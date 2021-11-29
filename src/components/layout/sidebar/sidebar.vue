@@ -1,5 +1,28 @@
 <template>
-    <div>
-        sidebar works
+  <div>
+    <div class="menuList">
+      <a-menu>
+        <a-menu-item><HomeOutlined /><span class="menuItem">Dashboard</span></a-menu-item>
+        <a-menu-item><MailOutlined /><span class="menuItem">Communications</span></a-menu-item>
+        <a-menu-item><UserOutlined /><span class="menuItem">Manage Care Coordinator</span></a-menu-item>
+        <a-menu-item><UserOutlined /><span class="menuItem">Manage Patients</span></a-menu-item>
+        <a-menu-item><CalendarOutlined /><span class="menuItem">Appointment Calendar</span></a-menu-item>
+        <a-menu-item><UserOutlined /><span class="menuItem">Tasks</span></a-menu-item>
+      </a-menu>
     </div>
+  </div>
 </template>
+
+<script>
+import { defineComponent, ref } from 'vue';
+import { HomeOutlined , MailOutlined , UserOutlined , CalendarOutlined} from '@ant-design/icons-vue';
+export default defineComponent({
+  components: {
+    HomeOutlined,
+    MailOutlined,
+    UserOutlined,
+    CalendarOutlined
+  },
+
+});
+</script>

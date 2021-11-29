@@ -1,0 +1,89 @@
+.pageTittle {
+    margin: 0 0 20px 0;
+}
+/*--tiles--*/
+.topBox {
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    &.one {
+        background-color: $primary-color-contrast;
+        i {
+            color: $primary-color;
+        }
+        h5,
+        p {
+            color: $primary-color;
+        }
+    }
+    &.two {
+        background-color: #8e60ff;
+    }
+    &.three {
+        background-color: #ff6061;
+    }
+    &.four {
+        background-color: #ffa800;
+    }
+    &.five {
+        background-color: #0fb5c2;
+    }
+    &.six {
+        background-color: #267dff;
+    }
+    &.red {
+        background-color: $red-color;
+    }
+    &.blue {
+        background-color: #00897b;
+    }
+    &.green {
+        background-color: #267dff;
+    }
+    i {
+        color: $primary-color-contrast;
+        font-size: 22px;
+    }
+    h5 {
+        color: $primary-color-contrast;
+        padding: 10px 0 0px;
+        font-size: 30px;
+    }
+    p {
+        font-size: 12px;
+        color: $primary-color-contrast;
+    }
+}
+
+/*--cards--*/
+.common-card{
+  &.ant-card{
+	    background-color: $primary-color-contrast;
+		border: none;
+		border-radius: 10px;
+		overflow: hidden;
+		margin:0px 0 24px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        .ant-card-head {
+			background-color: $primary-color-contrast;
+			padding: 10px 15px;
+            .ant-card-head-wrapper{
+              .ant-card-head-title{
+				font-size: 18px;
+				color: $black-color;
+				padding:0;
+                font-family: $font-family-bold;
+              }
+            }
+			.buttons {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				.btn {
+					color: $primary-color;
+					background-color: $secondary-color;
+				}
+			}
+		}
+  }
+}

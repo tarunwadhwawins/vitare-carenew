@@ -1,0 +1,21 @@
+@import "variable.scss";
+@import "fonts.scss";
+
+
+.ant-layout-header{
+ background:#fff;
+ padding:0px;
+ .header-wrapper {
+    display: flex;
+    .logo {
+        width: 200px;
+        padding: 0 15px;
+        .logoInner{
+         width:120px
+        }
+    }
+    .header-control {
+        padding: 0 15px;
+    }
+  }
+}

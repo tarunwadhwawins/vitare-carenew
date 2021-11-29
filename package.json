@@ -12,10 +12,12 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
     "ant-design-vue": "^2.2.8",
+    "apexcharts": "^3.30.0",
     "core-js": "^3.6.5",
     "dayjs": "^1.10.7",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
+    "vue3-apexcharts": "^1.4.1",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
