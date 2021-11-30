@@ -62,7 +62,7 @@
                 </a-row>
                 <a-row>
                     <a-col :span="24">
-                        <a-table :columns="columns" :data-source="data" :scroll="{ x: 1200 }" @change="onChange" />
+                        <a-table :pagination="false" :columns="columns" :data-source="data" :scroll="{ x: 1200 }" @change="onChange" />
                         <template #bodyCell="{ column }">
                             <template v-if="column.key === 'type'">
                                 <span>
@@ -77,7 +77,7 @@
         </a-layout>
     </a-layout>
     <!--modal-->
-    <a-modal v-model:visible="visible" width="1140px" title="Add New Coordinator" centered @ok="handleOk">
+    <a-modal v-model:visible="visible" width="1140px" title="Add New Coordinator" centered @ok="handleOk" :footer="null">
         <a-row :gutter="24">
             <a-col :span="24">
                 <a-steps :current="current">
@@ -179,7 +179,7 @@
                     </a-row>
                     <a-row :gutter="24">
                         <a-col :span="24">
-                            <a-table :columns="columns1" :data-source="data1" :scroll="{ x: 900 }" />
+                            <a-table :pagination="false" :columns="columns1" :data-source="data1" :scroll="{ x: 900 }" />
                         </a-col>
                     </a-row>
                 </div>
@@ -224,7 +224,7 @@
                     </a-row>
                     <a-row :gutter="24">
                         <a-col :span="24">
-                            <a-table :columns="columns2" :data-source="data2" :scroll="{ x: 900 }" />
+                            <a-table :pagination="false" :columns="columns2" :data-source="data2" :scroll="{ x: 900 }" />
                         </a-col>
                     </a-row>
                 </div>
@@ -245,7 +245,7 @@
                     </a-row>
                     <a-row :gutter="24">
                         <a-col :span="24">
-                            <a-table :columns="columns2" :data-source="data2" :scroll="{ x: 900 }">
+                            <a-table :pagination="false" :columns="columns2" :data-source="data2" :scroll="{ x: 900 }">
                                 <template #action>
                                     <a><EditOutlined /></a> <a> <DeleteOutlined /></a>
                                 </template>
@@ -254,17 +254,75 @@
                     </a-row>
                 </div>
                 <div class="steps-content" v-if="steps[current].title == 'Documents'">
-                    <h3>Hello 5</h3>
+            <a-row :gutter="24">
+              <a-col :span="12">
+                <div class="form-group">
+                  <label>Name</label>
+                  <a-input v-model="value" size="large" />
                 </div>
-                <div class="steps-action">
-                    <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">Previous</a-button>
-                    <a-button v-if="current < steps.length - 1" type="primary" @click="next">Next</a-button>
-                    <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
-                        Done
-                    </a-button>
+              </a-col>
+              <a-col :span="12">
+                <div class="form-group">
+                  <label>Document</label>
+                  <a-input v-model="value" size="large" type="file"/>
                 </div>
-            </a-col>
-        </a-row>
+              </a-col>
+              <a-col :span="12">
+                <div class="form-group">
+                  <label> Type</label>
+                  <a-select
+                    ref="select"
+                    v-model="value1"
+                    style="width: 100%"
+                    size="large"
+                    @focus="focus"
+                    @change="handleChange"
+                  >
+                    <a-select-option value="lucy">Id Proof</a-select-option>
+                    <a-select-option value="Yiminghe">Clinical</a-select-option>
+                    <a-select-option value="Yiminghe">Insurance</a-select-option>
+                  </a-select>
+                </div>
+              </a-col>
+              <a-col :span="12">
+                <div class="form-group">
+                  <label> Tags</label>
+                   <a-select v-model:value="selectedItemsForTag" mode="multiple" placeholder="Please Select Roles" style="width: 100%" :options="filteredOptionsForTag.map(item => ({ value: item }))"/>
+                </div>
+              </a-col>
+            </a-row>
+            <a-row :gutter="24" class="mb-24">
+              <a-col :span="24">
+                <a-button class="btn primaryBtn">Add</a-button>
+              </a-col>
+            </a-row>
+            <a-row :gutter="24">
+              <a-col :span="24">
+                <a-table :pagination="false" :columns="columns3" :data-source="data3" :scroll="{ x: 900 }" />
+              </a-col>
+            </a-row> 
+          </div>
+          <div class="steps-action">
+            <a-button v-if="current > 0" style="margin-right: 8px" @click="prev"
+              >Previous</a-button
+            >
+            <a-button v-if="current < steps.length - 1" type="primary" @click="next"
+              >Next</a-button
+            >
+            <a-button
+              v-if="current == steps.length - 1"
+              type="primary"
+              @click="$message.success('Processing complete!')"
+            >
+              Done
+            </a-button>
+          </div>
+        </a-col>
+      </a-row>
+    
+
+        
+        
     </a-modal>
 
     <!---->
@@ -285,6 +343,7 @@ import {
     SmileOutlined
 } from "@ant-design/icons-vue";
 const OPTIONS = ['Manager', 'Billing Admin', 'User Admin'];
+const OPTIONSTAG = ['Tag1', 'Tag2', 'Tag3'];
 const columns = [{
         title: "First Name",
         dataIndex: "first",
@@ -454,6 +513,46 @@ const data2 = [{
         actions: "",
     },
 ];
+const columns3 = [
+  {
+    title: "Name",
+    dataIndex: "name",
+  },
+  {
+    title: "Document",
+    dataIndex: "document",
+  },
+  {
+    title: "	Type",
+    dataIndex: "type",
+  },
+   {
+    title: "	Tags",
+    dataIndex: "tags",
+  },
+   {
+    title: "Actions",
+    dataIndex: "actions",
+  },
+];
+const data3 = [
+  {
+    key: "1",
+    name: "Program 1",
+    document: "abc.pdf",
+    type: "Voter Id",
+    tags: "	Voter Id",
+    actions: "",
+  },
+  {
+    key: "2",
+    name: "Program 1",
+    document: "abc.pdf",
+    type: "Voter Id",
+    tags: "	Voter Id",
+    actions: "",
+  },
+];
 export default {
     components: {
         Header,
@@ -473,6 +572,9 @@ export default {
 
         const selectedItems = ref(['Manager']);
         const filteredOptions = computed(() => OPTIONS.filter(o => !selectedItems.value.includes(o)));
+
+        const selectedItemsForTag = ref(['Tag1']);
+        const filteredOptionsForTag = computed(() => OPTIONSTAG.filter(o => !selectedItemsForTag.value.includes(o)));
 
         const handleOk = (e) => {
             console.log(e);
@@ -496,11 +598,16 @@ export default {
             handleOk,
             data1,
             columns1,
+            handleChange,
             data2,
             columns2,
+            data3,
+            columns3,
             data,
             selectedItems,
             filteredOptions,
+            filteredOptionsForTag ,
+            selectedItemsForTag ,
             columns,
             onChange: (pagination, filters, sorter, extra) => {
                 console.log("params", pagination, filters, sorter, extra);

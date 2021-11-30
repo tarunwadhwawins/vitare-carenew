@@ -33,7 +33,16 @@ const routes = [
     component: () => import( '../components/care-coordinator/manage-care-coordinator')
   },
 
-
+  {
+    path: '/manage-patients',
+    name: 'Patients',
+    component: () => import( '../components/patients/patients')
+  },
+  {
+    path: '/appointment-calendar',
+    name: 'Appointmnet Calendar',
+    component: () => import( '../components/appoinment-calendar/appointment-calendar')
+  },
   {
     path: '/',
     name: 'Login',
