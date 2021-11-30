@@ -64,10 +64,58 @@
           </a-row>
           <a-row :gutter="24">
             <a-col :span="12">
-              <a-card title="Patients Stats" class="common-card"> </a-card>
+              <a-card title="Patients Stats" class="common-card">
+                <div class="list-group">
+                  <div class="list-group-item">
+                    <div class="thumb-image">
+                      <img src="../../assets/images/profile.jpg" alt="" width="30" />
+                    </div>
+                    <div class="name">Jane Doe</div>
+                    <div class="progress-bar">
+                      <a-progress :percent="30" />
+                    </div>
+                  </div>
+                  <div class="list-group-item">
+                    <div class="thumb-image">
+                      <img src="../../assets/images/profile.jpg" alt="" width="30" />
+                    </div>
+                    <div class="name">Jane Doe</div>
+                    <div class="progress-bar">
+                      <a-progress :percent="30" />
+                    </div>
+                  </div>
+                  <div class="list-group-item">
+                    <div class="thumb-image">
+                      <img src="../../assets/images/profile.jpg" alt="" width="30" />
+                    </div>
+                    <div class="name">Jane Doe</div>
+                    <div class="progress-bar">
+                      <a-progress :percent="30" />
+                    </div>
+                  </div>
+                  <div class="list-group-item">
+                    <div class="thumb-image">
+                      <img src="../../assets/images/profile.jpg" alt="" width="30" />
+                    </div>
+                    <div class="name">Jane Doe</div>
+                    <div class="progress-bar">
+                      <a-progress :percent="30" />
+                    </div>
+                  </div>
+                </div>
+              </a-card>
             </a-col>
             <a-col :span="12">
-              <a-card title="Virtual Waiting Room" class="common-card"> </a-card>
+              <a-card title="Virtual Waiting Room" class="common-card">
+                <a-tabs v-model:activeKey="activeKey">
+                  <a-tab-pane key="1" tab="New Requests">
+                    <a-table :dataSource="dataSource" :columns="columns" :pagination="false" size="small" />
+                  </a-tab-pane>
+                  <a-tab-pane key="2" tab="Future Appointments" force-render>
+                   <a-table :dataSource="dataSource" :columns="columns" :pagination="false" size="small" />
+                  </a-tab-pane>
+                </a-tabs>
+              </a-card>
             </a-col>
           </a-row>
           <a-row :gutter="24">
@@ -79,7 +127,7 @@
                   :options="chartOptions"
                   :series="series"
                 ></apexchart>
-               </a-card>
+              </a-card>
             </a-col>
             <a-col :span="12">
               <a-card title="Appointment Summary" class="common-card">
@@ -103,42 +151,56 @@
 import Header from "../layout/header/header";
 import Sidebar from "../layout/sidebar/sidebar";
 import { useRouter } from "vue-router";
+import { defineComponent, ref } from "vue";
 export default {
   components: {
     Header,
     Sidebar,
   },
-  data: function() {
+  data: function () {
     return {
+      activeKey: ref("1"),
+
       chartOptions: {
-            chart: {
-              height: 350,
-              type: 'area'
-            },
-            dataLabels: {
-              enabled: false
-            },
-            stroke: {
-              curve: 'smooth'
-            },
-            xaxis: {
-              type: 'datetime',
-              categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-            },
-            tooltip: {
-              x: {
-                format: 'dd/MM/yy HH:mm'
-              },
-            },
+        chart: {
+          height: 350,
+          type: "area",
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        stroke: {
+          curve: "smooth",
+        },
+        xaxis: {
+          type: "datetime",
+          categories: [
+            "2018-09-19T00:00:00.000Z",
+            "2018-09-19T01:30:00.000Z",
+            "2018-09-19T02:30:00.000Z",
+            "2018-09-19T03:30:00.000Z",
+            "2018-09-19T04:30:00.000Z",
+            "2018-09-19T05:30:00.000Z",
+            "2018-09-19T06:30:00.000Z",
+          ],
+        },
+        tooltip: {
+          x: {
+            format: "dd/MM/yy HH:mm",
           },
-      series: [{
-            name: 'series1',
-            data: [31, 40, 28, 51, 42, 109, 100]
-          }, {
-            name: 'series2',
-            data: [11, 32, 45, 32, 34, 52, 41]
-          }],
-    }
+        },
+      },
+      series: [
+        {
+          name: "series1",
+          data: [31, 40, 28, 51, 42, 109, 100],
+        },
+        {
+          name: "series2",
+          data: [11, 32, 45, 32, 34, 52, 41],
+        },
+      ],
+    };
   },
   setup() {
     const router = useRouter();
@@ -151,6 +213,40 @@ export default {
     }
     return {
       logout,
+      dataSource: [
+          {
+            key: '1',
+            date: 'Mike',
+            patient: 'John',
+            action: '10 Downing Street',
+          },
+          {
+            key: '2',
+            date: 'John',
+            patient: 'John',
+            action: 'John',
+          },
+        ],
+
+        columns: [
+          {
+            title: 'Date',
+            dataIndex: 'date',
+            key: 'date',
+          },
+          {
+            title: 'Patient',
+            dataIndex: 'patient',
+            key: 'patient',
+          },
+          {
+            title: 'Action',
+            dataIndex: 'action',
+            key: 'action',
+          },
+        ],
+
+
     };
   },
 };

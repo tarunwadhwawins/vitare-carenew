@@ -1,5 +1,11 @@
 .pageTittle {
     margin: 0 0 20px 0;
+    position: relative;
+    .commonBtn {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
 }
 /*--tiles--*/
 .topBox {
@@ -15,30 +21,6 @@
         p {
             color: $primary-color;
         }
-    }
-    &.two {
-        background-color: #8e60ff;
-    }
-    &.three {
-        background-color: #ff6061;
-    }
-    &.four {
-        background-color: #ffa800;
-    }
-    &.five {
-        background-color: #0fb5c2;
-    }
-    &.six {
-        background-color: #267dff;
-    }
-    &.red {
-        background-color: $red-color;
-    }
-    &.blue {
-        background-color: #00897b;
-    }
-    &.green {
-        background-color: #267dff;
     }
     i {
         color: $primary-color-contrast;
@@ -56,34 +38,87 @@
 }
 
 /*--cards--*/
-.common-card{
-  &.ant-card{
-	    background-color: $primary-color-contrast;
-		border: none;
-		border-radius: 10px;
-		overflow: hidden;
-		margin:0px 0 24px;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.common-card {
+    &.ant-card {
+        background-color: $primary-color-contrast;
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 0px 0 24px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         .ant-card-head {
-			background-color: $primary-color-contrast;
-			padding: 10px 15px;
-            .ant-card-head-wrapper{
-              .ant-card-head-title{
-				font-size: 18px;
-				color: $black-color;
-				padding:0;
-                font-family: $font-family-bold;
-              }
+            background-color: $primary-color-contrast;
+            padding: 10px 15px;
+            .ant-card-head-wrapper {
+                .ant-card-head-title {
+                    font-size: 18px;
+                    color: $black-color;
+                    padding: 0;
+                    font-family: $font-family-bold;
+                }
             }
-			.buttons {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				.btn {
-					color: $primary-color;
-					background-color: $secondary-color;
-				}
-			}
-		}
-  }
+            .buttons {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                .btn {
+                    color: $primary-color;
+                    background-color: $secondary-color;
+                }
+            }
+        }
+        .ant-card-body{
+            padding: 12px;
+        }
+    }
+}
+
+/*----*/
+.list-group {
+    .list-group-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        position: relative;
+        padding: 0.5rem 1rem;
+        color: #212529;
+        text-decoration: none;
+        background-color: #fff;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        &:last-child{
+            border-bottom:0px solid rgba(0, 0, 0, 0.125);    
+        }
+        .progress-bar {
+            min-width: 120px;
+        }
+    }
+}
+
+
+/*----*/
+.colorBox{
+    padding: 15px;
+    border-radius: 10px;
+    .anticon{
+        font-size: 40px;
+        margin:0 0 8px 0;
+        svg{
+         fill:#ffffff;
+        }
+    } 
+    h3{
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        margin: 0;
+        font-size: 50px;
+        transform: translatey(-50%);
+        color: #fff;
+    }  
+    p{
+        font-size: 16px;
+        display: block;
+        color:#fff;
+    }
 }
