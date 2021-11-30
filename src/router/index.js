@@ -20,6 +20,20 @@ const routes = [
     name: 'Dashboard',
     component: () => import( '../components/dashboard/dashboard')
   },
+
+  {
+    path: '/communications',
+    name: 'Communications',
+    component: () => import( '../components/communications/communications')
+  },
+
+  {
+    path: '/manage-care-coordinator',
+    name: 'Manage Care Coordinators',
+    component: () => import( '../components/care-coordinator/manage-care-coordinator')
+  },
+
+
   {
     path: '/',
     name: 'Login',

@@ -23,10 +23,10 @@
                      <h2>Login</h2>
                      <form>
                         <div class="field">
-                         <a-input v-model:value="value" placeholder="Username" />
+                         <a-input v-model:value="value" placeholder="Username" size="large" />
                         </div>
                         <div class="field">
-                         <a-input v-model:value="value" placeholder="Password" />
+                         <a-input v-model:value="value" placeholder="Password" size="large" />
                         </div>
                         <a-button class="btn primaryBtn" @click="login()">
                         
