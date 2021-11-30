@@ -14,13 +14,123 @@
           <a-row>
             <a-col :span="24">
               <h2 class="pageTittle">
-               Appointment Calendar
+                Appointment Calendar
                 <div class="commonBtn">
-                  <a-button class="btn primaryBtn"
-                    >Full Calendar View</a-button
-                  >
+                  <a-button class="btn primaryBtn">Full Calendar View</a-button>
                 </div>
               </h2>
+            </a-col>
+          </a-row>
+          <a-row>
+            <a-col :span="6"> sss </a-col>
+            <a-col :span="18">
+              <a-tabs v-model:activeKey="activeKey">
+                <a-tab-pane key="1" tab="Day">
+                  <a-row>
+                    <a-col :span="24">
+                      <div class="dayCalendar">
+                        <table class="table table-bordered">
+                          <tbody>
+                            <tr>
+                              <th>08:00 AM</th>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <th>09:00 AM</th>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <th>10:00 AM</th>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <th>11:00 AM</th>
+                              <td>
+                                <a-dropdown :placement="topLeft" :trigger="['click']" overlayClassName="valueItem">
+                                  <a class="ant-dropdown-link one" @click.prevent>
+                                    <div class="dropdown">
+                                      <p>
+                                        <span>Smith Joseph</span>
+                                        <span>10:00 AM - 11:00 AM</span>
+                                      </p>
+                                      <img
+                                        src="../../assets/images/profile-1.jpg"
+                                        alt="image"
+                                      />
+                                    </div>
+                                  </a>
+                                  <template #overlay>
+                                    <a-menu>
+                                      <a-menu-item key="3"
+                                        >Lorem Ipsum is simply dummy text of the printing
+                                        and typesetting industry.</a-menu-item
+                                      >
+                                    </a-menu>
+                                  </template>
+                                </a-dropdown>
+                              </td>
+                            </tr>
+                            <tr>
+                              <th>12:00 PM</th>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <th>01:00 PM</th>
+                              <td>
+                                <a-dropdown :trigger="['click']">
+                                  <a class="ant-dropdown-link two" @click.prevent>
+                                    <div class="dropdown">
+                                      <p>
+                                        <span>Smith Joseph</span>
+                                        <span>10:00 AM - 11:00 AM</span>
+                                      </p>
+                                      <img
+                                        src="../../assets/images/profile-1.jpg"
+                                        alt="image"
+                                      />
+                                    </div>
+                                  </a>
+                                  <template #overlay>
+                                    <a-menu>
+                                      <a-menu-item key="0">
+                                        <a href="http://www.alipay.com/">1st menu item</a>
+                                      </a-menu-item>
+                                      <a-menu-item key="1">
+                                        <a href="http://www.taobao.com/">2nd menu item</a>
+                                      </a-menu-item>
+                                      <a-menu-divider />
+                                      <a-menu-item key="3">3rd menu item</a-menu-item>
+                                    </a-menu>
+                                  </template>
+                                </a-dropdown>
+                              </td>
+                            </tr>
+                            <tr>
+                              <th>02:00 PM</th>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <th>03:00 PM</th>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <th>04:00 PM</th>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <th>05:00 PM</th>
+                              <td></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </a-col>
+                  </a-row>
+                </a-tab-pane>
+                <a-tab-pane key="2" tab="Tomorrow" force-render>Tomorrow</a-tab-pane>
+                <a-tab-pane key="3" tab="Week">Week</a-tab-pane>
+                <a-tab-pane key="4" tab="Month">Month</a-tab-pane>
+              </a-tabs>
             </a-col>
           </a-row>
         </a-layout-content>
@@ -318,7 +428,12 @@
             </a-row>
             <a-row :gutter="24" class="mb-24">
               <a-col :span="24">
-                <a-table :columns="columns1" :data-source="data1"  :pagination="false" :scroll="{ x: 900 }" />
+                <a-table
+                  :columns="columns1"
+                  :data-source="data1"
+                  :pagination="false"
+                  :scroll="{ x: 900 }"
+                />
               </a-col>
             </a-row>
           </div>
@@ -518,7 +633,12 @@
             </a-row>
             <a-row :gutter="24" class="mb-24">
               <a-col :span="24">
-                <a-table :columns="columns4" :data-source="data4" :pagination="false" :scroll="{ x: 900 }" />
+                <a-table
+                  :columns="columns4"
+                  :data-source="data4"
+                  :pagination="false"
+                  :scroll="{ x: 900 }"
+                />
               </a-col>
             </a-row>
           </div>
@@ -545,7 +665,6 @@
   </div>
 </template>
 
-
 <script>
 import Header from "../layout/header/header";
 import Sidebar from "../layout/sidebar/sidebar";
@@ -556,10 +675,7 @@ export default {
   },
 
   setup() {
-
-    return {
-
-    };
+    return {};
   },
 };
 </script>

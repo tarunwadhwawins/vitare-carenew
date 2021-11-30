@@ -67,7 +67,7 @@
                 }
             }
         }
-        .ant-card-body{
+        .ant-card-body {
             padding: 12px;
         }
     }
@@ -86,8 +86,8 @@
         text-decoration: none;
         background-color: #fff;
         border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-        &:last-child{
-            border-bottom:0px solid rgba(0, 0, 0, 0.125);    
+        &:last-child {
+            border-bottom: 0px solid rgba(0, 0, 0, 0.125);
         }
         .progress-bar {
             min-width: 120px;
@@ -95,19 +95,18 @@
     }
 }
 
-
 /*----*/
-.colorBox{
+.colorBox {
     padding: 15px;
     border-radius: 10px;
-    .anticon{
+    .anticon {
         font-size: 40px;
-        margin:0 0 8px 0;
-        svg{
-         fill:#ffffff;
+        margin: 0 0 8px 0;
+        svg {
+            fill: #ffffff;
         }
-    } 
-    h3{
+    }
+    h3 {
         position: absolute;
         right: 15px;
         top: 50%;
@@ -115,10 +114,102 @@
         font-size: 50px;
         transform: translatey(-50%);
         color: #fff;
-    }  
-    p{
+    }
+    p {
         font-size: 16px;
         display: block;
-        color:#fff;
+        color: #fff;
+    }
+}
+
+/*--calendar--*/
+.table-bordered > :not(caption) > * > * {
+    border-width: 0 1px;
+}
+.table > :not(caption) > * > * {
+    padding: 0.5rem 0.5rem;
+    border-bottom-width: 1px;
+}
+.dayCalendar {
+    .table {
+        width: 100%;
+        font-size: 10px;
+        font-weight: 400;
+        display: table;
+        margin-bottom: 1rem;
+        color: #212529;
+        vertical-align: top;
+        border-color: #dee2e6;
+        --bs-table-bg: transparent;
+        --bs-table-accent-bg: transparent;
+        --bs-table-striped-color: #212529;
+        --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
+        --bs-table-active-color: #212529;
+        --bs-table-active-bg: rgba(0, 0, 0, 0.1);
+        --bs-table-hover-color: #212529;
+        --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
+        tbody {
+            vertical-align: middle;
+            border-color: inherit;
+            border-style: solid;
+            border-width: 0;
+            display: table-row-group;
+            tr {
+                border-color: inherit;
+                border-style: solid;
+                display: table-row;
+                th {
+                    font-size: 13px;
+                    color: #111;
+                    width: 100px;
+                    height: 70px;
+                    text-align: center;
+                    border-color: inherit;
+                    border-style: solid;
+                }
+                td {
+                    .ant-dropdown-link {
+                        display: inline-block;
+                        border-radius: 0.25rem;
+                        .dropdown {
+                            font-size: 12px;
+                            display: flex;
+                            align-items: center;
+                            padding: 5px 8px;
+                            color: #fff;
+                            p {
+                                text-align: left;
+                                padding-right: 25px;
+                                span {
+                                    display: block;
+                                }
+                            }
+                            img {
+                                width: 35px;
+                                height: 35px;
+                                border-radius: 50%;
+                                object-fit: cover;
+                            }
+                        }
+                        &.one {
+                            background-color: #d9d9d9;
+                            .dropdown {
+                                color: #111;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.valueItem {
+    .ant-dropdown-menu {
+        max-width: 500px;
+        text-align: left;
+        .ant-dropdown-menu-item {
+            white-space: normal;
+        }
     }
 }
