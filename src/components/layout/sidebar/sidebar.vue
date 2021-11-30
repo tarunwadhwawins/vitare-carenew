@@ -1,5 +1,4 @@
 <template>
-  <div>
     <div class="menuList">
       <a-menu id="nav">
         <router-link to="/dashboard" ><a-menu-item><HomeOutlined /><span class="menuItem">Dashboard</span></a-menu-item></router-link>
@@ -11,7 +10,6 @@
         <a-menu-item><UserOutlined /><span class="menuItem">Tasks</span></a-menu-item>
       </a-menu>
     </div>
-  </div>
 </template>
 
 <script>

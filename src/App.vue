@@ -2,6 +2,7 @@
   <div>
   <div v-if="!auth">
     <router-view />
+    
   </div>
   <div v-else>
     <router-view />
@@ -17,6 +18,7 @@ export default {
   components:{
         // login,
         // Dashboard
+      
     },
 
     setup () {
