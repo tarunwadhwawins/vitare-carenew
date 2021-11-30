@@ -86,10 +86,10 @@ h1,h2,h3,h4,h5,h6 {
 	background-color: $red-color;
 }
 .blue {
-	background-color: #00897b;
+	background-color: #267dff;
 }
 .green {
-	background-color: #267dff;
+	background-color: #00897b;
 }
 
 /*----*/
@@ -103,7 +103,16 @@ h1,h2,h3,h4,h5,h6 {
 	}
 }
 
+.formHeading {
+	margin: 0 0 25px 0;
+	h2 {
+	  font-size: 17px;
+	  border-bottom: 1px solid #ddd;
+	  padding: 0 0 5px 0;
+	}
+  }
 
+  
 /*--modal--*/
 .ant-modal-content{
  .ant-modal-header{
@@ -116,3 +125,4 @@ h1,h2,h3,h4,h5,h6 {
     max-height: calc(100vh - 240px);
  }	
 }
+

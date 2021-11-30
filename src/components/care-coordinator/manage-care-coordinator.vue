@@ -91,6 +91,7 @@
       title="Add New Coordinator"
       centered
       @ok="handleOk"
+      :footer="null"
     >
       <a-row :gutter="24">
         <a-col :span="24">
@@ -319,20 +320,7 @@
               <a-col :span="12">
                 <div class="form-group">
                   <label>Document</label>
-                  <!-- <a-input v-model="value" size="large" type="file"/> -->
-                  <a-upload
-                    v-model:file-list="fileList"
-                    name="file"
-                    :multiple="true"
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                    :headers="headers"
-                    @change="handleChange"
-                  >
-                    <a-button>
-                      <upload-outlined></upload-outlined>
-                      Click to Upload
-                    </a-button>
-                  </a-upload>
+                  <a-input v-model="value" size="large" type="file"/>
                 </div>
               </a-col>
               <a-col :span="12">
@@ -367,7 +355,7 @@
               <a-col :span="24">
                 <a-table :columns="columns3" :data-source="data3" :scroll="{ x: 900 }" />
               </a-col>
-            </a-row>
+            </a-row> 
           </div>
           <div class="steps-action">
             <a-button v-if="current > 0" style="margin-right: 8px" @click="prev"
@@ -582,11 +570,11 @@ const columns3 = [
     title: "	Type",
     dataIndex: "type",
   },
-  {
+   {
     title: "	Tags",
     dataIndex: "tags",
   },
-  {
+   {
     title: "Actions",
     dataIndex: "actions",
   },
