@@ -212,42 +212,21 @@
             </a-row>
             <a-row :gutter="24" class="mb-24">
               <a-col :span="24">
-                  <a-button class="btn primaryBtn">Add</a-button>
+                <a-button class="btn primaryBtn">Add</a-button>
               </a-col>
             </a-row>
             <a-row :gutter="24">
               <a-col :span="24">
-                <a-table
-                  :columns="columns1"
-                  :data-source="data1"
-                  :scroll="{ x:900}"
-                />
+                <a-table :columns="columns1" :data-source="data1" :scroll="{ x: 900 }" />
               </a-col>
             </a-row>
           </div>
           <div class="steps-content" v-if="steps[current].title == 'Availability'">
-              <a-row :gutter="24">
-                <a-col :span="12">
-                  <div class="form-group">
-                    <label>Start Time</label>
-                    <a-select
-                    ref="select"
-                    v-model="value1"
-                    style="width: 100%"
-                    size="large"
-                    @focus="focus"
-                    @change="handleChange"
-                  >
-                    <a-select-option value="lucy">Male</a-select-option>
-                    <a-select-option value="Yiminghe">Female</a-select-option>
-                    <a-select-option value="Yiminghe">Others</a-select-option>
-                  </a-select>
-                  </div>
-                </a-col>
-                <a-col :span="12">
-                  <div class="form-group">
-                    <label>End Time</label>
-                    <a-select
+            <a-row :gutter="24">
+              <a-col :span="12">
+                <div class="form-group">
+                  <label>Start Time</label>
+                  <a-select
                     ref="select"
                     v-model="value1"
                     style="width: 100%"
@@ -258,13 +237,76 @@
                     <a-select-option value="lucy">Choose start Time</a-select-option>
                     <a-select-option value="Yiminghe">08:00 AM</a-select-option>
                     <a-select-option value="Yiminghe">08:30 AM</a-select-option>
+                    <a-select-option value="Yiminghe">09:00 AM</a-select-option>
+                    <a-select-option value="Yiminghe">09:30 AM</a-select-option>
+                    <a-select-option value="Yiminghe">10:00 AM</a-select-option>
+                    <a-select-option value="Yiminghe">10:30 AM</a-select-option>
+                    <a-select-option value="Yiminghe">11:00 AM</a-select-option>
                   </a-select>
-                  </div>
-                </a-col>
+                </div>
+              </a-col>
+              <a-col :span="12">
+                <div class="form-group">
+                  <label>End Time</label>
+                  <a-select
+                    ref="select"
+                    v-model="value1"
+                    style="width: 100%"
+                    size="large"
+                    @focus="focus"
+                    @change="handleChange"
+                  >
+                    <a-select-option value="lucy">Choose End Time</a-select-option>
+                    <a-select-option value="Yiminghe">02:00 PM</a-select-option>
+                    <a-select-option value="Yiminghe">02:30 PM</a-select-option>
+                    <a-select-option value="Yiminghe">03:00 PM</a-select-option>
+                    <a-select-option value="Yiminghe">03:30 PM</a-select-option>
+                    <a-select-option value="Yiminghe">04:00 PM</a-select-option>
+                    <a-select-option value="Yiminghe">04:30 PM</a-select-option>
+                    <a-select-option value="Yiminghe">05:00 PM</a-select-option>
+                    <a-select-option value="Yiminghe">05:30 PM</a-select-option>
+                  </a-select>
+                </div>
+              </a-col>
+            </a-row>
+            <a-row :gutter="24" class="mb-24">
+              <a-col :span="24">
+                <a-button class="btn primaryBtn">Add</a-button>
+              </a-col>
+            </a-row>
+            <a-row :gutter="24">
+              <a-col :span="24">
+                <a-table :columns="columns2" :data-source="data2" :scroll="{ x: 900 }" />
+              </a-col>
             </a-row>
           </div>
           <div class="steps-content" v-if="steps[current].title == 'Roles'">
-            <h3>Hello 4</h3>
+            <a-row :gutter="24">
+              <a-col :span="24">
+                <div class="form-group">
+                  <label>Role</label>
+                  <a-select
+                    v-model:value="value"
+                    mode="multiple"
+                    style="width: 100%"
+                    placeholder="Please select"
+                    :options="options"
+                    @change="handleChange"
+                  >
+                  </a-select>
+                </div>
+              </a-col>
+            </a-row>
+            <a-row :gutter="24" class="mb-24">
+              <a-col :span="24">
+                <a-button class="btn primaryBtn">Add</a-button>
+              </a-col>
+            </a-row>
+            <a-row :gutter="24">
+              <a-col :span="24">
+                <a-table :columns="columns2" :data-source="data2" :scroll="{ x: 900 }" />
+              </a-col>
+            </a-row>
           </div>
           <div class="steps-content" v-if="steps[current].title == 'Documents'">
             <h3>Hello 5</h3>
@@ -429,7 +471,7 @@ const data1 = [
     first: "Jane",
     last: "Doe",
     email: "john@aa.com",
-    phone: 	999-2222-111,
+    phone: "999-2222-111",
     actions: "In",
   },
   {
@@ -437,8 +479,36 @@ const data1 = [
     first: "Steve",
     last: "	Smith",
     email: "steve@smith.com",
-    phone: 	999-2222-111,
+    phone: "999-2222-111",
     actions: "In",
+  },
+];
+const columns2 = [
+  {
+    title: "Start Time",
+    dataIndex: "start",
+  },
+  {
+    title: "End Time",
+    dataIndex: "end",
+  },
+  {
+    title: "Actions",
+    dataIndex: "actions",
+  },
+];
+const data2 = [
+  {
+    key: "1",
+    start: "08:00 AM",
+    end: "	02:30 PM",
+    actions: "",
+  },
+  {
+    key: "2",
+    start: "09:00 AM",
+    end: "03:30 PM",
+    actions: "",
   },
 ];
 export default {
@@ -467,12 +537,19 @@ export default {
     const prev = () => {
       current.value--;
     };
+
+    const handleChange = value => {
+      console.log(`selected ${value}`);
+    };
+
     return {
       visible,
       showModal,
       handleOk,
       data1,
       columns1,
+      data2,
+      columns2,
       data,
       columns,
       onChange: (pagination, filters, sorter, extra) => {
@@ -503,6 +580,13 @@ export default {
       ],
       next,
       prev,
+    
+      value: ref(['Manger', 'Billing Admin' , 'User Admin']),
+      handleChange,
+      options: [...Array(3)].map((i) => ({
+        value: (i + 10).toString(36) + (i + 1),
+      })),
+
     };
   },
 };
