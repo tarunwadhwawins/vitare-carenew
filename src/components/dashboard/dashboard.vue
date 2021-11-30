@@ -17,80 +17,23 @@
             </a-col>
             <a-col :span="24">
               <a-row :gutter="24">
-                <a-col flex="1 0 0%">
-                  <div class="topBox one">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>Total Patients</p>
-                  </div>
-                </a-col>
-                <a-col flex="1 0 0%">
-                  <div class="topBox two">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>Total Patients</p>
-                  </div>
-                </a-col>
-                <a-col flex="1 0 0%">
-                  <div class="topBox three">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>Total Patients</p>
-                  </div>
-                </a-col>
-                <a-col flex="1 0 0%">
-                  <div class="topBox four">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>Total Patients</p>
-                  </div>
-                </a-col>
-                <a-col flex="1 0 0%">
-                  <div class="topBox five">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>Total Patients</p>
-                  </div>
-                </a-col>
-                <a-col flex="1 0 0%">
-                  <div class="topBox six">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>Total Patients</p>
-                  </div>
-                </a-col>
+                <Card number="one" :count="totalPatients.count" text="Total Patients"></Card>
+                <Card number="two" :count="newPatients.count" text="New Patients"></Card>
+                <Card number="three" :count="criticalPatients.count" text="Critical Patients"></Card>
+                <Card number="four" :count="abnormalPatients.count" text="Abnormal Patients"></Card>
+                <Card number="five" :count="activePatients.count" text="Active Patients"></Card>
+                <Card number="six" :count="inactivePatients.count" text="Inactive Patients"></Card>
               </a-row>
             </a-col>
           </a-row>
+
           <a-row :gutter="24">
-            <a-col :span="12">
-              <a-card title="Patients Stats" class="common-card"> </a-card>
-            </a-col>
-            <a-col :span="12">
-              <a-card title="Virtual Waiting Room" class="common-card"> </a-card>
-            </a-col>
+            <PatientsStats></PatientsStats>
+            <VirtualWaitingRoom></VirtualWaitingRoom>
           </a-row>
           <a-row :gutter="24">
-            <a-col :span="12">
-              <a-card title="Total Patients Chart" class="common-card">
-                <apexchart
-                  type="area"
-                  height="350"
-                  :options="chartOptions"
-                  :series="series"
-                ></apexchart>
-               </a-card>
-            </a-col>
-            <a-col :span="12">
-              <a-card title="Appointment Summary" class="common-card">
-                <apexchart
-                  type="area"
-                  height="350"
-                  :options="chartOptions"
-                  :series="series"
-                ></apexchart>
-              </a-card>
-            </a-col>
+            <TotalPatientsChart></TotalPatientsChart>
+            <AppointmentSummary></AppointmentSummary>            
           </a-row>
         </a-layout-content>
       </a-layout>
@@ -100,48 +43,87 @@
 </template>
 
 <script>
+// import { ref } from 'vue'
+// import { useRouter } from "vue-router";
+
 import Header from "../layout/header/header";
 import Sidebar from "../layout/sidebar/sidebar";
-import { useRouter } from "vue-router";
+import Card from "@/components/common/Card";
+import totalPatients from '@/data/total-patients.json'
+import newPatients from '@/data/new-patients.json'
+import criticalPatients from '@/data/critical-patients.json'
+import abnormalPatients from '@/data/abnormal-patients.json'
+import activePatients from '@/data/active-patients.json'
+import inactivePatients from '@/data/inactive-patients.json'
+import PatientsStats from "./PatientsStats";
+import VirtualWaitingRoom from "./VirtualWaitingRoom";
+import TotalPatientsChart from "./TotalPatientsChart";
+import AppointmentSummary from "./AppointmentSummary";
+
 export default {
   components: {
     Header,
     Sidebar,
+    Card,
+    PatientsStats,
+    VirtualWaitingRoom,
+    TotalPatientsChart,
+    AppointmentSummary,
   },
   data: function() {
+    console.log(totalPatients);
     return {
+      totalPatients,
+      newPatients,
+      criticalPatients,
+      abnormalPatients,
+      activePatients,
+      inactivePatients,
       chartOptions: {
-            chart: {
-              height: 350,
-              type: 'area'
-            },
-            dataLabels: {
-              enabled: false
-            },
-            stroke: {
-              curve: 'smooth'
-            },
-            xaxis: {
-              type: 'datetime',
-              categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-            },
-            tooltip: {
-              x: {
-                format: 'dd/MM/yy HH:mm'
-              },
-            },
+        chart: {
+          height: 350,
+          type: 'area'
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth'
+        },
+        xaxis: {
+          type: 'datetime',
+          categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+        },
+        tooltip: {
+          x: {
+            format: 'dd/MM/yy HH:mm'
           },
+        },
+      },
       series: [{
-            name: 'series1',
-            data: [31, 40, 28, 51, 42, 109, 100]
-          }, {
-            name: 'series2',
-            data: [11, 32, 45, 32, 34, 52, 41]
-          }],
+        name: 'series1',
+        data: [31, 40, 28, 51, 42, 109, 100]
+      }, {
+        name: 'series2',
+        data: [11, 32, 45, 32, 34, 52, 41]
+      }],
     }
   },
   setup() {
-    const router = useRouter();
+    // const totalPatients = ref(totalPatientsData);
+    // const newPatients = ref(newPatientsData);
+    // const criticalPatients = ref(criticalPatientsData);
+    // const abnormalPatients = ref(abnormalPatientsData);
+    // const activePatients = ref(activePatientsData);
+    // const inactivePatients = ref(inactivePatientsData);
+    
+    // this.totalPatientsCount = totalPatients.count;
+    // this.newPatientsCount = newPatients.count;
+    // this.criticalPatientsCount = criticalPatients.count;
+    // this.abnormalPatientsCount = abnormalPatients.count;
+    // this.activePatientsCount = activePatients.count;
+    // this.inactivePatientsCount = inactivePatients.count;
+    // const router = useRouter();
     function logout() {
       localStorage.removeItem("auth");
       localStorage.clear();
@@ -150,7 +132,7 @@ export default {
       // })
     }
     return {
-      logout,
+      logout
     };
   },
 };
