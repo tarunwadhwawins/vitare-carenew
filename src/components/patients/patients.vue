@@ -57,15 +57,19 @@
                 :data-source="data"
                 :scroll="{ x: 1200 }"
                 @change="onChange"
-              />
-              <template #bodyCell="{ column }">
+              >
+              <!-- <template #bodyCell="{ column }">
                 <template v-if="column.key === 'type'">
                   <span>
                     <smile-outlined />
                     Type
                   </span>
                 </template>
+              </template> -->
+               <template #flags>
+                  <span class="box redBgColor">flag color</span>
               </template>
+              </a-table>
             </a-col>
           </a-row>
         </a-layout-content>
@@ -599,6 +603,9 @@ const columns = [
   {
     title: "Flags",
     dataIndex: "flags",
+    slots: {
+        customRender: 'flags',
+        },
   },
   {
     title: "First Name",
@@ -854,7 +861,7 @@ export default {
     Header,
     Sidebar,
     UserOutlined,
-    SmileOutlined,
+    // SmileOutlined,
   },
 
   setup() {
