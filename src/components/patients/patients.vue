@@ -55,18 +55,22 @@
               <a-table
                 :columns="columns"
                 :data-source="data"
-                :scroll="{ x: 1200 }"
+                :scroll="{ x: 1600 }"
                 @change="onChange"
               >
-                 <template #firstName="text">
-                  <a href="">{{text.text}}</a>
+                <template #firstName="text">
+                  <a href="">{{ text.text }}</a>
                 </template>
                 <template #lastName="text">
-                  <a href="">{{text.text}}</a>
+                  <a href="">{{ text.text }}</a>
                 </template>
-                <template #flags="{text}">
-                  <span class="box " :class="text"></span> 
-                  <span class="box " :class="text=text.match(/yellowBgColor/g)" v-if="text.match(/yellowBgColor/g)"></span>
+                <template #flags="{ text }">
+                  <span class="box" :class="text"></span>
+                  <span
+                    class="box"
+                    :class="(text = text.match(/yellowBgColor/g))"
+                    v-if="text.match(/yellowBgColor/g)"
+                  ></span>
                 </template>
                 <template #compliance>
                   <a class="icons"><WarningOutlined /></a>
@@ -75,7 +79,6 @@
                 <template #lastReadingValues>
                   <WarningOutlined />
                 </template>
-                
               </a-table>
             </a-col>
           </a-row>
@@ -722,24 +725,24 @@ const columns = [
       compare: (a, b) => a.readingvalues - b.readingvalues,
       multiple: 1,
     },
-     slots: {
+    slots: {
       customRender: "lastReadingValues",
     },
     children: [
       {
-        title: 'Sp02',
-        dataIndex: 'sp02',
-        key: 'sp02',
+        title: "Sp02",
+        dataIndex: "sp02",
+        key: "sp02",
       },
       {
-        title: 'BP',
-        dataIndex: 'bp',
-        key: 'bp',
+        title: "BP",
+        dataIndex: "bp",
+        key: "bp",
       },
       {
-        title: 'Weight',
-        dataIndex: 'weight',
-        key: 'weight',
+        title: "Weight",
+        dataIndex: "weight",
+        key: "weight",
       },
     ],
   },
@@ -756,9 +759,9 @@ const data = [
     compliance: "",
     message: "5 months ago",
     readingvalues: "",
-    sp02:'01',
-    bp:'23',
-    weight:'10kg'
+    sp02: "	95%",
+    bp: "115/81",
+    weight: "189.2",
   },
   {
     key: "2",
@@ -771,6 +774,9 @@ const data = [
     compliance: "",
     message: "2 months ago",
     readingvalues: "",
+    sp02: "-",
+    bp: "105/81",
+    weight: "-",
   },
   {
     key: "3",
@@ -783,6 +789,9 @@ const data = [
     compliance: "",
     message: "4 months ago",
     readingvalues: "",
+    sp02: "-",
+    bp: "-",
+    weight: "-",
   },
   {
     key: "4",
@@ -795,6 +804,9 @@ const data = [
     compliance: "",
     message: "15 days ago",
     readingvalues: "",
+    sp02: "92%",
+    bp: "-",
+    weight: "181.2",
   },
 ];
 const columns1 = [
