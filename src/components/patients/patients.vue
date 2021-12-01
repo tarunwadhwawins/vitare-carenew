@@ -58,13 +58,16 @@
                 :scroll="{ x: 1200 }"
                 @change="onChange"
               >
-                <template #flags="{text}">
-                  <span class="box " :class="text"></span> 
-                  <span class="box " :class="text=text.match(/yellowBgColor/g)" v-if="text.match(/yellowBgColor/g)"></span>
+                <template #flags="{ text }">
+                  <span class="box" :class="text"></span>
+                  <span
+                    class="box"
+                    :class="(text = text.match(/yellowBgColor/g))"
+                    v-if="text.match(/yellowBgColor/g)"
+                  ></span>
                 </template>
-
                 <template #compliance>
-                  <WarningOutlined />
+                  <a class="icons"><WarningOutlined /></a>
                 </template>
               </a-table>
             </a-col>
@@ -371,7 +374,8 @@
                   :scroll="{ x: 900 }"
                 >
                   <template #action>
-                    <a><EditOutlined /></a> <a> <DeleteOutlined /></a>
+                    <a class="icons"><EditOutlined /></a>
+                    <a class="icons"><DeleteOutlined /></a>
                   </template>
                 </a-table>
               </a-col>
@@ -471,7 +475,8 @@
                   :scroll="{ x: 900 }"
                 >
                   <template #action>
-                    <a><EditOutlined /></a> <a> <DeleteOutlined /></a>
+                    <a class="icons"><EditOutlined /></a>
+                    <a class="icons"><DeleteOutlined /></a>
                   </template>
                 </a-table>
               </a-col>
@@ -509,7 +514,8 @@
                   :scroll="{ x: 900 }"
                 >
                   <template #action>
-                    <a><EditOutlined /></a> <a> <DeleteOutlined /></a>
+                    <a class="icons"><EditOutlined /></a
+                    ><a class="icons"><DeleteOutlined /></a>
                   </template>
                 </a-table>
               </a-col>
@@ -571,6 +577,14 @@
               <a-col :span="12">
                 <div class="form-group">
                   <label> Tags</label>
+                  <a-select
+                    v-model:value="selectedItemsForTag"
+                    mode="multiple"
+                    size="large"
+                    placeholder="Please Select Roles"
+                    style="width: 100%"
+                    :options="filteredOptionsForTag.map((item) => ({ value: item }))"
+                  />
                 </div>
               </a-col>
             </a-row>
@@ -588,7 +602,8 @@
                   :scroll="{ x: 900 }"
                 >
                   <template #action>
-                    <a><EditOutlined /></a> <a> <DeleteOutlined /></a>
+                    <a class="icons"><EditOutlined /></a>
+                    <a class="icons"><DeleteOutlined /></a>
                   </template>
                 </a-table>
               </a-col>
@@ -620,13 +635,13 @@
 <script>
 import Header from "../layout/header/header";
 import Sidebar from "../layout/sidebar/sidebar";
-import { defineComponent, ref, reactive } from "vue";
+import { defineComponent, ref, reactive, computed } from "vue";
+const OPTIONSTAG = ["Tag1", "Tag2", "Tag3"];
 import {
   UserOutlined,
-  SmileOutlined,
   DeleteOutlined,
   EditOutlined,
-  WarningOutlined
+  WarningOutlined,
 } from "@ant-design/icons-vue";
 const columns = [
   {
@@ -907,8 +922,7 @@ export default {
     UserOutlined,
     DeleteOutlined,
     EditOutlined,
-    // SmileOutlined,
-    WarningOutlined
+    WarningOutlined,
   },
 
   setup() {
@@ -933,6 +947,12 @@ export default {
     const handleChange = (value) => {
       console.log(`selected ${value}`);
     };
+
+    const selectedItemsForTag = ref(["Tag1"]);
+    const filteredOptionsForTag = computed(() =>
+      OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
+    );
+
     const value = ref(1);
     const radioStyle = reactive({
       //   display: "flex",
@@ -953,6 +973,8 @@ export default {
       columns4,
       data,
       columns,
+      filteredOptionsForTag,
+      selectedItemsForTag,
       onChange: (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
       },

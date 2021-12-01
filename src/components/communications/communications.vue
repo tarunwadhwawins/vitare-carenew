@@ -53,18 +53,18 @@
               <a-table
                 :columns="columns"
                 :data-source="data"
-                :scroll="{ x: 1500 }"
+                :scroll="{ x: 900 }"
                 @change="onChange"
               >
                 <template #resend>
                   <a class="icons"><MessageOutlined /></a>
                 </template>
 
-                <template #type="{text}">
-                  <a class="icons" v-if="text=='comment'"><CommentOutlined /></a>
-                  <a class="icons" v-if="text=='voiceMail'"><PhoneOutlined /></a>
-                  <a class="icons" v-if="text=='sent'"><PhoneOutlined /></a>
-                  <a class="icons" v-if="text=='mail'"><MailOutlined /></a>
+                <template #type="{ text }">
+                  <a class="icons" v-if="text == 'comment'"><CommentOutlined /></a>
+                  <a class="icons" v-if="text == 'voiceMail'"><PhoneOutlined /></a>
+                  <a class="icons" v-if="text == 'sent'"><PhoneOutlined /></a>
+                  <a class="icons" v-if="text == 'mail'"><MailOutlined /></a>
                 </template>
               </a-table>
             </a-col>
@@ -158,7 +158,13 @@
 import Header from "../layout/header/header";
 import Sidebar from "../layout/sidebar/sidebar";
 import { defineComponent, ref } from "vue";
-import { UserOutlined, MessageOutlined,CommentOutlined,PhoneOutlined,MailOutlined } from "@ant-design/icons-vue";
+import {
+  UserOutlined,
+  MessageOutlined,
+  CommentOutlined,
+  PhoneOutlined,
+  MailOutlined,
+} from "@ant-design/icons-vue";
 const columns = [
   {
     title: "Type",
@@ -273,7 +279,7 @@ export default {
     MessageOutlined,
     CommentOutlined,
     PhoneOutlined,
-    MailOutlined
+    MailOutlined,
   },
 
   setup() {

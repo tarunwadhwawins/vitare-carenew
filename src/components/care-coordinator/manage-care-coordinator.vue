@@ -374,6 +374,7 @@
                   <a-select
                     v-model:value="selectedItemsForTag"
                     mode="multiple"
+                    size="large"
                     placeholder="Please Select Roles"
                     style="width: 100%"
                     :options="filteredOptionsForTag.map((item) => ({ value: item }))"
