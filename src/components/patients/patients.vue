@@ -58,17 +58,9 @@
                 :scroll="{ x: 1200 }"
                 @change="onChange"
               >
-              <!-- <template #bodyCell="{ column }">
-                <template v-if="column.key === 'type'">
-                  <span>
-                    <smile-outlined />
-                    Type
-                  </span>
+                <template #flags>
+                  <span class="box redBgColor"></span>
                 </template>
-              </template> -->
-               <template #flags>
-                  <span class="box redBgColor">flag color</span>
-              </template>
               </a-table>
             </a-col>
           </a-row>
@@ -367,7 +359,16 @@
             </a-row>
             <a-row :gutter="24" class="mb-24">
               <a-col :span="24">
-                <a-table :columns="columns1" :data-source="data1"  :pagination="false" :scroll="{ x: 900 }" />
+                <a-table
+                  :columns="columns1"
+                  :data-source="data1"
+                  :pagination="false"
+                  :scroll="{ x: 900 }"
+                >
+                  <template #action>
+                    <a><EditOutlined /></a> <a> <DeleteOutlined /></a>
+                  </template>
+                </a-table>
               </a-col>
             </a-row>
           </div>
@@ -463,7 +464,11 @@
                   :data-source="data2"
                   :pagination="false"
                   :scroll="{ x: 900 }"
-                />
+                >
+                  <template #action>
+                    <a><EditOutlined /></a> <a> <DeleteOutlined /></a>
+                  </template>
+                </a-table>
               </a-col>
             </a-row>
             <a-row :gutter="24">
@@ -497,7 +502,11 @@
                   :data-source="data3"
                   :pagination="false"
                   :scroll="{ x: 900 }"
-                />
+                >
+                  <template #action>
+                    <a><EditOutlined /></a> <a> <DeleteOutlined /></a>
+                  </template>
+                </a-table>
               </a-col>
             </a-row>
           </div>
@@ -567,7 +576,16 @@
             </a-row>
             <a-row :gutter="24" class="mb-24">
               <a-col :span="24">
-                <a-table :columns="columns4" :data-source="data4" :pagination="false" :scroll="{ x: 900 }" />
+                <a-table
+                  :columns="columns4"
+                  :data-source="data4"
+                  :pagination="false"
+                  :scroll="{ x: 900 }"
+                >
+                  <template #action>
+                    <a><EditOutlined /></a> <a> <DeleteOutlined /></a>
+                  </template>
+                </a-table>
               </a-col>
             </a-row>
           </div>
@@ -598,14 +616,19 @@
 import Header from "../layout/header/header";
 import Sidebar from "../layout/sidebar/sidebar";
 import { defineComponent, ref, reactive } from "vue";
-import { UserOutlined, SmileOutlined } from "@ant-design/icons-vue";
+import {
+  UserOutlined,
+  SmileOutlined,
+  DeleteOutlined,
+  EditOutlined,
+} from "@ant-design/icons-vue";
 const columns = [
   {
     title: "Flags",
     dataIndex: "flags",
     slots: {
-        customRender: 'flags',
-        },
+      customRender: "flags",
+    },
   },
   {
     title: "First Name",
@@ -734,6 +757,9 @@ const columns1 = [
   {
     title: "Actions",
     dataIndex: "actions",
+    slots: {
+      customRender: "action",
+    },
   },
 ];
 const data1 = [
@@ -762,6 +788,9 @@ const columns2 = [
   {
     title: "Actions",
     dataIndex: "actions",
+    slots: {
+      customRender: "action",
+    },
   },
 ];
 const data2 = [
@@ -796,6 +825,9 @@ const columns3 = [
   {
     title: "Actions",
     dataIndex: "actions",
+    slots: {
+      customRender: "action",
+    },
   },
 ];
 const data3 = [
@@ -836,6 +868,9 @@ const columns4 = [
   {
     title: "Actions",
     dataIndex: "actions",
+    slots: {
+      customRender: "action",
+    },
   },
 ];
 const data4 = [
@@ -861,6 +896,8 @@ export default {
     Header,
     Sidebar,
     UserOutlined,
+    DeleteOutlined,
+    EditOutlined,
     // SmileOutlined,
   },
 

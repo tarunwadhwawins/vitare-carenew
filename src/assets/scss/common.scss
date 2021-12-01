@@ -56,6 +56,18 @@ h1,h2,h3,h4,h5,h6 {
  margin-bottom:24px;
 }
 
+.align-items-center {
+    align-items: center !important;
+}
+.d-flex {
+    display: flex !important;
+}
+.flex-shrink-0 {
+    flex-shrink: 0 !important;
+}
+.flex-grow-1 {
+    flex-grow: 1 !important;
+}
 /*----*/
 .ant-layout-has-sider {
     padding-top: 64px;
@@ -91,7 +103,21 @@ h1,h2,h3,h4,h5,h6 {
 .green {
 	background-color: #00897b;
 }
-
+.redBgColor {
+	background-color: $red-color;
+}
+.yellowBgColor {
+	background-color: $yellow-color;
+}
+.purpleBgColor {
+	background-color: #8e60ff;
+}
+.blueBgColor {
+	background-color: #267dff;
+}
+.greenBgColor {
+	background-color: #0fb5c2;
+}
 /*----*/
 
 .form-group{
@@ -126,3 +152,10 @@ h1,h2,h3,h4,h5,h6 {
  }	
 }
 
+
+.box {
+    width: 24px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 4px;
+}
