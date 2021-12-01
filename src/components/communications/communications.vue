@@ -59,6 +59,13 @@
                 <template #resend>
                   <a class="icons"><MessageOutlined /></a>
                 </template>
+
+                <template #type="{text}">
+                  <a class="icons" v-if="text=='comment'"><CommentOutlined /></a>
+                  <a class="icons" v-if="text=='voiceMail'"><PhoneOutlined /></a>
+                  <a class="icons" v-if="text=='sent'"><PhoneOutlined /></a>
+                  <a class="icons" v-if="text=='mail'"><MailOutlined /></a>
+                </template>
               </a-table>
             </a-col>
           </a-row>
@@ -151,11 +158,14 @@
 import Header from "../layout/header/header";
 import Sidebar from "../layout/sidebar/sidebar";
 import { defineComponent, ref } from "vue";
-import { UserOutlined, MessageOutlined } from "@ant-design/icons-vue";
+import { UserOutlined, MessageOutlined,CommentOutlined,PhoneOutlined,MailOutlined } from "@ant-design/icons-vue";
 const columns = [
   {
     title: "Type",
     dataIndex: "type",
+    slots: {
+      customRender: "type",
+    },
   },
   {
     title: "Status",
@@ -212,7 +222,7 @@ const columns = [
 const data = [
   {
     key: "1",
-    type: "",
+    type: "comment",
     status: "Delievered",
     message: "Appointment Reminder",
     patient: "John",
@@ -223,7 +233,7 @@ const data = [
   },
   {
     key: "2",
-    type: "",
+    type: "voiceMail",
     status: "Voice Mail",
     message: "Recall Reminder",
     patient: "Smith",
@@ -234,7 +244,7 @@ const data = [
   },
   {
     key: "3",
-    type: "",
+    type: "sent",
     status: "Sent",
     message: "Patient Message",
     patient: "Steve",
@@ -245,7 +255,7 @@ const data = [
   },
   {
     key: "4",
-    type: "",
+    type: "mail",
     status: "Sent",
     message: "Portal Invitation",
     patient: "Robert",
@@ -261,6 +271,9 @@ export default {
     Sidebar,
     UserOutlined,
     MessageOutlined,
+    CommentOutlined,
+    PhoneOutlined,
+    MailOutlined
   },
 
   setup() {

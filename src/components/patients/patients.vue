@@ -58,8 +58,13 @@
                 :scroll="{ x: 1200 }"
                 @change="onChange"
               >
-                <template #flags>
-                  <span class="box redBgColor"></span>
+                <template #flags="{text}">
+                  <span class="box " :class="text"></span> 
+                  <span class="box " :class="text=text.match(/yellowBgColor/g)" v-if="text.match(/yellowBgColor/g)"></span>
+                </template>
+
+                <template #compliance>
+                  <WarningOutlined />
                 </template>
               </a-table>
             </a-col>
@@ -621,6 +626,7 @@ import {
   SmileOutlined,
   DeleteOutlined,
   EditOutlined,
+  WarningOutlined
 } from "@ant-design/icons-vue";
 const columns = [
   {
@@ -669,6 +675,9 @@ const columns = [
       compare: (a, b) => a.compliance - b.compliance,
       multiple: 1,
     },
+    slots: {
+      customRender: "compliance",
+    },
   },
   {
     title: "Last Message Sent",
@@ -690,7 +699,7 @@ const columns = [
 const data = [
   {
     key: "1",
-    flags: "",
+    flags: "redBgColor",
     first: "Jane",
     last: "Doe",
     age: "85",
@@ -702,7 +711,7 @@ const data = [
   },
   {
     key: "2",
-    flags: "",
+    flags: "purpleBgColor",
     first: "Steve",
     last: "Smith",
     age: "78",
@@ -714,7 +723,7 @@ const data = [
   },
   {
     key: "3",
-    flags: "",
+    flags: "blueBgColor yellowBgColor ",
     first: "Joseph",
     last: "Spouse",
     age: "72",
@@ -726,7 +735,7 @@ const data = [
   },
   {
     key: "4",
-    flags: "",
+    flags: "greenBgColor",
     first: "Robert",
     last: "Henry",
     age: "79",
@@ -899,6 +908,7 @@ export default {
     DeleteOutlined,
     EditOutlined,
     // SmileOutlined,
+    WarningOutlined
   },
 
   setup() {
