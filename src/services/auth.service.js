@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://ditstekdemo.com/Virtare/public/api/';
+// const API_URL = 'http://ditstekdemo.com/Virtare/public/api/';
+const API_URL = 'https://ditstekdemo.com/Virtare-web/public/api/';
 
 class AuthService {
   login(user) {
@@ -8,7 +9,7 @@ class AuthService {
       .post(API_URL + 'login', {
         email: user.email,
         password: user.password,
-        role:"client"
+        role: user.role
       })
       .then(response => {
         if (response.data.token) {

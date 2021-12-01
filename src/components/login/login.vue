@@ -45,7 +45,7 @@ export default defineComponent({
 		return {
 			email: '',
 			password: '',
-			role: "client"
+			role: "Admin"
 		}
 	},
   methods: {
@@ -60,7 +60,6 @@ export default defineComponent({
 				},
 				(error) => {
 					this.loading = false;
-					console.log(error.toString())
 					this.message = (
 						error.response &&
 						error.response.data &&

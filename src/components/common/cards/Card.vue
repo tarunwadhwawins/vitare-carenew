@@ -1,6 +1,6 @@
 <template>
   <a-col flex="1 0 0%">
-    <div class="topBox" :class="number">
+    <div class="topBox" :class="customClass">
       <i class="fa fa-user-circle-o" aria-hidden="true"></i>
       <h5>{{ count }}</h5>
       <p>{{ text }}</p>
@@ -19,7 +19,7 @@ export default {
       type: Number,
       required: true
     },
-    number: {
+    customClass: {
       type: String,
       required: true
     },

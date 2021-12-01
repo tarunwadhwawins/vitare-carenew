@@ -6,23 +6,20 @@
         <Header />
       </a-layout-header>
       <a-layout>
-        <a-layout-sider
-          :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"
-          ><Sidebar
-        /></a-layout-sider>
+        <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
+          <Sidebar/>
+        </a-layout-sider>
         <a-layout-content>
           <a-row class="mb-24">
-            <a-col :span="24">
-              <h2 class="pageTittle">Dashboard</h2>
-            </a-col>
+            <MainHeader heading="Dashboard" buttonText=""></MainHeader>
             <a-col :span="24">
               <a-row :gutter="24">
-                <Card number="one" :count="totalPatients.count" text="Total Patients"></Card>
-                <Card number="two" :count="newPatients.count" text="New Patients"></Card>
-                <Card number="three" :count="criticalPatients.count" text="Critical Patients"></Card>
-                <Card number="four" :count="abnormalPatients.count" text="Abnormal Patients"></Card>
-                <Card number="five" :count="activePatients.count" text="Active Patients"></Card>
-                <Card number="six" :count="inactivePatients.count" text="Inactive Patients"></Card>
+                <Card customClass="bg-white one" :count="totalPatients.count" text="Total Patients"></Card>
+                <Card customClass="bg-purple" :count="newPatients.count" text="New Patients"></Card>
+                <Card customClass="bg-pink" :count="criticalPatients.count" text="Critical Patients"></Card>
+                <Card customClass="bg-yellow" :count="abnormalPatients.count" text="Abnormal Patients"></Card>
+                <Card customClass="bg-sky" :count="activePatients.count" text="Active Patients"></Card>
+                <Card customClass="bg-blue" :count="inactivePatients.count" text="Inactive Patients"></Card>
               </a-row>
             </a-col>
           </a-row>
@@ -31,10 +28,12 @@
             <PatientsStats></PatientsStats>
             <VirtualWaitingRoom></VirtualWaitingRoom>
           </a-row>
+
           <a-row :gutter="24">
             <TotalPatientsChart></TotalPatientsChart>
             <AppointmentSummary></AppointmentSummary>            
           </a-row>
+
         </a-layout-content>
       </a-layout>
     </a-layout>
@@ -48,7 +47,8 @@
 
 import Header from "../layout/header/header";
 import Sidebar from "../layout/sidebar/sidebar";
-import Card from "@/components/common/Card";
+import MainHeader from "@/components/common/MainHeader";
+import Card from "@/components/common/cards/Card";
 import totalPatients from '@/data/total-patients.json'
 import newPatients from '@/data/new-patients.json'
 import criticalPatients from '@/data/critical-patients.json'
@@ -64,6 +64,7 @@ export default {
   components: {
     Header,
     Sidebar,
+    MainHeader,
     Card,
     PatientsStats,
     VirtualWaitingRoom,

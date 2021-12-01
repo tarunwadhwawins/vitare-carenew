@@ -14,7 +14,17 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: () => import( '@/components/dashboard/Dashboard')
-  }
+  },
+  {
+    path: '/communications',
+    name: 'Communications',
+    component: () => import( '@/components/communications/Communications')
+  },
+  {
+    path: '/manage-care-coordinator',
+    name: 'Manage Care Coordinator',
+    component: () => import( '@/components/care-coordinator/CareCoordinator')
+  },
 ]
 
 const router = createRouter({
