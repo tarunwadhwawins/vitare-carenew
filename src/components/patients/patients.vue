@@ -58,6 +58,12 @@
                 :scroll="{ x: 1200 }"
                 @change="onChange"
               >
+                 <template #firstName="text">
+                  <a href="">{{text.text}}</a>
+                </template>
+                <template #lastName="text">
+                  <a href="">{{text.text}}</a>
+                </template>
                 <template #flags="{text}">
                   <span class="box " :class="text"></span> 
                   <span class="box " :class="text=text.match(/yellowBgColor/g)" v-if="text.match(/yellowBgColor/g)"></span>
@@ -66,6 +72,11 @@
                 <template #compliance>
                   <WarningOutlined />
                 </template>
+
+                <template #lastReadingValues>
+                  <WarningOutlined />
+                </template>
+                
               </a-table>
             </a-col>
           </a-row>
@@ -638,11 +649,17 @@ const columns = [
   },
   {
     title: "First Name",
-    dataIndex: "first",
+    dataIndex: "firstName",
+    slots: {
+      customRender: "firstName",
+    },
   },
   {
     title: "Last Name",
-    dataIndex: "last",
+    dataIndex: "lastName",
+    slots: {
+      customRender: "lastName",
+    },
   },
   {
     title: "Age",
@@ -694,26 +711,49 @@ const columns = [
       compare: (a, b) => a.readingvalues - b.readingvalues,
       multiple: 1,
     },
+     slots: {
+      customRender: "lastReadingValues",
+    },
+    children: [
+      {
+        title: 'Sp02',
+        dataIndex: 'sp02',
+        key: 'sp02',
+      },
+      {
+        title: 'BP',
+        dataIndex: 'bp',
+        key: 'bp',
+      },
+      {
+        title: 'Weight',
+        dataIndex: 'weight',
+        key: 'weight',
+      },
+    ],
   },
 ];
 const data = [
   {
     key: "1",
     flags: "redBgColor",
-    first: "Jane",
-    last: "Doe",
+    firstName: "Jane",
+    lastName: "Doe",
     age: "85",
     sex: "male",
     reading: "5 months ago",
     compliance: "",
     message: "5 months ago",
     readingvalues: "",
+    sp02:'01',
+    bp:'23',
+    weight:'10kg'
   },
   {
     key: "2",
     flags: "purpleBgColor",
-    first: "Steve",
-    last: "Smith",
+    firstName: "Steve",
+    lastName: "Smith",
     age: "78",
     sex: "Female",
     reading: "15 days ago",
@@ -724,8 +764,8 @@ const data = [
   {
     key: "3",
     flags: "blueBgColor yellowBgColor ",
-    first: "Joseph",
-    last: "Spouse",
+    firstName: "Joseph",
+    lastName: "Spouse",
     age: "72",
     sex: "male",
     reading: "2 months ago",
@@ -736,8 +776,8 @@ const data = [
   {
     key: "4",
     flags: "greenBgColor",
-    first: "Robert",
-    last: "Henry",
+    firstName: "Robert",
+    lastName: "Henry",
     age: "79",
     sex: "Female",
     reading: "4 months ago",

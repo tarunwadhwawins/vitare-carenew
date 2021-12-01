@@ -59,7 +59,6 @@
                 <template #resend>
                   <a class="icons"><MessageOutlined /></a>
                 </template>
-
                 <template #type="{text}">
                   <a class="icons" v-if="text=='comment'"><CommentOutlined /></a>
                   <a class="icons" v-if="text=='voiceMail'"><PhoneOutlined /></a>
