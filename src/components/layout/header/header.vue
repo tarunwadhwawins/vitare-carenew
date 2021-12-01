@@ -8,7 +8,25 @@
       </div>
       <div class="header-control">
         <div class="header-inner">
-          <div class="location">ss</div>
+          <div class="location d-flex align-items-center">
+            <a-dropdown :trigger="['click']">
+              <a class="ant-dropdown-link" @click.prevent>
+                <div class="name">Organisation - Location <DownOutlined /></div>
+              </a>
+              <template #overlay>
+                <a-menu>
+                  <a-menu-item key="0">
+                    <a href="#">Organisation 1</a>
+                  </a-menu-item>
+                  <a-menu-item key="1">
+                    <a href="">Organisation 2</a>
+                  </a-menu-item>
+                  <a-menu-item key="3"> <a href="">Organisation 3</a></a-menu-item>
+                  <a-menu-item key="4"> <a href="">Organisation 4</a></a-menu-item>
+                </a-menu>
+              </template>
+            </a-dropdown>
+          </div>
           <div class="search">
             <a-input v-model="value" size="large" placeholder="Enter search" />
           </div>
