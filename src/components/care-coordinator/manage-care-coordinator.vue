@@ -74,7 +74,9 @@
                 @change="onChange"
               >
                 <template #action>
-                  <a><EditOutlined /></a> <a> <DeleteOutlined /></a>
+                  <a class="icons"><EyeOutlined /></a>
+                  <a class="icons"><EditOutlined /></a>
+                  <a class="icons"> <DeleteOutlined /></a>
                 </template>
               </a-table>
             </a-col>
@@ -223,7 +225,8 @@
                   :scroll="{ x: 900 }"
                 >
                   <template #action>
-                    <a><EditOutlined /></a> <a> <DeleteOutlined /></a>
+                    <a class="icons"><EditOutlined /></a>
+                    <a class="icons"> <DeleteOutlined /></a>
                   </template>
                 </a-table>
               </a-col>
@@ -291,7 +294,8 @@
                   :scroll="{ x: 900 }"
                 >
                   <template #action>
-                    <a><EditOutlined /></a> <a> <DeleteOutlined /></a>
+                    <a class="icons"><EditOutlined /></a>
+                    <a class="icons"> <DeleteOutlined /></a>
                   </template>
                 </a-table>
               </a-col>
@@ -327,7 +331,7 @@
                   :scroll="{ x: 900 }"
                 >
                   <template #action>
-                    <a> <DeleteOutlined /></a>
+                    <a class="icons"> <DeleteOutlined /></a>
                   </template>
                 </a-table>
               </a-col>
@@ -391,7 +395,8 @@
                   :scroll="{ x: 900 }"
                 >
                   <template #action>
-                    <a><EditOutlined /></a> <a> <DeleteOutlined /></a>
+                    <a class="icons"><EditOutlined /></a>
+                    <a class="icons"> <DeleteOutlined /></a>
                   </template>
                 </a-table>
               </a-col>
@@ -423,7 +428,12 @@
 import Header from "../layout/header/header";
 import Sidebar from "../layout/sidebar/sidebar";
 import { defineComponent, ref, computed } from "vue";
-import { UserOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import {
+  UserOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  EyeOutlined,
+} from "@ant-design/icons-vue";
 const OPTIONS = ["Manager", "Billing Admin", "User Admin"];
 const OPTIONSTAG = ["Tag1", "Tag2", "Tag3"];
 const columns = [
@@ -653,6 +663,7 @@ export default {
     UserOutlined,
     DeleteOutlined,
     EditOutlined,
+    EyeOutlined,
   },
 
   setup() {

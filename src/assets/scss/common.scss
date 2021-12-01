@@ -6,26 +6,38 @@
 @import "style.scss";
 
 body {
-    font-family:$font-family-regular;
-    background-color: #f9f9f9;
+	font-family: $font-family-regular;
+	background-color: #f9f9f9;
 }
 img {
-    max-width: 100%;
-    // width: 100%;
+	max-width: 100%;
+	// width: 100%;
 }
 p {
-    font-size: 14px;
+	font-size: 14px;
 }
 svg {
-    vertical-align: middle;
+	vertical-align: middle;
 }
-p,a,h1,h2,h3,h4,h5,h6 {
+p,
+a,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	padding: 0;
 	margin: 0;
 }
 
-h1,h2,h3,h4,h5,h6 {
-	font-family:$font-family-semi-bold;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: $font-family-semi-bold;
 	color: $primary-color;
 }
 
@@ -33,10 +45,10 @@ h1,h2,h3,h4,h5,h6 {
 	background-color: $secondary-color;
 	color: $primary-color;
 	font-size: 14px;
-	padding:6px 25px;
+	padding: 6px 25px;
 	font-family: $font-family-bold;
 	height: auto;
-	border-radius:6px;
+	border-radius: 6px;
 }
 .secondaryBtn {
 	background-color: $secondary-color;
@@ -44,38 +56,38 @@ h1,h2,h3,h4,h5,h6 {
 	font-size: 14px;
 	border-radius: 15px;
 	border: 1px solid $secondary-color;
-	padding:6px 25px;
+	padding: 6px 25px;
 	font-family: $font-family-bold;
-	border-radius:6px;
+	border-radius: 6px;
 	&:hover {
 		color: $secondary-color;
 		background-color: #fff;
 	}
 }
-.mb-24{
- margin-bottom:24px;
+.mb-24 {
+	margin-bottom: 24px;
 }
 
 .align-items-center {
-    align-items: center !important;
+	align-items: center !important;
 }
 .d-flex {
-    display: flex !important;
+	display: flex !important;
 }
 .flex-shrink-0 {
-    flex-shrink: 0 !important;
+	flex-shrink: 0 !important;
 }
 .flex-grow-1 {
-    flex-grow: 1 !important;
+	flex-grow: 1 !important;
 }
 /*----*/
 .ant-layout-has-sider {
-    padding-top: 64px;
-    min-height: calc(100vh - 64px);
-    padding-left: 200px;
+	padding-top: 64px;
+	min-height: calc(100vh - 64px);
+	padding-left: 200px;
 }
 .ant-layout-content {
-    padding: 12px;
+	padding: 12px;
 }
 
 /*----*/
@@ -120,42 +132,73 @@ h1,h2,h3,h4,h5,h6 {
 }
 /*----*/
 
-.form-group{
+.form-group {
 	margin: 0 0 20px 0;
-	label{
-	  display:block;
-	  margin:0 0 4px 0;
-	  font-family:$font-family-semi-bold;
+	label {
+		display: block;
+		margin: 0 0 4px 0;
+		font-family: $font-family-semi-bold;
 	}
 }
 
 .formHeading {
 	margin: 0 0 25px 0;
 	h2 {
-	  font-size: 17px;
-	  border-bottom: 1px solid #ddd;
-	  padding: 0 0 5px 0;
+		font-size: 17px;
+		border-bottom: 1px solid #ddd;
+		padding: 0 0 5px 0;
 	}
-  }
-
-  
-/*--modal--*/
-.ant-modal-content{
- .ant-modal-header{
-  .ant-modal-title{
-	font-family:$font-family-semi-bold;	  
-  }
- }
- .ant-modal-body{
-    overflow: auto;
-    max-height: calc(100vh - 240px);
- }	
 }
 
+/*--modal--*/
+.ant-modal-content {
+	.ant-modal-header {
+		.ant-modal-title {
+			font-family: $font-family-semi-bold;
+		}
+	}
+	.ant-modal-body {
+		overflow: auto;
+		max-height: calc(100vh - 240px);
+	}
+}
 
 .box {
-    width: 24px;
-    height: 10px;
-    display: inline-block;
-    border-radius: 4px;
+	width: 24px;
+	height: 10px;
+	display: inline-block;
+	border-radius: 4px;
 }
+
+/*----*/
+.icons{
+	margin: 0 10px 0 0;
+	&:last-child{
+     margin:0;
+	}
+	.anticon-eye {
+		svg {
+			fill: #0d6efd;
+			font-size: 20px;
+		}
+	}
+	.anticon-edit{
+		svg {
+			fill: #198754;
+			font-size: 20px;
+		}
+	}
+	.anticon-delete{
+		svg {
+			fill: #dc3545;
+			font-size: 20px;
+		}
+	}
+	.anticon-message{
+		svg {
+			fill: #0d6efd;
+			font-size: 20px;
+		}	
+	}
+}
+

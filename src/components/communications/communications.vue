@@ -50,15 +50,16 @@
           </a-row>
           <a-row>
             <a-col :span="24">
-              <a-table :columns="columns" :data-source="data" :scroll="{ x: 1500 }" @change="onChange" />
-                 <template #bodyCell="{ column }">
-                    <template v-if="column.key === 'type'">
-                    <span>
-                        <smile-outlined />
-                            Type
-                        </span>
+              <a-table
+                :columns="columns"
+                :data-source="data"
+                :scroll="{ x: 1500 }"
+                @change="onChange"
+              >
+                <template #resend>
+                  <a class="icons"><MessageOutlined /></a>
                 </template>
-                </template>
+              </a-table>
             </a-col>
           </a-row>
         </a-layout-content>
@@ -150,7 +151,7 @@
 import Header from "../layout/header/header";
 import Sidebar from "../layout/sidebar/sidebar";
 import { defineComponent, ref } from "vue";
-import { UserOutlined , SmileOutlined } from "@ant-design/icons-vue";
+import { UserOutlined, MessageOutlined } from "@ant-design/icons-vue";
 const columns = [
   {
     title: "Type",
@@ -184,7 +185,7 @@ const columns = [
       multiple: 1,
     },
   },
-    {
+  {
     title: "Sent",
     dataIndex: "sent",
     sorter: {
@@ -192,7 +193,7 @@ const columns = [
       multiple: 1,
     },
   },
-    {
+  {
     title: "Appt Type, Date, Time",
     dataIndex: "appt",
     sorter: {
@@ -203,18 +204,17 @@ const columns = [
   {
     title: "Resend",
     dataIndex: "resend",
-    sorter: {
-      compare: (a, b) => a.resend - b.resend,
-      multiple: 1,
+    slots: {
+      customRender: "resend",
     },
   },
 ];
 const data = [
   {
     key: "1",
-    type:"",
+    type: "",
     status: "Delievered",
-    message:"Appointment Reminder",
+    message: "Appointment Reminder",
     patient: "John",
     sentto: 22998876654,
     sent: "Nov 11, 2021 - 11:30 Am",
@@ -223,9 +223,9 @@ const data = [
   },
   {
     key: "2",
-    type:"",
+    type: "",
     status: "Voice Mail",
-    message:"Recall Reminder",
+    message: "Recall Reminder",
     patient: "Smith",
     sentto: 22998876654,
     sent: "Nov 11, 2021 - 11:30 Am",
@@ -234,9 +234,9 @@ const data = [
   },
   {
     key: "3",
-    type:"",
+    type: "",
     status: "Sent",
-    message:"Patient Message",
+    message: "Patient Message",
     patient: "Steve",
     sentto: 22998876654,
     sent: "Nov 11, 2021 - 11:30 Am",
@@ -245,9 +245,9 @@ const data = [
   },
   {
     key: "4",
-    type:"",
+    type: "",
     status: "Sent",
-    message:"Portal Invitation",
+    message: "Portal Invitation",
     patient: "Robert",
     sentto: 22998876654,
     sent: "Nov 11, 2021 - 11:30 Am",
@@ -260,7 +260,7 @@ export default {
     Header,
     Sidebar,
     UserOutlined,
-    SmileOutlined
+    MessageOutlined,
   },
 
   setup() {
