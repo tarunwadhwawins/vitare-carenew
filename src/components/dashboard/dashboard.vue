@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!---->
     <a-layout>
       <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
         <Header />
@@ -37,24 +36,20 @@
         </a-layout-content>
       </a-layout>
     </a-layout>
-    <!---->
   </div>
 </template>
 
 <script>
-// import { ref } from 'vue'
-// import { useRouter } from "vue-router";
-
 import Header from "../layout/header/header";
 import Sidebar from "../layout/sidebar/sidebar";
 import MainHeader from "@/components/common/MainHeader";
 import Card from "@/components/common/cards/Card";
-import totalPatients from '@/data/total-patients.json'
-import newPatients from '@/data/new-patients.json'
-import criticalPatients from '@/data/critical-patients.json'
-import abnormalPatients from '@/data/abnormal-patients.json'
-import activePatients from '@/data/active-patients.json'
-import inactivePatients from '@/data/inactive-patients.json'
+import totalPatients from '@/data/total-patients.json';
+import newPatients from '@/data/new-patients.json';
+import criticalPatients from '@/data/critical-patients.json';
+import abnormalPatients from '@/data/abnormal-patients.json';
+import activePatients from '@/data/active-patients.json';
+import inactivePatients from '@/data/inactive-patients.json';
 import PatientsStats from "./PatientsStats";
 import VirtualWaitingRoom from "./VirtualWaitingRoom";
 import TotalPatientsChart from "./TotalPatientsChart";
@@ -111,26 +106,9 @@ export default {
     }
   },
   setup() {
-    // const totalPatients = ref(totalPatientsData);
-    // const newPatients = ref(newPatientsData);
-    // const criticalPatients = ref(criticalPatientsData);
-    // const abnormalPatients = ref(abnormalPatientsData);
-    // const activePatients = ref(activePatientsData);
-    // const inactivePatients = ref(inactivePatientsData);
-    
-    // this.totalPatientsCount = totalPatients.count;
-    // this.newPatientsCount = newPatients.count;
-    // this.criticalPatientsCount = criticalPatients.count;
-    // this.abnormalPatientsCount = abnormalPatients.count;
-    // this.activePatientsCount = activePatients.count;
-    // this.inactivePatientsCount = inactivePatients.count;
-    // const router = useRouter();
     function logout() {
       localStorage.removeItem("auth");
       localStorage.clear();
-      // router.push({
-      //     path: '/'
-      // })
     }
     return {
       logout
