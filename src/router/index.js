@@ -2,16 +2,12 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
   {
-    path: '/',
-    redirect: '/login',
-  },
-  {
     path: '/test',
     name: 'Test',
     component: () => import( '@/components/Test'),
   },
   {
-    path: '/login',
+    path: '/',
     name: 'Login',
     component: () => import( '@/components/login/login')
   },
@@ -36,17 +32,17 @@ const routes = [
   {
     path: '/manage-patients',
     name: 'Patients',
-    component: () => import( '../components/patients/patients')
+    component: () => import( '@/components/patients/patients')
   },
   {
     path: '/appointment-calendar',
     name: 'Appointmnet Calendar',
-    component: () => import( '../components/appoinment-calendar/appointment-calendar')
+    component: () => import( '@/components/appoinment-calendar/appointment-calendar')
   },
   {
     path: '/',
     name: 'Login',
-    component: () => import( '../components/login/login')
+    component: () => import( '@/components/login/login')
   }
 
 ]
