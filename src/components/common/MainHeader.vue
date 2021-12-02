@@ -4,7 +4,7 @@
       <h2 class="pageTittle">
         {{ heading }}
         <div class="commonBtn">
-          <a-button class="btn primaryBtn" @click="showModal">{{ buttonText }}</a-button>
+          <a-button class="btn primaryBtn" @click.prevent="showModal">{{ buttonText }}</a-button>
         </div>
       </h2>
     </a-col>

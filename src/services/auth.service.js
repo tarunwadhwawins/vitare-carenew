@@ -12,10 +12,12 @@ class AuthService {
         role: user.role
       })
       .then(response => {
-        if (response.data.token) {
-          localStorage.setItem('user', JSON.stringify(response.data));
+        const res = response.data
+        console.log(JSON.stringify(res.data.token));
+        if (res.data.token) {
+          localStorage.setItem('user', JSON.stringify(res.data));
         }
-        return response.data;
+        return res.data.token;
       });
   }
 

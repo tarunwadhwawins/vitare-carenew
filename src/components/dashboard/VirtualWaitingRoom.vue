@@ -2,12 +2,8 @@
   <a-col :span="12">
     <a-card title="Virtual Waiting Room" class="common-card">
       <a-tabs v-model:activeKey="activeKey">
-        <a-tab-pane key="1" tab="New Requests">
-          <a-table :dataSource="newRequests" :columns="columns" />
-        </a-tab-pane>
-        <a-tab-pane key="2" tab="Future Appointments">
-          <a-table :dataSource="futureAppointments" :columns="columns" />
-        </a-tab-pane>
+        <a-tab-pane key="1" tab="New Requests">New Requests</a-tab-pane>
+        <a-tab-pane key="2" tab="Future Appointments" force-render>Future Appointments</a-tab-pane>
       </a-tabs>
     </a-card>
   </a-col>

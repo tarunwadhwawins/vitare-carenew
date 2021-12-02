@@ -10,7 +10,7 @@
         </a-layout-sider>
         <a-layout-content>
           <a-row>
-            <MainHeader heading="Manange Care Coordinator" buttonText="Add New Coordinator" modalScreen="coordinator"></MainHeader>
+            <MainHeader heading="Manage Care Coordinator" buttonText="Add New Coordinator" modalScreen="coordinator"></MainHeader>
           </a-row>
 
           <a-row class="mb-24" :gutter="24">

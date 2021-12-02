@@ -67,7 +67,6 @@ export default {
     AppointmentSummary,
   },
   data: function() {
-    console.log(totalPatients);
     return {
       totalPatients,
       newPatients,

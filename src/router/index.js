@@ -6,6 +6,11 @@ const routes = [
     redirect: '/login',
   },
   {
+    path: '/test',
+    name: 'Test',
+    component: () => import( '@/components/Test'),
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import( '@/components/login/Login')
@@ -24,6 +29,16 @@ const routes = [
     path: '/manage-care-coordinator',
     name: 'Manage Care Coordinator',
     component: () => import( '@/components/care-coordinator/CareCoordinator')
+  },
+  {
+    path: '/manage-patients',
+    name: 'Manage Patients',
+    component: () => import( '@/components/patients/Patients')
+  },
+  {
+    path: '/appointment-calendar',
+    name: 'Appointment Calendar',
+    component: () => import( '@/components/appointment-calendar/AppointmentCalendar')
   },
 ]
 
