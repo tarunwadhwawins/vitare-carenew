@@ -38,8 +38,8 @@
 </template>
 
 <script>
-import Header from "../layout/header/header";
-import Sidebar from "../layout/sidebar/sidebar";
+import Header from "../layout/header/Header";
+import Sidebar from "../layout/sidebar/Sidebar";
 import LongCard from "@/components/common/cards/LongCard";
 import CoordinatorTable from "@/components/common/tables/CoordinatorTable";
 import MainHeader from "@/components/common/MainHeader";

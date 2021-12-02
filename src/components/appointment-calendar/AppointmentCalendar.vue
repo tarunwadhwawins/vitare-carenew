@@ -28,8 +28,8 @@
 </template>
 
 <script>
-// import Header from "../layout/header/header";
-// import Sidebar from "../layout/sidebar/sidebar";
+// import Header from "../layout/header/Header";
+// import Sidebar from "../layout/sidebar/Sidebar";
 // // import MainHeader from "@/components/common/MainHeader";
 // export default {
 //   components: {
