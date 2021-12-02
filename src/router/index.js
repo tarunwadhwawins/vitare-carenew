@@ -9,12 +9,12 @@ const routes = [
   {
     path: '/',
     name: 'Login',
-    component: () => import( '@/components/login/login')
+    component: () => import( '@/components/login/Login')
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import( '@/components/dashboard/dashboard')
+    component: () => import( '@/components/dashboard/Dashboard')
   },
 
   {
@@ -26,23 +26,18 @@ const routes = [
   {
     path: '/manage-care-coordinator',
     name: 'Manage Care Coordinators',
-    component: () => import( '@/components/care-coordinator/manage-care-coordinator')
+    component: () => import( '@/components/care-coordinator/CareCoordinator')
   },
 
   {
     path: '/manage-patients',
     name: 'Patients',
-    component: () => import( '@/components/patients/patients')
+    component: () => import( '@/components/patients/Patients')
   },
   {
     path: '/appointment-calendar',
     name: 'Appointmnet Calendar',
-    component: () => import( '@/components/appoinment-calendar/appointment-calendar')
-  },
-  {
-    path: '/',
-    name: 'Login',
-    component: () => import( '@/components/login/login')
+    component: () => import( '@/components/appoinment-calendar/AppointmentCalendar')
   }
 
 ]
