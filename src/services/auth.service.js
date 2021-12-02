@@ -15,9 +15,16 @@ class AuthService {
         const res = response.data
         console.log(JSON.stringify(res.data.token));
         if (res.data.token) {
-          localStorage.setItem('user', JSON.stringify(res.data));
+          var userData = {
+            'token': res.data.token,
+            'email': res.data.user.email,
+            'email_verify': res.data.user.email_verify,
+            'role_id': res.data.user.role_id,
+            'uuid': res.data.user.uuid,
+          }
+          localStorage.setItem('user', JSON.stringify(userData));
         }
-        return res.data.token;
+        return userData;
       });
   }
 

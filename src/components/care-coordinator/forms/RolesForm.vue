@@ -1,18 +1,17 @@
 <template>
-  <a-form :model="rolesForm" @submit.prevent="addCareCoordinatorRole">
+  <Form :model="rolesForm" @submit="addCareCoordinatorRole" :validation-schema="schema">
     <a-row :gutter="24">
       <a-col :span="24">
         <div class="form-group">
           <label>Role</label>
-          <select class="ant-input ant-input-lg"
+          <Field as="select" class="ant-input ant-input-lg"
             v-model="rolesForm.access_id"
+            name="access_id"
             mode="multiple"
-            style="width: 100%"
-            placeholder="Please select"
-            :options="options"
-            @change="handleChange">
+            placeholder="Please select">
             <option value="1">Client</option>
-          </select>
+          </Field>
+          <ErrorMessage class="error" name="access_id" />
         </div>
       </a-col>
     </a-row>
@@ -21,14 +20,33 @@
         <button class="btn primaryBtn">Add</button>
       </a-col>
     </a-row>
-  </a-form>
+  </Form>
 </template>
 
 <script>
   import { toRaw } from 'vue';
+  import { Form, Field, ErrorMessage } from 'vee-validate';
+  import * as yup from 'yup';
+  import { configure } from 'vee-validate';
+  // Default values
+  configure({
+    validateOnBlur: true,
+    validateOnChange: true,
+    validateOnInput: true,
+    validateOnModelUpdate: true,
+  });
   export default {
+    components: {
+      Form,
+      Field,
+      ErrorMessage,
+    },
     data() {
+      const schema = yup.object({
+        access_id: yup.string().required().label("Role"),
+      });
       return {
+        schema,
         rolesForm: {
           access_id: '',
           // care_coordinator_id: 1,

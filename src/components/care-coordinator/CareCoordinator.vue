@@ -30,7 +30,7 @@
             </a-col>
           </a-row>
           
-          <CoordinatorTable/>
+          <CoordinatorTable :list="list"></CoordinatorTable>
         </a-layout-content>
       </a-layout>
     </a-layout>
@@ -44,6 +44,27 @@ import LongCard from "@/components/common/cards/LongCard";
 import CoordinatorTable from "@/components/common/tables/CoordinatorTable";
 import MainHeader from "@/components/common/MainHeader";
 export default {
+  data() {
+    return {
+      list: [{}],
+    }
+  },
+  created() {
+    this.$store.dispatch("getCareCoordinatorsList")
+    .then((res) => { 
+      this.list = res.data.data;
+    },
+    (error) => {
+      this.loading = false;
+      this.message = (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) ||
+      error.message ||
+      error.toString();
+    });
+  },
   components: {
     Header,
     Sidebar,

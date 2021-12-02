@@ -6,7 +6,6 @@
         <template v-if="column.key === 'type'">
           <span>
             <smile-outlined />
-            Type
           </span>
         </template>
       </template>
@@ -18,11 +17,19 @@
 const columns = [
   {
     title: "First Name",
-    dataIndex: "first",
+    dataIndex: "first_name",
+    sorter: {
+      compare: (a, b) => a.first_name - b.first_name,
+      multiple: 3,
+    },
   },
   {
     title: "Last Name",
-    dataIndex: "last",
+    dataIndex: "last_name",
+    sorter: {
+      compare: (a, b) => a.last_name - b.last_name,
+      multiple: 3,
+    },
   },
   {
     title: "Role",
@@ -50,9 +57,9 @@ const columns = [
   },
   {
     title: "Created At",
-    dataIndex: "created",
+    dataIndex: "created_at",
     sorter: {
-      compare: (a, b) => a.created - b.created,
+      compare: (a, b) => a.created_at - b.created_at,
       multiple: 1,
     },
   },
@@ -73,60 +80,22 @@ const columns = [
     },
   },
 ];
-const data = [
-  {
-    key: "1",
-    first: "Jane",
-    last: "Doe",
-    role: "Physician",
-    specialization: "Wellness",
-    network: "In",
-    created: "Nov 10,2021",
-    status: "Active",
-    action: 70,
-  },
-  {
-    key: "2",
-    first: "Steve",
-    last: "Smith",
-    role: "Cardiologist",
-    specialization: "Behavior",
-    network: "Out",
-    created: "Nov 07,2021",
-    status: "Active",
-    action: 70,
-  },
-  {
-    key: "3",
-    first: "Joseph",
-    last: "William",
-    role: "RN",
-    specialization: "Wellness",
-    network: "In",
-    created: "Nov 01,2021",
-    status: "Active",
-    action: 70,
-  },
-  {
-    key: "4",
-    first: "Robert",
-    last: "Henry",
-    role: "Physician",
-    specialization: "Behavior",
-    network: "Out",
-    created: "Nov 10,2021",
-    status: "Active",
-    action: 70,
-  },
-];
+import { toRef } from 'vue';
 export default {
-  setup() {
+  props: {
+    list: {
+      type: Array,
+      required: true
+    }
+  },
+  setup(props) {
+    const data = toRef(props, 'list');
     return {
       data,
       columns,
-      onChange: (pagination, filters, sorter, extra) => {
-        console.log("params", pagination, filters, sorter, extra);
-      },
+      // onChange: (pagination, filters, sorter, extra) => {
+      //   // console.log("params", pagination, filters, sorter, extra);
+      // },
     };
   },
 }

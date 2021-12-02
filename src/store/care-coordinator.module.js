@@ -50,6 +50,27 @@ export const careCoordinator = {
         }
       );
     },
+    /* async getCareCoordinatorsList({commit}) {
+      try {
+        let list = await CareCoordinatorService.getCareCoordinatorsList();
+        commit('getCareCoordinatorsListSuccess', list)
+      }
+      catch (error) {
+        commit('getCareCoordinatorsListFailure', error);
+      }
+    }, */
+    getCareCoordinatorsList({ commit }) {
+      return CareCoordinatorService.getCareCoordinatorsList().then(
+        list => {
+          commit('getCareCoordinatorsListSuccess', list);
+          return Promise.resolve(list);
+        },
+        error => {
+          commit('getCareCoordinatorsListFailure', error);
+          return Promise.reject(error);
+        }
+      );
+    },
   },
   mutations: {
     addCareCoordinatorSuccess(state, coordinator) {
@@ -76,5 +97,11 @@ export const careCoordinator = {
     addRoleFailure(state) {
       state.role = null;
     },
+    getCareCoordinatorsListSuccess(state, list) {
+      state.list = list;
+    },
+    getCareCoordinatorsListFailure(state, error) {
+      state.list = error;
+    }
   }
 };

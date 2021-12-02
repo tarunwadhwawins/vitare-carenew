@@ -20,15 +20,17 @@
               <div class="rightWrapper">
                 <img class="rightImg" src="@/assets/images/curve.png" alt="image"/>
                 <h2>Login</h2>
-                <a-form @submit.prevent="handleLogin">
+                <Form @submit="handleLogin" :validation-schema="schema">
                   <div class="field">
-                    <input class="ant-input ant-input-lg" v-model="email" placeholder="Email" />
+                    <Field class="ant-input ant-input-lg" v-model="email" name="email" placeholder="Email"></Field>
+                    <ErrorMessage class="error" name="email" />
                   </div>
                   <div class="field">
-                    <input class="ant-input ant-input-lg" v-model="password" placeholder="Password" />
+                    <Field class="ant-input ant-input-lg" v-model="password" name="password" type="password" placeholder="Password"></Field>
+                    <ErrorMessage class="error" name="password" />
                   </div>
                   <button class="btn primaryBtn">Submit</button>
-                </a-form>
+                </Form>
               </div>
             </a-col>
           </a-row>
@@ -39,10 +41,32 @@
 </template>
 
 <script>
+import { Form, Field, ErrorMessage } from 'vee-validate';
+import * as yup from 'yup';
+import { configure } from 'vee-validate';
 import { defineComponent } from 'vue';
+
+// Default values
+configure({
+  validateOnBlur: true,
+  validateOnChange: true,
+  validateOnInput: true,
+  validateOnModelUpdate: true,
+});
+
 export default defineComponent({
+  components: {
+    Form,
+    Field,
+    ErrorMessage,
+  },
 	data() {
+    const schema = yup.object({
+      email: yup.string().required().email().label("Email"),
+      password: yup.string().required().min(8).label("Password"),
+    });
 		return {
+      schema,
 			email: '',
 			password: '',
 			role: "Admin"
@@ -73,3 +97,6 @@ export default defineComponent({
 	},
 });
 </script>
+
+<style>
+</style>
