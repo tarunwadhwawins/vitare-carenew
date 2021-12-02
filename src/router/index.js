@@ -13,33 +13,42 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import( '@/components/login/Login')
+    component: () => import( '@/components/login/login')
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import( '@/components/dashboard/Dashboard')
+    component: () => import( '@/components/dashboard/dashboard')
   },
+
   {
     path: '/communications',
     name: 'Communications',
-    component: () => import( '@/components/communications/Communications')
+    component: () => import( '../components/communications/communications')
   },
+
   {
     path: '/manage-care-coordinator',
-    name: 'Manage Care Coordinator',
-    component: () => import( '@/components/care-coordinator/CareCoordinator')
+    name: 'Manage Care Coordinators',
+    component: () => import( '../components/care-coordinator/manage-care-coordinator')
   },
+
   {
     path: '/manage-patients',
-    name: 'Manage Patients',
-    component: () => import( '@/components/patients/Patients')
+    name: 'Patients',
+    component: () => import( '../components/patients/patients')
   },
   {
     path: '/appointment-calendar',
-    name: 'Appointment Calendar',
-    component: () => import( '@/components/appointment-calendar/AppointmentCalendar')
+    name: 'Appointmnet Calendar',
+    component: () => import( '../components/appoinment-calendar/appointment-calendar')
   },
+  {
+    path: '/',
+    name: 'Login',
+    component: () => import( '../components/login/login')
+  }
+
 ]
 
 const router = createRouter({

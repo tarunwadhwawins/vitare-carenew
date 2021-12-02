@@ -66,7 +66,7 @@ export default {
     TotalPatientsChart,
     AppointmentSummary,
   },
-  data: function() {
+  data: function () {
     return {
       totalPatients,
       newPatients,

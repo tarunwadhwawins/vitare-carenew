@@ -2,6 +2,7 @@
   <div>
   <div v-if="!auth">
     <router-view />
+    
   </div>
   <div v-else>
     <router-view />
@@ -17,6 +18,7 @@ export default {
   components:{
         // login,
         // Dashboard
+      
     },
 
     setup () {
@@ -37,8 +39,6 @@ export default {
 }
 
 #nav {
-  padding: 30px;
-
   a {
     font-weight: bold;
     color: #2c3e50;
