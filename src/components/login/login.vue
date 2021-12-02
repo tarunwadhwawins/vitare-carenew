@@ -47,7 +47,7 @@ import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router'
 export default defineComponent({
   setup() {
-    const value = ref('');
+    const value = ref('');  
     const router = useRouter();
     function login(){
         localStorage.setItem('auth', true);
