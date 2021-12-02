@@ -43,7 +43,7 @@
     },
     data() {
       const schema = yup.object({
-        access_id: yup.string().required(),
+        access_id: yup.string().required().label("Role"),
       });
       return {
         schema,

@@ -72,9 +72,9 @@
     },
     data() {
       const schema = yup.object({
-        document_name: yup.string().required(),
-        doument: yup.string().required(),
-        type: yup.string().required(),
+        document_name: yup.string().required().label("Name"),
+        doument: yup.string().required().label("Doument"),
+        type: yup.string().required().label("Type"),
         // selectedItemsForTag: yup.string().required(),
       });
       return {

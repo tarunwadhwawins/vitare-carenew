@@ -72,8 +72,8 @@
     },
     data() {
       const schema = yup.object({
-        start_time: yup.string().required(),
-        end_time: yup.string().required(),
+        start_time: yup.string().required().label("Start Time"),
+        end_time: yup.string().required().label("End Time"),
       });
       return {
         schema,

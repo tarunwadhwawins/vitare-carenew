@@ -104,14 +104,14 @@
     },
     data() {
       const schema = yup.object({
-        first_name: yup.string().required(),
-        last_name: yup.string().required(),
-        designation: yup.string().required(),
-        gender_id: yup.string().required(),
-        email: yup.string().required().email(),
-        phone_no: yup.string().required(),
-        specialization_id: yup.string().required(),
-        network_id: yup.string().required(),
+        first_name: yup.string().required().label("First Name"),
+        last_name: yup.string().required().label("Last Name"),
+        designation: yup.string().required().label("Designation"),
+        gender_id: yup.string().required().label("Gender"),
+        email: yup.string().required().email().label("Email"),
+        phone_no: yup.string().required().label("Phone Number"),
+        specialization_id: yup.string().required().label("Specialization"),
+        network_id: yup.string().required().label("Network"),
       });
       return {
         schema,

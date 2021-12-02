@@ -53,6 +53,7 @@ configure({
   validateOnInput: true,
   validateOnModelUpdate: true,
 });
+
 export default defineComponent({
   components: {
     Form,
@@ -61,8 +62,8 @@ export default defineComponent({
   },
 	data() {
     const schema = yup.object({
-      email: yup.string().required().email(),
-      password: yup.string().required().min(8),
+      email: yup.string().required().email().label("Email"),
+      password: yup.string().required().min(8).label("Password"),
     });
 		return {
       schema,
