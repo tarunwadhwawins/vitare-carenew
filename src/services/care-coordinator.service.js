@@ -7,7 +7,6 @@ const API_URL = 'https://ditstekdemo.com/Virtare-web/public/api/';
 
 class CareCoordinatorService {
   addCareCoordinator(coordinator) {
-    console.log(coordinator);
     return axios
       .post(API_URL + 'carecoordinator', {
         first_name: coordinator.first_name,
@@ -18,6 +17,7 @@ class CareCoordinatorService {
         phone_no: coordinator.phone_no,
         specialization_id: coordinator.specialization_id,
         network_id: coordinator.network_id,
+        email_verify: coordinator.email_verify
       },
       { headers: authHeader() })
       .then(response => {
@@ -27,6 +27,7 @@ class CareCoordinatorService {
         return response.data;
       });
   }
+
   addCareCoordinatorContact(contact) {
     return axios
       .post(API_URL + 'carecoordinator/contact', {
@@ -44,6 +45,7 @@ class CareCoordinatorService {
         return response.data;
       });
   }
+
   addCareCoordinatorAvailability(availability) {
     return axios
       .post(API_URL + 'carecoordinator/availability', {
@@ -59,6 +61,7 @@ class CareCoordinatorService {
         return response.data;
       });
   }
+
   addCareCoordinatorRole(role) {
     return axios
       .post(API_URL + 'carecoordinator/access', {
@@ -73,6 +76,11 @@ class CareCoordinatorService {
         return response.data;
       });
   }
+
+  getCareCoordinatorsList() {
+    return axios.get(API_URL + 'carecoordinator/list', { headers: authHeader() });
+  }
+
 }
 
 export default new CareCoordinatorService();

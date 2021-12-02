@@ -98,7 +98,7 @@
             <div class="profile-menu">
               <a-dropdown :trigger="['click']">
                 <a class="ant-dropdown-link" @click.prevent>
-                  <div class="name">{{ user.email }} <strong>{{ role }}</strong></div>
+                  <div class="name">{{ user }} <strong>{{ role }}</strong></div>
                   <div class="image">
                     <img src="@/assets/images/profile-1.jpg" alt="image" />
                   </div>
@@ -126,24 +126,30 @@
 <script>
 import { defineComponent } from "vue";
 import { NotificationOutlined, DownOutlined } from "@ant-design/icons-vue";
-const getUserData = JSON.parse(localStorage.getItem('user'));
-const user = getUserData.user;
-const role = user.role_id ? 'Admin' : 'Client'
 export default defineComponent({
   data() {
     return {
-      user: user,
-      role: role
+      user: '',
+      role: '',
     }
   },
   components: {
     NotificationOutlined,
     DownOutlined,
   },
+  created() {
+    if(this.$store.state.auth.user == null) {
+      this.$router.push("/");
+      return;
+    }
+    // console.log(this.$store.state.auth.user);
+    this.user = this.$store.state.auth.user.email;
+    this.role = this.$store.state.auth.user.role_id ? 'Admin' : 'Client';
+  },
   methods: {
     logout() {
       this.$store.dispatch("auth/logout")
-      .then((res) => {
+      .then(() => {
         this.$router.push("/login");
       },
       (error) => {

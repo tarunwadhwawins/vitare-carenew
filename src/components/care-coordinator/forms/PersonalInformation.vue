@@ -127,8 +127,13 @@
         }
       }
     },
+    computed() {
+      return this.$store
+    },
     methods: {
       addCareCoordinator() {
+        const email_verify = this.$store.state.auth.user.email_verify
+        console.log(this.$store.state.auth.user.email_verify);
         const coordinator = toRaw(this.personalInformationForm);
         console.log("Coordinator", coordinator.first_name);
         this.$store.dispatch("addCareCoordinator", { 
@@ -139,7 +144,8 @@
           email: coordinator.email,
           phone_no: coordinator.phone_no,
           specialization_id: coordinator.specialization_id,
-          network_id: coordinator.network_id
+          network_id: coordinator.network_id,
+          email_verify: email_verify
         })
         .then((res) => { 
           console.log(res);
