@@ -124,9 +124,9 @@ export default {
     return {
       data,
       columns,
-      onChange: (pagination, filters, sorter, extra) => {
-        console.log("params", pagination, filters, sorter, extra);
-      },
+      // onChange: (pagination, filters, sorter, extra) => {
+      //   console.log("params", pagination, filters, sorter, extra);
+      // },
     };
   },
 }
