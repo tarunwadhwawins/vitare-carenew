@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 // import Home from '../views/Home.vue'
 
 const routes = [
@@ -18,41 +18,41 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import( '../components/dashboard/dashboard')
+    component: () => import( '../components/dashboard/Dashboard')
   },
 
   {
     path: '/communications',
     name: 'Communications',
-    component: () => import( '../components/communications/communications')
+    component: () => import( '../components/communications/Communications')
   },
 
   {
     path: '/manage-care-coordinator',
-    name: 'Manage Care Coordinators',
-    component: () => import( '../components/care-coordinator/manage-care-coordinator')
+    name: 'ManageCareCoordinators',
+    component: () => import( '../components/care-coordinator/ManageCareCoordinator')
   },
 
   {
     path: '/manage-patients',
     name: 'Patients',
-    component: () => import( '../components/patients/patients')
+    component: () => import( '../components/patients/Patients')
   },
   {
     path: '/appointment-calendar',
-    name: 'Appointmnet Calendar',
-    component: () => import( '../components/appoinment-calendar/appointment-calendar')
+    name: 'AppointmnetCalendar',
+    component: () => import( '../components/appoinment-calendar/AppointmentCalendar')
   },
   {
     path: '/',
     name: 'Login',
-    component: () => import( '../components/login/login')
+    component: () => import( '../components/login/Login')
   }
 
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
 })
 

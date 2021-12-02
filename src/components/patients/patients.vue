@@ -643,8 +643,8 @@
 </template>
 
 <script>
-import Header from "../layout/header/header";
-import Sidebar from "../layout/sidebar/sidebar";
+import Header from "../layout/header/Header";
+import Sidebar from "../layout/sidebar/Sidebar";
 import { defineComponent, ref, reactive, computed } from "vue";
 const OPTIONSTAG = ["Tag1", "Tag2", "Tag3"];
 import {

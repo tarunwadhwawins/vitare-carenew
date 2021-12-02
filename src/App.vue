@@ -13,7 +13,7 @@
 <script>
 // import login from './components/login/login'
 // import Dashboard from './components/dashboard/dashboard'
-// import {ref} from 'vue'
+import {onMounted} from 'vue'
 export default {
   components:{
         // login,
@@ -23,6 +23,9 @@ export default {
 
     setup () {
       const auth = localStorage.getItem('auth');
+      onMounted(()=>{
+         document.body.classList.add('test')
+      })
       return {
         auth
       }

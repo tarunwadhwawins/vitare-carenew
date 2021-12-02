@@ -60,8 +60,7 @@
                               @change="
                                 (newYear) => {
                                   onChange(current.year(newYear));
-                                }
-                              "
+                                }"
                             >
                               <a-select-option
                                 v-for="val in getYears(current)"
@@ -80,8 +79,7 @@
                               @change="
                                 (selectedMonth) => {
                                   onChange(current.month(parseInt(selectedMonth, 10)));
-                                }
-                              "
+                                }"
                             >
                               <a-select-option
                                 v-for="(val, index) in getMonths(current)"
@@ -1335,8 +1333,8 @@
 </template>
 
 <script>
-import Header from "../layout/header/header";
-import Sidebar from "../layout/sidebar/sidebar";
+import Header from "../layout/header/Header";
+import Sidebar from "../layout/sidebar/Sidebar";
 import { defineComponent, ref } from "vue";
 export default {
   components: {
