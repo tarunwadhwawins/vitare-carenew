@@ -133,9 +133,7 @@
     methods: {
       addCareCoordinator() {
         const email_verify = this.$store.state.auth.user.email_verify
-        console.log(this.$store.state.auth.user.email_verify);
         const coordinator = toRaw(this.personalInformationForm);
-        console.log("Coordinator", coordinator.first_name);
         this.$store.dispatch("addCareCoordinator", { 
           first_name: coordinator.first_name,
           last_name: coordinator.last_name,

@@ -87,7 +87,6 @@
     methods: {
       addCareCoordinatorAvailability() {
         const contact = toRaw(this.availabilityForm);
-        console.log(contact)
         this.$store.dispatch("addCareCoordinatorAvailability", { 
           start_time: contact.start_time,
           end_time: contact.end_time,

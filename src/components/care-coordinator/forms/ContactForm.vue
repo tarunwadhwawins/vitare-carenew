@@ -81,7 +81,6 @@
     methods: {
       addCareCoordinatorContact() {
         const contact = toRaw(this.contactForm);
-        console.log(contact)
         this.$store.dispatch("addCareCoordinatorContact", { 
           first_name: contact.first_name,
           last_name: contact.last_name,

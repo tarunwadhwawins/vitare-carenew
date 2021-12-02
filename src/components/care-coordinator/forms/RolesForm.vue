@@ -56,7 +56,6 @@
     methods: {
       addCareCoordinatorRole() {
         const contact = toRaw(this.rolesForm);
-        console.log(contact)
         this.$store.dispatch("addCareCoordinatorRole", { 
           access_id: contact.access_id,
           care_coordinator_id: 3,

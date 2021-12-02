@@ -142,7 +142,6 @@ export default defineComponent({
       this.$router.push("/");
       return;
     }
-    // console.log(this.$store.state.auth.user);
     this.user = this.$store.state.auth.user.email;
     this.role = this.$store.state.auth.user.role_id ? 'Admin' : 'Client';
   },
