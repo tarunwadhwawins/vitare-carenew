@@ -26,7 +26,7 @@
                     <ErrorMessage class="error" name="email" />
                   </div>
                   <div class="field">
-                    <Field class="ant-input ant-input-lg" v-model="password" name="password" placeholder="Password"></Field>
+                    <Field class="ant-input ant-input-lg" v-model="password" name="password" type="password" placeholder="Password"></Field>
                     <ErrorMessage class="error" name="password" />
                   </div>
                   <button class="btn primaryBtn">Submit</button>
@@ -43,8 +43,8 @@
 <script>
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
-import { defineComponent } from 'vue';
 import { configure } from 'vee-validate';
+import { defineComponent } from 'vue';
 
 // Default values
 configure({
@@ -98,8 +98,4 @@ export default defineComponent({
 </script>
 
 <style>
-span.error {
-  color: #ff0000;
-  text-transform: capitalize;
-}
 </style>

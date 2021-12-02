@@ -1,17 +1,14 @@
 <template>
-  <a-form :model="availabilityForm" @submit.prevent="addCareCoordinatorAvailability">
+  <Form :model="availabilityForm" @submit="addCareCoordinatorAvailability" :validation-schema="schema">
     <a-row :gutter="24">
 
       <a-col :span="12">
         <div class="form-group">
           <label>Start Time</label>
-          <select class="ant-input ant-input-lg"
-            ref="select"
+          <Field as="select"
+            class="ant-input ant-input-lg"
             v-model="availabilityForm.start_time"
-            style="width: 100%"
-            size="large"
-            @focus="focus"
-            @change="handleChange">
+            name="start_time">
             <option hidden>Choose start Time</option>
             <option value="08:00">08:00 AM</option>
             <option value="08:30">08:30 AM</option>
@@ -20,21 +17,18 @@
             <option value="10:00">10:00 AM</option>
             <option value="10:30">10:30 AM</option>
             <option value="11:00">11:00 AM</option>
-          </select>
+          </Field>
+          <ErrorMessage class="error" name="start_time" />
         </div>
       </a-col>
 
       <a-col :span="12">
         <div class="form-group">
           <label>End Time</label>
-          <select class="ant-input ant-input-lg"
-            ref="select"
+          <Field as="select"
+            class="ant-input ant-input-lg"
             v-model="availabilityForm.end_time"
-            style="width: 100%"
-            size="large"
-            @focus="focus"
-            @change="handleChange"
-          >
+            name="end_time"  >
             <option value="lucy">Choose End Time</option>
             <option value="02:00">02:00 PM</option>
             <option value="02:30">02:30 PM</option>
@@ -44,7 +38,8 @@
             <option value="04:30">04:30 PM</option>
             <option value="05:00">05:00 PM</option>
             <option value="05:30">05:30 PM</option>
-          </select>
+          </Field>
+          <ErrorMessage class="error" name="end_time" />
         </div>
       </a-col>
       
@@ -54,14 +49,34 @@
         <button class="btn primaryBtn">Add</button>
       </a-col>
     </a-row>
-  </a-form>
+  </Form>
 </template>
 
 <script>
   import { toRaw } from 'vue';
+  import { Form, Field, ErrorMessage } from 'vee-validate';
+  import * as yup from 'yup';
+  import { configure } from 'vee-validate';
+  // Default values
+  configure({
+    validateOnBlur: true,
+    validateOnChange: true,
+    validateOnInput: true,
+    validateOnModelUpdate: true,
+  });
   export default {
+    components: {
+      Form,
+      Field,
+      ErrorMessage,
+    },
     data() {
+      const schema = yup.object({
+        start_time: yup.string().required(),
+        end_time: yup.string().required(),
+      });
       return {
+        schema,
         availabilityForm: {
           start_time: '',
           end_time: '',

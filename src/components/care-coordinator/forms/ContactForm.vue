@@ -1,28 +1,32 @@
 <template>
-  <a-form :model="contactForm" @submit.prevent="addCareCoordinatorContact">
+  <Form :model="contactForm" @submit="addCareCoordinatorContact" :validation-schema="schema">
     <a-row :gutter="24">
       <a-col :span="12">
         <div class="form-group">
           <label>First Name</label>
-          <input class="ant-input ant-input-lg" v-model="contactForm.first_name" size="large" />
+          <Field class="ant-input ant-input-lg" v-model="contactForm.first_name" name="first_name" size="large" />
+          <ErrorMessage class="error" name="first_name" />
         </div>
       </a-col>
       <a-col :span="12">
         <div class="form-group">
           <label>Last Name</label>
-          <input class="ant-input ant-input-lg" v-model="contactForm.last_name" size="large" />
+          <Field class="ant-input ant-input-lg" v-model="contactForm.last_name" name="last_name" size="large" />
+          <ErrorMessage class="error" name="last_name" />
         </div>
       </a-col>
       <a-col :span="12">
         <div class="form-group">
           <label>Email</label>
-          <input class="ant-input ant-input-lg" v-model="contactForm.email" size="large" />
+          <Field class="ant-input ant-input-lg" v-model="contactForm.email" name="email" size="large" />
+          <ErrorMessage class="error" name="email" />
         </div>
       </a-col>
       <a-col :span="12">
         <div class="form-group">
           <label>Phone No</label>
-          <input class="ant-input ant-input-lg" v-model="contactForm.phone_no" size="large" />
+          <Field class="ant-input ant-input-lg" v-model="contactForm.phone_no" name="phone_no" size="large" />
+          <ErrorMessage class="error" name="phone_no" />
         </div>
       </a-col>
     </a-row>
@@ -31,14 +35,40 @@
         <button class="btn primaryBtn">Add</button>
       </a-col>
     </a-row>
-  </a-form>
+  </Form>
 </template>
 
 <script>
   import { toRaw } from 'vue';
+  import { Form, Field, ErrorMessage } from 'vee-validate';
+  import * as yup from 'yup';
+  import { configure } from 'vee-validate';
+  // Default values
+  configure({
+    validateOnBlur: true,
+    validateOnChange: true,
+    validateOnInput: true,
+    validateOnModelUpdate: true,
+  });
   export default {
+    components: {
+      Form,
+      Field,
+      ErrorMessage,
+    },
     data() {
+      const schema = yup.object({
+        first_name: yup.string().required(),
+        last_name: yup.string().required(),
+        designation: yup.string().required(),
+        gender_id: yup.string().required(),
+        email: yup.string().required().email(),
+        phone_no: yup.string().required(),
+        specialization_id: yup.string().required(),
+        network_id: yup.string().required(),
+      });
       return {
+        schema,
         contactForm: {
           first_name: '',
           last_name: '',
