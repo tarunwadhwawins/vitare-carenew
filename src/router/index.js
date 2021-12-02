@@ -24,13 +24,13 @@ const routes = [
   {
     path: '/communications',
     name: 'Communications',
-    component: () => import( '../components/communications/communications')
+    component: () => import( '@/components/communications/Communications')
   },
 
   {
     path: '/manage-care-coordinator',
     name: 'Manage Care Coordinators',
-    component: () => import( '../components/care-coordinator/manage-care-coordinator')
+    component: () => import( '@/components/care-coordinator/manage-care-coordinator')
   },
 
   {
