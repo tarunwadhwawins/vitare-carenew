@@ -6,54 +6,50 @@
         <Header />
       </a-layout-header>
       <a-layout>
-        <a-layout-sider
-          :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"
-        >
-          <Sidebar />
-        </a-layout-sider>
+        <Sidebar />
         <a-layout-content>
-          <a-row class="mb-24">
+          <a-row>
             <a-col :span="24">
               <h2 class="pageTittle">Dashboard</h2>
             </a-col>
             <a-col :span="24">
               <a-row :gutter="24">
-                <a-col flex="1 0 0%">
+                <a-col :xl="4" :sm="8" :xs="12">
                   <div class="topBox one">
                     <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                     <h5>10</h5>
                     <p>Total Patients</p>
                   </div>
                 </a-col>
-                <a-col flex="1 0 0%">
+                <a-col :xl="4" :sm="8" :xs="12">
                   <div class="topBox two">
                     <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                     <h5>10</h5>
                     <p>New Patients</p>
                   </div>
                 </a-col>
-                <a-col flex="1 0 0%">
+                <a-col :xl="4" :sm="8" :xs="12">
                   <div class="topBox three">
                     <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                     <h5>10</h5>
                     <p>Critical Patients</p>
                   </div>
                 </a-col>
-                <a-col flex="1 0 0%">
+                <a-col :xl="4" :sm="8" :xs="12">
                   <div class="topBox four">
                     <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                     <h5>10</h5>
                     <p>Abnormal Patients</p>
                   </div>
                 </a-col>
-                <a-col flex="1 0 0%">
+                <a-col :xl="4" :sm="8" :xs="12">
                   <div class="topBox five">
                     <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                     <h5>10</h5>
                     <p>Active Patients</p>
                   </div>
                 </a-col>
-                <a-col flex="1 0 0%">
+                <a-col :xl="4" :sm="8" :xs="12">
                   <div class="topBox six">
                     <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                     <h5>10</h5>
@@ -64,7 +60,7 @@
             </a-col>
           </a-row>
           <a-row :gutter="24">
-            <a-col :span="12">
+            <a-col :sm="12" :xs="24">
               <a-card title="Patients Stats" class="common-card">
                 <div class="list-group">
                   <div class="list-group-item">
@@ -97,7 +93,7 @@
                 </div>
               </a-card>
             </a-col>
-            <a-col :span="12">
+            <a-col :sm="12" :xs="24">
               <a-card title="Virtual Waiting Room" class="common-card">
                 <a-tabs v-model:activeKey="activeKey">
                   <a-tab-pane key="1" tab="New Requests">New Requests</a-tab-pane>
@@ -109,7 +105,7 @@
             </a-col>
           </a-row>
           <a-row :gutter="24">
-            <a-col :span="12">
+            <a-col :sm="12" :xs="24">
               <a-card title="Total Patients Chart" class="common-card">
                 <apexchart
                   type="area"
@@ -119,7 +115,7 @@
                 ></apexchart>
               </a-card>
             </a-col>
-            <a-col :span="12">
+            <a-col :sm="12" :xs="24">
               <a-card title="Appointment Summary" class="common-card">
                 <apexchart
                   type="area"

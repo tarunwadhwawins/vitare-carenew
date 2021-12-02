@@ -23,24 +23,24 @@
               </h2>
             </a-col>
           </a-row>
-          <a-row class="mb-24">
+          <a-row>
             <a-col :span="24">
               <a-row :gutter="24">
-                <a-col flex="1 0 0%">
+                <a-col :xl="8" :sm="8" :xs="24">
                   <div class="colorBox red">
                     <UserOutlined />
                     <h3>10</h3>
                     <p>Critical</p>
                   </div>
                 </a-col>
-                <a-col flex="1 0 0%">
+                <a-col :xl="8" :sm="8" :xs="24">
                   <div class="colorBox green">
                     <UserOutlined />
                     <h3>10</h3>
                     <p>High</p>
                   </div>
                 </a-col>
-                <a-col flex="1 0 0%">
+                <a-col :xl="8" :sm="8" :xs="24">
                   <div class="colorBox blue">
                     <UserOutlined />
                     <h3>10</h3>
@@ -88,7 +88,8 @@
     <!--modal-->
     <a-modal
       v-model:visible="visible"
-      width="1140px"
+      max-width="1140px"
+      width="100%"
       title="Add New Patients"
       centered
       @ok="handleOk"
@@ -101,25 +102,25 @@
           </a-steps>
           <div class="steps-content" v-if="steps[current].title == 'Demographics'">
             <a-row :gutter="24">
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Full Name</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Nick Name</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Date of Birth</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label> Gender</label>
                   <a-select
@@ -136,49 +137,49 @@
                   </a-select>
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Weight</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Height</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Email</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Phone No</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Country</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>State</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>City</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Zipcode</label>
                   <a-input v-model="value" size="large" />
@@ -199,13 +200,13 @@
               </a-col>
             </a-row>
             <a-row :gutter="24">
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Full Name</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label> Gender</label>
                   <a-select
@@ -222,19 +223,19 @@
                   </a-select>
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Email Address</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Phone No</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Relation</label>
                   <a-input v-model="value" size="large" />
@@ -251,37 +252,33 @@
               </a-col>
             </a-row>
             <a-row :gutter="24" class="mb-24">
-              <a-col :span="8">
+              <a-col :md="8" :sm="12" :xs="24">
                 <a-checkbox v-model:checked="checked"
                   >Congestive Health Failure</a-checkbox
                 >
               </a-col>
-              <a-col :span="8">
+              <a-col :md="8" :sm="12" :xs="24">
                 <a-checkbox v-model:checked="checked">COPD</a-checkbox>
               </a-col>
-              <a-col :span="8">
+              <a-col :md="8" :sm="12" :xs="24">
                 <a-checkbox v-model:checked="checked">Chronic Kidney Disease</a-checkbox>
               </a-col>
-            </a-row>
-            <a-row :gutter="24" class="mb-24">
-              <a-col :span="8">
+              <a-col :md="8" :sm="12" :xs="24">
                 <a-checkbox v-model:checked="checked">Cardiovascular Disease </a-checkbox>
               </a-col>
-              <a-col :span="8">
+              <a-col :md="8" :sm="12" :xs="24">
                 <a-checkbox v-model:checked="checked">Depression </a-checkbox>
               </a-col>
-              <a-col :span="8">
+              <a-col :md="8" :sm="12" :xs="24">
                 <a-checkbox v-model:checked="checked">Diabetes </a-checkbox>
               </a-col>
-            </a-row>
-            <a-row :gutter="24" class="mb-24">
-              <a-col :span="8">
+              <a-col :md="8" :sm="12" :xs="24">
                 <a-checkbox v-model:checked="checked">Hyper Tension </a-checkbox>
               </a-col>
-              <a-col :span="8">
+              <a-col :md="8" :sm="12" :xs="24">
                 <a-checkbox v-model:checked="checked">Stroke </a-checkbox>
               </a-col>
-              <a-col :span="8">
+              <a-col :md="8" :sm="12" :xs="24">
                 <a-checkbox v-model:checked="checked">Other </a-checkbox>
               </a-col>
             </a-row>
@@ -293,25 +290,25 @@
               </a-col>
             </a-row>
             <a-row :gutter="24">
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Name</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label> Designation</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Email</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Phone No</label>
                   <a-input v-model="value" size="large" />
@@ -321,7 +318,7 @@
           </div>
           <div class="steps-content" v-if="steps[current].title == 'Programs'">
             <a-row :gutter="24">
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Programs</label>
                   <a-select
@@ -338,7 +335,7 @@
                   </a-select>
                 </div>
               </a-col>
-              <a-col :span="6">
+              <a-col :sm="6" :xs="24">
                 <div class="form-group">
                   <label>Start Date</label>
                   <a-date-picker
@@ -348,7 +345,7 @@
                   />
                 </div>
               </a-col>
-              <a-col :span="6">
+              <a-col :sm="6" :xs="24">
                 <div class="form-group">
                   <label>End Date</label>
                   <a-date-picker
@@ -358,7 +355,7 @@
                   />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Status</label>
                   <a-radio-group v-model:value="value">
@@ -398,13 +395,13 @@
                   <h2>Blood Pressure</h2>
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Systolic</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Diastolic</label>
                   <a-input v-model="value" size="large" />
@@ -417,7 +414,7 @@
                   <h2>Pulse</h2>
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>BPM</label>
                   <a-input v-model="value" size="large" />
@@ -430,7 +427,7 @@
                   <h2>Blood Oxygen Saturation</h2>
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>SPO2</label>
                   <a-input v-model="value" size="large" />
@@ -443,13 +440,13 @@
                   <h2>Glucosen</h2>
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Fasting Blood Sugar</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Random Blood Sugar</label>
                   <a-input v-model="value" size="large" />
@@ -497,13 +494,13 @@
                   <h2>Medicine Routine</h2>
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Medicine</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label> Routine</label>
                   <a-input v-model="value" size="large" />
@@ -533,19 +530,19 @@
           </div>
           <div class="steps-content" v-if="steps[current].title == 'Billing'">
             <a-row :gutter="24">
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Insurance Id</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Insurance Type</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Expiry Date</label>
                   <a-input v-model="value" size="large" />
@@ -555,19 +552,19 @@
           </div>
           <div class="steps-content" v-if="steps[current].title == 'Documents'">
             <a-row :gutter="24">
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Name</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Document</label>
                   <a-input v-model="value" size="large" type="file" />
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label> Type</label>
                   <a-select
@@ -584,7 +581,7 @@
                   </a-select>
                 </div>
               </a-col>
-              <a-col :span="12">
+              <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label> Tags</label>
                   <a-select

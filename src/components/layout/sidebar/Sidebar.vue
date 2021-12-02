@@ -1,64 +1,45 @@
 <template>
-  <div class="menuList">
-    <a-menu>
-      <!-- <a-menu-item key="1"
-        ><HomeOutlined /><span class="menuItem">Dashboard</span></a-menu-item
-      >
-      <a-menu-item key="2"
-        ><MailOutlined /><span class="menuItem">Communications</span></a-menu-item
-      >
-      <a-menu-item key="3"
-        ><UserOutlined /><span class="menuItem"
-          >Manage Care Coordinator</span
-        ></a-menu-item
-      >
-      <a-menu-item key="4"
-        ><UserOutlined /><span class="menuItem">Manage Patients</span></a-menu-item
-      >
-      <a-menu-item key="5"
-        ><CalendarOutlined /><span class="menuItem"
-          >Appointment Calendar</span
-        ></a-menu-item
-      > -->
-
-      <router-link to="/dashboard"
-        ><a-menu-item
-          ><HomeOutlined /><span class="menuItem">Dashboard</span></a-menu-item
-        ></router-link
-      >
-      <router-link to="/communications"
-        ><a-menu-item
-          ><MailOutlined /><span class="menuItem">Communications</span></a-menu-item
-        ></router-link
-      >
-      <router-link to="/manage-care-coordinator"
-        ><a-menu-item
-          ><UserOutlined /><span class="menuItem"
-            >Manage Care Coordinator</span
-          ></a-menu-item
-        ></router-link
-      >
-      <router-link to="/manage-patients"
-        ><a-menu-item
-          ><UserOutlined /><span class="menuItem">Manage Patients</span></a-menu-item
-        ></router-link
-      >
-      <router-link to="/appointment-calendar"
-        ><a-menu-item
-          ><CalendarOutlined /><span class="menuItem"
-            >Appointment Calendar</span
-          ></a-menu-item
-        ></router-link
-      >
-      <!-- <a-menu-item><UserOutlined /><span class="menuItem">Manage Patients</span></a-menu-item> -->
-      <!-- <a-menu-item><CalendarOutlined /><span class="menuItem">Appointment Calendar</span></a-menu-item> -->
-      <!-- <a-menu-item><UserOutlined /><span class="menuItem">Tasks</span></a-menu-item> -->
-    </a-menu>
-  </div>
+  <a-layout-sider
+    :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"
+  >
+    <div class="menuList">
+      <a-menu>
+        <router-link to="/dashboard"
+          ><a-menu-item
+            ><HomeOutlined /><span class="menuItem">Dashboard</span></a-menu-item
+          ></router-link
+        >
+        <router-link to="/communications"
+          ><a-menu-item
+            ><MailOutlined /><span class="menuItem">Communications</span></a-menu-item
+          ></router-link
+        >
+        <router-link to="/manage-care-coordinator"
+          ><a-menu-item
+            ><UserOutlined /><span class="menuItem"
+              >Manage Care Coordinator</span
+            ></a-menu-item
+          ></router-link
+        >
+        <router-link to="/manage-patients"
+          ><a-menu-item
+            ><UserOutlined /><span class="menuItem">Manage Patients</span></a-menu-item
+          ></router-link
+        >
+        <router-link to="/appointment-calendar"
+          ><a-menu-item
+            ><CalendarOutlined /><span class="menuItem"
+              >Appointment Calendar</span
+            ></a-menu-item
+          ></router-link
+        >
+      </a-menu>
+    </div>
+  </a-layout-sider>
 </template>
 
 <script>
-import { defineComponent, ref, reactive, toRefs } from "vue";
+import { defineComponent, ref, reactive, toRefs, onUnmounted } from "vue";
 import {
   HomeOutlined,
   MailOutlined,
@@ -77,7 +58,9 @@ export default defineComponent({
     const state = reactive({
       selectedKeys: ["1"],
     });
-
+    onUnmounted(() => {
+      document.body.classList.remove("show");
+    });
     return { ...toRefs(state) };
   },
 });

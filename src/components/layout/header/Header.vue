@@ -5,32 +5,43 @@
         <div class="logoInner">
           <img src="../../../assets/images/logo.png" alt="image" />
         </div>
+        <div class="icon" @click="barMenu">
+          <MenuOutlined />
+        </div>
       </div>
       <div class="header-control">
         <div class="header-inner">
           <div class="location d-flex align-items-center">
             <a-dropdown :trigger="['click']">
               <a class="ant-dropdown-link" @click.prevent>
-                <div class="name">Organisation - Location <DownOutlined /></div>
+                <div class="name">Location <DownOutlined /></div>
               </a>
               <template #overlay>
                 <a-menu>
                   <a-menu-item key="0">
-                    <a href="#">Organisation 1</a>
+                    <a href="javascript:void(0)">Organisation 1</a>
                   </a-menu-item>
                   <a-menu-item key="1">
-                    <a href="">Organisation 2</a>
+                    <a href="javascript:void(0)">Organisation 2</a>
                   </a-menu-item>
-                  <a-menu-item key="3"> <a href="">Organisation 3</a></a-menu-item>
-                  <a-menu-item key="4"> <a href="">Organisation 4</a></a-menu-item>
+                  <a-menu-item key="3">
+                    <a href="javascript:void(0)">Organisation 3</a></a-menu-item
+                  >
+                  <a-menu-item key="4">
+                    <a href="javascript:void(0)">Organisation 4</a></a-menu-item
+                  >
                 </a-menu>
               </template>
             </a-dropdown>
           </div>
-          <div class="search">
+          <div class="bar-menu">
+            <div class="search-icon" @click="toggle = !toggle"><SearchOutlined /></div>
+            <div class="ellipse-icon" @click="ellipse = !ellipse"><MoreOutlined /></div>
+          </div>
+          <div class="search" :class="toggle ? 'show' : ''">
             <a-input v-model="value" size="large" placeholder="Enter search" />
           </div>
-          <div class="profile">
+          <div class="profile" :class="ellipse ? 'show' : ''">
             <div class="quick-actions d-flex align-items-center">
               <a-dropdown :trigger="['click']">
                 <a class="ant-dropdown-link" @click.prevent>
@@ -124,12 +135,33 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-import { NotificationOutlined, DownOutlined } from "@ant-design/icons-vue";
+import { defineComponent, ref } from "vue";
+import {
+  NotificationOutlined,
+  DownOutlined,
+  MenuOutlined,
+  SearchOutlined,
+  MoreOutlined,
+} from "@ant-design/icons-vue";
 export default defineComponent({
   components: {
     NotificationOutlined,
     DownOutlined,
+    MenuOutlined,
+    SearchOutlined,
+    MoreOutlined,
+  },
+  setup() {
+    const toggle = ref(false);
+    const ellipse = ref(false);
+    function barMenu() {
+      document.body.classList.toggle("show");
+    }
+    return {
+      barMenu,
+      toggle,
+      ellipse,
+    };
   },
 });
 </script>

@@ -11,7 +11,7 @@
           ><Sidebar
         /></a-layout-sider>
         <a-layout-content>
-          <a-row class="mb-24">
+          <a-row>
             <a-col :span="24">
               <h2 class="pageTittle">
                 Communications
@@ -24,21 +24,21 @@
             </a-col>
             <a-col :span="24">
               <a-row :gutter="24">
-                <a-col flex="1 0 0%">
+                <a-col :xl="8" :sm="8" :xs="24">
                   <div class="colorBox two">
                     <UserOutlined />
                     <h3>10</h3>
                     <p>Today</p>
                   </div>
                 </a-col>
-                <a-col flex="1 0 0%">
+                <a-col :xl="8" :sm="8" :xs="24">
                   <div class="colorBox five">
                     <UserOutlined />
                     <h3>10</h3>
                     <p>Tomorrow</p>
                   </div>
                 </a-col>
-                <a-col flex="1 0 0%">
+                <a-col :xl="8" :sm="8" :xs="24">
                   <div class="colorBox four">
                     <UserOutlined />
                     <h3>10</h3>
@@ -75,36 +75,37 @@
     <!--modal-->
     <a-modal
       v-model:visible="visible"
-      width="1140px"
+      max-width="1140px"
+      width="100%"
       title="Communications"
       @ok="handleOk"
     >
       <a-row :gutter="24">
-        <a-col :span="12">
+        <a-col :sm="12" :xs="24">
           <div class="form-group">
             <label>From</label>
             <a-input v-model="value" size="large" />
           </div>
         </a-col>
-        <a-col :span="12">
+        <a-col :sm="12" :xs="24">
           <div class="form-group">
             <label>To</label>
             <a-input v-model="value" size="large" />
           </div>
         </a-col>
-        <a-col :span="12">
+        <a-col :sm="12" :xs="24">
           <div class="form-group">
             <label>Patient</label>
             <a-input v-model="value" size="large" />
           </div>
         </a-col>
-        <a-col :span="12">
+        <a-col :sm="12" :xs="24">
           <div class="form-group">
             <label>From</label>
             <a-input v-model="value" size="large" />
           </div>
         </a-col>
-        <a-col :span="12">
+        <a-col :sm="12" :xs="24">
           <div class="form-group">
             <label>Message Category</label>
             <a-select
@@ -124,7 +125,7 @@
             </a-select>
           </div>
         </a-col>
-        <a-col :span="12">
+        <a-col :sm="12" :xs="24">
           <div class="form-group">
             <label>Priority</label>
             <a-select

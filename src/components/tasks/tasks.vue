@@ -25,17 +25,17 @@
             </a-col>
           </a-row>
           <a-row class="mb-24" :gutter="24">
-            <a-col :sm="12" :xs="24">
+            <a-col :span="12">
               <h2>Specialization</h2>
               <a-row :gutter="24">
-                <a-col :sm="12" :xs="24">
+                <a-col flex="1 0 0%">
                   <div class="colorBox two">
                     <UserOutlined />
                     <h3>4</h3>
                     <p>Wellness</p>
                   </div>
                 </a-col>
-                <a-col :sm="12" :xs="24">
+                <a-col flex="1 0 0%">
                   <div class="colorBox four">
                     <UserOutlined />
                     <h3>5</h3>
@@ -44,17 +44,17 @@
                 </a-col>
               </a-row>
             </a-col>
-            <a-col :sm="12" :xs="24">
+            <a-col :span="12">
               <h2>Network</h2>
               <a-row :gutter="24">
-                <a-col :sm="12" :xs="24">
+                <a-col flex="1 0 0%">
                   <div class="colorBox six">
                     <UserOutlined />
                     <h3>5</h3>
                     <p>In</p>
                   </div>
                 </a-col>
-                <a-col :sm="12" :xs="24">
+                <a-col flex="1 0 0%">
                   <div class="colorBox five">
                     <UserOutlined />
                     <h3>6</h3>
@@ -87,8 +87,7 @@
     <!--modal-->
     <a-modal
       v-model:visible="visible"
-      max-width="1140px"
-      width="100%"
+      width="1140px"
       title="Add New Coordinator"
       centered
       @ok="handleOk"
@@ -104,25 +103,25 @@
             v-if="steps[current].title == 'Personal Information'"
           >
             <a-row :gutter="24">
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label>First Name</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label>Last Name</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label>Designation</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label> Gender</label>
                   <a-select
@@ -139,19 +138,19 @@
                   </a-select>
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label>Email</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label>Phone No</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label>Specialization</label>
                   <a-select
@@ -167,7 +166,7 @@
                   </a-select>
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label>Network</label>
                   <a-select
@@ -187,25 +186,25 @@
           </div>
           <div class="steps-content" v-if="steps[current].title == 'Contacts'">
             <a-row :gutter="24">
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label>First Name</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label>Last Name</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label>Email</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label>Phone No</label>
                   <a-input v-model="value" size="large" />
@@ -235,7 +234,7 @@
           </div>
           <div class="steps-content" v-if="steps[current].title == 'Availability'">
             <a-row :gutter="24">
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label>Start Time</label>
                   <a-select
@@ -257,7 +256,7 @@
                   </a-select>
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label>End Time</label>
                   <a-select
@@ -304,7 +303,7 @@
           </div>
           <div class="steps-content" v-if="steps[current].title == 'Roles'">
             <a-row :gutter="24">
-              <a-col :sm="12" :xs="24">
+              <a-col :span="24">
                 <div class="form-group">
                   <label>Role</label>
                   <a-select
@@ -340,19 +339,19 @@
           </div>
           <div class="steps-content" v-if="steps[current].title == 'Documents'">
             <a-row :gutter="24">
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label>Name</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label>Document</label>
                   <a-input v-model="value" size="large" type="file" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label> Type</label>
                   <a-select
@@ -369,7 +368,7 @@
                   </a-select>
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :span="12">
                 <div class="form-group">
                   <label> Tags</label>
                   <a-select
@@ -427,8 +426,8 @@
 </template>
 
 <script>
-import Header from "../layout/header/Header";
-import Sidebar from "../layout/sidebar/Sidebar";
+import Header from "../layout/header/header";
+import Sidebar from "../layout/sidebar/sidebar";
 import { defineComponent, ref, computed } from "vue";
 import {
   UserOutlined,

@@ -5,6 +5,9 @@
         position: absolute;
         right: 0;
         top: 0;
+        @media screen and (max-width:576px){
+         position: relative;
+        }
     }
 }
 /*--tiles--*/
@@ -12,6 +15,7 @@
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 0 0 24px 0;
     &.one {
         background-color: $primary-color-contrast;
         i {
@@ -99,6 +103,10 @@
 .colorBox {
     padding: 15px;
     border-radius: 10px;
+    margin:0 0 24px 0;
+    @media screen and (max-width:576px){
+        margin:0 0 12px 0;    
+    }
     .anticon {
         font-size: 40px;
         margin: 0 0 8px 0;

@@ -16,20 +16,22 @@
               <h2 class="pageTittle">
                 Appointment Calendar
                 <div class="commonBtn">
-                  <a-button class="btn primaryBtn">Full Calendar View</a-button>
+                  <a-button class="btn primaryBtn" @click="toggle = !toggle">{{
+                    toggle ? "Full Calendar View" : "Hide Calendar View"
+                  }}</a-button>
                 </div>
               </h2>
             </a-col>
           </a-row>
           <a-row :gutter="24">
-            <a-col :span="6">
+            <a-col :md="6" :sm="24" :xs="24" v-show="toggle">
               <div class="apptBtn">
                 <a-button class="btn primaryBtn" @click="showModal">
                   New Appointment</a-button
                 >
               </div>
               <div class="calendar">
-                <div style="width:100%; border: 1px solid #d9d9d9; border-radius: 4px">
+                <div style="width: 100%; border: 1px solid #d9d9d9; border-radius: 4px">
                   <a-calendar
                     v-model:value="value"
                     :fullscreen="false"
@@ -97,7 +99,7 @@
                 </div>
               </div>
             </a-col>
-            <a-col :span="18">
+            <a-col :md="toggle == false ? 24 : 18" :sm="24" :xs="24">
               <a-tabs v-model:activeKey="activeKey">
                 <a-tab-pane key="1" tab="Day">
                   <a-row>
@@ -1280,25 +1282,25 @@
       @ok="handleOk"
     >
       <a-row :gutter="24">
-        <a-col :span="12">
+        <a-col :sm="12" :xs="24">
           <div class="form-group">
             <label>Patient</label>
             <a-input v-model="value" size="large" />
           </div>
         </a-col>
-        <a-col :span="12">
+        <a-col :sm="12" :xs="24">
           <div class="form-group">
             <label>Staff</label>
             <a-input v-model="value" size="large" />
           </div>
         </a-col>
-        <a-col :span="12">
+        <a-col :sm="12" :xs="24">
           <div class="form-group">
             <label>Start Date</label>
             <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
           </div>
         </a-col>
-        <a-col :span="12">
+        <a-col :sm="12" :xs="24">
           <div class="form-group">
             <label>Time</label>
             <a-select
@@ -1344,6 +1346,7 @@ export default {
 
   setup() {
     const visible = ref(false);
+    const toggle = ref(true);
 
     const showModal = () => {
       visible.value = true;
@@ -1387,7 +1390,7 @@ export default {
       handleOk,
       value1: ref(),
       size: ref("large"),
-
+      toggle,
       value,
       onPanelChange,
       getMonths,
@@ -1398,7 +1401,7 @@ export default {
 </script>
 <style scoped>
 .apptBtn {
-    text-align: center;
-    margin: 0 0 25px 0;
+  text-align: center;
+  margin: 0 0 25px 0;
 }
 </style>
