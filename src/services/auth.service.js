@@ -1,4 +1,5 @@
 import axios from 'axios';
+import store from '@/store/index.js';
 
 // const API_URL = 'http://ditstekdemo.com/Virtare/public/api/';
 const API_URL = 'https://ditstekdemo.com/Virtare-web/public/api/';
@@ -13,6 +14,7 @@ class AuthService {
       })
       .then(response => {
         const res = response.data
+        console.log(res);
         if (res.data.token) {
           var userData = {
             'token': res.data.token,
@@ -21,7 +23,8 @@ class AuthService {
             'role_id': res.data.user.role_id,
             'uuid': res.data.user.uuid,
           }
-          localStorage.setItem('user', JSON.stringify(userData));
+          store.state.user = userData;
+          localStorage.setItem('user', userData.token);
         }
         return userData;
       });

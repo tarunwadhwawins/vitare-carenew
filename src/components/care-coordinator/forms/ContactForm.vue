@@ -60,12 +60,8 @@
       const schema = yup.object({
         first_name: yup.string().required().label("First Name"),
         last_name: yup.string().required().label("Last Name"),
-        designation: yup.string().required().label("Designation"),
-        gender_id: yup.string().required().label("Gender"),
         email: yup.string().required().email().label("Email"),
         phone_no: yup.string().required().label("Phone Number"),
-        specialization_id: yup.string().required().label("Specialization"),
-        network_id: yup.string().required().label("Network"),
       });
       return {
         schema,
@@ -74,7 +70,6 @@
           last_name: '',
           email: '',
           phone_no: '',
-          // care_coordinator_id: 1,
         }
       }
     },
@@ -86,13 +81,14 @@
           last_name: contact.last_name,
           email: contact.email,
           phone_no: contact.phone_no,
-          care_coordinator_id: 3,
+          care_coordinator_id: JSON.parse(localStorage.getItem('coordinatorId')),
         })
         .then((res) => { 
           console.log(res);
         },
         (error) => {
-          this.loading = false;
+          console.log(error)
+          this.isLoading = false;
           this.message = (
             error.response &&
             error.response.data &&

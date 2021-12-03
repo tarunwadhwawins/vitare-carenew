@@ -80,23 +80,24 @@
         availabilityForm: {
           start_time: '',
           end_time: '',
-          // care_coordinator_id: 1,
         }
       }
     },
     methods: {
       addCareCoordinatorAvailability() {
+        localStorage.setItem('personalData', true);
         const contact = toRaw(this.availabilityForm);
         this.$store.dispatch("addCareCoordinatorAvailability", { 
           start_time: contact.start_time,
           end_time: contact.end_time,
-          care_coordinator_id: 3,
+          care_coordinator_id: JSON.parse(localStorage.getItem('coordinatorId')),
         })
         .then((res) => { 
           console.log(res);
         },
         (error) => {
-          this.loading = false;
+          console.log(error)
+          this.isLoading = false;
           this.message = (
             error.response &&
             error.response.data &&

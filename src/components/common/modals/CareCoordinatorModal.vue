@@ -13,11 +13,7 @@
       <!-- Contacts -->
       <div class="steps-content" v-if="steps[current].title == 'Contacts'">
         <ContactForm></ContactForm>
-        <a-row :gutter="24">
-          <a-col :span="24">
-            <a-table :columns="columns1" :data-source="data1" :scroll="{ x: 900 }" />
-          </a-col>
-        </a-row>
+        <CoordinatorContactsTable></CoordinatorContactsTable>
       </div>
 
       <!-- Availability -->
@@ -25,7 +21,7 @@
         <AvailabilityForm></AvailabilityForm>
         <a-row :gutter="24">
           <a-col :span="24">
-            <a-table :columns="columns2" :data-source="data2" :scroll="{ x: 900 }" />
+            <a-table :columns="availabilityColumns" :data-source="availabilityData" :scroll="{ x: 900 }" />
           </a-col>
         </a-row>
       </div>
@@ -35,7 +31,7 @@
         <RolesForm></RolesForm>
         <a-row :gutter="24">
           <a-col :span="24">
-            <a-table :columns="columns2" :data-source="data2" :scroll="{ x: 900 }" />
+            <a-table :columns="availabilityColumns" :data-source="availabilityData" :scroll="{ x: 900 }" />
           </a-col>
         </a-row>
       </div>
@@ -69,47 +65,8 @@ import ContactForm from "@/components/care-coordinator/forms/ContactForm";
 import AvailabilityForm from "@/components/care-coordinator/forms/AvailabilityForm";
 import RolesForm from "@/components/care-coordinator/forms/RolesForm";
 import DocumentsForm from "@/components/care-coordinator/forms/DocumentsForm";
-const columns1 = [
-  {
-    title: "First Name",
-    dataIndex: "first",
-  },
-  {
-    title: "Last Name",
-    dataIndex: "last",
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-  },
-  {
-    title: "Phone No",
-    dataIndex: "phone",
-  },
-  {
-    title: "Actions",
-    dataIndex: "actions",
-  },
-];
-const data1 = [
-  {
-    key: "1",
-    first: "Jane",
-    last: "Doe",
-    email: "john@aa.com",
-    phone: "999-2222-111",
-    actions: "In",
-  },
-  {
-    key: "2",
-    first: "Steve",
-    last: "	Smith",
-    email: "steve@smith.com",
-    phone: "999-2222-111",
-    actions: "In",
-  },
-];
-const columns2 = [
+import CoordinatorContactsTable from "@/components/common/tables/CoordinatorContactsTable";
+const availabilityColumns = [
   {
     title: "Start Time",
     dataIndex: "start",
@@ -123,7 +80,7 @@ const columns2 = [
     dataIndex: "actions",
   },
 ];
-const data2 = [
+const availabilityData = [
   {
     key: "1",
     start: "08:00 AM",
@@ -140,15 +97,15 @@ const data2 = [
 export default {
   components: {
     PersonalInformation,
+    CoordinatorContactsTable,
     ContactForm,
     AvailabilityForm,
     RolesForm,
     DocumentsForm,
   },
-  methods: {
-    addCareCoordinator() {
-    }
-  },
+  // created() {
+  //   return this.$store
+  // },
   setup() {
     const visible = ref(false);
     var current = ref(0);
@@ -160,7 +117,10 @@ export default {
       visible.value = false;
     };
     const next = () => {
-      current.value++;
+      let personalData = JSON.parse(localStorage.getItem('personalData'));
+      if(personalData) {
+        current.value++;
+      }
     };
     const prev = () => {
       current.value--;
@@ -173,10 +133,8 @@ export default {
       showModal,
       handleOk,
       current,
-      data1,
-      columns1,
-      data2,
-      columns2,
+      availabilityData,
+      availabilityColumns,
       steps: [
         {
           title: "Personal Information",

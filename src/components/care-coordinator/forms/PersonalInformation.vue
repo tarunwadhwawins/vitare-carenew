@@ -25,8 +25,8 @@
       <a-col :span="12">
         <div class="form-group">
           <label> Gender</label>
-          <Field class="ant-input ant-input-lg" name="gender_id" as="select"
-            v-model="personalInformationForm.gender_id"
+          <Field class="ant-input ant-input-lg" name="gender" as="select"
+            v-model="personalInformationForm.gender"
             style="width: 100%"
             size="large">
             <option value="" hidden>Choose Gender</option>
@@ -34,7 +34,7 @@
             <option value="1">Female</option>
             <option value="2">Others</option>
           </Field>
-          <ErrorMessage class="error" name="gender_id" />
+          <ErrorMessage class="error" name="gender" />
         </div>
       </a-col>
       <a-col :span="12">
@@ -54,27 +54,27 @@
       <a-col :span="12">
         <div class="form-group">
           <label>Specialization</label>
-          <Field class="ant-input ant-input-lg" name="specialization_id" as="select"
-            v-model="personalInformationForm.specialization_id"
+          <Field class="ant-input ant-input-lg" name="specialization" as="select"
+            v-model="personalInformationForm.specialization"
             style="width: 100%"
             size="large">
             <option value="1">Wellness</option>
-            <option value="2">Behavior</option>
+            <option value="1">Behavior</option>
           </Field>
-          <ErrorMessage class="error" name="specialization_id" />
+          <ErrorMessage class="error" name="specialization" />
         </div>
       </a-col>
       <a-col :span="12">
         <div class="form-group">
           <label>Network</label>
-          <Field class="ant-input ant-input-lg" name="network_id" as="select"
-            v-model="personalInformationForm.network_id"
+          <Field class="ant-input ant-input-lg" name="network" as="select"
+            v-model="personalInformationForm.network"
             style="width: 100%"
             size="large">
-            <option value="0">In</option>
+            <option value="1">In</option>
             <option value="1">Out</option>
           </Field>
-          <ErrorMessage class="error" name="network_id" />
+          <ErrorMessage class="error" name="network" />
         </div>
       </a-col>
       <a-col :span="24">
@@ -107,11 +107,11 @@
         first_name: yup.string().required().label("First Name"),
         last_name: yup.string().required().label("Last Name"),
         designation: yup.string().required().label("Designation"),
-        gender_id: yup.string().required().label("Gender"),
+        gender: yup.string().required().label("Gender"),
         email: yup.string().required().email().label("Email"),
         phone_no: yup.string().required().label("Phone Number"),
-        specialization_id: yup.string().required().label("Specialization"),
-        network_id: yup.string().required().label("Network"),
+        specialization: yup.string().required().label("Specialization"),
+        network: yup.string().required().label("Network"),
       });
       return {
         schema,
@@ -119,11 +119,11 @@
           first_name: '',
           last_name: '',
           designation: '',
-          gender_id: '',
+          gender: '',
           email: '',
           phone_no: '',
-          specialization_id: '',
-          network_id: '',
+          specialization: '',
+          network: '',
         }
       }
     },
@@ -138,18 +138,22 @@
           first_name: coordinator.first_name,
           last_name: coordinator.last_name,
           designation: coordinator.designation,
-          gender_id: coordinator.gender_id,
+          gender: coordinator.gender,
           email: coordinator.email,
           phone_no: coordinator.phone_no,
-          specialization_id: coordinator.specialization_id,
-          network_id: coordinator.network_id,
+          specialization: coordinator.specialization,
+          network: coordinator.network,
           email_verify: email_verify
         })
-        .then((res) => { 
+        .then((res) => {
+          localStorage.setItem('personalData', true);
+          localStorage.setItem('coordinatorId', res.data.id);
+          console.log(this.$store.state);
           console.log(res);
         },
         (error) => {
-          this.loading = false;
+          console.log(error)
+          this.isLoading = false;
           this.message = (
             error.response &&
             error.response.data &&

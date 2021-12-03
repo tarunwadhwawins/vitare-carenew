@@ -1,7 +1,7 @@
 <template>
   <a-row>
     <a-col :span="24">
-      <a-table :columns="columns" :data-source="data" :scroll="{ x: 1200 }" @change="onChange" />
+      <a-table :columns="columns" :data-source="coordinatorsList" :scroll="{ x: 1200 }" @change="onChange" />
       <template #bodyCell="{ column }">
         <template v-if="column.key === 'type'">
           <span>
@@ -11,9 +11,18 @@
       </template>
     </a-col>
   </a-row>
+  <loading
+    v-model:active="isLoading" 
+    loader="bars"
+    lock-scroll="true"
+    is-full-page="false"
+    transition="fade"
+    :can-cancel="false"/>
 </template>
 
 <script>
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 const columns = [
   {
     title: "First Name",
@@ -80,23 +89,69 @@ const columns = [
     },
   },
 ];
-import { toRef } from 'vue';
 export default {
-  props: {
-    list: {
-      type: Array,
-      required: true
+  data() {
+    return {
+      isLoading: false,
+      coordinatorsList: [{}],
     }
   },
-  setup(props) {
-    const data = toRef(props, 'list');
+  setup() {
     return {
-      data,
       columns,
-      // onChange: (pagination, filters, sorter, extra) => {
-      //   console.log("params", pagination, filters, sorter, extra);
-      // },
     };
+  },
+  created() {
+    this.isLoading = true;
+
+    this.$store.dispatch("getCareCoordinatorsList")
+    .then((res) => {
+      const responseData = res.data.data;
+      responseData.forEach((element, index) => 
+        this.coordinatorsList.push({
+          key: index+1,
+          first_name: element.first_name,
+          last_name: element.last_name,
+          role: element.role,
+          specialization: element.specialization,
+          network: element.network,
+          created_at: element.created_at,
+          status: element.status,
+          action: 'In',
+        }
+      ));
+      this.isLoading = false
+    },
+    (error) => {
+      console.log(error)
+      this.isLoading = false;
+      this.message = (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) ||
+      error.message ||
+      error.toString();
+    });
+
+    // this.$store.dispatch("getSpecializationsCount", 1)
+    // .then((res) => {
+    //   const response = res.data.data;
+    //   console.log('Dashboard Data', response)
+    // },
+    // (error) => {
+    //   console.log(error)
+    //   this.message = (
+    //     error.response &&
+    //     error.response.data &&
+    //     error.response.data.message
+    //   ) ||
+    //   error.message ||
+    //   error.toString();
+    // });
+  },
+  components: {
+    Loading,
   },
 }
 </script>

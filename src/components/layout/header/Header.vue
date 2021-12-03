@@ -152,7 +152,8 @@ export default defineComponent({
         this.$router.push("/login");
       },
       (error) => {
-        this.loading = false;
+        console.log(error)
+        this.isLoading = false;
         this.message = (
           error.response &&
           error.response.data &&

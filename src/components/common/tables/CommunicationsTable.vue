@@ -1,7 +1,7 @@
 <template>
   <a-row>
     <a-col :span="24">
-      <a-table :columns="columns" :data-source="data" :scroll="{ x: 1500 }" @change="onChange" />
+      <a-table :columns="communicationsColumns" :data-source="communicationsData" :scroll="{ x: 1500 }" @change="onChange" />
       <template #bodyCell="{ column }">
         <template v-if="column.key === 'type'">
           <span>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-const columns = [
+const communicationsColumns = [
   {
     title: "Type",
     dataIndex: "type",
@@ -73,7 +73,7 @@ const columns = [
     },
   },
 ];
-const data = [
+const communicationsData = [
   {
     key: "1",
     type:"",
@@ -122,8 +122,8 @@ const data = [
 export default {
   setup() {
     return {
-      data,
-      columns,
+      communicationsData,
+      communicationsColumns,
       // onChange: (pagination, filters, sorter, extra) => {
       //   console.log("params", pagination, filters, sorter, extra);
       // },

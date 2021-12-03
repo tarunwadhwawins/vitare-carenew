@@ -69,6 +69,7 @@ export default {
   data: function () {
     return {
       totalPatients,
+      SpecializationsCount: [],
       newPatients,
       criticalPatients,
       abnormalPatients,
@@ -113,5 +114,7 @@ export default {
       logout
     };
   },
+  created() {
+  }
 };
 </script>

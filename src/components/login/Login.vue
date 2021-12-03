@@ -33,6 +33,13 @@
                 </Form>
               </div>
             </a-col>
+            <loading
+              v-model:active="isLoading" 
+              loader="bars"
+              lock-scroll="true"
+              is-full-page="false"
+              transition="fade"
+              :can-cancel="false"/>
           </a-row>
         </div>
       </div>
@@ -45,6 +52,8 @@ import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
 import { configure } from 'vee-validate';
 import { defineComponent } from 'vue';
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 // Default values
 configure({
@@ -56,6 +65,7 @@ configure({
 
 export default defineComponent({
   components: {
+    Loading,
     Form,
     Field,
     ErrorMessage,
@@ -66,6 +76,7 @@ export default defineComponent({
       password: yup.string().required().label("Password"),
     });
 		return {
+      isLoading: false,
       schema,
 			email: '',
 			password: '',
@@ -74,7 +85,7 @@ export default defineComponent({
 	},
   methods: {
     handleLogin() {
-			this.loading = true;
+      this.isLoading = true;
 			const email = this.email;
 			const password = this.password;
 			const role = this.role;
@@ -83,7 +94,8 @@ export default defineComponent({
 					this.$router.push("/dashboard");
 				},
 				(error) => {
-					this.loading = false;
+          console.log(error)
+					this.isLoading = false;
 					this.message = (
 						error.response &&
 						error.response.data &&

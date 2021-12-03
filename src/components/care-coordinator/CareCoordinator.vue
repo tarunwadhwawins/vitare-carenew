@@ -30,15 +30,12 @@
             </a-col>
           </a-row>
           
-          
-          <loading
-            v-model:active="isLoading" 
-            loader="bars"
-            lock-scroll="true"
-            is-full-page="false"
-            transition="fade"
-            :can-cancel="false"/>
-          <CoordinatorTable :list="list"></CoordinatorTable>
+          <CoordinatorTable></CoordinatorTable>
+          <!-- <template #action>
+            <a class="icons"><EyeOutlined /></a>
+            <a class="icons"><EditOutlined /></a>
+            <a class="icons"> <DeleteOutlined /></a>
+          </template> -->
         </a-layout-content>
       </a-layout>
     </a-layout>
@@ -51,40 +48,17 @@ import Sidebar from "../layout/sidebar/Sidebar";
 import LongCard from "@/components/common/cards/LongCard";
 import CoordinatorTable from "@/components/common/tables/CoordinatorTable";
 import MainHeader from "@/components/common/MainHeader";
-import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
+// import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons-vue";
 export default {
-  data() {
-    return {
-      isLoading: false,
-      list: [{}],
-    }
-  },
-  created() {
-    this.isLoading = true;
-    this.$store.dispatch("getCareCoordinatorsList")
-    .then((res) => { 
-      this.list = res.data.data;
-      this.isLoading = false
-    },
-    (error) => {
-      this.loading = false;
-      this.message = (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) ||
-      error.message ||
-      error.toString();
-    });
-  },
   components: {
     Header,
     Sidebar,
     LongCard,
     CoordinatorTable,
     MainHeader,
-    Loading
+    // DeleteOutlined,
+    // EditOutlined,
+    // EyeOutlined,
   },
 };
 </script>

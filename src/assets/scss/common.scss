@@ -64,6 +64,15 @@ h6 {
 		background-color: #fff;
 	}
 }
+.blackBtn {
+    background: #000;
+    color: #fff;
+    font-size: 12px;
+    height: auto;
+    border-radius: 4px;
+	padding: 6px 12px;
+}
+
 .mb-24 {
 	margin-bottom: 24px;
 }
@@ -85,6 +94,9 @@ h6 {
 	padding-top: 64px;
 	min-height: calc(100vh - 64px);
 	padding-left: 200px;
+	@media screen and (max-width: 991px) {
+		padding-left: 0px;
+	}
 }
 .ant-layout-content {
 	padding: 12px;
@@ -183,13 +195,13 @@ h6 {
 	.anticon-eye {
 		svg {
 			fill: #0d6efd;
-			font-size:18px;
+			font-size: 18px;
 		}
 	}
 	.anticon-edit {
 		svg {
 			fill: #198754;
-			font-size:18px;
+			font-size: 18px;
 		}
 	}
 	.anticon-delete {
@@ -201,31 +213,31 @@ h6 {
 	.anticon-message {
 		svg {
 			fill: #0d6efd;
-			font-size:18px;
+			font-size: 18px;
 		}
 	}
 	.anticon-warning {
 		svg {
-			fill: #E29E19;
-			font-size:18px;
+			fill: #e29e19;
+			font-size: 18px;
 		}
 	}
 	.anticon-comment {
 		svg {
 			fill: #000;
-			font-size:18px;
+			font-size: 18px;
 		}
 	}
 	.anticon-phone {
 		svg {
 			fill: #000;
-			font-size:18px;
+			font-size: 18px;
 		}
 	}
 	.anticon-mail {
 		svg {
 			fill: #000;
-			font-size:18px;
+			font-size: 18px;
 		}
 	}
 }
@@ -250,16 +262,16 @@ span.error {
 								}
 							}
 						}
-						.ant-table-tbody{
+						.ant-table-tbody {
 							tr {
 								td {
-									padding:8px 10px;
+									padding: 8px 10px;
 									font-size: 13px;
 								}
-								&:hover{
-								 td{
-								    background: #f9f9f9;
-								 }
+								&:hover {
+									td {
+										background: #f9f9f9;
+									}
 								}
 							}
 						}
@@ -268,6 +280,26 @@ span.error {
 			}
 		}
 	}
+}
+
+/*----*/
+
+body {
+	&.show {
+		.ant-layout {
+			.ant-layout-has-sider {
+				.ant-layout-sider {
+					left: 0px !important;
+					z-index: 99;
+				}
+			}
+		}
+	}
+}
+
+/*----*/
+.common-btn {
+	text-align: right;
 }
 
 .bg-white { background-color: #ffffff; }
@@ -291,3 +323,18 @@ span.error {
 .text-teal { color: #00897b; }
 .text-grey { color: #d9d9d9; }
 .text-black { color: #000000; }
+
+.primaryBtn {
+	border: 1px solid transparent !important;
+	cursor: pointer !important;
+	color: #1890ff !important;
+	background: #fff !important;
+	border-color: #1890ff !important;
+	border-radius: 0px !important;
+	padding: 7px 20px 7px 19px !important;
+	font-size: 13px !important;
+	font-weight: 300 !important;
+}
+.steps-action {
+	float: right;
+}

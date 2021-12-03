@@ -42,6 +42,9 @@
     setup() {
       const visible = ref(false);
       const showModal = () => {
+        localStorage.setItem('personalData', true);
+        // localStorage.removeItem('personalData');
+        localStorage.removeItem('coordinatorId');
         visible.value = true;
       };
 

@@ -71,6 +71,42 @@ export const careCoordinator = {
         }
       );
     },
+    getCoordinatorContacts({ commit }, id) {
+      return CareCoordinatorService.getCoordinatorContacts(id).then(
+        contacts => {
+          commit('getCoordinatorContactsSuccess', contacts);
+          return Promise.resolve(contacts);
+        },
+        error => {
+          commit('getCoordinatorContactsFailure', error);
+          return Promise.reject(error);
+        }
+      );
+    },
+    getSpecializationsCount({ commit }, id) {
+      return CareCoordinatorService.getSpecializationsCount(id).then(
+        count => {
+          commit('getSpecializationsCountSuccess', count);
+          return Promise.resolve(count);
+        },
+        error => {
+          commit('getSpecializationsCountFailure', error);
+          return Promise.reject(error);
+        }
+      );
+    },
+    getNetworksCount({ commit }, id) {
+      return CareCoordinatorService.getNetworksCount(id).then(
+        count => {
+          commit('getNetworksCountSuccess', count);
+          return Promise.resolve(count);
+        },
+        error => {
+          commit('getNetworksCountFailure', error);
+          return Promise.reject(error);
+        }
+      );
+    },
   },
   mutations: {
     addCareCoordinatorSuccess(state, coordinator) {
@@ -102,6 +138,24 @@ export const careCoordinator = {
     },
     getCareCoordinatorsListFailure(state, error) {
       state.list = error;
-    }
+    },
+    getCoordinatorContactsSuccess(state, contacts) {
+      state.contacts = contacts;
+    },
+    getCoordinatorContactsFailure(state, error) {
+      state.contacts = error;
+    },
+    getSpecializationsCountSuccess(state, count) {
+      state.count = count;
+    },
+    getSpecializationsCountFailure(state, error) {
+      state.count = error;
+    },
+    getNetworksCountSuccessSuccess(state, count) {
+      state.count = count;
+    },
+    getNetworksCountFailureFailure(state, error) {
+      state.count = error;
+    },
   }
 };
