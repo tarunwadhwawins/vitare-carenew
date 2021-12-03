@@ -18,6 +18,7 @@
     "dayjs": "^1.10.7",
     "vee-validate": "^4.5.6",
     "vue": "^3.0.0",
+    "vue-loading-overlay": "^4.0.4",
     "vue-request": "^1.2.3",
     "vue-router": "^4.0.0-0",
     "vue3-apexcharts": "^1.4.1",

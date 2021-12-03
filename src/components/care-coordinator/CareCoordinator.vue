@@ -30,6 +30,14 @@
             </a-col>
           </a-row>
           
+          
+          <loading
+            v-model:active="isLoading" 
+            loader="bars"
+            lock-scroll="true"
+            is-full-page="false"
+            transition="fade"
+            :can-cancel="false"/>
           <CoordinatorTable :list="list"></CoordinatorTable>
         </a-layout-content>
       </a-layout>
@@ -43,16 +51,21 @@ import Sidebar from "../layout/sidebar/Sidebar";
 import LongCard from "@/components/common/cards/LongCard";
 import CoordinatorTable from "@/components/common/tables/CoordinatorTable";
 import MainHeader from "@/components/common/MainHeader";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 export default {
   data() {
     return {
+      isLoading: false,
       list: [{}],
     }
   },
   created() {
+    this.isLoading = true;
     this.$store.dispatch("getCareCoordinatorsList")
     .then((res) => { 
       this.list = res.data.data;
+      this.isLoading = false
     },
     (error) => {
       this.loading = false;
@@ -70,7 +83,8 @@ export default {
     Sidebar,
     LongCard,
     CoordinatorTable,
-    MainHeader
+    MainHeader,
+    Loading
   },
 };
 </script>

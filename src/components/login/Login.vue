@@ -63,7 +63,7 @@ export default defineComponent({
 	data() {
     const schema = yup.object({
       email: yup.string().required().email().label("Email"),
-      password: yup.string().required().min(8).label("Password"),
+      password: yup.string().required().label("Password"),
     });
 		return {
       schema,
