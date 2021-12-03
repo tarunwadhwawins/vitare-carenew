@@ -34,22 +34,29 @@ const routes = [
   },
 
   {
+    path: '/tasks',
+    name: 'Tasks',
+    component: () => import( '../components/tasks/Tasks')
+  },
+
+  {
     path: '/manage-patients',
     name: 'Patients',
     component: () => import( '../components/patients/Patients')
   },
+
   {
     path: '/appointment-calendar',
     name: 'AppointmnetCalendar',
     component: () => import( '../components/appoinment-calendar/AppointmentCalendar')
   },
+
   {
     path: '/patients-summary',
     name: 'PatientSummary',
     component: () => import( '../components/patient-summary/patientsummary')
   },
-
-
+  
   {
     path: '/',
     name: 'Login',

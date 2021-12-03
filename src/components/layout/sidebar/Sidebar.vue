@@ -33,6 +33,11 @@
             ></a-menu-item
           ></router-link
         >
+        <router-link to="/tasks"
+          ><a-menu-item
+            ><CalendarOutlined /><span class="menuItem">Tasks</span></a-menu-item
+          ></router-link
+        >
       </a-menu>
     </div>
   </a-layout-sider>
