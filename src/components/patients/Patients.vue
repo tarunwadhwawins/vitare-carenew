@@ -59,10 +59,10 @@
                 @change="onChange"
               >
                 <template #firstName="text">
-                  <a href="">{{ text.text }}</a>
+                  <a href="/#/patients-summary">{{ text.text }}</a>
                 </template>
                 <template #lastName="text">
-                  <a href="">{{ text.text }}</a>
+                  <a href="/#/patients-summary">{{ text.text }}</a>
                 </template>
                 <template #flags="{ text }">
                   <span class="box" :class="text"></span>
@@ -634,7 +634,6 @@
         </a-col>
       </a-row>
     </a-modal>
-
     <!---->
   </div>
 </template>

@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 // import Home from '../views/Home.vue'
 
 const routes = [
@@ -44,6 +44,13 @@ const routes = [
     component: () => import( '../components/appoinment-calendar/AppointmentCalendar')
   },
   {
+    path: '/patients-summary',
+    name: 'PatientSummary',
+    component: () => import( '../components/patient-summary/patientsummary')
+  },
+
+
+  {
     path: '/',
     name: 'Login',
     component: () => import( '../components/login/Login')
@@ -52,7 +59,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes
 })
 
