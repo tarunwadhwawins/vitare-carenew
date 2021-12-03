@@ -223,7 +223,7 @@
                     </div>
                   </div>
                   <div class="add-task">
-                    <a href="#"><PlusOutlined />Add Task</a>
+                    <a href="javascript:void(0)"><PlusOutlined />Add Task</a>
                   </div>
                 </div>
               </a-col>
@@ -423,7 +423,7 @@
                     </div>
                   </div>
                   <div class="add-task">
-                    <a href="#"><PlusOutlined />Add Task</a>
+                    <a href="javascript:void(0)"><PlusOutlined />Add Task</a>
                   </div>
                 </div>
               </a-col>
@@ -624,7 +624,7 @@
                     </div>
                   </div>
                   <div class="add-task">
-                    <a href="#"><PlusOutlined />Add Task</a>
+                    <a href="javascript:void(0)"><PlusOutlined />Add Task</a>
                   </div>
                 </div>
               </a-col>

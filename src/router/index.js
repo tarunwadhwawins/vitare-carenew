@@ -36,7 +36,7 @@ const routes = [
   {
     path: '/tasks',
     name: 'Tasks',
-    component: () => import( '../components/tasks/Tasks')
+    component: () => import( '../components/tasks/tasks')
   },
 
   {
