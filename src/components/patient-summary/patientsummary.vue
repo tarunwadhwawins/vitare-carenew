@@ -185,7 +185,7 @@
                   <a-tab-pane key="1" tab="Care Plan">Content of Tab Pane 1</a-tab-pane>
                   <a-tab-pane key="2" tab="Patient Vitals" force-render>
                     <a-row :gutter="24">
-                      <a-col :sm="12" :xs="24">
+                      <a-col :sm="12" :xs="24" class="mb-24">
                         <a-card title="Blood Pressure">
                           <a-tabs v-model:activeKey="activeKey1">
                             <a-tab-pane key="7" tab="Graph">
@@ -213,7 +213,7 @@
                           ></template>
                         </a-card>
                       </a-col>
-                      <a-col :sm="12" :xs="24">
+                      <a-col :sm="12" :xs="24" class="mb-24">
                         <a-card title="Pulse">
                           <a-tabs v-model:activeKey="activeKey2">
                             <a-tab-pane key="9" tab="Graph" force-render>
@@ -241,7 +241,7 @@
                           ></template>
                         </a-card>
                       </a-col>
-                      <a-col :sm="12" :xs="24">
+                      <a-col :sm="12" :xs="24" class="mb-24">
                         <a-card title="Blood Glucose">
                           <a-tabs v-model:activeKey="activeKey3">
                             <a-tab-pane key="11" tab="Graph">
@@ -269,7 +269,7 @@
                           ></template>
                         </a-card>
                       </a-col>
-                      <a-col :sm="12" :xs="24">
+                      <a-col :sm="12" :xs="24" class="mb-24">
                         <a-card title="Blood Oxygen Saturation">
                           <a-tabs v-model:activeKey="activeKey4">
                             <a-tab-pane key="13" tab="Graph">

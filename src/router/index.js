@@ -34,15 +34,23 @@ const routes = [
   },
 
   {
+    path: '/tasks',
+    name: 'Tasks',
+    component: () => import( '../components/tasks/tasks')
+  },
+
+  {
     path: '/manage-patients',
     name: 'Patients',
     component: () => import( '@/components/patients/Patients')
   },
+
   {
     path: '/appointment-calendar',
     name: 'Appointmnet Calendar',
     component: () => import( '@/components/appointment-calendar/AppointmentCalendar')
   },
+
   {
     path: '/patients-summary',
     name: 'PatientSummary',

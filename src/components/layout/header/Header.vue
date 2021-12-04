@@ -50,15 +50,17 @@
                 <template #overlay>
                   <a-menu>
                     <a-menu-item key="0">
-                      <a href="#">Add Appointment</a>
+                      <a href="javascript:void(0)">Add Appointment</a>
                     </a-menu-item>
                     <a-menu-item key="1">
-                      <a href="">Add Patient</a>
+                      <a href="javascript:void(0)">Add Patient</a>
                     </a-menu-item>
                     <a-menu-item key="3">
-                      <a href="">Add Care Coordinator</a></a-menu-item
+                      <a href="javascript:void(0)">Add Care Coordinator</a></a-menu-item
                     >
-                    <a-menu-item key="4"> <a href="">Add Task</a></a-menu-item>
+                    <a-menu-item key="4">
+                      <a href="javascript:void(0)">Add Task</a></a-menu-item
+                    >
                   </a-menu>
                 </template>
               </a-dropdown>
@@ -117,10 +119,10 @@
                 <template #overlay>
                   <a-menu>
                     <a-menu-item key="0">
-                      <a href="#">My Profile</a>
+                      <a href="javascript:void(0)">My Profile</a>
                     </a-menu-item>
                     <a-menu-item key="1">
-                      <a href="">Settings</a>
+                      <a href="javascript:void(0)">Settings</a>
                     </a-menu-item>
                     <a-menu-item key="3"> <a href="javascript:void(0)" @click="logout">Logout</a></a-menu-item>
                   </a-menu>

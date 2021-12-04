@@ -821,3 +821,132 @@
         }
     }
 }
+
+.tasks {
+    .task-box {
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        .task-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #f9f9f9;
+            padding: 0 0 10px;
+            h2 {
+                font-size: 18px;
+                color: #111;
+            }
+            .actions {
+                display: flex;
+                .ant-dropdown-link {
+                    font-size: 18px;
+                    font-weight: bold;
+                    margin: 0 8px 0 0;
+                    &:last-child {
+                        margin: 0;
+                    }
+                }
+            }
+        }
+        .task-body {
+            padding: 10px 0 0;
+            height: calc(100vh - 230px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            .task-card {
+                border: 1px solid #e3e3e3;
+                padding: 10px;
+                border-radius: 5px;
+                position: relative;
+                margin: 0 0 15px;
+                &.hide {
+                    display: none;
+                }
+                h3 {
+                    font-size: 20px;
+                    color: #111;
+                    padding: 0 25px 0 0;
+                }
+                p {
+                    padding: 0 25px 0 0;
+                }
+                .time-tasks {
+                    display: flex;
+                    align-items: center;
+                    padding: 10px 0 0;
+                    justify-content: space-between;
+                    .time {
+                        display: flex;
+                        align-items: center;
+                        p {
+                            font-size: 13px;
+                            color: #444;
+                            padding: 0 15px 0 0;
+                        }
+                        .category {
+                            display: inline-block;
+                            padding: 5px 10px;
+                            border-radius: 25px;
+                            font-size: 12px;
+                            color: #fff;
+                        }
+                    }
+                    .staff {
+                        ul {
+                            display: flex;
+                            justify-content: flex-end;
+                            padding: 0;
+                            margin: 0;
+                            li {
+                                width: 28px;
+                                height: 28px;
+                                border-radius: 50%;
+                                overflow: hidden;
+                                margin: 0 0 0 5px;
+                                img {
+                                    height: 100%;
+                                    object-fit: cover;
+                                }
+                            }
+                        }
+                    }
+                }
+                .menu {
+                    position: absolute;
+                    right: 6px;
+                    top: 15px;
+                    border: 1px solid #ddd;
+                    padding: 2px;
+                    .ant-dropdown-link {
+                        font-size: 18px;
+                        font-weight: bold;
+                    }
+                }
+                .drop-links {
+                    display: flex;
+                    margin: 9px 0 0 0;
+                    .ant-dropdown-link {
+                        font-size: 18px;
+                        font-weight: bold;
+                        margin: 0 10px 0 0;
+                        &:last-child {
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+        }
+        .add-task {
+            text-align: center;
+            a {
+                color: #000;
+                span {
+                    padding: 0 5px 0 0;
+                    position: relative;
+                    top: -4px;
+                }
+            }
+        }
+    }
+}

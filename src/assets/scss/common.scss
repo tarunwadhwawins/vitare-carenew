@@ -65,11 +65,11 @@ h6 {
 	}
 }
 .blackBtn {
-    background: #000;
-    color: #fff;
-    font-size: 12px;
-    height: auto;
-    border-radius: 4px;
+	background: #000;
+	color: #fff;
+	font-size: 12px;
+	height: auto;
+	border-radius: 4px;
 	padding: 6px 12px;
 }
 
@@ -88,6 +88,12 @@ h6 {
 }
 .flex-grow-1 {
 	flex-grow: 1 !important;
+}
+.bg-primary {
+	background-color:#0d6efd;
+}
+.bg-danger{
+	background-color:#dc3545;
 }
 /*----*/
 .ant-layout-has-sider {
