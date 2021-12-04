@@ -1,0 +1,64 @@
+<template>
+  <div>
+    <a-layout>
+      <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
+        <Header/>
+      </a-layout-header>
+      <a-layout>
+        <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
+          <Sidebar/>
+        </a-layout-sider>
+        <a-layout-content>
+          <a-row>
+            <MainHeader heading="Manage Care Coordinator" buttonText="Add New Coordinator" modalScreen="coordinator"></MainHeader>
+          </a-row>
+
+          <a-row class="mb-24" :gutter="24">
+            <a-col :span="12">
+              <h2>Specialization</h2>
+              <a-row :gutter="24">
+                <LongCard customClass="two" count="4" text="Wellness"></LongCard>
+                <LongCard customClass="four" count="5" text="Behaviour"></LongCard>
+              </a-row>
+            </a-col>
+            <a-col :span="12">
+              <h2>Network</h2>
+              <a-row :gutter="24">
+                <LongCard customClass="six" count="5" text="In"></LongCard>
+                <LongCard customClass="five" count="6" text="Out"></LongCard>
+              </a-row>
+            </a-col>
+          </a-row>
+          
+          <CoordinatorTable></CoordinatorTable>
+          <!-- <template #action>
+            <a class="icons"><EyeOutlined /></a>
+            <a class="icons"><EditOutlined /></a>
+            <a class="icons"> <DeleteOutlined /></a>
+          </template> -->
+        </a-layout-content>
+      </a-layout>
+    </a-layout>
+  </div>
+</template>
+
+<script>
+import Header from "../layout/header/Header";
+import Sidebar from "../layout/sidebar/Sidebar";
+import LongCard from "@/components/common/cards/LongCard";
+import CoordinatorTable from "@/components/common/tables/CoordinatorTable";
+import MainHeader from "@/components/common/MainHeader";
+// import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons-vue";
+export default {
+  components: {
+    Header,
+    Sidebar,
+    LongCard,
+    CoordinatorTable,
+    MainHeader,
+    // DeleteOutlined,
+    // EditOutlined,
+    // EyeOutlined,
+  },
+};
+</script>

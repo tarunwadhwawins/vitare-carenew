@@ -3,7 +3,7 @@
     <div class="header-wrapper">
       <div class="logo">
         <div class="logoInner">
-          <img src="../../../assets/images/logo.png" alt="image" />
+          <img src="@/assets/images/logo.png" alt="image" />
         </div>
         <div class="icon" @click="barMenu">
           <MenuOutlined />
@@ -75,7 +75,7 @@
                       <a class="d-flex align-items-center" href="#">
                         <div class="flex-shrink-0 imgProfile">
                           <img
-                            src="../../../assets/images/user-2.jpg"
+                            src="@/assets/images/user-2.jpg"
                             alt="image"
                             width="50"
                           />
@@ -90,7 +90,7 @@
                       <a class="d-flex align-items-center" href="#">
                         <div class="flex-shrink-0 imgProfile">
                           <img
-                            src="../../../assets/images/user-1.jpg"
+                            src="@/assets/images/user-1.jpg"
                             alt="image"
                             width="50"
                           />
@@ -109,9 +109,9 @@
             <div class="profile-menu">
               <a-dropdown :trigger="['click']">
                 <a class="ant-dropdown-link" @click.prevent>
-                  <div class="name">Jane Doe <strong>Admin</strong></div>
+                  <div class="name">{{ user }} <strong>{{ role }}</strong></div>
                   <div class="image">
-                    <img src="../../../assets/images/profile-1.jpg" alt="image" />
+                    <img src="@/assets/images/profile-1.jpg" alt="image" />
                   </div>
                 </a>
                 <template #overlay>
@@ -122,7 +122,7 @@
                     <a-menu-item key="1">
                       <a href="">Settings</a>
                     </a-menu-item>
-                    <a-menu-item key="3"> <a href="">Logout</a></a-menu-item>
+                    <a-menu-item key="3"> <a href="javascript:void(0)" @click="logout">Logout</a></a-menu-item>
                   </a-menu>
                 </template>
               </a-dropdown>
@@ -144,6 +144,12 @@ import {
   MoreOutlined,
 } from "@ant-design/icons-vue";
 export default defineComponent({
+  data() {
+    return {
+      user: '',
+      role: '',
+    }
+  },
   components: {
     NotificationOutlined,
     DownOutlined,
@@ -163,5 +169,32 @@ export default defineComponent({
       ellipse,
     };
   },
+  created() {
+    if(this.$store.state.auth.user == null) {
+      this.$router.push("/");
+      return;
+    }
+    this.user = this.$store.state.auth.user.email;
+    this.role = this.$store.state.auth.user.role_id ? 'Admin' : 'Client';
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("auth/logout")
+      .then(() => {
+        this.$router.push("/login");
+      },
+      (error) => {
+        console.log(error)
+        this.isLoading = false;
+        this.message = (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) ||
+        error.message ||
+        error.toString();
+      });
+    }
+  }
 });
 </script>

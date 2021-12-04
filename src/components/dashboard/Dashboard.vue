@@ -1,130 +1,34 @@
 <template>
   <div>
-    <!---->
     <a-layout>
       <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
         <Header />
       </a-layout-header>
       <a-layout>
-        <Sidebar />
+        <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
+          <Sidebar/>
+        </a-layout-sider>
         <a-layout-content>
           <a-row>
-            <a-col :span="24">
-              <h2 class="pageTittle">Dashboard</h2>
-            </a-col>
+            <MainHeader heading="Dashboard" buttonText=""></MainHeader>
             <a-col :span="24">
               <a-row :gutter="24">
-                <a-col :xl="4" :sm="8" :xs="12">
-                  <div class="topBox one">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>Total Patients</p>
-                  </div>
-                </a-col>
-                <a-col :xl="4" :sm="8" :xs="12">
-                  <div class="topBox two">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>New Patients</p>
-                  </div>
-                </a-col>
-                <a-col :xl="4" :sm="8" :xs="12">
-                  <div class="topBox three">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>Critical Patients</p>
-                  </div>
-                </a-col>
-                <a-col :xl="4" :sm="8" :xs="12">
-                  <div class="topBox four">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>Abnormal Patients</p>
-                  </div>
-                </a-col>
-                <a-col :xl="4" :sm="8" :xs="12">
-                  <div class="topBox five">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>Active Patients</p>
-                  </div>
-                </a-col>
-                <a-col :xl="4" :sm="8" :xs="12">
-                  <div class="topBox six">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>Inactive Patients</p>
-                  </div>
-                </a-col>
+                <Card customClass="one" :count="totalPatients.count" text="Total Patients"></Card>
+                <Card customClass="two" :count="newPatients.count" text="New Patients"></Card>
+                <Card customClass="three" :count="criticalPatients.count" text="Critical Patients"></Card>
+                <Card customClass="four" :count="abnormalPatients.count" text="Abnormal Patients"></Card>
+                <Card customClass="five" :count="activePatients.count" text="Active Patients"></Card>
+                <Card customClass="six" :count="inactivePatients.count" text="Inactive Patients"></Card>
               </a-row>
             </a-col>
           </a-row>
           <a-row :gutter="24">
-            <a-col :sm="12" :xs="24">
-              <a-card title="Patients Stats" class="common-card">
-                <div class="list-group">
-                  <div class="list-group-item">
-                    <div class="img">
-                      <img src="../../assets/images/profile.jpg" alt="image" width="30" />
-                    </div>
-                    <div class="name">Jane Doe</div>
-                    <div class="progress-bar">
-                      <a-progress :percent="30" size="small" />
-                    </div>
-                  </div>
-                  <div class="list-group-item">
-                    <div class="img">
-                      <img src="../../assets/images/profile.jpg" alt="image" width="30" />
-                    </div>
-                    <div class="name">Jane Doe</div>
-                    <div class="progress-bar">
-                      <a-progress :percent="30" size="small" />
-                    </div>
-                  </div>
-                  <div class="list-group-item">
-                    <div class="img">
-                      <img src="../../assets/images/profile.jpg" alt="image" width="30" />
-                    </div>
-                    <div class="name">Jane Doe</div>
-                    <div class="progress-bar">
-                      <a-progress :percent="30" size="small" />
-                    </div>
-                  </div>
-                </div>
-              </a-card>
-            </a-col>
-            <a-col :sm="12" :xs="24">
-              <a-card title="Virtual Waiting Room" class="common-card">
-                <a-tabs v-model:activeKey="activeKey">
-                  <a-tab-pane key="1" tab="New Requests">New Requests</a-tab-pane>
-                  <a-tab-pane key="2" tab="Future Appointments" force-render
-                    >Future Appointments</a-tab-pane
-                  >
-                </a-tabs>
-              </a-card>
-            </a-col>
+            <PatientsStats></PatientsStats>
+            <VirtualWaitingRoom></VirtualWaitingRoom>
           </a-row>
           <a-row :gutter="24">
-            <a-col :sm="12" :xs="24">
-              <a-card title="Total Patients Chart" class="common-card">
-                <apexchart
-                  type="area"
-                  height="350"
-                  :options="chartOptions"
-                  :series="series"
-                ></apexchart>
-              </a-card>
-            </a-col>
-            <a-col :sm="12" :xs="24">
-              <a-card title="Appointment Summary" class="common-card">
-                <apexchart
-                  type="area"
-                  height="350"
-                  :options="chartOptions"
-                  :series="series"
-                ></apexchart>
-              </a-card>
-            </a-col>
+            <TotalPatientsChart></TotalPatientsChart>
+            <AppointmentSummary></AppointmentSummary>
           </a-row>
         </a-layout-content>
       </a-layout>
@@ -137,13 +41,38 @@
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
 import { useRouter } from "vue-router";
+import MainHeader from "@/components/common/MainHeader";
+import Card from "@/components/common/cards/Card";
+import totalPatients from '@/data/total-patients.json';
+import newPatients from '@/data/new-patients.json';
+import criticalPatients from '@/data/critical-patients.json';
+import abnormalPatients from '@/data/abnormal-patients.json';
+import activePatients from '@/data/active-patients.json';
+import inactivePatients from '@/data/inactive-patients.json';
+import PatientsStats from "./PatientsStats";
+import VirtualWaitingRoom from "./VirtualWaitingRoom";
+import TotalPatientsChart from "./TotalPatientsChart";
+import AppointmentSummary from "./AppointmentSummary";
 export default {
   components: {
     Header,
     Sidebar,
+    MainHeader,
+    Card,
+    PatientsStats,
+    VirtualWaitingRoom,
+    TotalPatientsChart,
+    AppointmentSummary,
   },
   data: function () {
     return {
+      totalPatients,
+      SpecializationsCount: [],
+      newPatients,
+      criticalPatients,
+      abnormalPatients,
+      activePatients,
+      inactivePatients,
       chartOptions: {
         chart: {
           height: 350,
@@ -186,8 +115,6 @@ export default {
     };
   },
   setup() {
-    const router = useRouter();
-
     function logout() {
       localStorage.removeItem("auth");
       localStorage.clear();
