@@ -7,20 +7,30 @@
         <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
             <Sidebar />
         </a-layout-sider>
-        <Dashboard />
+        <a-layout-content>
+            <a-row>
+                <MainHeader heading="Manage Care Coordinator" buttonText="Add New Coordinator" modalScreen="coordinator"></MainHeader>
+            </a-row>
+            <CareCoordinator />
+        </a-layout-content>
     </a-layout>
 </a-layout>
 </template>
+
 <script>
-import Dashboard from "@/components/dashboard/Dashboard"
+import CareCoordinator from "@/components/care-coordinator/CareCoordinator";
 import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/layout/sidebar/Sidebar";
+import MainHeader from "@/components/common/MainHeader";
 export default {
-    name: 'ViewDashboard',
+    name: 'ViewManageCareCoordinator',
     components: {
-        Dashboard,
+        CareCoordinator,
         Header,
         Sidebar,
+        MainHeader
+
     }
+
 }
 </script>

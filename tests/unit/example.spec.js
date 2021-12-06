@@ -1,10 +1,10 @@
 import { shallowMount } from '@vue/test-utils'
-import HelloWorld from '@/components/HelloWorld.vue'
+import Login from '@/components/login/Login.vue'
 
-describe('HelloWorld.vue', () => {
-  it('renders props.msg when passed', () => {
+describe('Login.vue', () => {
+  it('renders message when component is created', () => {
     const msg = 'new message'
-    const wrapper = shallowMount(HelloWorld, {
+    const wrapper = shallowMount(Login, {
       props: { msg }
     })
     expect(wrapper.text()).toMatch(msg)
