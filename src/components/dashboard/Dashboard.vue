@@ -1,46 +1,29 @@
 <template>
-  <div>
-    <a-layout>
-      <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
-        <Header />
-      </a-layout-header>
-      <a-layout>
-        <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
-          <Sidebar/>
-        </a-layout-sider>
-        <a-layout-content>
-          <a-row>
-            <MainHeader heading="Dashboard" buttonText=""></MainHeader>
-            <a-col :span="24">
-              <a-row :gutter="24">
+<a-layout-content>
+    <a-row>
+        <MainHeader heading="Dashboard" buttonText=""></MainHeader>
+        <a-col :span="24">
+            <a-row :gutter="24">
                 <Card customClass="one" :count="totalPatients.count" text="Total Patients"></Card>
                 <Card customClass="two" :count="newPatients.count" text="New Patients"></Card>
                 <Card customClass="three" :count="criticalPatients.count" text="Critical Patients"></Card>
                 <Card customClass="four" :count="abnormalPatients.count" text="Abnormal Patients"></Card>
                 <Card customClass="five" :count="activePatients.count" text="Active Patients"></Card>
                 <Card customClass="six" :count="inactivePatients.count" text="Inactive Patients"></Card>
-              </a-row>
-            </a-col>
-          </a-row>
-          <a-row :gutter="24">
-            <PatientsStats></PatientsStats>
-            <VirtualWaitingRoom></VirtualWaitingRoom>
-          </a-row>
-          <a-row :gutter="24">
-            <TotalPatientsChart></TotalPatientsChart>
-            <AppointmentSummary></AppointmentSummary>
-          </a-row>
-        </a-layout-content>
-      </a-layout>
-    </a-layout>
-    <!---->
-  </div>
+            </a-row>
+        </a-col>
+    </a-row>
+    <a-row :gutter="24">
+        <PatientsStats></PatientsStats>
+        <VirtualWaitingRoom></VirtualWaitingRoom>
+    </a-row>
+    <a-row :gutter="24">
+        <TotalPatientsChart></TotalPatientsChart>
+        <AppointmentSummary></AppointmentSummary>
+    </a-row>
+</a-layout-content>
 </template>
-
 <script>
-import Header from "../layout/header/Header";
-import Sidebar from "../layout/sidebar/Sidebar";
-import { useRouter } from "vue-router";
 import MainHeader from "@/components/common/MainHeader";
 import Card from "@/components/common/cards/Card";
 import totalPatients from '@/data/total-patients.json';
@@ -55,8 +38,6 @@ import TotalPatientsChart from "./TotalPatientsChart";
 import AppointmentSummary from "./AppointmentSummary";
 export default {
   components: {
-    Header,
-    Sidebar,
     MainHeader,
     Card,
     PatientsStats,
