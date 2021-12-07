@@ -31,10 +31,10 @@ const contactColumns = [
     title: "Phone No",
     dataIndex: "phone_no",
   },
-  {
+  /* {
     title: "Actions",
     dataIndex: "actions",
-  },
+  }, */
 ];
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
@@ -60,7 +60,7 @@ export default {
           last_name: element.last_name,
           email: element.email,
           phone_no: element.phone_no,
-          actions: 'In',
+          // actions: 'In',
         })
       });
       console.log('Contact Data', this.contactData)

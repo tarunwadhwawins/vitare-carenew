@@ -80,14 +80,14 @@ const columns = [
       multiple: 1,
     },
   },
-  {
+  /* {
     title: "Action",
     dataIndex: "action",
     sorter: {
       compare: (a, b) => a.action - b.action,
       multiple: 1,
     },
-  },
+  }, */
 ];
 export default {
   data() {
@@ -117,7 +117,7 @@ export default {
           network: element.network,
           created_at: element.created_at,
           status: element.status,
-          action: 'In',
+          // action: 'In',
         }
       ));
       this.isLoading = false
