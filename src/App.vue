@@ -28,6 +28,8 @@ export default {
       onMounted(()=>{
          document.body.classList.add('test')
       })
+
+      cosnole.log('new')
       return {
         auth
       }
