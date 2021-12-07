@@ -1,10 +1,10 @@
 <template>
-  <Form :model="personalInformationForm" @submit="addCareCoordinator" :validation-schema="schema">
+  <Form ref="personalInformationForm" :model="personalInformationForm" @submit="addCareCoordinator" :validation-schema="schema">
     <a-row :gutter="24">
       <a-col :span="12">
         <div class="form-group">
           <label>First Name</label>
-          <Field class="ant-input ant-input-lg" v-model="personalInformationForm.first_name" name="first_name" size="large" />
+          <Field class="ant-input ant-input-lg" v-model="personalInformationForm.first_name" :value="firstName" name="first_name" size="large" />
           <ErrorMessage class="error" name="first_name" />
         </div>
       </a-col>
@@ -30,9 +30,9 @@
             style="width: 100%"
             size="large">
             <option value="" hidden>Choose Gender</option>
-            <option value="0">Male</option>
-            <option value="1">Female</option>
-            <option value="2">Others</option>
+            <option value="1">Male</option>
+            <option value="2">Female</option>
+            <option value="3">Others</option>
           </Field>
           <ErrorMessage class="error" name="gender" />
         </div>
@@ -116,14 +116,14 @@
       return {
         schema,
         personalInformationForm: {
-          first_name: '',
-          last_name: '',
-          designation: '',
-          gender: '',
-          email: '',
-          phone_no: '',
-          specialization: '',
-          network: '',
+          first_name: this.$store.state.personalData ? this.$store.state.personalData.first_name : '',
+          last_name: this.$store.state.personalData ? this.$store.state.personalData.last_name : '',
+          designation: this.$store.state.personalData ? this.$store.state.personalData.designation : '',
+          gender: this.$store.state.personalData ? this.$store.state.personalData.gender : '',
+          email: this.$store.state.personalData ? this.$store.state.personalData.email : '',
+          phone_no: this.$store.state.personalData ? this.$store.state.personalData.phone_no : '',
+          specialization: this.$store.state.personalData ? this.$store.state.personalData.specialization : '',
+          network: this.$store.state.personalData ? this.$store.state.personalData.network : '',
         }
       }
     },
@@ -132,7 +132,8 @@
     },
     methods: {
       addCareCoordinator() {
-        const email_verify = this.$store.state.auth.user.email_verify
+        alert('from other file')
+        const email_verify = JSON.parse(localStorage.getItem('user')).email_verify
         const coordinator = toRaw(this.personalInformationForm);
         this.$store.dispatch("addCareCoordinator", { 
           first_name: coordinator.first_name,
@@ -146,9 +147,8 @@
           email_verify: email_verify
         })
         .then((res) => {
-          localStorage.setItem('personalData', true);
-          localStorage.setItem('coordinatorId', res.data.id);
-          console.log(this.$store.state);
+          localStorage.setItem('personalData', JSON.stringify(res.data));
+          this.$store.state.personalData = res.data;
           console.log(res);
         },
         (error) => {

@@ -5,11 +5,6 @@ const routes = [
     path: '/',
     redirect: '/login'
   },
-  // {
-  //   path: '/test',
-  //   name: 'Test',
-  //   component: () => import( '@/components/Test'),
-  // },
   {
     path: '/login',
     name: 'Login',

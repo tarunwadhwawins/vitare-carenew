@@ -50,15 +50,32 @@ export const careCoordinator = {
         }
       );
     },
-    /* async getCareCoordinatorsList({commit}) {
-      try {
-        let list = await CareCoordinatorService.getCareCoordinatorsList();
-        commit('getCareCoordinatorsListSuccess', list)
-      }
-      catch (error) {
-        commit('getCareCoordinatorsListFailure', error);
-      }
-    }, */
+    addCareCoordinatorDocument({ commit }, document) {
+      return CareCoordinatorService.addCareCoordinatorDocument(document).then(
+        document => {
+          commit('addDocumentSuccess', document);
+          return Promise.resolve(document);
+        },
+        error => {
+          commit('addDocumentFailure');
+          return Promise.reject(error);
+        }
+      );
+    },
+    uploadFile({ commit }, file) {
+      // console.log('file 1', file);
+      return CareCoordinatorService.uploadFile(file).then(
+        file => {
+          commit('uploadFileSuccess', file);
+          return Promise.resolve(file);
+        },
+        error => {
+          commit('uploadFileFailure');
+          return Promise.reject(error);
+        }
+      );
+    },
+
     getCareCoordinatorsList({ commit }) {
       return CareCoordinatorService.getCareCoordinatorsList().then(
         list => {
@@ -83,6 +100,30 @@ export const careCoordinator = {
         }
       );
     },
+    getCoordinatorAvailabilities({ commit }, id) {
+      return CareCoordinatorService.getCoordinatorAvailabilities(id).then(
+        contacts => {
+          commit('getCoordinatorAvailabilitiesSuccess', contacts);
+          return Promise.resolve(contacts);
+        },
+        error => {
+          commit('getCoordinatorAvailabilitiesFailure', error);
+          return Promise.reject(error);
+        }
+      );
+    },
+    getCoordinatorRoles({ commit }, id) {
+      return CareCoordinatorService.getCoordinatorRoles(id).then(
+        contacts => {
+          commit('getCoordinatorRolesSuccess', contacts);
+          return Promise.resolve(contacts);
+        },
+        error => {
+          commit('getCoordinatorRolesFailure', error);
+          return Promise.reject(error);
+        }
+      );
+    },
     getSpecializationsCount({ commit }, id) {
       return CareCoordinatorService.getSpecializationsCount(id).then(
         count => {
@@ -95,14 +136,14 @@ export const careCoordinator = {
         }
       );
     },
-    getNetworksCount({ commit }, id) {
-      return CareCoordinatorService.getNetworksCount(id).then(
+    getNetworkCount({ commit }, id) {
+      return CareCoordinatorService.getNetworkCount(id).then(
         count => {
-          commit('getNetworksCountSuccess', count);
+          commit('getNetworkCountSuccess', count);
           return Promise.resolve(count);
         },
         error => {
-          commit('getNetworksCountFailure', error);
+          commit('getNetworkCountFailure', error);
           return Promise.reject(error);
         }
       );
@@ -133,6 +174,18 @@ export const careCoordinator = {
     addRoleFailure(state) {
       state.role = null;
     },
+    addDocumentSuccess(state, document) {
+      state.document = document;
+    },
+    addDocumentFailure(state) {
+      state.document = null;
+    },
+    uploadFileSuccess(state, file) {
+      state.file = file;
+    },
+    uploadFileFailure(state) {
+      state.file = null;
+    },
     getCareCoordinatorsListSuccess(state, list) {
       state.list = list;
     },
@@ -145,16 +198,28 @@ export const careCoordinator = {
     getCoordinatorContactsFailure(state, error) {
       state.contacts = error;
     },
+    getCoordinatorAvailabilitiesSuccess(state, availability) {
+      state.availability = availability;
+    },
+    getCoordinatorAvailabilitiesFailure(state, error) {
+      state.availability = error;
+    },
+    getCoordinatorRolesSuccess(state, roles) {
+      state.roles = roles;
+    },
+    getCoordinatorRolesFailure(state, error) {
+      state.roles = error;
+    },
     getSpecializationsCountSuccess(state, count) {
       state.count = count;
     },
     getSpecializationsCountFailure(state, error) {
       state.count = error;
     },
-    getNetworksCountSuccessSuccess(state, count) {
+    getNetworkCountSuccess(state, count) {
       state.count = count;
     },
-    getNetworksCountFailureFailure(state, error) {
+    getNetworkCountFailure(state, error) {
       state.count = error;
     },
   }

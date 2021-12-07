@@ -64,6 +64,32 @@ class CareCoordinatorService {
       });
   }
 
+  addCareCoordinatorDocument(document) {
+    return axios.post(API_URL + 'carecoordinator/document/'+document.care_coordinator_id, {
+        name: document.name,
+        file_path: document.file_path,
+        type_id: document.type_id,
+        tags: document.tags,
+      },
+      { headers: authHeader() })
+      .then(response => {
+        return response.data;
+      });
+  }
+
+  uploadFile(file) {
+    console.log('File 2', file)
+    // console.log('File Name', file.name)
+    let user = JSON.parse(localStorage.getItem('user'));
+    return axios.post('https://ditstekdemo.com/Virtare-web/public/api/fileupload', {file: file}, {headers: { 'Content-Type': 'multipart/form-data', 'Authorization': 'Bearer '+user.token} })
+    .then(function() {
+        console.log('SUCCESS!!');
+      })
+      .catch(function(error) {
+        console.log('FAILURE!!', error);
+      });
+  }
+
   getCareCoordinatorsList() {
     return axios.get(API_URL + 'carecoordinator/list', { headers: authHeader() });
   }
@@ -71,12 +97,20 @@ class CareCoordinatorService {
   getCoordinatorContacts(id) {
     return axios.get(API_URL + 'carecoordinator/contact/'+id, { headers: authHeader() });
   }
+
+  getCoordinatorAvailabilities(id) {
+    return axios.get(API_URL + 'carecoordinator/availability/'+id, { headers: authHeader() });
+  }
+
+  getCoordinatorRoles(id) {
+    return axios.get(API_URL + 'carecoordinator/access/'+id, { headers: authHeader() });
+  }
   
   getSpecializationsCount(id) {
     return axios.get(API_URL + 'specialization/'+id, { headers: authHeader() });
   }
 
-  getNetworksCount(id) {
+  getNetworkCount(id) {
     return axios.get(API_URL + 'network/'+id, { headers: authHeader() });
   }
 
