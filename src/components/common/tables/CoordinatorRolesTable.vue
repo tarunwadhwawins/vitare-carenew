@@ -23,10 +23,10 @@ const rolesColumns = [
     title: "Is Active",
     dataIndex: "is_active",
   },
-  {
-    title: "Actions",
-    dataIndex: "actions",
-  },
+  // {
+  //   title: "Actions",
+  //   dataIndex: "actions",
+  // },
 ];
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
@@ -50,7 +50,7 @@ export default {
           key: index+1,
           role: element.role,
           is_active: element.is_active ? 'Yes' : 'No',
-          actions: 'In',
+          // actions: 'In',
         })
       });
       console.log('Contact Data', this.rolesData)

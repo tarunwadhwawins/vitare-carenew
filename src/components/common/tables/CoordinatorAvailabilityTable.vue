@@ -23,10 +23,10 @@ const availabilityColumns = [
     title: "End Time",
     dataIndex: "end_time",
   },
-  {
-    title: "Actions",
-    dataIndex: "actions",
-  },
+  // {
+  //   title: "Actions",
+  //   dataIndex: "actions",
+  // },
 ];
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
@@ -50,7 +50,7 @@ export default {
           key: index+1,
           start_time: element.start_time,
           end_time: element.end_time,
-          actions: 'In',
+          // actions: 'In',
         })
       });
       console.log('Contact Data', this.availabilityData)
