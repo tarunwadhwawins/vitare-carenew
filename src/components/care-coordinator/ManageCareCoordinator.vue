@@ -750,19 +750,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.steps-content {
-  margin-top: 16px;
-  border-radius: 6px;
-  min-height: 200px;
-  text-align: left;
-  padding: 12px 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-.steps-action {
-  text-align: right;
-}
-</style>
