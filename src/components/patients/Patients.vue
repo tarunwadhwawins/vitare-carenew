@@ -59,10 +59,10 @@
                 @change="onChange"
               >
                 <template #firstName="text">
-                  <a href="/#/patients-summary">{{ text.text }}</a>
+                  <router-link to="patients-summary">{{ text.text }}</router-link>
                 </template>
                 <template #lastName="text">
-                  <a href="/#/patients-summary">{{ text.text }}</a>
+                  <router-link to="patients-summary">{{ text.text }}</router-link>
                 </template>
                 <template #flags="{ text }">
                   <span class="box" :class="text"></span>
