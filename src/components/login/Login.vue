@@ -13,12 +13,12 @@
 <loading v-model:active="isLoading" loader="bars" lock-scroll="true" is-full-page="false" transition="fade" :can-cancel="false" />
 </template>
 <script>
-import { Form, Field, ErrorMessage } from "vee-validate";
-import * as yup from "yup";
-import { configure } from "vee-validate";
-import { defineComponent } from "vue";
-import Loading from "vue-loading-overlay";
-import "vue-loading-overlay/dist/vue-loading.css";
+import { Form, Field, ErrorMessage } from "vee-validate"
+import * as yup from "yup"
+import { configure } from "vee-validate"
+import { defineComponent } from "vue"
+import Loading from "vue-loading-overlay"
+import "vue-loading-overlay/dist/vue-loading.css"
 
 // Default values
 configure({
