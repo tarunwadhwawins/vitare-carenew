@@ -13,12 +13,12 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import( '@/components/login/Login')
+    component: () => import( '@/views/login/Login')
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import( '@/components/dashboard/Dashboard')
+    component: () => import( '@/views/dashboard/Dashboard')
   },
 
   {
@@ -30,7 +30,7 @@ const routes = [
   {
     path: '/manage-care-coordinator',
     name: 'Manage Care Coordinators',
-    component: () => import( '@/components/care-coordinator/CareCoordinator')
+    component: () => import( '@/views/manage-care-coordinator/ManageCareCoordinator')
   },
 
   {
