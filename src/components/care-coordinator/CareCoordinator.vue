@@ -2,14 +2,14 @@
 
 
           <a-row class="mb-24" :gutter="24">
-            <a-col :span="12">
+            <a-col :sm="12" :xs="24">
               <h2>Specialization</h2>
               <a-row :gutter="24">
                 <LongCard customClass="two" :count="this.specialization.total" :text="specialization.specialization"></LongCard>
                 <LongCard customClass="four" count="5" text="Behaviour"></LongCard>
               </a-row>
             </a-col>
-            <a-col :span="12">
+            <a-col :sm="12" :xs="24">
               <h2>Network</h2>
               <a-row :gutter="24">
                 <LongCard customClass="six" :count="this.network.total" :text="network.network"></LongCard>

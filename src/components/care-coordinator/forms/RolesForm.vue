@@ -1,7 +1,7 @@
 <template>
   <Form :model="rolesForm" @submit="addCareCoordinatorRole" :validation-schema="schema">
     <a-row :gutter="24">
-      <a-col :span="24">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Role</label>
           <Field as="select" class="ant-input ant-input-lg"
@@ -17,7 +17,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="24" class="mb-24">
-      <a-col :span="24">
+      <a-col :sm="12" :xs="24">
         <button class="btn primaryBtn">Add</button>
       </a-col>
     </a-row>

@@ -6,7 +6,7 @@
     :validation-schema="schema"
   >
     <a-row :gutter="24">
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>First Name</label>
           <Field
@@ -19,7 +19,7 @@
           <ErrorMessage class="error" name="first_name" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Last Name</label>
           <Field
@@ -31,7 +31,7 @@
           <ErrorMessage class="error" name="last_name" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Designation</label>
           <Field
@@ -43,7 +43,7 @@
           <ErrorMessage class="error" name="designation" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label> Gender</label>
           <Field
@@ -61,7 +61,7 @@
           <ErrorMessage class="error" name="gender" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Email</label>
           <Field
@@ -73,7 +73,7 @@
           <ErrorMessage class="error" name="email" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Phone No</label>
           <Field
@@ -85,7 +85,7 @@
           <ErrorMessage class="error" name="phone_no" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Specialization</label>
           <Field
@@ -102,7 +102,7 @@
           <ErrorMessage class="error" name="specialization" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Network</label>
           <Field
