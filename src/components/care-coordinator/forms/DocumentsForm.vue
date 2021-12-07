@@ -1,21 +1,21 @@
 <template>
   <Form :model="documentForm" @submit="addCareCoordinatorDocument" :validation-schema="schema" enctype="multipart/form-data">
     <a-row :gutter="24">
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Name</label>
           <Field class="ant-input ant-input-lg" v-model="documentForm.document_name" name="document_name" size="large" />
           <ErrorMessage class="error" name="document_name" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Document</label>
           <Field class="ant-input ant-input-lg" v-model="documentForm.document_file" name="document_file" size="large" type="file" @change="onFileUpload" />
           <ErrorMessage class="error" name="document_file" ref="document_file" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label> Type</label>
           <Field class="ant-input ant-input-lg" as="select"
@@ -28,7 +28,7 @@
           <ErrorMessage class="error" name="document_type" />
         </div>
       </a-col>
-      <!-- <a-col :span="12">
+      <!-- <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label> Tags</label>
           <Field class="ant-input ant-input-lg" as="select"
@@ -100,13 +100,13 @@ import 'vue-loading-overlay/dist/vue-loading.css';
     methods: {
       onFileUpload (event) {
         this.isLoading = true;
-        // const document_file = ref(null)
         let doc_file = event.target.files[0]
-        console.log('doc_file', doc_file)
-        // const formData = new FormData()
-        // formData.append('file', doc_file)
-        // const document = toRaw(this.documentForm);
-        this.$store.dispatch("uploadFile", doc_file)
+        let file = {
+          name: doc_file.name,
+          size: doc_file.size,
+          type: doc_file.type
+        }
+        this.$store.dispatch("uploadFile", file)
         .then((res) => { 
           console.log(res);
 					this.isLoading = false;

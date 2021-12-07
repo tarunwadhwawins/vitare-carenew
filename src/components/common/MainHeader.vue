@@ -49,14 +49,12 @@ export default {
     CareCoordinatorModal,
   },
 
-  setup() {
-    const visible = ref(false);
-    const showModal = () => {
-      localStorage.setItem("personalData", true);
-      // localStorage.removeItem('personalData');
-      localStorage.removeItem("coordinatorId");
-      visible.value = true;
-    };
+    setup() {
+      const visible = ref(false);
+      const showModal = () => {
+        // localStorage.removeItem('coordinatorId');
+        visible.value = true;
+      };
 
     const handleOk = (e) => {
       console.log(e);

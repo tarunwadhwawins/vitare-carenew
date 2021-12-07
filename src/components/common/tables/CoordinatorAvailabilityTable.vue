@@ -42,7 +42,7 @@ export default {
   },
   created() {
     this.isLoading = true;
-    this.$store.dispatch("getCoordinatorAvailabilities", 12)
+    this.$store.dispatch("getCoordinatorAvailabilities", JSON.parse(localStorage.getItem('coordinatorId')))
     .then((res) => {
       const response = res.data.data;
       response.forEach((element, index) => {

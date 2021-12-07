@@ -1,5 +1,5 @@
 <template>
-  <a-col flex="1 0 0%">
+  <a-col :sm="12" :xs="24">
     <div class="colorBox" :class="customClass">
       <UserOutlined />
       <h3>{{ count }}</h3>

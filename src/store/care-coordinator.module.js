@@ -76,8 +76,8 @@ export const careCoordinator = {
       );
     },
 
-    getCareCoordinatorsList({ commit }) {
-      return CareCoordinatorService.getCareCoordinatorsList().then(
+    getCareCoordinatorsList({ commit }, id) {
+      return CareCoordinatorService.getCareCoordinatorsList(id).then(
         list => {
           commit('getCareCoordinatorsListSuccess', list);
           return Promise.resolve(list);

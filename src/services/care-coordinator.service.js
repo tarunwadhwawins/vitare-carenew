@@ -41,7 +41,7 @@ class CareCoordinatorService {
 
   addCareCoordinatorAvailability(availability) {
     return axios
-      .post(API_URL + 'carecoordinator/availability/'+availability.care_coordinator_id, {
+      .post(API_URL + 'carecoordinator/'+availability.care_coordinator_id+'/availability', {
         start_time: availability.start_time,
         end_time: availability.end_time,
         care_coordinator_id: availability.care_coordinator_id,
@@ -54,7 +54,7 @@ class CareCoordinatorService {
 
   addCareCoordinatorRole(role) {
     return axios
-      .post(API_URL + 'carecoordinator/access/'+role.care_coordinator_id, {
+      .post(API_URL + 'carecoordinator/'+role.care_coordinator_id+'/access', {
         role: role.role,
         care_coordinator_id: role.care_coordinator_id,
       },
@@ -65,7 +65,7 @@ class CareCoordinatorService {
   }
 
   addCareCoordinatorDocument(document) {
-    return axios.post(API_URL + 'carecoordinator/document/'+document.care_coordinator_id, {
+    return axios.post(API_URL + 'carecoordinator/'+document.care_coordinator_id+'/document', {
         name: document.name,
         file_path: document.file_path,
         type_id: document.type_id,
@@ -90,20 +90,20 @@ class CareCoordinatorService {
       });
   }
 
-  getCareCoordinatorsList() {
+  getCareCoordinatorsList(id) {
     return axios.get(API_URL + 'carecoordinator/list', { headers: authHeader() });
   }
 
   getCoordinatorContacts(id) {
-    return axios.get(API_URL + 'carecoordinator/contact/'+id, { headers: authHeader() });
+    return axios.get(API_URL + 'carecoordinator/'+id+'/contact', { headers: authHeader() });
   }
 
   getCoordinatorAvailabilities(id) {
-    return axios.get(API_URL + 'carecoordinator/availability/'+id, { headers: authHeader() });
+    return axios.get(API_URL + 'carecoordinator/'+id+'/availability', { headers: authHeader() });
   }
 
   getCoordinatorRoles(id) {
-    return axios.get(API_URL + 'carecoordinator/access/'+id, { headers: authHeader() });
+    return axios.get(API_URL + 'carecoordinator/'+id+'/access', { headers: authHeader() });
   }
   
   getSpecializationsCount(id) {

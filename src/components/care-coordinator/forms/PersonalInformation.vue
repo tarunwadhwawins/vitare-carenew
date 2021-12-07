@@ -6,7 +6,7 @@
     :validation-schema="schema"
   >
     <a-row :gutter="24">
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>First Name</label>
           <Field
@@ -19,7 +19,7 @@
           <ErrorMessage class="error" name="first_name" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Last Name</label>
           <Field
@@ -31,7 +31,7 @@
           <ErrorMessage class="error" name="last_name" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Designation</label>
           <Field
@@ -43,7 +43,7 @@
           <ErrorMessage class="error" name="designation" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label> Gender</label>
           <Field
@@ -61,7 +61,7 @@
           <ErrorMessage class="error" name="gender" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Email</label>
           <Field
@@ -73,7 +73,7 @@
           <ErrorMessage class="error" name="email" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Phone No</label>
           <Field
@@ -85,7 +85,7 @@
           <ErrorMessage class="error" name="phone_no" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Specialization</label>
           <Field
@@ -97,12 +97,12 @@
             size="large"
           >
             <option value="1">Wellness</option>
-            <option value="1">Behavior</option>
+            <option value="2">Behavior</option>
           </Field>
           <ErrorMessage class="error" name="specialization" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Network</label>
           <Field
@@ -127,72 +127,58 @@
 </template>
 
 <script>
-import { toRaw } from "vue";
-import { Form, Field, ErrorMessage } from "vee-validate";
-import * as yup from "yup";
-import { configure } from "vee-validate";
-// Default values
-configure({
-  validateOnBlur: true,
-  validateOnChange: true,
-  validateOnInput: true,
-  validateOnModelUpdate: true,
-});
-export default {
-  components: {
-    Form,
-    Field,
-    ErrorMessage,
-  },
-  data() {
-    const schema = yup.object({
-      first_name: yup.string().required().label("First Name"),
-      last_name: yup.string().required().label("Last Name"),
-      designation: yup.string().required().label("Designation"),
-      gender: yup.string().required().label("Gender"),
-      email: yup.string().required().email().label("Email"),
-      phone_no: yup.string().required().label("Phone Number"),
-      specialization: yup.string().required().label("Specialization"),
-      network: yup.string().required().label("Network"),
-    });
-    return {
-      schema,
-      personalInformationForm: {
-        first_name: this.$store.state.personalData
-          ? this.$store.state.personalData.first_name
-          : "",
-        last_name: this.$store.state.personalData
-          ? this.$store.state.personalData.last_name
-          : "",
-        designation: this.$store.state.personalData
-          ? this.$store.state.personalData.designation
-          : "",
-        gender: this.$store.state.personalData
-          ? this.$store.state.personalData.gender
-          : "",
-        email: this.$store.state.personalData ? this.$store.state.personalData.email : "",
-        phone_no: this.$store.state.personalData
-          ? this.$store.state.personalData.phone_no
-          : "",
-        specialization: this.$store.state.personalData
-          ? this.$store.state.personalData.specialization
-          : "",
-        network: this.$store.state.personalData
-          ? this.$store.state.personalData.network
-          : "",
-      },
-    };
-  },
-  computed() {
-    return this.$store;
-  },
-  methods: {
-    addCareCoordinator() {
-      alert("from other file");
-      const email_verify = JSON.parse(localStorage.getItem("user")).email_verify;
-      const coordinator = toRaw(this.personalInformationForm);
-      this.$store
-        .dispatch("addCareCoordinator", {
+  import { toRaw } from 'vue';
+  import { Form, Field, ErrorMessage } from 'vee-validate';
+  import * as yup from 'yup';
+  import { configure } from 'vee-validate';
+  // Default values
+  configure({
+    validateOnBlur: true,
+    validateOnChange: true,
+    validateOnInput: true,
+    validateOnModelUpdate: true,
+  });
+  export default {
+    components: {
+      Form,
+      Field,
+      ErrorMessage,
+    },
+    data() {
+      const schema = yup.object({
+        first_name: yup.string().required().label("First Name"),
+        last_name: yup.string().required().label("Last Name"),
+        designation: yup.string().required().label("Designation"),
+        gender: yup.string().required().label("Gender"),
+        email: yup.string().required().email().label("Email"),
+        phone_no: yup.string().required().label("Phone Number"),
+        specialization: yup.string().required().label("Specialization"),
+        network: yup.string().required().label("Network"),
+      });
+      
+      return {
+        schema,
+        personalInformationForm: {
+          first_name: '',
+          last_name: '',
+          designation: '',
+          gender: '',
+          email: '',
+          phone_no: '',
+          specialization: '',
+          network: '',
+        }
+      }
+    },
+    computed() {
+      return this.$store
+    },
+    methods: {
+      addCareCoordinator() {
+        alert('from other file')
+        const email_verify = JSON.parse(localStorage.getItem('user')).email_verify
+        const coordinator = toRaw(this.personalInformationForm);
+        this.$store.dispatch("addCareCoordinator", { 
           first_name: coordinator.first_name,
           last_name: coordinator.last_name,
           designation: coordinator.designation,
@@ -203,22 +189,24 @@ export default {
           network: coordinator.network,
           email_verify: email_verify,
         })
-        .then(
-          (res) => {
-            localStorage.setItem("personalData", JSON.stringify(res.data));
-            this.$store.state.personalData = res.data;
-            console.log(res);
-          },
-          (error) => {
-            console.log(error);
-            this.isLoading = false;
-            this.message =
-              (error.response && error.response.data && error.response.data.message) ||
-              error.message ||
-              error.toString();
-          }
-        );
-    },
-  },
-};
+        .then((res) => {
+          localStorage.setItem('personalData', JSON.stringify(res.data));
+          localStorage.setItem('coordinatorId', res.data.id);
+          this.$store.state.personalData = res.data;
+          console.log(res);
+        },
+        (error) => {
+          console.log(error)
+          this.isLoading = false;
+          this.message = (
+            error.response &&
+            error.response.data &&
+            error.response.data.message
+          ) ||
+          error.message ||
+          error.toString();
+        });
+      }
+    }
+  }
 </script>

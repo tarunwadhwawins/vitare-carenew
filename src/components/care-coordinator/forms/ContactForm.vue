@@ -1,28 +1,28 @@
 <template>
   <Form :model="contactForm" @submit="addCareCoordinatorContact" :validation-schema="schema">
     <a-row :gutter="24">
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>First Name</label>
           <Field class="ant-input ant-input-lg" v-model="contactForm.first_name" name="first_name" size="large" />
           <ErrorMessage class="error" name="first_name" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Last Name</label>
           <Field class="ant-input ant-input-lg" v-model="contactForm.last_name" name="last_name" size="large" />
           <ErrorMessage class="error" name="last_name" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Email</label>
           <Field class="ant-input ant-input-lg" v-model="contactForm.email" name="email" size="large" />
           <ErrorMessage class="error" name="email" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Phone No</label>
           <Field class="ant-input ant-input-lg" v-model="contactForm.phone_no" name="phone_no" size="large" />

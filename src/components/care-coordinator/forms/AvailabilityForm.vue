@@ -2,7 +2,7 @@
   <Form :model="availabilityForm" @submit="addCareCoordinatorAvailability" :validation-schema="schema">
     <a-row :gutter="24">
 
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Start Time</label>
           <Field as="select"
@@ -22,7 +22,7 @@
         </div>
       </a-col>
 
-      <a-col :span="12">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>End Time</label>
           <Field as="select"
@@ -85,12 +85,12 @@
     },
     methods: {
       addCareCoordinatorAvailability() {
-        localStorage.setItem('personalData', true);
+        const personal = JSON.parse(localStorage.getItem('personalData'));
         const contact = toRaw(this.availabilityForm);
         this.$store.dispatch("addCareCoordinatorAvailability", { 
           start_time: contact.start_time,
           end_time: contact.end_time,
-          care_coordinator_id: JSON.parse(localStorage.getItem('coordinatorId')),
+          care_coordinator_id: personal.id,
         })
         .then((res) => { 
           console.log(res);

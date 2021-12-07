@@ -50,7 +50,7 @@ export default {
   },
   created() {
     this.isLoading = true;
-    this.$store.dispatch("getCoordinatorContacts", 12)
+    this.$store.dispatch("getCoordinatorContacts", JSON.parse(localStorage.getItem('coordinatorId')))
     .then((res) => {
       const response = res.data.data;
       response.forEach((element, index) => {
