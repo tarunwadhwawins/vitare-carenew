@@ -42,7 +42,7 @@ export default {
   },
   created() {
     this.isLoading = true;
-    this.$store.dispatch("getCoordinatorRoles", 12)
+    this.$store.dispatch("getCoordinatorRoles", JSON.parse(localStorage.getItem('coordinatorId')))
     .then((res) => {
       const response = res.data.data;
       response.forEach((element, index) => {

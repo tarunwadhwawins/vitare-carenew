@@ -117,15 +117,11 @@ export default {
       visible.value = false;
     };
     const next = () => {
-      onMounted(() => {
-        if(current.value == 0) {
-          this.$refs.personalInformationForm.addCareCoordinator()
-        }
-      });
-      let personalData = JSON.parse(localStorage.getItem('personalData'));
-      if(personalData) {
+      // let personalData = JSON.parse(localStorage.getItem('personalData'));
+      // console.log(personalData);
+      // if(personalData) {
         current.value++;
-      }
+      // }
     };
     const prev = () => {
       localStorage.setItem('is_update', 'true');
