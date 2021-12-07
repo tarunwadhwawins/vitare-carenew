@@ -1,20 +1,27 @@
-.ant-layout-sider {
-  background: #fff;
-  .ant-layout-sider-children {
-      .menuList {
-          .ant-menu {
-              a {
-                  .ant-menu-item {
-                      color: #000;
-                      margin: 0;
-                  }
-                  &.router-link-active {
-                      .ant-menu-item {
-                          background-color: #f0f2f5;
-                      }
-                  }
-              }
-          }
-      }
-  }
+.ant-layout {
+    .ant-layout-has-sider {
+        .ant-layout-sider {
+            background: #fff;
+            @media screen and (max-width: 991px) {
+                left: -200px!important;
+            }
+            .ant-layout-sider-children {
+                .menuList {
+                    .ant-menu {
+                        a {
+                            .ant-menu-item {
+                                color: #000;
+                                margin: 0;
+                            }
+                            &.router-link-active {
+                                .ant-menu-item {
+                                    background-color: #f0f2f5;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

@@ -7,7 +7,7 @@
       
       <!-- Personal Information -->
       <div class="steps-content" v-if="steps[current].title == 'Personal Information'">
-        <PersonalInformation></PersonalInformation>
+        <PersonalInformation ref="personalInformationForm"></PersonalInformation>
       </div>
 
       <!-- Contacts -->
@@ -19,21 +19,13 @@
       <!-- Availability -->
       <div class="steps-content" v-if="steps[current].title == 'Availability'">
         <AvailabilityForm></AvailabilityForm>
-        <a-row :gutter="24">
-          <a-col :span="24">
-            <a-table :columns="availabilityColumns" :data-source="availabilityData" :scroll="{ x: 900 }" />
-          </a-col>
-        </a-row>
+        <CoordinatorAvailabilityTable></CoordinatorAvailabilityTable>
       </div>
 
       <!-- Roles -->
       <div class="steps-content" v-if="steps[current].title == 'Roles'">
         <RolesForm></RolesForm>
-        <a-row :gutter="24">
-          <a-col :span="24">
-            <a-table :columns="availabilityColumns" :data-source="availabilityData" :scroll="{ x: 900 }" />
-          </a-col>
-        </a-row>
+        <CoordinatorRolesTable></CoordinatorRolesTable>
       </div>
 
       <!-- Documents -->
@@ -59,13 +51,15 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import PersonalInformation from "@/components/care-coordinator/forms/PersonalInformation";
 import ContactForm from "@/components/care-coordinator/forms/ContactForm";
 import AvailabilityForm from "@/components/care-coordinator/forms/AvailabilityForm";
 import RolesForm from "@/components/care-coordinator/forms/RolesForm";
 import DocumentsForm from "@/components/care-coordinator/forms/DocumentsForm";
 import CoordinatorContactsTable from "@/components/common/tables/CoordinatorContactsTable";
+import CoordinatorAvailabilityTable from "@/components/common/tables/CoordinatorAvailabilityTable";
+import CoordinatorRolesTable from "@/components/common/tables/CoordinatorRolesTable";
 const availabilityColumns = [
   {
     title: "Start Time",
@@ -98,6 +92,8 @@ export default {
   components: {
     PersonalInformation,
     CoordinatorContactsTable,
+    CoordinatorAvailabilityTable,
+    CoordinatorRolesTable,
     ContactForm,
     AvailabilityForm,
     RolesForm,
@@ -105,6 +101,10 @@ export default {
   },
   // created() {
   //   return this.$store
+  // },
+  // mounted() {
+  //   console.log(this.$refs);
+  //   this.$refs.personalInformationForm.addCareCoordinator()
   // },
   setup() {
     const visible = ref(false);
@@ -117,12 +117,18 @@ export default {
       visible.value = false;
     };
     const next = () => {
+      onMounted(() => {
+        if(current.value == 0) {
+          this.$refs.personalInformationForm.addCareCoordinator()
+        }
+      });
       let personalData = JSON.parse(localStorage.getItem('personalData'));
       if(personalData) {
         current.value++;
       }
     };
     const prev = () => {
+      localStorage.setItem('is_update', 'true');
       current.value--;
     };
     const handleChange = value => {

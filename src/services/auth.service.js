@@ -24,7 +24,7 @@ class AuthService {
             'uuid': res.data.user.uuid,
           }
           store.state.user = userData;
-          localStorage.setItem('user', userData.token);
+          localStorage.setItem('user', JSON.stringify(userData));
         }
         return userData;
       });

@@ -5,13 +5,14 @@
         <div class="form-group">
           <label>Role</label>
           <Field as="select" class="ant-input ant-input-lg"
-            v-model="rolesForm.role"
-            name="role"
+            v-model="rolesForm.role_name[0]"
+            name="role_name"
             mode="multiple"
             placeholder="Please select">
-            <option value="1">Client</option>
+            <option value="1">Billing</option>
+            <option value="2">Messages</option>
           </Field>
-          <ErrorMessage class="error" name="role" />
+          <ErrorMessage class="error" name="role_name" />
         </div>
       </a-col>
     </a-row>
@@ -43,20 +44,20 @@
     },
     data() {
       const schema = yup.object({
-        role: yup.string().required().label("Role"),
+        role_name: yup.string().required().label("Role"),
       });
       return {
         schema,
         rolesForm: {
-          role: '',
+          role_name: [],
         }
       }
     },
     methods: {
       addCareCoordinatorRole() {
-        const contact = toRaw(this.rolesForm);
+        const roles = toRaw(this.rolesForm);
         this.$store.dispatch("addCareCoordinatorRole", { 
-          role: contact.role,
+          role: roles.role_name,
           care_coordinator_id: JSON.parse(localStorage.getItem('coordinatorId')),
         })
         .then((res) => { 
