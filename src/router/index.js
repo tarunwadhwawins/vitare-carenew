@@ -58,10 +58,22 @@ const routes = [
   },
   
   {
+    path: '/corrdinator-summary',
+    name: 'CoordinatorSummary',
+    component: () => import( '../components/coordinator-summary/Coordinatorsummary')
+  },
+
+  {
     path: '/',
     name: 'Login',
     component: () => import( '../components/login/Login')
-  }
+  },
+
+  {
+    path: '/admin-dashboard',
+    name: 'admin',
+    component: () => import( '../components/administration/Dashboard')
+  },
 
 ]
 

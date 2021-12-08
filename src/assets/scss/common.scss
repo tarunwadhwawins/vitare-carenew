@@ -72,7 +72,14 @@ h6 {
 	border-radius: 4px;
 	padding: 6px 12px;
 }
-
+.blueBtn{
+	background: #267dff;
+	color: #fff;
+	border-radius: 6px;
+	height: auto;
+	padding: 6px 12px;
+	
+}
 .mb-24 {
 	margin-bottom: 24px;
 }
@@ -90,10 +97,10 @@ h6 {
 	flex-grow: 1 !important;
 }
 .bg-primary {
-	background-color:#0d6efd;
+	background-color: #0d6efd;
 }
-.bg-danger{
-	background-color:#dc3545;
+.bg-danger {
+	background-color: #dc3545;
 }
 /*----*/
 .ant-layout-has-sider {
@@ -253,28 +260,24 @@ h6 {
 .ant-table-wrapper {
 	.ant-table {
 		.ant-table-content {
-			.ant-table-scroll {
-				.ant-table-body {
-					.ant-table-fixed {
-						.ant-table-thead {
-							tr {
-								th {
-									padding: 8px 10px;
-									font-weight: 600;
-								}
-							}
+			.ant-table-body {
+				.ant-table-thead {
+					tr {
+						th {
+							padding: 8px 10px;
+							font-weight: 600;
 						}
-						.ant-table-tbody {
-							tr {
-								td {
-									padding: 8px 10px;
-									font-size: 13px;
-								}
-								&:hover {
-									td {
-										background: #f9f9f9;
-									}
-								}
+					}
+				}
+				.ant-table-tbody {
+					tr {
+						td {
+							padding: 8px 10px;
+							font-size: 13px;
+						}
+						&:hover {
+							td {
+								background: #f9f9f9;
 							}
 						}
 					}

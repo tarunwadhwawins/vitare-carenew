@@ -78,6 +78,12 @@
                   <a class="icons"><EditOutlined /></a>
                   <a class="icons"> <DeleteOutlined /></a>
                 </template>
+                <template #first="text">
+                  <router-link to="corrdinator-summary">{{ text.text }}</router-link>
+                </template>
+                <template #last="text">
+                  <router-link to="corrdinator-summary">{{ text.text }}</router-link>
+                </template>
               </a-table>
             </a-col>
           </a-row>
@@ -442,10 +448,16 @@ const columns = [
   {
     title: "First Name",
     dataIndex: "first",
+    slots: {
+      customRender: "first",
+    },
   },
   {
     title: "Last Name",
     dataIndex: "last",
+    slots: {
+      customRender: "last",
+    },
   },
   {
     title: "Role",
