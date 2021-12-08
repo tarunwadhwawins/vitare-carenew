@@ -1,14 +1,15 @@
 <template>
   <a-row>
     <a-col :span="24">
-      <a-table :columns="columns" :data-source="coordinatorsList" :scroll="{ x: 1200 }" @change="onChange" />
-      <template #bodyCell="{ column }">
-        <template v-if="column.key === 'type'">
-          <span>
-            <smile-outlined />
-          </span>
+      <a-table :columns="columns" :data-source="coordinatorsList" :scroll="{ x: 900 }">
+        <template #action>
+            <!-- <a class="icons"><EyeOutlined /></a> -->
+            <div v-for="coordinator in coordinatorsList" :key="coordinator.id">
+              <a class="icons" @click ="onClickEditButton(coordinator.id)"><EditOutlined /></a>
+              <a class="icons" @click ="onClickDeleteButton(coordinator.id)"> <DeleteOutlined /></a>
+            </div>
         </template>
-      </template>
+      </a-table> 
     </a-col>
   </a-row>
   <loading
@@ -21,8 +22,10 @@
 </template>
 
 <script>
+import { ref, watch } from 'vue';
 import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import store from '@/store/index';
 const columns = [
   {
     title: "First Name",
@@ -80,78 +83,75 @@ const columns = [
       multiple: 1,
     },
   },
-  /* {
+  {
     title: "Action",
     dataIndex: "action",
-    sorter: {
-      compare: (a, b) => a.action - b.action,
-      multiple: 1,
+    slots: {
+      customRender: "action",
     },
-  }, */
+  },
 ];
 export default {
   data() {
     return {
       isLoading: false,
-      coordinatorsList: [{}],
     }
   },
-  setup() {
+  setup(props, { emit }) {
+    let coordinatorsList = ref()
+    watch( () => {
+      store.dispatch("getCareCoordinatorsList")
+      .then((res) => {
+        coordinatorsList.value = res.data.data;
+      },
+      (error) => {
+        console.log(error)
+        this.message = (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) ||
+        error.message ||
+        error.toString();
+      });
+    })
+    
+    const onClickEditButton = (rowId) => {
+      localStorage.setItem('is_update_coordinator', true)
+      emit('edit-clicked', rowId)
+    }
+    const onClickDeleteButton = (rowId) => {
+      console.log(rowId)
+      store.dispatch("deleteCoordinator", rowId)
+      .then((res) => {
+        console.log('Res', res)
+        // this.isLoading = false
+      },
+      (error) => {
+        console.log(error)
+        // this.isLoading = false;
+        this.message = (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) ||
+        error.message ||
+        error.toString();
+      });
+    }
+
     return {
+      onClickEditButton,
+      onClickDeleteButton,
+      coordinatorsList,
       columns,
     };
   },
-  created() {
-    this.isLoading = true;
-
-    this.$store.dispatch("getCareCoordinatorsList")
-    .then((res) => {
-      const responseData = res.data.data;
-      responseData.forEach((element, index) => 
-        this.coordinatorsList.push({
-          key: index+1,
-          first_name: element.first_name,
-          last_name: element.last_name,
-          role: element.role,
-          specialization: element.specialization,
-          network: element.network,
-          created_at: element.created_at,
-          status: element.status,
-          // action: 'In',
-        }
-      ));
-      this.isLoading = false
-    },
-    (error) => {
-      console.log(error)
-      this.isLoading = false;
-      this.message = (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) ||
-      error.message ||
-      error.toString();
-    });
-
-    // this.$store.dispatch("getSpecializationsCount", 1)
-    // .then((res) => {
-    //   const response = res.data.data;
-    //   console.log('Dashboard Data', response)
-    // },
-    // (error) => {
-    //   console.log(error)
-    //   this.message = (
-    //     error.response &&
-    //     error.response.data &&
-    //     error.response.data.message
-    //   ) ||
-    //   error.message ||
-    //   error.toString();
-    // });
-  },
   components: {
     Loading,
+    DeleteOutlined,
+    EditOutlined,
+    // EyeOutlined,
   },
 }
 </script>

@@ -35,6 +35,7 @@
         <div class="form-group">
           <label>Designation</label>
           <Field
+            :disabled="is_update_coordinator"
             class="ant-input ant-input-lg"
             v-model="personalInformationForm.designation"
             name="designation"
@@ -77,6 +78,7 @@
         <div class="form-group">
           <label>Phone No</label>
           <Field
+            :disabled="is_update_coordinator"
             class="ant-input ant-input-lg"
             v-model="personalInformationForm.phone_no"
             name="phone_no"
@@ -89,6 +91,7 @@
         <div class="form-group">
           <label>Specialization</label>
           <Field
+            :disabled="is_update_coordinator"
             class="ant-input ant-input-lg"
             name="specialization"
             as="select"
@@ -106,6 +109,7 @@
         <div class="form-group">
           <label>Network</label>
           <Field
+            :disabled="is_update_coordinator"
             class="ant-input ant-input-lg"
             name="network"
             as="select"
@@ -116,6 +120,7 @@
             <option value="1">In</option>
             <option value="1">Out</option>
           </Field>
+          <inut type="hidden" v-model="personalInformationForm.id" name="id" value=""/>
           <ErrorMessage class="error" name="network" />
         </div>
       </a-col>
@@ -127,7 +132,7 @@
 </template>
 
 <script>
-  import { toRaw } from 'vue';
+  import { toRaw, watch } from 'vue';
   import { Form, Field, ErrorMessage } from 'vee-validate';
   import * as yup from 'yup';
   import { configure } from 'vee-validate';
@@ -144,6 +149,14 @@
       Field,
       ErrorMessage,
     },
+    props: {
+      data: {
+        type: Array,
+        required: true
+      }
+    },
+    updated() {
+    },
     data() {
       const schema = yup.object({
         first_name: yup.string().required().label("First Name"),
@@ -157,6 +170,7 @@
       });
       
       return {
+        is_update_coordinator: '',
         schema,
         personalInformationForm: {
           first_name: '',
@@ -167,17 +181,60 @@
           phone_no: '',
           specialization: '',
           network: '',
+          id: '',
         }
       }
+    },
+    created() {
+      this.is_update_coordinator = localStorage.getItem('is_update_coordinator')
+      const personalData = JSON.parse(localStorage.getItem('personalData'))
+      if(personalData) {
+        if(personalData.gender == 'Male') {
+          personalData.gender = 1
+        }
+        else if(personalData.gender == 'Female') {
+          personalData.gender = 2
+        }
+        else {
+          personalData.gender = 3
+        }
+        this.personalInformationForm.first_name = personalData.first_name
+        this.personalInformationForm.last_name = personalData.last_name
+        this.personalInformationForm.designation = personalData.designation
+        this.personalInformationForm.gender = personalData.gender
+        this.personalInformationForm.email = personalData.email
+        this.personalInformationForm.phone_no = personalData.phone_no
+        this.personalInformationForm.specialization = personalData.specialization == 'Wellness' ? 1 : 2
+        this.personalInformationForm.network = personalData.network == 'In' ? 1 : 2
+        this.personalInformationForm.id = personalData.id
+      }
+    },
+    setup() {
+      // watch(() => {
+      //   const is_update_coordinator = localStorage.getItem('is_update_coordinator')
+      //   const personalData = JSON.parse(localStorage.getItem('personalData'))
+      //   if(is_update_coordinator) {
+      //     // const formData = this.data
+      //     this.personalInformationForm.first_name = personalData.first_name
+      //     this.personalInformationForm.last_name = personalData.last_name
+      //     this.personalInformationForm.designation = personalData.designation
+      //     this.personalInformationForm.gender = personalData.gender
+      //     this.personalInformationForm.email = personalData.email
+      //     this.personalInformationForm.phone_no = personalData.phone_no
+      //     this.personalInformationForm.specialization = personalData.specialization
+      //     this.personalInformationForm.network = personalData.network
+      //     this.personalInformationForm.id = personalData.id
+      //   }
+      // })
     },
     computed() {
       return this.$store
     },
     methods: {
       addCareCoordinator() {
-        alert('from other file')
         const email_verify = JSON.parse(localStorage.getItem('user')).email_verify
         const coordinator = toRaw(this.personalInformationForm);
+        const coordinatorId = coordinator.id;
         this.$store.dispatch("addCareCoordinator", { 
           first_name: coordinator.first_name,
           last_name: coordinator.last_name,
@@ -188,6 +245,7 @@
           specialization: coordinator.specialization,
           network: coordinator.network,
           email_verify: email_verify,
+          coordinatorId: coordinatorId,
         })
         .then((res) => {
           localStorage.setItem('personalData', JSON.stringify(res.data));

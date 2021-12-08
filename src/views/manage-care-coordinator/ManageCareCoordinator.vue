@@ -9,15 +9,16 @@
         </a-layout-sider>
         <a-layout-content>
             <a-row>
-                <MainHeader heading="Manage Care Coordinator" buttonText="Add New Coordinator" modalScreen="coordinator"></MainHeader>
+                <MainHeader :visibility="modalVisibility" heading="Manage Care Coordinator" buttonText="Add New Coordinator" modalScreen="coordinator"></MainHeader>
             </a-row>
-            <CareCoordinator />
+            <CareCoordinator @is-visible="changeVisibility($event)" />
         </a-layout-content>
     </a-layout>
 </a-layout>
 </template>
 
 <script>
+import { ref, watch } from "vue";
 import CareCoordinator from "@/components/care-coordinator/CareCoordinator";
 import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/layout/sidebar/Sidebar";
@@ -30,6 +31,17 @@ export default {
         Sidebar,
         MainHeader
 
+    },
+    setup() {
+        const modalVisibility = ref(false)
+        const changeVisibility = (status) => {
+            modalVisibility.value = status
+            // alert('Modal Visibility Status : '+ modalVisibility.value)
+        }
+        return {
+            changeVisibility,
+            modalVisibility
+        }
     }
 
 }

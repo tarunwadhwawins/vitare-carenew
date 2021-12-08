@@ -75,7 +75,6 @@ export const careCoordinator = {
         }
       );
     },
-
     getCareCoordinatorsList({ commit }, id) {
       return CareCoordinatorService.getCareCoordinatorsList(id).then(
         list => {
@@ -84,6 +83,30 @@ export const careCoordinator = {
         },
         error => {
           commit('getCareCoordinatorsListFailure', error);
+          return Promise.reject(error);
+        }
+      );
+    },
+    getCoordinatorDetails({ commit }, id) {
+      return CareCoordinatorService.getCoordinatorDetails(id).then(
+        list => {
+          commit('getCoordinatorDetailsSuccess', list);
+          return Promise.resolve(list);
+        },
+        error => {
+          commit('getCoordinatorDetailsFailure', error);
+          return Promise.reject(error);
+        }
+      );
+    },
+    deleteCoordinator({ commit }, id) {
+      return CareCoordinatorService.deleteCoordinator(id).then(
+        list => {
+          commit('deleteCoordinatorSuccess', list);
+          return Promise.resolve(list);
+        },
+        error => {
+          commit('deleteCoordinatorFailure', error);
           return Promise.reject(error);
         }
       );
@@ -100,6 +123,54 @@ export const careCoordinator = {
         }
       );
     },
+    deleteCoordinatorContact({ commit }, data) {
+      return CareCoordinatorService.deleteCoordinatorContact(data).then(
+        list => {
+          commit('deleteCoordinatorContactSuccess', list);
+          return Promise.resolve(list);
+        },
+        error => {
+          commit('deleteCoordinatorContactFailure', error);
+          return Promise.reject(error);
+        }
+      );
+    },
+    deleteCoordinatorAvailability({ commit }, data) {
+      return CareCoordinatorService.deleteCoordinatorAvailability(data).then(
+        list => {
+          commit('deleteCoordinatorAvailabilitySuccess', list);
+          return Promise.resolve(list);
+        },
+        error => {
+          commit('deleteCoordinatorAvailabilityFailure', error);
+          return Promise.reject(error);
+        }
+      );
+    },
+    deleteCoordinatorRole({ commit }, data) {
+      return CareCoordinatorService.deleteCoordinatorRole(data).then(
+        list => {
+          commit('deleteCoordinatorRoleSuccess', list);
+          return Promise.resolve(list);
+        },
+        error => {
+          commit('deleteCoordinatorRoleFailure', error);
+          return Promise.reject(error);
+        }
+      );
+    },
+    getCoordinatorContactDetails({ commit }, data) {
+      return CareCoordinatorService.getCoordinatorContactDetails(data).then(
+        contacts => {
+          commit('getCoordinatorContactDetailsSuccess', contacts);
+          return Promise.resolve(contacts);
+        },
+        error => {
+          commit('getCoordinatorContactDetailsFailure', error);
+          return Promise.reject(error);
+        }
+      );
+    },
     getCoordinatorAvailabilities({ commit }, id) {
       return CareCoordinatorService.getCoordinatorAvailabilities(id).then(
         contacts => {
@@ -112,6 +183,18 @@ export const careCoordinator = {
         }
       );
     },
+    getCoordinatorAvailabilityDetails({ commit }, data) {
+      return CareCoordinatorService.getCoordinatorAvailabilityDetails(data).then(
+        contacts => {
+          commit('getCoordinatorAvailabilitySuccess', contacts);
+          return Promise.resolve(contacts);
+        },
+        error => {
+          commit('getCoordinatorAvailabilityFailure', error);
+          return Promise.reject(error);
+        }
+      );
+    },
     getCoordinatorRoles({ commit }, id) {
       return CareCoordinatorService.getCoordinatorRoles(id).then(
         contacts => {
@@ -120,6 +203,18 @@ export const careCoordinator = {
         },
         error => {
           commit('getCoordinatorRolesFailure', error);
+          return Promise.reject(error);
+        }
+      );
+    },
+    getCoordinatorRoleDetails({ commit }, data) {
+      return CareCoordinatorService.getCoordinatorRoleDetails(data).then(
+        contacts => {
+          commit('getCoordinatorRoleDetailsSuccess', contacts);
+          return Promise.resolve(contacts);
+        },
+        error => {
+          commit('getCoordinatorRoleDetailsFailure', error);
           return Promise.reject(error);
         }
       );
@@ -149,6 +244,7 @@ export const careCoordinator = {
       );
     },
   },
+  
   mutations: {
     addCareCoordinatorSuccess(state, coordinator) {
       state.coordinator = coordinator;
@@ -221,6 +317,54 @@ export const careCoordinator = {
     },
     getNetworkCountFailure(state, error) {
       state.count = error;
+    },
+    getCoordinatorContactDetailsSuccess(state, contact) {
+      state.contact = contact;
+    },
+    getCoordinatorContactDetailsFailure(state, error) {
+      state.contact = error;
+    },
+    getCoordinatorAvailabilitySuccess(state, availability) {
+      state.availability = availability;
+    },
+    getCoordinatorAvailabilityFailure(state, error) {
+      state.availability = error;
+    },
+    getCoordinatorRoleDetailsSuccess(state, role) {
+      state.role = role;
+    },
+    getCoordinatorRoleDetailsFailure(state, error) {
+      state.role = error;
+    },
+    getCoordinatorDetailsSuccess(state, coordinator) {
+      state.coordinator = coordinator;
+    },
+    getCoordinatorDetailsFailure(state, error) {
+      state.coordinator = error;
+    },
+    deleteCoordinatorSuccess(state, coordinator) {
+      state.coordinator = coordinator;
+    },
+    deleteCoordinatorFailure(state, error) {
+      state.coordinator = error;
+    },
+    deleteCoordinatorContactSuccess(state, coordinator) {
+      state.coordinator = coordinator;
+    },
+    deleteCoordinatorContactFailure(state, error) {
+      state.coordinator = error;
+    },
+    deleteCoordinatorAvailabilitySuccess(state, coordinator) {
+      state.coordinator = coordinator;
+    },
+    deleteCoordinatorAvailabilityFailure(state, error) {
+      state.coordinator = error;
+    },
+    deleteCoordinatorRoleSuccess(state, coordinator) {
+      state.coordinator = coordinator;
+    },
+    deleteCoordinatorRoleFailure(state, error) {
+      state.coordinator = error;
     },
   }
 };

@@ -12,6 +12,7 @@
             <option value="1">Billing</option>
             <option value="2">Messages</option>
           </Field>
+          <inut type="hidden" v-model="rolesForm.id" name="id" value=""/>
           <ErrorMessage class="error" name="role_name" />
         </div>
       </a-col>
@@ -50,18 +51,21 @@
         schema,
         rolesForm: {
           role_name: [],
+          id: [],
         }
       }
     },
     methods: {
       addCareCoordinatorRole() {
-        const roles = toRaw(this.rolesForm);
+        const role = toRaw(this.rolesForm);
+        const roleId = role.id;
         this.$store.dispatch("addCareCoordinatorRole", { 
-          role: roles.role_name,
+          role: role.role_name,
           care_coordinator_id: JSON.parse(localStorage.getItem('coordinatorId')),
+          roleId: roleId ? roleId : null,
         })
-        .then((res) => { 
-          console.log(res);
+        .then((res) => {
+          localStorage.setItem('roleId', res.data.id)
         },
         (error) => {
           console.log(error)
