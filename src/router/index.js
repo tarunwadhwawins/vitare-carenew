@@ -72,8 +72,46 @@ const routes = [
   {
     path: '/admin-dashboard',
     name: 'admin',
-    component: () => import( '../components/administration/Dashboard')
+    component: () => import( '../components/administration/dashboard/Dashboard')
   },
+
+  {
+    path: '/manage-staff',
+    name: 'Manage Staff',
+    component: () => import( '../components/administration/manage-staff/Managestaff')
+  },
+
+  {
+    path: '/reports',
+    name: 'Reports',
+    component: () => import( '../components/administration/reports/Reports')
+  },
+
+  {
+    path: '/templates',
+    name: 'Templates',
+    component: () => import( '../components/administration/templates/Templates')
+  },
+
+  {
+    path: '/global-codes',
+    name: 'Global Codes',
+    component: () => import( '../components/administration/global-codes/Globalcode')
+  },
+
+  {
+    path: '/manage-programs',
+    name: 'Manage Program',
+    component: () => import( '../components/administration/manage-programs/Manageprogram')
+  },
+
+  {
+    path: '/roles-permission',
+    name: 'Roles Permission',
+    component: () => import( '../components/administration/roles-permissions/Rolespermissions')
+  },
+
+
 
 ]
 
