@@ -7,25 +7,25 @@
       
       <!-- Personal Information -->
       <div class="steps-content" v-if="steps[current].title == 'Personal Information'">
-        <PersonalInformation ref="personalInformationForm"></PersonalInformation>
+        <PersonalInformation></PersonalInformation>
       </div>
 
       <!-- Contacts -->
       <div class="steps-content" v-if="steps[current].title == 'Contacts'">
-        <ContactForm></ContactForm>
-        <CoordinatorContactsTable></CoordinatorContactsTable>
+        <ContactForm :data="contactData"></ContactForm>
+        <CoordinatorContactsTable @clicked="onClickViewContact($event)"></CoordinatorContactsTable>
       </div>
 
       <!-- Availability -->
       <div class="steps-content" v-if="steps[current].title == 'Availability'">
-        <AvailabilityForm></AvailabilityForm>
-        <CoordinatorAvailabilityTable></CoordinatorAvailabilityTable>
+        <AvailabilityForm :data="availabilityData"></AvailabilityForm>
+        <CoordinatorAvailabilityTable @clicked="onClickViewAvailability($event)"></CoordinatorAvailabilityTable>
       </div>
 
       <!-- Roles -->
       <div class="steps-content" v-if="steps[current].title == 'Roles'">
-        <RolesForm></RolesForm>
-        <CoordinatorRolesTable></CoordinatorRolesTable>
+        <RolesForm :data="roleData"></RolesForm>
+        <CoordinatorRolesTable @clicked="onClickViewRole($event)"></CoordinatorRolesTable>
       </div>
 
       <!-- Documents -->
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import PersonalInformation from "@/components/care-coordinator/forms/PersonalInformation";
 import ContactForm from "@/components/care-coordinator/forms/ContactForm";
 import AvailabilityForm from "@/components/care-coordinator/forms/AvailabilityForm";
@@ -60,35 +60,14 @@ import DocumentsForm from "@/components/care-coordinator/forms/DocumentsForm";
 import CoordinatorContactsTable from "@/components/common/tables/CoordinatorContactsTable";
 import CoordinatorAvailabilityTable from "@/components/common/tables/CoordinatorAvailabilityTable";
 import CoordinatorRolesTable from "@/components/common/tables/CoordinatorRolesTable";
-const availabilityColumns = [
-  {
-    title: "Start Time",
-    dataIndex: "start",
-  },
-  {
-    title: "End Time",
-    dataIndex: "end",
-  },
-  {
-    title: "Actions",
-    dataIndex: "actions",
-  },
-];
-const availabilityData = [
-  {
-    key: "1",
-    start: "08:00 AM",
-    end: "	02:30 PM",
-    actions: "",
-  },
-  {
-    key: "2",
-    start: "09:00 AM",
-    end: "03:30 PM",
-    actions: "",
-  },
-];
+import store from "@/store/index";
+
 export default {
+  data() {
+    return {
+      rowId: '',
+    }
+  },
   components: {
     PersonalInformation,
     CoordinatorContactsTable,
@@ -99,23 +78,72 @@ export default {
     RolesForm,
     DocumentsForm,
   },
-  // created() {
-  //   return this.$store
-  // },
-  // mounted() {
-  //   console.log(this.$refs);
-  //   this.$refs.personalInformationForm.addCareCoordinator()
-  // },
   setup() {
+    const contactData = ref()
+    const availabilityData = ref()
+    const roleData = ref()
+    const onClickViewContact = (rowId) => {
+      let data = {
+        'carecoordinatorId': JSON.parse(localStorage.getItem('coordinatorId')),
+        'contactId': rowId,
+      }
+      store.dispatch("getCoordinatorContactDetails", data)
+      .then((res) => {
+        contactData.value = res.data.data;
+      },
+      (error) => {
+        console.log(error)
+        this.message = (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) ||
+        error.message ||
+        error.toString();
+      });
+    }
+    const onClickViewAvailability = (rowId) => {
+      let data = {
+        'carecoordinatorId': JSON.parse(localStorage.getItem('coordinatorId')),
+        'availabilityId': rowId,
+      }
+      store.dispatch("getCoordinatorAvailabilityDetails", data)
+      .then((res) => {
+        availabilityData.value = res.data.data;
+      },
+      (error) => {
+        console.log(error)
+        this.message = (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) ||
+        error.message ||
+        error.toString();
+      });
+    }
+    const onClickViewRole = (rowId) => {
+      let data = {
+        'carecoordinatorId': JSON.parse(localStorage.getItem('coordinatorId')),
+        'roleId': rowId,
+      }
+      store.dispatch("getCoordinatorRoleDetails", data)
+      .then((res) => {
+        roleData.value = res.data.data;
+      },
+      (error) => {
+        console.log(error)
+        this.message = (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) ||
+        error.message ||
+        error.toString();
+      });
+    }
     const visible = ref(false);
     var current = ref(0);
-    const showModal = () => {
-      visible.value = true;
-    };
-    const handleOk = (e) => {
-      console.log(e);
-      visible.value = false;
-    };
     const next = () => {
       // let personalData = JSON.parse(localStorage.getItem('personalData'));
       // console.log(personalData);
@@ -127,16 +155,15 @@ export default {
       localStorage.setItem('is_update', 'true');
       current.value--;
     };
-    const handleChange = value => {
-      console.log(`selected ${value}`);
-    };
     return {
       visible,
-      showModal,
-      handleOk,
-      current,
+      onClickViewContact,
+      onClickViewAvailability,
+      onClickViewRole,
+      contactData,
       availabilityData,
-      availabilityColumns,
+      roleData,
+      current,
       steps: [
         {
           title: "Personal Information",
@@ -162,7 +189,6 @@ export default {
       next,
       prev,
       value: ref(['Manger', 'Billing Admin' , 'User Admin']),
-      handleChange,
       options: [...Array(3)].map((i) => ({
         value: (i + 10).toString(36) + (i + 1),
       })),

@@ -116,6 +116,7 @@
             <option value="1">In</option>
             <option value="1">Out</option>
           </Field>
+          <inut type="hidden" v-model="personalInformationForm.id" name="id" value=""/>
           <ErrorMessage class="error" name="network" />
         </div>
       </a-col>
@@ -144,6 +145,24 @@
       Field,
       ErrorMessage,
     },
+    props: {
+      data: {
+        type: Array,
+        required: true
+      }
+    },
+    updated() {
+      const formData = this.data
+      this.first_name = formData.first_name
+      this.last_name = formData.last_name
+      this.designation = formData.designation
+      this.gender = formData.gender
+      this.email = formData.email
+      this.phone_no = formData.phone_no
+      this.specialization = formData.specialization
+      this.network = formData.network
+      this.id = formData.id
+    },
     data() {
       const schema = yup.object({
         first_name: yup.string().required().label("First Name"),
@@ -167,6 +186,7 @@
           phone_no: '',
           specialization: '',
           network: '',
+          id: '',
         }
       }
     },
@@ -178,6 +198,7 @@
         alert('from other file')
         const email_verify = JSON.parse(localStorage.getItem('user')).email_verify
         const coordinator = toRaw(this.personalInformationForm);
+        const coordinatorId = coordinator.id;
         this.$store.dispatch("addCareCoordinator", { 
           first_name: coordinator.first_name,
           last_name: coordinator.last_name,
@@ -188,6 +209,7 @@
           specialization: coordinator.specialization,
           network: coordinator.network,
           email_verify: email_verify,
+          coordinatorId: coordinatorId,
         })
         .then((res) => {
           localStorage.setItem('personalData', JSON.stringify(res.data));
