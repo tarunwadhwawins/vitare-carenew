@@ -5,8 +5,8 @@
         <template #action>
             <div v-for="availability in availabilityData" :key="availability.key">
               <!-- <a class="icons"><EyeOutlined /></a> -->
-              <a class="icons" @click ="onClickViewButton(availability.key)"><EditOutlined /></a>
-              <a class="icons" @click ="onClickDeleteButton({coordinatorId: availability.coordinator_id, availabilityId: availability.key})"><DeleteOutlined /></a>
+              <a class="icons" @click ="onClickViewButton(availability.id)"><EditOutlined /></a>
+              <a class="icons" @click ="onClickDeleteButton({coordinatorId: availability.coordinator_id, availabilityId: availability.id})"><DeleteOutlined /></a>
             </div>
         </template>
       </a-table>
@@ -58,7 +58,7 @@ export default {
   setup(props, { emit }) {
     let availabilityData = ref()
     watch( () => {
-      this.$store.dispatch("getCoordinatorAvailabilities", JSON.parse(localStorage.getItem('coordinatorId'))).then((res) => {
+      store.dispatch("getCoordinatorAvailabilities", JSON.parse(localStorage.getItem('coordinatorId'))).then((res) => {
         availabilityData.value = res.data.data;
       },
       (error) => {
@@ -104,7 +104,7 @@ export default {
       availabilityColumns,
       onClickViewButton,
       onClickDeleteButton,
-      // availabilityData
+      availabilityData
     }
   }
 }

@@ -5,7 +5,7 @@
         <div class="form-group">
           <label>Role</label>
           <Field as="select" class="ant-input ant-input-lg"
-            v-model="rolesForm.role_name[0]"
+            v-model="rolesForm.role_name"
             name="role_name"
             mode="multiple"
             placeholder="Please select">
@@ -42,18 +42,6 @@
       Form,
       Field,
       ErrorMessage,
-    },
-    props: {
-      data: {
-        type: Array,
-        required: true
-      }
-    },
-    updated() {
-      const formData = this.data
-      console.log('Updated : ', formData.role)
-      this.rolesForm.role_name = formData.role == 'Billing Admin' ? 1 : 2;
-      this.rolesForm.id = formData.id;
     },
     data() {
       const schema = yup.object({

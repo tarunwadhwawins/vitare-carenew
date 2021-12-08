@@ -24,8 +24,8 @@
 
       <!-- Roles -->
       <div class="steps-content" v-if="steps[current].title == 'Roles'">
-        <RolesForm :data="roleData"></RolesForm>
-        <CoordinatorRolesTable @clicked="onClickViewRole($event)"></CoordinatorRolesTable>
+        <RolesForm></RolesForm>
+        <CoordinatorRolesTable></CoordinatorRolesTable>
       </div>
 
       <!-- Documents -->
@@ -122,26 +122,6 @@ export default {
         error.toString();
       });
     }
-    const onClickViewRole = (rowId) => {
-      let data = {
-        'carecoordinatorId': JSON.parse(localStorage.getItem('coordinatorId')),
-        'roleId': rowId,
-      }
-      store.dispatch("getCoordinatorRoleDetails", data)
-      .then((res) => {
-        roleData.value = res.data.data;
-      },
-      (error) => {
-        console.log(error)
-        this.message = (
-          error.response &&
-          error.response.data &&
-          error.response.data.message
-        ) ||
-        error.message ||
-        error.toString();
-      });
-    }
     const visible = ref(false);
     var current = ref(0);
     const next = () => {
@@ -159,7 +139,6 @@ export default {
       visible,
       onClickViewContact,
       onClickViewAvailability,
-      onClickViewRole,
       contactData,
       availabilityData,
       roleData,

@@ -3,10 +3,10 @@
     <a-col :span="24">
       <a-table :columns="rolesColumns" :data-source="rolesData" :scroll="{ x: 900 }">
         <template #action>
-          <div v-for="roles in rolesData" :key="roles.key">
+          <div v-for="roles in rolesData" :key="roles.id">
             <!-- <a class="icons"><EyeOutlined /></a> -->
-            <a class="icons" @click ="onClickViewButton(roles.key)"><EditOutlined /></a>
-            <a class="icons" @click ="onClickDeleteButton({coordinatorId: roles.coordinator_id, roleId: roles.key})"><DeleteOutlined /></a>
+            <!-- <a class="icons" @click ="onClickViewButton(roles.id)"><EditOutlined /></a> -->
+            <a class="icons" @click ="onClickDeleteButton({coordinatorId: roles.coordinator_id, roleId: roles.id})"><DeleteOutlined /></a>
           </div>
         </template>
       </a-table>
@@ -42,13 +42,11 @@ const rolesColumns = [
 import { ref, watch } from 'vue';
 import store from '@/store/index';
 import Loading from 'vue-loading-overlay';
-import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons-vue";
+import { DeleteOutlined } from "@ant-design/icons-vue";
 export default {
   components: {
     Loading,
-    DeleteOutlined,
-    EditOutlined,
-    // EyeOutlined,
+    DeleteOutlined
   },
   data() {
     return {
@@ -84,10 +82,6 @@ export default {
         error.toString();
       });
     });
-    const onClickViewButton = (rolesId) => {
-      // const rowId = JSON.parse(localStorage.getItem('roleId'));
-      emit('clicked', rolesId)
-    }
     const onClickDeleteButton = ({coordinatorId, roleId}) => {
       let data = {
         coordinatorId: coordinatorId,
@@ -112,10 +106,9 @@ export default {
       });
     }
     return {
-      onClickViewButton,
       onClickDeleteButton,
       rolesColumns,
-      // rolesData
+      rolesData
     }
   }
 }

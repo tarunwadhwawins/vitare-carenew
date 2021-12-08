@@ -99,26 +99,14 @@ class CareCoordinatorService {
   }
 
   addCareCoordinatorRole(role) {
-    if(role.roleId != null) {
-      return axios.put(API_URL + 'carecoordinator/'+role.care_coordinator_id+'/access/'+role.roleId, {
-        role: role.role,
-        care_coordinator_id: role.care_coordinator_id,
-      },
-      { headers: authHeader() })
-      .then(response => {
-        return response.data;
-      });
-    }
-    else {
-      return axios.post(API_URL + 'carecoordinator/'+role.care_coordinator_id+'/access', {
-        role: role.role,
-        care_coordinator_id: role.care_coordinator_id,
-      },
-      { headers: authHeader() })
-      .then(response => {
-        return response.data;
-      });
-    }
+    return axios.post(API_URL + 'carecoordinator/'+role.care_coordinator_id+'/access', {
+      role: role.role,
+      care_coordinator_id: role.care_coordinator_id,
+    },
+    { headers: authHeader() })
+    .then(response => {
+      return response.data;
+    });
   }
 
   addCareCoordinatorDocument(document) {
@@ -172,7 +160,7 @@ class CareCoordinatorService {
   }
 
   deleteCoordinatorRole(data) {
-    return axios.delete(API_URL + 'coordinator/'+data.coordinatorId+'/role/'+data.roleId, { headers: authHeader() });
+    return axios.delete(API_URL + 'coordinator/'+data.coordinatorId+'/access/'+data.roleId, { headers: authHeader() });
   }
 
   getCoordinatorContactDetails(data) {
