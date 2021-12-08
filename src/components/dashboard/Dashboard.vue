@@ -36,7 +36,9 @@ import PatientsStats from "./PatientsStats";
 import VirtualWaitingRoom from "./VirtualWaitingRoom";
 import TotalPatientsChart from "./TotalPatientsChart";
 import AppointmentSummary from "./AppointmentSummary";
+import { computed,ref } from 'vue'
 export default {
+  name:'Dashboard',
   components: {
     MainHeader,
     Card,
@@ -96,6 +98,7 @@ export default {
     };
   },
   setup() {
+    // const count = ref(1);
     function logout() {
       localStorage.removeItem("auth");
       localStorage.clear();
@@ -103,8 +106,11 @@ export default {
       //     path: '/'
       // })
     }
+    
+
+    
     return {
-      logout,
+      logout
     };
   },
 };
