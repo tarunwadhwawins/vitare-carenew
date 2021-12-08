@@ -16,8 +16,9 @@
               <h2 class="pageTittle">
                 Communications
                 <div class="commonBtn">
+                  <a-button class="btn blueBtn">Start Call</a-button>
                   <a-button class="btn primaryBtn" @click="showModal"
-                    >Add Message</a-button
+                    >Send Message</a-button
                   >
                 </div>
               </h2>
@@ -179,7 +180,7 @@ const columns = [
     dataIndex: "status",
   },
   {
-    title: "Message Category",
+    title: "Category",
     dataIndex: "message",
     sorter: {
       compare: (a, b) => a.message - b.message,

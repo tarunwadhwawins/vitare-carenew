@@ -8,6 +8,41 @@
         @media screen and (max-width: 576px) {
             position: relative;
         }
+        .ant-btn{
+            margin: 0 6px 0px 0;
+         &:last-child{
+          margin:0;
+         }    
+        }
+    }
+    .filter {
+        position: absolute;
+        right: 0;
+        top: 0;
+        @media screen and (max-width: 576px) {
+            position: relative;
+        }
+        .btn {
+            color: #000;
+            background: #e0dfdf;
+            font-size: 13px;
+            border: 0;
+            padding: 0;
+            &.active {
+                background-color: #777;
+                color: #fff;
+            }
+            .btn-content {
+                border-right: 1px solid rgba(0, 0, 0, 0.2);
+                padding: 6px 16px;
+                display: inline-block;
+            }
+            &:last-child {
+                .btn-content {
+                    border-right: 0px solid;
+                }
+            }
+        }
     }
 }
 /*--tiles--*/

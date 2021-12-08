@@ -2,7 +2,7 @@
   <a-layout-content>
     <a-row>
       <MainHeader heading="Dashboard" buttonText=""></MainHeader>
-      <a-col :span="24">
+      <a-col :span="24" v-if="totalPatients">
         <a-row :gutter="24">
           <Card customClass="one" :count="totalPatients ? totalPatients :''"></Card>
           <Card customClass="two" :count="newPatients ? newPatients : ''"></Card>
@@ -13,33 +13,69 @@
         </a-row>
       </a-col>
     </a-row>
-    <a-row :gutter="24">
+    <!-- <a-row :gutter="24">
       <PatientsStats></PatientsStats>
       <VirtualWaitingRoom></VirtualWaitingRoom>
+    </a-row> -->
+    <a-row :gutter="24">
+      <Appointment></Appointment>
+      <VirtualWaitingRoom></VirtualWaitingRoom>
+      <PatientsChart></PatientsChart>
+      <a-col :sm="12" :xs="24">
+        <a-card title="Care Coordinator Stats " class="common-card">
+          <a-tabs v-model:activeKey="activeKey1">
+            <a-tab-pane key="1" tab="Specialization " v-if="specialization">
+              <SpecializationChart :data="[specialization.total,wellness.total]" :categories="[specialization.specialization,wellness.specialization]"></SpecializationChart>
+            </a-tab-pane>
+            <a-tab-pane key="2" tab="Network " force-render>
+
+              <NetworkChart></NetworkChart>
+            </a-tab-pane>
+          </a-tabs>
+        </a-card>
+      </a-col>
+      <CptChart></CptChart>
+      <FinancialChart></FinancialChart>
     </a-row>
+    
     <a-row :gutter="24" v-if="totalPatients">
-      <TotalPatientsChart :chart="[totalPatients.count, newPatients.count, criticalPatients.count, abnormalPatients.count, activePatients.count, inactivePatients.count]" :lable="[totalPatients.text,newPatients.text,criticalPatients.text,abnormalPatients.text,activePatients.text,inactivePatients.text]"></TotalPatientsChart>
+      <TotalPatientsChart
+        :chart="[totalPatients.count, newPatients.count, criticalPatients.count, abnormalPatients.count, activePatients.count, inactivePatients.count]"
+        :lable="[totalPatients.text,newPatients.text,criticalPatients.text,abnormalPatients.text,activePatients.text,inactivePatients.text]">
+      </TotalPatientsChart>
       <AppointmentSummary></AppointmentSummary>
     </a-row>
   </a-layout-content>
 </template>
 <script>
-  import { ref, watchEffect } from 'vue'
+  import { ref, watchEffect, computed } from 'vue'
   import MainHeader from "@/components/common/MainHeader";
   import Card from "@/components/common/cards/Card";
-  import PatientsStats from "./PatientsStats";
+  import Appointment from "./Appointment";
   import VirtualWaitingRoom from "./VirtualWaitingRoom";
   import TotalPatientsChart from "./TotalPatientsChart";
   import AppointmentSummary from "./AppointmentSummary";
-  import store from "@/store/index"
+  import FinancialChart from "./FinancialChart"
+  import PatientsChart from "./PatientsChart"
+  import SpecializationChart from "./care-coordinator/SpecializationChart"
+  import NetworkChart from "./care-coordinator/NetworkChart"
+  import CptChart from "./CptChart"
+  import { useStore }  from "vuex"
+
   export default {
+
     components: {
       MainHeader,
       Card,
-      PatientsStats,
+      Appointment,
       VirtualWaitingRoom,
+      PatientsChart,
+      SpecializationChart,
+      NetworkChart,
+      CptChart,
       TotalPatientsChart,
       AppointmentSummary,
+      FinancialChart,
     },
     data: function () {
       return {
@@ -86,48 +122,59 @@
       };
     },
     setup() {
-      const totalPatients = ref()
-      const newPatients = ref()
-      const criticalPatients = ref()
-      const abnormalPatients = ref()
-      const activePatients = ref()
-      const inactivePatients = ref()
+      const store = useStore()
+      
 
-      watchEffect( () =>  {
-           store.dispatch("totalPatients").then((res) => {
-          totalPatients.value = res.data;
-        })
-        store.dispatch("newPatients").then((res) => {
-          console.log(res.data)
-          newPatients.value = res.data;
-        })
-        store.dispatch("abnormalPatients").then((res) => {
-          abnormalPatients.value = res.data;
-        })
-        store.dispatch("activePatients").then((res) => {
-          activePatients.value = res.data;
-        })
-        store.dispatch("inactivePatients").then((res) => {
-          inactivePatients.value = res.data;
-        })
-        store.dispatch("criticalPatients").then((res) => {
-          criticalPatients.value = res.data;
-        })
+      watchEffect(() => {
+        store.dispatch("totalPatients")
+        store.dispatch("newPatients")
+        store.dispatch("abnormalPatients")
+        store.dispatch("activePatients")
+        store.dispatch("inactivePatients")
+        store.dispatch("criticalPatients")
+        store.dispatch("specialization",1)
+        store.dispatch("specialization",2)
       })
 
+      const totalPatients = computed(()=>{
+        return store.state.dashBoard.tcount
+      })
+      const newPatients = computed(()=>{
+        return store.state.dashBoard.ncount 
+      })
+      const criticalPatients = computed(()=>{
+        return store.state.dashBoard.critcount
+      })
+      const abnormalPatients = computed(()=>{
+        return store.state.dashBoard.abcount
+      })
+      const activePatients = computed(()=>{
+        return store.state.dashBoard.activecount
+      })
+      const inactivePatients = computed(()=>{
+        return store.state.dashBoard.inactivecount
+      })
+      const specialization = computed(()=>{
 
-      function logout() {
-        localStorage.removeItem("auth");
-        localStorage.clear();
-      }
+        return store.state.dashBoard.specialization
+      })
+      const wellness = computed(()=>{
+
+return store.state.dashBoard.wellness
+})
+
+ 
+      
       return {
-        logout,
         totalPatients,
         newPatients,
         criticalPatients,
         abnormalPatients,
         activePatients,
         inactivePatients,
+        specialization,
+        wellness,
+   
 
       };
     },

@@ -23,6 +23,18 @@ class DashboardService {
       criticalPatient() {
         return axios.get(API_URL + 'critical-patients', { headers: authHeader() });
       }
+      newappointment() {
+        return axios.get(API_URL + 'appointment', { headers: authHeader() });
+      }
+      futureappointment() {
+        return axios.get(API_URL + 'appointment/status/1', { headers: authHeader() });
+      }
+      appointmentcount() {
+        return axios.get(API_URL + 'appointment-count', { headers: authHeader() });
+      }
+      specialization(id) {
+        return axios.get(API_URL + 'specialization/'+id, { headers: authHeader() });
+      }
 }
 
 export default new DashboardService(); 

@@ -15,7 +15,6 @@
 export default {
   props: ['chart','lable'],
   data: function() {
-    console.log(this.chart)
     return {
       series: this.chart,
       chartOptions: {
