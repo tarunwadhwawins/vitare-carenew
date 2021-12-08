@@ -125,11 +125,7 @@ export default {
     const visible = ref(false);
     var current = ref(0);
     const next = () => {
-      // let personalData = JSON.parse(localStorage.getItem('personalData'));
-      // console.log(personalData);
-      // if(personalData) {
-        current.value++;
-      // }
+      current.value++;
     };
     const prev = () => {
       localStorage.setItem('is_update', 'true');

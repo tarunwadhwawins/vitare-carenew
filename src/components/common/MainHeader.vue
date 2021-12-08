@@ -52,7 +52,8 @@ export default {
     setup() {
       const visible = ref(false);
       const showModal = () => {
-        // localStorage.removeItem('coordinatorId');
+        localStorage.removeItem('is_update_coordinator');
+        localStorage.removeItem('personalData');
         visible.value = true;
       };
 

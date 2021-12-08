@@ -104,7 +104,6 @@
     },
     methods: {
       addCareCoordinatorAvailability() {
-        // const personal = JSON.parse(localStorage.getItem('personalData'));
         const availability = toRaw(this.availabilityForm);
         const availabilityId = availability.id;
         this.$store.dispatch("addCareCoordinatorAvailability", { 

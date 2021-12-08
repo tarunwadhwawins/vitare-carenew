@@ -5,7 +5,7 @@
         <template #action>
             <!-- <a class="icons"><EyeOutlined /></a> -->
             <div v-for="coordinator in coordinatorsList" :key="coordinator.id">
-              <a class="icons" @click ="onClickViewButton(coordinator.id)"><EditOutlined /></a>
+              <a class="icons" @click ="onClickEditButton(coordinator.id)"><EditOutlined /></a>
               <a class="icons" @click ="onClickDeleteButton(coordinator.id)"> <DeleteOutlined /></a>
             </div>
         </template>
@@ -116,7 +116,8 @@ export default {
       });
     })
     
-    const onClickViewButton = (rowId) => {
+    const onClickEditButton = (rowId) => {
+      localStorage.setItem('is_update_coordinator', true)
       emit('edit-clicked', rowId)
     }
     const onClickDeleteButton = (rowId) => {
@@ -140,7 +141,7 @@ export default {
     }
 
     return {
-      onClickViewButton,
+      onClickEditButton,
       onClickDeleteButton,
       coordinatorsList,
       columns,

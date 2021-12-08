@@ -16,7 +16,7 @@
     </a-col>
   </a-row>
   
-  <CoordinatorTable @edit-clicked="onClickViewPersonal($event)"></CoordinatorTable>
+  <CoordinatorTable @edit-clicked="onClickEditPersonal($event)"></CoordinatorTable>
 </template>
 
 <script>
@@ -76,12 +76,11 @@ export default {
         error.toString();
       });
     })
-    const onClickViewPersonal = (rowId) => {
-      alert(rowId)
+    const onClickEditPersonal = (rowId) => {
       store.dispatch("getCoordinatorDetails", rowId)
       .then((res) => {
         const coordinatorData = res.data.data;
-        console.log('Coordinator Details', coordinatorData)
+        localStorage.setItem('personalData', JSON.stringify(coordinatorData))
       },
       (error) => {
         console.log(error)
@@ -96,7 +95,7 @@ export default {
     }
       
     return {
-      onClickViewPersonal,
+      onClickEditPersonal,
       specializationTotal,
       specializationText,
       networkTotal,

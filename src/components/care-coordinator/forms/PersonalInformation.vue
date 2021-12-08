@@ -152,16 +152,20 @@
       }
     },
     updated() {
-      const formData = this.data
-      this.first_name = formData.first_name
-      this.last_name = formData.last_name
-      this.designation = formData.designation
-      this.gender = formData.gender
-      this.email = formData.email
-      this.phone_no = formData.phone_no
-      this.specialization = formData.specialization
-      this.network = formData.network
-      this.id = formData.id
+      const is_update_coordinator = localStorage.getItem('is_update_coordinator')
+      const personalData = JSON.parse(localStorage.getItem('personalData'))
+      if(is_update_coordinator) {
+        // const formData = this.data
+        this.first_name = personalData.first_name
+        this.last_name = personalData.last_name
+        this.designation = personalData.designation
+        this.gender = personalData.gender
+        this.email = personalData.email
+        this.phone_no = personalData.phone_no
+        this.specialization = personalData.specialization
+        this.network = personalData.network
+        this.id = personalData.id
+      }
     },
     data() {
       const schema = yup.object({
