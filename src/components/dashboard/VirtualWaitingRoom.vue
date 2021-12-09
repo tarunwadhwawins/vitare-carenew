@@ -24,9 +24,8 @@
   </a-col>
 </template>
 <script>
-import { defineComponent, ref } from 'vue';
 
-  
+  import { reactive } from "vue"
   const columns5 = [
     {
       title: "Patient Name",
@@ -37,7 +36,7 @@ import { defineComponent, ref } from 'vue';
     },
     {
       title: "Appointment Type",
-      dataIndex: "appt",
+      dataIndex: "appointment_type",
     },
     {
       title: "Time",
@@ -51,20 +50,20 @@ import { defineComponent, ref } from 'vue';
       },
     },
   ];
-  const data5 = [
-    {
-      key: "1",
-      patient: "Steve Smith",
-      appt: "Wellness",
-      time: "01:30 PM",
-    },
-    {
-      key: "2",
-      patient: "Jane Doe",
-      appt: "Clinical",
-      time: "11:30 AM",
-    },
-  ];
+  // const data5 = [
+  //   {
+  //     key: "1",
+  //     patient: "Steve Smith",
+  //     appt: "Wellness",
+  //     time: "01:30 PM",
+  //   },
+  //   {
+  //     key: "2",
+  //     patient: "Jane Doe",
+  //     appt: "Clinical",
+  //     time: "11:30 AM",
+  //   },
+  // ];
   const columns6 = [
     {
       title: "Patient Name",
@@ -75,36 +74,28 @@ import { defineComponent, ref } from 'vue';
     },
     {
       title: "Appointment Type",
-      dataIndex: "appt",
+      dataIndex: "appointment_type",
     },
     {
       title: "Time",
       dataIndex: "time",
     },
   ];
-  const data6 = [
-    {
-      key: "1",
-      patient: "Robert",
-      appt: "Wellness",
-      time: "02:30 PM",
-    },
-    {
-      key: "2",
-      patient: "  Steve",
-      appt: "Clinical",
-      time: "10:30 AM",
-    },
-  ];
-export default defineComponent({
-  setup() {
-    return {
-     
+
+  export default {
+    props: ["newappointment", "future"],
+    setup(props) {
+
+
+      const data5 = reactive(props.newappointment)
+
+      const data6 = reactive(props.future)
+      return {
         data5,
         columns5,
         data6,
         columns6,
-    };
-  },
-});
+      };
+    },
+  };
 </script>

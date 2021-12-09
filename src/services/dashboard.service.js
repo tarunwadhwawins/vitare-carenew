@@ -23,17 +23,20 @@ class DashboardService {
       criticalPatient() {
         return axios.get(API_URL + 'critical-patients', { headers: authHeader() });
       }
-      newappointment() {
-        return axios.get(API_URL + 'appointment', { headers: authHeader() });
+      appointment(id) {
+        return axios.get(API_URL + 'appointment/status/'+id, { headers: authHeader() });
       }
-      futureappointment() {
-        return axios.get(API_URL + 'appointment/status/1', { headers: authHeader() });
+      todayappointment() {
+        return axios.get(API_URL + 'today-appointment', { headers: authHeader() });
       }
       appointmentcount() {
         return axios.get(API_URL + 'appointment-count', { headers: authHeader() });
       }
       specialization(id) {
         return axios.get(API_URL + 'specialization/'+id, { headers: authHeader() });
+      }
+      network(id) {
+        return axios.get(API_URL + 'network/'+id, { headers: authHeader() });
       }
 }
 

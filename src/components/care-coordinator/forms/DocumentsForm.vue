@@ -38,7 +38,6 @@
             size="large"
             placeholder="Please Select Roles"
             style="width: 100%"
-            @change="handleChange"
             :options="filteredOptionsForTag.map((item) => ({ value: item }))"
           />
           <ErrorMessage class="error" name="selectedItemsForTag" />
@@ -104,11 +103,6 @@ import Loading from 'vue-loading-overlay';
       }
     },
     methods: {
-      handleChange() {
-        // this.selectedItemsForTag.push(value)
-        console.log('value', this.value);
-        console.log('selectedItemsForTag', this.selectedItemsForTag);
-      },
       onFileUpload (event) {
         // this.isLoading = true;
 
