@@ -2,12 +2,9 @@
   <a-row>
     <a-col :span="24">
       <a-table :columns="columns" :data-source="coordinatorsList" :scroll="{ x: 900 }">
-        <template #action>
-            <!-- <a class="icons"><EyeOutlined /></a> -->
-            <div v-for="coordinator in coordinatorsList" :key="coordinator.id">
-              <a class="icons" @click ="onClickEditButton(coordinator.id)"><EditOutlined /></a>
-              <a class="icons" @click ="onClickDeleteButton(coordinator.id)"> <DeleteOutlined /></a>
-            </div>
+        <template #action="{ record }">
+          <a class="icons" @click ="onClickEditButton(record.id)"><EditOutlined /></a>
+          <a class="icons" @click ="onClickDeleteButton(record.id)"> <DeleteOutlined /></a>
         </template>
       </a-table> 
     </a-col>
@@ -100,9 +97,28 @@ export default {
   setup(props, { emit }) {
     let coordinatorsList = ref()
     watch( () => {
+      localStorage.setItem('is_update_coordinator', false)
       store.dispatch("getCareCoordinatorsList")
       .then((res) => {
-        coordinatorsList.value = res.data.data;
+        // coordinatorsList.value = res.data.data;
+        const response = res.data.data;
+        const coordinatorsData = [];
+        response.forEach(res => {
+          coordinatorsData.push({
+            key: res.id,
+            id: res.id,
+            first_name: res.first_name,
+            last_name: res.last_name,
+            role: res.role,
+            specialization: res.specialization,
+            network: res.network,
+            created_at: res.created_at,
+            status: res.status,
+            action: "",
+          })
+        });
+        console.log('coordinatorsData', coordinatorsData)
+        coordinatorsList.value = coordinatorsData;
       },
       (error) => {
         console.log(error)

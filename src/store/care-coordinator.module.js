@@ -63,7 +63,6 @@ export const careCoordinator = {
       );
     },
     uploadFile({ commit }, file) {
-      // console.log('file 1', file);
       return CareCoordinatorService.uploadFile(file).then(
         file => {
           commit('uploadFileSuccess', file);

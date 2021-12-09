@@ -2,15 +2,10 @@
   <a-row :gutter="24">
     <a-col :span="24">
       <a-table :columns="contactColumns" :data-source="contactData" :scroll="{ x: 900 }">
-        <!-- <span > -->
-          <template #action>
-            <!-- <a class="icons"><EyeOutlined /></a> -->
-            <div v-for="contact in contactData" :key="contact.id">
-              <a class="icons" @click ="onClickViewButton(contact.id)"><EditOutlined /></a>
-              <a class="icons" @click ="onClickDeleteButton({coordinatorId: contact.coordinator_id, contactId: contact.id})"> <DeleteOutlined /></a>
-            </div>
-          </template>
-        <!-- </span> -->
+        <template #action="{ record }">
+          <a class="icons" @click ="onClickViewButton(record.id)"><EditOutlined /></a>
+          <a class="icons" @click ="onClickDeleteButton({coordinatorId: record.coordinator_id, contactId: record.id})"> <DeleteOutlined /></a>
+        </template>
       </a-table> 
     </a-col>
   </a-row>

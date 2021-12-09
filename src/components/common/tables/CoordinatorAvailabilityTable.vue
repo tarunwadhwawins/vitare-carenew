@@ -2,12 +2,9 @@
   <a-row :gutter="24">
     <a-col :span="24">
       <a-table :columns="availabilityColumns" :data-source="availabilityData" :scroll="{ x: 900 }">
-        <template #action>
-            <div v-for="availability in availabilityData" :key="availability.key">
-              <!-- <a class="icons"><EyeOutlined /></a> -->
-              <a class="icons" @click ="onClickViewButton(availability.id)"><EditOutlined /></a>
-              <a class="icons" @click ="onClickDeleteButton({coordinatorId: availability.coordinator_id, availabilityId: availability.id})"><DeleteOutlined /></a>
-            </div>
+        <template #action="{ record }">
+          <a class="icons" @click ="onClickViewButton(record.id)"><EditOutlined /></a>
+          <a class="icons" @click ="onClickDeleteButton({coordinatorId: record.coordinator_id, availabilityId: record.id})"><DeleteOutlined /></a>
         </template>
       </a-table>
     </a-col>

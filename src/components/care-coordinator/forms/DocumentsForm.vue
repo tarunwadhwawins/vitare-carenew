@@ -28,17 +28,22 @@
           <ErrorMessage class="error" name="document_type" />
         </div>
       </a-col>
-      <!-- <a-col :sm="12" :xs="24">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label> Tags</label>
-          <Field class="ant-input ant-input-lg" as="select"
-            v-model:value="selectedItemsForTag[0]"
+          <a-select
+            v-model:value="value"
             name="selectedItemsForTag"
             mode="multiple"
-            :options="filteredOptionsForTag.map((item) => ({ value: item }))"/>
+            size="large"
+            placeholder="Please Select Roles"
+            style="width: 100%"
+            @change="handleChange"
+            :options="filteredOptionsForTag.map((item) => ({ value: item }))"
+          />
           <ErrorMessage class="error" name="selectedItemsForTag" />
         </div>
-      </a-col> -->
+      </a-col>
     </a-row>
     <a-row :gutter="24" class="mb-24">
       <a-col :span="24">
@@ -62,6 +67,7 @@
   import { Form, Field, ErrorMessage } from 'vee-validate';
   import * as yup from 'yup';
   import { configure } from 'vee-validate';
+  import axios from 'axios';
 import Loading from 'vue-loading-overlay';
   // Default values
   configure({
@@ -91,29 +97,30 @@ import Loading from 'vue-loading-overlay';
           document_name: '',
           document_file: '',
           document_type: '',
-          // selectedItemsForTag: [],
+          selectedItemsForTag: [],
           // FILE: null,
         }
       }
     },
     methods: {
+      handleChange() {
+        // this.selectedItemsForTag.push(value)
+        console.log('selectedItemsForTag', this.selectedItemsForTag);
+      },
       onFileUpload (event) {
-        this.isLoading = true;
+        // this.isLoading = true;
+
         let doc_file = event.target.files[0]
-        let file = {
-          name: doc_file.name,
-          size: doc_file.size,
-          type: doc_file.type
-        }
-        this.$store.dispatch("uploadFile", file)
-        .then((res) => { 
-          console.log(res);
-					this.isLoading = false;
+        let formData = new FormData();
+        formData.append('file', doc_file);
+        
+        this.$store.dispatch("uploadFile", formData)
+        .then((res) => {
+          localStorage.setItem('file_path', res.data.path)
         },
         (error) => {
           console.log(error)
-					this.isLoading = false;
-          this.isLoading = false;
+          // this.isLoading = false;
           this.message = (
             error.response &&
             error.response.data &&
@@ -122,23 +129,24 @@ import Loading from 'vue-loading-overlay';
           error.message ||
           error.toString();
         });
-        this.document_file = event.target.files[0]
       },
       addCareCoordinatorDocument() {
+        const file_path = localStorage.getItem('file_path')
         const document = toRaw(this.documentForm);
+        // console.log('selectedItemsForTag', document.selectedItemsForTag)
         this.$store.dispatch("addCareCoordinatorDocument", { 
           name: document.document_name,
-          file_path: this.document_file.name,
-          type_id: document.document_type,
-          tags: ["one","two"],
-          care_coordinator_id: 12,
+          document: file_path,
+          type: document.document_type,
+          tags: this.selectedItemsForTag,
+          care_coordinator_id: JSON.parse(localStorage.getItem('coordinatorId')),
         })
         .then((res) => { 
           console.log(res);
         },
         (error) => {
           console.log(error)
-          this.isLoading = false;
+          // this.isLoading = false;
           this.message = (
             error.response &&
             error.response.data &&
@@ -150,19 +158,25 @@ import Loading from 'vue-loading-overlay';
       }
     },
     setup() {
+      const value = ref()
       const selectedItems = ref(["Manager"]);
-      // const filteredOptions = computed(() =>
-      //   OPTIONS.filter((o) => !selectedItems.value.includes(o))
-      // );
-      // const selectedItemsForTag = ref(["Tag1"]);
-      // const filteredOptionsForTag = computed(() =>
-      //   OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
-      // );
+      const filteredOptions = computed(() =>
+        OPTIONS.filter((o) => !selectedItems.value.includes(o))
+      );
+      const selectedItemsForTag = ref(["Tag1"]);
+      const filteredOptionsForTag = computed(() =>
+        OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
+      );
+      // const handleChange = value => {
+      //   console.log(`selected ${value}`);
+      // };
       return {
+        // handleChange,
+        value,
         selectedItems,
-        // filteredOptions,
-        // filteredOptionsForTag,
-        // selectedItemsForTag,
+        filteredOptions,
+        filteredOptionsForTag,
+        selectedItemsForTag,
       };
     },
   };
