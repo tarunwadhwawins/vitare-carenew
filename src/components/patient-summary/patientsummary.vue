@@ -531,7 +531,7 @@
       <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <label>Device Name</label>
+            <label>Home Unit Type</label>
             <a-select
               ref="select"
               v-model="value1"
@@ -540,16 +540,40 @@
               @focus="focus"
               @change="handleChange"
             >
-              <a-select-option value="lucy">Bloop Pressure</a-select-option>
-              <a-select-option value="Yiminghe">Spo2</a-select-option>
+              <a-select-option value="lucy">Blood Pressure</a-select-option>
+              <a-select-option value="Yiminghe">Oxymeter</a-select-option>
               <a-select-option value="Yiminghe">Glucose</a-select-option>
             </a-select>
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <label>Status</label>
-            <a-switch v-model:checked="checked" />
+            <label>Model No</label>
+            <a-input v-model="value" size="large" />
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label>Serial No</label>
+            <a-input v-model="value" size="large" />
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label>MAC Address</label>
+            <a-input v-model="value" size="large" />
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label>Device Time</label>
+            <a-input v-model="value" size="large" />
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label>Server Time</label>
+            <a-input v-model="value" size="large" />
           </div>
         </a-col>
       </a-row>
@@ -897,8 +921,28 @@ const data1 = [
 ];
 const columns2 = [
   {
-    title: "Device",
+    title: "Home Unit Type",
+    dataIndex: "home",
+  },
+  {
+    title: "Model No",
+    dataIndex: "model",
+  },
+  {
+    title: "Serial No",
+    dataIndex: "serial",
+  },
+  {
+    title: "MAC Address",
+    dataIndex: "mac",
+  },
+  {
+    title: "Device Time",
     dataIndex: "device",
+  },
+  {
+    title: "Server Time",
+    dataIndex: "server",
   },
   {
     title: "Active/Inactive",
@@ -918,13 +962,23 @@ const columns2 = [
 const data2 = [
   {
     key: "1",
-    device: "Blood Pressure",
+    home: "Blood Pressure",
+    model: "M-101",
+    serial: "S-101",
+    mac: "Lorem",
+    device: "11:00 Am",
+    server: "11:30 Am",
     active: "",
     action: "",
   },
   {
     key: "2",
-    device: "Glucose",
+    home: "Oxymeter",
+    model: "M-102",
+    serial: "S-102",
+    mac: "Lorem",
+    device: "10:15 Am",
+    server: "10:30 Am",
     active: "",
     action: "",
   },

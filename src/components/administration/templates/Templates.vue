@@ -31,8 +31,8 @@
                     <a class="icons"><EditOutlined /></a>
                     <a class="icons"> <DeleteOutlined /></a>
                   </template>
-                  <template #active>
-                    <a-switch v-model:checked="checked" />
+                  <template #active="key">
+                    <a-switch v-model:checked="checked[key.record.key]" />
                   </template>
                 </a-table>
               </a-col>
@@ -121,7 +121,7 @@ export default {
   },
 
   setup() {
-    const checked = ref(false);
+    const checked = ref([false]);
 
     const visible = ref(false);
     const showModal = () => {

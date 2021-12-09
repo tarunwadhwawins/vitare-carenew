@@ -31,8 +31,8 @@
                     <a class="icons"><EditOutlined /></a>
                     <a class="icons"> <DeleteOutlined /></a>
                   </template>
-                  <template #active>
-                    <a-switch v-model:checked="checked" />
+                  <template #active="key">
+                    <a-switch v-model:checked="checked[key.record.key]" />
                   </template>
                 </a-table>
               </a-col>
@@ -50,7 +50,7 @@
       @ok="handleOk"
     >
       <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
+        <a-col :sm="8" :xs="24">
           <div class="form-group">
             <label>Category</label>
             <a-select
@@ -62,28 +62,43 @@
               @change="handleChange"
             >
               <a-select-option value="lucy">Choose Category</a-select-option>
-              <a-select-option value="Yiminghe">Appointment Reminder</a-select-option>
-              <a-select-option value="Yiminghe">Recall Reminder </a-select-option>
-              <a-select-option value="Yiminghe">Patient Message</a-select-option>
+              <a-select-option value="Yiminghe">AppointmentType</a-select-option>
+              <a-select-option value="Yiminghe">Specialization </a-select-option>
+              <a-select-option value="Yiminghe">Communication Category</a-select-option>
+              <a-select-option value="Yiminghe">Communication Status</a-select-option>
+              <a-select-option value="Yiminghe">Task Status</a-select-option>
+              <a-select-option value="Yiminghe">Task Priority</a-select-option>
+              <a-select-option value="Yiminghe">Relationship</a-select-option>
+              <a-select-option value="Yiminghe">Gender</a-select-option>
+              <a-select-option value="Yiminghe">Health Conditions</a-select-option>
+              <a-select-option value="Yiminghe">Designation</a-select-option>
+              <a-select-option value="Yiminghe">Document Type</a-select-option>
+              <a-select-option value="Yiminghe">Insurance Type</a-select-option>
             </a-select>
           </div>
         </a-col>
-        <a-col :sm="12" :xs="24">
+        <a-col :sm="8" :xs="24">
           <div class="form-group">
             <label>Code Name</label>
             <a-input v-model="value" size="large" />
           </div>
         </a-col>
-        <a-col :sm="12" :xs="24">
+        <a-col :sm="8" :xs="24">
+          <div class="form-group">
+            <label>Data Type</label>
+            <a-input v-model="value" size="large" />
+          </div>
+        </a-col>
+        <a-col :sm="24" :xs="24">
           <div class="form-group">
             <label>Description </label>
-            <a-input v-model="value" size="large" />
+            <a-textarea v-model:value="value2" placeholder="Description" allow-clear />
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <label>Data Type</label>
-            <a-input v-model="value" size="large" />
+            <label>Active/Inactive</label>
+            <a-switch v-model:checked="checked" />
           </div>
         </a-col>
       </a-row>
@@ -139,6 +154,13 @@ const columns = [
     },
   },
   {
+    title: "Active/Inactive",
+    dataIndex: "active",
+    slots: {
+      customRender: "active",
+    },
+  },
+  {
     title: "Actions",
     dataIndex: "actions",
     slots: {
@@ -149,7 +171,7 @@ const columns = [
 const data = [
   {
     key: "1",
-    category: "Appointment Reminder",
+    category: "Specialization",
     codename: "A-101",
     description: "Lorem Ipsum",
     date: "Dec 06, 2021",
@@ -158,7 +180,7 @@ const data = [
   },
   {
     key: "2",
-    category: "Recall Reminder",
+    category: "Relationship",
     codename: "A-102",
     description: "Lorem Ipsum",
     date: "Dec 08, 2021",
@@ -167,7 +189,7 @@ const data = [
   },
   {
     key: "3",
-    category: "Patient Message",
+    category: "Communication Status",
     codename: "A-103",
     description: "Lorem Ipsum",
     date: "Dec 11, 2021",
@@ -184,7 +206,7 @@ export default {
   },
 
   setup() {
-    const checked = ref(false);
+    const checked = ref([false]);
 
     const visible = ref(false);
     const showModal = () => {

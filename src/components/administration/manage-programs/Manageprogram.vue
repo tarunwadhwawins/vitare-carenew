@@ -31,8 +31,8 @@
                     <a class="icons"><EditOutlined /></a>
                     <a class="icons"> <DeleteOutlined /></a>
                   </template>
-                  <template #active>
-                    <a-switch v-model:checked="checked" />
+                  <template #active="key">
+                    <a-switch v-model:checked="checked[key.record.key]" />
                   </template>
                 </a-table>
               </a-col>
@@ -44,37 +44,18 @@
     <!--modals-->
     <a-modal v-model:visible="visible" title="Add New Program" @ok="handleOk">
       <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
+        <a-col :sm="24" :xs="24">
           <div class="form-group">
             <label>Choose Programs</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">Choose Programs</a-select-option>
-              <a-select-option value="Yiminghe"
-                >RPM - Remote Patient Monitor</a-select-option
-              >
-              <a-select-option value="Yiminghe"
-                >BHI - Behaviour Health Integration</a-select-option
-              >
-              <a-select-option value="Yiminghe"
-                >CCM - Chronic Care Management
-              </a-select-option>
-            </a-select>
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Description</label>
             <a-input v-model="value" size="large" />
           </div>
         </a-col>
-
+        <a-col :sm="24" :xs="24">
+          <div class="form-group">
+            <label>Description</label>
+            <a-textarea v-model:value="value2" placeholder="Message" allow-clear />
+          </div>
+        </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <label>Active/Inactive</label>
@@ -156,7 +137,7 @@ export default {
   },
 
   setup() {
-    const checked = ref(false);
+    const checked = ref([false]);
 
     const visible = ref(false);
     const showModal = () => {

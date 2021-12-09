@@ -15,19 +15,9 @@
               </a-col>
             </a-row>
             <a-row :gutter="24">
-              <a-col :sm="6" :xs="24">
+              <a-col :sm="8" :xs="24">
                 <div class="form-group">
-                  <label>Choose Date</label>
-                  <a-date-picker
-                    v-model:value="value1"
-                    :size="size"
-                    style="width: 100%"
-                  />
-                </div>
-              </a-col>
-              <a-col :sm="6" :xs="24">
-                <div class="form-group">
-                  <label>Choose Day</label>
+                  <label>Report Name</label>
                   <a-select
                     ref="select"
                     v-model="value1"
@@ -41,13 +31,28 @@
                   </a-select>
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :sm="8" :xs="24">
                 <div class="form-group">
-                  <label>Item Display</label>
-                  <a-input v-model="value" size="large" />
+                  <label>Start Date</label>
+                  <a-date-picker
+                    v-model:value="value1"
+                    :size="size"
+                    style="width: 100%"
+                  />
+                </div>
+              </a-col>
+              <a-col :sm="8" :xs="24">
+                <div class="form-group">
+                  <label>End Date</label>
+                  <a-date-picker
+                    v-model:value="value1"
+                    :size="size"
+                    style="width: 100%"
+                  />
                 </div>
               </a-col>
               <a-col :sm="24" :xs="24" class="text-right">
+                <a-button class="btn blueBtn">Search</a-button>
                 <a-button class="btn blueBtn">Download</a-button>
               </a-col>
             </a-row>

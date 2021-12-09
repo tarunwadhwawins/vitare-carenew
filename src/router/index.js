@@ -110,7 +110,11 @@ const routes = [
     name: 'Roles Permission',
     component: () => import( '../components/administration/roles-permissions/Rolespermissions')
   },
-
+  {
+    path: '/cpt-codes',
+    name: 'CPT Codes',
+    component: () => import( '../components/administration/cpt-codes/Cptcodes')
+  },
 
 
 ]

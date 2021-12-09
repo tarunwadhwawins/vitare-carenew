@@ -12,10 +12,10 @@
             <a-row>
               <a-col :span="24">
                 <h2 class="pageTittle">
-                  Manage Staff
+                  CPT Codes
                   <div class="commonBtn">
                     <a-button class="btn primaryBtn" @click="showModal"
-                      >Add New Staff</a-button
+                      >Add CPT Codes</a-button
                     >
                   </div>
                 </h2>
@@ -46,69 +46,30 @@
       v-model:visible="visible"
       max-width="1140px"
       width="100%"
-      title="Add New Member"
+      title="Add Global Codes"
       @ok="handleOk"
     >
       <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <label>First Name</label>
+            <label>CPT Code</label>
             <a-input v-model="value" size="large" />
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <label>Last Name </label>
+            <label>Billing Amount</label>
             <a-input v-model="value" size="large" />
           </div>
         </a-col>
-        <a-col :sm="12" :xs="24">
+        <a-col :sm="24" :xs="24">
           <div class="form-group">
-            <label>Email</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Phone Number</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Passcode</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Password</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Designation</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Manage Role</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">Manage Role</a-select-option>
-              <a-select-option value="Yiminghe">Admin</a-select-option>
-              <a-select-option value="Yiminghe">Manager </a-select-option>
-              <a-select-option value="Yiminghe">Standard</a-select-option>
-              <a-select-option value="Yiminghe">Billing Admin</a-select-option>
-            </a-select>
+            <label>Description </label>
+            <a-textarea
+              v-model:value="value2"
+              placeholder="textarea with clear icon"
+              allow-clear
+            />
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
@@ -126,47 +87,31 @@
 <script>
 import Header from "@/components/administration/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
-import { defineComponent, ref } from "vue";
+import { ref } from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 const columns = [
   {
-    title: "Name",
-    dataIndex: "name",
+    title: "Cpt Code",
+    dataIndex: "cpt",
     sorter: {
-      compare: (a, b) => a.name - b.name,
+      compare: (a, b) => a.cpt - b.cpt,
       multiple: 3,
     },
   },
   {
-    title: "Email",
-    dataIndex: "email",
+    title: "Description",
+    dataIndex: "description",
     sorter: {
-      compare: (a, b) => a.email - b.phoemailne,
+      compare: (a, b) => a.description - b.description,
       multiple: 3,
     },
   },
   {
-    title: "Phone",
-    dataIndex: "phone",
+    title: "Billing Amount",
+    dataIndex: "billing",
     sorter: {
-      compare: (a, b) => a.phone - b.phone,
-      multiple: 3,
-    },
-  },
-  {
-    title: "Designation",
-    dataIndex: "designation",
-    sorter: {
-      compare: (a, b) => a.designation - b.designation,
+      compare: (a, b) => a.billing - b.billing,
       multiple: 2,
-    },
-  },
-  {
-    title: "Roles",
-    dataIndex: "roles",
-    sorter: {
-      compare: (a, b) => a.roles - b.roles,
-      multiple: 1,
     },
   },
   {
@@ -186,32 +131,26 @@ const columns = [
 ];
 const data = [
   {
-    key: "1",
-    name: "Smith",
-    email: "smith87@gmail.com",
-    phone: "(789)-456-995",
-    designation: "Administrative",
-    roles: "Billing Admin",
+    key: 1,
+    cpt: "99453",
+    description: "Lorem Ipsum",
+    billing: "$150",
     active: "",
     action: "",
   },
   {
-    key: "2",
-    name: "Joseph",
-    email: "joesph33@gmail.com",
-    phone: "(557)-887-678",
-    designation: "Executive",
-    roles: "Admin",
+    key: 2,
+    cpt: "99454",
+    description: "Lorem Ipsum",
+    billing: "$200",
     active: "",
     action: "",
   },
   {
-    key: "3",
-    name: "Henry",
-    email: "heny67@gmail.com",
-    phone: "(789)-456-995",
-    designation: "Manager",
-    roles: "User Admin",
+    key: 3,
+    cpt: "99457",
+    description: "Lorem Ipsum",
+    billing: "$250",
     active: "",
     action: "",
   },
