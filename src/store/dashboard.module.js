@@ -31,7 +31,7 @@ export const dashBoard = {
         if(error.message=="Request failed with status code 401"){
          AuthService.logout();
         }
-        commit('totalPatientsFailure', error);
+        commit('Failure', error);
       }
     },
     async newPatients({ commit }) {
@@ -39,7 +39,7 @@ export const dashBoard = {
         let resp = await DashboardService.newPatient()
         commit('newPatientsSuccess', resp.data.data);
       } catch (error) {
-        commit('newPatientsFailure', error);
+        commit('Failure', error);
       }
     },
     async abnormalPatients({ commit }) {
@@ -47,7 +47,7 @@ export const dashBoard = {
         let resp = await DashboardService.abnormalPatient()
         commit('abnormalPatientsSuccess', resp.data.data);
       } catch (error) {
-        commit('abnormalPatientsFailure', error);
+        commit('Failure', error);
       }
     },
     async activePatients({ commit }) {
@@ -55,7 +55,7 @@ export const dashBoard = {
         let resp = await DashboardService.activePatient()
         commit('activePatientsSuccess', resp.data.data);
       } catch (error) {
-        commit('activePatientsFailure', error);
+        commit('Failure', error);
       }
     },
     async inactivePatients({ commit }) {
@@ -63,7 +63,7 @@ export const dashBoard = {
         let resp = await DashboardService.inactivePatient()
         commit('inactivePatientsSuccess', resp.data.data);
       } catch (error) {
-        commit('inactivePatientsFailure', error);
+        commit('Failure', error);
       }
     },
     async criticalPatients({ commit }) {
@@ -71,7 +71,7 @@ export const dashBoard = {
         let resp = await DashboardService.criticalPatient()
         commit('criticalPatientsSuccess', resp.data.data);
       } catch (error) {
-        commit('criticalPatientsFailure', error);
+        commit('Failure', error);
       }
     },
     async appointment({ commit },id) {
@@ -85,7 +85,7 @@ export const dashBoard = {
         }
         
       } catch (error) {
-        commit('newappointmentFailure', error);
+        commit('Failure', error);
       }
     },
     async todayappointment({ commit }) {
@@ -93,7 +93,7 @@ export const dashBoard = {
         let resp = await DashboardService.todayappointment()
         commit('todayappointmentSuccess', resp.data.data);
       } catch (error) {
-        commit('todayappointmentFailure', error);
+        commit('Failure', error);
       }
     },
     async appointmentcount({ commit }) {
@@ -101,7 +101,7 @@ export const dashBoard = {
         let resp = await DashboardService.appointmentcount()
         commit('appointmentcountSuccess', resp.data);
       } catch (error) {
-        commit('appointmentcountFailure', error);
+        commit('Failure', error);
       }
     },
     async specialization({ commit }, id) {
@@ -113,7 +113,7 @@ export const dashBoard = {
           commit('specializationSuccess', resp.data.data);
         }
       } catch (error) {
-        commit('specializationFailure', error);
+        commit('Failure', error);
       }
     },
     async network({ commit }, id) {
@@ -125,7 +125,7 @@ export const dashBoard = {
           commit('networkoutSuccess', resp.data.data);
         }
       } catch (error) {
-        commit('specializationFailure', error);
+        commit('Failure', error);
       }
     },
   },
@@ -133,77 +133,56 @@ export const dashBoard = {
     totalPatientsSuccess(state, count) {
       state.tcount = count;
     },
-    totalPatientsFailure(state, error) {
+    Failure(state, error) {
       state.errormsg = error;
     },
     newPatientsSuccess(state, count) {
       state.ncount = count;
     },
-    newPatientsFailure(state, error) {
-      state.errormsg = error;
-    },
+    
     abnormalPatientsSuccess(state, count) {
       state.abcount = count;
     },
-    abnormalPatientsFailure(state, error) {
-      state.errormsg = error;
-    },
+    
     activePatientsSuccess(state, count) {
       state.activecount = count;
     },
-    activePatientsFailure(state, error) {
-      state.errormsg = error;
-    },
+   
     inactivePatientsSuccess(state, count) {
       state.inactivecount = count;
     },
-    inactivePatientsFailure(state, error) {
-      state.errormsg = error;
-    },
+    
     criticalPatientsSuccess(state, count) {
       state.critcount = count;
     },
-    criticalPatientsFailure(state, error) {
-      state.errormsg = error;
-    },
+    
     newappointmentSuccess(state, appointment) {
       state.newappointment = appointment;
     },
     futureappointmentSuccess(state, appointment) {
       state.futureappointment = appointment;
     },
-    appointmentFailure(state, error) {
-      state.errormsg = error;
-    },
+    
     todayappointmentSuccess(state, appointment) {
       state.todayappointment = appointment;
     },
-    todayappointmentFailure(state, error) {
-      state.errormsg = error;
-    },
+    
     appointmentcountSuccess(state, count) {
       state.appointmentcount = count;
     },
-    appointmentcountFailure(state, error) {
-      state.errormsg = error;
-    },
+    
     wellnessSuccess(state, count) {
       state.wellness = count;
     },
     specializationSuccess(state, count) {
       state.specialization = count;
     },
-    specializationFailure(state, count) {
-      state.errormsg = count;
-    },
+    
     networkinSuccess(state, count) {
       state.networkin = count;
     },
     networkoutSuccess(state, count) {
       state.networkout = count;
-    },
-    networkFailure(state, count) {
-      state.errormsg = count;
     },
 
 
