@@ -6,10 +6,9 @@
 
 <script>
   export default {
-    props: ["categories","data"],
-  
-    setup(props){
-      console.log(props.categories)
+    props: ["categories", "data"],
+
+    setup(props) {
       return {
         wellness: {
           annotations: {
@@ -62,7 +61,7 @@
             labels: {
               rotate: -45,
             },
-            categories: ["Wellness", "Behavior"],
+            categories: props.categories,
             tickPlacement: "on",
           },
           yaxis: {
@@ -71,13 +70,13 @@
             },
           },
         },
-      
-      behavior: [
-        {
-          name: "Specialization",
-          data: [1, 2],
-        },
-      ],
+
+        behavior: [
+          {
+            name: "Specialization",
+            data: props.data,
+          },
+        ],
       }
     }
   };

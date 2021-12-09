@@ -13,23 +13,22 @@
         </a-row>
       </a-col>
     </a-row>
-    <!-- <a-row :gutter="24">
-      <PatientsStats></PatientsStats>
-      <VirtualWaitingRoom></VirtualWaitingRoom>
-    </a-row> -->
-    <a-row :gutter="24">
-      <Appointment></Appointment>
-      <VirtualWaitingRoom></VirtualWaitingRoom>
-      <PatientsChart></PatientsChart>
+    <a-row :gutter="24" v-if="totalPatients">
+      <Appointment :todayappointment="todayappointment"></Appointment>
+      <VirtualWaitingRoom :newappointment="newappointment" :future="futureappointment"></VirtualWaitingRoom>
+      <PatientsChart :data="[newPatients.count,abnormalPatients.count,criticalPatients.count]"
+        :categories="[newPatients.text,abnormalPatients.text, criticalPatients.text]"></PatientsChart>
       <a-col :sm="12" :xs="24">
         <a-card title="Care Coordinator Stats " class="common-card">
           <a-tabs v-model:activeKey="activeKey1">
             <a-tab-pane key="1" tab="Specialization " v-if="specialization">
-              <SpecializationChart :data="[specialization.total,wellness.total]" :categories="[specialization.specialization,wellness.specialization]"></SpecializationChart>
+              <SpecializationChart :data="[specialization.total,wellness.total]"
+                :categories="[specialization.specialization,wellness.specialization]"></SpecializationChart>
             </a-tab-pane>
-            <a-tab-pane key="2" tab="Network " force-render>
+            <a-tab-pane key="2" tab="Network " force-render v-if="totalPatients">
 
-              <NetworkChart></NetworkChart>
+              <NetworkChart :categories="[networkin.network,networkout.network]"
+                :data="[networkin.total,networkout.total]"></NetworkChart>
             </a-tab-pane>
           </a-tabs>
         </a-card>
@@ -37,13 +36,14 @@
       <CptChart></CptChart>
       <FinancialChart></FinancialChart>
     </a-row>
-    
+
     <a-row :gutter="24" v-if="totalPatients">
       <TotalPatientsChart
         :chart="[totalPatients.count, newPatients.count, criticalPatients.count, abnormalPatients.count, activePatients.count, inactivePatients.count]"
         :lable="[totalPatients.text,newPatients.text,criticalPatients.text,abnormalPatients.text,activePatients.text,inactivePatients.text]">
       </TotalPatientsChart>
-      <AppointmentSummary></AppointmentSummary>
+      <AppointmentSummary :data="appointmentcount.map((item) =>  item.total )"
+        :categories="appointmentcount.map((item) =>  item.month )"></AppointmentSummary>
     </a-row>
   </a-layout-content>
 </template>
@@ -60,7 +60,7 @@
   import SpecializationChart from "./care-coordinator/SpecializationChart"
   import NetworkChart from "./care-coordinator/NetworkChart"
   import CptChart from "./CptChart"
-  import { useStore }  from "vuex"
+  import { useStore } from "vuex"
 
   export default {
 
@@ -77,94 +77,81 @@
       AppointmentSummary,
       FinancialChart,
     },
-    data: function () {
-      return {
-        SpecializationsCount: [],
-        chartOptions: {
-          chart: {
-            height: 350,
-            type: "area",
-          },
-          dataLabels: {
-            enabled: false,
-          },
-          stroke: {
-            curve: "smooth",
-          },
-          xaxis: {
-            type: "datetime",
-            categories: [
-              "2018-09-19T00:00:00.000Z",
-              "2018-09-19T01:30:00.000Z",
-              "2018-09-19T02:30:00.000Z",
-              "2018-09-19T03:30:00.000Z",
-              "2018-09-19T04:30:00.000Z",
-              "2018-09-19T05:30:00.000Z",
-              "2018-09-19T06:30:00.000Z",
-            ],
-          },
-          tooltip: {
-            x: {
-              format: "dd/MM/yy HH:mm",
-            },
-          },
-        },
-        series: [
-          {
-            name: "series1",
-            data: [31, 40, 28, 51, 42, 109, 100],
-          },
-          {
-            name: "series2",
-            data: [11, 32, 45, 32, 34, 52, 41],
-          },
-        ],
-      };
-    },
+
     setup() {
       const store = useStore()
-      
+
 
       watchEffect(() => {
-        store.dispatch("totalPatients")
+
         store.dispatch("newPatients")
         store.dispatch("abnormalPatients")
         store.dispatch("activePatients")
         store.dispatch("inactivePatients")
         store.dispatch("criticalPatients")
-        store.dispatch("specialization",1)
-        store.dispatch("specialization",2)
+        store.dispatch("specialization", 1)
+        store.dispatch("specialization", 2)
+        store.dispatch("network", 1)
+        store.dispatch("network", 2)
+        store.dispatch("appointmentcount")
+        store.dispatch("appointment", 1)
+        store.dispatch("appointment", 2)
+        store.dispatch("todayappointment")
+        store.dispatch("totalPatients")
       })
 
-      const totalPatients = computed(()=>{
+      const totalPatients = computed(() => {
         return store.state.dashBoard.tcount
       })
-      const newPatients = computed(()=>{
-        return store.state.dashBoard.ncount 
+      const newPatients = computed(() => {
+        return store.state.dashBoard.ncount
       })
-      const criticalPatients = computed(()=>{
+      const criticalPatients = computed(() => {
         return store.state.dashBoard.critcount
       })
-      const abnormalPatients = computed(()=>{
+      const abnormalPatients = computed(() => {
         return store.state.dashBoard.abcount
       })
-      const activePatients = computed(()=>{
+      const activePatients = computed(() => {
         return store.state.dashBoard.activecount
       })
-      const inactivePatients = computed(()=>{
+      const inactivePatients = computed(() => {
         return store.state.dashBoard.inactivecount
       })
-      const specialization = computed(()=>{
+      const specialization = computed(() => {
 
         return store.state.dashBoard.specialization
       })
-      const wellness = computed(()=>{
+      const networkin = computed(() => {
 
-return store.state.dashBoard.wellness
-})
+        return store.state.dashBoard.networkin
+      })
+      const networkout = computed(() => {
 
- 
-      
+        return store.state.dashBoard.networkout
+      })
+      const wellness = computed(() => {
+
+        return store.state.dashBoard.wellness
+      })
+      const appointmentcount = computed(() => {
+
+        return store.state.dashBoard.appointmentcount
+      })
+      const futureappointment = computed(() => {
+
+        return store.state.dashBoard.futureappointment
+      })
+      const todayappointment = computed(() => {
+
+        return store.state.dashBoard.todayappointment
+      })
+      const newappointment = computed(() => {
+
+        return store.state.dashBoard.newappointment
+      })
+
+
       return {
         totalPatients,
         newPatients,
@@ -174,7 +161,12 @@ return store.state.dashBoard.wellness
         inactivePatients,
         specialization,
         wellness,
-   
+        networkin,
+        networkout,
+        appointmentcount,
+        futureappointment,
+        newappointment,
+        todayappointment,
 
       };
     },

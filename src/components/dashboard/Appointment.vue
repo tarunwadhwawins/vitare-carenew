@@ -8,13 +8,14 @@
         <template #appt="text">
           <router-link to="manage-care-coordinator">{{
             text.text
-          }}</router-link>
+            }}</router-link>
         </template>
       </a-table>
     </a-card>
   </a-col>
 </template>
 <script>
+  import { reactive } from "vue"
   const columns4 = [
     {
       title: "Patient Name",
@@ -29,31 +30,18 @@
     },
     {
       title: "  Appointment With",
-      dataIndex: "appt",
+      dataIndex: "appointment_type",
       slots: {
         customRender: "appt",
       },
     },
   ];
-  const data4 = [
-    {
-      key: "1",
-      patient: "Steve Smith",
-      date: "Dec 20, 2021 - 01:30 PM",
-      appt: "Joseph",
-    },
-    {
-      key: "2",
-      patient: "Jane Doe",
-      date: "Dec 23, 2021 - 11:30 AM",
-      appt: "Robert",
-    },
-  ];
   export default {
-
-    setup(){
-      return{
-        data4,
+    props: ["todayappointment"],
+    setup(props) {
+      const data = reactive(props.todayappointment)
+      return {
+        data,
         columns4,
       }
     }

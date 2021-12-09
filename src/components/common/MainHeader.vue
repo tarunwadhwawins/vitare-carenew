@@ -6,7 +6,7 @@
       <div class="commonBtn">
         <a-button class="btn primaryBtn" @click.prevent="showModal">{{
           buttonText
-        }}</a-button>
+          }}</a-button>
       </div>
 
       <div class="filter" v-if="heading === 'Dashboard'">
@@ -19,16 +19,8 @@
   <!-- </a-row> -->
 
   <!-- Modal -->
-  <a-modal
-    v-model:visible="visible"
-    max-width="1140px"
-    width="100%"
-    :title="buttonText"
-    centered
-    @ok="handleOk"
-    @onCancel="handleCancel"
+  <a-modal v-model:visible="visible" max-width="1140px" width="100%" :title="buttonText" centered @ok="handleOk"
     :footer="null">
-
     <AddCommunicationModal v-if="modalScreen == 'communication'"></AddCommunicationModal>
     <CareCoordinatorModal v-if="modalScreen == 'coordinator'"></CareCoordinatorModal>
   </a-modal>
@@ -73,14 +65,14 @@ export default {
       localStorage.setItem('is_update_coordinator', false)
     };
 
-    const handleOk = (e) => {
-      console.log(e);
-      visible.value = false;
-    };
+      const handleOk = (e) => {
+        console.log(e);
+        visible.value = false;
+      };
 
-    const handleChange = (value) => {
-      console.log(`selected ${value}`);
-    };
+      const handleChange = (value) => {
+        console.log(`selected ${value}`);
+      };
 
     watch(() => {
       localStorage.removeItem('is_update_coordinator');
@@ -102,9 +94,9 @@ export default {
 };
 </script>
 <style>
-.pageTittle .commonBtn {
-  position: absolute;
-  right: 0;
-  top: 0;
-}
+  .pageTittle .commonBtn {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
 </style>

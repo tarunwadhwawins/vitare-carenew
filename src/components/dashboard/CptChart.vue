@@ -9,7 +9,7 @@
 <script>
   export default {
 
-    setup(){
+    setup() {
       return {
         code: {
           annotations: {
