@@ -125,6 +125,7 @@ export default {
     
     const onClickEditButton = (rowId) => {
       localStorage.setItem('is_update_coordinator', true)
+      localStorage.setItem('coordinatorId', rowId)
       emit('edit-clicked', rowId)
     }
     const onClickDeleteButton = (rowId) => {

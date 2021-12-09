@@ -1,54 +1,61 @@
 import CareCoordinatorService from '../services/care-coordinator.service';
+import AuthService from '../services/auth.service';
 
 export const careCoordinator = {
+  state: {
+    coordinator: null,
+    contact: null,
+    availability: null,
+    role: null,
+  },
   actions: {
-    addCareCoordinator({ commit }, coordinator) {
-      return CareCoordinatorService.addCareCoordinator(coordinator).then(
-        coordinator => {
-          commit('addCareCoordinatorSuccess', coordinator);
-          return Promise.resolve(coordinator);
-        },
-        error => {
-          commit('addCareCoordinatorFailure');
-          return Promise.reject(error);
+    async addCareCoordinator({ commit }, coordinator) {
+      try {
+        let response = await CareCoordinatorService.addCareCoordinator(coordinator)
+        commit('addCareCoordinatorSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    addCareCoordinatorContact({ commit }, contact) {
-      return CareCoordinatorService.addCareCoordinatorContact(contact).then(
-        contact => {
-          commit('addContactSuccess', contact);
-          return Promise.resolve(contact);
-        },
-        error => {
-          commit('addContactFailure');
-          return Promise.reject(error);
+    async addCareCoordinatorContact({ commit }, contact) {
+      try {
+        let response = await CareCoordinatorService.addCareCoordinatorContact(contact)
+        commit('addContactSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    addCareCoordinatorAvailability({ commit }, availability) {
-      return CareCoordinatorService.addCareCoordinatorAvailability(availability).then(
-        availability => {
-          commit('addAvailabilitySuccess', availability);
-          return Promise.resolve(availability);
-        },
-        error => {
-          commit('addAvailabilityFailure');
-          return Promise.reject(error);
+    async addCareCoordinatorAvailability({ commit }, availability) {
+      try {
+        let response = await CareCoordinatorService.addCareCoordinatorAvailability(availability)
+        commit('addAvailabilitySuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    addCareCoordinatorRole({ commit }, role) {
-      return CareCoordinatorService.addCareCoordinatorRole(role).then(
-        role => {
-          commit('addRoleSuccess', role);
-          return Promise.resolve(role);
-        },
-        error => {
-          commit('addRoleFailure');
-          return Promise.reject(error);
+    async addCareCoordinatorRole({ commit }, role) {
+      try {
+        let response = await CareCoordinatorService.addCareCoordinatorRole(role)
+        commit('addRoleSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
     addCareCoordinatorDocument({ commit }, document) {
       return CareCoordinatorService.addCareCoordinatorDocument(document).then(
@@ -248,122 +255,65 @@ export const careCoordinator = {
     addCareCoordinatorSuccess(state, coordinator) {
       state.coordinator = coordinator;
     },
-    addCareCoordinatorFailure(state) {
-      state.coordinator = null;
-    },
     addContactSuccess(state, contact) {
       state.contact = contact;
-    },
-    addContactFailure(state) {
-      state.contact = null;
     },
     addAvailabilitySuccess(state, availability) {
       state.availability = availability;
     },
-    addAvailabilityFailure(state) {
-      state.availability = null;
-    },
     addRoleSuccess(state, role) {
       state.role = role;
-    },
-    addRoleFailure(state) {
-      state.role = null;
     },
     addDocumentSuccess(state, document) {
       state.document = document;
     },
-    addDocumentFailure(state) {
-      state.document = null;
-    },
     uploadFileSuccess(state, file) {
       state.file = file;
-    },
-    uploadFileFailure(state) {
-      state.file = null;
     },
     getCareCoordinatorsListSuccess(state, list) {
       state.list = list;
     },
-    getCareCoordinatorsListFailure(state, error) {
-      state.list = error;
-    },
     getCoordinatorContactsSuccess(state, contacts) {
       state.contacts = contacts;
-    },
-    getCoordinatorContactsFailure(state, error) {
-      state.contacts = error;
     },
     getCoordinatorAvailabilitiesSuccess(state, availability) {
       state.availability = availability;
     },
-    getCoordinatorAvailabilitiesFailure(state, error) {
-      state.availability = error;
-    },
     getCoordinatorRolesSuccess(state, roles) {
       state.roles = roles;
-    },
-    getCoordinatorRolesFailure(state, error) {
-      state.roles = error;
     },
     getSpecializationsCountSuccess(state, count) {
       state.count = count;
     },
-    getSpecializationsCountFailure(state, error) {
-      state.count = error;
-    },
     getNetworkCountSuccess(state, count) {
       state.count = count;
-    },
-    getNetworkCountFailure(state, error) {
-      state.count = error;
     },
     getCoordinatorContactDetailsSuccess(state, contact) {
       state.contact = contact;
     },
-    getCoordinatorContactDetailsFailure(state, error) {
-      state.contact = error;
-    },
     getCoordinatorAvailabilitySuccess(state, availability) {
       state.availability = availability;
-    },
-    getCoordinatorAvailabilityFailure(state, error) {
-      state.availability = error;
     },
     getCoordinatorRoleDetailsSuccess(state, role) {
       state.role = role;
     },
-    getCoordinatorRoleDetailsFailure(state, error) {
-      state.role = error;
-    },
     getCoordinatorDetailsSuccess(state, coordinator) {
       state.coordinator = coordinator;
-    },
-    getCoordinatorDetailsFailure(state, error) {
-      state.coordinator = error;
     },
     deleteCoordinatorSuccess(state, coordinator) {
       state.coordinator = coordinator;
     },
-    deleteCoordinatorFailure(state, error) {
-      state.coordinator = error;
-    },
     deleteCoordinatorContactSuccess(state, coordinator) {
       state.coordinator = coordinator;
-    },
-    deleteCoordinatorContactFailure(state, error) {
-      state.coordinator = error;
     },
     deleteCoordinatorAvailabilitySuccess(state, coordinator) {
       state.coordinator = coordinator;
     },
-    deleteCoordinatorAvailabilityFailure(state, error) {
-      state.coordinator = error;
-    },
     deleteCoordinatorRoleSuccess(state, coordinator) {
       state.coordinator = coordinator;
     },
-    deleteCoordinatorRoleFailure(state, error) {
-      state.coordinator = error;
+    Failure(state, error) {
+      state.errormsg = error;
     },
   }
 };

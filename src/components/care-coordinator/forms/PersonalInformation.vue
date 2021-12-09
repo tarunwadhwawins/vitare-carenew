@@ -1,7 +1,5 @@
 <template>
   <Form
-    ref="personalInformationForm"
-    :model="personalInformationForm"
     @submit="addCareCoordinator"
     :validation-schema="schema"
   >
@@ -12,7 +10,6 @@
           <Field
             class="ant-input ant-input-lg"
             v-model="personalInformationForm.first_name"
-            :value="firstName"
             name="first_name"
             size="large"
           />
@@ -120,7 +117,7 @@
             <option value="1">In</option>
             <option value="1">Out</option>
           </Field>
-          <inut type="hidden" v-model="personalInformationForm.id" name="id" value=""/>
+          <!-- <input type="hidden" v-model="personalInformationForm.id" name="id" value=""/> -->
           <ErrorMessage class="error" name="network" />
         </div>
       </a-col>
@@ -132,10 +129,11 @@
 </template>
 
 <script>
-  import { toRaw, watch } from 'vue';
+  import { reactive, ref } from 'vue';
   import { Form, Field, ErrorMessage } from 'vee-validate';
   import * as yup from 'yup';
   import { configure } from 'vee-validate';
+  import { useStore } from "vuex"
   // Default values
   configure({
     validateOnBlur: true,
@@ -155,8 +153,6 @@
         required: true
       }
     },
-    updated() {
-    },
     data() {
       const schema = yup.object({
         first_name: yup.string().required().label("First Name"),
@@ -168,21 +164,12 @@
         specialization: yup.string().required().label("Specialization"),
         network: yup.string().required().label("Network"),
       });
+      const user = JSON.parse(localStorage.getItem('user'));
       
       return {
+        user,
         is_update_coordinator: '',
-        schema,
-        personalInformationForm: {
-          first_name: '',
-          last_name: '',
-          designation: '',
-          gender: '',
-          email: '',
-          phone_no: '',
-          specialization: '',
-          network: '',
-          id: '',
-        }
+        schema, 
       }
     },
     created() {
@@ -210,60 +197,25 @@
       }
     },
     setup() {
-      // watch(() => {
-      //   const is_update_coordinator = localStorage.getItem('is_update_coordinator')
-      //   const personalData = JSON.parse(localStorage.getItem('personalData'))
-      //   if(is_update_coordinator) {
-      //     // const formData = this.data
-      //     this.personalInformationForm.first_name = personalData.first_name
-      //     this.personalInformationForm.last_name = personalData.last_name
-      //     this.personalInformationForm.designation = personalData.designation
-      //     this.personalInformationForm.gender = personalData.gender
-      //     this.personalInformationForm.email = personalData.email
-      //     this.personalInformationForm.phone_no = personalData.phone_no
-      //     this.personalInformationForm.specialization = personalData.specialization
-      //     this.personalInformationForm.network = personalData.network
-      //     this.personalInformationForm.id = personalData.id
-      //   }
-      // })
-    },
-    computed() {
-      return this.$store
-    },
-    methods: {
-      addCareCoordinator() {
-        const email_verify = JSON.parse(localStorage.getItem('user')).email_verify
-        const coordinator = toRaw(this.personalInformationForm);
-        const coordinatorId = coordinator.id;
-        this.$store.dispatch("addCareCoordinator", { 
-          first_name: coordinator.first_name,
-          last_name: coordinator.last_name,
-          designation: coordinator.designation,
-          gender: coordinator.gender,
-          email: coordinator.email,
-          phone_no: coordinator.phone_no,
-          specialization: coordinator.specialization,
-          network: coordinator.network,
-          email_verify: email_verify,
-          coordinatorId: coordinatorId,
-        })
-        .then((res) => {
-          localStorage.setItem('personalData', JSON.stringify(res.data));
-          localStorage.setItem('coordinatorId', res.data.id);
-          this.$store.state.personalData = res.data;
-          console.log(res);
-        },
-        (error) => {
-          console.log(error)
-          this.message = (
-            error.response &&
-            error.response.data &&
-            error.response.data.message
-          ) ||
-          error.message ||
-          error.toString();
-        });
+      const store = useStore()
+      const personalInformationForm = reactive({
+        first_name: null,
+        last_name: null,
+        designation: null,
+        gender: null,
+        email: null,
+        phone_no: null,
+        specialization: null,
+        network: null,
+      })
+      const addCareCoordinator = () => {
+        store.dispatch("addCareCoordinator", personalInformationForm)
       }
-    }
+
+      return {
+        personalInformationForm,
+        addCareCoordinator
+      }
+    },
   }
 </script>
