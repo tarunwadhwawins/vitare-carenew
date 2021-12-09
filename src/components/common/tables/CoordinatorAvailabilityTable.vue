@@ -40,6 +40,7 @@ import { ref, watch } from 'vue';
 import store from '@/store/index';
 import Loading from 'vue-loading-overlay';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons-vue";
+import swal from 'sweetalert';
 export default {
   components: {
     Loading,
@@ -73,37 +74,33 @@ export default {
       emit('clicked', availabilityId)
     }
     const onClickDeleteButton = ({coordinatorId, availabilityId}) => {
-      let data = {
-        coordinatorId: coordinatorId,
-        availabilityId: availabilityId
-      }
-      console.log(data)
-      store.dispatch("deleteCoordinatorAvailability", data)
-      .then((res) => {
-        console.log('Res', res)
-        store.dispatch("getCoordinatorAvailabilities", JSON.parse(localStorage.getItem('coordinatorId'))).then((res) => {
-          availabilityData.value = res.data.data;
-        },
-        (error) => {
-          console.log(error)
-          this.message = (
-            error.response &&
-            error.response.data &&
-            error.response.data.message
-          ) ||
-          error.message ||
-          error.toString();
-        });
-      },
-      (error) => {
-        console.log(error)
-        this.message = (
-          error.response &&
-          error.response.data &&
-          error.response.data.message
-        ) ||
-        error.message ||
-        error.toString();
+      swal({
+        title: "Are you sure?",
+        text: "Are you sure you want to delete this record?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          let data = {
+            coordinatorId: coordinatorId,
+            availabilityId: availabilityId
+          }
+          console.log(data)
+          store.dispatch("deleteCoordinatorAvailability", data)
+          .then((res) => {
+            console.log('Res', res)
+            store.dispatch("getCoordinatorAvailabilities", JSON.parse(localStorage.getItem('coordinatorId'))).then((res) => {
+              availabilityData.value = res.data.data;
+            },
+            (error) => {
+              console.log(error)
+            });
+          },
+          (error) => {
+            console.log(error)
+          });
+        }
       });
     }
     return {
