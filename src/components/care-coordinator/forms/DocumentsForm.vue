@@ -90,7 +90,6 @@ import Loading from 'vue-loading-overlay';
         // selectedItemsForTag: yup.string().required(),
       });
       return {
-        isLoading: false,
         schema,
         documentForm: {
           document_name: '',
@@ -104,8 +103,6 @@ import Loading from 'vue-loading-overlay';
     },
     methods: {
       onFileUpload (event) {
-        // this.isLoading = true;
-
         let doc_file = event.target.files[0]
         let formData = new FormData();
         formData.append('file', doc_file);
@@ -116,7 +113,6 @@ import Loading from 'vue-loading-overlay';
         },
         (error) => {
           console.log(error)
-          // this.isLoading = false;
           this.message = (
             error.response &&
             error.response.data &&
@@ -142,7 +138,6 @@ import Loading from 'vue-loading-overlay';
         },
         (error) => {
           console.log(error)
-          // this.isLoading = false;
           this.message = (
             error.response &&
             error.response.data &&
