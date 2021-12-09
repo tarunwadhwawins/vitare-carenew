@@ -1,8 +1,8 @@
 import { shallowMount } from '@vue/test-utils'
-import Login from '@/components/login/Login.vue'
+import Dashboard from '@/components/dashboard/Dashboard.vue'
 
 const factory = (values = {}) => {
-  return shallowMount(Login, {
+  return shallowMount(Dashboard, {
     data () {
       return {
         ...values
@@ -12,11 +12,9 @@ const factory = (values = {}) => {
 }
 
 
-describe('Login', () => {
-  it('does not render an error ', () => {
+describe('Dashboard', () => {
+  it('does not render an error', () => {
     const wrapper = factory()
     expect(wrapper.find('.error').exists()).toBeFalsy()
   })
 })
-
-
