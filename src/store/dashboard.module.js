@@ -85,7 +85,7 @@ export const dashBoard = {
         }
         
       } catch (error) {
-        commit('newappointmentFailure', error);
+        commit('appointmentFailure', error);
       }
     },
     async todayappointment({ commit }) {
