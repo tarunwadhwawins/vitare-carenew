@@ -105,10 +105,15 @@ class CareCoordinatorService {
   }
 
   addCareCoordinatorDocument(document) {
+    console.log('Document name', document.name)
+    console.log('Document document', document.document)
+    console.log('Document type', document.type)
+    console.log('Document tags', document.tags)
+    console.log('Document care_coordinator_id', document.care_coordinator_id)
     return axios.post(API_URL + 'carecoordinator/'+document.care_coordinator_id+'/document', {
         name: document.name,
-        file_path: document.file_path,
-        type_id: document.type_id,
+        document: document.document,
+        type: document.type,
         tags: document.tags,
       },
       { headers: authHeader() })
@@ -118,16 +123,21 @@ class CareCoordinatorService {
   }
 
   uploadFile(file) {
-    console.log('File 2', file)
-    // console.log('File Name', file.name)
     let user = JSON.parse(localStorage.getItem('user'));
-    return axios.post('https://ditstekdemo.com/Virtare-web/public/api/fileupload', {file: file}, {headers: { 'Content-Type': 'multipart/form-data', 'Authorization': 'Bearer '+user.token} })
-    .then(function() {
-        console.log('SUCCESS!!');
-      })
-      .catch(function(error) {
-        console.log('FAILURE!!', error);
-      });
+    return axios.post('https://ditstekdemo.com/Virtare-web/public/api/fileupload',
+    file,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer '+user.token
+      }
+    }).then(function(response) {
+      console.log('SUCCESS!!');
+      return response.data
+    })
+    .catch(function(error) {
+      console.log('FAILURE!!', error);
+    });
   }
 
   getCareCoordinatorsList(id) {

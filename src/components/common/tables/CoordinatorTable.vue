@@ -3,8 +3,8 @@
     <a-col :span="24">
       <a-table :columns="columns" :data-source="coordinatorsList" :scroll="{ x: 900 }">
         <template #action="{ record }">
-              <a class="icons" @click ="onClickEditButton(record.id)"><EditOutlined /></a>
-              <a class="icons" @click ="onClickDeleteButton(record.id)"> <DeleteOutlined /></a>
+          <a class="icons" @click ="onClickEditButton(record.id)"><EditOutlined /></a>
+          <a class="icons" @click ="onClickDeleteButton(record.id)"> <DeleteOutlined /></a>
         </template>
       </a-table> 
     </a-col>

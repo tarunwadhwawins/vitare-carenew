@@ -128,7 +128,6 @@ export default {
       current.value++;
     };
     const prev = () => {
-      localStorage.setItem('is_update', 'true');
       current.value--;
     };
     return {

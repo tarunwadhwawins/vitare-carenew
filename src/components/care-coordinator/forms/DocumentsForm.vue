@@ -28,7 +28,7 @@
           <ErrorMessage class="error" name="document_type" />
         </div>
       </a-col>
-      <!-- <a-col :sm="12" :xs="24">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label> Tags</label>
           <Field class="ant-input ant-input-lg" as="select"
@@ -38,7 +38,7 @@
             :options="filteredOptionsForTag.map((item) => ({ value: item }))"/>
           <ErrorMessage class="error" name="selectedItemsForTag" />
         </div>
-      </a-col> -->
+      </a-col>
     </a-row>
     <a-row :gutter="24" class="mb-24">
       <a-col :span="24">
@@ -99,58 +99,41 @@ import Loading from 'vue-loading-overlay';
     },
     methods: {
       onFileUpload (event) {
-        this.isLoading = true;
+        // this.isLoading = true;
+
         let doc_file = event.target.files[0]
+        let formData = new FormData();
+        formData.append('file', doc_file);
         
-        let user = JSON.parse(localStorage.getItem('user'));
-        axios.post('https://ditstekdemo.com/Virtare-web/public/api/fileupload',
-          {
-            file: doc_file
-          }, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              'Authorization': 'Bearer '+user.token
-            }
-          }
-        ).then(function() {
-          console.log('SUCCESS!!');
-        })
-        .catch(function(error) {
-          console.log('FAILURE!!', error);
+        // console.log('doc_file', doc_file)
+        // console.log('formData', formData)
+        
+        this.$store.dispatch("uploadFile", formData)
+        .then((res) => {
+          localStorage.setItem('file_path', res.data.path)
+          console.log(res.data.path);
+        },
+        (error) => {
+          console.log(error)
+          // this.isLoading = false;
+          this.message = (
+            error.response &&
+            error.response.data &&
+            error.response.data.message
+          ) ||
+          error.message ||
+          error.toString();
         });
-        
-        // let file = {
-        //   name: doc_file.name,
-        //   size: doc_file.size,
-        //   type: doc_file.type
-        // }
-        // this.$store.dispatch("uploadFile", file)
-        // .then((res) => { 
-        //   console.log(res);
-				// 	this.isLoading = false;
-        // },
-        // (error) => {
-        //   console.log(error)
-				// 	this.isLoading = false;
-        //   this.isLoading = false;
-        //   this.message = (
-        //     error.response &&
-        //     error.response.data &&
-        //     error.response.data.message
-        //   ) ||
-        //   error.message ||
-        //   error.toString();
-        // });
-        // this.document_file = event.target.files[0]
       },
       addCareCoordinatorDocument() {
+        const file_path = localStorage.getItem('file_path')
         const document = toRaw(this.documentForm);
         this.$store.dispatch("addCareCoordinatorDocument", { 
           name: document.document_name,
-          file_path: this.document_file.name,
-          type_id: document.document_type,
+          document: file_path,
+          type: document.document_type,
           tags: ["one","two"],
-          care_coordinator_id: 12,
+          care_coordinator_id: JSON.parse(localStorage.getItem('coordinatorId')),
         })
         .then((res) => { 
           console.log(res);
@@ -170,18 +153,18 @@ import Loading from 'vue-loading-overlay';
     },
     setup() {
       const selectedItems = ref(["Manager"]);
-      // const filteredOptions = computed(() =>
-      //   OPTIONS.filter((o) => !selectedItems.value.includes(o))
-      // );
-      // const selectedItemsForTag = ref(["Tag1"]);
-      // const filteredOptionsForTag = computed(() =>
-      //   OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
-      // );
+      const filteredOptions = computed(() =>
+        OPTIONS.filter((o) => !selectedItems.value.includes(o))
+      );
+      const selectedItemsForTag = ref(["Tag1"]);
+      const filteredOptionsForTag = computed(() =>
+        OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
+      );
       return {
         selectedItems,
-        // filteredOptions,
-        // filteredOptionsForTag,
-        // selectedItemsForTag,
+        filteredOptions,
+        filteredOptionsForTag,
+        selectedItemsForTag,
       };
     },
   };
