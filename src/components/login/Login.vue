@@ -62,7 +62,8 @@ export default defineComponent({
         })
         .then(
           () => {
-            this.$router.push("/dashboard");
+            this.$router.push("dashboard");
+            
           },
           (error) => {
             console.log(error);

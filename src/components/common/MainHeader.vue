@@ -6,7 +6,7 @@
       <div class="commonBtn">
         <a-button class="btn primaryBtn" @click.prevent="showModal">{{
           buttonText
-        }}</a-button>
+          }}</a-button>
       </div>
 
       <div class="filter" v-if="heading === 'Dashboard'">
@@ -19,41 +19,34 @@
   <!-- </a-row> -->
 
   <!-- Modal -->
-  <a-modal
-    v-model:visible="visible"
-    max-width="1140px"
-    width="100%"
-    :title="buttonText"
-    centered
-    @ok="handleOk"
-    :footer="null"
-  >
+  <a-modal v-model:visible="visible" max-width="1140px" width="100%" :title="buttonText" centered @ok="handleOk"
+    :footer="null">
     <AddCommunicationModal v-if="modalScreen == 'communication'"></AddCommunicationModal>
     <CareCoordinatorModal v-if="modalScreen == 'coordinator'"></CareCoordinatorModal>
   </a-modal>
 </template>
 
 <script>
-import { ref } from "vue";
-import AddCommunicationModal from "@/components/common/modals/AddCommunicationModal";
-import CareCoordinatorModal from "@/components/common/modals/CareCoordinatorModal";
-export default {
-  props: {
-    heading: {
-      type: String,
-      required: true,
+  import { ref } from "vue";
+  import AddCommunicationModal from "@/components/common/modals/AddCommunicationModal";
+  import CareCoordinatorModal from "@/components/common/modals/CareCoordinatorModal";
+  export default {
+    props: {
+      heading: {
+        type: String,
+        required: true,
+      },
+      buttonText: {
+        type: String,
+      },
+      modalScreen: {
+        type: String,
+      },
     },
-    buttonText: {
-      type: String,
+    components: {
+      AddCommunicationModal,
+      CareCoordinatorModal,
     },
-    modalScreen: {
-      type: String,
-    },
-  },
-  components: {
-    AddCommunicationModal,
-    CareCoordinatorModal,
-  },
 
     setup() {
       const visible = ref(false);
@@ -62,31 +55,31 @@ export default {
         visible.value = true;
       };
 
-    const handleOk = (e) => {
-      console.log(e);
-      visible.value = false;
-    };
+      const handleOk = (e) => {
+        console.log(e);
+        visible.value = false;
+      };
 
-    const handleChange = (value) => {
-      console.log(`selected ${value}`);
-    };
+      const handleChange = (value) => {
+        console.log(`selected ${value}`);
+      };
 
-    return {
-      visible,
-      showModal,
-      handleOk,
-      handleChange,
-      options: [...Array(3)].map((i) => ({
-        value: (i + 10).toString(36) + (i + 1),
-      })),
-    };
-  },
-};
+      return {
+        visible,
+        showModal,
+        handleOk,
+        handleChange,
+        options: [...Array(3)].map((i) => ({
+          value: (i + 10).toString(36) + (i + 1),
+        })),
+      };
+    },
+  };
 </script>
 <style>
-.pageTittle .commonBtn {
-  position: absolute;
-  right: 0;
-  top: 0;
-}
+  .pageTittle .commonBtn {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
 </style>
