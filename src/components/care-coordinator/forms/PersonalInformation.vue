@@ -255,7 +255,6 @@
         },
         (error) => {
           console.log(error)
-          this.isLoading = false;
           this.message = (
             error.response &&
             error.response.data &&

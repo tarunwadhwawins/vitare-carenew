@@ -49,7 +49,6 @@ export default {
   },
   data() {
     return {
-      isLoading: false,
     }
   },
   setup(props, { emit }) {
@@ -60,7 +59,6 @@ export default {
       },
       (error) => {
         console.log(error)
-        this.isLoading = false;
         this.message = (
           error.response &&
           error.response.data &&
@@ -88,7 +86,6 @@ export default {
         },
         (error) => {
           console.log(error)
-          this.isLoading = false;
           this.message = (
             error.response &&
             error.response.data &&
@@ -100,7 +97,6 @@ export default {
       },
       (error) => {
         console.log(error)
-        // this.isLoading = false;
         this.message = (
           error.response &&
           error.response.data &&

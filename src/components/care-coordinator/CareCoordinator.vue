@@ -48,14 +48,6 @@ export default {
       },
       (error) => {
         console.log(error)
-        this.isLoading = false;
-        this.message = (
-          error.response &&
-          error.response.data &&
-          error.response.data.message
-        ) ||
-        error.message ||
-        error.toString();
       });
       
       store.dispatch("getNetworkCount", 1)
@@ -66,14 +58,6 @@ export default {
       },
       (error) => {
         console.log(error)
-        this.isLoading = false;
-        this.message = (
-          error.response &&
-          error.response.data &&
-          error.response.data.message
-        ) ||
-        error.message ||
-        error.toString();
       });
     })
     const onClickEditPersonal = (rowId) => {
@@ -86,13 +70,6 @@ export default {
       },
       (error) => {
         console.log(error)
-        this.message = (
-          error.response &&
-          error.response.data &&
-          error.response.data.message
-        ) ||
-        error.message ||
-        error.toString();
       });
     }
       

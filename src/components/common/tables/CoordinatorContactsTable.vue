@@ -57,7 +57,6 @@ export default {
   },
   data() {
     return {
-      isLoading: false,
     }
   },
   setup(props, { emit }) {
@@ -68,14 +67,6 @@ export default {
       },
       (error) => {
         console.log(error)
-        this.isLoading = false;
-        this.message = (
-          error.response &&
-          error.response.data &&
-          error.response.data.message
-        ) ||
-        error.message ||
-        error.toString();
       });
     })
     const onClickViewButton = (rowId) => {
@@ -95,26 +86,10 @@ export default {
         },
         (error) => {
           console.log(error)
-          this.isLoading = false;
-          this.message = (
-            error.response &&
-            error.response.data &&
-            error.response.data.message
-          ) ||
-          error.message ||
-          error.toString();
         });
       },
       (error) => {
         console.log(error)
-        // this.isLoading = false;
-        this.message = (
-          error.response &&
-          error.response.data &&
-          error.response.data.message
-        ) ||
-        error.message ||
-        error.toString();
       });
     }
     return {

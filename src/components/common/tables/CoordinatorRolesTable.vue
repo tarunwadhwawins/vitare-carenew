@@ -46,7 +46,6 @@ export default {
   },
   data() {
     return {
-      isLoading: false,
     }
   },
   setup(props, { emit }) {
@@ -55,11 +54,9 @@ export default {
       store.dispatch("getCoordinatorRoles", JSON.parse(localStorage.getItem('coordinatorId')))
       .then((res) => {
         rolesData.value = res.data.data;
-        this.isLoading = false
       },
       (error) => {
         console.log(error)
-        this.isLoading = false;
         this.message = (
           error.response &&
           error.response.data &&
@@ -80,11 +77,9 @@ export default {
         console.log('Res', res)
         store.dispatch("getCoordinatorRoles", data.coordinatorId).then((res) => {
           rolesData.value = res.data.data;
-          this.isLoading = false
         },
         (error) => {
           console.log(error)
-          this.isLoading = false;
           this.message = (
             error.response &&
             error.response.data &&
@@ -96,7 +91,6 @@ export default {
       },
       (error) => {
         console.log(error)
-        // this.isLoading = false;
         this.message = (
           error.response &&
           error.response.data &&
