@@ -5,7 +5,7 @@
         <div class="form-group">
           <label>Role</label>
           <Field as="select" class="ant-input ant-input-lg"
-            v-model="rolesForm.role_name"
+            v-model="rolesForm.role_name[0]"
             name="role_name"
             mode="multiple"
             placeholder="Please select">

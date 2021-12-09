@@ -34,7 +34,7 @@ export default {
     LongCard,
     CoordinatorTable,
   },
-  setup() {
+  setup(props, {emit}) {
     const specializationTotal = ref()
     const specializationText = ref()
     const networkTotal = ref()
@@ -80,7 +80,9 @@ export default {
       store.dispatch("getCoordinatorDetails", rowId)
       .then((res) => {
         const coordinatorData = res.data.data;
+        localStorage.setItem('is_update_coordinator', true)
         localStorage.setItem('personalData', JSON.stringify(coordinatorData))
+        emit('is-visible', true)
       },
       (error) => {
         console.log(error)

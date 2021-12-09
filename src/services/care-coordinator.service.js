@@ -7,16 +7,11 @@ const API_URL = 'https://ditstekdemo.com/Virtare-web/public/api/';
 class CareCoordinatorService {
   addCareCoordinator(coordinator) {
     if(coordinator.coordinatorId != null) {
-      return axios.put(API_URL + 'carecoordinator'+coordinator.coordinatorId, {
+      return axios.put(API_URL + 'carecoordinator/'+coordinator.coordinatorId, {
         first_name: coordinator.first_name,
         last_name: coordinator.last_name,
-        designation: coordinator.designation,
         gender: coordinator.gender,
         email: coordinator.email,
-        phone_no: coordinator.phone_no,
-        specialization: coordinator.specialization,
-        network: coordinator.network,
-        email_verify: coordinator.email_verify
       },
       { headers: authHeader() })
       .then(response => {

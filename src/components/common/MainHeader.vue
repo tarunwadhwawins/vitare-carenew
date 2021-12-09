@@ -20,19 +20,24 @@
     :title="buttonText"
     centered
     @ok="handleOk"
-    :footer="null"
-  >
+    @onCancel="handleCancel"
+    :footer="null">
+
     <AddCommunicationModal v-if="modalScreen == 'communication'"></AddCommunicationModal>
     <CareCoordinatorModal v-if="modalScreen == 'coordinator'"></CareCoordinatorModal>
   </a-modal>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import AddCommunicationModal from "@/components/common/modals/AddCommunicationModal";
 import CareCoordinatorModal from "@/components/common/modals/CareCoordinatorModal";
 export default {
   props: {
+    visibility: {
+      type: Boolean,
+      required: true,
+    },
     heading: {
       type: String,
       required: true,
@@ -49,13 +54,18 @@ export default {
     CareCoordinatorModal,
   },
 
-    setup() {
-      const visible = ref(false);
-      const showModal = () => {
-        localStorage.removeItem('is_update_coordinator');
-        localStorage.removeItem('personalData');
-        visible.value = true;
-      };
+  setup(props) {
+    const visible = ref(false);
+    const showModal = () => {
+      localStorage.removeItem('is_update_coordinator');
+      localStorage.removeItem('personalData');
+      visible.value = true;
+    };
+
+    const handleCancel = (e) => {
+      visible.value = false;
+      localStorage.setItem('is_update_coordinator', false)
+    };
 
     const handleOk = (e) => {
       console.log(e);
@@ -66,9 +76,16 @@ export default {
       console.log(`selected ${value}`);
     };
 
+    watch(() => {
+      localStorage.removeItem('is_update_coordinator');
+      // alert('Modal Visibility Props : '+ props.visibility)
+      visible.value = props.visibility;
+    })
+
     return {
       visible,
       showModal,
+      handleCancel,
       handleOk,
       handleChange,
       options: [...Array(3)].map((i) => ({
