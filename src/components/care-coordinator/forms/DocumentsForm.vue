@@ -98,6 +98,7 @@ import Loading from 'vue-loading-overlay';
           document_file: '',
           document_type: '',
           selectedItemsForTag: [],
+          value: [],
           // FILE: null,
         }
       }
@@ -105,6 +106,7 @@ import Loading from 'vue-loading-overlay';
     methods: {
       handleChange() {
         // this.selectedItemsForTag.push(value)
+        console.log('value', this.value);
         console.log('selectedItemsForTag', this.selectedItemsForTag);
       },
       onFileUpload (event) {
@@ -138,7 +140,7 @@ import Loading from 'vue-loading-overlay';
           name: document.document_name,
           document: file_path,
           type: document.document_type,
-          tags: this.selectedItemsForTag,
+          tags: this.value,
           care_coordinator_id: JSON.parse(localStorage.getItem('coordinatorId')),
         })
         .then((res) => { 
