@@ -13,16 +13,17 @@
 
 <script>
 export default {
+  props: ['chart','lable'],
   data: function() {
     return {
-      series: [12.7, 7.6, 22.3, 27.9, 20.8, 8.6],
+      series: this.chart,
       chartOptions: {
         chart: {
           width: '100%',
           type: 'pie',
         },
         colors: ['#775DD0', '#03A9F4', '#FF9800', '#FD6A6A', '#008FFB', "#9fffff"],
-        labels: ["Total Patients", "New Patients", "Critical Patients", "Abnormal Patients", "Active Patients", "Inactive Patients"],
+        labels: this.lable,
         dataLabels: {
           formatter(val, opts) {
             const name = opts.w.globals.labels[opts.seriesIndex]

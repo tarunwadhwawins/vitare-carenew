@@ -8,6 +8,12 @@
           buttonText
         }}</a-button>
       </div>
+
+      <div class="filter" v-if="heading === 'Dashboard'">
+        <button class="btn active"><span class="btn-content">Day</span></button>
+        <button class="btn"><span class="btn-content">Week</span></button>
+        <button class="btn"><span class="btn-content">Month</span></button>
+      </div>
     </h2>
   </a-col>
   <!-- </a-row> -->
