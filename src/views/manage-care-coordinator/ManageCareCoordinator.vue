@@ -9,7 +9,7 @@
         </a-layout-sider>
         <a-layout-content>
             <a-row>
-                <MainHeader :visibility="modalVisibility" heading="Manage Care Coordinator" buttonText="Add New Coordinator" modalScreen="coordinator"></MainHeader>
+                <MainHeader :visibility="modalVisibility" @is-visible="changeVisibility($event)" heading="Manage Care Coordinator" buttonText="Add New Coordinator" modalScreen="coordinator"></MainHeader>
             </a-row>
             <CareCoordinator @is-visible="changeVisibility($event)" />
         </a-layout-content>
