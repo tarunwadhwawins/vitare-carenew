@@ -62,6 +62,7 @@
   import { Form, Field, ErrorMessage } from 'vee-validate';
   import * as yup from 'yup';
   import { configure } from 'vee-validate';
+  import axios from 'axios';
 import Loading from 'vue-loading-overlay';
   // Default values
   configure({
@@ -100,29 +101,47 @@ import Loading from 'vue-loading-overlay';
       onFileUpload (event) {
         this.isLoading = true;
         let doc_file = event.target.files[0]
-        let file = {
-          name: doc_file.name,
-          size: doc_file.size,
-          type: doc_file.type
-        }
-        this.$store.dispatch("uploadFile", file)
-        .then((res) => { 
-          console.log(res);
-					this.isLoading = false;
-        },
-        (error) => {
-          console.log(error)
-					this.isLoading = false;
-          this.isLoading = false;
-          this.message = (
-            error.response &&
-            error.response.data &&
-            error.response.data.message
-          ) ||
-          error.message ||
-          error.toString();
+        
+        let user = JSON.parse(localStorage.getItem('user'));
+        axios.post('https://ditstekdemo.com/Virtare-web/public/api/fileupload',
+          {
+            file: doc_file
+          }, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Authorization': 'Bearer '+user.token
+            }
+          }
+        ).then(function() {
+          console.log('SUCCESS!!');
+        })
+        .catch(function(error) {
+          console.log('FAILURE!!', error);
         });
-        this.document_file = event.target.files[0]
+        
+        // let file = {
+        //   name: doc_file.name,
+        //   size: doc_file.size,
+        //   type: doc_file.type
+        // }
+        // this.$store.dispatch("uploadFile", file)
+        // .then((res) => { 
+        //   console.log(res);
+				// 	this.isLoading = false;
+        // },
+        // (error) => {
+        //   console.log(error)
+				// 	this.isLoading = false;
+        //   this.isLoading = false;
+        //   this.message = (
+        //     error.response &&
+        //     error.response.data &&
+        //     error.response.data.message
+        //   ) ||
+        //   error.message ||
+        //   error.toString();
+        // });
+        // this.document_file = event.target.files[0]
       },
       addCareCoordinatorDocument() {
         const document = toRaw(this.documentForm);
