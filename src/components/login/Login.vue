@@ -37,7 +37,10 @@
                   <div class="field">
                     <a-input v-model:value="value" placeholder="Password" size="large" />
                   </div>
-                  <a-button class="btn primaryBtn" @click="login()"> Submit</a-button>
+                  <div class="buttons">
+                    <a-button class="btn primaryBtn" @click="login()">Continue</a-button>
+                    <a class=""> Forgot Password ? </a>
+                  </div>
                 </form>
               </div>
             </a-col>

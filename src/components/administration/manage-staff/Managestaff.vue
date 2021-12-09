@@ -34,6 +34,12 @@
                   <template #active="key">
                     <a-switch v-model:checked="checked[key.record.key]" />
                   </template>
+                  <template #name="text">
+                    <router-link to="corrdinator-summary">{{ text.text }}</router-link>
+                  </template>
+                  <template #email="text">
+                    <a :href="'mailto:' + text.text">{{ text.text }}</a>
+                  </template>
                 </a-table>
               </a-col>
             </a-row>
@@ -132,17 +138,15 @@ const columns = [
   {
     title: "Name",
     dataIndex: "name",
-    sorter: {
-      compare: (a, b) => a.name - b.name,
-      multiple: 3,
+    slots: {
+      customRender: "name",
     },
   },
   {
     title: "Email",
     dataIndex: "email",
-    sorter: {
-      compare: (a, b) => a.email - b.phoemailne,
-      multiple: 3,
+    slots: {
+      customRender: "email",
     },
   },
   {
@@ -188,7 +192,7 @@ const data = [
   {
     key: "1",
     name: "Smith",
-    email: "smith87@gmail.com",
+    email: "smith@gmail.com",
     phone: "(789)-456-995",
     designation: "Administrative",
     roles: "Billing Admin",
@@ -198,7 +202,7 @@ const data = [
   {
     key: "2",
     name: "Joseph",
-    email: "joesph33@gmail.com",
+    email: "joesph@gmail.com",
     phone: "(557)-887-678",
     designation: "Executive",
     roles: "Admin",
@@ -208,7 +212,7 @@ const data = [
   {
     key: "3",
     name: "Henry",
-    email: "heny67@gmail.com",
+    email: "heny@gmail.com",
     phone: "(789)-456-995",
     designation: "Manager",
     roles: "User Admin",

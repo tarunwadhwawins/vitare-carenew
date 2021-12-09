@@ -26,8 +26,9 @@
                     @focus="focus"
                     @change="handleChange"
                   >
-                    <a-select-option value="lucy">All Days</a-select-option>
-                    <a-select-option value="Yiminghe">Custom</a-select-option>
+                    <a-select-option value="lucy">Choose Report</a-select-option>
+                    <a-select-option value="lucy">Report 1</a-select-option>
+                    <a-select-option value="Yiminghe">Report 2</a-select-option>
                   </a-select>
                 </div>
               </a-col>

@@ -38,7 +38,7 @@
             ><CalendarOutlined /><span class="menuItem">Tasks</span></a-menu-item
           ></router-link
         >
-        <router-link to="/admin-dashboard"
+        <router-link to="/cpt-codes"
           ><a-menu-item
             ><CalendarOutlined /><span class="menuItem"
               >Administration
