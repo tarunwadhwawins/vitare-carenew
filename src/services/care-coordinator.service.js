@@ -105,11 +105,6 @@ class CareCoordinatorService {
   }
 
   addCareCoordinatorDocument(document) {
-    console.log('Document name', document.name)
-    console.log('Document document', document.document)
-    console.log('Document type', document.type)
-    console.log('Document tags', document.tags)
-    console.log('Document care_coordinator_id', document.care_coordinator_id)
     return axios.post(API_URL + 'carecoordinator/'+document.care_coordinator_id+'/document', {
         name: document.name,
         document: document.document,

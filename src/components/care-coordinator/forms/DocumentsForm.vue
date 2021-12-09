@@ -31,11 +31,16 @@
       <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label> Tags</label>
-          <Field class="ant-input ant-input-lg" as="select"
-            v-model:value="selectedItemsForTag[0]"
+          <a-select
+            v-model:value="value"
             name="selectedItemsForTag"
             mode="multiple"
-            :options="filteredOptionsForTag.map((item) => ({ value: item }))"/>
+            size="large"
+            placeholder="Please Select Roles"
+            style="width: 100%"
+            @change="handleChange"
+            :options="filteredOptionsForTag.map((item) => ({ value: item }))"
+          />
           <ErrorMessage class="error" name="selectedItemsForTag" />
         </div>
       </a-col>
@@ -92,12 +97,16 @@ import Loading from 'vue-loading-overlay';
           document_name: '',
           document_file: '',
           document_type: '',
-          // selectedItemsForTag: [],
+          selectedItemsForTag: [],
           // FILE: null,
         }
       }
     },
     methods: {
+      handleChange() {
+        // this.selectedItemsForTag.push(value)
+        console.log('selectedItemsForTag', this.selectedItemsForTag);
+      },
       onFileUpload (event) {
         // this.isLoading = true;
 
@@ -105,13 +114,9 @@ import Loading from 'vue-loading-overlay';
         let formData = new FormData();
         formData.append('file', doc_file);
         
-        // console.log('doc_file', doc_file)
-        // console.log('formData', formData)
-        
         this.$store.dispatch("uploadFile", formData)
         .then((res) => {
           localStorage.setItem('file_path', res.data.path)
-          console.log(res.data.path);
         },
         (error) => {
           console.log(error)
@@ -128,11 +133,12 @@ import Loading from 'vue-loading-overlay';
       addCareCoordinatorDocument() {
         const file_path = localStorage.getItem('file_path')
         const document = toRaw(this.documentForm);
+        // console.log('selectedItemsForTag', document.selectedItemsForTag)
         this.$store.dispatch("addCareCoordinatorDocument", { 
           name: document.document_name,
           document: file_path,
           type: document.document_type,
-          tags: ["one","two"],
+          tags: this.selectedItemsForTag,
           care_coordinator_id: JSON.parse(localStorage.getItem('coordinatorId')),
         })
         .then((res) => { 
@@ -140,7 +146,7 @@ import Loading from 'vue-loading-overlay';
         },
         (error) => {
           console.log(error)
-          this.isLoading = false;
+          // this.isLoading = false;
           this.message = (
             error.response &&
             error.response.data &&
@@ -152,6 +158,7 @@ import Loading from 'vue-loading-overlay';
       }
     },
     setup() {
+      const value = ref()
       const selectedItems = ref(["Manager"]);
       const filteredOptions = computed(() =>
         OPTIONS.filter((o) => !selectedItems.value.includes(o))
@@ -160,7 +167,12 @@ import Loading from 'vue-loading-overlay';
       const filteredOptionsForTag = computed(() =>
         OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
       );
+      // const handleChange = value => {
+      //   console.log(`selected ${value}`);
+      // };
       return {
+        // handleChange,
+        value,
         selectedItems,
         filteredOptions,
         filteredOptionsForTag,
