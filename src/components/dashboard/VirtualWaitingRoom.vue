@@ -3,9 +3,10 @@
     <a-card title="Populate Waiting Room" class="common-card">
       <a-tabs v-model:activeKey="activeKey">
         <a-tab-pane key="1" tab="New Requests">
-          <a-table :columns="columns5" :data-source="data5" :pagination="false">
+          <a-table :columns="columns" :data-source="data" :pagination="{ pageSize: 2 }">
             <template #patientName="text">
               <router-link to="#">{{ text.text }}</router-link>
+              
             </template>
             <template #action>
               <a-button class="btn blueBtn">Start</a-button>
@@ -13,7 +14,7 @@
           </a-table>
         </a-tab-pane>
         <a-tab-pane key="2" tab="Future Appointments" force-render>
-          <a-table :columns="columns6" :data-source="data6" :pagination="false">
+          <a-table :columns="columns1" :data-source="data1" :pagination="{ pageSize: 2 }">
             <template #patientName="text">
               <router-link to="#">{{ text.text }}</router-link>
             </template>
@@ -26,7 +27,7 @@
 <script>
 
   import { reactive } from "vue"
-  const columns5 = [
+  const columns = [
     {
       title: "Patient Name",
       dataIndex: "patient",
@@ -50,21 +51,7 @@
       },
     },
   ];
-  // const data5 = [
-  //   {
-  //     key: "1",
-  //     patient: "Steve Smith",
-  //     appt: "Wellness",
-  //     time: "01:30 PM",
-  //   },
-  //   {
-  //     key: "2",
-  //     patient: "Jane Doe",
-  //     appt: "Clinical",
-  //     time: "11:30 AM",
-  //   },
-  // ];
-  const columns6 = [
+  const columns1 = [
     {
       title: "Patient Name",
       dataIndex: "patient",
@@ -87,14 +74,14 @@
     setup(props) {
 
 
-      const data5 = reactive(props.newappointment)
+      const data = reactive(props.newappointment)
 
-      const data6 = reactive(props.future)
+      const data1 = reactive(props.future)
       return {
-        data5,
-        columns5,
-        data6,
-        columns6,
+        data,
+        columns,
+        data1,
+        columns1,
       };
     },
   };

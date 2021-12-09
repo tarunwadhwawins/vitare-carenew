@@ -8,7 +8,7 @@
         <Field class="ant-input ant-input-lg" v-model="password" name="password" type="password" placeholder="Password"></Field>
         <ErrorMessage class="error" name="password" />
     </div>
-    <button class="btn primaryBtn">Submit</button>
+    <button class="btn primaryBtn">Login</button>
 </Form>
 <loading v-model:active="isLoading" loader="bars" :lock-scroll="true" :is-full-page="false" transition="fade" :can-cancel="false" />
 </template>
