@@ -83,7 +83,20 @@ export default {
       store.dispatch("deleteCoordinatorAvailability", data)
       .then((res) => {
         console.log('Res', res)
-        // this.isLoading = false
+        store.dispatch("getCoordinatorAvailabilities", JSON.parse(localStorage.getItem('coordinatorId'))).then((res) => {
+          availabilityData.value = res.data.data;
+        },
+        (error) => {
+          console.log(error)
+          this.isLoading = false;
+          this.message = (
+            error.response &&
+            error.response.data &&
+            error.response.data.message
+          ) ||
+          error.message ||
+          error.toString();
+        });
       },
       (error) => {
         console.log(error)

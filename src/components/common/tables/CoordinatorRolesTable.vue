@@ -3,7 +3,7 @@
     <a-col :span="24">
       <a-table :columns="rolesColumns" :data-source="rolesData" :scroll="{ x: 900 }">
         <template #action="{ record }">
-          <a class="icons" @click ="onClickDeleteButton({coordinatorId: record.id.coordinator_id, roleId: record.id.id})"><DeleteOutlined /></a>
+          <a class="icons" @click ="onClickDeleteButton({coordinatorId: record.coordinator_id, roleId: record.id})"><DeleteOutlined /></a>
         </template>
       </a-table>
     </a-col>
@@ -55,15 +55,6 @@ export default {
       store.dispatch("getCoordinatorRoles", JSON.parse(localStorage.getItem('coordinatorId')))
       .then((res) => {
         rolesData.value = res.data.data;
-        // response.forEach((element, index) => {
-        //   this.rolesData.push({
-        //     key: element.id,
-        //     coordinator_id: element.coordinator_id,
-        //     role: element.role,
-        //     is_active: element.is_active ? 'Yes' : 'No',
-        //     // actions: 'In',
-        //   })
-        // });
         this.isLoading = false
       },
       (error) => {
@@ -87,7 +78,21 @@ export default {
       store.dispatch("deleteCoordinatorRole", data)
       .then((res) => {
         console.log('Res', res)
-        // this.isLoading = false
+        store.dispatch("getCoordinatorRoles", data.coordinatorId).then((res) => {
+          rolesData.value = res.data.data;
+          this.isLoading = false
+        },
+        (error) => {
+          console.log(error)
+          this.isLoading = false;
+          this.message = (
+            error.response &&
+            error.response.data &&
+            error.response.data.message
+          ) ||
+          error.message ||
+          error.toString();
+        });
       },
       (error) => {
         console.log(error)

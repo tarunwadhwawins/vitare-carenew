@@ -90,7 +90,20 @@ export default {
       store.dispatch("deleteCoordinatorContact", data)
       .then((res) => {
         console.log('Res', res)
-        // this.isLoading = false
+        store.dispatch("getCoordinatorContacts", JSON.parse(localStorage.getItem('coordinatorId'))).then((res) => {
+          contactData.value = res.data.data;
+        },
+        (error) => {
+          console.log(error)
+          this.isLoading = false;
+          this.message = (
+            error.response &&
+            error.response.data &&
+            error.response.data.message
+          ) ||
+          error.message ||
+          error.toString();
+        });
       },
       (error) => {
         console.log(error)
