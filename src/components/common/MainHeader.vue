@@ -19,7 +19,7 @@
   <!-- </a-row> -->
 
   <!-- Modal -->
-  <a-modal v-model:visible="visible" max-width="1140px" width="100%" :title="buttonText" centered @ok="handleOk"
+  <a-modal v-model:visible="visible" max-width="1140px" width="100%" :title="buttonText" centered @ok="handleOk" @cancel="handleCancel"
     :footer="null">
     <AddCommunicationModal v-if="modalScreen == 'communication'"></AddCommunicationModal>
     <CareCoordinatorModal v-if="modalScreen == 'coordinator'"></CareCoordinatorModal>
@@ -52,7 +52,7 @@ export default {
     CareCoordinatorModal,
   },
 
-  setup(props) {
+  setup(props, {emit}) {
     const visible = ref(false);
     const showModal = () => {
       localStorage.removeItem('is_update_coordinator');
@@ -60,10 +60,11 @@ export default {
       visible.value = true;
     };
 
-    const handleCancel = (e) => {
+    const handleCancel = () => {
       visible.value = false;
       localStorage.setItem('is_update_coordinator', false)
       localStorage.removeItem('coordinatorId')
+      emit('is-visible', false)
     };
 
       const handleOk = (e) => {
@@ -76,9 +77,10 @@ export default {
       };
 
     watch(() => {
-      localStorage.removeItem('is_update_coordinator');
+      // localStorage.removeItem('is_update_coordinator');
       // alert('Modal Visibility Props : '+ props.visibility)
       visible.value = props.visibility;
+      console.log('In Watch!!!!!!!!!!!!')
     })
 
     return {
