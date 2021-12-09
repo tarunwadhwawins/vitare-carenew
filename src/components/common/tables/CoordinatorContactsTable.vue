@@ -48,6 +48,7 @@ import { ref, watch } from 'vue';
 import store from '@/store/index';
 import Loading from 'vue-loading-overlay';
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import swal from 'sweetalert';
 export default {
   components: {
     Loading,
@@ -73,23 +74,33 @@ export default {
       emit('clicked', rowId)
     }
     const onClickDeleteButton = ({coordinatorId, contactId}) => {
-      let data = {
-        coordinatorId: coordinatorId,
-        contactId: contactId
-      }
-      console.log(data)
-      store.dispatch("deleteCoordinatorContact", data)
-      .then((res) => {
-        console.log('Res', res)
-        store.dispatch("getCoordinatorContacts", JSON.parse(localStorage.getItem('coordinatorId'))).then((res) => {
-          contactData.value = res.data.data;
-        },
-        (error) => {
-          console.log(error)
-        });
-      },
-      (error) => {
-        console.log(error)
+      swal({
+        title: "Are you sure?",
+        text: "Are you sure you want to delete this record?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          let data = {
+            coordinatorId: coordinatorId,
+            contactId: contactId
+          }
+          console.log(data)
+          store.dispatch("deleteCoordinatorContact", data)
+          .then((res) => {
+            console.log('Res', res)
+            store.dispatch("getCoordinatorContacts", JSON.parse(localStorage.getItem('coordinatorId'))).then((res) => {
+              contactData.value = res.data.data;
+            },
+            (error) => {
+              console.log(error)
+            });
+          },
+          (error) => {
+            console.log(error)
+          });
+        }
       });
     }
     return {

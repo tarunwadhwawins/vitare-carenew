@@ -23,6 +23,7 @@ import { ref, watch } from 'vue';
 import Loading from 'vue-loading-overlay';
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import store from '@/store/index';
+import swal from 'sweetalert';
 const columns = [
   {
     title: "First Name",
@@ -127,37 +128,45 @@ export default {
       emit('edit-clicked', rowId)
     }
     const onClickDeleteButton = (rowId) => {
-      console.log(rowId)
-      store.dispatch("deleteCoordinator", rowId)
-      .then((res) => {
-        console.log('Res', res)
-        store.dispatch("getCareCoordinatorsList").then((res) => {
-          // coordinatorsList.value = res.data.data;
-          const response = res.data.data;
-          const coordinatorsData = [];
-          response.forEach(res => {
-            coordinatorsData.push({
-              key: res.id,
-              id: res.id,
-              first_name: res.first_name,
-              last_name: res.last_name,
-              role: res.role,
-              specialization: res.specialization,
-              network: res.network,
-              created_at: res.created_at,
-              status: res.status,
-              action: "",
-            })
+      swal({
+        title: "Are you sure?",
+        text: "Are you sure you want to delete this record?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          store.dispatch("deleteCoordinator", rowId).then((res) => {
+            console.log('Res', res)
+            store.dispatch("getCareCoordinatorsList").then((res) => {
+              // coordinatorsList.value = res.data.data;
+              const response = res.data.data;
+              const coordinatorsData = [];
+              response.forEach(res => {
+                coordinatorsData.push({
+                  key: res.id,
+                  id: res.id,
+                  first_name: res.first_name,
+                  last_name: res.last_name,
+                  role: res.role,
+                  specialization: res.specialization,
+                  network: res.network,
+                  created_at: res.created_at,
+                  status: res.status,
+                  action: "",
+                })
+              });
+              console.log('coordinatorsData', coordinatorsData)
+              coordinatorsList.value = coordinatorsData;
+            },
+            (error) => {
+              console.log(error)
+            });
+          },
+          (error) => {
+            console.log(error)
           });
-          console.log('coordinatorsData', coordinatorsData)
-          coordinatorsList.value = coordinatorsData;
-        },
-        (error) => {
-          console.log(error)
-        });
-      },
-      (error) => {
-        console.log(error)
+        }
       });
     }
 

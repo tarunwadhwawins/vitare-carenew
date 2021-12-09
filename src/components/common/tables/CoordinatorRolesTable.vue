@@ -39,6 +39,7 @@ import { ref, watch } from 'vue';
 import store from '@/store/index';
 import Loading from 'vue-loading-overlay';
 import { DeleteOutlined } from "@ant-design/icons-vue";
+import swal from 'sweetalert';
 export default {
   components: {
     Loading,
@@ -67,37 +68,33 @@ export default {
       });
     });
     const onClickDeleteButton = ({coordinatorId, roleId}) => {
-      let data = {
-        coordinatorId: coordinatorId,
-        roleId: roleId
-      }
-      console.log(data)
-      store.dispatch("deleteCoordinatorRole", data)
-      .then((res) => {
-        console.log('Res', res)
-        store.dispatch("getCoordinatorRoles", data.coordinatorId).then((res) => {
-          rolesData.value = res.data.data;
-        },
-        (error) => {
-          console.log(error)
-          this.message = (
-            error.response &&
-            error.response.data &&
-            error.response.data.message
-          ) ||
-          error.message ||
-          error.toString();
-        });
-      },
-      (error) => {
-        console.log(error)
-        this.message = (
-          error.response &&
-          error.response.data &&
-          error.response.data.message
-        ) ||
-        error.message ||
-        error.toString();
+      swal({
+        title: "Are you sure?",
+        text: "Are you sure you want to delete this record?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          let data = {
+            coordinatorId: coordinatorId,
+            roleId: roleId
+          }
+          console.log(data)
+          store.dispatch("deleteCoordinatorRole", data)
+          .then((res) => {
+            console.log('Res', res)
+            store.dispatch("getCoordinatorRoles", data.coordinatorId).then((res) => {
+              rolesData.value = res.data.data;
+            },
+            (error) => {
+              console.log(error)
+            });
+          },
+          (error) => {
+            console.log(error)
+          });
+        }
       });
     }
     return {
