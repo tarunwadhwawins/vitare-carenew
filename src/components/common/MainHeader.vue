@@ -6,33 +6,36 @@
       <div class="commonBtn">
         <a-button class="btn primaryBtn" @click.prevent="showModal">{{
           buttonText
-        }}</a-button>
+          }}</a-button>
+      </div>
+
+      <div class="filter" v-if="heading === 'Dashboard'">
+        <button class="btn active"><span class="btn-content">Day</span></button>
+        <button class="btn"><span class="btn-content">Week</span></button>
+        <button class="btn"><span class="btn-content">Month</span></button>
       </div>
     </h2>
   </a-col>
   <!-- </a-row> -->
 
   <!-- Modal -->
-  <a-modal
-    v-model:visible="visible"
-    max-width="1140px"
-    width="100%"
-    :title="buttonText"
-    centered
-    @ok="handleOk"
-    :footer="null"
-  >
+  <a-modal v-model:visible="visible" max-width="1140px" width="100%" :title="buttonText" centered @ok="handleOk"
+    :footer="null">
     <AddCommunicationModal v-if="modalScreen == 'communication'"></AddCommunicationModal>
     <CareCoordinatorModal v-if="modalScreen == 'coordinator'"></CareCoordinatorModal>
   </a-modal>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import AddCommunicationModal from "@/components/common/modals/AddCommunicationModal";
 import CareCoordinatorModal from "@/components/common/modals/CareCoordinatorModal";
 export default {
   props: {
+    visibility: {
+      type: Boolean,
+      required: true,
+    },
     heading: {
       type: String,
       required: true,
@@ -49,25 +52,39 @@ export default {
     CareCoordinatorModal,
   },
 
-    setup() {
-      const visible = ref(false);
-      const showModal = () => {
-        // localStorage.removeItem('coordinatorId');
-        visible.value = true;
+  setup(props) {
+    const visible = ref(false);
+    const showModal = () => {
+      localStorage.removeItem('is_update_coordinator');
+      localStorage.removeItem('personalData');
+      visible.value = true;
+    };
+
+    const handleCancel = (e) => {
+      visible.value = false;
+      localStorage.setItem('is_update_coordinator', false)
+      localStorage.removeItem('coordinatorId')
+    };
+
+      const handleOk = (e) => {
+        console.log(e);
+        visible.value = false;
       };
 
-    const handleOk = (e) => {
-      console.log(e);
-      visible.value = false;
-    };
+      const handleChange = (value) => {
+        console.log(`selected ${value}`);
+      };
 
-    const handleChange = (value) => {
-      console.log(`selected ${value}`);
-    };
+    watch(() => {
+      localStorage.removeItem('is_update_coordinator');
+      // alert('Modal Visibility Props : '+ props.visibility)
+      visible.value = props.visibility;
+    })
 
     return {
       visible,
       showModal,
+      handleCancel,
       handleOk,
       handleChange,
       options: [...Array(3)].map((i) => ({
@@ -78,9 +95,9 @@ export default {
 };
 </script>
 <style>
-.pageTittle .commonBtn {
-  position: absolute;
-  right: 0;
-  top: 0;
-}
+  .pageTittle .commonBtn {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
 </style>

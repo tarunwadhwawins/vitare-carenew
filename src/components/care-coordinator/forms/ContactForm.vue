@@ -25,6 +25,7 @@
       <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Phone No</label>
+          <inut type="hidden" v-model="contactForm.id" name="id" value=""/>
           <Field class="ant-input ant-input-lg" v-model="contactForm.phone_no" name="phone_no" size="large" />
           <ErrorMessage class="error" name="phone_no" />
         </div>
@@ -56,6 +57,21 @@
       Field,
       ErrorMessage,
     },
+    props: {
+      data: {
+        type: Array,
+        required: true
+      }
+    },
+    updated() {
+      console.log('Updated : ', this.data)
+      const formData = this.data
+      this.contactForm.first_name = formData.first_name;
+      this.contactForm.last_name = formData.last_name;
+      this.contactForm.email = formData.email;
+      this.contactForm.phone_no = formData.phone_no;
+      this.contactForm.id = formData.id;
+    },
     data() {
       const schema = yup.object({
         first_name: yup.string().required().label("First Name"),
@@ -70,25 +86,27 @@
           last_name: '',
           email: '',
           phone_no: '',
+          id: '',
         }
       }
     },
     methods: {
       addCareCoordinatorContact() {
         const contact = toRaw(this.contactForm);
-        this.$store.dispatch("addCareCoordinatorContact", { 
+        const contactId = contact.id;
+        this.$store.dispatch("addCareCoordinatorContact", {
           first_name: contact.first_name,
           last_name: contact.last_name,
           email: contact.email,
           phone_no: contact.phone_no,
           care_coordinator_id: JSON.parse(localStorage.getItem('coordinatorId')),
+          contactId: contactId ? contactId : null,
         })
-        .then((res) => { 
-          console.log(res);
+        .then((res) => {
+          localStorage.setItem('contactId', res.data.id)
         },
         (error) => {
           console.log(error)
-          this.isLoading = false;
           this.message = (
             error.response &&
             error.response.data &&

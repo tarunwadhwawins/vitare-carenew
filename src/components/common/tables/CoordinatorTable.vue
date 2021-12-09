@@ -1,14 +1,12 @@
 <template>
   <a-row>
     <a-col :span="24">
-      <a-table :columns="columns" :data-source="coordinatorsList" :scroll="{ x: 1200 }" @change="onChange" />
-      <template #bodyCell="{ column }">
-        <template v-if="column.key === 'type'">
-          <span>
-            <smile-outlined />
-          </span>
+      <a-table :columns="columns" :data-source="coordinatorsList" :scroll="{ x: 900 }">
+        <template #action="{ record }">
+          <a class="icons" @click ="onClickEditButton(record.id)"><EditOutlined /></a>
+          <a class="icons" @click ="onClickDeleteButton(record.id)"> <DeleteOutlined /></a>
         </template>
-      </template>
+      </a-table> 
     </a-col>
   </a-row>
   <loading
@@ -21,8 +19,11 @@
 </template>
 
 <script>
+import { ref, watch } from 'vue';
 import Loading from 'vue-loading-overlay';
-// import 'vue-loading-overlay/dist/vue-loading.css';
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import store from '@/store/index';
+import swal from 'sweetalert';
 const columns = [
   {
     title: "First Name",
@@ -80,78 +81,107 @@ const columns = [
       multiple: 1,
     },
   },
-  /* {
+  {
     title: "Action",
     dataIndex: "action",
-    sorter: {
-      compare: (a, b) => a.action - b.action,
-      multiple: 1,
+    slots: {
+      customRender: "action",
     },
-  }, */
+  },
 ];
 export default {
   data() {
     return {
-      isLoading: false,
-      coordinatorsList: [{}],
     }
   },
-  setup() {
+  setup(props, { emit }) {
+    let coordinatorsList = ref()
+    watch( () => {
+      store.dispatch("getCareCoordinatorsList").then((res) => {
+        // coordinatorsList.value = res.data.data;
+        const response = res.data.data;
+        const coordinatorsData = [];
+        response.forEach(res => {
+          coordinatorsData.push({
+            key: res.id,
+            id: res.id,
+            first_name: res.first_name,
+            last_name: res.last_name,
+            role: res.role,
+            specialization: res.specialization,
+            network: res.network,
+            created_at: res.created_at,
+            status: res.status,
+            action: "",
+          })
+        });
+        console.log('coordinatorsData', coordinatorsData)
+        coordinatorsList.value = coordinatorsData;
+      },
+      (error) => {
+        console.log(error)
+      });
+    })
+    
+    const onClickEditButton = (rowId) => {
+      localStorage.setItem('is_update_coordinator', true)
+      emit('edit-clicked', rowId)
+    }
+    const onClickDeleteButton = (rowId) => {
+      swal({
+        title: "Are you sure?",
+        text: "Are you sure you want to delete this record?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          store.dispatch("deleteCoordinator", rowId).then((res) => {
+            console.log('Res', res)
+            store.dispatch("getCareCoordinatorsList").then((res) => {
+              // coordinatorsList.value = res.data.data;
+              const response = res.data.data;
+              const coordinatorsData = [];
+              response.forEach(res => {
+                coordinatorsData.push({
+                  key: res.id,
+                  id: res.id,
+                  first_name: res.first_name,
+                  last_name: res.last_name,
+                  role: res.role,
+                  specialization: res.specialization,
+                  network: res.network,
+                  created_at: res.created_at,
+                  status: res.status,
+                  action: "",
+                })
+              });
+              console.log('coordinatorsData', coordinatorsData)
+              coordinatorsList.value = coordinatorsData;
+            },
+            (error) => {
+              console.log(error)
+            });
+          },
+          (error) => {
+            console.log(error)
+          });
+        }
+      });
+    }
+
     return {
+      onClickEditButton,
+      onClickDeleteButton,
+      coordinatorsList,
       columns,
     };
   },
-  created() {
-    this.isLoading = true;
-
-    this.$store.dispatch("getCareCoordinatorsList")
-    .then((res) => {
-      const responseData = res.data.data;
-      responseData.forEach((element, index) => 
-        this.coordinatorsList.push({
-          key: index+1,
-          first_name: element.first_name,
-          last_name: element.last_name,
-          role: element.role,
-          specialization: element.specialization,
-          network: element.network,
-          created_at: element.created_at,
-          status: element.status,
-          // action: 'In',
-        }
-      ));
-      this.isLoading = false
-    },
-    (error) => {
-      console.log(error)
-      this.isLoading = false;
-      this.message = (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) ||
-      error.message ||
-      error.toString();
-    });
-
-    // this.$store.dispatch("getSpecializationsCount", 1)
-    // .then((res) => {
-    //   const response = res.data.data;
-    //   console.log('Dashboard Data', response)
-    // },
-    // (error) => {
-    //   console.log(error)
-    //   this.message = (
-    //     error.response &&
-    //     error.response.data &&
-    //     error.response.data.message
-    //   ) ||
-    //   error.message ||
-    //   error.toString();
-    // });
-  },
   components: {
     Loading,
+    DeleteOutlined,
+    EditOutlined,
+    // EyeOutlined,
   },
 }
 </script>

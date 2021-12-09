@@ -1,7 +1,12 @@
 <template>
   <a-row :gutter="24">
     <a-col :span="24">
-      <a-table :columns="contactColumns" :data-source="contactData" :scroll="{ x: 900 }" />
+      <a-table :columns="contactColumns" :data-source="contactData" :scroll="{ x: 900 }">
+        <template #action="{ record }">
+          <a class="icons" @click ="onClickViewButton(record.id)"><EditOutlined /></a>
+          <a class="icons" @click ="onClickDeleteButton({coordinatorId: record.coordinator_id, contactId: record.id})"> <DeleteOutlined /></a>
+        </template>
+      </a-table> 
     </a-col>
   </a-row>
   <loading
@@ -31,57 +36,78 @@ const contactColumns = [
     title: "Phone No",
     dataIndex: "phone_no",
   },
-  /* {
-    title: "Actions",
-    dataIndex: "actions",
-  }, */
+  {
+    title: "Action",
+    dataIndex: "action",
+    slots: {
+      customRender: "action",
+    },
+  },
 ];
+import { ref, watch } from 'vue';
+import store from '@/store/index';
 import Loading from 'vue-loading-overlay';
-// import 'vue-loading-overlay/dist/vue-loading.css';
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import swal from 'sweetalert';
 export default {
   components: {
     Loading,
+    DeleteOutlined,
+    EditOutlined,
+    // EyeOutlined,
   },
   data() {
     return {
-      isLoading: false,
-      contactData: [{}],
     }
   },
-  created() {
-    this.isLoading = true;
-    this.$store.dispatch("getCoordinatorContacts", JSON.parse(localStorage.getItem('coordinatorId')))
-    .then((res) => {
-      const response = res.data.data;
-      response.forEach((element, index) => {
-        this.contactData.push({
-          key: index+1,
-          first_name: element.first_name,
-          last_name: element.last_name,
-          email: element.email,
-          phone_no: element.phone_no,
-          // actions: 'In',
-        })
+  setup(props, { emit }) {
+    let contactData = ref()
+    watch( () => {
+      store.dispatch("getCoordinatorContacts", JSON.parse(localStorage.getItem('coordinatorId'))).then((res) => {
+        contactData.value = res.data.data;
+      },
+      (error) => {
+        console.log(error)
       });
-      console.log('Contact Data', this.contactData)
-      this.isLoading = false
-    },
-    (error) => {
-      console.log(error)
-      this.isLoading = false;
-      this.message = (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) ||
-      error.message ||
-      error.toString();
-    });
-  },
-  setup() {
+    })
+    const onClickViewButton = (rowId) => {
+      emit('clicked', rowId)
+    }
+    const onClickDeleteButton = ({coordinatorId, contactId}) => {
+      swal({
+        title: "Are you sure?",
+        text: "Are you sure you want to delete this record?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          let data = {
+            coordinatorId: coordinatorId,
+            contactId: contactId
+          }
+          console.log(data)
+          store.dispatch("deleteCoordinatorContact", data)
+          .then((res) => {
+            console.log('Res', res)
+            store.dispatch("getCoordinatorContacts", JSON.parse(localStorage.getItem('coordinatorId'))).then((res) => {
+              contactData.value = res.data.data;
+            },
+            (error) => {
+              console.log(error)
+            });
+          },
+          (error) => {
+            console.log(error)
+          });
+        }
+      });
+    }
     return {
+      onClickViewButton,
+      onClickDeleteButton,
       contactColumns,
-      // contactData
+      contactData
     }
   }
 }

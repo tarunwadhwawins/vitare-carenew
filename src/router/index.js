@@ -11,6 +11,11 @@ const routes = [
     component: () => import( '@/views/login/Login')
   },
   {
+    path: '/test',
+    name: 'Test',
+    component: () => import( '@/components/Test')
+  },
+  {
     path: '/dashboard',
     name: 'Dashboard',
     component: () => import( '@/views/dashboard/Dashboard')
@@ -57,6 +62,7 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+
 })
 
 export default router
