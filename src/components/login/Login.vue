@@ -1,17 +1,17 @@
 <template>
   <Form @submit="handleLogin" :validation-schema="schema">
     <div class="field">
-      <Field class="ant-input ant-input-lg" v-model="email" name="email" placeholder="Email"></Field>
+      <Field class="ant-input ant-input-lg" v-model="email" name="email" :placeholder="$t('login.ePlaceholder')"></Field>
       <ErrorMessage class="error" name="email" />
     </div>
     <div class="field">
-      <Field class="ant-input ant-input-lg" v-model="password" name="password" type="password" placeholder="Password">
+      <Field class="ant-input ant-input-lg" v-model="password" name="password" type="password" :placeholder="$t('login.psdPlaceholder')">
       </Field>
       <ErrorMessage class="error" name="password" />
     </div>
     <div class="buttons">
-      <button class="btn primaryBtn">Login</button>
-      <a class=""> Forgot Password ? </a>
+      <button class="btn primaryBtn">{{$t('login.login')}}</button>
+      <a class=""> {{$t('login.forgotPassword')}} </a>
     </div>
   </Form>
   <loading v-model:active="isLoading" loader="bars" :lock-scroll="true" :is-full-page="false" transition="fade"
