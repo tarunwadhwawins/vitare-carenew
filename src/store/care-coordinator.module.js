@@ -330,8 +330,8 @@ export const careCoordinator = {
     getCoordinatorRoleDetailsSuccess(state, roleDetails) {
       state.roleDetails = roleDetails;
     },
-    getCoordinatorDetailsSuccess(state, CoordinatorDetails) {
-      state.CoordinatorDetails = CoordinatorDetails;
+    getCoordinatorDetailsSuccess(state, details) {
+      state.CoordinatorDetails = details;
     },
     deleteCoordinatorSuccess(state, deleteCoordinator) {
       state.deleteCoordinator = deleteCoordinator;

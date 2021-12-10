@@ -43,6 +43,12 @@ export default {
       store.dispatch("networksCount", 1)
       store.dispatch("networksCount", 2)
     })
+    
+    const onClickEditPersonal = (rowId) => {
+      store.dispatch("getCoordinatorDetails", rowId)
+      emit('is-visible', true)
+    }
+
     const specializationWellness = computed(() => {
       return store.state.careCoordinator.specializationWellness
     })
@@ -55,24 +61,18 @@ export default {
     const networksOut = computed(() => {
       return store.state.careCoordinator.networksOut
     })
-    const onClickEditPersonal = (rowId) => {
-      store.dispatch("getCoordinatorDetails", rowId)
-      .then((res) => {
-        const coordinatorData = res.data.data;
-        localStorage.setItem('is_update_coordinator', true)
-        localStorage.setItem('personalData', JSON.stringify(coordinatorData))
-        emit('is-visible', true)
-      },
-      (error) => {
-        console.log(error)
-      });
-    }
+    const coordinatorData = computed(() => {
+      localStorage.setItem('is_update_coordinator', true)
+      localStorage.setItem('personalData', JSON.stringify(coordinatorData))
+      return store.state.careCoordinator.CoordinatorDetails
+    })
       
     return {
       specializationWellness,
       specializationBehavour,
       networksIn,
       networksOut,
+      coordinatorData,
       onClickEditPersonal,
       // specializationTotal,
       // specializationText,
