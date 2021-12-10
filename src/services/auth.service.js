@@ -6,6 +6,7 @@ const API_URL = 'https://ditstekdemo.com/Virtare-web/public/api/';
 
 class AuthService {
   login(user) {
+   
     return axios
       .post(API_URL + 'login', {
         email: user.email,
@@ -14,7 +15,7 @@ class AuthService {
       })
       .then(response => {
         const res = response.data
-        console.log(res);
+        console.log("res",res);
         if (res.data.token) {
           var userData = {
             'token': res.data.token,

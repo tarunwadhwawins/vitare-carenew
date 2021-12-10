@@ -77,10 +77,7 @@ export default {
       };
 
     watch(() => {
-      // localStorage.removeItem('is_update_coordinator');
-      // alert('Modal Visibility Props : '+ props.visibility)
       visible.value = props.visibility;
-      console.log('In Watch!!!!!!!!!!!!')
     })
 
     return {
