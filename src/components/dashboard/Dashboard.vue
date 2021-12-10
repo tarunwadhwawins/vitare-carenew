@@ -83,7 +83,7 @@
 
 
       watchEffect(() => {
-
+        store.dispatch("todayappointment")
         store.dispatch("newPatients")
         store.dispatch("abnormalPatients")
         store.dispatch("activePatients")
@@ -95,8 +95,7 @@
         store.dispatch("network", 2)
         store.dispatch("appointmentcount")
         store.dispatch("appointment", 1)
-        store.dispatch("appointment", 2)
-        store.dispatch("todayappointment")
+        store.dispatch("appointment", 2)   
         store.dispatch("totalPatients")
       })
 
