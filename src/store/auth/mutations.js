@@ -1,19 +1,15 @@
 export const loginSuccess = (state, user) => {
-    state.status.loggedIn = true;
-    state.user = user;
+    state.isLoggedIn = true;
+    state.token=user;
 }
 export const loginFailure = (state, error) => {
-    state.status.loggedIn = false;
-    state.user = error;
+    state.isLoggedIn = false;
+    state.token='';
 }
 export const logout = (state) => {
-    state.status.loggedIn = false;
-    state.user = null;
+    state.isLoggedIn = false;
+    state.token='';
+  
 }
-export const registerSuccess = (state) => {
-    state.status.loggedIn = false;
-}
-export const registerFailure = (state) => {
-    state.status.loggedIn = false;
-}
+
 

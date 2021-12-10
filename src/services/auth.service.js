@@ -15,7 +15,6 @@ class AuthService {
       })
       .then(response => {
         const res = response.data
-        console.log("res",res);
         if (res.data.token) {
           var userData = {
             'token': res.data.token,

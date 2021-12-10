@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-
+let user = JSON.parse(localStorage.getItem('user'))
 const routes = [
   {
     path: '/',
@@ -65,4 +65,12 @@ const router = createRouter({
 
 })
 
+ router.beforeEach((to, from, next) => {
+  if (user) {
+    console.log(next)
+    next();
+  } else {
+    next("/login")
+  }
+ })
 export default router

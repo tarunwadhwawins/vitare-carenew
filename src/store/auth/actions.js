@@ -1,31 +1,19 @@
 import AuthService from '../../services/auth.service';
+import router from "@/router"
 
-
-export const login = ({ commit }, user) => {
-    return AuthService.login(user).then(
+export const login = async({ commit }, user) => {
+    return await AuthService.login(user).then(
         user => {
             commit('loginSuccess', user);
-            return Promise.resolve(user);
+            router.push('/dashboard')
         },
+        
         error => {
             commit('loginFailure', error);
-            return Promise.reject(error);
         }
     );
 }
 export const logout = ({ commit }) => {
     AuthService.logout();
     commit('logout');
-}
-export const register = ({ commit }, user) => {
-    return AuthService.register(user).then(
-        response => {
-            commit('registerSuccess');
-            return Promise.resolve(response.data);
-        },
-        error => {
-            commit('registerFailure');
-            return Promise.reject(error);
-        }
-    );
 }

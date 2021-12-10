@@ -174,20 +174,9 @@
       };
     },
     created() {
-      if (this.$store.state.auth.user == null) {
-        this.$router.push("/");
-        return;
-      }
-      this.user = this.$store.state.auth.user.email;
-      this.role = this.$store.state.auth.user.role_id ? 'Admin' : 'Client';
-    },
-    watch() {
-      if (this.$store.state.auth.user == null) {
-        this.$router.push("/");
-        return;
-      }
-      this.user = this.$store.state.auth.user.email;
-      this.role = this.$store.state.auth.user.role_id ? 'Admin' : 'Client';
+      let user = JSON.parse(localStorage.getItem('user'))
+      this.user = user.email;
+      this.role = user.role_id ? 'Admin' : 'Client';
     },
     methods: {
       logout() {
