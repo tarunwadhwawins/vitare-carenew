@@ -6,6 +6,7 @@ const API_URL = 'https://ditstekdemo.com/Virtare-web/public/api/';
 
 class CareCoordinatorService {
   addCareCoordinator(coordinator) {
+    const user = JSON.parse(localStorage.getItem('user'));
     if(coordinator.coordinatorId != null) {
       return axios.put(API_URL + 'carecoordinator/'+coordinator.coordinatorId, {
         first_name: coordinator.first_name,
@@ -14,9 +15,6 @@ class CareCoordinatorService {
         email: coordinator.email,
       },
       { headers: authHeader() })
-      .then(response => {
-        return response.data;
-      });
     }
     else {
       return axios.post(API_URL + 'carecoordinator', {
@@ -28,12 +26,9 @@ class CareCoordinatorService {
         phone_no: coordinator.phone_no,
         specialization: coordinator.specialization,
         network: coordinator.network,
-        email_verify: coordinator.email_verify
+        email_verify: user.email_verify
       },
       { headers: authHeader() })
-      .then(response => {
-        return response.data;
-      });
     }
   }
 
@@ -48,9 +43,6 @@ class CareCoordinatorService {
           care_coordinator_id: contact.care_coordinator_id,
         },
         { headers: authHeader() })
-        .then(response => {
-          return response.data;
-        });
     }
     else {
       return axios
@@ -62,9 +54,6 @@ class CareCoordinatorService {
           care_coordinator_id: contact.care_coordinator_id,
         },
         { headers: authHeader() })
-        .then(response => {
-          return response.data;
-        });
     }
   }
 
@@ -76,9 +65,6 @@ class CareCoordinatorService {
         care_coordinator_id: availability.care_coordinator_id,
       },
       { headers: authHeader() })
-      .then(response => {
-        return response.data;
-      });
     }
     else {
       return axios.post(API_URL + 'carecoordinator/'+availability.care_coordinator_id+'/availability', {
@@ -87,9 +73,6 @@ class CareCoordinatorService {
         care_coordinator_id: availability.care_coordinator_id,
       },
       { headers: authHeader() })
-      .then(response => {
-        return response.data;
-      });
     }
   }
 
