@@ -14,7 +14,7 @@ class CareCoordinatorService {
         gender: coordinator.gender,
         email: coordinator.email,
       },
-      { headers: authHeader() })
+      { headers: authHeader() });
     }
     else {
       return axios.post(API_URL + 'carecoordinator', {
@@ -28,7 +28,7 @@ class CareCoordinatorService {
         network: coordinator.network,
         email_verify: user.email_verify
       },
-      { headers: authHeader() })
+      { headers: authHeader() });
     }
   }
 
@@ -42,7 +42,7 @@ class CareCoordinatorService {
           phone_no: contact.phone_no,
           care_coordinator_id: contact.care_coordinator_id,
         },
-        { headers: authHeader() })
+        { headers: authHeader() });
     }
     else {
       return axios
@@ -53,7 +53,7 @@ class CareCoordinatorService {
           phone_no: contact.phone_no,
           care_coordinator_id: contact.care_coordinator_id,
         },
-        { headers: authHeader() })
+        { headers: authHeader() });
     }
   }
 
@@ -64,7 +64,7 @@ class CareCoordinatorService {
         end_time: availability.end_time,
         care_coordinator_id: availability.care_coordinator_id,
       },
-      { headers: authHeader() })
+      { headers: authHeader() });
     }
     else {
       return axios.post(API_URL + 'carecoordinator/'+availability.care_coordinator_id+'/availability', {
@@ -72,7 +72,7 @@ class CareCoordinatorService {
         end_time: availability.end_time,
         care_coordinator_id: availability.care_coordinator_id,
       },
-      { headers: authHeader() })
+      { headers: authHeader() });
     }
   }
 
@@ -81,23 +81,12 @@ class CareCoordinatorService {
       role: role.role,
       care_coordinator_id: role.care_coordinator_id,
     },
-    { headers: authHeader() })
-    .then(response => {
-      return response.data;
-    });
+    { headers: authHeader() });
   }
 
   addCareCoordinatorDocument(document) {
-    return axios.post(API_URL + 'carecoordinator/'+document.care_coordinator_id+'/document', {
-        name: document.name,
-        document: document.document,
-        type: document.type,
-        tags: document.tags,
-      },
-      { headers: authHeader() })
-      .then(response => {
-        return response.data;
-      });
+    return axios.post(API_URL + 'carecoordinator/'+document.care_coordinator_id+'/document', document,
+      { headers: authHeader() });
   }
 
   uploadFile(file) {
@@ -165,11 +154,11 @@ class CareCoordinatorService {
     return axios.get(API_URL + 'carecoordinator/'+data.carecoordinatorId+'/access/'+data.roleId, { headers: authHeader() });
   }
   
-  getSpecializationsCount(id) {
+  specializationsCount(id) {
     return axios.get(API_URL + 'specialization/'+id, { headers: authHeader() });
   }
 
-  getNetworkCount(id) {
+  networksCount(id) {
     return axios.get(API_URL + 'network/'+id, { headers: authHeader() });
   }
 
