@@ -167,6 +167,14 @@ h6 {
 		margin: 0 0 4px 0;
 		font-family: $font-family-semi-bold;
 	}
+	.duration {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		span{
+			margin: 0 0 0 5px;
+		}
+	}
 	.error {
 		position: absolute;
 		color: $red-color;
