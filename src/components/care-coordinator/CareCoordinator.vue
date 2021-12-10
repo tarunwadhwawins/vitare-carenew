@@ -2,16 +2,16 @@
   <a-row class="mb-24" :gutter="24">
     <a-col :sm="12" :xs="24">
       <h2>Specialization</h2>
-      <a-row :gutter="24">
-        <LongCard customClass="two" :count="specializationTotal" :text="specializationText"></LongCard>
-        <LongCard customClass="four" count="5" text="Behaviour"></LongCard>
+      <a-row :gutter="24" v-if="specializationWellness && specializationBehavour">
+        <LongCard customClass="two" :count="specializationWellness.total" :text="specializationWellness.specialization"></LongCard>
+        <LongCard customClass="four" :count="specializationBehavour.total" :text="specializationBehavour.specialization"></LongCard>
       </a-row>
     </a-col>
     <a-col :sm="12" :xs="24">
       <h2>Network</h2>
-      <a-row :gutter="24">
-        <LongCard customClass="six" :count="networkTotal" :text="networkText"></LongCard>
-        <LongCard customClass="five" count="6" text="Out"></LongCard>
+      <a-row :gutter="24" v-if="networksIn && networksOut">
+        <LongCard customClass="six" :count="networksIn.total" :text="networksIn.network"></LongCard>
+        <LongCard customClass="five" :count="networksOut.total" :text="networksOut.network"></LongCard>
       </a-row>
     </a-col>
   </a-row>
@@ -20,10 +20,11 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue';
+import { ref, watchEffect, computed } from 'vue';
 import LongCard from "@/components/common/cards/LongCard";
 import CoordinatorTable from "@/components/common/tables/CoordinatorTable";
-import store from "@/store/index";
+import { useStore } from "vuex"
+
 export default {
   data() {
     return {
@@ -35,30 +36,24 @@ export default {
     CoordinatorTable,
   },
   setup(props, {emit}) {
-    const specializationTotal = ref()
-    const specializationText = ref()
-    const networkTotal = ref()
-    const networkText = ref()
-    watch( () => {
-      store.dispatch("getSpecializationsCount", 1).then((res) => {
-        const specialization = res.data.data;
-        specializationTotal.value = specialization.total;
-        specializationText.value = specialization.specialization;
-        // console.log(specialization.value)
-      },
-      (error) => {
-        console.log(error)
-      });
-      
-      store.dispatch("getNetworkCount", 1)
-      .then((res) => {
-        const network = res.data.data;
-        networkTotal.value = network.total;
-        networkText.value = network.network;
-      },
-      (error) => {
-        console.log(error)
-      });
+    const store = useStore()
+    watchEffect( () => {
+      store.dispatch("specializationsCount", 1)
+      store.dispatch("specializationsCount", 2)
+      store.dispatch("networksCount", 1)
+      store.dispatch("networksCount", 2)
+    })
+    const specializationWellness = computed(() => {
+      return store.state.careCoordinator.specializationWellness
+    })
+    const specializationBehavour = computed(() => {
+      return store.state.careCoordinator.specializationBehavour
+    })
+    const networksIn = computed(() => {
+      return store.state.careCoordinator.networksIn
+    })
+    const networksOut = computed(() => {
+      return store.state.careCoordinator.networksOut
     })
     const onClickEditPersonal = (rowId) => {
       store.dispatch("getCoordinatorDetails", rowId)
@@ -74,11 +69,15 @@ export default {
     }
       
     return {
+      specializationWellness,
+      specializationBehavour,
+      networksIn,
+      networksOut,
       onClickEditPersonal,
-      specializationTotal,
-      specializationText,
-      networkTotal,
-      networkText,
+      // specializationTotal,
+      // specializationText,
+      // networkTotal,
+      // networkText,
     }
   }
 };

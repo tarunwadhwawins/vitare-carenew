@@ -54,11 +54,12 @@
 </template>
 
 <script>
-  import { toRaw } from 'vue';
+  import { reactive } from 'vue';
   import { Form, Field, ErrorMessage } from 'vee-validate';
   import * as yup from 'yup';
   import { configure } from 'vee-validate';
   import moment from "moment";
+  import { useStore } from "vuex"
   // Default values
   configure({
     validateOnBlur: true,
@@ -95,37 +96,24 @@
       });
       return {
         schema,
-        availabilityForm: {
-          start_time: '',
-          end_time: '',
-          id: '',
-        }
       }
     },
-    methods: {
-      addCareCoordinatorAvailability() {
-        const availability = toRaw(this.availabilityForm);
-        const availabilityId = availability.id;
-        this.$store.dispatch("addCareCoordinatorAvailability", { 
-          start_time: availability.start_time,
-          end_time: availability.end_time,
-          care_coordinator_id: JSON.parse(localStorage.getItem('coordinatorId')),
-          availabilityId: availabilityId ? availabilityId : null,
-        })
-        .then((res) => {
-          localStorage.setItem('availabilityId', res.data.id)
-        },
-        (error) => {
-          console.log(error)
-          this.message = (
-            error.response &&
-            error.response.data &&
-            error.response.data.message
-          ) ||
-          error.message ||
-          error.toString();
-        });
+    setup() {
+      const store = useStore()
+      const availabilityId = JSON.parse(localStorage.getItem('availabilityId'));
+      const availabilityForm = reactive({
+        start_time: null,
+        end_time: null,
+        care_coordinator_id: JSON.parse(localStorage.getItem('coordinatorId')),
+        availabilityId: availabilityId ? availabilityId : null,
+      })
+      const addCareCoordinatorAvailability = () => {
+        store.dispatch("addCareCoordinatorAvailability", availabilityForm)
       }
-    }
+      return {
+        availabilityForm,
+        addCareCoordinatorAvailability
+      }
+    },
   }
 </script>

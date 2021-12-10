@@ -40,10 +40,11 @@
 </template>
 
 <script>
-  import { toRaw } from 'vue';
+  import { reactive } from 'vue';
   import { Form, Field, ErrorMessage } from 'vee-validate';
   import * as yup from 'yup';
   import { configure } from 'vee-validate';
+  import { useStore } from "vuex"
   // Default values
   configure({
     validateOnBlur: true,
@@ -81,41 +82,26 @@
       });
       return {
         schema,
-        contactForm: {
-          first_name: '',
-          last_name: '',
-          email: '',
-          phone_no: '',
-          id: '',
-        }
       }
     },
-    methods: {
-      addCareCoordinatorContact() {
-        const contact = toRaw(this.contactForm);
-        const contactId = contact.id;
-        this.$store.dispatch("addCareCoordinatorContact", {
-          first_name: contact.first_name,
-          last_name: contact.last_name,
-          email: contact.email,
-          phone_no: contact.phone_no,
-          care_coordinator_id: JSON.parse(localStorage.getItem('coordinatorId')),
-          contactId: contactId ? contactId : null,
-        })
-        .then((res) => {
-          localStorage.setItem('contactId', res.data.id)
-        },
-        (error) => {
-          console.log(error)
-          this.message = (
-            error.response &&
-            error.response.data &&
-            error.response.data.message
-          ) ||
-          error.message ||
-          error.toString();
-        });
+    setup() {
+      const store = useStore()
+      const contactId = JSON.parse(localStorage.getItem('contactId'));
+      const contactForm = reactive({
+        first_name: null,
+        last_name: null,
+        email: null,
+        phone_no: null,
+        care_coordinator_id: JSON.parse(localStorage.getItem('coordinatorId')),
+        contactId: contactId ? contactId : null,
+      })
+      const addCareCoordinatorContact = () => {
+        store.dispatch("addCareCoordinatorContact", contactForm)
       }
-    }
+      return {
+        contactForm,
+        addCareCoordinatorContact
+      }
+    },
   }
 </script>

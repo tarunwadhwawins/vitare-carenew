@@ -4,8 +4,8 @@
       <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Name</label>
-          <Field class="ant-input ant-input-lg" v-model="documentForm.document_name" name="document_name" size="large" />
-          <ErrorMessage class="error" name="document_name" />
+          <Field class="ant-input ant-input-lg" v-model="documentForm.name" name="name" size="large" />
+          <ErrorMessage class="error" name="name" />
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
@@ -20,12 +20,12 @@
           <label> Type</label>
           <Field class="ant-input ant-input-lg" as="select"
             ref="select"
-            v-model="documentForm.document_type"
-            name="document_type">
+            v-model="documentForm.type"
+            name="type">
             <option value="1">Id Proof</option>
             <option value="2">Insurance</option>
           </Field>
-          <ErrorMessage class="error" name="document_type" />
+          <ErrorMessage class="error" name="type" />
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
@@ -60,13 +60,12 @@
 </template>
 
 <script>
-  import { ref, computed, toRaw } from "vue";
+  import { ref, computed, useStore, reactive } from "vue";
   const OPTIONS = ["Manager", "Billing Admin", "User Admin"];
   const OPTIONSTAG = ["Tag1", "Tag2", "Tag3"];
   import { Form, Field, ErrorMessage } from 'vee-validate';
   import * as yup from 'yup';
   import { configure } from 'vee-validate';
-  import axios from 'axios';
 import Loading from 'vue-loading-overlay';
   // Default values
   configure({
@@ -84,71 +83,17 @@ import Loading from 'vue-loading-overlay';
     },
     data() {
       const schema = yup.object({
-        document_name: yup.string().required().label("Name"),
+        name: yup.string().required().label("Name"),
         document_file: yup.mixed().required().label("Doument"),
-        document_type: yup.string().required().label("Type"),
+        type: yup.string().required().label("Type"),
         // selectedItemsForTag: yup.string().required(),
       });
       return {
         schema,
-        documentForm: {
-          document_name: '',
-          document_file: '',
-          document_type: '',
-          selectedItemsForTag: [],
-          value: [],
-          // FILE: null,
-        }
-      }
-    },
-    methods: {
-      onFileUpload (event) {
-        let doc_file = event.target.files[0]
-        let formData = new FormData();
-        formData.append('file', doc_file);
-        
-        this.$store.dispatch("uploadFile", formData)
-        .then((res) => {
-          localStorage.setItem('file_path', res.data.path)
-        },
-        (error) => {
-          console.log(error)
-          this.message = (
-            error.response &&
-            error.response.data &&
-            error.response.data.message
-          ) ||
-          error.message ||
-          error.toString();
-        });
-      },
-      addCareCoordinatorDocument() {
-        const file_path = localStorage.getItem('file_path')
-        const document = toRaw(this.documentForm);
-        // console.log('selectedItemsForTag', document.selectedItemsForTag)
-        this.$store.dispatch("addCareCoordinatorDocument", { 
-          name: document.document_name,
-          document: file_path,
-          type: document.document_type,
-          tags: this.value,
-          care_coordinator_id: JSON.parse(localStorage.getItem('coordinatorId')),
-        })
-        .then((res) => { 
-          console.log(res);
-        },
-        (error) => {
-          console.log(error)
-          this.message = (
-            error.response &&
-            error.response.data &&
-            error.response.data.message
-          ) ||
-          error.message ||
-          error.toString();
-        });
       }
     },
     setup() {
+      const store = useStore()
       const value = ref()
       const selectedItems = ref(["Manager"]);
       const filteredOptions = computed(() =>
@@ -158,17 +103,36 @@ import Loading from 'vue-loading-overlay';
       const filteredOptionsForTag = computed(() =>
         OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
       );
-      // const handleChange = value => {
-      //   console.log(`selected ${value}`);
-      // };
+      const onFileUpload = (event) => {
+        let doc_file = event.target.files[0]
+        let formData = new FormData();
+        formData.append('file', doc_file);
+        store.dispatch("uploadFile", formData)
+        .then((res) => {
+          localStorage.setItem('file_path', res.data.path)
+        });
+      }
+
+      const addCareCoordinatorDocument = () => {
+        const documentForm = reactive({
+          name: null,
+          document: file_path,
+          type: null,
+          tags: this.value,
+        })
+        const file_path = localStorage.getItem('file_path')
+        store.dispatch("addCareCoordinatorDocument", documentForm)
+      }
+      
       return {
-        // handleChange,
+        onFileUpload,
+        addCareCoordinatorDocument,
         value,
         selectedItems,
         filteredOptions,
         filteredOptionsForTag,
         selectedItemsForTag,
-      };
+      }
     },
   };
 </script>

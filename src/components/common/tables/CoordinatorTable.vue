@@ -1,7 +1,7 @@
 <template>
   <a-row>
     <a-col :span="24">
-      <a-table :columns="columns" :data-source="coordinatorsList" :scroll="{ x: 900 }">
+      <a-table v-if="coordinatorsList" :columns="columns" :data-source="coordinatorsList" :scroll="{ x: 900 }">
         <template #action="{ record }">
           <a class="icons" @click ="onClickEditButton(record.id)"><EditOutlined /></a>
           <a class="icons" @click ="onClickDeleteButton(record.id)"> <DeleteOutlined /></a>
@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue';
+import { watchEffect, computed } from 'vue';
 import Loading from 'vue-loading-overlay';
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-import store from '@/store/index';
+import { useStore } from "vuex"
 import swal from 'sweetalert';
 const columns = [
   {
@@ -95,36 +95,17 @@ export default {
     }
   },
   setup(props, { emit }) {
-    let coordinatorsList = ref()
-    watch( () => {
-      store.dispatch("getCareCoordinatorsList").then((res) => {
-        // coordinatorsList.value = res.data.data;
-        const response = res.data.data;
-        const coordinatorsData = [];
-        response.forEach(res => {
-          coordinatorsData.push({
-            key: res.id,
-            id: res.id,
-            first_name: res.first_name,
-            last_name: res.last_name,
-            role: res.role,
-            specialization: res.specialization,
-            network: res.network,
-            created_at: res.created_at,
-            status: res.status,
-            action: "",
-          })
-        });
-        console.log('coordinatorsData', coordinatorsData)
-        coordinatorsList.value = coordinatorsData;
-      },
-      (error) => {
-        console.log(error)
-      });
+    const store = useStore()
+    watchEffect( () => {
+      store.dispatch("getCareCoordinatorsList")
+    })
+    const coordinatorsList = computed(() => {
+      return store.state.careCoordinator.coordinatorsList
     })
     
     const onClickEditButton = (rowId) => {
       localStorage.setItem('is_update_coordinator', true)
+      localStorage.setItem('coordinatorId', rowId)
       emit('edit-clicked', rowId)
     }
     const onClickDeleteButton = (rowId) => {
@@ -138,30 +119,7 @@ export default {
         if (willDelete) {
           store.dispatch("deleteCoordinator", rowId).then((res) => {
             console.log('Res', res)
-            store.dispatch("getCareCoordinatorsList").then((res) => {
-              // coordinatorsList.value = res.data.data;
-              const response = res.data.data;
-              const coordinatorsData = [];
-              response.forEach(res => {
-                coordinatorsData.push({
-                  key: res.id,
-                  id: res.id,
-                  first_name: res.first_name,
-                  last_name: res.last_name,
-                  role: res.role,
-                  specialization: res.specialization,
-                  network: res.network,
-                  created_at: res.created_at,
-                  status: res.status,
-                  action: "",
-                })
-              });
-              console.log('coordinatorsData', coordinatorsData)
-              coordinatorsList.value = coordinatorsData;
-            },
-            (error) => {
-              console.log(error)
-            });
+            store.dispatch("getCareCoordinatorsList")
           },
           (error) => {
             console.log(error)

@@ -1,246 +1,280 @@
 import CareCoordinatorService from '../services/care-coordinator.service';
+import AuthService from '../services/auth.service';
 
 export const careCoordinator = {
+  state: {
+    coordinator: null,
+    contact: null,
+    availability: null,
+    role: null,
+    file: null,
+    document: null,
+    coordinatorsList: null,
+    contactsList: null,
+    availabilityList: null,
+    rolesList: null,
+    specializationWellness: null,
+    specializationBehavour: null,
+    networksIn: null,
+    networksOut: null,
+    contactDetails: null,
+    availabilityDetails: null,
+    roleDetails: null,
+    CoordinatorDetails: null,
+    deleteCoordinator: null,
+    deleteContact: null,
+    deleteAvailability: null,
+    deleteRole: null,
+    errormsg: null,
+  },
   actions: {
-    addCareCoordinator({ commit }, coordinator) {
-      return CareCoordinatorService.addCareCoordinator(coordinator).then(
-        coordinator => {
-          commit('addCareCoordinatorSuccess', coordinator);
-          return Promise.resolve(coordinator);
-        },
-        error => {
-          commit('addCareCoordinatorFailure');
-          return Promise.reject(error);
+    async addCareCoordinator({ commit }, coordinator) {
+      try {
+        let response = await CareCoordinatorService.addCareCoordinator(coordinator)
+        commit('addCareCoordinatorSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    addCareCoordinatorContact({ commit }, contact) {
-      return CareCoordinatorService.addCareCoordinatorContact(contact).then(
-        contact => {
-          commit('addContactSuccess', contact);
-          return Promise.resolve(contact);
-        },
-        error => {
-          commit('addContactFailure');
-          return Promise.reject(error);
+    async addCareCoordinatorContact({ commit }, contact) {
+      try {
+        let response = await CareCoordinatorService.addCareCoordinatorContact(contact)
+        commit('addContactSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    addCareCoordinatorAvailability({ commit }, availability) {
-      return CareCoordinatorService.addCareCoordinatorAvailability(availability).then(
-        availability => {
-          commit('addAvailabilitySuccess', availability);
-          return Promise.resolve(availability);
-        },
-        error => {
-          commit('addAvailabilityFailure');
-          return Promise.reject(error);
+    async addCareCoordinatorAvailability({ commit }, availability) {
+      try {
+        let response = await CareCoordinatorService.addCareCoordinatorAvailability(availability)
+        commit('addAvailabilitySuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    addCareCoordinatorRole({ commit }, role) {
-      return CareCoordinatorService.addCareCoordinatorRole(role).then(
-        role => {
-          commit('addRoleSuccess', role);
-          return Promise.resolve(role);
-        },
-        error => {
-          commit('addRoleFailure');
-          return Promise.reject(error);
+    async addCareCoordinatorRole({ commit }, role) {
+      try {
+        let response = await CareCoordinatorService.addCareCoordinatorRole(role)
+        commit('addRoleSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    addCareCoordinatorDocument({ commit }, document) {
-      return CareCoordinatorService.addCareCoordinatorDocument(document).then(
-        document => {
-          commit('addDocumentSuccess', document);
-          return Promise.resolve(document);
-        },
-        error => {
-          commit('addDocumentFailure');
-          return Promise.reject(error);
+    async uploadFile({ commit }, file) {
+      try {
+        let response = await CareCoordinatorService.uploadFile(file)
+        commit('uploadFileSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    uploadFile({ commit }, file) {
-      return CareCoordinatorService.uploadFile(file).then(
-        file => {
-          commit('uploadFileSuccess', file);
-          return Promise.resolve(file);
-        },
-        error => {
-          commit('uploadFileFailure');
-          return Promise.reject(error);
+    async addCareCoordinatorDocument({ commit }, document) {
+      try {
+        let response = await CareCoordinatorService.addCareCoordinatorDocument(document)
+        commit('addDocumentSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    getCareCoordinatorsList({ commit }, id) {
-      return CareCoordinatorService.getCareCoordinatorsList(id).then(
-        list => {
-          commit('getCareCoordinatorsListSuccess', list);
-          return Promise.resolve(list);
-        },
-        error => {
-          commit('getCareCoordinatorsListFailure', error);
-          return Promise.reject(error);
+    async getCareCoordinatorsList({ commit }, id) {
+      try {
+        let response = await CareCoordinatorService.getCareCoordinatorsList(id)
+        commit('getCareCoordinatorsListSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    getCoordinatorDetails({ commit }, id) {
-      return CareCoordinatorService.getCoordinatorDetails(id).then(
-        list => {
-          commit('getCoordinatorDetailsSuccess', list);
-          return Promise.resolve(list);
-        },
-        error => {
-          commit('getCoordinatorDetailsFailure', error);
-          return Promise.reject(error);
+    async getCoordinatorDetails({ commit }, id) {
+      try {
+        let response = await CareCoordinatorService.getCoordinatorDetails(id)
+        commit('getCoordinatorDetailsSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    deleteCoordinator({ commit }, id) {
-      return CareCoordinatorService.deleteCoordinator(id).then(
-        list => {
-          commit('deleteCoordinatorSuccess', list);
-          return Promise.resolve(list);
-        },
-        error => {
-          commit('deleteCoordinatorFailure', error);
-          return Promise.reject(error);
+    async deleteCoordinator({ commit }, id) {
+      try {
+        let response = await CareCoordinatorService.deleteCoordinator(id)
+        commit('deleteCoordinatorSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    getCoordinatorContacts({ commit }, id) {
-      return CareCoordinatorService.getCoordinatorContacts(id).then(
-        contacts => {
-          commit('getCoordinatorContactsSuccess', contacts);
-          return Promise.resolve(contacts);
-        },
-        error => {
-          commit('getCoordinatorContactsFailure', error);
-          return Promise.reject(error);
+    async getCoordinatorContacts({ commit }, id) {
+      try {
+        let response = await CareCoordinatorService.getCoordinatorContacts(id)
+        commit('getCoordinatorContactsSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    deleteCoordinatorContact({ commit }, data) {
-      return CareCoordinatorService.deleteCoordinatorContact(data).then(
-        list => {
-          commit('deleteCoordinatorContactSuccess', list);
-          return Promise.resolve(list);
-        },
-        error => {
-          commit('deleteCoordinatorContactFailure', error);
-          return Promise.reject(error);
+    async deleteCoordinatorContact({ commit }, data) {
+      try {
+        let response = await CareCoordinatorService.deleteCoordinatorContact(data)
+        commit('deleteCoordinatorContactSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    deleteCoordinatorAvailability({ commit }, data) {
-      return CareCoordinatorService.deleteCoordinatorAvailability(data).then(
-        list => {
-          commit('deleteCoordinatorAvailabilitySuccess', list);
-          return Promise.resolve(list);
-        },
-        error => {
-          commit('deleteCoordinatorAvailabilityFailure', error);
-          return Promise.reject(error);
+    async deleteCoordinatorAvailability({ commit }, data) {
+      try {
+        let response = await CareCoordinatorService.deleteCoordinatorAvailability(data)
+        commit('deleteCoordinatorAvailabilitySuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    deleteCoordinatorRole({ commit }, data) {
-      return CareCoordinatorService.deleteCoordinatorRole(data).then(
-        list => {
-          commit('deleteCoordinatorRoleSuccess', list);
-          return Promise.resolve(list);
-        },
-        error => {
-          commit('deleteCoordinatorRoleFailure', error);
-          return Promise.reject(error);
+    async deleteCoordinatorRole({ commit }, data) {
+      try {
+        let response = await CareCoordinatorService.deleteCoordinatorRole(data)
+        commit('deleteCoordinatorRoleSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    getCoordinatorContactDetails({ commit }, data) {
-      return CareCoordinatorService.getCoordinatorContactDetails(data).then(
-        contacts => {
-          commit('getCoordinatorContactDetailsSuccess', contacts);
-          return Promise.resolve(contacts);
-        },
-        error => {
-          commit('getCoordinatorContactDetailsFailure', error);
-          return Promise.reject(error);
+    async getCoordinatorContactDetails({ commit }, data) {
+      try {
+        let response = await CareCoordinatorService.getCoordinatorContactDetails(data)
+        commit('getCoordinatorContactDetailsSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    getCoordinatorAvailabilities({ commit }, id) {
-      return CareCoordinatorService.getCoordinatorAvailabilities(id).then(
-        contacts => {
-          commit('getCoordinatorAvailabilitiesSuccess', contacts);
-          return Promise.resolve(contacts);
-        },
-        error => {
-          commit('getCoordinatorAvailabilitiesFailure', error);
-          return Promise.reject(error);
+    async getCoordinatorAvailabilities({ commit }, id) {
+      try {
+        let response = await CareCoordinatorService.getCoordinatorAvailabilities(id)
+        commit('getCoordinatorAvailabilitiesSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    getCoordinatorAvailabilityDetails({ commit }, data) {
-      return CareCoordinatorService.getCoordinatorAvailabilityDetails(data).then(
-        contacts => {
-          commit('getCoordinatorAvailabilitySuccess', contacts);
-          return Promise.resolve(contacts);
-        },
-        error => {
-          commit('getCoordinatorAvailabilityFailure', error);
-          return Promise.reject(error);
+    async getCoordinatorAvailabilityDetails({ commit }, data) {
+      try {
+        let response = await CareCoordinatorService.getCoordinatorAvailabilityDetails(data)
+        commit('getCoordinatorAvailabilitySuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    getCoordinatorRoles({ commit }, id) {
-      return CareCoordinatorService.getCoordinatorRoles(id).then(
-        contacts => {
-          commit('getCoordinatorRolesSuccess', contacts);
-          return Promise.resolve(contacts);
-        },
-        error => {
-          commit('getCoordinatorRolesFailure', error);
-          return Promise.reject(error);
+    async getCoordinatorRoles({ commit }, id) {
+      try {
+        let response = await CareCoordinatorService.getCoordinatorRoles(id)
+        commit('getCoordinatorRolesSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    getCoordinatorRoleDetails({ commit }, data) {
-      return CareCoordinatorService.getCoordinatorRoleDetails(data).then(
-        contacts => {
-          commit('getCoordinatorRoleDetailsSuccess', contacts);
-          return Promise.resolve(contacts);
-        },
-        error => {
-          commit('getCoordinatorRoleDetailsFailure', error);
-          return Promise.reject(error);
+    async getCoordinatorRoleDetails({ commit }, data) {
+      try {
+        let response = await CareCoordinatorService.getCoordinatorRoleDetails(data)
+        commit('getCoordinatorRoleDetailsSuccess', response.data.data);
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
         }
-      );
+        commit('Failure', error);
+      }
     },
-    getSpecializationsCount({ commit }, id) {
-      return CareCoordinatorService.getSpecializationsCount(id).then(
-        count => {
-          commit('getSpecializationsCountSuccess', count);
-          return Promise.resolve(count);
-        },
-        error => {
-          commit('getSpecializationsCountFailure', error);
-          return Promise.reject(error);
+    async specializationsCount({ commit }, id) {
+      try {
+        let response = await CareCoordinatorService.specializationsCount(id)
+        if (id == 1) {
+          commit('specializationWellnessSuccess', response.data.data);
+        } else {
+          commit('specializationBehavourSuccess', response.data.data);
         }
-      );
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
+        }
+        commit('Failure', error);
+      }
     },
-    getNetworkCount({ commit }, id) {
-      return CareCoordinatorService.getNetworkCount(id).then(
-        count => {
-          commit('getNetworkCountSuccess', count);
-          return Promise.resolve(count);
-        },
-        error => {
-          commit('getNetworkCountFailure', error);
-          return Promise.reject(error);
+    async networksCount({ commit }, id) {
+      try {
+        let response = await CareCoordinatorService.networksCount(id)
+        if (id == 1) {
+          commit('networksInSuccess', response.data.data);
+        } else {
+          commit('networksOutSuccess', response.data.data);
         }
-      );
+      }
+      catch(error) {
+        if(error.message == "Request failed with status code 401") {
+          AuthService.logout();
+        }
+        commit('Failure', error);
+      }
     },
   },
   
@@ -248,122 +282,71 @@ export const careCoordinator = {
     addCareCoordinatorSuccess(state, coordinator) {
       state.coordinator = coordinator;
     },
-    addCareCoordinatorFailure(state) {
-      state.coordinator = null;
-    },
     addContactSuccess(state, contact) {
       state.contact = contact;
-    },
-    addContactFailure(state) {
-      state.contact = null;
     },
     addAvailabilitySuccess(state, availability) {
       state.availability = availability;
     },
-    addAvailabilityFailure(state) {
-      state.availability = null;
-    },
     addRoleSuccess(state, role) {
       state.role = role;
-    },
-    addRoleFailure(state) {
-      state.role = null;
-    },
-    addDocumentSuccess(state, document) {
-      state.document = document;
-    },
-    addDocumentFailure(state) {
-      state.document = null;
     },
     uploadFileSuccess(state, file) {
       state.file = file;
     },
-    uploadFileFailure(state) {
-      state.file = null;
+    addDocumentSuccess(state, document) {
+      state.document = document;
     },
-    getCareCoordinatorsListSuccess(state, list) {
-      state.list = list;
+    getCareCoordinatorsListSuccess(state, coordinatorsList) {
+      state.coordinatorsList = coordinatorsList;
     },
-    getCareCoordinatorsListFailure(state, error) {
-      state.list = error;
+    getCoordinatorContactsSuccess(state, contactsList) {
+      state.contactsList = contactsList;
     },
-    getCoordinatorContactsSuccess(state, contacts) {
-      state.contacts = contacts;
+    getCoordinatorAvailabilitiesSuccess(state, availabilityList) {
+      state.availabilityList = availabilityList;
     },
-    getCoordinatorContactsFailure(state, error) {
-      state.contacts = error;
+    getCoordinatorRolesSuccess(state, rolesList) {
+      state.rolesList = rolesList;
     },
-    getCoordinatorAvailabilitiesSuccess(state, availability) {
-      state.availability = availability;
+    specializationWellnessSuccess(state, wellness) {
+      state.specializationWellness = wellness;
     },
-    getCoordinatorAvailabilitiesFailure(state, error) {
-      state.availability = error;
+    specializationBehavourSuccess(state, behaviour) {
+      state.specializationBehavour = behaviour;
     },
-    getCoordinatorRolesSuccess(state, roles) {
-      state.roles = roles;
+    networksInSuccess(state, networkIn) {
+      state.networksIn = networkIn;
     },
-    getCoordinatorRolesFailure(state, error) {
-      state.roles = error;
+    networksOutSuccess(state, networkOut) {
+      state.networksOut = networkOut;
     },
-    getSpecializationsCountSuccess(state, count) {
-      state.count = count;
+    getCoordinatorContactDetailsSuccess(state, contactDetails) {
+      state.contactDetails = contactDetails;
     },
-    getSpecializationsCountFailure(state, error) {
-      state.count = error;
+    getCoordinatorAvailabilitySuccess(state, availabilityDetails) {
+      state.availabilityDetails = availabilityDetails;
     },
-    getNetworkCountSuccess(state, count) {
-      state.count = count;
+    getCoordinatorRoleDetailsSuccess(state, roleDetails) {
+      state.roleDetails = roleDetails;
     },
-    getNetworkCountFailure(state, error) {
-      state.count = error;
+    getCoordinatorDetailsSuccess(state, CoordinatorDetails) {
+      state.CoordinatorDetails = CoordinatorDetails;
     },
-    getCoordinatorContactDetailsSuccess(state, contact) {
-      state.contact = contact;
+    deleteCoordinatorSuccess(state, deleteCoordinator) {
+      state.deleteCoordinator = deleteCoordinator;
     },
-    getCoordinatorContactDetailsFailure(state, error) {
-      state.contact = error;
+    deleteCoordinatorContactSuccess(state, deleteContact) {
+      state.deleteContact = deleteContact;
     },
-    getCoordinatorAvailabilitySuccess(state, availability) {
-      state.availability = availability;
+    deleteCoordinatorAvailabilitySuccess(state, deleteAvailability) {
+      state.deleteAvailability = deleteAvailability;
     },
-    getCoordinatorAvailabilityFailure(state, error) {
-      state.availability = error;
+    deleteCoordinatorRoleSuccess(state, deleteRole) {
+      state.deleteRole = deleteRole;
     },
-    getCoordinatorRoleDetailsSuccess(state, role) {
-      state.role = role;
-    },
-    getCoordinatorRoleDetailsFailure(state, error) {
-      state.role = error;
-    },
-    getCoordinatorDetailsSuccess(state, coordinator) {
-      state.coordinator = coordinator;
-    },
-    getCoordinatorDetailsFailure(state, error) {
-      state.coordinator = error;
-    },
-    deleteCoordinatorSuccess(state, coordinator) {
-      state.coordinator = coordinator;
-    },
-    deleteCoordinatorFailure(state, error) {
-      state.coordinator = error;
-    },
-    deleteCoordinatorContactSuccess(state, coordinator) {
-      state.coordinator = coordinator;
-    },
-    deleteCoordinatorContactFailure(state, error) {
-      state.coordinator = error;
-    },
-    deleteCoordinatorAvailabilitySuccess(state, coordinator) {
-      state.coordinator = coordinator;
-    },
-    deleteCoordinatorAvailabilityFailure(state, error) {
-      state.coordinator = error;
-    },
-    deleteCoordinatorRoleSuccess(state, coordinator) {
-      state.coordinator = coordinator;
-    },
-    deleteCoordinatorRoleFailure(state, error) {
-      state.coordinator = error;
+    Failure(state, error) {
+      state.errormsg = error;
     },
   }
 };

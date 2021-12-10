@@ -4,16 +4,16 @@
       <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Role</label>
-          <Field as="select" class="ant-input ant-input-lg"
-            v-model="rolesForm.role_name[0]"
-            name="role_name"
+          <Field as="select" class="ant-input ant-input-lg" multiple="true"
+            v-model="rolesForm.role"
+            name="role"
             mode="multiple"
             placeholder="Please select">
             <option value="1">Billing</option>
             <option value="2">Messages</option>
           </Field>
           <inut type="hidden" v-model="rolesForm.id" name="id" value=""/>
-          <ErrorMessage class="error" name="role_name" />
+          <ErrorMessage class="error" name="role" />
         </div>
       </a-col>
     </a-row>
@@ -26,10 +26,11 @@
 </template>
 
 <script>
-  import { toRaw } from 'vue';
+  import { reactive  } from 'vue';
   import { Form, Field, ErrorMessage } from 'vee-validate';
   import * as yup from 'yup';
   import { configure } from 'vee-validate';
+  import { useStore } from "vuex"
   // Default values
   configure({
     validateOnBlur: true,
@@ -45,39 +46,27 @@
     },
     data() {
       const schema = yup.object({
-        role_name: yup.string().required().label("Role"),
+        // role: yup.string().required().label("Role"),
       });
       return {
         schema,
-        rolesForm: {
-          role_name: [],
-          id: [],
-        }
       }
     },
-    methods: {
-      addCareCoordinatorRole() {
-        const role = toRaw(this.rolesForm);
-        const roleId = role.id;
-        this.$store.dispatch("addCareCoordinatorRole", { 
-          role: role.role_name,
-          care_coordinator_id: JSON.parse(localStorage.getItem('coordinatorId')),
-          roleId: roleId ? roleId : null,
-        })
-        .then((res) => {
-          localStorage.setItem('roleId', res.data.id)
-        },
-        (error) => {
-          console.log(error)
-          this.message = (
-            error.response &&
-            error.response.data &&
-            error.response.data.message
-          ) ||
-          error.message ||
-          error.toString();
-        });
+    setup() {
+      const store = useStore()
+      const roleId = JSON.parse(localStorage.getItem('roleId'));
+      const rolesForm = reactive({
+        role: [],
+        care_coordinator_id: JSON.parse(localStorage.getItem('coordinatorId')),
+        roleId: roleId ? roleId : null,
+      })
+      const addCareCoordinatorRole = () => {
+        store.dispatch("addCareCoordinatorRole", rolesForm)
       }
-    }
+      return {
+        rolesForm,
+        addCareCoordinatorRole
+      }
+    },
   }
 </script>
