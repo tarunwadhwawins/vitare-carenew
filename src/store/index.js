@@ -1,15 +1,9 @@
 import { createStore } from 'vuex'
-import { auth } from "./auth.module";
+import { auth } from "./auth/index";
 import { careCoordinator } from "./care-coordinator.module";
-import { dashBoard } from "./dashboard.module";
+import { dashBoard } from "./dashboard/index";
 
 export default createStore({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
   modules: {
     auth,
     careCoordinator,

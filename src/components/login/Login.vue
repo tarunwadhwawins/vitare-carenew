@@ -59,7 +59,7 @@
         const password = this.password;
         const role = this.role;
         this.$store
-          .dispatch("auth/login", {
+          .dispatch("login", {
             email,
             password,
             role,
