@@ -1,4 +1,5 @@
 import CareCoordinatorService from '../services/care-coordinator.service';
+import AuthService from '../services/auth.service';
 
 export const careCoordinator = {
   state: {

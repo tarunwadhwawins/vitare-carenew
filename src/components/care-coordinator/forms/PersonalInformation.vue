@@ -117,7 +117,7 @@
             <option value="1">In</option>
             <option value="1">Out</option>
           </Field>
-          <input type="hidden" v-model="personalInformationForm.id" name="id" value=""/>
+          <!-- <input type="hidden" v-model="personalInformationForm.id" name="id" value=""/> -->
           <ErrorMessage class="error" name="network" />
         </div>
       </a-col>
