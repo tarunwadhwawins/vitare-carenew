@@ -1,9 +1,9 @@
 <template>
   <a-row :gutter="24">
     <a-col :span="24">
-      <a-table :columns="availabilityColumns" :data-source="availabilityData" :scroll="{ x: 900 }">
+      <a-table :columns="availabilityColumns" :data-source="availabilityList" :scroll="{ x: 900 }">
         <template #action="{ record }">
-          <a class="icons" @click ="onClickViewButton(record.id)"><EditOutlined /></a>
+          <a class="icons" @click ="onClickEditButton(record.id)"><EditOutlined /></a>
           <a class="icons" @click ="onClickDeleteButton({coordinatorId: record.coordinator_id, availabilityId: record.id})"><DeleteOutlined /></a>
         </template>
       </a-table>
@@ -36,8 +36,8 @@ const availabilityColumns = [
     },
   },
 ];
-import { ref, watch } from 'vue';
-import store from '@/store/index';
+import { ref, watchEffect, computed } from 'vue';
+  import { useStore } from "vuex"
 import Loading from 'vue-loading-overlay';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons-vue";
 import swal from 'sweetalert';
@@ -53,24 +53,14 @@ export default {
     }
   },
   setup(props, { emit }) {
-    let availabilityData = ref()
-    watch( () => {
-      store.dispatch("getCoordinatorAvailabilities", JSON.parse(localStorage.getItem('coordinatorId'))).then((res) => {
-        availabilityData.value = res.data.data;
-      },
-      (error) => {
-        console.log(error)
-        this.message = (
-          error.response &&
-          error.response.data &&
-          error.response.data.message
-        ) ||
-        error.message ||
-        error.toString();
-      });
+    const isLoading = ref(true);
+    const store = useStore()
+    const coordinatorId = JSON.parse(localStorage.getItem('coordinatorId'))
+    watchEffect( () => {
+      store.dispatch("getCoordinatorAvailabilities", coordinatorId).then(() => { isLoading.value = false });
     })
-    const onClickViewButton = (availabilityId) => {
-      // const rowId = JSON.parse(localStorage.getItem('availabilityId'));
+    const onClickEditButton = (availabilityId) => {
+      localStorage.setItem('availabilityId', availabilityId)
       emit('clicked', availabilityId)
     }
     const onClickDeleteButton = ({coordinatorId, availabilityId}) => {
@@ -82,32 +72,29 @@ export default {
         dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
+          isLoading.value = true;
           let data = {
             coordinatorId: coordinatorId,
             availabilityId: availabilityId
           }
-          console.log(data)
-          store.dispatch("deleteCoordinatorAvailability", data)
-          .then((res) => {
-            console.log('Res', res)
-            store.dispatch("getCoordinatorAvailabilities", JSON.parse(localStorage.getItem('coordinatorId'))).then((res) => {
-              availabilityData.value = res.data.data;
-            },
-            (error) => {
-              console.log(error)
-            });
-          },
-          (error) => {
-            console.log(error)
-          });
+          store.dispatch("deleteCoordinatorAvailability", data).then(() => {
+            store.dispatch("getCoordinatorAvailabilities", coordinatorId).then(() => {
+              localStorage.removeItem('availabilityId')
+              isLoading.value = false;
+            })
+          })
         }
       });
     }
+    const availabilityList = computed(() => {
+      return store.state.careCoordinator.availabilityList
+    })
     return {
+      isLoading,
       availabilityColumns,
-      onClickViewButton,
+      onClickEditButton,
       onClickDeleteButton,
-      availabilityData
+      availabilityList
     }
   }
 }

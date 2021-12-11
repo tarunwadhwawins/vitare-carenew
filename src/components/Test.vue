@@ -1,113 +1,135 @@
-<style>
-  input[type="file"]{
-    position: absolute;
-    top: -500px;
-  }
-  div.file-listing{
-    width: 200px;
-  }
-  span.remove-file{
-    color: red;
-    cursor: pointer;
-    float: right;
-  }
-</style>
-
 <template>
-  <div class="container">
-    <div class="large-12 medium-12 small-12 cell">
-      <label>Files
-        <input type="file" id="files" ref="files" multiple v-on:change="handleFilesUpload()"/>
-      </label>
-    </div>
-    <div class="large-12 medium-12 small-12 cell">
-      <div v-for="(file, key) in files" :key="file.name" class="file-listing">{{ file.name }} <span class="remove-file" v-on:click="removeFile( key )">Remove</span></div>
-    </div>
-    <br>
-    <div class="large-12 medium-12 small-12 cell">
-      <button v-on:click="addFiles()">Add Files</button>
-    </div>
-    <br>
-    <div class="large-12 medium-12 small-12 cell">
-      <button v-on:click="submitFiles()">Submit</button>
-    </div>
-  </div>
+  <a-form
+    ref="formRef"
+    :model="formState"
+    :rules="rules"
+    :label-col="labelCol"
+    :wrapper-col="wrapperCol"
+  >
+    <a-form-item ref="name" label="Activity name" name="name">
+      <a-input v-model:value="formState.name" />
+    </a-form-item>
+    <a-form-item label="Activity zone" name="region">
+      <a-select v-model:value="formState.region" placeholder="please select your zone">
+        <a-select-option value="shanghai">Zone one</a-select-option>
+        <a-select-option value="beijing">Zone two</a-select-option>
+      </a-select>
+    </a-form-item>
+    <a-form-item label="Activity time" required name="date1">
+      <a-date-picker
+        v-model:value="formState.date1"
+        show-time
+        type="date"
+        placeholder="Pick a date"
+        style="width: 100%"
+      />
+    </a-form-item>
+    <a-form-item label="Instant delivery" name="delivery">
+      <a-switch v-model:checked="formState.delivery" />
+    </a-form-item>
+    <a-form-item label="Activity type" name="type">
+      <a-checkbox-group v-model:value="formState.type">
+        <a-checkbox value="1" name="type">Online</a-checkbox>
+        <a-checkbox value="2" name="type">Promotion</a-checkbox>
+        <a-checkbox value="3" name="type">Offline</a-checkbox>
+      </a-checkbox-group>
+    </a-form-item>
+    <a-form-item label="Resources" name="resource">
+      <a-radio-group v-model:value="formState.resource">
+        <a-radio value="1">Sponsor</a-radio>
+        <a-radio value="2">Venue</a-radio>
+      </a-radio-group>
+    </a-form-item>
+    <a-form-item label="Activity form" name="desc">
+      <a-textarea v-model:value="formState.desc" />
+    </a-form-item>
+    <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
+      <a-button type="primary" @click="onSubmit">Create</a-button>
+      <a-button style="margin-left: 10px" @click="resetForm">Reset</a-button>
+    </a-form-item>
+  </a-form>
 </template>
-
 <script>
-  import axios from 'axios';
-  export default {
-    /*
-      Defines the data used by the component
-    */
-    data(){
-      return {
-        files: []
-      }
-    },
-    /*
-      Defines the method used by the component
-    */
-    methods: {
-      /*
-        Adds a file
-      */
-      addFiles(){
-        this.$refs.files.click();
+import { defineComponent, reactive, ref, toRaw } from 'vue';
+export default defineComponent({
+  setup() {
+    const formRef = ref();
+    const formState = reactive({
+      name: '',
+      region: undefined,
+      date1: undefined,
+      delivery: false,
+      type: [],
+      resource: '',
+      desc: '',
+    });
+    const rules = {
+      name: [{
+        required: true,
+        message: 'Please input Activity name',
+        trigger: 'blur',
+      }, {
+        min: 3,
+        max: 5,
+        message: 'Length should be 3 to 5',
+        trigger: 'blur',
+      }],
+      region: [{
+        required: true,
+        message: 'Please select Activity zone',
+        trigger: 'change',
+      }],
+      date1: [{
+        required: true,
+        message: 'Please pick a date',
+        trigger: 'change',
+        type: 'object',
+      }],
+      type: [{
+        type: 'array',
+        required: true,
+        message: 'Please select at least one activity type',
+        trigger: 'change',
+      }],
+      resource: [{
+        required: true,
+        message: 'Please select activity resource',
+        trigger: 'change',
+      }],
+      desc: [{
+        required: true,
+        message: 'Please input activity form',
+        trigger: 'blur',
+      }],
+    };
+
+    const onSubmit = () => {
+      formRef.value.validate().then(() => {
+        console.log('values', formState, toRaw(formState));
+      }).catch(error => {
+        console.log('error', error);
+      });
+    };
+
+    const resetForm = () => {
+      formRef.value.resetFields();
+    };
+
+    return {
+      formRef,
+      labelCol: {
+        span: 4,
       },
-      /*
-        Submits files to the server
-      */
-      submitFiles(){
-        /*
-          Initialize the form data
-        */
-        let formData = new FormData();
-        /*
-          Iteate over any file sent over appending the files
-          to the form data.
-        */
-        for( var i = 0; i < this.files.length; i++ ){
-          let file = this.files[i];
-          formData.append('files[' + i + ']', file);
-        }
-        /*
-          Make the request to the POST /select-files URL
-        */
-        let user = JSON.parse(localStorage.getItem('user'));
-        axios.post('https://ditstekdemo.com/Virtare-web/public/api/fileupload',
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              'Authorization': 'Bearer '+user.token
-            }
-          }
-        ).then(function(){
-          console.log('SUCCESS!!');
-        })
-        .catch(function(){
-          console.log('FAILURE!!');
-        });
+      wrapperCol: {
+        span: 14,
       },
-      /*
-        Handles the uploading of files
-      */
-      handleFilesUpload(){
-        let uploadedFiles = this.$refs.files.files;
-        /*
-          Adds the uploaded file to the files array
-        */
-        for( var i = 0; i < uploadedFiles.length; i++ ){
-          this.files.push( uploadedFiles[i] );
-        }
-      },
-      /*
-        Removes a select file the user has uploaded
-      */
-      removeFile( key ){
-        this.files.splice( key, 1 );
-      }
-    }
-  }
+      other: '',
+      formState,
+      rules,
+      onSubmit,
+      resetForm,
+    };
+  },
+
+});
 </script>

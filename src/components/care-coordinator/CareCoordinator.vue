@@ -17,6 +17,13 @@
   </a-row>
   
   <CoordinatorTable @edit-clicked="onClickEditPersonal($event)"></CoordinatorTable>
+  <loading
+    :active="isLoading" 
+    loader="bars"
+    lock-scroll="true"
+    is-full-page="true"
+    transition="fade"
+    :can-cancel="false"/>
 </template>
 
 <script>
@@ -24,24 +31,22 @@ import { ref, watchEffect, computed } from 'vue';
 import LongCard from "@/components/common/cards/LongCard";
 import CoordinatorTable from "@/components/common/tables/CoordinatorTable";
 import { useStore } from "vuex"
+import Loading from 'vue-loading-overlay';
 
 export default {
-  data() {
-    return {
-      
-    }
-  },
   components: {
     LongCard,
     CoordinatorTable,
+    Loading,
   },
   setup(props, {emit}) {
+    const isLoading = ref(true);
     const store = useStore()
     watchEffect( () => {
-      store.dispatch("specializationsCount", 1)
-      store.dispatch("specializationsCount", 2)
-      store.dispatch("networksCount", 1)
-      store.dispatch("networksCount", 2)
+      store.dispatch("specializationsCount", 1).then(() => { isLoading.value = false })
+      store.dispatch("specializationsCount", 2).then(() => { isLoading.value = false })
+      store.dispatch("networksCount", 1).then(() => { isLoading.value = false })
+      store.dispatch("networksCount", 2).then(() => { isLoading.value = false })
     })
     
     const onClickEditPersonal = (rowId) => {
@@ -74,10 +79,7 @@ export default {
       networksOut,
       coordinatorData,
       onClickEditPersonal,
-      // specializationTotal,
-      // specializationText,
-      // networkTotal,
-      // networkText,
+      isLoading,
     }
   }
 };

@@ -1,31 +1,29 @@
 <template>
-  <Form :model="documentForm" @submit="addCareCoordinatorDocument" :validation-schema="schema" enctype="multipart/form-data">
+  <a-form ref="formRef" :rules="rules" :model="documentForm" @submit="addCareCoordinatorDocument">
     <a-row :gutter="24">
       <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Name</label>
-          <Field class="ant-input ant-input-lg" v-model="documentForm.name" name="name" size="large" />
-          <ErrorMessage class="error" name="name" />
+          <a-input size="large" v-model:value="documentForm.name" />
+          <a-form-item ref="name" name="name"/>
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Document</label>
-          <Field class="ant-input ant-input-lg" v-model="documentForm.document_file" name="document_file" size="large" type="file" @change="onFileUpload" />
-          <ErrorMessage class="error" name="document_file" ref="document_file" />
+          <a-input v-model:value="documentForm.document_file" name="document_file" size="large" type="file" @change="onFileUpload" />
+          <a-form-item name="document_file"/>
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label> Type</label>
-          <Field class="ant-input ant-input-lg" as="select"
-            ref="select"
-            v-model="documentForm.type"
-            name="type">
-            <option value="1">Id Proof</option>
-            <option value="2">Insurance</option>
-          </Field>
-          <ErrorMessage class="error" name="type" />
+          <a-select v-model:value="documentForm.type" name="type" style="width: 100%" size="large">
+            <a-select-option hidden>Choose Type</a-select-option>
+            <a-select-option value="1">Id Proof</a-select-option>
+            <a-select-option value="2">Insurance</a-select-option>
+          </a-select>
+          <a-form-item name="type"/>
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
@@ -40,7 +38,7 @@
             style="width: 100%"
             :options="filteredOptionsForTag.map((item) => ({ value: item }))"
           />
-          <ErrorMessage class="error" name="selectedItemsForTag" />
+          <a-form-item name="tags"/>
         </div>
       </a-col>
     </a-row>
@@ -49,51 +47,40 @@
         <button class="btn primaryBtn">Add</button>
       </a-col>
     </a-row>
-  </Form>
-  <loading
-    v-model:active="isLoading" 
-    loader="bars"
-    lock-scroll="true"
-    is-full-page="false"
-    transition="fade"
-    :can-cancel="false"/>
+  </a-form>
 </template>
 
 <script>
-  import { ref, computed, useStore, reactive } from "vue";
+  import { ref, computed, reactive } from "vue";
   const OPTIONS = ["Manager", "Billing Admin", "User Admin"];
   const OPTIONSTAG = ["Tag1", "Tag2", "Tag3"];
-  import { Form, Field, ErrorMessage } from 'vee-validate';
-  import * as yup from 'yup';
-  import { configure } from 'vee-validate';
-import Loading from 'vue-loading-overlay';
-  // Default values
-  configure({
-    validateOnBlur: true,
-    validateOnChange: true,
-    validateOnInput: true,
-    validateOnModelUpdate: true,
-  });
+  import { useStore } from "vuex"
   export default {
-    components: {
-      Form,
-      Field,
-      ErrorMessage,
-      Loading,
-    },
-    data() {
-      const schema = yup.object({
-        name: yup.string().required().label("Name"),
-        document_file: yup.mixed().required().label("Doument"),
-        type: yup.string().required().label("Type"),
-        // selectedItemsForTag: yup.string().required(),
-      });
-      return {
-        schema,
-      }
-    },
     setup() {
       const store = useStore()
+      const formRef = ref();
+      const rules = {
+        name: [{
+          required: true,
+          message: 'Please enter Name',
+          trigger: 'blur',
+        }],
+        document_file: [{
+          required: true,
+          message: 'Please select an image',
+          trigger: 'blur',
+        }],
+        type: [{
+          required: true,
+          message: 'Please select Type',
+          trigger: 'blur',
+        }],
+        // tags: [{
+        //   required: true,
+        //   message: 'Please select Tag(s)',
+        //   trigger: 'blur',
+        // }],
+      };
       const value = ref()
       const selectedItems = ref(["Manager"]);
       const filteredOptions = computed(() =>
@@ -113,19 +100,26 @@ import Loading from 'vue-loading-overlay';
         });
       }
 
+      const file_path = localStorage.getItem('file_path')
+      const documentForm = reactive({
+        name: null,
+        document: file_path,
+        type: null,
+        tags: [],
+      })
       const addCareCoordinatorDocument = () => {
-        const documentForm = reactive({
-          name: null,
-          document: file_path,
-          type: null,
-          tags: this.value,
-        })
-        const file_path = localStorage.getItem('file_path')
-        store.dispatch("addCareCoordinatorDocument", documentForm)
+        formRef.value.validate().then(() => {
+          store.dispatch("addCareCoordinatorDocument", documentForm)
+        }).catch(error => {
+          console.log('error', error);
+        });
       }
       
       return {
+        formRef,
+        rules,
         onFileUpload,
+        documentForm,
         addCareCoordinatorDocument,
         value,
         selectedItems,

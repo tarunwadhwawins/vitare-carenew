@@ -12,13 +12,13 @@
 
       <!-- Contacts -->
       <div class="steps-content" v-if="steps[current].title == 'Contacts'">
-        <ContactForm :data="contactData"></ContactForm>
+        <ContactForm :data="contactDetails"></ContactForm>
         <CoordinatorContactsTable @clicked="onClickViewContact($event)"></CoordinatorContactsTable>
       </div>
 
       <!-- Availability -->
       <div class="steps-content" v-if="steps[current].title == 'Availability'">
-        <AvailabilityForm :data="availabilityData"></AvailabilityForm>
+        <AvailabilityForm :data="availabilityDetails"></AvailabilityForm>
         <CoordinatorAvailabilityTable @clicked="onClickViewAvailability($event)"></CoordinatorAvailabilityTable>
       </div>
 
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import PersonalInformation from "@/components/care-coordinator/forms/PersonalInformation";
 import ContactForm from "@/components/care-coordinator/forms/ContactForm";
 import AvailabilityForm from "@/components/care-coordinator/forms/AvailabilityForm";
@@ -63,11 +63,6 @@ import CoordinatorRolesTable from "@/components/common/tables/CoordinatorRolesTa
 import store from "@/store/index";
 
 export default {
-  data() {
-    return {
-      rowId: '',
-    }
-  },
   components: {
     PersonalInformation,
     CoordinatorContactsTable,
@@ -79,48 +74,21 @@ export default {
     DocumentsForm,
   },
   setup() {
-    const contactData = ref()
-    const availabilityData = ref()
     const roleData = ref()
+    const carecoordinatorId = JSON.parse(localStorage.getItem('coordinatorId'))
     const onClickViewContact = (rowId) => {
       let data = {
-        'carecoordinatorId': JSON.parse(localStorage.getItem('coordinatorId')),
+        'carecoordinatorId': carecoordinatorId,
         'contactId': rowId,
       }
       store.dispatch("getCoordinatorContactDetails", data)
-      .then((res) => {
-        contactData.value = res.data.data;
-      },
-      (error) => {
-        console.log(error)
-        this.message = (
-          error.response &&
-          error.response.data &&
-          error.response.data.message
-        ) ||
-        error.message ||
-        error.toString();
-      });
     }
     const onClickViewAvailability = (rowId) => {
       let data = {
-        'carecoordinatorId': JSON.parse(localStorage.getItem('coordinatorId')),
+        'carecoordinatorId': carecoordinatorId,
         'availabilityId': rowId,
       }
       store.dispatch("getCoordinatorAvailabilityDetails", data)
-      .then((res) => {
-        availabilityData.value = res.data.data;
-      },
-      (error) => {
-        console.log(error)
-        this.message = (
-          error.response &&
-          error.response.data &&
-          error.response.data.message
-        ) ||
-        error.message ||
-        error.toString();
-      });
     }
     const visible = ref(false);
     var current = ref(0);
@@ -130,12 +98,19 @@ export default {
     const prev = () => {
       current.value--;
     };
+    const contactDetails = computed(() => {
+      return store.state.careCoordinator.contactDetails
+    })
+    const availabilityDetails = computed(() => {
+      return store.state.careCoordinator.availabilityDetails
+    })
     return {
       visible,
       onClickViewContact,
       onClickViewAvailability,
-      contactData,
-      availabilityData,
+      contactDetails,
+      availabilityDetails,
+      availabilityDetails,
       roleData,
       current,
       steps: [

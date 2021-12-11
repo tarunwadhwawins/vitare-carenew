@@ -33,9 +33,10 @@ class CareCoordinatorService {
   }
 
   addCareCoordinatorContact(contact) {
-    if(contact.contactId != null) {
+    const contactId = JSON.parse(localStorage.getItem('contactId'));
+    if(contactId != null) {
       return axios
-        .put(API_URL + 'carecoordinator/'+contact.care_coordinator_id+'/contact/'+contact.contactId, {
+        .put(API_URL + 'carecoordinator/'+contact.care_coordinator_id+'/contact/'+contactId, {
           first_name: contact.first_name,
           last_name: contact.last_name,
           email: contact.email,
@@ -58,8 +59,9 @@ class CareCoordinatorService {
   }
 
   addCareCoordinatorAvailability(availability) {
-    if(availability.availabilityId != null) {
-      return axios.put(API_URL + 'carecoordinator/'+availability.care_coordinator_id+'/availability/'+availability.availabilityId, {
+    const availabilityId = JSON.parse(localStorage.getItem('availabilityId'));
+    if(availabilityId != null) {
+      return axios.put(API_URL + 'carecoordinator/'+availability.care_coordinator_id+'/availability/'+availabilityId, {
         start_time: availability.start_time,
         end_time: availability.end_time,
         care_coordinator_id: availability.care_coordinator_id,

@@ -1,9 +1,9 @@
 <template>
   <a-row :gutter="24">
     <a-col :span="24">
-      <a-table :columns="contactColumns" :data-source="contactData" :scroll="{ x: 900 }">
+      <a-table :columns="contactColumns" :data-source="contactsList" :scroll="{ x: 900 }">
         <template #action="{ record }">
-          <a class="icons" @click ="onClickViewButton(record.id)"><EditOutlined /></a>
+          <a class="icons" @click ="onClickEditButton(record.id)"><EditOutlined /></a>
           <a class="icons" @click ="onClickDeleteButton({coordinatorId: record.coordinator_id, contactId: record.id})"> <DeleteOutlined /></a>
         </template>
       </a-table> 
@@ -44,8 +44,8 @@ const contactColumns = [
     },
   },
 ];
-import { ref, watch } from 'vue';
-import store from '@/store/index';
+import { ref, watchEffect, computed } from 'vue';
+  import { useStore } from "vuex"
 import Loading from 'vue-loading-overlay';
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import swal from 'sweetalert';
@@ -56,21 +56,15 @@ export default {
     EditOutlined,
     // EyeOutlined,
   },
-  data() {
-    return {
-    }
-  },
   setup(props, { emit }) {
-    let contactData = ref()
-    watch( () => {
-      store.dispatch("getCoordinatorContacts", JSON.parse(localStorage.getItem('coordinatorId'))).then((res) => {
-        contactData.value = res.data.data;
-      },
-      (error) => {
-        console.log(error)
-      });
+    const isLoading = ref(true);
+    const store = useStore()
+    const coordinatorId = JSON.parse(localStorage.getItem('coordinatorId'))
+    watchEffect( () => {
+      store.dispatch("getCoordinatorContacts", coordinatorId).then(() => { isLoading.value = false });
     })
-    const onClickViewButton = (rowId) => {
+    const onClickEditButton = (rowId) => {
+      localStorage.setItem('contactId', rowId)
       emit('clicked', rowId)
     }
     const onClickDeleteButton = ({coordinatorId, contactId}) => {
@@ -82,32 +76,30 @@ export default {
         dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
+          isLoading.value = true;
           let data = {
             coordinatorId: coordinatorId,
             contactId: contactId
           }
-          console.log(data)
-          store.dispatch("deleteCoordinatorContact", data)
-          .then((res) => {
-            console.log('Res', res)
-            store.dispatch("getCoordinatorContacts", JSON.parse(localStorage.getItem('coordinatorId'))).then((res) => {
-              contactData.value = res.data.data;
-            },
-            (error) => {
-              console.log(error)
-            });
-          },
-          (error) => {
-            console.log(error)
-          });
+          store.dispatch("deleteCoordinatorContact", data).then(() => {
+            store.dispatch("getCoordinatorContacts", coordinatorId).then(() => {
+              localStorage.removeItem('contactId')
+              isLoading.value = false;
+            })
+          })
         }
       });
     }
+    const contactsList = computed(() => {
+      return store.state.careCoordinator.contactsList
+    })
+
     return {
-      onClickViewButton,
+      onClickEditButton,
       onClickDeleteButton,
       contactColumns,
-      contactData
+      contactsList,
+      isLoading
     }
   }
 }

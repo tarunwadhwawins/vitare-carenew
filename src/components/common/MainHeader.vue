@@ -63,7 +63,7 @@ export default {
     const handleCancel = () => {
       visible.value = false;
       localStorage.setItem('is_update_coordinator', false)
-      localStorage.removeItem('coordinatorId')
+      // localStorage.removeItem('coordinatorId')
       emit('is-visible', false)
     };
 

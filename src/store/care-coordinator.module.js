@@ -4,20 +4,20 @@ import AuthService from '../services/auth.service';
 export const careCoordinator = {
   state: {
     coordinator: null,
-    contact: null,
+    addContact: null,
+    contactsList: null,
+    contactDetails: null,
     availability: null,
     role: null,
     file: null,
     document: null,
     coordinatorsList: null,
-    contactsList: null,
     availabilityList: null,
     rolesList: null,
     specializationWellness: null,
     specializationBehavour: null,
     networksIn: null,
     networksOut: null,
-    contactDetails: null,
     availabilityDetails: null,
     roleDetails: null,
     CoordinatorDetails: null,
@@ -283,7 +283,7 @@ export const careCoordinator = {
       state.coordinator = coordinator;
     },
     addContactSuccess(state, contact) {
-      state.contact = contact;
+      state.addContact = contact;
     },
     addAvailabilitySuccess(state, availability) {
       state.availability = availability;

@@ -36,7 +36,7 @@ const rolesColumns = [
   },
 ];
 import { ref, watch } from 'vue';
-import store from '@/store/index';
+  import { useStore } from "vuex"
 import Loading from 'vue-loading-overlay';
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import swal from 'sweetalert';
@@ -50,6 +50,7 @@ export default {
     }
   },
   setup(props, { emit }) {
+    const store = useStore()  
     let rolesData = ref()
     watch( () => {
       store.dispatch("getCoordinatorRoles", JSON.parse(localStorage.getItem('coordinatorId')))
