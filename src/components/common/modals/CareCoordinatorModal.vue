@@ -110,7 +110,6 @@ export default {
       onClickViewAvailability,
       contactDetails,
       availabilityDetails,
-      availabilityDetails,
       roleData,
       current,
       steps: [
