@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div class="SelectLanguage">
+      <span  for="Select Language">Select Language <SelectLanguage /></span>
+    </div>
+    
     <router-view />
   </div>
 </template>
@@ -10,10 +14,12 @@
 import { onMounted } from "vue";
 // import Dashboard from './components/dashboard/Dashboard'
 // import {ref} from 'vue'
+import SelectLanguage from "./views/localization/SelectLanguage.vue"
 export default {
   components: {
     // login,
-    // Dashboard
+    // Dashboard,
+    SelectLanguage
   },
 
   setup() {
@@ -45,5 +51,9 @@ export default {
       color: #42b983;
     }
   }
+}
+.SelectLanguage{
+  padding-top:10px;
+  text-align: center;
 }
 </style>

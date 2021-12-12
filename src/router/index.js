@@ -1,10 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-let user = JSON.parse(localStorage.getItem('user'))
 const routes = [
-  {
-    path: '/',
-    redirect: '/login'
-  },
+  
   {
     path: '/login',
     name: 'Login',
@@ -16,7 +12,7 @@ const routes = [
     component: () => import( '@/components/Test')
   },
   {
-    path: '/dashboard',
+    path: '/',
     name: 'Dashboard',
     component: () => import( '@/views/dashboard/Dashboard')
   },
@@ -65,12 +61,15 @@ const router = createRouter({
 
 })
 
- router.beforeEach((to, from, next) => {
-  if (user) {
-    console.log(next)
-    next();
+router.beforeEach((to, from, next) => {
+  const loggedIn = localStorage.getItem('user');
+  if (!loggedIn) {  
+    next('/login');
+  
   } else {
-    next("/login")
+
+    next();
   }
- })
+});
+
 export default router

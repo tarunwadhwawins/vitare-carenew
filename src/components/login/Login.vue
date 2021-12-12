@@ -3,7 +3,7 @@
     <div class="field">
       <a-input
         v-model:value="logininfomation.email"
-        placeholder="email"
+        :placeholder="$t('login.ePlaceholder')"
         size="large"
       />
       <a-form-item ref="email" name="email" />
@@ -11,16 +11,16 @@
     <div class="field">
       <a-input-password
         v-model:value="logininfomation.password"
-        placeholder="Password"
+        :placeholder="$t('login.psdPlaceholder')"
         size="large"
       />
       <a-form-item ref="password" name="password" />
     </div>
     <div class="buttons">
       <a-button class="btn primaryBtn" @click="handleLogin()"
-        >Continue</a-button
+        >{{$t('login.login')}}</a-button
       >
-      <a class=""> Forgot Password ? </a>
+      <a class=""> {{$t('login.forgotPassword')}} </a>
     </div>
   </a-form>
 
@@ -36,9 +36,9 @@
 <script>
 import { defineComponent } from "vue";
 import Loading from "vue-loading-overlay";
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import { useStore } from "vuex";
-
+import router from "@/router"
 
 
 export default defineComponent({
@@ -52,6 +52,18 @@ export default defineComponent({
     const store = useStore();
     const isLoading = ref(false);
     const formRef = ref();
+    const isLogin = ref(false)
+        isLogin.value = computed(() => {
+           if(JSON.parse(localStorage.getItem('user'))){
+             return true
+           }else{
+            return false
+           }
+           
+        })
+        if(isLogin.value){
+       router.push("/")
+        }
     const rules = {
       email: [
         {
@@ -91,6 +103,7 @@ export default defineComponent({
       formRef,
       rules,
       isLoading,
+      isLogin,
       logininfomation,
       handleLogin,
     };

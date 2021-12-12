@@ -147,13 +147,8 @@
     SearchOutlined,
     MoreOutlined,
   } from "@ant-design/icons-vue";
+  import { useStore } from "vuex"
   export default defineComponent({
-    data() {
-      return {
-        user: '',
-        role: '',
-      }
-    },
     components: {
       NotificationOutlined,
       DownOutlined,
@@ -162,39 +157,31 @@
       MoreOutlined,
     },
     setup() {
+      const store = useStore()
       const toggle = ref(false);
       const ellipse = ref(false);
+      const user = ref()
+      const role = ref()
+      const userdata = JSON.parse(localStorage.getItem('user'))
+      console.log(userdata);
+      user.value = userdata.email;
+      role.value = userdata.role_id ? 'Admin' : 'Client';
       function barMenu() {
         document.body.classList.toggle("show");
+      }
+      function logout() {
+        console.log("fdfs")
+        store.dispatch("logout")
       }
       return {
         barMenu,
         toggle,
         ellipse,
+        logout,
+        role,
+        user,
+        userdata
       };
     },
-    created() {
-      let user = JSON.parse(localStorage.getItem('user'))
-      this.user = user.email;
-      this.role = user.role_id ? 'Admin' : 'Client';
-    },
-    methods: {
-      logout() {
-        this.$store.dispatch("auth/logout")
-          .then(() => {
-            this.$router.push("/login");
-          },
-            (error) => {
-              console.log(error)
-              this.message = (
-                error.response &&
-                error.response.data &&
-                error.response.data.message
-              ) ||
-                error.message ||
-                error.toString();
-            });
-      }
-    }
   });
 </script>

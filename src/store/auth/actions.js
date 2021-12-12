@@ -5,7 +5,7 @@ export const login = async({ commit }, user) => {
     return await AuthService.login(user).then(
         user => {
             commit('loginSuccess', user);
-            router.push('/dashboard')
+            router.push('/')
         },
         
         error => {
