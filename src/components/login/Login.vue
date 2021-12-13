@@ -3,7 +3,6 @@
 <ErrorMessages></ErrorMessages>
 
 <a-form ref="formRef" :rules="rules" :model="logininfomation">
-    
       
     <div class="field">
         <a-input v-model:value="logininfomation.email" :placeholder="$t('login.ePlaceholder')" size="large" />
@@ -19,10 +18,10 @@
     </div>
 </a-form>
 
-<loading v-model:active="isLoading" loader="bars" :lock-scroll="true" :is-full-page="false" transition="fade" :can-cancel="false" />
+<loading  v-model:active="isLoading" loader="bars" :lock-scroll="true" :is-full-page="false" transition="fade" :can-cancel="false" />
 </template>
 <script>
-import { defineComponent, ref, reactive } from "vue";
+import { defineComponent, ref, reactive, watch, computed  } from "vue";
 import Loading from "vue-loading-overlay";
 import { useStore } from "vuex";
 import  ErrorMessages  from "@/components/common/errorhandling/ErrorMessages"
@@ -59,13 +58,20 @@ export default defineComponent({
       password: null,
       role: "Admin",
     });
+     const errorMsg = watch(() => {
+       if(store.state.auth.errorMsg){
+isLoading.value = false;
+       }
+           
+        });
+       
     const handleLogin = () => {
       formRef.value
         .validate()
         .then(() => {
-           //isLoading.value = true;
+           isLoading.value = true;
           store.dispatch("login", logininfomation);
-
+//isLoading.value = false;
         })
         .catch((error) => {
           console.log("error", error);
@@ -76,10 +82,10 @@ export default defineComponent({
       formRef,
       rules,
       isLoading,
+      errorMsg,
       logininfomation,
       handleLogin,
-     // errorMsg,
-      //closeAlert,
+    
     };
   },
 });
