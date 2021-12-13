@@ -25,6 +25,7 @@ class AuthService {
           }
           store.state.user = userData;
           localStorage.setItem('user', JSON.stringify(userData));
+          localStorage.setItem("auth", "true");
         }
         return userData;
       });
@@ -32,6 +33,7 @@ class AuthService {
 
   logout() {
     localStorage.removeItem('user');
+    localStorage.removeItem('auth');
   }
 }
 
