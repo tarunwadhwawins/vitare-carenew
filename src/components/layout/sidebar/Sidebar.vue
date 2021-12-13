@@ -4,7 +4,7 @@
   >
     <div class="menuList">
       <a-menu>
-        <router-link to="/"
+        <router-link to="/dashboard"
           ><a-menu-item
             ><HomeOutlined /><span class="menuItem">Dashboard</span></a-menu-item
           ></router-link

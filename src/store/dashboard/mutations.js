@@ -2,7 +2,7 @@ export const totalPatientsSuccess = (state, count) => {
     state.tcount = count;
 }
 export const Failure = (state, error) => {
-    state.errormsg = error;
+    state.errorMsg = error;
 }
 export const newPatientsSuccess = (state, count) => {
     state.ncount = count;

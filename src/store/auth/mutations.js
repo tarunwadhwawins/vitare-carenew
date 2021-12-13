@@ -4,7 +4,10 @@ export const loginSuccess = (state, user) => {
 }
 export const loginFailure = (state, error) => {
     state.isLoggedIn = false;
-    state.token='';
+    state.token = '';
+    state.errorMsg = error;
+    
+
 }
 export const logout = (state) => {
     state.isLoggedIn = false;

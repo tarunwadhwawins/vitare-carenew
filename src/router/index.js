@@ -1,6 +1,10 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 const routes = [
-  
+  {
+    path: '/',
+    redirect: '/login',
+    meta: { guestOnly: true }
+  },
   {
     path: '/login',
     name: 'Login',
@@ -70,16 +74,6 @@ const router = createRouter({
 
 })
 
-// router.beforeEach((to, from, next) => {
-//   const loggedIn = localStorage.getItem('user');
-//   if (!loggedIn) {  
-//     next('/login');
-  
-//   } else {
-
-//     next();
-//   }
-// });
 
 
 function isLoggedIn() {

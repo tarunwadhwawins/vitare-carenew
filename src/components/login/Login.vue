@@ -1,6 +1,10 @@
 
 <template>
+<ErrorMessages></ErrorMessages>
+
 <a-form ref="formRef" :rules="rules" :model="logininfomation">
+    
+      
     <div class="field">
         <a-input v-model:value="logininfomation.email" :placeholder="$t('login.ePlaceholder')" size="large" />
         <a-form-item ref="email" name="email" />
@@ -18,34 +22,22 @@
 <loading v-model:active="isLoading" loader="bars" :lock-scroll="true" :is-full-page="false" transition="fade" :can-cancel="false" />
 </template>
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref, reactive } from "vue";
 import Loading from "vue-loading-overlay";
-import { ref, reactive, computed } from "vue";
 import { useStore } from "vuex";
-import router from "@/router";
+import  ErrorMessages  from "@/components/common/errorhandling/ErrorMessages"
 
 export default defineComponent({
   name: "Login",
   components: {
     Loading,
+    ErrorMessages,
   },
 
   setup() {
     const store = useStore();
     const isLoading = ref(false);
     const formRef = ref();
-    // const isLogin = ref(false)
-    //   isLogin.value = computed(() => {
-    //      if(JSON.parse(localStorage.getItem('user'))){
-    //        return true
-    //      }else{
-    //       return false
-    //      }
-
-    //   })
-    //   if(isLogin.value){
-    //  router.push("/")
-    //   }
     const rules = {
       email: [
         {
@@ -71,8 +63,9 @@ export default defineComponent({
       formRef.value
         .validate()
         .then(() => {
-          isLoading.value = true;
+           //isLoading.value = true;
           store.dispatch("login", logininfomation);
+
         })
         .catch((error) => {
           console.log("error", error);
@@ -83,9 +76,10 @@ export default defineComponent({
       formRef,
       rules,
       isLoading,
-      // isLogin,
       logininfomation,
       handleLogin,
+     // errorMsg,
+      //closeAlert,
     };
   },
 });

@@ -19,6 +19,7 @@
                     <div class="rightWrapper">
                         <img class="rightImg" src="@/assets/images/curve.png" alt="image" />
                         <h2>{{$t('login.login')}}</h2>
+                    
                         <Login />
                     </div>
                 </a-col>
@@ -34,6 +35,7 @@ export default {
     name: "ViewLogin",
     components: {
         Login,
+        
     },
 };
 </script>

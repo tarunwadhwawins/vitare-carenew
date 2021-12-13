@@ -12,7 +12,7 @@ export default {
     wellness: null,
     networkin: null,
     networkout: null,
-    errormsg:null,
+    errorMsg:null,
     todayappointment:null,
 
 }

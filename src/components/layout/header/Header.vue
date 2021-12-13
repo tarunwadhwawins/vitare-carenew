@@ -163,14 +163,12 @@
       const user = ref()
       const role = ref()
       const userdata = JSON.parse(localStorage.getItem('user'))
-      console.log(userdata);
       user.value = userdata.email;
       role.value = userdata.role_id ? 'Admin' : 'Client';
       function barMenu() {
         document.body.classList.toggle("show");
       }
       function logout() {
-        console.log("fdfs")
         store.dispatch("logout")
       }
       return {
