@@ -8,11 +8,11 @@
         @media screen and (max-width: 576px) {
             position: relative;
         }
-        .ant-btn{
+        .ant-btn {
             margin: 0 6px 0px 0;
-         &:last-child{
-          margin:0;
-         }    
+            &:last-child {
+                margin: 0;
+            }
         }
     }
     .filter {
@@ -28,6 +28,7 @@
             font-size: 13px;
             border: 0;
             padding: 0;
+            cursor: pointer;
             &.active {
                 background-color: #777;
                 color: #fff;
@@ -109,6 +110,14 @@
         }
         .ant-card-body {
             padding: 12px;
+            .filter{
+                .ant-dropdown-link{
+                    color: #444;
+                }
+            }
+            h4{
+             font-size:50px;
+            }
         }
     }
 }
@@ -573,6 +582,38 @@
                     top: -4px;
                 }
             }
+        }
+    }
+}
+
+/*----*/
+.blockLists {
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    h4 {
+        font-size: 16px;
+        color: #fff;
+    }
+    h5 {
+        font-size: 20px;
+        color: #fff;
+    }
+    p {
+        font-size: 12px;
+        color: #fff;
+    }
+}
+.filter {
+    text-align: left;
+    margin: 0 0 5px 0;
+    min-height: 22px;
+    .ant-dropdown-link {
+        justify-content: flex-start;
+        color: #fff;
+        .anticon {
+            padding: 0 5px 0 0;
         }
     }
 }

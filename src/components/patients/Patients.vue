@@ -102,27 +102,37 @@
           </a-steps>
           <div class="steps-content" v-if="steps[current].title == 'Demographics'">
             <a-row :gutter="24">
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
-                  <label>Full Name</label>
+                  <label>First Name <span class="red-color">*</span></label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
-                  <label>Nick Name</label>
+                  <label>Middle Name</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
-                  <label>Date of Birth</label>
+                  <label>Last Name <span class="red-color">*</span></label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
-                  <label> Gender</label>
+                  <label>Date of Birth <span class="red-color">*</span></label>
+                  <a-date-picker
+                    v-model:value="value1"
+                    :size="size"
+                    style="width: 100%"
+                  />
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label> Gender <span class="red-color">*</span></label>
                   <a-select
                     ref="select"
                     v-model="value1"
@@ -137,57 +147,146 @@
                   </a-select>
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>Language <span class="red-color">*</span></label>
+                  <a-input v-model="value" size="large" />
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>Other Language</label>
+                  <a-select
+                    v-model:value="selectedItemsForTag2"
+                    mode="multiple"
+                    size="large"
+                    placeholder="Please Select Roles"
+                    style="width: 100%"
+                    :options="filteredOptionsForTag2.map((item) => ({ value: item }))"
+                  />
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>Nick Name</label>
+                  <a-input v-model="value" size="large" />
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Weight</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Height</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
-                  <label>Email</label>
+                  <label>Email <span class="red-color">*</span></label>
+                  <a-input v-model="value" size="large">
+                    <template #addonAfter>
+                      <a-select v-model:value="value4" style="width: 120px">
+                        <a-select-option value="@yahoo">@yahoo.com</a-select-option>
+                        <a-select-option value="@gmail.com">@gmail.com</a-select-option>
+                        <a-select-option value="@hotmail.com"
+                          >@hotmail.com</a-select-option
+                        >
+                        <a-select-option value="@outlook.com"
+                          >@outlook.com</a-select-option
+                        >
+                        <a-select-option value="@aol.com">@aol.com</a-select-option>
+                      </a-select>
+                    </template>
+                  </a-input>
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>Phone Number <span class="red-color">*</span></label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
-                  <label>Phone No</label>
+                  <label
+                    >Preferred Method of Contact <span class="red-color">*</span></label
+                  >
+                  <a-select
+                    v-model:value="selectedItemsForTag1"
+                    mode="multiple"
+                    size="large"
+                    placeholder="Please Select Roles"
+                    style="width: 100%"
+                    :options="filteredOptionsForTag1.map((item) => ({ value: item }))"
+                  />
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label
+                    >Preferred time of day for contact
+                    <span class="red-color">*</span></label
+                  >
+                  <a-select
+                    ref="select"
+                    show-search
+                    v-model="value1"
+                    style="width: 100%"
+                    size="large"
+                    @focus="focus"
+                    @change="handleChange"
+                  >
+                    <a-select-option value="lucy">Morning</a-select-option>
+                    <a-select-option value="Yiminghe">Afternoon</a-select-option>
+                    <a-select-option value="Yiminghe">Evening</a-select-option>
+                  </a-select>
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label
+                    >MRN( Medical Record Number) <span class="red-color">*</span></label
+                  >
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
-                  <label>Country</label>
+                  <label>Country <span class="red-color">*</span></label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
-                  <label>State</label>
+                  <label>State <span class="red-color">*</span></label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
-                  <label>City</label>
+                  <label>City <span class="red-color">*</span></label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
-                  <label>Zipcode</label>
+                  <label>Zipcode <span class="red-color">*</span></label>
+                  <a-input v-model="value" size="large" />
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>Suite or Apartment <span class="red-color">*</span></label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
               <a-col :span="24">
                 <div class="form-group">
-                  <label>Address</label>
+                  <label>Address <span class="red-color">*</span></label>
                   <a-textarea v-model="value2" allow-clear />
                 </div>
               </a-col>
@@ -200,13 +299,61 @@
               </a-col>
             </a-row>
             <a-row :gutter="24">
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
-                  <label>Full Name</label>
+                  <label>Full Name <span class="red-color">*</span></label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>Email Address <span class="red-color">*</span></label>
+                  <a-input v-model="value" size="large" />
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>Phone Number <span class="red-color">*</span></label>
+                  <a-input v-model="value" size="large" />
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label
+                    >Preferred Method of Contact <span class="red-color">*</span></label
+                  >
+                  <a-select
+                    v-model:value="selectedItemsForTag1"
+                    mode="multiple"
+                    size="large"
+                    placeholder="Please Select Roles"
+                    style="width: 100%"
+                    :options="filteredOptionsForTag1.map((item) => ({ value: item }))"
+                  />
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label
+                    >Preferred time of day for contact
+                    <span class="red-color">*</span></label
+                  >
+                  <a-select
+                    ref="select"
+                    show-search
+                    v-model="value1"
+                    style="width: 100%"
+                    size="large"
+                    @focus="focus"
+                    @change="handleChange"
+                  >
+                    <a-select-option value="lucy">Morning</a-select-option>
+                    <a-select-option value="Yiminghe">Afternoon</a-select-option>
+                    <a-select-option value="Yiminghe">Evening</a-select-option>
+                  </a-select>
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
                   <label> Gender</label>
                   <a-select
@@ -223,22 +370,95 @@
                   </a-select>
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
-                <div class="form-group">
-                  <label>Email Address</label>
-                  <a-input v-model="value" size="large" />
-                </div>
-              </a-col>
-              <a-col :sm="12" :xs="24">
-                <div class="form-group">
-                  <label>Phone No</label>
-                  <a-input v-model="value" size="large" />
-                </div>
-              </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Relation</label>
                   <a-input v-model="value" size="large" />
+                </div>
+              </a-col>
+            </a-row>
+            <a-row :gutter="24">
+              <a-col :span="24">
+                <div class="formHeading">
+                  <h2>Emergency Contact</h2>
+                </div>
+              </a-col>
+            </a-row>
+            <a-row :gutter="24">
+              <a-col :md="24" :sm="24" :xs="24" class="mb-24">
+                <a-checkbox v-model:checked="checked">
+                  Same as primary family member info
+                </a-checkbox>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>Full Name <span class="red-color">*</span></label>
+                  <a-input v-model="value" size="large" />
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>Email Address <span class="red-color">*</span></label>
+                  <a-input v-model="value" size="large" />
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>Phone Number <span class="red-color">*</span></label>
+                  <a-input v-model="value" size="large" />
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label
+                    >Preferred Method of Contact <span class="red-color">*</span></label
+                  >
+                  <a-select
+                    v-model:value="selectedItemsForTag1"
+                    mode="multiple"
+                    size="large"
+                    placeholder="Please Select Roles"
+                    style="width: 100%"
+                    :options="filteredOptionsForTag1.map((item) => ({ value: item }))"
+                  />
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label
+                    >Preferred time of day for contact
+                    <span class="red-color">*</span></label
+                  >
+                  <a-select
+                    ref="select"
+                    show-search
+                    v-model="value1"
+                    style="width: 100%"
+                    size="large"
+                    @focus="focus"
+                    @change="handleChange"
+                  >
+                    <a-select-option value="lucy">Morning</a-select-option>
+                    <a-select-option value="Yiminghe">Afternoon</a-select-option>
+                    <a-select-option value="Yiminghe">Evening</a-select-option>
+                  </a-select>
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label> Gender</label>
+                  <a-select
+                    ref="select"
+                    v-model="value1"
+                    style="width: 100%"
+                    size="large"
+                    @focus="focus"
+                    @change="handleChange"
+                  >
+                    <a-select-option value="lucy">Male</a-select-option>
+                    <a-select-option value="Yiminghe">Female</a-select-option>
+                    <a-select-option value="Yiminghe">Others</a-select-option>
+                  </a-select>
                 </div>
               </a-col>
             </a-row>
@@ -252,34 +472,105 @@
               </a-col>
             </a-row>
             <a-row :gutter="24" class="mb-24">
-              <a-col :md="8" :sm="12" :xs="24">
+              <a-col :md="24" :sm="24" :xs="24" class="mb-24">
+                <a-input-search
+                  v-model:value="value22"
+                  placeholder="Search..."
+                  style="width: 100%"
+                  size="large"
+                  @search="onSearch"
+                />
+              </a-col>
+              <a-col :md="24" :sm="24" :xs="24">
                 <a-checkbox v-model:checked="checked"
-                  >Congestive Health Failure</a-checkbox
+                  >Certain infectious and parasitic diseases (A00-B99)</a-checkbox
                 >
               </a-col>
+              <a-col :md="24" :sm="24" :xs="24">
+                <a-checkbox v-model:checked="checked">Neoplasms (C00-D49)</a-checkbox>
+              </a-col>
+              <a-col :md="24" :sm="24" :xs="24">
+                <a-checkbox v-model:checked="checked"
+                  >Endocrine, nutritional and metabolic diseases (E00-E89)</a-checkbox
+                >
+              </a-col>
+              <a-col :md="24" :sm="24" :xs="24">
+                <a-checkbox v-model:checked="checked"
+                  >Mental, Behavioral and Neurodevelopmental disorders (F01-F99 )
+                </a-checkbox>
+              </a-col>
+              <a-col :md="24" :sm="24" :xs="24">
+                <a-checkbox v-model:checked="checked"
+                  >Diseases of the nervous system (G00-G99)
+                </a-checkbox>
+              </a-col>
+              <a-col :md="24" :sm="24" :xs="24">
+                <a-checkbox v-model:checked="checked"
+                  >Diseases of the eye and adnexa (H00-H59)
+                </a-checkbox>
+              </a-col>
+              <a-col :md="24" :sm="24" :xs="24">
+                <a-checkbox v-model:checked="checked"
+                  >Diseases of the ear and mastoid process(H60-H95)
+                </a-checkbox>
+              </a-col>
+              <a-col :md="24" :sm="24" :xs="24">
+                <a-checkbox v-model:checked="checked"
+                  >Diseases of the circulatory system (I00-I99)
+                </a-checkbox>
+              </a-col>
+            </a-row>
+            <a-row :gutter="24">
+              <a-col :span="24">
+                <div class="formHeading">
+                  <h2>Referral Source (Assisted Living, Home Health, Cardiologist)</h2>
+                </div>
+              </a-col>
+            </a-row>
+            <a-row :gutter="24">
               <a-col :md="8" :sm="12" :xs="24">
-                <a-checkbox v-model:checked="checked">COPD</a-checkbox>
+                <div class="form-group">
+                  <label>Name</label>
+                  <a-input v-model="value" size="large" />
+                </div>
               </a-col>
               <a-col :md="8" :sm="12" :xs="24">
-                <a-checkbox v-model:checked="checked">Chronic Kidney Disease</a-checkbox>
+                <div class="form-group">
+                  <label> Designation</label>
+                  <a-input v-model="value" size="large" />
+                </div>
               </a-col>
               <a-col :md="8" :sm="12" :xs="24">
-                <a-checkbox v-model:checked="checked">Cardiovascular Disease </a-checkbox>
+                <div class="form-group">
+                  <label>Email</label>
+                  <a-input v-model="value" size="large">
+                    <template #addonAfter>
+                      <a-select v-model:value="value4" style="width: 120px">
+                        <a-select-option value="@yahoo">@yahoo.com</a-select-option>
+                        <a-select-option value="@gmail.com">@gmail.com</a-select-option>
+                        <a-select-option value="@hotmail.com"
+                          >@hotmail.com</a-select-option
+                        >
+                        <a-select-option value="@outlook.com"
+                          >@outlook.com</a-select-option
+                        >
+                        <a-select-option value="@aol.com">@aol.com</a-select-option>
+                      </a-select>
+                    </template>
+                  </a-input>
+                </div>
               </a-col>
               <a-col :md="8" :sm="12" :xs="24">
-                <a-checkbox v-model:checked="checked">Depression </a-checkbox>
+                <div class="form-group">
+                  <label>Phone No</label>
+                  <a-input v-model="value" size="large" />
+                </div>
               </a-col>
               <a-col :md="8" :sm="12" :xs="24">
-                <a-checkbox v-model:checked="checked">Diabetes </a-checkbox>
-              </a-col>
-              <a-col :md="8" :sm="12" :xs="24">
-                <a-checkbox v-model:checked="checked">Hyper Tension </a-checkbox>
-              </a-col>
-              <a-col :md="8" :sm="12" :xs="24">
-                <a-checkbox v-model:checked="checked">Stroke </a-checkbox>
-              </a-col>
-              <a-col :md="8" :sm="12" :xs="24">
-                <a-checkbox v-model:checked="checked">Other </a-checkbox>
+                <div class="form-group">
+                  <label>Fax</label>
+                  <a-input v-model="value" size="large" />
+                </div>
               </a-col>
             </a-row>
             <a-row :gutter="24">
@@ -290,27 +581,50 @@
               </a-col>
             </a-row>
             <a-row :gutter="24">
-              <a-col :sm="12" :xs="24">
+              <a-col :md="24" :sm="24" :xs="24" class="mb-24">
+                <a-checkbox v-model:checked="checked"> Same as above </a-checkbox>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Name</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
                   <label> Designation</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Email</label>
+                  <a-input v-model="value" size="large">
+                    <template #addonAfter>
+                      <a-select v-model:value="value4" style="width: 120px">
+                        <a-select-option value="@yahoo">@yahoo.com</a-select-option>
+                        <a-select-option value="@gmail.com">@gmail.com</a-select-option>
+                        <a-select-option value="@hotmail.com"
+                          >@hotmail.com</a-select-option
+                        >
+                        <a-select-option value="@outlook.com"
+                          >@outlook.com</a-select-option
+                        >
+                        <a-select-option value="@aol.com">@aol.com</a-select-option>
+                      </a-select>
+                    </template>
+                  </a-input>
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>Phone Number</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
-                  <label>Phone No</label>
+                  <label>Fax</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
@@ -318,7 +632,7 @@
           </div>
           <div class="steps-content" v-if="steps[current].title == 'Programs'">
             <a-row :gutter="24">
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Programs</label>
                   <a-select
@@ -330,14 +644,20 @@
                     @change="handleChange"
                   >
                     <a-select-option value="lucy">Choose Program</a-select-option>
-                    <a-select-option value="Yiminghe">Program 1</a-select-option>
-                    <a-select-option value="Yiminghe">Program 2</a-select-option>
+                    <a-select-option value="Yiminghe">RPM</a-select-option>
+                    <a-select-option value="Yiminghe">Mental Wellness</a-select-option>
+                    <a-select-option value="Yiminghe"
+                      >CCM Chronic Care Management</a-select-option
+                    >
+                    <a-select-option value="Yiminghe"
+                      >TCM- Transitional Care Managment</a-select-option
+                    >
                   </a-select>
                 </div>
               </a-col>
-              <a-col :sm="6" :xs="24">
+              <a-col :md="8" :sm="6" :xs="24">
                 <div class="form-group">
-                  <label>Start Date</label>
+                  <label>Onboarding scheduled date</label>
                   <a-date-picker
                     v-model:value="value1"
                     :size="size"
@@ -345,9 +665,9 @@
                   />
                 </div>
               </a-col>
-              <a-col :sm="6" :xs="24">
+              <a-col :md="8" :sm="6" :xs="24">
                 <div class="form-group">
-                  <label>End Date</label>
+                  <label>Discharge Date</label>
                   <a-date-picker
                     v-model:value="value2"
                     :size="size"
@@ -355,7 +675,7 @@
                   />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Status</label>
                   <a-radio-group v-model:value="value">
@@ -382,6 +702,78 @@
                 >
                   <template #action>
                     <a class="icons"><EditOutlined /></a>
+                  </template>
+                </a-table>
+              </a-col>
+            </a-row>
+          </div>
+          <div class="steps-content" v-if="steps[current].title == 'Devices'">
+            <a-row :gutter="24">
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>Home Unit Type</label>
+                  <a-select
+                    ref="select"
+                    v-model="value1"
+                    style="width: 100%"
+                    size="large"
+                    @focus="focus"
+                    @change="handleChange"
+                  >
+                    <a-select-option value="lucy">Blood Pressure</a-select-option>
+                    <a-select-option value="Yiminghe">Oxymeter</a-select-option>
+                    <a-select-option value="Yiminghe">Glucose</a-select-option>
+                  </a-select>
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>Model No</label>
+                  <a-input v-model="value" size="large" />
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>Serial No</label>
+                  <a-input v-model="value" size="large" />
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>MAC Address</label>
+                  <a-input v-model="value" size="large" />
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>Device Time</label>
+                  <a-input v-model="value" size="large" />
+                </div>
+              </a-col>
+              <a-col :md="8" :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>Server Time</label>
+                  <a-input v-model="value" size="large" />
+                </div>
+              </a-col>
+            </a-row>
+            <a-row :gutter="24" class="mb-24">
+              <a-col :span="24">
+                <a-button class="btn primaryBtn">Add</a-button>
+              </a-col>
+            </a-row>
+            <a-row :gutter="24" class="mb-24">
+              <a-col :span="24">
+                <a-table
+                  :columns="columns5"
+                  :data-source="data5"
+                  :pagination="false"
+                  :scroll="{ x: 900 }"
+                >
+                  <template #active>
+                    <a-switch v-model:checked="checked" />
+                  </template>
+                  <template #action>
                     <a class="icons"><DeleteOutlined /></a>
                   </template>
                 </a-table>
@@ -643,6 +1035,8 @@ import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
 import { defineComponent, ref, reactive, computed } from "vue";
 const OPTIONSTAG = ["Tag1", "Tag2", "Tag3"];
+const OPTIONSTAG1 = ["Email", "Phone", "Text"];
+const OPTIONSTAG2 = ["English", "Spanish", "German", "French", "ASL"];
 import {
   UserOutlined,
   DeleteOutlined,
@@ -811,12 +1205,20 @@ const columns1 = [
     dataIndex: "program",
   },
   {
+    title: "Onboarding scheduled date",
+    dataIndex: "Onboarding",
+  },
+  {
     title: "Start Date",
     dataIndex: "start",
   },
   {
     title: "End Date",
     dataIndex: "end",
+  },
+  {
+    title: "Discharge Date",
+    dataIndex: "discharge",
   },
   {
     title: "Status",
@@ -830,24 +1232,30 @@ const columns1 = [
     },
   },
 ];
+
 const data1 = [
   {
     key: "1",
-    program: "Program 1",
-    start: "Nov 12, 2021",
+    program: "RPM",
+    Onboarding: "Nov 12, 2021",
+    start: "Nov 13, 2021",
     end: "Dec 20, 2021",
+    discharge: "Dec 20, 2021",
     status: "Active",
     actions: "",
   },
   {
     key: "2",
-    program: "Program 2",
-    start: "Nov 22, 2021",
-    end: "Dec 28, 2021",
+    program: "TCM- Transitional Care Managment",
+    Onboarding: "Dec 21, 2021",
+    start: "Dec 28, 2021",
+    end: "Jan 10, 2022",
+    discharge: "Jan 11, 2022",
     status: "InActive",
     actions: "",
   },
 ];
+
 const columns2 = [
   {
     title: "History",
@@ -959,6 +1367,70 @@ const data4 = [
     actions: "",
   },
 ];
+const columns5 = [
+  {
+    title: "Home Unit Type",
+    dataIndex: "home",
+  },
+  {
+    title: "Model No",
+    dataIndex: "model",
+  },
+  {
+    title: "Serial No",
+    dataIndex: "serial",
+  },
+  {
+    title: "MAC Address",
+    dataIndex: "mac",
+  },
+  {
+    title: "Device Time",
+    dataIndex: "device",
+  },
+  {
+    title: "Server Time",
+    dataIndex: "server",
+  },
+  {
+    title: "Active/Inactive",
+    dataIndex: "active",
+    slots: {
+      customRender: "active",
+    },
+  },
+  {
+    title: "Action",
+    dataIndex: "action",
+    slots: {
+      customRender: "action",
+    },
+  },
+];
+const data5 = [
+  {
+    key: "1",
+    home: "Blood Pressure",
+    model: "M-101",
+    serial: "S-101",
+    mac: "Lorem",
+    device: "11:00 Am",
+    server: "11:30 Am",
+    active: "",
+    action: "",
+  },
+  {
+    key: "2",
+    home: "Oxymeter",
+    model: "M-102",
+    serial: "S-102",
+    mac: "Lorem",
+    device: "10:15 Am",
+    server: "10:30 Am",
+    active: "",
+    action: "",
+  },
+];
 export default {
   components: {
     Header,
@@ -997,6 +1469,16 @@ export default {
       OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
     );
 
+    const selectedItemsForTag1 = ref(["Email"]);
+    const filteredOptionsForTag1 = computed(() =>
+      OPTIONSTAG1.filter((o) => !selectedItemsForTag.value.includes(o))
+    );
+
+    const selectedItemsForTag2 = ref(["English"]);
+    const filteredOptionsForTag2 = computed(() =>
+      OPTIONSTAG2.filter((o) => !selectedItemsForTag.value.includes(o))
+    );
+
     const value = ref(1);
     const radioStyle = reactive({
       //   display: "flex",
@@ -1015,10 +1497,16 @@ export default {
       columns3,
       data4,
       columns4,
+      data5,
+      columns5,
       data,
       columns,
       filteredOptionsForTag,
       selectedItemsForTag,
+      filteredOptionsForTag1,
+      selectedItemsForTag1,
+      filteredOptionsForTag2,
+      selectedItemsForTag2,
       onChange: (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
       },
@@ -1035,6 +1523,10 @@ export default {
         },
         {
           title: "Programs",
+          content: "Second-content",
+        },
+        {
+          title: "Devices",
           content: "Second-content",
         },
         {

@@ -86,9 +86,229 @@
               </div>
             </a-col>
           </a-row>
+          <a-row :gutter="24">
+            <a-col :sm="24" :xs="24">
+              <div class="summary-tabs">
+                <a-tabs v-model:activeKey="activeKey1">
+                  <a-tab-pane key="1" tab="Contacts">
+                    <a-row :gutter="24">
+                      <a-col :span="24">
+                        <div class="common-btn mb-24">
+                          <a-button class="btn blackBtn" @click="showModal3"
+                            ><PlusOutlined
+                          /></a-button>
+                        </div>
+                      </a-col>
+                      <a-col :span="24">
+                        <a-table
+                          :pagination="false"
+                          :columns="columns3"
+                          :data-source="data3"
+                          :scroll="{ x: 900 }"
+                        >
+                          <template #action>
+                            <a class="icons"><EditOutlined /></a>
+                            <a class="icons"> <DeleteOutlined /></a>
+                          </template>
+                        </a-table>
+                      </a-col>
+                    </a-row>
+                  </a-tab-pane>
+                  <a-tab-pane key="2" tab="Availability" force-render>
+                    <a-row :gutter="24">
+                      <a-col :sm="24" :xs="24">
+                        <div class="common-btn mb-24">
+                          <a-button class="btn blackBtn" @click="showModal2"
+                            ><PlusOutlined
+                          /></a-button>
+                        </div>
+                      </a-col>
+                      <a-col :span="24">
+                        <a-table
+                          :pagination="false"
+                          :columns="columns4"
+                          :data-source="data4"
+                          :scroll="{ x: 900 }"
+                        >
+                          <template #action>
+                            <a class="icons"><EditOutlined /></a>
+                            <a class="icons"> <DeleteOutlined /></a>
+                          </template>
+                        </a-table>
+                      </a-col>
+                    </a-row>
+                  </a-tab-pane>
+                  <a-tab-pane key="3" tab="Roles">
+                    <a-row :gutter="24">
+                      <a-col :sm="24" :xs="24">
+                        <div class="common-btn mb-24">
+                          <a-button class="btn blackBtn" @click="showModal1"
+                            ><PlusOutlined
+                          /></a-button>
+                        </div>
+                      </a-col>
+                      <a-col :span="24">
+                        <a-table
+                          :pagination="false"
+                          :columns="columns5"
+                          :data-source="data5"
+                          :scroll="{ x: 900 }"
+                        >
+                          <template #action>
+                            <a class="icons"><EditOutlined /></a>
+                            <a class="icons"> <DeleteOutlined /></a>
+                          </template>
+                        </a-table>
+                      </a-col>
+                    </a-row>
+                  </a-tab-pane>
+                  <a-tab-pane key="4" tab="Documents">
+                    <a-col :sm="24" :xs="24">
+                      <div class="common-btn mb-24">
+                        <a-button class="btn blackBtn" @click="showModal"
+                          ><PlusOutlined
+                        /></a-button>
+                      </div>
+                    </a-col>
+                    <a-row :gutter="24">
+                      <a-col :sm="24" :xs="24">
+                        <a-table
+                          :columns="columns2"
+                          :data-source="data2"
+                          :scroll="{ x: 900 }"
+                          :pagination="false"
+                          @change="onChange"
+                        >
+                          <template #action>
+                            <a class="icons"><EditOutlined /></a>
+                            <a class="icons"><DeleteOutlined /></a>
+                          </template>
+                        </a-table>
+                      </a-col>
+                    </a-row>
+                  </a-tab-pane>
+                </a-tabs>
+              </div>
+            </a-col>
+          </a-row>
         </a-layout-content>
       </a-layout>
     </a-layout>
+    <!--modals-->
+    <a-modal v-model:visible="visible" title="Add Documents" centered @ok="handleOk">
+      <a-row :gutter="24">
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label>Name</label>
+            <a-input v-model="value" size="large" />
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label>Document</label>
+            <a-input v-model="value" size="large" />
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label>Type</label>
+            <a-select
+              ref="select"
+              v-model="value1"
+              style="width: 100%"
+              size="large"
+              @focus="focus"
+              @change="handleChange"
+            >
+              <a-select-option value="lucy">Id Proof</a-select-option>
+              <a-select-option value="Yiminghe">Clinical</a-select-option>
+              <a-select-option value="Yiminghe">Insurance</a-select-option>
+            </a-select>
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label>Tags</label>
+            <a-select
+              v-model:value="selectedItemsForTag"
+              mode="multiple"
+              size="large"
+              placeholder="Please Select Roles"
+              style="width: 100%"
+              :options="filteredOptionsForTag.map((item) => ({ value: item }))"
+            />
+          </div>
+        </a-col>
+      </a-row>
+    </a-modal>
+    <!---->
+    <a-modal v-model:visible="visible1" title="Add Roles" centered @ok="handleOk">
+      <a-row :gutter="24">
+        <a-col :sm="24" :xs="24">
+          <div class="form-group">
+            <label>Role</label>
+            <a-select
+              ref="select"
+              v-model="value1"
+              style="width: 100%"
+              size="large"
+              @focus="focus"
+              @change="handleChange"
+            >
+              <a-select-option value="lucy">Billing Admin</a-select-option>
+              <a-select-option value="Yiminghe">Manager</a-select-option>
+              <a-select-option value="Yiminghe">User Admin</a-select-option>
+            </a-select>
+          </div>
+        </a-col>
+      </a-row>
+    </a-modal>
+    <!------>
+    <a-modal v-model:visible="visible2" title="Add Availability" centered @ok="handleOk">
+      <a-row :gutter="24">
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label>Start Time</label>
+            <a-input v-model="value" size="large" />
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label>End Time</label>
+            <a-input v-model="value" size="large" />
+          </div>
+        </a-col>
+      </a-row>
+    </a-modal>
+    <!---->
+    <a-modal v-model:visible="visible3" title="Add Contacts" centered @ok="handleOk">
+      <a-row :gutter="24">
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label>First Name</label>
+            <a-input v-model="value" size="large" />
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label>Last Name</label>
+            <a-input v-model="value" size="large" />
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label> Email</label>
+            <a-input v-model="value" size="large" />
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label> Phone No</label>
+            <a-input v-model="value" size="large" />
+          </div>
+        </a-col>
+      </a-row>
+    </a-modal>
     <!---->
   </div>
 </template>
@@ -97,7 +317,9 @@
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
 import { useRouter } from "vue-router";
-import { defineComponent, ref } from "vue";
+import { ref, computed } from "vue";
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons-vue";
+const OPTIONSTAG = ["Tag1", "Tag2", "Tag3"];
 const columns = [
   {
     title: "Patient Name",
@@ -206,25 +428,227 @@ const data1 = [
     reading: "4 months ago",
   },
 ];
+const columns2 = [
+  {
+    title: "Name",
+    dataIndex: "name",
+  },
+  {
+    title: "Document",
+    dataIndex: "document",
+  },
+  {
+    title: "Type",
+    dataIndex: "type",
+    sorter: {
+      compare: (a, b) => a.message - b.message,
+      multiple: 3,
+    },
+  },
+  {
+    title: "Tags",
+    dataIndex: "tags",
+    sorter: {
+      compare: (a, b) => a.patient - b.patient,
+      multiple: 2,
+    },
+  },
+  {
+    title: "Action",
+    dataIndex: "action",
+    slots: {
+      customRender: "action",
+    },
+  },
+];
+const data2 = [
+  {
+    key: "1",
+    name: "Program 1",
+    document: "abc.pdf",
+    type: "Voter ID",
+    tags: "Voter ID",
+    action: "",
+  },
+  {
+    key: "2",
+    name: "Program 1",
+    document: "abc.pdf",
+    type: "Voter ID",
+    tags: "Voter ID",
+    action: "",
+  },
+];
+const columns3 = [
+  {
+    title: "First Name",
+    dataIndex: "first",
+  },
+  {
+    title: "Last Name",
+    dataIndex: "last",
+  },
+  {
+    title: "Email",
+    dataIndex: "email",
+  },
+  {
+    title: "Phone No",
+    dataIndex: "phone",
+  },
+  {
+    title: "Actions",
+    dataIndex: "actions",
+    slots: {
+      customRender: "action",
+    },
+  },
+];
+const data3 = [
+  {
+    key: "1",
+    first: "Jane",
+    last: "Doe",
+    email: "john@aa.com",
+    phone: "999-2222-111",
+    actions: "In",
+  },
+  {
+    key: "2",
+    first: "Steve",
+    last: "	Smith",
+    email: "steve@smith.com",
+    phone: "999-2222-111",
+    actions: "In",
+  },
+];
+const columns4 = [
+  {
+    title: "Start Time",
+    dataIndex: "start",
+  },
+  {
+    title: "End Time",
+    dataIndex: "end",
+  },
+  {
+    title: "Actions",
+    dataIndex: "actions",
+    slots: {
+      customRender: "action",
+    },
+  },
+];
+const data4 = [
+  {
+    key: "1",
+    start: "08:00 AM",
+    end: "	02:30 PM",
+    actions: "",
+  },
+  {
+    key: "2",
+    start: "09:00 AM",
+    end: "03:30 PM",
+    actions: "",
+  },
+];
+const columns5 = [
+  {
+    title: "Role",
+    dataIndex: "role",
+  },
+
+  {
+    title: "Actions",
+    dataIndex: "actions",
+    slots: {
+      customRender: "action",
+    },
+  },
+];
+const data5 = [
+  {
+    key: "1",
+    role: "Manager",
+    actions: "",
+  },
+  {
+    key: "2",
+    role: "Billing Admin",
+    actions: "",
+  },
+];
+
 export default {
   components: {
     Header,
     Sidebar,
+    DeleteOutlined,
+    EditOutlined,
+    PlusOutlined,
   },
-
   setup() {
     function logout() {
       localStorage.removeItem("auth");
       localStorage.clear();
     }
 
+    const visible = ref(false);
+    const visible1 = ref(false);
+    const visible2 = ref(false);
+    const visible3 = ref(false);
+
+    const showModal = () => {
+      visible.value = true;
+    };
+    const showModal1 = () => {
+      visible1.value = true;
+    };
+    const showModal2 = () => {
+      visible2.value = true;
+    };
+    const showModal3 = () => {
+      visible3.value = true;
+    };
+
+    const handleOk = (e) => {
+      console.log(e);
+      visible.value = false;
+    };
+
+    const selectedItemsForTag = ref(["Tag1"]);
+    const filteredOptionsForTag = computed(() =>
+      OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
+    );
     return {
       logout,
       data,
       columns,
       data1,
       columns1,
+      data2,
+      columns2,
+      data3,
+      columns3,
+      data4,
+      columns4,
+      data5,
+      columns5,
       activeKey: ref("1"),
+      activeKey1: ref("1"),
+      filteredOptionsForTag,
+      selectedItemsForTag,
+
+      visible,
+      visible1,
+      visible2,
+      visible3,
+      showModal,
+      showModal1,
+      showModal2,
+      showModal3,
+      handleOk,
     };
   },
 };

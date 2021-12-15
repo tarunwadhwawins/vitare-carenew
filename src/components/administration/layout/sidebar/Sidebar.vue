@@ -24,6 +24,11 @@
             ><MailOutlined /><span class="menuItem">Manage Programs</span></a-menu-item
           ></router-link
         >
+        <router-link to="/manage-providers"
+          ><a-menu-item
+            ><MailOutlined /><span class="menuItem">Manage Providers</span></a-menu-item
+          ></router-link
+        >
         <router-link to="/roles-permission"
           ><a-menu-item
             ><SafetyOutlined /><span class="menuItem"

@@ -106,6 +106,18 @@ const routes = [
   },
 
   {
+    path: '/manage-providers',
+    name: 'Manage Providers',
+    component: () => import( '../components/administration/manage-providers/Manageproviders')
+  },
+
+  {
+    path: '/provider-summary',
+    name: 'Provider Summary',
+    component: () => import( '../components/administration/provider-summary/Providersummary')
+  },
+
+  {
     path: '/roles-permission',
     name: 'Roles Permission',
     component: () => import( '../components/administration/roles-permissions/Rolespermissions')
