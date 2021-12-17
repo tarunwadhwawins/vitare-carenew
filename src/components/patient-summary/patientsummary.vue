@@ -18,7 +18,9 @@
               <div class="patientInfo">
                 <div class="patientImg" @click="showModalCustom">
                   <img src="../../assets/images/profile-4.jpg" alt="image" />
-                  <router-link to="manage-patients"><EditOutlined /></router-link>
+                  <router-link to="manage-patients"
+                    ><EditOutlined
+                  /></router-link>
                 </div>
 
                 <p class="name">Jane Doe</p>
@@ -32,61 +34,15 @@
                   </div>
                   <div class="pat-profile-inner">
                     <div class="thumb-head">
-                      Notes <br />
-                      <PlusOutlined @click="showAddNoteModal" />
+                      Appointments <br />
+                      <PlusOutlined @click="showAddAppointmentModal" /><br />
                     </div>
                     <div class="thumb-desc">
-                      <a href="javascript:void(0)" @click="showNoteModal"
-                        >John Clinical Dec 15 2021</a
+                      <router-link to="appointment-calendar">
+                        John Deer Dec 20th 2021 </router-link
                       ><br />
-                      <a href="javascript:void(0)" @click="showNoteModal"
-                        >Devin Reminder Dec 15 2021</a
-                      ><br />
-                      <a href="javascript:void(0)" @click="showNoteModal"
-                        >+ 6 More</a
-                      >
-                    </div>
-                  </div>
-                  <div class="pat-profile-inner">
-                    <div class="thumb-head">
-                      Devices <br /><PlusOutlined @click="showModal2" />
-                    </div>
-                    <div class="thumb-desc">
-                      <a href="javascript:void(0)" @click="showDeviceModal"
-                        >Blood Pressure(M-101)</a
-                      ><br />
-                      <a href="javascript:void(0)" @click="showDeviceModal"
-                        >Oxymeter(M-102)</a
-                      >
-                    </div>
-                  </div>
-                  <div class="pat-profile-inner">
-                    <div class="thumb-head">
-                      Documents <br /><PlusOutlined @click="showModal" />
-                    </div>
-                    <div class="thumb-desc">
-                      <a href="javascript:void(0)" @click="showDocumentModal"
-                        >Program 1</a
-                      ><br />
-                      <a href="javascript:void(0)" @click="showDocumentModal"
-                        >Program 2</a
-                      >
-                    </div>
-                  </div>
-                  <div class="pat-profile-inner">
-                    <div class="thumb-head">
-                      TimeLogs <br /><PlusOutlined @click="showModal1" />
-                    </div>
-                    <div class="thumb-desc">
-                      <a
-                        href="javascript:void(0)"
-                        @click="showTimeLogDetailModal"
-                        >Daily monitoring of vitals (Oct 25, 2021)</a
-                      ><br />
-                      <a
-                        href="javascript:void(0)"
-                        @click="showTimeLogDetailModal"
-                        >Provider Order For Lab ( Oct 28, 2021)</a
+                      <router-link to="appointment-calendar">
+                        Matt K Dec 25th 2021</router-link
                       >
                     </div>
                   </div>
@@ -118,6 +74,36 @@
                   </div>
                   <div class="pat-profile-inner">
                     <div class="thumb-head">
+                      Notes <br />
+                      <PlusOutlined @click="showAddNoteModal" />
+                    </div>
+                    <div class="thumb-desc">
+                      <a href="javascript:void(0)" @click="showNoteModal"
+                        >John Clinical Dec 15 2021</a
+                      ><br />
+                      <a href="javascript:void(0)" @click="showNoteModal"
+                        >Devin Reminder Dec 15 2021</a
+                      ><br />
+                      <a href="javascript:void(0)" @click="showNoteModal"
+                        >+ 6 More</a
+                      >
+                    </div>
+                  </div>
+                  <div class="pat-profile-inner">
+                    <div class="thumb-head">
+                      Documents <br /><PlusOutlined @click="showModal" />
+                    </div>
+                    <div class="thumb-desc">
+                      <a href="javascript:void(0)" @click="showDocumentModal"
+                        >Program 1</a
+                      ><br />
+                      <a href="javascript:void(0)" @click="showDocumentModal"
+                        >Program 2</a
+                      >
+                    </div>
+                  </div>
+                  <div class="pat-profile-inner">
+                    <div class="thumb-head">
                       Care Team <br /><PlusOutlined @click="showModal7" />
                     </div>
                     <div class="thumb-desc">
@@ -138,15 +124,31 @@
                   </div>
                   <div class="pat-profile-inner">
                     <div class="thumb-head">
-                      Appointments <br />
-                      <PlusOutlined @click="showAddAppointmentModal" /><br />
+                      TimeLogs <br /><PlusOutlined @click="showModal1" />
                     </div>
                     <div class="thumb-desc">
-                      <router-link to="appointment-calendar">
-                        John Deer Dec 20th 2021 </router-link
+                      <a
+                        href="javascript:void(0)"
+                        @click="showTimeLogDetailModal"
+                        >Daily monitoring of vitals (Oct 25, 2021)</a
                       ><br />
-                      <router-link to="appointment-calendar">
-                        Matt K Dec 25th 2021</router-link
+                      <a
+                        href="javascript:void(0)"
+                        @click="showTimeLogDetailModal"
+                        >Provider Order For Lab ( Oct 28, 2021)</a
+                      >
+                    </div>
+                  </div>
+                  <div class="pat-profile-inner">
+                    <div class="thumb-head">
+                      Devices <br /><PlusOutlined @click="showModal2" />
+                    </div>
+                    <div class="thumb-desc">
+                      <a href="javascript:void(0)" @click="showDeviceModal"
+                        >Blood Pressure(M-101)</a
+                      ><br />
+                      <a href="javascript:void(0)" @click="showDeviceModal"
+                        >Oxymeter(M-102)</a
                       >
                     </div>
                   </div>
@@ -287,9 +289,41 @@
                 </a-collapse>
               </div> -->
               <div class="thumbDesc patientTimeline">
+                <a-checkbox-group v-model:value3="value3">
+                  <a-row>
+                    <a-col :span="6">
+                      <a-checkbox value3="A"
+                        >Visits <HeatMapOutlined
+                      /></a-checkbox>
+                    </a-col>
+                    <a-col :span="6">
+                      <a-checkbox value3="B"
+                        >Appointments <ClockCircleOutlined
+                      /></a-checkbox>
+                    </a-col>
+                    <a-col :span="6">
+                      <a-checkbox value3="C"
+                        >Notes <FolderOpenOutlined
+                      /></a-checkbox>
+                    </a-col>
+                    <a-col :span="6">
+                      <a-checkbox value3="D"
+                        >Documents <FilePdfOutlined
+                      /></a-checkbox>
+                    </a-col>
+                    <a-col :span="6">
+                      <a-checkbox value3="E"
+                        >Notifications <BellOutlined
+                      /></a-checkbox>
+                    </a-col>
+                  </a-row>
+                </a-checkbox-group>
                 <a-timeline mode="alternate">
-                  <a-timeline-item
-                    >Create a services site 2015-09-01</a-timeline-item
+                  <a-timeline-item>
+                    <template #dot
+                      ><HeatMapOutlined style="font-size: 16px"
+                    /></template>
+                    Create a services site 2015-09-01</a-timeline-item
                   >
                   <a-timeline-item color="green"
                     >Solve initial network problems 2015-09-01</a-timeline-item
@@ -306,8 +340,11 @@
                   <a-timeline-item color="red"
                     >Network problems being solved 2015-09-01</a-timeline-item
                   >
-                  <a-timeline-item
-                    >Create a services site 2015-09-01</a-timeline-item
+                  <a-timeline-item>
+                    <template #dot
+                      ><HeatMapOutlined style="font-size: 16px"
+                    /></template>
+                    Create a services site 2015-09-01</a-timeline-item
                   >
                   <a-timeline-item>
                     <template #dot
@@ -323,7 +360,7 @@
                   >
                   <a-timeline-item>
                     <template #dot
-                      ><ClockCircleOutlined style="font-size: 16px"
+                      ><FolderOpenOutlined style="font-size: 16px"
                     /></template>
                     Sed ut perspiciatis unde omnis iste natus error sit
                     voluptatem accusantium doloremque laudantium, totam rem
@@ -338,7 +375,7 @@
                   >
                   <a-timeline-item>
                     <template #dot
-                      ><ClockCircleOutlined style="font-size: 16px"
+                      ><FilePdfOutlined style="font-size: 16px"
                     /></template>
                     Technical testing 2015-09-01
                   </a-timeline-item>
@@ -354,8 +391,11 @@
                   <a-timeline-item color="red"
                     >Network problems being solved 2015-09-01</a-timeline-item
                   >
-                  <a-timeline-item
-                    >Create a services site 2015-09-01</a-timeline-item
+                  <a-timeline-item>
+                    <template #dot
+                      ><BellOutlined style="font-size: 16px"
+                    /></template>
+                    Create a services site 2015-09-01</a-timeline-item
                   >
                 </a-timeline>
               </div>
@@ -1343,7 +1383,6 @@
       </a-row>
     </a-modal>
     <!---->
-    
   </div>
 </template>
 
@@ -1358,6 +1397,10 @@ import {
   EditOutlined,
   PlusOutlined,
   ClockCircleOutlined,
+  HeatMapOutlined,
+  FolderOpenOutlined,
+  FilePdfOutlined,
+  BellOutlined,
 } from "@ant-design/icons-vue";
 const OPTIONSTAG = ["Manger", "Billing Admin", "User Admin"];
 const value = ref(dayjs("12:08", "HH:mm"));
@@ -1452,6 +1495,7 @@ const columns1 = [
     slots: {
       customRender: "action",
     },
+    
   },
 ];
 const data1 = [
@@ -1745,6 +1789,10 @@ export default {
     EditOutlined,
     PlusOutlined,
     ClockCircleOutlined,
+    HeatMapOutlined,
+    FolderOpenOutlined,
+    FilePdfOutlined,
+    BellOutlined,
   },
   data: function () {
     return {
@@ -1889,7 +1937,6 @@ export default {
       console.log(e, "I was closed.");
     };
 
-
     const custom = ref(false);
     const current = ref(0);
     const showModalCustom = () => {
@@ -1915,7 +1962,7 @@ export default {
     return {
       handleOkcustom,
       showModalCustom,
-      
+
       custom,
       next,
       prev,
@@ -1992,6 +2039,7 @@ export default {
       activeKey4: ref("13"),
       value1: ref(),
       size: ref("large"),
+      value3: ref([]),
       value,
       dayjs,
       checked,

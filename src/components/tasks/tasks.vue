@@ -26,23 +26,23 @@
                     <a-button class="btn primaryBtn" @click="showModal"
                       >Add New Task</a-button
                     >
-                    </div>
-                    <div class="filter">
-                      <button
-                        class="btn"
-                        :class="toggle ? 'active' : ''"
-                        @click="toggle = !toggle"
-                      >
-                        <span class="btn-content">Dashboard View</span>
-                      </button>
-                      <button
-                        class="btn"
-                        :class="toggle ? '' : 'active'"
-                        @click="toggle = !toggle"
-                      >
-                        <span class="btn-content">List View</span>
-                      </button>
-                    </div>
+                  </div>
+                  <div class="filter">
+                    <button
+                      class="btn"
+                      :class="toggle ? 'active' : ''"
+                      @click="toggle = !toggle"
+                    >
+                      <span class="btn-content">Dashboard View</span>
+                    </button>
+                    <button
+                      class="btn"
+                      :class="toggle ? '' : 'active'"
+                      @click="toggle = !toggle"
+                    >
+                      <span class="btn-content">List View</span>
+                    </button>
+                  </div>
                 </h2>
               </a-col>
             </a-row>
@@ -325,6 +325,16 @@
             </div>
             <div class="list-view" v-show="!toggle">
               <a-row :gutter="24">
+                <a-col :span="12">
+                  <a-input-search
+                    v-model:value="inputvalue"
+                    placeholder="Search . . ."
+                    enter-button="Search"
+                    size="large"
+                    @search="onSearch"
+                    class="mb-24"
+                  />
+                </a-col>
                 <a-col :sm="24">
                   <a-table
                     :columns="columns"

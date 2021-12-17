@@ -20,6 +20,16 @@
                   </div>
                 </h2>
               </a-col>
+               <a-col :span="12">
+              <a-input-search
+                v-model:value="inputvalue"
+                placeholder="Search . . ."
+                enter-button="Search"
+                size="large"
+                @search="onSearch"
+                class="mb-24"
+              />
+            </a-col>
               <a-col :span="24">
                 <a-table
                   :columns="columns"

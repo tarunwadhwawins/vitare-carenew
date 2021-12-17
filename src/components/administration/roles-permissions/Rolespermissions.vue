@@ -20,6 +20,16 @@
                   </div>
                 </h2>
               </a-col>
+              <a-col :span="12">
+                <a-input-search
+                  v-model:value="inputvalue"
+                  placeholder="Search . . ."
+                  enter-button="Search"
+                  size="large"
+                  @search="onSearch"
+                  class="mb-24"
+                />
+              </a-col>
               <a-col :span="24">
                 <a-table
                   :columns="columns"
@@ -53,9 +63,16 @@
       <a-row :gutter="24">
         <a-col :span="24">
           <a-steps :current="current">
-            <a-step v-for="item in steps" :key="item.title" :title="item.title" />
+            <a-step
+              v-for="item in steps"
+              :key="item.title"
+              :title="item.title"
+            />
           </a-steps>
-          <div class="steps-content" v-if="steps[current].title == 'Select Role'">
+          <div
+            class="steps-content"
+            v-if="steps[current].title == 'Select Role'"
+          >
             <a-row :gutter="24">
               <a-col :sm="8" :xs="24">
                 <div class="roles">
@@ -73,7 +90,9 @@
                     <a-radio v-model:checked="checked3">Billing Admin</a-radio>
                   </div>
                   <div class="radioInput">
-                    <a-radio v-model:checked="checked4">Phone System Admin</a-radio>
+                    <a-radio v-model:checked="checked4"
+                      >Phone System Admin</a-radio
+                    >
                   </div>
                   <div class="radioInput">
                     <a-radio v-model:checked="checked5">Super Admin</a-radio>
@@ -125,7 +144,10 @@
               </a-col>
             </a-row>
           </div>
-          <div class="steps-content" v-if="steps[current].title == 'Describe Role'">
+          <div
+            class="steps-content"
+            v-if="steps[current].title == 'Describe Role'"
+          >
             <a-row :gutter="24">
               <a-col :sm="24" :xs="24">
                 <div class="form-group">
@@ -145,7 +167,10 @@
               </a-col>
             </a-row>
           </div>
-          <div class="steps-content" v-if="steps[current].title == 'Permissions'">
+          <div
+            class="steps-content"
+            v-if="steps[current].title == 'Permissions'"
+          >
             <a-row :gutter="24">
               <a-col :sm="24" :xs="24">
                 <div class="roles">
@@ -160,7 +185,9 @@
                     <a-checkbox v-model:checked="checked8">Overview</a-checkbox>
                   </div>
                   <div class="radioInput">
-                    <a-checkbox v-model:checked="checked9">Invertory</a-checkbox>
+                    <a-checkbox v-model:checked="checked9"
+                      >Invertory</a-checkbox
+                    >
                   </div>
                   <div class="radioInput">
                     <a-checkbox v-model:checked="checked10">Order</a-checkbox>
@@ -176,13 +203,19 @@
                     <a-divider />
                   </div>
                   <div class="radioInput">
-                    <a-checkbox v-model:checked="checked13">Desktop App</a-checkbox>
+                    <a-checkbox v-model:checked="checked13"
+                      >Desktop App</a-checkbox
+                    >
                   </div>
                   <div class="radioInput">
-                    <a-checkbox v-model:checked="checked14">Mobile App</a-checkbox>
+                    <a-checkbox v-model:checked="checked14"
+                      >Mobile App</a-checkbox
+                    >
                   </div>
                   <div class="radioInput">
-                    <a-checkbox v-model:checked="checked15">Third Party App</a-checkbox>
+                    <a-checkbox v-model:checked="checked15"
+                      >Third Party App</a-checkbox
+                    >
                   </div>
                   <a-divider class="transparent" />
                   <div class="radioInput">
@@ -197,19 +230,29 @@
                     >
                   </div>
                   <div class="radioInput">
-                    <a-checkbox v-model:checked="checked18">Messages</a-checkbox>
+                    <a-checkbox v-model:checked="checked18"
+                      >Messages</a-checkbox
+                    >
                   </div>
                   <div class="radioInput">
-                    <a-checkbox v-model:checked="checked19">Notification</a-checkbox>
+                    <a-checkbox v-model:checked="checked19"
+                      >Notification</a-checkbox
+                    >
                   </div>
                   <div class="radioInput">
-                    <a-checkbox v-model:checked="checked20">Outbound Caller</a-checkbox>
+                    <a-checkbox v-model:checked="checked20"
+                      >Outbound Caller</a-checkbox
+                    >
                   </div>
                   <div class="radioInput">
-                    <a-checkbox v-model:checked="checked21">User Info</a-checkbox>
+                    <a-checkbox v-model:checked="checked21"
+                      >User Info</a-checkbox
+                    >
                   </div>
                   <div class="radioInput">
-                    <a-checkbox v-model:checked="checked22">Phones & Numbers</a-checkbox>
+                    <a-checkbox v-model:checked="checked22"
+                      >Phones & Numbers</a-checkbox
+                    >
                   </div>
                   <a-divider class="transparent" />
                   <div class="radioInput">
@@ -219,10 +262,14 @@
                     <a-divider />
                   </div>
                   <div class="radioInput">
-                    <a-checkbox v-model:checked="checked24">Audit Trail</a-checkbox>
+                    <a-checkbox v-model:checked="checked24"
+                      >Audit Trail</a-checkbox
+                    >
                   </div>
                   <div class="radioInput">
-                    <a-checkbox v-model:checked="checked25">Business SMS</a-checkbox>
+                    <a-checkbox v-model:checked="checked25"
+                      >Business SMS</a-checkbox
+                    >
                   </div>
                   <div class="radioInput">
                     <a-checkbox v-model:checked="checked26"
@@ -240,7 +287,9 @@
                     >
                   </div>
                   <div class="radioInput">
-                    <a-checkbox v-model:checked="checked29">Internal SMS</a-checkbox>
+                    <a-checkbox v-model:checked="checked29"
+                      >Internal SMS</a-checkbox
+                    >
                   </div>
                 </div>
               </a-col>
@@ -250,7 +299,10 @@
             <a-button v-if="current > 0" style="margin-right: 8px" @click="prev"
               >Previous</a-button
             >
-            <a-button v-if="current < steps.length - 1" type="primary" @click="next"
+            <a-button
+              v-if="current < steps.length - 1"
+              type="primary"
+              @click="next"
               >Next</a-button
             >
             <a-button

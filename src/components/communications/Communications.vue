@@ -7,7 +7,12 @@
       </a-layout-header>
       <a-layout>
         <a-layout-sider
-          :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"
+          :style="{
+            overflow: 'auto',
+            height: '100vh',
+            position: 'fixed',
+            left: 0,
+          }"
           ><Sidebar
         /></a-layout-sider>
         <a-layout-content>
@@ -25,21 +30,28 @@
             </a-col>
             <a-col :span="24">
               <a-row :gutter="24">
-                <a-col :xl="8" :sm="8" :xs="24">
+                <a-col :xl="6" :sm="6" :xs="24">
+                  <div class="colorBox blueBg">
+                    <UserOutlined />
+                    <h3>15</h3>
+                    <p>Yesterday</p>
+                  </div>
+                </a-col>
+                <a-col :xl="6" :sm="6" :xs="24">
                   <div class="colorBox two">
                     <UserOutlined />
                     <h3>10</h3>
                     <p>Today</p>
                   </div>
                 </a-col>
-                <a-col :xl="8" :sm="8" :xs="24">
-                  <div class="colorBox five">
+                <a-col :xl="6" :sm="6" :xs="24">
+                  <div class="colorBox skyBlue">
                     <UserOutlined />
                     <h3>10</h3>
                     <p>Tomorrow</p>
                   </div>
                 </a-col>
-                <a-col :xl="8" :sm="8" :xs="24">
+                <a-col :xl="6" :sm="6" :xs="24">
                   <div class="colorBox four">
                     <UserOutlined />
                     <h3>10</h3>
@@ -50,6 +62,16 @@
             </a-col>
           </a-row>
           <a-row>
+            <a-col :span="12">
+              <a-input-search
+                v-model:value="inputvalue"
+                placeholder="Search . . ."
+                enter-button="Search"
+                size="large"
+                @search="onSearch"
+                class="mb-24"
+              />
+            </a-col>
             <a-col :span="24">
               <a-table
                 :columns="columns"
@@ -62,8 +84,12 @@
                 </template>
 
                 <template #type="{ text }">
-                  <a class="icons" v-if="text == 'comment'"><CommentOutlined /></a>
-                  <a class="icons" v-if="text == 'voiceMail'"><PhoneOutlined /></a>
+                  <a class="icons" v-if="text == 'comment'"
+                    ><CommentOutlined
+                  /></a>
+                  <a class="icons" v-if="text == 'voiceMail'"
+                    ><PhoneOutlined
+                  /></a>
                   <a class="icons" v-if="text == 'sent'"><PhoneOutlined /></a>
                   <a class="icons" v-if="text == 'mail'"><MailOutlined /></a>
                 </template>
@@ -117,9 +143,15 @@
               @focus="focus"
               @change="handleChange"
             >
-              <a-select-option value="lucy">Appointment Reminder</a-select-option>
-              <a-select-option value="Yiminghe">Recall Reminder</a-select-option>
-              <a-select-option value="Yiminghe">Portal Invitation </a-select-option>
+              <a-select-option value="lucy"
+                >Appointment Reminder</a-select-option
+              >
+              <a-select-option value="Yiminghe"
+                >Recall Reminder</a-select-option
+              >
+              <a-select-option value="Yiminghe"
+                >Portal Invitation
+              </a-select-option>
               <a-select-option value="Yiminghe"
                 >Patient Message Notification
               </a-select-option>
@@ -169,25 +201,6 @@ import {
 } from "@ant-design/icons-vue";
 const columns = [
   {
-    title: "Type",
-    dataIndex: "type",
-    slots: {
-      customRender: "type",
-    },
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-  },
-  {
-    title: "Category",
-    dataIndex: "message",
-    sorter: {
-      compare: (a, b) => a.message - b.message,
-      multiple: 3,
-    },
-  },
-  {
     title: "Patient",
     dataIndex: "patient",
     sorter: {
@@ -204,7 +217,42 @@ const columns = [
     },
   },
   {
-    title: "Sent",
+    title: "Type",
+    dataIndex: "type",
+    slots: {
+      customRender: "type",
+    },
+  },
+  {
+    title: "Staff",
+    dataIndex: "staff",
+    slots: {
+      customRender: "staff",
+    },
+    sorter: {
+      compare: (a, b) => a.patient - b.patient,
+      multiple: 2,
+    },
+  },
+  {
+    title: "Status",
+    dataIndex: "status",
+    sorter: {
+      compare: (a, b) => a.patient - b.patient,
+      multiple: 2,
+    },
+  },
+  {
+    title: "Category",
+    dataIndex: "message",
+    sorter: {
+      compare: (a, b) => a.message - b.message,
+      multiple: 3,
+    },
+  },
+
+  {
+    title: "Date Sent",
     dataIndex: "sent",
     sorter: {
       compare: (a, b) => a.sent - b.sent,
@@ -233,44 +281,48 @@ const data = [
     type: "comment",
     status: "Delievered",
     message: "Appointment Reminder",
-    patient: "John",
+    patient: "Jane Doe",
     sentto: 22998876654,
     sent: "Nov 11, 2021 - 11:30 Am",
     appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
+    staff: "Steve Smith",
   },
   {
     key: "2",
     type: "voiceMail",
     status: "Voice Mail",
     message: "Recall Reminder",
-    patient: "Smith",
+    patient: "Steve Smith",
     sentto: 22998876654,
     sent: "Nov 11, 2021 - 11:30 Am",
     appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
+    staff: "Robert Henry",
   },
   {
     key: "3",
     type: "sent",
     status: "Sent",
     message: "Patient Message",
-    patient: "Steve",
+    patient: "Joseph Spouse",
     sentto: 22998876654,
     sent: "Nov 11, 2021 - 11:30 Am",
     appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
+    staff: "Jane Doe",
   },
   {
     key: "4",
     type: "mail",
     status: "Sent",
     message: "Portal Invitation",
-    patient: "Robert",
+    patient: "Robert Henry",
     sentto: 22998876654,
     sent: "Nov 11, 2021 - 11:30 Am",
     appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
+    staff: "Jane Doe",
   },
 ];
 export default {

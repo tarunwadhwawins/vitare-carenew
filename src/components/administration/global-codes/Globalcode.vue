@@ -20,6 +20,16 @@
                   </div>
                 </h2>
               </a-col>
+              <a-col :span="12">
+                <a-input-search
+                  v-model:value="inputvalue"
+                  placeholder="Search . . ."
+                  enter-button="Search"
+                  size="large"
+                  @search="onSearch"
+                  class="mb-24"
+                />
+              </a-col>
               <a-col :span="24">
                 <a-table
                   :columns="columns"
@@ -62,15 +72,25 @@
               @change="handleChange"
             >
               <a-select-option value="lucy">Choose Category</a-select-option>
-              <a-select-option value="Yiminghe">AppointmentType</a-select-option>
-              <a-select-option value="Yiminghe">Specialization </a-select-option>
-              <a-select-option value="Yiminghe">Communication Category</a-select-option>
-              <a-select-option value="Yiminghe">Communication Status</a-select-option>
+              <a-select-option value="Yiminghe"
+                >AppointmentType</a-select-option
+              >
+              <a-select-option value="Yiminghe"
+                >Specialization
+              </a-select-option>
+              <a-select-option value="Yiminghe"
+                >Communication Category</a-select-option
+              >
+              <a-select-option value="Yiminghe"
+                >Communication Status</a-select-option
+              >
               <a-select-option value="Yiminghe">Task Status</a-select-option>
               <a-select-option value="Yiminghe">Task Priority</a-select-option>
               <a-select-option value="Yiminghe">Relationship</a-select-option>
               <a-select-option value="Yiminghe">Gender</a-select-option>
-              <a-select-option value="Yiminghe">Health Conditions</a-select-option>
+              <a-select-option value="Yiminghe"
+                >Health Conditions</a-select-option
+              >
               <a-select-option value="Yiminghe">Designation</a-select-option>
               <a-select-option value="Yiminghe">Document Type</a-select-option>
               <a-select-option value="Yiminghe">Insurance Type</a-select-option>
@@ -92,7 +112,11 @@
         <a-col :sm="24" :xs="24">
           <div class="form-group">
             <label>Description </label>
-            <a-textarea v-model:value="value2" placeholder="Description" allow-clear />
+            <a-textarea
+              v-model:value="value2"
+              placeholder="Description"
+              allow-clear
+            />
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">

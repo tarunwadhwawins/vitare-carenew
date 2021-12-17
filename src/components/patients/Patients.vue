@@ -56,6 +56,16 @@
             </a-col>
           </a-row>
           <a-row>
+            <a-col :span="12">
+              <a-input-search
+                v-model:value="inputvalue"
+                placeholder="Search . . ."
+                enter-button="Search"
+                size="large"
+                @search="onSearch"
+                class="mb-24"
+              />
+            </a-col>
             <a-col :span="24">
               <a-table
                 :columns="columns"
@@ -781,7 +791,7 @@
             <a-row :gutter="24">
               <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
-                  <label>Home Unit Type</label>
+                  <label>Device Type</label>
                   <a-select
                     ref="select"
                     v-model="value1"
@@ -854,7 +864,7 @@
           </div>
           <div
             class="steps-content"
-            v-if="steps[current].title == 'Assessments'"
+            v-if="steps[current].title == 'Parameters'"
           >
             <a-row :gutter="24">
               <a-col :span="24">
@@ -928,7 +938,7 @@
             <a-row :gutter="24">
               <a-col :span="24">
                 <div class="formHeading">
-                  <h2>Medicine History</h2>
+                  <h2>Medical History</h2>
                 </div>
               </a-col>
               <a-col :span="24">
@@ -961,7 +971,7 @@
             <a-row :gutter="24">
               <a-col :span="24">
                 <div class="formHeading">
-                  <h2>Medicine Routine</h2>
+                  <h2>Medication</h2>
                 </div>
               </a-col>
               <a-col :sm="12" :xs="24">
@@ -972,7 +982,7 @@
               </a-col>
               <a-col :sm="12" :xs="24">
                 <div class="form-group">
-                  <label> Routine</label>
+                  <label> Frequency</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
@@ -998,23 +1008,114 @@
               </a-col>
             </a-row>
           </div>
-          <div class="steps-content" v-if="steps[current].title == 'Billing'">
+          <div class="steps-content" v-if="steps[current].title == 'Insurance'">
             <a-row :gutter="24">
-              <a-col :sm="12" :xs="24">
+              <a-col :sm="8" :xs="24">
                 <div class="form-group">
-                  <label>Insurance Id</label>
+                  <label>Insurance Number</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :sm="8" :xs="24">
                 <div class="form-group">
-                  <label>Insurance Type</label>
+                  <label>Insurance Name</label>
+                  <a-select
+                    ref="select"
+                    show-search
+                    v-model="value1"
+                    style="width: 100%"
+                    size="large"
+                    @focus="focus"
+                    @change="handleChange"
+                  >
+                    <a-select-option value="lucy">Personal</a-select-option>
+                    <a-select-option value="Yiminghe">Business</a-select-option>
+                    <a-select-option value="Yiminghe"
+                      >Life/Health</a-select-option
+                    >
+                    <a-select-option value="Yiminghe">Benefits</a-select-option>
+                  </a-select>
+                </div>
+              </a-col>
+              <a-col :sm="8" :xs="24">
+                <div class="form-group">
+                  <label>Expiration Date</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-              <a-col :sm="12" :xs="24">
+              <a-col :span="24">
+                <div class="formHeading">
+                  <h2>Secondary Insurance</h2>
+                </div>
+              </a-col>
+               <a-col :sm="8" :xs="24">
                 <div class="form-group">
-                  <label>Expiry Date</label>
+                  <label>Insurance Number</label>
+                  <a-input v-model="value" size="large" />
+                </div>
+              </a-col>
+              <a-col :sm="8" :xs="24">
+                <div class="form-group">
+                  <label>Insurance Name</label>
+                  <a-select
+                    ref="select"
+                    show-search
+                    v-model="value1"
+                    style="width: 100%"
+                    size="large"
+                    @focus="focus"
+                    @change="handleChange"
+                  >
+                    <a-select-option value="lucy">Personal</a-select-option>
+                    <a-select-option value="Yiminghe">Business</a-select-option>
+                    <a-select-option value="Yiminghe"
+                      >Life/Health</a-select-option
+                    >
+                    <a-select-option value="Yiminghe">Benefits</a-select-option>
+                  </a-select>
+                </div>
+              </a-col>
+              <a-col :sm="8" :xs="24">
+                <div class="form-group">
+                  <label>Expiration Date</label>
+                  <a-input v-model="value" size="large" />
+                </div>
+              </a-col>
+               <a-col :span="24">
+                <div class="formHeading">
+                  <h2>Tertiary  Insurance</h2>
+                </div>
+              </a-col>
+              <a-col :sm="8" :xs="24">
+                <div class="form-group">
+                  <label>Insurance Number</label>
+                  <a-input v-model="value" size="large" />
+                </div>
+              </a-col>
+              <a-col :sm="8" :xs="24">
+                <div class="form-group">
+                  <label>Insurance Name</label>
+                  <a-select
+                    ref="select"
+                    show-search
+                    v-model="value1"
+                    style="width: 100%"
+                    size="large"
+                    @focus="focus"
+                    @change="handleChange"
+                  >
+                    <a-select-option value="lucy">Personal</a-select-option>
+                    <a-select-option value="Yiminghe">Business</a-select-option>
+                    <a-select-option value="Yiminghe"
+                      >Life/Health</a-select-option
+                    >
+                    <a-select-option value="Yiminghe">Benefits</a-select-option>
+                  </a-select>
+                </div>
+              </a-col>
+              <a-col :sm="8" :xs="24">
+                <div class="form-group">
+                  <label>Expiration Date</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
@@ -1137,10 +1238,14 @@ const columns = [
     },
   },
   {
-    title: "First Name",
+    title: "Name",
     dataIndex: "firstName",
     slots: {
       customRender: "firstName",
+    },
+    sorter: {
+      compare: (a, b) => a.reading - b.reading,
+      multiple: 1,
     },
   },
   // {
@@ -1221,8 +1326,34 @@ const columns = [
       compare: (a, b) => a.message - b.message,
       multiple: 1,
     },
+    filters: [
+      {
+        text: "Flag",
+        value: "flag",
+      },
+      {
+        text: "Name",
+        value: "name",
+      },
+      {
+        text: "Last Reading Date",
+        value: "readdate",
+      },
+      {
+        text: "Last Reading Value",
+        value: "readvalue",
+      },
+      {
+        text: "Non Compliance ",
+        value: "noncompliance",
+      },
+      {
+        text: "Last Message Seen",
+        value: "messagseen",
+      },
+    ],
+    onFilter: (value, record) => record.name.indexOf(value) === 0,
   },
-  
 ];
 const data = [
   {
@@ -1370,7 +1501,7 @@ const data2 = [
 ];
 const columns3 = [
   {
-    title: "Program Name",
+    title: "Medication List",
     dataIndex: "program",
   },
   {
@@ -1439,7 +1570,7 @@ const columns4 = [
 const data4 = [
   {
     key: "1",
-    name: "Program 1",
+    name: "Document 1",
     document: "abc.pdf",
     type: "Voter Id",
     tags: "	Voter Id",
@@ -1447,7 +1578,7 @@ const data4 = [
   },
   {
     key: "2",
-    name: "Program 1",
+    name: "Document 1",
     document: "abc.pdf",
     type: "Voter Id",
     tags: "	Voter Id",
@@ -1456,7 +1587,7 @@ const data4 = [
 ];
 const columns5 = [
   {
-    title: "Home Unit Type",
+    title: "Device Type",
     dataIndex: "home",
   },
   {
@@ -1617,7 +1748,7 @@ export default {
           content: "Second-content",
         },
         {
-          title: "Assessments",
+          title: "Parameters",
           content: "Second-content",
         },
         {
@@ -1625,7 +1756,7 @@ export default {
           content: "Second-content",
         },
         {
-          title: "Billing",
+          title: "Insurance",
           content: "Second-content",
         },
         {

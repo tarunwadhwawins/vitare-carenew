@@ -7,7 +7,12 @@
       </a-layout-header>
       <a-layout>
         <a-layout-sider
-          :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"
+          :style="{
+            overflow: 'auto',
+            height: '100vh',
+            position: 'fixed',
+            left: 0,
+          }"
         >
           <Sidebar />
         </a-layout-sider>
@@ -65,6 +70,16 @@
             </a-col>
           </a-row>
           <a-row>
+            <a-col :span="12">
+              <a-input-search
+                v-model:value="inputvalue"
+                placeholder="Search . . ."
+                enter-button="Search"
+                size="large"
+                @search="onSearch"
+                class="mb-24"
+              />
+            </a-col>
             <a-col :span="24">
               <a-table
                 :pagination="false"
@@ -79,10 +94,14 @@
                   <a class="icons"> <DeleteOutlined /></a>
                 </template>
                 <template #first="text">
-                  <router-link to="corrdinator-summary">{{ text.text }}</router-link>
+                  <router-link to="corrdinator-summary">{{
+                    text.text
+                  }}</router-link>
                 </template>
                 <template #last="text">
-                  <router-link to="corrdinator-summary">{{ text.text }}</router-link>
+                  <router-link to="corrdinator-summary">{{
+                    text.text
+                  }}</router-link>
                 </template>
               </a-table>
             </a-col>
@@ -103,7 +122,11 @@
       <a-row :gutter="24">
         <a-col :span="24">
           <a-steps :current="current">
-            <a-step v-for="item in steps" :key="item.title" :title="item.title" />
+            <a-step
+              v-for="item in steps"
+              :key="item.title"
+              :title="item.title"
+            />
           </a-steps>
           <div
             class="steps-content"
@@ -239,7 +262,10 @@
               </a-col>
             </a-row>
           </div>
-          <div class="steps-content" v-if="steps[current].title == 'Availability'">
+          <div
+            class="steps-content"
+            v-if="steps[current].title == 'Availability'"
+          >
             <a-row :gutter="24">
               <a-col :sm="12" :xs="24">
                 <div class="form-group">
@@ -252,7 +278,9 @@
                     @focus="focus"
                     @change="handleChange"
                   >
-                    <a-select-option value="lucy">Choose start Time</a-select-option>
+                    <a-select-option value="lucy"
+                      >Choose start Time</a-select-option
+                    >
                     <a-select-option value="Yiminghe">08:00 AM</a-select-option>
                     <a-select-option value="Yiminghe">08:30 AM</a-select-option>
                     <a-select-option value="Yiminghe">09:00 AM</a-select-option>
@@ -274,7 +302,9 @@
                     @focus="focus"
                     @change="handleChange"
                   >
-                    <a-select-option value="lucy">Choose End Time</a-select-option>
+                    <a-select-option value="lucy"
+                      >Choose End Time</a-select-option
+                    >
                     <a-select-option value="Yiminghe">02:00 PM</a-select-option>
                     <a-select-option value="Yiminghe">02:30 PM</a-select-option>
                     <a-select-option value="Yiminghe">03:00 PM</a-select-option>
@@ -371,7 +401,9 @@
                   >
                     <a-select-option value="lucy">Id Proof</a-select-option>
                     <a-select-option value="Yiminghe">Clinical</a-select-option>
-                    <a-select-option value="Yiminghe">Insurance</a-select-option>
+                    <a-select-option value="Yiminghe"
+                      >Insurance</a-select-option
+                    >
                   </a-select>
                 </div>
               </a-col>
@@ -384,7 +416,9 @@
                     size="large"
                     placeholder="Please Select Roles"
                     style="width: 100%"
-                    :options="filteredOptionsForTag.map((item) => ({ value: item }))"
+                    :options="
+                      filteredOptionsForTag.map((item) => ({ value: item }))
+                    "
                   />
                 </div>
               </a-col>
@@ -414,7 +448,10 @@
             <a-button v-if="current > 0" style="margin-right: 8px" @click="prev"
               >Previous</a-button
             >
-            <a-button v-if="current < steps.length - 1" type="primary" @click="next"
+            <a-button
+              v-if="current < steps.length - 1"
+              type="primary"
+              @click="next"
               >Next</a-button
             >
             <a-button

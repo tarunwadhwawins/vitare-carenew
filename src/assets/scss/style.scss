@@ -179,6 +179,12 @@
         display: block;
         color: #fff;
     }
+    &.blueBg {
+        background-color: #91BDFF;
+    }
+    &.skyBlue {
+        background-color: #90eef5;
+    }
 }
 
 /*--calendar--*/
@@ -601,6 +607,10 @@
     overflow: auto;
     padding: 20px;
     background-color: #fff;
+    .ant-checkbox-group {
+        width: 100%;
+        margin: 0 0 30px;
+    }
 }
 
 /*----*/
