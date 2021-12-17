@@ -7,7 +7,12 @@
       </a-layout-header>
       <a-layout>
         <a-layout-sider
-          :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"
+          :style="{
+            overflow: 'auto',
+            height: '100vh',
+            position: 'fixed',
+            left: 0,
+          }"
           ><Sidebar
         /></a-layout-sider>
         <a-layout-content>
@@ -59,11 +64,15 @@
                 @change="onChange"
               >
                 <template #firstName="text">
-                  <router-link to="patients-summary">{{ text.text }}</router-link>
+                  <router-link to="patients-summary">{{
+                    text.text
+                  }}</router-link>
                 </template>
-                <template #lastName="text">
-                  <router-link to="patients-summary">{{ text.text }}</router-link>
-                </template>
+                <!-- <template #lastName="text">
+                  <router-link to="patients-summary">{{
+                    text.text
+                  }}</router-link>
+                </template> -->
                 <template #flags="{ text }">
                   <span class="box" :class="text"></span>
                   <span
@@ -98,9 +107,16 @@
       <a-row :gutter="24">
         <a-col :span="24">
           <a-steps :current="current">
-            <a-step v-for="item in steps" :key="item.title" :title="item.title" />
+            <a-step
+              v-for="item in steps"
+              :key="item.title"
+              :title="item.title"
+            />
           </a-steps>
-          <div class="steps-content" v-if="steps[current].title == 'Demographics'">
+          <div
+            class="steps-content"
+            v-if="steps[current].title == 'Demographics'"
+          >
             <a-row :gutter="24">
               <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
@@ -162,7 +178,9 @@
                     size="large"
                     placeholder="Please Select Roles"
                     style="width: 100%"
-                    :options="filteredOptionsForTag2.map((item) => ({ value: item }))"
+                    :options="
+                      filteredOptionsForTag2.map((item) => ({ value: item }))
+                    "
                   />
                 </div>
               </a-col>
@@ -190,15 +208,21 @@
                   <a-input v-model="value" size="large">
                     <template #addonAfter>
                       <a-select v-model:value="value4" style="width: 120px">
-                        <a-select-option value="@yahoo">@yahoo.com</a-select-option>
-                        <a-select-option value="@gmail.com">@gmail.com</a-select-option>
+                        <a-select-option value="@yahoo"
+                          >@yahoo.com</a-select-option
+                        >
+                        <a-select-option value="@gmail.com"
+                          >@gmail.com</a-select-option
+                        >
                         <a-select-option value="@hotmail.com"
                           >@hotmail.com</a-select-option
                         >
                         <a-select-option value="@outlook.com"
                           >@outlook.com</a-select-option
                         >
-                        <a-select-option value="@aol.com">@aol.com</a-select-option>
+                        <a-select-option value="@aol.com"
+                          >@aol.com</a-select-option
+                        >
                       </a-select>
                     </template>
                   </a-input>
@@ -213,7 +237,8 @@
               <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
                   <label
-                    >Preferred Method of Contact <span class="red-color">*</span></label
+                    >Preferred Method of Contact
+                    <span class="red-color">*</span></label
                   >
                   <a-select
                     v-model:value="selectedItemsForTag1"
@@ -221,7 +246,9 @@
                     size="large"
                     placeholder="Please Select Roles"
                     style="width: 100%"
-                    :options="filteredOptionsForTag1.map((item) => ({ value: item }))"
+                    :options="
+                      filteredOptionsForTag1.map((item) => ({ value: item }))
+                    "
                   />
                 </div>
               </a-col>
@@ -241,7 +268,9 @@
                     @change="handleChange"
                   >
                     <a-select-option value="lucy">Morning</a-select-option>
-                    <a-select-option value="Yiminghe">Afternoon</a-select-option>
+                    <a-select-option value="Yiminghe"
+                      >Afternoon</a-select-option
+                    >
                     <a-select-option value="Yiminghe">Evening</a-select-option>
                   </a-select>
                 </div>
@@ -249,7 +278,8 @@
               <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
                   <label
-                    >MRN( Medical Record Number) <span class="red-color">*</span></label
+                    >MRN( Medical Record Number)
+                    <span class="red-color">*</span></label
                   >
                   <a-input v-model="value" size="large" />
                 </div>
@@ -280,7 +310,9 @@
               </a-col>
               <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
-                  <label>Suite or Apartment <span class="red-color">*</span></label>
+                  <label
+                    >Suite or Apartment <span class="red-color">*</span></label
+                  >
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
@@ -320,7 +352,8 @@
               <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
                   <label
-                    >Preferred Method of Contact <span class="red-color">*</span></label
+                    >Preferred Method of Contact
+                    <span class="red-color">*</span></label
                   >
                   <a-select
                     v-model:value="selectedItemsForTag1"
@@ -328,7 +361,9 @@
                     size="large"
                     placeholder="Please Select Roles"
                     style="width: 100%"
-                    :options="filteredOptionsForTag1.map((item) => ({ value: item }))"
+                    :options="
+                      filteredOptionsForTag1.map((item) => ({ value: item }))
+                    "
                   />
                 </div>
               </a-col>
@@ -348,7 +383,9 @@
                     @change="handleChange"
                   >
                     <a-select-option value="lucy">Morning</a-select-option>
-                    <a-select-option value="Yiminghe">Afternoon</a-select-option>
+                    <a-select-option value="Yiminghe"
+                      >Afternoon</a-select-option
+                    >
                     <a-select-option value="Yiminghe">Evening</a-select-option>
                   </a-select>
                 </div>
@@ -411,7 +448,8 @@
               <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
                   <label
-                    >Preferred Method of Contact <span class="red-color">*</span></label
+                    >Preferred Method of Contact
+                    <span class="red-color">*</span></label
                   >
                   <a-select
                     v-model:value="selectedItemsForTag1"
@@ -419,7 +457,9 @@
                     size="large"
                     placeholder="Please Select Roles"
                     style="width: 100%"
-                    :options="filteredOptionsForTag1.map((item) => ({ value: item }))"
+                    :options="
+                      filteredOptionsForTag1.map((item) => ({ value: item }))
+                    "
                   />
                 </div>
               </a-col>
@@ -439,7 +479,9 @@
                     @change="handleChange"
                   >
                     <a-select-option value="lucy">Morning</a-select-option>
-                    <a-select-option value="Yiminghe">Afternoon</a-select-option>
+                    <a-select-option value="Yiminghe"
+                      >Afternoon</a-select-option
+                    >
                     <a-select-option value="Yiminghe">Evening</a-select-option>
                   </a-select>
                 </div>
@@ -463,7 +505,10 @@
               </a-col>
             </a-row>
           </div>
-          <div class="steps-content" v-if="steps[current].title == 'Conditions'">
+          <div
+            class="steps-content"
+            v-if="steps[current].title == 'Conditions'"
+          >
             <a-row :gutter="24">
               <a-col :span="24">
                 <div class="formHeading">
@@ -483,20 +528,25 @@
               </a-col>
               <a-col :md="24" :sm="24" :xs="24">
                 <a-checkbox v-model:checked="checked"
-                  >Certain infectious and parasitic diseases (A00-B99)</a-checkbox
-                >
-              </a-col>
-              <a-col :md="24" :sm="24" :xs="24">
-                <a-checkbox v-model:checked="checked">Neoplasms (C00-D49)</a-checkbox>
-              </a-col>
-              <a-col :md="24" :sm="24" :xs="24">
-                <a-checkbox v-model:checked="checked"
-                  >Endocrine, nutritional and metabolic diseases (E00-E89)</a-checkbox
+                  >Certain infectious and parasitic diseases
+                  (A00-B99)</a-checkbox
                 >
               </a-col>
               <a-col :md="24" :sm="24" :xs="24">
                 <a-checkbox v-model:checked="checked"
-                  >Mental, Behavioral and Neurodevelopmental disorders (F01-F99 )
+                  >Neoplasms (C00-D49)</a-checkbox
+                >
+              </a-col>
+              <a-col :md="24" :sm="24" :xs="24">
+                <a-checkbox v-model:checked="checked"
+                  >Endocrine, nutritional and metabolic diseases
+                  (E00-E89)</a-checkbox
+                >
+              </a-col>
+              <a-col :md="24" :sm="24" :xs="24">
+                <a-checkbox v-model:checked="checked"
+                  >Mental, Behavioral and Neurodevelopmental disorders (F01-F99
+                  )
                 </a-checkbox>
               </a-col>
               <a-col :md="24" :sm="24" :xs="24">
@@ -523,7 +573,9 @@
             <a-row :gutter="24">
               <a-col :span="24">
                 <div class="formHeading">
-                  <h2>Referral Source (Assisted Living, Home Health, Cardiologist)</h2>
+                  <h2>
+                    Referral Source (Assisted Living, Home Health, Cardiologist)
+                  </h2>
                 </div>
               </a-col>
             </a-row>
@@ -546,15 +598,21 @@
                   <a-input v-model="value" size="large">
                     <template #addonAfter>
                       <a-select v-model:value="value4" style="width: 120px">
-                        <a-select-option value="@yahoo">@yahoo.com</a-select-option>
-                        <a-select-option value="@gmail.com">@gmail.com</a-select-option>
+                        <a-select-option value="@yahoo"
+                          >@yahoo.com</a-select-option
+                        >
+                        <a-select-option value="@gmail.com"
+                          >@gmail.com</a-select-option
+                        >
                         <a-select-option value="@hotmail.com"
                           >@hotmail.com</a-select-option
                         >
                         <a-select-option value="@outlook.com"
                           >@outlook.com</a-select-option
                         >
-                        <a-select-option value="@aol.com">@aol.com</a-select-option>
+                        <a-select-option value="@aol.com"
+                          >@aol.com</a-select-option
+                        >
                       </a-select>
                     </template>
                   </a-input>
@@ -582,7 +640,9 @@
             </a-row>
             <a-row :gutter="24">
               <a-col :md="24" :sm="24" :xs="24" class="mb-24">
-                <a-checkbox v-model:checked="checked"> Same as above </a-checkbox>
+                <a-checkbox v-model:checked="checked">
+                  Same as above
+                </a-checkbox>
               </a-col>
               <a-col :md="8" :sm="12" :xs="24">
                 <div class="form-group">
@@ -602,15 +662,21 @@
                   <a-input v-model="value" size="large">
                     <template #addonAfter>
                       <a-select v-model:value="value4" style="width: 120px">
-                        <a-select-option value="@yahoo">@yahoo.com</a-select-option>
-                        <a-select-option value="@gmail.com">@gmail.com</a-select-option>
+                        <a-select-option value="@yahoo"
+                          >@yahoo.com</a-select-option
+                        >
+                        <a-select-option value="@gmail.com"
+                          >@gmail.com</a-select-option
+                        >
                         <a-select-option value="@hotmail.com"
                           >@hotmail.com</a-select-option
                         >
                         <a-select-option value="@outlook.com"
                           >@outlook.com</a-select-option
                         >
-                        <a-select-option value="@aol.com">@aol.com</a-select-option>
+                        <a-select-option value="@aol.com"
+                          >@aol.com</a-select-option
+                        >
                       </a-select>
                     </template>
                   </a-input>
@@ -643,9 +709,13 @@
                     @focus="focus"
                     @change="handleChange"
                   >
-                    <a-select-option value="lucy">Choose Program</a-select-option>
+                    <a-select-option value="lucy"
+                      >Choose Program</a-select-option
+                    >
                     <a-select-option value="Yiminghe">RPM</a-select-option>
-                    <a-select-option value="Yiminghe">Mental Wellness</a-select-option>
+                    <a-select-option value="Yiminghe"
+                      >Mental Wellness</a-select-option
+                    >
                     <a-select-option value="Yiminghe"
                       >CCM Chronic Care Management</a-select-option
                     >
@@ -720,7 +790,9 @@
                     @focus="focus"
                     @change="handleChange"
                   >
-                    <a-select-option value="lucy">Blood Pressure</a-select-option>
+                    <a-select-option value="lucy"
+                      >Blood Pressure</a-select-option
+                    >
                     <a-select-option value="Yiminghe">Oxymeter</a-select-option>
                     <a-select-option value="Yiminghe">Glucose</a-select-option>
                   </a-select>
@@ -780,7 +852,10 @@
               </a-col>
             </a-row>
           </div>
-          <div class="steps-content" v-if="steps[current].title == 'Assessments'">
+          <div
+            class="steps-content"
+            v-if="steps[current].title == 'Assessments'"
+          >
             <a-row :gutter="24">
               <a-col :span="24">
                 <div class="formHeading">
@@ -846,7 +921,10 @@
               </a-col>
             </a-row>
           </div>
-          <div class="steps-content" v-if="steps[current].title == 'Clinical Data'">
+          <div
+            class="steps-content"
+            v-if="steps[current].title == 'Clinical Data'"
+          >
             <a-row :gutter="24">
               <a-col :span="24">
                 <div class="formHeading">
@@ -969,7 +1047,9 @@
                   >
                     <a-select-option value="lucy">Id Proof</a-select-option>
                     <a-select-option value="Yiminghe">Clinical</a-select-option>
-                    <a-select-option value="Yiminghe">Insurance</a-select-option>
+                    <a-select-option value="Yiminghe"
+                      >Insurance</a-select-option
+                    >
                   </a-select>
                 </div>
               </a-col>
@@ -982,7 +1062,9 @@
                     size="large"
                     placeholder="Please Select Roles"
                     style="width: 100%"
-                    :options="filteredOptionsForTag.map((item) => ({ value: item }))"
+                    :options="
+                      filteredOptionsForTag.map((item) => ({ value: item }))
+                    "
                   />
                 </div>
               </a-col>
@@ -1012,7 +1094,10 @@
             <a-button v-if="current > 0" style="margin-right: 8px" @click="prev"
               >Previous</a-button
             >
-            <a-button v-if="current < steps.length - 1" type="primary" @click="next"
+            <a-button
+              v-if="current < steps.length - 1"
+              type="primary"
+              @click="next"
               >Next</a-button
             >
             <a-button
@@ -1058,53 +1143,18 @@ const columns = [
       customRender: "firstName",
     },
   },
-  {
-    title: "Last Name",
-    dataIndex: "lastName",
-    slots: {
-      customRender: "lastName",
-    },
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    sorter: {
-      compare: (a, b) => a.age - b.age,
-      multiple: 3,
-    },
-  },
-  {
-    title: "Sex",
-    dataIndex: "sex",
-    sorter: {
-      compare: (a, b) => a.sex - b.sex,
-      multiple: 2,
-    },
-  },
+  // {
+  //   title: "Last Name",
+  //   dataIndex: "lastName",
+  //   slots: {
+  //     customRender: "lastName",
+  //   },
+  // },
   {
     title: "Last Reading Date",
     dataIndex: "reading",
     sorter: {
       compare: (a, b) => a.reading - b.reading,
-      multiple: 1,
-    },
-  },
-  {
-    title: "Non Compliance",
-    dataIndex: "compliance",
-    sorter: {
-      compare: (a, b) => a.compliance - b.compliance,
-      multiple: 1,
-    },
-    slots: {
-      customRender: "compliance",
-    },
-  },
-  {
-    title: "Last Message Sent",
-    dataIndex: "message",
-    sorter: {
-      compare: (a, b) => a.message - b.message,
       multiple: 1,
     },
   },
@@ -1136,15 +1186,52 @@ const columns = [
       },
     ],
   },
+  // {
+  //   title: "Age",
+  //   dataIndex: "age",
+  //   sorter: {
+  //     compare: (a, b) => a.age - b.age,
+  //     multiple: 3,
+  //   },
+  // },
+  // {
+  //   title: "Sex",
+  //   dataIndex: "sex",
+  //   sorter: {
+  //     compare: (a, b) => a.sex - b.sex,
+  //     multiple: 2,
+  //   },
+  // },
+
+  {
+    title: "Non Compliance",
+    dataIndex: "compliance",
+    sorter: {
+      compare: (a, b) => a.compliance - b.compliance,
+      multiple: 1,
+    },
+    slots: {
+      customRender: "compliance",
+    },
+  },
+  {
+    title: "Last Message Sent",
+    dataIndex: "message",
+    sorter: {
+      compare: (a, b) => a.message - b.message,
+      multiple: 1,
+    },
+  },
+  
 ];
 const data = [
   {
     key: "1",
     flags: "redBgColor",
-    firstName: "Jane",
-    lastName: "Doe",
-    age: "85",
-    sex: "male",
+    firstName: "Jane Doe",
+    // lastName: "Doe",
+    // age: "85",
+    // sex: "male",
     reading: "5 months ago",
     compliance: "",
     message: "5 months ago",
@@ -1156,10 +1243,10 @@ const data = [
   {
     key: "2",
     flags: "purpleBgColor",
-    firstName: "Steve",
-    lastName: "Smith",
-    age: "78",
-    sex: "Female",
+    firstName: "Steve Smith",
+    // lastName: "Smith",
+    // age: "78",
+    // sex: "Female",
     reading: "15 days ago",
     compliance: "",
     message: "2 months ago",
@@ -1171,10 +1258,10 @@ const data = [
   {
     key: "3",
     flags: "blueBgColor yellowBgColor ",
-    firstName: "Joseph",
-    lastName: "Spouse",
-    age: "72",
-    sex: "male",
+    firstName: "Joseph Spouse",
+    // lastName: "Spouse",
+    // age: "72",
+    // sex: "male",
     reading: "2 months ago",
     compliance: "",
     message: "4 months ago",
@@ -1186,10 +1273,10 @@ const data = [
   {
     key: "4",
     flags: "greenBgColor",
-    firstName: "Robert",
-    lastName: "Henry",
-    age: "79",
-    sex: "Female",
+    firstName: "Robert Henry",
+    // lastName: "Henry",
+    // age: "79",
+    // sex: "Female",
     reading: "4 months ago",
     compliance: "",
     message: "15 days ago",

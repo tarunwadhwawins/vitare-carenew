@@ -7,7 +7,12 @@
       </a-layout-header>
       <a-layout>
         <a-layout-sider
-          :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"
+          :style="{
+            overflow: 'auto',
+            height: '100vh',
+            position: 'fixed',
+            left: 0,
+          }"
         >
           <Sidebar />
         </a-layout-sider>
@@ -17,22 +22,27 @@
               <a-col :span="24">
                 <h2 class="pageTittle">
                   Tasks
-                  <div class="filter">
-                    <button
-                      class="btn"
-                      :class="toggle ? 'active' : ''"
-                      @click="toggle = !toggle"
+                  <div class="addtaskButton">
+                    <a-button class="btn primaryBtn" @click="showModal"
+                      >Add New Task</a-button
                     >
-                      <span class="btn-content">Dashboard View</span>
-                    </button>
-                    <button
-                      class="btn"
-                      :class="toggle ? '' : 'active'"
-                      @click="toggle = !toggle"
-                    >
-                      <span class="btn-content">List View</span>
-                    </button>
-                  </div>
+                    </div>
+                    <div class="filter">
+                      <button
+                        class="btn"
+                        :class="toggle ? 'active' : ''"
+                        @click="toggle = !toggle"
+                      >
+                        <span class="btn-content">Dashboard View</span>
+                      </button>
+                      <button
+                        class="btn"
+                        :class="toggle ? '' : 'active'"
+                        @click="toggle = !toggle"
+                      >
+                        <span class="btn-content">List View</span>
+                      </button>
+                    </div>
                 </h2>
               </a-col>
             </a-row>
@@ -131,17 +141,23 @@
                           <a-menu>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked1">Urgent</a-checkbox>
+                                <a-checkbox v-model:checked="checked1"
+                                  >Urgent</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked2">High</a-checkbox>
+                                <a-checkbox v-model:checked="checked2"
+                                  >High</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked3">Normal</a-checkbox>
+                                <a-checkbox v-model:checked="checked3"
+                                  >Normal</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                           </a-menu>
@@ -167,22 +183,30 @@
                           <a-menu>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked4">Badger</a-checkbox>
+                                <a-checkbox v-model:checked="checked4"
+                                  >Badger</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked5">Devin</a-checkbox>
+                                <a-checkbox v-model:checked="checked5"
+                                  >Devin</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked6">Matt</a-checkbox>
+                                <a-checkbox v-model:checked="checked6"
+                                  >Matt</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked7">John</a-checkbox>
+                                <a-checkbox v-model:checked="checked7"
+                                  >John</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                           </a-menu>
@@ -243,7 +267,7 @@
                   </a-card>
                 </a-col>
                 <a-col :md="8" :sm="12" :xs="24">
-                  <a-card title="Tasks Pie" class="common-card">
+                  <a-card title="Category View" class="common-card">
                     <div class="filter">
                       <a-dropdown :trigger="['click']">
                         <a class="ant-dropdown-link" @click.prevent>
@@ -260,12 +284,16 @@
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked11">Comm</a-checkbox>
+                                <a-checkbox v-model:checked="checked11"
+                                  >Comm</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked12">Admin</a-checkbox>
+                                <a-checkbox v-model:checked="checked12"
+                                  >Admin</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
@@ -288,9 +316,9 @@
                   </a-card>
                 </a-col>
                 <a-col :md="8" :sm="12" :xs="24">
-                  <a-card title="Completing Rate" class="common-card">
+                  <a-card title="Completion Rate" class="common-card">
                     <h4>85%</h4>
-                    <p>Sum of completing rate</p>
+                    <p>Sum of Completion Rate</p>
                   </a-card>
                 </a-col>
               </a-row>
@@ -305,8 +333,16 @@
                     :pagination="false"
                     @change="onChange"
                   >
+                    <template #name="text">
+                      <router-link to="#">{{ text.text }}</router-link>
+                    </template>
                     <template #status="key">
                       <a-switch v-model:checked="checked[key.record.key]" />
+                    </template>
+                    <template #action>
+                      <a class="icons"><EditOutlined /></a>
+                      <a class="icons"> <DeleteOutlined /></a>
+                      <a class="icons"> <CalendarOutlined /></a>
                     </template>
                   </a-table>
                 </a-col>
@@ -317,18 +353,132 @@
       </a-layout>
     </a-layout>
     <!---->
+
+    <a-modal
+      v-model:visible="visible"
+      width="1140px"
+      title="Add Task"
+      centered
+      @ok="handleOk"
+    >
+      <a-row :gutter="24">
+        <a-col :span="12">
+          <div class="form-group">
+            <label>Title</label>
+            <a-input v-model="value" size="large" />
+          </div>
+        </a-col>
+        <a-col :span="12">
+          <div class="form-group">
+            <label> Short Description</label>
+            <a-input v-model="value" size="large" />
+          </div>
+        </a-col>
+        <a-col :span="12">
+          <div class="form-group">
+            <label>Status</label>
+            <a-select
+              ref="select"
+              v-model="value1"
+              style="width: 100%"
+              size="large"
+              @focus="focus"
+              @change="handleChange"
+            >
+              <a-select-option value="lucy">Choose Status </a-select-option>
+              <a-select-option value="Yiminghe">Waiting</a-select-option>
+              <a-select-option value="Yiminghe">Inprogress</a-select-option>
+              <a-select-option value="Yiminghe">Completed</a-select-option>
+            </a-select>
+          </div>
+        </a-col>
+        <a-col :span="12">
+          <div class="form-group">
+            <label> Priority</label>
+            <a-select
+              ref="select"
+              v-model="value1"
+              style="width: 100%"
+              size="large"
+              @focus="focus"
+              @change="handleChange"
+            >
+              <a-select-option value="lucy">Urgent</a-select-option>
+              <a-select-option value="Yiminghe">Medium</a-select-option>
+              <a-select-option value="Yiminghe">Normal</a-select-option>
+            </a-select>
+          </div>
+        </a-col>
+        <a-col :span="12">
+          <div class="form-group">
+            <label>Assigned To</label>
+            <a-select
+              v-model:value="selectedItems"
+              mode="multiple"
+              size="large"
+              placeholder="Please Select Roles"
+              style="width: 100%"
+              :options="filteredOptions.map((item) => ({ value: item }))"
+            />
+          </div>
+        </a-col>
+        <a-col :span="12">
+          <div class="form-group">
+            <label>Category</label>
+            <a-select
+              v-model:value="selectedItemsForTag"
+              mode="multiple"
+              size="large"
+              placeholder="Please Select Roles"
+              style="width: 100%"
+              :options="filteredOptionsForTag.map((item) => ({ value: item }))"
+            />
+          </div>
+        </a-col>
+        <a-col :span="12">
+          <div class="form-group">
+            <label>Start Date</label>
+            <a-date-picker
+              v-model:value="value1"
+              :size="size"
+              style="width: 100%"
+            />
+          </div>
+        </a-col>
+        <a-col :span="12">
+          <div class="form-group">
+            <label>Due Date</label>
+            <a-date-picker
+              v-model:value="value1"
+              :size="size"
+              style="width: 100%"
+            />
+          </div>
+        </a-col>
+      </a-row>
+    </a-modal>
   </div>
 </template>
 
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { defineComponent, ref } from "vue";
-import { FilterOutlined } from "@ant-design/icons-vue";
+import { ref, computed } from "vue";
+import {
+  FilterOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  CalendarOutlined,
+} from "@ant-design/icons-vue";
+const OPTIONS = ["Jane Doe", "Steve Smith", "Joseph William"];
+const OPTIONSTAG = ["Admin", "Clinical", "Office", "Personal"];
 const columns = [
   {
     title: "Task Name",
     dataIndex: "name",
+    slots: {
+      customRender: "name",
+    },
     filters: [
       {
         text: "Task 1",
@@ -372,12 +522,20 @@ const columns = [
     dataIndex: "category",
     filters: [
       {
-        text: "Specialization",
-        value: "specialization",
+        text: "Clinical",
+        value: "clinical",
       },
       {
-        text: "Relationship",
-        value: "relationship",
+        text: "Comm",
+        value: "comm",
+      },
+      {
+        text: "Admin",
+        value: "admin",
+      },
+      {
+        text: "Internal",
+        value: "internal",
       },
     ],
     onFilter: (value, record) => record.name.indexOf(value) === 0,
@@ -412,6 +570,13 @@ const columns = [
     ],
     onFilter: (value, record) => record.name.indexOf(value) === 0,
   },
+  {
+    title: "Actions",
+    dataIndex: "actions",
+    slots: {
+      customRender: "action",
+    },
+  },
 ];
 const data = [
   {
@@ -419,18 +584,40 @@ const data = [
     name: " Task 1",
     status: "",
     priority: "High",
-    category: "Specialization",
+    category: "Clinical",
     duedate: "Dec 24, 2021",
     assigned: "John",
+    actions: "",
   },
   {
     key: "2",
     name: "Task 2",
     status: "",
     priority: "Normal",
-    category: "Relationship",
+    category: "Internal",
     duedate: "Dec 28, 2021",
     assigned: "Devin",
+    actions: "",
+  },
+  {
+    key: "3",
+    name: " Task 3",
+    status: "",
+    priority: "Critical ",
+    category: "Comm",
+    duedate: "Dec 29, 2021",
+    assigned: "Smith",
+    actions: "",
+  },
+  {
+    key: "4",
+    name: "Task 4",
+    status: "",
+    priority: "Normal",
+    category: "Admin",
+    duedate: "Dec 30, 2021",
+    assigned: "Andrew",
+    actions: "",
   },
 ];
 export default {
@@ -438,6 +625,9 @@ export default {
     Header,
     Sidebar,
     FilterOutlined,
+    DeleteOutlined,
+    EditOutlined,
+    CalendarOutlined,
   },
 
   data: function () {
@@ -671,6 +861,29 @@ export default {
     const checked12 = ref(false);
     const checked13 = ref(false);
     const toggle = ref(true);
+
+    const visible = ref(false);
+    const showModal = () => {
+      visible.value = true;
+    };
+    const handleOk = (e) => {
+      console.log(e);
+      visible.value = false;
+    };
+    const handleChange = (value) => {
+      console.log(`selected ${value}`);
+    };
+
+    const selectedItems = ref(["Jane Doe"]);
+    const filteredOptions = computed(() =>
+      OPTIONS.filter((o) => !selectedItems.value.includes(o))
+    );
+
+    const selectedItemsForTag = ref(["Admin"]);
+    const filteredOptionsForTag = computed(() =>
+      OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
+    );
+
     return {
       data,
       columns,
@@ -689,6 +902,14 @@ export default {
       checked11,
       checked12,
       checked13,
+      visible,
+      showModal,
+      handleOk,
+      handleChange,
+      selectedItems,
+      filteredOptions,
+      filteredOptionsForTag,
+      selectedItemsForTag,
     };
   },
 };
