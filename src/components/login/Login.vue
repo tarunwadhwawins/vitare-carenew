@@ -1,30 +1,45 @@
-
 <template>
-<ErrorMessages></ErrorMessages>
+  <ErrorMessages></ErrorMessages>
 
-<a-form ref="formRef" :rules="rules" :model="logininfomation">
-      
+  <a-form ref="formRef" :rules="rules" :model="logininfomation">
     <div class="field">
-        <a-input v-model:value="logininfomation.email" :placeholder="$t('login.ePlaceholder')" size="large" />
-        <a-form-item ref="email" name="email" />
+      <a-input
+        v-model:value="logininfomation.email"
+        :placeholder="$t('login.ePlaceholder')"
+        size="large"
+      />
+      <a-form-item ref="email" name="email" />
     </div>
     <div class="field">
-        <a-input-password v-model:value="logininfomation.password" :placeholder="$t('login.psdPlaceholder')" size="large" />
-        <a-form-item ref="password" name="password" />
+      <a-input-password
+        v-model:value="logininfomation.password"
+        :placeholder="$t('login.psdPlaceholder')"
+        size="large"
+      />
+      <a-form-item ref="password" name="password" />
     </div>
     <div class="buttons">
-        <a-button class="btn primaryBtn" @click="handleLogin()">{{$t('login.login')}}</a-button>
-        <a class=""> {{$t('login.forgotPassword')}} </a>
+      <a-button class="btn primaryBtn" @click="handleLogin()">{{
+        $t("login.login")
+      }}</a-button>
+      <a class=""> {{ $t("login.forgotPassword") }} </a>
     </div>
-</a-form>
+  </a-form>
 
-<loading  v-model:active="isLoading" loader="bars" :lock-scroll="true" :is-full-page="false" transition="fade" :can-cancel="false" />
+  <loading
+    v-model:active="isLoading"
+    loader="bars"
+    :lock-scroll="true"
+    :is-full-page="false"
+    transition="fade"
+    :can-cancel="false"
+  />
 </template>
 <script>
-import { defineComponent, ref, reactive, watch, computed  } from "vue";
+import { defineComponent, ref, reactive, watchEffect, computed } from "vue";
 import Loading from "vue-loading-overlay";
 import { useStore } from "vuex";
-import  ErrorMessages  from "@/components/common/errorhandling/ErrorMessages"
+import ErrorMessages from "@/components/common/errorhandling/ErrorMessages";
 
 export default defineComponent({
   name: "Login",
@@ -58,20 +73,19 @@ export default defineComponent({
       password: null,
       role: "Admin",
     });
-     const errorMsg = watch(() => {
-       if(store.state.auth.errorMsg){
-isLoading.value = false;
-       }
-           
-        });
-       
+    const errorMsg = watchEffect(() => {
+      if (store.state.auth.errorMsg) {
+        isLoading.value = false;
+      }
+    });
+
     const handleLogin = () => {
       formRef.value
         .validate()
         .then(() => {
-           isLoading.value = true;
+          isLoading.value = true;
           store.dispatch("login", logininfomation);
-//isLoading.value = false;
+          //isLoading.value = false;
         })
         .catch((error) => {
           console.log("error", error);
@@ -85,7 +99,6 @@ isLoading.value = false;
       errorMsg,
       logininfomation,
       handleLogin,
-    
     };
   },
 });
@@ -96,3 +109,4 @@ isLoading.value = false;
   display: none !important;
 }
 </style>
+

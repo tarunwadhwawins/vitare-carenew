@@ -34,6 +34,7 @@ class AuthService {
   logout() {
     localStorage.removeItem('user');
     localStorage.removeItem('auth');
+    location.reload();
   }
 }
 

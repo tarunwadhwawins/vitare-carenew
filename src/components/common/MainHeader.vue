@@ -34,7 +34,6 @@ export default {
   props: {
     visibility: {
       type: Boolean,
-      required: true,
     },
     heading: {
       type: String,

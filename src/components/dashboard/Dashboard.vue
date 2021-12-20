@@ -1,7 +1,7 @@
 <template>
   <a-layout-content>
     <a-row>
-      <MainHeader heading="Dashboard" buttonText=""></MainHeader>
+      <MainHeader heading="Dashboard" buttonText="" :visibility="false"></MainHeader>
       <a-col :span="24" v-if="totalPatients">
         <a-row :gutter="24">
           <Card customClass="one" :count="totalPatients ? totalPatients :''"></Card>

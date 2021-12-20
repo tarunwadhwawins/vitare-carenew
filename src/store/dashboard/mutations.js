@@ -1,7 +1,7 @@
 export const totalPatientsSuccess = (state, count) => {
     state.tcount = count;
 }
-export const Failure = (state, error) => {
+export const failure = (state, error) => {
     state.errorMsg = error;
 }
 export const newPatientsSuccess = (state, count) => {
