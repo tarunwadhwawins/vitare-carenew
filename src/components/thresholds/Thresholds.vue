@@ -113,6 +113,14 @@ import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
 import { defineComponent, ref } from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+const renderContent = ({ text, index }) => {
+  const obj = {
+    children: text,
+    props: { colSpan: null },
+  };
+
+  return obj;
+};
 const columns = [
   {
     title: "Threshold Group",
@@ -120,6 +128,62 @@ const columns = [
     sorter: {
       compare: (a, b) => a.template - b.template,
       multiple: 3,
+    },
+    customRender: ({ text, index }) => {
+      const obj = {
+        children: text,
+        props: {},
+      };
+
+      if (index === 0) {
+        obj.props.rowSpan = 4;
+      } // These two are merged into above cell
+
+      if (index === 1) {
+        obj.props.rowSpan = 0;
+      }
+
+      if (index === 2) {
+        obj.props.colSpan = 0;
+      }
+      if (index === 3) {
+        obj.props.rowSpan = 0;
+      }
+
+      // if (index === 4) {
+      //   obj.props.colSpan = 0;
+      // }
+      // if (index === 5) {
+      //   obj.props.colSpan = 0;
+      // }
+
+
+
+      if (index === 4) {
+        obj.props.rowSpan = 3;
+      } //
+
+       if (index === 5) {
+        obj.props.rowSpan = 0;
+      }
+
+      if (index === 6) {
+        obj.props.colSpan = 0;
+      }
+
+
+      if (index === 7) {
+        obj.props.rowSpan = 3;
+      } //
+
+       if (index === 8) {
+        obj.props.rowSpan = 0;
+      }
+
+      if (index === 9) {
+        obj.props.colSpan = 0;
+      }
+      return obj;
     },
   },
   {
@@ -129,6 +193,7 @@ const columns = [
       compare: (a, b) => a.template - b.template,
       multiple: 3,
     },
+     customRender: renderContent,
   },
   {
     title: "High Limit ",
@@ -137,6 +202,7 @@ const columns = [
       compare: (a, b) => a.template - b.template,
       multiple: 3,
     },
+     customRender: renderContent,
   },
   {
     title: "Low Limit ",
@@ -145,6 +211,7 @@ const columns = [
       compare: (a, b) => a.template - b.template,
       multiple: 3,
     },
+     customRender: renderContent,
   },
 
   {
@@ -166,7 +233,7 @@ const data = [
   },
   {
     key: "2",
-    group: "Group Two",
+    group: "Group One",
     type: "Systolic BP",
     high: "90",
     low: "80",
@@ -174,31 +241,63 @@ const data = [
   },
   {
     key: "3",
-    group: "Group Three",
-    type: "Diastolic BP",
-    high: "120",
-    low: "110",
-    action: "",
-  },
-  {
-    key: "4",
-    group: "Group Four",
-    type: "Pulse (BP Cuff)",
-    high: "80",
-    low: "70",
-    action: "",
-  },
-  {
-    key: "5",
-    group: "Group Five",
+    group: "Group One",
     type: "Weight",
     high: "80",
     low: "60",
     action: "",
   },
   {
+    key: "4",
+    group: "Group One",
+    type: "Spo2",
+    high: "100",
+    low: "90",
+    action: "",
+  },
+  {
+    key: "5",
+    group: "Group Two",
+    type: "Blood Glucose",
+    high: "120",
+    low: "85",
+    action: "",
+  },
+  {
     key: "6",
-    group: "Group Six",
+    group: "Group Two",
+    type: "Systolic BP",
+    high: "90",
+    low: "80",
+    action: "",
+  },
+  {
+    key: "7",
+    group: "Group Two",
+    type: "Diastolic BP",
+    high: "120",
+    low: "110",
+    action: "",
+  },
+  {
+    key: "8",
+    group: "Group Three",
+    type: "Pulse (BP Cuff)",
+    high: "80",
+    low: "70",
+    action: "",
+  },
+  {
+    key: "9",
+    group: "Group Three",
+    type: "Weight",
+    high: "80",
+    low: "60",
+    action: "",
+  },
+  {
+    key: "10",
+    group: "Group Three",
     type: "Spo2",
     high: "100",
     low: "90",

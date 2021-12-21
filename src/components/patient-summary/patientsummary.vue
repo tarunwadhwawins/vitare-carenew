@@ -297,7 +297,34 @@
                 </a-collapse>
               </div> -->
               <div class="thumbDesc patientTimeline">
-                <a-checkbox-group v-model:value3="value3">
+                <a-timeline>
+                  <a-timeline-item>
+                    <template #dot><FolderOpenOutlined /></template>
+                   
+                    <a-tabs v-model:activeKey="activeKey">
+                      <a-tab-pane key="1" tab="Visits"></a-tab-pane>
+                      <a-tab-pane
+                        key="2"
+                        tab="Appointments"
+                        force-render
+                      ></a-tab-pane>
+                      <a-tab-pane key="3" tab="Notes"></a-tab-pane>
+                      <a-tab-pane key="4" tab="Documents "></a-tab-pane>
+                      <a-tab-pane key="5" tab="Notifications"></a-tab-pane>
+                    </a-tabs>
+                  </a-timeline-item>
+                  <a-timeline-item color="yellow"
+                    > <template #dot><FilePdfOutlined /></template>Solve initial network problems 2015-09-01</a-timeline-item
+                  >
+                  <a-timeline-item color="red">
+                    <template #dot><HeatMapOutlined /></template>
+                    Technical testing 2015-09-01
+                  </a-timeline-item>
+                  <a-timeline-item
+                    >Network problems being solved 2015-09-01</a-timeline-item
+                  >
+                </a-timeline>
+                <!-- <a-checkbox-group v-model:value3="value3">
                   <a-row>
                     <a-col :span="4">
                       <a-checkbox value3="A"
@@ -325,7 +352,7 @@
                       /></a-checkbox>
                     </a-col>
                   </a-row>
-                </a-checkbox-group>
+                </a-checkbox-group> -->
                 <a-timeline mode="alternate">
                   <a-timeline-item>
                     <template #dot
@@ -406,6 +433,7 @@
                     Create a services site 2015-09-01</a-timeline-item
                   >
                 </a-timeline>
+                -->
               </div>
             </a-col>
           </a-row>

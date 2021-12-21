@@ -153,7 +153,22 @@
               <a-col :sm="12" :xs="24">
                 <div class="form-group">
                   <label>Designation</label>
-                  <a-input v-model="value" size="large" />
+                  <a-select
+                    ref="select"
+                    v-model="value1"
+                    style="width: 100%"
+                    size="large"
+                    @focus="focus"
+                    @change="handleChange"
+                  >
+                    <a-select-option value="Administrative"
+                      >Administrative</a-select-option
+                    >
+                    <a-select-option value="Manager">Manager</a-select-option>
+                    <a-select-option value="Executive"
+                      >Executive</a-select-option
+                    >
+                  </a-select>
                 </div>
               </a-col>
               <a-col :sm="12" :xs="24">
@@ -349,12 +364,20 @@
                 <div class="form-group">
                   <label>Role</label>
                   <a-select
-                    v-model:value="selectedItems"
-                    mode="multiple"
-                    placeholder="Please Select Roles"
+                    ref="select"
+                    v-model="value1"
                     style="width: 100%"
-                    :options="filteredOptions.map((item) => ({ value: item }))"
+                    size="large"
+                    @focus="focus"
+                    @change="handleChange"
                   >
+                    <a-select-option value="Billing"
+                      >Billing Admin</a-select-option
+                    >
+                    <a-select-option value="Admin">Admin</a-select-option>
+                    <a-select-option value="User">User Admin</a-select-option>
+                    <a-select-option value="Standard">Standard</a-select-option>
+                    <a-select-option value="Manager">Manager</a-select-option>
                   </a-select>
                 </div>
               </a-col>
@@ -443,6 +466,46 @@
                 >
                   <template #action>
                     <a class="icons"><EditOutlined /></a>
+                    <a class="icons"> <DeleteOutlined /></a>
+                  </template>
+                </a-table>
+              </a-col>
+            </a-row>
+          </div>
+          <div class="steps-content" v-if="steps[current].title == 'Providers'">
+            <a-row :gutter="24">
+              <a-col :sm="12" :xs="24">
+                <div class="form-group">
+                  <label>Provider</label>
+                  <a-select
+                    ref="select"
+                    v-model="value1"
+                    style="width: 100%"
+                    size="large"
+                    @focus="focus"
+                    @change="handleChange"
+                  >
+                    <a-select-option value="a">Provider 1</a-select-option>
+                    <a-select-option value="b">Provider 2</a-select-option>
+                    <a-select-option value="c">Provider 3</a-select-option>
+                  </a-select>
+                </div>
+              </a-col>
+            </a-row>
+            <a-row :gutter="24" class="mb-24">
+              <a-col :span="24">
+                <a-button class="btn primaryBtn">Add</a-button>
+              </a-col>
+            </a-row>
+            <a-row :gutter="24">
+              <a-col :span="24">
+                <a-table
+                  :pagination="false"
+                  :columns="columns4"
+                  :data-source="data4"
+                  :scroll="{ x: 900 }"
+                >
+                  <template #action>
                     <a class="icons"> <DeleteOutlined /></a>
                   </template>
                 </a-table>
@@ -712,6 +775,33 @@ const data3 = [
     actions: "",
   },
 ];
+const columns4 = [
+  {
+    title: "Provider Name",
+    dataIndex: "name",
+  },
+  
+  {
+    title: "Actions",
+    dataIndex: "actions",
+    slots: {
+      customRender: "action",
+    },
+  },
+];
+const data4 = [
+  {
+    key: "1",
+    name: "Provider 1",
+   
+    actions: "",
+  },
+  {
+    key: "2",
+    name: "Provider 2",
+    actions: "",
+  },
+];
 export default {
   components: {
     Header,
@@ -766,6 +856,8 @@ export default {
       columns2,
       data3,
       columns3,
+      data4,
+      columns4,
       data,
       selectedItems,
       filteredOptions,
@@ -795,6 +887,10 @@ export default {
         },
         {
           title: "Documents",
+          content: "Second-content",
+        },
+        {
+          title: "Providers",
           content: "Last-content",
         },
       ],

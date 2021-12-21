@@ -40,7 +40,7 @@
         >
         <router-link to="/time-tracking-report"
           ><a-menu-item
-            ><FileTextOutlined /><span class="menuItem">Tracking Reports</span></a-menu-item
+            ><FileTextOutlined /><span class="menuItem">Reports</span></a-menu-item
           ></router-link
         >
         <router-link to="/thresholds"
