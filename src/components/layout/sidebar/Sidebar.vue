@@ -38,6 +38,16 @@
             ><CalendarOutlined /><span class="menuItem">Tasks</span></a-menu-item
           ></router-link
         >
+        <router-link to="/time-tracking-report"
+          ><a-menu-item
+            ><FileTextOutlined /><span class="menuItem">Tracking Reports</span></a-menu-item
+          ></router-link
+        >
+        <router-link to="/thresholds"
+          ><a-menu-item
+            ><FileTextOutlined /><span class="menuItem">Thresholds</span></a-menu-item
+          ></router-link
+        >
         <router-link to="/cpt-codes"
           ><a-menu-item
             ><CalendarOutlined /><span class="menuItem"
@@ -57,6 +67,7 @@ import {
   MailOutlined,
   UserOutlined,
   CalendarOutlined,
+  FileTextOutlined,
 } from "@ant-design/icons-vue";
 export default defineComponent({
   components: {
@@ -64,6 +75,7 @@ export default defineComponent({
     MailOutlined,
     UserOutlined,
     CalendarOutlined,
+    FileTextOutlined,
   },
 
   setup() {

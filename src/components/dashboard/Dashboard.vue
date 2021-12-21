@@ -13,55 +13,73 @@
               <h2 class="pageTittle">
                 Dashboard
                 <div class="filter">
-                  <button class="btn active"><span class="btn-content">Day</span></button>
-                  <button class="btn"><span class="btn-content">Week</span></button>
-                  <button class="btn"><span class="btn-content">Month</span></button>
+                  <button class="btn active">
+                    <span class="btn-content">Day</span>
+                  </button>
+                  <button class="btn">
+                    <span class="btn-content">Week</span>
+                  </button>
+                  <button class="btn">
+                    <span class="btn-content">Month</span>
+                  </button>
                 </div>
               </h2>
             </a-col>
             <a-col :span="24">
               <a-row :gutter="24">
                 <a-col :xl="4" :sm="8" :xs="12">
-                  <div class="topBox one">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>Total Patients</p>
-                  </div>
+                  <router-link to="manage-patients">
+                    <div class="topBox one">
+                      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                      <h5>10</h5>
+                      <p>Total Patients</p>
+                    </div>
+                  </router-link>
                 </a-col>
                 <a-col :xl="4" :sm="8" :xs="12">
-                  <div class="topBox two">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>New Patients</p>
-                  </div>
+                  <router-link to="manage-patients">
+                    <div class="topBox two">
+                      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                      <h5>10</h5>
+                      <p>New Patients</p>
+                    </div>
+                  </router-link>
                 </a-col>
                 <a-col :xl="4" :sm="8" :xs="12">
-                  <div class="topBox three">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>Critical Patients</p>
-                  </div>
+                  <router-link to="manage-patients">
+                    <div class="topBox three">
+                      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                      <h5>10</h5>
+                      <p>Critical Patients</p>
+                    </div>
+                  </router-link>
                 </a-col>
                 <a-col :xl="4" :sm="8" :xs="12">
-                  <div class="topBox four">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>Abnormal Patients</p>
-                  </div>
+                  <router-link to="manage-patients">
+                    <div class="topBox four">
+                      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                      <h5>10</h5>
+                      <p>Abnormal Patients</p>
+                    </div>
+                  </router-link>
                 </a-col>
                 <a-col :xl="4" :sm="8" :xs="12">
-                  <div class="topBox five">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>Active Patients</p>
-                  </div>
+                  <router-link to="manage-patients">
+                    <div class="topBox five">
+                      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                      <h5>10</h5>
+                      <p>Active Patients</p>
+                    </div>
+                  </router-link>
                 </a-col>
                 <a-col :xl="4" :sm="8" :xs="12">
-                  <div class="topBox six">
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    <h5>10</h5>
-                    <p>Inactive Patients</p>
-                  </div>
+                  <router-link to="manage-patients">
+                    <div class="topBox six">
+                      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                      <h5>10</h5>
+                      <p>Inactive Patients</p>
+                    </div>
+                  </router-link>
                 </a-col>
               </a-row>
             </a-col>
@@ -69,12 +87,18 @@
           <a-row :gutter="24">
             <a-col :sm="12" :xs="24">
               <a-card title="Today's Appointment" class="common-card">
-                <a-table :columns="columns4" :data-source="data4" :pagination="false">
+                <a-table
+                  :columns="columns4"
+                  :data-source="data4"
+                  :pagination="false"
+                >
                   <template #patientName="text">
-                    <router-link to="patients-summary">{{ text.text }}</router-link>
+                    <router-link to="patients-summary">{{
+                      text.text
+                    }}</router-link>
                   </template>
                   <template #appt="text">
-                    <router-link to="manage-care-coordinator">{{
+                    <router-link to="corrdinator-summary">{{
                       text.text
                     }}</router-link>
                   </template>
@@ -85,9 +109,15 @@
               <a-card title="Populate Waiting Room" class="common-card">
                 <a-tabs v-model:activeKey="activeKey">
                   <a-tab-pane key="1" tab="New Requests">
-                    <a-table :columns="columns5" :data-source="data5" :pagination="false">
+                    <a-table
+                      :columns="columns5"
+                      :data-source="data5"
+                      :pagination="false"
+                    >
                       <template #patientName="text">
-                        <router-link to="#">{{ text.text }}</router-link>
+                        <router-link to="patients-summary">{{
+                          text.text
+                        }}</router-link>
                       </template>
                       <template #action>
                         <a-button class="btn blueBtn">Start</a-button>
@@ -95,9 +125,15 @@
                     </a-table>
                   </a-tab-pane>
                   <a-tab-pane key="2" tab="Future Appointments" force-render>
-                    <a-table :columns="columns6" :data-source="data6" :pagination="false">
+                    <a-table
+                      :columns="columns6"
+                      :data-source="data6"
+                      :pagination="false"
+                    >
                       <template #patientName="text">
-                        <router-link to="#">{{ text.text }}</router-link>
+                        <router-link to="patients-summary">{{
+                          text.text
+                        }}</router-link>
                       </template>
                     </a-table>
                   </a-tab-pane>

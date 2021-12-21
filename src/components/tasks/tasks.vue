@@ -335,6 +335,11 @@
                     class="mb-24"
                   />
                 </a-col>
+                <a-col :span="12">
+                  <div class="text-right mb-24">
+                    <a-button class="primaryBtn">Export to Excel</a-button>
+                  </div>
+                </a-col>
                 <a-col :sm="24">
                   <a-table
                     :columns="columns"

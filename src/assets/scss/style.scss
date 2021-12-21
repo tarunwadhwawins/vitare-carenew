@@ -16,7 +16,7 @@
         }
     }
     .addtaskButton {
-        position:absolute;
+        position: absolute;
         right: 300px;
         top: 0;
     }
@@ -179,11 +179,31 @@
         display: block;
         color: #fff;
     }
+    &.whiteBg {
+        background-color: #fff;
+        .anticon {
+            svg {
+                fill: #000;
+            }
+        }
+        h3,p { 
+            color: #000;
+        }
+    }
     &.blueBg {
-        background-color: #91BDFF;
+        background-color: #91bdff;
     }
     &.skyBlue {
         background-color: #90eef5;
+    }
+    &.orangeBg {
+        background-color: #ff4500;
+    }
+    &.greenBg {
+        background-color: #008000;
+    }
+    &.yellowBg {
+        background-color: #FDDA0D;
     }
 }
 
@@ -610,6 +630,16 @@
     .ant-checkbox-group {
         width: 100%;
         margin: 0 0 30px;
+        .ant-checkbox-wrapper {
+            span {
+                .anticon {
+                    color: #267dff;
+                    position: relative;
+                    top: -3px;
+                    left: 5px;
+                }
+            }
+        }
     }
 }
 

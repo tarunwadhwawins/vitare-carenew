@@ -9,8 +9,16 @@
         <Sidebar />
         <a-layout-content>
           <a-row>
-            <a-col :span="24">
+            <a-col :span="12">
               <h2 class="pageTittle">Patient Summary</h2>
+            </a-col>
+            <a-col :span="12">
+              <div class="timer">
+                <h3>Current Session : 0:00</h3>
+                <a-button class="primaryBtn" @click="showStopTimerModal"
+                  >Stop Timer</a-button
+                >
+              </div>
             </a-col>
           </a-row>
           <a-row :gutter="24" class="mb-24">
@@ -291,27 +299,27 @@
               <div class="thumbDesc patientTimeline">
                 <a-checkbox-group v-model:value3="value3">
                   <a-row>
-                    <a-col :span="6">
+                    <a-col :span="4">
                       <a-checkbox value3="A"
                         >Visits <HeatMapOutlined
                       /></a-checkbox>
                     </a-col>
-                    <a-col :span="6">
+                    <a-col :span="5">
                       <a-checkbox value3="B"
                         >Appointments <ClockCircleOutlined
                       /></a-checkbox>
                     </a-col>
-                    <a-col :span="6">
+                    <a-col :span="4">
                       <a-checkbox value3="C"
                         >Notes <FolderOpenOutlined
                       /></a-checkbox>
                     </a-col>
-                    <a-col :span="6">
+                    <a-col :span="5">
                       <a-checkbox value3="D"
                         >Documents <FilePdfOutlined
                       /></a-checkbox>
                     </a-col>
-                    <a-col :span="6">
+                    <a-col :span="5">
                       <a-checkbox value3="E"
                         >Notifications <BellOutlined
                       /></a-checkbox>
@@ -422,12 +430,22 @@
                               ></apexchart>
                             </a-tab-pane>
                             <a-tab-pane key="8" tab="Table" force-render>
+                              <div class="text-right mb-24">
+                                <a-button class="primaryBtn"
+                                  >Export to Excel</a-button
+                                >
+                              </div>
                               <a-table
                                 :columns="columns4"
                                 :data-source="data4"
                                 :pagination="false"
                                 @change="onChange"
-                              />
+                                ><template #value="text">
+                                  <span class="dangerValue">{{
+                                    text.text
+                                  }}</span>
+                                </template>
+                              </a-table>
                             </a-tab-pane>
                           </a-tabs>
                           <template #extra
@@ -450,6 +468,11 @@
                               ></apexchart>
                             </a-tab-pane>
                             <a-tab-pane key="10" tab="Table">
+                              <div class="text-right mb-24">
+                                <a-button class="primaryBtn"
+                                  >Export to Excel</a-button
+                                >
+                              </div>
                               <a-table
                                 :columns="columns5"
                                 :data-source="data5"
@@ -478,6 +501,11 @@
                               ></apexchart>
                             </a-tab-pane>
                             <a-tab-pane key="12" tab="Table" force-render>
+                              <div class="text-right mb-24">
+                                <a-button class="primaryBtn"
+                                  >Export to Excel</a-button
+                                >
+                              </div>
                               <a-table
                                 :columns="columns6"
                                 :data-source="data6"
@@ -506,6 +534,11 @@
                               ></apexchart>
                             </a-tab-pane>
                             <a-tab-pane key="14" tab="Table" force-render>
+                              <div class="text-right mb-24">
+                                <a-button class="primaryBtn"
+                                  >Export to Excel</a-button
+                                >
+                              </div>
                               <a-table
                                 :columns="columns6"
                                 :data-source="data6"
@@ -1140,6 +1173,75 @@
         </a-col>
       </a-row>
     </a-modal>
+    <a-modal
+      v-model:visible="stoptimervisible"
+      width="1000px"
+      title="Time Tracker"
+      @ok="handleOk"
+    >
+      <a-row :gutter="24">
+        <a-col :sm="24" :xs="24">
+          <h3 class="mb-24">Patient Review Time</h3>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label>Billing Code</label>
+            <a-select
+              ref="select"
+              v-model="value1"
+              style="width: 100%"
+              size="large"
+              @focus="focus"
+              @change="handleChange"
+            >
+              <a-select-option value="lucy">90791 (Evaluation)</a-select-option>
+              <a-select-option value="Yiminghe"
+                >90832 (LCSW Ongoing Services)</a-select-option
+              >
+              <a-select-option value="Yiminghe"
+                >96130 (Deep Dive)</a-select-option
+              >
+            </a-select>
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label>Time</label>
+            <a-input v-model="value" size="large" />
+          </div>
+        </a-col>
+        <a-col :sm="24" :xs="24">
+          <h3 class="mb-24">Video Consult Time</h3>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label>Video Billing Code</label>
+            <a-select
+              ref="select"
+              v-model="value1"
+              style="width: 100%"
+              size="large"
+              @focus="focus"
+              @change="handleChange"
+            >
+              <a-select-option value="lucy">90791 (Evaluation)</a-select-option>
+              <a-select-option value="Yiminghe"
+                >90832 (LCSW Ongoing Services)</a-select-option
+              >
+              <a-select-option value="Yiminghe"
+                >96130 (Deep Dive)</a-select-option
+              >
+            </a-select>
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <label>Time</label>
+            <a-input v-model="value" size="large" />
+          </div>
+        </a-col>
+      </a-row>
+    </a-modal>
     <!---->
     <a-modal
       v-model:visible="visible3"
@@ -1495,7 +1597,6 @@ const columns1 = [
     slots: {
       customRender: "action",
     },
-    
   },
 ];
 const data1 = [
@@ -1627,6 +1728,9 @@ const columns4 = [
   {
     title: "Value",
     dataIndex: "value",
+    slots: {
+      customRender: "value",
+    },
   },
 ];
 const data4 = [
@@ -1865,6 +1969,7 @@ export default {
     const bloodoxygenvisible = ref(false);
     const bloodglucosevisible = ref(false);
     const appointmentvisible = ref(false);
+    const stoptimervisible = ref(false);
 
     const showModal = () => {
       visible.value = true;
@@ -1922,6 +2027,9 @@ export default {
     };
     const showAddAppointmentModal = () => {
       appointmentvisible.value = true;
+    };
+    const showStopTimerModal = () => {
+      stoptimervisible.value = true;
     };
 
     const handleOk = (e) => {
@@ -2003,6 +2111,7 @@ export default {
       bloodoxygenvisible,
       bloodglucosevisible,
       appointmentvisible,
+      stoptimervisible,
 
       showModal,
       showModal1,
@@ -2023,6 +2132,7 @@ export default {
       showBloodOxygenDetailModal,
       showBloodGlucoseDetailModal,
       showAddAppointmentModal,
+      showStopTimerModal,
 
       handleOk,
 
@@ -2048,3 +2158,18 @@ export default {
   },
 };
 </script>
+<style scoped lang="scss">
+.timer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  h3 {
+    margin: 0 10px 0 0;
+  }
+}
+.dangerValue {
+  padding: 5px;
+  background-color: #f03131f3;
+  color: #fff;
+}
+</style>

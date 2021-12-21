@@ -20,17 +20,23 @@
                   </div>
                 </h2>
               </a-col>
+              <a-col :span="12">
+                <a-input-search
+                  v-model:value="inputvalue"
+                  placeholder="Search . . ."
+                  enter-button="Search"
+                  size="large"
+                  @search="onSearch"
+                  class="mb-24"
+                />
+              </a-col>
+              <a-col :span="12">
+                <div class="text-right mb-24">
+                  <a-button class="primaryBtn">Export to Excel</a-button>
+                </div>
+              </a-col>
             </a-row>
-             <a-col :span="12">
-              <a-input-search
-                v-model:value="inputvalue"
-                placeholder="Search . . ."
-                enter-button="Search"
-                size="large"
-                @search="onSearch"
-                class="mb-24"
-              />
-            </a-col>
+
             <a-row :gutter="24">
               <a-col :span="24">
                 <a-table
@@ -378,7 +384,7 @@ const columns2 = [
   {
     title: "Actions",
     dataIndex: "actions",
-     slots: {
+    slots: {
       customRender: "actions",
     },
   },

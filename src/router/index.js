@@ -62,6 +62,16 @@ const routes = [
     name: 'CoordinatorSummary',
     component: () => import( '../components/coordinator-summary/Coordinatorsummary')
   },
+  {
+    path: '/time-tracking-report',
+    name: 'TimeTrackingReport',
+    component: () => import( '../components/time-tracking-report/TimeTrackingReport')
+  },
+  {
+    path: '/thresholds',
+    name: 'Thresholds',
+    component: () => import( '../components/thresholds/Thresholds')
+  },
 
   {
     path: '/',

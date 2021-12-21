@@ -30,6 +30,11 @@
                   class="mb-24"
                 />
               </a-col>
+              <a-col :span="12">
+                <div class="text-right mb-24">
+                  <a-button class="primaryBtn">Export to Excel</a-button>
+                </div>
+              </a-col>
               <a-col :span="24">
                 <a-table
                   :columns="columns"
@@ -216,6 +221,60 @@ const data = [
     category: "Communication Status",
     codename: "A-103",
     description: "Lorem Ipsum",
+    date: "Dec 11, 2021",
+    count: "2",
+    action: "",
+  },
+  {
+    key: "4",
+    category: "Condition",
+    codename: "A-104",
+    description: "Abdominal aortic aneurysm - ",
+    date: "Dec 11, 2021",
+    count: "2",
+    action: "",
+  },
+  {
+    key: "5",
+    category: "Condition",
+    codename: "A-105",
+    description: "Acquired absense of foot",
+    date: "Dec 11, 2021",
+    count: "2",
+    action: "",
+  },
+  {
+    key: "6",
+    category: "Condition",
+    codename: "A-106",
+    description: "ADRD - Aizheimer's Disease and Related Dementies ",
+    date: "Dec 11, 2021",
+    count: "2",
+    action: "",
+  },
+  {
+    key: "7",
+    category: "Condition",
+    codename: "A-107",
+    description: "Anemina ",
+    date: "Dec 11, 2021",
+    count: "2",
+    action: "",
+  },
+  {
+    key: "8",
+    category: "Condition",
+    codename: "A-108",
+    description: "Anxiety ",
+    date: "Dec 11, 2021",
+    count: "2",
+    action: "",
+  },
+  {
+    key: "9",
+    category: "Condition",
+    codename: "A-109",
+    description: "Asymptomatic Menopausal State ",
     date: "Dec 11, 2021",
     count: "2",
     action: "",

@@ -20,16 +20,21 @@
                   </div>
                 </h2>
               </a-col>
-               <a-col :span="12">
-              <a-input-search
-                v-model:value="inputvalue"
-                placeholder="Search . . ."
-                enter-button="Search"
-                size="large"
-                @search="onSearch"
-                class="mb-24"
-              />
-            </a-col>
+              <a-col :span="12">
+                <a-input-search
+                  v-model:value="inputvalue"
+                  placeholder="Search . . ."
+                  enter-button="Search"
+                  size="large"
+                  @search="onSearch"
+                  class="mb-24"
+                />
+              </a-col>
+              <a-col :span="12">
+                <div class="text-right mb-24">
+                  <a-button class="primaryBtn">Export to Excel</a-button>
+                </div>
+              </a-col>
               <a-col :span="24">
                 <a-table
                   :columns="columns"
@@ -73,7 +78,9 @@
             >
               <a-select-option value="lucy">Choose Service</a-select-option>
               <a-select-option value="Yiminghe">Service Type 1</a-select-option>
-              <a-select-option value="Yiminghe">Service Type 2 </a-select-option>
+              <a-select-option value="Yiminghe"
+                >Service Type 2
+              </a-select-option>
               <a-select-option value="Yiminghe">Service Type 3</a-select-option>
               <a-select-option value="Yiminghe">Service Type 4</a-select-option>
             </a-select>
@@ -118,7 +125,11 @@
         <a-col :sm="24" :xs="24">
           <div class="form-group">
             <label>Description </label>
-            <a-textarea v-model:value="value2" placeholder="Message" allow-clear />
+            <a-textarea
+              v-model:value="value2"
+              placeholder="Message"
+              allow-clear
+            />
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
@@ -181,25 +192,50 @@ const columns = [
 const data = [
   {
     key: 1,
-    cpt: "99453",
-    description: "Lorem Ipsum",
+    cpt: "90791",
+    description: "Evaluation",
     billing: "$150",
     active: "",
     action: "",
   },
   {
     key: 2,
-    cpt: "99454",
-    description: "Lorem Ipsum",
+    cpt: "90832",
+    description: "LCSW Ongoing Services",
     billing: "$200",
     active: "",
     action: "",
   },
   {
     key: 3,
-    cpt: "99457",
-    description: "Lorem Ipsum",
-    billing: "$250",
+    cpt: "96130",
+    description: "Deep Dive",
+    billing: "$120",
+    active: "",
+    action: "",
+  },
+  {
+    key: 4,
+    cpt: "96138",
+    description: "M3 Screening - MSW",
+    billing: "$160",
+    active: "",
+    action: "",
+  },
+  {
+    key: 5,
+    cpt: "99358",
+    description: "Patient Discharge",
+    billing: "$300",
+    active: "",
+    action: "",
+  },
+  {
+    key: 6,
+    cpt: "99453",
+    description:
+      "(ES Team) Setup and patient education for use of RPM equipment",
+    billing: "$150",
     active: "",
     action: "",
   },

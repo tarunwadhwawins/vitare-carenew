@@ -31,25 +31,46 @@
           <a-row>
             <a-col :span="24">
               <a-row :gutter="24">
-                <a-col :xl="8" :sm="8" :xs="24">
+                <a-col :xl="4" :sm="4" :xs="24">
                   <div class="colorBox red">
                     <UserOutlined />
-                    <h3>10</h3>
+                    <h3>5</h3>
                     <p>Critical</p>
                   </div>
                 </a-col>
-                <a-col :xl="8" :sm="8" :xs="24">
-                  <div class="colorBox green">
+                <a-col :xl="4" :sm="4" :xs="24">
+                  <div class="colorBox orangeBg">
                     <UserOutlined />
                     <h3>10</h3>
-                    <p>High</p>
+                    <p>Trending</p>
                   </div>
                 </a-col>
-                <a-col :xl="8" :sm="8" :xs="24">
+                <a-col :xl="4" :sm="4" :xs="24">
+                  <div class="colorBox greenBg">
+                    <UserOutlined />
+                    <h3>15</h3>
+                    <p>WNL</p>
+                  </div>
+                </a-col>
+                <a-col :xl="4" :sm="4" :xs="24">
+                  <div class="colorBox yellowBg">
+                    <UserOutlined />
+                    <h3>8</h3>
+                    <p>Watch List</p>
+                  </div>
+                </a-col>
+                <a-col :xl="4" :sm="4" :xs="24">
                   <div class="colorBox blue">
                     <UserOutlined />
-                    <h3>10</h3>
-                    <p>Normal</p>
+                    <h3>6</h3>
+                    <p>Messages</p>
+                  </div>
+                </a-col>
+                <a-col :xl="4" :sm="4" :xs="24">
+                  <div class="colorBox whiteBg">
+                    <UserOutlined />
+                    <h3>12</h3>
+                    <p>Escalations</p>
                   </div>
                 </a-col>
               </a-row>
@@ -66,11 +87,16 @@
                 class="mb-24"
               />
             </a-col>
+            <a-col :span="12">
+              <div class="text-right mb-24">
+                <a-button class="primaryBtn">Export to Excel</a-button>
+              </div>
+            </a-col>
             <a-col :span="24">
               <a-table
                 :columns="columns"
                 :data-source="data"
-                :scroll="{ x: 1600 }"
+                :scroll="{ x: 1024 }"
                 @change="onChange"
               >
                 <template #firstName="text">
@@ -1048,7 +1074,7 @@
                   <h2>Secondary Insurance</h2>
                 </div>
               </a-col>
-               <a-col :sm="8" :xs="24">
+              <a-col :sm="8" :xs="24">
                 <div class="form-group">
                   <label>Insurance Number</label>
                   <a-input v-model="value" size="large" />
@@ -1081,9 +1107,9 @@
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
-               <a-col :span="24">
+              <a-col :span="24">
                 <div class="formHeading">
-                  <h2>Tertiary  Insurance</h2>
+                  <h2>Tertiary Insurance</h2>
                 </div>
               </a-col>
               <a-col :sm="8" :xs="24">
