@@ -357,7 +357,7 @@
                     <template #action>
                       <a class="icons"><EditOutlined /></a>
                       <a class="icons"> <DeleteOutlined /></a>
-                      <a class="icons"> <CalendarOutlined /></a>
+                      <router-link to="appointment-calendar" class="icons"> <CalendarOutlined /></router-link>
                     </template>
                   </a-table>
                 </a-col>

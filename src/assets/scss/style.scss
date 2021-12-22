@@ -186,7 +186,8 @@
                 fill: #000;
             }
         }
-        h3,p { 
+        h3,
+        p {
             color: #000;
         }
     }
@@ -203,7 +204,7 @@
         background-color: #008000;
     }
     &.yellowBg {
-        background-color: #FDDA0D;
+        background-color: #fdda0d;
     }
 }
 
@@ -292,6 +293,55 @@
         }
     }
 }
+.calendarDropdown {
+    width: 350px;
+    white-space: break-spaces;
+    .itemWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 5px 0;
+        border-bottom: 1px solid #e3e3e3;
+        .leftWrapper {
+            color: $gray-color-300;
+            font-size: 14px;
+        }
+        .rightWrapper {
+            font-family: $font-family-semi-bold;
+            font-size: 14px;
+            a {
+                color: #1890ff;
+            }
+        }
+    }
+    .notesWrapper {
+        padding: 5px 0;
+        span {
+            color: $gray-color-300;
+            font-size: 14px;
+        }
+        p {
+            font-size: 13px;
+            line-height: 17px;
+        }
+    }
+    .createTask {
+        text-align: right;
+        a {
+            .anticon {
+                background-color: #1890ff;
+                color: #fff;
+                height: 25px;
+                width: 25px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 2px;
+            }
+        }
+    }
+}
+
 .table-responsive {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -362,8 +412,8 @@
 
 .monthValue {
     .ant-dropdown-menu {
-        max-width: 300px;
-        text-align: left;
+        // max-width: 300px;
+        // text-align: left;
         .ant-dropdown-menu-item {
             white-space: normal;
             .ant-dropdown-menu-title-content {
@@ -626,7 +676,95 @@
     height: 720px;
     overflow: auto;
     padding: 20px;
-    background-color: #fff;
+    // background-color: #fff;
+    .ant-tabs {
+        background-color: #fff;
+    }
+    .ant-timeline {
+        .dateOuter {
+            padding: 0 0 35px;
+            .ant-timeline-item-content {
+                background-color: transparent;
+            }
+        }
+        .ant-timeline-item-tail {
+            border-left: 2px solid #ddd;
+        }
+        .ant-timeline-item-head {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            .anticon {
+                font-size: 20px;
+                &.redIcon {
+                    color: #880808;
+                }
+                &.orangeIcon {
+                    color: #ff4500;
+                }
+                &.greenIcon {
+                    color: #008000;
+                }
+                &.yellowIcon {
+                    color: #fdda0d;
+                }
+            }
+        }
+        .ant-timeline-item-content {
+            margin: 0 0 0 50px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            .timelineInner {
+                .timelineHeader {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0 0 15px;
+                    border-bottom: 1px solid #e3e3e3;
+                    margin: 0 0 15px;
+                    .title {
+                        display: flex;
+                        align-items: center;
+                        h4 {
+                            margin: 0 10px 0 0;
+                        }
+                        .ant-typography {
+                            mark {
+                                padding: 5px 10px;
+                                border-radius: 25px;
+                            }
+                        }
+                        .time {
+                            color: $gray-color-300;
+                            margin: 0 0 0 10px;
+                        }
+                    }
+                    .userImg {
+                        img {
+                            width: 35px;
+                            height: 35px;
+                            object-fit: cover;
+                            border-radius: 50px;
+                        }
+                    }
+                }
+                .timelineBody {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    .anticon {
+                        color: #267dff;
+                        font-size: 20px;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
     .ant-checkbox-group {
         width: 100%;
         margin: 0 0 30px;
@@ -639,6 +777,27 @@
                     left: 5px;
                 }
             }
+        }
+    }
+    .date {
+        position: relative;
+        text-align: center;
+        z-index: 1;
+        &:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            background-color: #e3e3e3;
+            height: 1px;
+            transform: translateY(-50%);
+            z-index: -1;
+        }
+        span {
+            background-color: #e3e3e3;
+            padding: 10px 15px;
+            border-radius: 35px;
         }
     }
 }

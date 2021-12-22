@@ -7,7 +7,12 @@
       </a-layout-header>
       <a-layout>
         <a-layout-sider
-          :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"
+          :style="{
+            overflow: 'auto',
+            height: '100vh',
+            position: 'fixed',
+            left: 0,
+          }"
           ><Sidebar
         /></a-layout-sider>
         <a-layout-content>
@@ -31,14 +36,25 @@
                 >
               </div>
               <div class="calendar">
-                <div style="width: 100%; border: 1px solid #d9d9d9; border-radius: 4px">
+                <div
+                  style="
+                    width: 100%;
+                    border: 1px solid #d9d9d9;
+                    border-radius: 4px;
+                  "
+                >
                   <a-calendar
                     v-model:value="value"
                     :fullscreen="false"
                     @panelChange="onPanelChange"
                   >
                     <template
-                      #headerRender="{ value: current, type, onChange, onTypeChange }"
+                      #headerRender="{
+                        value: current,
+                        type,
+                        onChange,
+                        onTypeChange,
+                      }"
                     >
                       <div style="padding: 10px">
                         <!-- <div style="margin-bottom: 10px">Custom header</div> -->
@@ -49,7 +65,9 @@
                               :value="type"
                               @change="(e) => onTypeChange(e.target.value)"
                             >
-                              <a-radio-button value="month">Month</a-radio-button>
+                              <a-radio-button value="month"
+                                >Month</a-radio-button
+                              >
                               <a-radio-button value="year">Year</a-radio-button>
                             </a-radio-group>
                           </a-col>
@@ -62,7 +80,8 @@
                               @change="
                                 (newYear) => {
                                   onChange(current.year(newYear));
-                                }"
+                                }
+                              "
                             >
                               <a-select-option
                                 v-for="val in getYears(current)"
@@ -80,8 +99,11 @@
                               :value="String(current.month())"
                               @change="
                                 (selectedMonth) => {
-                                  onChange(current.month(parseInt(selectedMonth, 10)));
-                                }"
+                                  onChange(
+                                    current.month(parseInt(selectedMonth, 10))
+                                  );
+                                }
+                              "
                             >
                               <a-select-option
                                 v-for="(val, index) in getMonths(current)"
@@ -127,10 +149,13 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a class="ant-dropdown-link one" @click.prevent>
+                                  <a
+                                    class="ant-dropdown-link one"
+                                    @click.prevent
+                                  >
                                     <div class="dropdown">
                                       <p>
-                                        <span>Smith Joseph</span>
+                                        <span>Smith Joseph </span>
                                         <span>10:00 AM - 11:00 AM</span>
                                       </p>
                                       <img
@@ -141,10 +166,65 @@
                                   </a>
                                   <template #overlay>
                                     <a-menu>
-                                      <a-menu-item key="1"
-                                        >Lorem Ipsum is simply dummy text of the printing
-                                        and typesetting industry.</a-menu-item
-                                      >
+                                      <a-menu-item key="1">
+                                        <div class="calendarDropdown">
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Appointment Type
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Clinical
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Date Time
+                                            </div>
+                                            <div class="rightWrapper">
+                                              December 12, 2021 12:00 PM
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Coordinator
+                                            </div>
+                                            <div class="rightWrapper">
+                                              <router-link
+                                                to="patients-summary"
+                                              >
+                                                Steve Smith
+                                              </router-link>
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Program
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Program 1
+                                            </div>
+                                          </div>
+                                          <div class="notesWrapper">
+                                            <span>Notes</span>
+                                            <p>
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                            </p>
+                                          </div>
+                                          <div class="createTask">
+                                            <a-tooltip placement="left">
+                                              <template #title>
+                                                <span>Add Task</span>
+                                              </template>
+                                              <router-link to="tasks"
+                                                ><FileAddOutlined
+                                              /></router-link>
+                                            </a-tooltip>
+                                          </div>
+                                        </div>
+                                      </a-menu-item>
                                     </a-menu>
                                   </template>
                                 </a-dropdown>
@@ -158,7 +238,10 @@
                               <th>01:00 PM</th>
                               <td>
                                 <a-dropdown :trigger="['click']">
-                                  <a class="ant-dropdown-link two" @click.prevent>
+                                  <a
+                                    class="ant-dropdown-link two"
+                                    @click.prevent
+                                  >
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -173,8 +256,63 @@
                                   <template #overlay>
                                     <a-menu>
                                       <a-menu-item key="0">
-                                        Lorem Ipsum is simply dummy text of the printing
-                                        and typesetting industry.
+                                        <div class="calendarDropdown">
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Appointment Type
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Clinical
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Date Time
+                                            </div>
+                                            <div class="rightWrapper">
+                                              December 12, 2021 12:00 PM
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Coordinator
+                                            </div>
+                                            <div class="rightWrapper">
+                                              <router-link
+                                                to="patients-summary"
+                                              >
+                                                Steve Smith
+                                              </router-link>
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Program
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Program 1
+                                            </div>
+                                          </div>
+                                          <div class="notesWrapper">
+                                            <span>Notes</span>
+                                            <p>
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                            </p>
+                                          </div>
+                                          <div class="createTask">
+                                            <a-tooltip placement="left">
+                                              <template #title>
+                                                <span>Add Task</span>
+                                              </template>
+                                              <router-link to="tasks"
+                                                ><FileAddOutlined
+                                              /></router-link>
+                                            </a-tooltip>
+                                          </div>
+                                        </div>
                                       </a-menu-item>
                                     </a-menu>
                                   </template>
@@ -193,7 +331,10 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a class="ant-dropdown-link three" @click.prevent>
+                                  <a
+                                    class="ant-dropdown-link three"
+                                    @click.prevent
+                                  >
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -208,9 +349,63 @@
                                   <template #overlay>
                                     <a-menu>
                                       <a-menu-item key="1"
-                                        >Lorem Ipsum is simply dummy text of the printing
-                                        and typesetting industry.</a-menu-item
-                                      >
+                                        ><div class="calendarDropdown">
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Appointment Type
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Clinical
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Date Time
+                                            </div>
+                                            <div class="rightWrapper">
+                                              December 12, 2021 12:00 PM
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Coordinator
+                                            </div>
+                                            <div class="rightWrapper">
+                                              <router-link
+                                                to="patients-summary"
+                                              >
+                                                Steve Smith
+                                              </router-link>
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Program
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Program 1
+                                            </div>
+                                          </div>
+                                          <div class="notesWrapper">
+                                            <span>Notes</span>
+                                            <p>
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                            </p>
+                                          </div>
+                                          <div class="createTask">
+                                            <a-tooltip placement="left">
+                                              <template #title>
+                                                <span>Add Task</span>
+                                              </template>
+                                              <router-link to="tasks"
+                                                ><FileAddOutlined
+                                              /></router-link>
+                                            </a-tooltip>
+                                          </div></div
+                                      ></a-menu-item>
                                     </a-menu>
                                   </template>
                                 </a-dropdown>
@@ -219,7 +414,10 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a class="ant-dropdown-link four" @click.prevent>
+                                  <a
+                                    class="ant-dropdown-link four"
+                                    @click.prevent
+                                  >
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -234,9 +432,63 @@
                                   <template #overlay>
                                     <a-menu>
                                       <a-menu-item key="1"
-                                        >Lorem Ipsum is simply dummy text of the printing
-                                        and typesetting industry.</a-menu-item
-                                      >
+                                        ><div class="calendarDropdown">
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Appointment Type
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Clinical
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Date Time
+                                            </div>
+                                            <div class="rightWrapper">
+                                              December 12, 2021 12:00 PM
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Coordinator
+                                            </div>
+                                            <div class="rightWrapper">
+                                              <router-link
+                                                to="patients-summary"
+                                              >
+                                                Steve Smith
+                                              </router-link>
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Program
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Program 1
+                                            </div>
+                                          </div>
+                                          <div class="notesWrapper">
+                                            <span>Notes</span>
+                                            <p>
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                            </p>
+                                          </div>
+                                          <div class="createTask">
+                                            <a-tooltip placement="left">
+                                              <template #title>
+                                                <span>Add Task</span>
+                                              </template>
+                                              <router-link to="tasks"
+                                                ><FileAddOutlined
+                                              /></router-link>
+                                            </a-tooltip>
+                                          </div></div
+                                      ></a-menu-item>
                                     </a-menu>
                                   </template>
                                 </a-dropdown>
@@ -254,7 +506,10 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a class="ant-dropdown-link one" @click.prevent>
+                                  <a
+                                    class="ant-dropdown-link one"
+                                    @click.prevent
+                                  >
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -269,9 +524,63 @@
                                   <template #overlay>
                                     <a-menu>
                                       <a-menu-item key="1"
-                                        >Lorem Ipsum is simply dummy text of the printing
-                                        and typesetting industry.</a-menu-item
-                                      >
+                                        ><div class="calendarDropdown">
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Appointment Type
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Clinical
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Date Time
+                                            </div>
+                                            <div class="rightWrapper">
+                                              December 12, 2021 12:00 PM
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Coordinator
+                                            </div>
+                                            <div class="rightWrapper">
+                                              <router-link
+                                                to="patients-summary"
+                                              >
+                                                Steve Smith
+                                              </router-link>
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Program
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Program 1
+                                            </div>
+                                          </div>
+                                          <div class="notesWrapper">
+                                            <span>Notes</span>
+                                            <p>
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                            </p>
+                                          </div>
+                                          <div class="createTask">
+                                            <a-tooltip placement="left">
+                                              <template #title>
+                                                <span>Add Task</span>
+                                              </template>
+                                              <router-link to="tasks"
+                                                ><FileAddOutlined
+                                              /></router-link>
+                                            </a-tooltip>
+                                          </div></div
+                                      ></a-menu-item>
                                     </a-menu>
                                   </template>
                                 </a-dropdown>
@@ -309,7 +618,10 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a class="ant-dropdown-link one" @click.prevent>
+                                  <a
+                                    class="ant-dropdown-link one"
+                                    @click.prevent
+                                  >
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -324,9 +636,63 @@
                                   <template #overlay>
                                     <a-menu>
                                       <a-menu-item key="1"
-                                        >Lorem Ipsum is simply dummy text of the printing
-                                        and typesetting industry.</a-menu-item
-                                      >
+                                        ><div class="calendarDropdown">
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Appointment Type
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Clinical
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Date Time
+                                            </div>
+                                            <div class="rightWrapper">
+                                              December 12, 2021 12:00 PM
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Coordinator
+                                            </div>
+                                            <div class="rightWrapper">
+                                              <router-link
+                                                to="patients-summary"
+                                              >
+                                                Steve Smith
+                                              </router-link>
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Program
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Program 1
+                                            </div>
+                                          </div>
+                                          <div class="notesWrapper">
+                                            <span>Notes</span>
+                                            <p>
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                            </p>
+                                          </div>
+                                          <div class="createTask">
+                                            <a-tooltip placement="left">
+                                              <template #title>
+                                                <span>Add Task</span>
+                                              </template>
+                                              <router-link to="tasks"
+                                                ><FileAddOutlined
+                                              /></router-link>
+                                            </a-tooltip>
+                                          </div></div
+                                      ></a-menu-item>
                                     </a-menu>
                                   </template>
                                 </a-dropdown>
@@ -340,7 +706,10 @@
                               <th>01:00 PM</th>
                               <td>
                                 <a-dropdown :trigger="['click']">
-                                  <a class="ant-dropdown-link two" @click.prevent>
+                                  <a
+                                    class="ant-dropdown-link two"
+                                    @click.prevent
+                                  >
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -355,8 +724,63 @@
                                   <template #overlay>
                                     <a-menu>
                                       <a-menu-item key="0">
-                                        Lorem Ipsum is simply dummy text of the printing
-                                        and typesetting industry.
+                                        <div class="calendarDropdown">
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Appointment Type
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Clinical
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Date Time
+                                            </div>
+                                            <div class="rightWrapper">
+                                              December 12, 2021 12:00 PM
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Coordinator
+                                            </div>
+                                            <div class="rightWrapper">
+                                              <router-link
+                                                to="patients-summary"
+                                              >
+                                                Steve Smith
+                                              </router-link>
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Program
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Program 1
+                                            </div>
+                                          </div>
+                                          <div class="notesWrapper">
+                                            <span>Notes</span>
+                                            <p>
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                            </p>
+                                          </div>
+                                          <div class="createTask">
+                                            <a-tooltip placement="left">
+                                              <template #title>
+                                                <span>Add Task</span>
+                                              </template>
+                                              <router-link to="tasks"
+                                                ><FileAddOutlined
+                                              /></router-link>
+                                            </a-tooltip>
+                                          </div>
+                                        </div>
                                       </a-menu-item>
                                     </a-menu>
                                   </template>
@@ -375,7 +799,10 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a class="ant-dropdown-link three" @click.prevent>
+                                  <a
+                                    class="ant-dropdown-link three"
+                                    @click.prevent
+                                  >
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -390,9 +817,63 @@
                                   <template #overlay>
                                     <a-menu>
                                       <a-menu-item key="1"
-                                        >Lorem Ipsum is simply dummy text of the printing
-                                        and typesetting industry.</a-menu-item
-                                      >
+                                        ><div class="calendarDropdown">
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Appointment Type
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Clinical
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Date Time
+                                            </div>
+                                            <div class="rightWrapper">
+                                              December 12, 2021 12:00 PM
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Coordinator
+                                            </div>
+                                            <div class="rightWrapper">
+                                              <router-link
+                                                to="patients-summary"
+                                              >
+                                                Steve Smith
+                                              </router-link>
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Program
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Program 1
+                                            </div>
+                                          </div>
+                                          <div class="notesWrapper">
+                                            <span>Notes</span>
+                                            <p>
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                            </p>
+                                          </div>
+                                          <div class="createTask">
+                                            <a-tooltip placement="left">
+                                              <template #title>
+                                                <span>Add Task</span>
+                                              </template>
+                                              <router-link to="tasks"
+                                                ><FileAddOutlined
+                                              /></router-link>
+                                            </a-tooltip>
+                                          </div></div
+                                      ></a-menu-item>
                                     </a-menu>
                                   </template>
                                 </a-dropdown>
@@ -401,7 +882,10 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a class="ant-dropdown-link four" @click.prevent>
+                                  <a
+                                    class="ant-dropdown-link four"
+                                    @click.prevent
+                                  >
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -416,9 +900,63 @@
                                   <template #overlay>
                                     <a-menu>
                                       <a-menu-item key="1"
-                                        >Lorem Ipsum is simply dummy text of the printing
-                                        and typesetting industry.</a-menu-item
-                                      >
+                                        ><div class="calendarDropdown">
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Appointment Type
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Clinical
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Date Time
+                                            </div>
+                                            <div class="rightWrapper">
+                                              December 12, 2021 12:00 PM
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Coordinator
+                                            </div>
+                                            <div class="rightWrapper">
+                                              <router-link
+                                                to="patients-summary"
+                                              >
+                                                Steve Smith
+                                              </router-link>
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Program
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Program 1
+                                            </div>
+                                          </div>
+                                          <div class="notesWrapper">
+                                            <span>Notes</span>
+                                            <p>
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                            </p>
+                                          </div>
+                                          <div class="createTask">
+                                            <a-tooltip placement="left">
+                                              <template #title>
+                                                <span>Add Task</span>
+                                              </template>
+                                              <router-link to="tasks"
+                                                ><FileAddOutlined
+                                              /></router-link>
+                                            </a-tooltip>
+                                          </div></div
+                                      ></a-menu-item>
                                     </a-menu>
                                   </template>
                                 </a-dropdown>
@@ -436,7 +974,10 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a class="ant-dropdown-link one" @click.prevent>
+                                  <a
+                                    class="ant-dropdown-link one"
+                                    @click.prevent
+                                  >
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -451,9 +992,63 @@
                                   <template #overlay>
                                     <a-menu>
                                       <a-menu-item key="1"
-                                        >Lorem Ipsum is simply dummy text of the printing
-                                        and typesetting industry.</a-menu-item
-                                      >
+                                        ><div class="calendarDropdown">
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Appointment Type
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Clinical
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Date Time
+                                            </div>
+                                            <div class="rightWrapper">
+                                              December 12, 2021 12:00 PM
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Coordinator
+                                            </div>
+                                            <div class="rightWrapper">
+                                              <router-link
+                                                to="patients-summary"
+                                              >
+                                                Steve Smith
+                                              </router-link>
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Program
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Program 1
+                                            </div>
+                                          </div>
+                                          <div class="notesWrapper">
+                                            <span>Notes</span>
+                                            <p>
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                            </p>
+                                          </div>
+                                          <div class="createTask">
+                                            <a-tooltip placement="left">
+                                              <template #title>
+                                                <span>Add Task</span>
+                                              </template>
+                                              <router-link to="tasks"
+                                                ><FileAddOutlined
+                                              /></router-link>
+                                            </a-tooltip>
+                                          </div></div
+                                      ></a-menu-item>
                                     </a-menu>
                                   </template>
                                 </a-dropdown>
@@ -479,7 +1074,10 @@
                               <th>Tue</th>
                               <td>
                                 <a-dropdown :trigger="['click']">
-                                  <a class="ant-dropdown-link one" @click.prevent>
+                                  <a
+                                    class="ant-dropdown-link one"
+                                    @click.prevent
+                                  >
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -494,8 +1092,63 @@
                                   <template #overlay>
                                     <a-menu>
                                       <a-menu-item key="0">
-                                        Lorem Ipsum is simply dummy text of the printing
-                                        and typesetting industry.
+                                        <div class="calendarDropdown">
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Appointment Type
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Clinical
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Date Time
+                                            </div>
+                                            <div class="rightWrapper">
+                                              December 12, 2021 12:00 PM
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Coordinator
+                                            </div>
+                                            <div class="rightWrapper">
+                                              <router-link
+                                                to="patients-summary"
+                                              >
+                                                Steve Smith
+                                              </router-link>
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Program
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Program 1
+                                            </div>
+                                          </div>
+                                          <div class="notesWrapper">
+                                            <span>Notes</span>
+                                            <p>
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                            </p>
+                                          </div>
+                                          <div class="createTask">
+                                            <a-tooltip placement="left">
+                                              <template #title>
+                                                <span>Add Task</span>
+                                              </template>
+                                              <router-link to="tasks"
+                                                ><FileAddOutlined
+                                              /></router-link>
+                                            </a-tooltip>
+                                          </div>
+                                        </div>
                                       </a-menu-item>
                                     </a-menu>
                                   </template>
@@ -514,7 +1167,10 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a class="ant-dropdown-link two" @click.prevent>
+                                  <a
+                                    class="ant-dropdown-link two"
+                                    @click.prevent
+                                  >
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -529,9 +1185,63 @@
                                   <template #overlay>
                                     <a-menu>
                                       <a-menu-item key="1"
-                                        >Lorem Ipsum is simply dummy text of the printing
-                                        and typesetting industry.</a-menu-item
-                                      >
+                                        ><div class="calendarDropdown">
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Appointment Type
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Clinical
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Date Time
+                                            </div>
+                                            <div class="rightWrapper">
+                                              December 12, 2021 12:00 PM
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Coordinator
+                                            </div>
+                                            <div class="rightWrapper">
+                                              <router-link
+                                                to="patients-summary"
+                                              >
+                                                Steve Smith
+                                              </router-link>
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Program
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Program 1
+                                            </div>
+                                          </div>
+                                          <div class="notesWrapper">
+                                            <span>Notes</span>
+                                            <p>
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                            </p>
+                                          </div>
+                                          <div class="createTask">
+                                            <a-tooltip placement="left">
+                                              <template #title>
+                                                <span>Add Task</span>
+                                              </template>
+                                              <router-link to="tasks"
+                                                ><FileAddOutlined
+                                              /></router-link>
+                                            </a-tooltip>
+                                          </div></div
+                                      ></a-menu-item>
                                     </a-menu>
                                   </template>
                                 </a-dropdown>
@@ -545,7 +1255,10 @@
                               <th>Sat</th>
                               <td>
                                 <a-dropdown :trigger="['click']">
-                                  <a class="ant-dropdown-link three" @click.prevent>
+                                  <a
+                                    class="ant-dropdown-link three"
+                                    @click.prevent
+                                  >
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -560,14 +1273,72 @@
                                   <template #overlay>
                                     <a-menu>
                                       <a-menu-item key="0">
-                                        Lorem Ipsum is simply dummy text of the printing
-                                        and typesetting industry.
+                                        <div class="calendarDropdown">
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Appointment Type
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Clinical
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Date Time
+                                            </div>
+                                            <div class="rightWrapper">
+                                              December 12, 2021 12:00 PM
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Coordinator
+                                            </div>
+                                            <div class="rightWrapper">
+                                              <router-link
+                                                to="patients-summary"
+                                              >
+                                                Steve Smith
+                                              </router-link>
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Program
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Program 1
+                                            </div>
+                                          </div>
+                                          <div class="notesWrapper">
+                                            <span>Notes</span>
+                                            <p>
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                            </p>
+                                          </div>
+                                          <div class="createTask">
+                                            <a-tooltip placement="left">
+                                              <template #title>
+                                                <span>Add Task</span>
+                                              </template>
+                                              <router-link to="tasks"
+                                                ><FileAddOutlined
+                                              /></router-link>
+                                            </a-tooltip>
+                                          </div>
+                                        </div>
                                       </a-menu-item>
                                     </a-menu>
                                   </template>
                                 </a-dropdown>
                                 <a-dropdown :trigger="['click']">
-                                  <a class="ant-dropdown-link four" @click.prevent>
+                                  <a
+                                    class="ant-dropdown-link four"
+                                    @click.prevent
+                                  >
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -582,8 +1353,63 @@
                                   <template #overlay>
                                     <a-menu>
                                       <a-menu-item key="0">
-                                        Lorem Ipsum is simply dummy text of the printing
-                                        and typesetting industry.
+                                        <div class="calendarDropdown">
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Appointment Type
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Clinical
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Date Time
+                                            </div>
+                                            <div class="rightWrapper">
+                                              December 12, 2021 12:00 PM
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Coordinator
+                                            </div>
+                                            <div class="rightWrapper">
+                                              <router-link
+                                                to="patients-summary"
+                                              >
+                                                Steve Smith
+                                              </router-link>
+                                            </div>
+                                          </div>
+                                          <div class="itemWrapper">
+                                            <div class="leftWrapper">
+                                              Program
+                                            </div>
+                                            <div class="rightWrapper">
+                                              Program 1
+                                            </div>
+                                          </div>
+                                          <div class="notesWrapper">
+                                            <span>Notes</span>
+                                            <p>
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet,
+                                              consectetur adipisicing elit.
+                                            </p>
+                                          </div>
+                                          <div class="createTask">
+                                            <a-tooltip placement="left">
+                                              <template #title>
+                                                <span>Add Task</span>
+                                              </template>
+                                              <router-link to="tasks"
+                                                ><FileAddOutlined
+                                              /></router-link>
+                                            </a-tooltip>
+                                          </div>
+                                        </div>
                                       </a-menu-item>
                                     </a-menu>
                                   </template>
@@ -625,7 +1451,10 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a class="ant-dropdown-link one" @click.prevent>
+                                    <a
+                                      class="ant-dropdown-link one"
+                                      @click.prevent
+                                    >
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -635,21 +1464,64 @@
                                     </a>
                                     <template #overlay>
                                       <a-menu>
-                                        <a-menu-item key="1">
-                                          <li>
-                                            <img
-                                              src="../../assets/images/profile-1.jpg"
-                                              alt=""
-                                            />
-                                            <span>Jane Doe</span>
-                                          </li>
-                                          <li>
-                                            Lorem Ipsum is simply dummy text of the
-                                            printing and typesetting industry. Lorem Ipsum
-                                            has been the industry's standard dummy text
-                                            ever since the 1500s, when an unknown printer
-                                            took a galley of type and scrambled it
-                                          </li>
+                                        <a-menu-item key="0">
+                                          <div class="calendarDropdown">
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Appointment Type
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Clinical
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Date Time
+                                              </div>
+                                              <div class="rightWrapper">
+                                                December 12, 2021 12:00 PM
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Coordinator
+                                              </div>
+                                              <div class="rightWrapper">
+                                                <router-link
+                                                  to="patients-summary"
+                                                >
+                                                  Steve Smith
+                                                </router-link>
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Program
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Program 1
+                                              </div>
+                                            </div>
+                                            <div class="notesWrapper">
+                                              <span>Notes</span>
+                                              <p>
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                              </p>
+                                            </div>
+                                            <div class="createTask">
+                                              <a-tooltip placement="left">
+                                                <template #title>
+                                                  <span>Add Task</span>
+                                                </template>
+                                                <router-link to="tasks"
+                                                  ><FileAddOutlined
+                                                /></router-link>
+                                              </a-tooltip>
+                                            </div>
+                                          </div>
                                         </a-menu-item>
                                       </a-menu>
                                     </template>
@@ -658,7 +1530,10 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a class="ant-dropdown-link two" @click.prevent>
+                                    <a
+                                      class="ant-dropdown-link two"
+                                      @click.prevent
+                                    >
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -668,21 +1543,64 @@
                                     </a>
                                     <template #overlay>
                                       <a-menu>
-                                        <a-menu-item key="1">
-                                          <li>
-                                            <img
-                                              src="../../assets/images/profile-1.jpg"
-                                              alt=""
-                                            />
-                                            <span>Jane Doe</span>
-                                          </li>
-                                          <li>
-                                            Lorem Ipsum is simply dummy text of the
-                                            printing and typesetting industry. Lorem Ipsum
-                                            has been the industry's standard dummy text
-                                            ever since the 1500s, when an unknown printer
-                                            took a galley of type and scrambled it
-                                          </li>
+                                        <a-menu-item key="0">
+                                         <div class="calendarDropdown">
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Appointment Type
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Clinical
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Date Time
+                                              </div>
+                                              <div class="rightWrapper">
+                                                December 12, 2021 12:00 PM
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Coordinator
+                                              </div>
+                                              <div class="rightWrapper">
+                                                <router-link
+                                                  to="patients-summary"
+                                                >
+                                                  Steve Smith
+                                                </router-link>
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Program
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Program 1
+                                              </div>
+                                            </div>
+                                            <div class="notesWrapper">
+                                              <span>Notes</span>
+                                              <p>
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                              </p>
+                                            </div>
+                                            <div class="createTask">
+                                              <a-tooltip placement="left">
+                                                <template #title>
+                                                  <span>Add Task</span>
+                                                </template>
+                                                <router-link to="tasks"
+                                                  ><FileAddOutlined
+                                                /></router-link>
+                                              </a-tooltip>
+                                            </div>
+                                          </div>
                                         </a-menu-item>
                                       </a-menu>
                                     </template>
@@ -697,7 +1615,10 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a class="ant-dropdown-link three" @click.prevent>
+                                    <a
+                                      class="ant-dropdown-link three"
+                                      @click.prevent
+                                    >
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -708,20 +1629,63 @@
                                     <template #overlay>
                                       <a-menu>
                                         <a-menu-item key="1">
-                                          <li>
-                                            <img
-                                              src="../../assets/images/profile-1.jpg"
-                                              alt=""
-                                            />
-                                            <span>Jane Doe</span>
-                                          </li>
-                                          <li>
-                                            Lorem Ipsum is simply dummy text of the
-                                            printing and typesetting industry. Lorem Ipsum
-                                            has been the industry's standard dummy text
-                                            ever since the 1500s, when an unknown printer
-                                            took a galley of type and scrambled it
-                                          </li>
+                                          <div class="calendarDropdown">
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Appointment Type
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Clinical
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Date Time
+                                              </div>
+                                              <div class="rightWrapper">
+                                                December 12, 2021 12:00 PM
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Coordinator
+                                              </div>
+                                              <div class="rightWrapper">
+                                                <router-link
+                                                  to="patients-summary"
+                                                >
+                                                  Steve Smith
+                                                </router-link>
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Program
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Program 1
+                                              </div>
+                                            </div>
+                                            <div class="notesWrapper">
+                                              <span>Notes</span>
+                                              <p>
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                              </p>
+                                            </div>
+                                            <div class="createTask">
+                                              <a-tooltip placement="left">
+                                                <template #title>
+                                                  <span>Add Task</span>
+                                                </template>
+                                                <router-link to="tasks"
+                                                  ><FileAddOutlined
+                                                /></router-link>
+                                              </a-tooltip>
+                                            </div>
+                                          </div>
                                         </a-menu-item>
                                       </a-menu>
                                     </template>
@@ -733,7 +1697,10 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a class="ant-dropdown-link four" @click.prevent>
+                                    <a
+                                      class="ant-dropdown-link four"
+                                      @click.prevent
+                                    >
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -744,20 +1711,63 @@
                                     <template #overlay>
                                       <a-menu>
                                         <a-menu-item key="1">
-                                          <li>
-                                            <img
-                                              src="../../assets/images/profile-1.jpg"
-                                              alt=""
-                                            />
-                                            <span>Jane Doe</span>
-                                          </li>
-                                          <li>
-                                            Lorem Ipsum is simply dummy text of the
-                                            printing and typesetting industry. Lorem Ipsum
-                                            has been the industry's standard dummy text
-                                            ever since the 1500s, when an unknown printer
-                                            took a galley of type and scrambled it
-                                          </li>
+                                          <div class="calendarDropdown">
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Appointment Type
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Clinical
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Date Time
+                                              </div>
+                                              <div class="rightWrapper">
+                                                December 12, 2021 12:00 PM
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Coordinator
+                                              </div>
+                                              <div class="rightWrapper">
+                                                <router-link
+                                                  to="patients-summary"
+                                                >
+                                                  Steve Smith
+                                                </router-link>
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Program
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Program 1
+                                              </div>
+                                            </div>
+                                            <div class="notesWrapper">
+                                              <span>Notes</span>
+                                              <p>
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                              </p>
+                                            </div>
+                                            <div class="createTask">
+                                              <a-tooltip placement="left">
+                                                <template #title>
+                                                  <span>Add Task</span>
+                                                </template>
+                                                <router-link to="tasks"
+                                                  ><FileAddOutlined
+                                                /></router-link>
+                                              </a-tooltip>
+                                            </div>
+                                          </div>
                                         </a-menu-item>
                                       </a-menu>
                                     </template>
@@ -780,7 +1790,10 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a class="ant-dropdown-link one" @click.prevent>
+                                    <a
+                                      class="ant-dropdown-link one"
+                                      @click.prevent
+                                    >
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -791,20 +1804,63 @@
                                     <template #overlay>
                                       <a-menu>
                                         <a-menu-item key="1">
-                                          <li>
-                                            <img
-                                              src="../../assets/images/profile-1.jpg"
-                                              alt=""
-                                            />
-                                            <span>Jane Doe</span>
-                                          </li>
-                                          <li>
-                                            Lorem Ipsum is simply dummy text of the
-                                            printing and typesetting industry. Lorem Ipsum
-                                            has been the industry's standard dummy text
-                                            ever since the 1500s, when an unknown printer
-                                            took a galley of type and scrambled it
-                                          </li>
+                                          <div class="calendarDropdown">
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Appointment Type
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Clinical
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Date Time
+                                              </div>
+                                              <div class="rightWrapper">
+                                                December 12, 2021 12:00 PM
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Coordinator
+                                              </div>
+                                              <div class="rightWrapper">
+                                                <router-link
+                                                  to="patients-summary"
+                                                >
+                                                  Steve Smith
+                                                </router-link>
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Program
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Program 1
+                                              </div>
+                                            </div>
+                                            <div class="notesWrapper">
+                                              <span>Notes</span>
+                                              <p>
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                              </p>
+                                            </div>
+                                            <div class="createTask">
+                                              <a-tooltip placement="left">
+                                                <template #title>
+                                                  <span>Add Task</span>
+                                                </template>
+                                                <router-link to="tasks"
+                                                  ><FileAddOutlined
+                                                /></router-link>
+                                              </a-tooltip>
+                                            </div>
+                                          </div>
                                         </a-menu-item>
                                       </a-menu>
                                     </template>
@@ -819,7 +1875,10 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a class="ant-dropdown-link three" @click.prevent>
+                                    <a
+                                      class="ant-dropdown-link three"
+                                      @click.prevent
+                                    >
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -830,20 +1889,63 @@
                                     <template #overlay>
                                       <a-menu>
                                         <a-menu-item key="1">
-                                          <li>
-                                            <img
-                                              src="../../assets/images/profile-1.jpg"
-                                              alt=""
-                                            />
-                                            <span>Jane Doe</span>
-                                          </li>
-                                          <li>
-                                            Lorem Ipsum is simply dummy text of the
-                                            printing and typesetting industry. Lorem Ipsum
-                                            has been the industry's standard dummy text
-                                            ever since the 1500s, when an unknown printer
-                                            took a galley of type and scrambled it
-                                          </li>
+                                          <div class="calendarDropdown">
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Appointment Type
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Clinical
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Date Time
+                                              </div>
+                                              <div class="rightWrapper">
+                                                December 12, 2021 12:00 PM
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Coordinator
+                                              </div>
+                                              <div class="rightWrapper">
+                                                <router-link
+                                                  to="patients-summary"
+                                                >
+                                                  Steve Smith
+                                                </router-link>
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Program
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Program 1
+                                              </div>
+                                            </div>
+                                            <div class="notesWrapper">
+                                              <span>Notes</span>
+                                              <p>
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                              </p>
+                                            </div>
+                                            <div class="createTask">
+                                              <a-tooltip placement="left">
+                                                <template #title>
+                                                  <span>Add Task</span>
+                                                </template>
+                                                <router-link to="tasks"
+                                                  ><FileAddOutlined
+                                                /></router-link>
+                                              </a-tooltip>
+                                            </div>
+                                          </div>
                                         </a-menu-item>
                                       </a-menu>
                                     </template>
@@ -858,7 +1960,10 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a class="ant-dropdown-link four" @click.prevent>
+                                    <a
+                                      class="ant-dropdown-link four"
+                                      @click.prevent
+                                    >
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -869,20 +1974,63 @@
                                     <template #overlay>
                                       <a-menu>
                                         <a-menu-item key="1">
-                                          <li>
-                                            <img
-                                              src="../../assets/images/profile-1.jpg"
-                                              alt=""
-                                            />
-                                            <span>Jane Doe</span>
-                                          </li>
-                                          <li>
-                                            Lorem Ipsum is simply dummy text of the
-                                            printing and typesetting industry. Lorem Ipsum
-                                            has been the industry's standard dummy text
-                                            ever since the 1500s, when an unknown printer
-                                            took a galley of type and scrambled it
-                                          </li>
+                                          <div class="calendarDropdown">
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Appointment Type
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Clinical
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Date Time
+                                              </div>
+                                              <div class="rightWrapper">
+                                                December 12, 2021 12:00 PM
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Coordinator
+                                              </div>
+                                              <div class="rightWrapper">
+                                                <router-link
+                                                  to="patients-summary"
+                                                >
+                                                  Steve Smith
+                                                </router-link>
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Program
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Program 1
+                                              </div>
+                                            </div>
+                                            <div class="notesWrapper">
+                                              <span>Notes</span>
+                                              <p>
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                              </p>
+                                            </div>
+                                            <div class="createTask">
+                                              <a-tooltip placement="left">
+                                                <template #title>
+                                                  <span>Add Task</span>
+                                                </template>
+                                                <router-link to="tasks"
+                                                  ><FileAddOutlined
+                                                /></router-link>
+                                              </a-tooltip>
+                                            </div>
+                                          </div>
                                         </a-menu-item>
                                       </a-menu>
                                     </template>
@@ -902,7 +2050,10 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a class="ant-dropdown-link four" @click.prevent>
+                                    <a
+                                      class="ant-dropdown-link four"
+                                      @click.prevent
+                                    >
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -913,20 +2064,63 @@
                                     <template #overlay>
                                       <a-menu>
                                         <a-menu-item key="1">
-                                          <li>
-                                            <img
-                                              src="../../assets/images/profile-1.jpg"
-                                              alt=""
-                                            />
-                                            <span>Jane Doe</span>
-                                          </li>
-                                          <li>
-                                            Lorem Ipsum is simply dummy text of the
-                                            printing and typesetting industry. Lorem Ipsum
-                                            has been the industry's standard dummy text
-                                            ever since the 1500s, when an unknown printer
-                                            took a galley of type and scrambled it
-                                          </li>
+                                          <div class="calendarDropdown">
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Appointment Type
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Clinical
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Date Time
+                                              </div>
+                                              <div class="rightWrapper">
+                                                December 12, 2021 12:00 PM
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Coordinator
+                                              </div>
+                                              <div class="rightWrapper">
+                                                <router-link
+                                                  to="patients-summary"
+                                                >
+                                                  Steve Smith
+                                                </router-link>
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Program
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Program 1
+                                              </div>
+                                            </div>
+                                            <div class="notesWrapper">
+                                              <span>Notes</span>
+                                              <p>
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                              </p>
+                                            </div>
+                                            <div class="createTask">
+                                              <a-tooltip placement="left">
+                                                <template #title>
+                                                  <span>Add Task</span>
+                                                </template>
+                                                <router-link to="tasks"
+                                                  ><FileAddOutlined
+                                                /></router-link>
+                                              </a-tooltip>
+                                            </div>
+                                          </div>
                                         </a-menu-item>
                                       </a-menu>
                                     </template>
@@ -944,7 +2138,10 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a class="ant-dropdown-link three" @click.prevent>
+                                    <a
+                                      class="ant-dropdown-link three"
+                                      @click.prevent
+                                    >
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -955,20 +2152,63 @@
                                     <template #overlay>
                                       <a-menu>
                                         <a-menu-item key="1">
-                                          <li>
-                                            <img
-                                              src="../../assets/images/profile-1.jpg"
-                                              alt=""
-                                            />
-                                            <span>Jane Doe</span>
-                                          </li>
-                                          <li>
-                                            Lorem Ipsum is simply dummy text of the
-                                            printing and typesetting industry. Lorem Ipsum
-                                            has been the industry's standard dummy text
-                                            ever since the 1500s, when an unknown printer
-                                            took a galley of type and scrambled it
-                                          </li>
+                                          <div class="calendarDropdown">
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Appointment Type
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Clinical
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Date Time
+                                              </div>
+                                              <div class="rightWrapper">
+                                                December 12, 2021 12:00 PM
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Coordinator
+                                              </div>
+                                              <div class="rightWrapper">
+                                                <router-link
+                                                  to="patients-summary"
+                                                >
+                                                  Steve Smith
+                                                </router-link>
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Program
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Program 1
+                                              </div>
+                                            </div>
+                                            <div class="notesWrapper">
+                                              <span>Notes</span>
+                                              <p>
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                              </p>
+                                            </div>
+                                            <div class="createTask">
+                                              <a-tooltip placement="left">
+                                                <template #title>
+                                                  <span>Add Task</span>
+                                                </template>
+                                                <router-link to="tasks"
+                                                  ><FileAddOutlined
+                                                /></router-link>
+                                              </a-tooltip>
+                                            </div>
+                                          </div>
                                         </a-menu-item>
                                       </a-menu>
                                     </template>
@@ -983,7 +2223,10 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a class="ant-dropdown-link one" @click.prevent>
+                                    <a
+                                      class="ant-dropdown-link one"
+                                      @click.prevent
+                                    >
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -994,20 +2237,63 @@
                                     <template #overlay>
                                       <a-menu>
                                         <a-menu-item key="1">
-                                          <li>
-                                            <img
-                                              src="../../assets/images/profile-1.jpg"
-                                              alt=""
-                                            />
-                                            <span>Jane Doe</span>
-                                          </li>
-                                          <li>
-                                            Lorem Ipsum is simply dummy text of the
-                                            printing and typesetting industry. Lorem Ipsum
-                                            has been the industry's standard dummy text
-                                            ever since the 1500s, when an unknown printer
-                                            took a galley of type and scrambled it
-                                          </li>
+                                          <div class="calendarDropdown">
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Appointment Type
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Clinical
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Date Time
+                                              </div>
+                                              <div class="rightWrapper">
+                                                December 12, 2021 12:00 PM
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Coordinator
+                                              </div>
+                                              <div class="rightWrapper">
+                                                <router-link
+                                                  to="patients-summary"
+                                                >
+                                                  Steve Smith
+                                                </router-link>
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Program
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Program 1
+                                              </div>
+                                            </div>
+                                            <div class="notesWrapper">
+                                              <span>Notes</span>
+                                              <p>
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                              </p>
+                                            </div>
+                                            <div class="createTask">
+                                              <a-tooltip placement="left">
+                                                <template #title>
+                                                  <span>Add Task</span>
+                                                </template>
+                                                <router-link to="tasks"
+                                                  ><FileAddOutlined
+                                                /></router-link>
+                                              </a-tooltip>
+                                            </div>
+                                          </div>
                                         </a-menu-item>
                                       </a-menu>
                                     </template>
@@ -1030,7 +2316,10 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a class="ant-dropdown-link four" @click.prevent>
+                                    <a
+                                      class="ant-dropdown-link four"
+                                      @click.prevent
+                                    >
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -1041,20 +2330,63 @@
                                     <template #overlay>
                                       <a-menu>
                                         <a-menu-item key="1">
-                                          <li>
-                                            <img
-                                              src="../../assets/images/profile-1.jpg"
-                                              alt=""
-                                            />
-                                            <span>Jane Doe</span>
-                                          </li>
-                                          <li>
-                                            Lorem Ipsum is simply dummy text of the
-                                            printing and typesetting industry. Lorem Ipsum
-                                            has been the industry's standard dummy text
-                                            ever since the 1500s, when an unknown printer
-                                            took a galley of type and scrambled it
-                                          </li>
+                                          <div class="calendarDropdown">
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Appointment Type
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Clinical
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Date Time
+                                              </div>
+                                              <div class="rightWrapper">
+                                                December 12, 2021 12:00 PM
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Coordinator
+                                              </div>
+                                              <div class="rightWrapper">
+                                                <router-link
+                                                  to="patients-summary"
+                                                >
+                                                  Steve Smith
+                                                </router-link>
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Program
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Program 1
+                                              </div>
+                                            </div>
+                                            <div class="notesWrapper">
+                                              <span>Notes</span>
+                                              <p>
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                              </p>
+                                            </div>
+                                            <div class="createTask">
+                                              <a-tooltip placement="left">
+                                                <template #title>
+                                                  <span>Add Task</span>
+                                                </template>
+                                                <router-link to="tasks"
+                                                  ><FileAddOutlined
+                                                /></router-link>
+                                              </a-tooltip>
+                                            </div>
+                                          </div>
                                         </a-menu-item>
                                       </a-menu>
                                     </template>
@@ -1066,7 +2398,10 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a class="ant-dropdown-link one" @click.prevent>
+                                    <a
+                                      class="ant-dropdown-link one"
+                                      @click.prevent
+                                    >
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -1077,20 +2412,63 @@
                                     <template #overlay>
                                       <a-menu>
                                         <a-menu-item key="1">
-                                          <li>
-                                            <img
-                                              src="../../assets/images/profile-1.jpg"
-                                              alt=""
-                                            />
-                                            <span>Jane Doe</span>
-                                          </li>
-                                          <li>
-                                            Lorem Ipsum is simply dummy text of the
-                                            printing and typesetting industry. Lorem Ipsum
-                                            has been the industry's standard dummy text
-                                            ever since the 1500s, when an unknown printer
-                                            took a galley of type and scrambled it
-                                          </li>
+                                          <div class="calendarDropdown">
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Appointment Type
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Clinical
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Date Time
+                                              </div>
+                                              <div class="rightWrapper">
+                                                December 12, 2021 12:00 PM
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Coordinator
+                                              </div>
+                                              <div class="rightWrapper">
+                                                <router-link
+                                                  to="patients-summary"
+                                                >
+                                                  Steve Smith
+                                                </router-link>
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Program
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Program 1
+                                              </div>
+                                            </div>
+                                            <div class="notesWrapper">
+                                              <span>Notes</span>
+                                              <p>
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                              </p>
+                                            </div>
+                                            <div class="createTask">
+                                              <a-tooltip placement="left">
+                                                <template #title>
+                                                  <span>Add Task</span>
+                                                </template>
+                                                <router-link to="tasks"
+                                                  ><FileAddOutlined
+                                                /></router-link>
+                                              </a-tooltip>
+                                            </div>
+                                          </div>
                                         </a-menu-item>
                                       </a-menu>
                                     </template>
@@ -1105,7 +2483,10 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a class="ant-dropdown-link three" @click.prevent>
+                                    <a
+                                      class="ant-dropdown-link three"
+                                      @click.prevent
+                                    >
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -1116,20 +2497,63 @@
                                     <template #overlay>
                                       <a-menu>
                                         <a-menu-item key="1">
-                                          <li>
-                                            <img
-                                              src="../../assets/images/profile-1.jpg"
-                                              alt=""
-                                            />
-                                            <span>Jane Doe</span>
-                                          </li>
-                                          <li>
-                                            Lorem Ipsum is simply dummy text of the
-                                            printing and typesetting industry. Lorem Ipsum
-                                            has been the industry's standard dummy text
-                                            ever since the 1500s, when an unknown printer
-                                            took a galley of type and scrambled it
-                                          </li>
+                                          <div class="calendarDropdown">
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Appointment Type
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Clinical
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Date Time
+                                              </div>
+                                              <div class="rightWrapper">
+                                                December 12, 2021 12:00 PM
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Coordinator
+                                              </div>
+                                              <div class="rightWrapper">
+                                                <router-link
+                                                  to="patients-summary"
+                                                >
+                                                  Steve Smith
+                                                </router-link>
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Program
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Program 1
+                                              </div>
+                                            </div>
+                                            <div class="notesWrapper">
+                                              <span>Notes</span>
+                                              <p>
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                              </p>
+                                            </div>
+                                            <div class="createTask">
+                                              <a-tooltip placement="left">
+                                                <template #title>
+                                                  <span>Add Task</span>
+                                                </template>
+                                                <router-link to="tasks"
+                                                  ><FileAddOutlined
+                                                /></router-link>
+                                              </a-tooltip>
+                                            </div>
+                                          </div>
                                         </a-menu-item>
                                       </a-menu>
                                     </template>
@@ -1141,7 +2565,10 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a class="ant-dropdown-link one" @click.prevent>
+                                    <a
+                                      class="ant-dropdown-link one"
+                                      @click.prevent
+                                    >
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -1152,20 +2579,63 @@
                                     <template #overlay>
                                       <a-menu>
                                         <a-menu-item key="1">
-                                          <li>
-                                            <img
-                                              src="../../assets/images/profile-1.jpg"
-                                              alt=""
-                                            />
-                                            <span>Jane Doe</span>
-                                          </li>
-                                          <li>
-                                            Lorem Ipsum is simply dummy text of the
-                                            printing and typesetting industry. Lorem Ipsum
-                                            has been the industry's standard dummy text
-                                            ever since the 1500s, when an unknown printer
-                                            took a galley of type and scrambled it
-                                          </li>
+                                          <div class="calendarDropdown">
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Appointment Type
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Clinical
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Date Time
+                                              </div>
+                                              <div class="rightWrapper">
+                                                December 12, 2021 12:00 PM
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Coordinator
+                                              </div>
+                                              <div class="rightWrapper">
+                                                <router-link
+                                                  to="patients-summary"
+                                                >
+                                                  Steve Smith
+                                                </router-link>
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Program
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Program 1
+                                              </div>
+                                            </div>
+                                            <div class="notesWrapper">
+                                              <span>Notes</span>
+                                              <p>
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                              </p>
+                                            </div>
+                                            <div class="createTask">
+                                              <a-tooltip placement="left">
+                                                <template #title>
+                                                  <span>Add Task</span>
+                                                </template>
+                                                <router-link to="tasks"
+                                                  ><FileAddOutlined
+                                                /></router-link>
+                                              </a-tooltip>
+                                            </div>
+                                          </div>
                                         </a-menu-item>
                                       </a-menu>
                                     </template>
@@ -1182,7 +2652,10 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a class="ant-dropdown-link three" @click.prevent>
+                                    <a
+                                      class="ant-dropdown-link three"
+                                      @click.prevent
+                                    >
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -1193,20 +2666,63 @@
                                     <template #overlay>
                                       <a-menu>
                                         <a-menu-item key="1">
-                                          <li>
-                                            <img
-                                              src="../../assets/images/profile-1.jpg"
-                                              alt=""
-                                            />
-                                            <span>Jane Doe</span>
-                                          </li>
-                                          <li>
-                                            Lorem Ipsum is simply dummy text of the
-                                            printing and typesetting industry. Lorem Ipsum
-                                            has been the industry's standard dummy text
-                                            ever since the 1500s, when an unknown printer
-                                            took a galley of type and scrambled it
-                                          </li>
+                                          <div class="calendarDropdown">
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Appointment Type
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Clinical
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Date Time
+                                              </div>
+                                              <div class="rightWrapper">
+                                                December 12, 2021 12:00 PM
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Coordinator
+                                              </div>
+                                              <div class="rightWrapper">
+                                                <router-link
+                                                  to="patients-summary"
+                                                >
+                                                  Steve Smith
+                                                </router-link>
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Program
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Program 1
+                                              </div>
+                                            </div>
+                                            <div class="notesWrapper">
+                                              <span>Notes</span>
+                                              <p>
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                              </p>
+                                            </div>
+                                            <div class="createTask">
+                                              <a-tooltip placement="left">
+                                                <template #title>
+                                                  <span>Add Task</span>
+                                                </template>
+                                                <router-link to="tasks"
+                                                  ><FileAddOutlined
+                                                /></router-link>
+                                              </a-tooltip>
+                                            </div>
+                                          </div>
                                         </a-menu-item>
                                       </a-menu>
                                     </template>
@@ -1227,7 +2743,10 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a class="ant-dropdown-link four" @click.prevent>
+                                    <a
+                                      class="ant-dropdown-link four"
+                                      @click.prevent
+                                    >
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -1238,20 +2757,63 @@
                                     <template #overlay>
                                       <a-menu>
                                         <a-menu-item key="1">
-                                          <li>
-                                            <img
-                                              src="../../assets/images/profile-1.jpg"
-                                              alt=""
-                                            />
-                                            <span>Jane Doe</span>
-                                          </li>
-                                          <li>
-                                            Lorem Ipsum is simply dummy text of the
-                                            printing and typesetting industry. Lorem Ipsum
-                                            has been the industry's standard dummy text
-                                            ever since the 1500s, when an unknown printer
-                                            took a galley of type and scrambled it
-                                          </li>
+                                          <div class="calendarDropdown">
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Appointment Type
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Clinical
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Date Time
+                                              </div>
+                                              <div class="rightWrapper">
+                                                December 12, 2021 12:00 PM
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Coordinator
+                                              </div>
+                                              <div class="rightWrapper">
+                                                <router-link
+                                                  to="patients-summary"
+                                                >
+                                                  Steve Smith
+                                                </router-link>
+                                              </div>
+                                            </div>
+                                            <div class="itemWrapper">
+                                              <div class="leftWrapper">
+                                                Program
+                                              </div>
+                                              <div class="rightWrapper">
+                                                Program 1
+                                              </div>
+                                            </div>
+                                            <div class="notesWrapper">
+                                              <span>Notes</span>
+                                              <p>
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet,
+                                                consectetur adipisicing elit.
+                                              </p>
+                                            </div>
+                                            <div class="createTask">
+                                              <a-tooltip placement="left">
+                                                <template #title>
+                                                  <span>Add Task</span>
+                                                </template>
+                                                <router-link to="tasks"
+                                                  ><FileAddOutlined
+                                                /></router-link>
+                                              </a-tooltip>
+                                            </div>
+                                          </div>
                                         </a-menu-item>
                                       </a-menu>
                                     </template>
@@ -1297,7 +2859,11 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <label>Start Date</label>
-            <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
+            <a-date-picker
+              v-model:value="value1"
+              :size="size"
+              style="width: 100%"
+            />
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
@@ -1338,10 +2904,12 @@
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
 import { defineComponent, ref } from "vue";
+import { FileAddOutlined } from "@ant-design/icons-vue";
 export default {
   components: {
     Header,
     Sidebar,
+    FileAddOutlined,
   },
 
   setup() {

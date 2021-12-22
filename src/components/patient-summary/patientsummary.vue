@@ -299,8 +299,8 @@
               <div class="thumbDesc patientTimeline">
                 <a-timeline>
                   <a-timeline-item>
-                    <template #dot><FolderOpenOutlined /></template>
-                   
+                    <template #dot><FolderOpenOutlined/></template>
+
                     <a-tabs v-model:activeKey="activeKey">
                       <a-tab-pane key="1" tab="Visits"></a-tab-pane>
                       <a-tab-pane
@@ -313,127 +313,154 @@
                       <a-tab-pane key="5" tab="Notifications"></a-tab-pane>
                     </a-tabs>
                   </a-timeline-item>
-                  <a-timeline-item color="yellow"
-                    > <template #dot><FilePdfOutlined /></template>Solve initial network problems 2015-09-01</a-timeline-item
+                  <a-timeline-item color="blue">
+                    <template #dot><FilePdfOutlined class="yellowIcon"/></template>
+                    <div class="timelineInner">
+                      <div class="timelineHeader">
+                        <div class="title">
+                          <h4>Lorem Ipsum</h4>
+                          <a-typography-text mark>Read</a-typography-text>
+                          <span class="time">12:00 PM</span>
+                        </div>
+                        <div class="userImg">
+                          <img
+                            src="../../assets/images/profile-4.jpg"
+                            alt="image"
+                          />
+                        </div>
+                      </div>
+                      <div class="timelineBody">
+                        <div class="content">
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit.... <a href="#">more</a>
+                        </div>
+                        <MailOutlined />
+                      </div>
+                    </div>
+                  </a-timeline-item>
+                  <a-timeline-item color="red">
+                    <template #dot><HeatMapOutlined  class="redIcon"/></template>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit
+                    culpa assumenda quidem magnam
+                  </a-timeline-item>
+                  <a-timeline-item color="red">
+                    <template #dot><ClockCircleOutlined class="orangeIcon"/></template>
+                    <div class="timelineInner">
+                      <div class="timelineHeader">
+                        <div class="title">
+                          <h4>Lorem Ipsum</h4>
+                          <a-typography-text mark>Read</a-typography-text>
+                          <span class="time">12:00 PM</span>
+                        </div>
+                        <div class="userImg">
+                          <img
+                            src="../../assets/images/profile-4.jpg"
+                            alt="image"
+                          />
+                        </div>
+                      </div>
+                      <div class="timelineBody">
+                        <div class="content">
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit.... <a href="#">more</a>
+                        </div>
+                        <MailOutlined />
+                      </div>
+                    </div>
+                  </a-timeline-item>
+                  <a-timeline-item color="red">
+                    <template #dot><BellOutlined class="yellowIcon"/></template>
+                   <div class="timelineInner">
+                      <div class="timelineHeader">
+                        <div class="title">
+                          <h4>Lorem Ipsum</h4>
+                          <a-typography-text mark>Read</a-typography-text>
+                          <span class="time">12:00 PM</span>
+                        </div>
+                        <div class="userImg">
+                          <img
+                            src="../../assets/images/profile-4.jpg"
+                            alt="image"
+                          />
+                        </div>
+                      </div>
+                      <div class="timelineBody">
+                        <div class="content">
+                          Lorem ipsum dolor sit amet consectetur adipisicing elit.... <a href="#">more</a>
+                        </div>
+                        <MailOutlined />
+                      </div>
+                    </div>
+                  </a-timeline-item>
+                  <a-timeline-item class="dateOuter"
+                    ><template #dot><ClockCircleOutlined class="orangeIcon"/></template>
+                    <div class="date">
+                      <span>Dec 12, 2021</span>
+                    </div></a-timeline-item
+                  >
+                  <a-timeline-item color="blue">
+                    <template #dot><FilePdfOutlined class="yellowIcon"/></template>Lorem ipsum
+                   <div class="timelineInner">
+                      <div class="timelineHeader">
+                        <div class="title">
+                          <h4>Lorem Ipsum</h4>
+                          <a-typography-text mark>Read</a-typography-text>
+                          <span class="time">12:00 PM</span>
+                        </div>
+                        <div class="userImg">
+                          <img
+                            src="../../assets/images/profile-4.jpg"
+                            alt="image"
+                          />
+                        </div>
+                      </div>
+                      <div class="timelineBody">
+                        <div class="content">
+                          Lorem ipsum dolor sit amet consectetur adipisicing elit.... <a href="#">more</a>
+                        </div>
+                        <MailOutlined />
+                      </div>
+                    </div></a-timeline-item
                   >
                   <a-timeline-item color="red">
-                    <template #dot><HeatMapOutlined /></template>
-                    Technical testing 2015-09-01
+                    <template #dot><HeatMapOutlined class="redIcon"/></template>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit
+                    culpa assumenda quidem magnam fuga quaerat pariatur labore
+                    exercitationem voluptate iusto, repellat debitis quis itaque
+                    nulla numquam, fugiat quas ullam. Minus.
                   </a-timeline-item>
-                  <a-timeline-item
-                    >Network problems being solved 2015-09-01</a-timeline-item
-                  >
+                  <a-timeline-item color="red">
+                    <template #dot><ClockCircleOutlined class="orangeIcon"/></template>
+                   <div class="timelineInner">
+                      <div class="timelineHeader">
+                        <div class="title">
+                          <h4>Lorem Ipsum</h4>
+                          <a-typography-text mark>Read</a-typography-text>
+                          <span class="time">12:00 PM</span>
+                        </div>
+                        <div class="userImg">
+                          <img
+                            src="../../assets/images/profile-4.jpg"
+                            alt="image"
+                          />
+                        </div>
+                      </div>
+                      <div class="timelineBody">
+                        <div class="content">
+                          Lorem ipsum dolor sit amet consectetur adipisicing elit.... <a href="#">more</a>
+                        </div>
+                        <MailOutlined />
+                      </div>
+                    </div>
+                  </a-timeline-item>
+                  <a-timeline-item color="red">
+                    <template #dot><BellOutlined class="yellowIcon"/></template>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit
+                    culpa assumenda quidem magnam fuga quaerat pariatur labore
+                    exercitationem voluptate iusto, repellat debitis quis itaque
+                    nulla numquam, fugiat quas ullam. Minus.
+                  </a-timeline-item>
                 </a-timeline>
-                <!-- <a-checkbox-group v-model:value3="value3">
-                  <a-row>
-                    <a-col :span="4">
-                      <a-checkbox value3="A"
-                        >Visits <HeatMapOutlined
-                      /></a-checkbox>
-                    </a-col>
-                    <a-col :span="5">
-                      <a-checkbox value3="B"
-                        >Appointments <ClockCircleOutlined
-                      /></a-checkbox>
-                    </a-col>
-                    <a-col :span="4">
-                      <a-checkbox value3="C"
-                        >Notes <FolderOpenOutlined
-                      /></a-checkbox>
-                    </a-col>
-                    <a-col :span="5">
-                      <a-checkbox value3="D"
-                        >Documents <FilePdfOutlined
-                      /></a-checkbox>
-                    </a-col>
-                    <a-col :span="5">
-                      <a-checkbox value3="E"
-                        >Notifications <BellOutlined
-                      /></a-checkbox>
-                    </a-col>
-                  </a-row>
-                </a-checkbox-group> -->
-                <a-timeline mode="alternate">
-                  <a-timeline-item>
-                    <template #dot
-                      ><HeatMapOutlined style="font-size: 16px"
-                    /></template>
-                    Create a services site 2015-09-01</a-timeline-item
-                  >
-                  <a-timeline-item color="green"
-                    >Solve initial network problems 2015-09-01</a-timeline-item
-                  >
-                  <a-timeline-item>
-                    <template #dot
-                      ><ClockCircleOutlined style="font-size: 16px"
-                    /></template>
-                    Sed ut perspiciatis unde omnis iste natus error sit
-                    voluptatem accusantium doloremque laudantium, totam rem
-                    aperiam, eaque ipsa quae ab illo inventore veritatis et
-                    quasi architecto beatae vitae dicta sunt explicabo.
-                  </a-timeline-item>
-                  <a-timeline-item color="red"
-                    >Network problems being solved 2015-09-01</a-timeline-item
-                  >
-                  <a-timeline-item>
-                    <template #dot
-                      ><HeatMapOutlined style="font-size: 16px"
-                    /></template>
-                    Create a services site 2015-09-01</a-timeline-item
-                  >
-                  <a-timeline-item>
-                    <template #dot
-                      ><ClockCircleOutlined style="font-size: 16px"
-                    /></template>
-                    Technical testing 2015-09-01
-                  </a-timeline-item>
-                  <a-timeline-item
-                    >Create a services site 2015-09-01</a-timeline-item
-                  >
-                  <a-timeline-item color="green"
-                    >Solve initial network problems 2015-09-01</a-timeline-item
-                  >
-                  <a-timeline-item>
-                    <template #dot
-                      ><FolderOpenOutlined style="font-size: 16px"
-                    /></template>
-                    Sed ut perspiciatis unde omnis iste natus error sit
-                    voluptatem accusantium doloremque laudantium, totam rem
-                    aperiam, eaque ipsa quae ab illo inventore veritatis et
-                    quasi architecto beatae vitae dicta sunt explicabo.
-                  </a-timeline-item>
-                  <a-timeline-item color="red"
-                    >Network problems being solved 2015-09-01</a-timeline-item
-                  >
-                  <a-timeline-item
-                    >Create a services site 2015-09-01</a-timeline-item
-                  >
-                  <a-timeline-item>
-                    <template #dot
-                      ><FilePdfOutlined style="font-size: 16px"
-                    /></template>
-                    Technical testing 2015-09-01
-                  </a-timeline-item>
-                  <a-timeline-item>
-                    <template #dot
-                      ><ClockCircleOutlined style="font-size: 16px"
-                    /></template>
-                    Sed ut perspiciatis unde omnis iste natus error sit
-                    voluptatem accusantium doloremque laudantium, totam rem
-                    aperiam, eaque ipsa quae ab illo inventore veritatis et
-                    quasi architecto beatae vitae dicta sunt explicabo.
-                  </a-timeline-item>
-                  <a-timeline-item color="red"
-                    >Network problems being solved 2015-09-01</a-timeline-item
-                  >
-                  <a-timeline-item>
-                    <template #dot
-                      ><BellOutlined style="font-size: 16px"
-                    /></template>
-                    Create a services site 2015-09-01</a-timeline-item
-                  >
-                </a-timeline>
-                -->
               </div>
             </a-col>
           </a-row>
@@ -1519,9 +1546,8 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { useRouter } from "vue-router";
 import dayjs from "dayjs";
-import { defineComponent, ref, computed } from "vue";
+import { ref, computed } from "vue";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -1531,6 +1557,7 @@ import {
   FolderOpenOutlined,
   FilePdfOutlined,
   BellOutlined,
+  MailOutlined,
 } from "@ant-design/icons-vue";
 const OPTIONSTAG = ["Manger", "Billing Admin", "User Admin"];
 const value = ref(dayjs("12:08", "HH:mm"));
@@ -1925,6 +1952,7 @@ export default {
     FolderOpenOutlined,
     FilePdfOutlined,
     BellOutlined,
+    MailOutlined,
   },
   data: function () {
     return {
@@ -1975,7 +2003,7 @@ export default {
       localStorage.removeItem("auth");
       localStorage.clear();
     }
-    const activeKey5 = ref(["1"]);
+    // const activeKey5 = ref(["1"]);
     const checked = ref(false);
 
     const visible = ref(false);
