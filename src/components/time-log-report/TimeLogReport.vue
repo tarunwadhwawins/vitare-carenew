@@ -78,8 +78,18 @@
                     /></span>
                   </template>
                   <template #actions>
+                  <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Edit</span>
+                    </template>
                     <a class="icons"><EditOutlined /></a>
+                  </a-tooltip>
+                  <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Delete</span>
+                    </template>
                     <a class="icons"> <DeleteOutlined /></a>
+                  </a-tooltip>
                   </template>
                   <template #active="key">
                     <a-switch v-model:checked="checked[key.record.key]" />

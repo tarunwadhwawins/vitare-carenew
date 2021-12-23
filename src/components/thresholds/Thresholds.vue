@@ -11,62 +11,14 @@
           <div class="common-bg">
             <a-row>
               <a-col :span="24">
-                <h2 class="pageTittle">Thresholds</h2>
-              </a-col>
-            </a-row>
-            <a-row :gutter="24">
-              <a-col :sm="6" :xs="24">
-                <div class="form-group">
-                  <label>Threshold Group</label>
-                  <a-input v-model="value" size="large" />
-                </div>
-              </a-col>
-              <a-col :sm="6" :xs="24">
-                <div class="form-group">
-                  <label>Type </label>
-                  <a-select
-                    ref="select"
-                    v-model="value1"
-                    style="width: 100%"
-                    size="large"
-                    @focus="focus"
-                    @change="handleChange"
-                  >
-                    <a-select-option value="Blood"
-                      >Blood Glucose</a-select-option
-                    >
-                    <a-select-option value="Systolic"
-                      >Systolic BP</a-select-option
-                    >
-                    <a-select-option value="Diastolic"
-                      >Diastolic BP</a-select-option
-                    >
-                    <a-select-option value="Pulse"
-                      >Pulse (BP Cuff)</a-select-option
-                    >
-                    <a-select-option value="Weight">Weight</a-select-option>
-                    <a-select-option value="Spo2">Spo2</a-select-option>
-                  </a-select>
-                </div>
-              </a-col>
-              <a-col :sm="6" :xs="24">
-                <div class="form-group">
-                  <label>High Limit </label>
-                  <a-input v-model="value" size="large" />
-                </div>
-              </a-col>
-              <a-col :sm="6" :xs="24">
-                <div class="form-group">
-                  <label>Low Limit </label>
-                  <a-input v-model="value" size="large" />
-                </div>
-              </a-col>
-              <a-col :sm="24" :xs="24">
-                <div class="mb-24">
-                  <a-button class="btn primaryBtn" @click="showModal"
-                    >Add</a-button
+                 <h2 class="pageTittle">Thresholds
+
+                  <div class="commonBtn">
+                   <a-button class="btn primaryBtn" @click="showModal"
+                    >Add New Threshold</a-button
                   >
                 </div>
+                </h2>
               </a-col>
             </a-row>
             <a-row>
@@ -93,8 +45,18 @@
                   @change="onChange"
                 >
                   <template #actions>
+                  <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Edit</span>
+                    </template>
                     <a class="icons"><EditOutlined /></a>
+                  </a-tooltip>
+                  <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Delete</span>
+                    </template>
                     <a class="icons"> <DeleteOutlined /></a>
+                  </a-tooltip>
                   </template>
                   <template #active="key">
                     <a-switch v-model:checked="checked[key.record.key]" />
@@ -106,6 +68,7 @@
         </a-layout-content>
       </a-layout>
     </a-layout>
+    <Thresholds v-model:visible="Thresholds" @ok="handleOk" />
   </div>
 </template>
 <script>
@@ -113,6 +76,8 @@ import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
 import { defineComponent, ref } from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import Thresholds from "@/components/modals/Thresholds";
+
 const renderContent = ({ text, index }) => {
   const obj = {
     children: text,
@@ -310,26 +275,26 @@ export default {
     Sidebar,
     DeleteOutlined,
     EditOutlined,
+    Thresholds,
   },
 
   setup() {
     const checked = ref([false]);
 
-    const visible = ref(false);
+    const Thresholds = ref(false);
     const showModal = () => {
-      visible.value = true;
+      Thresholds.value = true;
     };
-
     const handleOk = (e) => {
       console.log(e);
-      visible.value = false;
+      Thresholds.value = false;
     };
     return {
       columns,
       data,
       checked,
 
-      visible,
+      Thresholds,
       showModal,
       handleOk,
     };

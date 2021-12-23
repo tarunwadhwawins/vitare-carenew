@@ -169,7 +169,7 @@
                       height="250"
                       :options="Incompleteoption"
                       :series="Incompleteseries"
-                       @click="clickHandler2"
+                      @click="clickHandler2"
                     ></apexchart>
                   </a-card>
                 </a-col>
@@ -219,7 +219,7 @@
                       height="250"
                       :options="teamoption"
                       :series="teamseries"
-                       @click="clickHandler"
+                      @click="clickHandler"
                     ></apexchart>
                   </a-card>
                 </a-col>
@@ -354,20 +354,37 @@
                     @change="onChange"
                   >
                     <template #name="text">
-                      <router-link to="#">{{ text.text }}</router-link>
+                      <router-link to="#" @click="showModal">{{ text.text }}</router-link>
                     </template>
                     <template #assigned="text">
-                      <router-link to="corrdinator-summary">{{ text.text }}</router-link>
+                      <router-link to="corrdinator-summary">{{
+                        text.text
+                      }}</router-link>
                     </template>
                     <template #status="key">
                       <a-switch v-model:checked="checked[key.record.key]" />
                     </template>
                     <template #action>
-                      <a class="icons"><EditOutlined /></a>
-                      <a class="icons"> <DeleteOutlined /></a>
-                      <router-link to="appointment-calendar" class="icons">
-                        <CalendarOutlined
-                      /></router-link>
+                      <a-tooltip placement="bottom">
+                        <template #title>
+                          <span>Edit</span>
+                        </template>
+                        <a class="icons"><EditOutlined /></a>
+                      </a-tooltip>
+                      <a-tooltip placement="bottom">
+                        <template #title>
+                          <span>Delete</span>
+                        </template>
+                        <a class="icons"> <DeleteOutlined /></a>
+                      </a-tooltip>
+                      <a-tooltip placement="bottom">
+                        <template #title>
+                          <span>Cearte Appointment</span>
+                        </template>
+                        <router-link to="appointment-calendar" class="icons">
+                          <CalendarOutlined
+                        /></router-link>
+                      </a-tooltip>
                     </template>
                   </a-table>
                 </a-col>
@@ -492,7 +509,7 @@ const columns = [
         value: "	Devin",
       },
     ],
-     slots: {
+    slots: {
       customRender: "assigned",
     },
     onFilter: (value, record) => record.name.indexOf(value) === 0,

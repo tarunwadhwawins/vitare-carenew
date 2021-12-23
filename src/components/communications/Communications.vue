@@ -142,10 +142,21 @@
                     <a-card title="Call Planned" class="common-card">
                       <apexchart
                         type="bar"
-                        height="245"
+                        height="350"
                         :options="calloption"
                         :series="callseries"
                         @click="clickHandler"
+                      ></apexchart>
+                    </a-card>
+                  </a-col>
+                  <a-col :sm="12" :xs="24">
+                    <a-card title="Call Queue" class="common-card">
+                      <apexchart
+                        type="bar"
+                        height="350"
+                        :options="callqueoption"
+                        :series="callqueseries"
+                        @click="clickHandler2"
                       ></apexchart>
                     </a-card>
                   </a-col>
@@ -184,22 +195,12 @@
                       </a-tabs>
                     </a-card>
                   </a-col>
-                  <a-col :sm="12" :xs="24">
-                    <a-card title="Call Queue" class="common-card">
-                      <apexchart
-                        type="bar"
-                        height="350"
-                        :options="callqueoption"
-                        :series="callqueseries"
-                        @click="clickHandler2"
-                      ></apexchart>
-                    </a-card>
-                  </a-col>
+
                   <a-col :sm="12" :xs="24">
                     <a-card title="Communication Type" class="common-card">
                       <apexchart
                         type="area"
-                        height="350"
+                        height="245"
                         :options="chartOptions"
                         :series="series"
                         @click="clickHandler2"

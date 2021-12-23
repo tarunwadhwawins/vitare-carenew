@@ -94,9 +94,24 @@
                 @change="onChange"
               >
                 <template #action>
-                  <a class="icons"><EyeOutlined /></a>
-                  <a class="icons"><EditOutlined /></a>
-                  <a class="icons"> <DeleteOutlined /></a>
+                  <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>View</span>
+                    </template>
+                    <a class="icons"><EyeOutlined /></a>
+                  </a-tooltip>
+                  <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Edit</span>
+                    </template>
+                    <a class="icons"><EditOutlined /></a>
+                  </a-tooltip>
+                  <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Delete</span>
+                    </template>
+                    <a class="icons"> <DeleteOutlined /></a>
+                  </a-tooltip>
                 </template>
                 <template #first="text">
                   <router-link to="corrdinator-summary">{{
@@ -389,7 +404,7 @@
             </a-row>
             <a-row :gutter="24">
               <a-col :span="24">
-                 <a-table
+                <a-table
                   :pagination="false"
                   :columns="rolecolumns"
                   :data-source="roledata"
@@ -811,7 +826,7 @@ const columns4 = [
     title: "Provider Name",
     dataIndex: "name",
   },
-  
+
   {
     title: "Actions",
     dataIndex: "actions",
@@ -824,7 +839,7 @@ const data4 = [
   {
     key: "1",
     name: "Provider 1",
-   
+
     actions: "",
   },
   {
