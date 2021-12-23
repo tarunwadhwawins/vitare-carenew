@@ -25,17 +25,11 @@
                   <a-button class="btn primaryBtn" @click="showModal"
                     >Send Message</a-button
                   >
-                  <!-- <a-button @click="showEmailModal" >Email</a-button> -->
-
                   <a-tooltip placement="bottom">
                     <template #title>
                       <span>Email</span>
                     </template>
-                    <a-button
-                      type="primary"
-                      :size="small"
-                      @click="openNotification"
-                    >
+                    <a-button type="primary" :size="small" @click="openNotification">
                       <template #icon>
                         <MailOutlined />
                       </template>
@@ -46,11 +40,7 @@
                     <template #title>
                       <span>SMS</span>
                     </template>
-                    <a-button
-                      type="primary"
-                      :size="small"
-                      @click="openNotification1"
-                    >
+                    <a-button type="primary" :size="small" @click="openNotification1">
                       <template #icon>
                         <MessageOutlined />
                       </template>
@@ -61,11 +51,7 @@
                     <template #title>
                       <span>Reminder</span>
                     </template>
-                    <a-button
-                      type="primary"
-                      :size="small"
-                      @click="openNotification2"
-                    >
+                    <a-button type="primary" :size="small" @click="openNotification2">
                       <template #icon>
                         <AlertOutlined />
                       </template>
@@ -76,17 +62,12 @@
                     <template #title>
                       <span>Call</span>
                     </template>
-                    <a-button
-                      type="primary"
-                      :size="small"
-                      @click="openNotification3"
-                    >
+                    <a-button type="primary" :size="small" @click="openNotification3">
                       <template #icon>
                         <PhoneOutlined />
                       </template>
                     </a-button>
                   </a-tooltip>
-
                   <!-- <a-button @click="openNotification">Email</a-button>
                   <a-button @click="openNotification1">SMS</a-button>
                   <a-button @click="openNotification2">Reminder</a-button>
@@ -171,11 +152,7 @@
                             </template>
                           </a-table>
                         </a-tab-pane>
-                        <a-tab-pane
-                          key="2"
-                          tab="Future Appointments"
-                          force-render
-                        >
+                        <a-tab-pane key="2" tab="Future Appointments" force-render>
                           <a-table
                             :columns="columns6"
                             :data-source="data6"
@@ -241,9 +218,7 @@
                         <a class="icons"><MessageOutlined /></a>
                       </template>
                       <template #patient="text">
-                        <router-link to="patients-summary">{{
-                          text.text
-                        }}</router-link>
+                        <router-link to="patients-summary">{{ text.text }}</router-link>
                       </template>
                       <template #staff="text">
                         <router-link to="corrdinator-summary">{{
@@ -265,18 +240,10 @@
                       </template>
 
                       <template #type="{ text }">
-                        <a class="icons" v-if="text == 'comment'"
-                          ><CommentOutlined
-                        /></a>
-                        <a class="icons" v-if="text == 'voiceMail'"
-                          ><PhoneOutlined
-                        /></a>
-                        <a class="icons" v-if="text == 'sent'"
-                          ><PhoneOutlined
-                        /></a>
-                        <a class="icons" v-if="text == 'mail'"
-                          ><MailOutlined
-                        /></a>
+                        <a class="icons" v-if="text == 'comment'"><CommentOutlined /></a>
+                        <a class="icons" v-if="text == 'voiceMail'"><PhoneOutlined /></a>
+                        <a class="icons" v-if="text == 'sent'"><PhoneOutlined /></a>
+                        <a class="icons" v-if="text == 'mail'"><MailOutlined /></a>
                       </template>
                     </a-table>
                   </a-col>
@@ -289,112 +256,7 @@
       </a-layout>
     </a-layout>
     <!--modal-->
-    <a-modal
-      v-model:visible="visible"
-      max-width="1140px"
-      width="100%"
-      title="Communications"
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>From</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>To</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Patient</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>From</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Message Category</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy"
-                >Appointment Reminder</a-select-option
-              >
-              <a-select-option value="Yiminghe"
-                >Recall Reminder</a-select-option
-              >
-              <a-select-option value="Yiminghe"
-                >Portal Invitation
-              </a-select-option>
-              <a-select-option value="Yiminghe"
-                >Patient Message Notification
-              </a-select-option>
-            </a-select>
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Priority</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">Urgent</a-select-option>
-              <a-select-option value="Yiminghe">Medium</a-select-option>
-              <a-select-option value="Yiminghe">Normal</a-select-option>
-            </a-select>
-          </div>
-        </a-col>
-        <a-col :span="24">
-          <div class="form-group">
-            <label>Message</label>
-            <a-textarea v-model="value2" allow-clear />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
-    <a-modal
-      v-model:visible="emailmodal"
-      style="top: 70px"
-      title="Email"
-      @ok="handleOk"
-    >
-      <template #footer>
-        <a-button type="primary" @ok="handleOk">Ok</a-button>
-      </template>
-      <a-row :gutter="24">
-        <a-col :sm="24" :xs="24">
-          <h2>December 12, 2021 12:00 PM</h2>
-        </a-col>
-        <a-col :sm="24" :xs="24">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore
-            corporis pariatur, porro velit saepe, nostrum iste rem eius ut odio
-            quod quam eaque. Aspernatur saepe libero, eius dignissimos minus
-            enim.
-          </p>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <CommunicationsModal v-model:visible="CommunicationsModal" @ok="handleOk" />
     <!---->
   </div>
 </template>
@@ -405,7 +267,7 @@ import Sidebar from "../layout/sidebar/Sidebar";
 import { defineComponent, ref, h } from "vue";
 import { notification, Button } from "ant-design-vue";
 import { useRouter } from "vue-router";
-
+import CommunicationsModal from "@/components/modals/CommunicationsModal";
 import {
   UserOutlined,
   MessageOutlined,
@@ -561,6 +423,7 @@ export default {
     PhoneOutlined,
     MailOutlined,
     AlertOutlined,
+    CommunicationsModal,
   },
   data: function () {
     return {
@@ -1123,21 +986,8 @@ export default {
         time: "04:15 PM",
       },
     ];
-    const visible = ref(false);
+
     const toggle = ref(true);
-
-    const showModal = () => {
-      visible.value = true;
-    };
-
-    const handleOk = (e) => {
-      console.log(e);
-      visible.value = false;
-    };
-    const emailmodal = ref(false);
-    const showEmailModal = () => {
-      emailmodal.value = true;
-    };
     const openNotification = () => {
       const key = `open${Date.now()}`;
       notification.open({
@@ -1206,10 +1056,21 @@ export default {
         onClose: close,
       });
     };
+
+    const CommunicationsModal = ref(false);
+    const showModal = () => {
+      CommunicationsModal.value = true;
+    };
+    const handleOk = (e) => {
+      console.log(e);
+      CommunicationsModal.value = false;
+    };
+
     return {
-      visible,
+      CommunicationsModal,
       showModal,
       handleOk,
+
       data,
       columns,
       toggle,
@@ -1217,14 +1078,11 @@ export default {
       columns6,
       data5,
       columns5,
-      emailmodal,
       openNotification,
       openNotification1,
       openNotification2,
       openNotification3,
-      showEmailModal,
       clickHandler,
-
       onChange: (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
       },

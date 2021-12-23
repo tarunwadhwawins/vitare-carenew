@@ -141,23 +141,17 @@
                           <a-menu>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked1"
-                                  >Urgent</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked1">Urgent</a-checkbox>
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked2"
-                                  >High</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked2">High</a-checkbox>
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked3"
-                                  >Normal</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked3">Normal</a-checkbox>
                               </div>
                             </a-menu-item>
                           </a-menu>
@@ -183,30 +177,22 @@
                           <a-menu>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked4"
-                                  >Badger</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked4">Badger</a-checkbox>
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked5"
-                                  >Devin</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked5">Devin</a-checkbox>
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked6"
-                                  >Matt</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked6">Matt</a-checkbox>
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked7"
-                                  >John</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked7">John</a-checkbox>
                               </div>
                             </a-menu-item>
                           </a-menu>
@@ -284,16 +270,12 @@
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked11"
-                                  >Comm</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked11">Comm</a-checkbox>
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked12"
-                                  >Admin</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked12">Admin</a-checkbox>
                               </div>
                             </a-menu-item>
                             <a-menu-item>
@@ -357,7 +339,9 @@
                     <template #action>
                       <a class="icons"><EditOutlined /></a>
                       <a class="icons"> <DeleteOutlined /></a>
-                      <router-link to="appointment-calendar" class="icons"> <CalendarOutlined /></router-link>
+                      <router-link to="appointment-calendar" class="icons">
+                        <CalendarOutlined
+                      /></router-link>
                     </template>
                   </a-table>
                 </a-col>
@@ -368,125 +352,23 @@
       </a-layout>
     </a-layout>
     <!---->
-
-    <a-modal
-      v-model:visible="visible"
-      width="1140px"
-      title="Add Task"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :span="12">
-          <div class="form-group">
-            <label>Title</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :span="12">
-          <div class="form-group">
-            <label> Short Description</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :span="12">
-          <div class="form-group">
-            <label>Status</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">Choose Status </a-select-option>
-              <a-select-option value="Yiminghe">Waiting</a-select-option>
-              <a-select-option value="Yiminghe">Inprogress</a-select-option>
-              <a-select-option value="Yiminghe">Completed</a-select-option>
-            </a-select>
-          </div>
-        </a-col>
-        <a-col :span="12">
-          <div class="form-group">
-            <label> Priority</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">Urgent</a-select-option>
-              <a-select-option value="Yiminghe">Medium</a-select-option>
-              <a-select-option value="Yiminghe">Normal</a-select-option>
-            </a-select>
-          </div>
-        </a-col>
-        <a-col :span="12">
-          <div class="form-group">
-            <label>Assigned To</label>
-            <a-select
-              v-model:value="selectedItems"
-              mode="multiple"
-              size="large"
-              placeholder="Please Select Roles"
-              style="width: 100%"
-              :options="filteredOptions.map((item) => ({ value: item }))"
-            />
-          </div>
-        </a-col>
-        <a-col :span="12">
-          <div class="form-group">
-            <label>Category</label>
-            <a-select
-              v-model:value="selectedItemsForTag"
-              mode="multiple"
-              size="large"
-              placeholder="Please Select Roles"
-              style="width: 100%"
-              :options="filteredOptionsForTag.map((item) => ({ value: item }))"
-            />
-          </div>
-        </a-col>
-        <a-col :span="12">
-          <div class="form-group">
-            <label>Start Date</label>
-            <a-date-picker
-              v-model:value="value1"
-              :size="size"
-              style="width: 100%"
-            />
-          </div>
-        </a-col>
-        <a-col :span="12">
-          <div class="form-group">
-            <label>Due Date</label>
-            <a-date-picker
-              v-model:value="value1"
-              :size="size"
-              style="width: 100%"
-            />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <TasksModal v-model:visible="TasksModal" @ok="handleOk" />
+    <!---->
   </div>
 </template>
 
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { ref, computed } from "vue";
+import TasksModal from "@/components/modals/TasksModal";
+import { ref } from "vue";
 import {
   FilterOutlined,
   DeleteOutlined,
   EditOutlined,
   CalendarOutlined,
 } from "@ant-design/icons-vue";
-const OPTIONS = ["Jane Doe", "Steve Smith", "Joseph William"];
-const OPTIONSTAG = ["Admin", "Clinical", "Office", "Personal"];
+
 const columns = [
   {
     title: "Task Name",
@@ -639,6 +521,7 @@ export default {
   components: {
     Header,
     Sidebar,
+    TasksModal,
     FilterOutlined,
     DeleteOutlined,
     EditOutlined,
@@ -877,27 +760,18 @@ export default {
     const checked13 = ref(false);
     const toggle = ref(true);
 
-    const visible = ref(false);
-    const showModal = () => {
-      visible.value = true;
-    };
-    const handleOk = (e) => {
-      console.log(e);
-      visible.value = false;
-    };
     const handleChange = (value) => {
       console.log(`selected ${value}`);
     };
 
-    const selectedItems = ref(["Jane Doe"]);
-    const filteredOptions = computed(() =>
-      OPTIONS.filter((o) => !selectedItems.value.includes(o))
-    );
-
-    const selectedItemsForTag = ref(["Admin"]);
-    const filteredOptionsForTag = computed(() =>
-      OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
-    );
+    const TasksModal = ref(false);
+    const showModal = () => {
+      TasksModal.value = true;
+    };
+    const handleOk = (e) => {
+      console.log(e);
+      TasksModal.value = false;
+    };
 
     return {
       data,
@@ -917,14 +791,12 @@ export default {
       checked11,
       checked12,
       checked13,
-      visible,
+
+      TasksModal,
       showModal,
       handleOk,
+
       handleChange,
-      selectedItems,
-      filteredOptions,
-      filteredOptionsForTag,
-      selectedItemsForTag,
     };
   },
 };

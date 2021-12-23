@@ -1,0 +1,117 @@
+<template>
+  <a-row :gutter="24">
+    <a-col :sm="8" :xs="24">
+      <div class="form-group">
+        <label>Insurance Number</label>
+        <a-input v-model="value" size="large" />
+      </div>
+    </a-col>
+    <a-col :sm="8" :xs="24">
+      <div class="form-group">
+        <label>Insurance Name</label>
+        <a-select
+          ref="select"
+          show-search
+          v-model="value1"
+          style="width: 100%"
+          size="large"
+          @focus="focus"
+          @change="handleChange"
+        >
+          <a-select-option value="lucy">Personal</a-select-option>
+          <a-select-option value="Yiminghe">Business</a-select-option>
+          <a-select-option value="Yiminghe">Life/Health</a-select-option>
+          <a-select-option value="Yiminghe">Benefits</a-select-option>
+        </a-select>
+      </div>
+    </a-col>
+    <a-col :sm="8" :xs="24">
+      <div class="form-group">
+        <label>Expiration Date</label>
+        <a-input v-model="value" size="large" />
+      </div>
+    </a-col>
+    <a-col :span="24">
+      <div class="formHeading">
+        <h2>Secondary Insurance</h2>
+      </div>
+    </a-col>
+    <a-col :sm="8" :xs="24">
+      <div class="form-group">
+        <label>Insurance Number</label>
+        <a-input v-model="value" size="large" />
+      </div>
+    </a-col>
+    <a-col :sm="8" :xs="24">
+      <div class="form-group">
+        <label>Insurance Name</label>
+        <a-select
+          ref="select"
+          show-search
+          v-model="value1"
+          style="width: 100%"
+          size="large"
+          @focus="focus"
+          @change="handleChange"
+        >
+          <a-select-option value="lucy">Personal</a-select-option>
+          <a-select-option value="Yiminghe">Business</a-select-option>
+          <a-select-option value="Yiminghe">Life/Health</a-select-option>
+          <a-select-option value="Yiminghe">Benefits</a-select-option>
+        </a-select>
+      </div>
+    </a-col>
+    <a-col :sm="8" :xs="24">
+      <div class="form-group">
+        <label>Expiration Date</label>
+        <a-input v-model="value" size="large" />
+      </div>
+    </a-col>
+    <a-col :span="24">
+      <div class="formHeading">
+        <h2>Tertiary Insurance</h2>
+      </div>
+    </a-col>
+    <a-col :sm="8" :xs="24">
+      <div class="form-group">
+        <label>Insurance Number</label>
+        <a-input v-model="value" size="large" />
+      </div>
+    </a-col>
+    <a-col :sm="8" :xs="24">
+      <div class="form-group">
+        <label>Insurance Name</label>
+        <a-select
+          ref="select"
+          show-search
+          v-model="value1"
+          style="width: 100%"
+          size="large"
+          @focus="focus"
+          @change="handleChange"
+        >
+          <a-select-option value="lucy">Personal</a-select-option>
+          <a-select-option value="Yiminghe">Business</a-select-option>
+          <a-select-option value="Yiminghe">Life/Health</a-select-option>
+          <a-select-option value="Yiminghe">Benefits</a-select-option>
+        </a-select>
+      </div>
+    </a-col>
+    <a-col :sm="8" :xs="24">
+      <div class="form-group">
+        <label>Expiration Date</label>
+        <a-input v-model="value" size="large" />
+      </div>
+    </a-col>
+  </a-row>
+</template>
+<script>
+import { defineComponent, ref, reactive } from "vue";
+import { EditOutlined } from "@ant-design/icons-vue";
+export default defineComponent({
+  components: {},
+  setup() {
+    return {};
+  },
+});
+</script>
