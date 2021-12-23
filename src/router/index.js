@@ -72,6 +72,11 @@ const routes = [
     name: 'Thresholds',
     component: () => import( '../components/thresholds/Thresholds')
   },
+  {
+    path: '/time-log-report',
+    name: 'TimeLogReport',
+    component: () => import( '../components/time-log-report/TimeLogReport')
+  },
 
   {
     path: '/',
@@ -89,6 +94,11 @@ const routes = [
     path: '/manage-staff',
     name: 'Manage Staff',
     component: () => import( '../components/administration/manage-staff/Managestaff')
+  },
+  {
+    path: '/care-coordinator',
+    name: 'ManageCareCoordinator',
+    component: () => import( '../components/administration/care-coordinator/ManageCareCoordinator')
   },
 
   {

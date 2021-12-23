@@ -85,6 +85,15 @@ h6 {
 .mb-24 {
 	margin-bottom: 24px;
 }
+.mt-28 {
+	margin-top: 28px;
+}
+img.reportFlag {
+    max-width: 30px;
+}
+.p-15 {
+	padding: 15px;
+}
 
 .align-items-center {
 	align-items: center !important;
@@ -211,6 +220,12 @@ h6 {
 	&:last-child {
 		margin: 0;
 	}
+}
+.circleBox {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	display: inline-block;
 }
 
 /*----*/

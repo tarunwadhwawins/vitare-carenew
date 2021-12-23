@@ -105,7 +105,7 @@
                 </a-table>
               </a-card>
             </a-col>
-            <a-col :sm="12" :xs="24">
+            <!-- <a-col :sm="12" :xs="24">
               <a-card title="Populate Waiting Room" class="common-card">
                 <a-tabs v-model:activeKey="activeKey">
                   <a-tab-pane key="1" tab="New Requests">
@@ -138,6 +138,17 @@
                     </a-table>
                   </a-tab-pane>
                 </a-tabs>
+              </a-card>
+            </a-col> -->
+           
+            <a-col :sm="12" :xs="24">
+              <a-card title="Call Queue" class="common-card">
+                <apexchart
+                  type="bar"
+                  height="250"
+                  :options="calloption"
+                  :series="callseries"
+                ></apexchart>
               </a-card>
             </a-col>
             <a-col :sm="12" :xs="24">
@@ -192,7 +203,7 @@
                 </div> -->
                 <apexchart
                   type="pie"
-                  height="350"
+                  height="362"
                   :options="billed"
                   :series="due"
                 ></apexchart>
@@ -257,14 +268,38 @@ const data4 = [
   {
     key: "1",
     patient: "Steve Smith",
-    date: "Dec 20, 2021 - 01:30 PM",
+    date: "Dec 20, 2021 - 10:30 AM",
     appt: "Joseph",
   },
   {
     key: "2",
     patient: "Jane Doe",
-    date: "Dec 23, 2021 - 11:30 AM",
+    date: "Dec 20, 2021 - 11:30 AM",
     appt: "Robert",
+  },
+  {
+    key: "3",
+    patient: "Henry Joseph",
+    date: "Dec 20, 2021 - 01:00 PM",
+    appt: "Robert",
+  },
+  {
+    key: "4",
+    patient: "Carol Liam",
+    date: "Dec 20, 2021 - 04:15 PM",
+    appt: "Robert",
+  },
+  {
+    key: "6",
+    patient: "Brett William",
+    date: "Dec 20, 2021 - 04:45 PM",
+    appt: "Joseph",
+  },
+  {
+    key: "7",
+    patient: "John Smith",
+    date: "Dec 20, 2021 - 05:20 PM",
+    appt: "Joseph",
   },
 ];
 const columns5 = [
@@ -459,7 +494,6 @@ export default {
             rotate: -45,
           },
           categories: ["Wellness", "Behavior"],
-          tickPlacement: "on",
         },
         yaxis: {
           title: {
@@ -527,7 +561,6 @@ export default {
             rotate: -45,
           },
           categories: ["In", "Out"],
-          tickPlacement: "on",
         },
         yaxis: {
           title: {
@@ -578,7 +611,7 @@ export default {
         dataLabels: {
           enabled: false,
         },
-        colors: ["#267dff", "#0fb5c2"],
+        colors: ["#3b72c5", "#ffb526", "#419541", "#343470"],
         stroke: {
           width: 1,
           colors: ["#fff"],
@@ -594,7 +627,6 @@ export default {
             rotate: -45,
           },
           categories: ["99453", "99454", "99457", "99458 "],
-          tickPlacement: "on",
         },
         yaxis: {
           title: {
@@ -661,7 +693,6 @@ export default {
             rotate: -45,
           },
           categories: ["Normal", "High", "Critical"],
-          tickPlacement: "on",
         },
         yaxis: {
           title: {
@@ -673,6 +704,72 @@ export default {
         {
           name: "Patients",
           data: [45, 12, 34],
+        },
+      ],
+      calloption: {
+        annotations: {
+          points: [
+            {
+              x: "In",
+              seriesIndex: 0,
+              label: {
+                borderColor: "#775DD0",
+                offsetY: 0,
+                style: {
+                  color: "#fff",
+                  background: "#775DD0",
+                },
+              },
+            },
+          ],
+        },
+        chart: {
+          height: 350,
+          type: "bar",
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: "20%",
+            barHeight: "100%",
+            distributed: true,
+            horizontal: false,
+            dataLabels: {
+              position: "bottom",
+            },
+          },
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        colors: ["#121258", "#218421", "#ffb526"],
+        stroke: {
+          width: 1,
+          colors: ["#fff"],
+        },
+
+        grid: {
+          row: {
+            colors: ["#fff", "#f2f2f2"],
+          },
+        },
+        
+        xaxis: {
+          labels: {
+            rotate: -45,
+          },
+          categories: ["Going On", "Completed", "In Queue"],
+        },
+        yaxis: {
+          title: {
+            text: "Number of Count",
+          },
+        },
+      },
+      callseries: [
+        {
+          name: "Value",
+          data: [12, 8, 6],
         },
       ],
     };

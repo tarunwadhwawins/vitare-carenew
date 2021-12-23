@@ -12,7 +12,7 @@
             <a-row>
               <a-col :span="24">
                 <h2 class="pageTittle">
-                  Manage Programs
+                  Programs
                   <div class="commonBtn">
                     <a-button class="btn primaryBtn" @click="showModal"
                       >Add New Program</a-button

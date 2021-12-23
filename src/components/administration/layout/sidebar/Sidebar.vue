@@ -14,19 +14,19 @@
             ><CreditCardOutlined /><span class="menuItem">CPT Codes</span></a-menu-item
           ></router-link
         >
-        <router-link to="/manage-staff"
+        <router-link to="/care-coordinator"
           ><a-menu-item
-            ><TeamOutlined /><span class="menuItem">Manage Staff</span></a-menu-item
+            ><TeamOutlined /><span class="menuItem">Care Coordinator</span></a-menu-item
           ></router-link
         >
         <router-link to="/manage-programs"
           ><a-menu-item
-            ><MailOutlined /><span class="menuItem">Manage Programs</span></a-menu-item
+            ><MailOutlined /><span class="menuItem">Programs</span></a-menu-item
           ></router-link
         >
         <router-link to="/manage-providers"
           ><a-menu-item
-            ><MailOutlined /><span class="menuItem">Manage Providers</span></a-menu-item
+            ><MailOutlined /><span class="menuItem">Providers</span></a-menu-item
           ></router-link
         >
         <router-link to="/roles-permission"

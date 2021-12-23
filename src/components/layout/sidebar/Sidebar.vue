@@ -6,24 +6,30 @@
       <a-menu>
         <router-link to="/dashboard"
           ><a-menu-item
-            ><HomeOutlined /><span class="menuItem">Dashboard</span></a-menu-item
+            ><HomeOutlined /><span class="menuItem"
+              >Dashboard</span
+            ></a-menu-item
           ></router-link
         >
         <router-link to="/communications"
           ><a-menu-item
-            ><MailOutlined /><span class="menuItem">Communications</span></a-menu-item
+            ><MailOutlined /><span class="menuItem"
+              >Communications</span
+            ></a-menu-item
           ></router-link
         >
-        <router-link to="/manage-care-coordinator"
+        <!-- <router-link to="/manage-care-coordinator"
           ><a-menu-item
             ><UserOutlined /><span class="menuItem"
               >Manage Care Coordinator</span
             ></a-menu-item
           ></router-link
-        >
+        > -->
         <router-link to="/manage-patients"
           ><a-menu-item
-            ><UserOutlined /><span class="menuItem">Manage Patients</span></a-menu-item
+            ><UserOutlined /><span class="menuItem"
+              >Manage Patients</span
+            ></a-menu-item
           ></router-link
         >
         <router-link to="/appointment-calendar"
@@ -35,17 +41,30 @@
         >
         <router-link to="/tasks"
           ><a-menu-item
-            ><CalendarOutlined /><span class="menuItem">Tasks</span></a-menu-item
+            ><CalendarOutlined /><span class="menuItem"
+              >Tasks</span
+            ></a-menu-item
           ></router-link
         >
         <router-link to="/time-tracking-report"
           ><a-menu-item
-            ><FileTextOutlined /><span class="menuItem">Reports</span></a-menu-item
+            ><FileTextOutlined /><span class="menuItem"
+              >Reports</span
+            ></a-menu-item
           ></router-link
         >
         <router-link to="/thresholds"
           ><a-menu-item
-            ><FileTextOutlined /><span class="menuItem">Thresholds</span></a-menu-item
+            ><FileTextOutlined /><span class="menuItem"
+              >Thresholds</span
+            ></a-menu-item
+          ></router-link
+        >
+        <router-link to="/time-log-report"
+          ><a-menu-item
+            ><FileTextOutlined /><span class="menuItem"
+              >Audit Time Log</span
+            ></a-menu-item
           ></router-link
         >
         <router-link to="/cpt-codes"
