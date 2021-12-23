@@ -36,25 +36,14 @@
                 >
               </div>
               <div class="calendar">
-                <div
-                  style="
-                    width: 100%;
-                    border: 1px solid #d9d9d9;
-                    border-radius: 4px;
-                  "
-                >
+                <div style="width: 100%; border: 1px solid #d9d9d9; border-radius: 4px">
                   <a-calendar
                     v-model:value="value"
                     :fullscreen="false"
                     @panelChange="onPanelChange"
                   >
                     <template
-                      #headerRender="{
-                        value: current,
-                        type,
-                        onChange,
-                        onTypeChange,
-                      }"
+                      #headerRender="{ value: current, type, onChange, onTypeChange }"
                     >
                       <div style="padding: 10px">
                         <!-- <div style="margin-bottom: 10px">Custom header</div> -->
@@ -65,9 +54,7 @@
                               :value="type"
                               @change="(e) => onTypeChange(e.target.value)"
                             >
-                              <a-radio-button value="month"
-                                >Month</a-radio-button
-                              >
+                              <a-radio-button value="month">Month</a-radio-button>
                               <a-radio-button value="year">Year</a-radio-button>
                             </a-radio-group>
                           </a-col>
@@ -99,13 +86,8 @@
                               :value="String(current.month())"
                               @change="
                                 (selectedMonth) => {
-<<<<<<< Updated upstream
-                                  onChange(
-                                    current.month(parseInt(selectedMonth, 10))
-                                  );
-=======
                                   onChange(current.month(parseInt(selectedMonth, 10)));
->>>>>>> Stashed changes
+                                  onChange(current.month(parseInt(selectedMonth, 10)));
                                 }
                               "
                             >
@@ -153,10 +135,7 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a
-                                    class="ant-dropdown-link one"
-                                    @click.prevent
-                                  >
+                                  <a class="ant-dropdown-link one" @click.prevent>
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph </span>
@@ -176,45 +155,32 @@
                                             <div class="leftWrapper">
                                               Appointment Type
                                             </div>
-                                            <div class="rightWrapper">
-                                              Clinical
-                                            </div>
+                                            <div class="rightWrapper">Clinical</div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Date Time
-                                            </div>
+                                            <div class="leftWrapper">Date Time</div>
                                             <div class="rightWrapper">
                                               December 12, 2021 12:00 PM
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Coordinator
-                                            </div>
+                                            <div class="leftWrapper">Coordinator</div>
                                             <div class="rightWrapper">
-                                              <router-link
-                                                to="patients-summary"
-                                              >
+                                              <router-link to="patients-summary">
                                                 Steve Smith
                                               </router-link>
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Program
-                                            </div>
-                                            <div class="rightWrapper">
-                                              Program 1
-                                            </div>
+                                            <div class="leftWrapper">Program</div>
+                                            <div class="rightWrapper">Program 1</div>
                                           </div>
                                           <div class="notesWrapper">
                                             <span>Notes</span>
                                             <p>
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet, consectetur
+                                              adipisicing elit. Lorem ipsum dolor sit
+                                              amet, consectetur adipisicing elit.
                                             </p>
                                           </div>
                                           <div class="createTask">
@@ -242,10 +208,7 @@
                               <th>01:00 PM</th>
                               <td>
                                 <a-dropdown :trigger="['click']">
-                                  <a
-                                    class="ant-dropdown-link two"
-                                    @click.prevent
-                                  >
+                                  <a class="ant-dropdown-link two" @click.prevent>
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -265,45 +228,32 @@
                                             <div class="leftWrapper">
                                               Appointment Type
                                             </div>
-                                            <div class="rightWrapper">
-                                              Clinical
-                                            </div>
+                                            <div class="rightWrapper">Clinical</div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Date Time
-                                            </div>
+                                            <div class="leftWrapper">Date Time</div>
                                             <div class="rightWrapper">
                                               December 12, 2021 12:00 PM
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Coordinator
-                                            </div>
+                                            <div class="leftWrapper">Coordinator</div>
                                             <div class="rightWrapper">
-                                              <router-link
-                                                to="patients-summary"
-                                              >
+                                              <router-link to="patients-summary">
                                                 Steve Smith
                                               </router-link>
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Program
-                                            </div>
-                                            <div class="rightWrapper">
-                                              Program 1
-                                            </div>
+                                            <div class="leftWrapper">Program</div>
+                                            <div class="rightWrapper">Program 1</div>
                                           </div>
                                           <div class="notesWrapper">
                                             <span>Notes</span>
                                             <p>
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet, consectetur
+                                              adipisicing elit. Lorem ipsum dolor sit
+                                              amet, consectetur adipisicing elit.
                                             </p>
                                           </div>
                                           <div class="createTask">
@@ -335,10 +285,7 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a
-                                    class="ant-dropdown-link three"
-                                    @click.prevent
-                                  >
+                                  <a class="ant-dropdown-link three" @click.prevent>
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -358,45 +305,32 @@
                                             <div class="leftWrapper">
                                               Appointment Type
                                             </div>
-                                            <div class="rightWrapper">
-                                              Clinical
-                                            </div>
+                                            <div class="rightWrapper">Clinical</div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Date Time
-                                            </div>
+                                            <div class="leftWrapper">Date Time</div>
                                             <div class="rightWrapper">
                                               December 12, 2021 12:00 PM
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Coordinator
-                                            </div>
+                                            <div class="leftWrapper">Coordinator</div>
                                             <div class="rightWrapper">
-                                              <router-link
-                                                to="patients-summary"
-                                              >
+                                              <router-link to="patients-summary">
                                                 Steve Smith
                                               </router-link>
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Program
-                                            </div>
-                                            <div class="rightWrapper">
-                                              Program 1
-                                            </div>
+                                            <div class="leftWrapper">Program</div>
+                                            <div class="rightWrapper">Program 1</div>
                                           </div>
                                           <div class="notesWrapper">
                                             <span>Notes</span>
                                             <p>
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet, consectetur
+                                              adipisicing elit. Lorem ipsum dolor sit
+                                              amet, consectetur adipisicing elit.
                                             </p>
                                           </div>
                                           <div class="createTask">
@@ -418,10 +352,7 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a
-                                    class="ant-dropdown-link four"
-                                    @click.prevent
-                                  >
+                                  <a class="ant-dropdown-link four" @click.prevent>
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -441,45 +372,32 @@
                                             <div class="leftWrapper">
                                               Appointment Type
                                             </div>
-                                            <div class="rightWrapper">
-                                              Clinical
-                                            </div>
+                                            <div class="rightWrapper">Clinical</div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Date Time
-                                            </div>
+                                            <div class="leftWrapper">Date Time</div>
                                             <div class="rightWrapper">
                                               December 12, 2021 12:00 PM
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Coordinator
-                                            </div>
+                                            <div class="leftWrapper">Coordinator</div>
                                             <div class="rightWrapper">
-                                              <router-link
-                                                to="patients-summary"
-                                              >
+                                              <router-link to="patients-summary">
                                                 Steve Smith
                                               </router-link>
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Program
-                                            </div>
-                                            <div class="rightWrapper">
-                                              Program 1
-                                            </div>
+                                            <div class="leftWrapper">Program</div>
+                                            <div class="rightWrapper">Program 1</div>
                                           </div>
                                           <div class="notesWrapper">
                                             <span>Notes</span>
                                             <p>
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet, consectetur
+                                              adipisicing elit. Lorem ipsum dolor sit
+                                              amet, consectetur adipisicing elit.
                                             </p>
                                           </div>
                                           <div class="createTask">
@@ -510,10 +428,7 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a
-                                    class="ant-dropdown-link one"
-                                    @click.prevent
-                                  >
+                                  <a class="ant-dropdown-link one" @click.prevent>
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -533,45 +448,32 @@
                                             <div class="leftWrapper">
                                               Appointment Type
                                             </div>
-                                            <div class="rightWrapper">
-                                              Clinical
-                                            </div>
+                                            <div class="rightWrapper">Clinical</div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Date Time
-                                            </div>
+                                            <div class="leftWrapper">Date Time</div>
                                             <div class="rightWrapper">
                                               December 12, 2021 12:00 PM
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Coordinator
-                                            </div>
+                                            <div class="leftWrapper">Coordinator</div>
                                             <div class="rightWrapper">
-                                              <router-link
-                                                to="patients-summary"
-                                              >
+                                              <router-link to="patients-summary">
                                                 Steve Smith
                                               </router-link>
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Program
-                                            </div>
-                                            <div class="rightWrapper">
-                                              Program 1
-                                            </div>
+                                            <div class="leftWrapper">Program</div>
+                                            <div class="rightWrapper">Program 1</div>
                                           </div>
                                           <div class="notesWrapper">
                                             <span>Notes</span>
                                             <p>
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet, consectetur
+                                              adipisicing elit. Lorem ipsum dolor sit
+                                              amet, consectetur adipisicing elit.
                                             </p>
                                           </div>
                                           <div class="createTask">
@@ -622,10 +524,7 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a
-                                    class="ant-dropdown-link one"
-                                    @click.prevent
-                                  >
+                                  <a class="ant-dropdown-link one" @click.prevent>
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -645,45 +544,32 @@
                                             <div class="leftWrapper">
                                               Appointment Type
                                             </div>
-                                            <div class="rightWrapper">
-                                              Clinical
-                                            </div>
+                                            <div class="rightWrapper">Clinical</div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Date Time
-                                            </div>
+                                            <div class="leftWrapper">Date Time</div>
                                             <div class="rightWrapper">
                                               December 12, 2021 12:00 PM
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Coordinator
-                                            </div>
+                                            <div class="leftWrapper">Coordinator</div>
                                             <div class="rightWrapper">
-                                              <router-link
-                                                to="patients-summary"
-                                              >
+                                              <router-link to="patients-summary">
                                                 Steve Smith
                                               </router-link>
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Program
-                                            </div>
-                                            <div class="rightWrapper">
-                                              Program 1
-                                            </div>
+                                            <div class="leftWrapper">Program</div>
+                                            <div class="rightWrapper">Program 1</div>
                                           </div>
                                           <div class="notesWrapper">
                                             <span>Notes</span>
                                             <p>
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet, consectetur
+                                              adipisicing elit. Lorem ipsum dolor sit
+                                              amet, consectetur adipisicing elit.
                                             </p>
                                           </div>
                                           <div class="createTask">
@@ -710,10 +596,7 @@
                               <th>01:00 PM</th>
                               <td>
                                 <a-dropdown :trigger="['click']">
-                                  <a
-                                    class="ant-dropdown-link two"
-                                    @click.prevent
-                                  >
+                                  <a class="ant-dropdown-link two" @click.prevent>
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -733,45 +616,32 @@
                                             <div class="leftWrapper">
                                               Appointment Type
                                             </div>
-                                            <div class="rightWrapper">
-                                              Clinical
-                                            </div>
+                                            <div class="rightWrapper">Clinical</div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Date Time
-                                            </div>
+                                            <div class="leftWrapper">Date Time</div>
                                             <div class="rightWrapper">
                                               December 12, 2021 12:00 PM
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Coordinator
-                                            </div>
+                                            <div class="leftWrapper">Coordinator</div>
                                             <div class="rightWrapper">
-                                              <router-link
-                                                to="patients-summary"
-                                              >
+                                              <router-link to="patients-summary">
                                                 Steve Smith
                                               </router-link>
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Program
-                                            </div>
-                                            <div class="rightWrapper">
-                                              Program 1
-                                            </div>
+                                            <div class="leftWrapper">Program</div>
+                                            <div class="rightWrapper">Program 1</div>
                                           </div>
                                           <div class="notesWrapper">
                                             <span>Notes</span>
                                             <p>
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet, consectetur
+                                              adipisicing elit. Lorem ipsum dolor sit
+                                              amet, consectetur adipisicing elit.
                                             </p>
                                           </div>
                                           <div class="createTask">
@@ -803,10 +673,7 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a
-                                    class="ant-dropdown-link three"
-                                    @click.prevent
-                                  >
+                                  <a class="ant-dropdown-link three" @click.prevent>
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -826,45 +693,32 @@
                                             <div class="leftWrapper">
                                               Appointment Type
                                             </div>
-                                            <div class="rightWrapper">
-                                              Clinical
-                                            </div>
+                                            <div class="rightWrapper">Clinical</div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Date Time
-                                            </div>
+                                            <div class="leftWrapper">Date Time</div>
                                             <div class="rightWrapper">
                                               December 12, 2021 12:00 PM
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Coordinator
-                                            </div>
+                                            <div class="leftWrapper">Coordinator</div>
                                             <div class="rightWrapper">
-                                              <router-link
-                                                to="patients-summary"
-                                              >
+                                              <router-link to="patients-summary">
                                                 Steve Smith
                                               </router-link>
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Program
-                                            </div>
-                                            <div class="rightWrapper">
-                                              Program 1
-                                            </div>
+                                            <div class="leftWrapper">Program</div>
+                                            <div class="rightWrapper">Program 1</div>
                                           </div>
                                           <div class="notesWrapper">
                                             <span>Notes</span>
                                             <p>
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet, consectetur
+                                              adipisicing elit. Lorem ipsum dolor sit
+                                              amet, consectetur adipisicing elit.
                                             </p>
                                           </div>
                                           <div class="createTask">
@@ -886,10 +740,7 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a
-                                    class="ant-dropdown-link four"
-                                    @click.prevent
-                                  >
+                                  <a class="ant-dropdown-link four" @click.prevent>
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -909,45 +760,32 @@
                                             <div class="leftWrapper">
                                               Appointment Type
                                             </div>
-                                            <div class="rightWrapper">
-                                              Clinical
-                                            </div>
+                                            <div class="rightWrapper">Clinical</div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Date Time
-                                            </div>
+                                            <div class="leftWrapper">Date Time</div>
                                             <div class="rightWrapper">
                                               December 12, 2021 12:00 PM
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Coordinator
-                                            </div>
+                                            <div class="leftWrapper">Coordinator</div>
                                             <div class="rightWrapper">
-                                              <router-link
-                                                to="patients-summary"
-                                              >
+                                              <router-link to="patients-summary">
                                                 Steve Smith
                                               </router-link>
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Program
-                                            </div>
-                                            <div class="rightWrapper">
-                                              Program 1
-                                            </div>
+                                            <div class="leftWrapper">Program</div>
+                                            <div class="rightWrapper">Program 1</div>
                                           </div>
                                           <div class="notesWrapper">
                                             <span>Notes</span>
                                             <p>
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet, consectetur
+                                              adipisicing elit. Lorem ipsum dolor sit
+                                              amet, consectetur adipisicing elit.
                                             </p>
                                           </div>
                                           <div class="createTask">
@@ -978,10 +816,7 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a
-                                    class="ant-dropdown-link one"
-                                    @click.prevent
-                                  >
+                                  <a class="ant-dropdown-link one" @click.prevent>
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -1001,45 +836,32 @@
                                             <div class="leftWrapper">
                                               Appointment Type
                                             </div>
-                                            <div class="rightWrapper">
-                                              Clinical
-                                            </div>
+                                            <div class="rightWrapper">Clinical</div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Date Time
-                                            </div>
+                                            <div class="leftWrapper">Date Time</div>
                                             <div class="rightWrapper">
                                               December 12, 2021 12:00 PM
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Coordinator
-                                            </div>
+                                            <div class="leftWrapper">Coordinator</div>
                                             <div class="rightWrapper">
-                                              <router-link
-                                                to="patients-summary"
-                                              >
+                                              <router-link to="patients-summary">
                                                 Steve Smith
                                               </router-link>
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Program
-                                            </div>
-                                            <div class="rightWrapper">
-                                              Program 1
-                                            </div>
+                                            <div class="leftWrapper">Program</div>
+                                            <div class="rightWrapper">Program 1</div>
                                           </div>
                                           <div class="notesWrapper">
                                             <span>Notes</span>
                                             <p>
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet, consectetur
+                                              adipisicing elit. Lorem ipsum dolor sit
+                                              amet, consectetur adipisicing elit.
                                             </p>
                                           </div>
                                           <div class="createTask">
@@ -1078,10 +900,7 @@
                               <th>Tue</th>
                               <td>
                                 <a-dropdown :trigger="['click']">
-                                  <a
-                                    class="ant-dropdown-link one"
-                                    @click.prevent
-                                  >
+                                  <a class="ant-dropdown-link one" @click.prevent>
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -1101,45 +920,32 @@
                                             <div class="leftWrapper">
                                               Appointment Type
                                             </div>
-                                            <div class="rightWrapper">
-                                              Clinical
-                                            </div>
+                                            <div class="rightWrapper">Clinical</div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Date Time
-                                            </div>
+                                            <div class="leftWrapper">Date Time</div>
                                             <div class="rightWrapper">
                                               December 12, 2021 12:00 PM
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Coordinator
-                                            </div>
+                                            <div class="leftWrapper">Coordinator</div>
                                             <div class="rightWrapper">
-                                              <router-link
-                                                to="patients-summary"
-                                              >
+                                              <router-link to="patients-summary">
                                                 Steve Smith
                                               </router-link>
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Program
-                                            </div>
-                                            <div class="rightWrapper">
-                                              Program 1
-                                            </div>
+                                            <div class="leftWrapper">Program</div>
+                                            <div class="rightWrapper">Program 1</div>
                                           </div>
                                           <div class="notesWrapper">
                                             <span>Notes</span>
                                             <p>
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet, consectetur
+                                              adipisicing elit. Lorem ipsum dolor sit
+                                              amet, consectetur adipisicing elit.
                                             </p>
                                           </div>
                                           <div class="createTask">
@@ -1171,10 +977,7 @@
                                   :trigger="['click']"
                                   overlayClassName="valueItem"
                                 >
-                                  <a
-                                    class="ant-dropdown-link two"
-                                    @click.prevent
-                                  >
+                                  <a class="ant-dropdown-link two" @click.prevent>
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -1194,45 +997,32 @@
                                             <div class="leftWrapper">
                                               Appointment Type
                                             </div>
-                                            <div class="rightWrapper">
-                                              Clinical
-                                            </div>
+                                            <div class="rightWrapper">Clinical</div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Date Time
-                                            </div>
+                                            <div class="leftWrapper">Date Time</div>
                                             <div class="rightWrapper">
                                               December 12, 2021 12:00 PM
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Coordinator
-                                            </div>
+                                            <div class="leftWrapper">Coordinator</div>
                                             <div class="rightWrapper">
-                                              <router-link
-                                                to="patients-summary"
-                                              >
+                                              <router-link to="patients-summary">
                                                 Steve Smith
                                               </router-link>
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Program
-                                            </div>
-                                            <div class="rightWrapper">
-                                              Program 1
-                                            </div>
+                                            <div class="leftWrapper">Program</div>
+                                            <div class="rightWrapper">Program 1</div>
                                           </div>
                                           <div class="notesWrapper">
                                             <span>Notes</span>
                                             <p>
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet, consectetur
+                                              adipisicing elit. Lorem ipsum dolor sit
+                                              amet, consectetur adipisicing elit.
                                             </p>
                                           </div>
                                           <div class="createTask">
@@ -1259,10 +1049,7 @@
                               <th>Sat</th>
                               <td>
                                 <a-dropdown :trigger="['click']">
-                                  <a
-                                    class="ant-dropdown-link three"
-                                    @click.prevent
-                                  >
+                                  <a class="ant-dropdown-link three" @click.prevent>
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -1282,45 +1069,32 @@
                                             <div class="leftWrapper">
                                               Appointment Type
                                             </div>
-                                            <div class="rightWrapper">
-                                              Clinical
-                                            </div>
+                                            <div class="rightWrapper">Clinical</div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Date Time
-                                            </div>
+                                            <div class="leftWrapper">Date Time</div>
                                             <div class="rightWrapper">
                                               December 12, 2021 12:00 PM
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Coordinator
-                                            </div>
+                                            <div class="leftWrapper">Coordinator</div>
                                             <div class="rightWrapper">
-                                              <router-link
-                                                to="patients-summary"
-                                              >
+                                              <router-link to="patients-summary">
                                                 Steve Smith
                                               </router-link>
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Program
-                                            </div>
-                                            <div class="rightWrapper">
-                                              Program 1
-                                            </div>
+                                            <div class="leftWrapper">Program</div>
+                                            <div class="rightWrapper">Program 1</div>
                                           </div>
                                           <div class="notesWrapper">
                                             <span>Notes</span>
                                             <p>
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet, consectetur
+                                              adipisicing elit. Lorem ipsum dolor sit
+                                              amet, consectetur adipisicing elit.
                                             </p>
                                           </div>
                                           <div class="createTask">
@@ -1339,10 +1113,7 @@
                                   </template>
                                 </a-dropdown>
                                 <a-dropdown :trigger="['click']">
-                                  <a
-                                    class="ant-dropdown-link four"
-                                    @click.prevent
-                                  >
+                                  <a class="ant-dropdown-link four" @click.prevent>
                                     <div class="dropdown">
                                       <p>
                                         <span>Smith Joseph</span>
@@ -1362,45 +1133,32 @@
                                             <div class="leftWrapper">
                                               Appointment Type
                                             </div>
-                                            <div class="rightWrapper">
-                                              Clinical
-                                            </div>
+                                            <div class="rightWrapper">Clinical</div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Date Time
-                                            </div>
+                                            <div class="leftWrapper">Date Time</div>
                                             <div class="rightWrapper">
                                               December 12, 2021 12:00 PM
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Coordinator
-                                            </div>
+                                            <div class="leftWrapper">Coordinator</div>
                                             <div class="rightWrapper">
-                                              <router-link
-                                                to="patients-summary"
-                                              >
+                                              <router-link to="patients-summary">
                                                 Steve Smith
                                               </router-link>
                                             </div>
                                           </div>
                                           <div class="itemWrapper">
-                                            <div class="leftWrapper">
-                                              Program
-                                            </div>
-                                            <div class="rightWrapper">
-                                              Program 1
-                                            </div>
+                                            <div class="leftWrapper">Program</div>
+                                            <div class="rightWrapper">Program 1</div>
                                           </div>
                                           <div class="notesWrapper">
                                             <span>Notes</span>
                                             <p>
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
-                                              Lorem ipsum dolor sit amet,
-                                              consectetur adipisicing elit.
+                                              Lorem ipsum dolor sit amet, consectetur
+                                              adipisicing elit. Lorem ipsum dolor sit
+                                              amet, consectetur adipisicing elit.
                                             </p>
                                           </div>
                                           <div class="createTask">
@@ -1455,10 +1213,7 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a
-                                      class="ant-dropdown-link one"
-                                      @click.prevent
-                                    >
+                                    <a class="ant-dropdown-link one" @click.prevent>
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -1474,45 +1229,32 @@
                                               <div class="leftWrapper">
                                                 Appointment Type
                                               </div>
-                                              <div class="rightWrapper">
-                                                Clinical
-                                              </div>
+                                              <div class="rightWrapper">Clinical</div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Date Time
-                                              </div>
+                                              <div class="leftWrapper">Date Time</div>
                                               <div class="rightWrapper">
                                                 December 12, 2021 12:00 PM
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Coordinator
-                                              </div>
+                                              <div class="leftWrapper">Coordinator</div>
                                               <div class="rightWrapper">
-                                                <router-link
-                                                  to="patients-summary"
-                                                >
+                                                <router-link to="patients-summary">
                                                   Steve Smith
                                                 </router-link>
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Program
-                                              </div>
-                                              <div class="rightWrapper">
-                                                Program 1
-                                              </div>
+                                              <div class="leftWrapper">Program</div>
+                                              <div class="rightWrapper">Program 1</div>
                                             </div>
                                             <div class="notesWrapper">
                                               <span>Notes</span>
                                               <p>
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet, consectetur
+                                                adipisicing elit. Lorem ipsum dolor sit
+                                                amet, consectetur adipisicing elit.
                                               </p>
                                             </div>
                                             <div class="createTask">
@@ -1534,10 +1276,7 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a
-                                      class="ant-dropdown-link two"
-                                      @click.prevent
-                                    >
+                                    <a class="ant-dropdown-link two" @click.prevent>
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -1548,50 +1287,37 @@
                                     <template #overlay>
                                       <a-menu>
                                         <a-menu-item key="0">
-                                         <div class="calendarDropdown">
+                                          <div class="calendarDropdown">
                                             <div class="itemWrapper">
                                               <div class="leftWrapper">
                                                 Appointment Type
                                               </div>
-                                              <div class="rightWrapper">
-                                                Clinical
-                                              </div>
+                                              <div class="rightWrapper">Clinical</div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Date Time
-                                              </div>
+                                              <div class="leftWrapper">Date Time</div>
                                               <div class="rightWrapper">
                                                 December 12, 2021 12:00 PM
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Coordinator
-                                              </div>
+                                              <div class="leftWrapper">Coordinator</div>
                                               <div class="rightWrapper">
-                                                <router-link
-                                                  to="patients-summary"
-                                                >
+                                                <router-link to="patients-summary">
                                                   Steve Smith
                                                 </router-link>
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Program
-                                              </div>
-                                              <div class="rightWrapper">
-                                                Program 1
-                                              </div>
+                                              <div class="leftWrapper">Program</div>
+                                              <div class="rightWrapper">Program 1</div>
                                             </div>
                                             <div class="notesWrapper">
                                               <span>Notes</span>
                                               <p>
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet, consectetur
+                                                adipisicing elit. Lorem ipsum dolor sit
+                                                amet, consectetur adipisicing elit.
                                               </p>
                                             </div>
                                             <div class="createTask">
@@ -1619,10 +1345,7 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a
-                                      class="ant-dropdown-link three"
-                                      @click.prevent
-                                    >
+                                    <a class="ant-dropdown-link three" @click.prevent>
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -1638,45 +1361,32 @@
                                               <div class="leftWrapper">
                                                 Appointment Type
                                               </div>
-                                              <div class="rightWrapper">
-                                                Clinical
-                                              </div>
+                                              <div class="rightWrapper">Clinical</div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Date Time
-                                              </div>
+                                              <div class="leftWrapper">Date Time</div>
                                               <div class="rightWrapper">
                                                 December 12, 2021 12:00 PM
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Coordinator
-                                              </div>
+                                              <div class="leftWrapper">Coordinator</div>
                                               <div class="rightWrapper">
-                                                <router-link
-                                                  to="patients-summary"
-                                                >
+                                                <router-link to="patients-summary">
                                                   Steve Smith
                                                 </router-link>
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Program
-                                              </div>
-                                              <div class="rightWrapper">
-                                                Program 1
-                                              </div>
+                                              <div class="leftWrapper">Program</div>
+                                              <div class="rightWrapper">Program 1</div>
                                             </div>
                                             <div class="notesWrapper">
                                               <span>Notes</span>
                                               <p>
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet, consectetur
+                                                adipisicing elit. Lorem ipsum dolor sit
+                                                amet, consectetur adipisicing elit.
                                               </p>
                                             </div>
                                             <div class="createTask">
@@ -1701,10 +1411,7 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a
-                                      class="ant-dropdown-link four"
-                                      @click.prevent
-                                    >
+                                    <a class="ant-dropdown-link four" @click.prevent>
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -1720,45 +1427,32 @@
                                               <div class="leftWrapper">
                                                 Appointment Type
                                               </div>
-                                              <div class="rightWrapper">
-                                                Clinical
-                                              </div>
+                                              <div class="rightWrapper">Clinical</div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Date Time
-                                              </div>
+                                              <div class="leftWrapper">Date Time</div>
                                               <div class="rightWrapper">
                                                 December 12, 2021 12:00 PM
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Coordinator
-                                              </div>
+                                              <div class="leftWrapper">Coordinator</div>
                                               <div class="rightWrapper">
-                                                <router-link
-                                                  to="patients-summary"
-                                                >
+                                                <router-link to="patients-summary">
                                                   Steve Smith
                                                 </router-link>
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Program
-                                              </div>
-                                              <div class="rightWrapper">
-                                                Program 1
-                                              </div>
+                                              <div class="leftWrapper">Program</div>
+                                              <div class="rightWrapper">Program 1</div>
                                             </div>
                                             <div class="notesWrapper">
                                               <span>Notes</span>
                                               <p>
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet, consectetur
+                                                adipisicing elit. Lorem ipsum dolor sit
+                                                amet, consectetur adipisicing elit.
                                               </p>
                                             </div>
                                             <div class="createTask">
@@ -1794,10 +1488,7 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a
-                                      class="ant-dropdown-link one"
-                                      @click.prevent
-                                    >
+                                    <a class="ant-dropdown-link one" @click.prevent>
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -1813,45 +1504,32 @@
                                               <div class="leftWrapper">
                                                 Appointment Type
                                               </div>
-                                              <div class="rightWrapper">
-                                                Clinical
-                                              </div>
+                                              <div class="rightWrapper">Clinical</div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Date Time
-                                              </div>
+                                              <div class="leftWrapper">Date Time</div>
                                               <div class="rightWrapper">
                                                 December 12, 2021 12:00 PM
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Coordinator
-                                              </div>
+                                              <div class="leftWrapper">Coordinator</div>
                                               <div class="rightWrapper">
-                                                <router-link
-                                                  to="patients-summary"
-                                                >
+                                                <router-link to="patients-summary">
                                                   Steve Smith
                                                 </router-link>
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Program
-                                              </div>
-                                              <div class="rightWrapper">
-                                                Program 1
-                                              </div>
+                                              <div class="leftWrapper">Program</div>
+                                              <div class="rightWrapper">Program 1</div>
                                             </div>
                                             <div class="notesWrapper">
                                               <span>Notes</span>
                                               <p>
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet, consectetur
+                                                adipisicing elit. Lorem ipsum dolor sit
+                                                amet, consectetur adipisicing elit.
                                               </p>
                                             </div>
                                             <div class="createTask">
@@ -1879,10 +1557,7 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a
-                                      class="ant-dropdown-link three"
-                                      @click.prevent
-                                    >
+                                    <a class="ant-dropdown-link three" @click.prevent>
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -1898,45 +1573,32 @@
                                               <div class="leftWrapper">
                                                 Appointment Type
                                               </div>
-                                              <div class="rightWrapper">
-                                                Clinical
-                                              </div>
+                                              <div class="rightWrapper">Clinical</div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Date Time
-                                              </div>
+                                              <div class="leftWrapper">Date Time</div>
                                               <div class="rightWrapper">
                                                 December 12, 2021 12:00 PM
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Coordinator
-                                              </div>
+                                              <div class="leftWrapper">Coordinator</div>
                                               <div class="rightWrapper">
-                                                <router-link
-                                                  to="patients-summary"
-                                                >
+                                                <router-link to="patients-summary">
                                                   Steve Smith
                                                 </router-link>
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Program
-                                              </div>
-                                              <div class="rightWrapper">
-                                                Program 1
-                                              </div>
+                                              <div class="leftWrapper">Program</div>
+                                              <div class="rightWrapper">Program 1</div>
                                             </div>
                                             <div class="notesWrapper">
                                               <span>Notes</span>
                                               <p>
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet, consectetur
+                                                adipisicing elit. Lorem ipsum dolor sit
+                                                amet, consectetur adipisicing elit.
                                               </p>
                                             </div>
                                             <div class="createTask">
@@ -1964,10 +1626,7 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a
-                                      class="ant-dropdown-link four"
-                                      @click.prevent
-                                    >
+                                    <a class="ant-dropdown-link four" @click.prevent>
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -1983,45 +1642,32 @@
                                               <div class="leftWrapper">
                                                 Appointment Type
                                               </div>
-                                              <div class="rightWrapper">
-                                                Clinical
-                                              </div>
+                                              <div class="rightWrapper">Clinical</div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Date Time
-                                              </div>
+                                              <div class="leftWrapper">Date Time</div>
                                               <div class="rightWrapper">
                                                 December 12, 2021 12:00 PM
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Coordinator
-                                              </div>
+                                              <div class="leftWrapper">Coordinator</div>
                                               <div class="rightWrapper">
-                                                <router-link
-                                                  to="patients-summary"
-                                                >
+                                                <router-link to="patients-summary">
                                                   Steve Smith
                                                 </router-link>
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Program
-                                              </div>
-                                              <div class="rightWrapper">
-                                                Program 1
-                                              </div>
+                                              <div class="leftWrapper">Program</div>
+                                              <div class="rightWrapper">Program 1</div>
                                             </div>
                                             <div class="notesWrapper">
                                               <span>Notes</span>
                                               <p>
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet, consectetur
+                                                adipisicing elit. Lorem ipsum dolor sit
+                                                amet, consectetur adipisicing elit.
                                               </p>
                                             </div>
                                             <div class="createTask">
@@ -2054,10 +1700,7 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a
-                                      class="ant-dropdown-link four"
-                                      @click.prevent
-                                    >
+                                    <a class="ant-dropdown-link four" @click.prevent>
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -2073,45 +1716,32 @@
                                               <div class="leftWrapper">
                                                 Appointment Type
                                               </div>
-                                              <div class="rightWrapper">
-                                                Clinical
-                                              </div>
+                                              <div class="rightWrapper">Clinical</div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Date Time
-                                              </div>
+                                              <div class="leftWrapper">Date Time</div>
                                               <div class="rightWrapper">
                                                 December 12, 2021 12:00 PM
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Coordinator
-                                              </div>
+                                              <div class="leftWrapper">Coordinator</div>
                                               <div class="rightWrapper">
-                                                <router-link
-                                                  to="patients-summary"
-                                                >
+                                                <router-link to="patients-summary">
                                                   Steve Smith
                                                 </router-link>
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Program
-                                              </div>
-                                              <div class="rightWrapper">
-                                                Program 1
-                                              </div>
+                                              <div class="leftWrapper">Program</div>
+                                              <div class="rightWrapper">Program 1</div>
                                             </div>
                                             <div class="notesWrapper">
                                               <span>Notes</span>
                                               <p>
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet, consectetur
+                                                adipisicing elit. Lorem ipsum dolor sit
+                                                amet, consectetur adipisicing elit.
                                               </p>
                                             </div>
                                             <div class="createTask">
@@ -2142,10 +1772,7 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a
-                                      class="ant-dropdown-link three"
-                                      @click.prevent
-                                    >
+                                    <a class="ant-dropdown-link three" @click.prevent>
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -2161,45 +1788,32 @@
                                               <div class="leftWrapper">
                                                 Appointment Type
                                               </div>
-                                              <div class="rightWrapper">
-                                                Clinical
-                                              </div>
+                                              <div class="rightWrapper">Clinical</div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Date Time
-                                              </div>
+                                              <div class="leftWrapper">Date Time</div>
                                               <div class="rightWrapper">
                                                 December 12, 2021 12:00 PM
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Coordinator
-                                              </div>
+                                              <div class="leftWrapper">Coordinator</div>
                                               <div class="rightWrapper">
-                                                <router-link
-                                                  to="patients-summary"
-                                                >
+                                                <router-link to="patients-summary">
                                                   Steve Smith
                                                 </router-link>
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Program
-                                              </div>
-                                              <div class="rightWrapper">
-                                                Program 1
-                                              </div>
+                                              <div class="leftWrapper">Program</div>
+                                              <div class="rightWrapper">Program 1</div>
                                             </div>
                                             <div class="notesWrapper">
                                               <span>Notes</span>
                                               <p>
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet, consectetur
+                                                adipisicing elit. Lorem ipsum dolor sit
+                                                amet, consectetur adipisicing elit.
                                               </p>
                                             </div>
                                             <div class="createTask">
@@ -2227,10 +1841,7 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a
-                                      class="ant-dropdown-link one"
-                                      @click.prevent
-                                    >
+                                    <a class="ant-dropdown-link one" @click.prevent>
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -2246,45 +1857,32 @@
                                               <div class="leftWrapper">
                                                 Appointment Type
                                               </div>
-                                              <div class="rightWrapper">
-                                                Clinical
-                                              </div>
+                                              <div class="rightWrapper">Clinical</div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Date Time
-                                              </div>
+                                              <div class="leftWrapper">Date Time</div>
                                               <div class="rightWrapper">
                                                 December 12, 2021 12:00 PM
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Coordinator
-                                              </div>
+                                              <div class="leftWrapper">Coordinator</div>
                                               <div class="rightWrapper">
-                                                <router-link
-                                                  to="patients-summary"
-                                                >
+                                                <router-link to="patients-summary">
                                                   Steve Smith
                                                 </router-link>
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Program
-                                              </div>
-                                              <div class="rightWrapper">
-                                                Program 1
-                                              </div>
+                                              <div class="leftWrapper">Program</div>
+                                              <div class="rightWrapper">Program 1</div>
                                             </div>
                                             <div class="notesWrapper">
                                               <span>Notes</span>
                                               <p>
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet, consectetur
+                                                adipisicing elit. Lorem ipsum dolor sit
+                                                amet, consectetur adipisicing elit.
                                               </p>
                                             </div>
                                             <div class="createTask">
@@ -2320,10 +1918,7 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a
-                                      class="ant-dropdown-link four"
-                                      @click.prevent
-                                    >
+                                    <a class="ant-dropdown-link four" @click.prevent>
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -2339,45 +1934,32 @@
                                               <div class="leftWrapper">
                                                 Appointment Type
                                               </div>
-                                              <div class="rightWrapper">
-                                                Clinical
-                                              </div>
+                                              <div class="rightWrapper">Clinical</div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Date Time
-                                              </div>
+                                              <div class="leftWrapper">Date Time</div>
                                               <div class="rightWrapper">
                                                 December 12, 2021 12:00 PM
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Coordinator
-                                              </div>
+                                              <div class="leftWrapper">Coordinator</div>
                                               <div class="rightWrapper">
-                                                <router-link
-                                                  to="patients-summary"
-                                                >
+                                                <router-link to="patients-summary">
                                                   Steve Smith
                                                 </router-link>
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Program
-                                              </div>
-                                              <div class="rightWrapper">
-                                                Program 1
-                                              </div>
+                                              <div class="leftWrapper">Program</div>
+                                              <div class="rightWrapper">Program 1</div>
                                             </div>
                                             <div class="notesWrapper">
                                               <span>Notes</span>
                                               <p>
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet, consectetur
+                                                adipisicing elit. Lorem ipsum dolor sit
+                                                amet, consectetur adipisicing elit.
                                               </p>
                                             </div>
                                             <div class="createTask">
@@ -2402,10 +1984,7 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a
-                                      class="ant-dropdown-link one"
-                                      @click.prevent
-                                    >
+                                    <a class="ant-dropdown-link one" @click.prevent>
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -2421,45 +2000,32 @@
                                               <div class="leftWrapper">
                                                 Appointment Type
                                               </div>
-                                              <div class="rightWrapper">
-                                                Clinical
-                                              </div>
+                                              <div class="rightWrapper">Clinical</div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Date Time
-                                              </div>
+                                              <div class="leftWrapper">Date Time</div>
                                               <div class="rightWrapper">
                                                 December 12, 2021 12:00 PM
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Coordinator
-                                              </div>
+                                              <div class="leftWrapper">Coordinator</div>
                                               <div class="rightWrapper">
-                                                <router-link
-                                                  to="patients-summary"
-                                                >
+                                                <router-link to="patients-summary">
                                                   Steve Smith
                                                 </router-link>
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Program
-                                              </div>
-                                              <div class="rightWrapper">
-                                                Program 1
-                                              </div>
+                                              <div class="leftWrapper">Program</div>
+                                              <div class="rightWrapper">Program 1</div>
                                             </div>
                                             <div class="notesWrapper">
                                               <span>Notes</span>
                                               <p>
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet, consectetur
+                                                adipisicing elit. Lorem ipsum dolor sit
+                                                amet, consectetur adipisicing elit.
                                               </p>
                                             </div>
                                             <div class="createTask">
@@ -2487,10 +2053,7 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a
-                                      class="ant-dropdown-link three"
-                                      @click.prevent
-                                    >
+                                    <a class="ant-dropdown-link three" @click.prevent>
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -2506,45 +2069,32 @@
                                               <div class="leftWrapper">
                                                 Appointment Type
                                               </div>
-                                              <div class="rightWrapper">
-                                                Clinical
-                                              </div>
+                                              <div class="rightWrapper">Clinical</div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Date Time
-                                              </div>
+                                              <div class="leftWrapper">Date Time</div>
                                               <div class="rightWrapper">
                                                 December 12, 2021 12:00 PM
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Coordinator
-                                              </div>
+                                              <div class="leftWrapper">Coordinator</div>
                                               <div class="rightWrapper">
-                                                <router-link
-                                                  to="patients-summary"
-                                                >
+                                                <router-link to="patients-summary">
                                                   Steve Smith
                                                 </router-link>
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Program
-                                              </div>
-                                              <div class="rightWrapper">
-                                                Program 1
-                                              </div>
+                                              <div class="leftWrapper">Program</div>
+                                              <div class="rightWrapper">Program 1</div>
                                             </div>
                                             <div class="notesWrapper">
                                               <span>Notes</span>
                                               <p>
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet, consectetur
+                                                adipisicing elit. Lorem ipsum dolor sit
+                                                amet, consectetur adipisicing elit.
                                               </p>
                                             </div>
                                             <div class="createTask">
@@ -2569,10 +2119,7 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a
-                                      class="ant-dropdown-link one"
-                                      @click.prevent
-                                    >
+                                    <a class="ant-dropdown-link one" @click.prevent>
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -2588,45 +2135,32 @@
                                               <div class="leftWrapper">
                                                 Appointment Type
                                               </div>
-                                              <div class="rightWrapper">
-                                                Clinical
-                                              </div>
+                                              <div class="rightWrapper">Clinical</div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Date Time
-                                              </div>
+                                              <div class="leftWrapper">Date Time</div>
                                               <div class="rightWrapper">
                                                 December 12, 2021 12:00 PM
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Coordinator
-                                              </div>
+                                              <div class="leftWrapper">Coordinator</div>
                                               <div class="rightWrapper">
-                                                <router-link
-                                                  to="patients-summary"
-                                                >
+                                                <router-link to="patients-summary">
                                                   Steve Smith
                                                 </router-link>
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Program
-                                              </div>
-                                              <div class="rightWrapper">
-                                                Program 1
-                                              </div>
+                                              <div class="leftWrapper">Program</div>
+                                              <div class="rightWrapper">Program 1</div>
                                             </div>
                                             <div class="notesWrapper">
                                               <span>Notes</span>
                                               <p>
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet, consectetur
+                                                adipisicing elit. Lorem ipsum dolor sit
+                                                amet, consectetur adipisicing elit.
                                               </p>
                                             </div>
                                             <div class="createTask">
@@ -2656,10 +2190,7 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a
-                                      class="ant-dropdown-link three"
-                                      @click.prevent
-                                    >
+                                    <a class="ant-dropdown-link three" @click.prevent>
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -2675,45 +2206,32 @@
                                               <div class="leftWrapper">
                                                 Appointment Type
                                               </div>
-                                              <div class="rightWrapper">
-                                                Clinical
-                                              </div>
+                                              <div class="rightWrapper">Clinical</div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Date Time
-                                              </div>
+                                              <div class="leftWrapper">Date Time</div>
                                               <div class="rightWrapper">
                                                 December 12, 2021 12:00 PM
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Coordinator
-                                              </div>
+                                              <div class="leftWrapper">Coordinator</div>
                                               <div class="rightWrapper">
-                                                <router-link
-                                                  to="patients-summary"
-                                                >
+                                                <router-link to="patients-summary">
                                                   Steve Smith
                                                 </router-link>
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Program
-                                              </div>
-                                              <div class="rightWrapper">
-                                                Program 1
-                                              </div>
+                                              <div class="leftWrapper">Program</div>
+                                              <div class="rightWrapper">Program 1</div>
                                             </div>
                                             <div class="notesWrapper">
                                               <span>Notes</span>
                                               <p>
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet, consectetur
+                                                adipisicing elit. Lorem ipsum dolor sit
+                                                amet, consectetur adipisicing elit.
                                               </p>
                                             </div>
                                             <div class="createTask">
@@ -2747,10 +2265,7 @@
                                     :trigger="['click']"
                                     overlayClassName="monthValue"
                                   >
-                                    <a
-                                      class="ant-dropdown-link four"
-                                      @click.prevent
-                                    >
+                                    <a class="ant-dropdown-link four" @click.prevent>
                                       <div class="dropdown">
                                         <p>
                                           <span>Smith Joseph</span>
@@ -2766,45 +2281,32 @@
                                               <div class="leftWrapper">
                                                 Appointment Type
                                               </div>
-                                              <div class="rightWrapper">
-                                                Clinical
-                                              </div>
+                                              <div class="rightWrapper">Clinical</div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Date Time
-                                              </div>
+                                              <div class="leftWrapper">Date Time</div>
                                               <div class="rightWrapper">
                                                 December 12, 2021 12:00 PM
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Coordinator
-                                              </div>
+                                              <div class="leftWrapper">Coordinator</div>
                                               <div class="rightWrapper">
-                                                <router-link
-                                                  to="patients-summary"
-                                                >
+                                                <router-link to="patients-summary">
                                                   Steve Smith
                                                 </router-link>
                                               </div>
                                             </div>
                                             <div class="itemWrapper">
-                                              <div class="leftWrapper">
-                                                Program
-                                              </div>
-                                              <div class="rightWrapper">
-                                                Program 1
-                                              </div>
+                                              <div class="leftWrapper">Program</div>
+                                              <div class="rightWrapper">Program 1</div>
                                             </div>
                                             <div class="notesWrapper">
                                               <span>Notes</span>
                                               <p>
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
-                                                Lorem ipsum dolor sit amet,
-                                                consectetur adipisicing elit.
+                                                Lorem ipsum dolor sit amet, consectetur
+                                                adipisicing elit. Lorem ipsum dolor sit
+                                                amet, consectetur adipisicing elit.
                                               </p>
                                             </div>
                                             <div class="createTask">
@@ -2841,7 +2343,6 @@
       </a-layout>
     </a-layout>
     <!--modal-->
-<<<<<<< Updated upstream
     <a-modal
       v-model:visible="visible"
       width="1000px"
@@ -2864,11 +2365,7 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <label>Start Date</label>
-            <a-date-picker
-              v-model:value="value1"
-              :size="size"
-              style="width: 100%"
-            />
+            <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
@@ -2901,9 +2398,9 @@
         </a-col>
       </a-row>
     </a-modal>
-=======
+    =======
     <AddAppointment v-model:visible="appointmentModal" @ok="handleOk" />
->>>>>>> Stashed changes
+    >>>>>>> Stashed changes
     <!---->
   </div>
 </template>
@@ -2919,11 +2416,8 @@ export default {
   components: {
     Header,
     Sidebar,
-<<<<<<< Updated upstream
-    FileAddOutlined,
-=======
     AddAppointment,
->>>>>>> Stashed changes
+    FileAddOutlined,
   },
 
   setup() {
