@@ -99,9 +99,13 @@
                               :value="String(current.month())"
                               @change="
                                 (selectedMonth) => {
+<<<<<<< Updated upstream
                                   onChange(
                                     current.month(parseInt(selectedMonth, 10))
                                   );
+=======
+                                  onChange(current.month(parseInt(selectedMonth, 10)));
+>>>>>>> Stashed changes
                                 }
                               "
                             >
@@ -2837,6 +2841,7 @@
       </a-layout>
     </a-layout>
     <!--modal-->
+<<<<<<< Updated upstream
     <a-modal
       v-model:visible="visible"
       width="1000px"
@@ -2896,6 +2901,9 @@
         </a-col>
       </a-row>
     </a-modal>
+=======
+    <AddAppointment v-model:visible="appointmentModal" @ok="handleOk" />
+>>>>>>> Stashed changes
     <!---->
   </div>
 </template>
@@ -2903,34 +2911,28 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
+import AddAppointment from "@/components/modals/AddAppointment";
+
 import { defineComponent, ref } from "vue";
 import { FileAddOutlined } from "@ant-design/icons-vue";
 export default {
   components: {
     Header,
     Sidebar,
+<<<<<<< Updated upstream
     FileAddOutlined,
+=======
+    AddAppointment,
+>>>>>>> Stashed changes
   },
 
   setup() {
-    const visible = ref(false);
     const toggle = ref(true);
 
-    const showModal = () => {
-      visible.value = true;
-    };
-
-    const handleOk = (e) => {
-      console.log(e);
-      visible.value = false;
-    };
-
     const value = ref();
-
     const onPanelChange = (value, mode) => {
       console.log(value, mode);
     };
-
     const getMonths = (value) => {
       const localeData = value.localeData();
       const months = [];
@@ -2938,35 +2940,42 @@ export default {
       for (let i = 0; i < 12; i++) {
         months.push(localeData.monthsShort(value.month(i)));
       }
-
       return months;
     };
-
     const getYears = (value) => {
       const year = value.year();
       const years = [];
-
       for (let i = year - 10; i < year + 10; i += 1) {
         years.push(i);
       }
-
       return years;
     };
+
+    const appointmentModal = ref(false);
+    const showModal = () => {
+      appointmentModal.value = true;
+    };
+    const handleOk = (e) => {
+      console.log(e);
+      appointmentModal.value = false;
+    };
+
     return {
-      visible,
-      showModal,
-      handleOk,
       value1: ref(),
-      size: ref("large"),
       toggle,
       value,
       onPanelChange,
       getMonths,
       getYears,
+
+      appointmentModal,
+      handleOk,
+      showModal,
     };
   },
 };
 </script>
+
 <style scoped>
 .apptBtn {
   text-align: center;
