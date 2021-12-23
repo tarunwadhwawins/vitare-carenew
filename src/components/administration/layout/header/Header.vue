@@ -50,7 +50,7 @@
                 <template #overlay>
                   <a-menu>
                     <a-menu-item key="0">
-                      <a href="javascript:void(0)">Add Appointment</a>
+                      <a-button @click="showModal">Add Appointment</a-button>
                     </a-menu-item>
                     <a-menu-item key="1">
                       <a href="javascript:void(0)">Add Patient</a>
@@ -125,11 +125,15 @@
         </div>
       </div>
     </div>
+    <!---->
+    <AddAppointment v-model:visible="appointmentModal" @ok="handleOk" />
+    <!---->
   </div>
 </template>
 
 <script>
 import { defineComponent, ref } from "vue";
+import AddAppointment from "@/components/modals/AddAppointment";
 import {
   NotificationOutlined,
   DownOutlined,
@@ -144,6 +148,7 @@ export default defineComponent({
     MenuOutlined,
     SearchOutlined,
     MoreOutlined,
+    AddAppointment,
   },
   setup() {
     const toggle = ref(false);
@@ -151,10 +156,24 @@ export default defineComponent({
     function barMenu() {
       document.body.classList.toggle("show");
     }
+
+    const appointmentModal = ref(false);
+    const showModal = () => {
+      appointmentModal.value = true;
+    };
+    const handleOk = (e) => {
+      console.log(e);
+      appointmentModal.value = false;
+    };
+
     return {
       barMenu,
       toggle,
       ellipse,
+
+      appointmentModal,
+      handleOk,
+      showModal,
     };
   },
 });
