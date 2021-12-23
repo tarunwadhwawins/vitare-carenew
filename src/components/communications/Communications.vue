@@ -26,10 +26,71 @@
                     >Send Message</a-button
                   >
                   <!-- <a-button @click="showEmailModal" >Email</a-button> -->
-                  <a-button @click="openNotification">Email</a-button>
+
+                  <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Email</span>
+                    </template>
+                    <a-button
+                      type="primary"
+                      :size="small"
+                      @click="openNotification"
+                    >
+                      <template #icon>
+                        <MailOutlined />
+                      </template>
+                    </a-button>
+                  </a-tooltip>
+
+                  <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>SMS</span>
+                    </template>
+                    <a-button
+                      type="primary"
+                      :size="small"
+                      @click="openNotification1"
+                    >
+                      <template #icon>
+                        <MessageOutlined />
+                      </template>
+                    </a-button>
+                  </a-tooltip>
+
+                  <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Reminder</span>
+                    </template>
+                    <a-button
+                      type="primary"
+                      :size="small"
+                      @click="openNotification2"
+                    >
+                      <template #icon>
+                        <AlertOutlined />
+                      </template>
+                    </a-button>
+                  </a-tooltip>
+
+                  <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Call</span>
+                    </template>
+                    <a-button
+                      type="primary"
+                      :size="small"
+                      @click="openNotification3"
+                    >
+                      <template #icon>
+                        <PhoneOutlined />
+                      </template>
+                    </a-button>
+                  </a-tooltip>
+
+                  <!-- <a-button @click="openNotification">Email</a-button>
                   <a-button @click="openNotification1">SMS</a-button>
                   <a-button @click="openNotification2">Reminder</a-button>
-                  <a-button @click="openNotification3">Call</a-button>
+                  <a-button @click="openNotification3">Call</a-button> -->
                 </div>
                 <div class="filter">
                   <button
@@ -187,7 +248,8 @@
                       <template #staff="text">
                         <router-link to="corrdinator-summary">{{
                           text.text[0]
-                        }}</router-link><br>
+                        }}</router-link
+                        ><br />
                         <router-link to="corrdinator-summary">{{
                           text.text[1]
                         }}</router-link>
@@ -344,13 +406,13 @@ import { defineComponent, ref, h } from "vue";
 import { notification, Button } from "ant-design-vue";
 import { useRouter } from "vue-router";
 
-
 import {
   UserOutlined,
   MessageOutlined,
   CommentOutlined,
   PhoneOutlined,
   MailOutlined,
+  AlertOutlined,
 } from "@ant-design/icons-vue";
 const close = () => {
   console.log(
@@ -498,6 +560,7 @@ export default {
     CommentOutlined,
     PhoneOutlined,
     MailOutlined,
+    AlertOutlined,
   },
   data: function () {
     return {
@@ -967,11 +1030,11 @@ export default {
 
   setup() {
     const router = useRouter();
-    function clickHandler(event, chartContext, config){
-        console.log(event)
-        console.log(chartContext)
-        console.log(config)
-        router.push({path:'corrdinator-summary'})
+    function clickHandler(event, chartContext, config) {
+      console.log(event);
+      console.log(chartContext);
+      console.log(config);
+      router.push({ path: "corrdinator-summary" });
     }
     const columns5 = [
       {
@@ -1116,7 +1179,7 @@ export default {
     const openNotification2 = () => {
       const key = `open${Date.now()}`;
       notification.open({
-        message: "Remindar",
+        message: "Reminder",
         description:
           "Lorem Ipsum is simply dummy text of the pritype and scrambled it to make a type specimen book",
 
