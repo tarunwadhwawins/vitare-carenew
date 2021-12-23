@@ -14,11 +14,11 @@
             ><CreditCardOutlined /><span class="menuItem">CPT Codes</span></a-menu-item
           ></router-link
         >
-        <router-link to="/care-coordinator"
+        <!-- <router-link to="/care-coordinator"
           ><a-menu-item
             ><TeamOutlined /><span class="menuItem">Care Coordinator</span></a-menu-item
           ></router-link
-        >
+        > -->
         <router-link to="/manage-programs"
           ><a-menu-item
             ><MailOutlined /><span class="menuItem">Programs</span></a-menu-item
@@ -69,7 +69,6 @@ import {
   DashboardOutlined,
   MailOutlined,
   CreditCardOutlined,
-  TeamOutlined,
   FileDoneOutlined,
   HomeOutlined,
   SafetyOutlined,
@@ -81,7 +80,6 @@ export default defineComponent({
     MailOutlined,
     DashboardOutlined,
     CreditCardOutlined,
-    TeamOutlined,
     FileDoneOutlined,
     HomeOutlined,
     SafetyOutlined,

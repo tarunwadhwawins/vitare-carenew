@@ -20,7 +20,7 @@
           <a-row>
             <a-col :span="24">
               <h2 class="pageTittle">
-                Manange Care Coordinator
+                Care Coordinator
                 <div class="commonBtn">
                   <a-button class="btn primaryBtn" @click="showModal"
                     >Add New Coordinator</a-button

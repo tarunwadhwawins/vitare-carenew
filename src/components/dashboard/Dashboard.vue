@@ -152,6 +152,7 @@
                   height="350"
                   :options="code"
                   :series="value"
+                  @click="clickHandler4"
                 ></apexchart>
               </a-card>
             </a-col>
@@ -168,6 +169,7 @@
                   height="362"
                   :options="billed"
                   :series="due"
+                   @click="clickHandler6"
                 ></apexchart>
               </a-card>
             </a-col>
@@ -180,6 +182,7 @@
                   height="350"
                   :options="chartOptions"
                   :series="series"
+                   @click="clickHandler2"
                 ></apexchart>
               </a-card>
             </a-col>
@@ -190,6 +193,7 @@
                   height="350"
                   :options="chartOptions"
                   :series="series"
+                   @click="clickHandler5"
                 ></apexchart>
               </a-card>
             </a-col>
@@ -739,23 +743,24 @@ export default {
   setup() {
     const router = useRouter();
     function clickHandler(event, chartContext, config){
-        console.log(event)
-        console.log(chartContext)
-        console.log(config)
         router.push({path:'communications'})
     }
     function clickHandler2(event, chartContext, config){
-        console.log(event)
-        console.log(chartContext)
-        console.log(config)
         router.push({path:'manage-patients'})
     }
     function clickHandler3(event, chartContext, config){
-        console.log(event)
-        console.log(chartContext)
-        console.log(config)
         router.push({path:'manage-care-coordinator'})
     }
+    function clickHandler4(event, chartContext, config){
+        router.push({path:'cpt-codes'})
+    }
+    function clickHandler5(event, chartContext, config){
+        router.push({path:'appointment-calendar'})
+    }
+    function clickHandler6(event, chartContext, config){
+        router.push({path:'time-tracking-report'})
+    }
+    
     
 
     function logout() {
@@ -776,6 +781,9 @@ export default {
       clickHandler,
       clickHandler2,
       clickHandler3,
+      clickHandler4,
+      clickHandler5,
+      clickHandler6,
     };
   },
 };

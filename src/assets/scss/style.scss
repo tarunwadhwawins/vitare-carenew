@@ -836,3 +836,30 @@
         }
     }
 }
+
+
+// Communication Notification Popup 
+
+.notificationBody {
+    padding: 10px 0 0;
+    border-top: 1px solid #e3e3e3;
+    p {
+        font-size: 14px;
+        padding: 0 0 5px;
+        span {
+            font-family: $font-family-semi-bold;
+        }
+        &.summary{
+            color: #999;
+        }
+    }
+    .actionBtns {
+        text-align: right;
+        padding: 10px 0 0;
+    }
+}
+.ant-notification-notice-btn {
+    .ant-btn {
+        margin: 0 0 0 10px;
+    }
+}

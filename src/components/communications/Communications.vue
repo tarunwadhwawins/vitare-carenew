@@ -29,7 +29,11 @@
                     <template #title>
                       <span>Email</span>
                     </template>
-                    <a-button type="primary" :size="small" @click="openNotification">
+                    <a-button
+                      type="primary"
+                      :size="small"
+                      @click="openNotification('bottomRight')"
+                    >
                       <template #icon>
                         <MailOutlined />
                       </template>
@@ -40,7 +44,11 @@
                     <template #title>
                       <span>SMS</span>
                     </template>
-                    <a-button type="primary" :size="small" @click="openNotification1">
+                    <a-button
+                      type="primary"
+                      :size="small"
+                      @click="openNotification1('bottomRight')"
+                    >
                       <template #icon>
                         <MessageOutlined />
                       </template>
@@ -51,7 +59,11 @@
                     <template #title>
                       <span>Reminder</span>
                     </template>
-                    <a-button type="primary" :size="small" @click="openNotification2">
+                    <a-button
+                      type="primary"
+                      :size="small"
+                      @click="openNotification2('bottomRight')"
+                    >
                       <template #icon>
                         <AlertOutlined />
                       </template>
@@ -62,7 +74,11 @@
                     <template #title>
                       <span>Call</span>
                     </template>
-                    <a-button type="primary" :size="small" @click="openNotification3">
+                    <a-button
+                      type="primary"
+                      :size="small"
+                      @click="openNotification3('bottomRight')"
+                    >
                       <template #icon>
                         <PhoneOutlined />
                       </template>
@@ -152,7 +168,11 @@
                             </template>
                           </a-table>
                         </a-tab-pane>
-                        <a-tab-pane key="2" tab="Future Appointments" force-render>
+                        <a-tab-pane
+                          key="2"
+                          tab="Future Appointments"
+                          force-render
+                        >
                           <a-table
                             :columns="columns6"
                             :data-source="data6"
@@ -175,6 +195,7 @@
                         height="350"
                         :options="callqueoption"
                         :series="callqueseries"
+                        @click="clickHandler2"
                       ></apexchart>
                     </a-card>
                   </a-col>
@@ -185,6 +206,7 @@
                         height="350"
                         :options="chartOptions"
                         :series="series"
+                        @click="clickHandler2"
                       ></apexchart>
                     </a-card>
                   </a-col>
@@ -218,7 +240,9 @@
                         <a class="icons"><MessageOutlined /></a>
                       </template>
                       <template #patient="text">
-                        <router-link to="patients-summary">{{ text.text }}</router-link>
+                        <router-link to="patients-summary">{{
+                          text.text
+                        }}</router-link>
                       </template>
                       <template #staff="text">
                         <router-link to="corrdinator-summary">{{
@@ -240,10 +264,18 @@
                       </template>
 
                       <template #type="{ text }">
-                        <a class="icons" v-if="text == 'comment'"><CommentOutlined /></a>
-                        <a class="icons" v-if="text == 'voiceMail'"><PhoneOutlined /></a>
-                        <a class="icons" v-if="text == 'sent'"><PhoneOutlined /></a>
-                        <a class="icons" v-if="text == 'mail'"><MailOutlined /></a>
+                        <a class="icons" v-if="text == 'comment'"
+                          ><CommentOutlined
+                        /></a>
+                        <a class="icons" v-if="text == 'voiceMail'"
+                          ><PhoneOutlined
+                        /></a>
+                        <a class="icons" v-if="text == 'sent'"
+                          ><PhoneOutlined
+                        /></a>
+                        <a class="icons" v-if="text == 'mail'"
+                          ><MailOutlined
+                        /></a>
                       </template>
                     </a-table>
                   </a-col>
@@ -275,6 +307,7 @@ import {
   PhoneOutlined,
   MailOutlined,
   AlertOutlined,
+  
 } from "@ant-design/icons-vue";
 const close = () => {
   console.log(
@@ -424,6 +457,7 @@ export default {
     MailOutlined,
     AlertOutlined,
     CommunicationsModal,
+    
   },
   data: function () {
     return {
@@ -894,10 +928,10 @@ export default {
   setup() {
     const router = useRouter();
     function clickHandler(event, chartContext, config) {
-      console.log(event);
-      console.log(chartContext);
-      console.log(config);
       router.push({ path: "corrdinator-summary" });
+    }
+    function clickHandler2(event, chartContext, config) {
+      router.push({ path: "time-tracking-report" });
     }
     const columns5 = [
       {
@@ -988,79 +1022,145 @@ export default {
     ];
 
     const toggle = ref(true);
-    const openNotification = () => {
-      const key = `open${Date.now()}`;
-      notification.open({
-        message: "Email",
-        description:
-          "Lorem Ipsum is simply dummy text of the printing aa type specimen book",
-        btn: h(
-          Button,
-          {
-            type: "primary",
-            size: "small",
-            onClick: () => notification.close(key),
-          },
-          "Reply"
-        ),
-        key,
-        onClose: close,
-      });
-    };
-    const openNotification1 = () => {
-      const key = `open${Date.now()}`;
-      notification.open({
-        message: "SMS",
-        description:
-          "Lorem Ipsum is simply dummy text of the printingscrambled it to make a type specimen book",
-        btn: h(
-          Button,
-          {
-            type: "primary",
-            size: "small",
-            onClick: () => notification.close(key),
-          },
-          "Reply"
-        ),
-        key,
-        onClose: close,
-      });
-    };
-    const openNotification2 = () => {
-      const key = `open${Date.now()}`;
-      notification.open({
-        message: "Reminder",
-        description:
-          "Lorem Ipsum is simply dummy text of the pritype and scrambled it to make a type specimen book",
 
-        key,
-        onClose: close,
-      });
-    };
-    const openNotification3 = () => {
+    const openNotification = (placement) => {
       const key = `open${Date.now()}`;
       notification.open({
-        message: "Call",
-        description:
-          "Lorem Ipsum is simply dummy text of the printter took a galley of type and scrambled it to make a type specimen book",
+        message: <h2>Email</h2>,
+        description: (
+          <div class="notificationBody">
+            <p>
+              Date Time : <span>December 20, 2021 12:00 PM</span>
+            </p>
+            <p>
+              Patient Name : <span>Jane Doe</span>
+            </p>
+            <p class="summary">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
+              at incidunt !
+            </p>
+          </div>
+        ),
         btn: h(
           Button,
           {
             type: "primary",
-            size: "small",
             onClick: () => notification.close(key),
           },
-          "Start Call"
+          "Reply"
         ),
         key,
         onClose: close,
+        placement,
+      });
+    };
+    const openNotification1 = (placement) => {
+      const key = `open${Date.now()}`;
+      notification.open({
+        message: <h2>SMS</h2>,
+        description: (
+          <div class="notificationBody">
+            <p>
+              Date Time : <span>December 20, 2021 12:00 PM</span>
+            </p>
+            <p>
+              Patient Name : <span>Jane Doe</span>
+            </p>
+            <p class="summary">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
+              at incidunt !
+            </p>
+          </div>
+        ),
+        btn: h(
+          Button,
+          {
+            type: "primary",
+            onClick: () => notification.close(key),
+          },
+          "Reply"
+        ),
+        key,
+        onClose: close,
+        placement
+      });
+    };
+    const openNotification2 = (placement) => {
+      const key = `open${Date.now()}`;
+      notification.open({
+        message:<h2>Reminder</h2>,
+         description: (
+          <div class="notificationBody">
+            <p>
+              Date Time : <span>December 20, 2021 12:00 PM</span>
+            </p>
+            <p>
+              Patient Name : <span>Jane Doe</span>
+            </p>
+            <p class="summary">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
+              at incidunt !
+            </p>
+          </div>
+        ),
+        key,
+        onClose: close,
+        placement
+      });
+    };
+    const openNotification3 = (placement) => {
+      const key = `open${Date.now()}`;
+      notification.open({
+        message:<h2>Call</h2>,
+         description: (
+          <div class="notificationBody">
+            <p>
+              Date Time : <span>December 20, 2021 12:00 PM</span>
+            </p>
+            <p>
+              Patient Name : <span>Jane Doe</span>
+            </p>
+            <p class="summary">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
+              at incidunt !
+            </p>
+          </div>
+        ),
+        btn:[ h(
+          Button,
+          {
+            onClick: () => notification.close(key),
+          },
+          "Cancel ",
+        ),h(
+          Button,
+          {
+            type: "primary",
+            onClick: () => notification.close(key),
+          },
+          "Accept",
+        )],
+        key,
+        onClose: close,
+        placement,
       });
     };
 
     const CommunicationsModal = ref(false);
+
+    const showEmailpop = ref(false);
+    const hideEmailpop = ref(false);
+    const showEmail = () => {
+      showEmailpop.value = true;
+    };
+    const hideEmail = () => {
+      showEmailpop.value = false;
+    };
+
     const showModal = () => {
       CommunicationsModal.value = true;
     };
+
     const handleOk = (e) => {
       console.log(e);
       CommunicationsModal.value = false;
@@ -1070,6 +1170,10 @@ export default {
       CommunicationsModal,
       showModal,
       handleOk,
+      showEmail,
+      hideEmail,
+      showEmailpop,
+      hideEmailpop,
 
       data,
       columns,
@@ -1083,6 +1187,7 @@ export default {
       openNotification2,
       openNotification3,
       clickHandler,
+      clickHandler2,
       onChange: (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
       },

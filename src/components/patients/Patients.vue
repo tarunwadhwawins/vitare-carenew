@@ -19,7 +19,7 @@
           <a-row>
             <a-col :span="24">
               <h2 class="pageTittle">
-                Manange Patients
+                Patients
                 <div class="commonBtn">
                   <a-button class="btn primaryBtn" @click="showModal"
                     >Add New Patients</a-button

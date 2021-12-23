@@ -18,17 +18,17 @@
             ></a-menu-item
           ></router-link
         >
-        <!-- <router-link to="/manage-care-coordinator"
+        <router-link to="/manage-care-coordinator"
           ><a-menu-item
             ><UserOutlined /><span class="menuItem"
-              >Manage Care Coordinator</span
+              >Care Coordinator</span
             ></a-menu-item
           ></router-link
-        > -->
+        >
         <router-link to="/manage-patients"
           ><a-menu-item
             ><UserOutlined /><span class="menuItem"
-              >Manage Patients</span
+              >Patients</span
             ></a-menu-item
           ></router-link
         >

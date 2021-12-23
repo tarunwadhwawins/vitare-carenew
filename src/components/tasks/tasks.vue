@@ -141,17 +141,23 @@
                           <a-menu>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked1">Urgent</a-checkbox>
+                                <a-checkbox v-model:checked="checked1"
+                                  >Urgent</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked2">High</a-checkbox>
+                                <a-checkbox v-model:checked="checked2"
+                                  >High</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked3">Normal</a-checkbox>
+                                <a-checkbox v-model:checked="checked3"
+                                  >Normal</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                           </a-menu>
@@ -163,6 +169,7 @@
                       height="250"
                       :options="Incompleteoption"
                       :series="Incompleteseries"
+                       @click="clickHandler2"
                     ></apexchart>
                   </a-card>
                 </a-col>
@@ -177,22 +184,30 @@
                           <a-menu>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked4">Badger</a-checkbox>
+                                <a-checkbox v-model:checked="checked4"
+                                  >Badger</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked5">Devin</a-checkbox>
+                                <a-checkbox v-model:checked="checked5"
+                                  >Devin</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked6">Matt</a-checkbox>
+                                <a-checkbox v-model:checked="checked6"
+                                  >Matt</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked7">John</a-checkbox>
+                                <a-checkbox v-model:checked="checked7"
+                                  >John</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                           </a-menu>
@@ -204,6 +219,7 @@
                       height="250"
                       :options="teamoption"
                       :series="teamseries"
+                       @click="clickHandler"
                     ></apexchart>
                   </a-card>
                 </a-col>
@@ -214,6 +230,7 @@
                       height="250"
                       :options="chartOptions"
                       :series="series"
+                      @click="clickHandler2"
                     ></apexchart>
                   </a-card>
                 </a-col>
@@ -249,6 +266,7 @@
                       height="350"
                       :options="completed"
                       :series="incomplete"
+                      @click="clickHandler2"
                     ></apexchart>
                   </a-card>
                 </a-col>
@@ -270,12 +288,16 @@
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked11">Comm</a-checkbox>
+                                <a-checkbox v-model:checked="checked11"
+                                  >Comm</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked12">Admin</a-checkbox>
+                                <a-checkbox v-model:checked="checked12"
+                                  >Admin</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
@@ -294,6 +316,7 @@
                       height="300"
                       :options="premium"
                       :series="business"
+                      @click="clickHandler2"
                     ></apexchart>
                   </a-card>
                 </a-col>
@@ -333,6 +356,9 @@
                     <template #name="text">
                       <router-link to="#">{{ text.text }}</router-link>
                     </template>
+                    <template #assigned="text">
+                      <router-link to="corrdinator-summary">{{ text.text }}</router-link>
+                    </template>
                     <template #status="key">
                       <a-switch v-model:checked="checked[key.record.key]" />
                     </template>
@@ -361,6 +387,7 @@
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
 import TasksModal from "@/components/modals/TasksModal";
+import { useRouter } from "vue-router";
 import { ref } from "vue";
 import {
   FilterOutlined,
@@ -465,6 +492,9 @@ const columns = [
         value: "	Devin",
       },
     ],
+     slots: {
+      customRender: "assigned",
+    },
     onFilter: (value, record) => record.name.indexOf(value) === 0,
   },
   {
@@ -566,7 +596,7 @@ export default {
         dataLabels: {
           enabled: false,
         },
-        colors: ["#267dff", "#00897b", "#E30D2A"],
+        colors: ["#E30D2A", "#00897b", "#267dff"],
         stroke: {
           width: 1,
           colors: ["#fff"],
@@ -582,7 +612,6 @@ export default {
             rotate: -45,
           },
           categories: ["Urgent  ", "High", "Normal"],
-          tickPlacement: "on",
         },
         yaxis: {
           title: {
@@ -633,7 +662,7 @@ export default {
         dataLabels: {
           enabled: false,
         },
-        colors: ["#00897b", "#00897b", "#00897b"],
+        colors: ["#3b72c5", "#ffb526", "#419541", "#343470"],
         stroke: {
           width: 1,
           colors: ["#fff"],
@@ -649,7 +678,6 @@ export default {
             rotate: -45,
           },
           categories: ["Badger ", "Devin ", "Matt ", "John"],
-          tickPlacement: "on",
         },
         yaxis: {
           title: {
@@ -744,6 +772,14 @@ export default {
     };
   },
   setup() {
+    const router = useRouter();
+
+    function clickHandler(event, chartContext, config) {
+      router.push({ path: "corrdinator-summary" });
+    }
+    function clickHandler2(event, chartContext, config) {
+      router.push({ path: "time-tracking-report" });
+    }
     const checked = ref([false]);
     const checked1 = ref(false);
     const checked2 = ref(false);
@@ -795,6 +831,8 @@ export default {
       TasksModal,
       showModal,
       handleOk,
+      clickHandler,
+      clickHandler2,
 
       handleChange,
     };

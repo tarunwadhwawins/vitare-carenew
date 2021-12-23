@@ -299,7 +299,7 @@
               <div class="thumbDesc patientTimeline">
                 <a-timeline>
                   <a-timeline-item>
-                    <template #dot><FolderOpenOutlined/></template>
+                    <template #dot><FolderOpenOutlined /></template>
 
                     <a-tabs v-model:activeKey="activeKey">
                       <a-tab-pane key="1" tab="Visits"></a-tab-pane>
@@ -314,7 +314,9 @@
                     </a-tabs>
                   </a-timeline-item>
                   <a-timeline-item color="blue">
-                    <template #dot><FilePdfOutlined class="yellowIcon"/></template>
+                    <template #dot
+                      ><FilePdfOutlined class="yellowIcon"
+                    /></template>
                     <div class="timelineInner">
                       <div class="timelineHeader">
                         <div class="title">
@@ -339,12 +341,16 @@
                     </div>
                   </a-timeline-item>
                   <a-timeline-item color="red">
-                    <template #dot><HeatMapOutlined  class="redIcon"/></template>
+                    <template #dot
+                      ><HeatMapOutlined class="redIcon"
+                    /></template>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit
                     culpa assumenda quidem magnam
                   </a-timeline-item>
                   <a-timeline-item color="red">
-                    <template #dot><ClockCircleOutlined class="orangeIcon"/></template>
+                    <template #dot
+                      ><ClockCircleOutlined class="orangeIcon"
+                    /></template>
                     <div class="timelineInner">
                       <div class="timelineHeader">
                         <div class="title">
@@ -369,8 +375,10 @@
                     </div>
                   </a-timeline-item>
                   <a-timeline-item color="red">
-                    <template #dot><BellOutlined class="yellowIcon"/></template>
-                   <div class="timelineInner">
+                    <template #dot
+                      ><BellOutlined class="yellowIcon"
+                    /></template>
+                    <div class="timelineInner">
                       <div class="timelineHeader">
                         <div class="title">
                           <h4>Lorem Ipsum</h4>
@@ -386,21 +394,26 @@
                       </div>
                       <div class="timelineBody">
                         <div class="content">
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit.... <a href="#">more</a>
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit.... <a href="#">more</a>
                         </div>
                         <MailOutlined />
                       </div>
                     </div>
                   </a-timeline-item>
                   <a-timeline-item class="dateOuter"
-                    ><template #dot><ClockCircleOutlined class="orangeIcon"/></template>
+                    ><template #dot
+                      ><ClockCircleOutlined class="orangeIcon"
+                    /></template>
                     <div class="date">
                       <span>Dec 12, 2021</span>
                     </div></a-timeline-item
                   >
                   <a-timeline-item color="blue">
-                    <template #dot><FilePdfOutlined class="yellowIcon"/></template>Lorem ipsum
-                   <div class="timelineInner">
+                    <template #dot
+                      ><FilePdfOutlined class="yellowIcon" /></template
+                    >Lorem ipsum
+                    <div class="timelineInner">
                       <div class="timelineHeader">
                         <div class="title">
                           <h4>Lorem Ipsum</h4>
@@ -416,22 +429,26 @@
                       </div>
                       <div class="timelineBody">
                         <div class="content">
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit.... <a href="#">more</a>
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit.... <a href="#">more</a>
                         </div>
                         <MailOutlined />
-                      </div>
-                    </div></a-timeline-item
-                  >
+                      </div></div
+                  ></a-timeline-item>
                   <a-timeline-item color="red">
-                    <template #dot><HeatMapOutlined class="redIcon"/></template>
+                    <template #dot
+                      ><HeatMapOutlined class="redIcon"
+                    /></template>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit
                     culpa assumenda quidem magnam fuga quaerat pariatur labore
                     exercitationem voluptate iusto, repellat debitis quis itaque
                     nulla numquam, fugiat quas ullam. Minus.
                   </a-timeline-item>
                   <a-timeline-item color="red">
-                    <template #dot><ClockCircleOutlined class="orangeIcon"/></template>
-                   <div class="timelineInner">
+                    <template #dot
+                      ><ClockCircleOutlined class="orangeIcon"
+                    /></template>
+                    <div class="timelineInner">
                       <div class="timelineHeader">
                         <div class="title">
                           <h4>Lorem Ipsum</h4>
@@ -447,14 +464,17 @@
                       </div>
                       <div class="timelineBody">
                         <div class="content">
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit.... <a href="#">more</a>
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit.... <a href="#">more</a>
                         </div>
                         <MailOutlined />
                       </div>
                     </div>
                   </a-timeline-item>
                   <a-timeline-item color="red">
-                    <template #dot><BellOutlined class="yellowIcon"/></template>
+                    <template #dot
+                      ><BellOutlined class="yellowIcon"
+                    /></template>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit
                     culpa assumenda quidem magnam fuga quaerat pariatur labore
                     exercitationem voluptate iusto, repellat debitis quis itaque
@@ -482,6 +502,7 @@
                                 height="350"
                                 :options="chartOptions"
                                 :series="series"
+                                @click="clickHandler"
                               ></apexchart>
                             </a-tab-pane>
                             <a-tab-pane key="8" tab="Table" force-render>
@@ -520,6 +541,7 @@
                                 height="350"
                                 :options="chartOptions"
                                 :series="series"
+                                @click="clickHandler"
                               ></apexchart>
                             </a-tab-pane>
                             <a-tab-pane key="10" tab="Table">
@@ -553,6 +575,7 @@
                                 height="350"
                                 :options="chartOptions"
                                 :series="series"
+                                @click="clickHandler"
                               ></apexchart>
                             </a-tab-pane>
                             <a-tab-pane key="12" tab="Table" force-render>
@@ -586,6 +609,7 @@
                                 height="350"
                                 :options="chartOptions"
                                 :series="series"
+                                @click="clickHandler"
                               ></apexchart>
                             </a-tab-pane>
                             <a-tab-pane key="14" tab="Table" force-render>
@@ -654,6 +678,12 @@
                           :pagination="false"
                           @change="onChange"
                         >
+                          <template #performed="text">
+                            <router-link to="corrdinator-summary">{{ text.text }}</router-link>
+                          </template>
+                          <template #logged="text">
+                            <router-link to="corrdinator-summary">{{ text.text }}</router-link>
+                          </template>
                           <template #action>
                             <a class="icons"><EditOutlined /></a>
                             <a class="icons"><DeleteOutlined /></a>
@@ -1068,6 +1098,7 @@
                   height="350"
                   :options="chartOptions"
                   :series="series"
+                  @click="clickHandler"
                 ></apexchart>
               </a-tab-pane>
               <a-tab-pane key="8" tab="Table" force-render>
@@ -1108,6 +1139,7 @@
                   height="350"
                   :options="chartOptions"
                   :series="series"
+                  @click="clickHandler"
                 ></apexchart>
               </a-tab-pane>
               <a-tab-pane key="14" tab="Table" force-render>
@@ -1147,6 +1179,7 @@
                   height="350"
                   :options="chartOptions"
                   :series="series"
+                  @click="clickHandler"
                 ></apexchart>
               </a-tab-pane>
               <a-tab-pane key="12" tab="Table" force-render>
@@ -1548,6 +1581,8 @@ import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
 import dayjs from "dayjs";
 import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+
 import {
   DeleteOutlined,
   EditOutlined,
@@ -1621,6 +1656,9 @@ const columns1 = [
   {
     title: "Logged By",
     dataIndex: "logged",
+     slots: {
+      customRender: "logged",
+    },
   },
   {
     title: "Performed By",
@@ -1629,6 +1667,10 @@ const columns1 = [
       compare: (a, b) => a.performed - b.performed,
       multiple: 3,
     },
+    slots: {
+      customRender: "performed",
+    },
+    
   },
   {
     title: "Date",
@@ -1999,6 +2041,10 @@ export default {
   },
 
   setup() {
+    const router = useRouter();
+    function clickHandler(event, chartContext, config) {
+      router.push({ path: "time-tracking-report" });
+    }
     function logout() {
       localStorage.removeItem("auth");
       localStorage.clear();
@@ -2126,7 +2172,7 @@ export default {
     return {
       handleOkcustom,
       showModalCustom,
-
+      clickHandler,
       custom,
       next,
       prev,
