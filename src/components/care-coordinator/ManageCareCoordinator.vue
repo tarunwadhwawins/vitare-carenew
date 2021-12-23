@@ -389,13 +389,14 @@
             </a-row>
             <a-row :gutter="24">
               <a-col :span="24">
-                <a-table
+                 <a-table
                   :pagination="false"
-                  :columns="columns2"
-                  :data-source="data2"
+                  :columns="rolecolumns"
+                  :data-source="roledata"
                   :scroll="{ x: 900 }"
                 >
                   <template #action>
+                    <a class="icons"><EditOutlined /></a>
                     <a class="icons"> <DeleteOutlined /></a>
                   </template>
                 </a-table>
@@ -701,6 +702,36 @@ const data1 = [
     actions: "In",
   },
 ];
+const rolecolumns = [
+  {
+    title: "Role",
+    dataIndex: "role",
+  },
+  {
+    title: "Actions",
+    dataIndex: "actions",
+    slots: {
+      customRender: "action",
+    },
+  },
+];
+const roledata = [
+  {
+    key: "1",
+    role: "Billing Admin",
+    actions: "",
+  },
+  {
+    key: "2",
+    role: "User Admin",
+    actions: "",
+  },
+  {
+    key: "3",
+    role: "Standard",
+    actions: "",
+  },
+];
 const columns2 = [
   {
     title: "Start Time",
@@ -859,6 +890,8 @@ export default {
       data4,
       columns4,
       data,
+      rolecolumns,
+      roledata,
       selectedItems,
       filteredOptions,
       filteredOptionsForTag,
