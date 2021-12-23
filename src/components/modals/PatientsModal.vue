@@ -56,7 +56,6 @@
 </template>
 <script>
 import { defineComponent, ref, computed, reactive } from "vue";
-// import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import Demographics from "@/components/modals/forms/Demographics";
 import Conditions from "@/components/modals/forms/Conditions";
 import Programs from "@/components/modals/forms/Programs";
@@ -67,8 +66,6 @@ import Insurance from "@/components/modals/forms/Insurance";
 import Documents from "@/components/modals/forms/Documents";
 export default {
   components: {
-    // DeleteOutlined,
-    // EditOutlined,
     Demographics,
     Conditions,
     Programs,
