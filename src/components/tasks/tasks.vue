@@ -141,23 +141,17 @@
                           <a-menu>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked1"
-                                  >Urgent</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked1">Urgent</a-checkbox>
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked2"
-                                  >High</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked2">High</a-checkbox>
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked3"
-                                  >Normal</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked3">Normal</a-checkbox>
                               </div>
                             </a-menu-item>
                           </a-menu>
@@ -184,30 +178,22 @@
                           <a-menu>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked4"
-                                  >Badger</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked4">Badger</a-checkbox>
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked5"
-                                  >Devin</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked5">Devin</a-checkbox>
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked6"
-                                  >Matt</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked6">Matt</a-checkbox>
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked7"
-                                  >John</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked7">John</a-checkbox>
                               </div>
                             </a-menu-item>
                           </a-menu>
@@ -288,16 +274,12 @@
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked11"
-                                  >Comm</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked11">Comm</a-checkbox>
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked12"
-                                  >Admin</a-checkbox
-                                >
+                                <a-checkbox v-model:checked="checked12">Admin</a-checkbox>
                               </div>
                             </a-menu-item>
                             <a-menu-item>
@@ -354,37 +336,20 @@
                     @change="onChange"
                   >
                     <template #name="text">
-                      <router-link to="#" @click="showModal">{{ text.text }}</router-link>
+                      <router-link to="#">{{ text.text }}</router-link>
                     </template>
                     <template #assigned="text">
-                      <router-link to="corrdinator-summary">{{
-                        text.text
-                      }}</router-link>
+                      <router-link to="corrdinator-summary">{{ text.text }}</router-link>
                     </template>
                     <template #status="key">
                       <a-switch v-model:checked="checked[key.record.key]" />
                     </template>
                     <template #action>
-                        <a-tooltip placement="bottom">
-                          <template #title>
-                            <span>Edit</span>
-                          </template>
-                          <a class="icons"><EditOutlined /></a>
-                        </a-tooltip>
-                        <a-tooltip placement="bottom">
-                          <template #title>
-                            <span>Delete</span>
-                          </template>
-                          <a class="icons"> <DeleteOutlined /></a>
-                        </a-tooltip>
-                      <a-tooltip placement="bottom">
-                        <template #title>
-                          <span>Create Appointment</span>
-                        </template>
-                        <router-link to="appointment-calendar" class="icons">
-                          <CalendarOutlined
-                        /></router-link>
-                      </a-tooltip>
+                      <a class="icons"><EditOutlined /></a>
+                      <a class="icons"> <DeleteOutlined /></a>
+                      <router-link to="appointment-calendar" class="icons">
+                        <CalendarOutlined
+                      /></router-link>
                     </template>
                   </a-table>
                 </a-col>
@@ -792,10 +757,12 @@ export default {
     const router = useRouter();
 
     function clickHandler(event, chartContext, config) {
-      router.push({ path: "corrdinator-summary" });
+      toggle.value = false;
+      // router.push({ path: "corrdinator-summary" });
     }
     function clickHandler2(event, chartContext, config) {
-      router.push({ path: "time-tracking-report" });
+      toggle.value = false;
+      // router.push({ path: "time-tracking-report" });
     }
     const checked = ref([false]);
     const checked1 = ref(false);
