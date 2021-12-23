@@ -365,21 +365,21 @@
                       <a-switch v-model:checked="checked[key.record.key]" />
                     </template>
                     <template #action>
+                        <a-tooltip placement="bottom">
+                          <template #title>
+                            <span>Edit</span>
+                          </template>
+                          <a class="icons"><EditOutlined /></a>
+                        </a-tooltip>
+                        <a-tooltip placement="bottom">
+                          <template #title>
+                            <span>Delete</span>
+                          </template>
+                          <a class="icons"> <DeleteOutlined /></a>
+                        </a-tooltip>
                       <a-tooltip placement="bottom">
                         <template #title>
-                          <span>Edit</span>
-                        </template>
-                        <a class="icons"><EditOutlined /></a>
-                      </a-tooltip>
-                      <a-tooltip placement="bottom">
-                        <template #title>
-                          <span>Delete</span>
-                        </template>
-                        <a class="icons"> <DeleteOutlined /></a>
-                      </a-tooltip>
-                      <a-tooltip placement="bottom">
-                        <template #title>
-                          <span>Cearte Appointment</span>
+                          <span>Create Appointment</span>
                         </template>
                         <router-link to="appointment-calendar" class="icons">
                           <CalendarOutlined

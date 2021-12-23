@@ -465,7 +465,7 @@
                       </a-col>
                     </a-row>
                   </a-tab-pane> -->
-                  <a-tab-pane key="4" tab="Time Logs">
+                  <!-- <a-tab-pane key="4" tab="Time Logs">
                     <a-row :gutter="24">
                       <a-col :sm="24" :xs="24">
                         <div class="common-btn mb-24">
@@ -489,7 +489,7 @@
                         </a-table>
                       </a-col>
                     </a-row>
-                  </a-tab-pane>
+                  </a-tab-pane> -->
                   <!-- <a-tab-pane key="5" tab="Devices">
                     <a-row :gutter="24">
                       <a-col :sm="24" :xs="24">
@@ -517,7 +517,7 @@
                       </a-col>
                     </a-row>
                   </a-tab-pane> -->
-                  <a-tab-pane key="6" tab="Notes">
+                  <!-- <a-tab-pane key="6" tab="Notes">
                     <a-row :gutter="24">
                       <a-col :sm="24" :xs="24">
                         <div class="common-btn mb-24">
@@ -544,7 +544,7 @@
                         </a-table>
                       </a-col>
                     </a-row>
-                  </a-tab-pane>
+                  </a-tab-pane> -->
                 </a-tabs>
               </div>
             </a-col>
@@ -626,7 +626,6 @@ import PatientsModal from "@/components/modals/PatientsModal";
 import dayjs from "dayjs";
 import { ref, computed } from "vue";
 import {
-  DeleteOutlined,
   EditOutlined,
   PlusOutlined,
   ClockCircleOutlined,
@@ -907,7 +906,6 @@ export default {
   components: {
     Header,
     Sidebar,
-    DeleteOutlined,
     EditOutlined,
     PlusOutlined,
     ClockCircleOutlined,
