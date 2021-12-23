@@ -105,50 +105,9 @@
                 </a-table>
               </a-card>
             </a-col>
-            <!-- <a-col :sm="12" :xs="24">
-              <a-card title="Populate Waiting Room" class="common-card">
-                <a-tabs v-model:activeKey="activeKey">
-                  <a-tab-pane key="1" tab="New Requests">
-                    <a-table
-                      :columns="columns5"
-                      :data-source="data5"
-                      :pagination="false"
-                    >
-                      <template #patientName="text">
-                        <router-link to="patients-summary">{{
-                          text.text
-                        }}</router-link>
-                      </template>
-                      <template #action>
-                        <a-button class="btn blueBtn">Start</a-button>
-                      </template>
-                    </a-table>
-                  </a-tab-pane>
-                  <a-tab-pane key="2" tab="Future Appointments" force-render>
-                    <a-table
-                      :columns="columns6"
-                      :data-source="data6"
-                      :pagination="false"
-                    >
-                      <template #patientName="text">
-                        <router-link to="patients-summary">{{
-                          text.text
-                        }}</router-link>
-                      </template>
-                    </a-table>
-                  </a-tab-pane>
-                </a-tabs>
-              </a-card>
-            </a-col> -->
-           
             <a-col :sm="12" :xs="24">
               <a-card title="Call Queue" class="common-card">
-                <apexchart
-                  type="bar"
-                  height="250"
-                  :options="calloption"
-                  :series="callseries"
-                ></apexchart>
+                <apexchart type="bar" height="250" :options="calloption" :series="callseries" @click="clickHandler"></apexchart>
               </a-card>
             </a-col>
             <a-col :sm="12" :xs="24">
@@ -158,6 +117,7 @@
                   height="412"
                   :options="option1"
                   :series="series1"
+                   @click="clickHandler2"
                 ></apexchart>
               </a-card>
             </a-col>
@@ -170,6 +130,7 @@
                       height="350"
                       :options="wellness"
                       :series="behavior"
+                      @click="clickHandler3"
                     ></apexchart>
                   </a-tab-pane>
                   <a-tab-pane key="2" tab="Network " force-render>
@@ -178,6 +139,7 @@
                       height="350"
                       :options="In"
                       :series="Out"
+                      @click="clickHandler3"
                     ></apexchart>
                   </a-tab-pane>
                 </a-tabs>
@@ -776,6 +738,25 @@ export default {
   },
   setup() {
     const router = useRouter();
+    function clickHandler(event, chartContext, config){
+        console.log(event)
+        console.log(chartContext)
+        console.log(config)
+        router.push({path:'communications'})
+    }
+    function clickHandler2(event, chartContext, config){
+        console.log(event)
+        console.log(chartContext)
+        console.log(config)
+        router.push({path:'manage-patients'})
+    }
+    function clickHandler3(event, chartContext, config){
+        console.log(event)
+        console.log(chartContext)
+        console.log(config)
+        router.push({path:'manage-care-coordinator'})
+    }
+    
 
     function logout() {
       localStorage.removeItem("auth");
@@ -792,6 +773,9 @@ export default {
       columns5,
       data6,
       columns6,
+      clickHandler,
+      clickHandler2,
+      clickHandler3,
     };
   },
 };

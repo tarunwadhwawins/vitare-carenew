@@ -87,6 +87,7 @@
                         height="245"
                         :options="calloption"
                         :series="callseries"
+                        @click="clickHandler"
                       ></apexchart>
                     </a-card>
                   </a-col>
@@ -177,6 +178,19 @@
                     >
                       <template #resend>
                         <a class="icons"><MessageOutlined /></a>
+                      </template>
+                      <template #patient="text">
+                        <router-link to="patients-summary">{{
+                          text.text
+                        }}</router-link>
+                      </template>
+                      <template #staff="text">
+                        <router-link to="corrdinator-summary">{{
+                          text.text[0]
+                        }}</router-link><br>
+                        <router-link to="corrdinator-summary">{{
+                          text.text[1]
+                        }}</router-link>
                       </template>
 
                       <template #status="{ text }">
@@ -296,16 +310,26 @@
         </a-col>
       </a-row>
     </a-modal>
-    <a-modal v-model:visible="emailmodal"  style="top: 70px"  title="Email" @ok="handleOk">
-       <template #footer>
-        <a-button type="primary"  @ok="handleOk">Ok</a-button>
+    <a-modal
+      v-model:visible="emailmodal"
+      style="top: 70px"
+      title="Email"
+      @ok="handleOk"
+    >
+      <template #footer>
+        <a-button type="primary" @ok="handleOk">Ok</a-button>
       </template>
       <a-row :gutter="24">
         <a-col :sm="24" :xs="24">
-         <h2>December 12, 2021 12:00 PM</h2>
+          <h2>December 12, 2021 12:00 PM</h2>
         </a-col>
         <a-col :sm="24" :xs="24">
-         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore corporis pariatur, porro velit saepe, nostrum iste rem eius ut odio quod quam eaque. Aspernatur saepe libero, eius dignissimos minus enim.</p>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore
+            corporis pariatur, porro velit saepe, nostrum iste rem eius ut odio
+            quod quam eaque. Aspernatur saepe libero, eius dignissimos minus
+            enim.
+          </p>
         </a-col>
       </a-row>
     </a-modal>
@@ -316,8 +340,10 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { defineComponent, ref,h } from "vue";
-import { notification, Button } from 'ant-design-vue';
+import { defineComponent, ref, h } from "vue";
+import { notification, Button } from "ant-design-vue";
+import { useRouter } from "vue-router";
+
 
 import {
   UserOutlined,
@@ -328,7 +354,7 @@ import {
 } from "@ant-design/icons-vue";
 const close = () => {
   console.log(
-    'Notification was closed. Either the close button was clicked or duration time elapsed.',
+    "Notification was closed. Either the close button was clicked or duration time elapsed."
   );
 };
 const columns = [
@@ -338,6 +364,9 @@ const columns = [
     sorter: {
       compare: (a, b) => a.patient - b.patient,
       multiple: 2,
+    },
+    slots: {
+      customRender: "patient",
     },
   },
   {
@@ -421,7 +450,7 @@ const data = [
     sent: "Nov 11, 2021 - 11:30 Am",
     appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
-    staff: "Steve Smith",
+    staff: ["Steve Smith", "Jane Doe"],
   },
   {
     key: "2",
@@ -433,7 +462,7 @@ const data = [
     sent: "Nov 11, 2021 - 11:30 Am",
     appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
-    staff: "Robert Henry",
+    staff: ["Robert Henry"],
   },
   {
     key: "3",
@@ -445,7 +474,7 @@ const data = [
     sent: "Nov 11, 2021 - 11:30 Am",
     appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
-    staff: "Jane Doe",
+    staff: ["Jane Doe"],
   },
   {
     key: "4",
@@ -457,7 +486,7 @@ const data = [
     sent: "Nov 11, 2021 - 11:30 Am",
     appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
-    staff: "Jane Doe",
+    staff: ["Jane Doe"],
   },
 ];
 export default {
@@ -937,6 +966,13 @@ export default {
   },
 
   setup() {
+    const router = useRouter();
+    function clickHandler(event, chartContext, config){
+        console.log(event)
+        console.log(chartContext)
+        console.log(config)
+        router.push({path:'corrdinator-summary'})
+    }
     const columns5 = [
       {
         title: "Patient Name",
@@ -1042,17 +1078,17 @@ export default {
     const openNotification = () => {
       const key = `open${Date.now()}`;
       notification.open({
-        message: 'Email',
+        message: "Email",
         description:
-          'Lorem Ipsum is simply dummy text of the printing aa type specimen book',
+          "Lorem Ipsum is simply dummy text of the printing aa type specimen book",
         btn: h(
           Button,
           {
-            type: 'primary',
-            size: 'small',
+            type: "primary",
+            size: "small",
             onClick: () => notification.close(key),
           },
-          'Reply',
+          "Reply"
         ),
         key,
         onClose: close,
@@ -1061,17 +1097,17 @@ export default {
     const openNotification1 = () => {
       const key = `open${Date.now()}`;
       notification.open({
-        message: 'SMS',
+        message: "SMS",
         description:
-          'Lorem Ipsum is simply dummy text of the printingscrambled it to make a type specimen book',
+          "Lorem Ipsum is simply dummy text of the printingscrambled it to make a type specimen book",
         btn: h(
           Button,
           {
-            type: 'primary',
-            size: 'small',
+            type: "primary",
+            size: "small",
             onClick: () => notification.close(key),
           },
-          'Reply',
+          "Reply"
         ),
         key,
         onClose: close,
@@ -1080,10 +1116,10 @@ export default {
     const openNotification2 = () => {
       const key = `open${Date.now()}`;
       notification.open({
-        message: 'Remindar',
+        message: "Remindar",
         description:
-          'Lorem Ipsum is simply dummy text of the pritype and scrambled it to make a type specimen book',
-       
+          "Lorem Ipsum is simply dummy text of the pritype and scrambled it to make a type specimen book",
+
         key,
         onClose: close,
       });
@@ -1091,17 +1127,17 @@ export default {
     const openNotification3 = () => {
       const key = `open${Date.now()}`;
       notification.open({
-        message: 'Call',
+        message: "Call",
         description:
-          'Lorem Ipsum is simply dummy text of the printter took a galley of type and scrambled it to make a type specimen book',
+          "Lorem Ipsum is simply dummy text of the printter took a galley of type and scrambled it to make a type specimen book",
         btn: h(
           Button,
           {
-            type: 'primary',
-            size: 'small',
+            type: "primary",
+            size: "small",
             onClick: () => notification.close(key),
           },
-          'Start Call',
+          "Start Call"
         ),
         key,
         onClose: close,
@@ -1124,6 +1160,7 @@ export default {
       openNotification2,
       openNotification3,
       showEmailModal,
+      clickHandler,
 
       onChange: (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);

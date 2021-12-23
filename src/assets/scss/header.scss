@@ -4,6 +4,7 @@
 .ant-layout-header {
   background: #fff;
   padding: 0px;
+  z-index: 99!important;
   .header-wrapper {
     display: flex;
     .logo {
