@@ -50,16 +50,18 @@
                 <template #overlay>
                   <a-menu>
                     <a-menu-item key="0">
-                      <a-button @click="showModal">Add Appointment</a-button>
+                      <a href="javascript:void(0)" @click="addAppt">Add Appointment</a>
                     </a-menu-item>
                     <a-menu-item key="1">
-                      <a href="javascript:void(0)">Add Patient</a>
+                      <a href="javascript:void(0)" @click="addPatient">Add Patient</a>
                     </a-menu-item>
-                    <a-menu-item key="3">
+                    <!-- <a-menu-item key="3">
                       <a href="javascript:void(0)">Add Care Coordinator</a></a-menu-item
-                    >
+                    > -->
                     <a-menu-item key="4">
-                      <a href="javascript:void(0)">Add Task</a></a-menu-item
+                      <a href="javascript:void(0)" @click="addTask"
+                        >Add Task</a
+                      ></a-menu-item
                     >
                   </a-menu>
                 </template>
@@ -126,7 +128,9 @@
       </div>
     </div>
     <!---->
-    <AddAppointment v-model:visible="appointmentModal" @ok="handleOk" />
+    <AddAppointment v-model:visible="appointmentModal" @ok="apptOk" />
+    <TasksModal v-model:visible="TasksModal" @ok="taskOk" />
+    <PatientsModal v-model:visible="PatientsModal" @ok="patientOk" />
     <!---->
   </div>
 </template>
@@ -134,6 +138,8 @@
 <script>
 import { defineComponent, ref } from "vue";
 import AddAppointment from "@/components/modals/AddAppointment";
+import TasksModal from "@/components/modals/TasksModal";
+import PatientsModal from "@/components/modals/PatientsModal";
 import {
   NotificationOutlined,
   DownOutlined,
@@ -149,6 +155,8 @@ export default defineComponent({
     SearchOutlined,
     MoreOutlined,
     AddAppointment,
+    TasksModal,
+    PatientsModal,
   },
   setup() {
     const toggle = ref(false);
@@ -158,12 +166,30 @@ export default defineComponent({
     }
 
     const appointmentModal = ref(false);
-    const showModal = () => {
+    const addAppt = () => {
       appointmentModal.value = true;
     };
-    const handleOk = (e) => {
+    const apptOk = (e) => {
       console.log(e);
       appointmentModal.value = false;
+    };
+
+    const TasksModal = ref(false);
+    const addTask = () => {
+      TasksModal.value = true;
+    };
+    const taskOk = (e) => {
+      console.log(e);
+      TasksModal.value = false;
+    };
+
+    const PatientsModal = ref(false);
+    const addPatient = () => {
+      PatientsModal.value = true;
+    };
+    const patientOk = (e) => {
+      console.log(e);
+      PatientsModal.value = false;
     };
 
     return {
@@ -172,8 +198,16 @@ export default defineComponent({
       ellipse,
 
       appointmentModal,
-      handleOk,
-      showModal,
+      apptOk,
+      addAppt,
+
+      TasksModal,
+      addTask,
+      taskOk,
+
+      PatientsModal,
+      addPatient,
+      patientOk,
     };
   },
 });
