@@ -26,9 +26,8 @@
               <div class="patientInfo">
                 <div class="patientImg" @click="showModalCustom">
                   <img src="../../assets/images/profile-4.jpg" alt="image" />
-                  <router-link to="manage-patients"
-                    ><EditOutlined
-                  /></router-link>
+                  <!-- <router-link to="manage-patients"><EditOutlined /></router-link> -->
+                  <EditOutlined @click="addPatient" />
                 </div>
 
                 <p class="name">Jane Doe</p>
@@ -92,9 +91,7 @@
                       <a href="javascript:void(0)" @click="showNoteModal"
                         >Devin Reminder Dec 15 2021</a
                       ><br />
-                      <a href="javascript:void(0)" @click="showNoteModal"
-                        >+ 6 More</a
-                      >
+                      <a href="javascript:void(0)" @click="showNoteModal">+ 6 More</a>
                     </div>
                   </div>
                   <div class="pat-profile-inner">
@@ -102,8 +99,7 @@
                       Documents <br /><PlusOutlined @click="showModal" />
                     </div>
                     <div class="thumb-desc">
-                      <a href="javascript:void(0)" @click="showDocumentModal"
-                        >Program 1</a
+                      <a href="javascript:void(0)" @click="showDocumentModal">Program 1</a
                       ><br />
                       <a href="javascript:void(0)" @click="showDocumentModal"
                         >Program 2</a
@@ -120,14 +116,10 @@
                         >John Smith (P) HT </router-link
                       ><br />
                       <!-- <PlusOutlined @click="showModal8" /> -->
-                      <router-link to="corrdinator-summary"
-                        >Devin CC
-                      </router-link>
+                      <router-link to="corrdinator-summary">Devin CC </router-link>
                       <br />
                       <!-- <PlusOutlined @click="showModal9" /> -->
-                      <router-link to="corrdinator-summary"
-                        >Badger FC</router-link
-                      >
+                      <router-link to="corrdinator-summary">Badger FC</router-link>
                     </div>
                   </div>
                   <div class="pat-profile-inner">
@@ -135,14 +127,10 @@
                       TimeLogs <br /><PlusOutlined @click="showModal1" />
                     </div>
                     <div class="thumb-desc">
-                      <a
-                        href="javascript:void(0)"
-                        @click="showTimeLogDetailModal"
+                      <a href="javascript:void(0)" @click="showTimeLogDetailModal"
                         >Daily monitoring of vitals (Oct 25, 2021)</a
                       ><br />
-                      <a
-                        href="javascript:void(0)"
-                        @click="showTimeLogDetailModal"
+                      <a href="javascript:void(0)" @click="showTimeLogDetailModal"
                         >Provider Order For Lab ( Oct 28, 2021)</a
                       >
                     </div>
@@ -164,138 +152,6 @@
               </div>
             </a-col>
             <a-col :sm="16" :xs="24">
-              <!-- <a-alert
-                description="Patient has dimentia. Talk to wife - Marry when calling. Prefers evening calling."
-                type="error"
-                class="mb-24"
-                closable
-                @close="onClose"
-              /> -->
-              <!-- <div class="thumbDesc">
-                <a-collapse v-model:activeKey="activeKey5" :bordered="false">
-                  <a-collapse-panel key="1" header=" Patient Infomation">
-                    <p><strong>Language</strong> : English</p>
-                  </a-collapse-panel>
-                  <a-collapse-panel key="2" header=" Contact Infomation">
-                    <p><strong>Phone Number</strong> : (554) 856-5645</p>
-                  </a-collapse-panel>
-                  <a-collapse-panel key="3" header="Care Team">
-                    <a-row :gutter="24">
-                      <a-col :sm="8" :xs="24">
-                        <div class="care-team">
-                          <h2>
-                            Health Team
-                            <span class="plus-icon" @click="showModal7">
-                              <PlusOutlined />
-                            </span>
-                          </h2>
-                          <ul>
-                            <li>
-                              <div class="profileImg">
-                                <img
-                                  src="../../assets/images/profile-2.jpg"
-                                  alt="image"
-                                />
-                              </div>
-                              <div class="content">
-                                <p class="name">ICC Health (Mental Health)</p>
-                                <p class="role">Care Team</p>
-                              </div>
-                            </li>
-                            <li>
-                              <div class="profileImg">
-                                <img
-                                  src="../../assets/images/profile-3.jpg"
-                                  alt="image"
-                                />
-                              </div>
-                              <div class="content">
-                                <p class="name">ICC Health (Medical)</p>
-                                <p class="role">Care Team</p>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </a-col>
-                      <a-col :sm="8" :xs="24">
-                        <div class="care-team">
-                          <h2>
-                            Care Coordinators
-                            <span class="plus-icon" @click="showModal8">
-                              <PlusOutlined />
-                            </span>
-                          </h2>
-                          <ul>
-                            <li>
-                              <div class="profileImg">
-                                <img
-                                  src="../../assets/images/profile-2.jpg"
-                                  alt="image"
-                                />
-                              </div>
-                              <div class="content">
-                                <p class="name">ICC Health (Mental Health)</p>
-                                <p class="role">Care Team</p>
-                              </div>
-                            </li>
-                            <li>
-                              <div class="profileImg">
-                                <img
-                                  src="../../assets/images/profile-3.jpg"
-                                  alt="image"
-                                />
-                              </div>
-                              <div class="content">
-                                <p class="name">ICC Health (Medical)</p>
-                                <p class="role">Care Team</p>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </a-col>
-                      <a-col :sm="8" :xs="24">
-                        <div class="care-team">
-                          <h2>
-                            Family Coordinators
-                            <span class="plus-icon" @click="showModal9">
-                              <PlusOutlined />
-                            </span>
-                          </h2>
-                          <ul>
-                            <li>
-                              <div class="profileImg">
-                                <img
-                                  src="../../assets/images/profile-2.jpg"
-                                  alt="image"
-                                />
-                              </div>
-                              <div class="content">
-                                <p class="name">ICC Health (Mental Health)</p>
-                                <p class="role">Care Team</p>
-                              </div>
-                            </li>
-                            <li>
-                              <div class="profileImg">
-                                <img
-                                  src="../../assets/images/profile-3.jpg"
-                                  alt="image"
-                                />
-                              </div>
-                              <div class="content">
-                                <p class="name">ICC Health (Medical)</p>
-                                <p class="role">Care Team</p>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </a-col>
-                    </a-row>
-                  </a-collapse-panel>
-                  <a-collapse-panel key="4" header="Insurance Infomation">
-                    <p><strong>Primary Insurance</strong> : NA</p>
-                  </a-collapse-panel>
-                </a-collapse>
-              </div> -->
               <div class="thumbDesc patientTimeline">
                 <a-timeline>
                   <a-timeline-item>
@@ -303,20 +159,14 @@
 
                     <a-tabs v-model:activeKey="activeKey">
                       <a-tab-pane key="1" tab="Visits"></a-tab-pane>
-                      <a-tab-pane
-                        key="2"
-                        tab="Appointments"
-                        force-render
-                      ></a-tab-pane>
+                      <a-tab-pane key="2" tab="Appointments" force-render></a-tab-pane>
                       <a-tab-pane key="3" tab="Notes"></a-tab-pane>
                       <a-tab-pane key="4" tab="Documents "></a-tab-pane>
                       <a-tab-pane key="5" tab="Notifications"></a-tab-pane>
                     </a-tabs>
                   </a-timeline-item>
                   <a-timeline-item color="blue">
-                    <template #dot
-                      ><FilePdfOutlined class="yellowIcon"
-                    /></template>
+                    <template #dot><FilePdfOutlined class="yellowIcon" /></template>
                     <div class="timelineInner">
                       <div class="timelineHeader">
                         <div class="title">
@@ -325,32 +175,25 @@
                           <span class="time">12:00 PM</span>
                         </div>
                         <div class="userImg">
-                          <img
-                            src="../../assets/images/profile-4.jpg"
-                            alt="image"
-                          />
+                          <img src="../../assets/images/profile-4.jpg" alt="image" />
                         </div>
                       </div>
                       <div class="timelineBody">
                         <div class="content">
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit.... <a href="#">more</a>
+                          Lorem ipsum dolor sit amet consectetur adipisicing elit....
+                          <a href="#">more</a>
                         </div>
                         <MailOutlined />
                       </div>
                     </div>
                   </a-timeline-item>
                   <a-timeline-item color="red">
-                    <template #dot
-                      ><HeatMapOutlined class="redIcon"
-                    /></template>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit
-                    culpa assumenda quidem magnam
+                    <template #dot><HeatMapOutlined class="redIcon" /></template>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit culpa
+                    assumenda quidem magnam
                   </a-timeline-item>
                   <a-timeline-item color="red">
-                    <template #dot
-                      ><ClockCircleOutlined class="orangeIcon"
-                    /></template>
+                    <template #dot><ClockCircleOutlined class="orangeIcon" /></template>
                     <div class="timelineInner">
                       <div class="timelineHeader">
                         <div class="title">
@@ -359,25 +202,20 @@
                           <span class="time">12:00 PM</span>
                         </div>
                         <div class="userImg">
-                          <img
-                            src="../../assets/images/profile-4.jpg"
-                            alt="image"
-                          />
+                          <img src="../../assets/images/profile-4.jpg" alt="image" />
                         </div>
                       </div>
                       <div class="timelineBody">
                         <div class="content">
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit.... <a href="#">more</a>
+                          Lorem ipsum dolor sit amet consectetur adipisicing elit....
+                          <a href="#">more</a>
                         </div>
                         <MailOutlined />
                       </div>
                     </div>
                   </a-timeline-item>
                   <a-timeline-item color="red">
-                    <template #dot
-                      ><BellOutlined class="yellowIcon"
-                    /></template>
+                    <template #dot><BellOutlined class="yellowIcon" /></template>
                     <div class="timelineInner">
                       <div class="timelineHeader">
                         <div class="title">
@@ -386,33 +224,27 @@
                           <span class="time">12:00 PM</span>
                         </div>
                         <div class="userImg">
-                          <img
-                            src="../../assets/images/profile-4.jpg"
-                            alt="image"
-                          />
+                          <img src="../../assets/images/profile-4.jpg" alt="image" />
                         </div>
                       </div>
                       <div class="timelineBody">
                         <div class="content">
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit.... <a href="#">more</a>
+                          Lorem ipsum dolor sit amet consectetur adipisicing elit....
+                          <a href="#">more</a>
                         </div>
                         <MailOutlined />
                       </div>
                     </div>
                   </a-timeline-item>
                   <a-timeline-item class="dateOuter"
-                    ><template #dot
-                      ><ClockCircleOutlined class="orangeIcon"
-                    /></template>
+                    ><template #dot><ClockCircleOutlined class="orangeIcon" /></template>
                     <div class="date">
                       <span>Dec 12, 2021</span>
                     </div></a-timeline-item
                   >
                   <a-timeline-item color="blue">
-                    <template #dot
-                      ><FilePdfOutlined class="yellowIcon" /></template
-                    >Lorem ipsum
+                    <template #dot><FilePdfOutlined class="yellowIcon" /></template>Lorem
+                    ipsum
                     <div class="timelineInner">
                       <div class="timelineHeader">
                         <div class="title">
@@ -421,33 +253,26 @@
                           <span class="time">12:00 PM</span>
                         </div>
                         <div class="userImg">
-                          <img
-                            src="../../assets/images/profile-4.jpg"
-                            alt="image"
-                          />
+                          <img src="../../assets/images/profile-4.jpg" alt="image" />
                         </div>
                       </div>
                       <div class="timelineBody">
                         <div class="content">
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit.... <a href="#">more</a>
+                          Lorem ipsum dolor sit amet consectetur adipisicing elit....
+                          <a href="#">more</a>
                         </div>
                         <MailOutlined />
                       </div></div
                   ></a-timeline-item>
                   <a-timeline-item color="red">
-                    <template #dot
-                      ><HeatMapOutlined class="redIcon"
-                    /></template>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit
-                    culpa assumenda quidem magnam fuga quaerat pariatur labore
-                    exercitationem voluptate iusto, repellat debitis quis itaque
-                    nulla numquam, fugiat quas ullam. Minus.
+                    <template #dot><HeatMapOutlined class="redIcon" /></template>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit culpa
+                    assumenda quidem magnam fuga quaerat pariatur labore exercitationem
+                    voluptate iusto, repellat debitis quis itaque nulla numquam, fugiat
+                    quas ullam. Minus.
                   </a-timeline-item>
                   <a-timeline-item color="red">
-                    <template #dot
-                      ><ClockCircleOutlined class="orangeIcon"
-                    /></template>
+                    <template #dot><ClockCircleOutlined class="orangeIcon" /></template>
                     <div class="timelineInner">
                       <div class="timelineHeader">
                         <div class="title">
@@ -456,29 +281,24 @@
                           <span class="time">12:00 PM</span>
                         </div>
                         <div class="userImg">
-                          <img
-                            src="../../assets/images/profile-4.jpg"
-                            alt="image"
-                          />
+                          <img src="../../assets/images/profile-4.jpg" alt="image" />
                         </div>
                       </div>
                       <div class="timelineBody">
                         <div class="content">
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit.... <a href="#">more</a>
+                          Lorem ipsum dolor sit amet consectetur adipisicing elit....
+                          <a href="#">more</a>
                         </div>
                         <MailOutlined />
                       </div>
                     </div>
                   </a-timeline-item>
                   <a-timeline-item color="red">
-                    <template #dot
-                      ><BellOutlined class="yellowIcon"
-                    /></template>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit
-                    culpa assumenda quidem magnam fuga quaerat pariatur labore
-                    exercitationem voluptate iusto, repellat debitis quis itaque
-                    nulla numquam, fugiat quas ullam. Minus.
+                    <template #dot><BellOutlined class="yellowIcon" /></template>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit culpa
+                    assumenda quidem magnam fuga quaerat pariatur labore exercitationem
+                    voluptate iusto, repellat debitis quis itaque nulla numquam, fugiat
+                    quas ullam. Minus.
                   </a-timeline-item>
                 </a-timeline>
               </div>
@@ -488,9 +308,7 @@
             <a-col :sm="24" :xs="24">
               <div class="summary-tabs">
                 <a-tabs v-model:activeKey="activeKey">
-                  <a-tab-pane key="1" tab="Care Plan"
-                    >Content of Tab Pane 1</a-tab-pane
-                  >
+                  <a-tab-pane key="1" tab="Care Plan">Content of Tab Pane 1</a-tab-pane>
                   <a-tab-pane key="2" tab="Patient Vitals" force-render>
                     <a-row :gutter="24">
                       <a-col :sm="12" :xs="24" class="mb-24">
@@ -502,14 +320,11 @@
                                 height="350"
                                 :options="chartOptions"
                                 :series="series"
-                                @click="clickHandler"
                               ></apexchart>
                             </a-tab-pane>
                             <a-tab-pane key="8" tab="Table" force-render>
                               <div class="text-right mb-24">
-                                <a-button class="primaryBtn"
-                                  >Export to Excel</a-button
-                                >
+                                <a-button class="primaryBtn">Export to Excel</a-button>
                               </div>
                               <a-table
                                 :columns="columns4"
@@ -517,9 +332,7 @@
                                 :pagination="false"
                                 @change="onChange"
                                 ><template #value="text">
-                                  <span class="dangerValue">{{
-                                    text.text
-                                  }}</span>
+                                  <span class="dangerValue">{{ text.text }}</span>
                                 </template>
                               </a-table>
                             </a-tab-pane>
@@ -541,14 +354,11 @@
                                 height="350"
                                 :options="chartOptions"
                                 :series="series"
-                                @click="clickHandler"
                               ></apexchart>
                             </a-tab-pane>
                             <a-tab-pane key="10" tab="Table">
                               <div class="text-right mb-24">
-                                <a-button class="primaryBtn"
-                                  >Export to Excel</a-button
-                                >
+                                <a-button class="primaryBtn">Export to Excel</a-button>
                               </div>
                               <a-table
                                 :columns="columns5"
@@ -575,14 +385,11 @@
                                 height="350"
                                 :options="chartOptions"
                                 :series="series"
-                                @click="clickHandler"
                               ></apexchart>
                             </a-tab-pane>
                             <a-tab-pane key="12" tab="Table" force-render>
                               <div class="text-right mb-24">
-                                <a-button class="primaryBtn"
-                                  >Export to Excel</a-button
-                                >
+                                <a-button class="primaryBtn">Export to Excel</a-button>
                               </div>
                               <a-table
                                 :columns="columns6"
@@ -609,14 +416,11 @@
                                 height="350"
                                 :options="chartOptions"
                                 :series="series"
-                                @click="clickHandler"
                               ></apexchart>
                             </a-tab-pane>
                             <a-tab-pane key="14" tab="Table" force-render>
                               <div class="text-right mb-24">
-                                <a-button class="primaryBtn"
-                                  >Export to Excel</a-button
-                                >
+                                <a-button class="primaryBtn">Export to Excel</a-button>
                               </div>
                               <a-table
                                 :columns="columns6"
@@ -678,12 +482,6 @@
                           :pagination="false"
                           @change="onChange"
                         >
-                          <template #performed="text">
-                            <router-link to="corrdinator-summary">{{ text.text }}</router-link>
-                          </template>
-                          <template #logged="text">
-                            <router-link to="corrdinator-summary">{{ text.text }}</router-link>
-                          </template>
                           <template #action>
                             <a class="icons"><EditOutlined /></a>
                             <a class="icons"><DeleteOutlined /></a>
@@ -723,9 +521,7 @@
                     <a-row :gutter="24">
                       <a-col :sm="24" :xs="24">
                         <div class="common-btn mb-24">
-                          <a-button
-                            class="btn blackBtn"
-                            @click="showAddNoteModal"
+                          <a-button class="btn blackBtn" @click="showAddNoteModal"
                             ><PlusOutlined
                           /></a-button>
                         </div>
@@ -757,821 +553,47 @@
       </a-layout>
     </a-layout>
     <!--modals-->
-    <a-modal
-      v-model:visible="visible"
-      width="1000px"
-      title="Add Document"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Name</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Document</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Type</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">Id Proof</a-select-option>
-              <a-select-option value="Yiminghe">Clinical</a-select-option>
-              <a-select-option value="Yiminghe">Insurance</a-select-option>
-            </a-select>
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Tags</label>
-            <a-select
-              v-model:value="selectedItemsForTag"
-              mode="multiple"
-              size="large"
-              placeholder="Please Select Roles"
-              style="width: 100%"
-              :options="filteredOptionsForTag.map((item) => ({ value: item }))"
-            />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <AddDocument v-model:visible="visible" @ok="handleOk" />
     <!---->
-    <a-modal
-      v-model:visible="visible1"
-      width="1000px"
-      title="Add Time Logs "
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Category</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy"
-                >Daily monitoring of vitals</a-select-option
-              >
-              <a-select-option value="Yiminghe"
-                >Provider Order For Lab</a-select-option
-              >
-            </a-select>
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Logged By</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Performed By</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Date</label>
-            <a-date-picker
-              v-model:value="value1"
-              :size="size"
-              style="width: 100%"
-            />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Time Amount</label>
-            <a-time-picker
-              v-model:value="value"
-              format="HH:mm"
-              :size="size"
-              style="width: 100%"
-            />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
-    <!---->
-    <a-modal
-      v-model:visible="visible2"
-      width="1000px"
-      title="Add Device"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Home Unit Type</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">Blood Pressure</a-select-option>
-              <a-select-option value="Yiminghe">Oxymeter</a-select-option>
-              <a-select-option value="Yiminghe">Glucose</a-select-option>
-            </a-select>
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Model No</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Serial No</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>MAC Address</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Device Time</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Server Time</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
-    <a-modal
-      v-model:visible="addnotesvisible"
-      width="1000px"
-      title="Add Note"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Date</label>
-            <a-date-picker
-              v-model:value="value1"
-              :size="size"
-              style="width: 100%"
-            />
-          </div>
-        </a-col>
-
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Category</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">Clinical</a-select-option>
-              <a-select-option value="Yiminghe">Admin</a-select-option>
-              <a-select-option value="Yiminghe">General</a-select-option>
-            </a-select>
-          </div>
-        </a-col>
-        <a-col :sm="24" :xs="24">
-          <div class="form-group">
-            <label>Note</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
-    <!---->
-    <a-modal
-      v-model:visible="notevisible"
-      width="1000px"
-      title="Notes Detail"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="24" :xs="24">
-          <a-table
-            :columns="columns3"
-            :data-source="data3"
-            :pagination="false"
-            @change="onChange"
-          >
-            <template #flags="{ text }">
-              <span class="box" :class="text"></span>
-              <span
-                class="box"
-                :class="(text = text.match(/yellowBgColor/g))"
-                v-if="text.match(/yellowBgColor/g)"
-              ></span>
-            </template>
-          </a-table>
-        </a-col>
-      </a-row>
-    </a-modal>
-
-    <a-modal
-      v-model:visible="devicevisible"
-      width="1000px"
-      title="Device Detail"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="24" :xs="24">
-          <a-table
-            :columns="columns2"
-            :data-source="data2"
-            :pagination="false"
-            @change="onChange"
-          >
-            <template #flags="{ text }">
-              <span class="box" :class="text"></span>
-              <span
-                class="box"
-                :class="(text = text.match(/yellowBgColor/g))"
-                v-if="text.match(/yellowBgColor/g)"
-              ></span>
-            </template>
-          </a-table>
-        </a-col>
-      </a-row>
-    </a-modal>
-
-    <a-modal
-      v-model:visible="documentvisible"
-      width="1000px"
-      title="Document Detail"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="24" :xs="24">
-          <a-table
-            :columns="columns"
-            :data-source="data"
-            :scroll="{ x: 900 }"
-            :pagination="false"
-            @change="onChange"
-          >
-            <template #action>
-              <a class="icons"><EditOutlined /></a>
-              <a class="icons"><DeleteOutlined /></a>
-            </template>
-          </a-table>
-        </a-col>
-      </a-row>
-    </a-modal>
-    <a-modal
-      v-model:visible="timelogsvisible"
-      width="1000px"
-      title="Time Logs Detail"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="24" :xs="24">
-          <a-table
-            :columns="columns1"
-            :data-source="data1"
-            :scroll="{ x: 900 }"
-            :pagination="false"
-            @change="onChange"
-          >
-            <template #action>
-              <a class="icons"><EditOutlined /></a>
-              <a class="icons"><DeleteOutlined /></a>
-            </template>
-          </a-table>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <AddTimeLogs v-model:visible="visible1" @ok="handleOk" />
+    <!--Add Device -->
+    <AddDevice v-model:visible="visible2" @ok="handleOk" />
+    <!--Add note -->
+    <AddNote v-model:visible="addnotesvisible" @ok="handleOk" />
+    <!--notes Detail -->
+    <NotesDetail v-model:visible="notevisible" @ok="handleOk" />
+    <!--Device Detail-->
+    <DeviceDetail v-model:visible="devicevisible" @ok="handleOk" />
+    <!--Document Detail-->
+    <DocumentDetail v-model:visible="documentvisible" @ok="handleOk" />
+    <!--Time Logs-->
+    <TimeLogsDetail v-model:visible="timelogsvisible" @ok="handleOk" />
     <!-- Blood Pressure Detail Modal  -->
-    <a-modal
-      v-model:visible="bloodpressurevisible"
-      width="1000px"
-      title="Blood Pressure Detail"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="24" :xs="24" class="mb-24">
-          <a-card title="Blood Pressure">
-            <a-tabs v-model:activeKey="activeKey1">
-              <a-tab-pane key="7" tab="Graph">
-                <apexchart
-                  type="area"
-                  height="350"
-                  :options="chartOptions"
-                  :series="series"
-                  @click="clickHandler"
-                ></apexchart>
-              </a-tab-pane>
-              <a-tab-pane key="8" tab="Table" force-render>
-                <a-table
-                  :columns="columns4"
-                  :data-source="data4"
-                  :pagination="false"
-                  @change="onChange"
-                />
-              </a-tab-pane>
-            </a-tabs>
-            <template #extra
-              ><a>
-                <a-button class="btn blackBtn" @click="showModal3"
-                  ><PlusOutlined
-                /></a-button> </a
-            ></template>
-          </a-card>
-        </a-col>
-      </a-row>
-    </a-modal>
-
+    <BloodPressureDetail v-model:visible="bloodpressurevisible" @ok="handleOk" />
     <!-- Blood Oxygen Saturation Detail Modal  -->
-    <a-modal
-      v-model:visible="bloodoxygenvisible"
-      width="1000px"
-      title="Blood Oxygen Saturation Detail"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="24" :xs="24" class="mb-24">
-          <a-card title="Blood Oxygen Saturation">
-            <a-tabs v-model:activeKey="activeKey4">
-              <a-tab-pane key="13" tab="Graph">
-                <apexchart
-                  type="area"
-                  height="350"
-                  :options="chartOptions"
-                  :series="series"
-                  @click="clickHandler"
-                ></apexchart>
-              </a-tab-pane>
-              <a-tab-pane key="14" tab="Table" force-render>
-                <a-table
-                  :columns="columns6"
-                  :data-source="data6"
-                  :pagination="false"
-                  @change="onChange"
-                />
-              </a-tab-pane>
-            </a-tabs>
-            <template #extra
-              ><a>
-                <a-button class="btn blackBtn" @click="showModal6"
-                  ><PlusOutlined
-                /></a-button> </a
-            ></template>
-          </a-card>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <BloodOxygenDetail v-model:visible="bloodoxygenvisible" @ok="handleOk" />
     <!-- Blood Glucose Detail Modal  -->
-    <a-modal
-      v-model:visible="bloodglucosevisible"
-      width="1000px"
-      title="Blood Glucose Detail"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="24" :xs="24" class="mb-24">
-          <a-card title="Blood Glucose">
-            <a-tabs v-model:activeKey="activeKey3">
-              <a-tab-pane key="11" tab="Graph">
-                <apexchart
-                  type="area"
-                  height="350"
-                  :options="chartOptions"
-                  :series="series"
-                  @click="clickHandler"
-                ></apexchart>
-              </a-tab-pane>
-              <a-tab-pane key="12" tab="Table" force-render>
-                <a-table
-                  :columns="columns6"
-                  :data-source="data6"
-                  :pagination="false"
-                  @change="onChange"
-                />
-              </a-tab-pane>
-            </a-tabs>
-            <template #extra
-              ><a>
-                <a-button class="btn blackBtn" @click="showModal5"
-                  ><PlusOutlined
-                /></a-button> </a
-            ></template>
-          </a-card>
-        </a-col>
-      </a-row>
-    </a-modal>
-
-    <a-modal
-      v-model:visible="appointmentvisible"
-      width="1000px"
-      title="Appointment Detail"
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Patient</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Staff</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Start Date</label>
-            <a-date-picker
-              v-model:value="value1"
-              :size="size"
-              style="width: 100%"
-            />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Time</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">Select Time</a-select-option>
-              <a-select-option value="Yiminghe">10 Mins</a-select-option>
-              <a-select-option value="Yiminghe">20 Mins</a-select-option>
-              <a-select-option value="Yiminghe">30 Mins</a-select-option>
-              <a-select-option value="Yiminghe">1 Hour</a-select-option>
-              <a-select-option value="Yiminghe">2 Hour</a-select-option>
-              <a-select-option value="Yiminghe">4 Hour</a-select-option>
-              <a-select-option value="Yiminghe">Full Day</a-select-option>
-            </a-select>
-          </div>
-        </a-col>
-        <a-col :span="24">
-          <div class="form-group">
-            <label>Note</label>
-            <a-textarea v-model="value2" allow-clear />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
-    <a-modal
-      v-model:visible="stoptimervisible"
-      width="1000px"
-      title="Time Tracker"
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="24" :xs="24">
-          <h3 class="mb-24">Patient Review Time</h3>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Billing Code</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">90791 (Evaluation)</a-select-option>
-              <a-select-option value="Yiminghe"
-                >90832 (LCSW Ongoing Services)</a-select-option
-              >
-              <a-select-option value="Yiminghe"
-                >96130 (Deep Dive)</a-select-option
-              >
-            </a-select>
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Time</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="24" :xs="24">
-          <h3 class="mb-24">Video Consult Time</h3>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Video Billing Code</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">90791 (Evaluation)</a-select-option>
-              <a-select-option value="Yiminghe"
-                >90832 (LCSW Ongoing Services)</a-select-option
-              >
-              <a-select-option value="Yiminghe"
-                >96130 (Deep Dive)</a-select-option
-              >
-            </a-select>
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Time</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <BloodGlucoseDetail v-model:visible="bloodglucosevisible" @ok="handleOk" />
     <!---->
-    <a-modal
-      v-model:visible="visible3"
-      width="1000px"
-      title="Add Blood Report"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="8" :xs="24">
-          <div class="form-group">
-            <label>Date & Time</label>
-            <a-date-picker
-              v-model:value="value1"
-              :size="size"
-              style="width: 100%"
-            />
-          </div>
-        </a-col>
-        <a-col :sm="8" :xs="24">
-          <div class="form-group">
-            <label>Systolic</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="8" :xs="24">
-          <div class="form-group">
-            <label>Diastoli</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
-
+    <AddAppointment v-model:visible="appointmentvisible" @ok="handleOk" />
     <!---->
-    <a-modal
-      v-model:visible="visible4"
-      width="1000px"
-      title="Add Pulse"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Date & Time</label>
-            <a-date-picker
-              v-model:value="value1"
-              :size="size"
-              style="width: 100%"
-            />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Value</label>
-            <a-input
-              v-model="value"
-              size="large"
-              placeholder="Add Heart Rate"
-            />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <TimeTracker v-model:visible="stoptimervisible" @ok="handleOk" />
+    <!--vital Summary-->
+    <VitalSummary v-model:visible="visible3" @ok="handleOk" />
     <!---->
-    <a-modal
-      v-model:visible="visible5"
-      width="1000px"
-      title="Add Blood Glucose"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="8" :xs="24">
-          <div class="form-group">
-            <label>Date & Time</label>
-            <a-date-picker
-              v-model:value="value1"
-              :size="size"
-              style="width: 100%"
-            />
-          </div>
-        </a-col>
-        <a-col :sm="8" :xs="24">
-          <div class="form-group">
-            <label>FBS</label>
-            <a-input v-model="value" size="large" placeholder="value" />
-          </div>
-        </a-col>
-        <a-col :sm="8" :xs="24">
-          <div class="form-group">
-            <label>RBS</label>
-            <a-input v-model="value" size="large" placeholder="value" />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <AddPulse v-model:visible="visible4" @ok="handleOk" />
     <!---->
-    <a-modal
-      v-model:visible="visible6"
-      width="1000px"
-      title="Blood Oxygen Saturation"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Date & Time</label>
-            <a-date-picker
-              v-model:value="value1"
-              :size="size"
-              style="width: 100%"
-            />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Value</label>
-            <a-input v-model="value" size="large" placeholder="Value" />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <BloodGlucose v-model:visible="visible5" @ok="handleOk" />
     <!---->
-    <a-modal
-      v-model:visible="visible7"
-      width="1000px"
-      title="Add Health"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Date & Time</label>
-            <a-date-picker
-              v-model:value="value1"
-              :size="size"
-              style="width: 100%"
-            />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Value</label>
-            <a-input v-model="value" size="large" placeholder="Value" />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <BloodOxygen v-model:visible="visible6" @ok="handleOk" />
     <!---->
-    <a-modal
-      v-model:visible="visible8"
-      width="1000px"
-      title="Add Care Coordinators"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="24" :xs="24">
-          <a-row :gutter="24" class="mb-24">
-            <a-col :sm="20" :xs="24">
-              <a-input
-                v-model="value"
-                size="large"
-                placeholder="Enter Search Here..."
-              />
-            </a-col>
-            <a-col :sm="4" :xs="24">
-              <a-button class="btn primaryBtn" size="large"> Add New </a-button>
-            </a-col>
-          </a-row>
-        </a-col>
-        <a-col :sm="24" :xs="24">
-          <a-table
-            :columns="columns7"
-            :data-source="data7"
-            :pagination="false"
-            @change="onChange"
-          >
-            <template #checkbox>
-              <a-checkbox v-model:checked="checked"></a-checkbox>
-            </template>
-          </a-table>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <AddHealth v-model:visible="visible7" @ok="handleOk" />
     <!---->
-    <a-modal
-      v-model:visible="visible9"
-      width="1000px"
-      title="Add Family Coordinators"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>First Name</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Last Name</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Email</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Phone No</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Relationship</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">Brother</a-select-option>
-              <a-select-option value="Yiminghe">Sister</a-select-option>
-              <a-select-option value="Yiminghe">Mother</a-select-option>
-              <a-select-option value="Yiminghe">Father</a-select-option>
-            </a-select>
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <CareCoordinators v-model:visible="visible8" @ok="handleOk" />
+    <!---->
+    <FamilyCoordinators v-model:visible="visible9" @ok="handleOk" />
+    <!---->
+    <PatientsModal v-model:visible="PatientsModal" @ok="handleOk" />
     <!---->
   </div>
 </template>
@@ -1579,10 +601,30 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
+import VitalSummary from "@/components/modals/VitalSummary";
+import FamilyCoordinators from "@/components/modals/FamilyCoordinators";
+import CareCoordinators from "@/components/modals/CareCoordinators";
+import AddHealth from "@/components/modals/AddHealth";
+import BloodOxygen from "@/components/modals/BloodOxygen";
+import BloodGlucose from "@/components/modals/BloodGlucose";
+import AddPulse from "@/components/modals/AddPulse";
+import TimeTracker from "@/components/modals/TimeTracker";
+import BloodGlucoseDetail from "@/components/modals/BloodGlucoseDetail";
+import BloodOxygenDetail from "@/components/modals/BloodOxygenDetail";
+import BloodPressureDetail from "@/components/modals/BloodPressureDetail";
+import TimeLogsDetail from "@/components/modals/TimeLogsDetail";
+import DocumentDetail from "@/components/modals/DocumentDetail";
+import DeviceDetail from "@/components/modals/DeviceDetail";
+import NotesDetail from "@/components/modals/NotesDetail";
+import AddNote from "@/components/modals/AddNote";
+import AddDevice from "@/components/modals/AddDevice";
+import AddDocument from "@/components/modals/AddDocument";
+import AddTimeLogs from "@/components/modals/AddTimeLogs";
+import AddAppointment from "@/components/modals/AddAppointment";
+import PatientsModal from "@/components/modals/PatientsModal";
+
 import dayjs from "dayjs";
 import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
-
 import {
   DeleteOutlined,
   EditOutlined,
@@ -1596,58 +638,6 @@ import {
 } from "@ant-design/icons-vue";
 const OPTIONSTAG = ["Manger", "Billing Admin", "User Admin"];
 const value = ref(dayjs("12:08", "HH:mm"));
-
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-  },
-  {
-    title: "Document",
-    dataIndex: "document",
-  },
-  {
-    title: "Type",
-    dataIndex: "type",
-    sorter: {
-      compare: (a, b) => a.message - b.message,
-      multiple: 3,
-    },
-  },
-  {
-    title: "Tags",
-    dataIndex: "tags",
-    sorter: {
-      compare: (a, b) => a.patient - b.patient,
-      multiple: 2,
-    },
-  },
-  {
-    title: "Action",
-    dataIndex: "action",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
-const data = [
-  {
-    key: "1",
-    name: "Program 1",
-    document: "abc.pdf",
-    type: "Voter ID",
-    tags: "Voter ID",
-    action: "",
-  },
-  {
-    key: "2",
-    name: "Program 1",
-    document: "abc.pdf",
-    type: "Voter ID",
-    tags: "Voter ID",
-    action: "",
-  },
-];
 const columns1 = [
   {
     title: "Category",
@@ -1656,9 +646,6 @@ const columns1 = [
   {
     title: "Logged By",
     dataIndex: "logged",
-     slots: {
-      customRender: "logged",
-    },
   },
   {
     title: "Performed By",
@@ -1667,10 +654,6 @@ const columns1 = [
       compare: (a, b) => a.performed - b.performed,
       multiple: 3,
     },
-    slots: {
-      customRender: "performed",
-    },
-    
   },
   {
     title: "Date",
@@ -1716,70 +699,6 @@ const data1 = [
     action: "",
   },
 ];
-const columns2 = [
-  {
-    title: "Home Unit Type",
-    dataIndex: "home",
-  },
-  {
-    title: "Model No",
-    dataIndex: "model",
-  },
-  {
-    title: "Serial No",
-    dataIndex: "serial",
-  },
-  {
-    title: "MAC Address",
-    dataIndex: "mac",
-  },
-  {
-    title: "Device Time",
-    dataIndex: "device",
-  },
-  {
-    title: "Server Time",
-    dataIndex: "server",
-  },
-  {
-    title: "Active/Inactive",
-    dataIndex: "active",
-    slots: {
-      customRender: "active",
-    },
-  },
-  {
-    title: "Action",
-    dataIndex: "action",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
-const data2 = [
-  {
-    key: "1",
-    home: "Blood Pressure",
-    model: "M-101",
-    serial: "S-101",
-    mac: "Lorem",
-    device: "11:00 Am",
-    server: "11:30 Am",
-    active: "",
-    action: "",
-  },
-  {
-    key: "2",
-    home: "Oxymeter",
-    model: "M-102",
-    serial: "S-102",
-    mac: "Lorem",
-    device: "10:15 Am",
-    server: "10:30 Am",
-    active: "",
-    action: "",
-  },
-];
 const columns3 = [
   {
     title: "Date",
@@ -1805,14 +724,16 @@ const data3 = [
   {
     key: "1",
     date: "Nov 10, 2021",
-    note: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore voluptatibus dolore, vel error harum porro totam eveniet modi iusto eos, dolorum provident aliquid earum corporis veritatis? Officiis molestiae amet ullam?",
+    note:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore voluptatibus dolore, vel error harum porro totam eveniet modi iusto eos, dolorum provident aliquid earum corporis veritatis? Officiis molestiae amet ullam?",
     category: "Admin",
     flag: "blueBgColor",
   },
   {
     key: "2",
     date: "Nov 11, 2021",
-    note: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore voluptatibus dolore, vel error harum porro totam eveniet modi iusto eos, dolorum provident aliquid earum corporis veritatis? Officiis molestiae amet ullam?",
+    note:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore voluptatibus dolore, vel error harum porro totam eveniet modi iusto eos, dolorum provident aliquid earum corporis veritatis? Officiis molestiae amet ullam?",
     category: "Clinical",
     flag: "redBgColor",
   },
@@ -1995,6 +916,27 @@ export default {
     FilePdfOutlined,
     BellOutlined,
     MailOutlined,
+    VitalSummary,
+    FamilyCoordinators,
+    CareCoordinators,
+    AddHealth,
+    BloodOxygen,
+    BloodGlucose,
+    AddPulse,
+    TimeTracker,
+    BloodGlucoseDetail,
+    BloodOxygenDetail,
+    BloodPressureDetail,
+    TimeLogsDetail,
+    DocumentDetail,
+    DeviceDetail,
+    NotesDetail,
+    AddNote,
+    AddDevice,
+    AddDocument,
+    AddTimeLogs,
+    AddAppointment,
+    PatientsModal,
   },
   data: function () {
     return {
@@ -2039,12 +981,7 @@ export default {
       ],
     };
   },
-
   setup() {
-    const router = useRouter();
-    function clickHandler(event, chartContext, config) {
-      router.push({ path: "time-tracking-report" });
-    }
     function logout() {
       localStorage.removeItem("auth");
       localStorage.clear();
@@ -2133,7 +1070,6 @@ export default {
     const showStopTimerModal = () => {
       stoptimervisible.value = true;
     };
-
     const handleOk = (e) => {
       console.log(e);
       visible.value = false;
@@ -2169,20 +1105,24 @@ export default {
       console.log(`selected ${value}`);
     };
 
+    const PatientsModal = ref(false);
+    const addPatient = () => {
+      PatientsModal.value = true;
+    };
+
     return {
       handleOkcustom,
       showModalCustom,
-      clickHandler,
       custom,
       next,
       prev,
       handleChange,
-      data,
-      columns,
+      // data,
+      // columns,
       data1,
       columns1,
-      data2,
-      columns2,
+      // data2,
+      // columns2,
       data3,
       columns3,
       data4,
@@ -2235,9 +1175,7 @@ export default {
       showBloodGlucoseDetailModal,
       showAddAppointmentModal,
       showStopTimerModal,
-
       handleOk,
-
       logout,
       filteredOptionsForTag,
       selectedItemsForTag,
@@ -2256,6 +1194,8 @@ export default {
       dayjs,
       checked,
       onClose,
+      PatientsModal,
+      addPatient,
     };
   },
 };

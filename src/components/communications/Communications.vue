@@ -168,11 +168,7 @@
                             </template>
                           </a-table>
                         </a-tab-pane>
-                        <a-tab-pane
-                          key="2"
-                          tab="Future Appointments"
-                          force-render
-                        >
+                        <a-tab-pane key="2" tab="Future Appointments" force-render>
                           <a-table
                             :columns="columns6"
                             :data-source="data6"
@@ -240,9 +236,7 @@
                         <a class="icons"><MessageOutlined /></a>
                       </template>
                       <template #patient="text">
-                        <router-link to="patients-summary">{{
-                          text.text
-                        }}</router-link>
+                        <router-link to="patients-summary">{{ text.text }}</router-link>
                       </template>
                       <template #staff="text">
                         <router-link to="corrdinator-summary">{{
@@ -264,18 +258,10 @@
                       </template>
 
                       <template #type="{ text }">
-                        <a class="icons" v-if="text == 'comment'"
-                          ><CommentOutlined
-                        /></a>
-                        <a class="icons" v-if="text == 'voiceMail'"
-                          ><PhoneOutlined
-                        /></a>
-                        <a class="icons" v-if="text == 'sent'"
-                          ><PhoneOutlined
-                        /></a>
-                        <a class="icons" v-if="text == 'mail'"
-                          ><MailOutlined
-                        /></a>
+                        <a class="icons" v-if="text == 'comment'"><CommentOutlined /></a>
+                        <a class="icons" v-if="text == 'voiceMail'"><PhoneOutlined /></a>
+                        <a class="icons" v-if="text == 'sent'"><PhoneOutlined /></a>
+                        <a class="icons" v-if="text == 'mail'"><MailOutlined /></a>
                       </template>
                     </a-table>
                   </a-col>
@@ -307,7 +293,6 @@ import {
   PhoneOutlined,
   MailOutlined,
   AlertOutlined,
-  
 } from "@ant-design/icons-vue";
 const close = () => {
   console.log(
@@ -457,7 +442,6 @@ export default {
     MailOutlined,
     AlertOutlined,
     CommunicationsModal,
-    
   },
   data: function () {
     return {
@@ -1022,7 +1006,6 @@ export default {
     ];
 
     const toggle = ref(true);
-
     const openNotification = (placement) => {
       const key = `open${Date.now()}`;
       notification.open({
@@ -1036,8 +1019,8 @@ export default {
               Patient Name : <span>Jane Doe</span>
             </p>
             <p class="summary">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
-              at incidunt !
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus at incidunt
+              !
             </p>
           </div>
         ),
@@ -1067,8 +1050,8 @@ export default {
               Patient Name : <span>Jane Doe</span>
             </p>
             <p class="summary">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
-              at incidunt !
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus at incidunt
+              !
             </p>
           </div>
         ),
@@ -1082,14 +1065,14 @@ export default {
         ),
         key,
         onClose: close,
-        placement
+        placement,
       });
     };
     const openNotification2 = (placement) => {
       const key = `open${Date.now()}`;
       notification.open({
-        message:<h2>Reminder</h2>,
-         description: (
+        message: <h2>Reminder</h2>,
+        description: (
           <div class="notificationBody">
             <p>
               Date Time : <span>December 20, 2021 12:00 PM</span>
@@ -1098,21 +1081,21 @@ export default {
               Patient Name : <span>Jane Doe</span>
             </p>
             <p class="summary">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
-              at incidunt !
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus at incidunt
+              !
             </p>
           </div>
         ),
         key,
         onClose: close,
-        placement
+        placement,
       });
     };
     const openNotification3 = (placement) => {
       const key = `open${Date.now()}`;
       notification.open({
-        message:<h2>Call</h2>,
-         description: (
+        message: <h2>Call</h2>,
+        description: (
           <div class="notificationBody">
             <p>
               Date Time : <span>December 20, 2021 12:00 PM</span>
@@ -1121,25 +1104,28 @@ export default {
               Patient Name : <span>Jane Doe</span>
             </p>
             <p class="summary">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
-              at incidunt !
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus at incidunt
+              !
             </p>
           </div>
         ),
-        btn:[ h(
-          Button,
-          {
-            onClick: () => notification.close(key),
-          },
-          "Cancel ",
-        ),h(
-          Button,
-          {
-            type: "primary",
-            onClick: () => notification.close(key),
-          },
-          "Accept",
-        )],
+        btn: [
+          h(
+            Button,
+            {
+              onClick: () => notification.close(key),
+            },
+            "Cancel "
+          ),
+          h(
+            Button,
+            {
+              type: "primary",
+              onClick: () => notification.close(key),
+            },
+            "Accept"
+          ),
+        ],
         key,
         onClose: close,
         placement,
