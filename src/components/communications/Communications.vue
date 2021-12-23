@@ -179,7 +179,11 @@
                             </template>
                           </a-table>
                         </a-tab-pane>
-                        <a-tab-pane key="2" tab="Future Appointments" force-render>
+                        <a-tab-pane
+                          key="2"
+                          tab="Future Appointments"
+                          force-render
+                        >
                           <a-table
                             :columns="columns6"
                             :data-source="data6"
@@ -234,10 +238,18 @@
                       @change="onChange"
                     >
                       <template #resend>
-                        <a class="icons"><MessageOutlined /></a>
+                        <a-tooltip placement="bottom">
+                          <template #title>
+                            <span>Message</span>
+                          </template>
+                           <a class="icons"><MessageOutlined /></a>
+                        </a-tooltip>
+                       
                       </template>
                       <template #patient="text">
-                        <router-link to="patients-summary">{{ text.text }}</router-link>
+                        <router-link to="patients-summary">{{
+                          text.text
+                        }}</router-link>
                       </template>
                       <template #staff="text">
                         <router-link to="corrdinator-summary">{{
@@ -259,10 +271,39 @@
                       </template>
 
                       <template #type="{ text }">
-                        <a class="icons" v-if="text == 'comment'"><CommentOutlined /></a>
-                        <a class="icons" v-if="text == 'voiceMail'"><PhoneOutlined /></a>
-                        <a class="icons" v-if="text == 'sent'"><PhoneOutlined /></a>
-                        <a class="icons" v-if="text == 'mail'"><MailOutlined /></a>
+                        <a-tooltip placement="bottom">
+                          <template #title>
+                            <span>Comment</span>
+                          </template>
+                           <a class="icons" v-if="text == 'comment'"
+                          ><CommentOutlined
+                        /></a>
+                        </a-tooltip>
+                        <a-tooltip placement="bottom">
+                          <template #title>
+                            <span>Voice Mail</span>
+                          </template>
+                             <a class="icons" v-if="text == 'voiceMail'"
+                          ><PhoneOutlined
+                        /></a>
+                        </a-tooltip>
+                        <a-tooltip placement="bottom">
+                          <template #title>
+                            <span>Sent</span>
+                          </template>
+                             <a class="icons" v-if="text == 'sent'"
+                          ><PhoneOutlined
+                        /></a>
+                        </a-tooltip>
+                        <a-tooltip placement="bottom">
+                          <template #title>
+                            <span>Mail</span>
+                          </template>
+                             <a class="icons" v-if="text == 'mail'"
+                          ><MailOutlined
+                        /></a>
+                        </a-tooltip>
+
                       </template>
                     </a-table>
                   </a-col>
@@ -1020,8 +1061,8 @@ export default {
               Patient Name : <span>Jane Doe</span>
             </p>
             <p class="summary">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus at incidunt
-              !
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
+              at incidunt !
             </p>
           </div>
         ),
@@ -1051,8 +1092,8 @@ export default {
               Patient Name : <span>Jane Doe</span>
             </p>
             <p class="summary">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus at incidunt
-              !
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
+              at incidunt !
             </p>
           </div>
         ),
@@ -1082,8 +1123,8 @@ export default {
               Patient Name : <span>Jane Doe</span>
             </p>
             <p class="summary">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus at incidunt
-              !
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
+              at incidunt !
             </p>
           </div>
         ),
@@ -1105,8 +1146,8 @@ export default {
               Patient Name : <span>Jane Doe</span>
             </p>
             <p class="summary">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus at incidunt
-              !
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
+              at incidunt !
             </p>
           </div>
         ),

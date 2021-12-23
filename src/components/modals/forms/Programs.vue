@@ -59,7 +59,13 @@
         :scroll="{ x: 900 }"
       >
         <template #action>
-          <a class="icons"><EditOutlined /></a>
+         <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Edit</span>
+                    </template>
+                    <a class="icons"><EditOutlined /></a>
+                  </a-tooltip>
+               
         </template>
       </a-table>
     </a-col>

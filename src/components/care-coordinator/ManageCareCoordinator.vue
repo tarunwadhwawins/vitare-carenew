@@ -290,8 +290,19 @@
                   :scroll="{ x: 900 }"
                 >
                   <template #action>
+              
+                    <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Edit</span>
+                    </template>
                     <a class="icons"><EditOutlined /></a>
+                  </a-tooltip>
+                  <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Delete</span>
+                    </template>
                     <a class="icons"> <DeleteOutlined /></a>
+                  </a-tooltip>
                   </template>
                 </a-table>
               </a-col>
@@ -366,8 +377,19 @@
                   :scroll="{ x: 900 }"
                 >
                   <template #action>
+                   
+                    <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Edit</span>
+                    </template>
                     <a class="icons"><EditOutlined /></a>
+                  </a-tooltip>
+                  <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Delete</span>
+                    </template>
                     <a class="icons"> <DeleteOutlined /></a>
+                  </a-tooltip>
                   </template>
                 </a-table>
               </a-col>
@@ -411,8 +433,19 @@
                   :scroll="{ x: 900 }"
                 >
                   <template #action>
+                 
+                    <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Edit</span>
+                    </template>
                     <a class="icons"><EditOutlined /></a>
+                  </a-tooltip>
+                  <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Delete</span>
+                    </template>
                     <a class="icons"> <DeleteOutlined /></a>
+                  </a-tooltip>
                   </template>
                 </a-table>
               </a-col>
@@ -481,8 +514,18 @@
                   :scroll="{ x: 900 }"
                 >
                   <template #action>
+                     <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Edit</span>
+                    </template>
                     <a class="icons"><EditOutlined /></a>
+                  </a-tooltip>
+                  <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Delete</span>
+                    </template>
                     <a class="icons"> <DeleteOutlined /></a>
+                  </a-tooltip>
                   </template>
                 </a-table>
               </a-col>
@@ -522,7 +565,12 @@
                   :scroll="{ x: 900 }"
                 >
                   <template #action>
+                    <a-tooltip placement="bottom">
+                    <template #title>
+                      <span>Delete</span>
+                    </template>
                     <a class="icons"> <DeleteOutlined /></a>
+                  </a-tooltip>
                   </template>
                 </a-table>
               </a-col>
