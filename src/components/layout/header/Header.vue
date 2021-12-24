@@ -104,6 +104,11 @@
                         >Add Task</a
                       ></a-menu-item
                     >
+                    <a-menu-item key="4">
+                      <a href="javascript:void(0)" @click="addStart"
+                        >Add Start Call</a
+                      ></a-menu-item
+                    >
                   </a-menu>
                 </template>
               </a-dropdown>
@@ -183,6 +188,7 @@
     <TasksModal v-model:visible="TasksModal" @ok="taskOk" />
     <PatientsModal v-model:visible="PatientsModal" @ok="patientOk" />
     <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" />
+    <AddStartCall v-model:visible="AddStartCall" @ok="startOk" />
     <!---->
   </div>
 </template>
@@ -193,6 +199,7 @@ import AddAppointment from "@/components/modals/AddAppointment";
 import TasksModal from "@/components/modals/TasksModal";
 import PatientsModal from "@/components/modals/PatientsModal";
 import CoordinatorsModal from "@/components/modals/CoordinatorsModal";
+import AddStartCall from "@/components/modals/AddStartCall";
 import {
   NotificationOutlined,
   DownOutlined,
@@ -211,6 +218,7 @@ export default defineComponent({
     TasksModal,
     PatientsModal,
     CoordinatorsModal,
+    AddStartCall,
   },
   setup() {
     const toggle = ref(false);
@@ -255,6 +263,15 @@ export default defineComponent({
       CoordinatorsModal.value = false;
     };
 
+    const AddStartCall = ref(false);
+    const addStart = () => {
+      AddStartCall.value = true;
+    };
+    const startOk = (e) => {
+      console.log(e);
+      AddStartCall.value = false;
+    };
+
     return {
       barMenu,
       toggle,
@@ -274,6 +291,10 @@ export default defineComponent({
 
       CoordinatorsModal,
       addCare,
+      AddStartCall,
+      addStart,
+      startOk,
+
       handleOk,
     };
   },
