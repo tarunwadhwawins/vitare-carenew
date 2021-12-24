@@ -957,7 +957,8 @@ export default {
       router.push({ path: "corrdinator-summary" });
     }
     function clickHandler2(event, chartContext, config) {
-      router.push({ path: "time-tracking-report" });
+      toggle.value = false;
+      // router.push({ path: "time-tracking-report" });
     }
     const columns5 = [
       {
