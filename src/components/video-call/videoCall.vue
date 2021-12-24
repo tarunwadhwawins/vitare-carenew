@@ -13,6 +13,7 @@
               <a-col :span="24">
                 <h2 class="pageTittle">Video Call</h2>
               </a-col>
+           
             </a-row>
             <a-row :gutter="24">
               <a-col :sm="17" :xs="24">
@@ -138,6 +139,7 @@
                         </div>
                       </a-col>
                     </a-row>
+                     <a-button class="endCall" :size="size" block>End Call</a-button>
                   </div>
                 </div>
               </a-col>
@@ -161,7 +163,9 @@ export default {
   },
 
   setup() {
-    return {};
+    return {
+       size: ref('large'),
+    };
   },
 };
 </script>
