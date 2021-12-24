@@ -55,9 +55,11 @@
                     <a-menu-item key="1">
                       <a href="javascript:void(0)" @click="addPatient">Add Patient</a>
                     </a-menu-item>
-                    <!-- <a-menu-item key="3">
-                      <a href="javascript:void(0)">Add Care Coordinator</a></a-menu-item
-                    > -->
+                    <a-menu-item key="3">
+                      <a href="javascript:void(0)" @click="addCare"
+                        >Add Care Coordinator</a
+                      ></a-menu-item
+                    >
                     <a-menu-item key="4">
                       <a href="javascript:void(0)" @click="addTask"
                         >Add Task</a
@@ -131,6 +133,7 @@
     <AddAppointment v-model:visible="appointmentModal" @ok="apptOk" />
     <TasksModal v-model:visible="TasksModal" @ok="taskOk" />
     <PatientsModal v-model:visible="PatientsModal" @ok="patientOk" />
+    <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" />
     <!---->
   </div>
 </template>
@@ -140,6 +143,7 @@ import { defineComponent, ref } from "vue";
 import AddAppointment from "@/components/modals/AddAppointment";
 import TasksModal from "@/components/modals/TasksModal";
 import PatientsModal from "@/components/modals/PatientsModal";
+import CoordinatorsModal from "@/components/modals/CoordinatorsModal";
 import {
   NotificationOutlined,
   DownOutlined,
@@ -157,6 +161,7 @@ export default defineComponent({
     AddAppointment,
     TasksModal,
     PatientsModal,
+    CoordinatorsModal,
   },
   setup() {
     const toggle = ref(false);
@@ -192,6 +197,15 @@ export default defineComponent({
       PatientsModal.value = false;
     };
 
+    const CoordinatorsModal = ref(false);
+    const addCare = () => {
+      CoordinatorsModal.value = true;
+    };
+    const handleOk = (e) => {
+      console.log(e);
+      CoordinatorsModal.value = false;
+    };
+
     return {
       barMenu,
       toggle,
@@ -208,6 +222,10 @@ export default defineComponent({
       PatientsModal,
       addPatient,
       patientOk,
+
+      CoordinatorsModal,
+      addCare,
+      handleOk,
     };
   },
 });
