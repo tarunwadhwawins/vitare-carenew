@@ -21,14 +21,16 @@
                 </h2>
               </a-col>
               <a-col :span="12">
-                <a-input-search
-                  v-model:value="inputvalue"
+                  <a-select
+                  v-model:value="value2"
+                  :size="size"
+                  mode="tags"
+                  style="width: 100%"
                   placeholder="Search . . ."
-                  enter-button="Search"
-                  size="large"
-                  @search="onSearch"
-                  class="mb-24"
-                />
+                  :options="searchoptions"
+                  @change="handleChange2"
+                >
+                </a-select>
               </a-col>
               <a-col :span="12">
                 <div class="text-right mb-24">
@@ -310,6 +312,60 @@ export default {
       console.log(e);
       visible.value = false;
     };
+     const handleChange2 = (value) => {
+      console.log(`selected ${value}`);
+    };
+
+    const searchoptions = ref([
+      {
+        value: "Specialization",
+        label: "Specialization",
+      },
+      {
+        value: "Relationship",
+        label: "Relationship",
+      },
+      {
+        value: "Communication Status",
+        label: "Communication Status",
+      },
+      {
+        value: "Condition",
+        label: "Condition",
+      },
+      {
+        value: "Acquired absense of foot",
+        label: "Acquired absense of foot",
+      },
+      {
+        value: "Anemina",
+        label: "Anemina",
+      },
+      {
+        value: "Shared",
+        label: "Shared",
+      },
+      {
+        value: "Anxiety",
+        label: "Anxiety",
+      },
+      {
+        value: "A-101",
+        label: "A-101",
+      },
+      {
+        value: "A-102",
+        label: "A-102",
+      },
+      {
+        value: "A-103",
+        label: "A-103",
+      },
+      {
+        value: "A-104",
+        label: "A-104",
+      },
+    ]);
     return {
       columns,
       data,
@@ -318,6 +374,9 @@ export default {
       visible,
       showModal,
       handleOk,
+       handleChange2,
+      searchoptions,
+      size: ref([]),
     };
   },
 };

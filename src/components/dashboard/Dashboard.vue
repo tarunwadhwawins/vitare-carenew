@@ -209,6 +209,7 @@
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
 import { useRouter } from "vue-router";
+import { provide } from "vue";
 // import { UserOutlined } from "@ant-design/icons-vue";
 const columns4 = [
   {
@@ -740,9 +741,11 @@ export default {
       ],
     };
   },
-  setup() {
+  setup(props,{emit}) {
     const router = useRouter();
     function clickHandler(event, chartContext, config){
+        // emit('listView',false)
+        provide('listView',false)
         router.push({path:'communications'})
     }
     function clickHandler2(event, chartContext, config){

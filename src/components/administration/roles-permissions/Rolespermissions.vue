@@ -21,14 +21,16 @@
                 </h2>
               </a-col>
               <a-col :span="12">
-                <a-input-search
-                  v-model:value="inputvalue"
+                <a-select
+                  v-model:value="value2"
+                  :size="size"
+                  mode="tags"
+                  style="width: 100%"
                   placeholder="Search . . ."
-                  enter-button="Search"
-                  size="large"
-                  @search="onSearch"
-                  class="mb-24"
-                />
+                  :options="searchoptions"
+                  @change="handleChange2"
+                >
+                </a-select>
               </a-col>
               <a-col :span="12">
                 <div class="text-right mb-24">
@@ -43,18 +45,18 @@
                   @change="onChange"
                 >
                   <template #actions>
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>Edit</span>
-                    </template>
-                    <a class="icons"><EditOutlined /></a>
-                  </a-tooltip>
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>Delete</span>
-                    </template>
-                    <a class="icons"> <DeleteOutlined /></a>
-                  </a-tooltip>
+                    <a-tooltip placement="bottom">
+                      <template #title>
+                        <span>Edit</span>
+                      </template>
+                      <a class="icons"><EditOutlined /></a>
+                    </a-tooltip>
+                    <a-tooltip placement="bottom">
+                      <template #title>
+                        <span>Delete</span>
+                      </template>
+                      <a class="icons"> <DeleteOutlined /></a>
+                    </a-tooltip>
                   </template>
                   <template #active="key">
                     <a-switch v-model:checked="checked[key.record.key]" />
@@ -468,6 +470,25 @@ export default {
       current.value--;
     };
 
+    const handleChange2 = (value) => {
+      console.log(`selected ${value}`);
+    };
+
+    const searchoptions = ref([
+      {
+        value: "Billing Admin",
+        label: "Billing Admin",
+      },
+      {
+        value: "Manager",
+        label: "Manager",
+      },
+      {
+        value: "User Admin",
+        label: "User Admin",
+      },
+    ]);
+
     return {
       columns,
       data,
@@ -502,6 +523,9 @@ export default {
       checked28,
       checked29,
       checked30,
+      handleChange2,
+      searchoptions,
+      size: ref([]),
 
       visible,
       showModal,

@@ -78,14 +78,16 @@
           </a-row>
           <a-row>
             <a-col :span="12">
-              <a-input-search
-                v-model:value="inputvalue"
+              <a-select
+                v-model:value="value2"
+                :size="size"
+                mode="tags"
+                style="width: 100%"
                 placeholder="Search . . ."
-                enter-button="Search"
-                size="large"
-                @search="onSearch"
-                class="mb-24"
-              />
+                :options="searchoptions"
+                @change="handleChange"
+              >
+              </a-select>
             </a-col>
             <a-col :span="12">
               <div class="text-right mb-24">
@@ -345,12 +347,37 @@ export default {
       console.log(e);
       PatientsModal.value = false;
     };
+    const handleChange = (value) => {
+      console.log(`selected ${value}`);
+    };
+
+    const searchoptions = ref([
+      {
+        value: "Jane Doe",
+        label: "Jane Doe",
+      },
+      {
+        value: "Steve Smith",
+        label: "Steve Smith",
+      },
+      {
+        value: "Joseph Spouse",
+        label: "Joseph Spouse",
+      },
+      {
+        value: "Robert Henry",
+        label: "Robert Henry",
+      },
+    ]);
     return {
       PatientsModal,
       showModal,
       handleOk,
       data,
       columns,
+      handleChange,
+      searchoptions,
+      size: ref([]),
     };
   },
 };

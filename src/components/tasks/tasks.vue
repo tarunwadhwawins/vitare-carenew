@@ -141,17 +141,23 @@
                           <a-menu>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked1">Urgent</a-checkbox>
+                                <a-checkbox v-model:checked="checked1"
+                                  >Urgent</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked2">High</a-checkbox>
+                                <a-checkbox v-model:checked="checked2"
+                                  >High</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked3">Normal</a-checkbox>
+                                <a-checkbox v-model:checked="checked3"
+                                  >Normal</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                           </a-menu>
@@ -178,22 +184,30 @@
                           <a-menu>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked4">Badger</a-checkbox>
+                                <a-checkbox v-model:checked="checked4"
+                                  >Badger</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked5">Devin</a-checkbox>
+                                <a-checkbox v-model:checked="checked5"
+                                  >Devin</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked6">Matt</a-checkbox>
+                                <a-checkbox v-model:checked="checked6"
+                                  >Matt</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked7">John</a-checkbox>
+                                <a-checkbox v-model:checked="checked7"
+                                  >John</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                           </a-menu>
@@ -274,12 +288,16 @@
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked11">Comm</a-checkbox>
+                                <a-checkbox v-model:checked="checked11"
+                                  >Comm</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
                               <div class="checkbox">
-                                <a-checkbox v-model:checked="checked12">Admin</a-checkbox>
+                                <a-checkbox v-model:checked="checked12"
+                                  >Admin</a-checkbox
+                                >
                               </div>
                             </a-menu-item>
                             <a-menu-item>
@@ -313,14 +331,16 @@
             <div class="list-view" v-show="!toggle">
               <a-row :gutter="24">
                 <a-col :span="12">
-                  <a-input-search
-                    v-model:value="inputvalue"
+                  <a-select
+                    v-model:value="value2"
+                    :size="size"
+                    mode="tags"
+                    style="width: 100%"
                     placeholder="Search . . ."
-                    enter-button="Search"
-                    size="large"
-                    @search="onSearch"
-                    class="mb-24"
-                  />
+                    :options="searchoptions"
+                    @change="handleChange2"
+                  >
+                  </a-select>
                 </a-col>
                 <a-col :span="12">
                   <div class="text-right mb-24">
@@ -336,36 +356,39 @@
                     @change="onChange"
                   >
                     <template #name="text">
-                      <router-link to="#">{{ text.text }}</router-link>
+                      <router-link to="#" @click="showModal">{{
+                        text.text
+                      }}</router-link>
                     </template>
                     <template #assigned="text">
-                      <router-link to="corrdinator-summary">{{ text.text }}</router-link>
+                      <router-link to="corrdinator-summary">{{
+                        text.text
+                      }}</router-link>
                     </template>
                     <template #status="key">
                       <a-switch v-model:checked="checked[key.record.key]" />
                     </template>
                     <template #action>
-                     <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>Edit</span>
-                    </template>
-                    <a class="icons"><EditOutlined /></a>
-                  </a-tooltip>
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>Delete</span>
-                    </template>
-                    <a class="icons"> <DeleteOutlined /></a>
-                  </a-tooltip>
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>Create Appointment</span>
-                    </template>
-                    <router-link to="appointment-calendar" class="icons">
-                        <CalendarOutlined
-                      /></router-link>
-                  </a-tooltip>
-                     
+                      <a-tooltip placement="bottom">
+                        <template #title>
+                          <span>Edit</span>
+                        </template>
+                        <a class="icons"><EditOutlined /></a>
+                      </a-tooltip>
+                      <a-tooltip placement="bottom">
+                        <template #title>
+                          <span>Delete</span>
+                        </template>
+                        <a class="icons"> <DeleteOutlined /></a>
+                      </a-tooltip>
+                      <a-tooltip placement="bottom">
+                        <template #title>
+                          <span>Create Appointment</span>
+                        </template>
+                        <router-link to="appointment-calendar" class="icons">
+                          <CalendarOutlined
+                        /></router-link>
+                      </a-tooltip>
                     </template>
                   </a-table>
                 </a-col>
@@ -809,6 +832,45 @@ export default {
       TasksModal.value = false;
     };
 
+    const handleChange2 = (value) => {
+      console.log(`selected ${value}`);
+    };
+
+    const searchoptions = ref([
+      {
+        value: "Jane Doe",
+        label: "Jane Doe",
+      },
+      {
+        value: "Steve Smith",
+        label: "Steve Smith",
+      },
+      {
+        value: "Joseph Spouse",
+        label: "Joseph Spouse",
+      },
+      {
+        value: "Robert Henry",
+        label: "Robert Henry",
+      },
+      {
+        value: "Task 1",
+        label: "Task 1",
+      },
+      {
+        value: "Task 2",
+        label: "Task 2",
+      },
+      {
+        value: "Clinical",
+        label: "Clinical",
+      },
+      {
+        value: "Internal",
+        label: "Internal",
+      },
+    ]);
+
     return {
       data,
       columns,
@@ -827,6 +889,9 @@ export default {
       checked11,
       checked12,
       checked13,
+      handleChange2,
+      searchoptions,
+      size: ref([]),
 
       TasksModal,
       showModal,

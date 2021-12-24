@@ -55,11 +55,11 @@
                     <a-menu-item key="1">
                       <a href="javascript:void(0)" @click="addPatient">Add Patient</a>
                     </a-menu-item>
-                    <a-menu-item key="3">
+                    <!-- <a-menu-item key="3">
                       <a href="javascript:void(0)" @click="addCare"
                         >Add Care Coordinator</a
                       ></a-menu-item
-                    >
+                    > -->
                     <a-menu-item key="4">
                       <a href="javascript:void(0)" @click="addTask"
                         >Add Task</a

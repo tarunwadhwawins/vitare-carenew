@@ -21,14 +21,16 @@
                 </h2>
               </a-col>
               <a-col :span="12">
-                <a-input-search
-                  v-model:value="inputvalue"
+                 <a-select
+                  v-model:value="value2"
+                  :size="size"
+                  mode="tags"
+                  style="width: 100%"
                   placeholder="Search . . ."
-                  enter-button="Search"
-                  size="large"
-                  @search="onSearch"
-                  class="mb-24"
-                />
+                  :options="searchoptions"
+                  @change="handleChange2"
+                >
+                </a-select>
               </a-col>
               <a-col :span="12">
                 <div class="text-right mb-24">
@@ -178,10 +180,32 @@ export default {
       console.log(e);
       visible.value = false;
     };
+     const handleChange2 = (value) => {
+      console.log(`selected ${value}`);
+    };
+
+    const searchoptions = ref([
+      {
+        value: "RPM - Remote Patient Monitor",
+        label: "RPM - Remote Patient Monitor",
+      },
+      {
+        value: "BHI - Behaviour Health Integration",
+        label: "BHI - Behaviour Health Integration",
+      },
+      {
+        value: "CCM - Chronic Care Management",
+        label: "CCM - Chronic Care Management",
+      },
+    
+    ]);
     return {
       columns,
       data,
       checked,
+      handleChange2,
+      searchoptions,
+      size: ref([]),
 
       visible,
       showModal,

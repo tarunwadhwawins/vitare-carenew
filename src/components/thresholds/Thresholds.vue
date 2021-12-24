@@ -11,26 +11,30 @@
           <div class="common-bg">
             <a-row>
               <a-col :span="24">
-                 <h2 class="pageTittle">Thresholds
+                <h2 class="pageTittle">
+                  Thresholds
 
                   <div class="commonBtn">
-                   <a-button class="btn primaryBtn" @click="showModal"
-                    >Add New Threshold</a-button
-                  >
-                </div>
+                    <a-button class="btn primaryBtn" @click="showModal"
+                      >Add New Threshold</a-button
+                    >
+                  </div>
                 </h2>
               </a-col>
             </a-row>
             <a-row>
               <a-col :span="12">
-                <a-input-search
-                  v-model:value="inputvalue"
+                <a-select
+                  v-model:value="value"
+                  :size="size"
+                  mode="tags"
+                  style="width: 100%"
                   placeholder="Search . . ."
-                  enter-button="Search"
-                  size="large"
-                  @search="onSearch"
-                  class="mb-24"
-                />
+                  :options="options"
+                  @change="handleChange"
+                  
+                >
+                </a-select>
               </a-col>
               <a-col :span="12">
                 <div class="text-right mb-24">
@@ -45,18 +49,18 @@
                   @change="onChange"
                 >
                   <template #actions>
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>Edit</span>
-                    </template>
-                    <a class="icons"><EditOutlined /></a>
-                  </a-tooltip>
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>Delete</span>
-                    </template>
-                    <a class="icons"> <DeleteOutlined /></a>
-                  </a-tooltip>
+                    <a-tooltip placement="bottom">
+                      <template #title>
+                        <span>Edit</span>
+                      </template>
+                      <a class="icons"><EditOutlined /></a>
+                    </a-tooltip>
+                    <a-tooltip placement="bottom">
+                      <template #title>
+                        <span>Delete</span>
+                      </template>
+                      <a class="icons"> <DeleteOutlined /></a>
+                    </a-tooltip>
                   </template>
                   <template #active="key">
                     <a-switch v-model:checked="checked[key.record.key]" />
@@ -122,13 +126,11 @@ const columns = [
       //   obj.props.colSpan = 0;
       // }
 
-
-
       if (index === 4) {
         obj.props.rowSpan = 3;
       } //
 
-       if (index === 5) {
+      if (index === 5) {
         obj.props.rowSpan = 0;
       }
 
@@ -136,12 +138,11 @@ const columns = [
         obj.props.colSpan = 0;
       }
 
-
       if (index === 7) {
         obj.props.rowSpan = 3;
       } //
 
-       if (index === 8) {
+      if (index === 8) {
         obj.props.rowSpan = 0;
       }
 
@@ -158,7 +159,7 @@ const columns = [
       compare: (a, b) => a.template - b.template,
       multiple: 3,
     },
-     customRender: renderContent,
+    customRender: renderContent,
   },
   {
     title: "High Limit ",
@@ -167,7 +168,7 @@ const columns = [
       compare: (a, b) => a.template - b.template,
       multiple: 3,
     },
-     customRender: renderContent,
+    customRender: renderContent,
   },
   {
     title: "Low Limit ",
@@ -176,7 +177,7 @@ const columns = [
       compare: (a, b) => a.template - b.template,
       multiple: 3,
     },
-     customRender: renderContent,
+    customRender: renderContent,
   },
 
   {
@@ -279,6 +280,9 @@ export default {
   },
 
   setup() {
+    const handleChange = value => {
+      console.log(`selected ${value}`);
+    };
     const checked = ref([false]);
 
     const Thresholds = ref(false);
@@ -289,14 +293,48 @@ export default {
       console.log(e);
       Thresholds.value = false;
     };
-    return {
+    const options = ref([
+      {
+        value: 'Group One',
+        label: 'Group One',
+      },
+      {
+        value: 'Blood Glucose',
+        label: 'Blood Glucose',
+      },
+      {
+        value: 'Systolic BP',
+        label: 'Systolic BP',
+      },
+      {
+        value: 'Weight',
+        label: 'Weight',
+      },
+      {
+        value: 'Spo2',
+        label: 'Spo2',
+      },
+      {
+        value: 'Pulse (BP Cuff)',
+        label: 'Pulse (BP Cuff)',
+      },
+      {
+        value: 'Group Three',
+        label: 'Group Three',
+      },
+    ]);
+   
+   return {
       columns,
       data,
       checked,
-
       Thresholds,
       showModal,
       handleOk,
+      value: ref([]),
+      handleChange,
+      options,
+      size: ref([]),
     };
   },
 };

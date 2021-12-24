@@ -77,6 +77,11 @@ const routes = [
     name: 'TimeLogReport',
     component: () => import( '../components/time-log-report/TimeLogReport')
   },
+  {
+    path: '/video-call',
+    name: 'videoCall',
+    component: () => import( '../components/video-call/videoCall')
+  },
 
   {
     path: '/',

@@ -21,7 +21,8 @@
               <h2 class="pageTittle">
                 Communications
                 <div class="addtaskButton">
-                  <a-button class="btn blueBtn">Start Call</a-button>
+                  <router-link to="video-call"><a-button class="btn blueBtn">Start Call</a-button></router-link>
+                  
                   <a-button class="btn primaryBtn" @click="showModal"
                     >Send Message</a-button
                   >
@@ -89,7 +90,7 @@
                   <a-button @click="openNotification2">Reminder</a-button>
                   <a-button @click="openNotification3">Call</a-button> -->
                 </div>
-                <div class="filter">
+                <div class="filter" >
                   <button
                     class="btn"
                     :class="toggle ? 'active' : ''"
@@ -157,6 +158,7 @@
                         :options="callqueoption"
                         :series="callqueseries"
                         @click="clickHandler2"
+                        
                       ></apexchart>
                     </a-card>
                   </a-col>
@@ -216,14 +218,16 @@
               <div class="list-view" v-show="!toggle">
                 <a-row>
                   <a-col :span="12">
-                    <a-input-search
-                      v-model:value="inputvalue"
+                    <a-select
+                      v-model:value="value2"
+                      :size="size"
+                      mode="tags"
+                      style="width: 100%"
                       placeholder="Search . . ."
-                      enter-button="Search"
-                      size="large"
-                      @search="onSearch"
-                      class="mb-24"
-                    />
+                      :options="searchoptions"
+                      @change="handleChange"
+                    >
+                    </a-select>
                   </a-col>
                   <a-col :span="12">
                     <div class="text-right mb-24">
@@ -242,9 +246,8 @@
                           <template #title>
                             <span>Message</span>
                           </template>
-                           <a class="icons"><MessageOutlined /></a>
+                          <a class="icons"><MessageOutlined /></a>
                         </a-tooltip>
-                       
                       </template>
                       <template #patient="text">
                         <router-link to="patients-summary">{{
@@ -275,35 +278,34 @@
                           <template #title>
                             <span>Comment</span>
                           </template>
-                           <a class="icons" v-if="text == 'comment'"
-                          ><CommentOutlined
-                        /></a>
+                          <a class="icons" v-if="text == 'comment'"
+                            ><CommentOutlined
+                          /></a>
                         </a-tooltip>
                         <a-tooltip placement="bottom">
                           <template #title>
                             <span>Voice Mail</span>
                           </template>
-                             <a class="icons" v-if="text == 'voiceMail'"
-                          ><PhoneOutlined
-                        /></a>
+                          <a class="icons" v-if="text == 'voiceMail'"
+                            ><PhoneOutlined
+                          /></a>
                         </a-tooltip>
                         <a-tooltip placement="bottom">
                           <template #title>
                             <span>Sent</span>
                           </template>
-                             <a class="icons" v-if="text == 'sent'"
-                          ><PhoneOutlined
-                        /></a>
+                          <a class="icons" v-if="text == 'sent'"
+                            ><PhoneOutlined
+                          /></a>
                         </a-tooltip>
                         <a-tooltip placement="bottom">
                           <template #title>
                             <span>Mail</span>
                           </template>
-                             <a class="icons" v-if="text == 'mail'"
-                          ><MailOutlined
-                        /></a>
+                          <a class="icons" v-if="text == 'mail'"
+                            ><MailOutlined
+                          /></a>
                         </a-tooltip>
-
                       </template>
                     </a-table>
                   </a-col>
@@ -324,7 +326,7 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { defineComponent, ref, h } from "vue";
+import { defineComponent, ref, h, inject } from "vue";
 import { notification, Button } from "ant-design-vue";
 import { useRouter } from "vue-router";
 import CommunicationsModal from "@/components/modals/CommunicationsModal";
@@ -952,7 +954,9 @@ export default {
   },
 
   setup() {
+   
     const router = useRouter();
+    const test = inject('listView')
     function clickHandler(event, chartContext, config) {
       router.push({ path: "corrdinator-summary" });
     }
@@ -960,6 +964,9 @@ export default {
       toggle.value = false;
       // router.push({ path: "time-tracking-report" });
     }
+
+    
+    
     const columns5 = [
       {
         title: "Patient Name",
@@ -1195,6 +1202,41 @@ export default {
       CommunicationsModal.value = false;
     };
 
+     const handleChange = (value) => {
+      console.log(`selected ${value}`);
+    };
+
+    const searchoptions = ref([
+      {
+        value: "Jane Doe",
+        label: "Jane Doe",
+      },
+      {
+        value: "Steve Smith",
+        label: "Steve Smith",
+      },
+      {
+        value: "Joseph Spouse",
+        label: "Joseph Spouse",
+      },
+      {
+        value: "Robert Henry",
+        label: "Robert Henry",
+      },
+      {
+        value: "Appointment Reminder",
+        label: "Appointment Reminder",
+      },
+      {
+        value: "Recall Reminder",
+        label: "Recall Reminder",
+      },
+      {
+        value: "Patient Message",
+        label: "Patient Message",
+      },
+    ]);
+
     return {
       CommunicationsModal,
       showModal,
@@ -1203,6 +1245,7 @@ export default {
       hideEmail,
       showEmailpop,
       hideEmailpop,
+      test,
 
       data,
       columns,
@@ -1217,9 +1260,13 @@ export default {
       openNotification3,
       clickHandler,
       clickHandler2,
+      
       onChange: (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
       },
+      handleChange,
+      searchoptions,
+      size: ref([]),
     };
   },
 };
