@@ -36,10 +36,10 @@
             @focus="focus"
             @change="handleChange"
           >
-            <a-select-option value="lucy">Appointment Reminder</a-select-option>
-            <a-select-option value="Yiminghe">Recall Reminder</a-select-option>
-            <a-select-option value="Yiminghe">Portal Invitation </a-select-option>
-            <a-select-option value="Yiminghe"
+            <a-select-option value="Appointment">Appointment Reminder</a-select-option>
+            <a-select-option value="Recall">Recall Reminder</a-select-option>
+            <a-select-option value="Portal">Portal Invitation </a-select-option>
+            <a-select-option value="Patient"
               >Patient Message Notification
             </a-select-option>
           </a-select>
