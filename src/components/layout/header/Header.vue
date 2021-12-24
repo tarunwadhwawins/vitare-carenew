@@ -12,7 +12,42 @@
       <div class="header-control">
         <div class="header-inner">
           <div class="location d-flex align-items-center">
-            <a-dropdown :trigger="['click']">
+            <a-dropdown>
+              <a class="ant-dropdown-link" @click.prevent>
+                Organisation - Location
+                <DownOutlined />
+              </a>
+              <template #overlay>
+                <a-menu>
+                  <a-sub-menu key="test1" title="Organisation 1">
+                    <a-menu-item>Location 1</a-menu-item>
+                    <a-menu-item>Location 2</a-menu-item>
+                    <a-menu-item>Location 3</a-menu-item>
+                    <a-menu-item>Location 4</a-menu-item>
+                  </a-sub-menu>
+                  <a-sub-menu key="test2" title="Organisation 2">
+                    <a-menu-item>Location 5</a-menu-item>
+                    <a-menu-item>Location 6</a-menu-item>
+                    <a-menu-item>Location 7</a-menu-item>
+                    <a-menu-item>Location 8</a-menu-item>
+                  </a-sub-menu>
+                  <a-sub-menu key="test3" title="Organisation 3">
+                    <a-menu-item>Location 1</a-menu-item>
+                    <a-menu-item>Location 2</a-menu-item>
+                    <a-menu-item>Location 3</a-menu-item>
+                    <a-menu-item>Location 4</a-menu-item>
+                  </a-sub-menu>
+                  <a-sub-menu key="test4" title="Organisation 4">
+                    <a-menu-item>Location 5</a-menu-item>
+                    <a-menu-item>Location 6</a-menu-item>
+                    <a-menu-item>Location 7</a-menu-item>
+                    <a-menu-item>Location 8</a-menu-item>
+                  </a-sub-menu>
+                </a-menu>
+              </template>
+            </a-dropdown>
+
+            <!-- <a-dropdown :trigger="['click']">
               <a class="ant-dropdown-link" @click.prevent>
                 <div class="name">Location <DownOutlined /></div>
               </a>
@@ -32,11 +67,15 @@
                   >
                 </a-menu>
               </template>
-            </a-dropdown>
+            </a-dropdown> -->
           </div>
           <div class="bar-menu">
-            <div class="search-icon" @click="toggle = !toggle"><SearchOutlined /></div>
-            <div class="ellipse-icon" @click="ellipse = !ellipse"><MoreOutlined /></div>
+            <div class="search-icon" @click="toggle = !toggle">
+              <SearchOutlined />
+            </div>
+            <div class="ellipse-icon" @click="ellipse = !ellipse">
+              <MoreOutlined />
+            </div>
           </div>
           <div class="search" :class="toggle ? 'show' : ''">
             <a-input v-model="value" size="large" placeholder="Enter search" />
@@ -50,10 +89,14 @@
                 <template #overlay>
                   <a-menu>
                     <a-menu-item key="0">
-                      <a href="javascript:void(0)" @click="addAppt">Add Appointment</a>
+                      <a href="javascript:void(0)" @click="addAppt"
+                        >Add Appointment</a
+                      >
                     </a-menu-item>
                     <a-menu-item key="1">
-                      <a href="javascript:void(0)" @click="addPatient">Add Patient</a>
+                      <a href="javascript:void(0)" @click="addPatient"
+                        >Add Patient</a
+                      >
                     </a-menu-item>
                     <!-- <a-menu-item key="3">
                       <a href="javascript:void(0)">Add Care Coordinator</a></a-menu-item
@@ -105,7 +148,9 @@
                         </div>
                       </a>
                     </li>
-                    <li class="allNotication"><a href="#">Check all notifications</a></li>
+                    <li class="allNotication">
+                      <a href="#">Check all notifications</a>
+                    </li>
                   </a-menu>
                 </template>
               </a-dropdown>
@@ -115,7 +160,10 @@
                 <a class="ant-dropdown-link" @click.prevent>
                   <div class="name">Jane Doe <strong>Admin</strong></div>
                   <div class="image">
-                    <img src="../../../assets/images/profile-1.jpg" alt="image" />
+                    <img
+                      src="../../../assets/images/profile-1.jpg"
+                      alt="image"
+                    />
                   </div>
                 </a>
                 <template #overlay>
