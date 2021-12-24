@@ -44,9 +44,15 @@
               <div class="thumbDesc">
                 <a-tabs v-model:activeKey="activeKey">
                   <a-tab-pane key="1" tab="My Appointments">
-                    <a-table :columns="columns" :data-source="data" :pagination="false">
+                    <a-table
+                      :columns="columns"
+                      :data-source="data"
+                      :pagination="false"
+                    >
                       <template #patientName="text">
-                        <router-link to="patients-summary">{{ text.text }}</router-link>
+                        <router-link to="patients-summary">{{
+                          text.text
+                        }}</router-link>
                       </template>
                       <template #appt="text">
                         <router-link to="manage-care-coordinator">{{
@@ -56,12 +62,20 @@
                     </a-table>
                   </a-tab-pane>
                   <a-tab-pane key="2" tab="My Patients" force-render>
-                    <a-table :columns="columns1" :data-source="data1" @change="onChange">
+                    <a-table
+                      :columns="columns1"
+                      :data-source="data1"
+                      @change="onChange"
+                    >
                       <template #firstName="text">
-                        <router-link to="patients-summary">{{ text.text }}</router-link>
+                        <router-link to="patients-summary">{{
+                          text.text
+                        }}</router-link>
                       </template>
                       <template #lastName="text">
-                        <router-link to="patients-summary">{{ text.text }}</router-link>
+                        <router-link to="patients-summary">{{
+                          text.text
+                        }}</router-link>
                       </template>
                       <template #flags="{ text }">
                         <span class="box" :class="text"></span>
@@ -80,8 +94,12 @@
                       </template>
                     </a-table>
                   </a-tab-pane>
-                  <a-tab-pane key="3" tab="Permissions">Content of Tab Pane 3</a-tab-pane>
-                  <a-tab-pane key="4" tab="Documents ">Content of Tab Pane 3</a-tab-pane>
+                  <a-tab-pane key="3" tab="Permissions"
+                    >Content of Tab Pane 3</a-tab-pane
+                  >
+                  <a-tab-pane key="4" tab="Documents "
+                    >Content of Tab Pane 3</a-tab-pane
+                  >
                 </a-tabs>
               </div>
             </a-col>
@@ -107,8 +125,18 @@
                           :scroll="{ x: 900 }"
                         >
                           <template #action>
-                            <a class="icons"><EditOutlined /></a>
-                            <a class="icons"> <DeleteOutlined /></a>
+                            <a-tooltip placement="bottom">
+                              <template #title>
+                                <span>Edit</span>
+                              </template>
+                              <a class="icons"><EditOutlined /></a>
+                            </a-tooltip>
+                            <a-tooltip placement="bottom">
+                              <template #title>
+                                <span>Delete</span>
+                              </template>
+                              <a class="icons"> <DeleteOutlined /></a>
+                            </a-tooltip>
                           </template>
                         </a-table>
                       </a-col>
@@ -122,7 +150,12 @@
       </a-layout>
     </a-layout>
     <!---->
-    <a-modal v-model:visible="visible" title="Add Locations" centered @ok="handleOk">
+    <a-modal
+      v-model:visible="visible"
+      title="Add Locations"
+      centered
+      @ok="handleOk"
+    >
       <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
           <div class="form-group">
@@ -151,7 +184,11 @@
         <a-col :sm="24" :xs="24">
           <div class="form-group">
             <label>Address</label>
-            <a-textarea v-model:value="value2" placeholder="Address" allow-clear />
+            <a-textarea
+              v-model:value="value2"
+              placeholder="Address"
+              allow-clear
+            />
           </div>
         </a-col>
       </a-row>
@@ -165,7 +202,11 @@ import Header from "@/components/administration/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import { useRouter } from "vue-router";
 import { defineComponent, ref } from "vue";
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons-vue";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
+} from "@ant-design/icons-vue";
 const columns = [
   {
     title: "Patient Name",
