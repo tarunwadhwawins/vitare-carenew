@@ -15,7 +15,7 @@
               </a-col>
             </a-row>
             <a-row :gutter="24">
-              <a-col :sm="17" :xs="24">
+              <a-col :sm="16" :xs="24">
                 <div class="videoCall">
                   <img class="largeImg" src="../../assets/images/patient.png" />
                   <!-- <div class="participant">
@@ -66,7 +66,7 @@
                   </div>
                 </div> -->
               </a-col>
-              <a-col :sm="7" :xs="24">
+              <a-col :sm="8" :xs="24">
                 <div class="callRightWrapper">
                   <div class="header">
                     <img src="../../assets/images/user-2.jpg" />
