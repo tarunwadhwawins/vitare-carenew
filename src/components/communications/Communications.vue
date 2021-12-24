@@ -21,8 +21,12 @@
               <h2 class="pageTittle">
                 Communications
                 <div class="addtaskButton">
-                  <router-link to="video-call"><a-button class="btn blueBtn">Start Call</a-button></router-link>
-                  
+                  <router-link to="video-call"
+                    ><a-button class="btn blueBtn"
+                      >Start Call</a-button
+                    ></router-link
+                  >
+
                   <a-button class="btn primaryBtn" @click="showModal"
                     >Send Message</a-button
                   >
@@ -90,7 +94,7 @@
                   <a-button @click="openNotification2">Reminder</a-button>
                   <a-button @click="openNotification3">Call</a-button> -->
                 </div>
-                <div class="filter" >
+                <div class="filter">
                   <button
                     class="btn"
                     :class="toggle ? 'active' : ''"
@@ -158,7 +162,6 @@
                         :options="callqueoption"
                         :series="callqueseries"
                         @click="clickHandler2"
-                        
                       ></apexchart>
                     </a-card>
                   </a-col>
@@ -241,6 +244,11 @@
                       :scroll="{ x: 900 }"
                       @change="onChange"
                     >
+                      <template #expandedRowRender="{ record }">
+                        <p style="margin: 0">
+                          {{ record.description }}
+                        </p>
+                      </template>
                       <template #resend>
                         <a-tooltip placement="bottom">
                           <template #title>
@@ -437,6 +445,8 @@ const data = [
     appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
     staff: ["Steve Smith", "Jane Doe"],
+     description:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
   },
   {
     key: "2",
@@ -449,6 +459,8 @@ const data = [
     appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
     staff: ["Robert Henry"],
+     description:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
   },
   {
     key: "3",
@@ -461,6 +473,8 @@ const data = [
     appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
     staff: ["Jane Doe"],
+     description:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book..",
   },
   {
     key: "4",
@@ -473,6 +487,8 @@ const data = [
     appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
     staff: ["Jane Doe"],
+     description:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book..",
   },
 ];
 export default {
@@ -954,9 +970,8 @@ export default {
   },
 
   setup() {
-   
     const router = useRouter();
-    const test = inject('listView')
+    const test = inject("listView");
     function clickHandler(event, chartContext, config) {
       router.push({ path: "corrdinator-summary" });
     }
@@ -965,8 +980,6 @@ export default {
       // router.push({ path: "time-tracking-report" });
     }
 
-    
-    
     const columns5 = [
       {
         title: "Patient Name",
@@ -997,18 +1010,21 @@ export default {
         patient: "Steve Smith",
         appt: "Wellness",
         time: "01:30 PM",
+       
       },
       {
         key: "2",
         patient: "Jane Doe",
         appt: "Clinical",
         time: "11:30 AM",
+      
       },
       {
         key: "3",
         patient: "Joseph Spouse",
         appt: "Wellness",
         time: "02:30 PM",
+      
       },
     ];
     const columns6 = [
@@ -1202,7 +1218,7 @@ export default {
       CommunicationsModal.value = false;
     };
 
-     const handleChange = (value) => {
+    const handleChange = (value) => {
       console.log(`selected ${value}`);
     };
 
@@ -1260,7 +1276,7 @@ export default {
       openNotification3,
       clickHandler,
       clickHandler2,
-      
+
       onChange: (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
       },
