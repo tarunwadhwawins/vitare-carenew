@@ -13,15 +13,11 @@
               <a-col :span="24">
                 <h2 class="pageTittle">Video Call</h2>
               </a-col>
-           
             </a-row>
             <a-row :gutter="24">
               <a-col :sm="17" :xs="24">
                 <div class="videoCall">
-                  <img
-                    class="largeImg"
-                    src="../../assets/images/patient.png"
-                  />
+                  <img class="largeImg" src="../../assets/images/patient.png" />
                   <!-- <div class="participant">
                     <div class="participantBox">
                       <img src="../../assets/images/video-call-thumb-1.png" />
@@ -139,7 +135,11 @@
                         </div>
                       </a-col>
                     </a-row>
-                     <a-button class="endCall" :size="size" block>End Call</a-button>
+                  </div>
+                  <div class="footer">
+                    <a-button class="endCall" :size="size" block
+                      >End Call</a-button
+                    >
                   </div>
                 </div>
               </a-col>
@@ -164,7 +164,7 @@ export default {
 
   setup() {
     return {
-       size: ref('large'),
+      size: ref("large"),
     };
   },
 };
