@@ -164,47 +164,9 @@ export default {
       visible.value = false;
     };
     const checked = ref([false]);
-<<<<<<< Updated upstream
-
-    const current = ref(0);
-
-    const next = () => {
-      current.value++;
-    };
-
-    const prev = () => {
-      current.value--;
-    };
-
-    const selectedItemsForTag = ref(["Tag1"]);
-    const filteredOptionsForTag = computed(() =>
-      OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
-    );
-
-    const handleChange2 = (value) => {
-      console.log(`selected ${value}`);
-    };
-
-    const searchoptions = ref([
-      {
-        value: "Provider 1",
-        label: "Provider 1",
-      },
-      {
-        value: "Provider 2",
-        label: "Provider 2",
-      },
-      {
-        value: "Provider 3",
-        label: "Provider 3",
-      },
-    ]);
-
-=======
->>>>>>> Stashed changes
     return {
-      handleChange2,
-      searchoptions,
+      // handleChange2,
+      // searchoptions,
       size: ref([]),
       visible,
       showModal,
