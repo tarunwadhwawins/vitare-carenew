@@ -45,19 +45,18 @@
                   @change="onChange"
                 >
                   <template #actions>
-                 
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>Edit</span>
-                    </template>
-                    <a class="icons"><EditOutlined /></a>
-                  </a-tooltip>
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>Delete</span>
-                    </template>
-                    <a class="icons"> <DeleteOutlined /></a>
-                  </a-tooltip>
+                    <a-tooltip placement="bottom">
+                      <template #title>
+                        <span>Edit</span>
+                      </template>
+                      <a class="icons"><EditOutlined /></a>
+                    </a-tooltip>
+                    <a-tooltip placement="bottom">
+                      <template #title>
+                        <span>Delete</span>
+                      </template>
+                      <a class="icons"> <DeleteOutlined /></a>
+                    </a-tooltip>
                   </template>
                   <template #active="key">
                     <a-switch v-model:checked="checked[key.record.key]" />
@@ -70,23 +69,7 @@
       </a-layout>
     </a-layout>
     <!--modals-->
-    <a-modal v-model:visible="visible" title="Add New Template" @ok="handleOk">
-      <a-row :gutter="24">
-        <a-col :sm="24" :xs="24">
-          <div class="form-group">
-            <label>Template Name</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Status</label>
-            <a-switch v-model:checked="checked" />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <AdminTemplates v-model:visible="visible" @ok="handleOk" />
     <!---->
   </div>
 </template>
@@ -94,6 +77,7 @@
 <script>
 import Header from "@/components/administration/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
+import AdminTemplates from "@/components/modals/AdminTemplates";
 import { defineComponent, ref } from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 const columns = [
@@ -146,6 +130,7 @@ export default {
     Sidebar,
     DeleteOutlined,
     EditOutlined,
+    AdminTemplates,
   },
 
   setup() {
