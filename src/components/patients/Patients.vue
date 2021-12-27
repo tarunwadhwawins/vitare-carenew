@@ -31,42 +31,42 @@
           <a-row>
             <a-col :span="24">
               <a-row :gutter="24">
-                <a-col :xl="4" :sm="4" :xs="24">
+                <a-col :xl="4" :sm="8" :xs="24">
                   <div class="colorBox red">
                     <UserOutlined />
                     <h3>5</h3>
                     <p>Critical</p>
                   </div>
                 </a-col>
-                <a-col :xl="4" :sm="4" :xs="24">
+                <a-col :xl="4" :sm="8" :xs="24">
                   <div class="colorBox orangeBg">
                     <UserOutlined />
                     <h3>10</h3>
                     <p>Trending</p>
                   </div>
                 </a-col>
-                <a-col :xl="4" :sm="4" :xs="24">
+                <a-col :xl="4" :sm="8" :xs="24">
                   <div class="colorBox greenBg">
                     <UserOutlined />
                     <h3>15</h3>
                     <p>WNL</p>
                   </div>
                 </a-col>
-                <a-col :xl="4" :sm="4" :xs="24">
+                <a-col :xl="4" :sm="8" :xs="24">
                   <div class="colorBox yellowBg">
                     <UserOutlined />
                     <h3>8</h3>
                     <p>Watch List</p>
                   </div>
                 </a-col>
-                <a-col :xl="4" :sm="4" :xs="24">
+                <a-col :xl="4" :sm="8" :xs="24">
                   <div class="colorBox blue">
                     <UserOutlined />
                     <h3>6</h3>
                     <p>Messages</p>
                   </div>
                 </a-col>
-                <a-col :xl="4" :sm="4" :xs="24">
+                <a-col :xl="4" :sm="8" :xs="24">
                   <div class="colorBox whiteBg">
                     <UserOutlined />
                     <h3>12</h3>
