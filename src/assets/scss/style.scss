@@ -864,6 +864,20 @@
 }
 
 // Video Call
+
+.videoCallHeading {
+    display: flex;
+    align-items: center;
+    margin: 0 0 20px;
+    h2 {
+        margin: 0;
+        font-size: 18px;
+    }
+    span {
+        font-size: 18px;
+        margin: 0 0 0 5px;
+    }
+}
 .videoCall {
     position: relative;
     border-radius: 15px;

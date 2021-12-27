@@ -11,13 +11,14 @@
           <div class="common-bg">
             <a-row>
               <a-col :span="24">
-                <h2 class="pageTittle">Video Call</h2>
+                <div class="videoCallHeading">
+                <h2 class="pageTittle">Video Call </h2> <span>- Steve Smith (64 - Male)</span><img width="30" src="../../assets/images/flag-orange.svg"></div>
               </a-col>
             </a-row>
             <a-row :gutter="24">
               <a-col :sm="16" :xs="24">
                 <div class="videoCall">
-                  <img class="largeImg" src="../../assets/images/patient.png" />
+                  <img  class="largeImg" src="../../assets/images/patient.png" />
                   <!-- <div class="participant">
                     <div class="participantBox">
                       <img src="../../assets/images/video-call-thumb-1.png" />

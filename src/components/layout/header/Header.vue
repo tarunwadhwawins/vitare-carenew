@@ -106,7 +106,7 @@
                     >
                     <a-menu-item key="4">
                       <a href="javascript:void(0)" @click="addStart"
-                        >Add Start Call</a
+                        >Start Call</a
                       ></a-menu-item
                     >
                   </a-menu>
