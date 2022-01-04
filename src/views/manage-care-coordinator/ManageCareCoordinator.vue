@@ -5,11 +5,11 @@
     </a-layout-header>
     <a-layout>
         <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
-            <Sidebar />
-        </a-layout-sider>
+            <Sidebar /> 
+        </a-layout-sider> 
         <a-layout-content>
             <a-row>
-                <MainHeader :visibility="modalVisibility" @is-visible="changeVisibility($event)" heading="Manage Care Coordinator" buttonText="Add New Coordinator" modalScreen="coordinator"></MainHeader>
+            <MainHeader :visibility="modalVisibility" @is-visible="changeVisibility($event)" heading="Manage Care Coordinator" buttonText="Add New Coordinator" modalScreen="coordinator"></MainHeader>
             </a-row>
             <CareCoordinator @is-visible="changeVisibility($event)" />
         </a-layout-content>
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { ref, watch } from "vue";
+import { ref, watch,inject } from "vue";
 import CareCoordinator from "@/components/care-coordinator/CareCoordinator";
 import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/layout/sidebar/Sidebar";
@@ -28,12 +28,13 @@ export default {
     components: {
         CareCoordinator,
         Header,
-        Sidebar,
+        Sidebar, 
         MainHeader
 
     },
     setup() {
         const modalVisibility = ref(false)
+        const addButton = inject('addButton')
         const changeVisibility = (status) => {
             modalVisibility.value = status
             // alert('Modal Visibility Status : '+ modalVisibility.value)

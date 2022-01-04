@@ -3,7 +3,7 @@ module.exports = {
   //Setting here public path for deployment
   publicPath: process.env.NODE_ENV === 'production'? '': '/',
   devServer: {
-    port: 8081,
+    port: 8081
   },
   configureWebpack: {
     plugins: [
@@ -17,4 +17,5 @@ module.exports = {
       config.optimization.delete('splitChunks')
     },
   filenameHashing: false,
+  runtimeCompiler:true
 }

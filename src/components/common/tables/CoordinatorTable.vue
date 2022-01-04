@@ -1,10 +1,10 @@
 <template>
   <a-row>
     <a-col :span="24">
-      <a-table v-if="coordinatorsList" :columns="columns" :data-source="coordinatorsList" :scroll="{ x: 900 }">
+      <a-table v-if="coordinatorsList && screenPermission==1" :columns="columns" :data-source="coordinatorsList" :scroll="{ x: 900 }">
         <template #action="{ record }">
-          <a class="icons" @click ="onClickEditButton(record.id)"><EditOutlined /></a>
-          <a class="icons" @click ="onClickDeleteButton(record.id)"> <DeleteOutlined /></a>
+          <a class="icons" v-if="pageAction[1].Access==1" @click ="onClickEditButton(record.id)"><EditOutlined /></a>
+          <a class="icons" v-if="pageAction[2].Access==1" @click ="onClickDeleteButton(record.id)"> <DeleteOutlined /></a>
         </template>
       </a-table> 
     </a-col>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { watchEffect, computed } from 'vue';
+import { watchEffect, computed,ref } from 'vue';
 import Loading from 'vue-loading-overlay';
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex"
@@ -94,8 +94,22 @@ export default {
     return {
     }
   },
+  props:{
+    pageAction:Number,
+    screenPermission:Number
+  },
   setup(props, { emit }) {
     const store = useStore()
+    // const screenPermission =ref()
+    // const pageAction = ref()
+    // console.log('props',JSON.parse(props.permissions))
+    // JSON.parse(props.permissions).forEach(element => {
+    //   if(element['ScreenName']=='Customers-details'){
+    //     screenPermission.value=element.Access
+    //     return pageAction.value=JSON.parse(element.Actions)
+    //   }
+    // });
+    // console.log('list',pageAction.value)
     watchEffect( () => {
       store.dispatch("getCareCoordinatorsList")
     })
@@ -133,6 +147,8 @@ export default {
       onClickDeleteButton,
       coordinatorsList,
       columns,
+      // pageAction,
+      // screenPermission
     };
   },
   components: {
@@ -140,6 +156,8 @@ export default {
     DeleteOutlined,
     EditOutlined,
     // EyeOutlined,
+   
+
   },
 }
 </script>

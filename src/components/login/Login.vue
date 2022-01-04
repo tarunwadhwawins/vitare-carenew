@@ -18,6 +18,7 @@
       />
       <a-form-item ref="password" name="password" />
     </div>
+     <a-checkbox v-model:checked="logininfomation.checked">Employee login</a-checkbox>
     <div class="buttons">
       <a-button class="btn primaryBtn" @click="handleLogin()">{{
         $t("login.login")
@@ -36,7 +37,7 @@
   />
 </template>
 <script>
-import { defineComponent, ref, reactive, watchEffect, computed } from "vue";
+import { defineComponent, ref, reactive, watchEffect, computed, onMounted } from "vue";
 import Loading from "vue-loading-overlay";
 import { useStore } from "vuex";
 import ErrorMessages from "@/components/common/errorhandling/ErrorMessages";
@@ -50,7 +51,7 @@ export default defineComponent({
 
   setup() {
     const store = useStore();
-    const isLoading = ref(false);
+    // const isLoading = ref(false);
     const formRef = ref();
     const rules = {
       email: [
@@ -72,10 +73,11 @@ export default defineComponent({
       email: null,
       password: null,
       role: "Admin",
+      checked:false
     });
     const errorMsg = watchEffect(() => {
       if (store.state.auth.errorMsg) {
-        isLoading.value = false;
+        store.state.isLoading = false;
       }
     });
 
@@ -83,7 +85,7 @@ export default defineComponent({
       formRef.value
         .validate()
         .then(() => {
-          isLoading.value = true;
+          store.state.isLoading = true;
           store.dispatch("login", logininfomation);
           //isLoading.value = false;
         })
@@ -92,10 +94,17 @@ export default defineComponent({
         });
     };
 
+    // onMounted(()=>{
+    //   let temp = JSON.parse(localStorage.getItem("user"))
+    //   if(temp){
+    //   store.commit('permissions',temp.roleAndPermission)
+    //   }
+    // })
+
     return {
       formRef,
       rules,
-      isLoading,
+      // isLoading,
       errorMsg,
       logininfomation,
       handleLogin,

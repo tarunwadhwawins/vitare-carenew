@@ -80,7 +80,7 @@
 
     setup() {
       const store = useStore()
-
+   
 
       watchEffect(() => {
         store.dispatch("todayappointment")

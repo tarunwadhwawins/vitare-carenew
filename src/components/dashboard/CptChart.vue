@@ -1,16 +1,26 @@
 <template>
   <a-col :sm="12" :xs="24">
-    <a-card title="CPT Code Billing Summary" class="common-card">
-      <apexchart type="bar" height="350" :options="code" :series="value"></apexchart>
+    <a-card title="CPT Code Billing Summary" class="common-card">HI
+      <apexchart type="bar" height="350" :options="code" :series="value"  @click="clickHandler"></apexchart>
     </a-card>
   </a-col>
 </template>
 
 <script>
+import { useRouter } from "vue-router";
   export default {
 
     setup() {
+      function clickHandler(event, chartContext, config){
+        console.log("click")
+        console.log(event)
+        console.log(chartContext)
+        console.log(config)
+        router.push({path: "/manage-care-coordinator"});
+    }
+       const router = useRouter();
       return {
+        clickHandler,
         code: {
           annotations: {
             points: [
@@ -31,6 +41,7 @@
           chart: {
             height: 350,
             type: "bar",
+           
           },
           plotOptions: {
             bar: {

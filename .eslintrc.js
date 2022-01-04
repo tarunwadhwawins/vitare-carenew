@@ -7,9 +7,10 @@ module.exports = {
     'plugin:vue/vue3-essential',
     'eslint:recommended'
   ],
-  // parserOptions: {
-  //   parser: 'babel-eslint'
-  // },
+  parserOptions: {
+    parser: 'babel-eslint',
+    ecmaVersion: 7,
+  },
   rules: {
     'no-unused-vars': 'warn',
     'comma-dangle': 'off',

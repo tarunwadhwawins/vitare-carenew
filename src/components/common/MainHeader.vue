@@ -4,7 +4,7 @@
     <h2 class="pageTittle">
       {{ heading }}
       <div class="commonBtn">
-        <a-button class="btn primaryBtn" @click.prevent="showModal">{{
+        <a-button class="btn primaryBtn" :disabled="pageAction[0].Access==1"  @click.prevent="showModal">{{
           buttonText
           }}</a-button>
       </div>
@@ -30,6 +30,7 @@
 import { ref, watch } from "vue";
 import AddCommunicationModal from "@/components/common/modals/AddCommunicationModal";
 import CareCoordinatorModal from "@/components/common/modals/CareCoordinatorModal";
+import { useStore } from "vuex"
 export default {
   props: {
     visibility: {
@@ -45,6 +46,8 @@ export default {
     modalScreen: {
       type: String,
     },
+
+    addButton:Number
   },
   components: {
     AddCommunicationModal,
@@ -53,11 +56,27 @@ export default {
 
   setup(props, {emit}) {
     const visible = ref(false);
+    const store = useStore();
+    const permissions=ref();
+    const screenPermission =ref()
+    const pageAction = ref()
     const showModal = () => {
       localStorage.removeItem('is_update_coordinator');
       localStorage.removeItem('personalData');
       visible.value = true;
     };
+
+     store.state.auth.permissions.forEach(async(element) => {
+      if(element['ModuleName']=='customers-details'){
+        permissions.value=element.Permissions
+        JSON.parse(permissions.value).forEach(async(element) => {
+      if(element['ScreenName']=='Customers-details'){
+        screenPermission.value=element.Access
+        pageAction.value=JSON.parse(element.Actions)
+      }
+    });
+      }
+    });
 
     const handleCancel = () => {
       visible.value = false;
@@ -88,6 +107,9 @@ export default {
       options: [...Array(3)].map((i) => ({
         value: (i + 10).toString(36) + (i + 1),
       })),
+      pageAction,
+      screenPermission,
+      permissions
     };
   },
 };

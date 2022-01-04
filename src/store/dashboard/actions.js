@@ -1,5 +1,5 @@
 import DashboardService from '../../services/dashboard.service';
-import AuthService from '../../services/auth.service';
+// import AuthService from '../../services/auth.service';
 
 export const totalPatients = async ({ commit }) => {
      await DashboardService.totalPatient().then((response) => {
@@ -8,7 +8,7 @@ export const totalPatients = async ({ commit }) => {
         .catch((error) => {
             
             if (error.response.status == 401) {
-                AuthService.logout();
+               //AuthService.logout();
             }
             commit('failure', error.response.data);
         })
@@ -19,7 +19,7 @@ export const newPatients = async ({ commit }) => {
         commit('newPatientsSuccess', response.data.data);
     }).catch((error) => {
         if (error.response.status == 401) {
-            AuthService.logout();
+           //AuthService.logout();
         }
         commit('failure', error.response.data);
     })
@@ -30,7 +30,7 @@ export const abnormalPatients = async ({ commit }) => {
         commit('abnormalPatientsSuccess', response.data.data);
     }).catch((error) => {
         if (error.response.status == 401) {
-            AuthService.logout();
+           //AuthService.logout();
         }
         commit('failure', error.response.data);
     })
@@ -41,7 +41,7 @@ export const activePatients = async ({ commit }) => {
         commit('activePatientsSuccess', response.data.data);
     }).catch((error) => {
         if (error.response.status == 401) {
-            AuthService.logout();
+           //AuthService.logout();
         }
         commit('failure', error.response.data);
     })
@@ -52,7 +52,7 @@ export const inactivePatients = async ({ commit }) => {
         commit('inactivePatientsSuccess', response.data.data);
     }).catch((error) => {
         if (error.response.status == 401) {
-            AuthService.logout();
+           //AuthService.logout();
         }
         commit('failure', error.response.data);
     })
@@ -63,7 +63,7 @@ export const criticalPatients = async ({ commit }) => {
         commit('criticalPatientsSuccess', response.data.data);
     }).catch((error) => {
         if (error.response.status == 401) {
-            AuthService.logout();
+           //AuthService.logout();
         }
         commit('failure', error.response.data);
     })
@@ -79,7 +79,7 @@ export const appointment = async ({ commit }, id) => {
 
     }) .catch((error) => {
         if (error.response.status == 401) {
-            AuthService.logout();
+           //AuthService.logout();
         }
         commit('failure', error.response.data);
     })
@@ -89,7 +89,7 @@ export const todayappointment = async ({ commit }) => {
         commit('todayappointmentSuccess', response.data.data);
     }).catch((error) => {
         if (error.response.status == 401) {
-            AuthService.logout();
+           //AuthService.logout();
         }
         commit('failure', error.response.data);
     })
@@ -99,7 +99,7 @@ export const appointmentcount = async ({ commit }) => {
         commit('appointmentcountSuccess', response.data);
     }).catch((error) => {
         if (error.response.status == 401) {
-            AuthService.logout();
+           //AuthService.logout();
         }
         commit('failure', error.response.data);
     })
@@ -114,7 +114,7 @@ export const specialization = async ({ commit }, id) => {
         }
     }).catch((error) => {
         if (error.response.status == 401) {
-            AuthService.logout();
+           //AuthService.logout();
         }
         commit('failure', error.response.data);
     })
@@ -129,7 +129,7 @@ export const network = async ({ commit }, id) => {
         }
     }) .catch((error) => {
         if (error.response.status == 401) {
-            AuthService.logout();
+           //AuthService.logout();
         }
         commit('failure', error.response.data);
     })

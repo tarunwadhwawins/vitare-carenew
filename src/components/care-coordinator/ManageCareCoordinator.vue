@@ -17,12 +17,12 @@
               <h2 class="pageTittle">
                 Manange Care Coordinator
                 <div class="commonBtn">
-                  <a-button class="btn primaryBtn" @click="showModal"
-                    >Add New Coordinator</a-button
+                  <a-button class="btn primaryBtn"  @click="showModal"
+                    >Add New Coordinator </a-button
                   >
                 </div>
               </h2>
-            </a-col>
+            </a-col> 
           </a-row>
           <a-row class="mb-24" :gutter="24">
             <a-col :sm="12" :xs="24">
@@ -410,10 +410,10 @@
             >
             <a-button v-if="current < steps.length - 1" type="primary" @click="next"
               >Next</a-button
-            >
+            >  
             <a-button
               v-if="current == steps.length - 1"
-              type="primary"
+              type="primary" 
               @click="$message.success('Processing complete!')"
             >
               Done
@@ -429,7 +429,7 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed,inject } from "vue";
 import {
   UserOutlined,
   DeleteOutlined,
@@ -659,6 +659,7 @@ const data3 = [
   },
 ];
 export default {
+  name: 'ManageCareCoordinator',
   components: {
     Header,
     Sidebar,
@@ -674,7 +675,6 @@ export default {
     const showModal = () => {
       visible.value = true;
     };
-
     const selectedItems = ref(["Manager"]);
     const filteredOptions = computed(() =>
       OPTIONS.filter((o) => !selectedItems.value.includes(o))
@@ -702,6 +702,7 @@ export default {
     };
 
     return {
+     
       visible,
       showModal,
       handleOk,

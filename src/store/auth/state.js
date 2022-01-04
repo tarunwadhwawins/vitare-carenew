@@ -3,4 +3,6 @@ export default{
     loggedIn:null,
     token:null,
     errorMsg:null,
+    isLoading:false,
+    permissions:null
 }
