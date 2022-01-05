@@ -50,11 +50,7 @@
                 <template #overlay>
                   <a-menu>
                     <a-menu-item key="0">
-<<<<<<< Updated upstream
-                      <a href="javascript:void(0)" @click="addAppt">Add Appointment</a>
-=======
                       <a href="javascript:void(0)" @click="showModal">Add Appointment</a>
->>>>>>> Stashed changes
                     </a-menu-item>
                     <a-menu-item key="1">
                       <a href="javascript:void(0)" @click="addPatient">Add Patient</a>

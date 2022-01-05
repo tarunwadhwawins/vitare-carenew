@@ -4,12 +4,6 @@ body.test {
             .ant-layout-has-sider {
                 .ant-layout-sider {
                     left: -200px !important;
-<<<<<<< Updated upstream
-                    @media screen and (max-width: 991px) {
-                        left:0px !important;
-                    }
-=======
->>>>>>> Stashed changes
                 }
             }
         }
@@ -24,15 +18,9 @@ body.test {
         .ant-layout-sider {
             background: #fff;
             z-index: 99;
-<<<<<<< Updated upstream
-            @media screen and (max-width: 991px) {
-                left: -200px !important;
-            }
-=======
             // @media screen and (max-width: 991px) {
             //     left: -200px !important;
             // }
->>>>>>> Stashed changes
             .ant-layout-sider-children {
                 .menuList {
                     .ant-menu {
