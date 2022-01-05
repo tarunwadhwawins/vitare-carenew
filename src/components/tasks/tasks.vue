@@ -7,7 +7,12 @@
       </a-layout-header>
       <a-layout>
         <a-layout-sider
-          :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"
+          :style="{
+            overflow: 'auto',
+            height: '100vh',
+            position: 'fixed',
+            left: 0,
+          }"
         >
           <Sidebar />
         </a-layout-sider>
@@ -17,718 +22,384 @@
               <a-col :span="24">
                 <h2 class="pageTittle">
                   Tasks
-                  <div class="commonBtn">
+                  <div class="addtaskButton">
                     <a-button class="btn primaryBtn" @click="showModal"
-                      >Add Task</a-button
+                      >Add New Task</a-button
                     >
+                  </div>
+                  <div class="filter">
+                    <button
+                      class="btn"
+                      :class="toggle ? 'active' : ''"
+                      @click="toggle = !toggle"
+                    >
+                      <span class="btn-content">Dashboard View</span>
+                    </button>
+                    <button
+                      class="btn"
+                      :class="toggle ? '' : 'active'"
+                      @click="toggle = !toggle"
+                    >
+                      <span class="btn-content">List View</span>
+                    </button>
                   </div>
                 </h2>
               </a-col>
             </a-row>
-            <a-row class="mb-24" :gutter="24">
-              <a-col :lg="8" :md="12" :sm="24" :xs="24">
-                <div class="task-box">
-                  <div class="task-header">
-                    <h2>Waiting</h2>
-                    <div class="actions">
-                      <a-dropdown @click="toggle = !toggle">
-                        <a class="ant-dropdown-link"> <PlusOutlined /></a>
-                      </a-dropdown>
+            <div class="dashboard-view" v-show="toggle">
+              <a-row class="mb-24" :gutter="24">
+                <a-col :xl="6" :sm="8" :xs="12">
+                  <div class="blockLists five">
+                    <h4>Completed Tasks</h4>
+                    <div class="filter">
                       <a-dropdown :trigger="['click']">
                         <a class="ant-dropdown-link" @click.prevent>
-                          <EllipsisOutlined
-                        /></a>
+                          <FilterOutlined /> Filter
+                        </a>
                         <template #overlay>
                           <a-menu>
                             <a-menu-item key="0">
-                              <a href="#">Add rule to section</a>
+                              <a href="http://www.alipay.com/">Urgent</a>
                             </a-menu-item>
                             <a-menu-item key="1">
-                              <a href="#">Rename Section</a>
-                            </a-menu-item>
-                            <a-menu-item key="2">
-                              <a href="#">Add Section</a>
-                            </a-menu-item>
-                            <a-menu-item key="3">
-                              <a href="#">Delete Section</a>
+                              <a href="http://www.taobao.com/">2nd menu item</a>
                             </a-menu-item>
                           </a-menu>
                         </template>
                       </a-dropdown>
                     </div>
+                    <h5>100</h5>
+                    <p>Task Count</p>
                   </div>
-                  <div class="task-body">
-                    <div class="task-card" :class="toggle ? '' : 'hide'">
-                      <a-input
-                        v-model="value"
-                        size="large"
-                        placeholder="Write a task name"
-                      />
-                      <div class="drop-links">
-                        <a-dropdown :trigger="['click']">
-                          <a class="ant-dropdown-link" @click.prevent>
-                            <UserOutlined />
-                          </a>
-                          <template #overlay>
-                            <a-row :gutter="24">
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Assigned To</label>
-                                  <a-input v-model="value" size="medium" />
-                                </div>
-                              </a-col>
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Category</label>
-                                  <a-input v-model="value" size="medium" />
-                                </div>
-                              </a-col>
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Priority</label>
-                                  <a-select
-                                    ref="select"
-                                    v-model="value1"
-                                    style="width: 100%"
-                                    size="medium"
-                                    @focus="focus"
-                                    @change="handleChange"
-                                  >
-                                    <a-select-option value="lucy">Urgent</a-select-option>
-                                    <a-select-option value="Yiminghe"
-                                      >Medium</a-select-option
-                                    >
-                                    <a-select-option value="Yiminghe"
-                                      >Normal</a-select-option
-                                    >
-                                  </a-select>
-                                </div>
-                              </a-col>
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Short Description</label>
-                                  <a-input v-model="value" size="medium" />
-                                </div>
-                              </a-col>
-                            </a-row>
-                          </template>
-                        </a-dropdown>
-                        <a-dropdown :trigger="['click']">
-                          <a class="ant-dropdown-link" @click.prevent>
-                            <CalendarOutlined
-                          /></a>
-                          <template #overlay>
-                            <a-row :gutter="24">
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Start Date</label>
-                                  <a-input v-model="value" size="medium" />
-                                </div>
-                              </a-col>
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Due Date</label>
-                                  <a-input v-model="value" size="medium" />
-                                </div> </a-col
-                            ></a-row>
-                          </template>
-                        </a-dropdown>
-                      </div>
-                    </div>
-                    <div class="task-card">
-                      <div class="menu">
-                        <a-dropdown :trigger="['click']">
-                          <a class="ant-dropdown-link" @click.prevent>
-                            <EllipsisOutlined
-                          /></a>
-                          <template #overlay>
-                            <a-menu>
-                              <a-menu-item key="0">
-                                <a href="#">Edit Task Name</a>
-                              </a-menu-item>
-                              <a-menu-item key="1">
-                                <a href="#">View Detail</a>
-                              </a-menu-item>
-                              <a-menu-item key="2">
-                                <a href="#">Delete Task</a>
-                              </a-menu-item>
-                            </a-menu>
-                          </template>
-                        </a-dropdown>
-                      </div>
-                      <h3>Medical Record for P. Pan</h3>
-                      <p>Request medical records from his PCP</p>
-                      <div class="time-tasks">
-                        <div class="time">
-                          <p>2 day ago</p>
-                          <div class="category bg-primary">Onboard</div>
-                        </div>
-                        <div class="staff">
-                          <ul>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="task-card">
-                      <div class="menu">
-                        <a-dropdown :trigger="['click']">
-                          <a class="ant-dropdown-link" @click.prevent>
-                            <EllipsisOutlined
-                          /></a>
-                          <template #overlay>
-                            <a-menu>
-                              <a-menu-item key="0">
-                                <a href="#">Edit Task Name</a>
-                              </a-menu-item>
-                              <a-menu-item key="1">
-                                <a href="#">View Detail</a>
-                              </a-menu-item>
-                              <a-menu-item key="2">
-                                <a href="#">Delete Task</a>
-                              </a-menu-item>
-                            </a-menu>
-                          </template>
-                        </a-dropdown>
-                      </div>
-                      <h3>Medical Record for P. Pan</h3>
-                      <p>Request medical records from his PCP</p>
-                      <div class="time-tasks">
-                        <div class="time">
-                          <p>2 day ago</p>
-                          <div class="category bg-primary">Onboard</div>
-                        </div>
-                        <div class="staff">
-                          <ul>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="add-task">
-                    <a href="javascript:void(0)"><PlusOutlined />Add Task</a>
-                  </div>
-                </div>
-              </a-col>
-              <a-col :lg="8" :md="12" :sm="24" :xs="24">
-                <div class="task-box">
-                  <div class="task-header">
-                    <h2>In Progress</h2>
-                    <div class="actions">
-                      <a-dropdown @click="toggle1 = !toggle1">
-                        <a class="ant-dropdown-link"> <PlusOutlined /></a>
-                      </a-dropdown>
+                </a-col>
+                <a-col :xl="6" :sm="8" :xs="12">
+                  <div class="blockLists three">
+                    <h4>InComplete Tasks</h4>
+                    <div class="filter">
                       <a-dropdown :trigger="['click']">
                         <a class="ant-dropdown-link" @click.prevent>
-                          <EllipsisOutlined
-                        /></a>
+                          <FilterOutlined /> Filter
+                        </a>
                         <template #overlay>
                           <a-menu>
                             <a-menu-item key="0">
-                              <a href="#">Add rule to section</a>
+                              <a href="http://www.alipay.com/">1st menu item</a>
                             </a-menu-item>
                             <a-menu-item key="1">
-                              <a href="#">Rename Section</a>
-                            </a-menu-item>
-                            <a-menu-item key="2">
-                              <a href="#">Add Section</a>
-                            </a-menu-item>
-                            <a-menu-item key="3">
-                              <a href="#">Delete Section</a>
+                              <a href="http://www.taobao.com/">2nd menu item</a>
                             </a-menu-item>
                           </a-menu>
                         </template>
                       </a-dropdown>
                     </div>
+                    <h5>18</h5>
+                    <p>Task Count</p>
                   </div>
-                  <div class="task-body">
-                    <div class="task-card" :class="toggle1 ? '' : 'hide'">
-                      <a-input
-                        v-model="value"
-                        size="large"
-                        placeholder="Write a task name"
-                      />
-                      <div class="drop-links">
-                        <a-dropdown :trigger="['click']">
-                          <a class="ant-dropdown-link" @click.prevent>
-                            <UserOutlined />
-                          </a>
-                          <template #overlay>
-                            <a-row :gutter="24">
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Assigned To</label>
-                                  <a-input v-model="value" size="medium" />
-                                </div>
-                              </a-col>
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Category</label>
-                                  <a-input v-model="value" size="medium" />
-                                </div>
-                              </a-col>
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Priority</label>
-                                  <a-select
-                                    ref="select"
-                                    v-model="value1"
-                                    style="width: 100%"
-                                    size="medium"
-                                    @focus="focus"
-                                    @change="handleChange"
-                                  >
-                                    <a-select-option value="lucy">Urgent</a-select-option>
-                                    <a-select-option value="Yiminghe"
-                                      >Medium</a-select-option
-                                    >
-                                    <a-select-option value="Yiminghe"
-                                      >Normal</a-select-option
-                                    >
-                                  </a-select>
-                                </div>
-                              </a-col>
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Short Description</label>
-                                  <a-input v-model="value" size="medium" />
-                                </div>
-                              </a-col>
-                            </a-row>
-                          </template>
-                        </a-dropdown>
-                        <a-dropdown :trigger="['click']">
-                          <a class="ant-dropdown-link" @click.prevent>
-                            <CalendarOutlined
-                          /></a>
-                          <template #overlay>
-                            <a-row :gutter="24">
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Start Date</label>
-                                  <a-input v-model="value" size="medium" />
-                                </div>
-                              </a-col>
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Due Date</label>
-                                  <a-input v-model="value" size="medium" />
-                                </div> </a-col
-                            ></a-row>
-                          </template>
-                        </a-dropdown>
-                      </div>
-                    </div>
-                    <div class="task-card">
-                      <div class="menu">
-                        <a-dropdown :trigger="['click']">
-                          <a class="ant-dropdown-link" @click.prevent>
-                            <EllipsisOutlined
-                          /></a>
-                          <template #overlay>
-                            <a-menu>
-                              <a-menu-item key="0">
-                                <a href="#">Edit Task Name</a>
-                              </a-menu-item>
-                              <a-menu-item key="1">
-                                <a href="#">View Detail</a>
-                              </a-menu-item>
-                              <a-menu-item key="2">
-                                <a href="#">Delete Task</a>
-                              </a-menu-item>
-                            </a-menu>
-                          </template>
-                        </a-dropdown>
-                      </div>
-                      <h3>Medical Record for P. Pan</h3>
-                      <p>Request medical records from his PCP</p>
-                      <div class="time-tasks">
-                        <div class="time">
-                          <p>2 day ago</p>
-                          <div class="category bg-danger">Urgent</div>
-                        </div>
-                        <div class="staff">
-                          <ul>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="task-card">
-                      <div class="menu">
-                        <a-dropdown :trigger="['click']">
-                          <a class="ant-dropdown-link" @click.prevent>
-                            <EllipsisOutlined
-                          /></a>
-                          <template #overlay>
-                            <a-menu>
-                              <a-menu-item key="0">
-                                <a href="#">Edit Task Name</a>
-                              </a-menu-item>
-                              <a-menu-item key="1">
-                                <a href="#">View Detail</a>
-                              </a-menu-item>
-                              <a-menu-item key="2">
-                                <a href="#">Delete Task</a>
-                              </a-menu-item>
-                            </a-menu>
-                          </template>
-                        </a-dropdown>
-                      </div>
-                      <h3>Medical Record for P. Pan</h3>
-                      <p>Request medical records from his PCP</p>
-                      <div class="time-tasks">
-                        <div class="time">
-                          <p>2 day ago</p>
-                        </div>
-                        <div class="staff">
-                          <ul>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="add-task">
-                    <a href="javascript:void(0)"><PlusOutlined />Add Task</a>
-                  </div>
-                </div>
-              </a-col>
-              <a-col :lg="8" :md="12" :sm="24" :xs="24">
-                <div class="task-box">
-                  <div class="task-header">
-                    <h2>Completed</h2>
-                    <div class="actions">
-                      <a-dropdown @click="toggle2 = !toggle2">
-                        <a class="ant-dropdown-link"> <PlusOutlined /></a>
-                      </a-dropdown>
+                </a-col>
+                <a-col :xl="6" :sm="8" :xs="12">
+                  <div class="blockLists six">
+                    <h4>Overdue Tasks</h4>
+                    <div class="filter">
                       <a-dropdown :trigger="['click']">
                         <a class="ant-dropdown-link" @click.prevent>
-                          <EllipsisOutlined
-                        /></a>
+                          <FilterOutlined /> Filter
+                        </a>
                         <template #overlay>
                           <a-menu>
                             <a-menu-item key="0">
-                              <a href="#">Add rule to section</a>
+                              <a href="http://www.alipay.com/">1st menu item</a>
                             </a-menu-item>
                             <a-menu-item key="1">
-                              <a href="#">Rename Section</a>
-                            </a-menu-item>
-                            <a-menu-item key="2">
-                              <a href="#">Add Section</a>
-                            </a-menu-item>
-                            <a-menu-item key="3">
-                              <a href="#">Delete Section</a>
+                              <a href="http://www.taobao.com/">2nd menu item</a>
                             </a-menu-item>
                           </a-menu>
                         </template>
                       </a-dropdown>
                     </div>
+                    <h5>0</h5>
+                    <p>Task Count</p>
                   </div>
-                  <div class="task-body">
-                    <div class="task-card" :class="toggle2 ? '' : 'hide'">
-                      <a-input
-                        v-model="value"
-                        size="large"
-                        placeholder="Write a task name"
-                      />
-                      <div class="drop-links">
-                        <a-dropdown :trigger="['click']">
-                          <a class="ant-dropdown-link" @click.prevent>
-                            <UserOutlined />
-                          </a>
-                          <template #overlay>
-                            <a-row :gutter="24">
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Assigned To</label>
-                                  <a-input v-model="value" size="medium" />
-                                </div>
-                              </a-col>
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Category</label>
-                                  <a-input v-model="value" size="medium" />
-                                </div>
-                              </a-col>
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Priority</label>
-                                  <a-select
-                                    ref="select"
-                                    v-model="value1"
-                                    style="width: 100%"
-                                    size="medium"
-                                    @focus="focus"
-                                    @change="handleChange"
-                                  >
-                                    <a-select-option value="lucy">Urgent</a-select-option>
-                                    <a-select-option value="Yiminghe"
-                                      >Medium</a-select-option
-                                    >
-                                    <a-select-option value="Yiminghe"
-                                      >Normal</a-select-option
-                                    >
-                                  </a-select>
-                                </div>
-                              </a-col>
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Short Description</label>
-                                  <a-input v-model="value" size="medium" />
-                                </div>
-                              </a-col>
-                            </a-row>
-                          </template>
-                        </a-dropdown>
-                        <a-dropdown :trigger="['click']">
-                          <a class="ant-dropdown-link" @click.prevent>
-                            <CalendarOutlined
-                          /></a>
-                          <template #overlay>
-                            <a-row :gutter="24">
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Start Date</label>
-                                  <a-input v-model="value" size="medium" />
-                                </div>
-                              </a-col>
-                              <a-col :sm="24" :xs="24">
-                                <div class="form-group">
-                                  <label>Due Date</label>
-                                  <a-input v-model="value" size="medium" />
-                                </div> </a-col
-                            ></a-row>
-                          </template>
-                        </a-dropdown>
-                      </div>
-                    </div>
-                    <div class="task-card">
-                      <div class="menu">
-                        <a-dropdown :trigger="['click']">
-                          <a class="ant-dropdown-link" @click.prevent>
-                            <EllipsisOutlined
-                          /></a>
-                          <template #overlay>
-                            <a-menu>
-                              <a-menu-item key="0">
-                                <a href="#">Edit Task Name</a>
-                              </a-menu-item>
-                              <a-menu-item key="1">
-                                <a href="#">View Detail</a>
-                              </a-menu-item>
-                              <a-menu-item key="2">
-                                <a href="#">Delete Task</a>
-                              </a-menu-item>
-                            </a-menu>
-                          </template>
-                        </a-dropdown>
-                      </div>
-                      <h3>Medical Record for P. Pan</h3>
-                      <p>Request medical records from his PCP</p>
-                      <div class="time-tasks">
-                        <div class="time">
-                          <p>2 day ago</p>
-                          <div class="category bg-primary">Onboard</div>
-                        </div>
-                        <div class="staff">
-                          <ul>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="task-card">
-                      <div class="menu">
-                        <a-dropdown :trigger="['click']">
-                          <a class="ant-dropdown-link" @click.prevent>
-                            <EllipsisOutlined
-                          /></a>
-                          <template #overlay>
-                            <a-menu>
-                              <a-menu-item key="0">
-                                <a href="#">Edit Task Name</a>
-                              </a-menu-item>
-                              <a-menu-item key="1">
-                                <a href="#">View Detail</a>
-                              </a-menu-item>
-                              <a-menu-item key="2">
-                                <a href="#">Delete Task</a>
-                              </a-menu-item>
-                            </a-menu>
-                          </template>
-                        </a-dropdown>
-                      </div>
-                      <h3>Medical Record for P. Pan</h3>
-                      <p>Request medical records from his PCP</p>
-                      <div class="time-tasks">
-                        <div class="time">
-                          <p>2 day ago</p>
-                          <div class="category bg-primary">Onboard</div>
-                        </div>
-                        <div class="staff">
-                          <ul>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                            <li>
-                              <img src="../../assets/images/profile-1.jpg" alt="image" />
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
+                </a-col>
+                <a-col :xl="6" :sm="8" :xs="12">
+                  <div class="blockLists two">
+                    <h4>Total Tasks</h4>
+                    <div class="filter"></div>
+                    <h5>118</h5>
+                    <p>Task Count</p>
                   </div>
-                  <div class="add-task">
-                    <a href="javascript:void(0)"><PlusOutlined />Add Task</a>
+                </a-col>
+              </a-row>
+              <a-row :gutter="24">
+                <a-col :md="8" :sm="12" :xs="24">
+                  <a-card title="Incomplete Tasks" class="common-card">
+                    <div class="filter">
+                      <a-dropdown :trigger="['click']">
+                        <a class="ant-dropdown-link" @click.prevent>
+                          <FilterOutlined /> Filter
+                        </a>
+                        <template #overlay>
+                          <a-menu>
+                            <a-menu-item>
+                              <div class="checkbox">
+                                <a-checkbox v-model:checked="checked1"
+                                  >Urgent</a-checkbox
+                                >
+                              </div>
+                            </a-menu-item>
+                            <a-menu-item>
+                              <div class="checkbox">
+                                <a-checkbox v-model:checked="checked2"
+                                  >High</a-checkbox
+                                >
+                              </div>
+                            </a-menu-item>
+                            <a-menu-item>
+                              <div class="checkbox">
+                                <a-checkbox v-model:checked="checked3"
+                                  >Normal</a-checkbox
+                                >
+                              </div>
+                            </a-menu-item>
+                          </a-menu>
+                        </template>
+                      </a-dropdown>
+                    </div>
+                    <apexchart
+                      type="bar"
+                      height="250"
+                      :options="Incompleteoption"
+                      :series="Incompleteseries"
+                      @click="clickHandler2"
+                    ></apexchart>
+                  </a-card>
+                </a-col>
+                <a-col :md="8" :sm="12" :xs="24">
+                  <a-card title="Team Member" class="common-card">
+                    <div class="filter">
+                      <a-dropdown :trigger="['click']">
+                        <a class="ant-dropdown-link" @click.prevent>
+                          <FilterOutlined /> Filter
+                        </a>
+                        <template #overlay>
+                          <a-menu>
+                            <a-menu-item>
+                              <div class="checkbox">
+                                <a-checkbox v-model:checked="checked4"
+                                  >Badger</a-checkbox
+                                >
+                              </div>
+                            </a-menu-item>
+                            <a-menu-item>
+                              <div class="checkbox">
+                                <a-checkbox v-model:checked="checked5"
+                                  >Devin</a-checkbox
+                                >
+                              </div>
+                            </a-menu-item>
+                            <a-menu-item>
+                              <div class="checkbox">
+                                <a-checkbox v-model:checked="checked6"
+                                  >Matt</a-checkbox
+                                >
+                              </div>
+                            </a-menu-item>
+                            <a-menu-item>
+                              <div class="checkbox">
+                                <a-checkbox v-model:checked="checked7"
+                                  >John</a-checkbox
+                                >
+                              </div>
+                            </a-menu-item>
+                          </a-menu>
+                        </template>
+                      </a-dropdown>
+                    </div>
+                    <apexchart
+                      type="bar"
+                      height="250"
+                      :options="teamoption"
+                      :series="teamseries"
+                      @click="clickHandler"
+                    ></apexchart>
+                  </a-card>
+                </a-col>
+                <a-col :md="8" :sm="12" :xs="24">
+                  <a-card title="Task Completion over" class="common-card">
+                    <apexchart
+                      type="area"
+                      height="250"
+                      :options="chartOptions"
+                      :series="series"
+                      @click="clickHandler2"
+                    ></apexchart>
+                  </a-card>
+                </a-col>
+                <a-col :md="8" :sm="12" :xs="24">
+                  <a-card title="All Tasks" class="common-card">
+                    <div class="filter">
+                      <a-dropdown :trigger="['click']">
+                        <a class="ant-dropdown-link" @click.prevent>
+                          <FilterOutlined /> Filter
+                        </a>
+                        <template #overlay>
+                          <a-menu>
+                            <a-menu-item>
+                              <div class="checkbox">
+                                <a-checkbox v-model:checked="checked8"
+                                  >Completed</a-checkbox
+                                >
+                              </div>
+                            </a-menu-item>
+                            <a-menu-item>
+                              <div class="checkbox">
+                                <a-checkbox v-model:checked="checked9"
+                                  >Incomplete</a-checkbox
+                                >
+                              </div>
+                            </a-menu-item>
+                          </a-menu>
+                        </template>
+                      </a-dropdown>
+                    </div>
+                    <apexchart
+                      type="pie"
+                      height="350"
+                      :options="completed"
+                      :series="incomplete"
+                      @click="clickHandler2"
+                    ></apexchart>
+                  </a-card>
+                </a-col>
+                <a-col :md="8" :sm="12" :xs="24">
+                  <a-card title="Category View" class="common-card">
+                    <div class="filter">
+                      <a-dropdown :trigger="['click']">
+                        <a class="ant-dropdown-link" @click.prevent>
+                          <FilterOutlined /> Filter
+                        </a>
+                        <template #overlay>
+                          <a-menu>
+                            <a-menu-item>
+                              <div class="checkbox">
+                                <a-checkbox v-model:checked="checked10"
+                                  >Clinical</a-checkbox
+                                >
+                              </div>
+                            </a-menu-item>
+                            <a-menu-item>
+                              <div class="checkbox">
+                                <a-checkbox v-model:checked="checked11"
+                                  >Comm</a-checkbox
+                                >
+                              </div>
+                            </a-menu-item>
+                            <a-menu-item>
+                              <div class="checkbox">
+                                <a-checkbox v-model:checked="checked12"
+                                  >Admin</a-checkbox
+                                >
+                              </div>
+                            </a-menu-item>
+                            <a-menu-item>
+                              <div class="checkbox">
+                                <a-checkbox v-model:checked="checked13"
+                                  >Internal</a-checkbox
+                                >
+                              </div>
+                            </a-menu-item>
+                          </a-menu>
+                        </template>
+                      </a-dropdown>
+                    </div>
+                    <apexchart
+                      type="pie"
+                      height="300"
+                      :options="premium"
+                      :series="business"
+                      @click="clickHandler2"
+                    ></apexchart>
+                  </a-card>
+                </a-col>
+                <a-col :md="8" :sm="12" :xs="24">
+                  <a-card title="Completion Rate" class="common-card">
+                    <h4>85%</h4>
+                    <p>Sum of Completion Rate</p>
+                  </a-card>
+                </a-col>
+              </a-row>
+            </div>
+            <div class="list-view" v-show="!toggle">
+              <a-row :gutter="24">
+                <a-col :span="12">
+                  <a-select
+                    v-model:value="value2"
+                    :size="size"
+                    mode="tags"
+                    style="width: 100%"
+                    placeholder="Search . . ."
+                    :options="searchoptions"
+                    @change="handleChange2"
+                  >
+                  </a-select>
+                </a-col>
+                <a-col :span="12">
+                  <div class="text-right mb-24">
+                    <a-button class="primaryBtn">Export to Excel</a-button>
                   </div>
-                </div>
-              </a-col>
-            </a-row>
+                </a-col>
+                <a-col :sm="24">
+                  <a-table
+                    :columns="columns"
+                    :data-source="data"
+                    :scroll="{ x: 900 }"
+                    :pagination="false"
+                    @change="onChange"
+                  >
+                    <template #name="text">
+                      <router-link to="#" @click="showModal">{{
+                        text.text
+                      }}</router-link>
+                    </template>
+                    <template #assigned="text">
+                      <router-link to="corrdinator-summary">{{
+                        text.text
+                      }}</router-link>
+                    </template>
+                    <template #status="key">
+                      <a-switch v-model:checked="checked[key.record.key]" />
+                    </template>
+                    <template #action>
+                      <a-tooltip placement="bottom">
+                        <template #title>
+                          <span>Edit</span>
+                        </template>
+                        <a class="icons"><EditOutlined /></a>
+                      </a-tooltip>
+                      <a-tooltip placement="bottom">
+                        <template #title>
+                          <span>Delete</span>
+                        </template>
+                        <a class="icons"> <DeleteOutlined /></a>
+                      </a-tooltip>
+                      <a-tooltip placement="bottom">
+                        <template #title>
+                          <span>Create Appointment</span>
+                        </template>
+                        <router-link to="appointment-calendar" class="icons">
+                          <CalendarOutlined
+                        /></router-link>
+                      </a-tooltip>
+                    </template>
+                  </a-table>
+                </a-col>
+              </a-row>
+            </div>
           </div>
         </a-layout-content>
       </a-layout>
     </a-layout>
-    <!--modal-->
-    <a-modal
-      v-model:visible="visible"
-      width="1140px"
-      title="Add Task"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :span="12">
-          <div class="form-group">
-            <label>Title</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :span="12">
-          <div class="form-group">
-            <label> Short Description</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :span="12">
-          <div class="form-group">
-            <label>Status</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">Choose Status </a-select-option>
-              <a-select-option value="Yiminghe">Waiting</a-select-option>
-              <a-select-option value="Yiminghe">Inprogress</a-select-option>
-              <a-select-option value="Yiminghe">Completed</a-select-option>
-            </a-select>
-          </div>
-        </a-col>
-        <a-col :span="12">
-          <div class="form-group">
-            <label> Priority</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">Urgent</a-select-option>
-              <a-select-option value="Yiminghe">Medium</a-select-option>
-              <a-select-option value="Yiminghe">Normal</a-select-option>
-            </a-select>
-          </div>
-        </a-col>
-        <a-col :span="12">
-          <div class="form-group">
-            <label>Assigned To</label>
-            <a-select
-              v-model:value="selectedItems"
-              mode="multiple"
-              size="large"
-              placeholder="Please Select Roles"
-              style="width: 100%"
-              :options="filteredOptions.map((item) => ({ value: item }))"
-            />
-          </div>
-        </a-col>
-        <a-col :span="12">
-          <div class="form-group">
-            <label>Category</label>
-            <a-select
-              v-model:value="selectedItemsForTag"
-              mode="multiple"
-              size="large"
-              placeholder="Please Select Roles"
-              style="width: 100%"
-              :options="filteredOptionsForTag.map((item) => ({ value: item }))"
-            />
-          </div>
-        </a-col>
-        <a-col :span="12">
-          <div class="form-group">
-            <label>Start Date</label>
-            <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
-          </div>
-        </a-col>
-        <a-col :span="12">
-          <div class="form-group">
-            <label>Due Date</label>
-            <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <!---->
+    <TasksModal v-model:visible="TasksModal" @ok="handleOk" />
     <!---->
   </div>
 </template>
@@ -736,89 +407,500 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { defineComponent, ref, computed } from "vue";
+import TasksModal from "@/components/modals/TasksModal";
+import { useRouter } from "vue-router";
+import { ref } from "vue";
 import {
-  EllipsisOutlined,
-  PlusOutlined,
-  UserOutlined,
+  FilterOutlined,
+  DeleteOutlined,
+  EditOutlined,
   CalendarOutlined,
 } from "@ant-design/icons-vue";
-const OPTIONS = ["Jane Doe", "Steve Smith", "Joseph William"];
-const OPTIONSTAG = ["Admin", "Clinical", "Office", "Personal"];
 
+const columns = [
+  {
+    title: "Task Name",
+    dataIndex: "name",
+    slots: {
+      customRender: "name",
+    },
+    filters: [
+      {
+        text: "Task 1",
+        value: "task 1",
+      },
+      {
+        text: "Task 2",
+        value: "task 2",
+      },
+    ],
+    onFilter: (value, record) => record.name.indexOf(value) === 0,
+  },
+  {
+    title: "Status ",
+    dataIndex: "status",
+    slots: {
+      customRender: "status",
+    },
+  },
+  {
+    title: "Priority ",
+    dataIndex: "priority",
+    filters: [
+      {
+        text: "High",
+        value: "high",
+      },
+      {
+        text: "Normal",
+        value: "normal",
+      },
+      {
+        text: "Urgent",
+        value: "urgent",
+      },
+    ],
+    onFilter: (value, record) => record.name.indexOf(value) === 0,
+  },
+  {
+    title: "Category ",
+    dataIndex: "category",
+    filters: [
+      {
+        text: "Clinical",
+        value: "clinical",
+      },
+      {
+        text: "Comm",
+        value: "comm",
+      },
+      {
+        text: "Admin",
+        value: "admin",
+      },
+      {
+        text: "Internal",
+        value: "internal",
+      },
+    ],
+    onFilter: (value, record) => record.name.indexOf(value) === 0,
+  },
+  {
+    title: "Due Date ",
+    dataIndex: "duedate",
+    filters: [
+      {
+        text: "Dec 24, 2021",
+        value: "Dec 24, 2021",
+      },
+      {
+        text: "Dec 28, 2021",
+        value: "Dec 28, 2021",
+      },
+    ],
+    onFilter: (value, record) => record.name.indexOf(value) === 0,
+  },
+  {
+    title: "Assigned By",
+    dataIndex: "assigned",
+    filters: [
+      {
+        text: "John",
+        value: "John",
+      },
+      {
+        text: "	Devin",
+        value: "	Devin",
+      },
+    ],
+    slots: {
+      customRender: "assigned",
+    },
+    onFilter: (value, record) => record.name.indexOf(value) === 0,
+  },
+  {
+    title: "Actions",
+    dataIndex: "actions",
+    slots: {
+      customRender: "action",
+    },
+  },
+];
+const data = [
+  {
+    key: "1",
+    name: " Task 1",
+    status: "",
+    priority: "High",
+    category: "Clinical",
+    duedate: "Dec 24, 2021",
+    assigned: "John",
+    actions: "",
+  },
+  {
+    key: "2",
+    name: "Task 2",
+    status: "",
+    priority: "Normal",
+    category: "Internal",
+    duedate: "Dec 28, 2021",
+    assigned: "Devin",
+    actions: "",
+  },
+  {
+    key: "3",
+    name: " Task 3",
+    status: "",
+    priority: "Critical ",
+    category: "Comm",
+    duedate: "Dec 29, 2021",
+    assigned: "Smith",
+    actions: "",
+  },
+  {
+    key: "4",
+    name: "Task 4",
+    status: "",
+    priority: "Normal",
+    category: "Admin",
+    duedate: "Dec 30, 2021",
+    assigned: "Andrew",
+    actions: "",
+  },
+];
 export default {
   components: {
     Header,
     Sidebar,
-    EllipsisOutlined,
-    PlusOutlined,
-    UserOutlined,
+    TasksModal,
+    FilterOutlined,
+    DeleteOutlined,
+    EditOutlined,
     CalendarOutlined,
   },
 
+  data: function () {
+    return {
+      Incompleteoption: {
+        annotations: {
+          points: [
+            {
+              x: "In",
+              seriesIndex: 0,
+              label: {
+                borderColor: "#775DD0",
+                offsetY: 0,
+                style: {
+                  color: "#fff",
+                  background: "#775DD0",
+                },
+              },
+            },
+          ],
+        },
+        chart: {
+          height: 350,
+          type: "bar",
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: "20%",
+            barHeight: "100%",
+            distributed: true,
+            horizontal: false,
+            dataLabels: {
+              position: "bottom",
+            },
+          },
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        colors: ["#E30D2A", "#00897b", "#267dff"],
+        stroke: {
+          width: 1,
+          colors: ["#fff"],
+        },
+
+        grid: {
+          row: {
+            colors: ["#fff", "#f2f2f2"],
+          },
+        },
+        xaxis: {
+          labels: {
+            rotate: -45,
+          },
+          categories: ["Urgent  ", "High", "Normal"],
+        },
+        yaxis: {
+          title: {
+            text: "Task Count",
+          },
+        },
+      },
+      Incompleteseries: [
+        {
+          name: "Task Count",
+          data: [45, 32, 23],
+        },
+      ],
+
+      teamoption: {
+        annotations: {
+          points: [
+            {
+              x: "In",
+              seriesIndex: 0,
+              label: {
+                borderColor: "#775DD0",
+                offsetY: 0,
+                style: {
+                  color: "#fff",
+                  background: "#775DD0",
+                },
+              },
+            },
+          ],
+        },
+        chart: {
+          height: 412,
+          type: "bar",
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: "20%",
+            barHeight: "100%",
+            distributed: true,
+            horizontal: false,
+            dataLabels: {
+              position: "bottom",
+            },
+          },
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        colors: ["#3b72c5", "#ffb526", "#419541", "#343470"],
+        stroke: {
+          width: 1,
+          colors: ["#fff"],
+        },
+
+        grid: {
+          row: {
+            colors: ["#fff", "#f2f2f2"],
+          },
+        },
+        xaxis: {
+          labels: {
+            rotate: -45,
+          },
+          categories: ["Badger ", "Devin ", "Matt ", "John"],
+        },
+        yaxis: {
+          title: {
+            text: "Task Count",
+          },
+        },
+      },
+      teamseries: [
+        {
+          name: "Task Count",
+          data: [34, 23, 12, 15],
+        },
+      ],
+
+      chartOptions: {
+        chart: {
+          height: 412,
+          type: "area",
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        colors: ["#0fb5c2", "#ff6061"],
+        stroke: {
+          curve: "smooth",
+        },
+        // xaxis: {
+        //   type: "datetime",
+        //   categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z"],
+        // },
+        tooltip: {
+          x: {
+            format: "dd/MM/yy HH:mm",
+          },
+        },
+      },
+      series: [
+        {
+          name: "Complete",
+          data: [50, 90],
+        },
+        {
+          name: "Incomplete",
+          data: [8, 10],
+        },
+      ],
+
+      incomplete: [4567, 1000],
+      completed: {
+        chart: {
+          type: "pie",
+        },
+        labels: ["Completed", "Incomplete"],
+        colors: ["#0fb5c2", "#ff6061"],
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200,
+              },
+              legend: {
+                position: "bottom",
+              },
+            },
+          },
+        ],
+      },
+
+      business: [45, 12, 23, 20],
+      premium: {
+        chart: {
+          width: 412,
+          type: "pie",
+        },
+        labels: ["Clinical", "Comm", "Admin", "Internal"],
+        colors: ["#0fb5c2", "#40a9ff", "#267dff", "#8e60ff"],
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200,
+              },
+              legend: {
+                position: "bottom",
+              },
+            },
+          },
+        ],
+      },
+    };
+  },
   setup() {
-    const visible = ref(false);
-    const toggle = ref(false);
-    const toggle1 = ref(false);
-    const toggle2 = ref(false);
-    const current = ref(0);
-    const showModal = () => {
-      visible.value = true;
-    };
+    const router = useRouter();
 
-    const selectedItems = ref(["Jane Doe"]);
-    const filteredOptions = computed(() =>
-      OPTIONS.filter((o) => !selectedItems.value.includes(o))
-    );
-
-    const selectedItemsForTag = ref(["Admin"]);
-    const filteredOptionsForTag = computed(() =>
-      OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
-    );
-
-    const handleOk = (e) => {
-      console.log(e);
-      visible.value = false;
-    };
+    function clickHandler(event, chartContext, config) {
+      toggle.value = false;
+      // router.push({ path: "corrdinator-summary" });
+    }
+    function clickHandler2(event, chartContext, config) {
+      toggle.value = false;
+      // router.push({ path: "time-tracking-report" });
+    }
+    const checked = ref([false]);
+    const checked1 = ref(false);
+    const checked2 = ref(false);
+    const checked3 = ref(false);
+    const checked4 = ref(false);
+    const checked5 = ref(false);
+    const checked6 = ref(false);
+    const checked7 = ref(false);
+    const checked8 = ref(false);
+    const checked9 = ref(false);
+    const checked10 = ref(false);
+    const checked11 = ref(false);
+    const checked12 = ref(false);
+    const checked13 = ref(false);
+    const toggle = ref(true);
 
     const handleChange = (value) => {
       console.log(`selected ${value}`);
     };
 
+    const TasksModal = ref(false);
+    const showModal = () => {
+      TasksModal.value = true;
+    };
+    const handleOk = (e) => {
+      console.log(e);
+      TasksModal.value = false;
+    };
+
+    const handleChange2 = (value) => {
+      console.log(`selected ${value}`);
+    };
+
+    const searchoptions = ref([
+      {
+        value: "Jane Doe",
+        label: "Jane Doe",
+      },
+      {
+        value: "Steve Smith",
+        label: "Steve Smith",
+      },
+      {
+        value: "Joseph Spouse",
+        label: "Joseph Spouse",
+      },
+      {
+        value: "Robert Henry",
+        label: "Robert Henry",
+      },
+      {
+        value: "Task 1",
+        label: "Task 1",
+      },
+      {
+        value: "Task 2",
+        label: "Task 2",
+      },
+      {
+        value: "Clinical",
+        label: "Clinical",
+      },
+      {
+        value: "Internal",
+        label: "Internal",
+      },
+    ]);
+
     return {
-      visible,
+      data,
+      columns,
+      checked,
+      toggle,
+      checked1,
+      checked2,
+      checked3,
+      checked4,
+      checked5,
+      checked6,
+      checked7,
+      checked8,
+      checked9,
+      checked10,
+      checked11,
+      checked12,
+      checked13,
+      handleChange2,
+      searchoptions,
+      size: ref([]),
+
+      TasksModal,
       showModal,
       handleOk,
+      clickHandler,
+      clickHandler2,
+
       handleChange,
-      selectedItems,
-      filteredOptions,
-      filteredOptionsForTag,
-      selectedItemsForTag,
-      onChange: (pagination, filters, sorter, extra) => {
-        console.log("params", pagination, filters, sorter, extra);
-      },
-      current,
-      size: ref("large"),
-      toggle,
-      toggle1,
-      toggle2,
     };
   },
 };
 </script>
-
-<style scoped>
-.steps-content {
-  margin-top: 16px;
-  border-radius: 6px;
-  min-height: 200px;
-  text-align: left;
-  padding: 12px 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-.steps-action {
-  text-align: right;
-}
-</style>

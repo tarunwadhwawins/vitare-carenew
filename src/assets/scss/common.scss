@@ -7,7 +7,7 @@
 
 body {
 	font-family: $font-family-regular;
-	background-color: #f9f9f9;
+	background-color: #f0f2f5;
 }
 img {
 	max-width: 100%;
@@ -50,7 +50,6 @@ h6 {
 	height: auto;
 	border-radius: 6px;
 }
-
 .secondaryBtn {
 	background-color: $secondary-color;
 	color: #fff;
@@ -73,17 +72,27 @@ h6 {
 	border-radius: 4px;
 	padding: 6px 12px;
 }
-.blueBtn{
+.blueBtn {
 	background: #267dff;
 	color: #fff;
 	border-radius: 6px;
 	height: auto;
 	padding: 6px 12px;
-	
 }
-
+.text-right {
+	text-align: right;
+}
 .mb-24 {
 	margin-bottom: 24px;
+}
+.mt-28 {
+	margin-top: 28px;
+}
+img.reportFlag {
+    max-width: 30px;
+}
+.p-15 {
+	padding: 15px;
 }
 
 .align-items-center {
@@ -157,11 +166,14 @@ h6 {
 .greenBgColor {
 	background-color: #0fb5c2;
 }
+
+.red-color{
+ color:$red-color;
+}
 /*----*/
 
 .form-group {
 	margin: 0 0 20px 0;
-	position: relative;
 	label {
 		display: block;
 		margin: 0 0 4px 0;
@@ -174,13 +186,6 @@ h6 {
 		span{
 			margin: 0 0 0 5px;
 		}
-	}
-	.error {
-		position: absolute;
-		color: $red-color;
-		left: 0;
-		bottom: -20px;
-		font-size: 11px;
 	}
 }
 
@@ -215,6 +220,12 @@ h6 {
 	&:last-child {
 		margin: 0;
 	}
+}
+.circleBox {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	display: inline-block;
 }
 
 /*----*/
@@ -278,28 +289,24 @@ h6 {
 .ant-table-wrapper {
 	.ant-table {
 		.ant-table-content {
-			.ant-table-scroll {
-				.ant-table-body {
-					.ant-table-fixed {
-						.ant-table-thead {
-							tr {
-								th {
-									padding: 8px 10px;
-									font-weight: 600;
-								}
-							}
+			.ant-table-body {
+				.ant-table-thead {
+					tr {
+						th {
+							padding: 8px 10px;
+							font-weight: 600;
 						}
-						.ant-table-tbody {
-							tr {
-								td {
-									padding: 8px 10px;
-									font-size: 13px;
-								}
-								&:hover {
-									td {
-										background: #f9f9f9;
-									}
-								}
+					}
+				}
+				.ant-table-tbody {
+					tr {
+						td {
+							padding: 8px 10px;
+							font-size: 13px;
+						}
+						&:hover {
+							td {
+								background: #f9f9f9;
 							}
 						}
 					}
@@ -328,19 +335,27 @@ body {
 .common-btn {
 	text-align: right;
 }
-.ant-input-lg {
-	height: 40px;
+
+/*--admin css ---*/
+
+.common-bg {
+	// box-shadow: 0 0 10px rgb(0 0 0 / 10%);
+	padding: 15px;
+	border-radius: 5px;
+	background-color: #fff;
 }
-/*--stepper css--*/
-.steps-content {
-	margin-top: 16px;
-	border-radius: 6px;
-	min-height: 200px;
-	text-align: left;
-	padding: 12px 0;
-	overflow-x: hidden;
-	overflow-y: auto;
+
+.roles {
+	h4 {
+		margin: 0 0 20px 0;
+	}
+	.radioInput {
+		margin: 0 0 10px 0;
+	}
 }
-.steps-action {
-	text-align: right;
+
+.ant-divider {
+	&.transparent {
+		border-top: 0;
+	}
 }

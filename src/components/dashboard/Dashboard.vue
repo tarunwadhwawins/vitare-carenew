@@ -1,173 +1,793 @@
 <template>
-  <a-layout-content>
-    <a-row>
-      <MainHeader heading="Dashboard" buttonText=""></MainHeader>
-      <a-col :span="24" v-if="totalPatients">
-        <a-row :gutter="24">
-          <Card customClass="one" :count="totalPatients ? totalPatients :''"></Card>
-          <Card customClass="two" :count="newPatients ? newPatients : ''"></Card>
-          <Card customClass="three" :count="criticalPatients ? criticalPatients : ''"></Card>
-          <Card customClass="four" :count="abnormalPatients ? abnormalPatients : ''"></Card>
-          <Card customClass="five" :count="activePatients ? activePatients : ''"></Card>
-          <Card customClass="six" :count="inactivePatients ? inactivePatients : ''"></Card>
-        </a-row>
-      </a-col>
-    </a-row>
-    <a-row :gutter="24" v-if="totalPatients">
-      <Appointment :todayappointment="todayappointment"></Appointment>
-      <VirtualWaitingRoom :newappointment="newappointment" :future="futureappointment"></VirtualWaitingRoom>
-      <PatientsChart :data="[newPatients.count,abnormalPatients.count,criticalPatients.count]"
-        :categories="[newPatients.text,abnormalPatients.text, criticalPatients.text]"></PatientsChart>
-      <a-col :sm="12" :xs="24">
-        <a-card title="Care Coordinator Stats " class="common-card">
-          <a-tabs v-model:activeKey="activeKey1">
-            <a-tab-pane key="1" tab="Specialization " v-if="specialization">
-              <SpecializationChart :data="[specialization.total,wellness.total]"
-                :categories="[specialization.specialization,wellness.specialization]"></SpecializationChart>
-            </a-tab-pane>
-            <a-tab-pane key="2" tab="Network " force-render v-if="totalPatients">
-
-              <NetworkChart :categories="[networkin.network,networkout.network]"
-                :data="[networkin.total,networkout.total]"></NetworkChart>
-            </a-tab-pane>
-          </a-tabs>
-        </a-card>
-      </a-col>
-      <CptChart></CptChart>
-      <FinancialChart></FinancialChart>
-    </a-row>
-
-    <a-row :gutter="24" v-if="totalPatients">
-      <TotalPatientsChart
-        :chart="[totalPatients.count, newPatients.count, criticalPatients.count, abnormalPatients.count, activePatients.count, inactivePatients.count]"
-        :lable="[totalPatients.text,newPatients.text,criticalPatients.text,abnormalPatients.text,activePatients.text,inactivePatients.text]">
-      </TotalPatientsChart>
-      <AppointmentSummary :data="appointmentcount.map((item) =>  item.total )"
-        :categories="appointmentcount.map((item) =>  item.month )"></AppointmentSummary>
-    </a-row>
-  </a-layout-content>
+  <div>
+    <!---->
+    <a-layout>
+      <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
+        <Header />
+      </a-layout-header>
+      <a-layout>
+        <Sidebar />
+        <a-layout-content>
+          <a-row>
+            <a-col :span="24">
+              <h2 class="pageTittle">
+                {{$t('global.dashboard')}}
+                <div class="filter">
+                  <button class="btn active">
+                    <span class="btn-content">{{$t('global.day')}}</span>
+                  </button>
+                  <button class="btn">
+                    <span class="btn-content">{{$t('global.week')}}</span>
+                  </button>
+                  <button class="btn">
+                    <span class="btn-content">{{$t('global.month')}}</span>
+                  </button>
+                </div>
+              </h2>
+            </a-col>
+            <a-col :span="24">
+              <a-row :gutter="24">
+                <a-col :xl="4" :sm="8" :xs="12">
+                  <router-link to="manage-patients">
+                    <div class="topBox one">
+                      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                      <h5>10</h5>
+                      <p>{{$t('dashboard.totalPatients')}}</p>
+                    </div>
+                  </router-link>
+                </a-col>
+                <a-col :xl="4" :sm="8" :xs="12">
+                  <router-link to="manage-patients">
+                    <div class="topBox two">
+                      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                      <h5>10</h5>
+                      <p>{{$t('dashboard.newPatients')}}</p>
+                    </div>
+                  </router-link>
+                </a-col>
+                <a-col :xl="4" :sm="8" :xs="12">
+                  <router-link to="manage-patients">
+                    <div class="topBox three">
+                      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                      <h5>10</h5>
+                      <p>{{$t('dashboard.criticalPatients')}}</p>
+                    </div>
+                  </router-link>
+                </a-col>
+                <a-col :xl="4" :sm="8" :xs="12">
+                  <router-link to="manage-patients">
+                    <div class="topBox four">
+                      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                      <h5>10</h5>
+                      <p>{{$t('dashboard.abnormalPatients')}}</p>
+                    </div>
+                  </router-link>
+                </a-col>
+                <a-col :xl="4" :sm="8" :xs="12">
+                  <router-link to="manage-patients">
+                    <div class="topBox five">
+                      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                      <h5>10</h5>
+                      <p>{{$t('dashboard.activePatients')}}</p>
+                    </div>
+                  </router-link>
+                </a-col>
+                <a-col :xl="4" :sm="8" :xs="12">
+                  <router-link to="manage-patients">
+                    <div class="topBox six">
+                      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                      <h5>10</h5>
+                      <p>{{$t('dashboard.inactivePatients')}}</p>
+                    </div>
+                  </router-link>
+                </a-col>
+              </a-row>
+            </a-col>
+          </a-row>
+          <a-row :gutter="24">
+            <a-col :sm="12" :xs="24">
+              <a-card :title="$t('dashboard.todayAppointment')" class="common-card">
+                <a-table
+                  :columns="columns4"
+                  :data-source="data4"
+                  :pagination="false"
+                >
+                  <template #patientName="text">
+                    <router-link to="patients-summary">{{
+                      text.text
+                    }}</router-link>
+                  </template>
+                  <template #appt="text">
+                    <router-link to="corrdinator-summary">{{
+                      text.text
+                    }}</router-link>
+                  </template>
+                </a-table>
+              </a-card>
+            </a-col>
+            <a-col :sm="12" :xs="24">
+              <a-card :title="$t('dashboard.callQueue')" class="common-card">
+                <apexchart type="bar" height="250" :options="calloption" :series="callseries" @click="clickHandler"></apexchart>
+              </a-card>
+            </a-col>
+            <a-col :sm="12" :xs="24">
+              <a-card title="Patients Stats" class="common-card">
+                <apexchart
+                  type="bar"
+                  height="412"
+                  :options="option1"
+                  :series="series1"
+                   @click="clickHandler2"
+                ></apexchart>
+              </a-card>
+            </a-col>
+            <a-col :sm="12" :xs="24">
+              <a-card :title="$t('dashboard.careCoordinatorStats') " class="common-card">
+                <a-tabs v-model:activeKey="activeKey1">
+                  <a-tab-pane key="1" tab="Specialization ">
+                    <apexchart
+                      type="bar"
+                      height="350"
+                      :options="wellness"
+                      :series="behavior"
+                      @click="clickHandler3"
+                    ></apexchart>
+                  </a-tab-pane>
+                  <a-tab-pane key="2" tab="Network " force-render>
+                    <apexchart
+                      type="bar"
+                      height="350"
+                      :options="In"
+                      :series="Out"
+                      @click="clickHandler3"
+                    ></apexchart>
+                  </a-tab-pane>
+                </a-tabs>
+              </a-card>
+            </a-col>
+            <a-col :sm="12" :xs="24">
+              <a-card :title="$t('dashboard.cPTCodeBillingSummary')" class="common-card">
+                <apexchart
+                  type="bar"
+                  height="350"
+                  :options="code"
+                  :series="value"
+                  @click="clickHandler4"
+                ></apexchart>
+              </a-card>
+            </a-col>
+            <a-col :sm="12" :xs="24">
+              <a-card :title="$t('dashboard.financialStats')" class="common-card">
+                <!-- <div class="list-group">
+                  <div class="list-group-item">
+                    <div class="name">Billed</div>
+                    <div class="value">4567 $</div>
+                  </div>
+                </div> -->
+                <apexchart
+                  type="pie"
+                  height="362"
+                  :options="billed"
+                  :series="due"
+                   @click="clickHandler6"
+                ></apexchart>
+              </a-card>
+            </a-col>
+          </a-row>
+          <a-row :gutter="24">
+            <a-col :sm="12" :xs="24">
+              <a-card :title="$t('dashboard.totalPatientsChart')" class="common-card">
+                <apexchart
+                  type="area"
+                  height="350"
+                  :options="chartOptions"
+                  :series="series"
+                   @click="clickHandler2"
+                ></apexchart>
+              </a-card>
+            </a-col>
+            <a-col :sm="12" :xs="24">
+              <a-card :title="$t('dashboard.appointmentSummary')" class="common-card">
+                <apexchart
+                  type="area"
+                  height="350"
+                  :options="chartOptions"
+                  :series="series"
+                   @click="clickHandler5"
+                ></apexchart>
+              </a-card>
+            </a-col>
+          </a-row>
+        </a-layout-content>
+      </a-layout>
+    </a-layout>
+    <!---->
+  </div>
 </template>
+
 <script>
-  import { ref, watchEffect, computed } from 'vue'
-  import MainHeader from "@/components/common/MainHeader";
-  import Card from "@/components/common/cards/Card";
-  import Appointment from "./Appointment";
-  import VirtualWaitingRoom from "./VirtualWaitingRoom";
-  import TotalPatientsChart from "./TotalPatientsChart";
-  import AppointmentSummary from "./AppointmentSummary";
-  import FinancialChart from "./FinancialChart"
-  import PatientsChart from "./PatientsChart"
-  import SpecializationChart from "./care-coordinator/SpecializationChart"
-  import NetworkChart from "./care-coordinator/NetworkChart"
-  import CptChart from "./CptChart"
-  import { useStore } from "vuex"
-
-  export default {
-
-    components: {
-      MainHeader,
-      Card,
-      Appointment,
-      VirtualWaitingRoom,
-      PatientsChart,
-      SpecializationChart,
-      NetworkChart,
-      CptChart,
-      TotalPatientsChart,
-      AppointmentSummary,
-      FinancialChart,
+import Header from "../layout/header/Header";
+import Sidebar from "../layout/sidebar/Sidebar";
+import { useRouter } from "vue-router";
+import { provide } from "vue";
+// import { UserOutlined } from "@ant-design/icons-vue";
+const columns4 = [
+  {
+    title: "Patient Name",
+    dataIndex: "patient",
+    slots: {
+      customRender: "patientName",
     },
-
-    setup() {
-      const store = useStore()
-
-
-      watchEffect(() => {
-        store.dispatch("todayappointment")
-        store.dispatch("newPatients")
-        store.dispatch("abnormalPatients")
-        store.dispatch("activePatients")
-        store.dispatch("inactivePatients")
-        store.dispatch("criticalPatients")
-        store.dispatch("specialization", 1)
-        store.dispatch("specialization", 2)
-        store.dispatch("network", 1)
-        store.dispatch("network", 2)
-        store.dispatch("appointmentcount")
-        store.dispatch("appointment", 1)
-        store.dispatch("appointment", 2)   
-        store.dispatch("totalPatients")
-      })
-
-      const totalPatients = computed(() => {
-        return store.state.dashBoard.tcount
-      })
-      const newPatients = computed(() => {
-        return store.state.dashBoard.ncount
-      })
-      const criticalPatients = computed(() => {
-        return store.state.dashBoard.critcount
-      })
-      const abnormalPatients = computed(() => {
-        return store.state.dashBoard.abcount
-      })
-      const activePatients = computed(() => {
-        return store.state.dashBoard.activecount
-      })
-      const inactivePatients = computed(() => {
-        return store.state.dashBoard.inactivecount
-      })
-      const specialization = computed(() => {
-
-        return store.state.dashBoard.specialization
-      })
-      const networkin = computed(() => {
-
-        return store.state.dashBoard.networkin
-      })
-      const networkout = computed(() => {
-
-        return store.state.dashBoard.networkout
-      })
-      const wellness = computed(() => {
-
-        return store.state.dashBoard.wellness
-      })
-      const appointmentcount = computed(() => {
-
-        return store.state.dashBoard.appointmentcount
-      })
-      const futureappointment = computed(() => {
-
-        return store.state.dashBoard.futureappointment
-      })
-      const todayappointment = computed(() => {
-
-        return store.state.dashBoard.todayappointment
-      })
-      const newappointment = computed(() => {
-
-        return store.state.dashBoard.newappointment
-      })
-
-
-      return {
-        totalPatients,
-        newPatients,
-        criticalPatients,
-        abnormalPatients,
-        activePatients,
-        inactivePatients,
-        specialization,
-        wellness,
-        networkin,
-        networkout,
-        appointmentcount,
-        futureappointment,
-        newappointment,
-        todayappointment,
-
-      };
+  },
+  {
+    title: "Date Time ",
+    dataIndex: "date",
+  },
+  {
+    title: "	Appointment With",
+    dataIndex: "appt",
+    slots: {
+      customRender: "appt",
     },
-  };
+  },
+];
+const data4 = [
+  {
+    key: "1",
+    patient: "Steve Smith",
+    date: "Dec 20, 2021 - 10:30 AM",
+    appt: "Joseph",
+  },
+  {
+    key: "2",
+    patient: "Jane Doe",
+    date: "Dec 20, 2021 - 11:30 AM",
+    appt: "Robert",
+  },
+  {
+    key: "3",
+    patient: "Henry Joseph",
+    date: "Dec 20, 2021 - 01:00 PM",
+    appt: "Robert",
+  },
+  {
+    key: "4",
+    patient: "Carol Liam",
+    date: "Dec 20, 2021 - 04:15 PM",
+    appt: "Robert",
+  },
+  {
+    key: "6",
+    patient: "Brett William",
+    date: "Dec 20, 2021 - 04:45 PM",
+    appt: "Joseph",
+  },
+  {
+    key: "7",
+    patient: "John Smith",
+    date: "Dec 20, 2021 - 05:20 PM",
+    appt: "Joseph",
+  },
+];
+const columns5 = [
+  {
+    title: "Patient Name",
+    dataIndex: "patient",
+    slots: {
+      customRender: "patientName",
+    },
+  },
+  {
+    title: "Appointment Type",
+    dataIndex: "appt",
+  },
+  {
+    title: "Time",
+    dataIndex: "time",
+  },
+  {
+    title: "Action ",
+    dataIndex: "action",
+    slots: {
+      customRender: "action",
+    },
+  },
+];
+const data5 = [
+  {
+    key: "1",
+    patient: "Steve Smith",
+    appt: "Wellness",
+    time: "01:30 PM",
+  },
+  {
+    key: "2",
+    patient: "Jane Doe",
+    appt: "Clinical",
+    time: "11:30 AM",
+  },
+];
+const columns6 = [
+  {
+    title: "Patient Name",
+    dataIndex: "patient",
+    slots: {
+      customRender: "patientName",
+    },
+  },
+  {
+    title: "Appointment Type",
+    dataIndex: "appt",
+  },
+  {
+    title: "Time",
+    dataIndex: "time",
+  },
+];
+const data6 = [
+  {
+    key: "1",
+    patient: "Robert",
+    appt: "Wellness",
+    time: "02:30 PM",
+  },
+  {
+    key: "2",
+    patient: "	Steve",
+    appt: "Clinical",
+    time: "10:30 AM",
+  },
+];
+export default {
+  components: {
+    Header,
+    Sidebar,
+  },
+  data: function () {
+    return {
+      chartOptions: {
+        chart: {
+          height: 350,
+          type: "area",
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        stroke: {
+          curve: "smooth",
+        },
+        xaxis: {
+          type: "datetime",
+          categories: [
+            "2018-09-19T00:00:00.000Z",
+            "2018-09-19T01:30:00.000Z",
+            "2018-09-19T02:30:00.000Z",
+            "2018-09-19T03:30:00.000Z",
+            "2018-09-19T04:30:00.000Z",
+            "2018-09-19T05:30:00.000Z",
+            "2018-09-19T06:30:00.000Z",
+          ],
+        },
+        tooltip: {
+          x: {
+            format: "dd/MM/yy HH:mm",
+          },
+        },
+      },
+      series: [
+        {
+          name: "series1",
+          data: [31, 40, 28, 51, 42, 109, 100],
+        },
+        {
+          name: "series2",
+          data: [11, 32, 45, 32, 34, 52, 41],
+        },
+      ],
+
+      due: [4567, 1000],
+      billed: {
+        chart: {
+          width: 380,
+          type: "pie",
+        },
+        labels: ["Billed", "Due"],
+        colors: ["#267dff", "#E30D2A"],
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200,
+              },
+              legend: {
+                position: "bottom",
+              },
+            },
+          },
+        ],
+      },
+
+      wellness: {
+        annotations: {
+          points: [
+            {
+              x: "Wellness",
+              seriesIndex: 0,
+              label: {
+                borderColor: "#ff0000",
+                offsetY: 0,
+                style: {
+                  color: "#fff",
+                  background: "#ff0000",
+                },
+                // text: "Bananas are good",
+              },
+            },
+          ],
+        },
+        chart: {
+          height: 350,
+          type: "bar",
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: "20%",
+            barHeight: "100%",
+            distributed: true,
+            horizontal: false,
+            dataLabels: {
+              position: "bottom",
+            },
+          },
+        },
+        colors: ["#8e60ff", "#ffa800"],
+        dataLabels: {
+          enabled: false,
+        },
+        stroke: {
+          width: 1,
+          colors: ["#fff"],
+        },
+
+        grid: {
+          row: {
+            colors: ["#fff", "#f2f2f2"],
+          },
+        },
+        xaxis: {
+          labels: {
+            rotate: -45,
+          },
+          categories: ["Wellness", "Behavior"],
+        },
+        yaxis: {
+          title: {
+            text: "Specialization",
+          },
+        },
+      },
+      behavior: [
+        {
+          name: "Specialization",
+          data: [1, 2],
+        },
+      ],
+
+      In: {
+        annotations: {
+          points: [
+            {
+              x: "In",
+              seriesIndex: 0,
+              label: {
+                borderColor: "#775DD0",
+                offsetY: 0,
+                style: {
+                  color: "#fff",
+                  background: "#775DD0",
+                },
+                // text: "Bananas are good",
+              },
+            },
+          ],
+        },
+        chart: {
+          height: 350,
+          type: "bar",
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: "20%",
+            barHeight: "100%",
+            distributed: true,
+            horizontal: false,
+            dataLabels: {
+              position: "bottom",
+            },
+          },
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        colors: ["#267dff", "#0fb5c2"],
+        stroke: {
+          width: 1,
+          colors: ["#fff"],
+        },
+
+        grid: {
+          row: {
+            colors: ["#fff", "#f2f2f2"],
+          },
+        },
+        xaxis: {
+          labels: {
+            rotate: -45,
+          },
+          categories: ["In", "Out"],
+        },
+        yaxis: {
+          title: {
+            text: "Network",
+          },
+        },
+      },
+      Out: [
+        {
+          name: "Network",
+          data: [3, 4],
+        },
+      ],
+
+      code: {
+        annotations: {
+          points: [
+            {
+              x: "In",
+              seriesIndex: 0,
+              label: {
+                borderColor: "#775DD0",
+                offsetY: 0,
+                style: {
+                  color: "#fff",
+                  background: "#775DD0",
+                },
+              },
+            },
+          ],
+        },
+        chart: {
+          height: 350,
+          type: "bar",
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: "20%",
+            barHeight: "100%",
+            distributed: true,
+            horizontal: false,
+            dataLabels: {
+              position: "bottom",
+            },
+          },
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        colors: ["#3b72c5", "#ffb526", "#419541", "#343470"],
+        stroke: {
+          width: 1,
+          colors: ["#fff"],
+        },
+
+        grid: {
+          row: {
+            colors: ["#fff", "#f2f2f2"],
+          },
+        },
+        xaxis: {
+          labels: {
+            rotate: -45,
+          },
+          categories: ["99453", "99454", "99457", "99458 "],
+        },
+        yaxis: {
+          title: {
+            text: "Minutes",
+          },
+        },
+      },
+      value: [
+        {
+          name: "Minutes",
+          data: [120, 80, 90, 30],
+        },
+      ],
+
+      option1: {
+        annotations: {
+          points: [
+            {
+              x: "In",
+              seriesIndex: 0,
+              label: {
+                borderColor: "#775DD0",
+                offsetY: 0,
+                style: {
+                  color: "#fff",
+                  background: "#775DD0",
+                },
+              },
+            },
+          ],
+        },
+        chart: {
+          height: 350,
+          type: "bar",
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: "20%",
+            barHeight: "100%",
+            distributed: true,
+            horizontal: false,
+            dataLabels: {
+              position: "bottom",
+            },
+          },
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        colors: ["#267dff", "#00897b", "#E30D2A"],
+        stroke: {
+          width: 1,
+          colors: ["#fff"],
+        },
+
+        grid: {
+          row: {
+            colors: ["#fff", "#f2f2f2"],
+          },
+        },
+        xaxis: {
+          labels: {
+            rotate: -45,
+          },
+          categories: ["Normal", "High", "Critical"],
+        },
+        yaxis: {
+          title: {
+            text: "Patients",
+          },
+        },
+      },
+      series1: [
+        {
+          name: "Patients",
+          data: [45, 12, 34],
+        },
+      ],
+      calloption: {
+        annotations: {
+          points: [
+            {
+              x: "In",
+              seriesIndex: 0,
+              label: {
+                borderColor: "#775DD0",
+                offsetY: 0,
+                style: {
+                  color: "#fff",
+                  background: "#775DD0",
+                },
+              },
+            },
+          ],
+        },
+        chart: {
+          height: 350,
+          type: "bar",
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: "20%",
+            barHeight: "100%",
+            distributed: true,
+            horizontal: false,
+            dataLabels: {
+              position: "bottom",
+            },
+          },
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        colors: ["#121258", "#218421", "#ffb526"],
+        stroke: {
+          width: 1,
+          colors: ["#fff"],
+        },
+
+        grid: {
+          row: {
+            colors: ["#fff", "#f2f2f2"],
+          },
+        },
+        
+        xaxis: {
+          labels: {
+            rotate: -45,
+          },
+          categories: ["Going On", "Completed", "In Queue"],
+        },
+        yaxis: {
+          title: {
+            text: "Number of Count",
+          },
+        },
+      },
+      callseries: [
+        {
+          name: "Value",
+          data: [12, 8, 6],
+        },
+      ],
+    };
+  },
+  setup(props,{emit}) {
+    const router = useRouter();
+    function clickHandler(event, chartContext, config){
+        // emit('listView',false)
+        provide('listView',false)
+        router.push({path:'communications'})
+    }
+    function clickHandler2(event, chartContext, config){
+        router.push({path:'manage-patients'})
+    }
+    function clickHandler3(event, chartContext, config){
+        router.push({path:'manage-care-coordinator'})
+    }
+    function clickHandler4(event, chartContext, config){
+        router.push({path:'cpt-codes'})
+    }
+    function clickHandler5(event, chartContext, config){
+        router.push({path:'appointment-calendar'})
+    }
+    function clickHandler6(event, chartContext, config){
+        router.push({path:'time-tracking-report'})
+    }
+    
+    
+
+    function logout() {
+      localStorage.removeItem("auth");
+      localStorage.clear();
+      // router.push({
+      //     path: '/'
+      // })
+    }
+    return {
+      logout,
+      data4,
+      columns4,
+      data5,
+      columns5,
+      data6,
+      columns6,
+      clickHandler,
+      clickHandler2,
+      clickHandler3,
+      clickHandler4,
+      clickHandler5,
+      clickHandler6,
+    };
+  },
+};
 </script>
