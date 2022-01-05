@@ -4,7 +4,7 @@
     <h2 class="pageTittle">
       {{ heading }}
       <div class="commonBtn">
-        <a-button class="btn primaryBtn" :disabled="pageAction[0].Access==1"  @click.prevent="showModal">{{
+        <a-button class="btn primaryBtn"   @click.prevent="showModal">{{
           buttonText
           }}</a-button>
       </div>
@@ -66,17 +66,17 @@ export default {
       visible.value = true;
     };
 
-     store.state.auth.permissions.forEach(async(element) => {
-      if(element['ModuleName']=='customers-details'){
-        permissions.value=element.Permissions
-        JSON.parse(permissions.value).forEach(async(element) => {
-      if(element['ScreenName']=='Customers-details'){
-        screenPermission.value=element.Access
-        pageAction.value=JSON.parse(element.Actions)
-      }
-    });
-      }
-    });
+    //  store.state.auth.permissions.forEach(async(element) => {
+    //   if(element['ModuleName']=='customers-details'){
+    //     permissions.value=element.Permissions
+    //     JSON.parse(permissions.value).forEach(async(element) => {
+    //   if(element['ScreenName']=='Customers-details'){
+    //     screenPermission.value=element.Access
+    //     pageAction.value=JSON.parse(element.Actions)
+    //   }
+    // });
+    //   }
+    // });
 
     const handleCancel = () => {
       visible.value = false;

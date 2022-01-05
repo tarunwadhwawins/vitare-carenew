@@ -1,6 +1,5 @@
 <template>
   <ErrorMessages></ErrorMessages>
-
   <a-form ref="formRef" :rules="rules" :model="logininfomation">
     <div class="field">
       <a-input
@@ -18,7 +17,7 @@
       />
       <a-form-item ref="password" name="password" />
     </div>
-     <a-checkbox v-model:checked="logininfomation.checked">Employee login</a-checkbox>
+     <!-- <a-checkbox v-model:checked="logininfomation.checked">Employee login</a-checkbox> -->
     <div class="buttons">
       <a-button class="btn primaryBtn" @click="handleLogin()">{{
         $t("login.login")
@@ -73,7 +72,7 @@ export default defineComponent({
       email: null,
       password: null,
       role: "Admin",
-      checked:false
+      // checked:false
     });
     const errorMsg = watchEffect(() => {
       if (store.state.auth.errorMsg) {

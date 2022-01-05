@@ -139,7 +139,7 @@
 </template>
 
 <script>
-  import { defineComponent, ref } from "vue";
+  import { computed, defineComponent, ref } from "vue";
   import {
     NotificationOutlined,
     DownOutlined,
@@ -162,9 +162,17 @@
       const ellipse = ref(false);
       const user = ref()
       const role = ref()
-      const userdata = JSON.parse(localStorage.getItem('user'))
-      user.value = userdata.email;
-      role.value = userdata.role_id ? 'Admin' : 'Client';
+
+      // const userData = JSON.parse(localStorage.getItem('user'))
+      const userData = computed(()=>{
+        return store.state.auth.userData
+      })
+
+      // const userData = null
+      
+      console.log('user',userData.value)
+      user.value = userData.value.email;
+      role.value = userData.value.role_id ? 'Admin' : 'Client';
       function barMenu() {
         document.body.classList.toggle("show");
       }
@@ -178,7 +186,7 @@
         logout,
         role,
         user,
-        userdata
+        userData
       };
     },
   });

@@ -1,56 +1,66 @@
 <template>
   <div class="container">
-    <div class="large-12 medium-12 small-12 cell">
-    </div>
-    <br>
-    <div class="large-12 medium-12 small-12 cell">
-      <!-- <button v-on:click="addFiles()">Add Files</button> -->
-      <h2>This is Employee Dashboard</h2>
-    </div>
-     <div>
-       <a-button type="primary" @click="showModal">Open Modal</a-button>
-      <Modal  v-model:visible="visible"   title="Basic Modal" @ok="handleOk"></Modal>
-   <!-- <button @click="openModal">Open Modal</button> -->
+    
+
+<div>
+  <a-button type="primary" @click="showButton1" :class="button==1?'active':''">show-1</a-button>
+  <a-button type="primary" @click="showButton2" :class="button==2?'active':''">show-2</a-button>
+  <a-button type="primary" @click="showButton3" :class="button==3?'active':''">show-3</a-button>
+  <a-button type="primary" @click="showButton4" :class="button==4?'active':''">show-4</a-button>
+
+  <div v-if="button==1" >
+    <div>call component-1 here</div>
+  </div>
+  
+  <div v-if="button==2" >
+    <div>call component-2 here</div>
+  </div>
+  
+  <div v-if="button==3" >
+    <div>call component-3 here</div>
+  </div>
+  
+  <div v-if="button==4" >
+    <div>call component-4 here</div>
+  </div>
+</div>
    
- </div>
-    <br>
-    <div class="large-12 medium-12 small-12 cell">
-      <button v-on:click="logout()">Logout</button>
-    </div>
+   
+ 
   </div>
 </template>
 
 
 
 <script>
- import { ref,defineAsyncComponent } from "vue"
- import { useStore } from "vuex"
- import Modal from '@/components/modals/commonModal.vue'
+ import { ref } from "vue"
+ 
+
 
   export default {
-    components: {
-      Modal
-    },
-    
+
     setup() {
-      const store = useStore()
-      const visible = ref(false);
+ 
+      const button = ref(1);
 
-    const showModal = () => {
-      visible.value = true;
-    };
-
-    const handleOk = () => {
-      visible.value = false;
-    }
-      function logout() {
-        store.dispatch("logout")
+      function showButton1(){
+        button.value = 1
+      }
+      function showButton2(){
+        button.value = 2
+      }
+      function showButton3(){
+        button.value = 3
+      }
+      function showButton4(){
+        button.value = 4
       }
       return {
-        logout,
-        visible,
-        showModal,
-        handleOk
+        button,
+        showButton1,
+        showButton2,
+        showButton3,
+        showButton4
 
       };
     },
@@ -58,16 +68,9 @@
 </script>
 
 <style>
-  input[type="file"]{
-    position: absolute;
-    top: -500px;
+  .active{
+    background-color: brown;
   }
-  div.file-listing{
-    width: 200px;
-  }
-  span.remove-file{
-    color: red;
-    cursor: pointer;
-    float: right;
-  }
+
+  
 </style>

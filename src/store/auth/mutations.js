@@ -1,14 +1,13 @@
 
 // Checkig login status if its success
-export const loginSuccess = (state, user) => {
+export const loginSuccess = (state, resp) => {
     state.isLoggedIn = true;
-    state.token=user;
+    state.userData=resp;
 }
 
 // After login storing permissions
-export const permissions = (state,userData) =>{
-    
-    state.permissions = userData
+export const permissions = (state,resp) =>{
+    state.permissions = resp
   
 }
 

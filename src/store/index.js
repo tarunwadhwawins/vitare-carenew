@@ -12,6 +12,6 @@ export default createStore({
     
   },
 
-  plugins: [createPersistedState()],
+  // plugins: [createPersistedState({paths: ['dashBoard']})],
   
 })

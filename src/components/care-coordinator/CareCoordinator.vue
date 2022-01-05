@@ -52,18 +52,18 @@ export default {
     //   return store.state.auth.permissions
     // })
 
-    store.state.auth.permissions.forEach(async(element) => {
-      if(element['ModuleName']=='customers-details'){
-        permissions.value=element.Permissions
-        JSON.parse(permissions.value).forEach(async(element) => {
-      if(element['ScreenName']=='Customers-details'){
-        screenPermission.value=element.Access
-        pageAction.value=JSON.parse(element.Actions)
-        provide('addButton',pageAction.value[0].Access)
-      }
-    });
-      }
-    });
+    // store.state.auth.permissions.forEach(async(element) => {
+    //   if(element['ModuleName']=='customers-details'){
+    //     permissions.value=element.Permissions
+    //     JSON.parse(permissions.value).forEach(async(element) => {
+    //   if(element['ScreenName']=='Customers-details'){
+    //     screenPermission.value=element.Access
+    //     pageAction.value=JSON.parse(element.Actions)
+    //     provide('addButton',pageAction.value[0].Access)
+    //   }
+    // });
+    //   }
+    // });
 
     
 

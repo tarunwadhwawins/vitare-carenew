@@ -4,5 +4,6 @@ export default{
     token:null,
     errorMsg:null,
     isLoading:false,
-    permissions:null
+    permissions:null,
+    userData:null
 }
