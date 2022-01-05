@@ -9,10 +9,67 @@
         <Sidebar />
         <a-layout-content>
           <a-row>
-            <a-col :span="12">
+            <a-col :span="5">
               <h2 class="pageTittle">Patient Summary</h2>
             </a-col>
-            <a-col :span="12">
+
+            <a-col :span="11">
+              <div class="pageTittle">
+                <div class="filter">
+                  <a-button
+                    @click="showButton1"
+                    :class="button == 1 ? 'active' : ''"
+                    >Default</a-button
+                  >
+                  <a-button
+                    @click="showButton2"
+                    :class="button == 2 ? 'active' : ''"
+                    >Timeline</a-button
+                  >
+                  <a-button
+                    @click="showButton3"
+                    :class="button == 3 ? 'active' : ''"
+                    >Care Plan</a-button
+                  >
+                  <a-button
+                    @click="showButton4"
+                    :class="button == 4 ? 'active' : ''"
+                    >Patient Vitals</a-button
+                  >
+                </div>
+                <!-- <div class="filter">
+                  <button
+                    class="btn"
+                    :class="toggle ? 'active' : ''"
+                    @click="toggle = !toggle"
+                  >
+                    <span class="btn-content">Default</span>
+                  </button>
+                  <button
+                    class="btn"
+                    :class="toggle ? 'active' : ''"
+                    @click="toggle = !toggle"
+                  >
+                    <span class="btn-content">Timeline</span>
+                  </button>
+                  <button
+                    class="btn"
+                    :class="toggle ? 'active' : ''"
+                    @click="toggle = !toggle"
+                  >
+                    <span class="btn-content">Care Plan</span>
+                  </button>
+                  <button
+                    class="btn"
+                    :class="toggle ? '' : 'active'"
+                    @click="toggle = !toggle"
+                  >
+                    <span class="btn-content">Patient Vitals</span>
+                  </button>
+                </div> -->
+              </div>
+            </a-col>
+            <a-col :span="8">
               <div class="timer">
                 <h3>Current Session : 0:00</h3>
                 <a-button class="primaryBtn" @click="showStopTimerModal"
@@ -20,321 +77,550 @@
                 >
               </div>
             </a-col>
-          </a-row>
-          <a-row :gutter="24" class="mb-24">
-            <a-col :sm="8" :xs="24">
-              <div class="patientInfo">
-                <div class="patientImg" @click="showModalCustom">
-                  <img src="../../assets/images/profile-4.jpg" alt="image" />
-                  <!-- <router-link to="manage-patients"><EditOutlined /></router-link> -->
-                  <EditOutlined @click="addPatient" />
-                </div>
+            <a-col :sm="24" :xs="24">
+              <div v-if="button == 1">
+                <div>
+                  <a-row :gutter="24">
+                    <a-col :sm="8" :xs="24">
+                      <div class="patientInfo">
+                        <div class="patientImg" @click="showModalCustom">
+                          <img
+                            src="../../assets/images/profile-4.jpg"
+                            alt="image"
+                          />
+                          <div class="info">
+                            <p>Jane Doe</p>
+                            <p>jane@gmail.com</p>
+                            <p>+343-3563-767</p>
+                            <p>132, My Street, Kingston, New York 12401.</p>
+                          </div>
+                          <EditOutlined @click="addPatient" />
+                        </div>
 
-                <p class="name">Jane Doe</p>
-                <div class="pat-profile">
-                  <div class="pat-profile-inner">
-                    <div class="thumb-head">Flag</div>
-                    <div class="thumb-desc">
-                      <span class="box redBgColor"></span>
-                      <span class="box yellowBgColor"></span>
-                    </div>
-                  </div>
-                  <div class="pat-profile-inner">
-                    <div class="thumb-head">
-                      Appointments <br />
-                      <PlusOutlined @click="showAddAppointmentModal" /><br />
-                    </div>
-                    <div class="thumb-desc">
-                      <router-link to="appointment-calendar">
-                        John Deer Dec 20th 2021 </router-link
-                      ><br />
-                      <router-link to="appointment-calendar">
+                        <!-- <p class="name">Jane Doe</p> -->
+                        <div class="pat-profile">
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">Flag</div>
+                            <div class="thumb-desc">
+                              <span class="box redBgColor"></span>
+                              <span class="box yellowBgColor"></span>
+                            </div>
+                          </div>
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">
+                              Appointments
+                              <PlusOutlined
+                                @click="showAddAppointmentModal"
+                              /><br />
+                            </div>
+                            <div class="thumb-desc">
+                              <router-link to="appointment-calendar">
+                                John Deer 20th 2021 (+1 more) </router-link
+                              ><br />
+                              <!-- <router-link to="appointment-calendar">
                         Matt K Dec 25th 2021</router-link
-                      >
-                    </div>
-                  </div>
-                  <div class="pat-profile-inner">
-                    <div class="thumb-head">
-                      Vital Summary <br /><PlusOutlined @click="showModal3" />
-                    </div>
-                    <div class="thumb-desc">
-                      <a href="javascript:void(0)"
-                        ><span @click="showBloodPressureDetailModal"
-                          >BP 120 / 78 Dec 15 6 PM</span
-                        ></a
-                      >
-                      <br />
-                      <!-- <PlusOutlined @click="showModal6" /> -->
-                      <a href="javascript:void(0)"
+                      > -->
+                            </div>
+                          </div>
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">
+                              Vital Summary <PlusOutlined @click="showModal3" />
+                            </div>
+                            <div class="thumb-desc">
+                              <a href="javascript:void(0)"
+                                ><span @click="showBloodPressureDetailModal"
+                                  >BP 120 / 78 Dec 15 6 PM</span
+                                ></a
+                              >
+                              <!-- <br /> -->
+                              <!-- <PlusOutlined @click="showModal6" /> -->
+                              <!-- <a href="javascript:void(0)"
                         ><span @click="showBloodOxygenDetailModal"
                           >SPO2 96 Dec 15 5 PM</span
                         ></a
                       >
-                      <br />
-                      <!-- <PlusOutlined @click="showModal5" /> -->
-                      <a href="javascript:void(0)"
+                      <br /> -->
+                              <!-- <PlusOutlined @click="showModal5" /> -->
+                              <!-- <a href="javascript:void(0)"
                         ><span @click="showBloodGlucoseDetailModal"
                           >Gulocose 86 Dec 14 4 PM</span
                         ></a
-                      >
-                    </div>
-                  </div>
-                  <div class="pat-profile-inner">
-                    <div class="thumb-head">
-                      Notes <br />
-                      <PlusOutlined @click="showAddNoteModal" />
-                    </div>
-                    <div class="thumb-desc">
-                      <a href="javascript:void(0)" @click="showNoteModal"
-                        >John Clinical Dec 15 2021</a
-                      ><br />
-                      <a href="javascript:void(0)" @click="showNoteModal"
+                      > -->
+                            </div>
+                          </div>
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">
+                              Notes
+                              <PlusOutlined @click="showAddNoteModal" />
+                            </div>
+                            <div class="thumb-desc">
+                              <a
+                                href="javascript:void(0)"
+                                @click="showNoteModal"
+                                >John Clinical Dec 15 2021</a
+                              >
+                              <!-- <a href="javascript:void(0)" @click="showNoteModal"
                         >Devin Reminder Dec 15 2021</a
                       ><br />
-                      <a href="javascript:void(0)" @click="showNoteModal">+ 6 More</a>
-                    </div>
-                  </div>
-                  <div class="pat-profile-inner">
-                    <div class="thumb-head">
-                      Documents <br /><PlusOutlined @click="showModal" />
-                    </div>
-                    <div class="thumb-desc">
-                      <a href="javascript:void(0)" @click="showDocumentModal">Program 1</a
-                      ><br />
-                      <a href="javascript:void(0)" @click="showDocumentModal"
-                        >Program 2</a
-                      >
-                    </div>
-                  </div>
-                  <div class="pat-profile-inner">
-                    <div class="thumb-head">
-                      Care Team <br /><PlusOutlined @click="showModal7" />
-                    </div>
-                    <div class="thumb-desc">
-                      <!-- <PlusOutlined @click="showModal7" /> -->
-                      <router-link to="corrdinator-summary"
-                        >John Smith (P) HT </router-link
-                      ><br />
-                      <!-- <PlusOutlined @click="showModal8" /> -->
-                      <router-link to="corrdinator-summary">Devin CC </router-link>
-                      <br />
-                      <!-- <PlusOutlined @click="showModal9" /> -->
-                      <router-link to="corrdinator-summary">Badger FC</router-link>
-                    </div>
-                  </div>
-                  <div class="pat-profile-inner">
-                    <div class="thumb-head">
-                      TimeLogs <br /><PlusOutlined @click="showModal1" />
-                    </div>
-                    <div class="thumb-desc">
-                      <a href="javascript:void(0)" @click="showTimeLogDetailModal"
-                        >Daily monitoring of vitals (Oct 25, 2021)</a
-                      ><br />
-                      <a href="javascript:void(0)" @click="showTimeLogDetailModal"
+                      <a href="javascript:void(0)" @click="showNoteModal"
+                        >+ 6 More</a
+                      > -->
+                            </div>
+                          </div>
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">
+                              Documents <PlusOutlined @click="showModal" />
+                            </div>
+                            <div class="thumb-desc">
+                              <a
+                                href="javascript:void(0)"
+                                @click="showDocumentModal"
+                                >Program 1</a
+                              >
+                            </div>
+                          </div>
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">
+                              Care Team <PlusOutlined @click="showModal7" />
+                            </div>
+                            <div class="thumb-desc">
+                              <!-- <PlusOutlined @click="showModal7" /> -->
+                              <router-link to="corrdinator-summary"
+                                >John Smith (P) HT </router-link
+                              ><br />
+                              <!-- <PlusOutlined @click="showModal8" /> -->
+                              <!-- <router-link to="corrdinator-summary"
+                        >Devin CC
+                      </router-link>
+                      <br /> -->
+                              <!-- <PlusOutlined @click="showModal9" /> -->
+                              <!-- <router-link to="corrdinator-summary"
+                        >Badger FC</router-link
+                      > -->
+                            </div>
+                          </div>
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">
+                              TimeLogs <PlusOutlined @click="showModal1" />
+                            </div>
+                            <div class="thumb-desc">
+                              <a
+                                href="javascript:void(0)"
+                                @click="showTimeLogDetailModal"
+                                >Daily monitoring of vitals (Oct 25, 2021)</a
+                              >
+                              <!-- <a
+                        href="javascript:void(0)"
+                        @click="showTimeLogDetailModal"
                         >Provider Order For Lab ( Oct 28, 2021)</a
-                      >
-                    </div>
-                  </div>
-                  <div class="pat-profile-inner">
-                    <div class="thumb-head">
-                      Devices <br /><PlusOutlined @click="showModal2" />
-                    </div>
-                    <div class="thumb-desc">
-                      <a href="javascript:void(0)" @click="showDeviceModal"
-                        >Blood Pressure(M-101)</a
-                      ><br />
-                      <a href="javascript:void(0)" @click="showDeviceModal"
+                      > -->
+                            </div>
+                          </div>
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">
+                              Devices <PlusOutlined @click="showModal2" />
+                            </div>
+                            <div class="thumb-desc">
+                              <a
+                                href="javascript:void(0)"
+                                @click="showDeviceModal"
+                                >Blood Pressure(M-101)</a
+                              >
+                              <!-- <a href="javascript:void(0)" @click="showDeviceModal"
                         >Oxymeter(M-102)</a
-                      >
-                    </div>
-                  </div>
+                      > -->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </a-col>
+                    <a-col :sm="16" :xs="24">
+                      <div class="thumbDesc patientTimeline">
+                        <a-tabs v-model:activeKey="activeKey">
+                          <a-tab-pane
+                            key="1"
+                            tab="Notifications"
+                            force-render
+                          ></a-tab-pane>
+                          <a-tab-pane key="2" tab="Visits"></a-tab-pane>
+                          <a-tab-pane key="3" tab="Notes"></a-tab-pane>
+                          <a-tab-pane key="4" tab="Appointments"></a-tab-pane>
+                          <a-tab-pane key="5" tab="Documents "></a-tab-pane>
+                          <a-tab-pane key="6" tab="Additional 1  "></a-tab-pane>
+                          <a-tab-pane key="7" tab="Additional 2 "></a-tab-pane>
+                        </a-tabs>
+                        <a-timeline>
+                          <a-timeline-item color="blue">
+                            <template #dot
+                              ><FolderOpenOutlined class="yellowIcon"
+                            /></template>
+                            <div class="timelineInner">
+                              <div class="timelineHeader">
+                                <div class="title">
+                                  <h4>Lorem Ipsum</h4>
+                                  <a-typography-text mark
+                                    >Read</a-typography-text
+                                  >
+                                  <span class="time">12:00 PM</span>
+                                </div>
+                                <div class="userImg">
+                                  <img
+                                    src="../../assets/images/profile-4.jpg"
+                                    alt="image"
+                                  />
+                                </div>
+                              </div>
+                              <div class="timelineBody">
+                                <div class="content">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit....
+                                  <a href="#">more</a>
+                                </div>
+                                <MailOutlined />
+                              </div>
+                            </div>
+                          </a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><HeatMapOutlined class="redIcon"
+                            /></template>
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Sit culpa assumenda quidem magnam
+                          </a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><ClockCircleOutlined class="orangeIcon"
+                            /></template>
+                            <div class="timelineInner">
+                              <div class="timelineHeader">
+                                <div class="title">
+                                  <h4>Lorem Ipsum</h4>
+                                  <a-typography-text mark
+                                    >Read</a-typography-text
+                                  >
+                                  <span class="time">12:00 PM</span>
+                                </div>
+                                <div class="userImg">
+                                  <img
+                                    src="../../assets/images/profile-4.jpg"
+                                    alt="image"
+                                  />
+                                </div>
+                              </div>
+                              <div class="timelineBody">
+                                <div class="content">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit....
+                                  <a href="#">more</a>
+                                </div>
+                                <MailOutlined />
+                              </div>
+                            </div>
+                          </a-timeline-item>
+                        </a-timeline>
+                      </div>
+                    </a-col>
+                  </a-row>
                 </div>
               </div>
-            </a-col>
-            <a-col :sm="16" :xs="24">
-              <div class="thumbDesc patientTimeline">
-                <a-timeline>
-                  <a-timeline-item>
-                    <template #dot><FolderOpenOutlined /></template>
 
-                    <a-tabs v-model:activeKey="activeKey">
-                      <a-tab-pane key="1" tab="Visits"></a-tab-pane>
-                      <a-tab-pane key="2" tab="Appointments" force-render></a-tab-pane>
-                      <a-tab-pane key="3" tab="Notes"></a-tab-pane>
-                      <a-tab-pane key="4" tab="Documents "></a-tab-pane>
-                      <a-tab-pane key="5" tab="Notifications"></a-tab-pane>
-                    </a-tabs>
-                  </a-timeline-item>
-                  <a-timeline-item color="blue">
-                    <template #dot><FilePdfOutlined class="yellowIcon" /></template>
-                    <div class="timelineInner">
-                      <div class="timelineHeader">
-                        <div class="title">
-                          <h4>Lorem Ipsum</h4>
-                          <a-typography-text mark>Read</a-typography-text>
-                          <span class="time">12:00 PM</span>
-                        </div>
-                        <div class="userImg">
-                          <img src="../../assets/images/profile-4.jpg" alt="image" />
-                        </div>
+              <div v-if="button == 2">
+                <div>
+                  <a-row :gutter="24">
+                    <a-col :sm="24" :xs="24">
+                      <div class="patientSummary">
+                          <img
+                            src="../../assets/images/profile-4.jpg"
+                            alt="image"
+                          />
+                          <div class="info">
+                            <h2>Jane Doe</h2>
+                            <p><a href="mailto:jane@gmail.com"><MailOutlined/> jane@gmail.com</a></p>
+                            <p> <a href="tel:1234567890"><PhoneOutlined :rotate="90"/> +343-3563-767</a></p>
+                            <p>132, My Street, Kingston, New York 12401.</p>
+                          </div>
+                          <EditOutlined @click="addPatient" />
                       </div>
-                      <div class="timelineBody">
-                        <div class="content">
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit....
-                          <a href="#">more</a>
-                        </div>
-                        <MailOutlined />
+                    </a-col>
+                    <a-col :sm="24" :xs="24">
+                      <div class="thumbDesc patientTimeline mt-28">
+                        <a-tabs v-model:activeKey="activeKey">
+                          <a-tab-pane key="5" tab="Notifications"></a-tab-pane>
+                          <a-tab-pane key="1" tab="Visits"></a-tab-pane>
+                          <a-tab-pane key="3" tab="Notes"></a-tab-pane>
+                          <a-tab-pane
+                            key="2"
+                            tab="Appointments"
+                            force-render
+                          ></a-tab-pane>
+
+                          <a-tab-pane key="4" tab="Documents "></a-tab-pane>
+                          <a-tab-pane key="6" tab="Additional 1  "></a-tab-pane>
+                          <a-tab-pane key="7" tab="Additional 2 "></a-tab-pane>
+                        </a-tabs>
+                        <a-timeline>
+                          <a-timeline-item color="blue">
+                            <template #dot
+                              ><FolderOpenOutlined class="yellowIcon"
+                            /></template>
+                            <div class="timelineInner">
+                              <div class="timelineHeader">
+                                <div class="title">
+                                  <h4>Lorem Ipsum</h4>
+                                  <a-typography-text mark
+                                    >Read</a-typography-text
+                                  >
+                                  <span class="time">12:00 PM</span>
+                                </div>
+                                <div class="userImg">
+                                  <img
+                                    src="../../assets/images/profile-4.jpg"
+                                    alt="image"
+                                  />
+                                </div>
+                              </div>
+                              <div class="timelineBody">
+                                <div class="content">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit....
+                                  <a href="#">more</a>
+                                </div>
+                                <MailOutlined />
+                              </div>
+                            </div>
+                          </a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><HeatMapOutlined class="redIcon"
+                            /></template>
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Sit culpa assumenda quidem magnam
+                          </a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><ClockCircleOutlined class="orangeIcon"
+                            /></template>
+                            <div class="timelineInner">
+                              <div class="timelineHeader">
+                                <div class="title">
+                                  <h4>Lorem Ipsum</h4>
+                                  <a-typography-text mark
+                                    >Read</a-typography-text
+                                  >
+                                  <span class="time">12:00 PM</span>
+                                </div>
+                                <div class="userImg">
+                                  <img
+                                    src="../../assets/images/profile-4.jpg"
+                                    alt="image"
+                                  />
+                                </div>
+                              </div>
+                              <div class="timelineBody">
+                                <div class="content">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit....
+                                  <a href="#">more</a>
+                                </div>
+                                <MailOutlined />
+                              </div>
+                            </div>
+                          </a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><BellOutlined class="yellowIcon"
+                            /></template>
+                            <div class="timelineInner">
+                              <div class="timelineHeader">
+                                <div class="title">
+                                  <h4>Lorem Ipsum</h4>
+                                  <a-typography-text mark
+                                    >Read</a-typography-text
+                                  >
+                                  <span class="time">12:00 PM</span>
+                                </div>
+                                <div class="userImg">
+                                  <img
+                                    src="../../assets/images/profile-4.jpg"
+                                    alt="image"
+                                  />
+                                </div>
+                              </div>
+                              <div class="timelineBody">
+                                <div class="content">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit....
+                                  <a href="#">more</a>
+                                </div>
+                                <MailOutlined />
+                              </div>
+                            </div>
+                          </a-timeline-item>
+                          <a-timeline-item class="dateOuter"
+                            ><template #dot
+                              ><ClockCircleOutlined class="orangeIcon"
+                            /></template>
+                            <div class="date">
+                              <span>Dec 12, 2021</span>
+                            </div></a-timeline-item
+                          >
+                          <a-timeline-item color="blue">
+                            <template #dot
+                              ><FilePdfOutlined class="yellowIcon" /></template
+                            >Lorem ipsum
+                            <div class="timelineInner">
+                              <div class="timelineHeader">
+                                <div class="title">
+                                  <h4>Lorem Ipsum</h4>
+                                  <a-typography-text mark
+                                    >Read</a-typography-text
+                                  >
+                                  <span class="time">12:00 PM</span>
+                                </div>
+                                <div class="userImg">
+                                  <img
+                                    src="../../assets/images/profile-4.jpg"
+                                    alt="image"
+                                  />
+                                </div>
+                              </div>
+                              <div class="timelineBody">
+                                <div class="content">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit....
+                                  <a href="#">more</a>
+                                </div>
+                                <MailOutlined />
+                              </div></div
+                          ></a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><HeatMapOutlined class="redIcon"
+                            /></template>
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Sit culpa assumenda quidem magnam fuga quaerat
+                            pariatur labore exercitationem voluptate iusto,
+                            repellat debitis quis itaque nulla numquam, fugiat
+                            quas ullam. Minus.
+                          </a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><ClockCircleOutlined class="orangeIcon"
+                            /></template>
+                            <div class="timelineInner">
+                              <div class="timelineHeader">
+                                <div class="title">
+                                  <h4>Lorem Ipsum</h4>
+                                  <a-typography-text mark
+                                    >Read</a-typography-text
+                                  >
+                                  <span class="time">12:00 PM</span>
+                                </div>
+                                <div class="userImg">
+                                  <img
+                                    src="../../assets/images/profile-4.jpg"
+                                    alt="image"
+                                  />
+                                </div>
+                              </div>
+                              <div class="timelineBody">
+                                <div class="content">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit....
+                                  <a href="#">more</a>
+                                </div>
+                                <MailOutlined />
+                              </div>
+                            </div>
+                          </a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><BellOutlined class="yellowIcon"
+                            /></template>
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Sit culpa assumenda quidem magnam fuga quaerat
+                            pariatur labore exercitationem voluptate iusto,
+                            repellat debitis quis itaque nulla numquam, fugiat
+                            quas ullam. Minus.
+                          </a-timeline-item>
+                        </a-timeline>
                       </div>
-                    </div>
-                  </a-timeline-item>
-                  <a-timeline-item color="red">
-                    <template #dot><HeatMapOutlined class="redIcon" /></template>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit culpa
-                    assumenda quidem magnam
-                  </a-timeline-item>
-                  <a-timeline-item color="red">
-                    <template #dot><ClockCircleOutlined class="orangeIcon" /></template>
-                    <div class="timelineInner">
-                      <div class="timelineHeader">
-                        <div class="title">
-                          <h4>Lorem Ipsum</h4>
-                          <a-typography-text mark>Read</a-typography-text>
-                          <span class="time">12:00 PM</span>
-                        </div>
-                        <div class="userImg">
-                          <img src="../../assets/images/profile-4.jpg" alt="image" />
-                        </div>
-                      </div>
-                      <div class="timelineBody">
-                        <div class="content">
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit....
-                          <a href="#">more</a>
-                        </div>
-                        <MailOutlined />
-                      </div>
-                    </div>
-                  </a-timeline-item>
-                  <a-timeline-item color="red">
-                    <template #dot><BellOutlined class="yellowIcon" /></template>
-                    <div class="timelineInner">
-                      <div class="timelineHeader">
-                        <div class="title">
-                          <h4>Lorem Ipsum</h4>
-                          <a-typography-text mark>Read</a-typography-text>
-                          <span class="time">12:00 PM</span>
-                        </div>
-                        <div class="userImg">
-                          <img src="../../assets/images/profile-4.jpg" alt="image" />
-                        </div>
-                      </div>
-                      <div class="timelineBody">
-                        <div class="content">
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit....
-                          <a href="#">more</a>
-                        </div>
-                        <MailOutlined />
-                      </div>
-                    </div>
-                  </a-timeline-item>
-                  <a-timeline-item class="dateOuter"
-                    ><template #dot><ClockCircleOutlined class="orangeIcon" /></template>
-                    <div class="date">
-                      <span>Dec 12, 2021</span>
-                    </div></a-timeline-item
-                  >
-                  <a-timeline-item color="blue">
-                    <template #dot><FilePdfOutlined class="yellowIcon" /></template>Lorem
-                    ipsum
-                    <div class="timelineInner">
-                      <div class="timelineHeader">
-                        <div class="title">
-                          <h4>Lorem Ipsum</h4>
-                          <a-typography-text mark>Read</a-typography-text>
-                          <span class="time">12:00 PM</span>
-                        </div>
-                        <div class="userImg">
-                          <img src="../../assets/images/profile-4.jpg" alt="image" />
-                        </div>
-                      </div>
-                      <div class="timelineBody">
-                        <div class="content">
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit....
-                          <a href="#">more</a>
-                        </div>
-                        <MailOutlined />
-                      </div></div
-                  ></a-timeline-item>
-                  <a-timeline-item color="red">
-                    <template #dot><HeatMapOutlined class="redIcon" /></template>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit culpa
-                    assumenda quidem magnam fuga quaerat pariatur labore exercitationem
-                    voluptate iusto, repellat debitis quis itaque nulla numquam, fugiat
-                    quas ullam. Minus.
-                  </a-timeline-item>
-                  <a-timeline-item color="red">
-                    <template #dot><ClockCircleOutlined class="orangeIcon" /></template>
-                    <div class="timelineInner">
-                      <div class="timelineHeader">
-                        <div class="title">
-                          <h4>Lorem Ipsum</h4>
-                          <a-typography-text mark>Read</a-typography-text>
-                          <span class="time">12:00 PM</span>
-                        </div>
-                        <div class="userImg">
-                          <img src="../../assets/images/profile-4.jpg" alt="image" />
-                        </div>
-                      </div>
-                      <div class="timelineBody">
-                        <div class="content">
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit....
-                          <a href="#">more</a>
-                        </div>
-                        <MailOutlined />
-                      </div>
-                    </div>
-                  </a-timeline-item>
-                  <a-timeline-item color="red">
-                    <template #dot><BellOutlined class="yellowIcon" /></template>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit culpa
-                    assumenda quidem magnam fuga quaerat pariatur labore exercitationem
-                    voluptate iusto, repellat debitis quis itaque nulla numquam, fugiat
-                    quas ullam. Minus.
-                  </a-timeline-item>
-                </a-timeline>
+                    </a-col>
+                  </a-row>
+                </div>
               </div>
-            </a-col>
-          </a-row>
-          <a-row :gutter="24">
-            <a-col :sm="24" :xs="24">
-              <div class="summary-tabs">
-                <a-tabs v-model:activeKey="activeKey">
-                  <a-tab-pane key="1" tab="Care Plan">Content of Tab Pane 1</a-tab-pane>
-                  <a-tab-pane key="2" tab="Patient Vitals" force-render>
+
+              <div v-if="button == 3">
+                <a-row>
+                  <a-col :sm="24" :xs="24">
+                    <div class="patientSummary">
+                          <img
+                            src="../../assets/images/profile-4.jpg"
+                            alt="image"
+                          />
+                          <div class="info">
+                            <h2>Jane Doe</h2>
+                            <p><a href="mailto:jane@gmail.com"><MailOutlined/> jane@gmail.com</a></p>
+                            <p> <a href="tel:1234567890"><PhoneOutlined :rotate="90"/> +343-3563-767</a></p>
+                            <p>132, My Street, Kingston, New York 12401.</p>
+                          </div>
+                          <EditOutlined @click="addPatient" />
+                      </div>
+                  </a-col>
+                </a-row>
+                <div>Care Plan</div>
+              </div>
+
+              <div v-if="button == 4">
+                <div>
+                  <a-row :gutter="24">
+                    <a-col :sm="24" :xs="24">
+                      <div class="patientSummary">
+                          <img
+                            src="../../assets/images/profile-4.jpg"
+                            alt="image"
+                          />
+                          <div class="info">
+                            <h2>Jane Doe</h2>
+                            <p><a href="mailto:jane@gmail.com"><MailOutlined/> jane@gmail.com</a></p>
+                            <p> <a href="tel:1234567890"><PhoneOutlined :rotate="90"/> +343-3563-767</a></p>
+                            <p>132, My Street, Kingston, New York 12401.</p>
+                          </div>
+                          <EditOutlined @click="addPatient" />
+                      </div>
+                    </a-col>
+                  </a-row>
+                  <div class="patientsVitals">
                     <a-row :gutter="24">
                       <a-col :sm="12" :xs="24" class="mb-24">
                         <a-card title="Blood Pressure">
                           <a-tabs v-model:activeKey="activeKey1">
-                            <a-tab-pane key="7" tab="Graph">
-                              <apexchart
-                                type="area"
-                                height="350"
-                                :options="chartOptions"
-                                :series="series"
-                              ></apexchart>
-                            </a-tab-pane>
+                            
                             <a-tab-pane key="8" tab="Table" force-render>
-                              <div class="text-right mb-24">
-                                <a-button class="primaryBtn">Export to Excel</a-button>
-                              </div>
+                              <!-- <div class="text-right mb-24">
+                                <a-button class="primaryBtn"
+                                  >Export to Excel</a-button
+                                >
+                              </div> -->
                               <a-table
                                 :columns="columns4"
                                 :data-source="data4"
                                 :pagination="false"
                                 @change="onChange"
                                 ><template #value="text">
-                                  <span class="dangerValue">{{ text.text }}</span>
+                                  <span class="dangerValue">{{
+                                    text.text
+                                  }}</span>
                                 </template>
                               </a-table>
+                            </a-tab-pane>
+                            <a-tab-pane key="7" tab="Graph">
+                              <apexchart
+                                type="area"
+                                height="210"
+                                :options="chartOptions"
+                                :series="series"
+                              ></apexchart>
                             </a-tab-pane>
                           </a-tabs>
                           <template #extra
@@ -348,24 +634,27 @@
                       <a-col :sm="12" :xs="24" class="mb-24">
                         <a-card title="Pulse">
                           <a-tabs v-model:activeKey="activeKey2">
-                            <a-tab-pane key="9" tab="Graph" force-render>
-                              <apexchart
-                                type="area"
-                                height="350"
-                                :options="chartOptions"
-                                :series="series"
-                              ></apexchart>
-                            </a-tab-pane>
-                            <a-tab-pane key="10" tab="Table">
-                              <div class="text-right mb-24">
-                                <a-button class="primaryBtn">Export to Excel</a-button>
-                              </div>
+                            
+                            <a-tab-pane key="10" tab="Table" force-render>
+                              <!-- <div class="text-right mb-24">
+                                <a-button class="primaryBtn"
+                                  >Export to Excel</a-button
+                                >
+                              </div> -->
                               <a-table
                                 :columns="columns5"
                                 :data-source="data5"
                                 :pagination="false"
                                 @change="onChange"
                               />
+                            </a-tab-pane>
+                            <a-tab-pane key="9" tab="Graph">
+                              <apexchart
+                                type="area"
+                                height="210"
+                                :options="chartOptions"
+                                :series="series"
+                              ></apexchart>
                             </a-tab-pane>
                           </a-tabs>
                           <template #extra
@@ -379,24 +668,27 @@
                       <a-col :sm="12" :xs="24" class="mb-24">
                         <a-card title="Blood Glucose">
                           <a-tabs v-model:activeKey="activeKey3">
-                            <a-tab-pane key="11" tab="Graph">
-                              <apexchart
-                                type="area"
-                                height="350"
-                                :options="chartOptions"
-                                :series="series"
-                              ></apexchart>
-                            </a-tab-pane>
+                            
                             <a-tab-pane key="12" tab="Table" force-render>
-                              <div class="text-right mb-24">
-                                <a-button class="primaryBtn">Export to Excel</a-button>
-                              </div>
+                              <!-- <div class="text-right mb-24">
+                                <a-button class="primaryBtn"
+                                  >Export to Excel</a-button
+                                >
+                              </div> -->
                               <a-table
                                 :columns="columns6"
                                 :data-source="data6"
                                 :pagination="false"
                                 @change="onChange"
                               />
+                            </a-tab-pane>
+                            <a-tab-pane key="11" tab="Graph">
+                              <apexchart
+                                type="area"
+                                height="210"
+                                :options="chartOptions"
+                                :series="series"
+                              ></apexchart>
                             </a-tab-pane>
                           </a-tabs>
                           <template #extra
@@ -410,24 +702,27 @@
                       <a-col :sm="12" :xs="24" class="mb-24">
                         <a-card title="Blood Oxygen Saturation">
                           <a-tabs v-model:activeKey="activeKey4">
-                            <a-tab-pane key="13" tab="Graph">
-                              <apexchart
-                                type="area"
-                                height="350"
-                                :options="chartOptions"
-                                :series="series"
-                              ></apexchart>
-                            </a-tab-pane>
+                            
                             <a-tab-pane key="14" tab="Table" force-render>
-                              <div class="text-right mb-24">
-                                <a-button class="primaryBtn">Export to Excel</a-button>
-                              </div>
+                              <!-- <div class="text-right mb-24">
+                                <a-button class="primaryBtn"
+                                  >Export to Excel</a-button
+                                >
+                              </div> -->
                               <a-table
                                 :columns="columns6"
                                 :data-source="data6"
                                 :pagination="false"
                                 @change="onChange"
                               />
+                            </a-tab-pane>
+                            <a-tab-pane key="13" tab="Graph">
+                              <apexchart
+                                type="area"
+                                height="210"
+                                :options="chartOptions"
+                                :series="series"
+                              ></apexchart>
                             </a-tab-pane>
                           </a-tabs>
                           <template #extra
@@ -439,113 +734,8 @@
                         </a-card>
                       </a-col>
                     </a-row>
-                  </a-tab-pane>
-                  <!-- <a-tab-pane key="3" tab="Documents">
-                    <a-row :gutter="24">
-                      <a-col :sm="24" :xs="24">
-                        <div class="common-btn mb-24">
-                          <a-button class="btn blackBtn" @click="showModal"
-                            ><PlusOutlined
-                          /></a-button>
-                        </div>
-                      </a-col>
-                      <a-col :sm="24" :xs="24">
-                        <a-table
-                          :columns="columns"
-                          :data-source="data"
-                          :scroll="{ x: 900 }"
-                          :pagination="false"
-                          @change="onChange"
-                        >
-                          <template #action>
-                            <a class="icons"><EditOutlined /></a>
-                            <a class="icons"><DeleteOutlined /></a>
-                          </template>
-                        </a-table>
-                      </a-col>
-                    </a-row>
-                  </a-tab-pane> -->
-                  <!-- <a-tab-pane key="4" tab="Time Logs">
-                    <a-row :gutter="24">
-                      <a-col :sm="24" :xs="24">
-                        <div class="common-btn mb-24">
-                          <a-button class="btn blackBtn" @click="showModal1"
-                            ><PlusOutlined
-                          /></a-button>
-                        </div>
-                      </a-col>
-                      <a-col :sm="24" :xs="24">
-                        <a-table
-                          :columns="columns1"
-                          :data-source="data1"
-                          :scroll="{ x: 900 }"
-                          :pagination="false"
-                          @change="onChange"
-                        >
-                          <template #action>
-                            <a class="icons"><EditOutlined /></a>
-                            <a class="icons"><DeleteOutlined /></a>
-                          </template>
-                        </a-table>
-                      </a-col>
-                    </a-row>
-                  </a-tab-pane> -->
-                  <!-- <a-tab-pane key="5" tab="Devices">
-                    <a-row :gutter="24">
-                      <a-col :sm="24" :xs="24">
-                        <div class="common-btn mb-24">
-                          <a-button class="btn blackBtn" @click="showModal2"
-                            ><PlusOutlined
-                          /></a-button>
-                        </div>
-                      </a-col>
-                      <a-col :sm="24" :xs="24">
-                        <a-table
-                          :columns="columns2"
-                          :data-source="data2"
-                          :scroll="{ x: 900 }"
-                          :pagination="false"
-                          @change="onChange"
-                        >
-                          <template #active>
-                            <a-switch v-model:checked="checked" />
-                          </template>
-                          <template #action>
-                            <a class="icons"><DeleteOutlined /></a>
-                          </template>
-                        </a-table>
-                      </a-col>
-                    </a-row>
-                  </a-tab-pane> -->
-                  <!-- <a-tab-pane key="6" tab="Notes">
-                    <a-row :gutter="24">
-                      <a-col :sm="24" :xs="24">
-                        <div class="common-btn mb-24">
-                          <a-button class="btn blackBtn" @click="showAddNoteModal"
-                            ><PlusOutlined
-                          /></a-button>
-                        </div>
-                      </a-col>
-                      <a-col :sm="24" :xs="24">
-                        <a-table
-                          :columns="columns3"
-                          :data-source="data3"
-                          :pagination="false"
-                          @change="onChange"
-                        >
-                          <template #flags="{ text }">
-                            <span class="box" :class="text"></span>
-                            <span
-                              class="box"
-                              :class="(text = text.match(/yellowBgColor/g))"
-                              v-if="text.match(/yellowBgColor/g)"
-                            ></span>
-                          </template>
-                        </a-table>
-                      </a-col>
-                    </a-row>
-                  </a-tab-pane> -->
-                </a-tabs>
+                  </div>
+                </div>
               </div>
             </a-col>
           </a-row>
@@ -569,7 +759,10 @@
     <!--Time Logs-->
     <TimeLogsDetail v-model:visible="timelogsvisible" @ok="handleOk" />
     <!-- Blood Pressure Detail Modal  -->
-    <BloodPressureDetail v-model:visible="bloodpressurevisible" @ok="handleOk" />
+    <BloodPressureDetail
+      v-model:visible="bloodpressurevisible"
+      @ok="handleOk"
+    />
     <!-- Blood Oxygen Saturation Detail Modal  -->
     <BloodOxygenDetail v-model:visible="bloodoxygenvisible" @ok="handleOk" />
     <!-- Blood Glucose Detail Modal  -->
@@ -634,6 +827,7 @@ import {
   FilePdfOutlined,
   BellOutlined,
   MailOutlined,
+  PhoneOutlined
 } from "@ant-design/icons-vue";
 const OPTIONSTAG = ["Manger", "Billing Admin", "User Admin"];
 const value = ref(dayjs("12:08", "HH:mm"));
@@ -723,16 +917,14 @@ const data3 = [
   {
     key: "1",
     date: "Nov 10, 2021",
-    note:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore voluptatibus dolore, vel error harum porro totam eveniet modi iusto eos, dolorum provident aliquid earum corporis veritatis? Officiis molestiae amet ullam?",
+    note: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore voluptatibus dolore, vel error harum porro totam eveniet modi iusto eos, dolorum provident aliquid earum corporis veritatis? Officiis molestiae amet ullam?",
     category: "Admin",
     flag: "blueBgColor",
   },
   {
     key: "2",
     date: "Nov 11, 2021",
-    note:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore voluptatibus dolore, vel error harum porro totam eveniet modi iusto eos, dolorum provident aliquid earum corporis veritatis? Officiis molestiae amet ullam?",
+    note: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore voluptatibus dolore, vel error harum porro totam eveniet modi iusto eos, dolorum provident aliquid earum corporis veritatis? Officiis molestiae amet ullam?",
     category: "Clinical",
     flag: "redBgColor",
   },
@@ -907,6 +1099,7 @@ export default {
     Header,
     Sidebar,
     EditOutlined,
+    PhoneOutlined,
     PlusOutlined,
     ClockCircleOutlined,
     HeatMapOutlined,
@@ -940,7 +1133,7 @@ export default {
     return {
       chartOptions: {
         chart: {
-          height: 350,
+          height: 210,
           type: "area",
         },
         dataLabels: {
@@ -1108,6 +1301,21 @@ export default {
       PatientsModal.value = true;
     };
 
+    const button = ref(1);
+
+    function showButton1() {
+      button.value = 1;
+    }
+    function showButton2() {
+      button.value = 2;
+    }
+    function showButton3() {
+      button.value = 3;
+    }
+    function showButton4() {
+      button.value = 4;
+    }
+
     return {
       handleOkcustom,
       showModalCustom,
@@ -1181,10 +1389,10 @@ export default {
         console.log("params", pagination, filters, sorter, extra);
       },
       activeKey: ref("2"),
-      activeKey1: ref("7"),
-      activeKey2: ref("9"),
-      activeKey3: ref("11"),
-      activeKey4: ref("13"),
+      activeKey1: ref("8"),
+      activeKey2: ref("10"),
+      activeKey3: ref("12"),
+      activeKey4: ref("14"),
       value1: ref(),
       size: ref("large"),
       value3: ref([]),
@@ -1194,6 +1402,11 @@ export default {
       onClose,
       PatientsModal,
       addPatient,
+      button,
+      showButton1,
+      showButton2,
+      showButton3,
+      showButton4,
     };
   },
 };

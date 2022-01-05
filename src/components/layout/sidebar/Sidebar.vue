@@ -56,7 +56,7 @@
         <router-link to="/thresholds"
           ><a-menu-item
             ><FileTextOutlined /><span class="menuItem"
-              >Thresholds</span
+              >General Parameters</span
             ></a-menu-item
           ></router-link
         >

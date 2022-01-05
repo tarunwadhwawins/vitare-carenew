@@ -106,6 +106,53 @@
                   </a-calendar>
                 </div>
               </div>
+              <div class="physicians">
+                 <a-row :gutter="16">
+                   <a-col :span="24">
+                    <div class="phyInner">
+                      <h2>Physicians</h2>
+                    </div>
+                   </a-col>
+                  <a-col :span="12">
+                    <div class="phyInner">
+                     <a-avatar :size="80" src="http://ditstekdemo.com/ditstek-care/img/profile-1.jpg" />
+                     <span class="checkIcon one"><CheckOutlined /></span>
+                     <p>Steve Smith</p>
+                     </div>
+                  </a-col>
+                  <a-col :span="12">
+                    <div class="phyInner">
+                     <a-avatar :size="80" src="http://ditstekdemo.com/ditstek-care/img/profile-4.jpg" />
+                     <span class="checkIcon two"><CheckOutlined /></span>
+                     <p>Robert Henry</p>
+                    </div>
+                  </a-col>
+                  <a-col :span="12">
+                    <div class="phyInner">
+                     <a-avatar :size="80" src="http://ditstekdemo.com/ditstek-care/img/profile-1.jpg" />
+                     <span class="checkIcon three"><CheckOutlined /></span>
+                     <p>Smith Joseph</p>
+                     </div>
+                  </a-col>
+                  <a-col :span="12">
+                    <div class="phyInner">
+                     <a-avatar :size="80" src="http://ditstekdemo.com/ditstek-care/img/profile-4.jpg" />
+                     <span class="checkIcon four"><CheckOutlined /></span>
+                     <p>Jane Doe</p>
+                    </div>
+                  </a-col>
+                  <a-col :span="12">
+                    <div class="phyInner" @click="showModal2">
+                     <a-avatar :size="80" title="Add Physician">
+                       <template #icon>
+                        <PlusOutlined />
+                      </template>
+                     </a-avatar>
+                    </div>
+                  </a-col>
+                 </a-row>
+                 
+              </div>
             </a-col>
             <a-col :md="toggle == false ? 24 : 18" :sm="24" :xs="24">
               <a-tabs v-model:activeKey="activeKey">
@@ -2344,6 +2391,7 @@
     </a-layout>
     <!--modal-->
     <AddAppointment v-model:visible="appointmentModal" @ok="handleOk" />
+    <AddPhysician v-model:visible="physicianModal" @ok="handleOk2" />
     <!---->
   </div>
 </template>
@@ -2352,15 +2400,19 @@
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
 import AddAppointment from "@/components/modals/AddAppointment";
+import AddPhysician from "@/components/modals/AddPhysician";
 
 import { defineComponent, ref } from "vue";
-import { FileAddOutlined } from "@ant-design/icons-vue";
+import { FileAddOutlined, CheckOutlined, PlusOutlined } from "@ant-design/icons-vue";
 export default {
   components: {
     Header,
     Sidebar,
     AddAppointment,
     FileAddOutlined,
+    CheckOutlined,
+    PlusOutlined,
+    AddPhysician
   },
 
   setup() {
@@ -2397,6 +2449,15 @@ export default {
       appointmentModal.value = false;
     };
 
+    const physicianModal = ref(false);
+    const showModal2 = () => {
+      physicianModal.value = true;
+    };
+    const handleOk2 = (e) => {
+      console.log(e);
+      physicianModal.value = false;
+    };
+
     return {
       value1: ref(),
       toggle,
@@ -2408,6 +2469,9 @@ export default {
       appointmentModal,
       handleOk,
       showModal,
+      handleOk2,
+      showModal2,
+      physicianModal,
     };
   },
 };

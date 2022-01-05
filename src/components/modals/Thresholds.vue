@@ -1,9 +1,9 @@
 <template>
-  <a-modal width="1000px" title="Thresholds" centered>
+  <a-modal width="1000px" title="General Parameters" centered>
     <a-row :gutter="24">
       <a-col :sm="6" :xs="24">
         <div class="form-group">
-          <label>Threshold Group</label>
+          <label>General Parameters Group</label>
           <a-input v-model="value" size="large" />
         </div>
       </a-col>
@@ -18,7 +18,8 @@
             @focus="focus"
             @change="handleChange"
           >
-            <a-select-option value="Blood">Blood Glucose</a-select-option>
+            <a-select-option value="Blood">Blood Glucose Fasting </a-select-option>
+            <a-select-option value="NonFastBlood">Blood Glucose Non-Fasting </a-select-option>
             <a-select-option value="Systolic">Systolic BP</a-select-option>
             <a-select-option value="Diastolic">Diastolic BP</a-select-option>
             <a-select-option value="Pulse">Pulse (BP Cuff)</a-select-option>
@@ -30,13 +31,15 @@
       <a-col :sm="6" :xs="24">
         <div class="form-group">
           <label>High Limit </label>
-          <a-input v-model="value" size="large" />
+          <!-- <a-input v-model="value" size="large" /> -->
+          <a-input-number v-model:value="value" :min="0" :max="10" :step="0.1" size="large" style="width:100%"/>
         </div>
       </a-col>
       <a-col :sm="6" :xs="24">
         <div class="form-group">
           <label>Low Limit </label>
-          <a-input v-model="value" size="large" />
+          <!-- <a-input v-model="value" size="large" /> -->
+          <a-input-number v-model:value="value2" :min="0" :max="10" :step="0.1" size="large" style="width:100%"/>
         </div>
       </a-col>
     </a-row>
@@ -50,6 +53,8 @@ const OPTIONS = ["Jane Doe", "Steve Smith", "Joseph William"];
 const OPTIONSTAG = ["Admin", "Clinical", "Office", "Personal"];
 export default {
   setup() {
+     const value = ref();
+     const value2 = ref();
     const selectedItems = ref(["Jane Doe"]);
     const filteredOptions = computed(() =>
       OPTIONS.filter((o) => !selectedItems.value.includes(o))
@@ -65,6 +70,8 @@ export default {
       filteredOptionsForTag,
       selectedItemsForTag,
       size: ref("large"),
+      value,
+      value2,
     };
   },
 };

@@ -12,11 +12,11 @@
             <a-row>
               <a-col :span="24">
                 <h2 class="pageTittle">
-                  Thresholds
+                  General Parameters
 
                   <div class="commonBtn">
                     <a-button class="btn primaryBtn" @click="showModal"
-                      >Add New Threshold</a-button
+                      >Add New Parameters</a-button
                     >
                   </div>
                 </h2>
@@ -92,7 +92,7 @@ const renderContent = ({ text, index }) => {
 };
 const columns = [
   {
-    title: "Threshold Group",
+    title: "General Parameters Group",
     dataIndex: "group",
     sorter: {
       compare: (a, b) => a.template - b.template,
@@ -105,7 +105,7 @@ const columns = [
       };
 
       if (index === 0) {
-        obj.props.rowSpan = 4;
+        obj.props.rowSpan = 5;
       } // These two are merged into above cell
 
       if (index === 1) {
@@ -118,6 +118,9 @@ const columns = [
       if (index === 3) {
         obj.props.rowSpan = 0;
       }
+      if (index === 4) {
+        obj.props.rowSpan = 0;
+      }
 
       // if (index === 4) {
       //   obj.props.colSpan = 0;
@@ -126,27 +129,27 @@ const columns = [
       //   obj.props.colSpan = 0;
       // }
 
-      if (index === 4) {
+      if (index === 5) {
         obj.props.rowSpan = 3;
       } //
 
-      if (index === 5) {
-        obj.props.rowSpan = 0;
-      }
-
       if (index === 6) {
-        obj.props.colSpan = 0;
+        obj.props.rowSpan = 0;
       }
 
       if (index === 7) {
+        obj.props.colSpan = 0;
+      }
+
+      if (index === 8) {
         obj.props.rowSpan = 3;
       } //
 
-      if (index === 8) {
+      if (index === 9) {
         obj.props.rowSpan = 0;
       }
 
-      if (index === 9) {
+      if (index === 10) {
         obj.props.colSpan = 0;
       }
       return obj;
@@ -192,7 +195,7 @@ const data = [
   {
     key: "1",
     group: "Group One",
-    type: "Blood Glucose",
+    type: "Blood Glucose Non-Fasting",
     high: "120",
     low: "85",
     action: "",
@@ -200,21 +203,29 @@ const data = [
   {
     key: "2",
     group: "Group One",
+    type: "Blood Glucose Fasting",
+    high: "80",
+    low: "60",
+    action: "",
+  },
+  {
+    key: "3",
+    group: "Group One",
     type: "Systolic BP",
     high: "90",
     low: "80",
     action: "",
   },
   {
-    key: "3",
+    key: "4",
     group: "Group One",
     type: "Weight",
-    high: "80",
-    low: "60",
+    high: "80.50",
+    low: "60.20",
     action: "",
   },
   {
-    key: "4",
+    key: "5",
     group: "Group One",
     type: "Spo2",
     high: "100",
@@ -222,7 +233,7 @@ const data = [
     action: "",
   },
   {
-    key: "5",
+    key: "6",
     group: "Group Two",
     type: "Blood Glucose",
     high: "120",
@@ -230,7 +241,7 @@ const data = [
     action: "",
   },
   {
-    key: "6",
+    key: "7",
     group: "Group Two",
     type: "Systolic BP",
     high: "90",
@@ -238,7 +249,7 @@ const data = [
     action: "",
   },
   {
-    key: "7",
+    key: "8",
     group: "Group Two",
     type: "Diastolic BP",
     high: "120",
@@ -246,7 +257,7 @@ const data = [
     action: "",
   },
   {
-    key: "8",
+    key: "9",
     group: "Group Three",
     type: "Pulse (BP Cuff)",
     high: "80",
@@ -254,15 +265,15 @@ const data = [
     action: "",
   },
   {
-    key: "9",
+    key: "10",
     group: "Group Three",
     type: "Weight",
-    high: "80",
-    low: "60",
+    high: "70.50",
+    low: "55.80",
     action: "",
   },
   {
-    key: "10",
+    key: "11",
     group: "Group Three",
     type: "Spo2",
     high: "100",

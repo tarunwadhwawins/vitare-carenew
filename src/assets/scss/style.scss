@@ -52,6 +52,23 @@
                 }
             }
         }
+        .ant-btn {
+            border-radius: 0;
+            border: none;
+            border-right: 1px solid $gray-color-300;
+            background-color: #e0dfdf;
+            color: #000;
+            &:last-child {
+                border-right: none;
+            }
+            &.active {
+                background-color: #777;
+                color: #fff;
+            }
+            &::after {
+                display: none;
+            }
+        }
     }
 }
 /*--tiles--*/
@@ -438,10 +455,73 @@
     }
 }
 
+.physicians {
+    background-color: $gray-color-100;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 15px 0 0;
+    .phyInner {
+        text-align: center;
+        position: relative;
+        .checkIcon {
+            position: absolute;
+            right: 15px;
+            bottom: 45px;
+            padding: 5px;
+            background-color: #fff;
+            border-radius: 50%;
+            &.one {
+                .anticon {
+                    background-color: #111;
+                }
+            }
+            &.two {
+                .anticon {
+                    background-color: #8e60ff;
+                }
+            }
+            &.three {
+                .anticon {
+                    background-color: #ff6061;
+                }
+            }
+            &.four {
+                .anticon {
+                    background-color: #ffa800;
+                }
+            }
+            .anticon {
+                height: 20px;
+                width: 20px;
+                color: #fff;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+            }
+        }
+        p {
+            padding: 5px 0 15px;
+        }
+        h2 {
+            padding: 0 0 15px;
+        }
+        .ant-avatar-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+    }
+}
+
 /*----*/
 .summary-tabs {
     background-color: #fff;
     padding: 15px;
+    margin: 0 0 30px;
 }
 
 .patientInfo {
@@ -449,36 +529,80 @@
     background-color: #fff;
     position: relative;
     z-index: 0;
-    padding: 25px 0 0;
+    // padding: 25px 0 0;
     &:before {
-        content: "";
+        // content: "";
         top: 0;
         left: 0;
         right: 0;
         background-color: #d9d9d9;
-        height: 80px;
+        height: 120px;
         position: absolute;
         z-index: -1;
     }
     .patientImg {
         margin: 0 auto;
-        text-align: center;
         position: relative;
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        background-color: #d9d9d9;
         img {
-            width: 100px;
-            height: 100px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             object-fit: cover;
+            margin: 0 15px 0 0;
         }
         .anticon {
             position: absolute;
-            top: 0;
+            top: 15px;
+            right: 15px;
+        }
+        .info {
         }
     }
     .name {
         text-align: center;
         font-size: 18px;
         padding: 10px 0;
+    }
+}
+.patientSummary {
+    display: flex;
+    background-color: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+    align-items: center;
+    img {
+        height: 120px;
+        width: 120px;
+        object-fit: cover;
+    }
+    .info {
+        padding: 0 0 0 15px;
+        h2 {
+            font-size: 25px;
+            color: $primary-color;
+        }
+        p {
+            font-family: $font-family-semi-bold;
+            color: $black-color;
+            a {
+                display: flex;
+                align-items: center;
+                padding: 0 0 5px;
+                .anticon {
+                    margin: 0 5px 0 0;
+                }
+            }
+        }
+    } 
+    .anticon-edit {
+        position: absolute;
+        right: 15px;
+        top: 15px;
     }
 }
 
@@ -674,16 +798,31 @@
         }
     }
 }
-
-.patientTimeline {
-    height: 720px;
+.patientsVitals {
+    margin: 20px 0 0;
+    height: 450px;
     overflow: auto;
-    padding: 20px;
+    padding: 0 15px;
+    .ant-card {
+        .ant-card-body {
+            padding: 5px 15px;
+        }
+    }
+}
+.patientTimeline {
     // background-color: #fff;
     .ant-tabs {
         background-color: #fff;
+        .ant-tabs-nav {
+            .ant-tabs-tab {
+                margin: 0;
+            }
+        }
     }
     .ant-timeline {
+        padding: 40px 20px 0;
+        height: 385px;
+        overflow: auto;
         .dateOuter {
             padding: 0 0 35px;
             .ant-timeline-item-content {
@@ -968,7 +1107,6 @@
             }
             p {
                 font-size: 13px;
-                
             }
         }
         .callTime {
