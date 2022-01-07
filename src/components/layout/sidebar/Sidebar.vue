@@ -67,6 +67,13 @@
             ></a-menu-item
           ></router-link
         >
+        <router-link to="/reset-password"
+          ><a-menu-item
+            ><UnlockOutlined /><span class="menuItem"
+              >Reset Password</span
+            ></a-menu-item
+          ></router-link
+        >
         <router-link to="/cpt-codes"
           ><a-menu-item
             ><CalendarOutlined /><span class="menuItem"
@@ -87,6 +94,7 @@ import {
   UserOutlined,
   CalendarOutlined,
   FileTextOutlined,
+  UnlockOutlined
 } from "@ant-design/icons-vue";
 export default defineComponent({
   components: {
@@ -95,6 +103,7 @@ export default defineComponent({
     UserOutlined,
     CalendarOutlined,
     FileTextOutlined,
+    UnlockOutlined
   },
 
   setup() {

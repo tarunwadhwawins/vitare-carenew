@@ -12,17 +12,24 @@
             <a-col :span="24">
               <h2 class="pageTittle">
                 Dashboard
+
                 <div class="filter">
-                  <button class="btn active">
-                    <span class="btn-content">Day</span>
-                  </button>
-                  <button class="btn">
-                    <span class="btn-content">Week</span>
-                  </button>
-                  <button class="btn">
-                    <span class="btn-content">Month</span>
-                  </button>
-                </div>
+                  <a-button
+                    @click="showButton1"
+                    :class="button == 1 ? 'active' : ''"
+                    >Day</a-button
+                  >
+                  <a-button
+                    @click="showButton2"
+                    :class="button == 2 ? 'active' : ''"
+                    >Month</a-button
+                  >
+                  <a-button
+                    @click="showButton3"
+                    :class="button == 3 ? 'active' : ''"
+                    >Year</a-button
+                  >
+                </div>                
               </h2>
             </a-col>
             <a-col :span="24">
@@ -210,6 +217,8 @@ import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
 import { useRouter } from "vue-router";
 import { provide } from "vue";
+import { ref, computed } from "vue";
+
 // import { UserOutlined } from "@ant-design/icons-vue";
 const columns4 = [
   {
@@ -773,6 +782,18 @@ export default {
       //     path: '/'
       // })
     }
+
+    const button = ref(1);
+
+    function showButton1() {
+      button.value = 1;
+    }
+    function showButton2() {
+      button.value = 2;
+    }
+    function showButton3() {
+      button.value = 3;
+    }
     return {
       logout,
       data4,
@@ -787,6 +808,10 @@ export default {
       clickHandler4,
       clickHandler5,
       clickHandler6,
+       button,
+      showButton1,
+      showButton2,
+      showButton3,
     };
   },
 };

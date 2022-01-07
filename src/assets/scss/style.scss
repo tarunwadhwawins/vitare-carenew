@@ -819,6 +819,24 @@
             }
         }
     }
+    .ant-checkbox-group {
+        width: 100%;
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 10px;
+        .ant-checkbox-wrapper {
+            border: 2px solid $gray-color-300;
+            border-radius: 5px;
+            padding: 5px 10px;
+            &.ant-checkbox-wrapper-checked {
+                color: #1890ff;
+                border-color: #1890ff;
+            }
+            .ant-checkbox {
+                display: none;
+            }
+        }
+    }
     .ant-timeline {
         padding: 40px 20px 0;
         height: 385px;
@@ -903,20 +921,6 @@
                         font-size: 20px;
                         cursor: pointer;
                     }
-                }
-            }
-        }
-    }
-    .ant-checkbox-group {
-        width: 100%;
-        margin: 0 0 30px;
-        .ant-checkbox-wrapper {
-            span {
-                .anticon {
-                    color: #267dff;
-                    position: relative;
-                    top: -3px;
-                    left: 5px;
                 }
             }
         }

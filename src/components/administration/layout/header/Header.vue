@@ -3,7 +3,9 @@
     <div class="header-wrapper">
       <div class="logo">
         <div class="logoInner">
-          <img src="@/assets/images/logo.png" alt="image" />
+          <router-link to="/dashboard">
+            <img src="@/assets/images/logo.png" alt="image" />
+          </router-link>
         </div>
         <div class="icon" @click="barMenu">
           <MenuOutlined />
@@ -35,8 +37,12 @@
             </a-dropdown>
           </div>
           <div class="bar-menu">
-            <div class="search-icon" @click="toggle = !toggle"><SearchOutlined /></div>
-            <div class="ellipse-icon" @click="ellipse = !ellipse"><MoreOutlined /></div>
+            <div class="search-icon" @click="toggle = !toggle">
+              <SearchOutlined />
+            </div>
+            <div class="ellipse-icon" @click="ellipse = !ellipse">
+              <MoreOutlined />
+            </div>
           </div>
           <div class="search" :class="toggle ? 'show' : ''">
             <a-input v-model="value" size="large" placeholder="Enter search" />
@@ -50,10 +56,14 @@
                 <template #overlay>
                   <a-menu>
                     <a-menu-item key="0">
-                      <a href="javascript:void(0)" @click="showModal">Add Appointment</a>
+                      <a href="javascript:void(0)" @click="showModal"
+                        >Add Appointment</a
+                      >
                     </a-menu-item>
                     <a-menu-item key="1">
-                      <a href="javascript:void(0)" @click="addPatient">Add Patient</a>
+                      <a href="javascript:void(0)" @click="addPatient"
+                        >Add Patient</a
+                      >
                     </a-menu-item>
                     <!-- <a-menu-item key="3">
                       <a href="javascript:void(0)" @click="addCare"
@@ -80,7 +90,11 @@
                     <li class="listing">
                       <a class="d-flex align-items-center" href="#">
                         <div class="flex-shrink-0 imgProfile">
-                          <img src="@/assets/images/user-2.jpg" alt="image" width="50" />
+                          <img
+                            src="@/assets/images/user-2.jpg"
+                            alt="image"
+                            width="50"
+                          />
                         </div>
                         <div class="flex-grow-1 ms-3 summary">
                           <p>Just a reminder that you have appoinment</p>
@@ -91,7 +105,11 @@
                     <li class="listing">
                       <a class="d-flex align-items-center" href="#">
                         <div class="flex-shrink-0 imgProfile">
-                          <img src="@/assets/images/user-1.jpg" alt="image" width="50" />
+                          <img
+                            src="@/assets/images/user-1.jpg"
+                            alt="image"
+                            width="50"
+                          />
                         </div>
                         <div class="flex-grow-1 ms-3 summary">
                           <p>Just a reminder that you have appoinment</p>
@@ -99,7 +117,9 @@
                         </div>
                       </a>
                     </li>
-                    <li class="allNotication"><a href="#">Check all notifications</a></li>
+                    <li class="allNotication">
+                      <a href="#">Check all notifications</a>
+                    </li>
                   </a-menu>
                 </template>
               </a-dropdown>

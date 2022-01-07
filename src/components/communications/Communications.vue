@@ -417,14 +417,14 @@ const columns = [
       multiple: 1,
     },
   },
-  {
-    title: "Appt Type, Date, Time",
-    dataIndex: "appt",
-    sorter: {
-      compare: (a, b) => a.appt - b.appt,
-      multiple: 1,
-    },
-  },
+  // {
+  //   title: "Appt Type, Date, Time",
+  //   dataIndex: "appt",
+  //   sorter: {
+  //     compare: (a, b) => a.appt - b.appt,
+  //     multiple: 1,
+  //   },
+  // },
   {
     title: "Actions",
     dataIndex: "resend",
@@ -442,7 +442,7 @@ const data = [
     patient: "Jane Doe",
     sentto: 22998876654,
     sent: "Nov 11, 2021 - 11:30 Am",
-    appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
+    // appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
     staff: ["Steve Smith", "Jane Doe"],
      description:
@@ -456,7 +456,7 @@ const data = [
     patient: "Steve Smith",
     sentto: 22998876654,
     sent: "Nov 11, 2021 - 11:30 Am",
-    appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
+    // appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
     staff: ["Robert Henry"],
      description:
@@ -470,7 +470,7 @@ const data = [
     patient: "Joseph Spouse",
     sentto: 22998876654,
     sent: "Nov 11, 2021 - 11:30 Am",
-    appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
+    // appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
     staff: ["Jane Doe"],
      description:

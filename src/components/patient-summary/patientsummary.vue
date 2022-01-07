@@ -181,7 +181,7 @@
                           </div>
                           <div class="pat-profile-inner">
                             <div class="thumb-head">
-                              Care Team <PlusOutlined @click="showModal7" />
+                              Care Team <PlusOutlined @click="showModal8" />
                             </div>
                             <div class="thumb-desc">
                               <!-- <PlusOutlined @click="showModal7" /> -->
@@ -236,19 +236,15 @@
                     </a-col>
                     <a-col :sm="16" :xs="24">
                       <div class="thumbDesc patientTimeline">
-                        <a-tabs v-model:activeKey="activeKey">
-                          <a-tab-pane
-                            key="1"
-                            tab="Notifications"
-                            force-render
-                          ></a-tab-pane>
-                          <a-tab-pane key="2" tab="Visits"></a-tab-pane>
-                          <a-tab-pane key="3" tab="Notes"></a-tab-pane>
-                          <a-tab-pane key="4" tab="Appointments"></a-tab-pane>
-                          <a-tab-pane key="5" tab="Documents "></a-tab-pane>
-                          <a-tab-pane key="6" tab="Additional 1  "></a-tab-pane>
-                          <a-tab-pane key="7" tab="Additional 2 "></a-tab-pane>
-                        </a-tabs>
+                        <a-checkbox-group v-model:value="value10">
+                              <a-checkbox value="Notifications1">Notifications</a-checkbox>
+                              <a-checkbox value="Visits1">Visits</a-checkbox>
+                              <a-checkbox value="Notes1">Notes</a-checkbox>
+                              <a-checkbox value="Appointments1">Appointments</a-checkbox>
+                              <a-checkbox value="Documents1">Documents</a-checkbox>
+                              <a-checkbox value="Additional11">Additional 1</a-checkbox>
+                              <a-checkbox value="Additional21">Additional 2</a-checkbox>
+                        </a-checkbox-group>
                         <a-timeline>
                           <a-timeline-item color="blue">
                             <template #dot
@@ -329,22 +325,40 @@
                   <a-row :gutter="24">
                     <a-col :sm="24" :xs="24">
                       <div class="patientSummary">
-                          <img
-                            src="../../assets/images/profile-4.jpg"
-                            alt="image"
-                          />
-                          <div class="info">
-                            <h2>Jane Doe</h2>
-                            <p><a href="mailto:jane@gmail.com"><MailOutlined/> jane@gmail.com</a></p>
-                            <p> <a href="tel:1234567890"><PhoneOutlined :rotate="90"/> +343-3563-767</a></p>
-                            <p>132, My Street, Kingston, New York 12401.</p>
-                          </div>
-                          <EditOutlined @click="addPatient" />
+                        <img
+                          src="../../assets/images/profile-4.jpg"
+                          alt="image"
+                        />
+                        <div class="info">
+                          <h2>Jane Doe</h2>
+                          <p>
+                            <a href="mailto:jane@gmail.com"
+                              ><MailOutlined /> jane@gmail.com</a
+                            >
+                          </p>
+                          <p>
+                            <a href="tel:1234567890"
+                              ><PhoneOutlined :rotate="90" /> +343-3563-767</a
+                            >
+                          </p>
+                          <p>132, My Street, Kingston, New York 12401.</p>
+                        </div>
+                        <EditOutlined @click="addPatient" />
                       </div>
                     </a-col>
                     <a-col :sm="24" :xs="24">
                       <div class="thumbDesc patientTimeline mt-28">
-                        <a-tabs v-model:activeKey="activeKey">
+                        <a-checkbox-group v-model:value="value10">
+                              <a-checkbox value="Notifications">Notifications</a-checkbox>
+                              <a-checkbox value="Visits">Visits</a-checkbox>
+                              <a-checkbox value="Notes">Notes</a-checkbox>
+                              <a-checkbox value="Appointments">Appointments</a-checkbox>
+                              <a-checkbox value="Documents">Documents</a-checkbox>
+                              <a-checkbox value="Additional1">Additional 1</a-checkbox>
+                              <a-checkbox value="Additional2">Additional 2</a-checkbox>
+                        </a-checkbox-group>
+
+                        <!-- <a-tabs v-model:activeKey="activeKey">
                           <a-tab-pane key="5" tab="Notifications"></a-tab-pane>
                           <a-tab-pane key="1" tab="Visits"></a-tab-pane>
                           <a-tab-pane key="3" tab="Notes"></a-tab-pane>
@@ -357,7 +371,7 @@
                           <a-tab-pane key="4" tab="Documents "></a-tab-pane>
                           <a-tab-pane key="6" tab="Additional 1  "></a-tab-pane>
                           <a-tab-pane key="7" tab="Additional 2 "></a-tab-pane>
-                        </a-tabs>
+                        </a-tabs> -->
                         <a-timeline>
                           <a-timeline-item color="blue">
                             <template #dot
@@ -554,18 +568,26 @@
                 <a-row>
                   <a-col :sm="24" :xs="24">
                     <div class="patientSummary">
-                          <img
-                            src="../../assets/images/profile-4.jpg"
-                            alt="image"
-                          />
-                          <div class="info">
-                            <h2>Jane Doe</h2>
-                            <p><a href="mailto:jane@gmail.com"><MailOutlined/> jane@gmail.com</a></p>
-                            <p> <a href="tel:1234567890"><PhoneOutlined :rotate="90"/> +343-3563-767</a></p>
-                            <p>132, My Street, Kingston, New York 12401.</p>
-                          </div>
-                          <EditOutlined @click="addPatient" />
+                      <img
+                        src="../../assets/images/profile-4.jpg"
+                        alt="image"
+                      />
+                      <div class="info">
+                        <h2>Jane Doe</h2>
+                        <p>
+                          <a href="mailto:jane@gmail.com"
+                            ><MailOutlined /> jane@gmail.com</a
+                          >
+                        </p>
+                        <p>
+                          <a href="tel:1234567890"
+                            ><PhoneOutlined :rotate="90" /> +343-3563-767</a
+                          >
+                        </p>
+                        <p>132, My Street, Kingston, New York 12401.</p>
                       </div>
+                      <EditOutlined @click="addPatient" />
+                    </div>
                   </a-col>
                 </a-row>
                 <div>Care Plan</div>
@@ -576,17 +598,25 @@
                   <a-row :gutter="24">
                     <a-col :sm="24" :xs="24">
                       <div class="patientSummary">
-                          <img
-                            src="../../assets/images/profile-4.jpg"
-                            alt="image"
-                          />
-                          <div class="info">
-                            <h2>Jane Doe</h2>
-                            <p><a href="mailto:jane@gmail.com"><MailOutlined/> jane@gmail.com</a></p>
-                            <p> <a href="tel:1234567890"><PhoneOutlined :rotate="90"/> +343-3563-767</a></p>
-                            <p>132, My Street, Kingston, New York 12401.</p>
-                          </div>
-                          <EditOutlined @click="addPatient" />
+                        <img
+                          src="../../assets/images/profile-4.jpg"
+                          alt="image"
+                        />
+                        <div class="info">
+                          <h2>Jane Doe</h2>
+                          <p>
+                            <a href="mailto:jane@gmail.com"
+                              ><MailOutlined /> jane@gmail.com</a
+                            >
+                          </p>
+                          <p>
+                            <a href="tel:1234567890"
+                              ><PhoneOutlined :rotate="90" /> +343-3563-767</a
+                            >
+                          </p>
+                          <p>132, My Street, Kingston, New York 12401.</p>
+                        </div>
+                        <EditOutlined @click="addPatient" />
                       </div>
                     </a-col>
                   </a-row>
@@ -595,7 +625,6 @@
                       <a-col :sm="12" :xs="24" class="mb-24">
                         <a-card title="Blood Pressure">
                           <a-tabs v-model:activeKey="activeKey1">
-                            
                             <a-tab-pane key="8" tab="Table" force-render>
                               <!-- <div class="text-right mb-24">
                                 <a-button class="primaryBtn"
@@ -634,7 +663,6 @@
                       <a-col :sm="12" :xs="24" class="mb-24">
                         <a-card title="Pulse">
                           <a-tabs v-model:activeKey="activeKey2">
-                            
                             <a-tab-pane key="10" tab="Table" force-render>
                               <!-- <div class="text-right mb-24">
                                 <a-button class="primaryBtn"
@@ -668,7 +696,6 @@
                       <a-col :sm="12" :xs="24" class="mb-24">
                         <a-card title="Blood Glucose">
                           <a-tabs v-model:activeKey="activeKey3">
-                            
                             <a-tab-pane key="12" tab="Table" force-render>
                               <!-- <div class="text-right mb-24">
                                 <a-button class="primaryBtn"
@@ -702,7 +729,6 @@
                       <a-col :sm="12" :xs="24" class="mb-24">
                         <a-card title="Blood Oxygen Saturation">
                           <a-tabs v-model:activeKey="activeKey4">
-                            
                             <a-tab-pane key="14" tab="Table" force-render>
                               <!-- <div class="text-right mb-24">
                                 <a-button class="primaryBtn"
@@ -827,7 +853,7 @@ import {
   FilePdfOutlined,
   BellOutlined,
   MailOutlined,
-  PhoneOutlined
+  PhoneOutlined,
 } from "@ant-design/icons-vue";
 const OPTIONSTAG = ["Manger", "Billing Admin", "User Admin"];
 const value = ref(dayjs("12:08", "HH:mm"));
@@ -1407,6 +1433,7 @@ export default {
       showButton2,
       showButton3,
       showButton4,
+      value10: ref([]),
     };
   },
 };

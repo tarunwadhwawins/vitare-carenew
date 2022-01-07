@@ -29,18 +29,13 @@
             <a-col :md="12">
               <div class="rightWrapper">
                 <img class="rightImg" src="../../assets/images/curve.png" alt="image" />
-                <h2>Login</h2>
+                <h2>Forgot Password</h2>
                 <form>
                   <div class="field">
-                    <a-input v-model:value="value" placeholder="Username" size="large" />
-                  </div>
-                  <div class="field">
-                    <a-input v-model:value="value" placeholder="Password" size="large" />
+                    <a-input v-model:value="value" placeholder="Email Address" size="large" />
                   </div>
                   <div class="buttons">
-                    <a-button class="btn primaryBtn" @click="login()">Continue</a-button>
-                    <router-link to="/forgot-password"> Forgot Password ? </router-link>
-
+                    <a-button class="btn primaryBtn" @click="login()">Send</a-button>
                   </div>
                 </form>
               </div>
@@ -63,7 +58,7 @@ export default defineComponent({
     function login() {
       localStorage.setItem("auth", true);
       router.push({
-        path: "/dashboard",
+        path: "/",
       });
     }
     return {

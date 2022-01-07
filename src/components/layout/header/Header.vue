@@ -3,7 +3,9 @@
     <div class="header-wrapper">
       <div class="logo">
         <div class="logoInner">
-          <img src="../../../assets/images/logo.png" alt="image" />
+          <router-link to="/dashboard">
+            <img src="../../../assets/images/logo.png" alt="image" />
+          </router-link>
         </div>
         <div class="icon" @click="barMenu">
           <MenuOutlined />
@@ -89,10 +91,14 @@
                 <template #overlay>
                   <a-menu>
                     <a-menu-item key="0">
-                      <a href="javascript:void(0)" @click="addAppt">Add Appointment</a>
+                      <a href="javascript:void(0)" @click="addAppt"
+                        >Add Appointment</a
+                      >
                     </a-menu-item>
                     <a-menu-item key="1">
-                      <a href="javascript:void(0)" @click="addPatient">Add Patient</a>
+                      <a href="javascript:void(0)" @click="addPatient"
+                        >Add Patient</a
+                      >
                     </a-menu-item>
                     <!-- <a-menu-item key="3">
                       <a href="javascript:void(0)" @click="addCare"
@@ -163,7 +169,10 @@
                 <a class="ant-dropdown-link" @click.prevent>
                   <div class="name">Jane Doe <strong>Admin</strong></div>
                   <div class="image">
-                    <img src="../../../assets/images/profile-1.jpg" alt="image" />
+                    <img
+                      src="../../../assets/images/profile-1.jpg"
+                      alt="image"
+                    />
                   </div>
                 </a>
                 <template #overlay>
