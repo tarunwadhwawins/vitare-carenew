@@ -187,20 +187,26 @@ const columns = [
     },
     children: [
       {
+        title: "BP",
+        dataIndex: "bp",
+        key: "bp",
+      },
+      {
         title: "Sp02",
         dataIndex: "sp02",
         key: "sp02",
       },
       {
-        title: "BP",
-        dataIndex: "bp",
-        key: "bp",
+        title: "Glucose",
+        dataIndex: "glucose",
+        key: "glucose",
       },
       {
         title: "Weight",
         dataIndex: "weight",
         key: "weight",
       },
+      
     ],
   },
   // {
@@ -282,6 +288,7 @@ const data = [
     sp02: "	95%",
     bp: "115/81",
     weight: "189.2",
+    glucose: "80",
   },
   {
     key: "2",
@@ -297,6 +304,7 @@ const data = [
     sp02: "-",
     bp: "105/81",
     weight: "-",
+    glucose: "70",
   },
   {
     key: "3",
@@ -312,6 +320,7 @@ const data = [
     sp02: "-",
     bp: "-",
     weight: "-",
+    glucose: "75",
   },
   {
     key: "4",
@@ -327,6 +336,7 @@ const data = [
     sp02: "92%",
     bp: "-",
     weight: "181.2",
+    glucose: "-",
   },
 ];
 export default {

@@ -1,16 +1,20 @@
 <template>
   <a-modal width="1000px" title="Add Task" centered>
     <a-row :gutter="24">
-      <a-col :span="12">
+      <a-col :span="24">
         <div class="form-group">
           <label>Title</label>
           <a-input v-model="value" size="large" />
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :span="24">
         <div class="form-group">
-          <label> Short Description</label>
-          <a-input v-model="value" size="large" />
+          <label> Long Description</label>
+          <a-textarea
+            v-model:value="value"
+            placeholder="Description"
+            :auto-size="{ minRows: 3 }"
+          />
         </div>
       </a-col>
       <a-col :span="12">
@@ -77,13 +81,21 @@
       <a-col :span="12">
         <div class="form-group">
           <label>Start Date</label>
-          <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
+          <a-date-picker
+            v-model:value="value1"
+            :size="size"
+            style="width: 100%"
+          />
         </div>
       </a-col>
       <a-col :span="12">
         <div class="form-group">
           <label>Due Date</label>
-          <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
+          <a-date-picker
+            v-model:value="value1"
+            :size="size"
+            style="width: 100%"
+          />
         </div>
       </a-col>
     </a-row>
@@ -106,12 +118,14 @@ export default {
     const filteredOptionsForTag = computed(() =>
       OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
     );
+    const value = ref('');
     return {
       selectedItems,
       filteredOptions,
       filteredOptionsForTag,
       selectedItemsForTag,
       size: ref("large"),
+      value
     };
   },
 };

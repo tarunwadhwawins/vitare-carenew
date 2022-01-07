@@ -13,18 +13,17 @@
               <h2 class="pageTittle">Care Coordinator Summary</h2>
             </a-col>
           </a-row>
-          <a-row :gutter="24" class="mb-24">
-            <a-col :sm="8" :xs="24">
+          <a-row :gutter="24">
+            <a-col :sm="7" :xs="24">
               <div class="patientInfo">
                 <div class="patientImg">
                   <img src="../../assets/images/profile-4.jpg" alt="image" />
-                </div>
-                <p class="name">Jane Doe</p>
-                <div class="pat-profile">
-                  <div class="pat-profile-inner">
-                    <div class="thumb-head">DOB</div>
-                    <div class="thumb-desc">Aug 05, 1988 (33)</div>
+                  <div class="info">
+                    <p>Jane Doe</p>
+                    <p>DOB : June 25, 1988 (33)</p>
                   </div>
+                </div>
+                <div class="pat-profile">
                   <div class="pat-profile-inner">
                     <div class="thumb-head">Gender</div>
                     <div class="thumb-desc">Male</div>
@@ -40,13 +39,19 @@
                 </div>
               </div>
             </a-col>
-            <a-col :sm="16" :xs="24">
-              <div class="thumbDesc">
-                <a-tabs v-model:activeKey="activeKey">
-                  <a-tab-pane key="1" tab="My Appointments">
-                    <a-table :columns="columns" :data-source="data" :pagination="false">
+            <a-col :sm="17" :xs="24">
+              <div class="summary-tabs">
+                <a-tabs v-model:activeKey="activeKey1">
+                  <a-tab-pane key="1" tab="Appointments">
+                    <a-table
+                      :columns="columns"
+                      :data-source="data"
+                      :pagination="false"
+                    >
                       <template #patientName="text">
-                        <router-link to="patients-summary">{{ text.text }}</router-link>
+                        <router-link to="patients-summary">{{
+                          text.text
+                        }}</router-link>
                       </template>
                       <template #appt="text">
                         <router-link to="manage-care-coordinator">{{
@@ -55,13 +60,21 @@
                       </template>
                     </a-table>
                   </a-tab-pane>
-                  <a-tab-pane key="2" tab="My Patients" force-render>
-                    <a-table :columns="columns1" :data-source="data1" @change="onChange">
+                  <a-tab-pane key="2" tab="Patients">
+                    <a-table
+                      :columns="columns1"
+                      :data-source="data1"
+                      @change="onChange"
+                    >
                       <template #firstName="text">
-                        <router-link to="patients-summary">{{ text.text }}</router-link>
+                        <router-link to="patients-summary">{{
+                          text.text
+                        }}</router-link>
                       </template>
                       <template #lastName="text">
-                        <router-link to="patients-summary">{{ text.text }}</router-link>
+                        <router-link to="patients-summary">{{
+                          text.text
+                        }}</router-link>
                       </template>
                       <template #flags="{ text }">
                         <span class="box" :class="text"></span>
@@ -80,52 +93,7 @@
                       </template>
                     </a-table>
                   </a-tab-pane>
-                  <a-tab-pane key="3" tab="Permissions">Content of Tab Pane 3</a-tab-pane>
-                  <a-tab-pane key="4" tab="Documents ">Content of Tab Pane 3</a-tab-pane>
-                </a-tabs>
-              </div>
-            </a-col>
-          </a-row>
-          <a-row :gutter="24">
-            <a-col :sm="24" :xs="24">
-              <div class="summary-tabs">
-                <a-tabs v-model:activeKey="activeKey1">
-                  <a-tab-pane key="1" tab="Contacts">
-                    <a-row :gutter="24">
-                      <a-col :span="24">
-                        <div class="common-btn mb-24">
-                          <a-button class="btn blackBtn" @click="showModal3"
-                            ><PlusOutlined
-                          /></a-button>
-                        </div>
-                      </a-col>
-                      <a-col :span="24">
-                        <a-table
-                          :pagination="false"
-                          :columns="columns3"
-                          :data-source="data3"
-                          :scroll="{ x: 900 }"
-                        >
-                          <template #action>
-                           
-                            <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>Edit</span>
-                    </template>
-                    <a class="icons"><EditOutlined /></a>
-                  </a-tooltip>
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>Delete</span>
-                    </template>
-                    <a class="icons"> <DeleteOutlined /></a>
-                  </a-tooltip>
-                          </template>
-                        </a-table>
-                      </a-col>
-                    </a-row>
-                  </a-tab-pane>
-                  <a-tab-pane key="2" tab="Availability" force-render>
+                  <a-tab-pane key="3" tab="Availability">
                     <a-row :gutter="24">
                       <a-col :sm="24" :xs="24">
                         <div class="common-btn mb-24">
@@ -139,28 +107,61 @@
                           :pagination="false"
                           :columns="columns4"
                           :data-source="data4"
-                          :scroll="{ x: 900 }"
+                          :scroll="{ x: 600 }"
                         >
                           <template #action>
-                           
                             <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>Edit</span>
-                    </template>
-                    <a class="icons"><EditOutlined /></a>
-                  </a-tooltip>
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>Delete</span>
-                    </template>
-                    <a class="icons"> <DeleteOutlined /></a>
-                  </a-tooltip>
+                              <template #title>
+                                <span>Edit</span>
+                              </template>
+                              <a class="icons"><EditOutlined /></a>
+                            </a-tooltip>
+                            <a-tooltip placement="bottom">
+                              <template #title>
+                                <span>Delete</span>
+                              </template>
+                              <a class="icons"> <DeleteOutlined /></a>
+                            </a-tooltip>
                           </template>
                         </a-table>
                       </a-col>
                     </a-row>
                   </a-tab-pane>
-                  <a-tab-pane key="3" tab="Roles">
+                  <a-tab-pane key="4" tab="Contacts">
+                    <a-row :gutter="24">
+                      <a-col :span="24">
+                        <div class="common-btn mb-24">
+                          <a-button class="btn blackBtn" @click="showModal3"
+                            ><PlusOutlined
+                          /></a-button>
+                        </div>
+                      </a-col>
+                      <a-col :span="24">
+                        <a-table
+                          :pagination="false"
+                          :columns="columns3"
+                          :data-source="data3"
+                          :scroll="{ x: 600 }"
+                        >
+                          <template #action>
+                            <a-tooltip placement="bottom">
+                              <template #title>
+                                <span>Edit</span>
+                              </template>
+                              <a class="icons"><EditOutlined /></a>
+                            </a-tooltip>
+                            <a-tooltip placement="bottom">
+                              <template #title>
+                                <span>Delete</span>
+                              </template>
+                              <a class="icons"> <DeleteOutlined /></a>
+                            </a-tooltip>
+                          </template>
+                        </a-table>
+                      </a-col>
+                    </a-row>
+                  </a-tab-pane>
+                  <a-tab-pane key="5" tab="Roles">
                     <a-row :gutter="24">
                       <a-col :sm="24" :xs="24">
                         <div class="common-btn mb-24">
@@ -174,28 +175,27 @@
                           :pagination="false"
                           :columns="columns5"
                           :data-source="data5"
-                          :scroll="{ x: 900 }"
+                          :scroll="{ x: 600 }"
                         >
                           <template #action>
-                         
                             <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>Edit</span>
-                    </template>
-                    <a class="icons"><EditOutlined /></a>
-                  </a-tooltip>
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>Delete</span>
-                    </template>
-                    <a class="icons"> <DeleteOutlined /></a>
-                  </a-tooltip>
+                              <template #title>
+                                <span>Edit</span>
+                              </template>
+                              <a class="icons"><EditOutlined /></a>
+                            </a-tooltip>
+                            <a-tooltip placement="bottom">
+                              <template #title>
+                                <span>Delete</span>
+                              </template>
+                              <a class="icons"> <DeleteOutlined /></a>
+                            </a-tooltip>
                           </template>
                         </a-table>
                       </a-col>
                     </a-row>
                   </a-tab-pane>
-                  <a-tab-pane key="4" tab="Documents">
+                  <a-tab-pane key="6" tab="Documents">
                     <a-col :sm="24" :xs="24">
                       <div class="common-btn mb-24">
                         <a-button class="btn blackBtn" @click="showModal"
@@ -208,24 +208,23 @@
                         <a-table
                           :columns="columns2"
                           :data-source="data2"
-                          :scroll="{ x: 900 }"
+                          :scroll="{ x: 600 }"
                           :pagination="false"
                           @change="onChange"
                         >
                           <template #action>
-                            
                             <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>Edit</span>
-                    </template>
-                    <a class="icons"><EditOutlined /></a>
-                  </a-tooltip>
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>Delete</span>
-                    </template>
-                    <a class="icons"> <DeleteOutlined /></a>
-                  </a-tooltip>
+                              <template #title>
+                                <span>Edit</span>
+                              </template>
+                              <a class="icons"><EditOutlined /></a>
+                            </a-tooltip>
+                            <a-tooltip placement="bottom">
+                              <template #title>
+                                <span>Delete</span>
+                              </template>
+                              <a class="icons"> <DeleteOutlined /></a>
+                            </a-tooltip>
                           </template>
                         </a-table>
                       </a-col>
@@ -239,7 +238,12 @@
       </a-layout>
     </a-layout>
     <!--modals-->
-    <a-modal v-model:visible="visible" title="Add Documents" centered @ok="handleOk">
+    <a-modal
+      v-model:visible="visible"
+      title="Add Documents"
+      centered
+      @ok="handleOk"
+    >
       <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
           <div class="form-group">
@@ -286,7 +290,12 @@
       </a-row>
     </a-modal>
     <!---->
-    <a-modal v-model:visible="visible1" title="Add Roles" centered @ok="handleOk">
+    <a-modal
+      v-model:visible="visible1"
+      title="Add Roles"
+      centered
+      @ok="handleOk"
+    >
       <a-row :gutter="24">
         <a-col :sm="24" :xs="24">
           <div class="form-group">
@@ -308,7 +317,12 @@
       </a-row>
     </a-modal>
     <!------>
-    <a-modal v-model:visible="visible2" title="Add Availability" centered @ok="handleOk">
+    <a-modal
+      v-model:visible="visible2"
+      title="Add Availability"
+      centered
+      @ok="handleOk"
+    >
       <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
           <div class="form-group">
@@ -325,7 +339,12 @@
       </a-row>
     </a-modal>
     <!---->
-    <a-modal v-model:visible="visible3" title="Add Contacts" centered @ok="handleOk">
+    <a-modal
+      v-model:visible="visible3"
+      title="Add Contacts"
+      centered
+      @ok="handleOk"
+    >
       <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
           <div class="form-group">
@@ -362,7 +381,11 @@ import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
 import { useRouter } from "vue-router";
 import { ref, computed } from "vue";
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons-vue";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
+} from "@ant-design/icons-vue";
 const OPTIONSTAG = ["Tag1", "Tag2", "Tag3"];
 const columns = [
   {

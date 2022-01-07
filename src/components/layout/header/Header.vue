@@ -115,6 +115,11 @@
                         >Start Call</a
                       ></a-menu-item
                     >
+                    <a-menu-item key="4">
+                      <a href="javascript:void(0)" @click="addsendMessage"
+                        >Send Message</a
+                      ></a-menu-item
+                    >
                   </a-menu>
                 </template>
               </a-dropdown>
@@ -198,6 +203,7 @@
     <PatientsModal v-model:visible="PatientsModal" @ok="patientOk" />
     <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" />
     <AddStartCall v-model:visible="AddStartCall" @ok="startOk" />
+    <SendMessage v-model:visible="SendMessage" @ok="startOk" />
     <!---->
   </div>
 </template>
@@ -209,6 +215,7 @@ import TasksModal from "@/components/modals/TasksModal";
 import PatientsModal from "@/components/modals/PatientsModal";
 import CoordinatorsModal from "@/components/modals/CoordinatorsModal";
 import AddStartCall from "@/components/modals/AddStartCall";
+import SendMessage from "@/components/modals/SendMessage";
 import {
   NotificationOutlined,
   DownOutlined,
@@ -228,6 +235,7 @@ export default defineComponent({
     PatientsModal,
     CoordinatorsModal,
     AddStartCall,
+    SendMessage
   },
   setup() {
     const toggle = ref(false);
@@ -276,6 +284,10 @@ export default defineComponent({
     const addStart = () => {
       AddStartCall.value = true;
     };
+    const SendMessage = ref(false);
+    const addsendMessage = () => {
+      SendMessage.value = true;
+    };
     const startOk = (e) => {
       console.log(e);
       AddStartCall.value = false;
@@ -285,6 +297,8 @@ export default defineComponent({
       barMenu,
       toggle,
       ellipse,
+      SendMessage,
+      addsendMessage,
 
       appointmentModal,
       apptOk,
@@ -305,6 +319,8 @@ export default defineComponent({
       startOk,
 
       handleOk,
+
+      
     };
   },
 });

@@ -4,7 +4,11 @@
       <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Date</label>
-          <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
+          <a-date-picker
+            v-model:value="value1"
+            :size="size"
+            style="width: 100%"
+          />
         </div>
       </a-col>
 
@@ -28,7 +32,11 @@
       <a-col :sm="24" :xs="24">
         <div class="form-group">
           <label>Note</label>
-          <a-input v-model="value" size="large" />
+          <a-textarea
+            v-model:value="value2"
+            placeholder="Notes"
+            :auto-size="{ minRows: 7 }"
+          />
         </div>
       </a-col>
     </a-row>

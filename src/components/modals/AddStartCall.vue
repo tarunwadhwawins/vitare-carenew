@@ -8,7 +8,7 @@
           <a-select
             v-model:value="value"
             show-search
-            placeholder="Select a person"
+            placeholder="Select Patient"
             style="width: 100%"
             :options="options"
             @focus="handleFocus"

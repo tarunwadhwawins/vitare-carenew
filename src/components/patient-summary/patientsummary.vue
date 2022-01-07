@@ -90,11 +90,20 @@
                           />
                           <div class="info">
                             <p>Jane Doe</p>
-                            <p>jane@gmail.com</p>
-                            <p>+343-3563-767</p>
+                            <p>DOB : June 25, 1995</p>
+                            <p>
+                              <a href="mailto:jane@gmail.com"
+                                ><MailOutlined /> jane@gmail.com</a
+                              >
+                            </p>
+                            <p>
+                              <a href="tel:1234567890"
+                                ><PhoneOutlined :rotate="90" /> +343-3563-767</a
+                              >
+                            </p>
                             <p>132, My Street, Kingston, New York 12401.</p>
                           </div>
-                          <EditOutlined @click="addPatient" />
+                          <EditOutlined class="editIcon" @click="addPatient" />
                         </div>
 
                         <!-- <p class="name">Jane Doe</p> -->
@@ -108,6 +117,14 @@
                           </div>
                           <div class="pat-profile-inner">
                             <div class="thumb-head">
+                              Non Compliance
+                            </div>
+                            <div class="thumb-desc">
+                              <WarningOutlined />
+                            </div>
+                          </div>
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">
                               Appointments
                               <PlusOutlined
                                 @click="showAddAppointmentModal"
@@ -116,10 +133,21 @@
                             <div class="thumb-desc">
                               <router-link to="appointment-calendar">
                                 John Deer 20th 2021 (+1 more) </router-link
-                              ><br />
-                              <!-- <router-link to="appointment-calendar">
-                        Matt K Dec 25th 2021</router-link
-                      > -->
+                              >
+                            </div>
+                          </div>
+                          
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">
+                              Task
+                              <PlusOutlined
+                                @click="AddTaskModal"
+                              /><br />
+                            </div>
+                            <div class="thumb-desc">
+                              <router-link to="tasks">
+                                Task 1 </router-link
+                              >
                             </div>
                           </div>
                           <div class="pat-profile-inner">
@@ -237,13 +265,21 @@
                     <a-col :sm="16" :xs="24">
                       <div class="thumbDesc patientTimeline">
                         <a-checkbox-group v-model:value="value10">
-                              <a-checkbox value="Notifications1">Notifications</a-checkbox>
-                              <a-checkbox value="Visits1">Visits</a-checkbox>
-                              <a-checkbox value="Notes1">Notes</a-checkbox>
-                              <a-checkbox value="Appointments1">Appointments</a-checkbox>
-                              <a-checkbox value="Documents1">Documents</a-checkbox>
-                              <a-checkbox value="Additional11">Additional 1</a-checkbox>
-                              <a-checkbox value="Additional21">Additional 2</a-checkbox>
+                          <a-checkbox value="Notifications1"
+                            >Notifications</a-checkbox
+                          >
+                          <a-checkbox value="Visits1">Visits</a-checkbox>
+                          <a-checkbox value="Notes1">Notes</a-checkbox>
+                          <a-checkbox value="Appointments1"
+                            >Appointments</a-checkbox
+                          >
+                          <a-checkbox value="Documents1">Documents</a-checkbox>
+                          <a-checkbox value="Additional11"
+                            >Additional 1</a-checkbox
+                          >
+                          <a-checkbox value="Additional21"
+                            >Additional 2</a-checkbox
+                          >
                         </a-checkbox-group>
                         <a-timeline>
                           <a-timeline-item color="blue">
@@ -331,6 +367,7 @@
                         />
                         <div class="info">
                           <h2>Jane Doe</h2>
+                          <p>DOB : June 25, 1995</p>
                           <p>
                             <a href="mailto:jane@gmail.com"
                               ><MailOutlined /> jane@gmail.com</a
@@ -349,13 +386,21 @@
                     <a-col :sm="24" :xs="24">
                       <div class="thumbDesc patientTimeline mt-28">
                         <a-checkbox-group v-model:value="value10">
-                              <a-checkbox value="Notifications">Notifications</a-checkbox>
-                              <a-checkbox value="Visits">Visits</a-checkbox>
-                              <a-checkbox value="Notes">Notes</a-checkbox>
-                              <a-checkbox value="Appointments">Appointments</a-checkbox>
-                              <a-checkbox value="Documents">Documents</a-checkbox>
-                              <a-checkbox value="Additional1">Additional 1</a-checkbox>
-                              <a-checkbox value="Additional2">Additional 2</a-checkbox>
+                          <a-checkbox value="Notifications"
+                            >Notifications</a-checkbox
+                          >
+                          <a-checkbox value="Visits">Visits</a-checkbox>
+                          <a-checkbox value="Notes">Notes</a-checkbox>
+                          <a-checkbox value="Appointments"
+                            >Appointments</a-checkbox
+                          >
+                          <a-checkbox value="Documents">Documents</a-checkbox>
+                          <a-checkbox value="Additional1"
+                            >Additional 1</a-checkbox
+                          >
+                          <a-checkbox value="Additional2"
+                            >Additional 2</a-checkbox
+                          >
                         </a-checkbox-group>
 
                         <!-- <a-tabs v-model:activeKey="activeKey">
@@ -574,6 +619,7 @@
                       />
                       <div class="info">
                         <h2>Jane Doe</h2>
+                        <p>DOB : June 25, 1995</p>
                         <p>
                           <a href="mailto:jane@gmail.com"
                             ><MailOutlined /> jane@gmail.com</a
@@ -604,6 +650,7 @@
                         />
                         <div class="info">
                           <h2>Jane Doe</h2>
+                          <p>DOB : June 25, 1995</p>
                           <p>
                             <a href="mailto:jane@gmail.com"
                               ><MailOutlined /> jane@gmail.com</a
@@ -814,6 +861,8 @@
     <!---->
     <PatientsModal v-model:visible="PatientsModal" @ok="handleOk" />
     <!---->
+    <TaskModal v-model:visible="TaskModal" @ok="handleOk" />
+    <!---->
   </div>
 </template>
 
@@ -841,6 +890,7 @@ import AddDocument from "@/components/modals/AddDocument";
 import AddTimeLogs from "@/components/modals/AddTimeLogs";
 import AddAppointment from "@/components/modals/AddAppointment";
 import PatientsModal from "@/components/modals/PatientsModal";
+import TaskModal from "@/components/modals/TasksModal";
 
 import dayjs from "dayjs";
 import { ref, computed } from "vue";
@@ -854,6 +904,7 @@ import {
   BellOutlined,
   MailOutlined,
   PhoneOutlined,
+  WarningOutlined,
 } from "@ant-design/icons-vue";
 const OPTIONSTAG = ["Manger", "Billing Admin", "User Admin"];
 const value = ref(dayjs("12:08", "HH:mm"));
@@ -1133,6 +1184,7 @@ export default {
     FilePdfOutlined,
     BellOutlined,
     MailOutlined,
+    WarningOutlined,
     VitalSummary,
     FamilyCoordinators,
     CareCoordinators,
@@ -1154,6 +1206,7 @@ export default {
     AddTimeLogs,
     AddAppointment,
     PatientsModal,
+    TaskModal,
   },
   data: function () {
     return {
@@ -1266,6 +1319,9 @@ export default {
     const showDocumentModal = () => {
       documentvisible.value = true;
     };
+    const AddTaskModal = () => {
+      TaskModal.value = true;
+    };
     const showAddNoteModal = () => {
       addnotesvisible.value = true;
     };
@@ -1323,6 +1379,7 @@ export default {
     };
 
     const PatientsModal = ref(false);
+    const TaskModal = ref(false);
     const addPatient = () => {
       PatientsModal.value = true;
     };
@@ -1401,6 +1458,7 @@ export default {
       showDeviceModal,
       showDocumentModal,
       showAddNoteModal,
+      AddTaskModal,
       showTimeLogDetailModal,
       showBloodPressureDetailModal,
       showBloodOxygenDetailModal,
@@ -1434,6 +1492,7 @@ export default {
       showButton3,
       showButton4,
       value10: ref([]),
+      TaskModal
     };
   },
 };
