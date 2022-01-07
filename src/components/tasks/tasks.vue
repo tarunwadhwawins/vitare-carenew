@@ -130,7 +130,7 @@
                 </a-col>
               </a-row>
               <a-row :gutter="24">
-                <a-col :md="8" :sm="12" :xs="24">
+                <a-col :xl="8" :sm="12" :xs="24">
                   <a-card title="Incomplete Tasks" class="common-card">
                     <div class="filter">
                       <a-dropdown :trigger="['click']">
@@ -173,7 +173,7 @@
                     ></apexchart>
                   </a-card>
                 </a-col>
-                <a-col :md="8" :sm="12" :xs="24">
+                <a-col :xl="8" :sm="12" :xs="24">
                   <a-card title="Team Member" class="common-card">
                     <div class="filter">
                       <a-dropdown :trigger="['click']">
@@ -223,7 +223,7 @@
                     ></apexchart>
                   </a-card>
                 </a-col>
-                <a-col :md="8" :sm="12" :xs="24">
+                <a-col :xl="8" :sm="12" :xs="24">
                   <a-card title="Task Completion over" class="common-card">
                     <apexchart
                       type="area"
@@ -234,7 +234,7 @@
                     ></apexchart>
                   </a-card>
                 </a-col>
-                <a-col :md="8" :sm="12" :xs="24">
+                <a-col :xl="8" :sm="12" :xs="24">
                   <a-card title="All Tasks" class="common-card">
                     <div class="filter">
                       <a-dropdown :trigger="['click']">
@@ -270,7 +270,7 @@
                     ></apexchart>
                   </a-card>
                 </a-col>
-                <a-col :md="8" :sm="12" :xs="24">
+                <a-col :xl="8" :sm="12" :xs="24">
                   <a-card title="Category View" class="common-card">
                     <div class="filter">
                       <a-dropdown :trigger="['click']">
@@ -320,7 +320,7 @@
                     ></apexchart>
                   </a-card>
                 </a-col>
-                <a-col :md="8" :sm="12" :xs="24">
+                <a-col :xl="8" :sm="12" :xs="24">
                   <a-card title="Completion Rate" class="common-card">
                     <h4>85%</h4>
                     <p>Sum of Completion Rate</p>

@@ -9,11 +9,11 @@
         <Sidebar />
         <a-layout-content>
           <a-row>
-            <a-col :span="5">
+            <a-col :xl="5" :lg="10">
               <h2 class="pageTittle">Patient Summary</h2>
             </a-col>
 
-            <a-col :span="11">
+            <a-col :xl="11" :lg="14">
               <div class="pageTittle">
                 <div class="filter">
                   <a-button
@@ -69,7 +69,7 @@
                 </div> -->
               </div>
             </a-col>
-            <a-col :span="8">
+            <a-col :xl="8" :lg="24">
               <div class="timer">
                 <h3>Current Session : 0:00</h3>
                 <a-button class="primaryBtn" @click="showStopTimerModal"
@@ -81,7 +81,7 @@
               <div v-if="button == 1">
                 <div>
                   <a-row :gutter="24">
-                    <a-col :sm="8" :xs="24">
+                    <a-col :xl="8" :lg="24">
                       <div class="patientInfo">
                         <div class="patientImg" @click="showModalCustom">
                           <img
@@ -262,7 +262,7 @@
                         </div>
                       </div>
                     </a-col>
-                    <a-col :sm="16" :xs="24">
+                    <a-col :xl="16" :lg="24">
                       <div class="thumbDesc patientTimeline">
                         <a-checkbox-group v-model:value="value10">
                           <a-checkbox value="Notifications1"
@@ -1502,6 +1502,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  @media (max-width:1199px) {
+    margin: 0 0 20px;
+  }
   h3 {
     margin: 0 10px 0 0;
   }

@@ -11,7 +11,10 @@
         <a-steps :current="current">
           <a-step v-for="item in steps" :key="item.title" :title="item.title" />
         </a-steps>
-        <div class="steps-content" v-if="steps[current].title == 'Demographics'">
+        <div
+          class="steps-content"
+          v-if="steps[current].title == 'Demographics'"
+        >
           <Demographics />
         </div>
         <div class="steps-content" v-if="steps[current].title == 'Conditions'">
@@ -26,7 +29,10 @@
         <div class="steps-content" v-if="steps[current].title == 'Parameters'">
           <Parameters />
         </div>
-        <div class="steps-content" v-if="steps[current].title == 'Clinical Data'">
+        <div
+          class="steps-content"
+          v-if="steps[current].title == 'Clinical Data'"
+        >
           <ClinicalData />
         </div>
         <div class="steps-content" v-if="steps[current].title == 'Insurance'">
@@ -39,7 +45,10 @@
           <a-button v-if="current > 0" style="margin-right: 8px" @click="prev"
             >Previous</a-button
           >
-          <a-button v-if="current < steps.length - 1" type="primary" @click="next"
+          <a-button
+            v-if="current < steps.length - 1"
+            type="primary"
+            @click="next"
             >Next</a-button
           >
           <a-button
@@ -131,7 +140,29 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style lang="scss">
+@media (max-width: 1199px) {
+  .ant-steps-item {
+    display: flex;
+    .ant-steps-item-container {
+      text-align: center;
+      .ant-steps-item-icon {
+        margin: 0;
+      }
+      .ant-steps-item-content {
+        display: block;
+        .ant-steps-item-title {
+          padding: 0;
+          font-size: 13px;
+          &::after {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
 .steps-content {
   margin-top: 16px;
   border-radius: 6px;
