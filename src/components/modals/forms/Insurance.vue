@@ -2,13 +2,13 @@
   <a-row :gutter="24">
     <a-col :sm="8" :xs="24">
       <div class="form-group">
-        <label>Insurance Number</label>
+        <label>{{$t('patient.insurance.insuranceNumber')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :sm="8" :xs="24">
       <div class="form-group">
-        <label>Insurance Name</label>
+        <label>{{$t('patient.insurance.insuranceName')}}</label>
         <a-select
           ref="select"
           show-search
@@ -27,24 +27,24 @@
     </a-col>
     <a-col :sm="8" :xs="24">
       <div class="form-group">
-        <label>Expiration Date</label>
+        <label>{{$t('patient.insurance.expirationDate')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :span="24">
       <div class="formHeading">
-        <h2>Secondary Insurance</h2>
+        <h2>{{$t('patient.insurance.secondaryInsurance')}}</h2>
       </div>
     </a-col>
     <a-col :sm="8" :xs="24">
       <div class="form-group">
-        <label>Insurance Number</label>
+        <label>{{$t('patient.insurance.insuranceNumber')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :sm="8" :xs="24">
       <div class="form-group">
-        <label>Insurance Name</label>
+        <label>{{$t('patient.insurance.insuranceName')}}</label>
         <a-select
           ref="select"
           show-search
@@ -63,24 +63,24 @@
     </a-col>
     <a-col :sm="8" :xs="24">
       <div class="form-group">
-        <label>Expiration Date</label>
+        <label>{{$t('patient.insurance.expirationDate')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :span="24">
       <div class="formHeading">
-        <h2>Tertiary Insurance</h2>
+        <h2>{{$t('patient.insurance.tertiaryInsurance')}}</h2>
       </div>
     </a-col>
     <a-col :sm="8" :xs="24">
       <div class="form-group">
-        <label>Insurance Number</label>
+        <label>{{$t('patient.insurance.insuranceNumber')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :sm="8" :xs="24">
       <div class="form-group">
-        <label>Insurance Name</label>
+        <label>{{$t('patient.insurance.insuranceName')}}</label>
         <a-select
           ref="select"
           show-search
@@ -99,7 +99,7 @@
     </a-col>
     <a-col :sm="8" :xs="24">
       <div class="form-group">
-        <label>Expiration Date</label>
+        <label>{{$t('patient.insurance.expirationDate')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>

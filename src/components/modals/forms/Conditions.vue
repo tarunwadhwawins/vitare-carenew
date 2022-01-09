@@ -2,7 +2,7 @@
   <a-row :gutter="24">
     <a-col :span="24">
       <div class="formHeading">
-        <h2>Health Conditions</h2>
+        <h2>{{$t('patient.conditions.healthConditions')}}</h2>
       </div>
     </a-col>
   </a-row>
@@ -18,66 +18,66 @@
     </a-col>
     <a-col :md="24" :sm="24" :xs="24">
       <a-checkbox v-model:checked="checked1"
-        >Certain infectious and parasitic diseases (A00-B99)</a-checkbox
+        >{{$t('patient.conditions.A00')}}</a-checkbox
       >
     </a-col>
     <a-col :md="24" :sm="24" :xs="24">
-      <a-checkbox v-model:checked="checked2">Neoplasms (C00-D49)</a-checkbox>
+      <a-checkbox v-model:checked="checked2">{{$t('patient.conditions.C00')}}</a-checkbox>
     </a-col>
     <a-col :md="24" :sm="24" :xs="24">
       <a-checkbox v-model:checked="checked3"
-        >Endocrine, nutritional and metabolic diseases (E00-E89)</a-checkbox
+        >{{$t('patient.conditions.E00')}}</a-checkbox
       >
     </a-col>
     <a-col :md="24" :sm="24" :xs="24">
       <a-checkbox v-model:checked="checked4"
-        >Mental, Behavioral and Neurodevelopmental disorders (F01-F99 )
+        >{{$t('patient.conditions.F01')}}
       </a-checkbox>
     </a-col>
     <a-col :md="24" :sm="24" :xs="24">
       <a-checkbox v-model:checked="checked5"
-        >Diseases of the nervous system (G00-G99)
+        >{{$t('patient.conditions.G00')}}
       </a-checkbox>
     </a-col>
     <a-col :md="24" :sm="24" :xs="24">
       <a-checkbox v-model:checked="checked6"
-        >Diseases of the eye and adnexa (H00-H59)
+        >{{$t('patient.conditions.H00')}}
       </a-checkbox>
     </a-col>
     <a-col :md="24" :sm="24" :xs="24">
       <a-checkbox v-model:checked="checked7"
-        >Diseases of the ear and mastoid process(H60-H95)
+        >{{$t('patient.conditions.H60')}}
       </a-checkbox>
     </a-col>
     <a-col :md="24" :sm="24" :xs="24">
       <a-checkbox v-model:checked="checked8"
-        >Diseases of the circulatory system (I00-I99)
+        >{{$t('patient.conditions.I00')}}
       </a-checkbox>
     </a-col>
   </a-row>
   <a-row :gutter="24">
     <a-col :span="24">
       <div class="formHeading">
-        <h2>Referral Source (Assisted Living, Home Health, Cardiologist)</h2>
+        <h2>{{$t('patient.conditions.referralSource')}}</h2>
       </div>
     </a-col>
   </a-row>
   <a-row :gutter="24">
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>Name</label>
+        <label>{{$t('global.name')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label> Designation</label>
+        <label> {{$t('global.designation')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>Email</label>
+        <label>{{$t('global.email')}}</label>
         <a-input v-model="value" size="large">
           <template #addonAfter>
             <a-select v-model:value="value4" style="width: 120px">
@@ -93,13 +93,13 @@
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>Phone No</label>
+        <label>{{$t('global.PhoneNo')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>Fax</label>
+        <label>{{$t('patient.conditions.fax')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
@@ -107,29 +107,29 @@
   <a-row :gutter="24">
     <a-col :span="24">
       <div class="formHeading">
-        <h2>Primary Physician</h2>
+        <h2>{{$t('patient.conditions.primaryPhysician')}}</h2>
       </div>
     </a-col>
   </a-row>
   <a-row :gutter="24">
     <a-col :md="24" :sm="24" :xs="24" class="mb-24">
-      <a-checkbox v-model:checked="checked9"> Same as above </a-checkbox>
+      <a-checkbox v-model:checked="checked9"> {{$t('patient.conditions.sameAsabove')}} </a-checkbox>
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>Name</label>
+        <label>{{$t('global.name')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label> Designation</label>
+        <label> {{$t('global.designation')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>Email</label>
+        <label>{{$t('global.email')}}</label>
         <a-input v-model="value" size="large">
           <template #addonAfter>
             <a-select v-model:value="value4" style="width: 120px">
@@ -145,13 +145,13 @@
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>Phone Number</label>
+        <label>{{$t('global.phoneNo')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>Fax</label>
+        <label>{{$t('patient.conditions.fax')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>

@@ -2,7 +2,7 @@
   <a-row :gutter="24">
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>Device Type</label>
+        <label>{{$t('patient.devices.deviceType')}}</label>
         <a-select
           ref="select"
           v-model="value1"
@@ -19,38 +19,38 @@
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>Model No</label>
+        <label>{{$t('patient.devices.modelNo')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>Serial No</label>
+        <label>{{$t('patient.devices.serialNo')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>MAC Address</label>
+        <label>{{$t('patient.devices.MACAddress')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>Device Time</label>
+        <label>{{$t('patient.devices.deviceTime')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>Server Time</label>
+        <label>{{$t('patient.devices.ServerTime')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
   </a-row>
   <a-row :gutter="24" class="mb-24">
     <a-col :span="24">
-      <a-button class="btn primaryBtn">Add</a-button>
+      <a-button class="btn primaryBtn">{{$t('global.add')}}</a-button>
     </a-col>
   </a-row>
   <a-row :gutter="24" class="mb-24">

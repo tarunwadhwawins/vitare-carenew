@@ -2,19 +2,19 @@
   <a-row :gutter="24">
     <a-col :span="24">
       <div class="formHeading">
-        <h2>Medical History</h2>
+        <h2>{{$t('patient.clinicalData.medicalHistory')}}</h2>
       </div>
     </a-col>
     <a-col :span="24">
       <div class="form-group">
-        <label>Medical History</label>
+        <label>{{$t('patient.clinicalData.medicalHistory')}}</label>
         <a-textarea v-model="value2" allow-clear />
       </div>
     </a-col>
   </a-row>
   <a-row :gutter="24" class="mb-24">
     <a-col :span="24">
-      <a-button class="btn primaryBtn">Add</a-button>
+      <a-button class="btn primaryBtn">{{$t('global.add')}}</a-button>
     </a-col>
   </a-row>
   <a-row :gutter="24" class="mb-24">
@@ -29,13 +29,13 @@
          
           <a-tooltip placement="bottom">
                     <template #title>
-                      <span>Edit</span>
+                      <span>{{$t('global.edit')}}</span>
                     </template>
                     <a class="icons"><EditOutlined /></a>
                   </a-tooltip>
                   <a-tooltip placement="bottom">
                     <template #title>
-                      <span>Delete</span>
+                      <span>{{$t('global.delete')}}</span>
                     </template>
                     <a class="icons"> <DeleteOutlined /></a>
                   </a-tooltip>
@@ -46,25 +46,25 @@
   <a-row :gutter="24">
     <a-col :span="24">
       <div class="formHeading">
-        <h2>Medication</h2>
+        <h2>{{$t('patient.clinicalData.medication')}}</h2>
       </div>
     </a-col>
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>Medicine</label>
+        <label>{{$t('patient.clinicalData.medicine')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label> Frequency</label>
+        <label> {{$t('patient.clinicalData.frequency')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
   </a-row>
   <a-row :gutter="24" class="mb-24">
     <a-col :span="24">
-      <a-button class="btn primaryBtn">Add</a-button>
+      <a-button class="btn primaryBtn">{{$t('global.add')}}</a-button>
     </a-col>
   </a-row>
   <a-row :gutter="24" class="mb-24">
@@ -78,13 +78,13 @@
         <template #action>
          <a-tooltip placement="bottom">
                     <template #title>
-                      <span>Edit</span>
+                      <span>{{$t('global.edit')}}</span>
                     </template>
                     <a class="icons"><EditOutlined /></a>
                   </a-tooltip>
                   <a-tooltip placement="bottom">
                     <template #title>
-                      <span>Delete</span>
+                      <span>{{$t('global.delete')}}</span>
                     </template>
                     <a class="icons"> <DeleteOutlined /></a>
                   </a-tooltip>

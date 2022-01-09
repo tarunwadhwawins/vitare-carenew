@@ -2,7 +2,7 @@
   <a-modal
     max-width="1140px"
     width="100%"
-    title="Add New Coordinator"
+    :title="$t('careCoordinator.coordinatorsModal.addNewCoordinator')"
     centered
     :footer="null"
   >
@@ -31,17 +31,17 @@
         </div>
         <div class="steps-action">
           <a-button v-if="current > 0" style="margin-right: 8px" @click="prev"
-            >Previous</a-button
+            >{{$t('global.previous')}}</a-button
           >
           <a-button v-if="current < steps.length - 1" type="primary" @click="next"
-            >Next</a-button
+            >{{$t('global.next')}}</a-button
           >
           <a-button
             v-if="current == steps.length - 1"
             type="primary"
             @click="$message.success('Processing complete!')"
           >
-            Done
+            {{$t('global.done')}}
           </a-button>
         </div>
       </a-col>
@@ -49,7 +49,7 @@
   </a-modal>
 </template>
 <script>
-import { defineComponent, ref, computed, reactive } from "vue";
+import { ref } from "vue";
 import PersonalInformation from "@/components/modals/forms/PersonalInformation";
 import Contacts from "@/components/modals/forms/Contacts";
 import Availability from "@/components/modals/forms/Availability";

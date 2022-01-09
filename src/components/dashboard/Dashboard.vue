@@ -106,7 +106,7 @@
               </a-card>
             </a-col>
             <a-col :sm="12" :xs="24">
-              <a-card :title="$t('dashboard.callQueue')" class="common-card">
+              <a-card :title="$t('global.callQueue')" class="common-card">
                 <apexchart type="bar" height="250" :options="calloption" :series="callseries" @click="clickHandler"></apexchart>
               </a-card>
             </a-col>

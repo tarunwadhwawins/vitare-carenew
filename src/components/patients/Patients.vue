@@ -19,10 +19,10 @@
           <a-row>
             <a-col :span="24">
               <h2 class="pageTittle">
-                Patients
+                {{$t('patient.patients')}}
                 <div class="commonBtn">
                   <a-button class="btn primaryBtn" @click="showModal"
-                    >Add New Patients</a-button
+                    >{{$t('patient.addNewPatients')}}</a-button
                   >
                 </div>
               </h2>
@@ -35,42 +35,42 @@
                   <div class="colorBox red">
                     <UserOutlined />
                     <h3>5</h3>
-                    <p>Critical</p>
+                    <p>{{$t('patient.critical')}}</p>
                   </div>
                 </a-col>
                 <a-col :xl="4" :sm="8" :xs="24">
                   <div class="colorBox orangeBg">
                     <UserOutlined />
                     <h3>10</h3>
-                    <p>Trending</p>
+                    <p>{{$t('patient.trending')}}</p>
                   </div>
                 </a-col>
                 <a-col :xl="4" :sm="8" :xs="24">
                   <div class="colorBox greenBg">
                     <UserOutlined />
                     <h3>15</h3>
-                    <p>WNL</p>
+                    <p>{{$t('patient.WNL')}}</p>
                   </div>
                 </a-col>
                 <a-col :xl="4" :sm="8" :xs="24">
                   <div class="colorBox yellowBg">
                     <UserOutlined />
                     <h3>8</h3>
-                    <p>Watch List</p>
+                    <p>{{$t('patient.watchList')}}</p>
                   </div>
                 </a-col>
                 <a-col :xl="4" :sm="8" :xs="24">
                   <div class="colorBox blue">
                     <UserOutlined />
                     <h3>6</h3>
-                    <p>Messages</p>
+                    <p>{{$t('patient.messages')}}</p>
                   </div>
                 </a-col>
                 <a-col :xl="4" :sm="8" :xs="24">
                   <div class="colorBox whiteBg">
                     <UserOutlined />
                     <h3>12</h3>
-                    <p>Escalations</p>
+                    <p>{{$t('patient.escalations')}}</p>
                   </div>
                 </a-col>
               </a-row>
@@ -91,7 +91,7 @@
             </a-col>
             <a-col :span="12">
               <div class="text-right mb-24">
-                <a-button class="primaryBtn">Export to Excel</a-button>
+                <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
               </div>
             </a-col>
             <a-col :span="24">

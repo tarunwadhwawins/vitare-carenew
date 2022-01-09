@@ -2,31 +2,18 @@
   <a-row :gutter="24">
     <a-col :span="24">
       <div class="formHeading">
-        <h2>Blood Pressure</h2>
+        <h2>{{$t('patient.parameters.bloodPressure')}}</h2>
       </div>
     </a-col>
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>Systolic</label>
+        <label>{{$t('patient.parameters.systolic')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>Diastolic</label>
-        <a-input v-model="value" size="large" />
-      </div>
-    </a-col>
-  </a-row>
-  <a-row :gutter="24">
-    <a-col :span="24">
-      <div class="formHeading">
-        <h2>Pulse</h2>
-      </div>
-    </a-col>
-    <a-col :sm="12" :xs="24">
-      <div class="form-group">
-        <label>BPM</label>
+        <label>{{$t('patient.parameters.diastolic')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
@@ -34,12 +21,12 @@
   <a-row :gutter="24">
     <a-col :span="24">
       <div class="formHeading">
-        <h2>Blood Oxygen Saturation</h2>
+        <h2>{{$t('patient.parameters.pulse')}}</h2>
       </div>
     </a-col>
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>SPO2</label>
+        <label>{{$t('patient.parameters.BPM')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
@@ -47,18 +34,31 @@
   <a-row :gutter="24">
     <a-col :span="24">
       <div class="formHeading">
-        <h2>Glucosen</h2>
+        <h2>{{$t('patient.parameters.bloodOxygenSaturation')}}</h2>
       </div>
     </a-col>
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>Fasting Blood Sugar</label>
+        <label>{{$t('patient.parameters.SPO2')}}</label>
+        <a-input v-model="value" size="large" />
+      </div>
+    </a-col>
+  </a-row>
+  <a-row :gutter="24">
+    <a-col :span="24">
+      <div class="formHeading">
+        <h2>{{$t('patient.parameters.glucosen')}}</h2>
+      </div>
+    </a-col>
+    <a-col :sm="12" :xs="24">
+      <div class="form-group">
+        <label>{{$t('patient.parameters.FastingBloodSugar')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>Random Blood Sugar</label>
+        <label>{{$t('patient.parameters.randomBloodSugar')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>

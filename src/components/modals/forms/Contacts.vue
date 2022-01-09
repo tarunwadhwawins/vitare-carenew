@@ -2,32 +2,32 @@
   <a-row :gutter="24">
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>First Name</label>
+        <label>{{$t('global.firstName')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>Last Name</label>
+        <label>{{$t('global.lastName')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>Email</label>
+        <label>{{$t('global.email')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>Phone No</label>
+        <label>{{$t('global.phoneNo')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
   </a-row>
   <a-row :gutter="24" class="mb-24">
     <a-col :span="24">
-      <a-button class="btn primaryBtn">Add</a-button>
+      <a-button class="btn primaryBtn">{{$t('global.add')}}</a-button>
     </a-col>
   </a-row>
   <a-row :gutter="24">
@@ -41,13 +41,13 @@
         <template #action>
           <a-tooltip placement="bottom">
             <template #title>
-              <span>Edit</span>
+              <span>{{$t('global.edit')}}</span>
             </template>
             <a class="icons"><EditOutlined /></a>
           </a-tooltip>
           <a-tooltip placement="bottom">
             <template #title>
-              <span>Delete</span>
+              <span>{{$t('global.delete')}}</span>
             </template>
             <a class="icons"> <DeleteOutlined /></a>
           </a-tooltip>

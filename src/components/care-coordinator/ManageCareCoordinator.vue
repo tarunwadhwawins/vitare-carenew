@@ -20,10 +20,10 @@
           <a-row>
             <a-col :span="24">
               <h2 class="pageTittle">
-                Care Coordinator
+                {{$t('careCoordinator.manageCareCoordinator.careCoordinator')}}
                 <div class="commonBtn">
                   <a-button class="btn primaryBtn" @click="showModal"
-                    >Add New Coordinator</a-button
+                    >{{$t('careCoordinator.manageCareCoordinator.addNewCoordinator')}}</a-button
                   >
                 </div>
               </h2>
@@ -31,39 +31,39 @@
           </a-row>
           <a-row class="mb-24" :gutter="24">
             <a-col :sm="12" :xs="24">
-              <h2>Specialization</h2>
+              <h2>{{$t('global.specialization')}}</h2>
               <a-row :gutter="24">
                 <a-col :sm="12" :xs="24">
                   <div class="colorBox two">
                     <UserOutlined />
                     <h3>4</h3>
-                    <p>Wellness</p>
+                    <p>{{$t('careCoordinator.manageCareCoordinator.wellness')}}</p>
                   </div>
                 </a-col>
                 <a-col :sm="12" :xs="24">
                   <div class="colorBox four">
                     <UserOutlined />
                     <h3>5</h3>
-                    <p>Behavior</p>
+                    <p>{{$t('careCoordinator.manageCareCoordinator.behavior')}}</p>
                   </div>
                 </a-col>
               </a-row>
             </a-col>
             <a-col :sm="12" :xs="24">
-              <h2>Network</h2>
+              <h2>{{$t('global.network')}}</h2>
               <a-row :gutter="24">
                 <a-col :sm="12" :xs="24">
                   <div class="colorBox six">
                     <UserOutlined />
                     <h3>5</h3>
-                    <p>In</p>
+                    <p>{{$t('careCoordinator.manageCareCoordinator.in')}}</p>
                   </div>
                 </a-col>
                 <a-col :sm="12" :xs="24">
                   <div class="colorBox five">
                     <UserOutlined />
                     <h3>6</h3>
-                    <p>Out</p>
+                    <p>{{$t('careCoordinator.manageCareCoordinator.out')}}</p>
                   </div>
                 </a-col>
               </a-row>
@@ -84,7 +84,7 @@
             </a-col>
             <a-col :span="12">
               <div class="text-right mb-24">
-                <a-button class="primaryBtn">Export to Excel</a-button>
+                <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
               </div>
             </a-col>
             <a-col :span="24">

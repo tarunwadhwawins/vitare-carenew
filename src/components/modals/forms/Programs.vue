@@ -2,7 +2,7 @@
   <a-row :gutter="24">
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>Programs</label>
+        <label>{{$t('patient.programs.program')}}</label>
         <a-select
           ref="select"
           v-model="value1"
@@ -23,19 +23,19 @@
     </a-col>
     <a-col :md="8" :sm="6" :xs="24">
       <div class="form-group">
-        <label>Onboarding scheduled date</label>
+        <label>{{$t('patient.programs.onboardinScheduledDate')}}</label>
         <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
       </div>
     </a-col>
     <a-col :md="8" :sm="6" :xs="24">
       <div class="form-group">
-        <label>Discharge Date</label>
+        <label>{{$t('patient.programs.dischargeDate')}}</label>
         <a-date-picker v-model:value="value2" :size="size" style="width: 100%" />
       </div>
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>Status</label>
+        <label>{{$t('global.status')}}</label>
         <a-radio-group v-model:value="value">
           <a-radio :style="radioStyle" :value="1">Active</a-radio>
         </a-radio-group>
@@ -47,7 +47,7 @@
   </a-row>
   <a-row :gutter="24" class="mb-24">
     <a-col :span="24">
-      <a-button class="btn primaryBtn">Add</a-button>
+      <a-button class="btn primaryBtn">{{$t('global.add')}}</a-button>
     </a-col>
   </a-row>
   <a-row :gutter="24" class="mb-24">
@@ -61,7 +61,7 @@
         <template #action>
          <a-tooltip placement="bottom">
                     <template #title>
-                      <span>Edit</span>
+                      <span>{{$t('global.edit')}}</span>
                     </template>
                     <a class="icons"><EditOutlined /></a>
                   </a-tooltip>

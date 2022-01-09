@@ -2,19 +2,19 @@
   <a-row :gutter="24">
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>First Name</label>
+        <label>{{$t('global.firstName')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>Last Name</label>
+        <label>{{$t('global.lastName')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>Designation</label>
+        <label>{{$t('global.designation')}}</label>
         <a-select
           ref="select"
           v-model="value1"
@@ -31,7 +31,7 @@
     </a-col>
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label> Gender</label>
+        <label>{{$t('global.gender')}}</label>
         <a-select
           ref="select"
           v-model="value1"
@@ -48,19 +48,19 @@
     </a-col>
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>Email</label>
+        <label>{{$t('global.email')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>Phone No</label>
+        <label>{{$t('global.phoneNo')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>Specialization</label>
+        <label>{{$t('global.specialization')}}</label>
         <a-select
           ref="select"
           v-model="value1"
@@ -76,7 +76,7 @@
     </a-col>
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>Network</label>
+        <label>{{$t('global.network')}}</label>
         <a-select
           ref="select"
           v-model="value1"

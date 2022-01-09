@@ -37,17 +37,17 @@
         </div>
         <div class="steps-action">
           <a-button v-if="current > 0" style="margin-right: 8px" @click="prev"
-            >Previous</a-button
+            >{{$t('global.previous')}}</a-button
           >
           <a-button v-if="current < steps.length - 1" type="primary" @click="next"
-            >Next</a-button
+            >{{$t('global.next')}}</a-button
           >
           <a-button
             v-if="current == steps.length - 1"
             type="primary"
             @click="$message.success('Processing complete!')"
           >
-            Done
+            {{$t('global.done')}}
           </a-button>
         </div>
       </a-col>

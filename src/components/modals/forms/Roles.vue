@@ -2,7 +2,7 @@
   <a-row :gutter="24">
     <a-col :sm="12" :xs="24">
       <div class="form-group">
-        <label>Role</label>
+        <label>{{$t('careCoordinator.roles.role')}}</label>
         <a-select
           ref="select"
           v-model="value1"
@@ -22,7 +22,7 @@
   </a-row>
   <a-row :gutter="24" class="mb-24">
     <a-col :span="24">
-      <a-button class="btn primaryBtn">Add</a-button>
+      <a-button class="btn primaryBtn">{{$t('global.add')}}</a-button>
     </a-col>
   </a-row>
   <a-row :gutter="24">
@@ -36,13 +36,13 @@
         <template #action>
           <a-tooltip placement="bottom">
             <template #title>
-              <span>Edit</span>
+              <span>{{$t('global.edit')}}</span>
             </template>
             <a class="icons"><EditOutlined /></a>
           </a-tooltip>
           <a-tooltip placement="bottom">
             <template #title>
-              <span>Delete</span>
+              <span>{{$t('global.delete')}}</span>
             </template>
             <a class="icons"> <DeleteOutlined /></a>
           </a-tooltip>

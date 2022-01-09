@@ -1,33 +1,33 @@
 <template>
-  <a-modal width="1000px" title="Appointment Detail" centered>
+  <a-modal width="1000px" :title="$t('appointmentCalendar.addAppointment.appointmentDetail')" centered>
     <a-row :gutter="24">
       <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>Patient</label>
+          <label>{{$t('appointmentCalendar.addAppointment.patient')}}</label>
           <a-input v-model="value" size="large" />
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>Staff</label>
+          <label>{{$t('appointmentCalendar.addAppointment.staff')}}</label>
           <a-input v-model="value" size="large" />
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>Start Date</label>
+          <label>{{$t('appointmentCalendar.addAppointment.startDate')}}</label>
           <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>Start Time</label>
+          <label>{{$t('global.startTime')}}</label>
             <a-time-picker v-model:value="value2" :size="size" style="width: 100%" />
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>Time</label>
+          <label>{{$t('global.time')}}</label>
           <a-select
             ref="select"
             v-model="value1"
@@ -49,7 +49,7 @@
       </a-col>
        <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>Type of Visit</label>
+          <label>{{$t('appointmentCalendar.addAppointment.typeOfVisit')}}</label>
           <a-select
             ref="select"
             v-model="value1"
@@ -68,7 +68,7 @@
       </a-col>
       <a-col :span="24">
         <div class="form-group">
-          <label>Note</label>
+          <label>{{$t('appointmentCalendar.addAppointment.note')}}</label>
           <a-textarea v-model="value2" allow-clear />
         </div>
       </a-col>

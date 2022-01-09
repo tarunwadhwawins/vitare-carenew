@@ -19,20 +19,20 @@
           <a-row>
             <a-col :span="24">
               <h2 class="pageTittle">
-                Communications
+                {{$t('communications.communications')}}
                 <div class="addtaskButton">
                   <router-link to="video-call"
                     ><a-button class="btn blueBtn"
-                      >Start Call</a-button
+                      >{{$t('communications.startCall')}}</a-button
                     ></router-link
-                  >
+                  > 
 
                   <a-button class="btn primaryBtn" @click="showModal"
-                    >Send Message</a-button
+                    >{{$t('communications.sendMessage')}}</a-button
                   >
                   <a-tooltip placement="bottom">
                     <template #title>
-                      <span>Email</span>
+                      <span>{{$t('communications.email')}}</span>
                     </template>
                     <a-button
                       type="primary"
@@ -47,7 +47,7 @@
 
                   <a-tooltip placement="bottom">
                     <template #title>
-                      <span>SMS</span>
+                      <span>{{$t('communications.SMS')}}</span>
                     </template>
                     <a-button
                       type="primary"
@@ -62,7 +62,7 @@
 
                   <a-tooltip placement="bottom">
                     <template #title>
-                      <span>Reminder</span>
+                      <span>{{$t('communications.reminder')}}</span>
                     </template>
                     <a-button
                       type="primary"
@@ -77,7 +77,7 @@
 
                   <a-tooltip placement="bottom">
                     <template #title>
-                      <span>Call</span>
+                      <span>{{$t('communications.call')}}</span>
                     </template>
                     <a-button
                       type="primary"
@@ -100,14 +100,14 @@
                     :class="toggle ? 'active' : ''"
                     @click="toggle = !toggle"
                   >
-                    <span class="btn-content">Dashboard View</span>
+                    <span class="btn-content">{{$t('communications.dashboardView')}}</span>
                   </button>
                   <button
                     class="btn"
                     :class="toggle ? '' : 'active'"
                     @click="toggle = !toggle"
                   >
-                    <span class="btn-content">List View</span>
+                    <span class="btn-content">{{$t('global.listView')}}</span>
                   </button>
                 </div>
               </h2>
@@ -119,32 +119,32 @@
                     <div class="colorBox blueBg">
                       <UserOutlined />
                       <h3>15</h3>
-                      <p>Yesterday</p>
+                      <p>{{$t('global.yesterday')}}</p>
                     </div>
                   </a-col>
                   <a-col :xl="6" :sm="6" :xs="24">
                     <div class="colorBox two">
                       <UserOutlined />
                       <h3>10</h3>
-                      <p>Today</p>
+                      <p>{{$t('global.today')}}</p>
                     </div>
                   </a-col>
                   <a-col :xl="6" :sm="6" :xs="24">
                     <div class="colorBox skyBlue">
                       <UserOutlined />
                       <h3>10</h3>
-                      <p>Tomorrow</p>
+                      <p>{{$t('global.tomorrow')}}</p>
                     </div>
                   </a-col>
                   <a-col :xl="6" :sm="6" :xs="24">
                     <div class="colorBox four">
                       <UserOutlined />
                       <h3>10</h3>
-                      <p>Week</p>
+                      <p>{{$t('global.week')}}</p>
                     </div>
                   </a-col>
                   <a-col :sm="12" :xs="24">
-                    <a-card title="Call Planned" class="common-card">
+                    <a-card :title="$t('communications.callPlanned')" class="common-card">
                       <apexchart
                         type="bar"
                         height="350"
@@ -155,7 +155,7 @@
                     </a-card>
                   </a-col>
                   <a-col :sm="12" :xs="24">
-                    <a-card title="Call Queue" class="common-card">
+                    <a-card :title="$t('global.callQueue')" class="common-card">
                       <apexchart
                         type="bar"
                         height="350"
@@ -166,7 +166,7 @@
                     </a-card>
                   </a-col>
                   <a-col :sm="12" :xs="24">
-                    <a-card title="Populate Waiting Room" class="common-card">
+                    <a-card :title="$t('communications.populateWaitingRoom')" class="common-card">
                       <a-tabs v-model:activeKey="activeKey">
                         <a-tab-pane key="1" tab="New Requests">
                           <a-table
@@ -180,7 +180,7 @@
                               }}</router-link>
                             </template>
                             <template #action>
-                              <a-button class="btn blueBtn">Start</a-button>
+                              <a-button class="btn blueBtn">{{$t('communications.start')}}</a-button>
                             </template>
                           </a-table>
                         </a-tab-pane>
@@ -206,7 +206,7 @@
                   </a-col>
 
                   <a-col :sm="12" :xs="24">
-                    <a-card title="Communication Type" class="common-card">
+                    <a-card :title="$t('communications.communicationType')" class="common-card">
                       <apexchart
                         type="area"
                         height="245"
@@ -234,7 +234,7 @@
                   </a-col>
                   <a-col :span="12">
                     <div class="text-right mb-24">
-                      <a-button class="primaryBtn">Export to Excel</a-button>
+                      <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
                     </div>
                   </a-col>
                   <a-col :span="24">
@@ -252,7 +252,7 @@
                       <template #resend>
                         <a-tooltip placement="bottom">
                           <template #title>
-                            <span>Message</span>
+                            <span>{{$t('communications.message')}}</span>
                           </template>
                           <a class="icons"><MessageOutlined /></a>
                         </a-tooltip>
@@ -284,7 +284,7 @@
                       <template #type="{ text }">
                         <a-tooltip placement="bottom">
                           <template #title>
-                            <span>Comment</span>
+                            <span>{{$t('communications.comment')}}</span>
                           </template>
                           <a class="icons" v-if="text == 'comment'"
                             ><CommentOutlined
@@ -292,7 +292,7 @@
                         </a-tooltip>
                         <a-tooltip placement="bottom">
                           <template #title>
-                            <span>Voice Mail</span>
+                            <span>{{$t('communications.voiceMail')}}</span>
                           </template>
                           <a class="icons" v-if="text == 'voiceMail'"
                             ><PhoneOutlined
@@ -300,7 +300,7 @@
                         </a-tooltip>
                         <a-tooltip placement="bottom">
                           <template #title>
-                            <span>Sent</span>
+                            <span>{{$t('communications.sent')}}</span>
                           </template>
                           <a class="icons" v-if="text == 'sent'"
                             ><PhoneOutlined
@@ -308,7 +308,7 @@
                         </a-tooltip>
                         <a-tooltip placement="bottom">
                           <template #title>
-                            <span>Mail</span>
+                            <span>{{$t('communications.mail')}}</span>
                           </template>
                           <a class="icons" v-if="text == 'mail'"
                             ><MailOutlined

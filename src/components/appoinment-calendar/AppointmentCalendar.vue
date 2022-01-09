@@ -19,10 +19,10 @@
           <a-row>
             <a-col :span="24">
               <h2 class="pageTittle">
-                Appointment Calendar
+               {{$t('appointmentCalendar.appointmentCalendar')}}
                 <div class="commonBtn">
                   <a-button class="btn primaryBtn" @click="toggle = !toggle">{{
-                    toggle ? "Full Calendar View" : "Hide Calendar View"
+                    toggle ? $t('appointmentCalendar.fullCalendarView') : $t('appointmentCalendar.hideCalendarView')
                   }}</a-button>
                 </div>
               </h2>
@@ -32,7 +32,7 @@
             <a-col :md="6" :sm="24" :xs="24" v-show="toggle">
               <div class="apptBtn">
                 <a-button class="btn primaryBtn" @click="showModal">
-                  New Appointment</a-button
+                  {{$t('appointmentCalendar.newAppointment')}}</a-button
                 >
               </div>
               <div class="calendar">
