@@ -1,6 +1,7 @@
 const global = {
   dashboard:'Tablero de mandos',
   day:'Día',
+  date:'Fecha',
   week:'Semana',
   month:'Mes',
   email:'Correo electrónico',
@@ -39,7 +40,15 @@ const global = {
   city:'Ciudad',
   zipcode:'Código postal',
   address:'Habla a',
-  relation:'Relación'
+  relation:'Relación',
+  status:'Estado',
+  filter:'Filtrar',
+  taskCount:'Recuento de tareas',
+  reports:'Informes',
+  reportName:'Reportar nombre',
+  startDate:'Fecha de inicio',
+  endDate:'Fecha final',
+  download:'Descargar',
 
 }
 

@@ -15,6 +15,15 @@ const communications = {
   voiceMail:'Voice Mail',
   sent:'Sent',
   mail:'Mail',
+
+  communicationsModal:{
+    from:'From',
+    to:'To',
+    patient:'Patient',
+    messageCategory:'Message Category',
+    priority:'Priority',
+    message:'Message'
+  }
 }
 
 

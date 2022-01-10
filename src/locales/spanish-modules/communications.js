@@ -16,6 +16,15 @@ const communications = {
   sent: 'Enviado',
   mail: 'Correo',
 
+  communicationsModal:{
+    from:'Desde',
+    to:'A',
+    patient:'Paciente',
+    messageCategory:'Categoría de mensaje',
+    priority:'Prioridad',
+    message:'Mensaje'
+  }
+
 }
 
 

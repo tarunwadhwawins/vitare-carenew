@@ -1,6 +1,7 @@
 const global = {
   dashboard: 'Dashboard',
   day: 'Day',
+  date:'Date',
   listView:'List View',
   yesterday:'Yesterday',
   today:'Today',
@@ -41,7 +42,17 @@ const global = {
   zipcode:'Zipcode',
   address:'Address',
   relation:'Relation',
-  status:'Status'
+  status:'Status',
+  filter:'Filter',
+  taskCount:'Task Count',
+  reports:'Reports',
+  reportName:'Report Name',
+  startDate:'Start Date',
+  endDate:'End Date',
+  download:'Download',
+  category:'Category',
+  note:'Note'
+
 }
 
 

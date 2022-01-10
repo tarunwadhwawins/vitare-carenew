@@ -93,7 +93,7 @@
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>{{$t('global.PhoneNo')}}</label>
+        <label>{{$t('global.phoneNo')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>

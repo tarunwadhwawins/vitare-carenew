@@ -3,14 +3,14 @@
     <a-row :gutter="24">
       <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>Date</label>
+          <label>{{$t('global.date')}}</label>
           <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
         </div>
       </a-col>
 
       <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>Category</label>
+          <label>{{$t('global.category')}}</label>
           <a-select
             ref="select"
             v-model="value1"
@@ -27,7 +27,7 @@
       </a-col>
       <a-col :sm="24" :xs="24">
         <div class="form-group">
-          <label>Note</label>
+          <label>{{$t('global.note')}}</label>
           <a-input v-model="value" size="large" />
         </div>
       </a-col>

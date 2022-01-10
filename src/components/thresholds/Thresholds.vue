@@ -12,11 +12,11 @@
             <a-row>
               <a-col :span="24">
                 <h2 class="pageTittle">
-                  General Parameters
+                  {{$t('thresholds.generalParameters')}}
 
                   <div class="commonBtn">
                     <a-button class="btn primaryBtn" @click="showModal"
-                      >Add New Parameters</a-button
+                      >{{$t('thresholds.addNewParameters')}}</a-button
                     >
                   </div>
                 </h2>
@@ -38,7 +38,7 @@
               </a-col>
               <a-col :span="12">
                 <div class="text-right mb-24">
-                  <a-button class="primaryBtn">Export to Excel</a-button>
+                  <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
                 </div>
               </a-col>
               <a-col :sm="24" :xs="24">
@@ -51,13 +51,13 @@
                   <template #actions>
                     <a-tooltip placement="bottom">
                       <template #title>
-                        <span>Edit</span>
+                        <span>{{$t('global.edit')}}</span>
                       </template>
                       <a class="icons"><EditOutlined /></a>
                     </a-tooltip>
                     <a-tooltip placement="bottom">
                       <template #title>
-                        <span>Delete</span>
+                        <span>{{$t('global.delete')}}</span>
                       </template>
                       <a class="icons"> <DeleteOutlined /></a>
                     </a-tooltip>

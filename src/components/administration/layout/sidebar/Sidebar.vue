@@ -4,11 +4,11 @@
   >
     <div class="menuList">
       <a-menu>
-        <router-link to="/admin-dashboard"
+        <!-- <router-link to="#"
           ><a-menu-item
             ><DashboardOutlined /> <span class="menuItem">Dashboard</span></a-menu-item
           ></router-link
-        >
+        > -->
         <router-link to="/cpt-codes"
           ><a-menu-item
             ><CreditCardOutlined /><span class="menuItem">CPT Codes</span></a-menu-item
@@ -66,7 +66,7 @@
 <script>
 import { defineComponent, ref, reactive, toRefs, onUnmounted } from "vue";
 import {
-  DashboardOutlined,
+  // DashboardOutlined,
   MailOutlined,
   CreditCardOutlined,
   FileDoneOutlined,
@@ -78,7 +78,7 @@ import {
 export default defineComponent({
   components: {
     MailOutlined,
-    DashboardOutlined,
+    // DashboardOutlined,
     CreditCardOutlined,
     FileDoneOutlined,
     HomeOutlined,

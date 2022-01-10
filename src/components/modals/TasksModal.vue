@@ -1,21 +1,25 @@
 <template>
-  <a-modal width="1000px" title="Add Task" centered>
+  <a-modal width="1000px" :title="$t('tasks.tasksModal.addTask')" centered>
     <a-row :gutter="24">
-      <a-col :span="12">
+      <a-col :span="24">
         <div class="form-group">
-          <label>Title</label>
+          <label>{{$t('tasks.tasksModal.title')}}</label>
           <a-input v-model="value" size="large" />
+        </div>
+      </a-col>
+      <a-col :span="24">
+        <div class="form-group">
+          <label> {{$t('tasks.tasksModal.longDescription')}}</label>
+          <a-textarea
+            v-model:value="value"
+            placeholder="Description"
+            :auto-size="{ minRows: 3 }"
+          />
         </div>
       </a-col>
       <a-col :span="12">
         <div class="form-group">
-          <label> Short Description</label>
-          <a-input v-model="value" size="large" />
-        </div>
-      </a-col>
-      <a-col :span="12">
-        <div class="form-group">
-          <label>Status</label>
+          <label>{{$t('global.status')}}</label>
           <a-select
             ref="select"
             v-model="value1"
@@ -33,7 +37,7 @@
       </a-col>
       <a-col :span="12">
         <div class="form-group">
-          <label> Priority</label>
+          <label> {{$t('tasks.tasksModal.priority')}}</label>
           <a-select
             ref="select"
             v-model="value1"
@@ -50,7 +54,7 @@
       </a-col>
       <a-col :span="12">
         <div class="form-group">
-          <label>Assigned To</label>
+          <label>{{$t('tasks.tasksModal.assignedTo')}}</label>
           <a-select
             v-model:value="selectedItems"
             mode="multiple"
@@ -63,7 +67,7 @@
       </a-col>
       <a-col :span="12">
         <div class="form-group">
-          <label>Category</label>
+          <label>{{$t('tasks.tasksModal.category')}}</label>
           <a-select
             v-model:value="selectedItemsForTag"
             mode="multiple"
@@ -76,13 +80,13 @@
       </a-col>
       <a-col :span="12">
         <div class="form-group">
-          <label>Start Date</label>
+          <label>{{$t('tasks.tasksModal.startDate')}}</label>
           <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
         </div>
       </a-col>
       <a-col :span="12">
         <div class="form-group">
-          <label>Due Date</label>
+          <label>{{$t('tasks.tasksModal.dueDate')}}</label>
           <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
         </div>
       </a-col>
@@ -106,12 +110,14 @@ export default {
     const filteredOptionsForTag = computed(() =>
       OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
     );
+    const value = ref('');
     return {
       selectedItems,
       filteredOptions,
       filteredOptionsForTag,
       selectedItemsForTag,
       size: ref("large"),
+      value
     };
   },
 };

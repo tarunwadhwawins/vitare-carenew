@@ -49,7 +49,7 @@
   </a-modal>
 </template>
 <script>
-import { ref } from "vue";
+import { defineComponent, ref, computed, reactive } from "vue";
 import PersonalInformation from "@/components/modals/forms/PersonalInformation";
 import Contacts from "@/components/modals/forms/Contacts";
 import Availability from "@/components/modals/forms/Availability";

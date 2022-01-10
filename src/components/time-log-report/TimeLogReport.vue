@@ -11,13 +11,13 @@
           <div class="common-bg">
             <a-row>
               <a-col :span="24">
-                <h2 class="pageTittle">Audit Time Log</h2>
+                <h2 class="pageTittle">{{$t('timeLogReport.auditTimeLog')}}</h2>
               </a-col>
             </a-row>
             <a-row :gutter="24">
               <a-col :sm="10" :xs="24">
                 <div class="form-group">
-                  <label>Filter By</label>
+                  <label>{{$t('timeLogReport.filterBy')}}</label>
                   <a-select
                     ref="select"
                     v-model="value1"
@@ -33,14 +33,14 @@
               </a-col>
               <a-col :sm="10" :xs="24">
                 <div class="form-group">
-                  <label>Name</label>
+                  <label>{{$t('global.name')}}</label>
                   <a-input v-model="value" size="large" />
                 </div>
               </a-col>
               <a-col :sm="4" :xs="24">
                 <div class="text-right mt-28">
                   <a-button class="btn primaryBtn" @click="showModal"
-                    >View</a-button
+                    >{{$t('timeLogReport.view')}}</a-button
                   >
                 </div>
               </a-col>
@@ -80,13 +80,13 @@
                   <template #actions>
                   <a-tooltip placement="bottom">
                     <template #title>
-                      <span>Edit</span>
+                      <span>{{$t('global.edit')}}</span>
                     </template>
                     <a class="icons"><EditOutlined /></a>
                   </a-tooltip>
                   <a-tooltip placement="bottom">
                     <template #title>
-                      <span>Delete</span>
+                      <span>{{$t('global.delete')}}</span>
                     </template>
                     <a class="icons"> <DeleteOutlined /></a>
                   </a-tooltip>

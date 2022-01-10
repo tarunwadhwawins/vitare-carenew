@@ -3,7 +3,9 @@
     <div class="header-wrapper">
       <div class="logo">
         <div class="logoInner">
-          <img src="../../../assets/images/logo.png" alt="image" />
+          <router-link to="/dashboard">
+            <img src="../../../assets/images/logo.png" alt="image" />
+          </router-link>
         </div>
         <div class="icon" @click="barMenu">
           <MenuOutlined />
@@ -163,7 +165,10 @@
                 <a class="ant-dropdown-link" @click.prevent>
                   <div class="name">Jane Doe <strong>Admin</strong></div>
                   <div class="image">
-                    <img src="../../../assets/images/profile-1.jpg" alt="image" />
+                    <img
+                      src="../../../assets/images/profile-1.jpg"
+                      alt="image"
+                    />
                   </div>
                 </a>
                 <template #overlay>
@@ -189,6 +194,7 @@
     <PatientsModal v-model:visible="PatientsModal" @ok="patientOk" />
     <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" />
     <AddStartCall v-model:visible="AddStartCall" @ok="startOk" />
+    <SendMessage v-model:visible="SendMessage" @ok="startOk" />
     <!---->
   </div>
 </template>
@@ -200,6 +206,7 @@ import TasksModal from "@/components/modals/TasksModal";
 import PatientsModal from "@/components/modals/PatientsModal";
 import CoordinatorsModal from "@/components/modals/CoordinatorsModal";
 import AddStartCall from "@/components/modals/AddStartCall";
+import SendMessage from "@/components/modals/SendMessage";
 import {
   NotificationOutlined,
   DownOutlined,
@@ -219,6 +226,7 @@ export default defineComponent({
     PatientsModal,
     CoordinatorsModal,
     AddStartCall,
+    SendMessage
   },
   setup() {
     const toggle = ref(false);
@@ -267,6 +275,10 @@ export default defineComponent({
     const addStart = () => {
       AddStartCall.value = true;
     };
+    const SendMessage = ref(false);
+    const addsendMessage = () => {
+      SendMessage.value = true;
+    };
     const startOk = (e) => {
       console.log(e);
       AddStartCall.value = false;
@@ -276,6 +288,8 @@ export default defineComponent({
       barMenu,
       toggle,
       ellipse,
+      SendMessage,
+      addsendMessage,
 
       appointmentModal,
       apptOk,
@@ -296,6 +310,8 @@ export default defineComponent({
       startOk,
 
       handleOk,
+
+      
     };
   },
 });

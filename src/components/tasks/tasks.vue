@@ -12,7 +12,7 @@
             height: '100vh',
             position: 'fixed',
             left: 0,
-          }"
+          }" 
         >
           <Sidebar />
         </a-layout-sider>
@@ -21,10 +21,10 @@
             <a-row>
               <a-col :span="24">
                 <h2 class="pageTittle">
-                  Tasks
+                  {{$t('tasks.tasks')}}
                   <div class="addtaskButton">
                     <a-button class="btn primaryBtn" @click="showModal"
-                      >Add New Task</a-button
+                      >{{$t('tasks.addNewTask')}}</a-button
                     >
                   </div>
                   <div class="filter">
@@ -33,14 +33,14 @@
                       :class="toggle ? 'active' : ''"
                       @click="toggle = !toggle"
                     >
-                      <span class="btn-content">Dashboard View</span>
+                      <span class="btn-content">{{$t('tasks.dashboardView')}}</span>
                     </button>
                     <button
                       class="btn"
                       :class="toggle ? '' : 'active'"
                       @click="toggle = !toggle"
                     >
-                      <span class="btn-content">List View</span>
+                      <span class="btn-content">{{$t('global.listView')}}</span>
                     </button>
                   </div>
                 </h2>
@@ -50,11 +50,11 @@
               <a-row class="mb-24" :gutter="24">
                 <a-col :xl="6" :sm="8" :xs="12">
                   <div class="blockLists five">
-                    <h4>Completed Tasks</h4>
+                    <h4>{{$t('tasks.completedTasks')}}</h4>
                     <div class="filter">
                       <a-dropdown :trigger="['click']">
                         <a class="ant-dropdown-link" @click.prevent>
-                          <FilterOutlined /> Filter
+                          <FilterOutlined /> {{$t('global.filter')}}
                         </a>
                         <template #overlay>
                           <a-menu>
@@ -69,16 +69,16 @@
                       </a-dropdown>
                     </div>
                     <h5>100</h5>
-                    <p>Task Count</p>
+                    <p>{{$t('global.taskCount')}}</p>
                   </div>
                 </a-col>
                 <a-col :xl="6" :sm="8" :xs="12">
                   <div class="blockLists three">
-                    <h4>InComplete Tasks</h4>
+                    <h4>{{$t('tasks.inCompleteTasks')}}</h4>
                     <div class="filter">
                       <a-dropdown :trigger="['click']">
                         <a class="ant-dropdown-link" @click.prevent>
-                          <FilterOutlined /> Filter
+                          <FilterOutlined /> {{$t('global.filter')}}
                         </a>
                         <template #overlay>
                           <a-menu>
@@ -93,16 +93,16 @@
                       </a-dropdown>
                     </div>
                     <h5>18</h5>
-                    <p>Task Count</p>
+                    <p>{{$t('global.taskCount')}}</p>
                   </div>
                 </a-col>
                 <a-col :xl="6" :sm="8" :xs="12">
                   <div class="blockLists six">
-                    <h4>Overdue Tasks</h4>
+                    <h4>{{$t('tasks.overdueTasks')}}</h4>
                     <div class="filter">
                       <a-dropdown :trigger="['click']">
                         <a class="ant-dropdown-link" @click.prevent>
-                          <FilterOutlined /> Filter
+                          <FilterOutlined /> {{$t('global.filter')}}
                         </a>
                         <template #overlay>
                           <a-menu>
@@ -117,25 +117,25 @@
                       </a-dropdown>
                     </div>
                     <h5>0</h5>
-                    <p>Task Count</p>
+                    <p>{{$t('global.taskCount')}}</p>
                   </div>
                 </a-col>
                 <a-col :xl="6" :sm="8" :xs="12">
                   <div class="blockLists two">
-                    <h4>Total Tasks</h4>
+                    <h4>{{$t('tasks.totalTasks')}}</h4>
                     <div class="filter"></div>
                     <h5>118</h5>
-                    <p>Task Count</p>
+                    <p>{{$t('global.taskCount')}}</p>
                   </div>
                 </a-col>
               </a-row>
               <a-row :gutter="24">
-                <a-col :md="8" :sm="12" :xs="24">
+                <a-col :xl="8" :sm="12" :xs="24">
                   <a-card title="Incomplete Tasks" class="common-card">
                     <div class="filter">
                       <a-dropdown :trigger="['click']">
                         <a class="ant-dropdown-link" @click.prevent>
-                          <FilterOutlined /> Filter
+                          <FilterOutlined /> {{$t('global.filter')}}
                         </a>
                         <template #overlay>
                           <a-menu>
@@ -173,12 +173,12 @@
                     ></apexchart>
                   </a-card>
                 </a-col>
-                <a-col :md="8" :sm="12" :xs="24">
+                <a-col :xl="8" :sm="12" :xs="24">
                   <a-card title="Team Member" class="common-card">
                     <div class="filter">
                       <a-dropdown :trigger="['click']">
                         <a class="ant-dropdown-link" @click.prevent>
-                          <FilterOutlined /> Filter
+                          <FilterOutlined /> {{$t('global.filter')}}
                         </a>
                         <template #overlay>
                           <a-menu>
@@ -223,7 +223,7 @@
                     ></apexchart>
                   </a-card>
                 </a-col>
-                <a-col :md="8" :sm="12" :xs="24">
+                <a-col :xl="8" :sm="12" :xs="24">
                   <a-card title="Task Completion over" class="common-card">
                     <apexchart
                       type="area"
@@ -234,12 +234,12 @@
                     ></apexchart>
                   </a-card>
                 </a-col>
-                <a-col :md="8" :sm="12" :xs="24">
+                <a-col :xl="8" :sm="12" :xs="24">
                   <a-card title="All Tasks" class="common-card">
                     <div class="filter">
                       <a-dropdown :trigger="['click']">
                         <a class="ant-dropdown-link" @click.prevent>
-                          <FilterOutlined /> Filter
+                          <FilterOutlined /> {{$t('global.filter')}}
                         </a>
                         <template #overlay>
                           <a-menu>
@@ -270,12 +270,12 @@
                     ></apexchart>
                   </a-card>
                 </a-col>
-                <a-col :md="8" :sm="12" :xs="24">
+                <a-col :xl="8" :sm="12" :xs="24">
                   <a-card title="Category View" class="common-card">
                     <div class="filter">
                       <a-dropdown :trigger="['click']">
                         <a class="ant-dropdown-link" @click.prevent>
-                          <FilterOutlined /> Filter
+                          <FilterOutlined /> {{$t('global.filter')}}
                         </a>
                         <template #overlay>
                           <a-menu>
@@ -320,7 +320,7 @@
                     ></apexchart>
                   </a-card>
                 </a-col>
-                <a-col :md="8" :sm="12" :xs="24">
+                <a-col :xl="8" :sm="12" :xs="24">
                   <a-card title="Completion Rate" class="common-card">
                     <h4>85%</h4>
                     <p>Sum of Completion Rate</p>
@@ -344,7 +344,7 @@
                 </a-col>
                 <a-col :span="12">
                   <div class="text-right mb-24">
-                    <a-button class="primaryBtn">Export to Excel</a-button>
+                    <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
                   </div>
                 </a-col>
                 <a-col :sm="24">
@@ -371,19 +371,19 @@
                     <template #action>
                       <a-tooltip placement="bottom">
                         <template #title>
-                          <span>Edit</span>
+                          <span>{{$t('global.edit')}}</span>
                         </template>
                         <a class="icons"><EditOutlined /></a>
                       </a-tooltip>
                       <a-tooltip placement="bottom">
                         <template #title>
-                          <span>Delete</span>
+                          <span>{{$t('global.delete')}}</span>
                         </template>
                         <a class="icons"> <DeleteOutlined /></a>
                       </a-tooltip>
                       <a-tooltip placement="bottom">
                         <template #title>
-                          <span>Create Appointment</span>
+                          <span>{{$t('tasks.createAppointment')}}</span>
                         </template>
                         <router-link to="appointment-calendar" class="icons">
                           <CalendarOutlined

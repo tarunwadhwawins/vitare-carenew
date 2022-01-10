@@ -7,6 +7,10 @@ import communications from './spanish-modules/communications'
 import careCoordinator from './spanish-modules/careCoordinator'
 import patient from './spanish-modules/patients'
 import appointmentCalendar from './spanish-modules/appointmentCalendar'
+import tasks from './spanish-modules/tasks'
+import timeTrackingReport from './spanish-modules/timeTrackingReport'
+import thresholds from './spanish-modules/thresholds'
+import timeLogReport from './spanish-modules/timeLogReport'
 const spanish = {
     global,
     login,
@@ -16,7 +20,11 @@ const spanish = {
     communications,
     careCoordinator,
     patient,
-    appointmentCalendar
+    appointmentCalendar,
+    tasks,
+    timeTrackingReport,
+    thresholds,
+    timeLogReport
 }
 
 export default spanish

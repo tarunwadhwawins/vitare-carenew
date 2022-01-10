@@ -210,6 +210,8 @@ import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
 import { useRouter } from "vue-router";
 import { provide } from "vue";
+import { ref, computed } from "vue";
+
 // import { UserOutlined } from "@ant-design/icons-vue";
 const columns4 = [
   {
@@ -773,6 +775,18 @@ export default {
       //     path: '/'
       // })
     }
+
+    const button = ref(1);
+
+    function showButton1() {
+      button.value = 1;
+    }
+    function showButton2() {
+      button.value = 2;
+    }
+    function showButton3() {
+      button.value = 3;
+    }
     return {
       logout,
       data4,
@@ -787,6 +801,10 @@ export default {
       clickHandler4,
       clickHandler5,
       clickHandler6,
+       button,
+      showButton1,
+      showButton2,
+      showButton3,
     };
   },
 };

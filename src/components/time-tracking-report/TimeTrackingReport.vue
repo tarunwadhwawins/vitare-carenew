@@ -11,13 +11,13 @@
           <div class="common-bg">
             <a-row>
               <a-col :span="24">
-                <h2 class="pageTittle">Reports</h2>
+                <h2 class="pageTittle">{{$t('global.reports')}}</h2>
               </a-col>
             </a-row>
             <a-row :gutter="24">
               <a-col :sm="8" :xs="24">
                 <div class="form-group">
-                  <label>Report Name</label>
+                  <label>{{$t('global.reportName')}}</label>
                   <a-select
                     ref="select"
                     v-model="value1"
@@ -36,7 +36,7 @@
               </a-col>
               <a-col :sm="8" :xs="24">
                 <div class="form-group">
-                  <label>Start Date</label>
+                  <label>{{$t('global.startDate')}}</label>
                   <a-date-picker
                     v-model:value="value1"
                     :size="size"
@@ -46,7 +46,7 @@
               </a-col>
               <a-col :sm="8" :xs="24">
                 <div class="form-group">
-                  <label>End Date</label>
+                  <label>{{$t('global.endDate')}}</label>
                   <a-date-picker
                     v-model:value="value1"
                     :size="size"
@@ -57,7 +57,7 @@
               <a-col :span="24">
                 <div class="text-right">
                   <a-button class="btn primaryBtn" @click="showModal"
-                    >Download</a-button
+                    >{{$t('global.download')}}</a-button
                   >
                 </div>
               </a-col>

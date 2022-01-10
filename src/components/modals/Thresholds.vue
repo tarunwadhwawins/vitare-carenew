@@ -1,15 +1,15 @@
 <template>
-  <a-modal width="1000px" title="General Parameters" centered>
+  <a-modal width="1000px" :title="$t('thresholds.thresholdModal.generalParameters')" centered>
     <a-row :gutter="24">
       <a-col :sm="6" :xs="24">
         <div class="form-group">
-          <label>General Parameters Group</label>
+          <label>{{$t('thresholds.thresholdModal.generalParametersGroup')}}</label>
           <a-input v-model="value" size="large" />
         </div>
       </a-col>
       <a-col :sm="6" :xs="24">
         <div class="form-group">
-          <label>Type </label>
+          <label>{{$t('global.type')}} </label>
           <a-select
             ref="select"
             v-model="value1"
@@ -30,14 +30,14 @@
       </a-col>
       <a-col :sm="6" :xs="24">
         <div class="form-group">
-          <label>High Limit </label>
+          <label>{{$t('thresholds.thresholdModal.highLimit')}}</label>
           <!-- <a-input v-model="value" size="large" /> -->
           <a-input-number v-model:value="value" :min="0" :max="10" :step="0.1" size="large" style="width:100%"/>
         </div>
       </a-col>
       <a-col :sm="6" :xs="24">
         <div class="form-group">
-          <label>Low Limit </label>
+          <label>{{$t('thresholds.thresholdModal.lowLimit')}} </label>
           <!-- <a-input v-model="value" size="large" /> -->
           <a-input-number v-model:value="value2" :min="0" :max="10" :step="0.1" size="large" style="width:100%"/>
         </div>

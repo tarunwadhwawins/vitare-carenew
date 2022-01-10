@@ -50,7 +50,7 @@ programs:{
 
 },
 
-Devices:{
+devices:{
   deviceType:'Tipo de dispositivo',
   modelNo:'N º de Modelo',
   serialNo:'Número de serie',

@@ -4,22 +4,19 @@
       <a-col :sm="10" :xs="24">
         <div class="form-group">
           <label>Patient</label>
+
           <a-select
-            ref="select"
-            v-model="value1"
+            v-model:value="value"
+            show-search
+            placeholder="Select Patient"
             style="width: 100%"
-            size="large"
-            @focus="focus"
-            search
+            :options="options"
+            @focus="handleFocus"
+            @blur="handleBlur"
             @change="handleChange"
+            size="large"
+            
           >
-            <a-select-option value="lucy">Select Patient</a-select-option>
-            <a-select-option value="Yiminghe">Steve Smith</a-select-option>
-            <a-select-option value="Yiminghe">Jane Doe</a-select-option>
-            <a-select-option value="Yiminghe">Henry Joseph</a-select-option>
-            <a-select-option value="Yiminghe">Carol Liam</a-select-option>
-            <a-select-option value="Yiminghe">Brett William</a-select-option>
-            <a-select-option value="Yiminghe">John Smith</a-select-option>
           </a-select>
         </div>
       </a-col>
@@ -34,11 +31,12 @@
             @focus="focus"
             search
             @change="handleChange"
+            mode="tags"
+            placeholder="Select Staff"
           >
-            <a-select-option value="lucy">Select Staff</a-select-option>
-            <a-select-option value="Yiminghe">Jane Doe</a-select-option>
-            <a-select-option value="Yiminghe">Steve Smith</a-select-option>
-            <a-select-option value="Yiminghe">Joseph William</a-select-option>
+            <a-select-option value="Yiminghe1">Jane Doe</a-select-option>
+            <a-select-option value="Yiminghe2">Steve Smith</a-select-option>
+            <a-select-option value="Yiminghe3">Joseph William</a-select-option>
           </a-select>
         </div>
       </a-col>
@@ -56,8 +54,51 @@
 import { defineComponent, ref } from "vue";
 export default {
   setup() {
+     const options = ref([
+      {
+        value: 'Steve Smith',
+        label: 'Steve Smith',
+      },
+      {
+        value: 'Jane Doe',
+        label: 'Jane Doe',
+      },
+      {
+        value: 'Henry Joseph',
+        label: 'Henry Joseph',
+      },
+      {
+        value: 'Carol Liam',
+        label: 'Carol Liam',
+      },
+      {
+        value: 'Brett William',
+        label: 'Brett William',
+      },
+    ]);
+    const handleChange = value => {
+      console.log(`selected ${value}`);
+    };
+
+    const handleBlur = () => {
+      console.log('blur');
+    };
+
+    const handleFocus = () => {
+      console.log('focus');
+    };
+
+    const filterOption = (input, option) => {
+      return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    };
     return {
       size: ref("large"),
+      value: ref(undefined),
+      filterOption,
+      handleBlur,
+      handleFocus,
+      handleChange,
+      options,
     };
   },
 };

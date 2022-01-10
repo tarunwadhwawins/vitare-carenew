@@ -42,7 +42,7 @@
         <a-input v-model="value" size="large" placeholder="Phone Number" />
       </div>
     </a-col>
-    <a-col :md="16" :sm="12" :xs="24">
+    <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
         <label>Tags</label>
         <a-select
@@ -52,6 +52,19 @@
           placeholder="Please Select Roles"
           style="width: 100%"
           :options="filteredOptionsForTag.map((item) => ({ value: item }))"
+        />
+      </div>
+    </a-col>
+    <a-col :md="8" :sm="12" :xs="24">
+      <div class="form-group">
+        <label>Modules </label>
+        <a-select
+          v-model:value="selectedItemsForModules "
+          mode="multiple"
+          size="large"
+          placeholder="Please Select Modules"
+          style="width: 100%"
+          :options="filteredOptionsForModules.map((item) => ({ value: item }))"
         />
       </div>
     </a-col>
@@ -79,6 +92,7 @@
 <script>
 import { defineComponent, ref, computed } from "vue";
 const OPTIONSTAG = ["Tag1", "Tag2", "Tag3"];
+const OPTIONSTAG2 = ["TCM", "RPM", "CCMEHR", "BHI", "Wellness", "ECM"];
 export default defineComponent({
   components: {},
   setup() {
@@ -86,10 +100,16 @@ export default defineComponent({
     const filteredOptionsForTag = computed(() =>
       OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
     );
+    const selectedItemsForModules = ref(["TCM"]);
+    const filteredOptionsForModules  = computed(() =>
+      OPTIONSTAG2.filter((o) => !selectedItemsForModules.value.includes(o))
+    );
     return {
       size: ref("large"),
       filteredOptionsForTag,
       selectedItemsForTag,
+      filteredOptionsForModules,
+      selectedItemsForModules,
     };
   },
 });

@@ -2,11 +2,11 @@
   <a-modal width="1000px" title="Time Tracker">
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
-        <h3 class="mb-24">Patient Review Time</h3>
+        <h3 class="mb-24">{{$t('patientSummary.timeTrackerModal.patientReviewTime')}}</h3>
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>Billing Code</label>
+          <label>{{$t('patientSummary.timeTrackerModal.billingCode')}}</label>
           <a-select
             ref="select"
             v-model="value1"
@@ -30,11 +30,11 @@
         </div>
       </a-col>
       <a-col :sm="24" :xs="24">
-        <h3 class="mb-24">Video Consult Time</h3>
+        <h3 class="mb-24">{{$t('patientSummary.timeTrackerModal.videoConsultTime')}}</h3>
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>Video Billing Code</label>
+          <label>{{$t('patientSummary.timeTrackerModal.videoBillingCode')}}</label>
           <a-select
             ref="select"
             v-model="value1"
@@ -53,7 +53,7 @@
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>Time</label>
+          <label>{{$t('global.time')}}</label>
           <a-input v-model="value" size="large" />
         </div>
       </a-col>

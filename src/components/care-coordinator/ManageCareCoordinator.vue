@@ -20,7 +20,7 @@
           <a-row>
             <a-col :span="24">
               <h2 class="pageTittle">
-                {{$t('careCoordinator.manageCareCoordinator.careCoordinator')}}
+                Care Coordinator
                 <div class="commonBtn">
                   <a-button class="btn primaryBtn" @click="showModal"
                     >{{$t('careCoordinator.manageCareCoordinator.addNewCoordinator')}}</a-button
@@ -84,7 +84,7 @@
             </a-col>
             <a-col :span="12">
               <div class="text-right mb-24">
-                <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
+                <a-button class="primaryBtn">Export to Excel</a-button>
               </div>
             </a-col>
             <a-col :span="24">

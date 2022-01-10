@@ -50,7 +50,7 @@ const patient = {
 
   },
 
-  Devices:{
+  devices:{
     deviceType:'Device Type',
     modelNo:'Model No',
     serialNo:'Serial No',

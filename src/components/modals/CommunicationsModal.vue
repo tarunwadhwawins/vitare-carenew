@@ -3,31 +3,31 @@
     <a-row :gutter="24">
       <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>From</label>
+          <label>{{$t('communications.communicationsModal.from')}}</label>
           <a-input v-model="value" size="large" />
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>To</label>
+          <label>{{$t('communications.communicationsModal.to')}}</label>
           <a-input v-model="value" size="large" />
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>Patient</label>
+          <label>{{$t('communications.communicationsModal.patient')}}</label>
           <a-input v-model="value" size="large" />
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>From</label>
+          <label>{{$t('communications.communicationsModal.from')}}</label>
           <a-input v-model="value" size="large" />
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>Message Category</label>
+          <label>{{$t('communications.communicationsModal.messageCategory')}}</label>
           <a-select
             ref="select"
             v-model="value1"
@@ -47,7 +47,7 @@
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>Priority</label>
+          <label>{{$t('communications.communicationsModal.priority')}}</label>
           <a-select
             ref="select"
             v-model="value1"
@@ -64,7 +64,7 @@
       </a-col>
       <a-col :span="24">
         <div class="form-group">
-          <label>Message</label>
+          <label>{{$t('communications.communicationsModal.message')}}</label>
           <a-textarea v-model="value2" allow-clear />
         </div>
       </a-col>

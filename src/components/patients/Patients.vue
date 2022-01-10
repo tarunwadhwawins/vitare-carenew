@@ -175,6 +175,13 @@ const columns = [
       multiple: 1,
     },
   },
+  // {
+  //   title: "Last Name",
+  //   dataIndex: "lastName",
+  //   slots: {
+  //     customRender: "lastName",
+  //   },
+  // },
   {
     title: "Last Reading Values",
     dataIndex: "readingvalues",
@@ -187,21 +194,79 @@ const columns = [
     },
     children: [
       {
+        title: "BP",
+        dataIndex: "bp",
+        key: "bp",
+      },
+      {
         title: "Sp02",
         dataIndex: "sp02",
         key: "sp02",
       },
       {
-        title: "BP",
-        dataIndex: "bp",
-        key: "bp",
+        title: "Glucose",
+        dataIndex: "glucose",
+        key: "glucose",
       },
       {
         title: "Weight",
         dataIndex: "weight",
         key: "weight",
       },
+      
     ],
+  },
+  // {
+  //   title: "Age",
+  //   dataIndex: "age",
+  //   sorter: {
+  //     compare: (a, b) => a.age - b.age,
+  //     multiple: 3,
+  //   },
+  // },
+  // {
+  //   title: "Sex",
+  //   dataIndex: "sex",
+  //   sorter: {
+  //     compare: (a, b) => a.sex - b.sex,
+  //     multiple: 2,
+  //   },
+  // },
+
+  {
+    title: "Non Compliance",
+    dataIndex: "compliance",
+    sorter: {
+      compare: (a, b) => a.reading - b.reading,
+      multiple: 1,
+    },
+    filters: [
+      {
+        text: "Flag",
+        value: "flag",
+      },
+      {
+        text: "Name",
+        value: "name",
+      },
+      {
+        text: "Last Reading Date",
+        value: "readdate",
+      },
+      {
+        text: "Last Reading Value",
+        value: "readvalue",
+      },
+      {
+        text: "Non Compliance ",
+        value: "noncompliance",
+      },
+      {
+        text: "Last Message Seen",
+        value: "messagseen",
+      },
+    ],
+    onFilter: (value, record) => record.name.indexOf(value) === 0,
   },
   // {
   //   title: "Age",
@@ -282,6 +347,7 @@ const data = [
     sp02: "	95%",
     bp: "115/81",
     weight: "189.2",
+    glucose: "80",
   },
   {
     key: "2",
@@ -297,6 +363,7 @@ const data = [
     sp02: "-",
     bp: "105/81",
     weight: "-",
+    glucose: "70",
   },
   {
     key: "3",
@@ -312,6 +379,7 @@ const data = [
     sp02: "-",
     bp: "-",
     weight: "-",
+    glucose: "75",
   },
   {
     key: "4",
@@ -327,6 +395,7 @@ const data = [
     sp02: "92%",
     bp: "-",
     weight: "181.2",
+    glucose: "-",
   },
 ];
 export default {

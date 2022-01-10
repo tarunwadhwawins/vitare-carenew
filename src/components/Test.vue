@@ -1,113 +1,50 @@
-<style>
-  input[type="file"]{
-    position: absolute;
-    top: -500px;
-  }
-  div.file-listing{
-    width: 200px;
-  }
-  span.remove-file{
-    color: red;
-    cursor: pointer;
-    float: right;
-  }
-</style>
+
 
 <template>
   <div class="container">
-    <div class="large-12 medium-12 small-12 cell">
-      <label>Files
-        <input type="file" id="files" ref="files" multiple v-on:change="handleFilesUpload()"/>
-      </label>
+    <div>
+      <p v-if="test1">test1   <button @click="close1">X</button></p>
     </div>
-    <div class="large-12 medium-12 small-12 cell">
-      <div v-for="(file, key) in files" :key="file.name" class="file-listing">{{ file.name }} <span class="remove-file" v-on:click="removeFile( key )">Remove</span></div>
+
+    <div>
+      <p v-if="test2">test2   <button @click="close2">X</button></p>
     </div>
-    <br>
-    <div class="large-12 medium-12 small-12 cell">
-      <button v-on:click="addFiles()">Add Files</button>
+
+    <div>
+      <p v-if="test3">test3   <button @click="close3">X</button></p>
     </div>
-    <br>
-    <div class="large-12 medium-12 small-12 cell">
-      <button v-on:click="submitFiles()">Submit</button>
-    </div>
+    
   </div>
 </template>
 
 <script>
-  import axios from 'axios';
+import { ref } from '@vue/reactivity'
+
   export default {
-    /*
-      Defines the data used by the component
-    */
-    data(){
-      return {
-        files: []
-      }
-    },
-    /*
-      Defines the method used by the component
-    */
-    methods: {
-      /*
-        Adds a file
-      */
-      addFiles(){
-        this.$refs.files.click();
-      },
-      /*
-        Submits files to the server
-      */
-      submitFiles(){
-        /*
-          Initialize the form data
-        */
-        let formData = new FormData();
-        /*
-          Iteate over any file sent over appending the files
-          to the form data.
-        */
-        for( var i = 0; i < this.files.length; i++ ){
-          let file = this.files[i];
-          formData.append('files[' + i + ']', file);
-        }
-        /*
-          Make the request to the POST /select-files URL
-        */
-        let user = JSON.parse(localStorage.getItem('user'));
-        axios.post('https://ditstekdemo.com/Virtare-web/public/api/fileupload',
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              'Authorization': 'Bearer '+user.token
-            }
-          }
-        ).then(function(){
-          console.log('SUCCESS!!');
-        })
-        .catch(function(){
-          console.log('FAILURE!!');
-        });
-      },
-      /*
-        Handles the uploading of files
-      */
-      handleFilesUpload(){
-        let uploadedFiles = this.$refs.files.files;
-        /*
-          Adds the uploaded file to the files array
-        */
-        for( var i = 0; i < uploadedFiles.length; i++ ){
-          this.files.push( uploadedFiles[i] );
-        }
-      },
-      /*
-        Removes a select file the user has uploaded
-      */
-      removeFile( key ){
-        this.files.splice( key, 1 );
-      }
-    }
+   
+   setup(){
+
+     const test1 = ref(true)
+     const test2 = ref(true)
+     const test3 = ref(true)
+     function close1(){
+       test1.value=false
+     }
+     function close2(){
+       test2.value=false
+     }
+     function close3(){
+       test3.value=false
+     }
+     return{
+       test1,
+       test2,
+       test3,
+       close1,
+       close2,
+       close3,
+     }
+   }
+      
   }
 </script>

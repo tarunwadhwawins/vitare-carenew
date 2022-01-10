@@ -29,7 +29,7 @@
             </a-col>
           </a-row>
           <a-row :gutter="24">
-            <a-col :md="6" :sm="24" :xs="24" v-show="toggle">
+            <a-col :xl="6" :sm="10" :xs="24" v-show="toggle">
               <div class="apptBtn">
                 <a-button class="btn primaryBtn" @click="showModal">
                   {{$t('appointmentCalendar.newAppointment')}}</a-button
@@ -154,7 +154,7 @@
                  
               </div>
             </a-col>
-            <a-col :md="toggle == false ? 24 : 18" :sm="24" :xs="24">
+            <a-col :xl="toggle == false ? 24 : 18" :sm="toggle == false ? 24 : 14" :xs="24">
               <a-tabs v-model:activeKey="activeKey">
                 <a-tab-pane key="1" tab="Day">
                   <a-row>

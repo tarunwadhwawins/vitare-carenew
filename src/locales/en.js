@@ -7,6 +7,12 @@ import communications from './english-modules/communications'
 import careCoordinator from './english-modules/careCoordinator'
 import patient from './english-modules/patients'
 import appointmentCalendar from './english-modules/appointmentCalendar'
+import tasks from './english-modules/tasks'
+import timeTrackingReport from './english-modules/timeTrackingReport'
+import thresholds from './english-modules/thresholds'
+import timeLogReport from './english-modules/timeLogReport'
+import patientSummary from './english-modules/patientSummary'
+
 const english = {
     global,
     login,
@@ -16,7 +22,12 @@ const english = {
     communications,
     careCoordinator,
     patient,
-    appointmentCalendar
+    appointmentCalendar,
+    tasks,
+    timeTrackingReport,
+    thresholds,
+    timeLogReport,
+    patientSummary
 }
 
 export default english

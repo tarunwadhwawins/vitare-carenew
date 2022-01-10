@@ -82,6 +82,16 @@ const routes = [
     name: 'videoCall',
     component: () => import( '../components/video-call/videoCall')
   },
+  {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: () => import( '../components/reset-password/ResetPassword')
+  },
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: () => import( '../components/forgot-password/ForgotPassword')
+  },
 
   {
     path: '/',
@@ -151,6 +161,12 @@ const routes = [
     path: '/cpt-codes',
     name: 'CPT Codes',
     component: () => import( '../components/administration/cpt-codes/Cptcodes')
+  },
+
+  {
+    path: '/test',
+    name: 'Test',
+    component: () => import( '../components/Test.vue')
   },
 
 

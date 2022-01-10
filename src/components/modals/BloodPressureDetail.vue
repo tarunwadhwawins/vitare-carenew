@@ -1,8 +1,8 @@
 <template>
-  <a-modal width="1000px" title="Blood Pressure Detail" centered>
+  <a-modal width="1000px" :title="$t('patientSummary.bloodPressureDetails.bloodPressureDetail')" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24" class="mb-24">
-        <a-card title="Blood Pressure">
+        <a-card :title="$t('patientSummary.bloodPressureDetails.bloodPressure')">
           <a-tabs v-model:activeKey="activeKey1">
             <a-tab-pane key="7" tab="Graph">
               <apexchart

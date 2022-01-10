@@ -417,14 +417,14 @@ const columns = [
       multiple: 1,
     },
   },
-  {
-    title: "Appt Type, Date, Time",
-    dataIndex: "appt",
-    sorter: {
-      compare: (a, b) => a.appt - b.appt,
-      multiple: 1,
-    },
-  },
+  // {
+  //   title: "Appt Type, Date, Time",
+  //   dataIndex: "appt",
+  //   sorter: {
+  //     compare: (a, b) => a.appt - b.appt,
+  //     multiple: 1,
+  //   },
+  // },
   {
     title: "Actions",
     dataIndex: "resend",
@@ -442,11 +442,11 @@ const data = [
     patient: "Jane Doe",
     sentto: 22998876654,
     sent: "Nov 11, 2021 - 11:30 Am",
-    appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
+    // appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
     staff: ["Steve Smith", "Jane Doe"],
-     description:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
   },
   {
     key: "2",
@@ -456,11 +456,11 @@ const data = [
     patient: "Steve Smith",
     sentto: 22998876654,
     sent: "Nov 11, 2021 - 11:30 Am",
-    appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
+    // appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
     staff: ["Robert Henry"],
-     description:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
   },
   {
     key: "3",
@@ -470,11 +470,11 @@ const data = [
     patient: "Joseph Spouse",
     sentto: 22998876654,
     sent: "Nov 11, 2021 - 11:30 Am",
-    appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
+    // appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
     staff: ["Jane Doe"],
-     description:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book..",
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book..",
   },
   {
     key: "4",
@@ -487,8 +487,8 @@ const data = [
     appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
     resend: 70,
     staff: ["Jane Doe"],
-     description:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book..",
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book..",
   },
 ];
 export default {
@@ -1010,21 +1010,18 @@ export default {
         patient: "Steve Smith",
         appt: "Wellness",
         time: "01:30 PM",
-       
       },
       {
         key: "2",
         patient: "Jane Doe",
         appt: "Clinical",
         time: "11:30 AM",
-      
       },
       {
         key: "3",
         patient: "Joseph Spouse",
         appt: "Wellness",
         time: "02:30 PM",
-      
       },
     ];
     const columns6 = [
@@ -1287,3 +1284,16 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+@media (max-width: 1199px) {
+  .communications {
+    padding: 0px 0 60px;
+    .addtaskButton {
+      left: 0;
+      right: auto;
+      top: 50px;
+    }
+  }
+}
+</style>
