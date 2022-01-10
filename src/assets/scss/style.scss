@@ -466,30 +466,11 @@
         .checkIcon {
             position: absolute;
             right: 15px;
-            bottom: 45px;
+            top: 5px;
             padding: 5px;
             background-color: #fff;
             border-radius: 50%;
-            &.one {
-                .anticon {
-                    background-color: #111;
-                }
-            }
-            &.two {
-                .anticon {
-                    background-color: #8e60ff;
-                }
-            }
-            &.three {
-                .anticon {
-                    background-color: #ff6061;
-                }
-            }
-            &.four {
-                .anticon {
-                    background-color: #ffa800;
-                }
-            }
+            
             .anticon {
                 height: 20px;
                 width: 20px;
@@ -499,6 +480,8 @@
                 align-items: center;
                 justify-content: center;
                 font-size: 12px;
+                background-color: #dc3545;
+                cursor: pointer;
             }
         }
         p {
@@ -607,16 +590,15 @@
 }
 
 .pat-profile {
-    margin: 15px 0 0 0;
     .pat-profile-inner {
         display: flex;
         justify-content: space-between;
         border-bottom: 1px solid #eee;
         .thumb-head {
-            padding: 8px 15px;
+            padding: 7px 15px;
         }
         .thumb-desc {
-            padding: 8px 15px;
+            padding: 7px 15px;
             text-align: right;
             .anticon-warning{
                 svg {
@@ -805,7 +787,7 @@
 }
 .patientsVitals {
     margin: 20px 0 0;
-    height: 450px;
+    height: 375px;
     overflow: auto;
     padding: 0 15px;
     .ant-card {
@@ -848,8 +830,13 @@
     }
     .ant-timeline {
         padding: 40px 20px 0;
-        height: 385px;
         overflow: auto;
+        &.defaultTimeline {
+            height: 480px;
+        }
+        &.fullTimeline {
+            height: calc(100vh - 450px);
+        }
         .dateOuter {
             padding: 0 0 35px;
             .ant-timeline-item-content {

@@ -1,13 +1,17 @@
 <template>
-  <a-modal width="1000px" title="Add Vitals" centered>
+  <a-modal width="1024px" wrapClassName="full-modal" title="Add Vitals" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
-        <h2>BP</h2>
+        <h3>BP</h3>
       </a-col>
       <a-col :sm="8" :xs="24">
         <div class="form-group">
           <label>Date & Time</label>
-          <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
+          <a-date-picker
+            v-model:value="value1"
+            :size="size"
+            style="width: 100%"
+          />
         </div>
       </a-col>
       <a-col :sm="8" :xs="24">
@@ -24,12 +28,16 @@
       </a-col>
 
       <a-col :sm="24" :xs="24">
-        <h2>SpO2</h2>
+        <h3>SpO2</h3>
       </a-col>
       <a-col :sm="8" :xs="24">
         <div class="form-group">
           <label>Date & Time</label>
-          <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
+          <a-date-picker
+            v-model:value="value1"
+            :size="size"
+            style="width: 100%"
+          />
         </div>
       </a-col>
       <a-col :sm="8" :xs="24">
@@ -40,12 +48,16 @@
       </a-col>
 
       <a-col :sm="24" :xs="24">
-        <h2>Glucose</h2>
+        <h3>Glucose</h3>
       </a-col>
       <a-col :sm="8" :xs="24">
         <div class="form-group">
           <label>Date & Time</label>
-          <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
+          <a-date-picker
+            v-model:value="value1"
+            :size="size"
+            style="width: 100%"
+          />
         </div>
       </a-col>
       <a-col :sm="8" :xs="24">
@@ -56,12 +68,16 @@
       </a-col>
 
       <a-col :sm="24" :xs="24">
-        <h2>Weight</h2>
+        <h3>Weight</h3>
       </a-col>
       <a-col :sm="8" :xs="24">
         <div class="form-group">
           <label>Date & Time</label>
-          <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
+          <a-date-picker
+            v-model:value="value1"
+            :size="size"
+            style="width: 100%"
+          />
         </div>
       </a-col>
       <a-col :sm="8" :xs="24">
@@ -70,7 +86,6 @@
           <a-input v-model="value" size="large" />
         </div>
       </a-col>
-      
     </a-row>
   </a-modal>
 </template>
@@ -84,3 +99,21 @@ export default defineComponent({
   },
 });
 </script>
+<style lang="scss" scoped>
+.full-modal {
+  .ant-modal {
+    max-width: 100%;
+    top: 0;
+    padding-bottom: 0;
+    margin: 0;
+  }
+  .ant-modal-content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh);
+  }
+  .ant-modal-body {
+    flex: 1;
+  }
+}
+</style>

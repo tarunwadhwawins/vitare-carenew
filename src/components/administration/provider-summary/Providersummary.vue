@@ -18,131 +18,56 @@
               <div class="patientInfo">
                 <div class="patientImg">
                   <img src="@/assets/images/profile-4.jpg" alt="image" />
+                  <div class="info">
+                    <p>Jane Doe</p>
+                    <p>
+                      <a href="tel:1234567890"
+                        ><PhoneOutlined :rotate="90" /> +343-3563-767</a
+                      >
+                    </p>
+                    <p>132, My Street, Kingston, New York 12401.</p>
+                  </div>
                 </div>
-                <p class="name">Jane Doe</p>
                 <div class="pat-profile">
                   <div class="pat-profile-inner">
-                    <div class="thumb-head">DOB</div>
-                    <div class="thumb-desc">Aug 05, 1988 (33)</div>
+                    <div class="thumb-head">Tags</div>
+                    <div class="thumb-desc">Tag 1</div>
                   </div>
                   <div class="pat-profile-inner">
-                    <div class="thumb-head">Gender</div>
-                    <div class="thumb-desc">Male</div>
+                    <div class="thumb-head">Modules</div>
+                    <div class="thumb-desc">TCM, RPM</div>
                   </div>
                   <div class="pat-profile-inner">
-                    <div class="thumb-head">EHR ID</div>
-                    <div class="thumb-desc">123THJ</div>
-                  </div>
-                  <div class="pat-profile-inner">
-                    <div class="thumb-head">Specialization</div>
-                    <div class="thumb-desc">Clinical</div>
+                    <div class="thumb-head">Default Location</div>
+                    <div class="thumb-desc">Location 1</div>
                   </div>
                 </div>
               </div>
             </a-col>
             <a-col :sm="16" :xs="24">
-              <div class="thumbDesc">
-                <a-tabs v-model:activeKey="activeKey">
-                  <a-tab-pane key="1" tab="My Appointments">
-                    <a-table
-                      :columns="columns"
-                      :data-source="data"
-                      :pagination="false"
-                    >
-                      <template #patientName="text">
-                        <router-link to="patients-summary">{{
-                          text.text
-                        }}</router-link>
-                      </template>
-                      <template #appt="text">
-                        <router-link to="manage-care-coordinator">{{
-                          text.text
-                        }}</router-link>
-                      </template>
-                    </a-table>
-                  </a-tab-pane>
-                  <a-tab-pane key="2" tab="My Patients" force-render>
-                    <a-table
-                      :columns="columns1"
-                      :data-source="data1"
-                      @change="onChange"
-                    >
-                      <template #firstName="text">
-                        <router-link to="patients-summary">{{
-                          text.text
-                        }}</router-link>
-                      </template>
-                      <template #lastName="text">
-                        <router-link to="patients-summary">{{
-                          text.text
-                        }}</router-link>
-                      </template>
-                      <template #flags="{ text }">
-                        <span class="box" :class="text"></span>
-                        <span
-                          class="box"
-                          :class="(text = text.match(/yellowBgColor/g))"
-                          v-if="text.match(/yellowBgColor/g)"
-                        ></span>
-                      </template>
-                      <template #compliance>
-                        <a class="icons"><WarningOutlined /></a>
-                      </template>
-
-                      <template #lastReadingValues>
-                        <WarningOutlined />
-                      </template>
-                    </a-table>
-                  </a-tab-pane>
-                  <a-tab-pane key="3" tab="Permissions"
-                    >Content of Tab Pane 3</a-tab-pane
-                  >
-                  <a-tab-pane key="4" tab="Documents "
-                    >Content of Tab Pane 3</a-tab-pane
-                  >
-                </a-tabs>
-              </div>
-            </a-col>
-          </a-row>
-          <a-row :gutter="24">
-            <a-col :sm="24" :xs="24">
               <div class="summary-tabs">
-                <a-tabs v-model:activeKey="activeKey1">
-                  <a-tab-pane key="1" tab="Locations">
-                    <a-row :gutter="24">
-                      <a-col :span="24">
-                        <div class="common-btn mb-24">
-                          <a-button class="btn blackBtn" @click="showModal"
-                            ><PlusOutlined
-                          /></a-button>
-                        </div>
-                      </a-col>
-                      <a-col :span="24">
-                        <a-table
-                          :pagination="false"
-                          :columns="columns3"
-                          :data-source="data3"
-                          :scroll="{ x: 900 }"
-                        >
-                          <template #action>
-                            <a-tooltip placement="bottom">
-                              <template #title>
-                                <span>Edit</span>
-                              </template>
-                              <a class="icons"><EditOutlined /></a>
-                            </a-tooltip>
-                            <a-tooltip placement="bottom">
-                              <template #title>
-                                <span>Delete</span>
-                              </template>
-                              <a class="icons"> <DeleteOutlined /></a>
-                            </a-tooltip>
-                          </template>
-                        </a-table>
-                      </a-col>
-                    </a-row>
-                  </a-tab-pane>
-                </a-tabs>
+                <h2 class="mb-24">Locations</h2>
+                <a-table
+                  :pagination="false"
+                  :columns="columns3"
+                  :data-source="data3"
+                  :scroll="{ x: 600 }"
+                >
+                  <template #action>
+                    <a-tooltip placement="bottom">
+                      <template #title>
+                        <span>Edit</span>
+                      </template>
+                      <a class="icons"><EditOutlined /></a>
+                    </a-tooltip>
+                    <a-tooltip placement="bottom">
+                      <template #title>
+                        <span>Delete</span>
+                      </template>
+                      <a class="icons"> <DeleteOutlined /></a>
+                    </a-tooltip>
+                  </template>
+                </a-table>
               </div>
             </a-col>
           </a-row>
@@ -205,7 +130,6 @@ import { defineComponent, ref } from "vue";
 import {
   DeleteOutlined,
   EditOutlined,
-  PlusOutlined,
 } from "@ant-design/icons-vue";
 const columns = [
   {
@@ -358,6 +282,22 @@ const data3 = [
     phone: "999-2222-111",
     actions: "In",
   },
+  {
+    key: "3",
+    location: "Location 3",
+    address: "address3",
+    city: "City3",
+    phone: "999-2222-111",
+    actions: "In",
+  },
+  {
+    key: "4",
+    location: "Location ",
+    address: "address4",
+    city: "City4",
+    phone: "999-2222-111",
+    actions: "In",
+  },
 ];
 
 export default {
@@ -366,7 +306,7 @@ export default {
     Sidebar,
     DeleteOutlined,
     EditOutlined,
-    PlusOutlined,
+    
   },
 
   setup() {
