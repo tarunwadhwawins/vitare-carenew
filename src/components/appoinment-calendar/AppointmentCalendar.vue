@@ -116,28 +116,28 @@
                   <a-col :span="12">
                     <div class="phyInner">
                      <a-avatar :size="80" src="http://ditstekdemo.com/ditstek-care/img/profile-1.jpg" />
-                     <span class="checkIcon one"><CheckOutlined /></span>
+                     <span class="checkIcon"><CloseOutlined /></span>
                      <p>Steve Smith</p>
                      </div>
                   </a-col>
                   <a-col :span="12">
                     <div class="phyInner">
                      <a-avatar :size="80" src="http://ditstekdemo.com/ditstek-care/img/profile-4.jpg" />
-                     <span class="checkIcon two"><CheckOutlined /></span>
+                     <span class="checkIcon"><CloseOutlined /></span>
                      <p>Robert Henry</p>
                     </div>
                   </a-col>
                   <a-col :span="12">
                     <div class="phyInner">
                      <a-avatar :size="80" src="http://ditstekdemo.com/ditstek-care/img/profile-1.jpg" />
-                     <span class="checkIcon three"><CheckOutlined /></span>
+                     <span class="checkIcon"><CloseOutlined /></span>
                      <p>Smith Joseph</p>
                      </div>
                   </a-col>
                   <a-col :span="12">
                     <div class="phyInner">
                      <a-avatar :size="80" src="http://ditstekdemo.com/ditstek-care/img/profile-4.jpg" />
-                     <span class="checkIcon four"><CheckOutlined /></span>
+                     <span class="checkIcon"><CloseOutlined /></span>
                      <p>Jane Doe</p>
                     </div>
                   </a-col>
@@ -2403,14 +2403,14 @@ import AddAppointment from "@/components/modals/AddAppointment";
 import AddPhysician from "@/components/modals/AddPhysician";
 
 import { defineComponent, ref } from "vue";
-import { FileAddOutlined, CheckOutlined, PlusOutlined } from "@ant-design/icons-vue";
+import { FileAddOutlined, CloseOutlined, PlusOutlined } from "@ant-design/icons-vue";
 export default {
   components: {
     Header,
     Sidebar,
     AddAppointment,
     FileAddOutlined,
-    CheckOutlined,
+    CloseOutlined,
     PlusOutlined,
     AddPhysician
   },

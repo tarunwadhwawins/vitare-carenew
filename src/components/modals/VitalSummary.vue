@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" title="Add Vitals" centered>
+  <a-modal width="1024px" wrapClassName="full-modal" title="Add Vitals" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <h2>{{$t('patientSummary.vitalSummary.BP')}}</h2>
@@ -70,7 +70,6 @@
           <a-input v-model="value" size="large" />
         </div>
       </a-col>
-      
     </a-row>
   </a-modal>
 </template>
@@ -84,3 +83,21 @@ export default defineComponent({
   },
 });
 </script>
+<style lang="scss" scoped>
+.full-modal {
+  .ant-modal {
+    max-width: 100%;
+    top: 0;
+    padding-bottom: 0;
+    margin: 0;
+  }
+  .ant-modal-content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh);
+  }
+  .ant-modal-body {
+    flex: 1;
+  }
+}
+</style>
