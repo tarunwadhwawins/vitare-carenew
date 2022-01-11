@@ -1,4 +1,5 @@
 const careCoordinator = {
+    specialization:'Especialización',
     manageCareCoordinator:{
         careCoordinator:'Coordinador de cuidados',
         addNewCoordinator:'Agregar nuevo coordinador',

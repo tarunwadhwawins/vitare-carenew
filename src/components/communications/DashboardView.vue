@@ -1,10 +1,10 @@
 <template>
   <a-row :gutter="24">
     <!-- Cards -->
-    <LongCard customClass="blueBg" count="15" text="Yesterday"></LongCard>
-    <LongCard customClass="two" count="10" text="Today"></LongCard>
-    <LongCard customClass="skyBlue" count="10" text="Tomorrow"></LongCard>
-    <LongCard customClass="four" count="10" text="Week"></LongCard>
+    <LongCard customClass="blueBg" count="15" :text="$t('global.yesterday')"></LongCard>
+    <LongCard customClass="two" count="10" :text="$t('global.today')"></LongCard>
+    <LongCard customClass="skyBlue" count="10" :text="$t('global.tomorrow')"></LongCard>
+    <LongCard customClass="four" count="10" :text="$t('global.week')"></LongCard>
 
     <!-- Charts -->
     <a-col :sm="12" :xs="24">
