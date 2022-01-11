@@ -29,8 +29,8 @@ const routes = [
 
   {
     path: '/manage-care-coordinator',
-    name: 'ManageCareCoordinators',
-    component: () => import( '../components/care-coordinator/ManageCareCoordinator')
+    name: 'ManageCareCoordinators', 
+    component: () => import( '@/views/manage-care-coordinator/ManageCareCoordinator')
   },
 
   {

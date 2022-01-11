@@ -6,7 +6,7 @@ const global = {
   month:'Mes',
   email:'Correo electrónico',
   listView:'Vista de la lista',
-  view:'view',
+  view:'vista',
   yesterday:'Ayer',
   today:'Hoy dia',
   tomorrow:'Mañana',
