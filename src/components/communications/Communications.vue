@@ -94,7 +94,7 @@
                   <a-button @click="openNotification2">Reminder</a-button>
                   <a-button @click="openNotification3">Call</a-button> -->
                 </div>
-                <div class="filter">
+                <div class="filter" >
                   <button
                     class="btn"
                     :class="toggle ? 'active' : ''"

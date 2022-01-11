@@ -3,6 +3,7 @@ const global = {
   day: 'Day',
   date:'Date',
   listView:'List View',
+  view:'view',
   yesterday:'Yesterday',
   today:'Today',
   tomorrow:'Tomorrow',
