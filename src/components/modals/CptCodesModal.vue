@@ -11,12 +11,12 @@
             size="large"
             @focus="focus"
             @change="handleChange"
+            placeholder="Choose Service"
           >
-            <a-select-option value="lucy">Choose Service</a-select-option>
-            <a-select-option value="Yiminghe">Service Type 1</a-select-option>
-            <a-select-option value="Yiminghe">Service Type 2 </a-select-option>
-            <a-select-option value="Yiminghe">Service Type 3</a-select-option>
-            <a-select-option value="Yiminghe">Service Type 4</a-select-option>
+            <a-select-option value="Yimiernghe">Service Type 1</a-select-option>
+            <a-select-option value="Yiminerghe">Service Type 2 </a-select-option>
+            <a-select-option value="Yimiernghe">Service Type 3</a-select-option>
+            <a-select-option value="Yietminghe">Service Type 4</a-select-option>
           </a-select>
         </div>
       </a-col>
@@ -43,14 +43,14 @@
               size="large"
               @focus="focus"
               @change="handleChange"
+              placeholder="Choose Duration"
             >
-              <a-select-option value="lucy">Choose Duration</a-select-option>
-              <a-select-option value="Yiminghe">10 </a-select-option>
-              <a-select-option value="Yiminghe">20 </a-select-option>
-              <a-select-option value="Yiminghe">30 </a-select-option>
-              <a-select-option value="Yiminghe">40 </a-select-option>
-              <a-select-option value="Yiminghe">50 </a-select-option>
-              <a-select-option value="Yiminghe">60 </a-select-option>
+              <a-select-option value="Yimsinghe">10 </a-select-option>
+              <a-select-option value="Yimfinghe">20 </a-select-option>
+              <a-select-option value="Yimginghe">30 </a-select-option>
+              <a-select-option value="Yiminghie">40 </a-select-option>
+              <a-select-option value="Yimhinghe">50 </a-select-option>
+              <a-select-option value="Yiminhghe">60 </a-select-option>
             </a-select>
             <span>Mins </span>
           </div>

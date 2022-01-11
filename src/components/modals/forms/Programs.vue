@@ -12,10 +12,10 @@
           @change="handleChange"
         >
           <a-select-option value="lucy">Choose Program</a-select-option>
-          <a-select-option value="Yiminghe">RPM</a-select-option>
-          <a-select-option value="Yiminghe">Mental Wellness</a-select-option>
-          <a-select-option value="Yiminghe">CCM Chronic Care Management</a-select-option>
-          <a-select-option value="Yiminghe"
+          <a-select-option value="Yimisnghe">RPM</a-select-option>
+          <a-select-option value="Yimidnghe">Mental Wellness</a-select-option>
+          <a-select-option value="Yifminghe">CCM Chronic Care Management</a-select-option>
+          <a-select-option value="Yimginghe"
             >TCM- Transitional Care Managment</a-select-option
           >
         </a-select>
@@ -24,13 +24,13 @@
     <a-col :md="8" :sm="6" :xs="24">
       <div class="form-group">
         <label>Onboarding scheduled date</label>
-        <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
+        <a-date-picker v-model:value="date1" :size="size" style="width: 100%" />
       </div>
     </a-col>
     <a-col :md="8" :sm="6" :xs="24">
       <div class="form-group">
         <label>Discharge Date</label>
-        <a-date-picker v-model:value="value2" :size="size" style="width: 100%" />
+        <a-date-picker v-model:value="date2" :size="size" style="width: 100%" />
       </div>
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
@@ -142,6 +142,8 @@ export default defineComponent({
       // radioStyle,
       value,
       size: ref("large"),
+      date1: ref(),
+      date2: ref(),
     };
   },
 });

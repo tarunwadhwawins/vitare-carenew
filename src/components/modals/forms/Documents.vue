@@ -24,8 +24,8 @@
           @change="handleChange"
         >
           <a-select-option value="lucy">Id Proof</a-select-option>
-          <a-select-option value="Yiminghe">Clinical</a-select-option>
-          <a-select-option value="Yiminghe">Insurance</a-select-option>
+          <a-select-option value="Yiminghwe">Clinical</a-select-option>
+          <a-select-option value="Yimineghe">Insurance</a-select-option>
         </a-select>
       </div>
     </a-col>

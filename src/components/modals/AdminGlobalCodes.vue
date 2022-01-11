@@ -11,20 +11,20 @@
             size="large"
             @focus="focus"
             @change="handleChange"
+            placeholder="Choose Category"
           >
-            <a-select-option value="lucy">Choose Category</a-select-option>
-            <a-select-option value="Yiminghe">AppointmentType</a-select-option>
-            <a-select-option value="Yiminghe">Specialization </a-select-option>
-            <a-select-option value="Yiminghe">Communication Category</a-select-option>
-            <a-select-option value="Yiminghe">Communication Status</a-select-option>
-            <a-select-option value="Yiminghe">Task Status</a-select-option>
-            <a-select-option value="Yiminghe">Task Priority</a-select-option>
-            <a-select-option value="Yiminghe">Relationship</a-select-option>
-            <a-select-option value="Yiminghe">Gender</a-select-option>
-            <a-select-option value="Yiminghe">Health Conditions</a-select-option>
-            <a-select-option value="Yiminghe">Designation</a-select-option>
-            <a-select-option value="Yiminghe">Document Type</a-select-option>
-            <a-select-option value="Yiminghe">Insurance Type</a-select-option>
+            <a-select-option value="Yimsinghe">Appointment Type</a-select-option>
+            <a-select-option value="Yimifnghe">Specialization </a-select-option>
+            <a-select-option value="Yihminghe">Communication Category</a-select-option>
+            <a-select-option value="Yiminkghe">Communication Status</a-select-option>
+            <a-select-option value="Yimkinghe">Task Status</a-select-option>
+            <a-select-option value="Yimainghe">Task Priority</a-select-option>
+            <a-select-option value="Yiminghge">Relationship</a-select-option>
+            <a-select-option value="Yimindghe">Gender</a-select-option>
+            <a-select-option value="Yrimifsnghe">Health Conditions</a-select-option>
+            <a-select-option value="Yitminghe">Designation</a-select-option>
+            <a-select-option value="Yiminughe">Document Type</a-select-option>
+            <a-select-option value="Yimin ghe">Insurance Type</a-select-option>
           </a-select>
         </div>
       </a-col>

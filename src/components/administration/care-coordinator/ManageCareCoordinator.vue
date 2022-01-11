@@ -200,7 +200,7 @@
                     @change="handleChange"
                   >
                     <a-select-option value="lucy">Male</a-select-option>
-                    <a-select-option value="Yiminghe">Female</a-select-option>
+                    <a-select-option value="Yimindghe">Female</a-select-option>
                     <a-select-option value="Yiminghe">Others</a-select-option>
                   </a-select>
                 </div>
@@ -329,13 +329,13 @@
                     <a-select-option value="lucy"
                       >Choose start Time</a-select-option
                     >
-                    <a-select-option value="Yiminghe">08:00 AM</a-select-option>
-                    <a-select-option value="Yiminghe">08:30 AM</a-select-option>
-                    <a-select-option value="Yiminghe">09:00 AM</a-select-option>
-                    <a-select-option value="Yiminghe">09:30 AM</a-select-option>
-                    <a-select-option value="Yiminghe">10:00 AM</a-select-option>
-                    <a-select-option value="Yiminghe">10:30 AM</a-select-option>
-                    <a-select-option value="Yiminghe">11:00 AM</a-select-option>
+                    <a-select-option value="Yimisnghe">08:00 AM</a-select-option>
+                    <a-select-option value="Yimidanghe">08:30 AM</a-select-option>
+                    <a-select-option value="Yimiadnghe">09:00 AM</a-select-option>
+                    <a-select-option value="Yimadinghe">09:30 AM</a-select-option>
+                    <a-select-option value="Yimsfinghe">10:00 AM</a-select-option>
+                    <a-select-option value="Yimdfginghe">10:30 AM</a-select-option>
+                    <a-select-option value="Yisffminghe">11:00 AM</a-select-option>
                   </a-select>
                 </div>
               </a-col>

@@ -36,7 +36,7 @@
           @change="handleChange"
         >
           <a-select-option value="lucy">Male</a-select-option>
-          <a-select-option value="Yiminghe">Female</a-select-option>
+          <a-select-option value="Yimindghe">Female</a-select-option>
           <a-select-option value="Yiminghe">Others</a-select-option>
         </a-select>
       </div>
@@ -125,7 +125,7 @@
           @change="handleChange"
         >
           <a-select-option value="lucy">Morning</a-select-option>
-          <a-select-option value="Yiminghe">Afternoon</a-select-option>
+          <a-select-option value="Yimisnghe">Afternoon</a-select-option>
           <a-select-option value="Yiminghe">Evening</a-select-option>
         </a-select>
       </div>
@@ -224,7 +224,7 @@
           @change="handleChange"
         >
           <a-select-option value="lucy">Morning</a-select-option>
-          <a-select-option value="Yiminghe">Afternoon</a-select-option>
+          <a-select-option value="Yisminghe">Afternoon</a-select-option>
           <a-select-option value="Yiminghe">Evening</a-select-option>
         </a-select>
       </div>
@@ -241,7 +241,7 @@
           @change="handleChange"
         >
           <a-select-option value="lucy">Male</a-select-option>
-          <a-select-option value="Yiminghe">Female</a-select-option>
+          <a-select-option value="Yimsinghe">Female</a-select-option>
           <a-select-option value="Yiminghe">Others</a-select-option>
         </a-select>
       </div>
@@ -309,7 +309,7 @@
           @change="handleChange"
         >
           <a-select-option value="lucy">Morning</a-select-option>
-          <a-select-option value="Yiminghe">Afternoon</a-select-option>
+          <a-select-option value="Yiminsghe">Afternoon</a-select-option>
           <a-select-option value="Yiminghe">Evening</a-select-option>
         </a-select>
       </div>
@@ -326,7 +326,7 @@
           @change="handleChange"
         >
           <a-select-option value="lucy">Male</a-select-option>
-          <a-select-option value="Yiminghe">Female</a-select-option>
+          <a-select-option value="Yimisnghe">Female</a-select-option>
           <a-select-option value="Yiminghe">Others</a-select-option>
         </a-select>
       </div>
@@ -353,6 +353,9 @@ export default {
       selectedItemsForTag1,
       filteredOptionsForTag2,
       selectedItemsForTag2,
+      value1: ref(),
+      size: ref('large'),
+      checked: ref(false),
     };
   },
 };

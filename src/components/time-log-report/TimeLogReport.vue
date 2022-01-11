@@ -25,6 +25,7 @@
                     size="large"
                     @focus="focus"
                     @change="handleChange"
+                    placeholder="Select one"
                   >
                     <a-select-option value="lucy">Patient</a-select-option>
                     <a-select-option value="lucy">Staff</a-select-option>

@@ -11,8 +11,8 @@
             size="large"
             @focus="focus"
             @change="handleChange"
+            placeholder="Select Report"
           >
-            <a-select-option value="lucy">Choose Report</a-select-option>
             <a-select-option value="lucy">Report 1</a-select-option>
             <a-select-option value="Yiminghe">Report 2</a-select-option>
           </a-select>
@@ -32,7 +32,7 @@
         <div class="form-group">
           <label>End Date</label>
           <a-date-picker
-            v-model:value="value1"
+            v-model:value="value2"
             :size="size"
             style="width: 100%"
           />
@@ -64,6 +64,8 @@ export default {
       filteredOptionsForTag,
       selectedItemsForTag,
       size: ref("large"),
+      value1: ref(),
+      value2: ref(),
     };
   },
 };

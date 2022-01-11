@@ -94,29 +94,29 @@
               <a-col :sm="8" :xs="24">
                 <div class="roles">
                   <h4>Select a Role</h4>
-                  <div class="radioInput">
-                    <a-radio v-model:checked="checked30">Admin</a-radio>
-                  </div>
-                  <div class="radioInput">
-                    <a-radio v-model:checked="checked1">Manager</a-radio>
-                  </div>
-                  <div class="radioInput">
-                    <a-radio v-model:checked="checked2">User Admin</a-radio>
-                  </div>
-                  <div class="radioInput">
-                    <a-radio v-model:checked="checked3">Billing Admin</a-radio>
-                  </div>
-                  <div class="radioInput">
-                    <a-radio v-model:checked="checked4"
-                      >Phone System Admin</a-radio
-                    >
-                  </div>
-                  <div class="radioInput">
-                    <a-radio v-model:checked="checked5">Super Admin</a-radio>
-                  </div>
-                  <div class="radioInput">
-                    <a-radio v-model:checked="checked6">Standard</a-radio>
-                  </div>
+                  <a-radio-group v-model:value="radio">
+                    <div class="radioInput">
+                      <a-radio :value="1">Admin</a-radio>
+                    </div>
+                    <div class="radioInput">
+                      <a-radio :value="2">Manager</a-radio>
+                    </div>
+                    <div class="radioInput">
+                      <a-radio :value="3">User Admin</a-radio>
+                    </div>
+                    <div class="radioInput">
+                      <a-radio :value="4">Billing Admin</a-radio>
+                    </div>
+                    <div class="radioInput">
+                      <a-radio :value="5">Phone System Admin</a-radio>
+                    </div>
+                    <div class="radioInput">
+                      <a-radio :value="6">Super Admin</a-radio>
+                    </div>
+                    <div class="radioInput">
+                      <a-radio :value="7">Standard</a-radio>
+                    </div>
+                  </a-radio-group>
                 </div>
               </a-col>
               <a-col :sm="16" :xs="24">
@@ -489,6 +489,8 @@ export default {
       },
     ]);
 
+    const radio = ref(1);
+
     return {
       columns,
       data,
@@ -526,6 +528,7 @@ export default {
       handleChange2,
       searchoptions,
       size: ref([]),
+      radio,
 
       visible,
       showModal,

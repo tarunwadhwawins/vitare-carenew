@@ -144,6 +144,23 @@ const data = [
     action: "",
   },
 ];
+
+ const searchoptions = ref([
+      {
+        value: "Provider 1",
+        label: "Provider 1",
+      },
+      {
+        value: "Provider 2",
+        label: "Provider 2",
+      },
+      {
+        value: "Provider 3",
+        label: "Provider 3",
+      },
+    
+    ]);
+    
 export default {
   components: {
     Header,
@@ -163,10 +180,13 @@ export default {
       console.log(e);
       visible.value = false;
     };
+     const handleChange2 = (value) => {
+      console.log(`selected ${value}`);
+    };
     const checked = ref([false]);
     return {
-      // handleChange2,
-      // searchoptions,
+      handleChange2,
+      searchoptions,
       size: ref([]),
       visible,
       showModal,

@@ -12,7 +12,7 @@
           @change="handleChange"
         >
           <a-select-option value="lucy">Blood Pressure</a-select-option>
-          <a-select-option value="Yiminghe">Oxymeter</a-select-option>
+          <a-select-option value="Yimdinghe">Oxymeter</a-select-option>
           <a-select-option value="Yiminghe">Glucose</a-select-option>
         </a-select>
       </div>

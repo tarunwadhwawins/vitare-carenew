@@ -27,11 +27,11 @@
             size="large"
             @focus="focus"
             @change="handleChange"
+            placeholder="Select Status"
           >
-            <a-select-option value="lucy">Choose Status </a-select-option>
-            <a-select-option value="Yiminghe">Waiting</a-select-option>
-            <a-select-option value="Yiminghe">Inprogress</a-select-option>
-            <a-select-option value="Yiminghe">Completed</a-select-option>
+            <a-select-option value="Yiminsghe">Waiting</a-select-option>
+            <a-select-option value="Yidgfminghe">Inprogress</a-select-option>
+            <a-select-option value="Yimfginghe">Completed</a-select-option>
           </a-select>
         </div>
       </a-col>
@@ -45,9 +45,10 @@
             size="large"
             @focus="focus"
             @change="handleChange"
+            placeholder="Select Priority"
           >
             <a-select-option value="lucy">Urgent</a-select-option>
-            <a-select-option value="Yiminghe">Medium</a-select-option>
+            <a-select-option value="Yimingshe">Medium</a-select-option>
             <a-select-option value="Yiminghe">Normal</a-select-option>
           </a-select>
         </div>
@@ -92,7 +93,7 @@
         <div class="form-group">
           <label>Due Date</label>
           <a-date-picker
-            v-model:value="value1"
+            v-model:value="value2"
             :size="size"
             style="width: 100%"
           />
@@ -118,14 +119,16 @@ export default {
     const filteredOptionsForTag = computed(() =>
       OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
     );
-    const value = ref('');
+    const value = ref("");
     return {
       selectedItems,
       filteredOptions,
       filteredOptionsForTag,
       selectedItemsForTag,
       size: ref("large"),
-      value
+      value,
+      value1: ref(),
+      value2: ref(),
     };
   },
 };

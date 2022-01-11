@@ -57,7 +57,7 @@
             @change="handleChange"
           >
             <a-select-option value="lucy">Urgent</a-select-option>
-            <a-select-option value="Yiminghe">Medium</a-select-option>
+            <a-select-option value="Yimdinghe">Medium</a-select-option>
             <a-select-option value="Yiminghe">Normal</a-select-option>
           </a-select>
         </div>

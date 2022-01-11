@@ -78,12 +78,12 @@
           size="large"
           @focus="focus"
           @change="handleChange"
+          placeholder="Choose Location"
         >
-          <a-select-option value="lucy">Choose Location</a-select-option>
-          <a-select-option value="Yiminghe">Location 1</a-select-option>
-          <a-select-option value="Yiminghe">Location 2 </a-select-option>
-          <a-select-option value="Yiminghe">Location 3</a-select-option>
-          <a-select-option value="Yiminghe">Location 4</a-select-option>
+          <a-select-option value="Yimidnghe">Location 1</a-select-option>
+          <a-select-option value="Yimingghe">Location 2 </a-select-option>
+          <a-select-option value="Yiminjghe">Location 3</a-select-option>
+          <a-select-option value="Yimingkhe">Location 4</a-select-option>
         </a-select>
       </div>
     </a-col>

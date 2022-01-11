@@ -1,13 +1,13 @@
 <template>
   <a-modal width="1000px" title="General Parameters" centered>
     <a-row :gutter="24">
-      <a-col :sm="6" :xs="24">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>General Parameters Group</label>
           <a-input v-model="value" size="large" />
         </div>
       </a-col>
-      <a-col :sm="6" :xs="24">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Type </label>
           <a-select
@@ -17,6 +17,7 @@
             size="large"
             @focus="focus"
             @change="handleChange"
+            placeholder="Select Type"
           >
             <a-select-option value="Blood">Blood Glucose Fasting </a-select-option>
             <a-select-option value="NonFastBlood">Blood Glucose Non-Fasting </a-select-option>
@@ -28,14 +29,14 @@
           </a-select>
         </div>
       </a-col>
-      <a-col :sm="6" :xs="24">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>High Limit </label>
           <!-- <a-input v-model="value" size="large" /> -->
           <a-input-number v-model:value="value" :min="0" :max="10" :step="0.1" size="large" style="width:100%"/>
         </div>
       </a-col>
-      <a-col :sm="6" :xs="24">
+      <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Low Limit </label>
           <!-- <a-input v-model="value" size="large" /> -->
