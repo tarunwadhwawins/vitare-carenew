@@ -57,9 +57,9 @@ import ContactForm from "@/components/care-coordinator/forms/ContactForm";
 import AvailabilityForm from "@/components/care-coordinator/forms/AvailabilityForm";
 import RolesForm from "@/components/care-coordinator/forms/RolesForm";
 import DocumentsForm from "@/components/care-coordinator/forms/DocumentsForm";
-import CoordinatorContactsTable from "@/components/common/tables/CoordinatorContactsTable";
-import CoordinatorAvailabilityTable from "@/components/common/tables/CoordinatorAvailabilityTable";
-import CoordinatorRolesTable from "@/components/common/tables/CoordinatorRolesTable";
+import CoordinatorContactsTable from "@/components/care-coordinator/tables/CoordinatorContactsTable";
+import CoordinatorAvailabilityTable from "@/components/care-coordinator/tables/CoordinatorAvailabilityTable";
+import CoordinatorRolesTable from "@/components/care-coordinator/tables/CoordinatorRolesTable";
 import store from "@/store/index";
 
 export default {
