@@ -1,10 +1,12 @@
 <template>
   <a-col :xl="4" :sm="8" :xs="12">
-    <div class="topBox" :class="customClass">
-      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-      <h5>{{  count.count }}</h5>
-      <p>{{ count.text }}</p>
-    </div>
+    <router-link to="manage-patients">
+      <div class="topBox "  :class="customClass">
+        <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+        <h5>{{ count }}</h5>
+        <p>{{$t(('dashboard')+'.'+text)}}</p>
+      </div>
+    </router-link>
   </a-col>
 </template>
 
@@ -12,7 +14,11 @@
 export default {
   props: {
     count: {
-      type: Object,
+      type: Number,
+      required: true
+    },
+    text: {
+      type: String,
       required: true
     },
     customClass: {

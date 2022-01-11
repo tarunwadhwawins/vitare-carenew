@@ -1,5 +1,5 @@
-import CareCoordinatorService from '../../services/care-coordinator.service';
-import AuthService from '../../services/auth.service';
+import CareCoordinatorService from '../../services/careCoordinator';
+import AuthService from '../../services/auth';
 
 export const addCareCoordinator = async ({ commit }, coordinator) => {
     try {

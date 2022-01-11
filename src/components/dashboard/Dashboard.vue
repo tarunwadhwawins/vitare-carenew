@@ -27,7 +27,8 @@
             </a-col>
             <a-col :span="24">
               <a-row :gutter="24">
-                <a-col :xl="4" :sm="8" :xs="12">
+                <Card customClass="one" :count="10"  :text='totalPatients'></Card>
+                <!-- <a-col :xl="4" :sm="8" :xs="12">
                   <router-link to="manage-patients">
                     <div class="topBox one">
                       <i class="fa fa-user-circle-o" aria-hidden="true"></i>
@@ -35,7 +36,7 @@
                       <p>{{$t('dashboard.totalPatients')}}</p>
                     </div>
                   </router-link>
-                </a-col>
+                </a-col> -->
                 <a-col :xl="4" :sm="8" :xs="12">
                   <router-link to="manage-patients">
                     <div class="topBox two">
@@ -210,7 +211,8 @@ import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
 import { useRouter } from "vue-router";
 import { provide } from "vue";
-import { ref, computed } from "vue";
+import { ref } from "vue";
+import  Card from "../common/cards/Card"
 
 // import { UserOutlined } from "@ant-design/icons-vue";
 const columns4 = [
@@ -344,6 +346,7 @@ export default {
   components: {
     Header,
     Sidebar,
+    Card,
   },
   data: function () {
     return {
@@ -743,7 +746,10 @@ export default {
       ],
     };
   },
+  
   setup(props,{emit}) {
+   
+    const totalPatients="totalPatients"
     const router = useRouter();
     function clickHandler(event, chartContext, config){
         // emit('listView',false)
@@ -805,6 +811,7 @@ export default {
       showButton1,
       showButton2,
       showButton3,
+      totalPatients,
     };
   },
 };
