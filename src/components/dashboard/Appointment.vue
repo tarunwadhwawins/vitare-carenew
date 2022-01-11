@@ -1,12 +1,14 @@
 <template>
   <a-col :sm="12" :xs="24">
-    <a-card title="Today's Appointment" class="common-card">
-      <a-table :columns="columns" :data-source="data" :pagination="{ pageSize: 3 }">
+    <a-card :title="title" class="common-card">
+      <a-table :columns="column" :data-source="data" :pagination="false">
         <template #patientName="text">
-          <router-link to="patients-summary">{{ text.text }}</router-link>
+          <router-link to="patients-summary">{{
+            text.text
+            }}</router-link>
         </template>
         <template #appt="text">
-          <router-link to="manage-care-coordinator">{{
+          <router-link to="corrdinator-summary">{{
             text.text
             }}</router-link>
         </template>
@@ -16,34 +18,18 @@
 </template>
 <script>
   import { reactive } from "vue"
-  const columns = [
-    {
-      title: "Patient Name",
-      dataIndex: "patient_name",
-      slots: {
-        customRender: "patientName",
-      },
-    },
-    {
-      title: "Date Time ",
-      dataIndex: "date_time",
-    },
-    {
-      title: "  Appointment With",
-      dataIndex: "appointment_with",
-      slots: {
-        customRender: "appt",
-      },
-    },
-  ];
+
   export default {
-    props: ["todayappointment"],
+    props: ["appointment", "columns", "title"],
     setup(props) {
-     
-      const data = reactive(props.todayappointment)
+      const data = reactive(props.appointment)
+      const column = reactive(props.columns)
+
+
       return {
         data,
-        columns,
+        column,
+
       }
     }
   }

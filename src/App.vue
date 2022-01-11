@@ -1,8 +1,8 @@
 <template>
   <div>
-    <!-- <div class="SelectLanguage">
+    <div class="SelectLanguage">
       <span for="Select Language">Select Language <SelectLanguage /></span>
-    </div> -->
+    </div>
     <!-- used for component i18n like calendar -->
     <!-- <div class="change-locale">
       <span style="margin-right: 16px">Change locale of components:</span>
@@ -29,17 +29,15 @@ import esES from "ant-design-vue/es/locale/es_ES";
 import moment from "moment";
 import 'moment/dist/locale/es';
 import { onMounted } from "vue";
-// import SelectLanguage from "./views/localization/SelectLanguage.vue";
+import SelectLanguage from "./views/localization/SelectLanguage.vue";
 moment.locale("en");
 export default {
   components: {
-    // SelectLanguage,
+    SelectLanguage,
   },
-
   setup() {
     const auth = localStorage.getItem("auth");
     const locale = ref(enUS.locale);
-
     watch(locale, (val) => {
       moment.locale(val);
     });
@@ -63,18 +61,15 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
-
 #nav {
   a {
     font-weight: bold;
     color: #2c3e50;
-
     &.router-link-exact-active {
       color: #42b983;
     }
   }
 }
-
 .SelectLanguage {
   padding-top: 10px;
   text-align: center;
