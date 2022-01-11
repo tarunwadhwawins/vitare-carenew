@@ -35,7 +35,7 @@
 <script>
 import { ref, watchEffect, computed } from "vue";
 import LongCard from "@/components/common/cards/LongCard";
-import CoordinatorTable from "@/components/common/tables/CoordinatorTable";
+import CoordinatorTable from "./tables/CoordinatorTable";
 import { useStore } from "vuex";
 
 export default {

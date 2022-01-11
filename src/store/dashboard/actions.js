@@ -1,108 +1,70 @@
-import DashboardService from '../../services/dashboard.service';
-import AuthService from '../../services/auth.service';
+import DashboardService from '../../services/dashboard';
+// import AuthService from '../../services/auth';
 
-export const totalPatients = async ({ commit }) => {
-    try {
-        let resp = await DashboardService.totalPatient()
-        commit('totalPatientsSuccess', resp.data.data);
-    } catch (error) {
 
-        if (error.message == "Request failed with status code 401") {
-            AuthService.logout();
-        }
-        commit('Failure', error);
-    }
-}
-export const newPatients = async ({ commit }) => {
-    try {
-        let resp = await DashboardService.newPatient()
-        commit('newPatientsSuccess', resp.data.data);
-    } catch (error) {
-        commit('Failure', error);
-    }
-}
-export const abnormalPatients = async ({ commit }) => {
-    try {
-        let resp = await DashboardService.abnormalPatient()
-        commit('abnormalPatientsSuccess', resp.data.data);
-    } catch (error) {
-        commit('Failure', error);
-    }
-}
-export const activePatients = async ({ commit }) => {
-    try {
-        let resp = await DashboardService.activePatient()
-        commit('activePatientsSuccess', resp.data.data);
-    } catch (error) {
-        commit('Failure', error);
-    }
-}
-export const inactivePatients = async ({ commit }) => {
-    try {
-        let resp = await DashboardService.inactivePatient()
-        commit('inactivePatientsSuccess', resp.data.data);
-    } catch (error) {
-        commit('Failure', error);
-    }
-}
-export const criticalPatients = async ({ commit }) => {
-    try {
-        let resp = await DashboardService.criticalPatient()
-        commit('criticalPatientsSuccess', resp.data.data);
-    } catch (error) {
-        commit('Failure', error);
-    }
-}
 export const appointment = async ({ commit }, id) => {
-    try {
-        let resp = await DashboardService.appointment(id)
+
+    await DashboardService.appointment(id).then((response) => {
         if (id == 1) {
-            commit('newappointmentSuccess', resp.data.data);
+            commit('newappointmentSuccess', response.data.data);
         } else {
-            commit('futureappointmentSuccess', resp.data.data);
+            commit('futureappointmentSuccess', response.data.data);
         }
 
-    } catch (error) {
-        commit('Failure', error);
-    }
+    }).catch((error) => {
+        if (error.response.status == 401) {
+            //AuthService.logout();
+        }
+        commit('failure', error.response.data);
+    })
 }
 export const todayappointment = async ({ commit }) => {
-    try {
-        let resp = await DashboardService.todayappointment()
-        commit('todayappointmentSuccess', resp.data.data);
-    } catch (error) {
-        commit('Failure', error);
-    }
+    await DashboardService.todayappointment().then((response) => {
+        commit('todayappointmentSuccess', response.data.data);
+    }).catch((error) => {
+        if (error.response.status == 401) {
+            //AuthService.logout();
+        }
+        commit('failure', error.response.data);
+    })
 }
 export const appointmentcount = async ({ commit }) => {
-    try {
-        let resp = await DashboardService.appointmentcount()
-        commit('appointmentcountSuccess', resp.data);
-    } catch (error) {
-        commit('Failure', error);
-    }
+    await DashboardService.appointmentcount().then((response) => {
+        commit('appointmentcountSuccess', response.data);
+    }).catch((error) => {
+        if (error.response.status == 401) {
+            //AuthService.logout();
+        }
+        commit('failure', error.response.data);
+    })
 }
 export const specialization = async ({ commit }, id) => {
-    try {
-        let resp = await DashboardService.specialization(id)
+
+    await DashboardService.specialization(id).then((response) => {
         if (id == 1) {
-            commit('wellnessSuccess', resp.data.data);
+            commit('wellnessSuccess', response.data.data);
         } else {
-            commit('specializationSuccess', resp.data.data);
+            commit('specializationSuccess', response.data.data);
         }
-    } catch (error) {
-        commit('Failure', error);
-    }
+    }).catch((error) => {
+        if (error.response.status == 401) {
+            //AuthService.logout();
+        }
+        commit('failure', error.response.data);
+    })
 }
 export const network = async ({ commit }, id) => {
-    try {
-        let resp = await DashboardService.network(id)
+
+    await DashboardService.network(id).then((response) => {
         if (id == 1) {
-            commit('networkinSuccess', resp.data.data);
+            commit('networkinSuccess', response.data.data);
         } else {
-            commit('networkoutSuccess', resp.data.data);
+            commit('networkoutSuccess', response.data.data);
         }
-    } catch (error) {
-        commit('Failure', error);
-    }
+    }).catch((error) => {
+        if (error.response.status == 401) {
+            //AuthService.logout();
+        }
+        commit('failure', error.response.data);
+    })
 }

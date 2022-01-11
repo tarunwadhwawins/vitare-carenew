@@ -1,4 +1,4 @@
-import AuthService from '../../services/auth.service';
+import AuthService from '../../services/auth';
 import router from "@/router"
 
 export const login = async({ commit }, user) => {
