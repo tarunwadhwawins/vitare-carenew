@@ -20,11 +20,10 @@
                 <div class="addtaskButton">
                   <StartCall></StartCall>
                   <SendMessage></SendMessage>
-                  <!-- <ToolTip :boxTitle="$t('communications.email')" boxName="email"></ToolTip> -->
-                  <EmailButton></EmailButton>
-                  <SMSButton></SMSButton>
-                  <ReminderButton></ReminderButton>
-                  <CallButton></CallButton>
+                  <ToolTip :boxTitle="$t('communications.email')" boxName="email" @open="openNotification($event)"></ToolTip>
+                  <ToolTip :boxTitle="$t('communications.sms')" boxName="sms" @open="openNotification($event)"></ToolTip>
+                  <ToolTip :boxTitle="$t('communications.reminder')" boxName="reminder" @open="openNotification($event)"></ToolTip>
+                  <ToolTip :boxTitle="$t('communications.call')" boxName="call" @open="openNotification($event)"></ToolTip>
                 </div>
                 
                 <div class="filter">
@@ -67,15 +66,14 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { ref } from "vue";
+import { ref, h } from "vue";
 import DashboardView from "@/components/communications/DashboardView";
 import ListView from "@/components/communications/ListView";
 import StartCall from "@/components/communications/top/StartCall";
 import SendMessage from "@/components/communications/top/SendMessage";
-import EmailButton from "@/components/communications/top/EmailButton";
-import SMSButton from "@/components/communications/top/SMSButton";
-import ReminderButton from "@/components/communications/top/ReminderButton";
-import CallButton from "@/components/communications/top/CallButton";
+import ToolTip from "@/components/communications/toolTip/ToolTip";
+import { notification, Button } from "ant-design-vue";
+
 const close = () => {
   console.log(
     "Notification was closed. Either the close button was clicked or duration time elapsed."
@@ -90,10 +88,7 @@ export default {
     ListView,
     StartCall,
     SendMessage,
-    EmailButton,
-    SMSButton,
-    ReminderButton,
-    CallButton,
+    ToolTip,
   },
   
   setup() {
@@ -102,8 +97,89 @@ export default {
       console.log(`selected ${value}`);
     };
 
+    const openNotification = (data) => {
+      var key = `open${Date.now()}`;
+      var message = "";
+      var description = (
+        <div class="notificationBody">
+          <p>
+            Date Time : <span>December 20, 2021 12:00 PM</span>
+          </p>
+          <p>
+            Patient Name : <span>Jane Doe</span>
+          </p>
+          <p class="summary">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
+            at incidunt !
+          </p>
+        </div>
+      );
+      var button = "";
+      
+      const boxname = data.boxname;
+      const placement = data.placement;
+      if(boxname == 'email') {
+        message = <h2>Email</h2>;
+        button = h(
+          Button,
+          {
+            type: "primary",
+            onClick: () => notification.close(key),
+          },
+          "Reply"
+        );
+      }
+      else if(boxname == 'sms') {
+        // key = key;
+        message = <h2>SMS</h2>;
+        button = h(
+          Button,
+          {
+            type: "primary",
+            onClick: () => notification.close(key),
+          },
+          "Reply"
+        );
+      }
+      else if(boxname == 'reminder') {
+        // key = key;
+        message = <h2>Reminder</h2>;
+      }
+      else if(boxname == 'call') {
+        // key = key;
+        message = <h2>Call</h2>;
+        button = [
+          h(
+            Button,
+            {
+              onClick: () => notification.close(key),
+            },
+            "Cancel "
+          ),
+          h(
+            Button,
+            {
+              type: "primary",
+              onClick: () => notification.close(key),
+            },
+            "Accept"
+          ),
+        ];
+      }
+
+      notification.open({
+        message: message,
+        description: description,
+        btn: button,
+        key: key,
+        onClose: close,
+        placement,
+      });
+    };
+
     return {
       toggle,
+      openNotification,
       onChange: (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
       },
