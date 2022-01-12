@@ -21,6 +21,9 @@
               <h2 class="pageTittle">
                 Patients
                 <div class="commonBtn">
+                  <a-button class="btn blueBtn" :size="size">
+                    Upload Excel
+                  </a-button>
                   <a-button class="btn primaryBtn" @click="showModal"
                     >Add New Patients</a-button
                   >
@@ -101,14 +104,17 @@
                 :scroll="{ x: 1024 }"
                 @change="onChange"
               >
-                <template #firstName="text">
-                  <router-link to="patients-summary">{{ text.text }}</router-link>
-                </template>
-                <!-- <template #lastName="text">
+              
+                <template #patientid="text">
                   <router-link to="patients-summary">{{
                     text.text
                   }}</router-link>
-                </template> -->
+                </template>
+                <template #firstName="text">
+                  <router-link to="patients-summary">{{
+                    text.text
+                  }}</router-link>
+                </template>
                 <template #flags="{ text }">
                   <span class="box" :class="text"></span>
                   <span
@@ -124,6 +130,9 @@
                 <template #lastReadingValues>
                   <WarningOutlined />
                 </template>
+                <template #active="key">
+                    <a-switch v-model:checked="checked[key.record.key]" />
+                  </template>
               </a-table>
             </a-col>
           </a-row>
@@ -149,6 +158,14 @@ const columns = [
       customRender: "flags",
     },
   },
+  
+  {
+    title: "ID",
+    dataIndex: "patientid",
+    slots: {
+      customRender: "patientid",
+    },
+  },
   {
     title: "Name",
     dataIndex: "firstName",
@@ -160,13 +177,7 @@ const columns = [
       multiple: 1,
     },
   },
-  // {
-  //   title: "Last Name",
-  //   dataIndex: "lastName",
-  //   slots: {
-  //     customRender: "lastName",
-  //   },
-  // },
+
   {
     title: "Last Reading Date",
     dataIndex: "reading",
@@ -206,25 +217,8 @@ const columns = [
         dataIndex: "weight",
         key: "weight",
       },
-      
     ],
   },
-  // {
-  //   title: "Age",
-  //   dataIndex: "age",
-  //   sorter: {
-  //     compare: (a, b) => a.age - b.age,
-  //     multiple: 3,
-  //   },
-  // },
-  // {
-  //   title: "Sex",
-  //   dataIndex: "sex",
-  //   sorter: {
-  //     compare: (a, b) => a.sex - b.sex,
-  //     multiple: 2,
-  //   },
-  // },
 
   {
     title: "Non Compliance",
@@ -235,6 +229,13 @@ const columns = [
     },
     slots: {
       customRender: "compliance",
+    },
+  },
+  {
+    title: "Active / Inactive",
+    dataIndex: "active",
+    slots: {
+      customRender: "active",
     },
   },
   {
@@ -258,8 +259,20 @@ const columns = [
         value: "readdate",
       },
       {
-        text: "Last Reading Value",
-        value: "readvalue",
+        text: "BP",
+        value: "bp",
+      },
+      {
+        text: "Sp02",
+        value: "Sp02",
+      },
+      {
+        text: "Glucose",
+        value: "Glucose",
+      },
+      {
+        text: "Weight",
+        value: "Weight",
       },
       {
         text: "Non Compliance ",
@@ -269,18 +282,21 @@ const columns = [
         text: "Last Message Seen",
         value: "messagseen",
       },
+      {
+        text: "Active / Inactive",
+        value: "active",
+      },
     ],
     onFilter: (value, record) => record.name.indexOf(value) === 0,
   },
+  
 ];
 const data = [
   {
     key: "1",
     flags: "redBgColor",
+    patientid: "3432",
     firstName: "Jane Doe",
-    // lastName: "Doe",
-    // age: "85",
-    // sex: "male",
     reading: "5 months ago",
     compliance: "",
     message: "5 months ago",
@@ -289,14 +305,13 @@ const data = [
     bp: "115/81",
     weight: "189.2",
     glucose: "80",
+    active: "",
   },
   {
     key: "2",
     flags: "purpleBgColor",
     firstName: "Steve Smith",
-    // lastName: "Smith",
-    // age: "78",
-    // sex: "Female",
+    patientid: "5353",
     reading: "15 days ago",
     compliance: "",
     message: "2 months ago",
@@ -305,14 +320,13 @@ const data = [
     bp: "105/81",
     weight: "-",
     glucose: "70",
+    active: "",
   },
   {
     key: "3",
     flags: "blueBgColor yellowBgColor ",
     firstName: "Joseph Spouse",
-    // lastName: "Spouse",
-    // age: "72",
-    // sex: "male",
+    patientid: "2422",
     reading: "2 months ago",
     compliance: "",
     message: "4 months ago",
@@ -321,14 +335,13 @@ const data = [
     bp: "-",
     weight: "-",
     glucose: "75",
+    active: "",
   },
   {
     key: "4",
     flags: "greenBgColor",
     firstName: "Robert Henry",
-    // lastName: "Henry",
-    // age: "79",
-    // sex: "Female",
+    patientid: "8642",
     reading: "4 months ago",
     compliance: "",
     message: "15 days ago",
@@ -337,6 +350,7 @@ const data = [
     bp: "-",
     weight: "181.2",
     glucose: "-",
+    active: "",
   },
 ];
 export default {
@@ -379,6 +393,7 @@ export default {
         label: "Robert Henry",
       },
     ]);
+    const checked = ref([false]);
     return {
       PatientsModal,
       showModal,
@@ -388,6 +403,7 @@ export default {
       handleChange,
       searchoptions,
       size: ref([]),
+      checked,
     };
   },
 };

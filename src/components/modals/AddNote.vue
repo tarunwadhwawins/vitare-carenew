@@ -22,10 +22,11 @@
             size="large"
             @focus="focus"
             @change="handleChange"
+            placeholder="Select Category"
           >
             <a-select-option value="lucy">Clinical</a-select-option>
-            <a-select-option value="Yiminghe">Admin</a-select-option>
-            <a-select-option value="Yiminghe">General</a-select-option>
+            <a-select-option value="Yimidnghe">Admin</a-select-option>
+            <a-select-option value="Yimdinghe">General</a-select-option>
           </a-select>
         </div>
       </a-col>
@@ -49,6 +50,7 @@ export default defineComponent({
   setup() {
     return {
       size: ref("large"),
+      value1: ref(),
     };
   },
 });

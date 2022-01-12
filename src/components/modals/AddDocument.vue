@@ -29,9 +29,10 @@
             size="large"
             @focus="focus"
             @change="handleChange"
+            placeholder="Choose Type"
           >
             <a-select-option value="lucy">Id Proof</a-select-option>
-            <a-select-option value="Yiminghe">Clinical</a-select-option>
+            <a-select-option value="Yimidnghe">Clinical</a-select-option>
             <a-select-option value="Yiminghe">Insurance</a-select-option>
           </a-select>
         </div>

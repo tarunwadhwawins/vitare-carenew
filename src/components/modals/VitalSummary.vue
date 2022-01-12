@@ -34,7 +34,7 @@
         <div class="form-group">
           <label>Date & Time</label>
           <a-date-picker
-            v-model:value="value1"
+            v-model:value="value2"
             :size="size"
             style="width: 100%"
           />
@@ -54,7 +54,7 @@
         <div class="form-group">
           <label>Date & Time</label>
           <a-date-picker
-            v-model:value="value1"
+            v-model:value="value3"
             :size="size"
             style="width: 100%"
           />
@@ -74,7 +74,7 @@
         <div class="form-group">
           <label>Date & Time</label>
           <a-date-picker
-            v-model:value="value1"
+            v-model:value="value4"
             :size="size"
             style="width: 100%"
           />
@@ -95,6 +95,10 @@ export default defineComponent({
   setup() {
     return {
       size: ref("large"),
+      value1: ref(),
+      value2: ref(),
+      value3: ref(),
+      value4: ref(),
     };
   },
 });

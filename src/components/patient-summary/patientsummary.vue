@@ -98,6 +98,7 @@
                             alt="image"
                           />
                           <div class="info">
+                            <p>Patient Id : #3432</p>
                             <p>Jane Doe</p>
                             <p>DOB : June 25, 1995</p>
                             <p>
@@ -451,6 +452,7 @@
                         />
                         <div class="info">
                           <h2>Jane Doe</h2>
+                          <p>Patient Id : #3432</p>
                           <p>DOB : June 25, 1995</p>
                           <p>
                             <a href="mailto:jane@gmail.com"
@@ -689,6 +691,7 @@
                       />
                       <div class="info">
                         <h2>Jane Doe</h2>
+                        <p>Patient Id : 3432</p>
                         <p>DOB : June 25, 1995</p>
                         <p>
                           <a href="mailto:jane@gmail.com"
@@ -720,6 +723,7 @@
                         />
                         <div class="info">
                           <h2>Jane Doe</h2>
+                          <p>Patient Id : 3432</p>
                           <p>DOB : June 25, 1995</p>
                           <p>
                             <a href="mailto:jane@gmail.com"

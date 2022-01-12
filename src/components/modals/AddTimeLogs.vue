@@ -11,6 +11,7 @@
             size="large"
             @focus="focus"
             @change="handleChange"
+            placeholder="Choose Category"
           >
             <a-select-option value="lucy">Daily monitoring of vitals</a-select-option>
             <a-select-option value="Yiminghe">Provider Order For Lab</a-select-option>
@@ -39,7 +40,7 @@
         <div class="form-group">
           <label>Time Amount</label>
           <a-time-picker
-            v-model:value="value"
+            v-model:value="value2"
             format="HH:mm"
             :size="size"
             style="width: 100%"
@@ -56,6 +57,8 @@ export default defineComponent({
   setup() {
     return {
       size: ref("large"),
+      value1: ref(),
+      value2: ref(),
     };
   },
 });

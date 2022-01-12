@@ -11,9 +11,10 @@
             size="large"
             @focus="focus"
             @change="handleChange"
+            placeholder="Choose Unit Type"
           >
             <a-select-option value="lucy">Blood Pressure</a-select-option>
-            <a-select-option value="Yiminghe">Oxymeter</a-select-option>
+            <a-select-option value="Yimingdhe">Oxymeter</a-select-option>
             <a-select-option value="Yiminghe">Glucose</a-select-option>
           </a-select>
         </div>

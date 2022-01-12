@@ -566,7 +566,7 @@
     .info {
         padding: 0 0 0 25px;
         h2 {
-            font-size: 25px;
+            font-size: 22px;
             color: $primary-color;
         }
         p {
@@ -575,7 +575,7 @@
             a {
                 display: flex;
                 align-items: center;
-                padding: 0 0 5px;
+                padding: 0 0 2px;
                 .anticon {
                     margin: 0 5px 0 0;
                 }
@@ -595,10 +595,10 @@
         justify-content: space-between;
         border-bottom: 1px solid #eee;
         .thumb-head {
-            padding: 7px 15px;
+            padding: 6px 15px;
         }
         .thumb-desc {
-            padding: 7px 15px;
+            padding: 6px 15px;
             text-align: right;
             .anticon-warning{
                 svg {

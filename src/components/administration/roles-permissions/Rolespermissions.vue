@@ -116,6 +116,15 @@
                     <div class="radioInput">
                       <a-radio :value="7">Standard</a-radio>
                     </div>
+                    <div class="radioInput">
+                      <a-radio :value="8">ES</a-radio>
+                    </div>
+                    <div class="radioInput">
+                      <a-radio :value="9">LCSW</a-radio>
+                    </div>
+                    <div class="radioInput">
+                      <a-radio :value="10">Clinical Staff</a-radio>
+                    </div>
                   </a-radio-group>
                 </div>
               </a-col>

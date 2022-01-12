@@ -30,20 +30,20 @@
           <label>Time</label>
           <a-select
             ref="select"
-            v-model="value1"
+            v-model="value2"
             style="width: 100%"
             size="large"
             @focus="focus"
             @change="handleChange"
             placeholder="Select Time"
           >
-            <a-select-option value="Yiminghe">10 Mins</a-select-option>
-            <a-select-option value="Yiminghe">20 Mins</a-select-option>
-            <a-select-option value="Yiminghe">30 Mins</a-select-option>
-            <a-select-option value="Yiminghe">1 Hour</a-select-option>
-            <a-select-option value="Yiminghe">2 Hour</a-select-option>
-            <a-select-option value="Yiminghe">4 Hour</a-select-option>
-            <a-select-option value="Yiminghe">Full Day</a-select-option>
+            <a-select-option value="Yimisnghe">10 Mins</a-select-option>
+            <a-select-option value="Yimidnghe">20 Mins</a-select-option>
+            <a-select-option value="Yimifnghe">30 Mins</a-select-option>
+            <a-select-option value="Yimsfinghe">1 Hour</a-select-option>
+            <a-select-option value="Yimsfsinghe">2 Hour</a-select-option>
+            <a-select-option value="Yimindfghe">4 Hour</a-select-option>
+            <a-select-option value="Yiminadghe">Full Day</a-select-option>
           </a-select>
         </div>
       </a-col>
@@ -84,6 +84,8 @@ export default {
     const value = ref(moment('08:00:00', 'HH:mm:ss'));
     return {
       size: ref("large"),
+      value1: ref(),
+      value2: ref(),
     };
   },
 };
