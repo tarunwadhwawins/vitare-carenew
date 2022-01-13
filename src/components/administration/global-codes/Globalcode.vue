@@ -10,16 +10,7 @@
         <a-layout-content>
           <div class="common-bg">
             <a-row>
-              <a-col :span="24">
-                <h2 class="pageTittle">
-                  Global Codes
-                  <div class="commonBtn">
-                    <a-button class="btn primaryBtn" @click="showModal"
-                      >Add Global Codes</a-button
-                    >
-                  </div>
-                </h2>
-              </a-col>
+             <GlobalTitle title="Global Codes" button="Add Global Codes" @isVisible="showModal($event)" />
               <a-col :span="12">
                   <a-select
                   v-model:value="value2"
@@ -69,7 +60,7 @@
       </a-layout>
     </a-layout>
     <!--modals-->
-    <AdminGlobalCodes v-model:visible="visible" @ok="handleOk" />
+    <AdminGlobalCodes v-model:visible="visible"  @ok="handleOk" />
     <!---->
   </div>
 </template>
@@ -80,6 +71,7 @@ import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import AdminGlobalCodes from "@/components/modals/AdminGlobalCodes";
 import { defineComponent, ref } from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import GlobalTitle from "@/components/administration/global-codes/globalTitle"
 const columns = [
   {
     title: "Category",
@@ -226,14 +218,15 @@ export default {
     DeleteOutlined,
     EditOutlined,
     AdminGlobalCodes,
+    GlobalTitle,
   },
 
   setup() {
     const checked = ref([false]);
 
     const visible = ref(false);
-    const showModal = () => {
-      visible.value = true;
+    const showModal = (value) => {
+      visible.value = value;
     };
 
     const handleOk = (e) => {
