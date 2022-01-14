@@ -211,9 +211,9 @@ import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
 import { useRouter } from "vue-router";
 import { provide } from "vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import  Card from "../common/cards/Card"
-
+import { useStore } from "vuex"
 // import { UserOutlined } from "@ant-design/icons-vue";
 const columns4 = [
   {
@@ -748,7 +748,7 @@ export default {
   },
   
   setup(props,{emit}) {
-   
+    const store = useStore()
     const totalPatients="totalPatients"
     const router = useRouter();
     function clickHandler(event, chartContext, config){
