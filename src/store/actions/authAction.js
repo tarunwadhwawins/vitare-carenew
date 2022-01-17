@@ -14,7 +14,7 @@ export const login = async({ commit }, user) => {
     );
 }
 export const logout = ({ commit }) => {
-    AuthService.logout();
+
     commit('logout');
-    location.reload();
+   // location.reload();
 }
