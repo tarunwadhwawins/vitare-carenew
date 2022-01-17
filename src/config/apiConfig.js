@@ -3,12 +3,13 @@
 const API_URL =  process.env.VUE_APP_API_URL
 
 // API end points 
-const API_ENDPOINTS = {
+export const API_ENDPOINTS = {
     LOGIN: "login",
     Logout: "logout",
+    CallPerStaff:"call/staff"
     
 };
 
-export const getApiUrl = key => {
-    return API_URL + API_ENDPOINTS[key];
-};
+// export const getApiUrl = key => {
+//     return API_URL + API_ENDPOINTS[key];
+// };

@@ -1,10 +1,11 @@
 <template>
   <a-table
-    :columns="columns"
-    :data-source="data"
+  :key="1"
+    :columns="colomnsRecord"
+    :data-source="dataRecord"
     :pagination="false">
     <template #patientName="text">
-      <router-link to="patients-summary">
+      <router-link :to="linkTo">
         {{ text.text }}
       </router-link>
     </template>
@@ -15,57 +16,15 @@
 </template>
 
 <script>
+  import { reactive } from "vue"
 export default {
-  setup() {
+props:["colomnsRecord","dataRecord","linkTo"],
+  setup(props) {
     
-    const columns = [
-      {
-        title: "Patient Name",
-        dataIndex: "patient",
-        slots: {
-          customRender: "patientName",
-        },
-      },
-      {
-        title: "Appointment Type",
-        dataIndex: "appt",
-      },
-      {
-        title: "Time",
-        dataIndex: "time",
-      },
-      {
-        title: "Action ",
-        dataIndex: "action",
-        slots: {
-          customRender: "action",
-        },
-      },
-    ];
-    const data = [
-      {
-        key: "1",
-        patient: "Steve Smith",
-        appt: "Wellness",
-        time: "01:30 PM",
-      },
-      {
-        key: "2",
-        patient: "Jane Doe",
-        appt: "Clinical",
-        time: "11:30 AM",
-      },
-      {
-        key: "3",
-        patient: "Joseph Spouse",
-        appt: "Wellness",
-        time: "02:30 PM",
-      },
-    ];
-
+  //     const column = reactive(props.dataRecord)
     return {
-      columns,
-      data
+     // column,
+     // data
     }
   }
 }

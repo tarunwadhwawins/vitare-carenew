@@ -106,8 +106,11 @@ import Sidebar from "../layout/sidebar/Sidebar";
 import { useRouter } from "vue-router";
 import { provide } from "vue";
 import { ref, computed } from "vue";
-import  Card from "../common/cards/Card"
 import { useStore } from "vuex"
+import Card from "@/components/common/cards/Card"
+  import Appointement from "./Appointment"
+  import ApexChart from "@/components/common/charts/ApexChart";
+
 // import { UserOutlined } from "@ant-design/icons-vue";
 const columns4 = [
   {
@@ -117,6 +120,7 @@ const columns4 = [
       customRender: "patientName",
 
     },
+  },
     {
       title: "Date Time ",
       dataIndex: "date",
@@ -634,14 +638,6 @@ const columns4 = [
             },
           },
         },
-        callseries: [
-          {
-            name: "Value",
-            data: [12, 8, 6],
-          },
-
-        },
-      },
       callseries: [
         {
           name: "Value",
@@ -651,34 +647,7 @@ const columns4 = [
     };
   },
   
-  setup(props,{emit}) {
-    const store = useStore()
-    const totalPatients="totalPatients"
-    const router = useRouter();
-    function clickHandler(event, chartContext, config){
-        // emit('listView',false)
-        provide('listView',false)
-        router.push({path:'communications'})
-    }
-    function clickHandler2(event, chartContext, config){
-        router.push({path:'manage-patients'})
-    }
-    function clickHandler3(event, chartContext, config){
-        router.push({path:'manage-care-coordinator'})
-    }
-    function clickHandler4(event, chartContext, config){
-        router.push({path:'cpt-codes'})
-    }
-    function clickHandler5(event, chartContext, config){
-        router.push({path:'appointment-calendar'})
-    }
-    function clickHandler6(event, chartContext, config){
-        router.push({path:'time-tracking-report'})
-    }
-    
-    
-
-
+ 
     setup(props, { emit }) {
 
       const totalPatients = "totalPatients"
