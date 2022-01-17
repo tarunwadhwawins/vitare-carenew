@@ -198,7 +198,6 @@
                               <router-link to="corrdinator-summary"
                                 >John Smith (P) HT </router-link
                               ><br />
-                          
                             </div>
                           </div>
                           <div class="pat-profile-inner">
@@ -211,7 +210,6 @@
                                 @click="showTimeLogDetailModal"
                                 >Daily monitoring of vitals (Oct 25, 2021)</a
                               >
-                            
                             </div>
                           </div>
                           <div class="pat-profile-inner">
@@ -224,7 +222,6 @@
                                 @click="showDeviceModal"
                                 >Blood Pressure(M-101)</a
                               >
-                            
                             </div>
                           </div>
                         </div>
@@ -249,7 +246,7 @@
                             >Additional 2</a-checkbox
                           >
                         </a-checkbox-group>
-                         <a-timeline class="defaultTimeline">
+                        <a-timeline class="defaultTimeline">
                           <a-timeline-item color="blue">
                             <template #dot
                               ><FolderOpenOutlined class="yellowIcon"
@@ -684,7 +681,7 @@
               <div v-if="button == 3">
                 <a-row>
                   <a-col :sm="24" :xs="24">
-                    <div class="patientSummary">
+                    <div class="patientSummary mb-24">
                       <img
                         src="../../assets/images/profile-4.jpg"
                         alt="image"
@@ -708,8 +705,36 @@
                       <EditOutlined @click="addPatient" />
                     </div>
                   </a-col>
+                  <a-col :span="24">
+                    <div class="text-right mb-24">
+                      <a-button class="primaryBtn" @click="AddCarePlan"
+                        >Add Goal</a-button
+                      >
+                    </div>
+                    <a-table
+                      :columns="columnsCarePlan"
+                      :data-source="dataCarePlan"
+                      :pagination="false"
+                      @change="onChange"
+                    >
+
+                    <template #actions>
+                    <a-tooltip placement="bottom">
+                      <template #title>
+                        <span>Edit</span>
+                      </template>
+                      <a class="icons"><EditOutlined /></a>
+                    </a-tooltip>
+                    <a-tooltip placement="bottom">
+                      <template #title>
+                        <span>Delete</span>
+                      </template>
+                      <a class="icons"> <DeleteOutlined /></a>
+                    </a-tooltip>
+                  </template>
+                    </a-table>
+                  </a-col>
                 </a-row>
-                <div>Care Plan</div>
               </div>
 
               <div v-if="button == 4">
@@ -937,6 +962,8 @@
     <!---->
     <TaskModal v-model:visible="TaskModal" @ok="handleOk" />
     <!---->
+    <CarePlan v-model:visible="CarePlan" @ok="handleOk" />
+    <!---->
   </div>
 </template>
 
@@ -965,6 +992,7 @@ import AddTimeLogs from "@/components/modals/AddTimeLogs";
 import AddAppointment from "@/components/modals/AddAppointment";
 import PatientsModal from "@/components/modals/PatientsModal";
 import TaskModal from "@/components/modals/TasksModal";
+import CarePlan from "@/components/modals/CarePlan";
 
 import dayjs from "dayjs";
 import { ref, computed } from "vue";
@@ -979,6 +1007,7 @@ import {
   MailOutlined,
   PhoneOutlined,
   WarningOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons-vue";
 const OPTIONSTAG = ["Manger", "Billing Admin", "User Admin"];
 const value = ref(dayjs("12:08", "HH:mm"));
@@ -1120,6 +1149,73 @@ const data4 = [
     value: "122/80",
   },
 ];
+const columnsCarePlan = [
+  {
+    title: "Goal",
+    dataIndex: "goal",
+  },
+  {
+    title: "Start date",
+    dataIndex: "startdate",
+  },
+  {
+    title: "End date",
+    dataIndex: "enddate",
+  },
+  {
+    title: "Frequency",
+    dataIndex: "frequency",
+  },
+
+  {
+    title: "Duration",
+    dataIndex: "duration",
+  },
+  {
+    title: "Notes",
+    dataIndex: "notes",
+  },
+  {
+    title: "Actions",
+    dataIndex: "actions",
+    slots: {
+      customRender: "actions",
+    },
+  },
+];
+const dataCarePlan = [
+  {
+    key: "1",
+    goal: "Blood Pressure",
+    startdate: "Jan 15, 2022",
+    enddate: "Jan 30, 2022",
+    frequency: "5 Daily",
+    duration: "Any Time",
+    notes: "notes",
+    action: "",
+  },
+  {
+    key: "2",
+    goal: "SPO2",
+    startdate: "Jan 20, 2022",
+    enddate: "Jan 30, 2022",
+    frequency: "1 Month",
+    duration: "Any Time",
+    notes: "notes",
+    action: "",
+  },
+  {
+    key: "3",
+    goal: "Walk",
+    startdate: "Feb 01, 2022",
+    enddate: "Feb 10, 2022",
+    frequency: "5 Week",
+    duration: "Time Range 5:00 AM - 6:00 AM",
+    notes: "notes",
+    action: "",
+  },
+  
+];
 const columns5 = [
   {
     title: "Date Recorded",
@@ -1259,6 +1355,7 @@ export default {
     BellOutlined,
     MailOutlined,
     WarningOutlined,
+    DeleteOutlined,
     VitalSummary,
     FamilyCoordinators,
     CareCoordinators,
@@ -1281,6 +1378,7 @@ export default {
     AddAppointment,
     PatientsModal,
     TaskModal,
+    CarePlan,
   },
   data: function () {
     return {
@@ -1396,6 +1494,9 @@ export default {
     const AddTaskModal = () => {
       TaskModal.value = true;
     };
+    const AddCarePlan = () => {
+      CarePlan.value = true;
+    };
     const showAddNoteModal = () => {
       addnotesvisible.value = true;
     };
@@ -1454,6 +1555,7 @@ export default {
 
     const PatientsModal = ref(false);
     const TaskModal = ref(false);
+    const CarePlan = ref(false);
     const addPatient = () => {
       PatientsModal.value = true;
     };
@@ -1537,6 +1639,7 @@ export default {
       showDocumentModal,
       showAddNoteModal,
       AddTaskModal,
+      AddCarePlan,
       showTimeLogDetailModal,
       showBloodPressureDetailModal,
       showBloodOxygenDetailModal,
@@ -1572,6 +1675,9 @@ export default {
       value10: ref([]),
       TaskModal,
       onClose2,
+      CarePlan,
+      dataCarePlan,
+      columnsCarePlan,
     };
   },
 };

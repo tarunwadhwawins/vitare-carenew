@@ -1,7 +1,7 @@
 <template>
   <a-modal width="1000px" title="Add Note" centered>
     <a-row :gutter="24">
-      <a-col :sm="12" :xs="24">
+      <a-col :sm="8" :xs="24">
         <div class="form-group">
           <label>Date</label>
           <a-date-picker
@@ -12,7 +12,7 @@
         </div>
       </a-col>
 
-      <a-col :sm="12" :xs="24">
+      <a-col :sm="8" :xs="24">
         <div class="form-group">
           <label>Category</label>
           <a-select
@@ -22,11 +22,30 @@
             size="large"
             @focus="focus"
             @change="handleChange"
-            placeholder="Select Category"
+            placeholder="Choose Category"
           >
             <a-select-option value="lucy">Clinical</a-select-option>
             <a-select-option value="Yimidnghe">Admin</a-select-option>
             <a-select-option value="Yimdinghe">General</a-select-option>
+          </a-select>
+        </div>
+      </a-col>
+
+      <a-col :sm="8" :xs="24">
+        <div class="form-group">
+          <label>Type</label>
+          <a-select
+            ref="select"
+            v-model="value1"
+            style="width: 100%"
+            size="large"
+            @focus="focus"
+            @change="handleChange"
+            placeholder="Choose Type"
+          >
+            <a-select-option value="lucy">Type 1</a-select-option>
+            <a-select-option value="Yimidnghe">Type 2</a-select-option>
+            <a-select-option value="Yimdinghe">Type 3</a-select-option>
           </a-select>
         </div>
       </a-col>
