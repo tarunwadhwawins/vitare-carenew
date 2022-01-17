@@ -35,11 +35,9 @@ export default {
   components: {
     SelectLanguage,
   },
-
   setup() {
     const auth = localStorage.getItem("auth");
     const locale = ref(enUS.locale);
-
     watch(locale, (val) => {
       moment.locale(val);
     });
@@ -63,18 +61,15 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
-
 #nav {
   a {
     font-weight: bold;
     color: #2c3e50;
-
     &.router-link-exact-active {
       color: #42b983;
     }
   }
 }
-
 .SelectLanguage {
   padding-top: 10px;
   text-align: center;

@@ -1,1178 +1,154 @@
 <template>
   <div>
-    <!---->
     <a-layout>
+
       <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
         <Header />
       </a-layout-header>
+
       <a-layout>
         <a-layout-sider
-          :style="{
-            overflow: 'auto',
-            height: '100vh',
-            position: 'fixed',
-            left: 0,
-          }"
+          :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"
           ><Sidebar
         /></a-layout-sider>
+
         <a-layout-content>
           <a-row>
             <a-col :span="24">
               <h2 class="pageTittle">
-                {{$t('communications.communications')}}
+                {{ $t('communications.communications') }}
                 <div class="addtaskButton">
-                  <router-link to="video-call"
-                    ><a-button class="btn blueBtn"
-                      >{{$t('communications.startCall')}}</a-button
-                    ></router-link
-                  > 
-
-                  <a-button class="btn primaryBtn" @click="showModal"
-                    >{{$t('communications.sendMessage')}}</a-button
-                  >
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>{{$t('communications.email')}}</span>
-                    </template>
-                    <a-button
-                      type="primary"
-                      :size="small"
-                      @click="openNotification('bottomRight')"
-                    >
-                      <template #icon>
-                        <MailOutlined />
-                      </template>
-                    </a-button>
-                  </a-tooltip>
-
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>{{$t('communications.SMS')}}</span>
-                    </template>
-                    <a-button
-                      type="primary"
-                      :size="small"
-                      @click="openNotification1('bottomRight')"
-                    >
-                      <template #icon>
-                        <MessageOutlined />
-                      </template>
-                    </a-button>
-                  </a-tooltip>
-
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>{{$t('communications.reminder')}}</span>
-                    </template>
-                    <a-button
-                      type="primary"
-                      :size="small"
-                      @click="openNotification2('bottomRight')"
-                    >
-                      <template #icon>
-                        <AlertOutlined />
-                      </template>
-                    </a-button>
-                  </a-tooltip>
-
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>{{$t('communications.call')}}</span>
-                    </template>
-                    <a-button
-                      type="primary"
-                      :size="small"
-                      @click="openNotification3('bottomRight')"
-                    >
-                      <template #icon>
-                        <PhoneOutlined />
-                      </template>
-                    </a-button>
-                  </a-tooltip>
-                  <!-- <a-button @click="openNotification">Email</a-button>
-                  <a-button @click="openNotification1">SMS</a-button>
-                  <a-button @click="openNotification2">Reminder</a-button>
-                  <a-button @click="openNotification3">Call</a-button> -->
+                  <StartCall></StartCall>
+                  <SendMessage></SendMessage>
+                  <ToolTip :boxTitle="$t('communications.email')" boxName="email" @open="openNotification($event)"></ToolTip>
+                  <ToolTip :boxTitle="$t('communications.sms')" boxName="sms" @open="openNotification($event)"></ToolTip>
+                  <ToolTip :boxTitle="$t('communications.reminder')" boxName="reminder" @open="openNotification($event)"></ToolTip>
+                  <ToolTip :boxTitle="$t('communications.call')" boxName="call" @open="openNotification($event)"></ToolTip>
                 </div>
+                
                 <div class="filter">
-                  <button
-                    class="btn"
-                    :class="toggle ? 'active' : ''"
-                    @click="toggle = !toggle"
-                  >
-                    <span class="btn-content">{{$t('communications.dashboardView')}}</span>
+                  <button class="btn" :class="toggle ? 'active' : ''" @click="toggle = !toggle">
+                    <span class="btn-content">{{ $t('communications.dashboardView') }}</span>
                   </button>
                   <button
                     class="btn"
                     :class="toggle ? '' : 'active'"
                     @click="toggle = !toggle"
                   >
-                    <span class="btn-content">{{$t('global.listView')}}</span>
+                    <span class="btn-content">{{ $t('global.listView') }}</span>
                   </button>
                 </div>
+
               </h2>
             </a-col>
+            
             <a-col :span="24">
+              <!-- Dashboard View -->
               <div class="dashboard-view" v-show="toggle">
-                <a-row :gutter="24">
-                  <a-col :xl="6" :sm="6" :xs="24">
-                    <div class="colorBox blueBg">
-                      <UserOutlined />
-                      <h3>15</h3>
-                      <p>{{$t('global.yesterday')}}</p>
-                    </div>
-                  </a-col>
-                  <a-col :xl="6" :sm="6" :xs="24">
-                    <div class="colorBox two">
-                      <UserOutlined />
-                      <h3>10</h3>
-                      <p>{{$t('global.today')}}</p>
-                    </div>
-                  </a-col>
-                  <a-col :xl="6" :sm="6" :xs="24">
-                    <div class="colorBox skyBlue">
-                      <UserOutlined />
-                      <h3>10</h3>
-                      <p>{{$t('global.tomorrow')}}</p>
-                    </div>
-                  </a-col>
-                  <a-col :xl="6" :sm="6" :xs="24">
-                    <div class="colorBox four">
-                      <UserOutlined />
-                      <h3>10</h3>
-                      <p>{{$t('global.week')}}</p>
-                    </div>
-                  </a-col>
-                  <a-col :sm="12" :xs="24">
-                    <a-card :title="$t('communications.callPlanned')" class="common-card">
-                      <apexchart
-                        type="bar"
-                        height="350"
-                        :options="calloption"
-                        :series="callseries"
-                        @click="clickHandler"
-                      ></apexchart>
-                    </a-card>
-                  </a-col>
-                  <a-col :sm="12" :xs="24">
-                    <a-card :title="$t('global.callQueue')" class="common-card">
-                      <apexchart
-                        type="bar"
-                        height="350"
-                        :options="callqueoption"
-                        :series="callqueseries"
-                        @click="clickHandler2"
-                      ></apexchart>
-                    </a-card>
-                  </a-col>
-                  <a-col :sm="12" :xs="24">
-                    <a-card :title="$t('communications.populateWaitingRoom')" class="common-card">
-                      <a-tabs v-model:activeKey="activeKey">
-                        <a-tab-pane key="1" tab="New Requests">
-                          <a-table
-                            :columns="columns5"
-                            :data-source="data5"
-                            :pagination="false"
-                          >
-                            <template #patientName="text">
-                              <router-link to="patients-summary">{{
-                                text.text
-                              }}</router-link>
-                            </template>
-                            <template #action>
-                              <a-button class="btn blueBtn">{{$t('communications.start')}}</a-button>
-                            </template>
-                          </a-table>
-                        </a-tab-pane>
-                        <a-tab-pane
-                          key="2"
-                          tab="Future Appointments"
-                          force-render
-                        >
-                          <a-table
-                            :columns="columns6"
-                            :data-source="data6"
-                            :pagination="false"
-                          >
-                            <template #patientName="text">
-                              <router-link to="patients-summary">{{
-                                text.text
-                              }}</router-link>
-                            </template>
-                          </a-table>
-                        </a-tab-pane>
-                      </a-tabs>
-                    </a-card>
-                  </a-col>
-
-                  <a-col :sm="12" :xs="24">
-                    <a-card :title="$t('communications.communicationType')" class="common-card">
-                      <apexchart
-                        type="area"
-                        height="245"
-                        :options="chartOptions"
-                        :series="series"
-                        @click="clickHandler2"
-                      ></apexchart>
-                    </a-card>
-                  </a-col>
-                </a-row>
+                <DashboardView/>
               </div>
+              <!-- List View -->
               <div class="list-view" v-show="!toggle">
-                <a-row>
-                  <a-col :span="12">
-                    <a-select
-                      v-model:value="value2"
-                      :size="size"
-                      mode="tags"
-                      style="width: 100%"
-                      placeholder="Search . . ."
-                      :options="searchoptions"
-                      @change="handleChange"
-                    >
-                    </a-select>
-                  </a-col>
-                  <a-col :span="12">
-                    <div class="text-right mb-24">
-                      <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
-                    </div>
-                  </a-col>
-                  <a-col :span="24">
-                    <a-table
-                      :columns="columns"
-                      :data-source="data"
-                      :scroll="{ x: 900 }"
-                      @change="onChange"
-                    >
-                      <template #expandedRowRender="{ record }">
-                        <p style="margin: 0">
-                          {{ record.description }}
-                        </p>
-                      </template>
-                      <template #resend>
-                        <a-tooltip placement="bottom">
-                          <template #title>
-                            <span>{{$t('communications.message')}}</span>
-                          </template>
-                          <a class="icons"><MessageOutlined /></a>
-                        </a-tooltip>
-                      </template>
-                      <template #patient="text">
-                        <router-link to="patients-summary">{{
-                          text.text
-                        }}</router-link>
-                      </template>
-                      <template #staff="text">
-                        <router-link to="corrdinator-summary">{{
-                          text.text[0]
-                        }}</router-link
-                        ><br />
-                        <router-link to="corrdinator-summary">{{
-                          text.text[1]
-                        }}</router-link>
-                      </template>
-
-                      <template #status="{ text }">
-                        <span class="circleBox" :class="text"></span>
-                        <span
-                          class="box"
-                          :class="(text = text.match(/yellowBgColor/g))"
-                          v-if="text.match(/yellowBgColor/g)"
-                        ></span>
-                      </template>
-
-                      <template #type="{ text }">
-                        <a-tooltip placement="bottom">
-                          <template #title>
-                            <span>{{$t('communications.comment')}}</span>
-                          </template>
-                          <a class="icons" v-if="text == 'comment'"
-                            ><CommentOutlined
-                          /></a>
-                        </a-tooltip>
-                        <a-tooltip placement="bottom">
-                          <template #title>
-                            <span>{{$t('communications.voiceMail')}}</span>
-                          </template>
-                          <a class="icons" v-if="text == 'voiceMail'"
-                            ><PhoneOutlined
-                          /></a>
-                        </a-tooltip>
-                        <a-tooltip placement="bottom">
-                          <template #title>
-                            <span>{{$t('communications.sent')}}</span>
-                          </template>
-                          <a class="icons" v-if="text == 'sent'"
-                            ><PhoneOutlined
-                          /></a>
-                        </a-tooltip>
-                        <a-tooltip placement="bottom">
-                          <template #title>
-                            <span>{{$t('communications.mail')}}</span>
-                          </template>
-                          <a class="icons" v-if="text == 'mail'"
-                            ><MailOutlined
-                          /></a>
-                        </a-tooltip>
-                      </template>
-                    </a-table>
-                  </a-col>
-                </a-row>
+                <ListView/>
               </div>
             </a-col>
+
             <a-col :span="24"> </a-col>
           </a-row>
         </a-layout-content>
       </a-layout>
+
     </a-layout>
-    <!--modal-->
-    <CommunicationsModal v-model:visible="CommunicationsModal" @ok="handleOk" />
-    <!---->
+
   </div>
 </template>
-<!---->
+
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { defineComponent, ref, h, inject } from "vue";
+import { ref, h } from "vue";
+import DashboardView from "@/components/communications/DashboardView";
+import ListView from "@/components/communications/ListView";
+import StartCall from "@/components/communications/top/StartCall";
+import SendMessage from "@/components/communications/top/SendMessage";
+import ToolTip from "@/components/communications/toolTip/ToolTip";
 import { notification, Button } from "ant-design-vue";
-import { useRouter } from "vue-router";
-import CommunicationsModal from "@/components/modals/CommunicationsModal";
-import {
-  UserOutlined,
-  MessageOutlined,
-  CommentOutlined,
-  PhoneOutlined,
-  MailOutlined,
-  AlertOutlined,
-} from "@ant-design/icons-vue";
+
 const close = () => {
   console.log(
     "Notification was closed. Either the close button was clicked or duration time elapsed."
   );
 };
-const columns = [
-  {
-    title: "Patient",
-    dataIndex: "patient",
-    sorter: {
-      compare: (a, b) => a.patient - b.patient,
-      multiple: 2,
-    },
-    slots: {
-      customRender: "patient",
-    },
-  },
-  {
-    title: "Sent To",
-    dataIndex: "sentto",
-    sorter: {
-      compare: (a, b) => a.sentto - b.sentto,
-      multiple: 1,
-    },
-  },
-  {
-    title: "Type",
-    dataIndex: "type",
-    slots: {
-      customRender: "type",
-    },
-  },
-  {
-    title: "Staff",
-    dataIndex: "staff",
-    slots: {
-      customRender: "staff",
-    },
-    sorter: {
-      compare: (a, b) => a.patient - b.patient,
-      multiple: 2,
-    },
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-    sorter: {
-      compare: (a, b) => a.patient - b.patient,
-      multiple: 2,
-    },
-    slots: {
-      customRender: "status",
-    },
-  },
-  {
-    title: "Category",
-    dataIndex: "message",
-    sorter: {
-      compare: (a, b) => a.message - b.message,
-      multiple: 3,
-    },
-  },
 
-  {
-    title: "Date Sent",
-    dataIndex: "sent",
-    sorter: {
-      compare: (a, b) => a.sent - b.sent,
-      multiple: 1,
-    },
-  },
-  // {
-  //   title: "Appt Type, Date, Time",
-  //   dataIndex: "appt",
-  //   sorter: {
-  //     compare: (a, b) => a.appt - b.appt,
-  //     multiple: 1,
-  //   },
-  // },
-  {
-    title: "Actions",
-    dataIndex: "resend",
-    slots: {
-      customRender: "resend",
-    },
-  },
-];
-const data = [
-  {
-    key: "1",
-    type: "comment",
-    status: "greenBgColor",
-    message: "Appointment Reminder",
-    patient: "Jane Doe",
-    sentto: 22998876654,
-    sent: "Nov 11, 2021 - 11:30 Am",
-    // appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
-    resend: 70,
-    staff: ["Steve Smith", "Jane Doe"],
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  },
-  {
-    key: "2",
-    type: "voiceMail",
-    status: "three",
-    message: "Recall Reminder",
-    patient: "Steve Smith",
-    sentto: 22998876654,
-    sent: "Nov 11, 2021 - 11:30 Am",
-    // appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
-    resend: 70,
-    staff: ["Robert Henry"],
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  },
-  {
-    key: "3",
-    type: "sent",
-    status: "blue",
-    message: "Patient Message",
-    patient: "Joseph Spouse",
-    sentto: 22998876654,
-    sent: "Nov 11, 2021 - 11:30 Am",
-    // appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
-    resend: 70,
-    staff: ["Jane Doe"],
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book..",
-  },
-  {
-    key: "4",
-    type: "mail",
-    status: "greenBgColor",
-    message: "Portal Invitation",
-    patient: "Robert Henry",
-    sentto: 22998876654,
-    sent: "Nov 11, 2021 - 11:30 Am",
-    appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
-    resend: 70,
-    staff: ["Jane Doe"],
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book..",
-  },
-];
 export default {
   components: {
     Header,
     Sidebar,
-    UserOutlined,
-    MessageOutlined,
-    CommentOutlined,
-    PhoneOutlined,
-    MailOutlined,
-    AlertOutlined,
-    CommunicationsModal,
+    DashboardView,
+    ListView,
+    StartCall,
+    SendMessage,
+    ToolTip,
   },
-  data: function () {
-    return {
-      chartOptions: {
-        chart: {
-          height: 350,
-          type: "area",
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          // width: [5, 7, 5, 8],
-          curve: "straight",
-          // dashArray: [0, 8, 5, 6],
-        },
-        xaxis: {
-          categories: ["10", "12", "2", "4", "6", "8"],
-        },
-        tooltip: {
-          x: {
-            // format: "dd/MM/yy HH:mm",/
-          },
-        },
-      },
-      series: [
-        {
-          name: "SMS",
-          data: [15, 16, 18, 15, 14, 17, 18],
-        },
-        {
-          name: "Reminder",
-          data: [12, 14, 15, 13, 12, 15, 14],
-        },
-        {
-          name: "Call",
-          data: [11, 10, 11, 9, 10, 9, 11],
-        },
-        {
-          name: "Email",
-          data: [8, 7, 6, 8, 7, 8, 6],
-        },
-      ],
-
-      due: [4567, 1000],
-      billed: {
-        chart: {
-          width: 380,
-          type: "pie",
-        },
-        labels: ["Billed", "Due"],
-        colors: ["#267dff", "#E30D2A"],
-        responsive: [
-          {
-            breakpoint: 480,
-            options: {
-              chart: {
-                width: 200,
-              },
-              legend: {
-                position: "bottom",
-              },
-            },
-          },
-        ],
-      },
-
-      wellness: {
-        annotations: {
-          points: [
-            {
-              x: "Wellness",
-              seriesIndex: 0,
-              label: {
-                borderColor: "#ff0000",
-                offsetY: 0,
-                style: {
-                  color: "#fff",
-                  background: "#ff0000",
-                },
-                // text: "Bananas are good",
-              },
-            },
-          ],
-        },
-        chart: {
-          height: 350,
-          type: "bar",
-        },
-        plotOptions: {
-          bar: {
-            borderRadius: 10,
-            columnWidth: "20%",
-            barHeight: "100%",
-            distributed: true,
-            horizontal: false,
-            dataLabels: {
-              position: "bottom",
-            },
-          },
-        },
-        colors: ["#8e60ff", "#ffa800"],
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          width: 1,
-          colors: ["#fff"],
-        },
-
-        grid: {
-          row: {
-            colors: ["#fff", "#f2f2f2"],
-          },
-        },
-        xaxis: {
-          labels: {
-            rotate: -45,
-          },
-          categories: ["Wellness", "Behavior"],
-        },
-        yaxis: {
-          title: {
-            text: "Specialization",
-          },
-        },
-      },
-      behavior: [
-        {
-          name: "Specialization",
-          data: [1, 2],
-        },
-      ],
-
-      In: {
-        annotations: {
-          points: [
-            {
-              x: "In",
-              seriesIndex: 0,
-              label: {
-                borderColor: "#775DD0",
-                offsetY: 0,
-                style: {
-                  color: "#fff",
-                  background: "#775DD0",
-                },
-                // text: "Bananas are good",
-              },
-            },
-          ],
-        },
-        chart: {
-          height: 350,
-          type: "bar",
-        },
-        plotOptions: {
-          bar: {
-            borderRadius: 10,
-            columnWidth: "20%",
-            barHeight: "100%",
-            distributed: true,
-            horizontal: false,
-            dataLabels: {
-              position: "bottom",
-            },
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        colors: ["#267dff", "#0fb5c2"],
-        stroke: {
-          width: 1,
-          colors: ["#fff"],
-        },
-
-        grid: {
-          row: {
-            colors: ["#fff", "#f2f2f2"],
-          },
-        },
-        xaxis: {
-          labels: {
-            rotate: -45,
-          },
-          categories: ["In", "Out"],
-        },
-        yaxis: {
-          title: {
-            text: "Network",
-          },
-        },
-      },
-      Out: [
-        {
-          name: "Network",
-          data: [3, 4],
-        },
-      ],
-
-      code: {
-        annotations: {
-          points: [
-            {
-              x: "In",
-              seriesIndex: 0,
-              label: {
-                borderColor: "#775DD0",
-                offsetY: 0,
-                style: {
-                  color: "#fff",
-                  background: "#775DD0",
-                },
-              },
-            },
-          ],
-        },
-        chart: {
-          height: 350,
-          type: "bar",
-        },
-        plotOptions: {
-          bar: {
-            borderRadius: 10,
-            columnWidth: "20%",
-            barHeight: "100%",
-            distributed: true,
-            horizontal: false,
-            dataLabels: {
-              position: "bottom",
-            },
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        colors: ["#3b72c5", "#ffb526", "#419541", "#343470"],
-        stroke: {
-          width: 1,
-          colors: ["#fff"],
-        },
-
-        grid: {
-          row: {
-            colors: ["#fff", "#f2f2f2"],
-          },
-        },
-        xaxis: {
-          labels: {
-            rotate: -45,
-          },
-          categories: ["99453", "99454", "99457", "99458 "],
-        },
-        yaxis: {
-          title: {
-            text: "Minutes",
-          },
-        },
-      },
-      value: [
-        {
-          name: "Minutes",
-          data: [120, 80, 90, 30],
-        },
-      ],
-
-      option1: {
-        annotations: {
-          points: [
-            {
-              x: "In",
-              seriesIndex: 0,
-              label: {
-                borderColor: "#775DD0",
-                offsetY: 0,
-                style: {
-                  color: "#fff",
-                  background: "#775DD0",
-                },
-              },
-            },
-          ],
-        },
-        chart: {
-          height: 350,
-          type: "bar",
-        },
-        plotOptions: {
-          bar: {
-            borderRadius: 10,
-            columnWidth: "20%",
-            barHeight: "100%",
-            distributed: true,
-            horizontal: false,
-            dataLabels: {
-              position: "bottom",
-            },
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        colors: ["#267dff", "#00897b", "#E30D2A"],
-        stroke: {
-          width: 1,
-          colors: ["#fff"],
-        },
-
-        grid: {
-          row: {
-            colors: ["#fff", "#f2f2f2"],
-          },
-        },
-        xaxis: {
-          labels: {
-            rotate: -45,
-          },
-          categories: ["Normal", "High", "Critical"],
-        },
-        yaxis: {
-          title: {
-            text: "Patients",
-          },
-        },
-      },
-      series1: [
-        {
-          name: "Patients",
-          data: [45, 12, 34],
-        },
-      ],
-      calloption: {
-        annotations: {
-          points: [
-            {
-              x: "In",
-              seriesIndex: 0,
-              label: {
-                borderColor: "#775DD0",
-                offsetY: 0,
-                style: {
-                  color: "#fff",
-                  background: "#775DD0",
-                },
-              },
-            },
-          ],
-        },
-        chart: {
-          height: 350,
-          type: "bar",
-        },
-        plotOptions: {
-          bar: {
-            borderRadius: 10,
-            columnWidth: "20%",
-            barHeight: "100%",
-            distributed: true,
-            horizontal: false,
-            dataLabels: {
-              position: "bottom",
-            },
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        colors: ["#269b8f", "#269b8f", "#121258", "#218421"],
-        stroke: {
-          width: 1,
-          colors: ["#fff"],
-        },
-
-        grid: {
-          row: {
-            colors: ["#fff", "#f2f2f2"],
-          },
-        },
-
-        xaxis: {
-          labels: {
-            rotate: -45,
-          },
-          categories: ["Jane Doe", "Steve Smith", "Henry Joseph", "Carol Liam"],
-        },
-        yaxis: {
-          title: {
-            text: "Number of Calls",
-          },
-        },
-      },
-      callseries: [
-        {
-          name: "Value",
-          data: [10, 12, 8, 9],
-        },
-      ],
-      callqueoption: {
-        annotations: {
-          points: [
-            {
-              x: "In",
-              seriesIndex: 0,
-              label: {
-                borderColor: "#775DD0",
-                offsetY: 0,
-                style: {
-                  color: "#fff",
-                  background: "#775DD0",
-                },
-              },
-            },
-          ],
-        },
-        chart: {
-          height: 350,
-          type: "bar",
-        },
-        plotOptions: {
-          bar: {
-            borderRadius: 10,
-            columnWidth: "20%",
-            barHeight: "100%",
-            distributed: true,
-            horizontal: false,
-            dataLabels: {
-              position: "bottom",
-            },
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        colors: ["#121258", "#218421", "#ffb526"],
-        stroke: {
-          width: 1,
-          colors: ["#fff"],
-        },
-
-        grid: {
-          row: {
-            colors: ["#fff", "#f2f2f2"],
-          },
-        },
-
-        xaxis: {
-          labels: {
-            rotate: -45,
-          },
-          categories: ["Going On", "Completed", "In Queue"],
-        },
-        yaxis: {
-          title: {
-            text: "Number of Calls",
-          },
-        },
-      },
-      callqueseries: [
-        {
-          name: "Value",
-          data: [12, 8, 6],
-        },
-      ],
-    };
-  },
-
+  
   setup() {
-    const router = useRouter();
-    const test = inject("listView");
-    function clickHandler(event, chartContext, config) {
-      router.push({ path: "corrdinator-summary" });
-    }
-    function clickHandler2(event, chartContext, config) {
-      toggle.value = false;
-      // router.push({ path: "time-tracking-report" });
-    }
-
-    const columns5 = [
-      {
-        title: "Patient Name",
-        dataIndex: "patient",
-        slots: {
-          customRender: "patientName",
-        },
-      },
-      {
-        title: "Appointment Type",
-        dataIndex: "appt",
-      },
-      {
-        title: "Time",
-        dataIndex: "time",
-      },
-      {
-        title: "Action ",
-        dataIndex: "action",
-        slots: {
-          customRender: "action",
-        },
-      },
-    ];
-    const data5 = [
-      {
-        key: "1",
-        patient: "Steve Smith",
-        appt: "Wellness",
-        time: "01:30 PM",
-      },
-      {
-        key: "2",
-        patient: "Jane Doe",
-        appt: "Clinical",
-        time: "11:30 AM",
-      },
-      {
-        key: "3",
-        patient: "Joseph Spouse",
-        appt: "Wellness",
-        time: "02:30 PM",
-      },
-    ];
-    const columns6 = [
-      {
-        title: "Patient Name",
-        dataIndex: "patient",
-        slots: {
-          customRender: "patientName",
-        },
-      },
-      {
-        title: "Appointment Type",
-        dataIndex: "appt",
-      },
-      {
-        title: "Time",
-        dataIndex: "time",
-      },
-    ];
-    const data6 = [
-      {
-        key: "1",
-        patient: "Robert",
-        appt: "Wellness",
-        time: "02:30 PM",
-      },
-      {
-        key: "2",
-        patient: "Steve",
-        appt: "Clinical",
-        time: "10:30 AM",
-      },
-      {
-        key: "3",
-        patient: "Jane",
-        appt: "Wellness",
-        time: "03:30 PM",
-      },
-      {
-        key: "4",
-        patient: "Joseph",
-        appt: "Clinical",
-        time: "04:15 PM",
-      },
-    ];
-
     const toggle = ref(true);
-    const openNotification = (placement) => {
-      const key = `open${Date.now()}`;
-      notification.open({
-        message: <h2>Email</h2>,
-        description: (
-          <div class="notificationBody">
-            <p>
-              Date Time : <span>December 20, 2021 12:00 PM</span>
-            </p>
-            <p>
-              Patient Name : <span>Jane Doe</span>
-            </p>
-            <p class="summary">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
-              at incidunt !
-            </p>
-          </div>
-        ),
-        btn: h(
+    const handleChange = (value) => {
+      console.log(`selected ${value}`);
+    };
+
+    const openNotification = (data) => {
+      var key = `open${Date.now()}`;
+      var message = "";
+      var description = (
+        <div class="notificationBody">
+          <p>
+            Date Time : <span>December 20, 2021 12:00 PM</span>
+          </p>
+          <p>
+            Patient Name : <span>Jane Doe</span>
+          </p>
+          <p class="summary">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
+            at incidunt !
+          </p>
+        </div>
+      );
+      var button = "";
+      
+      const boxname = data.boxname;
+      const placement = data.placement;
+      if(boxname == 'email') {
+        message = <h2>Email</h2>;
+        button = h(
           Button,
           {
             type: "primary",
             onClick: () => notification.close(key),
           },
           "Reply"
-        ),
-        key,
-        onClose: close,
-        placement,
-      });
-    };
-    const openNotification1 = (placement) => {
-      const key = `open${Date.now()}`;
-      notification.open({
-        message: <h2>SMS</h2>,
-        description: (
-          <div class="notificationBody">
-            <p>
-              Date Time : <span>December 20, 2021 12:00 PM</span>
-            </p>
-            <p>
-              Patient Name : <span>Jane Doe</span>
-            </p>
-            <p class="summary">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
-              at incidunt !
-            </p>
-          </div>
-        ),
-        btn: h(
+        );
+      }
+      else if(boxname == 'sms') {
+        // key = key;
+        message = <h2>SMS</h2>;
+        button = h(
           Button,
           {
             type: "primary",
             onClick: () => notification.close(key),
           },
           "Reply"
-        ),
-        key,
-        onClose: close,
-        placement,
-      });
-    };
-    const openNotification2 = (placement) => {
-      const key = `open${Date.now()}`;
-      notification.open({
-        message: <h2>Reminder</h2>,
-        description: (
-          <div class="notificationBody">
-            <p>
-              Date Time : <span>December 20, 2021 12:00 PM</span>
-            </p>
-            <p>
-              Patient Name : <span>Jane Doe</span>
-            </p>
-            <p class="summary">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
-              at incidunt !
-            </p>
-          </div>
-        ),
-        key,
-        onClose: close,
-        placement,
-      });
-    };
-    const openNotification3 = (placement) => {
-      const key = `open${Date.now()}`;
-      notification.open({
-        message: <h2>Call</h2>,
-        description: (
-          <div class="notificationBody">
-            <p>
-              Date Time : <span>December 20, 2021 12:00 PM</span>
-            </p>
-            <p>
-              Patient Name : <span>Jane Doe</span>
-            </p>
-            <p class="summary">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
-              at incidunt !
-            </p>
-          </div>
-        ),
-        btn: [
+        );
+      }
+      else if(boxname == 'reminder') {
+        // key = key;
+        message = <h2>Reminder</h2>;
+      }
+      else if(boxname == 'call') {
+        // key = key;
+        message = <h2>Call</h2>;
+        button = [
           h(
             Button,
             {
@@ -1188,112 +164,29 @@ export default {
             },
             "Accept"
           ),
-        ],
-        key,
+        ];
+      }
+
+      notification.open({
+        message: message,
+        description: description,
+        btn: button,
+        key: key,
         onClose: close,
         placement,
       });
     };
 
-    const CommunicationsModal = ref(false);
-
-    const showEmailpop = ref(false);
-    const hideEmailpop = ref(false);
-    const showEmail = () => {
-      showEmailpop.value = true;
-    };
-    const hideEmail = () => {
-      showEmailpop.value = false;
-    };
-
-    const showModal = () => {
-      CommunicationsModal.value = true;
-    };
-
-    const handleOk = (e) => {
-      console.log(e);
-      CommunicationsModal.value = false;
-    };
-
-    const handleChange = (value) => {
-      console.log(`selected ${value}`);
-    };
-
-    const searchoptions = ref([
-      {
-        value: "Jane Doe",
-        label: "Jane Doe",
-      },
-      {
-        value: "Steve Smith",
-        label: "Steve Smith",
-      },
-      {
-        value: "Joseph Spouse",
-        label: "Joseph Spouse",
-      },
-      {
-        value: "Robert Henry",
-        label: "Robert Henry",
-      },
-      {
-        value: "Appointment Reminder",
-        label: "Appointment Reminder",
-      },
-      {
-        value: "Recall Reminder",
-        label: "Recall Reminder",
-      },
-      {
-        value: "Patient Message",
-        label: "Patient Message",
-      },
-    ]);
-
     return {
-      CommunicationsModal,
-      showModal,
-      handleOk,
-      showEmail,
-      hideEmail,
-      showEmailpop,
-      hideEmailpop,
-      test,
-
-      data,
-      columns,
       toggle,
-      data6,
-      columns6,
-      data5,
-      columns5,
       openNotification,
-      openNotification1,
-      openNotification2,
-      openNotification3,
-      clickHandler,
-      clickHandler2,
-
       onChange: (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
       },
       handleChange,
-      searchoptions,
       size: ref([]),
     };
   },
 };
 </script>
 
-<style lang="scss">
-@media (max-width: 1199px) {
-  .communications {
-    padding: 0px 0 60px;
-    .addtaskButton {
-      left: 0;
-      right: auto;
-      top: 50px;
-    }
-  }
-}
-</style>
