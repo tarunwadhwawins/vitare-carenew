@@ -1,9 +1,8 @@
 import DashboardService from '../../services/dashboard';
-// import AuthService from '../../services/auth';
+
 
 
 export const appointment = async ({ commit }, id) => {
-
     await DashboardService.appointment(id).then((response) => {
         if (id == 1) {
             commit('newappointmentSuccess', response.data.data);
@@ -19,6 +18,7 @@ export const appointment = async ({ commit }, id) => {
     })
 }
 export const todayappointment = async ({ commit }) => {
+    
     await DashboardService.todayappointment().then((response) => {
         commit('todayappointmentSuccess', response.data.data);
     }).catch((error) => {
