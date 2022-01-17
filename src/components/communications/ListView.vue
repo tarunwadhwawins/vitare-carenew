@@ -244,9 +244,9 @@ const data = [
 import { ref } from "vue";
 export default {
   setup() {
-    const handleChange = (value) => {
-      console.log(`selected ${value}`);
-    };
+    // const handleChange = (value) => {
+    //  // console.log(`selected ${value}`);
+    // };
 
     const searchoptions = ref(
       [
@@ -284,7 +284,7 @@ export default {
     return {
       columns,
       data,
-      handleChange,
+      //handleChange,
       searchoptions,
 
       onChange: (pagination, filters, sorter, extra) => {

@@ -20,7 +20,7 @@ export default {
       required: true
     },
     text: {
-      type: Number,
+      type: String,
       required: true
     },
     customClass: {

@@ -20,10 +20,10 @@
                 <div class="addtaskButton">
                   <StartCall></StartCall>
                   <SendMessage></SendMessage>
-                  <ToolTip :boxTitle="$t('communications.email')" boxName="email" @open="openNotification($event)"></ToolTip>
-                  <ToolTip :boxTitle="$t('communications.sms')" boxName="sms" @open="openNotification($event)"></ToolTip>
-                  <ToolTip :boxTitle="$t('communications.reminder')" boxName="reminder" @open="openNotification($event)"></ToolTip>
-                  <ToolTip :boxTitle="$t('communications.call')" boxName="call" @open="openNotification($event)"></ToolTip>
+                  <ToolTip :boxTitle="$t('communications.email')"  boxName="email" @open="openNotification($event)"></ToolTip>
+                  <ToolTip :boxTitle="$t('communications.sms')"  boxName="sms" @open="openNotification($event)"></ToolTip>
+                  <ToolTip :boxTitle="$t('communications.reminder')"  boxName="reminder" @open="openNotification($event)"></ToolTip>
+                  <ToolTip :boxTitle="$t('communications.call')"  boxName="call" @open="openNotification($event)"></ToolTip>
                 </div>
                 
                 <div class="filter">

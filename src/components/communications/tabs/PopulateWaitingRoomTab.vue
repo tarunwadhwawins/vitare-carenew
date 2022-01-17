@@ -1,11 +1,12 @@
 <template>
   <a-tab-pane :key="key" :tab="tab">
-    <PopulateWaitingRoomTable :linkTo="linkTo" :columns="columns" :dataSource="dataSource" :pagination="pagination" />
+    <PopulateWaitingRoomTable :linkTo="link" :colomnsRecord="columns" :dataRecord="dataSource" :pagination="pagination" />
   </a-tab-pane>
 </template>
 
 <script>
 import { useRouter } from "vue-router";
+import { reactive } from "vue"
 import PopulateWaitingRoomTable from "@/components/communications/tables/PopulateWaitingRoomTable";
 export default {
   props: {
@@ -14,18 +15,18 @@ export default {
       required: true
     },
     key: {
-      type: String,
+      type: Number,
       required: true
     },
     tab: {
       type: String,
       required: true
     },
-    columns: {
+    column: {
       type: Array,
       required: true
     },
-    dataSource: {
+    data: {
       type: Array,
       required: true
     },
@@ -38,7 +39,10 @@ export default {
     PopulateWaitingRoomTable,
   },
 
-  setup() {
+  setup(props) {
+    const link=reactive(props.linkTo)
+    const columns=reactive(props.column)
+    const dataSource= reactive(props.data)
     const router = useRouter();
     function clickHandler() {
       router.push({ path: "corrdinator-summary" });
@@ -46,6 +50,10 @@ export default {
 
     return {
       clickHandler,
+      columns,
+      link,
+      dataSource,
+
     }
   },
 }

@@ -31,24 +31,22 @@ export const demographics = async ({
 
 
 export const conditions = async ({commit}, data) => {
-  let counter = 1
-  if (counter == 1) {
     await serviceMethod.common("post", "patientCondition/1", null, data).then((response) => {
       console.log("response", response.data.data)
       commit('conditions', response.data.data);
-      counter = 2
     }).catch((error) => {
       if (error.response.status == 401) {
         //AuthService.logout();
       }
       commit('failure', error.response.data);
     })
-  }
-  if (counter == 2) {
+}
+
+  
+    export const patientReferals = async ({commit}, data) => {
     await serviceMethod.common("post", "patientReferals/1", null, data).then((response) => {
       console.log("response", response.data.data)
       commit('patientReferals', response.data.data);
-      counter = 3
     }).catch((error) => {
       if (error.response.status == 401) {
         //AuthService.logout();
@@ -57,11 +55,10 @@ export const conditions = async ({commit}, data) => {
     })
   }
 
-  if (counter == 3) {
+  export const patientPhysician = async ({commit}, data) => {
     await serviceMethod.common("post", "patientPhysician/1", null, data).then((response) => {
       console.log("response", response.data.data)
       commit('patientPhysician', response.data.data);
-      counter = 4
     }).catch((error) => {
       if (error.response.status == 401) {
         //AuthService.logout();
@@ -69,4 +66,4 @@ export const conditions = async ({commit}, data) => {
       commit('failure', error.response.data);
     })
   }
-}
+

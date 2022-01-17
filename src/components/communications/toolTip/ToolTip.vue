@@ -40,8 +40,10 @@ export default {
     const clickTooltip = (placement, boxname) => {
       emit('open', {placement, boxname})
     };
+    const small= "small"
     return {
       clickTooltip,
+      small
     }
   }
 }
