@@ -115,531 +115,510 @@ const columns4 = [
     dataIndex: "patient",
     slots: {
       customRender: "patientName",
-
     },
-    {
-      title: "Date Time ",
-      dataIndex: "date",
+  },
+  {
+    title: "Date Time ",
+    dataIndex: "date",
+  },
+  {
+    title: "	Appointment With",
+    dataIndex: "appt",
+    slots: {
+      customRender: "appt",
     },
-    {
-      title: "	Appointment With",
-      dataIndex: "appt",
-      slots: {
-        customRender: "appt",
-      },
+  },
+];
+const data4 = [
+  {
+    key: "1",
+    patient: "Steve Smith",
+    date: "Dec 20, 2021 - 10:30 AM",
+    appt: "Joseph",
+  },
+  {
+    key: "2",
+    patient: "Jane Doe",
+    date: "Dec 20, 2021 - 11:30 AM",
+    appt: "Robert",
+  },
+  {
+    key: "3",
+    patient: "Henry Joseph",
+    date: "Dec 20, 2021 - 01:00 PM",
+    appt: "Robert",
+  },
+  {
+    key: "4",
+    patient: "Carol Liam",
+    date: "Dec 20, 2021 - 04:15 PM",
+    appt: "Robert",
+  },
+  {
+    key: "6",
+    patient: "Brett William",
+    date: "Dec 20, 2021 - 04:45 PM",
+    appt: "Joseph",
+  },
+  {
+    key: "7",
+    patient: "John Smith",
+    date: "Dec 20, 2021 - 05:20 PM",
+    appt: "Joseph",
+  },
+];
+const columns5 = [
+  {
+    title: "Patient Name",
+    dataIndex: "patient",
+    slots: {
+      customRender: "patientName",
     },
-  ];
-  const data4 = [
-    {
-      key: "1",
-      patient: "Steve Smith",
-      date: "Dec 20, 2021 - 10:30 AM",
-      appt: "Joseph",
+  },
+  {
+    title: "Appointment Type",
+    dataIndex: "appt",
+  },
+  {
+    title: "Time",
+    dataIndex: "time",
+  },
+  {
+    title: "Action ",
+    dataIndex: "action",
+    slots: {
+      customRender: "action",
     },
-    {
-      key: "2",
-      patient: "Jane Doe",
-      date: "Dec 20, 2021 - 11:30 AM",
-      appt: "Robert",
+  },
+];
+const data5 = [
+  {
+    key: "1",
+    patient: "Steve Smith",
+    appt: "Wellness",
+    time: "01:30 PM",
+  },
+  {
+    key: "2",
+    patient: "Jane Doe",
+    appt: "Clinical",
+    time: "11:30 AM",
+  },
+];
+const columns6 = [
+  {
+    title: "Patient Name",
+    dataIndex: "patient",
+    slots: {
+      customRender: "patientName",
     },
-    {
-      key: "3",
-      patient: "Henry Joseph",
-      date: "Dec 20, 2021 - 01:00 PM",
-      appt: "Robert",
-    },
-    {
-      key: "4",
-      patient: "Carol Liam",
-      date: "Dec 20, 2021 - 04:15 PM",
-      appt: "Robert",
-    },
-    {
-      key: "6",
-      patient: "Brett William",
-      date: "Dec 20, 2021 - 04:45 PM",
-      appt: "Joseph",
-    },
-    {
-      key: "7",
-      patient: "John Smith",
-      date: "Dec 20, 2021 - 05:20 PM",
-      appt: "Joseph",
-    },
-  ];
-  const columns5 = [
-    {
-      title: "Patient Name",
-      dataIndex: "patient",
-      slots: {
-        customRender: "patientName",
-      },
-    },
-    {
-      title: "Appointment Type",
-      dataIndex: "appt",
-    },
-    {
-      title: "Time",
-      dataIndex: "time",
-    },
-    {
-      title: "Action ",
-      dataIndex: "action",
-      slots: {
-        customRender: "action",
-      },
-    },
-  ];
-  const data5 = [
-    {
-      key: "1",
-      patient: "Steve Smith",
-      appt: "Wellness",
-      time: "01:30 PM",
-    },
-    {
-      key: "2",
-      patient: "Jane Doe",
-      appt: "Clinical",
-      time: "11:30 AM",
-    },
-  ];
-  const columns6 = [
-    {
-      title: "Patient Name",
-      dataIndex: "patient",
-      slots: {
-        customRender: "patientName",
-      },
-    },
-    {
-      title: "Appointment Type",
-      dataIndex: "appt",
-    },
-    {
-      title: "Time",
-      dataIndex: "time",
-    },
-  ];
-  const data6 = [
-    {
-      key: "1",
-      patient: "Robert",
-      appt: "Wellness",
-      time: "02:30 PM",
-    },
-    {
-      key: "2",
-      patient: "	Steve",
-      appt: "Clinical",
-      time: "10:30 AM",
-    },
-  ];
-  export default {
-    components: {
-      Header,
-      Sidebar,
-      Card,
-      Appointement,
-      ApexChart
-    },
-    data: function () {
-      return {
-        chartOptions: {
-          chart: {
-            height: 350,
-            type: "area",
+  },
+  {
+    title: "Appointment Type",
+    dataIndex: "appt",
+  },
+  {
+    title: "Time",
+    dataIndex: "time",
+  },
+];
+const data6 = [
+  {
+    key: "1",
+    patient: "Robert",
+    appt: "Wellness",
+    time: "02:30 PM",
+  },
+  {
+    key: "2",
+    patient: "	Steve",
+    appt: "Clinical",
+    time: "10:30 AM",
+  },
+];
+export default {
+  components: {
+    Header,
+    Sidebar,
+  },
+  data: function () {
+    return {
+      chartOptions: {
+        chart: {
+          height: 350,
+          type: "area",
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        stroke: {
+          curve: "smooth",
+        },
+        xaxis: {
+          type: "datetime",
+          categories: [
+            "2018-09-19T00:00:00.000Z",
+            "2018-09-19T01:30:00.000Z",
+            "2018-09-19T02:30:00.000Z",
+            "2018-09-19T03:30:00.000Z",
+            "2018-09-19T04:30:00.000Z",
+            "2018-09-19T05:30:00.000Z",
+            "2018-09-19T06:30:00.000Z",
+          ],
+        },
+        tooltip: {
+          x: {
+            format: "dd/MM/yy HH:mm",
           },
-          dataLabels: {
-            enabled: false,
+        },
+      },
+      series: [
+        {
+          name: "series1",
+          data: [31, 40, 28, 51, 42, 109, 100],
+        },
+        {
+          name: "series2",
+          data: [11, 32, 45, 32, 34, 52, 41],
+        },
+      ],
+      due: [4567, 1000],
+      billed: {
+        chart: {
+          width: 380,
+          type: "pie",
+        },
+        labels: ["Billed", "Due"],
+        colors: ["#267dff", "#E30D2A"],
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200,
+              },
+              legend: {
+                position: "bottom",
+              },
+            },
           },
-          stroke: {
-            curve: "smooth",
-          },
-          xaxis: {
-            type: "datetime",
-            categories: [
-              "2018-09-19T00:00:00.000Z",
-              "2018-09-19T01:30:00.000Z",
-              "2018-09-19T02:30:00.000Z",
-              "2018-09-19T03:30:00.000Z",
-              "2018-09-19T04:30:00.000Z",
-              "2018-09-19T05:30:00.000Z",
-              "2018-09-19T06:30:00.000Z",
-            ],
-          },
-          tooltip: {
-            x: {
-              format: "dd/MM/yy HH:mm",
+        ],
+      },
+      wellness: {
+        annotations: {
+          points: [
+            {
+              x: "Wellness",
+              seriesIndex: 0,
+              label: {
+                borderColor: "#ff0000",
+                offsetY: 0,
+                style: {
+                  color: "#fff",
+                  background: "#ff0000",
+                },
+                // text: "Bananas are good",
+              },
+            },
+          ],
+        },
+        chart: {
+          height: 350,
+          type: "bar",
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: "20%",
+            barHeight: "100%",
+            distributed: true,
+            horizontal: false,
+            dataLabels: {
+              position: "bottom",
             },
           },
         },
-        series: [
-          {
-            name: "series1",
-            data: [31, 40, 28, 51, 42, 109, 100],
+        colors: ["#8e60ff", "#ffa800"],
+        dataLabels: {
+          enabled: false,
+        },
+        stroke: {
+          width: 1,
+          colors: ["#fff"],
+        },
+        grid: {
+          row: {
+            colors: ["#fff", "#f2f2f2"],
           },
-          {
-            name: "series2",
-            data: [11, 32, 45, 32, 34, 52, 41],
+        },
+        xaxis: {
+          labels: {
+            rotate: -45,
           },
-        ],
-
-        due: [4567, 1000],
-        billed: {
-          chart: {
-            width: 380,
-            type: "pie",
+          categories: ["Wellness", "Behavior"],
+        },
+        yaxis: {
+          title: {
+            text: "Specialization",
           },
-          labels: ["Billed", "Due"],
-          colors: ["#267dff", "#E30D2A"],
-          responsive: [
+        },
+      },
+      behavior: [
+        {
+          name: "Specialization",
+          data: [1, 2],
+        },
+      ],
+      In: {
+        annotations: {
+          points: [
             {
-              breakpoint: 480,
-              options: {
-                chart: {
-                  width: 200,
+              x: "In",
+              seriesIndex: 0,
+              label: {
+                borderColor: "#775DD0",
+                offsetY: 0,
+                style: {
+                  color: "#fff",
+                  background: "#775DD0",
                 },
-                legend: {
-                  position: "bottom",
+                // text: "Bananas are good",
+              },
+            },
+          ],
+        },
+        chart: {
+          height: 350,
+          type: "bar",
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: "20%",
+            barHeight: "100%",
+            distributed: true,
+            horizontal: false,
+            dataLabels: {
+              position: "bottom",
+            },
+          },
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        colors: ["#267dff", "#0fb5c2"],
+        stroke: {
+          width: 1,
+          colors: ["#fff"],
+        },
+        grid: {
+          row: {
+            colors: ["#fff", "#f2f2f2"],
+          },
+        },
+        xaxis: {
+          labels: {
+            rotate: -45,
+          },
+          categories: ["In", "Out"],
+        },
+        yaxis: {
+          title: {
+            text: "Network",
+          },
+        },
+      },
+      Out: [
+        {
+          name: "Network",
+          data: [3, 4],
+        },
+      ],
+      code: {
+        annotations: {
+          points: [
+            {
+              x: "In",
+              seriesIndex: 0,
+              label: {
+                borderColor: "#775DD0",
+                offsetY: 0,
+                style: {
+                  color: "#fff",
+                  background: "#775DD0",
                 },
               },
             },
           ],
         },
-
-        wellness: {
-          annotations: {
-            points: [
-              {
-                x: "Wellness",
-                seriesIndex: 0,
-                label: {
-                  borderColor: "#ff0000",
-                  offsetY: 0,
-                  style: {
-                    color: "#fff",
-                    background: "#ff0000",
-                  },
-                  // text: "Bananas are good",
-                },
-              },
-            ],
-          },
-          chart: {
-            height: 350,
-            type: "bar",
-          },
-          plotOptions: {
-            bar: {
-              borderRadius: 10,
-              columnWidth: "20%",
-              barHeight: "100%",
-              distributed: true,
-              horizontal: false,
-              dataLabels: {
-                position: "bottom",
-              },
-            },
-          },
-          colors: ["#8e60ff", "#ffa800"],
-          dataLabels: {
-            enabled: false,
-          },
-          stroke: {
-            width: 1,
-            colors: ["#fff"],
-          },
-
-          grid: {
-            row: {
-              colors: ["#fff", "#f2f2f2"],
-            },
-          },
-          xaxis: {
-            labels: {
-              rotate: -45,
-            },
-            categories: ["Wellness", "Behavior"],
-          },
-          yaxis: {
-            title: {
-              text: "Specialization",
+        chart: {
+          height: 350,
+          type: "bar",
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: "20%",
+            barHeight: "100%",
+            distributed: true,
+            horizontal: false,
+            dataLabels: {
+              position: "bottom",
             },
           },
         },
-        behavior: [
-          {
-            name: "Specialization",
-            data: [1, 2],
+        dataLabels: {
+          enabled: false,
+        },
+        colors: ["#3b72c5", "#ffb526", "#419541", "#343470"],
+        stroke: {
+          width: 1,
+          colors: ["#fff"],
+        },
+        grid: {
+          row: {
+            colors: ["#fff", "#f2f2f2"],
           },
-        ],
-
-        In: {
-          annotations: {
-            points: [
-              {
-                x: "In",
-                seriesIndex: 0,
-                label: {
-                  borderColor: "#775DD0",
-                  offsetY: 0,
-                  style: {
-                    color: "#fff",
-                    background: "#775DD0",
-                  },
-                  // text: "Bananas are good",
+        },
+        xaxis: {
+          labels: {
+            rotate: -45,
+          },
+          categories: ["99453", "99454", "99457", "99458 "],
+        },
+        yaxis: {
+          title: {
+            text: "Minutes",
+          },
+        },
+      },
+      value: [
+        {
+          name: "Minutes",
+          data: [120, 80, 90, 30],
+        },
+      ],
+      option1: {
+        annotations: {
+          points: [
+            {
+              x: "In",
+              seriesIndex: 0,
+              label: {
+                borderColor: "#775DD0",
+                offsetY: 0,
+                style: {
+                  color: "#fff",
+                  background: "#775DD0",
                 },
               },
-            ],
-          },
-          chart: {
-            height: 350,
-            type: "bar",
-          },
-          plotOptions: {
-            bar: {
-              borderRadius: 10,
-              columnWidth: "20%",
-              barHeight: "100%",
-              distributed: true,
-              horizontal: false,
-              dataLabels: {
-                position: "bottom",
-              },
             },
-          },
-          dataLabels: {
-            enabled: false,
-          },
-          colors: ["#267dff", "#0fb5c2"],
-          stroke: {
-            width: 1,
-            colors: ["#fff"],
-          },
-
-          grid: {
-            row: {
-              colors: ["#fff", "#f2f2f2"],
-            },
-          },
-          xaxis: {
-            labels: {
-              rotate: -45,
-            },
-            categories: ["In", "Out"],
-          },
-          yaxis: {
-            title: {
-              text: "Network",
+          ],
+        },
+        chart: {
+          height: 350,
+          type: "bar",
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: "20%",
+            barHeight: "100%",
+            distributed: true,
+            horizontal: false,
+            dataLabels: {
+              position: "bottom",
             },
           },
         },
-        Out: [
-          {
-            name: "Network",
-            data: [3, 4],
+        dataLabels: {
+          enabled: false,
+        },
+        colors: ["#267dff", "#00897b", "#E30D2A"],
+        stroke: {
+          width: 1,
+          colors: ["#fff"],
+        },
+        grid: {
+          row: {
+            colors: ["#fff", "#f2f2f2"],
           },
-        ],
-
-        code: {
-          annotations: {
-            points: [
-              {
-                x: "In",
-                seriesIndex: 0,
-                label: {
-                  borderColor: "#775DD0",
-                  offsetY: 0,
-                  style: {
-                    color: "#fff",
-                    background: "#775DD0",
-                  },
+        },
+        xaxis: {
+          labels: {
+            rotate: -45,
+          },
+          categories: ["Normal", "High", "Critical"],
+        },
+        yaxis: {
+          title: {
+            text: "Patients",
+          },
+        },
+      },
+      series1: [
+        {
+          name: "Patients",
+          data: [45, 12, 34],
+        },
+      ],
+      calloption: {
+        annotations: {
+          points: [
+            {
+              x: "In",
+              seriesIndex: 0,
+              label: {
+                borderColor: "#775DD0",
+                offsetY: 0,
+                style: {
+                  color: "#fff",
+                  background: "#775DD0",
                 },
               },
-            ],
-          },
-          chart: {
-            height: 350,
-            type: "bar",
-          },
-          plotOptions: {
-            bar: {
-              borderRadius: 10,
-              columnWidth: "20%",
-              barHeight: "100%",
-              distributed: true,
-              horizontal: false,
-              dataLabels: {
-                position: "bottom",
-              },
             },
-          },
-          dataLabels: {
-            enabled: false,
-          },
-          colors: ["#3b72c5", "#ffb526", "#419541", "#343470"],
-          stroke: {
-            width: 1,
-            colors: ["#fff"],
-          },
-
-          grid: {
-            row: {
-              colors: ["#fff", "#f2f2f2"],
-            },
-          },
-          xaxis: {
-            labels: {
-              rotate: -45,
-            },
-            categories: ["99453", "99454", "99457", "99458 "],
-          },
-          yaxis: {
-            title: {
-              text: "Minutes",
+          ],
+        },
+        chart: {
+          height: 350,
+          type: "bar",
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 10,
+            columnWidth: "20%",
+            barHeight: "100%",
+            distributed: true,
+            horizontal: false,
+            dataLabels: {
+              position: "bottom",
             },
           },
         },
-        value: [
-          {
-            name: "Minutes",
-            data: [120, 80, 90, 30],
-          },
-        ],
-
-        option1: {
-          annotations: {
-            points: [
-              {
-                x: "In",
-                seriesIndex: 0,
-                label: {
-                  borderColor: "#775DD0",
-                  offsetY: 0,
-                  style: {
-                    color: "#fff",
-                    background: "#775DD0",
-                  },
-                },
-              },
-            ],
-          },
-          chart: {
-            height: 350,
-            type: "bar",
-          },
-          plotOptions: {
-            bar: {
-              borderRadius: 10,
-              columnWidth: "20%",
-              barHeight: "100%",
-              distributed: true,
-              horizontal: false,
-              dataLabels: {
-                position: "bottom",
-              },
-            },
-          },
-          dataLabels: {
-            enabled: false,
-          },
-          colors: ["#267dff", "#00897b", "#E30D2A"],
-          stroke: {
-            width: 1,
-            colors: ["#fff"],
-          },
-
-          grid: {
-            row: {
-              colors: ["#fff", "#f2f2f2"],
-            },
-          },
-          xaxis: {
-            labels: {
-              rotate: -45,
-            },
-            categories: ["Normal", "High", "Critical"],
-          },
-          yaxis: {
-            title: {
-              text: "Patients",
-            },
+        dataLabels: {
+          enabled: false,
+        },
+        colors: ["#121258", "#218421", "#ffb526"],
+        stroke: {
+          width: 1,
+          colors: ["#fff"],
+        },
+        grid: {
+          row: {
+            colors: ["#fff", "#f2f2f2"],
           },
         },
-        series1: [
-          {
-            name: "Patients",
-            data: [45, 12, 34],
+        
+        xaxis: {
+          labels: {
+            rotate: -45,
           },
-        ],
-        calloption: {
-          annotations: {
-            points: [
-              {
-                x: "In",
-                seriesIndex: 0,
-                label: {
-                  borderColor: "#775DD0",
-                  offsetY: 0,
-                  style: {
-                    color: "#fff",
-                    background: "#775DD0",
-                  },
-                },
-              },
-            ],
-          },
-          chart: {
-            height: 350,
-            type: "bar",
-          },
-          plotOptions: {
-            bar: {
-              borderRadius: 10,
-              columnWidth: "20%",
-              barHeight: "100%",
-              distributed: true,
-              horizontal: false,
-              dataLabels: {
-                position: "bottom",
-              },
-            },
-          },
-          dataLabels: {
-            enabled: false,
-          },
-          colors: ["#121258", "#218421", "#ffb526"],
-          stroke: {
-            width: 1,
-            colors: ["#fff"],
-          },
-
-          grid: {
-            row: {
-              colors: ["#fff", "#f2f2f2"],
-            },
-          },
-
-          xaxis: {
-            labels: {
-              rotate: -45,
-            },
-            categories: ["Going On", "Completed", "In Queue"],
-          },
-          yaxis: {
-            title: {
-              text: "Number of Count",
-            },
-          },
+          categories: ["Going On", "Completed", "In Queue"],
         },
-        callseries: [
-          {
-            name: "Value",
-            data: [12, 8, 6],
+        yaxis: {
+          title: {
+            text: "Number of Count",
           },
-
         },
       },
       callseries: [
@@ -650,34 +629,6 @@ const columns4 = [
       ],
     };
   },
-  
-  setup(props,{emit}) {
-    const store = useStore()
-    const totalPatients="totalPatients"
-    const router = useRouter();
-    function clickHandler(event, chartContext, config){
-        // emit('listView',false)
-        provide('listView',false)
-        router.push({path:'communications'})
-    }
-    function clickHandler2(event, chartContext, config){
-        router.push({path:'manage-patients'})
-    }
-    function clickHandler3(event, chartContext, config){
-        router.push({path:'manage-care-coordinator'})
-    }
-    function clickHandler4(event, chartContext, config){
-        router.push({path:'cpt-codes'})
-    }
-    function clickHandler5(event, chartContext, config){
-        router.push({path:'appointment-calendar'})
-    }
-    function clickHandler6(event, chartContext, config){
-        router.push({path:'time-tracking-report'})
-    }
-    
-    
-
 
     setup(props, { emit }) {
 
