@@ -405,7 +405,7 @@
                         </a-col>
                         <a-col :md="9" :sm="9" :xs="9">
                             <a-checkbox-group v-model:value="conditions.condition">
-                                <a-checkbox  v-for="condition in patients.healthCondition.globalCode" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
+                                <a-checkbox v-for="condition in patients.healthCondition.globalCode" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
                             </a-checkbox-group>
                         </a-col>
                     </a-row>
@@ -431,7 +431,10 @@
                                 <!-- <label> {{$t('global.designation')}}</label>
                                 <a-input v-model="value" size="large" /> -->
                                 <a-form-item :label="$t('global.designation')" name="designation" :rules="[{ required: true, message: 'This field is required.' }]">
-                                    <a-input v-model:value="conditions.designation" size="large" />
+                                    <!-- <a-input v-model:value="conditions.designation" size="large" /> -->
+                                     <a-select ref="select" show-search v-model:value="conditions.designation" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                        <a-select-option v-for="designation in patients.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
+                                    </a-select>
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -510,8 +513,14 @@
                                 <!-- <label> {{$t('global.designation')}}</label>
                                 <a-input v-model="value" size="large" /> -->
                                 <a-form-item :label="$t('global.designation')" name="designation" :rules="[{ required: false, message: 'This field is required.' }]">
-                                    <a-input v-if="conditions.checked" v-model:value="conditions.designation" size="large" />
-                                    <a-input v-else v-model:value="conditions.physician.designation" size="large" />
+                                    <!-- <a-input v-if="conditions.checked" v-model:value="conditions.designation" size="large" />
+                                    <a-input v-else v-model:value="conditions.physician.designation" size="large" /> -->
+                                    <a-select v-if="conditions.checked"  ref="select" show-search v-model:value="conditions.designation" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                        <a-select-option v-for="designation in patients.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
+                                    </a-select>
+                                    <a-select v-else ref="select" show-search v-model:value="conditions.designation" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                        <a-select-option v-for="designation in patients.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
+                                    </a-select>
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -565,7 +574,7 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :md="8" :sm="12" :xs="24"> 
+                        <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.conditions.fax')}}</label>
                                 <a-input v-model="value" size="large" /> -->
@@ -588,7 +597,60 @@
                 <!--  -->
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Programs'">
-                <Programs />
+                <!-- <Programs /> -->
+                <a-form :model="conditions" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="programs" @finishFailed="onFinishFailed">
+                    <a-row :gutter="24">
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <label>{{$t('patient.programs.program')}}</label>
+                                <a-select ref="select" v-model="value1" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                    <a-select-option value="lucy">Choose Program</a-select-option>
+                                    <a-select-option value="Yiminghe">RPM</a-select-option>
+                                    <a-select-option value="Yiminghe">Mental Wellness</a-select-option>
+                                    <a-select-option value="Yiminghe">CCM Chronic Care Management</a-select-option>
+                                    <a-select-option value="Yiminghe">TCM- Transitional Care Managment</a-select-option>
+                                </a-select>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="6" :xs="24">
+                            <div class="form-group">
+                                <label>{{$t('patient.programs.onboardinScheduledDate')}}</label>
+                                <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="6" :xs="24">
+                            <div class="form-group">
+                                <label>{{$t('patient.programs.dischargeDate')}}</label>
+                                <a-date-picker v-model:value="value2" :size="size" style="width: 100%" />
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <label>{{$t('global.status')}}</label>
+                                <a-radio-group v-model:value="value">
+                                    <a-radio :style="radioStyle" :value="1">Active</a-radio>
+                                </a-radio-group>
+                                <a-radio-group v-model:value="value">
+                                    <a-radio :style="radioStyle" :value="2">Inactive</a-radio>
+                                </a-radio-group>
+                            </div>
+                        </a-col>
+                    </a-row>
+                    <a-row :gutter="24" class="mb-24">
+                        <a-col :span="24">
+                            <a-button class="btn primaryBtn">{{$t('global.add')}}</a-button>
+                        </a-col>
+                    </a-row>
+                    <div class="steps-action">
+                        <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
+                        <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
+                        <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
+                            {{$t('global.done')}}
+                        </a-button>
+                    </div>
+                </a-form>
+
+                <!-- end  -->
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Devices'">
                 <Devices />
@@ -635,7 +697,7 @@ export default {
     components: {
         // Demographics,
         // Conditions,
-        Programs,
+        // Programs,
         Devices,
         Parameters,
         ClinicalData,
@@ -684,7 +746,7 @@ export default {
         });
 
         const conditions = reactive({
-            condition:[],
+            condition: [],
             name: '',
             designation: '',
             email: '',
@@ -699,8 +761,6 @@ export default {
                 fax: ''
             }
         });
-
-        
 
         const next = (values) => {
             console.log('Success:', values);
@@ -718,14 +778,19 @@ export default {
             current.value++;
         }
 
-
         const prev = () => {
             current.value--;
         }
 
-       const nextCondition = (values) => {
-            console.log('Success:', values);
-              store.dispatch('conditions', conditions)
+        const nextCondition = (values) => {
+            console.log('patient:', values)
+            store.dispatch('conditions', conditions)
+            current.value++;
+        }
+
+        const programs = (values) => {
+            console.log('programs:', values)
+            store.dispatch('programs', programs)
             current.value++;
         }
 
@@ -741,13 +806,16 @@ export default {
         })
 
         const patients = computed(() => {
-            return store.state.patients
+            return store.state.storeData
         })
+
+        console.log('patients', patients)
 
         return {
             current,
             patients,
             nextCondition,
+            programs,
             steps: [{
                     title: "Demographics",
                     content: "First-content",
