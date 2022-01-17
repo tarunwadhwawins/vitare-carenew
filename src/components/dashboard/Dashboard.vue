@@ -106,9 +106,9 @@ import Sidebar from "../layout/sidebar/Sidebar";
 import { useRouter } from "vue-router";
 import { provide } from "vue";
 import { ref, computed } from "vue";
-import  Card from "../common/cards/Card"
-import { useStore } from "vuex"
-// import { UserOutlined } from "@ant-design/icons-vue";
+import Card from "@/components/common/cards/Card"
+import Appointement from "./Appointment"
+import ApexChart from "@/components/common/charts/ApexChart";
 const columns4 = [
   {
     title: "Patient Name",
@@ -240,6 +240,9 @@ export default {
   components: {
     Header,
     Sidebar,
+    Card,
+    Appointement,
+    ApexChart
   },
   data: function () {
     return {
