@@ -7,7 +7,7 @@
             text.text
             }}</router-link>
         </template>
-        <template #appt="text">
+        <template #staff="text">
           <router-link to="corrdinator-summary">{{
             text.text
             }}</router-link>
