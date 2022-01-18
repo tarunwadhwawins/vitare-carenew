@@ -1,15 +1,15 @@
 <template>
-  <a-row :gutter="24">
-{{ callPerStaffCount.callPerStaffCount }}
+  <a-row :gutter="24" >
+   
     <!-- Cards -->
-    <LongCard customClass="blueBg" :count="callPerStaffCount.callPerStaffCount" :text="$t('global.yesterday')">
+    <LongCard customClass="blueBg" :count="10" :text="$t('global.yesterday')">
     </LongCard>
     <LongCard customClass="two" :count="10" :text="$t('global.today')"></LongCard>
     <LongCard customClass="skyBlue" :count="10" :text="$t('global.tomorrow')"></LongCard>
     <LongCard customClass="four" :count="10" :text="$t('global.week')"></LongCard>
 
     <!-- Charts -->
-    <a-col :sm="12" :xs="24">
+    <a-col :sm="12" :xs="24" v-if="callPlannedOptions">
 
       <a-card :title="$t('communications.callPlanned')" class="common-card">
         <ApexChart type="bar" :height="350" :options="callPlannedOptions" :series="callPlannedSeries"
@@ -57,86 +57,17 @@
     },
     setup() {
       const store = useStore()
-
+      
       watchEffect(() => {
-
         store.dispatch("callPerStaff")
-
       })
-      const callPerStaffCount = computed(() => {
-        return store.state.storeData
+      
+      const callPlannedOptions = computed(() => {
+        return store.state.careCoordinator.callPerStaffName
       })
-      // const callPerStaffName  = computed(() => { 
-      //   return store.state.storeData.callPerStaffName
-      // })
-      //console.log(callPerStaffCount.value.callPerStaffCount)
-
-      const callPlannedOptions = {
-        annotations: {
-          points: [
-            {
-              x: "In",
-              seriesIndex: 0,
-              label: {
-                borderColor: "#775DD0",
-                offsetY: 0,
-                style: {
-                  color: "#fff",
-                  background: "#775DD0",
-                },
-              },
-            },
-          ],
-        },
-        chart: {
-          height: 350,
-          type: "bar",
-        },
-        plotOptions: {
-          bar: {
-            borderRadius: 10,
-            columnWidth: "20%",
-            barHeight: "100%",
-            distributed: true,
-            horizontal: false,
-            dataLabels: {
-              position: "bottom",
-            },
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        colors: ["#269b8f", "#269b8f", "#121258", "#218421"],
-        stroke: {
-          width: 1,
-          colors: ["#fff"],
-        },
-
-        grid: {
-          row: {
-            colors: ["#fff", "#f2f2f2"],
-          },
-        },
-
-        xaxis: {
-          labels: {
-            rotate: -45,
-          },
-          categories: callPerStaffCount.value.callPerStaffName,
-        },
-        yaxis: {
-          title: {
-            text: "Number of Calls",
-          },
-        },
-      };
-      const callPlannedSeries = [
-        {
-          name: "Value",
-          data: callPerStaffCount.value.callPerStaffCount,
-        },
-      ];
+      const callPlannedSeries = computed(() => {
+        return store.state.careCoordinator.callPerStaffCount
+      })
 
       const callQueOptions = {
         annotations: {
@@ -222,7 +153,7 @@
           dataIndex: "time",
         },
         {
-          title: "Action ",
+          title: "Action",
           dataIndex: "action",
           slots: {
             customRender: "action",
@@ -346,7 +277,6 @@
         futureAppointmentsData,
         communicationTypeOptions,
         communicationTypeSeries,
-        callPerStaffCount,
         //callPerStaffName
       };
     },
