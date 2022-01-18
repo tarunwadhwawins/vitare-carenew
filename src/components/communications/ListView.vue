@@ -8,22 +8,21 @@
         style="width: 100%"
         placeholder="Search . . ."
         :options="searchoptions"
-        @change="handleChange"
-      >
+        @change="handleChange">
       </a-select>
     </a-col>
     <a-col :span="12">
       <div class="text-right mb-24">
-        <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
+        <a-button class="primaryBtn">{{ $t('global.exportToExcel') }}</a-button>
       </div>
     </a-col>
     <a-col :span="24">
       <a-table
+        v-if="communicationsList"
         :columns="columns"
-        :data-source="data"
+        :data-source="communicationsList"
         :scroll="{ x: 900 }"
-        @change="onChange"
-      >
+        @change="onChange">
         <template #expandedRowRender="{ record }">
           <p style="margin: 0">
             {{ record.description }}
@@ -38,18 +37,18 @@
           </a-tooltip>
         </template>
         <template #patient="text">
-          <router-link to="patients-summary">{{
-            text.text
-          }}</router-link>
+          <router-link to="patients-summary">
+            {{ text.text }}
+          </router-link>
         </template>
         <template #staff="text">
-          <router-link to="corrdinator-summary">{{
-            text.text[0]
-          }}</router-link
-          ><br />
-          <router-link to="corrdinator-summary">{{
-            text.text[1]
-          }}</router-link>
+          <router-link to="corrdinator-summary">
+            {{ text.text[0] }}
+          </router-link>
+          <br />
+          <router-link to="corrdinator-summary">
+            {{ text.text[1] }}
+          </router-link>
         </template>
 
         <template #status="{ text }">
@@ -57,49 +56,49 @@
           <span
             class="box"
             :class="(text = text.match(/yellowBgColor/g))"
-            v-if="text.match(/yellowBgColor/g)"
-          ></span>
+            v-if="text.match(/yellowBgColor/g)">
+          </span>
         </template>
 
         <template #type="{ text }">
           <a-tooltip placement="bottom">
             <template #title>
-              <span>{{$t('communications.comment')}}</span>
+              <span>{{ $t('communications.comment') }}</span>
             </template>
-            <a class="icons" v-if="text == 'comment'"
-              ><CommentOutlined
-            /></a>
+            <a class="icons" v-if="text == 'comment'">
+              <CommentOutlined />
+            </a>
           </a-tooltip>
           <a-tooltip placement="bottom">
             <template #title>
-              <span>{{$t('communications.voiceMail')}}</span>
+              <span>{{ $t('communications.voiceMail') }}</span>
             </template>
-            <a class="icons" v-if="text == 'voiceMail'"
-              ><PhoneOutlined
-            /></a>
+            <a class="icons" v-if="text == 'voiceMail'">
+              <PhoneOutlined/>
+            </a>
           </a-tooltip>
           <a-tooltip placement="bottom">
             <template #title>
-              <span>{{$t('communications.sent')}}</span>
+              <span>{{ $t('communications.sent') }}</span>
             </template>
-            <a class="icons" v-if="text == 'sent'"
-              ><PhoneOutlined
-            /></a>
+            <a class="icons" v-if="text == 'sent'">
+              <PhoneOutlined/>
+            </a>
           </a-tooltip>
           <a-tooltip placement="bottom">
             <template #title>
-              <span>{{$t('communications.mail')}}</span>
+              <span>{{ $t('communications.mail') }}</span>
             </template>
-            <a class="icons" v-if="text == 'mail'"
-              ><MailOutlined
-            /></a>
+            <a class="icons" v-if="text == 'mail'">
+              <MailOutlined/>
+            </a>
           </a-tooltip>
         </template>
       </a-table>
     </a-col>
   </a-row>
 </template>
-<!---->
+
 <script>
 const columns = [
   {
@@ -109,33 +108,28 @@ const columns = [
       compare: (a, b) => a.patient - b.patient,
       multiple: 2,
     },
-    slots: {
-      customRender: "patient",
-    },
   },
   {
     title: "Sent To",
-    dataIndex: "sentto",
+    dataIndex: "sentTo",
     sorter: {
-      compare: (a, b) => a.sentto - b.sentto,
-      multiple: 1,
+      compare: (a, b) => a.sentTo - b.sentTo,
+      multiple: 2,
     },
   },
   {
     title: "Type",
     dataIndex: "type",
-    slots: {
-      customRender: "type",
+    sorter: {
+      compare: (a, b) => a.type - b.type,
+      multiple: 2,
     },
   },
   {
     title: "Staff",
-    dataIndex: "staff",
-    slots: {
-      customRender: "staff",
-    },
+    dataIndex: "staff.data.staff",
     sorter: {
-      compare: (a, b) => a.patient - b.patient,
+      compare: (a, b) => a.staff - b.staff,
       multiple: 2,
     },
   },
@@ -143,110 +137,45 @@ const columns = [
     title: "Status",
     dataIndex: "status",
     sorter: {
-      compare: (a, b) => a.patient - b.patient,
+      compare: (a, b) => a.status - b.status,
       multiple: 2,
-    },
-    slots: {
-      customRender: "status",
     },
   },
   {
     title: "Category",
-    dataIndex: "message",
+    dataIndex: "category",
     sorter: {
-      compare: (a, b) => a.message - b.message,
-      multiple: 3,
+      compare: (a, b) => a.category - b.category,
+      multiple: 2,
     },
   },
-
   {
     title: "Date Sent",
-    dataIndex: "sent",
+    dataIndex: "createdAt",
     sorter: {
-      compare: (a, b) => a.sent - b.sent,
-      multiple: 1,
-    },
-  },
-  // {
-  //   title: "Appt Type, Date, Time",
-  //   dataIndex: "appt",
-  //   sorter: {
-  //     compare: (a, b) => a.appt - b.appt,
-  //     multiple: 1,
-  //   },
-  // },
-  {
-    title: "Actions",
-    dataIndex: "resend",
-    slots: {
-      customRender: "resend",
+      compare: (a, b) => a.createdAt - b.createdAt,
+      multiple: 2,
     },
   },
 ];
-const data = [
-  {
-    key: "1",
-    type: "comment",
-    status: "greenBgColor",
-    message: "Appointment Reminder",
-    patient: "Jane Doe",
-    sentto: 22998876654,
-    sent: "Nov 11, 2021 - 11:30 Am",
-    // appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
-    resend: 70,
-    staff: ["Steve Smith", "Jane Doe"],
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  },
-  {
-    key: "2",
-    type: "voiceMail",
-    status: "three",
-    message: "Recall Reminder",
-    patient: "Steve Smith",
-    sentto: 22998876654,
-    sent: "Nov 11, 2021 - 11:30 Am",
-    // appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
-    resend: 70,
-    staff: ["Robert Henry"],
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  },
-  {
-    key: "3",
-    type: "sent",
-    status: "blue",
-    message: "Patient Message",
-    patient: "Joseph Spouse",
-    sentto: 22998876654,
-    sent: "Nov 11, 2021 - 11:30 Am",
-    // appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
-    resend: 70,
-    staff: ["Jane Doe"],
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book..",
-  },
-  {
-    key: "4",
-    type: "mail",
-    status: "greenBgColor",
-    message: "Portal Invitation",
-    patient: "Robert Henry",
-    sentto: 22998876654,
-    sent: "Nov 11, 2021 - 11:30 Am",
-    appt: "OLS APPT TYPE Nov 11, 2021 - 11:30 Am",
-    resend: 70,
-    staff: ["Jane Doe"],
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book..",
-  },
-];
-import { ref } from "vue";
+
+import { ref, watchEffect, computed } from 'vue';
+import { useStore } from "vuex"
 export default {
   setup() {
-    // const handleChange = (value) => {
-    //  // console.log(`selected ${value}`);
-    // };
+    const store = useStore()
+    const handleChange = (value) => {
+      console.log(`selected ${value}`);
+    };
+    
+    // watchEffect(() => {
+    //   store.dispatch('communicationsList')
+    // })
+    const communicationsList = []
+    // const communicationsList = computed(() => {
+    //   return store.state.communications.communicationsList
+    // })
+    // console.log('Communications', communicationsList.value)
 
     const searchoptions = ref(
       [
@@ -282,9 +211,9 @@ export default {
     );
 
     return {
+      communicationsList,
       columns,
-      data,
-      //handleChange,
+      handleChange,
       searchoptions,
 
       onChange: (pagination, filters, sorter, extra) => {

@@ -1,12 +1,12 @@
 <template>
   <a-modal width="1000px" title="Communications" centered>
     <a-row :gutter="24">
-      <a-col :sm="12" :xs="24">
+      <!-- <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>{{$t('communications.communicationsModal.from')}}</label>
           <a-input v-model="value" size="large" />
         </div>
-      </a-col>
+      </a-col> -->
       <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>{{$t('communications.communicationsModal.to')}}</label>
@@ -21,7 +21,7 @@
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
-          <label>{{$t('communications.communicationsModal.from')}}</label>
+          <label>{{$t('communications.communicationsModal.subject')}}</label>
           <a-input v-model="value" size="large" />
         </div>
       </a-col>
@@ -72,12 +72,30 @@
   </a-modal>
 </template>
 <script>
-import { defineComponent, ref } from "vue";
-export default {
-  setup() {
-    return {
-      size: ref("large"),
-    };
-  },
-};
+  import { ref, watchEffect, computed } from "vue";
+  import { useStore } from "vuex"
+  export default {
+    setup() {
+      const store = useStore()
+      
+      watchEffect(() => {
+        // store.dispatch("patientsList")
+        store.dispatch("globalCodes")
+      })
+      
+      const patientsList = computed(() => {
+        return store.state.communications.patientsList
+      })
+      const globalCodes = computed(() => {
+        return store.state.communications.globalCodes
+      })
+      console.log('patientsList', patientsList)
+      console.log('globalCodes', globalCodes.value)
+      
+      return {
+        patientsList,
+        globalCodes,
+      };
+    },
+  };
 </script>

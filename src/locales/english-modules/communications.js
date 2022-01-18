@@ -18,6 +18,7 @@ const communications = {
 
   communicationsModal:{
     from:'From',
+    subject:'Subject',
     to:'To',
     patient:'Patient',
     messageCategory:'Message Category',

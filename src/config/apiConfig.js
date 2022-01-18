@@ -6,7 +6,9 @@ const API_URL =  process.env.VUE_APP_API_URL
 export const API_ENDPOINTS = {
     LOGIN: "login",
     Logout: "logout",
-    CallPerStaff:"call/staff"
+    CallPerStaff:"call/staff",
+    communicationsList:"communication",
+    patientsList:"patient",
     
 };
 
