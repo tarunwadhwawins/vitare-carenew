@@ -1,8 +1,8 @@
 export default {
-    tcount: null,
-    ncount: null,
-    abcount: null,
-    activecount: null,
-    inactivecount: null,
-    critcount: null,
+    totalPatientcount: null,
+    activePaitientcount: null,
+    newPatientcount: null,
+    inActivePaitientcount: null,
+    abnormalPaitientcount: null,
+    criticalPaitientcount: null,
 }
