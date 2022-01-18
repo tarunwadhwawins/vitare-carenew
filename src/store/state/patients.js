@@ -1,5 +1,5 @@
 export default {
-    counter:null,
+    counter:0,
     globalCodes: {},
     gender: null,
     language: null,

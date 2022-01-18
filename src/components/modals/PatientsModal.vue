@@ -421,7 +421,7 @@
                             <div class="form-group">
                                 <!-- <label>{{$t('global.name')}}</label>
                                 <a-input v-model="value" size="large" /> -->
-                                <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: true, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: false, message: 'This field is required.' }]">
                                     <a-input v-model:value="conditions.name" size="large" />
                                 </a-form-item>
                             </div>
@@ -430,9 +430,9 @@
                             <div class="form-group">
                                 <!-- <label> {{$t('global.designation')}}</label>
                                 <a-input v-model="value" size="large" /> -->
-                                <a-form-item :label="$t('global.designation')" name="designation" :rules="[{ required: true, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.designation')" name="designation" :rules="[{ required: false, message: 'This field is required.' }]">
                                     <!-- <a-input v-model:value="conditions.designation" size="large" /> -->
-                                     <a-select ref="select" show-search v-model:value="conditions.designation" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                    <a-select ref="select" show-search v-model:value="conditions.designation" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="designation in patients.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
                                     </a-select>
                                 </a-form-item>
@@ -452,7 +452,7 @@
                                         </a-select>
                                     </template>
                                 </a-input> -->
-                                <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: false, message: 'This field is required.' }]">
                                     <a-input v-model:value="conditions.email" size="large">
                                         <template #addonAfter>
                                             <a-select v-model:value="value4" style="width: 120px">
@@ -471,7 +471,7 @@
                             <div class="form-group">
                                 <!-- <label>{{$t('global.phoneNo')}}</label>
                                 <a-input v-model="value" size="large" /> -->
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: 'This field is required.' }]">
                                     <a-input v-model:value="conditions.phoneNumber" size="large" />
                                 </a-form-item>
                             </div>
@@ -480,7 +480,7 @@
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.conditions.fax')}}</label>
                                 <a-input v-model="value" size="large" /> -->
-                                <a-form-item :label="$t('patient.conditions.fax')" name="fax" :rules="[{ required: true, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('patient.conditions.fax')" name="fax" :rules="[{ required: false, message: 'This field is required.' }]">
                                     <a-input v-model:value="conditions.fax" size="large" />
                                 </a-form-item>
                             </div>
@@ -515,10 +515,10 @@
                                 <a-form-item :label="$t('global.designation')" name="designation" :rules="[{ required: false, message: 'This field is required.' }]">
                                     <!-- <a-input v-if="conditions.checked" v-model:value="conditions.designation" size="large" />
                                     <a-input v-else v-model:value="conditions.physician.designation" size="large" /> -->
-                                    <a-select v-if="conditions.checked"  ref="select" show-search v-model:value="conditions.designation" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                    <a-select v-if="conditions.checked" ref="select" show-search v-model:value="conditions.designation" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="designation in patients.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
                                     </a-select>
-                                    <a-select v-else ref="select" show-search v-model:value="conditions.designation" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                    <a-select v-else ref="select" show-search v-model:value="conditions.physician.designation" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="designation in patients.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
                                     </a-select>
                                 </a-form-item>
@@ -764,28 +764,49 @@ export default {
 
         const next = (values) => {
             console.log('Success:', values);
-            if (demographics.isPrimary == false) {
+            if (demographics.isPrimary == true) {
                 demographics.emergencyFullName = demographics.fullName,
-                    demographics.emergencyEmail = demographics.familyEmail,
-                    demographics.emergencyPhoneNumber = demographics.familyPhoneNumber,
-                    demographics.emergencyContactType = demographics.familyContactType,
-                    demographics.emergencyContactTime = demographics.familyContactTime,
-                    demographics.emergencyGender = demographics.familyGender,
-                    store.dispatch('demographics', demographics)
+                demographics.emergencyEmail = demographics.familyEmail,
+                demographics.emergencyPhoneNumber = demographics.familyPhoneNumber,
+                demographics.emergencyContactType = demographics.familyContactType,
+                demographics.emergencyContactTime = demographics.familyContactTime,
+                demographics.emergencyGender = demographics.familyGender,
+                store.dispatch('demographics', demographics)
             } else {
                 store.dispatch('demographics', demographics)
             }
-            current.value++;
+            // current.value++;
+            current.value = patients.value.counter
         }
 
         const prev = () => {
-            current.value--;
+            // current.value--;
+            store.commit('counterMinus')
+            current.value = patients.value.counter
         }
 
-        const nextCondition = (values) => {
-            console.log('patient:', values)
+        const nextCondition = () => {
+            // console.log('patient:', values)
             store.dispatch('conditions', conditions)
-            current.value++;
+            if(patients.value.conditions){
+            store.dispatch('patientReferals', conditions)
+            }
+            // let physicianData = {}
+            if (conditions.checked == false && patients.value.patientReferals) {
+                conditions.name = conditions.physician.name,
+                conditions.designation = conditions.physician.designation,
+                conditions.email = conditions.physician.email,
+                conditions.phoneNumber = conditions.physician.phoneNumber,
+                conditions.fax = conditions.physician.fax
+                store.dispatch('patientPhysician', conditions)
+            }else if(conditions.checked == true && patients.value.patientReferals){
+                store.dispatch('patientPhysician', conditions)
+                // current.value++;
+            //   patients.value.counter
+              current.value = patients.value.counter
+
+            }
+            
         }
 
         const programs = (values) => {
@@ -806,7 +827,7 @@ export default {
         })
 
         const patients = computed(() => {
-            return store.state.storeData
+            return store.state.patients
         })
 
         console.log('patients', patients)

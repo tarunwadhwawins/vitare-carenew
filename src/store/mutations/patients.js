@@ -34,6 +34,7 @@ export const globalCodes = (state, data) => {
 
 export const demographics = (state, data) => {
    state.demographics = data
+   state.counter=1
 }
 
 export const conditions = (state, data) => {
@@ -46,4 +47,9 @@ export const conditions = (state, data) => {
  }
  export const patientPhysician = (state, data) => {
     state.patientPhysician = data
+    state.counter++
+ }
+
+ export const counterMinus = (state, data) => {
+    state.counter--
  }
