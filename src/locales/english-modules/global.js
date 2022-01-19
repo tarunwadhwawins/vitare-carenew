@@ -1,4 +1,6 @@
 const global = {
+  cancel: 'Cancel',
+  ok: 'Ok',
   dashboard: 'Dashboard',
   day: 'Day',
   date:'Date',

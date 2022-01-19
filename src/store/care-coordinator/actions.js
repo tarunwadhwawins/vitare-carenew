@@ -1,5 +1,7 @@
 import CareCoordinatorService from '../../services/careCoordinator';
+import ServiceMethodService from '../../services/serviceMethod';
 import AuthService from '../../services/auth';
+import { API_ENDPOINTS } from "../../config/apiConfig"
 
 export const addCareCoordinator = async ({ commit }, coordinator) => {
     try {

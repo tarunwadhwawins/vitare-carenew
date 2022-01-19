@@ -18,11 +18,17 @@ const communications = {
 
   communicationsModal:{
     from:'From',
+    subject:'Subject',
     to:'To',
     patient:'Patient',
     messageCategory:'Message Category',
     priority:'Priority',
-    message:'Message'
+    message:'Message',
+    type:'Type',
+    email:'Email',
+    sms:'SMS',
+    call:'Call',
+    reminder:'Reminder',
   }
 }
 
