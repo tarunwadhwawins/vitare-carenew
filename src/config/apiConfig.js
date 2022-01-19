@@ -19,8 +19,8 @@ export const API_ENDPOINTS = {
     CptCode:"patient/condition",
     Network:"staff/network",
     Specialization:"staff/specialization",
-    TotalPatientsChart:"patient/condition",
-    AppointmentChart:"patient/condition",
+    TotalPatientsChart:"count/patient",
+    AppointmentChart:"count/appointment",
 };
 
 // export const getApiUrl = key => {

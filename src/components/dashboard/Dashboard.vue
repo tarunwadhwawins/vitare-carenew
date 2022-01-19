@@ -53,15 +53,15 @@
               <ApexChart :title="$t('global.callQueue')" type="bar" :height="250" :options="callStatus.calloption"
                 :series="callStatus.callseries" linkTo="communications" />
             </a-col>
-            <a-col :sm="12" :xs="24">
+            <a-col :sm="12" :xs="24" v-if="patientsCondition">
 
-              <ApexChart title="Patients Stats" v-if="patientsCondition" type="bar" :height="412"
+              <ApexChart title="Patients Stats"  type="bar" :height="412"
                 :options="patientsCondition.option1" :series="patientsCondition.series1" linkTo="manage-patients">
               </ApexChart>
 
             </a-col>
            
-            <a-col :sm="12" :xs="24">
+            <a-col :sm="12" :xs="24" >
               <a-card :title="$t('dashboard.careCoordinatorStats') " class="common-card">
                 <a-tabs default-active-key="activeKey1">
                   <a-tab-pane key="1" tab="Specialization" v-if="specialization">
@@ -76,7 +76,8 @@
                 </a-tabs>
               </a-card>
             </a-col>
-          </a-row><a-row :gutter="24">
+          </a-row>
+          <a-row :gutter="24" >
             <a-col :sm="12" :xs="24" v-if="cptCodeValue">
 
               <ApexChart  :title="$t('dashboard.cPTCodeBillingSummary')" type="bar" :height="350"
@@ -303,7 +304,7 @@
 
         return store.state.dashBoard.appointmentChartValue
       })
-
+ 
       function logout() {
         localStorage.removeItem("auth");
         localStorage.clear();

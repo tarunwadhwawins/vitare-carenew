@@ -25,7 +25,6 @@ export const callStatusSuccess = (state, count) => {
               ],
             },
             chart: {
-              height: 350,
               type: "bar",
             },
             plotOptions: {
@@ -96,7 +95,6 @@ export const patientsStatsSuccess = (state, count) => {
           ],
         },
         chart: {
-          height: 350,
           type: "bar",
         },
         plotOptions: {
@@ -168,7 +166,6 @@ export const specializationSuccess = (state, count) => {
           ],
         },
         chart: {
-          height: 350,
           type: "bar",
         },
         plotOptions: {
@@ -240,7 +237,6 @@ export const networkSuccess = (state, count) => {
           ],
         },
         chart: {
-          height: 350,
           type: "bar",
         },
         plotOptions: {
@@ -310,7 +306,7 @@ export const cptCodeSuccess = (state, count) => {
         ],
       },
       chart: {
-        height: 350,
+        
         type: "bar",
       },
       plotOptions: {
@@ -364,7 +360,6 @@ export const financialSuccess = (state, count) => {
     due: [4567, 1000],
         billed: {
           chart: {
-            width: 380,
             type: "pie",
           },
           labels: ["Billed", "Due"],
@@ -373,9 +368,7 @@ export const financialSuccess = (state, count) => {
             {
               breakpoint: 480,
               options: {
-                chart: {
-                  width: 200,
-                },
+               
                 legend: {
                   position: "bottom",
                 },
@@ -386,10 +379,13 @@ export const financialSuccess = (state, count) => {
   };
 }
 export const totalPatientsChartSuccess = (state, count) => {
+  const check =count.map((item) => { 
+    return item.data.map((data) =>{ return data.month})})
+    const month=['January','February',]
   state.totalPatientsChartValue = {
     chartOptions: {
       chart: {
-        height: 350,
+       
         type: "area",
       },
       dataLabels: {
@@ -399,8 +395,7 @@ export const totalPatientsChartSuccess = (state, count) => {
         curve: "smooth",
       },
       xaxis: {
-        type: "datetime",
-        categories: [
+        categories:  [
           "2018-09-19T00:00:00.000Z",
           "2018-09-19T01:30:00.000Z",
           "2018-09-19T02:30:00.000Z",
@@ -411,12 +406,10 @@ export const totalPatientsChartSuccess = (state, count) => {
         ],
       },
       tooltip: {
-        x: {
-          format: "dd/MM/yy HH:mm",
-        },
+       
       },
     },
-    series: [
+    series:  [
       {
         name: "series1",
         data: [31, 40, 28, 51, 42, 109, 100],
@@ -433,7 +426,7 @@ export const appointmentChartSuccess = (state, count) => {
   state.appointmentChartValue = {
     chartOptions: {
       chart: {
-        height: 350,
+      
         type: "area",
       },
       dataLabels: {
