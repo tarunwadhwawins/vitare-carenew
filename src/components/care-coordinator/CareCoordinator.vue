@@ -33,63 +33,71 @@
 </template>
 
 <script>
-import { ref, watchEffect, computed } from "vue";
+import {
+    ref,
+    watchEffect,
+    computed
+} from "vue";
 import LongCard from "@/components/common/cards/LongCard";
 import CoordinatorTable from "./tables/CoordinatorTable";
-import { useStore } from "vuex";
+import {
+    useStore
+} from "vuex";
 
 export default {
-  data() {
-    return {};
-  },
-  components: {
-    LongCard,
-    CoordinatorTable,
-  },
-  setup(props, { emit }) {
-    const store = useStore();
-    watchEffect(() => {
-      // store.dispatch("specializationsCount", 1)
-      // store.dispatch("specializationsCount", 2)
-      // store.dispatch("networksCount", 1)
-      // store.dispatch("networksCount", 2)
-    });
-    const specializationWellness = computed(() => {
-      return 0; //store.state.careCoordinator.specializationWellness
-    });
-    const specializationBehavour = computed(() => {
-      return 0; //store.state.careCoordinator.specializationBehavour
-    });
-    const networksIn = computed(() => {
-      return 0; // store.state.careCoordinator.networksIn
-    });
-    const networksOut = computed(() => {
-      return 0; //store.state.careCoordinator.networksOut
-    });
-    const onClickEditPersonal = (rowId) => {
-      // store.dispatch("getCoordinatorDetails", rowId)
-      // .then((res) => {
-      //   const coordinatorData = res.data.data;
-      //   localStorage.setItem('is_update_coordinator', true)
-      //   localStorage.setItem('personalData', JSON.stringify(coordinatorData))
-      //   emit('is-visible', true)
-      // },
-      // (error) => {
-      //   console.log(error)
-      // });
-    };
+    data() {
+        return {};
+    },
+    components: {
+        LongCard,
+        CoordinatorTable,
+    },
+    setup(props, {
+        emit
+    }) {
+        const store = useStore();
+        watchEffect(() => {
+            // store.dispatch("specializationsCount", 1)
+            // store.dispatch("specializationsCount", 2)
+            // store.dispatch("networksCount", 1)
+            // store.dispatch("networksCount", 2)
+        });
+        const specializationWellness = computed(() => {
+            return 0; //store.state.careCoordinator.specializationWellness
+        });
+        const specializationBehavour = computed(() => {
+            return 0; //store.state.careCoordinator.specializationBehavour
+        });
+        const networksIn = computed(() => {
+            return 0; // store.state.careCoordinator.networksIn
+        });
+        const networksOut = computed(() => {
+            return 0; //store.state.careCoordinator.networksOut
+        });
+        const onClickEditPersonal = (rowId) => {
+            // store.dispatch("getCoordinatorDetails", rowId)
+            // .then((res) => {
+            //   const coordinatorData = res.data.data;
+            //   localStorage.setItem('is_update_coordinator', true)
+            //   localStorage.setItem('personalData', JSON.stringify(coordinatorData))
+            //   emit('is-visible', true)
+            // },
+            // (error) => {
+            //   console.log(error)
+            // });
+        };
 
-    return {
-      specializationWellness,
-      specializationBehavour,
-      networksIn,
-      networksOut,
-      onClickEditPersonal,
-      // specializationTotal,
-      // specializationText,
-      // networkTotal,
-      // networkText,
-    };
-  },
+        return {
+            specializationWellness,
+            specializationBehavour,
+            networksIn,
+            networksOut,
+            onClickEditPersonal,
+            // specializationTotal,
+            // specializationText,
+            // networkTotal,
+            // networkText,
+        };
+    },
 };
 </script>

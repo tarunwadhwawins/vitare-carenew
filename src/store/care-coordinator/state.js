@@ -1,4 +1,6 @@
 export default{
+    callPerStaffCount:null,
+    callPerStaffName:null,
     coordinator: null,
     contact: null,
     availability: null,

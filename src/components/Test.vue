@@ -1,50 +1,146 @@
-
-
 <template>
-  <div class="container">
-    <div>
-      <p v-if="test1">test1   <button @click="close1">X</button></p>
-    </div>
+<div class="container">
+    <table border=0 width=100%>
 
-    <div>
-      <p v-if="test2">test2   <button @click="close2">X</button></p>
-    </div>
+        <td>Goal</td>
+        <td><select>
+                <option>Blood Pressure</option>
+                <option>Medication</option>
+            </select>
+        </td>
+        <td>Frequency
+        </td>
+        <td><input size=1 type=text> &nbsp;
+            <select>
+                <option>Daily</option>
+                <option>Week</option>
+                <option>2 Weeks</option>
+                <option>Month</option>
+                <option>2 Months</option>
+                <option>3 Months</option>
+            </select>
+        </td>
+        <td>Duration
+        </td>
+        <td><select v-model="duration" @change="showHideDropDowns($event)">
+                <option value=0> Specific Time</option>
+                <option value=1> Time Range</option>
+                <option value=2> Any Time</option>
+            </select>
 
-    <div>
-      <p v-if="test3">test3   <button @click="close3">X</button></p>
-    </div>
-    
-  </div>
+            &nbsp;
+            &nbsp;
+            <select id="dropDownSpecificTime" v-if="duration==0">
+                <option>01:00</option>
+                <option>02:00</option>
+                <option>03:00</option>
+                <option>04:00</option>
+                <option>05:00</option>
+                <option>06:00</option>
+                <option>07:00</option>
+                <option>08:00</option>
+                <option>09:00</option>
+                <option>10:00</option>
+                <option>11:00</option>
+                <option>12:00</option>
+                <option>13:00</option>
+                <option>14:00</option>
+                <option>15:00</option>
+                <option>16:00</option>
+                <option>17:00</option>
+                <option>18:00</option>
+                <option>19:00</option>
+                <option>20:00</option>
+                <option>21:00</option>
+                <option>22:00</option>
+                <option>23:00</option>
+            </select>
+
+            <div v-if="duration==1">
+                from
+                <select id="dropDownSpecificTime" >
+                    <option>01:00</option>
+                    <option>02:00</option>
+                    <option>03:00</option>
+                    <option>04:00</option>
+                    <option>05:00</option>
+                    <option>06:00</option>
+                    <option>07:00</option>
+                    <option>08:00</option>
+                    <option>09:00</option>
+                    <option>10:00</option>
+                    <option>11:00</option>
+                    <option>12:00</option>
+                    <option>13:00</option>
+                    <option>14:00</option>
+                    <option>15:00</option>
+                    <option>16:00</option>
+                    <option>17:00</option>
+                    <option>18:00</option>
+                    <option>19:00</option>
+                    <option>20:00</option>
+                    <option>21:00</option>
+                    <option>22:00</option>
+                    <option>23:00</option>
+                </select>
+
+                to
+
+                <select id="dropDownSpecificTime" >
+                    <option>01:00</option>
+                    <option>02:00</option>
+                    <option>03:00</option>
+                    <option>04:00</option>
+                    <option>05:00</option>
+                    <option>06:00</option>
+                    <option>07:00</option>
+                    <option>08:00</option>
+                    <option>09:00</option>
+                    <option>10:00</option>
+                    <option>11:00</option>
+                    <option>12:00</option>
+                    <option>13:00</option>
+                    <option>14:00</option>
+                    <option>15:00</option>
+                    <option>16:00</option>
+                    <option>17:00</option>
+                    <option>18:00</option>
+                    <option>19:00</option>
+                    <option>20:00</option>
+                    <option>21:00</option>
+                    <option>22:00</option>
+                    <option>23:00</option>
+                </select>
+            </div>
+
+        </td>
+        <td>Notes</td>
+        <td>
+            <textarea cols=40></textarea>
+        </td>
+    </table>
+
+</div>
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
+import {
+    ref
+} from '@vue/reactivity'
 
-  export default {
-   
-   setup(){
+export default {
 
-     const test1 = ref(true)
-     const test2 = ref(true)
-     const test3 = ref(true)
-     function close1(){
-       test1.value=false
-     }
-     function close2(){
-       test2.value=false
-     }
-     function close3(){
-       test3.value=false
-     }
-     return{
-       test1,
-       test2,
-       test3,
-       close1,
-       close2,
-       close3,
-     }
-   }
-      
-  }
+    setup() {
+        const duration = ref()
+        const showHideDropDowns = () => {
+          console.log('duration',duration.value)
+            duration.value 
+        }
+        return {
+            duration,
+            showHideDropDowns
+        }
+    }
+
+}
 </script>

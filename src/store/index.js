@@ -1,10 +1,12 @@
 import { createStore } from 'vuex'
 import { dashBoard } from "./dashboard/index"
-import { counterCards } from "./counter-cards/index"
+import  { communications } from "./communications/index"
+import { patients } from "./patients/index"
 export default createStore({
  modules: {
   dashBoard,
-  counterCards
+  communications,
+  patients
   },
   // plugins: [ createPersistedState({
   //   reducer(state) {

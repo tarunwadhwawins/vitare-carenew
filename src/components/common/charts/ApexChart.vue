@@ -14,7 +14,6 @@
     props: {
       linkTo: {
         type: String,
-        required: true
       },
       title: {
         type: String,
