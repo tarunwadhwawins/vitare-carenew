@@ -128,9 +128,18 @@
       const patients = computed(() => {
         return store.state.patients
       })
-      const taskPriority = patients.value.taskPriority ? patients.value.taskPriority.globalCode : [];
+      const taskPriority = computed(() => {
+        return patients.value.taskPriority.globalCode;
+      }) 
+      const messageCategories = computed(() => {
+        return patients.value.messageCategories.globalCode;
+      }) 
+      const messageType = computed(() => {
+        return patients.value.messageType.globalCode;
+      }) 
+      /* const taskPriority = patients.value.taskPriority ? patients.value.taskPriority.globalCode : [];
       const messageCategories = patients.value.messageCategories ? patients.value.messageCategories.globalCode : [];
-      const messageType = patients.value.messageType ? patients.value.messageType.globalCode : [];
+      const messageType = patients.value.messageType ? patients.value.messageType.globalCode : []; */
 
       console.log('taskPriority', taskPriority)
       console.log('messageCategories', messageCategories)
