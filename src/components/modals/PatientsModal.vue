@@ -672,7 +672,7 @@
 
                     <a-row :gutter="24">
                         <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
+                            <div class="form-group"> 
                                 <label>{{$t('patient.devices.deviceType')}}</label>
                                 <a-select ref="select" show-search v-model:value="device.deviceType" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                     <a-select-option v-for="device in patients.deviceType.globalCode" :key="device.id" :value="device.id">{{device.name}}</a-select-option>
