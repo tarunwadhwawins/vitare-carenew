@@ -1,4 +1,5 @@
 export const globalCodes = (state, data) => {
+
      data.forEach(element => {
         if(element.name ==='Gender'){
             state.gender= element;
@@ -24,6 +25,12 @@ export const globalCodes = (state, data) => {
         if(element.name ==='Health Conditions'){
             state.healthCondition= element;
         }
+        if(element.name ==='Designations'){
+            state.designations= element;
+        }
+        if(element.name ==='Device Type'){
+            state.deviceType= element;
+        }
         
      });
     state.globalCodes = data;
@@ -33,7 +40,6 @@ export const globalCodes = (state, data) => {
 
 export const demographics = (state, data) => {
     state.demographics = data
-    state.counter = state.counter+1
  }
  
  export const conditions = (state, data) => {
@@ -46,10 +52,32 @@ export const demographics = (state, data) => {
   }
   export const patientPhysician = (state, data) => {
      state.patientPhysician = data
-     state.counter = state.counter+1
+  }
+
+  export const programList = (state, data) => {
+    state.programList = data
+ }
+
+ export const counterPlus = (state) => {
+    state.counter++
   }
  
-  export const counterMinus = (state, data) => {
-    state.counter = state.counter-1
+  export const counterMinus = (state) => {
+    state.counter--
   }
+
+  export const addProgram = (state, data) => {
+    state.addProgram = data
+ }
+
+
+ export const program = (state, data) => {
+    state.program = data
+ }
+ 
+
+ export const addDevice = (state, data) => {
+    state.addDevice = data
+ }
+
  

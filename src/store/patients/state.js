@@ -11,6 +11,12 @@ export default {
     demographics:null,
     healthCondition:null,
     patientReferals:null,
-    patientPhysician:null
+    patientPhysician:null,
+    designations:null,
+    programList:null,
+    addProgram:null,
+    deviceType:null,
+    program:null,
+    addDevice:null,
 
 }

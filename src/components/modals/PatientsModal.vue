@@ -7,7 +7,7 @@
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Demographics'">
                 <!-- <Demographics /> -->
-                <a-form :model="demographics" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="next" @finishFailed="onFinishFailed">
+                <a-form :model="demographics" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="demographic" @finishFailed="onFinishFailed">
                     <a-row :gutter="24">
 
                         <a-col :md="8" :sm="12" :xs="24">
@@ -63,7 +63,7 @@
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.otherLanguage')}}</label> -->
                                 <a-form-item :label="$t('patient.demographics.otherLanguage')" name="otherLanguage" :rules="[{ required: false, message: 'This field is required.' }]">
-                                    <a-select v-model:value="demographics.otherLanguage" mode="multiple" size="large" placeholder="Please Select Language" style="width: 100%" :options="patients.language.globalCode.map((item) => ({ value: item.name }))" />
+                                    <a-select v-model:value="demographics.otherLanguage" mode="multiple" size="large" placeholder="Please Select Language" style="width: 100%" :options="patients.language.globalCode.map((item) => ({ label: item.name, value: item.id }))" />
                                     <!-- <a-select ref="select" v-model:value="demographics.otherLanguage" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="language in patients.language.globalCode" :key="language.id" :value="language.id">{{language.name}}</a-select-option>
                                     </a-select> -->
@@ -126,7 +126,7 @@
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.preferredMethodofContact')}} <span class="red-color">*</span></label> -->
                                 <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="contactType" :rules="[{ required: false, message: 'This field is required.' }]">
-                                    <a-select v-model:value="demographics.contactType" mode="multiple" size="large" style="width: 100%" :options="patients.pmOfcontact.globalCode.map((item) => ({ value: item.name }))" />
+                                    <a-select v-model:value="demographics.contactType" mode="multiple" size="large" style="width: 100%" :options="patients.pmOfcontact.globalCode.map((item) => ({ label: item.name,value: item.id }))" />
                                     <!-- <a-select ref="select" v-model:value="demographics.contactType" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="pmOfcontact in patients.pmOfcontact.globalCode" :key="pmOfcontact.id" :value="pmOfcontact.id">{{pmOfcontact.name}}</a-select-option>
                                     </a-select> -->
@@ -243,7 +243,7 @@
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.preferredMethodofContact')}} <span class="red-color">*</span></label> -->
                                 <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="familyContactType" :rules="[{ required: false, message: 'This field is required.' }]">
-                                    <a-select v-model:value="demographics.familyContactType" mode="multiple" size="large" style="width: 100%" :options="patients.pmOfcontact.globalCode.map((item) => ({ value: item.name }))" />
+                                    <a-select v-model:value="demographics.familyContactType" mode="multiple" size="large" style="width: 100%" :options="patients.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" />
                                     <!-- <a-select ref="select" v-model:value="demographics.familyContactType" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="pmOfcontact in patients.pmOfcontact.globalCode" :key="pmOfcontact.id" :value="pmOfcontact.id">{{pmOfcontact.name}}</a-select-option>
                                     </a-select> -->
@@ -332,8 +332,8 @@
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.preferredMethodofContact')}}<span class="red-color">*</span></label> -->
                                 <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="emergencyContactType" :rules="[{ required: false, message: 'This field is required.' }]">
-                                    <a-select v-if="demographics.isPrimary" v-model:value="demographics.familyContactType" mode="multiple" size="large" style="width: 100%" :options="patients.pmOfcontact.globalCode.map((item) => ({ value: item.name }))" />
-                                    <a-select v-else v-model:value="demographics.emergencyContactType" mode="multiple" size="large" style="width: 100%" :options="patients.pmOfcontact.globalCode.map((item) => ({ value: item.name }))" />
+                                    <a-select v-if="demographics.isPrimary" v-model:value="demographics.familyContactType" mode="multiple" size="large" style="width: 100%" :options="patients.pmOfcontact.globalCode.map((item) => ({ label: item.name,value: item.id }))" />
+                                    <a-select v-else v-model:value="demographics.emergencyContactType" mode="multiple" size="large" style="width: 100%" :options="patients.pmOfcontact.globalCode.map((item) => ({ label: item.name,value: item.id }))" />
                                     <!-- <a-input v-model:value="demographics.emergencyContactType" size="large" /> -->
                                     <!-- <a-select v-if="demographics.isPrimary" ref="select" v-model:value="demographics.familyContactType" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="pmOfcontact in patients.pmOfcontact.globalCode" :key="pmOfcontact.id" :value="pmOfcontact.id">{{pmOfcontact.name}}</a-select-option>
@@ -603,47 +603,54 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <label>{{$t('patient.programs.program')}}</label>
-                                <a-select ref="select" v-model="value1" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                <!-- <a-select ref="select" v-model="value1" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                     <a-select-option value="lucy">Choose Program</a-select-option>
                                     <a-select-option value="Yiminghe">RPM</a-select-option>
                                     <a-select-option value="Yiminghe">Mental Wellness</a-select-option>
                                     <a-select-option value="Yiminghe">CCM Chronic Care Management</a-select-option>
                                     <a-select-option value="Yiminghe">TCM- Transitional Care Managment</a-select-option>
+                                </a-select> -->
+                                <a-select ref="select" show-search v-model:value="program.program" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                    <a-select-option v-for="program in patients.programList" :key="program.id" :value="program.id">{{program.description}}</a-select-option>
                                 </a-select>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="6" :xs="24">
                             <div class="form-group">
                                 <label>{{$t('patient.programs.onboardinScheduledDate')}}</label>
-                                <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
+                                <a-date-picker v-model:value="program.onboardingScheduleDate" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="6" :xs="24">
                             <div class="form-group">
                                 <label>{{$t('patient.programs.dischargeDate')}}</label>
-                                <a-date-picker v-model:value="value2" :size="size" style="width: 100%" />
+                                <a-date-picker v-model:value="program.dischargeDate" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <label>{{$t('global.status')}}</label>
-                                <a-radio-group v-model:value="value">
+                                <!-- <a-radio-group v-model:value="program.status">
                                     <a-radio :style="radioStyle" :value="1">Active</a-radio>
                                 </a-radio-group>
                                 <a-radio-group v-model:value="value">
-                                    <a-radio :style="radioStyle" :value="2">Inactive</a-radio>
+                                    <a-radio :style="radioStyle" :value="0">Inactive</a-radio>
+                                </a-radio-group> -->
+                                <a-radio-group v-model:value="program.status">
+                                    <a-radio :value="1">Active</a-radio>
+                                    <a-radio :value="0">Inactive</a-radio>
                                 </a-radio-group>
                             </div>
                         </a-col>
                     </a-row>
                     <a-row :gutter="24" class="mb-24">
                         <a-col :span="24">
-                            <a-button class="btn primaryBtn">{{$t('global.add')}}</a-button>
+                            <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
                         </a-col>
                     </a-row>
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                        <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
+                        <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
                         <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
                             {{$t('global.done')}}
                         </a-button>
@@ -653,7 +660,62 @@
                 <!-- end  -->
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Devices'">
-                <Devices />
+                <!-- <Devices /> -->
+                <a-form :model="conditions" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDevice" @finishFailed="onFinishFailed">
+
+                    <a-row :gutter="24">
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <label>{{$t('patient.devices.deviceType')}}</label>
+                                <a-select ref="select" show-search v-model:value="device.deviceType" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                    <a-select-option v-for="device in patients.deviceType.globalCode" :key="device.id" :value="device.id">{{device.name}}</a-select-option>
+                                </a-select>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <label>{{$t('patient.devices.modelNo')}}</label>
+                                <a-input v-model:value="device.modelNumber" size="large" />
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <label>{{$t('patient.devices.serialNo')}}</label>
+                                <a-input v-model:value="device.serialNumber" size="large" />
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <label>{{$t('patient.devices.MACAddress')}}</label>
+                                <a-input v-model:value="device.macAddress" size="large" />
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <label>{{$t('patient.devices.deviceTime')}}</label>
+                                <a-input v-model:value="device.deviceTime" size="large" />
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <label>{{$t('patient.devices.ServerTime')}}</label>
+                                <a-input v-model:value="device.serverTime" size="large" />
+                            </div>
+                        </a-col>
+                    </a-row>
+                    <a-row :gutter="24" class="mb-24">
+                        <a-col :span="24">
+                            <a-button class="btn primaryBtn"  html-type="submit">{{$t('global.add')}}</a-button>
+                        </a-col>
+                    </a-row>
+                    <div class="steps-action">
+                        <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
+                        <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
+                        <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
+                            {{$t('global.done')}}
+                        </a-button>
+                    </div>
+                </a-form>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Parameters'">
                 <Parameters />
@@ -698,7 +760,7 @@ export default {
         // Demographics,
         // Conditions,
         // Programs,
-        Devices,
+        // Devices,
         Parameters,
         ClinicalData,
         Insurance,
@@ -762,58 +824,112 @@ export default {
             }
         });
 
-        const next = (values) => {
+        const program = reactive({
+            program: '',
+            onboardingScheduleDate: '',
+            dischargeDate: '',
+            status: 1
+
+        })
+
+        const device = reactive({
+            deviceType: '',
+            modelNumber:'',
+            serialNumber:'',
+            macAddress:'',
+            deviceTime:'',
+            serverTime:''
+        })
+
+        const demographic = (values) => {
             console.log('Success:', values);
             if (demographics.isPrimary == true) {
                 demographics.emergencyFullName = demographics.fullName,
-                demographics.emergencyEmail = demographics.familyEmail,
-                demographics.emergencyPhoneNumber = demographics.familyPhoneNumber,
-                demographics.emergencyContactType = demographics.familyContactType,
-                demographics.emergencyContactTime = demographics.familyContactTime,
-                demographics.emergencyGender = demographics.familyGender,
-                store.dispatch('demographics', demographics)
+                    demographics.emergencyEmail = demographics.familyEmail,
+                    demographics.emergencyPhoneNumber = demographics.familyPhoneNumber,
+                    demographics.emergencyContactType = demographics.familyContactType,
+                    demographics.emergencyContactTime = demographics.familyContactTime,
+                    demographics.emergencyGender = demographics.familyGender,
+                    store.dispatch('demographics', demographics)
             } else {
                 store.dispatch('demographics', demographics)
             }
-            // current.value++;
-            current.value = patients.value.counter
+            if(patients.value.demographics.id){
+                current.value++;
+            }
+            
+            // current.value = patients.value.counter
+        }
+
+        const next = () => {
+            current.value++;
         }
 
         const prev = () => {
-            // current.value--;
-            store.commit('counterMinus')
-            current.value = patients.value.counter
+            current.value--;
+            store.commit('counterMinus', 1)
+            // current.value = patients.value.counter
         }
 
         const nextCondition = () => {
-            // console.log('patient:', values)
-            store.dispatch('conditions', conditions)
-            if(patients.value.conditions){
-            store.dispatch('patientReferals', conditions)
-            }
-            // let physicianData = {}
-            if (conditions.checked == false && patients.value.patientReferals) {
-                conditions.name = conditions.physician.name,
-                conditions.designation = conditions.physician.designation,
-                conditions.email = conditions.physician.email,
-                conditions.phoneNumber = conditions.physician.phoneNumber,
-                conditions.fax = conditions.physician.fax
-                store.dispatch('patientPhysician', conditions)
-            }else if(conditions.checked == true && patients.value.patientReferals){
-                store.dispatch('patientPhysician', conditions)
-                // current.value++;
-            //   patients.value.counter
-              current.value = patients.value.counter
+            // current.value++;
 
+            // console.log('patient:', values)
+            store.dispatch('conditions', {
+                data: conditions,
+                id: patients.value.demographics.id
+            })
+            store.dispatch('patientReferals', {
+                data: conditions,
+                id: patients.value.demographics.id
+            })
+            // let physicianData = {}
+            if (conditions.checked == false) {
+                conditions.name = conditions.physician.name,
+                    conditions.designation = conditions.physician.designation,
+                    conditions.email = conditions.physician.email,
+                    conditions.phoneNumber = conditions.physician.phoneNumber,
+                    conditions.fax = conditions.physician.fax
+                store.dispatch('patientPhysician', {
+                    data: conditions,
+                    id: patients.value.demographics.id
+                })
+                current.value++;
             }
-            
+            if (conditions.checked == true) {
+                store.dispatch('patientPhysician', {
+                    data: conditions,
+                    id: patients.value.demographics.id
+                })
+
+                // current.value = patients.value.counter
+                current.value++;
+            }
+
         }
 
         const programs = (values) => {
             console.log('programs:', values)
-            store.dispatch('programs', programs)
-            current.value++;
+            store.dispatch('addProgram', {
+                data: program,
+                id: patients.value.demographics.id
+            })
+            if(patients.value.addProgram.id){
+            current.value++; 
+            }
         }
+
+         const addDevice = (values) => {
+            console.log('programs:', values)
+            store.dispatch('addDevice', {
+                data: device,
+                id: patients.value.demographics.id
+            })
+            if(patients.value.addDevice.id){
+            current.value++; 
+            }
+        }
+
 
         const onFinishFailed = errorInfo => {
             console.log('Failed:', errorInfo);
@@ -824,6 +940,8 @@ export default {
 
         watchEffect(() => {
             store.dispatch('globalCodes')
+            store.dispatch('programList')
+            // store.dispatch('deviceType')
         })
 
         const patients = computed(() => {
@@ -835,8 +953,12 @@ export default {
         return {
             current,
             patients,
+            demographic,
             nextCondition,
             programs,
+            program,
+            device,
+            addDevice,
             steps: [{
                     title: "Demographics",
                     content: "First-content",
