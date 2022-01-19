@@ -42,7 +42,7 @@ const routes = [
   {
     path: '/manage-patients',
     name: 'Patients',
-    component: () => import( '../components/patients/Patients')
+    component: () => import( '@/views/patients/Patients') 
   },
 
   {

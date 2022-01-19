@@ -1,46 +1,46 @@
 <template>
   <a-modal width="1000px" title="Communications" centered>
     <a-row :gutter="24">
-      <!-- <a-col :sm="12" :xs="24">
-        <div class="form-group">
-          <label>{{$t('communications.communicationsModal.from')}}</label>
-          <a-input v-model="value" size="large" />
-        </div>
-      </a-col> -->
       <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>{{$t('communications.communicationsModal.to')}}</label>
-          <a-input v-model="value" size="large" />
+          <a-input v-model="to" size="large" />
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>{{$t('communications.communicationsModal.patient')}}</label>
-          <a-input v-model="value" size="large" />
+          <a-select
+            ref="select"
+            v-if="patientsList"
+            v-model="patientId"
+            style="width: 100%"
+            size="large"
+            @focus="focus"
+            @change="handleChange">
+            <a-select-option v-for="patient in patientsList" :key="patient.id" :value="patient.id">{{ patient.firstName }}{{ patient.lastName }}</a-select-option>
+          </a-select>
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>{{$t('communications.communicationsModal.subject')}}</label>
-          <a-input v-model="value" size="large" />
+          <a-input v-model="subject" size="large" />
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>{{$t('communications.communicationsModal.messageCategory')}}</label>
           <a-select
+            v-if="messageCategories"
             ref="select"
-            v-model="value1"
+            v-model="messageCategoryId"
             style="width: 100%"
             size="large"
             @focus="focus"
             @change="handleChange"
           >
-            <a-select-option value="Appointment">Appointment Reminder</a-select-option>
-            <a-select-option value="Recall">Recall Reminder</a-select-option>
-            <a-select-option value="Portal">Portal Invitation </a-select-option>
-            <a-select-option value="Patient"
-              >Patient Message Notification
+            <a-select-option v-for="messageCategory in messageCategories.globalCode" :key="messageCategory.id" :value="messageCategory.id">{{ messageCategory.name }}
             </a-select-option>
           </a-select>
         </div>
@@ -49,23 +49,21 @@
         <div class="form-group">
           <label>{{$t('communications.communicationsModal.priority')}}</label>
           <a-select
+            v-if="taskPriority"
             ref="select"
-            v-model="value1"
+            v-model="priorityId"
             style="width: 100%"
             size="large"
             @focus="focus"
-            @change="handleChange"
-          >
-            <a-select-option value="lucy">Urgent</a-select-option>
-            <a-select-option value="Yiminghe">Medium</a-select-option>
-            <a-select-option value="Yiminghe">Normal</a-select-option>
+            @change="handleChange">
+            <a-select-option v-for="priority in taskPriority.globalCode" :key="priority.id" :value="priority.id">{{ priority.name }}</a-select-option>
           </a-select>
         </div>
       </a-col>
       <a-col :span="24">
         <div class="form-group">
           <label>{{$t('communications.communicationsModal.message')}}</label>
-          <a-textarea v-model="value2" allow-clear />
+          <a-textarea v-model="message" allow-clear />
         </div>
       </a-col>
     </a-row>
@@ -79,22 +77,27 @@
       const store = useStore()
       
       watchEffect(() => {
-        // store.dispatch("patientsList")
         store.dispatch("globalCodes")
+        store.dispatch("patientsList")
       })
       
+      const taskPriority = computed(() => {
+        return store.state.patients.taskPriority
+      })
+      const messageCategories = computed(() => {
+        return store.state.patients.messageCategories
+      })
       const patientsList = computed(() => {
         return store.state.communications.patientsList
       })
-      const globalCodes = computed(() => {
-        return store.state.communications.globalCodes
-      })
-      console.log('patientsList', patientsList)
-      console.log('globalCodes', globalCodes.value)
+      console.log('taskPriority', taskPriority.value)
+      console.log('patientsList', patientsList.value)
+      console.log('messageCategories', messageCategories.value)
       
       return {
         patientsList,
-        globalCodes,
+        taskPriority,
+        messageCategories,
       };
     },
   };
