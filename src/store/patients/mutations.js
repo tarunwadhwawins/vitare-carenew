@@ -1,8 +1,16 @@
 export const globalCodes = (state, data) => {
-
      data.forEach(element => {
         if(element.name ==='Gender'){
             state.gender= element;
+        }
+        if(element.name ==='Task Priority') {
+            state.taskPriority = element;
+        }
+        if(element.name ==='MessageCategory') {
+            state.messageCategories = element;
+        }
+        if(element.name ==='Message Type') {
+            state.messageType = element;
         }
         if(element.name ==='Language'){
             state.language= element;

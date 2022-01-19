@@ -4,7 +4,7 @@ export const globalCodes = async ({
   commit
 }) => {
   await serviceMethod.common("get", "globalCodeCategory", null, null).then((response) => {
-    console.log("response", response.data.data)
+    // console.log("globalCodes", response.data.data)
     commit('globalCodes', response.data.data);
   }).catch((error) => {
     if (error.response.status == 401) {

@@ -1,13 +1,13 @@
 <template>
   <a-col :sm="12" :xs="24">
     <a-card :title="title" class="common-card">
-      <a-table :columns="column" :data-source="data" :pagination="false">
+      <a-table :columns="column" :data-source="data" :pagination="false" >
         <template #patientName="text">
           <router-link to="patients-summary">{{
             text.text
             }}</router-link>
         </template>
-        <template #appt="text">
+        <template #staff="text">
           <router-link to="corrdinator-summary">{{
             text.text
             }}</router-link>

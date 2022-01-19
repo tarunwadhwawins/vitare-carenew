@@ -1,17 +1,19 @@
 import { createStore } from 'vuex'
-// import createPersistedState from "vuex-persistedstate";
+import { dashBoard } from "./dashboard/index"
+import  { communications } from "./communications/index"
 import { patients } from "./patients/index"
-
 export default createStore({
  modules: {
-  patients,
+  dashBoard,
+  communications,
+  patients
   },
   // plugins: [ createPersistedState({
-    // reducer(state) {
-    // return {
-    //   //single state store in localStorage
-    //   token: state.storeData.token
-    //   }
-    // }
+  //   reducer(state) {
+  //   return {
+  //     //single state store in localStorage
+  //     token: state.storeData.token
+  //     }
+  //   }
   // })]
 })
