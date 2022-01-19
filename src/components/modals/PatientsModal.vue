@@ -12,7 +12,7 @@
 
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-input v-model:value="demographics.firstName" size="large" />
                                 </a-form-item>
                             </div>
@@ -33,7 +33,7 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.dateOfBirth')" name="dob" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.dateOfBirth')" name="dob" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-date-picker v-model:value="demographics.dob" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
                                 </a-form-item>
                             </div>
@@ -41,7 +41,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label> {{$t('global.gender')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('global.gender')" name="gender" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.gender')" name="gender" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-select ref="select" v-model:value="demographics.gender" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="gender in patients.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
                                     </a-select>
@@ -51,7 +51,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.language')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('patient.demographics.language')" name="language" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('patient.demographics.language')" name="language" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <!-- <a-input v-model:value="demographics.language" size="large" /> -->
                                     <a-select ref="select" v-model:value="demographics.language" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="language in patients.language.globalCode" :key="language.id" :value="language.id">{{language.name}}</a-select-option>
@@ -62,7 +62,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.otherLanguage')}}</label> -->
-                                <a-form-item :label="$t('patient.demographics.otherLanguage')" name="otherLanguage" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('patient.demographics.otherLanguage')" name="otherLanguage" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-select v-model:value="demographics.otherLanguage" mode="multiple" size="large" placeholder="Please Select Language" style="width: 100%" :options="patients.language.globalCode.map((item) => ({ label: item.name, value: item.id }))" />
                                     <!-- <a-select ref="select" v-model:value="demographics.otherLanguage" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="language in patients.language.globalCode" :key="language.id" :value="language.id">{{language.name}}</a-select-option>
@@ -99,7 +99,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('global.email')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: 'Please enter valid email.', type: 'email' }]">
                                     <a-input v-model:value="demographics.email" size="large">
                                         <template #addonAfter>
                                             <a-select v-model:value="value4" style="width: 120px">
@@ -117,7 +117,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('global.phoneNo')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: 'Please enter number only.',pattern: new RegExp(/^[0-9]+$/)}]">
                                     <a-input v-model:value="demographics.phoneNumber" size="large" />
                                 </a-form-item>
                             </div>
@@ -125,7 +125,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.preferredMethodofContact')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="contactType" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="contactType" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-select v-model:value="demographics.contactType" mode="multiple" size="large" style="width: 100%" :options="patients.pmOfcontact.globalCode.map((item) => ({ label: item.name,value: item.id }))" />
                                     <!-- <a-select ref="select" v-model:value="demographics.contactType" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="pmOfcontact in patients.pmOfcontact.globalCode" :key="pmOfcontact.id" :value="pmOfcontact.id">{{pmOfcontact.name}}</a-select-option>
@@ -136,7 +136,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label> {{$t('patient.demographics.preferredTimeofDayforContact')}}<span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="contactTime" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="contactTime" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-select ref="select" show-search v-model:value="demographics.contactTime" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="ptOfDayContact in patients.ptOfDayContact.globalCode" :key="ptOfDayContact.id" :value="ptOfDayContact.id">{{ptOfDayContact.name}}</a-select-option>
                                     </a-select>
@@ -146,7 +146,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.MRN')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('patient.demographics.MRN')" name="medicalRecordNumber" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('patient.demographics.MRN')" name="medicalRecordNumber" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-input v-model:value="demographics.medicalRecordNumber" size="large" />
                                 </a-form-item>
                             </div>
@@ -154,7 +154,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('global.country')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('global.country')" name="country" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.country')" name="country" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <!-- <a-input v-model:value="demographics.country" size="large" /> -->
                                     <a-select ref="select" show-search v-model:value="demographics.country" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="country in patients.country.globalCode" :key="country.id" :value="country.id">{{country.name}}</a-select-option>
@@ -165,7 +165,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('global.state')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('global.state')" name="state" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.state')" name="state" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <!-- <a-input v-model:value="demographics.state" size="large" /> -->
                                     <a-select ref="select" show-search v-model:value="demographics.state" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="state in patients.state.globalCode" :key="state.id" :value="state.id">{{state.name}}</a-select-option>
@@ -176,7 +176,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('global.city')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('global.city')" name="city" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.city')" name="city" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-input v-model:value="demographics.city" size="large" />
                                 </a-form-item>
                             </div>
@@ -184,7 +184,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('global.zipcode')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('global.zipcode')" name="zipCode" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.zipcode')" name="zipCode" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-input v-model:value="demographics.zipCode" size="large" />
                                 </a-form-item>
                             </div>
@@ -192,7 +192,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.suiteorApartment')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('patient.demographics.suiteorApartment')" name="appartment" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('patient.demographics.suiteorApartment')" name="appartment" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-input v-model:value="demographics.appartment" size="large" />
                                 </a-form-item>
                             </div>
@@ -200,7 +200,7 @@
                         <a-col :span="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('global.address')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('global.address')" name="address" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.address')" name="address" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-textarea v-model:value="demographics.address" allow-clear />
                                 </a-form-item>
                             </div>
@@ -218,7 +218,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.fullName')}}<span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('patient.demographics.fullName')" name="fullName" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('patient.demographics.fullName')" name="fullName" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-input v-model:value="demographics.fullName" size="large" />
                                 </a-form-item>
                             </div>
@@ -226,7 +226,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.emailAddress')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('patient.demographics.emailAddress')" name="familyEmail" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('patient.demographics.emailAddress')" name="familyEmail" :rules="[{ required: true, message: 'Please enter valid email.', type: 'email' }]">
                                     <a-input v-model:value="demographics.familyEmail" size="large" />
                                 </a-form-item>
                             </div>
@@ -234,7 +234,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('global.phoneNo')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: true, message: 'Please enter number only.',pattern: new RegExp(/^[0-9]+$/) }]">
                                     <a-input v-model:value="demographics.familyPhoneNumber" size="large" />
                                 </a-form-item>
                             </div>
@@ -242,7 +242,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.preferredMethodofContact')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="familyContactType" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="familyContactType" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-select v-model:value="demographics.familyContactType" mode="multiple" size="large" style="width: 100%" :options="patients.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" />
                                     <!-- <a-select ref="select" v-model:value="demographics.familyContactType" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="pmOfcontact in patients.pmOfcontact.globalCode" :key="pmOfcontact.id" :value="pmOfcontact.id">{{pmOfcontact.name}}</a-select-option>
@@ -253,7 +253,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.preferredTimeofDayforContact')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="familyContactTime" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="familyContactTime" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <!-- <a-select ref="select" show-search v-model:value="demographics.familyContactTime" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option value="lucy">Morning</a-select-option>
                                         <a-select-option value="Yiminghe">Afternoon</a-select-option>
@@ -269,7 +269,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label> {{$t('global.gender')}}</label> -->
-                                <a-form-item :label="$t('global.gender')" name="familyGender" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.gender')" name="familyGender" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-select ref="select" v-model:value="demographics.familyGender" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="gender in patients.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
                                     </a-select>
@@ -279,7 +279,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('global.relation')}}</label> -->
-                                <a-form-item :label="$t('global.relation')" name="relation" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.relation')" name="relation" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <!-- <a-input v-model:value="demographics.relation" size="large" /> -->
                                     <a-select ref="select" show-search v-model:value="demographics.relation" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="relation in patients.relation.globalCode" :key="relation.id" :value="relation.id">{{relation.name}}</a-select-option>
@@ -304,7 +304,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.fullName')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('patient.demographics.fullName')" name="emergencyFullName" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('patient.demographics.fullName')" name="emergencyFullName" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-input v-if="demographics.isPrimary" v-model:value="demographics.fullName" size="large" />
                                     <a-input v-else v-model:value="demographics.emergencyFullName" size="large" />
                                 </a-form-item>
@@ -313,7 +313,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.emailAddress')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('patient.demographics.emailAddress')" name="emergencyEmail" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('patient.demographics.emailAddress')" name="emergencyEmail" :rules="[{ required: true, message: 'Please enter valid email.', type: 'email' }]">
                                     <a-input v-if="demographics.isPrimary" v-model:value="demographics.familyEmail" size="large" />
                                     <a-input v-else v-model:value="demographics.emergencyEmail" size="large" />
                                 </a-form-item>
@@ -322,7 +322,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('global.phoneNo')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('global.phoneNo')" name="emergencyPhoneNumber" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.phoneNo')" name="emergencyPhoneNumber" :rules="[{ required: true, message: 'Please enter number only.',pattern: new RegExp(/^[0-9]+$/) }]">
                                     <a-input v-if="demographics.isPrimary" v-model:value="demographics.familyPhoneNumber" size="large" />
                                     <a-input v-else v-model:value="demographics.emergencyPhoneNumber" size="large" />
                                 </a-form-item>
@@ -331,7 +331,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.preferredMethodofContact')}}<span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="emergencyContactType" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="emergencyContactType" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-select v-if="demographics.isPrimary" v-model:value="demographics.familyContactType" mode="multiple" size="large" style="width: 100%" :options="patients.pmOfcontact.globalCode.map((item) => ({ label: item.name,value: item.id }))" />
                                     <a-select v-else v-model:value="demographics.emergencyContactType" mode="multiple" size="large" style="width: 100%" :options="patients.pmOfcontact.globalCode.map((item) => ({ label: item.name,value: item.id }))" />
                                     <!-- <a-input v-model:value="demographics.emergencyContactType" size="large" /> -->
@@ -348,7 +348,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.preferredTimeofDayforContact')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="emergencyContactTime" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="emergencyContactTime" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <!-- <a-select ref="select" show-search v-model:value="demographics.emergencyContactTime" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option value="lucy">Morning</a-select-option>
                                         <a-select-option value="Yiminghe">Afternoon</a-select-option>
@@ -366,7 +366,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label> {{$t('global.gender')}}</label> -->
-                                <a-form-item :label="$t('global.gender')" name="emergencyGender" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.gender')" name="emergencyGender" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-select v-if="demographics.isPrimary" ref="select" v-model:value="demographics.familyGender" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="gender in patients.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
                                     </a-select>
@@ -421,7 +421,7 @@
                             <div class="form-group">
                                 <!-- <label>{{$t('global.name')}}</label>
                                 <a-input v-model="value" size="large" /> -->
-                                <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-input v-model:value="conditions.name" size="large" />
                                 </a-form-item>
                             </div>
@@ -430,7 +430,7 @@
                             <div class="form-group">
                                 <!-- <label> {{$t('global.designation')}}</label>
                                 <a-input v-model="value" size="large" /> -->
-                                <a-form-item :label="$t('global.designation')" name="designation" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.designation')" name="designation" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <!-- <a-input v-model:value="conditions.designation" size="large" /> -->
                                     <a-select ref="select" show-search v-model:value="conditions.designation" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="designation in patients.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
@@ -452,7 +452,7 @@
                                         </a-select>
                                     </template>
                                 </a-input> -->
-                                <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: 'Please enter valid email.', type: 'email' }]">
                                     <a-input v-model:value="conditions.email" size="large">
                                         <template #addonAfter>
                                             <a-select v-model:value="value4" style="width: 120px">
@@ -471,7 +471,7 @@
                             <div class="form-group">
                                 <!-- <label>{{$t('global.phoneNo')}}</label>
                                 <a-input v-model="value" size="large" /> -->
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: 'Please enter number only.',pattern: new RegExp(/^[0-9]+$/) }]">
                                     <a-input v-model:value="conditions.phoneNumber" size="large" />
                                 </a-form-item>
                             </div>
@@ -480,7 +480,7 @@
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.conditions.fax')}}</label>
                                 <a-input v-model="value" size="large" /> -->
-                                <a-form-item :label="$t('patient.conditions.fax')" name="fax" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('patient.conditions.fax')" name="fax" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-input v-model:value="conditions.fax" size="large" />
                                 </a-form-item>
                             </div>
@@ -501,7 +501,7 @@
                             <div class="form-group">
                                 <!-- <label>{{$t('global.name')}}</label>
                                 <a-input v-model="value" size="large" /> -->
-                                <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-input v-if="conditions.checked" v-model:value="conditions.name" size="large" />
                                     <a-input v-else v-model:value="conditions.physician.name" size="large" />
 
@@ -512,7 +512,7 @@
                             <div class="form-group">
                                 <!-- <label> {{$t('global.designation')}}</label>
                                 <a-input v-model="value" size="large" /> -->
-                                <a-form-item :label="$t('global.designation')" name="designation" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.designation')" name="designation" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <!-- <a-input v-if="conditions.checked" v-model:value="conditions.designation" size="large" />
                                     <a-input v-else v-model:value="conditions.physician.designation" size="large" /> -->
                                     <a-select v-if="conditions.checked" ref="select" show-search v-model:value="conditions.designation" style="width: 100%" size="large" @focus="focus" @change="handleChange">
@@ -538,7 +538,7 @@
                                         </a-select>
                                     </template>
                                 </a-input> -->
-                                <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: 'Please enter valid email.', type: 'email' }]">
                                     <a-input v-if="conditions.checked" v-model:value="conditions.email" size="large">
                                         <template #addonAfter>
                                             <a-select v-model:value="value4" style="width: 120px">
@@ -568,7 +568,7 @@
                             <div class="form-group">
                                 <!-- <label>{{$t('global.phoneNo')}}</label>
                                 <a-input v-model="value" size="large" /> -->
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: 'Please enter number only.',pattern: new RegExp(/^[0-9]+$/) }]">
                                     <a-input v-if="conditions.checked" v-model:value="conditions.phoneNumber" size="large" />
                                     <a-input v-else v-model:value="conditions.physician.phoneNumber" size="large" />
                                 </a-form-item>
@@ -578,7 +578,7 @@
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.conditions.fax')}}</label>
                                 <a-input v-model="value" size="large" /> -->
-                                <a-form-item :label="$t('patient.conditions.fax')" name="fax" :rules="[{ required: false, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('patient.conditions.fax')" name="fax" :rules="[{ required: true, message: 'This field is required.' }]">
                                     <a-input v-if="conditions.checked" v-model:value="conditions.fax" size="large" />
                                     <a-input v-else v-model:value="conditions.physician.fax" size="large" />
 
@@ -602,7 +602,9 @@
                     <a-row :gutter="24">
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <label>{{$t('patient.programs.program')}}</label>
+                                <!-- <label>{{$t('patient.programs.program')}}</label> -->
+                                <a-form-item :label="$t('patient.programs.program')" name="fax" :rules="[{ required: true, message: 'This field is required.' }]">
+
                                 <!-- <a-select ref="select" v-model="value1" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                     <a-select-option value="lucy">Choose Program</a-select-option>
                                     <a-select-option value="Yiminghe">RPM</a-select-option>
@@ -613,18 +615,23 @@
                                 <a-select ref="select" show-search v-model:value="program.program" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                     <a-select-option v-for="program in patients.programList" :key="program.id" :value="program.id">{{program.description}}</a-select-option>
                                 </a-select>
+                                </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="6" :xs="24">
                             <div class="form-group">
-                                <label>{{$t('patient.programs.onboardinScheduledDate')}}</label>
+                                <!-- <label>{{$t('patient.programs.onboardinScheduledDate')}}</label> -->
+                                <a-form-item :label="$t('patient.programs.onboardinScheduledDate')" name="fax" :rules="[{ required: true, message: 'This field is required.' }]">
                                 <a-date-picker v-model:value="program.onboardingScheduleDate" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                                </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="6" :xs="24">
                             <div class="form-group">
-                                <label>{{$t('patient.programs.dischargeDate')}}</label>
+                                <!-- <label>{{$t('patient.programs.dischargeDate')}}</label> -->
+                                <a-form-item :label="$t('patient.programs.dischargeDate')" name="fax" :rules="[{ required: true, message: 'This field is required.' }]">
                                 <a-date-picker v-model:value="program.dischargeDate" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                                </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
@@ -833,6 +840,7 @@ export default {
         })
 
         const device = reactive({
+            inventory:1,
             deviceType: '',
             modelNumber:'',
             serialNumber:'',
