@@ -23,7 +23,12 @@ const communications = {
     patient:'Patient',
     messageCategory:'Message Category',
     priority:'Priority',
-    message:'Message'
+    message:'Message',
+    type:'Type',
+    email:'Email',
+    sms:'SMS',
+    call:'Call',
+    reminder:'Reminder',
   }
 }
 

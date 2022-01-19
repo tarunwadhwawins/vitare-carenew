@@ -10,6 +10,25 @@ export const API_ENDPOINTS = {
     communicationsList:"communication",
     patientsList:"patient",
     
+    TodayAppointment:"appointment/today",
+    CallStatus:"call/status",
+    TotalPaitient:"patient/total",
+    ActivePaitient:"patient/active",
+    InActivePaitient:"patient/inActive",
+    AbnormalPaitient:"patient/abnormal",
+    NewPaitient:"patient/new",
+    CriticalPaitient:"patient/critical",
+    PatientCondition:"patient/condition",
+    Financial:"patient/condition",
+    CptCode:"patient/condition",
+    Network:"staff/network",
+    Specialization:"staff/specialization",
+    TotalPatientsChart:"patient/condition",
+    AppointmentChart:"patient/condition",
+    futureAppointments:"appointment/future",
+    newRequests:"appointment/new",
+    communicationTypes:"communication/type",
+    addCommunication:"communication/1",
 };
 
 // export const getApiUrl = key => {

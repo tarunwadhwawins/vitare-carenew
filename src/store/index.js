@@ -1,23 +1,19 @@
 import { createStore } from 'vuex'
-//import  { storeData } from "./main-store/index"
-import  { careCoordinator } from "./care-coordinator/index"
+import { dashBoard } from "./dashboard/index"
 import  { communications } from "./communications/index"
 import { patients } from "./patients/index"
-//import createPersistedState from "vuex-persistedstate";
-//storeData modules store all action, getters, mutation, and states
 export default createStore({
  modules: {
-  //storeData
-  careCoordinator,
+  dashBoard,
   communications,
-  patients,
+  patients
   },
   // plugins: [ createPersistedState({
-    // reducer(state) {
-    // return {
-    //   //single state store in localStorage
-    //   token: state.storeData.token
-    //   }
-    // }
+  //   reducer(state) {
+  //   return {
+  //     //single state store in localStorage
+  //     token: state.storeData.token
+  //     }
+  //   }
   // })]
 })

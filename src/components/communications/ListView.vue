@@ -168,14 +168,15 @@ export default {
       console.log(`selected ${value}`);
     };
     
-    // watchEffect(() => {
-    //   store.dispatch('communicationsList')
-    // })
     const communicationsList = []
+    watchEffect(() => {
+      store.dispatch('communicationsList')
+    })
     // const communicationsList = computed(() => {
-    //   return store.state.communications.communicationsList
+      // return store.state.communications.communicationsList
     // })
-    // console.log('Communications', communicationsList.value)
+    // const communicationsList = store.state.communications.communicationsList
+    console.log('Communications List', communicationsList)
 
     const searchoptions = ref(
       [
