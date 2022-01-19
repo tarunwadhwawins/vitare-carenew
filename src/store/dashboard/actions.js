@@ -2,7 +2,6 @@ import ServiceMethodService from '../../services/serviceMethod';
 import { API_ENDPOINTS } from "../../config/apiConfig"
 
 export const todayAppointment = async ({ commit }) => {
-   console.log("login");
     await ServiceMethodService.common("get", API_ENDPOINTS['TodayAppointment'], null, null).then((response) => {
         commit('todayAppointmentSuccess', response.data.data);
     })
@@ -14,11 +13,6 @@ export const todayAppointment = async ({ commit }) => {
 export const callStatus = async ({ commit }) => {
     await ServiceMethodService.common("get", API_ENDPOINTS['CallStatus'], null, null).then((response) => {
        commit('callStatusSuccess',response.data.data)
-        // if (id == 1) {
-        //     commit('newappointmentSuccess', response.data.data);
-        // } else {
-        //     commit('futureappointmentSuccess', response.data.data);
-        // }
 
     }).catch((error) => {
         if (error.response.status == 401) {

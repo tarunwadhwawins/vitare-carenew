@@ -10,6 +10,7 @@
 
 <script>
   import { useRouter } from "vue-router";
+  import { reactive } from "vue"  
   export default {
     props: {
       linkTo: {

@@ -27,58 +27,64 @@
             </a-col>
             <a-col :span="24">
 
-              <a-row :gutter="24" v-if="totalPatients">
+              <a-row :gutter="24" >
 
-                <Card customClass="one" :count="totalPatients.count" :text='totalPatients.text' link="manage-patients">
+                <Card customClass="one" v-if="totalPatients" :count="totalPatients.count" :text='totalPatients.text' link="manage-patients">
                 </Card>
-                <Card customClass="two" :count="newPatients.count" :text='newPatients.text' link="manage-patients">
+                <Card customClass="two" v-if="newPatients" :count="newPatients.count" :text='newPatients.text' link="manage-patients">
                 </Card>
-                <Card customClass="three" :count="criticalPatients.count" :text='criticalPatients.text'
+                <Card customClass="three" v-if="criticalPatients" :count="criticalPatients.count" :text='criticalPatients.text'
                   link="manage-patients"></Card>
-                <Card customClass="four" :count="abnormalPatients.count" :text='abnormalPatients.text'
+                <Card customClass="four" v-if="abnormalPatients" :count="abnormalPatients.count" :text='abnormalPatients.text'
                   link="manage-patients"></Card>
-                <Card customClass="five" :count="activePatients.count" :text='activePatients.text'
+                <Card customClass="five" v-if="activePatients" :count="activePatients.count" :text='activePatients.text'
                   link="manage-patients"></Card>
-                <Card customClass="six" :count="inactivePatients.count" :text='inactivePatients.text'
+                <Card customClass="six" v-if="inactivePatients" :count="inactivePatients.count" :text='inactivePatients.text'
                   link="manage-patients"></Card>
               </a-row>
             </a-col>
           </a-row>
           <a-row :gutter="24">
-            
-            <Appointement v-if="data4" :appointment="data4" :columns="columns4" :title="$t('dashboard.todayAppointment')">
+
+            <Appointement v-if="data4" :appointment="data4" :columns="columns4"
+              :title="$t('dashboard.todayAppointment')">
             </Appointement>
             <a-col :sm="12" :xs="24" v-if="callStatus">
-              <ApexChart :title="$t('global.callQueue')" type="bar" height="250" :options="callStatus.calloption"
+              <ApexChart :title="$t('global.callQueue')" type="bar" :height="250" :options="callStatus.calloption"
                 :series="callStatus.callseries" linkTo="communications" />
             </a-col>
-            <a-col :sm="12" :xs="24">
+            <a-col :sm="12" :xs="24" v-if="patientsCondition">
 
-              <ApexChart title="Patients Stats" v-if="patientsCondition" type="bar" height="412" :options="patientsCondition.option1" :series="patientsCondition.series1"
-                link="manage-patients"></ApexChart>
+              <ApexChart title="Patients Stats"  type="bar" :height="412"
+                :options="patientsCondition.option1" :series="patientsCondition.series1" linkTo="manage-patients">
+              </ApexChart>
 
             </a-col>
-            <a-col :sm="12" :xs="24">
+           
+            <a-col :sm="12" :xs="24" >
               <a-card :title="$t('dashboard.careCoordinatorStats') " class="common-card">
-                <a-tabs v-model:activeKey="activeKey1">
-                  <a-tab-pane key="1" tab="Specialization ">
-                    <ApexChart type="bar" v-if="specialization" height="350" :options="specialization.wellness" :series="specialization.behavior"
-                      linkTo="manage-care-coordinator"></ApexChart>
+                <a-tabs default-active-key="activeKey1">
+                  <a-tab-pane key="1" tab="Specialization" v-if="specialization">
+                    <ApexChart type="bar"  :height="350" :options="specialization.wellness"
+                      :series="specialization.behavior" linkTo="manage-care-coordinator"></ApexChart>
                   </a-tab-pane>
-                  <a-tab-pane key="2" tab="Network " force-render>
-                    <ApexChart type="bar" height="350" v-if="network" :options="network.In" :series="network.Out" linkTo="manage-care-coordinator">
+                  <a-tab-pane key="2" tab="Network " force-render v-if="network">
+                    <ApexChart type="bar"  :height="350" v-if="network" :options="network.In" :series="network.Out"
+                      linkTo="manage-care-coordinator">
                     </ApexChart>
                   </a-tab-pane>
                 </a-tabs>
               </a-card>
             </a-col>
-            <a-col :sm="12" :xs="24">
+          </a-row>
+          <a-row :gutter="24" >
+            <a-col :sm="12" :xs="24" v-if="cptCodeValue">
 
-              <ApexChart v-if="cptCodeValue" :title="$t('dashboard.cPTCodeBillingSummary')" type="bar" height="350" :options="cptCodeValue.code"
-                :series="cptCodeValue.value" linkTo="cpt-codes"></ApexChart>
+              <ApexChart  :title="$t('dashboard.cPTCodeBillingSummary')" type="bar" :height="350"
+                :options="cptCodeValue.code" :series="cptCodeValue.value" linkTo="cpt-codes"></ApexChart>
 
             </a-col>
-            <a-col :sm="12" :xs="24">
+            <a-col :sm="12" :xs="24" v-if="financialValue">
 
               <!-- <div class="list-group">
                   <div class="list-group-item">
@@ -86,20 +92,22 @@
                     <div class="value">4567 $</div>
                   </div>
                 </div> -->
-              <ApexChart :title="$t('dashboard.financialStats')" v-if="financialValue" type="pie" height="362" :options="financialValue.billed" :series="financialValue.due"
-                linkTo="time-tracking-report"></ApexChart>
+              <ApexChart :title="$t('dashboard.financialStats')"  type="pie" :height="362"
+                :options="financialValue.billed" :series="financialValue.due" linkTo="time-tracking-report"></ApexChart>
             </a-col>
           </a-row>
           <a-row :gutter="24">
-            <a-col :sm="12" :xs="24">
+            <a-col :sm="12" :xs="24" v-if="totalPatientsChartValue">
 
-              <ApexChart v-if="totalPatientsChartValue" :title="$t('dashboard.totalPatientsChart')" type="area" height="350" :options="totalPatientsChartValue.chartOptions"
-                :series="totalPatientsChartValue.series" linkTo="manage-patients"></ApexChart>
+              <ApexChart  :title="$t('dashboard.totalPatientsChart')" type="area"
+                :height="350" :options="totalPatientsChartValue.chartOptions" :series="totalPatientsChartValue.series"
+                linkTo="manage-patients"></ApexChart>
 
             </a-col>
-            <a-col :sm="12" :xs="24">
-              <ApexChart v-if="appointmentChartValue" :title="$t('dashboard.appointmentSummary')" type="area" height="350" :options="appointmentChartValue.chartOptions"
-                :series="appointmentChartValue.series" linkTo="appointment-calendar"></ApexChart>
+            <a-col :sm="12" :xs="24" v-if="appointmentChartValue">
+              <ApexChart  :title="$t('dashboard.appointmentSummary')" type="area"
+                :height="350" :options="appointmentChartValue.chartOptions" :series="appointmentChartValue.series"
+                linkTo="appointment-calendar"></ApexChart>
             </a-col>
           </a-row>
         </a-layout-content>
@@ -217,7 +225,7 @@
       Appointement,
       ApexChart
     },
-   
+
     setup() {
       const store = useStore()
       const router = useRouter();
@@ -232,9 +240,9 @@
         store.dispatch("newPatients")
         store.dispatch("patientsStats")
         store.dispatch("specialization")
-        
+
         store.dispatch("network")
-        
+
         store.dispatch("cptCode")
         store.dispatch("financial")
         store.dispatch("totalPatientsChart")
@@ -242,7 +250,7 @@
         store.dispatch("totalPatients")
       })
 
-     
+
       const criticalPatients = computed(() => {
         return store.state.counterCards.criticalPaitientcount
       })
@@ -279,7 +287,7 @@
 
         return store.state.dashBoard.network
       })
-      
+
       const cptCodeValue = computed(() => {
 
         return store.state.dashBoard.cptCodeValue
@@ -296,7 +304,7 @@
 
         return store.state.dashBoard.appointmentChartValue
       })
-
+ 
       function logout() {
         localStorage.removeItem("auth");
         localStorage.clear();
