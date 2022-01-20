@@ -5,6 +5,7 @@
               <h2 class="pageTittle">
                 {{$t('global.dashboard')}}
                 <div class="filter">
+                 
                   <a-button
                     @click="showButton1"
                     :class="button == 1 ? 'active' : ''"
@@ -29,6 +30,7 @@
               </h2>
             </a-col>
             <a-col :span="24">
+             
               <a-row :gutter="24" v-if="xlGrid">
                 <Card v-for="item in totalPatients" :key="item.count"  :count="item.count" :text='item.text' link="manage-patients" :xl="xlGrid" :color="item.color" :textColor="item.textColor" :draggable="true">
                 </Card>
@@ -223,7 +225,7 @@
       const store = useStore()
       const router = useRouter();
       watchEffect(() => {
-        store.dispatch("globalCodes")
+        //store.dispatch("globalCodes")
         store.dispatch("totalPatients")
         store.dispatch("todayAppointment")
         store.dispatch("callStatus")
@@ -257,9 +259,9 @@
       // const inactivePatients = computed(() => {
       //   return store.state.counterCards.inActivePaitientcount
       // })
-      const globalCodes = computed(() => {
-        return store.state.counterCards.globalCodes
-      })
+      // const timeline = computed(() => {
+      //   return store.state.common.timeline
+      // })
       const totalPatients = computed(() => {
         return store.state.counterCards.totalPatientcount
       })
@@ -348,7 +350,7 @@
         showButton2,
         showButton3,
         showButton4,
-        globalCodes
+        //timeline
 
         // todayApointment
       };
