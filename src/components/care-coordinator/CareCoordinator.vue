@@ -16,6 +16,7 @@
     </a-col>
 </a-row>
 
+
 <a-row>
     <a-col :span="12">
         <a-select v-model:value="value2" :size="size" mode="tags" style="width: 100%" placeholder="Search . . ." :options="searchoptions" @change="handleChange">
