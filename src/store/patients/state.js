@@ -12,7 +12,11 @@ export default {
     healthCondition:null,
     patientReferals:null,
     patientPhysician:null,
-    taskPriority:null,
-    messageCategories:null,
+    designations:null,
+    programList:null,
+    addProgram:null,
+    deviceType:null,
+    program:null,
+    addDevice:null,
 
 }
