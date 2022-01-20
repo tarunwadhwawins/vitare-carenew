@@ -25,7 +25,7 @@
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item name="designation" :label="$t('global.designation')" has-feedback :rules="[{ required: true, message: 'This field is required.' }]">
+                                <a-form-item name="designation" :label="$t('global.designationId')" has-feedback :rules="[{ required: true, message: 'This field is required.' }]">
                                     <!-- <a-select v-model:value="personalInfoData.designationId" placeholder="Please select designation">
                                         <a-select-option value="Administrative">Administrative</a-select-option>
                                         <a-select-option value="Manager">Manager</a-select-option>
@@ -40,14 +40,14 @@
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item name="gender" :label="$t('global.gender')" has-feedback :rules="[{ required: true, message: 'This field is required.' }]">
+                                <a-form-item name="genderId" :label="$t('global.gender')" has-feedback :rules="[{ required: true, message: 'This field is required.' }]">
                                     <!-- <a-select v-model:value="personalInfoData.genderId" placeholder="Please select gender">
                                         <a-select-option value="lucy">Male</a-select-option>
                                         <a-select-option value="Yiminghe">Female</a-select-option>
                                         <a-select-option value="Yiminghe">Others</a-select-option>
                                     </a-select> -->
                                     <a-select ref="select" v-model:value="personalInfoData.genderId" style="width: 100%" size="large" @focus="focus" @change="handleChange">
-                                        <a-select-option v-for="gender in careCoordinator.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
+                                        <a-select-option v-for="gender in careCordinator.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
                                     </a-select>
                                 </a-form-item>
                             </div>
@@ -68,15 +68,21 @@
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.specialization')" name="specialization" :rules="[{ required: true, message: 'This field is required.' }]">
-                                    <a-input v-model:value="personalInfoData.specializationId" placeholder="input placeholder" />
+                                <a-form-item :label="$t('global.specialization')" name="specializationId" :rules="[{ required: true, message: 'This field is required.' }]">
+                                    <!-- <a-input v-model:value="personalInfoData.specializationId" placeholder="input placeholder" /> -->
+                                    <a-select ref="select" v-model:value="personalInfoData.specializationId" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                        <a-select-option v-for="network in careCordinator.specialization.globalCode" :key="network.id" :value="network.id">{{network.name}}</a-select-option>
+                                    </a-select>
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.network')" name="network" :rules="[{ required: true, message: 'This field is required.' }]">
-                                    <a-input v-model:value="personalInfoData.networkId" placeholder="input placeholder" />
+                                <a-form-item :label="$t('global.network')" name="networkId" :rules="[{ required: true, message: 'This field is required.' }]">
+                                    <!-- <a-input v-model:value="personalInfoData.networkId" placeholder="input placeholder" /> -->
+                                    <a-select ref="select" v-model:value="personalInfoData.networkId" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                        <a-select-option v-for="network in careCordinator.network.globalCode" :key="network.id" :value="network.id">{{network.name}}</a-select-option>
+                                    </a-select>
                                 </a-form-item>
                             </div>
                         </a-col>
