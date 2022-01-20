@@ -4,12 +4,12 @@ import  { communications } from "./communications/index"
 import { patients } from "./patients/index"
 import { counterCards } from "./counter-cards/index"
 export default createStore({
- modules: {
+modules: {
   dashBoard,
   communications,
   patients,
   counterCards,
-  },
+},
   // plugins: [ createPersistedState({
   //   reducer(state) {
   //   return {
