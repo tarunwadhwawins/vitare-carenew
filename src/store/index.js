@@ -12,12 +12,4 @@ modules: {
   counterCards,
   common,
   },
-  // plugins: [ createPersistedState({
-  //   reducer(state) {
-  //   return {
-  //     //single state store in localStorage
-  //     token: state.storeData.token
-  //     }
-  //   }
-  // })]
 })

@@ -1,53 +1,150 @@
-export const globalCodes = (state, data) => {
-     data.forEach(element => {
-        if(element.name ==='Gender'){
-            state.gender= element;
-        }
-        if(element.name ==='Task Priority') {
-            state.taskPriority = element;
-        }
-        if(element.name ==='MessageCategory') {
-            state.messageCategories = element;
-        }
-        if(element.name ==='Message Type') {
-            state.messageType = element;
-        }
-        if(element.name ==='Language'){
-            state.language= element;
-        }
-        if(element.name ==='Country'){
-            state.country= element;
-        }
-        if(element.name ==='States'){
-            state.state= element;
-        }
-        if(element.name ==='Contact Type'){
-            state.pmOfcontact= element;
-        }
-        if(element.name ==='Contact Time'){
-            state.ptOfDayContact= element;
-        }
-        if(element.name ==='Relationship'){
-            state.relation= element;
-        }
-        if(element.name ==='Health Conditions'){
-            state.healthCondition= element;
-        }
-        if(element.name ==='Designations'){
-            state.designations= element;
-        }
-        if(element.name ==='Device Type'){
-            state.deviceType= element;
-        }
-        
-     });
-    state.globalCodes = data;
-}
-
-
 
 export const demographics = (state, data) => {
     state.demographics = data
+ }
+
+ export const patients = (state, data) => {
+    state.patientList = data;
+    state.column= [{
+        title: "Flags",
+        dataIndex: "patientFlags.data[0].flags",
+        slots: {
+            customRender: "flags",
+        },
+    },
+    {
+        title: "Name",
+        dataIndex: "firstName",
+        slots: {
+            customRender: "firstName",
+        },
+        sorter: {
+            compare: (a, b) => a.reading - b.reading,
+            multiple: 1,
+        },
+    },
+    
+    {
+        title: "Last Reading Date",
+        dataIndex: "lastReadingDate",
+        sorter: {
+            compare: (a, b) => a.reading - b.reading,
+            multiple: 1,
+        },
+    },
+   
+    {
+        title: "Last Reading Values",
+        dataIndex: "readingvalues",
+        sorter: {
+            compare: (a, b) => a.readingvalues - b.readingvalues,
+            multiple: 1,
+        },
+        slots: {
+            customRender: "lastReadingValues",
+        },
+        children: [{
+                title: "BP",
+                dataIndex: "bp",
+                key: "bp",
+            },
+            {
+                title: "Sp02",
+                dataIndex: "sp02",
+                key: "sp02",
+            },
+            {
+                title: "Glucose",
+                dataIndex: "glucose",
+                key: "glucose",
+            },
+            {
+                title: "Weight",
+                dataIndex: "weight",
+                key: "weight",
+            },
+        ],
+    },
+    {
+        title: "Non Compliance",
+        dataIndex: "compliance",
+        sorter: {
+            compare: (a, b) => a.reading - b.reading,
+            multiple: 1,
+        },
+        filters: [{
+                text: "Flag",
+                value: "flag",
+            },
+            {
+                text: "Name",
+                value: "name",
+            },
+            {
+                text: "Last Reading Date",
+                value: "readdate",
+            },
+            {
+                text: "Last Reading Value",
+                value: "readvalue",
+            },
+            {
+                text: "Non Compliance ",
+                value: "noncompliance",
+            },
+            {
+                text: "Last Message Seen",
+                value: "messagseen",
+            },
+        ],
+        onFilter: (value, record) => record.name.indexOf(value) === 0,
+    },
+    {
+        title: "Non Compliance",
+        dataIndex: "compliance",
+        sorter: {
+            compare: (a, b) => a.compliance - b.compliance,
+            multiple: 1,
+        },
+        slots: {
+            customRender: "compliance",
+        },
+    },
+    {
+        title: "Last Message Sent",
+        dataIndex: "message",
+        sorter: {
+            compare: (a, b) => a.message - b.message,
+            multiple: 1,
+        },
+        filters: [{
+                text: "Flag",
+                value: "flag",
+            },
+            {
+                text: "Name",
+                value: "name",
+            },
+            {
+                text: "Last Reading Date",
+                value: "readdate",
+            },
+            {
+                text: "Last Reading Value",
+                value: "readvalue",
+            },
+            {
+                text: "Non Compliance ",
+                value: "noncompliance",
+            },
+            {
+                text: "Last Message Seen",
+                value: "messagseen",
+            },
+        ],
+        onFilter: (value, record) => record.name.indexOf(value) === 0,
+    },
+];
  }
  
  export const conditions = (state, data) => {
@@ -89,3 +186,13 @@ export const demographics = (state, data) => {
  }
 
  
+
+ export const successMsg = (state, data) => {
+    state.successMsg = data
+ }
+
+ export const errorMsg = (state, data) => {
+    state.errorMsg = data
+ }
+ 
+

@@ -1,21 +1,5 @@
 import serviceMethod from '../../services/serviceMethod';
 
-export const globalCodes = async ({
-  commit
-}) => {
-  await serviceMethod.common("get", "globalCodeCategory", null, null).then((response) => {
-    // console.log("globalCodes", response.data.data)
-    commit('globalCodes', response.data.data);
-    
-  }).catch((error) => {
-    if (error.response.status == 401) {
-      //AuthService.logout();
-    }
-    commit('failure', error.response.data);
-  })
-}
-
-
 export const demographics = async ({
   commit
 }, data) => {
@@ -23,13 +7,24 @@ export const demographics = async ({
     console.log("response", response.data.data)
     commit('demographics', response.data.data);
     commit('counterPlus')
-    alert(response.data.message);
+    commit('successMsg', response.message);
+    alert(response.message);
   }).catch((error) => {
-    if (error.response.status == 401) {
-      //AuthService.logout();
-    }
-    commit('failure', error.response.data);
+    commit('errorMsg', error); 
+    alert(error);
   })
+}
+
+export const patients = async ({
+  commit
+}, id) => {
+  await serviceMethod.common("get", `patient`, null, null).then((response) => {
+    console.log("response", response.data.data)
+    commit('patients', response.data.data);
+  }).catch((error) => {
+    commit('errorMsg', error);
+  })
+
 }
 
 
@@ -37,21 +32,6 @@ export const conditions = async ({
   commit
 }, data) => {
   console.log('data', data)
-  // let physicianData={}
-  // if (data.checked == true) {
-  //         data.name= data.physician.name,
-  //         data.designation= data.physician.designation,
-  //         data.email= data.physician.email,
-  //         data.phoneNumber= data.physician.phoneNumber,
-  //         data.fax= data.physician.fax
-  // }else{
-  //     physicianData.name= data.physician.name,
-  //     physicianData.designation= data.physician.designation,
-  //     physicianData.email= data.physician.email,
-  //     physicianData.phoneNumber= data.physician.phoneNumber,
-  //     physicianData.fax= data.physician.fax
-  // }
-
   await serviceMethod.common("post", `patient/${data.id}/condition`, null, data.data).then((response) => {
     console.log("response", response.data.data)
     commit('conditions', response.data.data);
@@ -91,7 +71,7 @@ export const programList = async ({
     console.log("response", response.data.data)
     commit('programList', response.data.data);
   }).catch((error) => {
-    commit('failure', error.response.data);
+    commit('failure', error);
   })
 
 }
@@ -108,6 +88,8 @@ export const addProgram = async ({
   })
 
 }
+
+
 
 
 export const program = async ({

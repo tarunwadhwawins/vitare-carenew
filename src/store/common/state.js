@@ -1,23 +1,19 @@
 export default {
-    counter:0,
-    globalCodes:null,
     gender:null,
     language:null,
     country:null,
     state:null,
     pmOfcontact:null,
     ptOfDayContact:null,
-    relation:null,
-    demographics:null,
     healthCondition:null,
-    patientReferals:null,
-    patientPhysician:null,
+    relation:null,
     designations:null,
     programList:null,
-    addProgram:null,
     deviceType:null,
     program:null,
-    addDevice:null,
     timeline:null,
+    taskPriority:null
+
+
 
 }

@@ -38,8 +38,8 @@
             <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
         </div>
     </a-col>
-    <a-col :span="24">
-        <DataTable :columns="columns" :data-source="data" :scroll="{ x: 1024 }" @change="onChange" />
+    <a-col :span="24"> 
+        <DataTable v-if="patients"  :columns="columns" :data-source="patients" :scroll="{ x: 1024 }" />
     </a-col>
 </a-row>
 
@@ -50,264 +50,15 @@
 
 <script>
 import {
-    ref
+  computed,
+    ref,watchEffect,
+    defineAsyncComponent
 } from "vue";
+import { useStore } from "vuex"
 import PatientsModal from "@/components/modals/PatientsModal";
-
-import CounterCard from "./counter-card/CounterCard.vue"
+import CounterCard from "./counter-card/CounterCard"
 import ShowModalButton from "./show-modal-button/ShowModalButton"
-import DataTable from "./data-table/DataTable.vue"
-const columns = [{
-        title: "Flags",
-        dataIndex: "flags",
-        slots: {
-            customRender: "flags",
-        },
-    },
-    {
-        title: "Name",
-        dataIndex: "firstName",
-        slots: {
-            customRender: "firstName",
-        },
-        sorter: {
-            compare: (a, b) => a.reading - b.reading,
-            multiple: 1,
-        },
-    },
-    // {
-    //   title: "Last Name",
-    //   dataIndex: "lastName",
-    //   slots: {
-    //     customRender: "lastName",
-    //   },
-    // },
-    {
-        title: "Last Reading Date",
-        dataIndex: "reading",
-        sorter: {
-            compare: (a, b) => a.reading - b.reading,
-            multiple: 1,
-        },
-    },
-    // {
-    //   title: "Last Name",
-    //   dataIndex: "lastName",
-    //   slots: {
-    //     customRender: "lastName",
-    //   },
-    // },
-    {
-        title: "Last Reading Values",
-        dataIndex: "readingvalues",
-        sorter: {
-            compare: (a, b) => a.readingvalues - b.readingvalues,
-            multiple: 1,
-        },
-        slots: {
-            customRender: "lastReadingValues",
-        },
-        children: [{
-                title: "BP",
-                dataIndex: "bp",
-                key: "bp",
-            },
-            {
-                title: "Sp02",
-                dataIndex: "sp02",
-                key: "sp02",
-            },
-            {
-                title: "Glucose",
-                dataIndex: "glucose",
-                key: "glucose",
-            },
-            {
-                title: "Weight",
-                dataIndex: "weight",
-                key: "weight",
-            },
-        ],
-    },
-    // {
-    //   title: "Age",
-    //   dataIndex: "age",
-    //   sorter: {
-    //     compare: (a, b) => a.age - b.age,
-    //     multiple: 3,
-    //   },
-    // },
-    // {
-    //   title: "Sex",
-    //   dataIndex: "sex",
-    //   sorter: {
-    //     compare: (a, b) => a.sex - b.sex,
-    //     multiple: 2,
-    //   },
-    // },
 
-    {
-        title: "Non Compliance",
-        dataIndex: "compliance",
-        sorter: {
-            compare: (a, b) => a.reading - b.reading,
-            multiple: 1,
-        },
-        filters: [{
-                text: "Flag",
-                value: "flag",
-            },
-            {
-                text: "Name",
-                value: "name",
-            },
-            {
-                text: "Last Reading Date",
-                value: "readdate",
-            },
-            {
-                text: "Last Reading Value",
-                value: "readvalue",
-            },
-            {
-                text: "Non Compliance ",
-                value: "noncompliance",
-            },
-            {
-                text: "Last Message Seen",
-                value: "messagseen",
-            },
-        ],
-        onFilter: (value, record) => record.name.indexOf(value) === 0,
-    },
-    // {
-    //   title: "Age",
-    //   dataIndex: "age",
-    //   sorter: {
-    //     compare: (a, b) => a.age - b.age,
-    //     multiple: 3,
-    //   },
-    // },
-    // {
-    //   title: "Sex",
-    //   dataIndex: "sex",
-    //   sorter: {
-    //     compare: (a, b) => a.sex - b.sex,
-    //     multiple: 2,
-    //   },
-    // },
-
-    {
-        title: "Non Compliance",
-        dataIndex: "compliance",
-        sorter: {
-            compare: (a, b) => a.compliance - b.compliance,
-            multiple: 1,
-        },
-        slots: {
-            customRender: "compliance",
-        },
-    },
-    {
-        title: "Last Message Sent",
-        dataIndex: "message",
-        sorter: {
-            compare: (a, b) => a.message - b.message,
-            multiple: 1,
-        },
-        filters: [{
-                text: "Flag",
-                value: "flag",
-            },
-            {
-                text: "Name",
-                value: "name",
-            },
-            {
-                text: "Last Reading Date",
-                value: "readdate",
-            },
-            {
-                text: "Last Reading Value",
-                value: "readvalue",
-            },
-            {
-                text: "Non Compliance ",
-                value: "noncompliance",
-            },
-            {
-                text: "Last Message Seen",
-                value: "messagseen",
-            },
-        ],
-        onFilter: (value, record) => record.name.indexOf(value) === 0,
-    },
-];
-const data = [{
-        key: "1",
-        flags: "redBgColor",
-        firstName: "Jane Doe",
-        // lastName: "Doe",
-        // age: "85",
-        // sex: "male",
-        reading: "5 months ago",
-        compliance: "",
-        message: "5 months ago",
-        readingvalues: "",
-        sp02: "	95%",
-        bp: "115/81",
-        weight: "189.2",
-        glucose: "80",
-    },
-    {
-        key: "2",
-        flags: "purpleBgColor",
-        firstName: "Steve Smith",
-        // lastName: "Smith",
-        // age: "78",
-        // sex: "Female",
-        reading: "15 days ago",
-        compliance: "",
-        message: "2 months ago",
-        readingvalues: "",
-        sp02: "-",
-        bp: "105/81",
-        weight: "-",
-        glucose: "70",
-    },
-    {
-        key: "3",
-        flags: "blueBgColor yellowBgColor ",
-        firstName: "Joseph Spouse",
-        // lastName: "Spouse",
-        // age: "72",
-        // sex: "male",
-        reading: "2 months ago",
-        compliance: "",
-        message: "4 months ago",
-        readingvalues: "",
-        sp02: "-",
-        bp: "-",
-        weight: "-",
-        glucose: "75",
-    },
-    {
-        key: "4",
-        flags: "greenBgColor",
-        firstName: "Robert Henry",
-        // lastName: "Henry",
-        // age: "79",
-        // sex: "Female",
-        reading: "4 months ago",
-        compliance: "",
-        message: "15 days ago",
-        readingvalues: "",
-        sp02: "92%",
-        bp: "-",
-        weight: "181.2",
-        glucose: "-",
-    },
-];
 export default {
     name: "Patients",
     components: {
@@ -316,48 +67,49 @@ export default {
         // WarningOutlined,
         CounterCard,
         ShowModalButton,
-        DataTable
+        DataTable:defineAsyncComponent(
+  () => import("./data-table/DataTable"))
     },
 
     setup() {
+        const store = useStore();
+        const searchoptions = ref([])
         const PatientsModal = ref(false);
         const showModal = (value) => {
-            PatientsModal.value = value;
+            PatientsModal.value = value; 
         };
         const handleOk = (e) => {
-            console.log(e);
+            console.log(e); 
             PatientsModal.value = false;
         };
         const handleChange = (value) => {
             console.log(`selected ${value}`);
         };
 
-        const searchoptions = ref([{
-                value: "Jane Doe",
-                label: "Jane Doe",
-            },
-            {
-                value: "Steve Smith",
-                label: "Steve Smith",
-            },
-            {
-                value: "Joseph Spouse",
-                label: "Joseph Spouse",
-            },
-            {
-                value: "Robert Henry",
-                label: "Robert Henry",
-            },
-        ]);
+        watchEffect( () => {
+            store.dispatch('globalCodes')
+            store.dispatch('programList')
+            store.dispatch('patients')
+        })
+
+        const columns  = computed(()=>{
+          return store.state.patients.column
+      })
+     
+    const patients = computed(()=>{
+            return store.state.patients.patientList
+        }) 
+
+       
         return {
             PatientsModal,
             showModal,
             handleOk,
-            data,
-            columns,
             handleChange,
             searchoptions,
             size: ref([]),
+            columns,
+            patients
         };
     },
 };
