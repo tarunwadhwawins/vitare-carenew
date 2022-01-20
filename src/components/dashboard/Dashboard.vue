@@ -1,58 +1,54 @@
 <template>
-  <div>
-    <!---->
-    <a-layout>
-      <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
-        <Header />
-      </a-layout-header>
-      <a-layout>
-        <Sidebar />
         <a-layout-content>
           <a-row>
             <a-col :span="24">
               <h2 class="pageTittle">
                 {{$t('global.dashboard')}}
                 <div class="filter">
-                  <button class="btn active">
-                    <span class="btn-content">{{$t('global.day')}}</span>
-                  </button>
-                  <button class="btn">
-                    <span class="btn-content">{{$t('global.week')}}</span>
-                  </button>
-                  <button class="btn">
-                    <span class="btn-content">{{$t('global.month')}}</span>
-                  </button>
-                </div>
+                  <a-button
+                    @click="showButton1"
+                    :class="button == 1 ? 'active' : ''"
+                    >Day</a-button
+                  >
+                  <a-button
+                    @click="showButton2"
+                    :class="button == 2 ? 'active' : ''"
+                    >Week</a-button
+                  >
+                  <a-button
+                    @click="showButton3"
+                    :class="button == 3 ? 'active' : ''"
+                    >Month</a-button
+                  >
+                  <a-button
+                    @click="showButton4"
+                    :class="button == 4 ? 'active' : ''"
+                    >Year</a-button
+                  >
+                </div>          
               </h2>
             </a-col>
             <a-col :span="24">
-
-              <a-row :gutter="24" >
-
-                <Card customClass="one" v-if="totalPatients" :count="totalPatients.count" :text='totalPatients.text' link="manage-patients">
+              <a-row :gutter="24" v-if="xlGrid">
+                <Card v-for="item in totalPatients" :key="item.count"  :count="item.count" :text='item.text' link="manage-patients" :xl="xlGrid" :color="item.color" :textColor="item.textColor" :draggable="true">
                 </Card>
-                <Card customClass="two" v-if="newPatients" :count="newPatients.count" :text='newPatients.text' link="manage-patients">
-                </Card>
-                <Card customClass="three" v-if="criticalPatients" :count="criticalPatients.count" :text='criticalPatients.text'
-                  link="manage-patients"></Card>
-                <Card customClass="four" v-if="abnormalPatients" :count="abnormalPatients.count" :text='abnormalPatients.text'
-                  link="manage-patients"></Card>
-                <Card customClass="five" v-if="activePatients" :count="activePatients.count" :text='activePatients.text'
-                  link="manage-patients"></Card>
-                <Card customClass="six" v-if="inactivePatients" :count="inactivePatients.count" :text='inactivePatients.text'
-                  link="manage-patients"></Card>
+              
               </a-row>
             </a-col>
           </a-row>
           <a-row :gutter="24">
-
             <Appointement v-if="data4" :appointment="data4" :columns="columns4"
               :title="$t('dashboard.todayAppointment')">
             </Appointement>
+            
             <a-col :sm="12" :xs="24" v-if="callStatus">
               <ApexChart :title="$t('global.callQueue')" type="bar" :height="250" :options="callStatus.calloption"
                 :series="callStatus.callseries" linkTo="communications" />
             </a-col>
+          </a-row>
+         
+          <a-row :gutter="24">
+            
             <a-col :sm="12" :xs="24" v-if="patientsCondition">
 
               <ApexChart title="Patients Stats"  type="bar" :height="412"
@@ -60,8 +56,7 @@
               </ApexChart>
 
             </a-col>
-           
-            <a-col :sm="12" :xs="24" >
+            <a-col :sm="12" :xs="24" v-if="specialization">
               <a-card :title="$t('dashboard.careCoordinatorStats') " class="common-card">
                 <a-tabs default-active-key="activeKey1">
                   <a-tab-pane key="1" tab="Specialization" v-if="specialization">
@@ -111,10 +106,9 @@
             </a-col>
           </a-row>
         </a-layout-content>
-      </a-layout>
-    </a-layout>
+      
     <!---->
-  </div>
+
 </template>
 
 <script>
@@ -136,8 +130,9 @@
       },
     },
     {
-      title: "Date Time ",
-      dataIndex: "startDate",
+      title: "Date Time",
+     
+      dataIndex: 'startDateTime',
     },
     {
       title: "Appointment With",
@@ -219,8 +214,6 @@
   ];
   export default {
     components: {
-      Header,
-      Sidebar,
       Card,
       Appointement,
       ApexChart
@@ -230,15 +223,16 @@
       const store = useStore()
       const router = useRouter();
       watchEffect(() => {
-
+        store.dispatch("globalCodes")
+        store.dispatch("totalPatients")
         store.dispatch("todayAppointment")
         store.dispatch("callStatus")
-        store.dispatch("abnormalPatients")
-        store.dispatch("activePatients")
-        store.dispatch("inactivePatients")
-        store.dispatch("criticalPatients")
-        store.dispatch("newPatients")
-        store.dispatch("patientsStats")
+        // store.dispatch("abnormalPatients")
+        // store.dispatch("activePatients")
+        // store.dispatch("inactivePatients")
+        // store.dispatch("criticalPatients")
+        // store.dispatch("newPatients")
+         store.dispatch("patientsStats")
         store.dispatch("specialization")
 
         store.dispatch("network")
@@ -247,27 +241,30 @@
         store.dispatch("financial")
         store.dispatch("totalPatientsChart")
         store.dispatch("appointmentChart")
-        store.dispatch("totalPatients")
+        
       })
 
 
-      const criticalPatients = computed(() => {
-        return store.state.counterCards.criticalPaitientcount
-      })
-      const abnormalPatients = computed(() => {
-        return store.state.counterCards.abnormalPaitientcount
-      })
-      const activePatients = computed(() => {
-        return store.state.counterCards.activePaitientcount
-      })
-      const inactivePatients = computed(() => {
-        return store.state.counterCards.inActivePaitientcount
+      // const criticalPatients = computed(() => {
+      //   return store.state.counterCards.criticalPaitientcount
+      // })
+      // const abnormalPatients = computed(() => {
+      //   return store.state.counterCards.abnormalPaitientcount
+      // })
+      // const activePatients = computed(() => {
+      //   return store.state.counterCards.activePaitientcount
+      // })
+      // const inactivePatients = computed(() => {
+      //   return store.state.counterCards.inActivePaitientcount
+      // })
+      const globalCodes = computed(() => {
+        return store.state.counterCards.globalCodes
       })
       const totalPatients = computed(() => {
         return store.state.counterCards.totalPatientcount
       })
-      const newPatients = computed(() => {
-        return store.state.counterCards.newPatientcount
+      const xlGrid = computed(() => {
+        return store.state.counterCards.xlGrid
       })
       const patientsCondition = computed(() => {
         return store.state.dashBoard.patientsCondition
@@ -321,12 +318,15 @@
       function showButton3() {
         button.value = 3;
       }
+      function showButton4() {
+        button.value = 4;
+      }
       return {
-        newPatients,
-        inactivePatients,
-        abnormalPatients,
-        criticalPatients,
-        activePatients,
+        xlGrid,
+        // inactivePatients,
+        // abnormalPatients,
+        // criticalPatients,
+        // activePatients,
         totalPatients,
         callStatus,
         patientsCondition,
@@ -347,7 +347,8 @@
         showButton1,
         showButton2,
         showButton3,
-
+        showButton4,
+        globalCodes
 
         // todayApointment
       };

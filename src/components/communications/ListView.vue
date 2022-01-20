@@ -169,8 +169,8 @@ const columns = [
   },
 ];
 
-import { reactive, ref, computed/* , watchEffect, computed */ } from 'vue';
-// import { useStore } from "vuex"
+import { ref, watchEffect, computed } from 'vue';
+import { useStore } from "vuex"
 import {
   MessageOutlined,
   CommentOutlined,
@@ -186,35 +186,19 @@ export default {
     MailOutlined,
     AlertOutlined,
   },
-  props: {
-    data: {
-      type: Array
-    }
-  },
-  setup(props) {
-    const list =reactive(JSON.parse(JSON.stringify(props)))
-    // const check = computed (() =>{
-    //   return list.data
-    // })
-    console.log('Props Data', list.data)
-    /* watchEffect(() => props.data, (communications) => {
-      console.log("Watch props.data function called with args:", communications);
-      // Both props are undefined so its just a bare callback func to be run
-    }); */
-    // const store = useStore()
+  setup() {
+    const store = useStore()
     const handleChange = (value) => {
       console.log(`selected ${value}`);
     };
     
-    const communicationsList =[]
-    // const communicationsList = ref(props.data)
-    // watchEffect(() => {
-    //   store.dispatch('communicationsList')
-    // })
-    // const communicationsList = computed(() => {
-    //   return store.state.communications.communicationsList
-    // })
-    // console.log('Data', communicationsList)
+    watchEffect(() => {
+      store.dispatch('communicationsList')
+    })
+    const communicationsList = computed(() => {
+      return store.state.communications.communicationsList
+    })
+    console.log('Data', communicationsList)
 
     const searchoptions = ref(
       [

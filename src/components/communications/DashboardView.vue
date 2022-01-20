@@ -126,14 +126,14 @@
       const communicationTypes = computed(() => {
         return store.state.communications.communicationTypes
       })
-      const newRequestsData = [];
-      const futureAppointmentsData = [];
-      /* const newRequestsData = computed(() => {
+      /* const newRequestsData = [];
+      const futureAppointmentsData = []; */
+      const newRequestsData = computed(() => {
         return store.state.communications.newRequests
       })
       const futureAppointmentsData = computed(() => {
         return store.state.communications.futureAppointments
-      }) */
+      })
 
       return {
         callPlannedOptions,
