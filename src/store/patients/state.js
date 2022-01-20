@@ -18,5 +18,9 @@ export default {
     deviceType:null,
     program:null,
     addDevice:null,
+    successMsg:null, 
+    errorMsg:null,
+    patientList:null,
+    column:null
 
 }

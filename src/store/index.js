@@ -8,12 +8,4 @@ export default createStore({
   communications,
   patients
   },
-  // plugins: [ createPersistedState({
-  //   reducer(state) {
-  //   return {
-  //     //single state store in localStorage
-  //     token: state.storeData.token
-  //     }
-  //   }
-  // })]
 })

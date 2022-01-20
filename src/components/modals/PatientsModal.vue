@@ -1,5 +1,7 @@
 <template>
 <a-modal max-width="1140px" width="100%" title="Add New Patients" centered :footer="null">
+<ServerMessage />
+
     <a-row :gutter="24">
         <a-col :span="24">
             <a-steps :current="current">
@@ -673,40 +675,52 @@
                     <a-row :gutter="24">
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group"> 
-                                <label>{{$t('patient.devices.deviceType')}}</label>
+                                <!-- <label>{{$t('patient.devices.deviceType')}}</label> -->
+                                <a-form-item :label="$t('patient.devices.deviceType')" name="fax" :rules="[{ required: true, message: 'This field is required.' }]">
                                 <a-select ref="select" show-search v-model:value="device.deviceType" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                     <a-select-option v-for="device in patients.deviceType.globalCode" :key="device.id" :value="device.id">{{device.name}}</a-select-option>
                                 </a-select>
+                                </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <label>{{$t('patient.devices.modelNo')}}</label>
+                                <!-- <label>{{$t('patient.devices.modelNo')}}</label> -->
+                                <a-form-item :label="$t('patient.devices.modelNo')" name="fax" :rules="[{ required: true, message: 'This field is required.' }]">
                                 <a-input v-model:value="device.modelNumber" size="large" />
+                                </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <label>{{$t('patient.devices.serialNo')}}</label>
+                                <!-- <label>{{$t('patient.devices.serialNo')}}</label> -->
+                                <a-form-item :label="$t('patient.devices.serialNo')" name="fax" :rules="[{ required: true, message: 'This field is required.' }]">
                                 <a-input v-model:value="device.serialNumber" size="large" />
+                                </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <label>{{$t('patient.devices.MACAddress')}}</label>
+                                <!-- <label>{{$t('patient.devices.MACAddress')}}</label> -->
+                                <a-form-item :label="$t('patient.devices.MACAddress')" name="fax" :rules="[{ required: true, message: 'This field is required.' }]">
                                 <a-input v-model:value="device.macAddress" size="large" />
+                                </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <label>{{$t('patient.devices.deviceTime')}}</label>
+                                <!-- <label>{{$t('patient.devices.deviceTime')}}</label> -->
+                                <a-form-item :label="$t('patient.devices.deviceTime')" name="fax" :rules="[{ required: true, message: 'This field is required.' }]">
                                 <a-input v-model:value="device.deviceTime" size="large" />
+                                </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <label>{{$t('patient.devices.ServerTime')}}</label>
+                                <!-- <label>{{$t('patient.devices.ServerTime')}}</label> -->
+                                <a-form-item :label="$t('patient.devices.ServerTime')" name="fax" :rules="[{ required: true, message: 'This field is required.' }]">
                                 <a-input v-model:value="device.serverTime" size="large" />
+                                </a-form-item>
                             </div>
                         </a-col>
                     </a-row>
@@ -759,9 +773,8 @@ import Parameters from "@/components/modals/forms/Parameters";
 import ClinicalData from "@/components/modals/forms/ClinicalData";
 import Insurance from "@/components/modals/forms/Insurance";
 import Documents from "@/components/modals/forms/Documents";
-import {
-    useStore
-} from "vuex";
+import {useStore} from "vuex"
+import ServerMessage from "../messageHandling/ServerSideMessage"
 export default {
     components: {
         // Demographics,
@@ -772,6 +785,7 @@ export default {
         ClinicalData,
         Insurance,
         Documents,
+        // ServerMessage
     },
     setup() {
         const store = useStore();
@@ -947,16 +961,13 @@ export default {
         };
 
         watchEffect(() => {
-            store.dispatch('globalCodes')
-            store.dispatch('programList')
+            
             // store.dispatch('deviceType')
         })
 
         const patients = computed(() => {
             return store.state.patients
         })
-
-        console.log('patients', patients)
 
         return {
             current,
