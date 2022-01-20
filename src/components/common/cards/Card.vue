@@ -1,10 +1,10 @@
 <template>
   <a-col :xl="xl" :sm="12" :xs="12">
     <router-link :to="link">
-      <div class="topBox " :style="{'background-color': color,'color': textColor}">
+      <div class="topBox" :style="{'background-color': color}">
         <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-        <h5>{{ count }}</h5>
-        <p>{{$t(('dashboard')+'.'+text)}}</p>
+        <h5 :style="{'color': textColor}">{{ count }}</h5>
+        <p :style="{'color': textColor}">{{$t(('dashboard')+'.'+text)}}</p>
       </div>
     </router-link>
   </a-col>

@@ -4,7 +4,7 @@ export const totalPatientsSuccess = (state, count) => {
         "text": "totalPatients",
         "count": 10,
         "class": "one",
-        "color": "#FF0000",
+        "color": "#8E61FF",
         "textColor": "white"
     },
     {
@@ -12,14 +12,14 @@ export const totalPatientsSuccess = (state, count) => {
         "count": 10,
         "class": "two",
         "color": "#FF5733",
-        "textColor": "white"
+        "textColor": "#8E61FF"
     },
     {
         "text": "totalPatients",
         "count": 10,
         "class": "three",
         "color": "#B13A20",
-        "textColor": "white"
+        "textColor": "black"
     },
     {
         "text": "totalPatients",
@@ -28,13 +28,13 @@ export const totalPatientsSuccess = (state, count) => {
         "color": "rgb(16, 66, 49)",
         "textColor": "white"
     },
-        // {
-        //     "text": "totalPatients",
-        //     "count": 10,
-        //     "class":"five",
-        //     "color":"rgb(16, 66, 49)",
-        //     "textColor":"white"
-        // },
+        {
+            "text": "totalPatients",
+            "count": 10,
+            "class":"five",
+            "color":"rgb(16, 66, 49)",
+            "textColor":"white"
+        },
         // {
         //     "text": "totalPatients",
         //     "count": 10,
