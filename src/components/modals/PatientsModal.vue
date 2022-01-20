@@ -966,7 +966,7 @@ export default {
         })
 
         const patients = computed(() => {
-            return store.state.patients
+            return store.state.common
         })
 
         return {

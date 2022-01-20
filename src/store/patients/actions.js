@@ -1,18 +1,5 @@
 import serviceMethod from '../../services/serviceMethod';
 
-export const globalCodes = async ({
-  commit
-}) => {
-  await serviceMethod.common("get", "globalCodeCategory", null, null).then((response) => {
-    // console.log("globalCodes", response.data.data)
-    commit('globalCodes', response.data.data);
-    
-  }).catch((error) => {
-    commit('errorMsg', error);
-  })
-}
-
-
 export const demographics = async ({
   commit
 }, data) => {
