@@ -65,7 +65,6 @@ export const callPerStaffSuccess = (state, count) => {
       data:  count.map((item) => {return item.count }),
     },
   ];
-  //console.log(state.callPerStaffName)
 }
 
 export const communicationTypesSuccess = (state, count) => {
@@ -83,6 +82,11 @@ export const communicationTypesSuccess = (state, count) => {
         curve: "straight",
         // dashArray: [0, 8, 5, 6],
       },
+      /* yaxis: {
+        title: {
+          text: "Number of Calls",
+        },
+      }, */
       xaxis: {
         categories: ["10", "12", "2", "4", "6", "8"],
       },
@@ -93,11 +97,11 @@ export const communicationTypesSuccess = (state, count) => {
       },
     },
     callseries: [
-      {
+      /* {
         name: count.map((item) => { return item.text }),
         data: count.map((item) => { return item.count }),
-      },
-      /* {
+      }, */
+      {
         name: "SMS",
         data: [15, 16, 18, 15, 14, 17, 18],
       },
@@ -111,8 +115,8 @@ export const communicationTypesSuccess = (state, count) => {
       },
       {
         name: "Email",
-        data: [8, 7, 6, 8, 7, 8, 6],
-      }, */
+        data: [8, 7, 6, 3, 7, 8, 2],
+      },
     ],
   }
 }
@@ -125,6 +129,9 @@ export const addCommunicationSuccess = async (state, addCommunication) => {
 }
 export const patientsListSuccess = async (state, patients) => {
   state.patientsList = patients;
+}
+export const patientDetailsSuccess = async (state, patient) => {
+  state.patientDetails = patient;
 }
 
 export const futureAppointmentsSuccess = async (state, futureAppointments) => {

@@ -4,7 +4,7 @@
   </a-button>
 
   <!-- Modal -->
-  <CommunicationsModal v-model:visible="CommunicationsModal" @ok="handleOk" />
+  <CommunicationsModal v-model:visible="visible" @ok="handleOk" @is-visible="handleOk" />
 </template>
 
 <script>
@@ -15,18 +15,18 @@ export default {
     CommunicationsModal,
   },
   setup() {
-    const CommunicationsModal = ref(false);
+    const visible = ref(false);
     const showModal = () => {
-      CommunicationsModal.value = true;
+      visible.value = true;
     };
 
     const handleOk = (e) => {
       console.log(e);
-      CommunicationsModal.value = false;
+      visible.value = false;
     };
 
     return {
-      CommunicationsModal,
+      visible,
       showModal,
       handleOk
     }

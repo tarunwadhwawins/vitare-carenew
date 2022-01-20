@@ -9,6 +9,7 @@ export const API_ENDPOINTS = {
     CallPerStaff:"call/staff",
     communicationsList:"communication",
     patientsList:"patient",
+    patientDetails:"patient",
     
     TodayAppointment:"appointment/today",
     CallStatus:"call/status",
@@ -23,8 +24,8 @@ export const API_ENDPOINTS = {
     CptCode:"patient/condition",
     Network:"staff/network",
     Specialization:"staff/specialization",
-    TotalPatientsChart:"patient/condition",
-    AppointmentChart:"patient/condition",
+    TotalPatientsChart:"count/patient",
+    AppointmentChart:"count/appointment",
     futureAppointments:"appointment/future",
     newRequests:"appointment/new",
     communicationTypes:"communication/type",

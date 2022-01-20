@@ -1,10 +1,10 @@
 <template>
-  <a-col :xl="4" :sm="8" :xs="12">
+  <a-col :xl="xl" :sm="12" :xs="12">
     <router-link :to="link">
-      <div class="topBox " :class="customClass">
+      <div class="topBox" :style="{'background-color': color}">
         <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-        <h5>{{ count }}</h5>
-        <p>{{$t(('dashboard')+'.'+text)}}</p>
+        <h5 :style="{'color': textColor}">{{ count }}</h5>
+        <p :style="{'color': textColor}">{{$t(('dashboard')+'.'+text)}}</p>
       </div>
     </router-link>
   </a-col>
@@ -25,10 +25,17 @@
         type: String,
         required: true
       },
-      customClass: {
-        type: String,
-        required: true
+      
+      xl:{
+        type:Number
       },
+      color:{
+        type:String
+      },
+      textColor:{
+      type:String
+      }
     },
   }
 </script>
+
