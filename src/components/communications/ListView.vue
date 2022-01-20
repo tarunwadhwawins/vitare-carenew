@@ -41,47 +41,34 @@
             {{ text.text }}
           </router-link>
         </template>
-        <template #staff="text">
-          <router-link to="corrdinator-summary">
-            {{ text.text[0] }}
-          </router-link>
-          <br />
-          <router-link to="corrdinator-summary">
-            {{ text.text[1] }}
+        <template #staff="{ record }">
+          <router-link v-for="staff in record.staff.data" :key="staff.id" to="corrdinator-summary">
+            {{ staff.staff }}
           </router-link>
         </template>
 
-        <template #status="{ text }">
-          <span class="circleBox" :class="text"></span>
-          <span
-            class="box"
-            :class="(text = text.match(/yellowBgColor/g))"
-            v-if="text.match(/yellowBgColor/g)">
-          </span>
+        <template #priority="{ record }">
+          <span class="circleBox" style="background-color: #008000" v-if="record.status=='completed'" ></span>
+          <span class="circleBox" style="background-color: #ff6061" v-if="record.status=='pending'" ></span>
+          <!-- <span class="circleBox" style="background-color: #008000" v-if="record.priority=='high'" ></span>
+          <span class="circleBox" style="background-color: #ffa800" v-if="record.priority=='medium'" ></span>
+          <span class="circleBox" style="background-color: #ff6061" v-if="record.priority=='low'" ></span> -->
         </template>
 
-        <template #type="{ text }">
+        <template #type="{ record }">
           <a-tooltip placement="bottom">
             <template #title>
               <span>{{ $t('communications.comment') }}</span>
             </template>
-            <a class="icons" v-if="text == 'comment'">
+            <a class="icons" v-if="record.type == 'SMS'">
               <CommentOutlined />
-            </a>
-          </a-tooltip>
-          <a-tooltip placement="bottom">
-            <template #title>
-              <span>{{ $t('communications.voiceMail') }}</span>
-            </template>
-            <a class="icons" v-if="text == 'voiceMail'">
-              <PhoneOutlined/>
             </a>
           </a-tooltip>
           <a-tooltip placement="bottom">
             <template #title>
               <span>{{ $t('communications.sent') }}</span>
             </template>
-            <a class="icons" v-if="text == 'sent'">
+            <a class="icons" v-if="record.type == 'Call'">
               <PhoneOutlined/>
             </a>
           </a-tooltip>
@@ -89,10 +76,24 @@
             <template #title>
               <span>{{ $t('communications.mail') }}</span>
             </template>
-            <a class="icons" v-if="text == 'mail'">
+            <a class="icons" v-if="record.type == 'Email'">
               <MailOutlined/>
             </a>
           </a-tooltip>
+          <a-tooltip placement="bottom">
+            <template #title>
+              <span>{{ $t('communications.reminder') }}</span>
+            </template>
+            <a class="icons" v-if="record.type == 'Reminder'">
+              <AlertOutlined/>
+            </a>
+          </a-tooltip>
+        </template>
+
+        <template #action>
+          <a class="icons">
+            <MessageOutlined />
+          </a>
         </template>
       </a-table>
     </a-col>
@@ -101,6 +102,11 @@
 
 <script>
 const columns = [
+  /* {
+    dataIndex: "id",
+    key: "key",
+    rowKey: "id",
+  }, */
   {
     title: "Patient",
     dataIndex: "patient",
@@ -120,25 +126,22 @@ const columns = [
   {
     title: "Type",
     dataIndex: "type",
-    sorter: {
-      compare: (a, b) => a.type - b.type,
-      multiple: 2,
+    slots: {
+      customRender: "type",
     },
   },
   {
     title: "Staff",
-    dataIndex: "staff.data.staff",
-    sorter: {
-      compare: (a, b) => a.staff - b.staff,
-      multiple: 2,
+    dataIndex: "staff",
+    slots: {
+      customRender: "staff",
     },
   },
   {
-    title: "Status",
-    dataIndex: "status",
-    sorter: {
-      compare: (a, b) => a.status - b.status,
-      multiple: 2,
+    title: "Priority",
+    dataIndex: "priority",
+    slots: {
+      customRender: "priority",
     },
   },
   {
@@ -157,26 +160,45 @@ const columns = [
       multiple: 2,
     },
   },
+  {
+    title: "Action",
+    dataIndex: "action",
+    slots: {
+      customRender: "action",
+    },
+  },
 ];
 
 import { ref, watchEffect, computed } from 'vue';
 import { useStore } from "vuex"
+import {
+  MessageOutlined,
+  CommentOutlined,
+  PhoneOutlined,
+  MailOutlined,
+  AlertOutlined,
+} from "@ant-design/icons-vue";
 export default {
+  components: {
+    MessageOutlined,
+    CommentOutlined,
+    PhoneOutlined,
+    MailOutlined,
+    AlertOutlined,
+  },
   setup() {
     const store = useStore()
     const handleChange = (value) => {
       console.log(`selected ${value}`);
     };
     
-    const communicationsList = []
     watchEffect(() => {
       store.dispatch('communicationsList')
     })
-    // const communicationsList = computed(() => {
-      // return store.state.communications.communicationsList
-    // })
-    // const communicationsList = store.state.communications.communicationsList
-    console.log('Communications List', communicationsList)
+    const communicationsList = computed(() => {
+      return store.state.communications.communicationsList
+    })
+    console.log('Data', communicationsList)
 
     const searchoptions = ref(
       [

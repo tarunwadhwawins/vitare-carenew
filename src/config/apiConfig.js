@@ -9,6 +9,7 @@ export const API_ENDPOINTS = {
     CallPerStaff:"call/staff",
     communicationsList:"communication",
     patientsList:"patient",
+    patientDetails:"patient",
     
     TodayAppointment:"appointment/today",
     CallStatus:"call/status",
