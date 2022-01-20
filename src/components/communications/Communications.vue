@@ -49,7 +49,7 @@
               </div>
               <!-- List View -->
               <div class="list-view" v-show="!toggle">
-                <ListView/>
+                <ListView :data="communicationsList"/>
               </div>
             </a-col>
 
@@ -66,13 +66,14 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { ref, h } from "vue";
+import { ref, h, watchEffect, computed } from "vue";
 import DashboardView from "@/components/communications/DashboardView";
 import ListView from "@/components/communications/ListView";
 import StartCall from "@/components/communications/top/StartCall";
 import SendMessage from "@/components/communications/top/SendMessage";
 import ToolTip from "@/components/communications/toolTip/ToolTip";
 import { notification, Button } from "ant-design-vue";
+import { useStore } from "vuex"
 
 const close = () => {
   console.log(
@@ -92,6 +93,13 @@ export default {
   },
   
   setup() {
+    const store = useStore()
+    watchEffect(() => {
+      store.dispatch('communicationsList')
+    })
+    const communicationsList = computed(() => {
+      return store.state.communications.communicationsList
+    })
     const toggle = ref(true);
     const handleChange = (value) => {
       console.log(`selected ${value}`);
@@ -178,6 +186,7 @@ export default {
     };
 
     return {
+      communicationsList,
       toggle,
       openNotification,
       onChange: (pagination, filters, sorter, extra) => {

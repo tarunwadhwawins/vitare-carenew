@@ -20,7 +20,7 @@
       <ApexChart :title="$t('global.callQueue')" type="bar" height="350" :options="callStatus.calloption"
         :series="callStatus.callseries" linkTo="communications" />
     </a-col>
-
+    
     <a-col :sm="12" :xs="24" v-if="newRequestsData || futureAppointmentsData">
       <a-card :title="$t('communications.populateWaitingRoom')" class="common-card">
         <a-tabs v-model:activeKey="activeKey">
@@ -55,38 +55,10 @@
     },
     setup() {
       const store = useStore()
-      
-      watchEffect(() => {
-        store.dispatch("callPerStaff")
-        store.dispatch("callStatus")
-        store.dispatch("communicationTypes")
-        store.dispatch("futureAppointments")
-        store.dispatch("newRequests")
-      })
-      
-      const callPlannedOptions = computed(() => {
-        return store.state.communications.callPerStaffName
-      })
-      const callPlannedSeries = computed(() => {
-        return store.state.communications.callPerStaffCount
-      })
-      const callStatus = computed(() => {
-        return store.state.dashBoard.callStatus
-      })
-      const communicationTypes = computed(() => {
-        return store.state.communications.communicationTypes
-      })
-      /* const newRequestsData = computed(() => {
-        return store.state.communications.newRequests
-      })
-      const futureAppointmentsData = computed(() => {
-        return store.state.communications.futureAppointments
-      }) */
-      console.log('communicationTypes', communicationTypes)
 
-      /* const newRequestsColumns = [
+      const newRequestsColumns = [
         {
-          dataIndex: "id",
+          dataIndex: "key",
           key: "key",
         },
         {
@@ -114,7 +86,7 @@
       ];
       const futureAppointmentsColumns = [
         {
-          dataIndex: "id",
+          dataIndex: "key",
           key: "key",
         },
         {
@@ -132,15 +104,44 @@
           title: "Time",
           dataIndex: "startTime",
         },
-      ]; */
+      ];
+      
+      watchEffect(() => {
+        store.dispatch("callPerStaff")
+        store.dispatch("callStatus")
+        store.dispatch("communicationTypes")
+        store.dispatch("futureAppointments")
+        store.dispatch("newRequests")
+      })
+      
+      const callPlannedOptions = computed(() => {
+        return store.state.communications.callPerStaffName
+      })
+      const callPlannedSeries = computed(() => {
+        return store.state.communications.callPerStaffCount
+      })
+      const callStatus = computed(() => {
+        return store.state.dashBoard.callStatus
+      })
+      const communicationTypes = computed(() => {
+        return store.state.communications.communicationTypes
+      })
+      const newRequestsData = [];
+      const futureAppointmentsData = [];
+      /* const newRequestsData = computed(() => {
+        return store.state.communications.newRequests
+      })
+      const futureAppointmentsData = computed(() => {
+        return store.state.communications.futureAppointments
+      }) */
 
       return {
         callPlannedOptions,
         callPlannedSeries,
-        /* newRequestsColumns,
+        newRequestsColumns,
         newRequestsData,
         futureAppointmentsColumns,
-        futureAppointmentsData, */
+        futureAppointmentsData,
         communicationTypes,
         callStatus,
       };

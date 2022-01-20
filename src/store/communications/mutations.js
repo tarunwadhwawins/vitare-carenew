@@ -65,7 +65,6 @@ export const callPerStaffSuccess = (state, count) => {
       data:  count.map((item) => {return item.count }),
     },
   ];
-  //console.log(state.callPerStaffName)
 }
 
 export const communicationTypesSuccess = (state, count) => {
@@ -125,6 +124,9 @@ export const addCommunicationSuccess = async (state, addCommunication) => {
 }
 export const patientsListSuccess = async (state, patients) => {
   state.patientsList = patients;
+}
+export const patientDetailsSuccess = async (state, patient) => {
+  state.patientDetails = patient;
 }
 
 export const futureAppointmentsSuccess = async (state, futureAppointments) => {
