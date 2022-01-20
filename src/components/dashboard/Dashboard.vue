@@ -22,11 +22,16 @@
                   <a-button
                     @click="showButton2"
                     :class="button == 2 ? 'active' : ''"
-                    >Month</a-button
+                    >Week</a-button
                   >
                   <a-button
                     @click="showButton3"
                     :class="button == 3 ? 'active' : ''"
+                    >Month</a-button
+                  >
+                  <a-button
+                    @click="showButton4"
+                    :class="button == 4 ? 'active' : ''"
                     >Year</a-button
                   >
                 </div>                
@@ -794,6 +799,9 @@ export default {
     function showButton3() {
       button.value = 3;
     }
+    function showButton4() {
+      button.value = 4;
+    }
     return {
       logout,
       data4,
@@ -812,6 +820,7 @@ export default {
       showButton1,
       showButton2,
       showButton3,
+      showButton4,
     };
   },
 };
