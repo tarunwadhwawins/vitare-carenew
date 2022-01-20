@@ -237,7 +237,7 @@ export const networkSuccess = (state, count) => {
           ],
         },
         chart: {
-          type: "bar",
+          type: "line",
         },
         plotOptions: {
           bar: {
@@ -352,6 +352,7 @@ export const cptCodeSuccess = (state, count) => {
         name: "Minutes",
         data: [120, 80, 90, 30],
       },
+      
     ],
   };
 }
@@ -379,9 +380,10 @@ export const financialSuccess = (state, count) => {
   };
 }
 export const totalPatientsChartSuccess = (state, count) => {
+
   const check =count.map((item) => { 
     return item.data.map((data) =>{ return data.month})})
-    const month=['January','February',]
+    const month=['January','February','March','April','May','June','July','August','September','October','November','December']
   state.totalPatientsChartValue = {
     chartOptions: {
       chart: {
@@ -405,19 +407,13 @@ export const totalPatientsChartSuccess = (state, count) => {
           "2018-09-19T06:30:00.000Z",
         ],
       },
-      tooltip: {
-       
-      },
     },
     series:  [
       {
         name: "series1",
         data: [31, 40, 28, 51, 42, 109, 100],
       },
-      {
-        name: "series2",
-        data: [11, 32, 45, 32, 34, 52, 41],
-      },
+     
     ],
   };
 }

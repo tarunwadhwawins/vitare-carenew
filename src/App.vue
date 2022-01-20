@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="SelectLanguage">
+    <!-- <div class="SelectLanguage">
       <span for="Select Language">Select Language <SelectLanguage /></span>
-    </div>
+    </div> -->
     <!-- used for component i18n like calendar -->
     <!-- <div class="change-locale">
       <span style="margin-right: 16px">Change locale of components:</span>
@@ -23,36 +23,36 @@
 </template>
 
 <script>
-import { ref, watch } from "vue";
-import enUS from "ant-design-vue/es/locale/en_US";
-import esES from "ant-design-vue/es/locale/es_ES";
-import moment from "moment";
-import 'moment/dist/locale/es';
-import { onMounted } from "vue";
-import SelectLanguage from "./views/localization/SelectLanguage.vue";
-moment.locale("en");
-export default {
-  components: {
-    SelectLanguage,
-  },
-  setup() {
-    const auth = localStorage.getItem("auth");
-    const locale = ref(enUS.locale);
-    watch(locale, (val) => {
-      moment.locale(val);
-    });
-    onMounted(() => {
-      document.body.classList.add("test");
-    });
-    return {
-      auth,
-      enUS,
-      esES,
-      locale,
-      moment,
-    };
-  },
-};
+// import { ref, watch } from "vue";
+// import enUS from "ant-design-vue/es/locale/en_US";
+// import esES from "ant-design-vue/es/locale/es_ES";
+// import moment from "moment";
+// import 'moment/dist/locale/es';
+// import { onMounted } from "vue";
+// import SelectLanguage from "./views/localization/SelectLanguage.vue";
+// moment.locale("en");
+// export default {
+//   components: {
+//     SelectLanguage,
+//   },
+//   setup() {
+//     const auth = localStorage.getItem("auth");
+//     const locale = ref(enUS.locale);
+//     watch(locale, (val) => {
+//       moment.locale(val);
+//     });
+//     onMounted(() => {
+//       document.body.classList.add("test");
+//     });
+//     return {
+//       auth,
+//       enUS,
+//       esES,
+//       locale,
+//       moment,
+//     };
+//   },
+// };
 </script>
 
 <style lang="scss">
