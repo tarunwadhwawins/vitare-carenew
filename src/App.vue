@@ -23,7 +23,7 @@
 </template>
 
 <script>
-// import { ref, watch } from "vue";
+ import { ref, watch } from "vue";
 // import enUS from "ant-design-vue/es/locale/en_US";
 // import esES from "ant-design-vue/es/locale/es_ES";
 // import moment from "moment";
@@ -31,16 +31,19 @@
 // import { onMounted } from "vue";
 // import SelectLanguage from "./views/localization/SelectLanguage.vue";
 // moment.locale("en");
-// export default {
+  import { useStore } from "vuex"
+export default {
 //   components: {
 //     SelectLanguage,
 //   },
-//   setup() {
+  setup() {
+      const store = useStore()
 //     const auth = localStorage.getItem("auth");
 //     const locale = ref(enUS.locale);
-//     watch(locale, (val) => {
+    watch(() => {
+      store.dispatch("globalCodes")
 //       moment.locale(val);
-//     });
+     });
 //     onMounted(() => {
 //       document.body.classList.add("test");
 //     });
@@ -51,8 +54,8 @@
 //       locale,
 //       moment,
 //     };
-//   },
-// };
+  },
+};
 </script>
 
 <style lang="scss">
