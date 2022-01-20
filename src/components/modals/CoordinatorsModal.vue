@@ -32,7 +32,7 @@
                                         <a-select-option value="Executive">Executive</a-select-option>
                                     </a-select> -->
                                     <a-select ref="select" show-search v-model:value="personalInfoData.designationId" style="width: 100%" size="large" @focus="focus" @change="handleChange">
-                                        <a-select-option v-for="designation in patients.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
+                                        <a-select-option v-for="designation in careCordinator.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
                                     </a-select>
                                 </a-form-item>
                             </div>
@@ -41,10 +41,13 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item name="gender" :label="$t('global.gender')" has-feedback :rules="[{ required: true, message: 'This field is required.' }]">
-                                    <a-select v-model:value="personalInfoData.genderId" placeholder="Please select gender">
+                                    <!-- <a-select v-model:value="personalInfoData.genderId" placeholder="Please select gender">
                                         <a-select-option value="lucy">Male</a-select-option>
                                         <a-select-option value="Yiminghe">Female</a-select-option>
                                         <a-select-option value="Yiminghe">Others</a-select-option>
+                                    </a-select> -->
+                                    <a-select ref="select" v-model:value="personalInfoData.genderId" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                        <a-select-option v-for="gender in careCoordinator.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
                                     </a-select>
                                 </a-form-item>
                             </div>
@@ -114,7 +117,8 @@
 <script>
 import {
     ref,
-    reactive
+    reactive,
+    computed
 } from "vue";
 import PersonalInformation from "@/components/modals/forms/PersonalInformation";
 import Contacts from "@/components/modals/forms/Contacts";
@@ -169,8 +173,14 @@ export default {
         const handleChange = (value) => {
             console.log(`selected ${value}`);
         };
+
+        const careCordinator = computed(() => {
+            return store.state.common
+        })
+
         return {
-            personalInfo,
+            careCordinator,
+            personalInfoData,
             current,
             steps: [{
                     title: "Personal Information",
