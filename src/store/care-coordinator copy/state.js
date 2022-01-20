@@ -24,6 +24,4 @@ export default{
     deleteAvailability: null,
     deleteRole: null,
     errormsg: null,
-
-    addStaff:null
 }

@@ -25,7 +25,7 @@
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item name="designation" :label="$t('global.designationId')" has-feedback :rules="[{ required: true, message: 'This field is required.' }]">
+                                <a-form-item name="designationId" :label="$t('global.designation')" has-feedback :rules="[{ required: true, message: 'This field is required.' }]">
                                     <!-- <a-select v-model:value="personalInfoData.designationId" placeholder="Please select designation">
                                         <a-select-option value="Administrative">Administrative</a-select-option>
                                         <a-select-option value="Manager">Manager</a-select-option>
@@ -54,14 +54,14 @@
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: 'This field is required.',type: 'email' }]">
                                     <a-input v-model:value="personalInfoData.email" placeholder="input placeholder" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: 'This field is required.',pattern: new RegExp(/^[0-9]+$/) }]">
                                     <a-input v-model:value="personalInfoData.phoneNumber" placeholder="input placeholder" />
                                 </a-form-item>
                             </div>
@@ -164,7 +164,7 @@ export default {
         }
 
         const personalInfo = (values) => {
-            store.dispatch('personalInfo', personalInfoData)
+            store.dispatch('addStaff', personalInfoData)
             current.value++; 
         }
 
@@ -188,6 +188,7 @@ export default {
             careCordinator,
             personalInfoData,
             current,
+            personalInfo,
             steps: [{
                     title: "Personal Information",
                     content: "First-content",

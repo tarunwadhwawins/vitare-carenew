@@ -1,6 +1,6 @@
 
-export const addStaff= async (state, data) => {
-    state.addStaff = data;
+export const addCareCoordinatorSuccess = async (state, coordinator) => {
+    state.coordinator = coordinator;
 }
 export const addContactSuccess = async (state, contact) => {
     state.contact = contact;
