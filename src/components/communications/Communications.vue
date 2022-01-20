@@ -42,7 +42,7 @@
               </h2>
             </a-col>
             
-            <a-col :span="24">
+            <a-col :span="24" v-if="communicationsList">
               <!-- Dashboard View -->
               <div class="dashboard-view" v-show="toggle">
                 <DashboardView/>

@@ -47,10 +47,12 @@
           </router-link>
         </template>
 
-        <template #status="{ record }">
-          <!-- <span class="circleBox"></span> -->
-          <span class="circleBox greenBgColor" v-if="record.status=='completed'" ></span>
-          <span class="circleBox three" v-if="record.status=='pending'" ></span>
+        <template #priority="{ record }">
+          <span class="circleBox" style="background-color: #008000" v-if="record.status=='completed'" ></span>
+          <span class="circleBox" style="background-color: #ff6061" v-if="record.status=='pending'" ></span>
+          <!-- <span class="circleBox" style="background-color: #008000" v-if="record.priority=='high'" ></span>
+          <span class="circleBox" style="background-color: #ffa800" v-if="record.priority=='medium'" ></span>
+          <span class="circleBox" style="background-color: #ff6061" v-if="record.priority=='low'" ></span> -->
         </template>
 
         <template #type="{ record }">
@@ -136,10 +138,10 @@ const columns = [
     },
   },
   {
-    title: "Status",
-    dataIndex: "status",
+    title: "Priority",
+    dataIndex: "priority",
     slots: {
-      customRender: "status",
+      customRender: "priority",
     },
   },
   {
@@ -167,7 +169,7 @@ const columns = [
   },
 ];
 
-import { ref/* , watchEffect, computed */ } from 'vue';
+import { reactive, ref, computed/* , watchEffect, computed */ } from 'vue';
 // import { useStore } from "vuex"
 import {
   MessageOutlined,
@@ -190,12 +192,21 @@ export default {
     }
   },
   setup(props) {
+    const list =reactive(JSON.parse(JSON.stringify(props)))
+    // const check = computed (() =>{
+    //   return list.data
+    // })
+    console.log('Props Data', list.data)
+    /* watchEffect(() => props.data, (communications) => {
+      console.log("Watch props.data function called with args:", communications);
+      // Both props are undefined so its just a bare callback func to be run
+    }); */
     // const store = useStore()
     const handleChange = (value) => {
       console.log(`selected ${value}`);
     };
     
-    const communicationsList = []
+    const communicationsList =[]
     // const communicationsList = ref(props.data)
     // watchEffect(() => {
     //   store.dispatch('communicationsList')

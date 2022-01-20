@@ -4,27 +4,34 @@
       <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item :label="$t('communications.communicationsModal.patient')" name="patient">
-              <a-select
-                ref="select"
-                v-if="patientsList"
-                v-model:value="messageForm.patientId"
-                style="width: 100%"
-                size="large"
-                 @change="patientChange">
-                <a-select-option v-for="patient in patientsList" :key="patient.id" :value="patient.id">{{ patient.firstName }}{{ patient.lastName }}</a-select-option>
-              </a-select>
+            <a-form-item :label="$t('communications.communicationsModal.from')" name="from">
+            <a-input v-model:value="messageForm.from" size="large" readonly />
             </a-form-item>
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
+            <a-form-item :label="$t('communications.communicationsModal.to')" name="patient">
+              <a-select
+                ref="select"
+                v-if="patientsList"
+                v-model:value="messageForm.to"
+                style="width: 100%"
+                size="large"
+                 @change="patientChange">
+                <a-select-option v-for="patient in patientsList" :key="patient.email" :value="patient.email">{{ patient.email }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </div>
+        </a-col>
+        <!-- <a-col :sm="12" :xs="24">
+          <div class="form-group">
             <a-form-item :label="$t('communications.communicationsModal.to')" name="to">
             <a-input v-model:value="messageForm.to" size="large" readonly />
             </a-form-item>
           </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
+        </a-col> -->
+        <a-col :sm="24" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('communications.communicationsModal.subject')" name="subject">
               <a-input v-model:value="messageForm.subject" size="large" />
@@ -63,7 +70,7 @@
             </a-form-item>
           </div>
         </a-col>
-        <a-col :sm="12" :xs="24">
+        <!-- <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('communications.communicationsModal.type')" name="type">
               <a-select
@@ -76,7 +83,7 @@
               </a-select>
             </a-form-item>
           </div>
-        </a-col>
+        </a-col> -->
         <a-col :span="24">
           <div class="form-group">
             <a-form-item :label="$t('communications.communicationsModal.message')" name="message">
@@ -129,17 +136,19 @@
       const patientsList = computed(() => {
         return store.state.communications.patientsList
       })
-      console.log('patientsList', patientsList)
 
       const messageForm = reactive({
+        from: '',
         to: '',
         patientId: '',
         priorityId: '',
         messageCategoryId: '',
         message: '',
         subject: '',
-        messageTypeId: '',
+        messageTypeId: 102,
       });
+      const staffEmail = localStorage.getItem('staffEmail')
+      messageForm.from = staffEmail;
 
       const sendMessage = () => {
         console.log('Message Form', messageForm)
