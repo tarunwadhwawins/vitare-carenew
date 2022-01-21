@@ -8,7 +8,7 @@
   </template>
   <script>
     import { reactive } from "vue"
-  import AddButton from "@/components/common/button/addButton"
+  import AddButton from "@/components/common/button/Button"
     export default {
         components: {
             AddButton,
