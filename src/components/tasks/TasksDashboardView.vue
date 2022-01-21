@@ -1,76 +1,13 @@
 <template>
   <a-row class="mb-24" :gutter="24">
     <a-col :xl="6" :sm="8" :xs="12">
-      <div class="blockLists five">
-        <h4>{{$t('tasks.completedTasks')}}</h4>
-        <div class="filter">
-          <a-dropdown :trigger="['click']">
-            <a class="ant-dropdown-link" @click.prevent>
-              <FilterOutlined /> {{$t('global.filter')}}
-            </a>
-            <template #overlay>
-              <a-menu>
-                <a-menu-item key="0">
-                  <a href="http://www.alipay.com/">Urgent</a>
-                </a-menu-item>
-                <a-menu-item key="1">
-                  <a href="http://www.taobao.com/">2nd menu item</a>
-                </a-menu-item>
-              </a-menu>
-            </template>
-          </a-dropdown>
-        </div>
-        <h5>100</h5>
-        <p>{{$t('global.taskCount')}}</p>
-      </div>
+      <FilterCard :filterCount="CompletedTasksFilterCount" count="100" class="blockLists five" :heading="$t('tasks.completedTasks')" />
     </a-col>
     <a-col :xl="6" :sm="8" :xs="12">
-      <div class="blockLists three">
-        <h4>{{$t('tasks.inCompleteTasks')}}</h4>
-        <div class="filter">
-          <a-dropdown :trigger="['click']">
-            <a class="ant-dropdown-link" @click.prevent>
-              <FilterOutlined /> {{$t('global.filter')}}
-            </a>
-            <template #overlay>
-              <a-menu>
-                <a-menu-item key="0">
-                  <a href="http://www.alipay.com/">1st menu item</a>
-                </a-menu-item>
-                <a-menu-item key="1">
-                  <a href="http://www.taobao.com/">2nd menu item</a>
-                </a-menu-item>
-              </a-menu>
-            </template>
-          </a-dropdown>
-        </div>
-        <h5>18</h5>
-        <p>{{$t('global.taskCount')}}</p>
-      </div>
+      <FilterCard :filterCount="OverdueTasksFilterCount" count="18" class="blockLists six" :heading="$t('tasks.overdueTasks')" />
     </a-col>
     <a-col :xl="6" :sm="8" :xs="12">
-      <div class="blockLists six">
-        <h4>{{$t('tasks.overdueTasks')}}</h4>
-        <div class="filter">
-          <a-dropdown :trigger="['click']">
-            <a class="ant-dropdown-link" @click.prevent>
-              <FilterOutlined /> {{$t('global.filter')}}
-            </a>
-            <template #overlay>
-              <a-menu>
-                <a-menu-item key="0">
-                  <a href="http://www.alipay.com/">1st menu item</a>
-                </a-menu-item>
-                <a-menu-item key="1">
-                  <a href="http://www.taobao.com/">2nd menu item</a>
-                </a-menu-item>
-              </a-menu>
-            </template>
-          </a-dropdown>
-        </div>
-        <h5>0</h5>
-        <p>{{$t('global.taskCount')}}</p>
-      </div>
+      <FilterCard :filterCount="IncompleteTasksFilterCount" count="0" class="blockLists three" :heading="$t('tasks.inCompleteTasks')" />
     </a-col>
     <a-col :xl="6" :sm="8" :xs="12">
       <div class="blockLists two">
@@ -121,10 +58,8 @@
 </template>
 
 <script>
-import {
-  FilterOutlined,
-} from "@ant-design/icons-vue";
 import { ref } from "vue";
+import FilterCard from "@/components/common/cards/FilterCard";
 import ApexChart from "@/components/common/charts/ApexChart";
 import IncompleteTasksFilter from "@/components/tasks/chartFilters/IncompleteTasks";
 import TeamMemberFilter from "@/components/tasks/chartFilters/TeamMember";
@@ -133,7 +68,7 @@ import CategoryViewFilter from "@/components/tasks/chartFilters/CategoryView";
 
 export default {
   components: {
-    FilterOutlined,
+    FilterCard,
     ApexChart,
     IncompleteTasksFilter,
     TeamMemberFilter,
@@ -373,6 +308,37 @@ export default {
       ],
     };
     
+    const CompletedTasksFilterCount = [{
+      key: 0,
+      text: 'Urgent',
+      link: 'http://www.alipay.com/',
+    },
+    {
+      key: 1,
+      text: '2nd Menu Item',
+      link: 'http://www.taobao.com/',
+    }];
+    const IncompleteTasksFilterCount = [{
+      key: 0,
+      text: '1st Menu Item',
+      link: 'http://www.alipay.com/',
+    },
+    {
+      key: 1,
+      text: '2nd Menu Item',
+      link: 'http://www.taobao.com/',
+    }];
+    const OverdueTasksFilterCount = [{
+      key: 0,
+      text: '1st Menu Item',
+      link: 'http://www.alipay.com/',
+    },
+    {
+      key: 1,
+      text: '2nd Menu Item',
+      link: 'http://www.taobao.com/',
+    }];
+
     return {
       clickHandler,
       clickHandler2,
@@ -401,6 +367,9 @@ export default {
       completed,
       business,
       premium,
+      CompletedTasksFilterCount,
+      IncompleteTasksFilterCount,
+      OverdueTasksFilterCount,
     }
   }
 }

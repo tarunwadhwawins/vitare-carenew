@@ -10,24 +10,13 @@
       <a-col :span="24">
         <div class="form-group">
           <label> {{$t('tasks.tasksModal.longDescription')}}</label>
-          <a-textarea
-            v-model:value="value"
-            placeholder="Description"
-            :auto-size="{ minRows: 3 }"
-          />
+          <a-textarea v-model:value="value" placeholder="Description" :auto-size="{ minRows: 3 }" />
         </div>
       </a-col>
       <a-col :span="12">
         <div class="form-group">
           <label>{{$t('global.status')}}</label>
-          <a-select
-            ref="select"
-            v-model="value1"
-            style="width: 100%"
-            size="large"
-            @focus="focus"
-            @change="handleChange"
-          >
+          <a-select ref="select" v-model="value1" style="width: 100%" size="large" @focus="focus" @change="handleChange">
             <a-select-option value="lucy">Choose Status </a-select-option>
             <a-select-option value="Yiminghe">Waiting</a-select-option>
             <a-select-option value="Yiminghe">Inprogress</a-select-option>
@@ -38,14 +27,7 @@
       <a-col :span="12">
         <div class="form-group">
           <label> {{$t('tasks.tasksModal.priority')}}</label>
-          <a-select
-            ref="select"
-            v-model="value1"
-            style="width: 100%"
-            size="large"
-            @focus="focus"
-            @change="handleChange"
-          >
+          <a-select ref="select" v-model="value1" style="width: 100%" size="large" @focus="focus" @change="handleChange">
             <a-select-option value="lucy">Urgent</a-select-option>
             <a-select-option value="Yiminghe">Medium</a-select-option>
             <a-select-option value="Yiminghe">Normal</a-select-option>
@@ -55,27 +37,13 @@
       <a-col :span="12">
         <div class="form-group">
           <label>{{$t('tasks.tasksModal.assignedTo')}}</label>
-          <a-select
-            v-model:value="selectedItems"
-            mode="multiple"
-            size="large"
-            placeholder="Please Select Roles"
-            style="width: 100%"
-            :options="filteredOptions.map((item) => ({ value: item }))"
-          />
+          <a-select v-model:value="selectedItems" mode="multiple" size="large" placeholder="Please Select Roles" style="width: 100%" :options="filteredOptions.map((item) => ({ value: item }))"/>
         </div>
       </a-col>
       <a-col :span="12">
         <div class="form-group">
           <label>{{$t('tasks.tasksModal.category')}}</label>
-          <a-select
-            v-model:value="selectedItemsForTag"
-            mode="multiple"
-            size="large"
-            placeholder="Please Select Category"
-            style="width: 100%"
-            :options="filteredOptionsForTag.map((item) => ({ value: item }))"
-          />
+          <a-select v-model:value="selectedItemsForTag" mode="multiple" size="large" placeholder="Please Select Category" style="width: 100%" :options="filteredOptionsForTag.map((item) => ({ value: item }))"/>
         </div>
       </a-col>
       <a-col :span="12">
@@ -97,18 +65,18 @@
 <script>
 import { ref, computed } from "vue";
 
-const OPTIONS = ["Jane Doe", "Steve Smith", "Joseph William"];
-const OPTIONSTAG = ["Admin", "Clinical", "Office", "Personal"];
+const assignedToTags = ["Jane Doe", "Steve Smith", "Joseph William"];
+const CategoryTags = ["Admin", "Clinical", "Office", "Personal"];
 export default {
   setup() {
     const selectedItems = ref(["Jane Doe"]);
     const filteredOptions = computed(() =>
-      OPTIONS.filter((o) => !selectedItems.value.includes(o))
+      assignedToTags.filter((o) => !selectedItems.value.includes(o))
     );
 
     const selectedItemsForTag = ref(["Admin"]);
     const filteredOptionsForTag = computed(() =>
-      OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
+      CategoryTags.filter((o) => !selectedItemsForTag.value.includes(o))
     );
     const value = ref('');
     return {

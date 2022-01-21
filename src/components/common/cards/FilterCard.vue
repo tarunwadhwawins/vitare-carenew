@@ -1,34 +1,32 @@
 <template>
-  <a-col :xl="6" :sm="8" :xs="12">
-    <div :class="className">
-      <h4>{{ heading }}</h4>
-      <div class="filter">
-        <a-dropdown :trigger="['click']">
-          <a class="ant-dropdown-link" @click.prevent>
-            <FilterOutlined /> {{$t('global.filter')}}
-          </a>
-          <template #overlay>
-            <a-menu>
-              <CompletedTasksFilter :filterCount="filterCount"/>
-            </a-menu>
-          </template>
-        </a-dropdown>
-      </div>
-      <h5>{{ count }}</h5>
-      <p>{{$t('global.taskCount')}}</p>
+  <div :class="className">
+    <h4>{{ heading }}</h4>
+    <div class="filter">
+      <a-dropdown :trigger="['click']">
+        <a class="ant-dropdown-link" @click.prevent>
+          <FilterOutlined /> {{$t('global.filter')}}
+        </a>
+        <template #overlay>
+          <a-menu>
+            <a-menu-item v-for="data in filterCount" :key="data.key">
+              <a :href="data.link">{{ data.text }}</a>
+            </a-menu-item>
+          </a-menu>
+        </template>
+      </a-dropdown>
     </div>
-  </a-col>
+    <h5>{{ count }}</h5>
+    <p>{{$t('global.taskCount')}}</p>
+  </div>
 </template>
 
 <script>
 import {
   FilterOutlined,
 } from "@ant-design/icons-vue";
-import CompletedTasksFilter from "@/components/tasks/cardsFilters/CompletedTasks";
 export default {
   components: {
     FilterOutlined,
-    CompletedTasksFilter,
   },
   props: {
     filterCount: {
