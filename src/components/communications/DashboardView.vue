@@ -21,12 +21,11 @@
         :series="callStatus.callseries" linkTo="communications" />
     </a-col>
     
-    <a-col :sm="12" :xs="24" v-if="newRequestsData || futureAppointmentsData">
+    <a-col :sm="12" :xs="24">
       <a-card :title="$t('communications.populateWaitingRoom')" class="common-card">
-        <a-tabs v-model:activeKey="activeKey">
-          <PopulateWaitingRoomTab :key="1" tab="New Requests" :column="newRequestsColumns" :data="newRequestsData"
-            linkTo="patients-summary" />
-          <PopulateWaitingRoomTab :key="2" tab="Future Appointments" :column="futureAppointmentsColumns"
+        <a-tabs default-active-key="activeKey1">
+          <PopulateWaitingRoomTab v-if="newRequestsData" key="1" tab="New Requests" :column="newRequestsColumns" :data="newRequestsData" linkTo="patients-summary" />
+          <PopulateWaitingRoomTab v-if="futureAppointmentsData" key="2" tab="Future Appointments" :column="futureAppointmentsColumns"
             :data="futureAppointmentsData" linkTo="patients-summary" />
         </a-tabs>
       </a-card>
@@ -37,6 +36,9 @@
         <ApexChart type="area" :height="245" :options="communicationTypes.calloption" :series="communicationTypes.callseries" />
       </a-card>
     </a-col>
+    <template #action>
+      <a-button class="btn blueBtn">Start</a-button>
+    </template>
 
   </a-row>
 </template>
@@ -57,10 +59,6 @@
       const store = useStore()
 
       const newRequestsColumns = [
-        {
-          dataIndex: "key",
-          key: "key",
-        },
         {
           title: "Patient Name",
           dataIndex: "patient",
@@ -85,10 +83,6 @@
         },
       ];
       const futureAppointmentsColumns = [
-        {
-          dataIndex: "key",
-          key: "key",
-        },
         {
           title: "Patient Name",
           dataIndex: "patient",
@@ -126,14 +120,14 @@
       const communicationTypes = computed(() => {
         return store.state.communications.communicationTypes
       })
-      /* const newRequestsData = [];
-      const futureAppointmentsData = []; */
       const newRequestsData = computed(() => {
         return store.state.communications.newRequests
       })
       const futureAppointmentsData = computed(() => {
         return store.state.communications.futureAppointments
       })
+      console.log('newRequestsData', newRequestsData);
+      console.log('futureAppointmentsData', futureAppointmentsData);
 
       return {
         callPlannedOptions,
