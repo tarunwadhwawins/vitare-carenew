@@ -612,8 +612,24 @@
                             <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
                         </a-col>
                     </a-row>
-                    <a-row :gutter="24" class="mb-24">
+                    <!-- <a-row :gutter="24" class="mb-24">
                         <DataTable :columns="columns" :data-source="programsData" :scroll="{ x: 1024 }" />
+                    </a-row> -->
+                    <a-row :gutter="24" class="mb-24">
+                        <a-col :span="24">
+                            <a-table :columns="columns" :data-source="programsData" :pagination="false" :scroll="{ x: 900 }">
+                                <template #action>
+                                    <a-tooltip placement="bottom">
+                                        <template #title>
+                                            <span>{{$t('global.edit')}}</span>
+                                        </template>
+                                        <a class="icons">
+                                            <EditOutlined /></a>
+                                    </a-tooltip>
+
+                                </template>
+                            </a-table>
+                        </a-col>
                     </a-row>
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
@@ -820,7 +836,7 @@ export default {
         ClinicalData,
         Insurance,
         Documents,
-        DataTable
+        // DataTable
         // ServerMessage
     },
     setup() {
@@ -975,7 +991,7 @@ export default {
             // if (patients.value.addProgram.id) {
             //     current.value++;
             // }
-            // store.dispatch('program',patients.value.demographics.id)
+            store.dispatch('program', patients.value.demographics.id)
         }
 
         const addDevice = (values) => {
@@ -1009,9 +1025,21 @@ export default {
             return store.state.patients
         })
 
+        const columns = computed(() => {
+            return store.state.patients.columns
+        })
+
+        const programsData = computed(() => {
+            return store.state.patients.program
+        })
+
+
+
         console.log('pt', patients.value)
 
         return {
+            programsData,
+            columns,
             patients,
             current,
             globalCode,

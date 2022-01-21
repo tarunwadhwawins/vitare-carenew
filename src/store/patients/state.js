@@ -9,6 +9,7 @@ export default {
     successMsg:null, 
     errorMsg:null,
     patientList:[],
-    column:null
+    column:null,
+    columns:null
 
 }

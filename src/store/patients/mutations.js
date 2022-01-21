@@ -190,11 +190,78 @@ export const demographics = (state, data) => {
 
   export const addProgram = (state, data) => {
     state.addProgram = data
+    state.columns = [
+        {
+          title: "Program Name",
+          dataIndex: "program",
+        },
+        {
+          title: "Onboarding scheduled date",
+          dataIndex: "Onboarding",
+        },
+        {
+          title: "Start Date",
+          dataIndex: "start",
+        },
+        {
+          title: "End Date",
+          dataIndex: "end",
+        },
+        {
+          title: "Discharge Date",
+          dataIndex: "discharge",
+        },
+        {
+          title: "Status",
+          dataIndex: "status",
+        },
+        {
+          title: "Actions",
+          dataIndex: "actions",
+          slots: {
+            customRender: "action",
+          },
+        },
+      ];
  }
 
 
  export const program = (state, data) => {
     state.program = data
+    state.columns = [
+        {
+          title: "Program Name",
+          dataIndex: "program",
+        },
+        {
+          title: "Onboarding scheduled date",
+          dataIndex: "Onboarding",
+        },
+        {
+          title: "Start Date",
+          dataIndex: "start",
+        },
+        {
+          title: "End Date",
+          dataIndex: "end",
+        },
+        {
+          title: "Discharge Date",
+          dataIndex: "discharge",
+        },
+        {
+          title: "Status",
+          dataIndex: "status",
+        },
+        {
+          title: "Actions",
+          dataIndex: "actions",
+          slots: {
+            customRender: "action",
+          },
+        },
+      ];
+    
  }
  
 
