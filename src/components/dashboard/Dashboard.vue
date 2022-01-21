@@ -39,7 +39,7 @@
             </a-col>
             <a-col :span="24">
               <a-row :gutter="24">
-                <a-col :xl="4" :sm="8" :xs="12">
+                <a-col :xl="3" :sm="8" :xs="12">
                   <router-link to="manage-patients">
                     <div class="topBox one">
                       <i class="fa fa-user-circle-o" aria-hidden="true"></i>
@@ -48,7 +48,7 @@
                     </div>
                   </router-link>
                 </a-col>
-                <a-col :xl="4" :sm="8" :xs="12">
+                <a-col :xl="3" :sm="8" :xs="12">
                   <router-link to="manage-patients">
                     <div class="topBox two">
                       <i class="fa fa-user-circle-o" aria-hidden="true"></i>
@@ -57,7 +57,7 @@
                     </div>
                   </router-link>
                 </a-col>
-                <a-col :xl="4" :sm="8" :xs="12">
+                <a-col :xl="3" :sm="8" :xs="12">
                   <router-link to="manage-patients">
                     <div class="topBox three">
                       <i class="fa fa-user-circle-o" aria-hidden="true"></i>
@@ -66,16 +66,25 @@
                     </div>
                   </router-link>
                 </a-col>
-                <a-col :xl="4" :sm="8" :xs="12">
+                <a-col :xl="3" :sm="8" :xs="12">
                   <router-link to="manage-patients">
                     <div class="topBox four">
                       <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                       <h5>10</h5>
-                      <p>Abnormal Patients</p>
+                      <p>Out of Range</p>
                     </div>
                   </router-link>
                 </a-col>
-                <a-col :xl="4" :sm="8" :xs="12">
+                <a-col :xl="3" :sm="8" :xs="12">
+                  <router-link to="manage-patients">
+                    <div class="topBox redBgColor">
+                      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                      <h5>10</h5>
+                      <p>Non-Compliance</p>
+                    </div>
+                  </router-link>
+                </a-col>
+                <a-col :xl="3" :sm="8" :xs="12">
                   <router-link to="manage-patients">
                     <div class="topBox five">
                       <i class="fa fa-user-circle-o" aria-hidden="true"></i>
@@ -84,7 +93,7 @@
                     </div>
                   </router-link>
                 </a-col>
-                <a-col :xl="4" :sm="8" :xs="12">
+                <a-col :xl="3" :sm="8" :xs="12">
                   <router-link to="manage-patients">
                     <div class="topBox six">
                       <i class="fa fa-user-circle-o" aria-hidden="true"></i>

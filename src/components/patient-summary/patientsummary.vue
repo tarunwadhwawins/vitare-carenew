@@ -37,36 +37,7 @@
                     >Patient Vitals</a-button
                   >
                 </div>
-                <!-- <div class="filter">
-                  <button
-                    class="btn"
-                    :class="toggle ? 'active' : ''"
-                    @click="toggle = !toggle"
-                  >
-                    <span class="btn-content">Default</span>
-                  </button>
-                  <button
-                    class="btn"
-                    :class="toggle ? 'active' : ''"
-                    @click="toggle = !toggle"
-                  >
-                    <span class="btn-content">Timeline</span>
-                  </button>
-                  <button
-                    class="btn"
-                    :class="toggle ? 'active' : ''"
-                    @click="toggle = !toggle"
-                  >
-                    <span class="btn-content">Care Plan</span>
-                  </button>
-                  <button
-                    class="btn"
-                    :class="toggle ? '' : 'active'"
-                    @click="toggle = !toggle"
-                  >
-                    <span class="btn-content">Patient Vitals</span>
-                  </button>
-                </div> -->
+              
               </div>
             </a-col>
             <a-col :xl="8" :lg="24">
@@ -98,7 +69,6 @@
                             alt="image"
                           />
                           <div class="info">
-                            <p>Patient Id : #3432</p>
                             <p>Jane Doe</p>
                             <p>DOB : June 25, 1995</p>
                             <p>

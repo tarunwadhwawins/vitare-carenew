@@ -16,6 +16,40 @@
           <div class="location d-flex align-items-center">
             <a-dropdown>
               <a class="ant-dropdown-link" @click.prevent>
+                Program - Provider
+                <DownOutlined />
+              </a>
+              <template #overlay>
+                <a-menu>
+                  <a-sub-menu key="test1" title="RPM">
+                    <a-menu-item>Provider 1</a-menu-item>
+                    <a-menu-item>Provider 2</a-menu-item>
+                    <a-menu-item>Provider 3</a-menu-item>
+                    <a-menu-item>Provider 4</a-menu-item>
+                  </a-sub-menu>
+                  <a-sub-menu key="test2" title="BHI">
+                    <a-menu-item>Provider 5</a-menu-item>
+                    <a-menu-item>Provider 6</a-menu-item>
+                    <a-menu-item>Provider 7</a-menu-item>
+                    <a-menu-item>Provider 8</a-menu-item>
+                  </a-sub-menu>
+                  <a-sub-menu key="test3" title="CCM">
+                    <a-menu-item>Provider 1</a-menu-item>
+                    <a-menu-item>Provider 2</a-menu-item>
+                    <a-menu-item>Provider 3</a-menu-item>
+                    <a-menu-item>Provider 4</a-menu-item>
+                  </a-sub-menu>
+                  <a-sub-menu key="test4" title="TCM">
+                    <a-menu-item>Provider 5</a-menu-item>
+                    <a-menu-item>Provider 6</a-menu-item>
+                    <a-menu-item>Provider 7</a-menu-item>
+                    <a-menu-item>Provider 8</a-menu-item>
+                  </a-sub-menu>
+                </a-menu>
+              </template>
+            </a-dropdown>
+            <!-- <a-dropdown>
+              <a class="ant-dropdown-link" @click.prevent>
                 Organisation - Location
                 <DownOutlined />
               </a>
@@ -45,28 +79,6 @@
                     <a-menu-item>Location 7</a-menu-item>
                     <a-menu-item>Location 8</a-menu-item>
                   </a-sub-menu>
-                </a-menu>
-              </template>
-            </a-dropdown>
-
-            <!-- <a-dropdown :trigger="['click']">
-              <a class="ant-dropdown-link" @click.prevent>
-                <div class="name">Location <DownOutlined /></div>
-              </a>
-              <template #overlay>
-                <a-menu>
-                  <a-menu-item key="0">
-                    <a href="javascript:void(0)">Organisation 1</a>
-                  </a-menu-item>
-                  <a-menu-item key="1">
-                    <a href="javascript:void(0)">Organisation 2</a>
-                  </a-menu-item>
-                  <a-menu-item key="3">
-                    <a href="javascript:void(0)">Organisation 3</a></a-menu-item
-                  >
-                  <a-menu-item key="4">
-                    <a href="javascript:void(0)">Organisation 4</a></a-menu-item
-                  >
                 </a-menu>
               </template>
             </a-dropdown> -->
