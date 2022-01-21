@@ -1,6 +1,18 @@
 import ServiceMethodService from '../../services/serviceMethod';
 import { API_ENDPOINTS } from "../../config/apiConfig"
+export const timeLine = async ({ commit }) => {
 
+    await ServiceMethodService.common("get", API_ENDPOINTS['TimeLine'], null, null).then((response) => {
+       
+            commit('timelineSuccess', response.data.data);
+       
+    }).catch((error) => {
+        if (error.response.status == 401) {
+            //AuthService.logout();
+        }
+        commit('failure', error.response.data);
+    })
+}
 export const todayAppointment = async ({ commit }) => {
     await ServiceMethodService.common("get", API_ENDPOINTS['TodayAppointment'], null, null).then((response) => {
         commit('todayAppointmentSuccess', response.data.data);
@@ -58,6 +70,7 @@ export const network = async ({ commit }) => {
         commit('failure', error.response.data);
     })
 }
+
 export const cptCode = async ({ commit }) => {
 
     await ServiceMethodService.common("get", API_ENDPOINTS['CptCode'], null, null).then((response) => {
