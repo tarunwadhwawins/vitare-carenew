@@ -87,7 +87,6 @@ export default {
         };
 
         watchEffect( () => {
-            store.dispatch('globalCodes')
             store.dispatch('programList')
             store.dispatch('patients')
         })

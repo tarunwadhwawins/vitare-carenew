@@ -8,10 +8,10 @@ export const demographics = async ({
     commit('demographics', response.data.data);
     commit('counterPlus')
     commit('successMsg', response.message);
-    alert(response.message);
+    alert("Form submitted successfully!")
   }).catch((error) => {
-    commit('errorMsg', error); 
-    alert(error);
+    commit('errorMsg', error);
+    alert(error) 
   })
 }
 
@@ -37,6 +37,7 @@ export const conditions = async ({
     commit('conditions', response.data.data);
   }).catch((error) => {
     commit('failure', error.response.data);
+    alert(error) 
   })
 }
 export const patientReferals = async ({
@@ -47,6 +48,7 @@ export const patientReferals = async ({
     commit('patientReferals', response.data.data);
   }).catch((error) => {
     commit('failure', error.response.data);
+    alert(error) 
   })
 
 }
@@ -57,8 +59,10 @@ export const patientPhysician = async ({
     console.log("response", response.data.data)
     commit('patientPhysician', response.data.data);
     commit('counterPlus')
+    alert("Form submitted successfully!")
   }).catch((error) => {
     commit('failure', error.response.data);
+    alert(error) 
   })
 
 }
@@ -73,8 +77,8 @@ export const programList = async ({
   }).catch((error) => {
     commit('failure', error);
   })
-
 }
+
 
 export const addProgram = async ({
   commit
@@ -83,8 +87,10 @@ export const addProgram = async ({
     console.log("response", response.data.data)
     commit('addProgram', response.data.data);
     commit('counterPlus')
+    alert("Form submitted successfully!")
   }).catch((error) => {
     commit('failure', error.response.data);
+    alert(error) 
   })
 
 }
@@ -112,8 +118,10 @@ export const addDevice = async ({
     console.log("response", response.data.data)
     commit('addDevice', response.data.data);
     commit('counterPlus')
+    alert("Form submitted successfully!")
   }).catch((error) => {
     commit('failure', error.response.data);
+    alert(error) 
   })
 
 }

@@ -8,7 +8,8 @@ export default {
     addDevice:null,
     successMsg:null, 
     errorMsg:null,
-    patientList:null,
-    column:null
+    patientList:[],
+    column:null,
+    columns:null
 
 }
