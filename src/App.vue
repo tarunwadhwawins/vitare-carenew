@@ -31,14 +31,16 @@
 // import { onMounted } from "vue";
 // import SelectLanguage from "./views/localization/SelectLanguage.vue";
 // moment.locale("en");
-// export default {
+  import { useStore } from "vuex"
+export default {
 //   components: {
 //     SelectLanguage,
 //   },
-//   setup() {
+  setup() {
+      const store = useStore()
 //     const auth = localStorage.getItem("auth");
 //     const locale = ref(enUS.locale);
-    watch(locale, (val) => {
+    watch(() => {
       store.dispatch("globalCodes")
 //       moment.locale(val);
      });
@@ -52,8 +54,8 @@
 //       locale,
 //       moment,
 //     };
-//   },
-// };
+  },
+};
 </script>
 
 <style lang="scss">
