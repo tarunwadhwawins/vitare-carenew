@@ -4,10 +4,27 @@ export const demographics = (state, data) => {
  }
 
  export const patients = (state, data) => {
-    state.patientList = data;
+    // state.patientList = data;
+     data.forEach(element => {
+         state.patientList.push({
+             flags:element.patientFlags.data[0]?element.patientFlags.data[0].flags.data[0].color:'',
+             firstName:element.firstName?element.firstName:'',
+             lastReadingDate:element.lastReadingDate?element.lastReadingDate:'',
+             weight:element.weight?element.weight:'',
+             reading: "",
+             compliance: "",
+             message: "",
+             readingvalues: "",
+             sp02: "",
+             bp: "",
+             glucose: "",
+             active:'',
+            })
+     });
+    
     state.column= [{
         title: "Flags",
-        dataIndex: "patientFlags.data[0].flags",
+        dataIndex: "flags",
         slots: {
             customRender: "flags",
         },

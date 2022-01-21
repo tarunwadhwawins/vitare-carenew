@@ -8,9 +8,7 @@ export const addStaff = async ({
     console.log("response", response.data.data)
     commit('addStaff', response.data.data);
     commit('successMsg', response.message);
-    alert(response.message);
   }).catch((error) => {
     commit('errorMsg', error);
-    alert(error);
   })
 }

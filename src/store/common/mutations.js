@@ -30,7 +30,7 @@ export const globalCodes = (state, data) => {
         if(element.name ==='Relationship'){
             state.relation= element;
         }
-        if(element.name ==='Health Conditions'){
+        if(element.name ==='Patient Diseases'){
             state.healthCondition= element;
         }
         if(element.name ==='Designations'){
