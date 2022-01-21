@@ -1,5 +1,5 @@
 <template>
-  <a-col :xl="12"  :xs="24">
+  <a-col :xl="6"  :xs="24">
     <div class="colorBox" :class="customClass">
       <UserOutlined />
       <h3>{{ count }}</h3>
