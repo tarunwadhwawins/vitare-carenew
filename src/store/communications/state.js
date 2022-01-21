@@ -1,6 +1,5 @@
 export default {
-  callPerStaffCount:null,
-  callPerStaffName:null,
+  callPlanned:null,
   communicationTypes:null,
   communicationsList: null,
   patientsList: null,

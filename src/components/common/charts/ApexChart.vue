@@ -1,16 +1,13 @@
 <template>
-  <a-card :title="title" class="common-card" v-if="title">
+  <a-card :title="title" class="common-card">
     <apexchart :type="type" :height="height" :options="options" :series="series" @click="clickHandler(linkTo)">
     </apexchart>
   </a-card>
-
-  <apexchart :type="type" :height="height" :options="options" :series="series" @click="clickHandler(linkTo)" v-else>
-  </apexchart>
 </template>
 
 <script>
   import { useRouter } from "vue-router";
-  import { reactive } from "vue"  
+  // import { reactive } from "vue"  
   export default {
     props: {
       linkTo: {
