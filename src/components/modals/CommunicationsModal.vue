@@ -42,7 +42,7 @@
                 size="large"
                 @change="handleChange"
               >
-                <a-select-option v-for="messageCategory in messageCategories" :key="messageCategory.id" :value="messageCategory.id">{{ messageCategory.name }}
+                <a-select-option v-for="messageCategory in messageCategories.globalCode" :key="messageCategory.id" :value="messageCategory.id">{{ messageCategory.name }}
                 </a-select-option>
               </a-select>
             </a-form-item>
@@ -58,7 +58,7 @@
                 style="width: 100%"
                 size="large"
                 @change="handleChange">
-                <a-select-option v-for="priority in taskPriority" :key="priority.id" :value="priority.id">{{ priority.name }}</a-select-option>
+                <a-select-option v-for="priority in taskPriority.globalCode" :key="priority.id" :value="priority.id">{{ priority.name }}</a-select-option>
               </a-select>
             </a-form-item>
           </div>
@@ -72,7 +72,7 @@
                 style="width: 100%"
                 size="large"
                 @change="handleChange">
-                <a-select-option v-for="type in messageType" :key="type.id" :value="type.id">{{ type.name }}</a-select-option>
+                <a-select-option v-for="type in messageType.globalCode" :key="type.id" :value="type.id">{{ type.name }}</a-select-option>
               </a-select>
             </a-form-item>
           </div>
@@ -113,23 +113,20 @@
         store.dispatch("patientsList")
       })
       
-      const patients = computed(() => {
-        return store.state.patients
-      })
       const taskPriority = computed(() => {
-        return patients.value.taskPriority.globalCode;
+        return store.state.common.taskPriority;
       }) 
       const messageCategories = computed(() => {
-        return patients.value.messageCategories.globalCode;
+        return store.state.common.messageCategories;
       }) 
       const messageType = computed(() => {
-        return patients.value.messageType.globalCode;
+        return store.state.common.messageType;
       })
 
       const patientsList = computed(() => {
         return store.state.communications.patientsList
       })
-      console.log('patientsList', patientsList)
+      console.log('taskPriority', taskPriority.value)
 
       const messageForm = reactive({
         to: '',
