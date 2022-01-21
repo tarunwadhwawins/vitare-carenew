@@ -12,7 +12,9 @@ export default {
     deviceType:null,
     program:null,
     timeline:null,
-    taskPriority:null
+    taskPriority:null,
+    network:null,
+    specialization:null
 
 
 

@@ -25,14 +25,14 @@
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item name="designation" :label="$t('global.designation')" has-feedback :rules="[{ required: true, message: 'This field is required.' }]">
+                                <a-form-item name="designationId" :label="$t('global.designation')" has-feedback :rules="[{ required: true, message: 'This field is required.' }]">
                                     <!-- <a-select v-model:value="personalInfoData.designationId" placeholder="Please select designation">
                                         <a-select-option value="Administrative">Administrative</a-select-option>
                                         <a-select-option value="Manager">Manager</a-select-option>
                                         <a-select-option value="Executive">Executive</a-select-option>
                                     </a-select> -->
                                     <a-select ref="select" show-search v-model:value="personalInfoData.designationId" style="width: 100%" size="large" @focus="focus" @change="handleChange">
-                                        <a-select-option v-for="designation in patients.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
+                                        <a-select-option v-for="designation in careCordinator.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
                                     </a-select>
                                 </a-form-item>
                             </div>
@@ -40,40 +40,49 @@
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item name="gender" :label="$t('global.gender')" has-feedback :rules="[{ required: true, message: 'This field is required.' }]">
-                                    <a-select v-model:value="personalInfoData.genderId" placeholder="Please select gender">
+                                <a-form-item name="genderId" :label="$t('global.gender')" has-feedback :rules="[{ required: true, message: 'This field is required.' }]">
+                                    <!-- <a-select v-model:value="personalInfoData.genderId" placeholder="Please select gender">
                                         <a-select-option value="lucy">Male</a-select-option>
                                         <a-select-option value="Yiminghe">Female</a-select-option>
                                         <a-select-option value="Yiminghe">Others</a-select-option>
+                                    </a-select> -->
+                                    <a-select ref="select" v-model:value="personalInfoData.genderId" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                        <a-select-option v-for="gender in careCordinator.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
                                     </a-select>
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: 'This field is required.',type: 'email' }]">
                                     <a-input v-model:value="personalInfoData.email" placeholder="input placeholder" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: 'This field is required.' }]">
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: 'This field is required.',pattern: new RegExp(/^[0-9]+$/) }]">
                                     <a-input v-model:value="personalInfoData.phoneNumber" placeholder="input placeholder" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.specialization')" name="specialization" :rules="[{ required: true, message: 'This field is required.' }]">
-                                    <a-input v-model:value="personalInfoData.specializationId" placeholder="input placeholder" />
+                                <a-form-item :label="$t('global.specialization')" name="specializationId" :rules="[{ required: true, message: 'This field is required.' }]">
+                                    <!-- <a-input v-model:value="personalInfoData.specializationId" placeholder="input placeholder" /> -->
+                                    <a-select ref="select" v-model:value="personalInfoData.specializationId" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                        <a-select-option v-for="network in careCordinator.specialization.globalCode" :key="network.id" :value="network.id">{{network.name}}</a-select-option>
+                                    </a-select>
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.network')" name="network" :rules="[{ required: true, message: 'This field is required.' }]">
-                                    <a-input v-model:value="personalInfoData.networkId" placeholder="input placeholder" />
+                                <a-form-item :label="$t('global.network')" name="networkId" :rules="[{ required: true, message: 'This field is required.' }]">
+                                    <!-- <a-input v-model:value="personalInfoData.networkId" placeholder="input placeholder" /> -->
+                                    <a-select ref="select" v-model:value="personalInfoData.networkId" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                        <a-select-option v-for="network in careCordinator.network.globalCode" :key="network.id" :value="network.id">{{network.name}}</a-select-option>
+                                    </a-select>
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -114,7 +123,8 @@
 <script>
 import {
     ref,
-    reactive
+    reactive,
+    computed
 } from "vue";
 import PersonalInformation from "@/components/modals/forms/PersonalInformation";
 import Contacts from "@/components/modals/forms/Contacts";
@@ -154,7 +164,7 @@ export default {
         }
 
         const personalInfo = (values) => {
-            store.dispatch('personalInfo', personalInfoData)
+            store.dispatch('addStaff', personalInfoData)
             current.value++; 
         }
 
@@ -169,9 +179,16 @@ export default {
         const handleChange = (value) => {
             console.log(`selected ${value}`);
         };
+
+        const careCordinator = computed(() => {
+            return store.state.common
+        })
+
         return {
-            personalInfo,
+            careCordinator,
+            personalInfoData,
             current,
+            personalInfo,
             steps: [{
                     title: "Personal Information",
                     content: "First-content",
