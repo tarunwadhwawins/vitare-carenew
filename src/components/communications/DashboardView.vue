@@ -23,7 +23,7 @@
     
     <a-col :sm="12" :xs="24">
       <a-card :title="$t('communications.populateWaitingRoom')" class="common-card">
-        <a-tabs default-active-key="activeKey1">
+        <a-tabs v-model:activeKey="activeKey">
           <PopulateWaitingRoomTab v-if="newRequestsData" key="1" tab="New Requests" :column="newRequestsColumns" :data="newRequestsData" linkTo="patients-summary" />
           <PopulateWaitingRoomTab v-if="futureAppointmentsData" key="2" tab="Future Appointments" :column="futureAppointmentsColumns"
             :data="futureAppointmentsData" linkTo="patients-summary" />
@@ -130,6 +130,7 @@
       console.log('futureAppointmentsData', futureAppointmentsData);
 
       return {
+        activeKey: ref("1"),
         callPlannedOptions,
         callPlannedSeries,
         newRequestsColumns,
