@@ -1,17 +1,15 @@
 <template>
-        <a-layout-content>
-          <a-row>
-            <a-col :span="24">
-              <h2 class="pageTittle">
-                {{$t('global.dashboard')}}
-                <div class="filter">
-                 
-                  <a-button
-                    @click="showButton1"
-                    :class="button == 1 ? 'active' : ''"
-                    >Day</a-button
-                  >
-                  <a-button
+  <a-layout-content>
+    <a-row>
+      <a-col :span="24">
+        <h2 class="pageTittle">
+          {{$t('global.dashboard')}}
+
+          <div class="filter" v-if="timeline">
+
+            <a-button v-for="item in timeline['globalCode']" :key="item.id" @click="showButton(item.id)"
+              :class="button== item.id ? 'active' : ''"> {{item.name}}</a-button>
+            <!-- <a-button
                     @click="showButton2"
                     :class="button == 2 ? 'active' : ''"
                     >Week</a-button
@@ -24,92 +22,92 @@
                   <a-button
                     @click="showButton4"
                     :class="button == 4 ? 'active' : ''"
-                    >Year</a-button
-                  >
-                </div>          
-              </h2>
-            </a-col>
-            <a-col :span="24">
-             
-              <a-row :gutter="24" v-if="xlGrid">
-                <Card v-for="item in totalPatients" :key="item.count"  :count="item.count" :text='item.text' link="manage-patients" :xl="xlGrid" :color="item.color" :textColor="item.textColor" :draggable="true">
-                </Card>
-              
-              </a-row>
-            </a-col>
-          </a-row>
-          <a-row :gutter="24">
-            <Appointement v-if="data4" :appointment="data4" :columns="columns4"
-              :title="$t('dashboard.todayAppointment')">
-            </Appointement>
-            
-            <a-col :sm="12" :xs="24" v-if="callStatus">
-              <ApexChart :title="$t('global.callQueue')" type="bar" :height="250" :options="callStatus.calloption"
-                :series="callStatus.callseries" linkTo="communications" />
-            </a-col>
-          </a-row>
-         
-          <a-row :gutter="24">
-            
-            <a-col :sm="12" :xs="24" v-if="patientsCondition">
+                    >Year</a-button -->
 
-              <ApexChart title="Patients Stats"  type="bar" :height="412"
-                :options="patientsCondition.option1" :series="patientsCondition.series1" linkTo="manage-patients">
+          </div>
+        </h2>
+      </a-col>
+      <a-col :span="24">
+
+        <a-row :gutter="24" v-if="xlGrid">
+          <Card v-for="item in totalPatients" :key="item.count" :count="item.count" :text='item.text'
+            link="manage-patients" :xl="xlGrid" :color="item.color" :textColor="item.textColor" :draggable="true">
+          </Card>
+
+        </a-row>
+      </a-col>
+    </a-row>
+    <a-row :gutter="24">
+      <Appointement v-if="data4" :appointment="data4" :columns="columns4" :title="$t('dashboard.todayAppointment')">
+      </Appointement>
+
+      <a-col :sm="12" :xs="24" v-if="callStatus">
+        <ApexChart :title="$t('global.callQueue')" type="bar" :height="250" :options="callStatus.calloption"
+          :series="callStatus.callseries" linkTo="communications" />
+      </a-col>
+    </a-row>
+
+    <a-row :gutter="24">
+
+      <a-col :sm="12" :xs="24" v-if="patientsCondition">
+
+        <ApexChart title="Patients Stats" type="bar" :height="412" :options="patientsCondition.option1"
+          :series="patientsCondition.series1" linkTo="manage-patients">
+        </ApexChart>
+
+      </a-col>
+      <a-col :sm="12" :xs="24" v-if="specialization">
+        <a-card :title="$t('dashboard.careCoordinatorStats') " class="common-card">
+          <a-tabs default-active-key="activeKey1">
+            <a-tab-pane key="1" tab="Specialization" v-if="specialization">
+              <ApexChart type="bar" :height="350" :options="specialization.wellness" :series="specialization.behavior"
+                linkTo="manage-care-coordinator"></ApexChart>
+            </a-tab-pane>
+            <a-tab-pane key="2" tab="Network " force-render v-if="network">
+              <ApexChart type="bar" :height="350" v-if="network" :options="network.In" :series="network.Out"
+                linkTo="manage-care-coordinator">
               </ApexChart>
+            </a-tab-pane>
+          </a-tabs>
+        </a-card>
+      </a-col>
+    </a-row>
+    <a-row :gutter="24">
+      <a-col :sm="12" :xs="24" v-if="cptCodeValue">
 
-            </a-col>
-            <a-col :sm="12" :xs="24" v-if="specialization">
-              <a-card :title="$t('dashboard.careCoordinatorStats') " class="common-card">
-                <a-tabs default-active-key="activeKey1">
-                  <a-tab-pane key="1" tab="Specialization" v-if="specialization">
-                    <ApexChart type="bar"  :height="350" :options="specialization.wellness"
-                      :series="specialization.behavior" linkTo="manage-care-coordinator"></ApexChart>
-                  </a-tab-pane>
-                  <a-tab-pane key="2" tab="Network " force-render v-if="network">
-                    <ApexChart type="bar"  :height="350" v-if="network" :options="network.In" :series="network.Out"
-                      linkTo="manage-care-coordinator">
-                    </ApexChart>
-                  </a-tab-pane>
-                </a-tabs>
-              </a-card>
-            </a-col>
-          </a-row>
-          <a-row :gutter="24" >
-            <a-col :sm="12" :xs="24" v-if="cptCodeValue">
+        <ApexChart :title="$t('dashboard.cPTCodeBillingSummary')" type="bar" :height="350" :options="cptCodeValue.code"
+          :series="cptCodeValue.value" linkTo="cpt-codes"></ApexChart>
 
-              <ApexChart  :title="$t('dashboard.cPTCodeBillingSummary')" type="bar" :height="350"
-                :options="cptCodeValue.code" :series="cptCodeValue.value" linkTo="cpt-codes"></ApexChart>
+      </a-col>
+      <a-col :sm="12" :xs="24" v-if="financialValue">
 
-            </a-col>
-            <a-col :sm="12" :xs="24" v-if="financialValue">
-
-              <!-- <div class="list-group">
+        <!-- <div class="list-group">
                   <div class="list-group-item">
                     <div class="name">Billed</div>
                     <div class="value">4567 $</div>
                   </div>
                 </div> -->
-              <ApexChart :title="$t('dashboard.financialStats')"  type="pie" :height="362"
-                :options="financialValue.billed" :series="financialValue.due" linkTo="time-tracking-report"></ApexChart>
-            </a-col>
-          </a-row>
-          <a-row :gutter="24">
-            <a-col :sm="12" :xs="24" v-if="totalPatientsChartValue">
+        <ApexChart :title="$t('dashboard.financialStats')" type="pie" :height="362" :options="financialValue.billed"
+          :series="financialValue.due" linkTo="time-tracking-report"></ApexChart>
+      </a-col>
+    </a-row>
+    <a-row :gutter="24">
+      <a-col :sm="12" :xs="24" v-if="totalPatientsChartValue">
 
-              <ApexChart  :title="$t('dashboard.totalPatientsChart')" type="area"
-                :height="350" :options="totalPatientsChartValue.chartOptions" :series="totalPatientsChartValue.series"
-                linkTo="manage-patients"></ApexChart>
+        <ApexChart :title="$t('dashboard.totalPatientsChart')" type="area" :height="350"
+          :options="totalPatientsChartValue.chartOptions" :series="totalPatientsChartValue.series"
+          linkTo="manage-patients"></ApexChart>
 
-            </a-col>
-            <a-col :sm="12" :xs="24" v-if="appointmentChartValue">
-              <ApexChart  :title="$t('dashboard.appointmentSummary')" type="area"
-                :height="350" :options="appointmentChartValue.chartOptions" :series="appointmentChartValue.series"
-                linkTo="appointment-calendar"></ApexChart>
-            </a-col>
-          </a-row>
-        </a-layout-content>
-      
-    <!---->
+      </a-col>
+      <a-col :sm="12" :xs="24" v-if="appointmentChartValue">
+        <ApexChart :title="$t('dashboard.appointmentSummary')" type="area" :height="350"
+          :options="appointmentChartValue.chartOptions" :series="appointmentChartValue.series"
+          linkTo="appointment-calendar"></ApexChart>
+      </a-col>
+    </a-row>
+  </a-layout-content>
+
+  <!---->
 
 </template>
 
@@ -133,7 +131,7 @@
     },
     {
       title: "Date Time",
-     
+
       dataIndex: 'startDateTime',
     },
     {
@@ -223,9 +221,17 @@
 
     setup() {
       const store = useStore()
+      //const button = ref()
       const router = useRouter();
-      watchEffect(() => {
-        //store.dispatch("globalCodes")
+      const timeline = computed(() => {
+        return store.state.common.timeline
+      })
+      const button = computed(() => {
+
+        return store.state.dashBoard.button
+      })
+      function apiCall(data) {
+        //console.log("data", data)
         store.dispatch("totalPatients")
         store.dispatch("todayAppointment")
         store.dispatch("callStatus")
@@ -234,7 +240,7 @@
         // store.dispatch("inactivePatients")
         // store.dispatch("criticalPatients")
         // store.dispatch("newPatients")
-         store.dispatch("patientsStats")
+        store.dispatch("patientsStats")
         store.dispatch("specialization")
 
         store.dispatch("network")
@@ -243,7 +249,10 @@
         store.dispatch("financial")
         store.dispatch("totalPatientsChart")
         store.dispatch("appointmentChart")
-        
+      }
+      watchEffect(() => {
+        apiCall(button)
+
       })
 
 
@@ -259,9 +268,7 @@
       // const inactivePatients = computed(() => {
       //   return store.state.counterCards.inActivePaitientcount
       // })
-      // const timeline = computed(() => {
-      //   return store.state.common.timeline
-      // })
+
       const totalPatients = computed(() => {
         return store.state.counterCards.totalPatientcount
       })
@@ -303,26 +310,30 @@
 
         return store.state.dashBoard.appointmentChartValue
       })
- 
+
+
+
       function logout() {
         localStorage.removeItem("auth");
         localStorage.clear();
       }
 
-      const button = ref(1);
 
-      function showButton1() {
-        button.value = 1;
+      function showButton(id) {
+        // console.log(id)
+        store.state.dashBoard.button = id;
+        apiCall(button)
       }
-      function showButton2() {
-        button.value = 2;
-      }
-      function showButton3() {
-        button.value = 3;
-      }
-      function showButton4() {
-        button.value = 4;
-      }
+
+      // function showButton2() {
+      //   button.value = 2;
+      // }
+      // function showButton3() {
+      //   button.value = 3;
+      // }
+      // function showButton4() {
+      //   button.value = 4;
+      // }
       return {
         xlGrid,
         // inactivePatients,
@@ -346,11 +357,11 @@
         data6,
         columns6,
         button,
-        showButton1,
-        showButton2,
-        showButton3,
-        showButton4,
-        //timeline
+        showButton,
+        // showButton2,
+        // showButton3,
+        // showButton4,
+        timeline
 
         // todayApointment
       };
