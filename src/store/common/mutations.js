@@ -42,7 +42,12 @@ export const globalCodes = (state, data) => {
         if(element.name ==='Timeline'){
             state.timeline= element;
         }
-        
+        if(element.name ==='Network'){
+            state.network= element; 
+        }
+        if(element.name ==='Specialization'){
+            state.specialization= element; 
+        }
      });
 
 }

@@ -4,6 +4,7 @@ import  { communications } from "./communications/index"
 import { patients } from "./patients/index"
 import { common } from "./common/index"
 import { counterCards } from "./counter-cards/index"
+import { careCoordinator } from "./care-coordinator/index"
 export default createStore({
 modules: {
   dashBoard,
@@ -11,5 +12,6 @@ modules: {
   patients,
   counterCards,
   common,
+  careCoordinator
   },
 })
