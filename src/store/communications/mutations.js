@@ -1,70 +1,70 @@
-export const callPerStaffSuccess = (state, count) => {
-  state.callPerStaffName={
-    annotations: {
-      points: [
-        {
-          x: "In",
-          seriesIndex: 0,
-          label: {
-            borderColor: "#775DD0",
-            offsetY: 0,
-            style: {
-              color: "#fff",
-              background: "#775DD0",
+export const callPlannedSuccess = (state, count) => {
+  state.callPlanned = {
+    calloption: {
+      annotations: {
+        points: [
+          {
+            x: "In",
+            seriesIndex: 0,
+            label: {
+              borderColor: "#775DD0",
+              offsetY: 0,
+              style: {
+                color: "#fff",
+                background: "#775DD0",
+              },
             },
           },
+        ],
+      },
+      chart: {
+        height: 350,
+        type: "bar",
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 10,
+          columnWidth: "20%",
+          barHeight: "100%",
+          distributed: true,
+          horizontal: false,
+          dataLabels: {
+            position: "bottom",
+          },
         },
-      ],
-    },
-    chart: {
-      height: 350,
-      type: "bar",
-    },
-    plotOptions: {
-      bar: {
-        borderRadius: 10,
-        columnWidth: "20%",
-        barHeight: "100%",
-        distributed: true,
-        horizontal: false,
-        dataLabels: {
-          position: "bottom",
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      colors: ["#269b8f", "#269b8f", "#121258", "#218421"],
+      stroke: {
+        width: 1,
+        colors: ["#fff"],
+      },
+      grid: {
+        row: {
+          colors: ["#fff", "#f2f2f2"],
+        },
+      },
+      xaxis: {
+        labels: {
+          rotate: -45,
+        },
+        categories: count.map((item) => {return item.staff}),
+      },
+      yaxis: {
+        title: {
+          text: "Number of Calls",
         },
       },
     },
-    dataLabels: {
-      enabled: false,
-    },
-    colors: ["#269b8f", "#269b8f", "#121258", "#218421"],
-    stroke: {
-      width: 1,
-      colors: ["#fff"],
-    },
-
-    grid: {
-      row: {
-        colors: ["#fff", "#f2f2f2"],
+    callseries: [
+      {
+        name: "Value",
+        data:  count.map((item) => {return item.count }),
       },
-    },
-
-    xaxis: {
-      labels: {
-        rotate: -45,
-      },
-      categories: count.map((item) => {return item.staff}),
-    },
-    yaxis: {
-      title: {
-        text: "Number of Calls",
-      },
-    },
-  };count.map((item) => {return item.staff})
-  state.callPerStaffCount =[
-    {
-      name: "Value",
-      data:  count.map((item) => {return item.count }),
-    },
-  ];
+    ]
+  }
 }
 
 export const communicationTypesSuccess = (state, count) => {

@@ -9,16 +9,12 @@
     <LongCard customClass="four" :count="10" :text="$t('global.week')"></LongCard>
 
     <!-- Charts -->
-    <a-col :sm="12" :xs="24" v-if="callPlannedOptions">
-      <a-card :title="$t('communications.callPlanned')" class="common-card">
-        <ApexChart type="bar" :height="350" :options="callPlannedOptions" :series="callPlannedSeries"
-          linkTo="corrdinator-summary" />
-      </a-card>
+    <a-col :sm="12" :xs="24" v-if="callPlanned">
+      <ApexChart :title="$t('communications.callPlanned')" type="bar" height="350" :options="callPlanned.calloption" :series="callPlanned.callseries" linkTo="corrdinator-summary" />
     </a-col>
 
     <a-col :sm="12" :xs="24" v-if="callStatus">
-      <ApexChart :title="$t('global.callQueue')" type="bar" height="350" :options="callStatus.calloption"
-        :series="callStatus.callseries" linkTo="communications" />
+      <ApexChart :title="$t('global.callQueue')" type="bar" height="350" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="communications" />
     </a-col>
     
     <a-col :sm="12" :xs="24">
@@ -32,10 +28,9 @@
     </a-col>
 
     <a-col :sm="12" :xs="24" v-if="communicationTypes">
-      <a-card :title="$t('communications.communicationType')" class="common-card">
-        <ApexChart type="area" :height="245" :options="communicationTypes.calloption" :series="communicationTypes.callseries" />
-      </a-card>
+      <ApexChart :title="$t('communications.communicationType')" type="area" :height="245" :options="communicationTypes.calloption" :series="communicationTypes.callseries" />
     </a-col>
+    
     <template #action>
       <a-button class="btn blueBtn">Start</a-button>
     </template>
@@ -101,18 +96,15 @@
       ];
       
       watchEffect(() => {
-        store.dispatch("callPerStaff")
+        store.dispatch("callPlanned")
         store.dispatch("callStatus")
         store.dispatch("communicationTypes")
         store.dispatch("futureAppointments")
         store.dispatch("newRequests")
       })
       
-      const callPlannedOptions = computed(() => {
-        return store.state.communications.callPerStaffName
-      })
-      const callPlannedSeries = computed(() => {
-        return store.state.communications.callPerStaffCount
+      const callPlanned = computed(() => {
+        return store.state.communications.callPlanned
       })
       const callStatus = computed(() => {
         return store.state.dashBoard.callStatus
@@ -131,8 +123,7 @@
 
       return {
         activeKey: ref("1"),
-        callPlannedOptions,
-        callPlannedSeries,
+        callPlanned,
         newRequestsColumns,
         newRequestsData,
         futureAppointmentsColumns,
