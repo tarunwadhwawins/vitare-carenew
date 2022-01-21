@@ -2,47 +2,47 @@ export const totalPatientsSuccess = (state, count) => {
 
     const test = [{
         "text": "totalPatients",
-        "count": 10,
+        "count": 12,
         "class": "one",
-        "color": "#8E61FF",
-        "textColor": "white"
+        "color": "#fff",
+        "textColor": "#111"
     },
     {
-        "text": "totalPatients",
-        "count": 10,
+        "text": "newPatients",
+        "count": 2,
         "class": "two",
-        "color": "#FF5733",
-        "textColor": "#8E61FF"
+        "color": "#8e60ff",
+        "textColor": "#fff"
     },
     {
-        "text": "totalPatients",
-        "count": 10,
+        "text": "criticalPatients",
+        "count": 5,
         "class": "three",
-        "color": "#B13A20",
-        "textColor": "black"
+        "color": "#ff6061",
+        "textColor": "#fff"
     },
     {
-        "text": "totalPatients",
-        "count": 10,
+        "text": "abnormalPatients",
+        "count": 5,
         "class": "four",
-        "color": "rgb(16, 66, 49)",
-        "textColor": "white"
+        "color": "#ffa800",
+        "textColor": "#fff"
     },
         {
-            "text": "totalPatients",
-            "count": 10,
+            "text": "activePatients",
+            "count": 12,
             "class":"five",
-            "color":"rgb(16, 66, 49)",
-            "textColor":"white"
+            "color":"#0fb5c2",
+            "textColor":"#fff"
         },
-        // {
-        //     "text": "totalPatients",
-        //     "count": 10,
-        //     "class":"six",
-        //     "color":"rgb(16, 66, 49)",
-        //     "textColor":"white"
+        {
+            "text": "inactivePatients",
+            "count":0,
+            "class":"six",
+            "color":"#267dff",
+            "textColor":"#fff"
 
-        // },
+        },
 
 
 

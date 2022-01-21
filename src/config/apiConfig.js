@@ -30,6 +30,7 @@ export const API_ENDPOINTS = {
     newRequests:"appointment/new",
     communicationTypes:"communication/type",
     addCommunication:"communication/1",
+    TimeLine:"patient/new"
 };
 
 // export const getApiUrl = key => {

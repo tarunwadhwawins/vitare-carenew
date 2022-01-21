@@ -1,3 +1,6 @@
+export const timelineSuccess = (state, count) => {
+  state.button = 123;
+}
 export const todayAppointmentSuccess = (state, count) => {
     state.todayAppointmentState = count;
 }
@@ -236,9 +239,7 @@ export const networkSuccess = (state, count) => {
             },
           ],
         },
-        chart: {
-          type: "line",
-        },
+        
         plotOptions: {
           bar: {
             borderRadius: 10,
@@ -381,13 +382,14 @@ export const financialSuccess = (state, count) => {
 }
 export const totalPatientsChartSuccess = (state, count) => {
 
-  const check =count.map((item) => { 
-    return item.data.map((data) =>{ return data.month})})
-    const month=['January','February','March','April','May','June','July','August','September','October','November','December']
+  // const check =count.map((item) => { 
+  //   return item.data.map((data) =>{ return data.month})})
+  //   const month=['January','February','March','April','May','June','July','August','September','October','November','December']
+  const date = 
   state.totalPatientsChartValue = {
     chartOptions: {
       chart: {
-       
+      
         type: "area",
       },
       dataLabels: {
@@ -397,25 +399,31 @@ export const totalPatientsChartSuccess = (state, count) => {
         curve: "smooth",
       },
       xaxis: {
-        categories:  [
-          "2018-09-19T00:00:00.000Z",
-          "2018-09-19T01:30:00.000Z",
-          "2018-09-19T02:30:00.000Z",
-          "2018-09-19T03:30:00.000Z",
-          "2018-09-19T04:30:00.000Z",
-          "2018-09-19T05:30:00.000Z",
-          "2018-09-19T06:30:00.000Z",
+        type: "datetime",
+        categories: [
+          "Jan 21,2021 1:00:00 PM",
+          "Feb 21,2021 1:00:00 PM",
+          "Mar 21,2021 1:00:00 PM",
+          "Apr 21,2021 1:00:00 PM",
+          "May 21,2021 1:00:00 PM",
+          "Jun 21,2021 1:00:00 PM",
+          "JUl 21,2021 1:00:00 PM",
         ],
       },
+      tooltip: {
+        x: {
+          format: "MMM/dd/yyyy",
+        },
+      },
     },
-    series:  [
+    series: [
       {
-        name: "series1",
+        name: "Patients",
         data: [31, 40, 28, 51, 42, 109, 100],
       },
-     
     ],
   };
+ // console.log("check",state.totalPatientsChartValue)
 }
 
 export const appointmentChartSuccess = (state, count) => {
@@ -434,29 +442,25 @@ export const appointmentChartSuccess = (state, count) => {
       xaxis: {
         type: "datetime",
         categories: [
-          "2018-09-19T00:00:00.000Z",
-          "2018-09-19T01:30:00.000Z",
-          "2018-09-19T02:30:00.000Z",
-          "2018-09-19T03:30:00.000Z",
-          "2018-09-19T04:30:00.000Z",
-          "2018-09-19T05:30:00.000Z",
-          "2018-09-19T06:30:00.000Z",
+          "Jan 21,2021 1:00:00 PM",
+          "Feb 21,2021 1:00:00 PM",
+          "Mar 21,2021 1:00:00 PM",
+          "Apr 21,2021 1:00:00 PM",
+          "May 21,2021 1:00:00 PM",
+          "Jun 21,2021 1:00:00 PM",
+          "JUl 21,2021 1:00:00 PM",
         ],
       },
       tooltip: {
         x: {
-          format: "dd/MM/yy HH:mm",
+          format: "MMM/dd/yyyy",
         },
       },
     },
     series: [
       {
-        name: "series1",
+        name: "Appointment",
         data: [31, 40, 28, 51, 42, 109, 100],
-      },
-      {
-        name: "series2",
-        data: [11, 32, 45, 32, 34, 52, 41],
       },
     ],
   };
