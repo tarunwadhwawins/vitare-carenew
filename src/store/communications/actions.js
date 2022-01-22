@@ -2,9 +2,9 @@ import ServiceMethodService from '../../services/serviceMethod';
 // import AuthService from '../../services/auth';
 import { API_ENDPOINTS } from "../../config/apiConfig"
 
-export const callPerStaff = async ({ commit }) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['CallPerStaff'], null, null).then((response) => {
-		commit('callPerStaffSuccess', response.data.data);
+export const callPlanned = async ({ commit }) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['CallPlanned'], null, null).then((response) => {
+		commit('callPlannedSuccess', response.data.data);
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {
