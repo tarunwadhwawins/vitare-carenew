@@ -465,3 +465,6 @@ export const appointmentChartSuccess = (state, count) => {
     ],
   };
 }
+export const widget = (state,data) =>{
+  state.widget=data
+}

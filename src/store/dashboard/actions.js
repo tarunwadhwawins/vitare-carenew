@@ -123,3 +123,6 @@ export const appointmentChart = async ({ commit }) => {
         commit('failure', error.response.data);
     })
 }
+export const widgettype =  ({ commit },data) => {
+            commit('widget', data);
+}

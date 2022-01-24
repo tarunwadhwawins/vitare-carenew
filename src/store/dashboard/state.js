@@ -8,5 +8,6 @@ export default {
     cptCodeValue:null,
     totalPatientsChartValue:null,
     appointmentChartValue:null,
-    button:null
+    button:null,
+    widget:null,
 }

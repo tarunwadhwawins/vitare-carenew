@@ -1,5 +1,5 @@
 <template>
-  <a-col :sm="12" :xs="24">
+  
     <a-card :title="title" class="common-card">
       <a-table :columns="column" :data-source="data" :pagination="false" >
         <template #patientName="text">
@@ -14,7 +14,7 @@
         </template>
       </a-table>
     </a-card>
-  </a-col>
+
 </template>
 <script>
   import { reactive } from "vue"

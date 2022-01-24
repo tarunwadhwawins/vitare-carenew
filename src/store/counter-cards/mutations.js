@@ -35,14 +35,14 @@ export const totalPatientsSuccess = (state, count) => {
             "color":"#0fb5c2",
             "textColor":"#fff"
         },
-        {
-            "text": "inactivePatients",
-            "count":0,
-            "class":"six",
-            "color":"#267dff",
-            "textColor":"#fff"
+        // {
+        //     "text": "inactivePatients",
+        //     "count":0,
+        //     "class":"six",
+        //     "color":"#267dff",
+        //     "textColor":"#fff"
 
-        },
+        // },
 
 
 
