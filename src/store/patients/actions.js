@@ -19,7 +19,7 @@ export const patients = async ({
   commit
 }, id) => {
   await serviceMethod.common("get", `patient`, null, null).then((response) => {
-    console.log("response", response.data.data)
+    console.log("patientsList", response.data.data)
     commit('patients', response.data.data);
   }).catch((error) => {
     commit('errorMsg', error);
@@ -72,7 +72,7 @@ export const programList = async ({
   commit
 }, data) => {
   await serviceMethod.common("get", `program`, null, data).then((response) => {
-    console.log("response", response.data.data)
+    console.log("programList", response.data.data)
     commit('programList', response.data.data);
   }).catch((error) => {
     commit('failure', error);
