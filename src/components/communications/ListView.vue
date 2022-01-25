@@ -179,7 +179,6 @@ export default {
     const handleChange = (value) => {
       // searchParams.push(value);
       // let newSearchParams = searchParams.slice(-1)[0];
-      // console.log('newSearchParams', newSearchParams);
       // store.dispatch('searchCommunications', newSearchParams)
     };
     
@@ -200,7 +199,7 @@ export default {
       handleChange,
       searchCommunications,
       onChange: (pagination, filters, sorter, extra) => {
-        console.log("params", pagination, filters, sorter, extra);
+        // console.log("params", pagination, filters, sorter, extra);
       },
     };
   },
