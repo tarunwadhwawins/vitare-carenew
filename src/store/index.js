@@ -5,6 +5,7 @@ import { patients } from "./patients/index"
 import { common } from "./common/index"
 import { counterCards } from "./counter-cards/index"
 import { careCoordinator } from "./careCoordinator/index"
+import { tasks } from "./tasks/index"
 export default createStore({
 modules: {
   dashBoard,
