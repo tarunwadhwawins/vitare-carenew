@@ -1,6 +1,6 @@
 const dashboard = {
   totalPatients: 'Total Patients',
-  newPatients: 'New Patients',
+  New: 'New Patients',
   criticalPatients: 'Critical Patients',
   abnormalPatients: 'Abnormal Patients',
   activePatients: 'Active Patients',
@@ -10,7 +10,10 @@ const dashboard = {
   cPTCodeBillingSummary: 'CPT Code Billing Summary',
   financialStats: 'Financial Stats',
   totalPatientsChart: 'Total Patients Chart',
-  appointmentSummary: 'Appointment Summary'
+  appointmentSummary: 'Appointment Summary',
+  Normal: 'Normal',
+  High: 'High',
+  Critical: 'Critical'
 }
 
 

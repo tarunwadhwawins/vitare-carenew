@@ -1,5 +1,5 @@
 <template>
-  <a-col :xl="xl" :sm="12" :xs="12">
+  <a-col :xl="xl" :sm="sm" :xs="12">
     <router-link :to="link">
       <div class="topBox" :style="{'background-color': color}">
         <i class="fa fa-user-circle-o" aria-hidden="true"></i>
@@ -27,6 +27,9 @@
       },
       
       xl:{
+        type:Number
+      },
+      sm:{
         type:Number
       },
       color:{

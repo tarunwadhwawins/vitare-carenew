@@ -5,5 +5,7 @@ export default {
     // inActivePaitientcount: null,
     // abnormalPaitientcount: null,
     // criticalPaitientcount: null,
-    xlGrid:null,
+    grid:null,
+    patientsCondition:null
+    
 }
