@@ -1,36 +1,36 @@
 <template>
-  <a-col :xl="12"  :xs="24">
-    <div class="colorBox" :class="customClass">
-      <UserOutlined />
-      <h3>{{ count }}</h3>
-      <p>{{ text }}</p>
-    </div>
-  </a-col>
+<div v-bind:style="{ backgroundColor: backgroundColor, color: textColor }" class="colorBox">
+    <UserOutlined />
+    <h3>{{ count }}</h3>
+    <p>{{ text }}</p>
+</div>
 </template>
 
 <script>
-import { UserOutlined } from "@ant-design/icons-vue";
-export default {
-  components: {
+import {
     UserOutlined
-  },
-  props: {
-    backgroundColor: {
-      type: String,
-      required: true
+} from "@ant-design/icons-vue";
+export default {
+    components: {
+        UserOutlined
     },
-    textColor: {
-      type: String,
-      required: true
+    props: {
+        backgroundColor: {
+            type: String,
+            required: true
+        },
+        textColor: {
+            type: String,
+            required: true
+        },
+        count: {
+            type: Number,
+            required: true
+        },
+        text: {
+            type: String,
+            required: true
+        },
     },
-    count: {
-      type: Number,
-      required: true
-    },
-    text: {
-      type: String,
-      required: true
-    },
-  },
 }
 </script>
