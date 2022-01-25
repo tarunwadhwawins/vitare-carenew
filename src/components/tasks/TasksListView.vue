@@ -18,15 +18,15 @@
     </a-col>
     <a-col :sm="24">
       <a-table
-        :columns="columns"
-        :data-source="data"
+        :columns="tasksColumns"
+        :data-source="tasksList"
         :scroll="{ x: 900 }"
         :pagination="false"
         @change="onChange">
-        <template #name="text">
+        <template #taskName="text">
           <router-link to="#" @click="showModal">{{ text.text }}</router-link>
         </template>
-        <template #assigned="text">
+        <template #assignedBy="text">
           <router-link to="corrdinator-summary">{{ text.text }}</router-link>
         </template>
         <template #status>
@@ -65,7 +65,8 @@ import {
   EditOutlined,
   CalendarOutlined,
 } from "@ant-design/icons-vue";
-import { ref } from "vue";
+import { ref, watchEffect, computed } from "vue";
+import { useStore } from "vuex"
 export default {
   components: {
     DeleteOutlined,
@@ -73,6 +74,14 @@ export default {
     CalendarOutlined,
   },
   setup() {
+    const store = useStore()
+    watchEffect(() => {
+      store.dispatch("tasksList")
+    })
+      
+    const tasksList = computed(() => {
+      return store.state.tasks.tasksList
+    })
 
     const handleChange = (value) => {
       console.log(`selected ${value}`);
@@ -112,12 +121,12 @@ export default {
       },
     ]);
 
-    const columns = [
+    const tasksColumns = [
       {
         title: "Task Name",
-        dataIndex: "name",
+        dataIndex: "taskName",
         slots: {
-          customRender: "name",
+          customRender: "taskName",
         },
         filters: [
           {
@@ -129,7 +138,7 @@ export default {
             value: "task 2",
           },
         ],
-        onFilter: (value, record) => record.name.indexOf(value) === 0,
+        onFilter: (value, record) => record.taskName.indexOf(value) === 0,
       },
       {
         title: "Status ",
@@ -155,7 +164,7 @@ export default {
             value: "urgent",
           },
         ],
-        onFilter: (value, record) => record.name.indexOf(value) === 0,
+        onFilter: (value, record) => record.status.indexOf(value) === 0,
       },
       {
         title: "Category ",
@@ -178,11 +187,11 @@ export default {
             value: "internal",
           },
         ],
-        onFilter: (value, record) => record.name.indexOf(value) === 0,
+        onFilter: (value, record) => record.category.indexOf(value) === 0,
       },
       {
         title: "Due Date ",
-        dataIndex: "duedate",
+        dataIndex: "dueDate",
         filters: [
           {
             text: "Dec 24, 2021",
@@ -193,11 +202,11 @@ export default {
             value: "Dec 28, 2021",
           },
         ],
-        onFilter: (value, record) => record.name.indexOf(value) === 0,
+        onFilter: (value, record) => record.dueDate.indexOf(value) === 0,
       },
       {
         title: "Assigned By",
-        dataIndex: "assigned",
+        dataIndex: "assignedBy",
         filters: [
           {
             text: "John",
@@ -211,7 +220,7 @@ export default {
         slots: {
           customRender: "assigned",
         },
-        onFilter: (value, record) => record.name.indexOf(value) === 0,
+        onFilter: (value, record) => record.assignedBy.indexOf(value) === 0,
       },
       {
         title: "Actions",
@@ -221,7 +230,7 @@ export default {
         },
       },
     ];
-    const data = [
+    /* const data = [
       {
         key: "1",
         name: " Task 1",
@@ -262,14 +271,14 @@ export default {
         assigned: "Andrew",
         actions: "",
       },
-    ];
+    ]; */
 
    return {
       size: ref([]),
       handleChange,
       searchoptions,
-      columns,
-      data,
+      tasksColumns,
+      tasksList,
     } 
   }
 }

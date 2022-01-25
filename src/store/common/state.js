@@ -14,7 +14,8 @@ export default {
     timeline:null,
     taskPriority:null,
     network:null,
-    specialization:null
+    specialization:null,
+    taskCategory:null
 
 
 

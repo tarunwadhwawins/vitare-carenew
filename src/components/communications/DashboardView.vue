@@ -1,12 +1,10 @@
 <template>
   <a-row :gutter="24" >
    
-    <!-- Cards -->
-    <LongCard customClass="blueBg" :count="10" :text="$t('global.yesterday')">
-    </LongCard>
-    <LongCard customClass="two" :count="10" :text="$t('global.today')"></LongCard>
-    <LongCard customClass="skyBlue" :count="10" :text="$t('global.tomorrow')"></LongCard>
-    <LongCard customClass="four" :count="10" :text="$t('global.week')"></LongCard>
+    <!-- Top Cards -->
+    <template v-for="count in communicationsCount" :key="count.id">
+      <LongCard :backgroundColor="count.backgroundColor" :count="count.count" :text="count.text" :textColor="textColor"></LongCard>
+    </template>
 
     <!-- Charts -->
     <a-col :sm="12" :xs="24" v-if="callPlanned">
@@ -44,6 +42,7 @@
   import PopulateWaitingRoomTab from "@/components/communications/tabs/PopulateWaitingRoomTab";
   import { ref, watchEffect, computed } from 'vue'
   import { useStore } from "vuex"
+  import moment from 'moment'
   export default {
     components: {
       LongCard,
@@ -52,6 +51,7 @@
     },
     setup() {
       const store = useStore()
+      const dateTimeNow = moment(new Date()).format('YYYY-MM-DD')
 
       const newRequestsColumns = [
         {
@@ -96,11 +96,13 @@
       ];
       
       watchEffect(() => {
+        console.log('DATE NOW', dateTimeNow)
         store.dispatch("callPlanned")
         store.dispatch("callStatus")
         store.dispatch("communicationTypes")
         store.dispatch("futureAppointments")
         store.dispatch("newRequests")
+        store.dispatch("communicationsCount", dateTimeNow)
       })
       
       const callPlanned = computed(() => {
@@ -118,9 +120,10 @@
       const futureAppointmentsData = computed(() => {
         return store.state.communications.futureAppointments
       })
-      console.log('newRequestsData', newRequestsData);
-      console.log('futureAppointmentsData', futureAppointmentsData);
-
+      const communicationsCount = computed(() => {
+        return store.state.communications.communicationsCount
+      })
+      
       return {
         activeKey: ref("1"),
         callPlanned,
@@ -128,6 +131,7 @@
         newRequestsData,
         futureAppointmentsColumns,
         futureAppointmentsData,
+        communicationsCount,
         communicationTypes,
         callStatus,
       };
