@@ -9,6 +9,7 @@ export const API_ENDPOINTS = {
     CallPlanned:"call/staff",
     communicationsList:"communication",
     patientsList:"patient",
+    staffList:"staff",
     patientDetails:"patient",
     
     TodayAppointment:"appointment/today",
@@ -23,8 +24,15 @@ export const API_ENDPOINTS = {
     futureAppointments:"appointment/future",
     newRequests:"appointment/new",
     communicationTypes:"communication/type",
-    addCommunication:"communication/1",
-    TimeLine:"patient/new"
+    addCommunication:"communication",
+    TimeLine:"patient/new",
+    communicationsCount:"communication/count",
+    searchCommunications:"communication/search",
+
+    addTask:"task",
+    tasksList:"task",
+    taskStatus:"task/status",
+    taskPriority:"task/priority",
 };
 
 // export const getApiUrl = key => {

@@ -52,7 +52,20 @@ export const communicationsList = async ({ commit }) => {
 
 export const patientsList = async ({ commit }) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['patientsList'], null, null).then((response) => {
+		console.log('patientsListSuccess', response.data.data);
 		commit('patientsListSuccess', response.data.data);
+	})
+	.catch((error) => {
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}
+
+export const staffList = async ({ commit }) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['staffList'], null, null).then((response) => {
+		commit('staffListSuccess', response.data.data);
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {
@@ -89,6 +102,31 @@ export const futureAppointments = async ({ commit }) => {
 export const newRequests = async ({ commit }) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['newRequests'], null, null).then((response) => {
 		commit('newRequestsSuccess', response.data.data);
+	})
+	.catch((error) => {
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}
+
+export const communicationsCount = async ({ commit }, date) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['communicationsCount']+'?date='+date, null).then((response) => {
+		commit('communicationsCountSuccess', response.data.data);
+	})
+	.catch((error) => {
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}
+
+export const searchCommunications = async ({ commit }, data) => {
+	console.log('data', data)
+	await ServiceMethodService.common("get", API_ENDPOINTS['searchCommunications']+'?search[]='+data, null, null).then((response) => {
+		commit('searchCommunicationsSuccess', response.data.data);
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {

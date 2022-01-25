@@ -2,13 +2,47 @@
   <a-modal width="1000px" title="Communications" centered>
     <a-form :model="messageForm" layout="vertical" @finish="sendMessage">
       <a-row :gutter="24">
+        <!-- <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="$t('communications.communicationsModal.from')" name="from">
+              <a-input v-model:value="messageForm.from" size="large" readonly />
+            </a-form-item>
+          </div>
+        </a-col> -->
         <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="$t('communications.communicationsModal.from')" name="from">
+              <a-select
+                ref="select"
+                v-if="staffList"
+                v-model:value="messageForm.from"
+                style="width: 100%"
+                size="large">
+                <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.name }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="$t('communications.communicationsModal.to')" name="to">
+              <div class="btn toggleButton" :class="toggleTo ? 'active' : ''" @click="toggleTo = !toggleTo">
+                <span class="btn-content">{{ $t('communications.communicationsModal.patient') }}</span>
+              </div>
+              <div class="btn toggleButton" :class="toggleTo ? '' : 'active'" @click="toggleTo = !toggleTo">
+                <span class="btn-content">{{ $t('communications.communicationsModal.staff') }}</span>
+              </div>
+              <a-input type="hidden" id="entityType" v-model="messageForm.entityType" :value="toggleTo ? 'patient' : 'staff'" />
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24" v-show="toggleTo">
           <div class="form-group">
             <a-form-item :label="$t('communications.communicationsModal.patient')" name="patient">
               <a-select
                 ref="select"
                 v-if="patientsList"
-                v-model:value="messageForm.patientId"
+                v-model:value="messageForm.referenceId"
                 style="width: 100%"
                 size="large"
                  @change="patientChange">
@@ -17,17 +51,17 @@
             </a-form-item>
           </div>
         </a-col>
-        <a-col :sm="12" :xs="24">
+        <a-col :sm="12" :xs="24" v-show="!toggleTo">
           <div class="form-group">
-            <a-form-item :label="$t('communications.communicationsModal.to')" name="to">
-            <a-input v-model:value="messageForm.to" size="large" readonly />
-            </a-form-item>
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <a-form-item :label="$t('communications.communicationsModal.subject')" name="subject">
-              <a-input v-model:value="messageForm.subject" size="large" />
+            <a-form-item :label="$t('communications.communicationsModal.staff')" name="staff">
+              <a-select
+                ref="select"
+                v-if="staffList"
+                v-model:value="messageForm.referenceId"
+                style="width: 100%"
+                size="large">
+                <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.name }}</a-select-option>
+              </a-select>
             </a-form-item>
           </div>
         </a-col>
@@ -65,15 +99,24 @@
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item :label="$t('communications.communicationsModal.type')" name="type">
+            <a-form-item :label="$t('communications.communicationsModal.messageType')" name="type">
               <a-select
                 ref="select"
                 v-model:value="messageForm.messageTypeId"
                 style="width: 100%"
                 size="large"
                 @change="handleChange">
-                <a-select-option v-for="type in messageType.globalCode" :key="type.id" :value="type.id">{{ type.name }}</a-select-option>
+                  <template v-for="type in messageType.globalCode">
+                    <a-select-option v-if="type.name == 'SMS' || type.name == 'Email'" :key="type.id" :value="type.id">{{ type.name }}</a-select-option>
+                  </template>
               </a-select>
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :span="24">
+          <div class="form-group">
+            <a-form-item :label="$t('communications.communicationsModal.subject')" name="subject">
+              <a-input v-model:value="messageForm.subject" size="large" />
             </a-form-item>
           </div>
         </a-col>
@@ -102,7 +145,9 @@
   export default {
     setup(props, {emit}) {
       const store = useStore()
+      const toggleTo = ref(true);
 
+      const staffId = localStorage.getItem('staffId');
       const visible = ref(true);
       const handleCancel = () => {
         emit('is-visible', false);
@@ -111,6 +156,7 @@
       watchEffect(() => {
         store.dispatch("globalCodes")
         store.dispatch("patientsList")
+        store.dispatch("staffList")
       })
       
       const taskPriority = computed(() => {
@@ -126,21 +172,28 @@
       const patientsList = computed(() => {
         return store.state.communications.patientsList
       })
-      console.log('taskPriority', taskPriority.value)
+      const staffList = computed(() => {
+        return store.state.communications.staffList
+      })
 
       const messageForm = reactive({
-        to: '',
-        patientId: '',
-        priorityId: '',
-        messageCategoryId: '',
-        message: '',
+        from: '',
+        entityType: '',
+        referenceId: '',
         subject: '',
+        messageCategoryId: '',
+        priorityId: '',
         messageTypeId: '',
+        message: '',
       });
 
       const sendMessage = () => {
+        messageForm.entityType = document.getElementById("entityType").value
+        // console.log('entityType', document.getElementById("entityType").value)
         console.log('Message Form', messageForm)
-        store.dispatch('addCommunication', messageForm)
+        store.dispatch('addCommunication', messageForm).then(res => {
+          store.dispatch('communicationsList')
+        })
         emit('is-visible', false);
       }
 
@@ -154,10 +207,12 @@
       };
       
       return {
+        toggleTo,
         patientChange,
         handleCancel,
         sendMessage,
         patientsList,
+        staffList,
         taskPriority,
         messageCategories,
         messageType,
@@ -170,5 +225,16 @@
 <style>
 .ant-modal-footer {
   display: none;
+}
+.toggleButton {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 6px 16px;
+  display: inline-block;
+  cursor: pointer;
+  width: 100px;
+}
+.toggleButton.active {
+  background-color: #777;
+  color: #fff;
 }
 </style>
