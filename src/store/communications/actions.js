@@ -124,7 +124,6 @@ export const communicationsCount = async ({ commit }, date) => {
 }
 
 export const searchCommunications = async ({ commit }, data) => {
-	console.log('data', data)
 	await ServiceMethodService.common("get", API_ENDPOINTS['searchCommunications']+'?search[]='+data, null, null).then((response) => {
 		commit('searchCommunicationsSuccess', response.data.data);
 	})

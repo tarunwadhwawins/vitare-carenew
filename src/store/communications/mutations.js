@@ -214,5 +214,5 @@ export const communicationsCountSuccess = async (state, count) => {
   state.communicationsCount = count;
 }
 export const searchCommunicationsSuccess = async (state, result) => {
-  state.searchCommunications = result;
+  state.communicationsList = result;
 }

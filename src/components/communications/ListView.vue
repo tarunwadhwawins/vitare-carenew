@@ -175,29 +175,25 @@ export default {
   },
   setup() {
     const store = useStore()
-    // var searchParams = [];
-    const handleChange = (value) => {
-      // searchParams.push(value);
-      // let newSearchParams = searchParams.slice(-1)[0];
-      // store.dispatch('searchCommunications', newSearchParams)
-    };
-    
+    var searchParams = [];
+
     watchEffect(() => {
       store.dispatch('communicationsList')
     })
-    // const communicationsList = [];
     const communicationsList = computed(() => {
       return store.state.communications.communicationsList
     })
-    const searchCommunications = computed(() => {
-      return store.state.communications.searchCommunications
-    })
+
+    const handleChange = (value) => {
+      searchParams.push(value);
+      let newSearchParams = searchParams.slice(-1)[0];
+      store.dispatch('searchCommunications', newSearchParams)
+    };
 
     return {
       communicationsList,
       columns,
       handleChange,
-      searchCommunications,
       onChange: (pagination, filters, sorter, extra) => {
         // console.log("params", pagination, filters, sorter, extra);
       },
