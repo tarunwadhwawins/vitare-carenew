@@ -148,8 +148,8 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('patient.demographics.MRN')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('patient.demographics.MRN')" name="medicalRecordNumber" :rules="[{ required: true, message: $t('patient.demographics.MRN')+' '+$t('global.validation') }]">
-                                    <a-input v-model:value="demographics.medicalRecordNumber" size="large" />
+                                <a-form-item :label="$t('patient.demographics.MRN')" name="medicalRecordNumber" :rules="[{ required: true, message: $t('patient.demographics.MRN')+' '+$t('global.validation'),pattern: new RegExp(/^[0-9]*$/) }]">
+                                    <a-input v-model:value="demographics.medicalRecordNumber" placeholder="Please enter number only" size="large" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -186,8 +186,8 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('global.zipcode')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('global.zipcode')" name="zipCode" :rules="[{ required: true, message: $t('global.zipcode')+' '+$t('global.validation'),pattern: new RegExp('^[0-9]{5}$') }]">
-                                    <a-input v-model:value="demographics.zipCode" size="large" />
+                                <a-form-item :label="$t('global.zipcode')" name="zipCode" :rules="[{ required: true, message:$t('global.validValidation')+' '+ $t('global.zipcode').toLowerCase(),pattern: new RegExp('^[0-9]{5}$') }]">
+                                    <a-input v-model:value="demographics.zipCode" placeholder="Please enter 5 digit number" size="large" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -928,9 +928,12 @@ export default {
             } else {
                 store.dispatch('demographics', demographics)
             }
-            // if(patients.value.demographics.id){
-            current.value++;
-            // }
+            setTimeout(()=>{
+                if(patients.value.demographics.id){
+             current.value++;
+            }
+            },2000)
+            
 
             // current.value = patients.value.counter
         }

@@ -205,14 +205,14 @@ export const demographics = (state, data) => {
           title: "Onboarding scheduled date",
           dataIndex: "onboardingScheduleDate",
         },
-        {
-          title: "Start Date",
-          dataIndex: "start",
-        },
-        {
-          title: "End Date",
-          dataIndex: "end",
-        },
+        // {
+        //   title: "Start Date",
+        //   dataIndex: "start",
+        // },
+        // {
+        //   title: "End Date",
+        //   dataIndex: "end",
+        // },
         {
           title: "Discharge Date",
           dataIndex: "dischargeDate",
