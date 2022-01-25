@@ -3,15 +3,23 @@
     <a-col :sm="12" :xs="24">
         <h2>{{$t('global.specialization')}}</h2>
         <a-row :gutter="24">
-            <LongCard customClass="two" :count="2" text="Wellness"></LongCard>
-            <LongCard customClass="four" :count="2" text="Behavior"></LongCard>
+            <a-col :xl="12"  :xs="24">
+            <LongCard backgroundColor="#8e60ff"  customClass="two" :count="2" text="Wellness"></LongCard>
+            </a-col>
+            <a-col :xl="12"  :xs="24">
+            <LongCard customClass="four" backgroundColor="#ffa800"  :count="2" text="Behavior"></LongCard>
+            </a-col>
         </a-row>
     </a-col>
     <a-col :sm="12" :xs="24">
         <h2>{{$t('global.network')}}</h2>
         <a-row :gutter="24">
-            <LongCard customClass="six" :count="3" text="In"></LongCard>
-            <LongCard customClass="five" :count="3" text="Out"></LongCard>
+            <a-col :xl="12"  :xs="24">
+            <LongCard customClass="six" backgroundColor="#267dff" :count="3" text="In"></LongCard>
+            </a-col>
+            <a-col :xl="12"  :xs="24">
+            <LongCard customClass="five" backgroundColor="#0fb5c2" :count="3" text="Out"></LongCard>
+            </a-col>
         </a-row>
     </a-col>
 </a-row> 
