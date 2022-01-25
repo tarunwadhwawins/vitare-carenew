@@ -29,9 +29,10 @@
       </a-col>
       <a-col :span="24">
 
-        <a-row :gutter="24" v-if="xlGrid">
-          <Card v-for="item in totalPatients" :key="item.count" :count="item.count" :text='item.text'
-            link="manage-patients" :xl="xlGrid" :color="item.color" :textColor="item.textColor" :draggable="true">
+        <a-row :gutter="24" v-if="grid">
+         
+          <Card v-for="item in totalPatients" :key="item.count" :count="item.total" :text='item.text'
+            link="manage-patients" :xl="grid.xlGrid" :color="item.color" :sm="grid.smGrid" :textColor="item.textColor" >
           </Card>
 
         </a-row>
@@ -73,13 +74,13 @@
       </a-col>
     </a-row>
     <a-row :gutter="24">
-      <a-col :sm="12" :xs="24" v-if="cptCodeValue">
+      <a-col :sm="12" :xs="24" v-if="specialization">
 
         <ApexChart :title="$t('dashboard.cPTCodeBillingSummary')" type="bar" :height="350" :options="cptCodeValue.code"
           :series="cptCodeValue.value" linkTo="cpt-codes"></ApexChart>
 
       </a-col>
-      <a-col :sm="12" :xs="24" v-if="financialValue">
+      <a-col :sm="12" :xs="24" v-if="specialization">
 
         <!-- <div class="list-group">
                   <div class="list-group-item">
@@ -92,14 +93,14 @@
       </a-col>
     </a-row>
     <a-row :gutter="24">
-      <a-col :sm="12" :xs="24" v-if="totalPatientsChartValue">
+      <a-col :sm="12" :xs="24" v-if="specialization">
 
         <ApexChart :title="$t('dashboard.totalPatientsChart')" type="area" :height="350"
           :options="totalPatientsChartValue.chartOptions" :series="totalPatientsChartValue.series"
           linkTo="manage-patients"></ApexChart>
 
       </a-col>
-      <a-col :sm="12" :xs="24" v-if="appointmentChartValue">
+      <a-col :sm="12" :xs="24" v-if="specialization">
         <ApexChart :title="$t('dashboard.appointmentSummary')" type="area" :height="350"
           :options="appointmentChartValue.chartOptions" :series="appointmentChartValue.series"
           linkTo="appointment-calendar"></ApexChart>
@@ -221,7 +222,7 @@
 
     setup() {
       const store = useStore()
-      //const button = ref()
+
       const router = useRouter();
       const timeline = computed(() => {
         return store.state.common.timeline
@@ -231,52 +232,30 @@
         return store.state.dashBoard.button
       })
       function apiCall(data) {
-        //console.log("data", data)
-        store.dispatch("totalPatients")
+        store.dispatch("counterCard")
         store.dispatch("todayAppointment")
         store.dispatch("callStatus")
-        // store.dispatch("abnormalPatients")
-        // store.dispatch("activePatients")
-        // store.dispatch("inactivePatients")
-        // store.dispatch("criticalPatients")
-        // store.dispatch("newPatients")
-        store.dispatch("patientsStats")
         store.dispatch("specialization")
 
         store.dispatch("network")
 
         store.dispatch("cptCode")
         store.dispatch("financial")
-        store.dispatch("totalPatientsChart")
-        store.dispatch("appointmentChart")
+        store.dispatch("totalPatientsChart",data)
+        store.dispatch("appointmentChart",data)
       }
       watchEffect(() => {
         apiCall(button)
 
       })
-
-
-      // const criticalPatients = computed(() => {
-      //   return store.state.counterCards.criticalPaitientcount
-      // })
-      // const abnormalPatients = computed(() => {
-      //   return store.state.counterCards.abnormalPaitientcount
-      // })
-      // const activePatients = computed(() => {
-      //   return store.state.counterCards.activePaitientcount
-      // })
-      // const inactivePatients = computed(() => {
-      //   return store.state.counterCards.inActivePaitientcount
-      // })
-
       const totalPatients = computed(() => {
         return store.state.counterCards.totalPatientcount
       })
-      const xlGrid = computed(() => {
-        return store.state.counterCards.xlGrid
+      const grid = computed(() => {
+        return store.state.counterCards.grid
       })
       const patientsCondition = computed(() => {
-        return store.state.dashBoard.patientsCondition
+        return store.state.counterCards.patientsCondition
       })
       const data4 = computed(() => {
         return store.state.dashBoard.todayAppointmentState
@@ -320,26 +299,12 @@
 
 
       function showButton(id) {
-        // console.log(id)
         store.state.dashBoard.button = id;
         apiCall(button)
       }
 
-      // function showButton2() {
-      //   button.value = 2;
-      // }
-      // function showButton3() {
-      //   button.value = 3;
-      // }
-      // function showButton4() {
-      //   button.value = 4;
-      // }
       return {
-        xlGrid,
-        // inactivePatients,
-        // abnormalPatients,
-        // criticalPatients,
-        // activePatients,
+        grid,
         totalPatients,
         callStatus,
         patientsCondition,
