@@ -186,7 +186,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <!-- <label>{{$t('global.zipcode')}} <span class="red-color">*</span></label> -->
-                                <a-form-item :label="$t('global.zipcode')" name="zipCode" :rules="[{ required: true, message: $t('global.zipcode')+' '+$t('global.validation'),pattern: new RegExp('^[0-9]{10}$') }]">
+                                <a-form-item :label="$t('global.zipcode')" name="zipCode" :rules="[{ required: true, message: $t('global.zipcode')+' '+$t('global.validation'),pattern: new RegExp('^[0-9]{5}$') }]">
                                     <a-input v-model:value="demographics.zipCode" size="large" />
                                 </a-form-item>
                             </div>
