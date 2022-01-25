@@ -190,7 +190,7 @@
       const sendMessage = () => {
         messageForm.entityType = document.getElementById("entityType").value
         // console.log('entityType', document.getElementById("entityType").value)
-        console.log('Message Form', messageForm)
+        // console.log('Message Form', messageForm)
         store.dispatch('addCommunication', messageForm).then(res => {
           store.dispatch('communicationsList')
         })
@@ -202,8 +202,8 @@
         const patientDetails = computed(() => {
           return store.state.communications.patientDetails;
         });
-        console.log('Patient Email', patientDetails.value);
-        messageForm.to = patientDetails.value.email;
+        // console.log('Patient Email', patientDetails.value);
+        // messageForm.to = patientDetails.value.email;
       };
       
       return {
