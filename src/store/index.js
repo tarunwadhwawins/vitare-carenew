@@ -12,6 +12,7 @@ modules: {
   patients,
   counterCards,
   common,
-  careCoordinator
+  careCoordinator,
+  tasks,
   },
 })

@@ -9,19 +9,14 @@ export const API_ENDPOINTS = {
     CallPlanned:"call/staff",
     communicationsList:"communication",
     patientsList:"patient",
+    staffList:"staff",
     patientDetails:"patient",
     
     TodayAppointment:"appointment/today",
     CallStatus:"call/status",
-    TotalPaitient:"patient/total",
-    ActivePaitient:"patient/active",
-    InActivePaitient:"patient/inActive",
-    AbnormalPaitient:"patient/abnormal",
-    NewPaitient:"patient/new",
-    CriticalPaitient:"patient/critical",
-    PatientCondition:"patient/condition",
-    Financial:"patient/condition",
-    CptCode:"patient/condition",
+    CounterCard:"patient/count",
+    Financial:"patient/count",
+    CptCode:"patient/count",
     Network:"staff/network",
     Specialization:"staff/specialization",
     TotalPatientsChart:"count/patient",
@@ -29,8 +24,15 @@ export const API_ENDPOINTS = {
     futureAppointments:"appointment/future",
     newRequests:"appointment/new",
     communicationTypes:"communication/type",
-    addCommunication:"communication/1",
-    TimeLine:"patient/new"
+    addCommunication:"communication",
+    TimeLine:"patient/new",
+    communicationsCount:"communication/count",
+    searchCommunications:"communication/search",
+
+    addTask:"task",
+    tasksList:"task",
+    taskStatus:"task/status",
+    taskPriority:"task/priority",
 };
 
 // export const getApiUrl = key => {

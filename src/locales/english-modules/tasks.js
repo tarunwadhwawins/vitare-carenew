@@ -12,6 +12,7 @@ const tasks = {
         addTask:'Add Task',
         title:'Title',
         longDescription:'Long Description',
+        status:'Status',
         priority:'Priority',
         assignedTo:'Assigned To',
         category:'Category',

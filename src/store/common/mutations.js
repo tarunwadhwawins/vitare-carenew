@@ -48,6 +48,12 @@ export const globalCodes = (state, data) => {
         if(element.name ==='Specialization'){
             state.specialization= element; 
         }
+        if(element.name ==='Task Category'){
+            state.taskCategory= element; 
+        }
+        if(element.name ==='Task Status'){
+            state.taskStatus= element; 
+        }
      });
 
 }

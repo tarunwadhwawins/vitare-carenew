@@ -47,7 +47,7 @@
       </a-layout>
     </a-layout>
     <!---->
-    <TasksModal v-model:visible="TasksModal" @ok="handleOk" />
+    <TasksModal v-model:visible="visible" @ok="handleOk" @is-visible="handleOk" />
     <!---->
   </div>
 </template>
@@ -72,18 +72,18 @@ export default {
   },
   setup() {
     const toggle = ref(true);
-    const TasksModal = ref(false);
+    const visible = ref(false);
     const showModal = () => {
-      TasksModal.value = true;
+      visible.value = true;
     };
     const handleOk = (e) => {
       console.log(e);
-      TasksModal.value = false;
+      visible.value = false;
     };
     return {
       buttonName: "Add New Task",
       toggle,
-      TasksModal,
+      visible,
       showModal,
       handleOk,
     };

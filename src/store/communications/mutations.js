@@ -1,4 +1,6 @@
-export const callPlannedSuccess = (state, count) => {
+
+  import moment from 'moment'
+  export const callPlannedSuccess = (state, count) => {
   state.callPlanned = {
     calloption: {
       annotations: {
@@ -68,6 +70,71 @@ export const callPlannedSuccess = (state, count) => {
 }
 
 export const communicationTypesSuccess = (state, count) => {
+  const typesData = [
+    {
+      "text": "SMS",
+      "data": [
+          {
+              "count": 7,
+              "time": 10
+          },
+          {
+              "count": 3,
+              "time": 13
+          }
+      ]
+    },
+      {
+        "text": "Reminder",
+        "data": [
+            {
+                "count": 5,
+                "time": 9
+            },
+            {
+                "count": 1,
+                "time": 13
+            }
+        ]
+    },
+      {
+        "text": "Call",
+        "data": [
+            {
+                "count": 7,
+                "time": 7
+            },
+            {
+                "count": 2,
+                "time": 11
+            }
+        ]
+    },
+      {
+        "text": "Email",
+        "data": [
+            {
+                "count": 9,
+                "time": 16
+            },
+            {
+                "count": 4,
+                "time": 18
+            }
+        ]
+    },
+  ]
+  const times = [];
+  typesData.forEach(types => {
+    var data = types.data
+    data.forEach(type => {
+      if (times.some(e => e == type.time)) return;
+      // console.log('Type', type)
+      times.push(type.time);
+    });
+    // var time = new Date(type.data.time * 1000).toLocaleString('en-GB', { timeZone: 'UTC' })
+  });
+  console.log('Times', times);
   state.communicationTypes = {
     calloption: {
       chart: {
@@ -130,6 +197,9 @@ export const addCommunicationSuccess = async (state, addCommunication) => {
 export const patientsListSuccess = async (state, patients) => {
   state.patientsList = patients;
 }
+export const staffListSuccess = async (state, patients) => {
+  state.staffList = patients;
+}
 export const patientDetailsSuccess = async (state, patient) => {
   state.patientDetails = patient;
 }
@@ -139,4 +209,10 @@ export const futureAppointmentsSuccess = async (state, futureAppointments) => {
 }
 export const newRequestsSuccess = async (state, newRequests) => {
   state.newRequests = newRequests;
+}
+export const communicationsCountSuccess = async (state, count) => {
+  state.communicationsCount = count;
+}
+export const searchCommunicationsSuccess = async (state, result) => {
+  state.searchCommunications = result;
 }

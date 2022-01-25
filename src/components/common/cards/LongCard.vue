@@ -15,15 +15,19 @@ export default {
     UserOutlined
   },
   props: {
+    backgroundColor: {
+      type: String,
+      required: true
+    },
+    textColor: {
+      type: String,
+      required: true
+    },
     count: {
       type: Number,
       required: true
     },
     text: {
-      type: String,
-      required: true
-    },
-    customClass: {
       type: String,
       required: true
     },

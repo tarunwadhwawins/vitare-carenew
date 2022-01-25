@@ -1,15 +1,16 @@
 <template>
   <a-row>
     <a-col :span="12">
-      <a-select
-        v-model:value="value2"
-        :size="size"
-        mode="tags"
-        style="width: 100%"
-        placeholder="Search . . ."
-        :options="searchoptions"
-        @change="handleChange">
-      </a-select>
+      <a-form>
+        <a-select
+          v-model:value="search"
+          :size="size"
+          mode="tags"
+          style="width: 100%"
+          placeholder="Search..."
+          @change="handleChange">
+        </a-select>
+      </a-form>
     </a-col>
     <a-col :span="12">
       <div class="text-right mb-24">
@@ -48,11 +49,9 @@
         </template>
 
         <template #priority="{ record }">
-          <span class="circleBox" style="background-color: #008000" v-if="record.status=='completed'" ></span>
-          <span class="circleBox" style="background-color: #ff6061" v-if="record.status=='pending'" ></span>
-          <!-- <span class="circleBox" style="background-color: #008000" v-if="record.priority=='high'" ></span>
-          <span class="circleBox" style="background-color: #ffa800" v-if="record.priority=='medium'" ></span>
-          <span class="circleBox" style="background-color: #ff6061" v-if="record.priority=='low'" ></span> -->
+          <span class="circleBox" style="background-color: #008000" v-if="record.priority=='Urgent'" ></span>
+          <span class="circleBox" style="background-color: #ffa800" v-if="record.priority=='Medium'" ></span>
+          <span class="circleBox" style="background-color: #ff6061" v-if="record.priority=='Normal'" ></span>
         </template>
 
         <template #type="{ record }">
@@ -102,24 +101,19 @@
 
 <script>
 const columns = [
-  /* {
-    dataIndex: "id",
-    key: "key",
-    rowKey: "id",
-  }, */
   {
-    title: "Patient",
-    dataIndex: "patient",
+    title: "From",
+    dataIndex: "from",
     sorter: {
-      compare: (a, b) => a.patient - b.patient,
+      compare: (a, b) => a.from - b.from,
       multiple: 2,
     },
   },
   {
-    title: "Sent To",
-    dataIndex: "sentTo",
+    title: "To",
+    dataIndex: "to",
     sorter: {
-      compare: (a, b) => a.sentTo - b.sentTo,
+      compare: (a, b) => a.to - b.to,
       multiple: 2,
     },
   },
@@ -128,13 +122,6 @@ const columns = [
     dataIndex: "type",
     slots: {
       customRender: "type",
-    },
-  },
-  {
-    title: "Staff",
-    dataIndex: "staff",
-    slots: {
-      customRender: "staff",
     },
   },
   {
@@ -188,57 +175,30 @@ export default {
   },
   setup() {
     const store = useStore()
+    // var searchParams = [];
     const handleChange = (value) => {
-      console.log(`selected ${value}`);
+      // searchParams.push(value);
+      // let newSearchParams = searchParams.slice(-1)[0];
+      // console.log('newSearchParams', newSearchParams);
+      // store.dispatch('searchCommunications', newSearchParams)
     };
     
     watchEffect(() => {
       store.dispatch('communicationsList')
     })
+    // const communicationsList = [];
     const communicationsList = computed(() => {
       return store.state.communications.communicationsList
     })
-    console.log('Data', communicationsList)
-
-    const searchoptions = ref(
-      [
-        {
-          value: "Jane Doe",
-          label: "Jane Doe",
-        },
-        {
-          value: "Steve Smith",
-          label: "Steve Smith",
-        },
-        {
-          value: "Joseph Spouse",
-          label: "Joseph Spouse",
-        },
-        {
-          value: "Robert Henry",
-          label: "Robert Henry",
-        },
-        {
-          value: "Appointment Reminder",
-          label: "Appointment Reminder",
-        },
-        {
-          value: "Recall Reminder",
-          label: "Recall Reminder",
-        },
-        {
-          value: "Patient Message",
-          label: "Patient Message",
-        },
-      ]
-    );
+    const searchCommunications = computed(() => {
+      return store.state.communications.searchCommunications
+    })
 
     return {
       communicationsList,
       columns,
       handleChange,
-      searchoptions,
-
+      searchCommunications,
       onChange: (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
       },

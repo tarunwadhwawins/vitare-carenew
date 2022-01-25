@@ -1,55 +1,76 @@
-export const totalPatientsSuccess = (state, count) => {
-
-    const test = [{
-        "text": "totalPatients",
-        "count": 12,
-        "class": "one",
-        "color": "#fff",
-        "textColor": "#111"
-    },
-    {
-        "text": "newPatients",
-        "count": 2,
-        "class": "two",
-        "color": "#8e60ff",
-        "textColor": "#fff"
-    },
-    {
-        "text": "criticalPatients",
-        "count": 5,
-        "class": "three",
-        "color": "#ff6061",
-        "textColor": "#fff"
-    },
-    {
-        "text": "abnormalPatients",
-        "count": 5,
-        "class": "four",
-        "color": "#ffa800",
-        "textColor": "#fff"
-    },
-        {
-            "text": "activePatients",
-            "count": 12,
-            "class":"five",
-            "color":"#0fb5c2",
-            "textColor":"#fff"
+export const counterCardSuccess = (state, count) => {
+    state.grid = {
+        xlGrid: parseInt(24 / count.length),
+        smGrid: parseInt(24 / parseInt(count.length / 2))
+    }
+    state.totalPatientcount = count
+    state.patientsCondition ={
+        option1: {
+          annotations: {
+            points: [
+              {
+                x: "In",
+                seriesIndex: 0,
+                label: {
+                  borderColor: "#775DD0",
+                  offsetY: 0,
+                  style: {
+                    color: "#fff",
+                    background: "#775DD0",
+                  },
+                },
+              },
+            ],
+          },
+          chart: {
+            type: "bar",
+          },
+          plotOptions: {
+            bar: {
+              borderRadius: 10,
+              columnWidth: "20%",
+              barHeight: "100%",
+              distributed: true,
+              horizontal: false,
+              dataLabels: {
+                position: "bottom",
+              },
+            },
+          },
+          dataLabels: {
+            enabled: false,
+          },
+          colors: count.map((item) => { return item.text=="Normal" || item.text=="High" || item.text=="Critical"  ? item.color :'' }),
+          stroke: {
+            width: 1,
+            colors: ["#fff"],
+          },
+  
+          grid: {
+            row: {
+              colors: ["#fff", "#f2f2f2"],
+            },
+          },
+          xaxis: {
+            labels: {
+              rotate: -45,
+            },
+            categories: count.map((item) => { return item.text=="Normal" || item.text=="High" || item.text=="Critical" ? item.text :'' }),
+          },
+          yaxis: {
+            title: {
+              text: "Patients",
+            },
+          },
         },
-        {
-            "text": "inactivePatients",
-            "count":0,
-            "class":"six",
-            "color":"#267dff",
-            "textColor":"#fff"
-
-        },
-
-
-
-
-    ]
-    state.xlGrid = parseInt(24 / test.length);
-    state.totalPatientcount = test
+        series1: [
+          {
+            name: "Patients",
+            data: count.map((item) => { return item.text=="Normal" || item.text=="High" || item.text=="Critical" ? item.total :'' }),
+          },
+        ],
+  
+      };
 }
 export const failure = (state, error) => {
     state.errorMsg = error;

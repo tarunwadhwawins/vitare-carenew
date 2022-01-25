@@ -1,8 +1,8 @@
 import ServiceMethodService from '../../services/serviceMethod';
 import { API_ENDPOINTS } from "../../config/apiConfig"
-export const totalPatients = async ({ commit }) => {
-    await ServiceMethodService.common("get", API_ENDPOINTS['TotalPaitient'], null, null).then((response) => {
-        commit('totalPatientsSuccess', response.data.data);
+export const counterCard = async ({ commit }) => {
+    await ServiceMethodService.common("get", API_ENDPOINTS['CounterCard'], null, null).then((response) => {
+        commit('counterCardSuccess', response.data.data);
     })
         .catch((error) => {
 
