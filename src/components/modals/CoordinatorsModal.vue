@@ -166,8 +166,9 @@ export default {
         const personalInfo = (values) => {
             store.dispatch('addStaff', personalInfoData)
             setTimeout(()=>{
-                if(addStaff.value.id){
-            current.value++; 
+            if(addStaff.value.id){
+             store.dispatch('staffs')
+             current.value++; 
             }
             },2000)
             
