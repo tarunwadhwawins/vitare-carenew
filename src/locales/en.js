@@ -12,6 +12,7 @@ import timeTrackingReport from './english-modules/timeTrackingReport'
 import thresholds from './english-modules/thresholds'
 import timeLogReport from './english-modules/timeLogReport'
 import patientSummary from './english-modules/patientSummary'
+import common from './english-modules/common'
 
 const english = {
     global,
@@ -27,7 +28,8 @@ const english = {
     timeTrackingReport,
     thresholds,
     timeLogReport,
-    patientSummary
+    patientSummary,
+    common,
 }
 
 export default english
