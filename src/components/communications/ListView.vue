@@ -1,16 +1,15 @@
 <template>
   <a-row>
     <a-col :span="12">
-      <a-form>
-        <a-select
-          v-model:value="search"
-          :size="size"
-          mode="tags"
-          style="width: 100%"
-          placeholder="Search..."
-          @change="handleChange">
-        </a-select>
-      </a-form>
+      <a-select
+        id="searchBox"
+        v-model:value="search"
+        :size="size"
+        mode="tags"
+        style="width: 100%"
+        placeholder="Search..."
+        @change="handleChange">
+      </a-select>
     </a-col>
     <a-col :span="12">
       <div class="text-right mb-24">
@@ -185,9 +184,7 @@ export default {
     })
 
     const handleChange = (value) => {
-      searchParams.push(value);
-      let newSearchParams = searchParams.slice(-1)[0];
-      store.dispatch('searchCommunications', newSearchParams)
+      store.dispatch('searchCommunications', value)
     };
 
     return {
