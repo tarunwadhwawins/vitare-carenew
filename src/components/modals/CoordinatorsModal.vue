@@ -13,6 +13,7 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation') }]">
                                     <a-input v-model:value="personalInfoData.firstName"  size="large" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.firstName[0]" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -20,20 +21,17 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.lastName')" name="lastName" :rules="[{ required: true, message: $t('global.lastName')+' '+$t('global.validation') }]">
                                     <a-input v-model:value="personalInfoData.lastName"  />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.lastName[0]" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item name="designationId" :label="$t('global.designation')" has-feedback :rules="[{ required: true, message: $t('global.designation')+' '+$t('global.validation') }]">
-                                    <!-- <a-select v-model:value="personalInfoData.designationId" placeholder="Please select designation">
-                                        <a-select-option value="Administrative">Administrative</a-select-option>
-                                        <a-select-option value="Manager">Manager</a-select-option>
-                                        <a-select-option value="Executive">Executive</a-select-option>
-                                    </a-select> -->
                                     <a-select ref="select" show-search v-model:value="personalInfoData.designationId" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="designation in careCordinator.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
                                     </a-select>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.designationId[0]" />
                                 </a-form-item>
                             </div>
 
@@ -41,14 +39,10 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item name="genderId" :label="$t('global.gender')" has-feedback :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
-                                    <!-- <a-select v-model:value="personalInfoData.genderId" placeholder="Please select gender">
-                                        <a-select-option value="lucy">Male</a-select-option>
-                                        <a-select-option value="Yiminghe">Female</a-select-option>
-                                        <a-select-option value="Yiminghe">Others</a-select-option>
-                                    </a-select> -->
                                     <a-select ref="select" v-model:value="personalInfoData.genderId" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="gender in careCordinator.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
                                     </a-select>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.genderId[0]" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -56,6 +50,7 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(),type: 'email' }]">
                                     <a-input v-model:value="personalInfoData.email" placeholder="test@test.com" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.email[0]" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -63,26 +58,27 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: new RegExp('^[0-9]{10}$') }]">
                                     <a-input v-model:value="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber[0]" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.specialization')" name="specializationId" :rules="[{ required: true, message: $t('global.specialization')+' '+$t('global.validation') }]">
-                                    <!-- <a-input v-model:value="personalInfoData.specializationId" placeholder="input placeholder" /> -->
                                     <a-select ref="select" v-model:value="personalInfoData.specializationId" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="network in careCordinator.specialization.globalCode" :key="network.id" :value="network.id">{{network.name}}</a-select-option>
                                     </a-select>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.specializationId[0]" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.network')" name="networkId" :rules="[{ required: true, message: $t('global.network')+' '+$t('global.validation') }]">
-                                    <!-- <a-input v-model:value="personalInfoData.networkId" placeholder="input placeholder" /> -->
                                     <a-select ref="select" v-model:value="personalInfoData.networkId" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="network in careCordinator.network.globalCode" :key="network.id" :value="network.id">{{network.name}}</a-select-option>
                                     </a-select>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.networkId[0]" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -133,6 +129,7 @@ import Roles from "@/components/modals/forms/Roles";
 import Documents from "@/components/modals/forms/Documents";
 import Providers from "@/components/modals/forms/Providers";
 import {useStore} from "vuex"
+import ErrorMessage from "../common/messages/ErrorMessage"
 export default {
     components: {
         // PersonalInformation,
@@ -141,6 +138,7 @@ export default {
         Roles,
         Documents,
         Providers,
+        ErrorMessage,
     },
     setup() {
         const current = ref(0);
@@ -194,7 +192,13 @@ export default {
             return store.state.careCoordinator.addStaff
         })
 
+        const errorMsg = computed(() => {
+            return store.state.common.errorMsg
+        })
+
+
         return {
+            errorMsg,
             addStaff,
             careCordinator,
             personalInfoData,

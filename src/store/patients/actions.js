@@ -10,8 +10,14 @@ export const demographics = async ({
     commit('successMsg', response.message);
     alert("Form submitted successfully!")
   }).catch((error) => {
-    commit('errorMsg', error);
-    alert(error) 
+    if(error.response.status === 422){
+      commit('errorMsg', error.response.data)
+    }else if(error.response.status === 500){
+      commit('errorMsg', error.response.data.message)
+    }else if(error.response.status === 401){
+      commit('errorMsg', error.response.data.message)
+    }
+    alert(error.response.data.message) 
   })
 }
 
@@ -37,7 +43,7 @@ export const conditions = async ({
     commit('conditions', response.data.data);
   }).catch((error) => {
     commit('failure', error.response.data);
-    alert(error) 
+    // alert(error.response.data.message)  
   })
 }
 export const patientReferals = async ({
@@ -47,8 +53,9 @@ export const patientReferals = async ({
     console.log("response", response.data.data)
     commit('patientReferals', response.data.data);
   }).catch((error) => {
-    commit('failure', error.response.data);
-    alert(error) 
+    commit('errorMsg', error.response.data);
+    console.log('check',error.response.data)
+    // alert(error.response.data.message) 
   })
 
 }
@@ -61,8 +68,9 @@ export const patientPhysician = async ({
     commit('counterPlus')
     alert("Form submitted successfully!")
   }).catch((error) => {
-    commit('failure', error.response.data);
-    alert(error) 
+    commit('errorMsg', error.response.data);
+    console.log('check',error.response.data)
+    // alert(error.response.data.message) 
   })
 
 }
@@ -90,7 +98,7 @@ export const addProgram = async ({
     alert("Form submitted successfully!")
   }).catch((error) => {
     commit('failure', error.response.data);
-    alert(error) 
+    alert(error.response.data.message) 
   })
 
 }
@@ -121,7 +129,38 @@ export const addDevice = async ({
     alert("Form submitted successfully!")
   }).catch((error) => {
     commit('failure', error.response.data);
-    alert(error) 
+    alert(error.response.data.message) 
+  })
+
+}
+
+let temp =[]
+
+export const parameterFields = async ({
+  commit
+}, id) => {
+  await serviceMethod.common("get", `field/${id}`, null, null).then((response) => {
+    console.log("response", response.data.data)
+    temp[id] = response.data.data
+    commit('parameterFields', temp)
+  }).catch((error) => {
+    commit('failure', error.response.data)
+    alert(error.response.data.message) 
+  })
+//  commit('fields',temp )
+}
+
+
+export const parameter = async ({
+  commit
+}, data) => {
+  await serviceMethod.common("post", `patient/${data.id}/vital`, null, {vital:data.vital}).then((response) => {
+    console.log("response", response.data.data)
+    commit('parameter', response.data.data);
+    alert("Form submitted successfully!")
+  }).catch((error) => {
+    commit('failure', error.response.data);
+    alert(error.response) 
   })
 
 }
