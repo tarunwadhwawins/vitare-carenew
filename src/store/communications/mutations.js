@@ -75,7 +75,8 @@ export const communicationTypesSuccess = (state, response) => {
   const callSeries = communicationType.map((item) => {
     return { name: item.text, data: item.data.map((data) => {
       if (timeList.indexOf(data.time) === -1) {
-        timeList.push(new Date(data.time).toLocaleString())
+        var date = new Date(data.time * 1000);
+        timeList.push(date.getHours())
       }
       return data.count
     })}
