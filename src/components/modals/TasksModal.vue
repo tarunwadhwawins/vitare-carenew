@@ -4,21 +4,21 @@
       <a-row :gutter="24">
         <a-col :span="24">
           <div class="form-group">
-            <a-form-item :label="$t('tasks.tasksModal.title')" name="title">
+            <a-form-item :label="$t('tasks.tasksModal.title')" name="title" :rules="[{ required: true, message: $t('tasks.tasksModal.title')+' '+$t('global.validation')  }]">
               <a-input v-model:value="taskForm.title" size="large" />
             </a-form-item>
           </div>
         </a-col>
         <a-col :span="24">
           <div class="form-group">
-            <a-form-item :label="$t('tasks.tasksModal.longDescription')" name="description">
+            <a-form-item :label="$t('tasks.tasksModal.longDescription')" name="description" :rules="[{ required: true, message: $t('tasks.tasksModal.longDescription')+' '+$t('global.validation')  }]">
               <a-textarea v-model:value="taskForm.description" placeholder="Description" :auto-size="{ minRows: 3 }" />
             </a-form-item>
           </div>
         </a-col>
         <a-col :span="12">
           <div class="form-group">
-            <a-form-item :label="$t('tasks.tasksModal.status')" name="taskStatus">
+            <a-form-item :label="$t('tasks.tasksModal.status')" name="taskStatus" :rules="[{ required: true, message: $t('tasks.tasksModal.status')+' '+$t('global.validation')  }]">
               <a-select v-model:value="taskForm.taskStatus" ref="select" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                 <a-select-option v-for="status in taskStatus.globalCode" :key="status.id" :value="status.id">{{ status.name }}</a-select-option>
               </a-select>
@@ -27,7 +27,7 @@
         </a-col>
         <a-col :span="12">
           <div class="form-group">
-            <a-form-item :label="$t('tasks.tasksModal.priority')" name="priority">
+            <a-form-item :label="$t('tasks.tasksModal.priority')" name="priority" :rules="[{ required: true, message: $t('tasks.tasksModal.priority')+' '+$t('global.validation')  }]">
               <a-select v-model:value="taskForm.priority" ref="select" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                 <a-select-option v-for="priority in taskPriority.globalCode" :key="priority.id" :value="priority.id">{{ priority.name }}</a-select-option>
               </a-select>
@@ -36,28 +36,28 @@
         </a-col>
         <a-col :span="12">
           <div class="form-group">
-            <a-form-item :label="$t('tasks.tasksModal.assignedTo')" name="assignedTo">
+            <a-form-item :label="$t('tasks.tasksModal.assignedTo')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.assignedTo')+' '+$t('global.validation')  }]">
               <a-select v-model:value="taskForm.assignedTo" mode="multiple" size="large" placeholder="Please Select Roles" style="width: 100%" :options="staffList.map((item) => ({ value: item.name }))"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col :span="12">
           <div class="form-group">
-            <a-form-item :label="$t('tasks.tasksModal.category')" name="taskCategory">
+            <a-form-item :label="$t('tasks.tasksModal.category')" name="taskCategory" :rules="[{ required: true, message: $t('tasks.tasksModal.category')+' '+$t('global.validation')  }]">
               <a-select v-model:value="taskForm.taskCategory" mode="multiple" size="large" placeholder="Please Select Category" style="width: 100%" :options="taskCategory.globalCode.map((item) => ({ value: item.name }))"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col :span="12">
           <div class="form-group">
-            <a-form-item :label="$t('tasks.tasksModal.startDate')" name="category">
+            <a-form-item :label="$t('tasks.tasksModal.startDate')" name="startDate" :rules="[{ required: true, message: $t('tasks.tasksModal.startDate')+' '+$t('global.validation')  }]">
               <a-date-picker v-model:value="taskForm.startDate" :size="size" style="width: 100%" />
             </a-form-item>
           </div>
         </a-col>
         <a-col :span="12">
           <div class="form-group">
-            <a-form-item :label="$t('tasks.tasksModal.dueDate')" name="category">
+            <a-form-item :label="$t('tasks.tasksModal.dueDate')" name="dueDate" :rules="[{ required: true, message: $t('tasks.tasksModal.dueDate')+' '+$t('global.validation')  }]">
               <a-date-picker v-model:value="taskForm.dueDate" :size="size" style="width: 100%" />
             </a-form-item>
           </div>
@@ -83,7 +83,8 @@ const assignedToTags = ["Jane Doe", "Steve Smith", "Joseph William"];
 const CategoryTags = ["Admin", "Clinical", "Office", "Personal"];
 export default {
   setup(props, {emit}) {
-
+    const editableTask = JSON.parse(localStorage.getItem('editableTask'));
+    console.log('editableTask', editableTask)
     const taskForm = reactive({
       title: '',
       description: '',
@@ -97,7 +98,9 @@ export default {
 
     const addNewTask = () => {
       console.log('task Form', taskForm)
-      store.dispatch("addTask", taskForm)
+      store.dispatch("addTask", taskForm).then(res => {
+        store.dispatch('tasksList')
+      })
       emit('is-visible', false);
     }
     const visible = ref(true);

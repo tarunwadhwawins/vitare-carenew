@@ -10,3 +10,7 @@ export const taskPrioritySuccess = async (state, priorities) => {
   state.taskPriority = priorities;
 }
 
+export const searchTasksSuccess = async (state, result) => {
+  state.tasksList = result;
+}
+
