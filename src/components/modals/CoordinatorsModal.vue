@@ -165,7 +165,13 @@ export default {
 
         const personalInfo = (values) => {
             store.dispatch('addStaff', personalInfoData)
-            current.value++; 
+            setTimeout(()=>{
+            if(addStaff.value.id){
+             store.dispatch('staffs')
+             current.value++; 
+            }
+            },2000)
+            
         }
 
         const prev = () => {
@@ -184,7 +190,12 @@ export default {
             return store.state.common
         })
 
+        const addStaff = computed(() => {
+            return store.state.careCoordinator.addStaff
+        })
+
         return {
+            addStaff,
             careCordinator,
             personalInfoData,
             current,
