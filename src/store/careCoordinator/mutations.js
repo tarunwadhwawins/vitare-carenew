@@ -51,7 +51,7 @@ export const staffs= async (state, data) => {
         },
         {
           title: "Created At",
-          dataIndex: "created_at",
+          dataIndex: "createdAt",
           sorter: {
             compare: (a, b) => a.created_at - b.created_at,
             multiple: 1,

@@ -2,6 +2,8 @@ const global = {
   dashboard:'Tablero de mandos',
   day:'Día',
   date:'Fecha',
+  validation:'se requiere.',
+  validValidation:'Por favor ingrese válida',
   week:'Semana',
   month:'Mes',
   email:'Correo electrónico',
