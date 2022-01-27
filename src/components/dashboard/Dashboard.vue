@@ -30,16 +30,17 @@
       <a-col :span="24">
 
         <a-row :gutter="24" v-if="grid">
-         
+
           <Card v-for="item in totalPatients" :key="item.count" :count="item.total" :text='item.text'
-            link="manage-patients" :xl="grid.xlGrid" :color="item.color" :sm="grid.smGrid" :textColor="item.textColor" >
+            link="manage-patients" :xl="grid.xlGrid" :color="item.color" :sm="grid.smGrid" :textColor="item.textColor">
           </Card>
 
         </a-row>
       </a-col>
     </a-row>
     <a-row :gutter="24">
-      <Appointement v-if="data4" :appointment="data4" :columns="columns4" :title="$t('dashboard.todayAppointment')">
+      <Appointement v-if="data4" :appointment="dateFormat(data4)" :columns="columns4"
+        :title="$t('dashboard.todayAppointment')">
       </Appointement>
 
       <a-col :sm="12" :xs="24" v-if="callStatus">
@@ -121,6 +122,7 @@
   import Card from "@/components/common/cards/Card"
   import Appointement from "./Appointment"
   import ApexChart from "@/components/common/charts/ApexChart";
+  import moment from 'moment';
   const columns4 = [
     {
       title: "Patient Name",
@@ -241,13 +243,20 @@
 
         store.dispatch("cptCode")
         store.dispatch("financial")
-        store.dispatch("totalPatientsChart",data)
-        store.dispatch("appointmentChart",data)
+        store.dispatch("totalPatientsChart", data)
+        store.dispatch("appointmentChart", data)
       }
       watchEffect(() => {
         apiCall(button)
 
       })
+      function dateFormat(data) {
+        data.map(el => {
+          let date = moment(new Date(el.startDate));
+          el.startDateTime = date.format("MMM DD, YYYY") + " " + moment(el.startTime, "HH:mm:ss").format("hh:mm A")
+        })
+        return data
+      }
       const totalPatients = computed(() => {
         return store.state.counterCards.totalPatientcount
       })
@@ -259,6 +268,7 @@
       })
       const data4 = computed(() => {
         return store.state.dashBoard.todayAppointmentState
+
       })
       const callStatus = computed(() => {
         return store.state.dashBoard.callStatus
@@ -304,6 +314,7 @@
       }
 
       return {
+        dateFormat,
         grid,
         totalPatients,
         callStatus,

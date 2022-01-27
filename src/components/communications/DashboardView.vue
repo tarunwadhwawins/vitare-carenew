@@ -98,7 +98,6 @@
       ];
       
       watchEffect(() => {
-        console.log('DATE NOW', dateTimeNow)
         store.dispatch("callPlanned")
         store.dispatch("callStatus")
         store.dispatch("communicationTypes")
