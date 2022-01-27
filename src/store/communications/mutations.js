@@ -69,72 +69,18 @@
   }
 }
 
-export const communicationTypesSuccess = (state, count) => {
-  const typesData = [
-    {
-      "text": "SMS",
-      "data": [
-          {
-              "count": 7,
-              "time": 10
-          },
-          {
-              "count": 3,
-              "time": 13
-          }
-      ]
-    },
-      {
-        "text": "Reminder",
-        "data": [
-            {
-                "count": 5,
-                "time": 9
-            },
-            {
-                "count": 1,
-                "time": 13
-            }
-        ]
-    },
-      {
-        "text": "Call",
-        "data": [
-            {
-                "count": 7,
-                "time": 7
-            },
-            {
-                "count": 2,
-                "time": 11
-            }
-        ]
-    },
-      {
-        "text": "Email",
-        "data": [
-            {
-                "count": 9,
-                "time": 16
-            },
-            {
-                "count": 4,
-                "time": 18
-            }
-        ]
-    },
-  ]
-  const times = [];
-  typesData.forEach(types => {
-    var data = types.data
-    data.forEach(type => {
-      if (times.some(e => e == type.time)) return;
-      // console.log('Type', type)
-      times.push(type.time);
-    });
-    // var time = new Date(type.data.time * 1000).toLocaleString('en-GB', { timeZone: 'UTC' })
-  });
-  console.log('Times', times);
+export const communicationTypesSuccess = (state, response) => {
+  const communicationType = [response]
+  const timeList = [];
+  const callSeries = communicationType.map((item) => {
+    return { name: item.text, data: item.data.map((data) => {
+      if (timeList.indexOf(data.time) === -1) {
+        timeList.push(new Date(data.time).toLocaleString())
+      }
+      return data.count
+    })}
+  })
+  
   state.communicationTypes = {
     calloption: {
       chart: {
@@ -145,46 +91,13 @@ export const communicationTypesSuccess = (state, count) => {
         enabled: false,
       },
       stroke: {
-        // width: [5, 7, 5, 8],
         curve: "straight",
-        // dashArray: [0, 8, 5, 6],
       },
-      /* yaxis: {
-        title: {
-          text: "Number of Calls",
-        },
-      }, */
       xaxis: {
-        categories: ["10", "12", "2", "4", "6", "8"],
-      },
-      tooltip: {
-        x: {
-          // format: "dd/MM/yy HH:mm",/
-        },
+        categories: timeList,
       },
     },
-    callseries: [
-      /* {
-        name: count.map((item) => { return item.text }),
-        data: count.map((item) => { return item.count }),
-      }, */
-      {
-        name: "SMS",
-        data: [15, 16, 18, 15, 14, 17, 18],
-      },
-      {
-        name: "Reminder",
-        data: [12, 14, 15, 13, 12, 15, 14],
-      },
-      {
-        name: "Call",
-        data: [11, 10, 11, 9, 10, 9, 11],
-      },
-      {
-        name: "Email",
-        data: [8, 7, 6, 3, 7, 8, 2],
-      },
-    ],
+    callseries: callSeries,
   }
 }
 
@@ -214,5 +127,5 @@ export const communicationsCountSuccess = async (state, count) => {
   state.communicationsCount = count;
 }
 export const searchCommunicationsSuccess = async (state, result) => {
-  state.searchCommunications = result;
+  state.communicationsList = result;
 }
