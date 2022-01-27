@@ -237,14 +237,14 @@ export const demographics = (state, data) => {
     state.addDevice = data
  }
 
+
+ export const parameterFields = (state, data) => {
+     console.log("data",data)
+    state.parameterFields = data
+ }
+
  
 
- export const successMsg = (state, data) => {
-    state.successMsg = data
- }
 
- export const errorMsg = (state, data) => {
-    state.errorMsg = data
- }
  
 

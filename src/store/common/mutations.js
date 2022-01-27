@@ -58,5 +58,14 @@ export const globalCodes = (state, data) => {
 
 }
 
+export const successMsg = (state, data) => {
+    state.successMsg = data
+ }
+
+ export const errorMsg = (state, data) => {
+    state.errorMsg = data
+ }
+
+
 
 

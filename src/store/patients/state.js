@@ -6,10 +6,9 @@ export default {
     addProgram:null,
     program:null,
     addDevice:null,
-    successMsg:null, 
-    errorMsg:null,
     patientList:[],
     column:null,
-    columns:null
+    columns:null,
+    parameterFields:null
 
 }
