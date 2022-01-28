@@ -119,11 +119,11 @@
     {
       title: "Date Time",
 
-      dataIndex: 'startDateTime',
+      dataIndex: 'date',
     },
     {
       title: "Appointment With",
-      dataIndex: "staff",
+      dataIndex: "staff['name']",
       slots: {
         customRender: "staff",
       },
@@ -234,8 +234,8 @@
       function dateFormat(data) {
 
         data.map(el => {
-          let date = moment(new Date(el.startDate));
-          el.startDateTime = date.format("MMM DD, YYYY") + ", " + moment(el.startTime, "HH:mm:ss").format("hh:mm A")
+          let date = moment(new Date(el.date));
+          el.date = date.format("MMM DD, YYYY") + ", " + moment(el.time, "HH:mm:ss").format("hh:mm A")
         })
         return data
       }

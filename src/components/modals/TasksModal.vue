@@ -80,7 +80,7 @@ import { ref, reactive, watchEffect, computed } from "vue";
 import { useStore } from "vuex"
 
 const assignedToTags = ["Jane Doe", "Steve Smith", "Joseph William"];
-const CategoryTags = ["Admin", "Clinical", "Office", "Personal"];
+//const CategoryTags = ["Admin", "Clinical", "Office", "Personal"];
 export default {
   setup(props, {emit}) {
     const editableTask = JSON.parse(localStorage.getItem('editableTask'));
@@ -97,8 +97,9 @@ export default {
     });
 
     const addNewTask = () => {
-      console.log('task Form', taskForm)
+      ///console.log('task Form', taskForm)
       store.dispatch("addTask", taskForm).then(res => {
+        console.log('task Form', res)
         store.dispatch('tasksList')
       })
       emit('is-visible', false);

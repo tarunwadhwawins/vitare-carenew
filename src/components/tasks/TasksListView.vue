@@ -93,7 +93,7 @@ export default {
       store.dispatch('searchTasks', value)
     };
 
-    const deleteTask = (id) => {
+    const deleteTask = () => {
       swal({
         title: "Are you sure?",
         text: "Are you sure you want to delete this record?",
