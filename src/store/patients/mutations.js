@@ -237,6 +237,53 @@ export const demographics = (state, data) => {
     state.addDevice = data
  }
 
+ 
+
+ export const devices = (state, data) => {
+    state.devices = data
+    state.devicesColumns =[
+        {
+          title: "Device Type",
+          dataIndex: "home",
+        },
+        {
+          title: "Model No",
+          dataIndex: "model",
+        },
+        {
+          title: "Serial No",
+          dataIndex: "serial",
+        },
+        {
+          title: "MAC Address",
+          dataIndex: "mac",
+        },
+        {
+          title: "Device Time",
+          dataIndex: "device",
+        },
+        {
+          title: "Server Time",
+          dataIndex: "server",
+        },
+        {
+          title: "Active/Inactive",
+          dataIndex: "active",
+          slots: {
+            customRender: "active",
+          },
+        },
+        {
+          title: "Action",
+          dataIndex: "action",
+          slots: {
+            customRender: "action",
+          },
+        },
+      ];
+      
+ }
+
 
  export const parameterFields = (state, data) => {
      console.log("data",data.map((item)=>{if(item!=null) return item}))
