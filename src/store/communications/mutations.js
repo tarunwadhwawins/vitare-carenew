@@ -1,5 +1,4 @@
 
-  import moment from 'moment'
   export const callPlannedSuccess = (state, count) => {
   state.callPlanned = {
     calloption: {
