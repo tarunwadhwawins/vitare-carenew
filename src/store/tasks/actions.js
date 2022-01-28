@@ -52,3 +52,15 @@ export const taskPriority = async ({ commit }) => {
 		commit('failure', error.response.data);
 	})
 }
+
+export const searchTasks = async ({ commit }, params) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['searchTasks']+'?search='+params, null, null).then((response) => {
+		commit('searchTasksSuccess', response.data.data);
+	})
+	.catch((error) => {
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}

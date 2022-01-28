@@ -39,7 +39,7 @@
 
               <!-- List View -->
             <div class="list-view" v-show="!toggle">
-                <TasksListView/>
+                <TasksListView @isEdit="showModal"/>
             </div>
 
           </div>
