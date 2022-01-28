@@ -623,6 +623,23 @@
                             <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
                         </a-col>
                     </a-row>
+                    <a-row :gutter="24" class="mb-24">
+    <a-col :span="24">
+      <a-table
+        :columns="deviceColumns"
+        :data-source="deviceData"
+        :pagination="false"
+        :scroll="{ x: 900 }"
+      >
+        <template #active>
+          <a-switch v-model:checked="checked" />
+        </template>
+        <template #action>
+          <a class="icons"><DeleteOutlined /></a>
+        </template>
+      </a-table>
+    </a-col>
+  </a-row>
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                         <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
@@ -766,7 +783,7 @@
                 </a-row>
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                    <a-button v-if="current < steps.length - 1" type="primary">{{$t('global.next')}}</a-button>
+                    <a-button v-if="current < steps.length - 1" type="primary"  @click="next">{{$t('global.next')}}</a-button>
                     <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
                         {{$t('global.done')}}
                     </a-button>
@@ -887,7 +904,7 @@
                     </a-row>
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                        <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
+                        <a-button v-if="current < steps.length - 1" type="primary" >{{$t('global.next')}}</a-button>
                         <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
                             {{$t('global.done')}}
                         </a-button>
@@ -1034,12 +1051,11 @@ export default {
       } else {
         store.dispatch("demographics", demographics);
       }
-      setTimeout(() => {
+      setTimeout(() => { 
         if (patients.value.demographics.id) {
-            store.dispatch('patients')
-          current.value++;
+          current.value++; 
         }
-      }, 2000);
+      }, 3000);
 
       // current.value = patients.value.counter
     };
@@ -1110,9 +1126,12 @@ export default {
         data: device,
         id: patients.value.demographics.id,
       });
-      if (patients.value.addDevice.id) {
-        current.value++;
-      }
+    //   if (patients.value.addDevice.id) {
+    //     current.value++;
+    //   }
+      setTimeout(() => {
+        store.dispatch("devices", patients.value.demographics.id);
+      }, 3000);
     };
 
     const parameter = (values) => {
@@ -1139,7 +1158,6 @@ export default {
         data: clinicalMedication,
         id: patients.value.demographics.id
       });
-      let id = 51;
       setTimeout(() => {
         store.dispatch("clinicalMedicatList", patients.value.demographics.id);
       }, 3000);
@@ -1151,6 +1169,12 @@ export default {
         data: { insurance: [insuranceData] },
         id: patients.value.demographics.id
       });
+      setTimeout(() => {
+        if (patients.value.insuranceForm.id) {
+          current.value++;
+        }
+      }, 2000);
+
     };
 
     const onFileUpload = (event) => {
@@ -1204,6 +1228,14 @@ export default {
 
     const patients = computed(() => {
       return store.state.patients;
+    });
+
+    const deviceData = computed(() => {
+      return store.state.patients.devices;
+    });
+
+    const deviceColumns = computed(() => {
+      return store.state.patients.devicesColumns;
     });
 
     const columns = computed(() => {
@@ -1262,6 +1294,8 @@ export default {
     });
 
     return {
+        deviceColumns,
+        deviceData,
       documentFile,
       filePath,
       onFileUpload,

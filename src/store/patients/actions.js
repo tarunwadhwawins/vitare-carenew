@@ -134,8 +134,22 @@ export const addDevice = async ({
 
 }
 
-let temp =[]
+export const devices = async ({
+  commit
+}, data) => {
+  await serviceMethod.common("get", `patient/${data.id}/inventory`, null, data.data).then((response) => {
+    console.log("response", response.data.data)
+    commit('devices', response.data.data);
+  }).catch((error) => {
+    commit('failure', error.response.data);
+    alert(error.response.data.message) 
+  })
 
+}
+
+
+
+let temp =[]
 export const parameterFields = async ({
   commit
 }, id) => {
