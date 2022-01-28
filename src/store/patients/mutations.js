@@ -239,12 +239,113 @@ export const demographics = (state, data) => {
 
 
  export const parameterFields = (state, data) => {
-     console.log("data",data)
-    state.parameterFields = data
+     console.log("data",data.map((item)=>{if(item!=null) return item}))
+    state.parameterFields = data.map((item)=>{if(item!=null) return item})
+ }
+
+
+ 
+ 
+ export const clinicalHistory = (state, data) => {
+    state.clinicalHistory = data
+ }
+
+ export const clinicalHistoryList = (state, data) => {
+    state.clinicalHistoryList = data
+    state.clinicalHistoryListColumns =  [
+        {
+          title: "History",
+          dataIndex: "history",
+        },
+        {
+          title: "Actions",
+          dataIndex: "actions",
+          slots: {
+            customRender: "action",
+          },
+        },
+      ];
+ }
+
+ 
+ export const clinicalMedicat = (state, data) => {
+    state.clinicalMedicat = data
  }
 
  
 
+ export const clinicalMedicatList = (state, data) => {
+    state.clinicalMedicatList = data
+    state.clinicalMedicatListColumns=[
+        {
+          title: "Medication List",
+          dataIndex: "medicine",
+        },
+        {
+            title: "Frequency",
+            dataIndex: "frequency",
+          },
+        {
+          title: "Start Date",
+          dataIndex: "startDate",
+        },
+        {
+          title: "End Date",
+          dataIndex: "endDate",
+        },
+        {
+          title: "Status",
+          dataIndex: "status",
+        },
+        {
+          title: "Actions",
+          dataIndex: "actions",
+          slots: {
+            customRender: "action",
+          },
+        },
+      ];
+ }
 
  
+ export const insuranceForm = (state, data) => {
+    state.insuranceForm = data
+ }
 
+
+ export const documentForm = (state, data) => {
+    state.documentForm = data
+ }
+
+ export const documents = (state, data) => {
+    state.documents = data
+    state.documentColumns=[
+        {
+          title: "Name",
+          dataIndex: "name",
+        },
+        {
+          title: "Document",
+          dataIndex: "document",
+        },
+        {
+          title: "	Type",
+          dataIndex: "type",
+        },
+        {
+          title: "	Tags",
+          dataIndex: "tags",
+        },
+        {
+          title: "Actions",
+          dataIndex: "actions",
+          slots: {
+            customRender: "action",
+          },
+        },
+      ];
+ }
+ 
+ export const uploadFile = (state, data) => {
+    state.uploadFile = data
+ }
