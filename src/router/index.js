@@ -48,7 +48,7 @@ const routes = [
   {
     path: '/appointment-calendar',
     name: 'AppointmnetCalendar',
-    component: () => import( '../components/appoinment-calendar/AppointmentCalendar')
+    component: () => import( '@/views/appoinment-calendar/AppointmentCalendar')
   },
 
   {

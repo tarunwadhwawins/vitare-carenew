@@ -1,11 +1,11 @@
 import ServiceMethodService from '../../services/serviceMethod';
 import { API_ENDPOINTS } from "../../config/apiConfig"
-export const timeLine = async ({ commit },data) => {
-    commit('timelineSuccess', data);
+export const timeLine = async ({ commit }, id) => {
+    commit('timelineSuccess', id);
     // await ServiceMethodService.common("get", API_ENDPOINTS['TimeLine'], null, null).then((response) => {
-       
+
     //         commit('timelineSuccess', response.data.data);
-       
+
     // }).catch((error) => {
     //     if (error.response.status == 401) {
     //         //AuthService.logout();
@@ -13,8 +13,8 @@ export const timeLine = async ({ commit },data) => {
     //     commit('failure', error.response.data);
     // })
 }
-export const todayAppointment = async ({ commit }) => {
-    await ServiceMethodService.common("get", API_ENDPOINTS['TodayAppointment'], null, null).then((response) => {
+export const todayAppointment = async ({ commit }, id) => {
+    await ServiceMethodService.common("get", API_ENDPOINTS['TodayAppointment'] + "?timelineId=" + id, null, null).then((response) => {
         commit('todayAppointmentSuccess', response.data.data);
     })
         .catch((error) => {
@@ -22,9 +22,9 @@ export const todayAppointment = async ({ commit }) => {
         })
 
 }
-export const callStatus = async ({ commit }) => {
-    await ServiceMethodService.common("get", API_ENDPOINTS['CallStatus'], null, null).then((response) => {
-       commit('callStatusSuccess',response.data.data)
+export const callStatus = async ({ commit }, id) => {
+    await ServiceMethodService.common("get", API_ENDPOINTS['CallStatus'] + "?timelineId=" + id, null, null).then((response) => {
+        commit('callStatusSuccess', response.data.data)
 
     }).catch((error) => {
         if (error.response.status == 401) {
@@ -46,8 +46,8 @@ export const callStatus = async ({ commit }) => {
 
 export const specialization = async ({ commit }, id) => {
 
-    await ServiceMethodService.common("get", API_ENDPOINTS['Specialization'], id, null).then((response) => {
-            commit('specializationSuccess', response.data.data);
+    await ServiceMethodService.common("get", API_ENDPOINTS['Specialization'] + "?timelineId=" + id, null, null).then((response) => {
+        commit('specializationSuccess', response.data.data);
     }).catch((error) => {
         if (error.response.status == 401) {
             //AuthService.logout();
@@ -57,12 +57,12 @@ export const specialization = async ({ commit }, id) => {
 }
 
 
-export const network = async ({ commit }) => {
+export const network = async ({ commit }, id) => {
 
-    await ServiceMethodService.common("get", API_ENDPOINTS['Network'], null, null).then((response) => {
-       
-            commit('networkSuccess', response.data.data);
-       
+    await ServiceMethodService.common("get", API_ENDPOINTS['Network'] + "?timelineId=" + id, null, null).then((response) => {
+
+        commit('networkSuccess', response.data.data);
+
     }).catch((error) => {
         if (error.response.status == 401) {
             //AuthService.logout();
@@ -72,11 +72,11 @@ export const network = async ({ commit }) => {
 }
 
 export const cptCode = async ({ commit }) => {
-    commit('cptCodeSuccess', "working");
+    commit('cptCodeSuccess');
     // await ServiceMethodService.common("get", API_ENDPOINTS['CptCode'], null, null).then((response) => {
-       
+
     //         commit('cptCodeSuccess', response.data.data);
-       
+
     // }).catch((error) => {
     //     if (error.response.status == 401) {
     //         //AuthService.logout();
@@ -85,11 +85,11 @@ export const cptCode = async ({ commit }) => {
     // })
 }
 export const financial = async ({ commit }) => {
-    commit('financialSuccess', "working");
+    commit('financialSuccess');
     // await ServiceMethodService.common("get", API_ENDPOINTS['Financial'], null, null).then((response) => {
-       
+
     //         commit('financialSuccess', response.data.data);
-       
+
     // }).catch((error) => {
     //     if (error.response.status == 401) {
     //         //AuthService.logout();
@@ -97,29 +97,29 @@ export const financial = async ({ commit }) => {
     //     commit('failure', error.response.data);
     // })
 }
-export const totalPatientsChart =  ({ commit },data) => {
-    commit('totalPatientsChartSuccess', data);
-    // await ServiceMethodService.common("get", API_ENDPOINTS['TotalPatientsChart'], null, null).then((response) => {
-       
-            
-       
-    // }).catch((error) => {
-    //     if (error.response.status == 401) {
-    //         //AuthService.logout();
-    //     }
-    //     commit('failure', error.response.data);
-    //})
+export const totalPatientsChart = async ({ commit }, id) => {
+
+    await ServiceMethodService.common("get", API_ENDPOINTS['TotalPatientsChart'] + "?timelineId=" + id, null, null).then((response) => {
+
+        commit('totalPatientsChartSuccess', response.data.data);
+
+    }).catch((error) => {
+        if (error.response.status == 401) {
+            //AuthService.logout();
+        }
+        commit('failure', error.response.data);
+    })
 }
-export const appointmentChart = async ({ commit },data) => {
-    commit('appointmentChartSuccess', data);
-    // await ServiceMethodService.common("get", API_ENDPOINTS['AppointmentChart'], null, null).then((response) => {
-       
-    //         commit('appointmentChartSuccess', response.data.data);
-       
-    // }).catch((error) => {
-    //     if (error.response.status == 401) {
-    //         //AuthService.logout();
-    //     }
-    //     commit('failure', error.response.data);
-    // })
+export const appointmentChart = async ({ commit }, id) => {
+
+    await ServiceMethodService.common("get", API_ENDPOINTS['AppointmentChart'] + "?timelineId=" + id, null, null).then((response) => {
+
+        commit('appointmentChartSuccess', response.data.data);
+
+    }).catch((error) => {
+        if (error.response.status == 401) {
+            //AuthService.logout();
+        }
+        commit('failure', error.response.data);
+    })
 }

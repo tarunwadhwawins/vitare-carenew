@@ -23,7 +23,7 @@ export const demographics = async ({
 
 export const patients = async ({
   commit
-}, id) => {
+}) => {
   await serviceMethod.common("get", `patient`, null, null).then((response) => {
     console.log("patientsList", response.data.data)
     commit('patients', response.data.data);

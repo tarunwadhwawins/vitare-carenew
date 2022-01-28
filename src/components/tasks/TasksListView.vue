@@ -2,12 +2,12 @@
   <a-row :gutter="24">
     <a-col :span="12">
       <a-select
-        v-model:value="value2"
+        id="searchBox"
+        v-model:value="search"
         :size="size"
         mode="tags"
         style="width: 100%"
-        placeholder="Search . . ."
-        :options="searchoptions"
+        placeholder="Search..."
         @change="handleChange">
       </a-select>
     </a-col>
@@ -32,25 +32,30 @@
         <template #status>
           <a-switch />
         </template>
-        <template #action>
+        <template #category="{ record }">
+          <router-link v-for="category in record.categories" :key="category.id" to="corrdinator-summary">
+            {{ category }}
+          </router-link>
+        </template>
+        <template #action="{ record }">
           <a-tooltip placement="bottom">
             <template #title>
               <span>{{ $t('global.edit') }}</span>
             </template>
-            <a class="icons"><EditOutlined /></a>
+            <a class="icons"><EditOutlined @click="editTask(record.id)" /></a>
           </a-tooltip>
           <a-tooltip placement="bottom">
             <template #title>
               <span>{{$t('global.delete')}}</span>
             </template>
-            <a class="icons"> <DeleteOutlined /></a>
+            <a class="icons"> <DeleteOutlined @click="deleteTask(record.id)" /></a>
           </a-tooltip>
           <a-tooltip placement="bottom">
             <template #title>
               <span>{{$t('tasks.createAppointment')}}</span>
             </template>
             <router-link to="appointment-calendar" class="icons">
-              <CalendarOutlined/>
+              <CalendarOutlined @click="createAppointment(record.id)"/>
             </router-link>
           </a-tooltip>
         </template>
@@ -67,13 +72,14 @@ import {
 } from "@ant-design/icons-vue";
 import { ref, watchEffect, computed } from "vue";
 import { useStore } from "vuex"
+import swal from 'sweetalert';
 export default {
   components: {
     DeleteOutlined,
     EditOutlined,
     CalendarOutlined,
   },
-  setup() {
+  setup(props, {emit}) {
     const store = useStore()
     watchEffect(() => {
       store.dispatch("tasksList")
@@ -84,42 +90,36 @@ export default {
     })
 
     const handleChange = (value) => {
-      console.log(`selected ${value}`);
+      store.dispatch('searchTasks', value)
     };
-    const searchoptions = ref([
-      {
-        value: "Jane Doe",
-        label: "Jane Doe",
-      },
-      {
-        value: "Steve Smith",
-        label: "Steve Smith",
-      },
-      {
-        value: "Joseph Spouse",
-        label: "Joseph Spouse",
-      },
-      {
-        value: "Robert Henry",
-        label: "Robert Henry",
-      },
-      {
-        value: "Task 1",
-        label: "Task 1",
-      },
-      {
-        value: "Task 2",
-        label: "Task 2",
-      },
-      {
-        value: "Clinical",
-        label: "Clinical",
-      },
-      {
-        value: "Internal",
-        label: "Internal",
-      },
-    ]);
+
+    const deleteTask = () => {
+      swal({
+        title: "Are you sure?",
+        text: "Are you sure you want to delete this record?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          // swal("Deleted!", "The record is deleted!", "success")
+          store.dispatch("tasksList")
+        }
+      });
+    };
+
+    const editTask = (id) => {
+      emit('isEdit', true);
+      console.log('editTask', id);
+    };
+
+    const updateTask = (data) => {
+      console.log('updateTask', data)
+    };
+
+    const createAppointment = (id) => {
+      console.log('createAppointment', id)
+    };
 
     const tasksColumns = [
       {
@@ -167,27 +167,11 @@ export default {
         onFilter: (value, record) => record.status.indexOf(value) === 0,
       },
       {
-        title: "Category ",
+        title: "Category",
         dataIndex: "category",
-        filters: [
-          {
-            text: "Clinical",
-            value: "clinical",
-          },
-          {
-            text: "Comm",
-            value: "comm",
-          },
-          {
-            text: "Admin",
-            value: "admin",
-          },
-          {
-            text: "Internal",
-            value: "internal",
-          },
-        ],
-        onFilter: (value, record) => record.category.indexOf(value) === 0,
+        slots: {
+          customRender: "category",
+        },
       },
       {
         title: "Due Date ",
@@ -230,55 +214,16 @@ export default {
         },
       },
     ];
-    /* const data = [
-      {
-        key: "1",
-        name: " Task 1",
-        status: "",
-        priority: "High",
-        category: "Clinical",
-        duedate: "Dec 24, 2021",
-        assigned: "John",
-        actions: "",
-      },
-      {
-        key: "2",
-        name: "Task 2",
-        status: "",
-        priority: "Normal",
-        category: "Internal",
-        duedate: "Dec 28, 2021",
-        assigned: "Devin",
-        actions: "",
-      },
-      {
-        key: "3",
-        name: " Task 3",
-        status: "",
-        priority: "Critical ",
-        category: "Comm",
-        duedate: "Dec 29, 2021",
-        assigned: "Smith",
-        actions: "",
-      },
-      {
-        key: "4",
-        name: "Task 4",
-        status: "",
-        priority: "Normal",
-        category: "Admin",
-        duedate: "Dec 30, 2021",
-        assigned: "Andrew",
-        actions: "",
-      },
-    ]; */
 
    return {
       size: ref([]),
       handleChange,
-      searchoptions,
       tasksColumns,
       tasksList,
+      deleteTask,
+      editTask,
+      updateTask,
+      createAppointment,
     } 
   }
 }
