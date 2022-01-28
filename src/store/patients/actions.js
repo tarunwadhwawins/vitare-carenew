@@ -136,8 +136,8 @@ export const addDevice = async ({
 
 export const devices = async ({
   commit
-}, data) => {
-  await serviceMethod.common("get", `patient/${data.id}/inventory`, null, data.data).then((response) => {
+}, id) => {
+  await serviceMethod.common("get", `patient/${id}/inventory`, null, null).then((response) => {
     console.log("response", response.data.data)
     commit('devices', response.data.data);
   }).catch((error) => {
@@ -246,7 +246,7 @@ export const insuranceForm = async ({commit}, data) => {
       finalInsurance.expirationDate=insuranceData.expirationDate[i];
       finalInsurance.insuranceName=insuranceData.insuranceName[i];
       finalInsurance.insuranceNumber=insuranceData.insuranceNumber[i];
-      finalInsurance.insuranceType=item;
+      finalInsurance.insuranceType=insuranceData.insuranceType[i];
       return finalInsurance;
     }
   })

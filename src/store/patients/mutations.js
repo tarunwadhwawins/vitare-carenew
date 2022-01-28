@@ -244,27 +244,27 @@ export const demographics = (state, data) => {
     state.devicesColumns =[
         {
           title: "Device Type",
-          dataIndex: "home",
+          dataIndex: "deviceType",
         },
         {
           title: "Model No",
-          dataIndex: "model",
+          dataIndex: "modelNumber",
         },
         {
           title: "Serial No",
-          dataIndex: "serial",
+          dataIndex: "serialNumber",
         },
         {
           title: "MAC Address",
-          dataIndex: "mac",
+          dataIndex: "macAddress",
         },
         {
           title: "Device Time",
-          dataIndex: "device",
+          dataIndex: "deviceTime",
         },
         {
           title: "Server Time",
-          dataIndex: "server",
+          dataIndex: "serverTime",
         },
         {
           title: "Active/Inactive",
