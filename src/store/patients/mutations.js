@@ -5,20 +5,21 @@ export const demographics = (state, data) => {
 
  export const patients = (state, data) => {
     // state.patientList = data;
+    console.log('mutationPatients',data)
      data.forEach(element => {
          state.patientList.push({
-             flags:element.patientFlags.data[0]?element.patientFlags.data[0].flags.data[0].color:'',
-             firstName:element.firstName?element.firstName:'',
-             lastReadingDate:element.lastReadingDate?element.lastReadingDate:'',
-             weight:element.weight?element.weight:'',
-             reading: "",
-             compliance: "",
-             message: "",
-             readingvalues: "",
-             sp02: "",
-             bp: "",
-             glucose: "",
-             active:'',
+            flags:element.patientFlags.data[0]?element.patientFlags.data[0].flags.data.color:'',
+            firstName:element.firstName?element.firstName:'',
+            lastReadingDate:element.lastReadingDate?element.lastReadingDate:'',
+            weight:element.weight?element.weight:'',
+            //  reading: "",
+            //  compliance: "",
+            //  message: "",
+            //  readingvalues: "",
+            //  sp02: "",
+            //  bp: "",
+            //  glucose: "",
+            //  active:'',
             })
      });
     
@@ -190,39 +191,6 @@ export const demographics = (state, data) => {
 
   export const addProgram = (state, data) => {
     state.addProgram = data
-    state.columns = [
-        {
-          title: "Program Name",
-          dataIndex: "program",
-        },
-        {
-          title: "Onboarding scheduled date",
-          dataIndex: "Onboarding",
-        },
-        {
-          title: "Start Date",
-          dataIndex: "start",
-        },
-        {
-          title: "End Date",
-          dataIndex: "end",
-        },
-        {
-          title: "Discharge Date",
-          dataIndex: "discharge",
-        },
-        {
-          title: "Status",
-          dataIndex: "status",
-        },
-        {
-          title: "Actions",
-          dataIndex: "actions",
-          slots: {
-            customRender: "action",
-          },
-        },
-      ];
  }
 
 
@@ -235,19 +203,19 @@ export const demographics = (state, data) => {
         },
         {
           title: "Onboarding scheduled date",
-          dataIndex: "Onboarding",
+          dataIndex: "onboardingScheduleDate",
         },
-        {
-          title: "Start Date",
-          dataIndex: "start",
-        },
-        {
-          title: "End Date",
-          dataIndex: "end",
-        },
+        // {
+        //   title: "Start Date",
+        //   dataIndex: "start",
+        // },
+        // {
+        //   title: "End Date",
+        //   dataIndex: "end",
+        // },
         {
           title: "Discharge Date",
-          dataIndex: "discharge",
+          dataIndex: "dischargeDate",
         },
         {
           title: "Status",
@@ -269,14 +237,14 @@ export const demographics = (state, data) => {
     state.addDevice = data
  }
 
+
+ export const parameterFields = (state, data) => {
+     console.log("data",data)
+    state.parameterFields = data
+ }
+
  
 
- export const successMsg = (state, data) => {
-    state.successMsg = data
- }
 
- export const errorMsg = (state, data) => {
-    state.errorMsg = data
- }
  
 

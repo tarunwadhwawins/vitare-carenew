@@ -3,18 +3,26 @@
     <a-col :sm="12" :xs="24">
         <h2>{{$t('global.specialization')}}</h2>
         <a-row :gutter="24">
-            <LongCard customClass="two" :count="2" text="Wellness"></LongCard>
-            <LongCard customClass="four" :count="2" text="Behavior"></LongCard>
+            <a-col :xl="12"  :xs="24">
+            <LongCard backgroundColor="#8e60ff"  customClass="two" :count="2" text="Wellness"></LongCard>
+            </a-col>
+            <a-col :xl="12"  :xs="24">
+            <LongCard customClass="four" backgroundColor="#ffa800"  :count="2" text="Behavior"></LongCard>
+            </a-col>
         </a-row>
     </a-col>
     <a-col :sm="12" :xs="24">
         <h2>{{$t('global.network')}}</h2>
         <a-row :gutter="24">
-            <LongCard customClass="six" :count="3" text="In"></LongCard>
-            <LongCard customClass="five" :count="3" text="Out"></LongCard>
+            <a-col :xl="12"  :xs="24">
+            <LongCard customClass="six" backgroundColor="#267dff" :count="3" text="In"></LongCard>
+            </a-col>
+            <a-col :xl="12"  :xs="24">
+            <LongCard customClass="five" backgroundColor="#0fb5c2" :count="3" text="Out"></LongCard>
+            </a-col>
         </a-row>
     </a-col>
-</a-row>
+</a-row> 
 
 
 <a-row>
@@ -28,7 +36,7 @@
         </div>
     </a-col>
     <a-col :span="24">
-        <CoordinatorTable @edit-clicked="onClickEditPersonal($event)"></CoordinatorTable>
+        <CoordinatorTable v-if="staffs"  :columns="columns" :data-source="staffs" :scroll="{ x: 1200 }"></CoordinatorTable>
     </a-col>
 </a-row>
 </template>
@@ -57,43 +65,25 @@ export default {
         emit
     }) {
         const store = useStore();
-        watchEffect(() => {
-            // store.dispatch("specializationsCount", 1)
-            // store.dispatch("specializationsCount", 2)
-            // store.dispatch("networksCount", 1)
-            // store.dispatch("networksCount", 2)
-        });
-        const specializationWellness = computed(() => {
-            return 0; //store.state.careCoordinator.specializationWellness
-        });
-        const specializationBehavour = computed(() => {
-            return 0; //store.state.careCoordinator.specializationBehavour
-        });
-        const networksIn = computed(() => {
-            return 0; // store.state.careCoordinator.networksIn
-        });
-        const networksOut = computed(() => {
-            return 0; //store.state.careCoordinator.networksOut
-        });
-        const onClickEditPersonal = (rowId) => {
-            // store.dispatch("getCoordinatorDetails", rowId)
-            // .then((res) => {
-            //   const coordinatorData = res.data.data;
-            //   localStorage.setItem('is_update_coordinator', true)
-            //   localStorage.setItem('personalData', JSON.stringify(coordinatorData))
-            //   emit('is-visible', true)
-            // },
-            // (error) => {
-            //   console.log(error)
-            // });
-        };
+        watchEffect( () => {
+            store.dispatch('staffs')
+        })
+
+        const columns  = computed(()=>{
+          return store.state.careCoordinator.columns
+      })
+     
+       const staffs = computed(()=>{ 
+            return store.state.careCoordinator.staffs
+        }) 
+
+        
+        
 
         return {
-            specializationWellness,
-            specializationBehavour,
-            networksIn,
-            networksOut,
-            onClickEditPersonal,
+            columns,
+            staffs,
+            
             // specializationTotal,
             // specializationText,
             // networkTotal,

@@ -15,7 +15,9 @@ export default {
     taskPriority:null,
     network:null,
     specialization:null,
-    taskCategory:null
+    taskCategory:null,
+    errorMsg:null,
+    successMsg:null, 
 
 
 

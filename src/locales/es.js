@@ -11,6 +11,7 @@ import tasks from './spanish-modules/tasks'
 import timeTrackingReport from './spanish-modules/timeTrackingReport'
 import thresholds from './spanish-modules/thresholds'
 import timeLogReport from './spanish-modules/timeLogReport'
+import common from './spanish-modules/common'
 const spanish = {
     global,
     login,
@@ -24,7 +25,8 @@ const spanish = {
     tasks,
     timeTrackingReport,
     thresholds,
-    timeLogReport
+    timeLogReport,
+    common,
 }
 
 export default spanish

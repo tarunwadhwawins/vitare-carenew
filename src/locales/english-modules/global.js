@@ -1,6 +1,8 @@
 const global = {
   cancel: 'Cancel',
   ok: 'Ok',
+  validation:'is required.',
+  validValidation:'Please enter valid',
   dashboard: 'Dashboard',
   day: 'Day',
   date:'Date',

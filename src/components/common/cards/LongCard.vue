@@ -1,11 +1,9 @@
 <template>
-  <a-col :xl="6"  :xs="24">
     <div v-bind:style="{ backgroundColor: backgroundColor, color: textColor }" class="colorBox">
       <UserOutlined />
       <h3>{{ count }}</h3>
       <p>{{ text }}</p>
     </div>
-  </a-col>
 </template>
 
 <script>

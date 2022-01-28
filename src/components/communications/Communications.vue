@@ -75,9 +75,9 @@ import ToolTip from "@/components/communications/toolTip/ToolTip";
 import { notification, Button } from "ant-design-vue";
 
 const close = () => {
-  console.log(
-    "Notification was closed. Either the close button was clicked or duration time elapsed."
-  );
+  // console.log(
+  //   "Notification was closed. Either the close button was clicked or duration time elapsed."
+  // );
 };
 
 export default {
@@ -94,7 +94,7 @@ export default {
   setup() {
     const toggle = ref(true);
     const handleChange = (value) => {
-      console.log(`selected ${value}`);
+      // console.log(`selected ${value}`);
     };
 
     const openNotification = (data) => {
@@ -181,7 +181,7 @@ export default {
       toggle,
       openNotification,
       onChange: (pagination, filters, sorter, extra) => {
-        console.log("params", pagination, filters, sorter, extra);
+        // console.log("params", pagination, filters, sorter, extra);
       },
       handleChange,
       size: ref([]),
