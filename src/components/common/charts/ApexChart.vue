@@ -1,8 +1,10 @@
 <template>
-  <a-card :title="title" class="common-card">
+  <a-card v-if="title" :title="title" class="common-card">
     <apexchart :type="type" :height="height" :options="options" :series="series" @click="clickHandler(linkTo)">
     </apexchart>
   </a-card>
+  <apexchart v-else :type="type" :height="height" :options="options" :series="series" @click="clickHandler(linkTo)">
+  </apexchart>
 </template>
 
 <script>

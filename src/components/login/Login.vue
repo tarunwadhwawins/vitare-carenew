@@ -16,13 +16,11 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useStore } from "vuex"
 export default defineComponent({
   setup() {
     const value = ref("");
     const router = useRouter();
-    const store = useStore()
-console.log(store.state)
+
     function login() {
       localStorage.setItem("auth", true);
       router.push({
