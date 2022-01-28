@@ -23,7 +23,7 @@
 </template>
 
 <script>
- import { ref, watchEffect } from "vue";
+ import { watchEffect } from "vue";
 // import enUS from "ant-design-vue/es/locale/en_US";
 // import esES from "ant-design-vue/es/locale/es_ES";
 // import moment from "moment";
@@ -42,7 +42,7 @@ export default {
 //     const locale = ref(enUS.locale);
 watchEffect(() => {
       store.dispatch("globalCodes")
-      store.dispatch("timeLine")
+      store.dispatch("timeLine",123)
 //       moment.locale(val);
      });
 //     onMounted(() => {

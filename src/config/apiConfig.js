@@ -1,6 +1,4 @@
 
-// Read api url from env file
-const API_URL =  process.env.VUE_APP_API_URL
 
 // API end points 
 export const API_ENDPOINTS = {
@@ -19,8 +17,8 @@ export const API_ENDPOINTS = {
     CptCode:"patient/count",
     Network:"staff/network",
     Specialization:"staff/specialization",
-    TotalPatientsChart:"count/patient",
-    AppointmentChart:"count/appointment",
+    TotalPatientsChart:"patient/chart",
+    AppointmentChart:"appointment/summary",
     futureAppointments:"appointment/future",
     newRequests:"appointment/new",
     communicationTypes:"communication/type",
