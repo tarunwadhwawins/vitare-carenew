@@ -74,28 +74,28 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.weight')" name="weight" :rules="[{ required: false, message: $t('patient.demographics.weight')+' '+$t('global.validation'), pattern: new RegExp(/^\d+(\.\d{1,2})?$/) }]">
-                                    <a-input v-model:value="demographics.weight" placeholder="Please enter weight in kg/ILB" size="large" />
+                                    <a-input v-model:value="demographics.weight" placeholder="Please enter weight in lbs" size="large" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.height')" name="height" :rules="[{ required: false, message: $t('patient.demographics.height')+' '+$t('global.validation'), pattern: new RegExp(/^\d+(\.\d{1,2})?$/) }]">
-                                    <a-input v-model:value="demographics.height" placeholder="Please enter height in cm/inch " size="large" />
+                                    <a-input v-model:value="demographics.height" placeholder="Please enter height in cm " size="large" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                                    <a-input v-model:value="demographics.email" placeholder="test@test.com"  size="large">
+                                    <a-input v-model:value="demographics.email" placeholder="test@test.com" size="large">
                                     </a-input>
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: new RegExp('^[0-9]{10}$')}]">
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: new RegExp('^[0-9]{10}')}]">
                                     <a-input v-model:value="demographics.phoneNumber" placeholder="Please enter 10 digit number" size="large" />
                                 </a-form-item>
                             </div>
@@ -150,7 +150,7 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.zipcode')" name="zipCode" :rules="[{ required: true, message:$t('global.validValidation')+' '+ $t('global.zipcode').toLowerCase(),pattern: new RegExp('^[0-9]{5}$') }]">
+                                <a-form-item :label="$t('global.zipcode')" name="zipCode" :rules="[{ required: true, message:$t('global.validValidation')+' '+ $t('global.zipcode').toLowerCase(),pattern: new RegExp('^[0-9]{5}') }]">
                                     <a-input v-model:value="demographics.zipCode" placeholder="Please enter 5 digit number" size="large" />
                                 </a-form-item>
                             </div>
@@ -195,7 +195,7 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: new RegExp('^[0-9]{10}$') }]">
+                                <a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: new RegExp('^[0-9]{10}') }]">
                                     <a-input v-model:value="demographics.familyPhoneNumber" placeholder="Please enter 10 digit number" size="large" />
                                 </a-form-item>
                             </div>
@@ -271,10 +271,10 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item v-if="demographics.isPrimary" :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: new RegExp('^[0-9]{10}$') }]">
+                                <a-form-item v-if="demographics.isPrimary" :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: new RegExp('^[0-9]{10}') }]">
                                     <a-input v-model:value="demographics.familyPhoneNumber" size="large" />
                                 </a-form-item>
-                                <a-form-item v-else :label="$t('global.phoneNo')" name="emergencyPhoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: new RegExp('^[0-9]{10}$') }]">
+                                <a-form-item v-else :label="$t('global.phoneNo')" name="emergencyPhoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: new RegExp('^[0-9]{10}') }]">
                                     <a-input v-model:value="demographics.emergencyPhoneNumber" placeholder="Please enter 10 digit number" size="large" />
                                 </a-form-item>
                             </div>
@@ -365,7 +365,7 @@
                                     <a-input v-model:value="conditions.name" size="large" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.name[0]" />
                                 </a-form-item>
-                                
+
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
@@ -374,9 +374,9 @@
                                     <a-select ref="select" show-search v-model:value="conditions.designation" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                                         <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
                                     </a-select>
-                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.designation[0]" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.designation[0]" />
                                 </a-form-item>
-                                
+
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
@@ -401,7 +401,7 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: new RegExp('^[0-9]{10}$') }]">
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: new RegExp(/^[0-9]{10}/) }]">
                                     <a-input v-model:value="conditions.phoneNumber" placeholder="Please enter 10 digit number" size="large" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber[0]" />
                                 </a-form-item>
@@ -469,10 +469,10 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item v-if="conditions.checked" :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: new RegExp('^[0-9]{10}$') }]">
+                                <a-form-item v-if="conditions.checked" :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: new RegExp(/^[0-9]{10}/) }]">
                                     <a-input v-model:value="conditions.phoneNumber" size="large" />
                                 </a-form-item>
-                                <a-form-item v-else :label="$t('global.phoneNo')" name="physicianPhoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: new RegExp('^[0-9]{10}$') }]">
+                                <a-form-item v-else :label="$t('global.phoneNo')" name="physicianPhoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: new RegExp(/^[0-9]{10}/) }]">
                                     <a-input v-model:value="conditions.physicianPhoneNumber" placeholder="Please enter 10 digit number" size="large" />
                                 </a-form-item>
                             </div>
@@ -548,8 +548,9 @@
                                         <template #title>
                                             <span>{{$t('global.edit')}}</span>
                                         </template>
-                                        <a class="icons">
-                                            <EditOutlined /></a>
+                                        <!-- <a class="icons">
+                                            <EditOutlined />
+                                        </a> -->
                                     </a-tooltip>
 
                                 </template>
@@ -631,114 +632,275 @@
                     </div>
                 </a-form>
             </div>
-            <div class="steps-content" v-if="steps[current].title == 'Parameters'">
-                <!-- <Parameters /> -->
+            <!-- <div class="steps-content" v-if="steps[current].title == 'Parameters'">
                 <a-form :model="parameters" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="parameter" @finishFailed="onFinishFailed">
-
-                    <a-row :gutter="24" v-for="deviceType in globalCode.deviceType.globalCode" :key="deviceType.id" >
+                    <a-row :gutter="24" v-for="deviceType in globalCode.deviceType.globalCode" :key="deviceType.id">
                         <a-col :span="24">
                             <div class="formHeading">
-                                <!-- <h2>{{$t('patient.parameters.bloodPressure')}}</h2> -->
                                 <h2>{{deviceType.name}} {{parameterFields(deviceType.id)}} </h2>
                             </div>
                         </a-col>
-                    
-                        <a-col :sm="12" :xs="24" >
-                           
-                                <div class="form-group"  v-for="fieldName in fields" :key="fieldName.id" >
-                                    <label>{{fieldName.field}}</label>
-                                    <a-input v-model:value="parameters[fieldName.id]" size="large" />
-                                 </div>
-                          
-                            
-                        </a-col>
-
-                        </a-row>
-                        <!-- <a-col :sm="12" :xs="24">
-                            <div class="form-group">
-                                <label>{{$t('patient.parameters.diastolic')}}</label>
-                                <a-input v-model="value" size="large" />
-                            </div>
-                        </a-col> -->
-                   
-                    <!-- <a-row :gutter="24">
-                        <a-col :span="24">
-                            <div class="formHeading">
-                                <h2>{{$t('patient.parameters.pulse')}}</h2>
-                            </div>
-                        </a-col>
                         <a-col :sm="12" :xs="24">
-                            <div class="form-group">
-                                <label>{{$t('patient.parameters.BPM')}}</label>
-                                <a-input v-model="value" size="large" />
+                            <div class="form-group" v-for="fieldName,i in fields" :key="i">
+                                <label>{{fieldName}}</label>
+                                <a-input v-model:value="parameters[i]" size="large" />
                             </div>
                         </a-col>
                     </a-row>
-                    <a-row :gutter="24">
-                        <a-col :span="24">
-                            <div class="formHeading">
-                                <h2>{{$t('patient.parameters.bloodOxygenSaturation')}}</h2>
-                            </div>
-                        </a-col>
-                        <a-col :sm="12" :xs="24">
-                            <div class="form-group">
-                                <label>{{$t('patient.parameters.SPO2')}}</label>
-                                <a-input v-model="value" size="large" />
-                            </div>
-                        </a-col>
-                    </a-row>
-                    <a-row :gutter="24">
-                        <a-col :span="24">
-                            <div class="formHeading">
-                                <h2>{{$t('patient.parameters.glucosen')}}</h2>
-                            </div>
-                        </a-col>
-                        <a-col :sm="12" :xs="24">
-                            <div class="form-group">
-                                <label>{{$t('patient.parameters.FastingBloodSugar')}}</label>
-                                <a-input v-model="value" size="large" />
-                            </div>
-                        </a-col>
-                        <a-col :sm="12" :xs="24">
-                            <div class="form-group">
-                                <label>{{$t('patient.parameters.randomBloodSugar')}}</label>
-                                <a-input v-model="value" size="large" />
-                            </div>
-                        </a-col>
-                    </a-row> -->
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                        <a-button v-if="current < steps.length - 1" type="primary" html-type="submit" >{{$t('global.next')}}</a-button>
+                        <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
+                        <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
+                            {{$t('global.done')}}
+                        </a-button>
+                    </div>
+                </a-form>
+            </div> -->
+            <div class="steps-content" v-if="steps[current].title == 'Clinical Data'">
+                <!-- <ClinicalData /> -->
+                <a-form :model="clinicals" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="clinicalHistory" @finishFailed="onFinishFailed">
+                    <div class="form-group">
+                        <a-form-item :label="$t('patient.clinicalData.medicalHistory')" name="history" :rules="[{ required: true, message: $t('patient.clinicalData.medicalHistory')+' '+$t('global.validation') }]">
+                            <a-input v-model:value="clinicals.history" size="large" />
+                        </a-form-item>
+                    </div>
+                    <a-row :gutter="24" class="mb-24">
+                        <a-col :span="24">
+                            <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
+                        </a-col>
+                    </a-row>
+                </a-form>
+                <a-row :gutter="24" class="mb-24">
+                    <a-col :span="24">
+                        <a-table :columns="clinicalHistoryColumns" :data-source="clinicalsData" :scroll="{ x: 900 }">
+                            <template #action>
+
+                                <a-tooltip placement="bottom">
+                                    <template #title>
+                                        <span>{{$t('global.edit')}}</span>
+                                    </template>
+                                    <a class="icons">
+                                        <EditOutlined />
+                                    </a>
+                                </a-tooltip>
+                                <a-tooltip placement="bottom">
+                                    <template #title>
+                                        <span>{{$t('global.delete')}}</span>
+                                    </template>
+                                    <a class="icons">
+                                        <DeleteOutlined />
+                                    </a>
+                                </a-tooltip>
+                            </template>
+                        </a-table>
+                    </a-col>
+                </a-row>
+
+                <a-form :model="clinicalMedication" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="clinicalMedicat" @finishFailed="onFinishFailed">
+                    <a-row :gutter="24">
+                        <a-col :span="24">
+                            <div class="formHeading">
+                                <h2>{{$t('patient.clinicalData.medication')}}</h2>
+                            </div>
+                        </a-col>
+                        <a-col :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('patient.clinicalData.medicine')" name="medicine" :rules="[{ required: true, message: $t('patient.clinicalData.medicine')+' '+$t('global.validation') }]">
+                                    <a-input v-model:value="clinicalMedication.medicine" size="large" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :sm="12" :xs="24">
+
+                            <div class="form-group">
+                                <a-form-item :label="$t('patient.clinicalData.frequency')" name="frequency" :rules="[{ required: true, message: $t('patient.clinicalData.frequency')+' '+$t('global.validation') }]">
+                                    <a-input v-model:value="clinicalMedication.frequency" size="large" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.startDate')" name="startDate" :rules="[{ required: true, message: $t('global.startDate')+' '+$t('global.validation') }]">
+                                    <a-date-picker v-model:value="clinicalMedication.startDate" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.endDate')" name="endDate" :rules="[{ required: true, message: $t('global.endDate')+' '+$t('global.validation') }]">
+                                    <a-date-picker v-model:value="clinicalMedication.endDate" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                    </a-row>
+                    <a-row :gutter="24" class="mb-24">
+                        <a-col :span="24">
+                            <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
+                        </a-col>
+                    </a-row>
+                </a-form>
+                <a-row :gutter="24" class="mb-24">
+                    <a-col :span="24">
+                        <a-table :columns="clinicalMedicatColumns" :data-source="clinicalMedicatData" :scroll="{ x: 900 }">
+                            <template #action>
+
+                                <a-tooltip placement="bottom">
+                                    <template #title>
+                                        <span>{{$t('global.edit')}}</span>
+                                    </template>
+                                    <a class="icons">
+                                        <EditOutlined />
+                                    </a>
+                                </a-tooltip>
+                                <a-tooltip placement="bottom">
+                                    <template #title>
+                                        <span>{{$t('global.delete')}}</span>
+                                    </template>
+                                    <a class="icons">
+                                        <DeleteOutlined />
+                                    </a>
+                                </a-tooltip>
+                            </template>
+                        </a-table>
+                    </a-col>
+                </a-row>
+                <div class="steps-action">
+                    <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
+                    <a-button v-if="current < steps.length - 1" type="primary">{{$t('global.next')}}</a-button>
+                    <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
+                        {{$t('global.done')}}
+                    </a-button>
+                </div>
+
+            </div>
+            <div class="steps-content" v-if="steps[current].title == 'Insurance'">
+                <!-- <Insurance /> -->
+                <a-form :model="insuranceData" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="insuranceForm" @finishFailed="onFinishFailed">
+
+                    <a-row :gutter="24" v-for=" insuranceName,i in globalCode.insuranceType.globalCode" :key="insuranceName.id">
+                        <a-col :span="24">
+                            <div class="formHeading">
+                                <h2>{{insuranceName.name}}</h2>
+                                <input type="hidden" :name="insuranceData.insuranceType[i]" :value="insuranceData.insuranceType[i]=insuranceName.id">
+                            </div>
+                        </a-col>
+                        <a-col :sm="8" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('patient.insurance.insuranceNumber')" name="insuranceNumber" :rules="[{ required: true, message: $t('patient.insurance.insuranceNumber')+' '+$t('global.validation') }]">
+                                    <a-input v-model:value="insuranceData.insuranceNumber[i]" size="large" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+
+                        <a-col :sm="8" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('patient.insurance.insuranceName')" name="insuranceName" :rules="[{ required: true, message: $t('patient.insurance.insuranceName')+' '+$t('global.validation') }]">
+                                    <a-select ref="select" show-search v-model:value="insuranceData.insuranceName[i]" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                        <a-select-option v-for="insuranceName in globalCode.insuranceName.globalCode" :key="insuranceName.id" :value="insuranceName.id">{{insuranceName.name}}</a-select-option>
+                                    </a-select>
+                                </a-form-item>
+                            </div>
+                        </a-col>
+
+                        <a-col :sm="8" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('patient.insurance.expirationDate')" name="expirationDate" :rules="[{ required: true, message: $t('patient.insurance.expirationDate')+' '+$t('global.validation') }]">
+                                    <a-date-picker v-model:value="insuranceData.expirationDate[i]" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+
+                    </a-row>
+                    <div class="steps-action">
+                        <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
+                        <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
                         <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
                             {{$t('global.done')}}
                         </a-button>
                     </div>
                 </a-form>
             </div>
-            <div class="steps-content" v-if="steps[current].title == 'Clinical Data'">
-                <ClinicalData />
-            </div>
-            <div class="steps-content" v-if="steps[current].title == 'Insurance'">
-                <Insurance />
-            </div>
             <div class="steps-content" v-if="steps[current].title == 'Documents'">
-                <Documents />
-            </div>
+                <!-- <Documents /> -->
+                <a-form :model="documents" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="documentForm" @finishFailed="onFinishFailed">
+                    <a-row :gutter="24">
+                        <a-col :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: true, message: $t('global.name')+' '+$t('global.validation') }]">
+                                    <a-input v-model:value="documents.name" size="large" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: true, message: $t('global.document')+' '+$t('global.validation') }]">
+                                    <a-input v-model:value="documents.document" name="document_file" size="large" type="file" @change="onFileUpload" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :sm="12" :xs="24">
+                            <div class="form-group">
 
+                                <a-form-item :label="$t('global.type')" name="type" :rules="[{ required: true, message: $t('global.type')+' '+$t('global.validation') }]">
+                                    <a-select ref="select" show-search v-model:value="documents.type" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                        <a-select-option v-for="documentType in globalCode.documentTypes.globalCode" :key="documentType.id" :value="documentType.id">{{documentType.name}}</a-select-option>
+                                    </a-select>
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :sm="12" :xs="24">
+                            <div class="form-group">
+
+                                <a-form-item :label="$t('global.tags')" name="tags" :rules="[{ required: true, message: $t('global.tags')+' '+$t('global.validation') }]">
+                                    <a-select v-model:value="documents.tags" mode="multiple" size="large" placeholder="" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" />
+                                </a-form-item>
+
+                            </div>
+                        </a-col>
+                    </a-row>
+                    <a-row :gutter="24" class="mb-24">
+                        <a-col :span="24">
+                            <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
+                        </a-col>
+                    </a-row>
+                    <a-row :gutter="24" class="mb-24">
+                        <a-col :span="24">
+                            <a-table :columns="documentColumns" :data-source="documentsData" :pagination="false" :scroll="{ x: 900 }">
+                                <template #action>
+                                    <a-tooltip placement="bottom">
+                                        <template #title>
+                                            <span>{{$t('global.edit')}}</span>
+                                        </template>
+                                        <a class="icons">
+                                            <EditOutlined /></a>
+                                    </a-tooltip>
+                                    <a-tooltip placement="bottom">
+                                        <template #title>
+                                            <span>{{$t('global.delete')}}</span>
+                                        </template>
+                                        <a class="icons">
+                                            <DeleteOutlined /></a>
+                                    </a-tooltip>
+                                </template>
+                            </a-table>
+                        </a-col>
+                    </a-row>
+                    <div class="steps-action">
+                        <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
+                        <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
+                        <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
+                            {{$t('global.done')}}
+                        </a-button>
+                    </div>
+                </a-form>
+            </div>
         </a-col>
     </a-row>
-
 </a-modal>
 </template>
 
 <script>
-import {
-    defineComponent,
-    ref,
-    computed,
-    reactive,
-    watchEffect
-} from "vue";
+import { defineComponent, ref, computed, reactive, watchEffect } from "vue";
 // import Demographics from "@/components/modals/forms/Demographics";
 // import Conditions from "@/components/modals/forms/Conditions";
 // import Programs from "@/components/modals/forms/Programs";
@@ -747,249 +909,344 @@ import {
 import ClinicalData from "@/components/modals/forms/ClinicalData";
 import Insurance from "@/components/modals/forms/Insurance";
 import Documents from "@/components/modals/forms/Documents";
-import {
-    useStore
-} from "vuex"
+import { useStore } from "vuex";
 // import DataTable from "../patients/data-table/DataTable.vue"
-import ErrorMessage from "../common/messages/ErrorMessage.vue"
-import serviceMethod from "../../services/serviceMethod"
+import ErrorMessage from "../common/messages/ErrorMessage.vue";
+import serviceMethod from "../../services/serviceMethod";
 export default {
-    components: {
-        // Demographics,
-        // Conditions,
-        // Programs,
-        // Devices,
-        // Parameters,
-        ClinicalData,
-        Insurance,
-        Documents,
-        // DataTable
-        ErrorMessage
-    },
-    setup() {
-        const store = useStore();
-        const current = ref(0);
-        const demographics = reactive({
-            firstName: '',
-            middleName: '',
-            lastName: '',
-            dob: '',
-            gender: '',
-            language: '',
-            otherLanguage: [],
-            nickName: '',
-            weight: '',
-            height: '',
-            email: '',
-            phoneNumber: '',
-            contactType: [],
-            contactTime: '',
-            medicalRecordNumber: '',
-            country: '',
-            state: '',
-            city: '',
-            zipCode: '',
-            appartment: '',
-            address: '',
-            fullName: '',
-            familyEmail: '',
-            familyPhoneNumber: '',
-            familyContactType: [],
-            familyContactTime: '',
-            familyGender: '',
-            relation: '',
-            emergencyFullName: '',
-            emergencyEmail: '',
-            emergencyPhoneNumber: '',
-            emergencyContactType: [],
-            emergencyContactTime: '',
-            emergencyGender: '',
-            isPrimary: false
+  components: {
+    // Demographics,
+    // Conditions,
+    // Programs,
+    // Devices,
+    // Parameters,
+    // ClinicalData,
+    // Insurance,
+    // Documents,
+    // DataTable
+    ErrorMessage,
+  },
+  setup() {
+    const store = useStore();
+    const current = ref(0);
+    const demographics = reactive({
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      dob: "",
+      gender: "",
+      language: "",
+      otherLanguage: [],
+      nickName: "",
+      weight: "",
+      height: "",
+      email: "",
+      phoneNumber: "",
+      contactType: [],
+      contactTime: "",
+      medicalRecordNumber: "",
+      country: "",
+      state: "",
+      city: "",
+      zipCode: "",
+      appartment: "",
+      address: "",
+      fullName: "",
+      familyEmail: "",
+      familyPhoneNumber: "",
+      familyContactType: [],
+      familyContactTime: "",
+      familyGender: "",
+      relation: "",
+      emergencyFullName: "",
+      emergencyEmail: "",
+      emergencyPhoneNumber: "",
+      emergencyContactType: [],
+      emergencyContactTime: "",
+      emergencyGender: "",
+      isPrimary: false,
+    });
+
+    const conditions = reactive({
+      condition: [],
+      name: "",
+      designation: "",
+      email: "",
+      phoneNumber: "",
+      fax: "",
+      checked: false,
+      physicianName: "",
+      physicianDesignation: "",
+      physicianEmail: "",
+      physicianPhoneNumber: "",
+      physicianFax: "",
+    });
+
+    const program = reactive({
+      program: "",
+      onboardingScheduleDate: "",
+      dischargeDate: "",
+      status: 1,
+    });
+
+    const device = reactive({
+      inventory: 1,
+      deviceType: "",
+      modelNumber: "",
+      serialNumber: "",
+      macAddress: "",
+      deviceTime: "",
+      serverTime: "",
+    });
+
+    const parameters = reactive([]);
+
+    const clinicals = reactive({
+      history: "",
+    });
+
+    const clinicalMedication = reactive({
+      medicine: "",
+      frequency: "",
+      startDate: "",
+      endDate: "",
+    });
+
+    const insuranceData = reactive({
+      insuranceNumber: [],
+      insuranceName: [],
+      expirationDate: [],
+      insuranceType: [],
+    });
+
+    const documentFile = ref();
+
+    const demographic = (values) => {
+      console.log("Success:", values);
+      if (demographics.isPrimary == true) {
+        (demographics.emergencyFullName = demographics.fullName),
+          (demographics.emergencyEmail = demographics.familyEmail),
+          (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
+          (demographics.emergencyContactType = demographics.familyContactType),
+          (demographics.emergencyContactTime = demographics.familyContactTime),
+          (demographics.emergencyGender = demographics.familyGender),
+          store.dispatch("demographics", demographics);
+      } else {
+        store.dispatch("demographics", demographics);
+      }
+      setTimeout(() => {
+        if (patients.value.demographics.id) {
+            store.dispatch('patients')
+          current.value++;
+        }
+      }, 2000);
+
+      // current.value = patients.value.counter
+    };
+
+    const next = () => {
+      current.value++;
+    };
+
+    const prev = () => {
+      current.value--;
+    //   store.commit("counterMinus", 1);
+      // current.value = patients.value.counter
+    };
+
+    const nextCondition = () => {
+      // current.value++;
+
+      // console.log('patient:', values)
+      store.dispatch("conditions", {
+        data: conditions,
+        id: patients.value.demographics.id,
+      });
+      store.dispatch("patientReferals", {
+        data: conditions,
+        id: patients.value.demographics.id,
+      });
+      // let physicianData = {}
+      if (conditions.checked == false) {
+        (conditions.name = conditions.physicianName),
+          (conditions.designation = conditions.physicianDesignation),
+          (conditions.email = conditions.physicianEmail),
+          (conditions.phoneNumber = conditions.physicianPhoneNumber),
+          (conditions.fax = conditions.physicianFax);
+        store.dispatch("patientPhysician", {
+          data: conditions,
+          id: patients.value.demographics.id,
+        });
+        current.value++;
+      }
+      if (conditions.checked == true) {
+        store.dispatch("patientPhysician", {
+          data: conditions,
+          id: patients.value.demographics.id,
         });
 
-        const conditions = reactive({
-            condition: [],
-            name: '',
-            designation: '',
-            email: '',
-            phoneNumber: '',
-            fax: '',
-            checked: false,
-            physicianName: '',
-            physicianDesignation: '',
-            physicianEmail: '',
-            physicianPhoneNumber: '',
-            physicianFax: ''
-            
-        });
+        // current.value = patients.value.counter
+        current.value++;
+      }
+    };
 
-        const program = reactive({
-            program: '',
-            onboardingScheduleDate: '',
-            dischargeDate: '',
-            status: 1
+    const programs = (values) => {
+      console.log("programs:", values);
+      store.dispatch("addProgram", {
+        data: program,
+        id: patients.value.demographics.id,
+      });
+      // if (patients.value.addProgram.id) {
+      //     current.value++;
+      // }
+      setTimeout(() => {
+        store.dispatch("program", patients.value.demographics.id);
+      }, 3000);
+    };
 
-        })
+    const addDevice = (values) => {
+      console.log("programs:", values);
+      store.dispatch("addDevice", {
+        data: device,
+        id: patients.value.demographics.id,
+      });
+      if (patients.value.addDevice.id) {
+        current.value++;
+      }
+    };
 
-        const device = reactive({
-            inventory: 1,
-            deviceType: '',
-            modelNumber: '',
-            serialNumber: '',
-            macAddress: '',
-            deviceTime: '',
-            serverTime: ''
-        })
+    const parameter = (values) => {
+      console.log("programs:", values);
+      store.dispatch("parameter", {
+        vital: parameters,
+        id: patients.value.demographics.id
+      });
+    };
 
-        const parameters = reactive([])
+    const clinicalHistory = (values) => {
+      store.dispatch("clinicalHistory", {
+        data: clinicals,
+        id: patients.value.demographics.id
+      });
+     
+      setTimeout(() => {
+        store.dispatch("clinicalHistoryList", patients.value.demographics.id);
+      }, 3000);
+    };
 
-        const demographic = (values) => {
-            console.log('Success:', values);
-            if (demographics.isPrimary == true) {
-                demographics.emergencyFullName = demographics.fullName,
-                    demographics.emergencyEmail = demographics.familyEmail,
-                    demographics.emergencyPhoneNumber = demographics.familyPhoneNumber,
-                    demographics.emergencyContactType = demographics.familyContactType,
-                    demographics.emergencyContactTime = demographics.familyContactTime,
-                    demographics.emergencyGender = demographics.familyGender,
-                    store.dispatch('demographics', demographics)
-            } else {
-                store.dispatch('demographics', demographics)
-            }
-            setTimeout(()=>{
-                if(patients.value.demographics.id){
-             current.value++;
-            }
-            },2000)
-            
+    const clinicalMedicat = (values) => {
+      store.dispatch("clinicalMedicat", {
+        data: clinicalMedication,
+        id: patients.value.demographics.id
+      });
+      let id = 51;
+      setTimeout(() => {
+        store.dispatch("clinicalMedicatList", patients.value.demographics.id);
+      }, 3000);
+    };
 
-            // current.value = patients.value.counter
-        }
+    const insuranceForm = (values) => {
+      console.log("programs:", values);
+      store.dispatch("insuranceForm", {
+        data: { insurance: [insuranceData] },
+        id: patients.value.demographics.id
+      });
+    };
 
-        const next = () => {
-            current.value++;
-        }
+    const onFileUpload = (event) => {
+      let doc_file = event.target.files[0];
+      let formData = new FormData();
+      formData.append("file", doc_file);
+      store.dispatch("uploadFile", formData);
+    };
 
-        const prev = () => {
-            current.value--;
-            store.commit('counterMinus', 1)
-            // current.value = patients.value.counter
-        }
+    const filePath = computed(() => {
+      return store.state.patients.uploadFile;
+    });
 
-        const nextCondition = () => {
-            // current.value++;
+    const documents = reactive({
+      name: "",
+      document: filePath.value ? filePath.value : "",
+      type: "",
+      tags: [],
+      entity: "patient",
+    });
 
-            // console.log('patient:', values)
-            store.dispatch('conditions', {
-                data: conditions,
-                id: patients.value.demographics.id
-            })
-            store.dispatch('patientReferals', {
-                data: conditions,
-                id: patients.value.demographics.id
-            })
-            // let physicianData = {}
-            if (conditions.checked == false) {
-                conditions.name = conditions.physicianName,
-                    conditions.designation = conditions.physicianDesignation,
-                    conditions.email = conditions.physicianEmail,
-                    conditions.phoneNumber = conditions.physicianPhoneNumber,
-                    conditions.fax = conditions.physicianFax
-                store.dispatch('patientPhysician', {
-                    data: conditions,
-                    id: patients.value.demographics.id
-                })
-                current.value++;
-            }
-            if (conditions.checked == true) {
-                store.dispatch('patientPhysician', {
-                    data: conditions,
-                    id: patients.value.demographics.id
-                })
+    const documentForm = (values) => {
+      console.log("programs:", values);
+      store.dispatch("documentForm", {
+        data: {
+          name: documents.name,
+          document: filePath.value ? filePath.value : "",
+          type: documents.type,
+          tags: documents.tags,
+          entity: "patient",
+        },
+        id: patients.value.demographics.id
+      });
+      setTimeout(() => {
+        store.dispatch("documents", patients.value.demographics.id);
+      }, 3000);
+    };
 
-                // current.value = patients.value.counter
-                current.value++;
-            }
+    const onFinishFailed = (errorInfo) => {
+      console.log("Failed:", errorInfo);
+    };
+    const handleChange = (value) => {
+      console.log(`selected ${value}`);
+    };
 
-        }
+  
 
-        const programs = (values) => {
-            console.log('programs:', values)
-            store.dispatch('addProgram', {
-                data: program,
-                id: patients.value.demographics.id
-            })
-            // if (patients.value.addProgram.id) {
-            //     current.value++;
-            // }
-            store.dispatch('program', patients.value.demographics.id)
-        }
+    const globalCode = computed(() => {
+      return store.state.common;
+    });
 
-        const addDevice = (values) => {
-            console.log('programs:', values)
-            store.dispatch('addDevice', {
-                data: device,
-                id: patients.value.demographics.id
-            })
-            if (patients.value.addDevice.id) {
-                current.value++;
-            }
-        }
+    const patients = computed(() => {
+      return store.state.patients;
+    });
 
-         const parameter = (values) => {
-            console.log('programs:', values)
-            store.dispatch('parameter', {
-                vital: parameters,
-                id: 40//patients.value.demographics.id
-            })
-            
-        } 
+    const columns = computed(() => {
+      return store.state.patients.columns;
+    });
 
-        const onFinishFailed = errorInfo => {
-            console.log('Failed:', errorInfo);
-        };
-        const handleChange = (value) => {
-            console.log(`selected ${value}`);
-        };
-        
+    const programsData = computed(() => {
+      return store.state.patients.program;
+    });
 
-        watchEffect(() => {
-                
-            // store.dispatch('program',patients.value.demographics.id)
-        })
+    const clinicalHistoryColumns = computed(() => {
+      return store.state.patients.clinicalHistoryListColumns;
+    });
 
-        const globalCode = computed(() => {
-           
-            return store.state.common
-        })
+    const clinicalsData = computed(() => {
+      return store.state.patients.clinicalHistoryList;
+    });
 
-        const patients = computed(() => {
-            return store.state.patients
-        })
+    const clinicalMedicatData = computed(() => {
+      return store.state.patients.clinicalMedicatList;
+    });
 
-        const columns = computed(() => {
-            return store.state.patients.columns
-        })
+    const clinicalMedicatColumns = computed(() => {
+      return store.state.patients.clinicalMedicatListColumns;
+    });
 
-        const programsData = computed(() => {
-            return store.state.patients.program
-        })
+    const documentsData = computed(() => {
+      return store.state.patients.documents;
+    });
 
+    const documentColumns = computed(() => {
+      return store.state.patients.documentColumns;
+    });
 
-        const errorMsg = computed(() => {
-            return store.state.common.errorMsg
-        })
+    const errorMsg = computed(() => {
+      return store.state.common.errorMsg;
+    });
 
-        
-        function parameterFields(id){
-            store.dispatch('parameterFields',id)
-        }
-        
+    function parameterFields(id) {
+      store.dispatch("parameterFields", id);
+    }
 
-        
-
-
-        let parameterFieldsName = [] 
+    // let parameterFieldsName = []
     //     async function parameterFields(id){
     //     await serviceMethod.common("get", `field/${id}`, null, null).then((response) => {
     //     console.log("response", response.data.data)
@@ -1000,116 +1257,135 @@ export default {
     //    return parameterFieldsName
     //     }
 
-        const fields = computed(()=>{
-            return  store.state.patients.parameterFields
-        })
-        
+    const fields = computed(() => {
+      return store.state.patients.parameterFields;
+    });
 
-        return {
-            parameter,
-            parameters,
-            // parameterFieldsName,
-            fields,
-            parameterFields,
-            errorMsg,
-            programsData,
-            columns,
-            patients,
-            current,
-            globalCode,
-            demographic,
-            nextCondition,
-            programs,
-            program,
-            device,
-            addDevice,
-            steps: [{
-                    title: "Demographics",
-                    content: "First-content",
-                },
-                {
-                    title: "Conditions",
-                    content: "Second-content",
-                },
-                {
-                    title: "Programs",
-                    content: "Second-content",
-                },
-                {
-                    title: "Devices",
-                    content: "Second-content",
-                },
-                {
-                    title: "Parameters",
-                    content: "Second-content",
-                },
-                {
-                    title: "Clinical Data",
-                    content: "Second-content",
-                },
-                {
-                    title: "Insurance",
-                    content: "Second-content",
-                },
-                {
-                    title: "Documents",
-                    content: "Last-content",
-                },
-            ],
-            next,
-            prev,
-            size: ref("large"),
-            handleChange,
-            demographics,
-            conditions,
-            onFinishFailed
-        };
-    },
+    return {
+      documentFile,
+      filePath,
+      onFileUpload,
+      documentColumns,
+      documentsData,
+      documentForm,
+      documents,
+      insuranceForm,
+      clinicalMedicatColumns,
+      clinicalMedicatData,
+      clinicalHistoryColumns,
+      insuranceData,
+      clinicalMedicat,
+      clinicalMedication,
+      clinicalsData,
+      clinicalHistory,
+      clinicals,
+      parameter,
+      parameters,
+      // parameterFieldsName,
+      fields,
+      parameterFields,
+      errorMsg,
+      programsData,
+      columns,
+      patients,
+      current,
+      globalCode,
+      demographic,
+      nextCondition,
+      programs,
+      program,
+      device,
+      addDevice,
+      steps: [
+        {
+          title: "Demographics",
+          content: "First-content",
+        },
+        {
+          title: "Conditions",
+          content: "Second-content",
+        },
+        {
+          title: "Programs",
+          content: "Second-content",
+        },
+        {
+          title: "Devices",
+          content: "Second-content",
+        },
+        // {
+        //   title: "Parameters",
+        //   content: "Second-content",
+        // },
+        {
+          title: "Clinical Data",
+          content: "Second-content",
+        },
+        {
+          title: "Insurance",
+          content: "Second-content",
+        },
+        {
+          title: "Documents",
+          content: "Last-content",
+        },
+      ],
+      next,
+      prev,
+      size: ref("large"),
+      handleChange,
+      demographics,
+      conditions,
+      onFinishFailed,
+    };
+  },
 };
 </script>
 
 <style lang="scss">
 @media (max-width: 1199px) {
-    .ant-steps-item {
-        display: flex;
+  .ant-steps-item {
+    display: flex;
 
-        .ant-steps-item-container {
-            text-align: center;
+    .ant-steps-item-container {
+      text-align: center;
 
-            .ant-steps-item-icon {
-                margin: 0;
-            }
+      .ant-steps-item-icon {
+        margin: 0;
+      }
 
-            .ant-steps-item-content {
-                display: block;
+      .ant-steps-item-content {
+        display: block;
 
-                .ant-steps-item-title {
-                    padding: 0;
-                    font-size: 13px;
+        .ant-steps-item-title {
+          padding: 0;
+          font-size: 13px;
 
-                    &::after {
-                        display: none;
-                    }
-                }
-            }
+          &::after {
+            display: none;
+          }
         }
+      }
     }
+  }
 }
 
 .steps-content {
-    margin-top: 16px;
-    border-radius: 6px;
-    min-height: 200px;
-    text-align: left;
-    padding: 12px 0;
-    overflow-x: hidden;
-    overflow-y: auto;
+  margin-top: 16px;
+  border-radius: 6px;
+  min-height: 200px;
+  text-align: left;
+  padding: 12px 0;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .steps-action {
-    text-align: right;
+  text-align: right;
 }
-.validation{
-    color: red;
+.validation {
+  color: red;
 }
 </style>
+
+
