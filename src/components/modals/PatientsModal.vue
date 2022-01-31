@@ -1336,6 +1336,7 @@ export default {
         successSwal(message);
         console.log(form)
         Object.assign(demographics,form );
+        store.dispatch('patients')
         current.value=0
     }
 
