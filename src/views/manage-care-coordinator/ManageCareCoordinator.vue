@@ -27,8 +27,7 @@
 
 <script>
 import {
-    ref,
-    watch
+    ref
 } from "vue";
 import CareCoordinatorTable from "@/components/care-coordinator/CareCoordinator";
 import Header from "@/components/layout/header/Header";

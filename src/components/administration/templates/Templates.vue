@@ -78,7 +78,7 @@
 import Header from "@/components/administration/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import AdminTemplates from "@/components/modals/AdminTemplates";
-import { defineComponent, ref } from "vue";
+import { ref } from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 const columns = [
   {

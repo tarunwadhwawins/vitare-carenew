@@ -608,7 +608,7 @@
 <script>
 import Header from "@/components/administration/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
-import { defineComponent, ref, computed } from "vue";
+import { ref, computed } from "vue";
 import {
   UserOutlined,
   DeleteOutlined,

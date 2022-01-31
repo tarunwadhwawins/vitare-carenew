@@ -16,10 +16,9 @@
 </template>
 
 <script>
-  import { reactive } from "vue"
 export default {
 props:["colomnsRecord","dataRecord","linkTo"],
-  setup(props) {
+  setup() {
     
   //     const column = reactive(props.dataRecord)
     return {

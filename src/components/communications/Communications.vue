@@ -93,7 +93,7 @@ export default {
   
   setup() {
     const toggle = ref(true);
-    const handleChange = (value) => {
+    const handleChange = () => {
       // console.log(`selected ${value}`);
     };
 
@@ -180,8 +180,8 @@ export default {
     return {
       toggle,
       openNotification,
-      onChange: (pagination, filters, sorter, extra) => {
-        // console.log("params", pagination, filters, sorter, extra);
+      onChange: () => {
+        // console.log("params", );
       },
       handleChange,
       size: ref([]),
