@@ -55,7 +55,7 @@
                               <div class="itemWrapper">
                                 <div class="leftWrapper">Coordinator</div>
                                 <div class="rightWrapper">
-                                  <router-link to="patients-summary">
+                                  <router-link :to="linkTo">
                                     Steve Smith
                                   </router-link>
                                 </div>
@@ -128,7 +128,7 @@
                               <div class="itemWrapper">
                                 <div class="leftWrapper">Coordinator</div>
                                 <div class="rightWrapper">
-                                  <router-link to="patients-summary">
+                                  <router-link :to="linkTo">
                                     Steve Smith
                                   </router-link>
                                 </div>
@@ -205,7 +205,7 @@
                               <div class="itemWrapper">
                                 <div class="leftWrapper">Coordinator</div>
                                 <div class="rightWrapper">
-                                  <router-link to="patients-summary">
+                                  <router-link :to="linkTo">
                                     Steve Smith
                                   </router-link>
                                 </div>
@@ -272,7 +272,7 @@
                               <div class="itemWrapper">
                                 <div class="leftWrapper">Coordinator</div>
                                 <div class="rightWrapper">
-                                  <router-link to="patients-summary">
+                                  <router-link :to="linkTo">
                                     Steve Smith
                                   </router-link>
                                 </div>
@@ -348,7 +348,7 @@
                               <div class="itemWrapper">
                                 <div class="leftWrapper">Coordinator</div>
                                 <div class="rightWrapper">
-                                  <router-link to="patients-summary">
+                                  <router-link :to="linkTo">
                                     Steve Smith
                                   </router-link>
                                 </div>
@@ -395,10 +395,10 @@
     FileAddOutlined,
   },
         setup() {
-            return{
-
-            }
-            
+          const linkTo = "patients-summary"
+          return {
+            linkTo
+          }
         }
     }
 </script>

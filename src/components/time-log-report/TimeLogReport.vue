@@ -59,7 +59,7 @@
                     }}</router-link>
                   </template>
                   <template #patient="text">
-                    <router-link to="patients-summary">{{
+                    <router-link :to="linkTo">{{
                       text.text
                     }}</router-link>
                   </template>
@@ -209,7 +209,9 @@ export default {
       console.log(e);
       visible.value = false;
     };
+    const linkTo = "patients-summary"
     return {
+      linkTo,
       columns,
       data,
       checked,

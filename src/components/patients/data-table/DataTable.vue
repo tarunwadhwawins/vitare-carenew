@@ -1,7 +1,7 @@
 <template>
     <a-table >
     <template #firstName="text">
-        <router-link to="patients-summary">{{ text.text }}</router-link>
+        <router-link :to="linkTo">{{ text.text }}</router-link>
     </template>
     <template #flags="text">
         <span class="box" :style="{'background-color':text.text}" ></span>
@@ -27,8 +27,10 @@ export default {
   },
 
   setup() {
+    const linkTo = "patients-summary"
     return {
-    };
+      linkTo
+    }
   },
 };
 </script>

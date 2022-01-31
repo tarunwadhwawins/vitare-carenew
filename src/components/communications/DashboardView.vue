@@ -20,8 +20,8 @@
     <a-col :sm="12" :xs="24">
       <a-card :title="$t('communications.populateWaitingRoom')" class="common-card">
         <a-tabs v-model:activeKey="activeKey">
-          <PopulateWaitingRoomTab v-if="newRequestsData" :key="1" tab="New Requests" :column="newRequestsColumns" :data="newRequestsData" :linkTo="linkTo" :pagination="false" />
-          <PopulateWaitingRoomTab v-if="futureAppointmentsData" :key="2" tab="Future Appointments" :column="futureAppointmentsColumns" :data="futureAppointmentsData" :linkTo="linkTo" :pagination="false" />
+          <PopulateWaitingRoomTab v-if="newRequestsData" :key="key1" tab="New Requests" :column="newRequestsColumns" :data="newRequestsData" :linkTo="linkTo" :pagination="false" />
+          <PopulateWaitingRoomTab v-if="futureAppointmentsData" :key="key2" tab="Future Appointments" :column="futureAppointmentsColumns" :data="futureAppointmentsData" :linkTo="linkTo" :pagination="false" />
         </a-tabs>
       </a-card>
     </a-col>
@@ -57,10 +57,6 @@
 
       const newRequestsColumns = [
         {
-          dataIndex: "key",
-          key: "key",
-        },
-        {
           title: "Patient Name",
           dataIndex: "patient",
           slots: {
@@ -84,10 +80,6 @@
         },
       ];
       const futureAppointmentsColumns = [
-        {
-          dataIndex: "key",
-          key: "key",
-        },
         {
           title: "Patient Name",
           dataIndex: "patient",
@@ -132,10 +124,14 @@
       const communicationsCount = computed(() => {
         return store.state.communications.communicationsCount
       })
+      const key1 = 1;
+      const key2 = 2;
       
       return {
-        activeKey: ref("1"),
+        activeKey: ref(key1),
         callPlanned,
+        key1,
+        key2,
         newRequestsColumns,
         newRequestsData,
         futureAppointmentsColumns,
