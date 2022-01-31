@@ -1090,7 +1090,7 @@ export default {
       insuranceType: [],
     });
 
-    const documentFile = ref();
+    
 
     const demographic = () => {
       if (demographics.isPrimary == true) {
@@ -1328,20 +1328,25 @@ export default {
       return store.state.patients.parameterFields;
     });
 
+    const form = reactive({ ...demographics });
+
     function closeModal(){
         emit('closeModal',false)
         let message = 'Patient successfully added!'
         successSwal(message);
+        console.log(form)
+        Object.assign(demographics,form );
+        current.value=0
     }
 
     return {
+        form,
         successSwal,
        closeModal,
        regex,
        scrollToTop,
       deviceColumns,
       deviceData,
-      documentFile,
       filePath,
       onFileUpload,
       documentColumns,

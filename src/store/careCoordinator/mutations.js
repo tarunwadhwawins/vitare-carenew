@@ -3,6 +3,10 @@ export const addStaff= async (state, data) => {
     state.addStaff = data;
 }
 
+export const errorMsg = (state, data) => {
+  state.errorMsg = data
+}
+
 export const staffs= async (state, data) => {
     state.staffs = data;
     state.columns = [
