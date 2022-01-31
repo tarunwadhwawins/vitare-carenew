@@ -197,7 +197,10 @@ export default {
         })
 
         const errorMsg = computed(() => {
-            return store.state.common.errorMsg
+            if(store.state.careCoordinator.errorMsg){
+                scrollToTop()
+            }
+            return store.state.careCoordinator.errorMsg
         })
 
 
