@@ -592,6 +592,7 @@
 
                                 </template>
                             </a-table>
+                            <Loader />
                         </a-col>
                     </a-row>
                     <div class="steps-action">
@@ -675,6 +676,7 @@
                                         <DeleteOutlined /></a>
                                 </template>
                             </a-table>
+                            <Loader />
                         </a-col>
                     </a-row>
                     <div class="steps-action">
@@ -723,6 +725,7 @@
                                 </a-tooltip>
                             </template>
                         </a-table>
+                        <Loader />
                     </a-col>
                 </a-row>
 
@@ -795,6 +798,7 @@
                                 </a-tooltip>
                             </template>
                         </a-table>
+                        <Loader />
                     </a-col>
                 </a-row>
                 <div class="steps-action">
@@ -919,6 +923,7 @@
                                     </a-tooltip>
                                 </template>
                             </a-table>
+                            <Loader />
                         </a-col>
                     </a-row>
                     <div class="steps-action">
@@ -951,6 +956,7 @@ import ErrorMessage from "../common/messages/ErrorMessage.vue";
 // import serviceMethod from "../../services/serviceMethod";
 import {regex} from "../../RegularExpressions/regex"
 import { scrollToTop } from "../../commonMethods/commonMethod"
+import Loader from "../loader/Loader"
 export default {
   components: {
     // Demographics,
@@ -963,6 +969,7 @@ export default {
     // Documents,
     // DataTable
     ErrorMessage,
+    Loader
   },
   setup() {
     const store = useStore();

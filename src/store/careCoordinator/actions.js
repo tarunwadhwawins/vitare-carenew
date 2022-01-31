@@ -17,7 +17,7 @@ export const addStaff = async ({
   })
   Toast.fire({
       icon: 'success',
-      title: 'Form submitted successfully!'
+      title:response.message
   })
   }).catch((error) => {
     if(error.response.status === 422){
