@@ -5,7 +5,6 @@ export const demographics = (state, data) => {
 
  export const patients = (state, data) => {
     // state.patientList = data;
-    console.log('mutationPatients',data)
      data.forEach(element => {
          state.patientList.push({
             flags:element.patientFlags.data[0]?element.patientFlags.data[0].flags.data.color:'',
@@ -286,7 +285,6 @@ export const demographics = (state, data) => {
 
 
  export const parameterFields = (state, data) => {
-     console.log("data",data.map((item)=>{if(item!=null) return item}))
     state.parameterFields = data.map((item)=>{if(item!=null) return item})
  }
 
@@ -382,6 +380,9 @@ export const demographics = (state, data) => {
         {
           title: "	Tags",
           dataIndex: "tags",
+          slots: {
+            customRender: "tags",
+          },
         },
         {
           title: "Actions",

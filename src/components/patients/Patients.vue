@@ -107,7 +107,7 @@ export default {
             handleChange,
             searchoptions,
             size: ref([]),
-            columns,
+            columns, 
             patients
         };
     },

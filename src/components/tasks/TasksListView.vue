@@ -72,7 +72,7 @@ import {
 } from "@ant-design/icons-vue";
 import { ref, watchEffect, computed } from "vue";
 import { useStore } from "vuex"
-import swal from 'sweetalert';
+import swal from 'sweetalert2';
 export default {
   components: {
     DeleteOutlined,
@@ -102,7 +102,6 @@ export default {
         dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
-          // swal("Deleted!", "The record is deleted!", "success")
           store.dispatch("tasksList")
         }
       });

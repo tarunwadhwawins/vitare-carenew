@@ -12,9 +12,9 @@ const factory = (values = {}) => {
 }
 
 
-describe('CareCoordinate', () => {
+describe('CareCoordinate.vue', () => {
   it('does not render an error', () => {
     const wrapper = factory()
-    // expect(wrapper.find('.error').exists()).toBeFalsy()
+    expect(wrapper.find('.error').exists()).toBeFalsy()
   })
 })

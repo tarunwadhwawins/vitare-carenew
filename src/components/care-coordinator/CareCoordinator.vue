@@ -36,6 +36,7 @@
         </div>
     </a-col>
     <a-col :span="24">
+        <Loader />
         <CoordinatorTable v-if="staffs"  :columns="columns" :data-source="staffs" :scroll="{ x: 1200 }"></CoordinatorTable>
     </a-col>
 </a-row>
@@ -43,12 +44,12 @@
 
 <script>
 import {
-    ref,
     watchEffect,
     computed
 } from "vue";
 import LongCard from "@/components/common/cards/LongCard";
 import CoordinatorTable from "./tables/CoordinatorTable";
+import Loader from "../loader/Loader"
 import {
     useStore
 } from "vuex";
@@ -60,10 +61,9 @@ export default {
     components: {
         LongCard,
         CoordinatorTable,
+        Loader
     },
-    setup(props, {
-        emit
-    }) {
+    setup() {
         const store = useStore();
         watchEffect( () => {
             store.dispatch('staffs')
