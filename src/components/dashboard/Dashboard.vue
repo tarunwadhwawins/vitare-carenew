@@ -24,7 +24,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="24">
-      <Appointement v-if="data4" :appointment="dateFormat(data4)" :columns="columns4"
+      <Appointement v-if="data4" :appointment="data4" :columns="columns4"
         :title="$t('dashboard.todayAppointment')">
       </Appointement>
 
@@ -105,7 +105,7 @@
   import Card from "@/components/common/cards/Card"
   import Appointement from "./Appointment"
   import ApexChart from "@/components/common/charts/ApexChart";
-  import moment from 'moment';
+  //import moment from 'moment';
   import { useStore } from 'vuex'
   const columns4 = [
     {
@@ -219,9 +219,7 @@
         store.dispatch("todayAppointment", data.value)
         store.dispatch("callStatus", data.value)
         store.dispatch("specialization", data.value)
-
         store.dispatch("network", data.value)
-
         store.dispatch("cptCode", data.value)
         store.dispatch("financial", data.value)
         store.dispatch("totalPatientsChart", data.value)
@@ -231,14 +229,6 @@
         apiCall(timeLineButton)
 
       })
-      function dateFormat(data) {
-
-        data.map(el => {
-          let date = moment(new Date(el.date));
-          el.date = date.format("MMM DD, YYYY") + ", " + moment(el.time, "HH:mm:ss").format("hh:mm A")
-        })
-        return data
-      }
       const totalPatients = computed(() => {
         return store.state.counterCards.totalPatientcount
       })
@@ -296,7 +286,6 @@
       }
 
       return {
-        dateFormat,
         grid,
         totalPatients,
         callStatus,

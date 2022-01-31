@@ -240,8 +240,7 @@ export default defineComponent({
     const addAppt = () => {
       appointmentModal.value = true;
     };
-    const apptOk = (e) => {
-      console.log(e);
+    const apptOk = () => {
       appointmentModal.value = false;
     };
 
@@ -249,8 +248,7 @@ export default defineComponent({
     const addTask = () => {
       TasksModal.value = true;
     };
-    const taskOk = (e) => {
-      console.log(e);
+    const taskOk = () => {
       TasksModal.value = false;
     };
 
@@ -258,8 +256,7 @@ export default defineComponent({
     const addPatient = () => {
       PatientsModal.value = true;
     };
-    const patientOk = (e) => {
-      console.log(e);
+    const patientOk = () => {
       PatientsModal.value = false;
     };
 
@@ -267,8 +264,7 @@ export default defineComponent({
     const addCare = () => {
       CoordinatorsModal.value = true;
     };
-    const handleOk = (e) => {
-      console.log(e);
+    const handleOk = () => {
       CoordinatorsModal.value = false;
     };
 
@@ -280,8 +276,7 @@ export default defineComponent({
     const addsendMessage = () => {
       SendMessage.value = true;
     };
-    const startOk = (e) => {
-      console.log(e);
+    const startOk = () => {
       AddStartCall.value = false;
     };
 

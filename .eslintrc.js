@@ -17,8 +17,8 @@ module.exports = {
   //   parser: 'babel-eslint'
   // },
   rules: {
-    // 'no-unused-vars': 'warn',
-    // 'comma-dangle': 'off',
+     'no-unused-vars': 'warn',
+     'comma-dangle': 'off',
     // 'class-methods-use-this': 'off',
     // 'import/no-unresolved': 'off',
     // 'import/extensions': 'off',

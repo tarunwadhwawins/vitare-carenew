@@ -1,9 +1,15 @@
+import moment from 'moment';
 export const timelineSuccess = (state, count) => {
 
   state.timeLineButton = count;
 }
 export const todayAppointmentSuccess = (state, count) => {
-  state.todayAppointmentState = count;
+  state.todayAppointmentState = count.map(el => { 
+     var day = moment.unix(new Date(el.date));
+el.date = String(day.format('MMM DD, yyyy, hh:mm A'));
+return el
+  })
+
 }
 export const failure = (state, error) => {
   state.errorMsg = error;
@@ -214,7 +220,7 @@ export const specializationSuccess = (state, count) => {
     behavior: [
       {
         name: "Specialization",
-        data: count.map((item) => { return item.count }),
+        data: count.map((item) => { return item.total }),
       },
     ],
   };
@@ -283,7 +289,7 @@ export const networkSuccess = (state, count) => {
     Out: [
       {
         name: "Network",
-        data: count.map((item) => { return item.count }),
+        data: count.map((item) => { return item.total }),
       },
     ],
   };
@@ -468,6 +474,7 @@ export const totalPatientsChartSuccess = (state, count) => {
 }
 
 export const appointmentChartSuccess = (state, count) => {
+   
 
   let categories = ''
   let format = ''
@@ -486,6 +493,36 @@ export const appointmentChartSuccess = (state, count) => {
 
   } else if (state.timeLineButton == 123) {
     type = "day"
+//     let days = [];
+//     let dates = []
+//     let today = moment();
+//     today.subtract(7, 'days')
+// for (var i = 0; i < 7; i++){
+    
+//    var day = today.add(1, 'days');
+   
+//    dates.push(day.format('YYYY-MM-DD'));
+//    days[day.format('dddd')]=i
+// }
+// let tmp = [];
+// count.forEach(function(key) {
+  
+//   let value = days[key.week];
+//   let index = days[key.week];
+
+//   tmp[index] = {
+//     week: key.week,
+//     total: value
+//   };
+  
+// });
+// let orderedData = {};
+// tmp.forEach(function(obj) {
+//   console.log("dfdf",obj);
+//   orderedData[obj.key] = obj.value;
+// });
+
+// console.log("dfdf",orderedData);
     categories = count.map((item) => {
       return item.week
     })
