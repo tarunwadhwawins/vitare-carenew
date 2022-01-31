@@ -1330,8 +1330,8 @@ export default {
 
     function closeModal(){
         emit('closeModal',false)
-        let message = 'Process completed!'
-        successSwal(message)
+        let message = 'Patient successfully added!'
+        successSwal(message);
     }
 
     return {
