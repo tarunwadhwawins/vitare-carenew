@@ -20,7 +20,7 @@ export default {
       visible.value = true;
     };
 
-    const handleOk = (e) => {
+    const handleOk = () => {
       visible.value = false;
     };
 

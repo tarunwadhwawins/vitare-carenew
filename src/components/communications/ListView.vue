@@ -177,7 +177,7 @@ const columns = [
   },
 ];
 
-import { ref, watchEffect, computed } from 'vue';
+import { watchEffect, computed } from 'vue';
 import { useStore } from "vuex"
 import {
   EyeOutlined,
@@ -198,7 +198,6 @@ export default {
   },
   setup() {
     const store = useStore()
-    var searchParams = [];
 
     watchEffect(() => {
       store.dispatch('communicationsList')
@@ -215,8 +214,8 @@ export default {
       communicationsList,
       columns,
       handleChange,
-      onChange: (pagination, filters, sorter, extra) => {
-        // console.log("params", pagination, filters, sorter, extra);
+      onChange: () => {
+        // console.log("params", );
       },
     };
   },

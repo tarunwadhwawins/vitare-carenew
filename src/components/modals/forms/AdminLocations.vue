@@ -80,7 +80,7 @@
   </a-row>
 </template>
 <script>
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref } from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 const columns2 = [
   {

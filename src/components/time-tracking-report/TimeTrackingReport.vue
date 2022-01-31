@@ -71,7 +71,7 @@
 <script>
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
-import { defineComponent, ref } from "vue";
+import { ref } from "vue";
 
 export default {
   components: {
