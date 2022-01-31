@@ -50,7 +50,7 @@
   </a-modal>
 </template>
 <script>
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref } from "vue";
 export default defineComponent({
   components: {},
   setup() {

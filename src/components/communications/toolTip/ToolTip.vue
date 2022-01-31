@@ -16,8 +16,6 @@
 
 <script>
 import { MailOutlined, MessageOutlined, AlertOutlined, PhoneOutlined } from "@ant-design/icons-vue";
-import { notification, Button } from "ant-design-vue";
-import { h } from "vue";
 export default {
   components: {
     MailOutlined,

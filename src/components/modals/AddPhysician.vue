@@ -21,7 +21,7 @@
   </a-modal>
 </template>
 <script>
-import { defineComponent, ref } from "vue";
+import { ref } from "vue";
 export default {
   setup() {
     const options = ref([

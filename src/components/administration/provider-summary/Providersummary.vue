@@ -125,8 +125,7 @@
 <script>
 import Header from "@/components/administration/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
-import { useRouter } from "vue-router";
-import { defineComponent, ref } from "vue";
+import { ref } from "vue";
 import {
   DeleteOutlined,
   EditOutlined,

@@ -31,7 +31,7 @@
   </a-modal>
 </template>
 <script>
-import { defineComponent, ref } from "vue";
+import { ref } from "vue";
 import AdminProviders from "@/components/modals/forms/AdminProviders";
 import AdminLocations from "@/components/modals/forms/AdminLocations";
 export default {
