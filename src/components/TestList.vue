@@ -180,10 +180,8 @@ import { useStore } from "vuex"
 
       onMounted(() => {
         window.addEventListener("scroll", () => {
-          // console.log("Scrolled Once")
           // pageRef,
           // (page) => {
-            // console.log("Scrolled Two")
             let element = scrollComponent.value;
             if (element.getBoundingClientRect().bottom < window.innerHeight) {
               loadMoreData(page++);
@@ -193,7 +191,6 @@ import { useStore } from "vuex"
       })
       
       async function loadMoreData(page) {
-        console.log("Scrolled Down", page)
         store.dispatch('communicationsList', page)
       }
 

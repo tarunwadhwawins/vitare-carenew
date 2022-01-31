@@ -122,9 +122,7 @@ export const communicationTypesSuccess = (state, response) => {
 export const communicationsSuccess = async (state, communications) => {
   let data = [];
   data = state.communicationsList;
-  console.log('STATE 1', state.communicationsList)
   state.communicationsList = data ? data.push(...communications) : communications;
-  console.log('STATE 2', state.communicationsList)
 }
 export const addCommunicationSuccess = async (state, addCommunication) => {
   state.addCommunication = addCommunication;
