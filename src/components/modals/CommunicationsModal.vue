@@ -1,6 +1,6 @@
 <template>
   <a-modal width="1000px" title="Communications" centered>
-    <a-form :model="messageForm" layout="vertical" @finish="sendMessage" @finishFailed="onFinishFailed">
+    <a-form :model="messageForm" layout="vertical" @finish="sendMessage">
       <a-row :gutter="24">
         <!-- <a-col :sm="12" :xs="24">
           <div class="form-group">
@@ -190,9 +190,9 @@
         emit('is-visible', false);
       }
 
-      const onFinishFailed = errorInfo => {
-          console.log('Failed:', errorInfo);
-      };
+     /*  const onFinishFailed = errorInfo => {
+        console.log('Failed:', errorInfo);
+      }; */
 
       const patientChange = (value) => {
         store.dispatch('patientDetails', value);
@@ -208,7 +208,7 @@
         patientChange,
         handleCancel,
         sendMessage,
-        onFinishFailed,
+        // onFinishFailed,
         patientsList,
         staffList,
         taskPriority,
