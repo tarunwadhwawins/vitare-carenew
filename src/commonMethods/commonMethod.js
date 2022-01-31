@@ -29,3 +29,7 @@ export function dateFormat(date) {
   var day = moment.unix(new Date(date));
   return String(day.format('MMM DD, yyyy, hh:mm A'));
 }
+export function timeOnly(date) {
+  var day = moment.unix(new Date(date));
+  return String(day.format('H'));
+}

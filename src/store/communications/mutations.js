@@ -1,4 +1,5 @@
 
+import { timeOnly } from '../../commonMethods/commonMethod';
 export const callPlannedSuccess = (state, count) => {
   state.callPlanned = {
     calloption: {
@@ -93,7 +94,7 @@ export const communicationTypesSuccess = (state, response) => {
       return {
         name: item.text, data: item.data.map((data) => {
           console.log('timeList', data.time)
-          timeList.push(data.time)
+          timeList.push(timeOnly(data.time))
           return data.count
         })
       }
