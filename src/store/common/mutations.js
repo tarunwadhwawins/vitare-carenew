@@ -79,6 +79,8 @@ export const successMsg = (state, data) => {
     state.errorMsg = data
  }
 
-
-
+ 
+ export const loadingStatus = (state, data) => {
+    state.loadingStatus = data
+ }
 

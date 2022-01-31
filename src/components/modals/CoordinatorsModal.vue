@@ -27,9 +27,10 @@
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item name="designationId" :label="$t('global.designation')" has-feedback :rules="[{ required: true, message: $t('global.designation')+' '+$t('global.validation') }]">
-                                    <a-select ref="select" show-search v-model:value="personalInfoData.designationId" style="width: 100%" size="large" @focus="focus" @change="handleChange">
-                                        <a-select-option v-for="designation in careCordinator.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
+                                <a-form-item name="designationId" :label="$t('global.designation')"  :rules="[{ required: true, message: $t('global.designation')+' '+$t('global.validation') }]">
+                                    <a-select ref="select"  v-model:value="personalInfoData.designationId" style="width: 100%" size="large"  @change="handleChange">
+                                        <!-- <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option> -->
+                                        <a-select-option  v-for="designation in careCordinator.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
                                     </a-select>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.designationId[0]" />
                                 </a-form-item>
@@ -38,8 +39,8 @@
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item name="genderId" :label="$t('global.gender')" has-feedback :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
-                                    <a-select ref="select" v-model:value="personalInfoData.genderId" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                <a-form-item name="genderId" :label="$t('global.gender')"  :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
+                                    <a-select ref="select" v-model:value="personalInfoData.genderId" style="width: 100%" size="large"  @change="handleChange">
                                         <a-select-option v-for="gender in careCordinator.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
                                     </a-select>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.genderId[0]" />
@@ -56,7 +57,7 @@
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: new RegExp('^[0-9]{10}$') }]">
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
                                     <a-input v-model:value="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber[0]" />
                                 </a-form-item>
@@ -122,14 +123,16 @@ import {
     reactive,
     computed
 } from "vue";
-import PersonalInformation from "@/components/modals/forms/PersonalInformation";
-import Contacts from "@/components/modals/forms/Contacts";
-import Availability from "@/components/modals/forms/Availability";
-import Roles from "@/components/modals/forms/Roles";
-import Documents from "@/components/modals/forms/Documents";
-import Providers from "@/components/modals/forms/Providers";
+// import PersonalInformation from "@/components/modals/forms/PersonalInformation"
+import Contacts from "@/components/modals/forms/Contacts"
+import Availability from "@/components/modals/forms/Availability"
+import Roles from "@/components/modals/forms/Roles"
+import Documents from "@/components/modals/forms/Documents"
+import Providers from "@/components/modals/forms/Providers"
 import {useStore} from "vuex"
 import ErrorMessage from "../common/messages/ErrorMessage"
+import {regex} from "../../RegularExpressions/regex"
+import { scrollToTop } from "../../commonMethods/commonMethod"
 export default {
     components: {
         // PersonalInformation,
@@ -161,7 +164,7 @@ export default {
             current.value++;
         }
 
-        const personalInfo = (values) => {
+        const personalInfo = () => {
             store.dispatch('addStaff', personalInfoData)
             setTimeout(()=>{
             if(addStaff.value.id){
@@ -177,12 +180,13 @@ export default {
         }
 
         const onFinishFailed = errorInfo => {
+            scrollToTop();
             console.log('Failed:', errorInfo);
         };
 
-        const handleChange = (value) => {
-            console.log(`selected ${value}`);
-        };
+        // const handleChange = (value) => {
+        //     console.log(`selected ${value}`);
+        // };
 
         const careCordinator = computed(() => {
             return store.state.common
@@ -198,6 +202,8 @@ export default {
 
 
         return {
+            scrollToTop,
+            regex,
             errorMsg,
             addStaff,
             careCordinator,

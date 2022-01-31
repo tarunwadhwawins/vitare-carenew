@@ -1,4 +1,6 @@
 const global = {
+  active:'Active',
+  inactive:'Inactive',
   cancel: 'Cancel',
   ok: 'Ok',
   validation:'is required.',

@@ -1,5 +1,5 @@
 import serviceMethod from '../../services/serviceMethod';
-
+import Swal from 'sweetalert2'
 
 export const addStaff = async ({
   commit
@@ -8,7 +8,17 @@ export const addStaff = async ({
     console.log("response", response.data.data)
     commit('addStaff', response.data.data);
     commit('successMsg', response.message);
-    alert("Form submitted successfully!")
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 5000,
+      timerProgressBar: true,
+  })
+  Toast.fire({
+      icon: 'success',
+      title: 'Form submitted successfully!'
+  })
   }).catch((error) => {
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
@@ -21,14 +31,14 @@ export const addStaff = async ({
   })
 }
 
-export const staffs = async ({
-  commit
-}, data) => {
+export const staffs = async ({commit}, data) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("get", "staff", null, data).then((response) => {
-    console.log("response", response.data.data)
     commit('staffs', response.data.data);
+    commit('loadingStatus', false)
     commit('successMsg', response.message);
   }).catch((error) => { 
     commit('errorMsg', error);
+    commit('loadingStatus', false)
   })
 }

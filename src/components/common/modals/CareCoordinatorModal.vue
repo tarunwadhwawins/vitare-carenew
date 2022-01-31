@@ -92,7 +92,6 @@ export default {
         contactData.value = res.data.data;
       },
       (error) => {
-        console.log(error)
         this.message = (
           error.response &&
           error.response.data &&
@@ -112,7 +111,6 @@ export default {
         availabilityData.value = res.data.data;
       },
       (error) => {
-        console.log(error)
         this.message = (
           error.response &&
           error.response.data &&

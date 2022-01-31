@@ -67,7 +67,6 @@ export default {
         contactData.value = res.data.data;
       },
       (error) => {
-        console.log(error)
       });
     })
     const onClickViewButton = (rowId) => {
@@ -86,19 +85,15 @@ export default {
             coordinatorId: coordinatorId,
             contactId: contactId
           }
-          console.log(data)
           store.dispatch("deleteCoordinatorContact", data)
           .then((res) => {
-            console.log('Res', res)
             store.dispatch("getCoordinatorContacts", JSON.parse(localStorage.getItem('coordinatorId'))).then((res) => {
               contactData.value = res.data.data;
             },
             (error) => {
-              console.log(error)
             });
           },
           (error) => {
-            console.log(error)
           });
         }
       });

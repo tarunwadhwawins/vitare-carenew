@@ -59,7 +59,6 @@ export default {
         availabilityData.value = res.data.data;
       },
       (error) => {
-        console.log(error)
         this.message = (
           error.response &&
           error.response.data &&
@@ -86,19 +85,15 @@ export default {
             coordinatorId: coordinatorId,
             availabilityId: availabilityId
           }
-          console.log(data)
           store.dispatch("deleteCoordinatorAvailability", data)
           .then((res) => {
-            console.log('Res', res)
             store.dispatch("getCoordinatorAvailabilities", JSON.parse(localStorage.getItem('coordinatorId'))).then((res) => {
               availabilityData.value = res.data.data;
             },
             (error) => {
-              console.log(error)
             });
           },
           (error) => {
-            console.log(error)
           });
         }
       });

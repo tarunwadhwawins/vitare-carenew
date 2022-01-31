@@ -21,7 +21,8 @@ export default {
     insuranceName:null,
     insuranceType:null,
     documentTags:null,
-    documentTypes:null
+    documentTypes:null,
+    loadingStatus:false
 
 
 

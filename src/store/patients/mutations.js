@@ -5,7 +5,6 @@ export const demographics = (state, data) => {
 
  export const patients = (state, data) => {
     // state.patientList = data;
-    console.log('mutationPatients',data)
      data.forEach(element => {
          state.patientList.push({
             flags:element.patientFlags.data[0]?element.patientFlags.data[0].flags.data.color:'',
@@ -244,27 +243,27 @@ export const demographics = (state, data) => {
     state.devicesColumns =[
         {
           title: "Device Type",
-          dataIndex: "home",
+          dataIndex: "deviceType",
         },
         {
           title: "Model No",
-          dataIndex: "model",
+          dataIndex: "modelNumber",
         },
         {
           title: "Serial No",
-          dataIndex: "serial",
+          dataIndex: "serialNumber",
         },
         {
           title: "MAC Address",
-          dataIndex: "mac",
+          dataIndex: "macAddress",
         },
         {
           title: "Device Time",
-          dataIndex: "device",
+          dataIndex: "deviceTime",
         },
         {
           title: "Server Time",
-          dataIndex: "server",
+          dataIndex: "serverTime",
         },
         {
           title: "Active/Inactive",
@@ -286,7 +285,6 @@ export const demographics = (state, data) => {
 
 
  export const parameterFields = (state, data) => {
-     console.log("data",data.map((item)=>{if(item!=null) return item}))
     state.parameterFields = data.map((item)=>{if(item!=null) return item})
  }
 
@@ -382,6 +380,9 @@ export const demographics = (state, data) => {
         {
           title: "	Tags",
           dataIndex: "tags",
+          slots: {
+            customRender: "tags",
+          },
         },
         {
           title: "Actions",
