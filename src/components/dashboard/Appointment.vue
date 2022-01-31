@@ -20,7 +20,17 @@
   import { reactive } from "vue"
 
   export default {
-    props: ["appointment", "columns", "title"],
+    props: {
+      appointment:{
+        type:Array,
+      }, 
+        columns:{
+        type:Array,
+      }, 
+      title:{
+      type:String,
+      required: true
+    }},
     setup(props) {
       const data = reactive(props.appointment)
       const column = reactive(props.columns)

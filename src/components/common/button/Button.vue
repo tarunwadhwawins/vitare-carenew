@@ -15,7 +15,6 @@ export default {
   },
   setup(props, { emit }) {
     const show = () => {
-      console.log("true");
       emit("click");
     };
 
