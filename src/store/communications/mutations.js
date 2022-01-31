@@ -86,7 +86,6 @@ export const communicationTypesSuccess = (state, response) => {
 
   const communicationType = array_list_final
   const timeList = [];
-  const series = [];
   const callSeries = communicationType.map((item) => {
     return {
       name: item.text, data: item.data.map((data) => {

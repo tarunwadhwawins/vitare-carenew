@@ -3,7 +3,7 @@ import { API_ENDPOINTS } from "../../config/apiConfig"
 
 export const tasksList = async ({ commit }) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['tasksList'], null, null).then((response) => {
-		console.log('tasksListSuccess', response.data.data);
+		// console.log('tasksListSuccess', response.data.data);
 		commit('tasksListSuccess', response.data.data);
 	})
 	.catch((error) => {
@@ -16,7 +16,7 @@ export const tasksList = async ({ commit }) => {
 
 export const addTask = async ({ commit }, data) => {
 	await ServiceMethodService.common("post", API_ENDPOINTS['addTask'], null, data).then((response) => {
-		console.log('addTaskSuccess', response.data.data);
+		// console.log('addTaskSuccess', response.data.data);
 		commit('addTaskSuccess', response.data.data);
 	})
 	.catch((error) => {
@@ -29,7 +29,7 @@ export const addTask = async ({ commit }, data) => {
 
 export const taskStatus = async ({ commit }) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['taskStatus'], null, null).then((response) => {
-		console.log('taskStatusSuccess', response.data.data);
+		// console.log('taskStatusSuccess', response.data.data);
 		commit('taskStatusSuccess', response.data.data);
 	})
 	.catch((error) => {
@@ -42,7 +42,7 @@ export const taskStatus = async ({ commit }) => {
 
 export const taskPriority = async ({ commit }) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['taskPriority'], null, null).then((response) => {
-		console.log('taskPrioritySuccess', response.data.data);
+		// console.log('taskPrioritySuccess', response.data.data);
 		commit('taskPrioritySuccess', response.data.data);
 	})
 	.catch((error) => {
