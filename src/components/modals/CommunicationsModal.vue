@@ -191,7 +191,7 @@
         // console.log('entityType', document.getElementById("entityType").value)
         // console.log('Message Form', messageForm)
         store.dispatch('addCommunication', messageForm).then(() => {
-          store.dispatch('communicationsList')
+          store.dispatch('communicationsList', 1)
         })
         emit('is-visible', false);
       }
