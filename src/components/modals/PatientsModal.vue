@@ -907,7 +907,7 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.tags')" name="tags" :rules="[{ required: false, message: $t('global.tags')+' '+$t('global.validation') }]">
-                                    <a-select v-model:value="documents.tags" mode="multiple" size="large" placeholder="" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" />
+                                    <a-select v-model:value="documents.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.tags?errorMsg.tags[0]:''" />
                                 </a-form-item>
                             </div>
