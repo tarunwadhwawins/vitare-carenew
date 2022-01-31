@@ -168,6 +168,11 @@ const routes = [
     name: 'Test',
     component: () => import( '../components/Test.vue')
   },
+  {
+    path: '/test-list',
+    name: 'Test List',
+    component: () => import( '../components/TestList.vue')
+  },
 
 
 ]

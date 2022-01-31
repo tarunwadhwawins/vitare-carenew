@@ -27,7 +27,6 @@ export const API_ENDPOINTS = {
     addCommunication:"communication",
     TimeLine:"patient/new",
     communicationsCount:"communication/count",
-    searchCommunications:"communication/search",
 
     addTask:"task",
     tasksList:"task",

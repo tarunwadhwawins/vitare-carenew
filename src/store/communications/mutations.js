@@ -1,6 +1,5 @@
 
-  import moment from 'moment'
-  export const callPlannedSuccess = (state, count) => {
+export const callPlannedSuccess = (state, count) => {
   state.callPlanned = {
     calloption: {
       annotations: {
@@ -70,16 +69,30 @@
 }
 
 export const communicationTypesSuccess = (state, response) => {
-  const communicationType = [response]
+  var array_list = [];
+  var array_list_final = [];
+  response.forEach(function(value) {
+    if(typeof array_list[value.text] === 'undefined') {
+      array_list[value.text] = [];
+    }
+    array_list[value.text].push(value);
+  });
+  for (const key in array_list) {
+    var array_value = [];
+    array_value['text']=key;
+    array_value['data']=array_list[key];
+    array_list_final.push(array_value);
+  }
+
+  const communicationType = array_list_final
   const timeList = [];
+  const series = [];
   const callSeries = communicationType.map((item) => {
-    return { name: item.text, data: item.data.map((data) => {
-      if (timeList.indexOf(data.time) === -1) {
-        var date = new Date(data.time * 1000);
-        timeList.push(date.getHours())
-      }
-      return data.count
-    })}
+    return {
+      name: item.text, data: item.data.map((data) => {
+        return data.time, data.count
+      })
+    }
   })
   
   state.communicationTypes = {

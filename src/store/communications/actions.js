@@ -31,15 +31,16 @@ export const communicationTypes = async ({ commit }) => {
 		commit('communicationTypesSuccess', response.data.data);
 	})
 	.catch((error) => {
-		if (error.response.status == 401) {
-			//AuthService.logout();
-		}
-		commit('failure', error.response.data);
+		// if (error.response.status == 401) {
+		// 	//AuthService.logout();
+		// }
+		// commit('failure', error.response.data);
+		commit('failure', error);
 	})
 }
 
-export const communicationsList = async ({ commit }) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['communicationsList'], null, null).then((response) => {
+export const communicationsList = async ({ commit }, page) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['communicationsList']+'?page='+page, null, null).then((response) => {
 		commit('communicationsSuccess', response.data.data);
 	})
 	.catch((error) => {
@@ -124,7 +125,7 @@ export const communicationsCount = async ({ commit }, date) => {
 }
 
 export const searchCommunications = async ({ commit }, params) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['searchCommunications']+'?search='+params, null, null).then((response) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['communicationsList']+'?search='+params, null, null).then((response) => {
 		commit('searchCommunicationsSuccess', response.data.data);
 	})
 	.catch((error) => {
