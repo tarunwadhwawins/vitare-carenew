@@ -11,9 +11,6 @@
             placeholder="Select Patient"
             style="width: 100%"
             :options="options"
-            @focus="handleFocus"
-            @blur="handleBlur"
-            @change="handleChange"
             size="large"
           >
           </a-select>
@@ -38,7 +35,7 @@
   </a-modal>
 </template>
 <script>
-import { defineComponent, ref } from "vue";
+import { ref } from "vue";
 export default {
   setup() {
     const options = ref([
@@ -63,17 +60,6 @@ export default {
         label: "Brett William",
       },
     ]);
-    const handleChange = (value) => {
-      console.log(`selected ${value}`);
-    };
-
-    const handleBlur = () => {
-      console.log("blur");
-    };
-
-    const handleFocus = () => {
-      console.log("focus");
-    };
 
     const filterOption = (input, option) => {
       return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
@@ -82,9 +68,6 @@ export default {
       size: ref("large"),
       value: ref(undefined),
       filterOption,
-      handleBlur,
-      handleFocus,
-      handleChange,
       options,
     };
   },

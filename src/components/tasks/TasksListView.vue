@@ -107,17 +107,16 @@ export default {
       });
     };
 
-    const editTask = (id) => {
+    const editTask = () => {
       emit('isEdit', true);
-      console.log('editTask', id);
     };
 
-    const updateTask = (data) => {
-      console.log('updateTask', data)
+    const updateTask = () => {
+      // console.log('updateTask', data)
     };
 
-    const createAppointment = (id) => {
-      console.log('createAppointment', id)
+    const createAppointment = () => {
+      // console.log('createAppointment', id)
     };
 
     const tasksColumns = [
