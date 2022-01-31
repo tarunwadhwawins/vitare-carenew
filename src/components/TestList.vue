@@ -1,11 +1,13 @@
 <template>
   <div>
     <div class='scrolling-component' ref='scrollComponent'>
+      <div ref="intersectionTrigger"></div>
       <a-table
         v-if="communicationsList"
         :columns="communicationsColumns"
         :data-source="communicationsList"
         :pagination="false">
+        
         <template #expandedRowRender="{ record }">
           <p style="margin: 0">
             {{ record.description }}
@@ -97,8 +99,11 @@
               <MessageOutlined />
             </a>
           </a-tooltip>
+           
         </template>
+       
       </a-table>
+      
     </div>
   </div>
 </template>
@@ -160,30 +165,44 @@ const communicationsColumns = [
   },
 ];
 
-import { ref, watchEffect, onMounted, onUnmounted, computed } from "vue";
+import { ref, watch, computed } from "vue";
 import { useStore } from "vuex"
+import { makeUseInfiniteScroll } from 'vue-use-infinite-scroll'
   export default {
     setup () {
       const store = useStore()
-      var page = 1
-      watchEffect(() => {
+      // var page = 1;
+      // watchEffect(() => {
+      //   store.dispatch('communicationsList', page, communicationsList)
+      // })
+      const useInfiniteScroll = makeUseInfiniteScroll({})
+      const intersectionTrigger = ref(null)
+      const pageRef = useInfiniteScroll(intersectionTrigger)
+
+      watch(
+        pageRef,
+        (page) => {
+          console.log("first")
+          fetchItems(page)
+        },
+        { immediate: true }
+      )
+
+      // const itemsRef = ref([])
+
+      async function fetchItems(page) {
         store.dispatch('communicationsList', page)
-      })
-      var communicationsList = computed(() => {
+      }
+      const communicationsList = computed(() => {
         return store.state.communications.communicationsList
       })
-      const scrollComponent = ref(null)
+      // const scrollComponent = ref(null)
       
-      async function loadMorePosts() {
-        communicationsList.value = [];
-        let newPosts = store.state.communications.communicationsList
-        // const index = communicationsList.value.findIndex(object => object.id === newPosts.id);
-        // if(index === -1) {
-          communicationsList.value.push(...newPosts)
-        // }
-        page++
-        // console.log('communicationsList', communicationsList.value)
+      /* async function loadMorePosts() {
+        
       }
+
+      console.log('communicationsList', communicationsList.value)
       
       onMounted(() => {
         window.addEventListener("scroll", handleScroll)
@@ -198,11 +217,12 @@ import { useStore } from "vuex"
         if (element.getBoundingClientRect().bottom < window.innerHeight) {
           loadMorePosts();
         }
-      }
+      } */
       // console.log('Posts', communicationsList)
       return {
+        intersectionTrigger,
         communicationsList,
-        scrollComponent,
+        // scrollComponent,
         communicationsColumns,
       }
     }

@@ -99,7 +99,7 @@
       
       watchEffect(() => {
         store.dispatch("callPlanned")
-        store.dispatch("callStatus")
+        store.dispatch("callStatus", 122)
         store.dispatch("communicationTypes")
         store.dispatch("futureAppointments")
         store.dispatch("newRequests")
