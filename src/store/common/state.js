@@ -15,7 +15,13 @@ export default {
     taskPriority:null,
     network:null,
     specialization:null,
-    taskCategory:null
+    taskCategory:null,
+    errorMsg:null,
+    successMsg:null, 
+    insuranceName:null,
+    insuranceType:null,
+    documentTags:null,
+    documentTypes:null
 
 
 

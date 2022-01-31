@@ -1,7 +1,7 @@
 <template>
   <a-col :sm="12" :xs="24">
     <a-card :title="title" class="common-card">
-      <a-table :columns="column" :data-source="data" :pagination="false" >
+      <a-table :columns="column" :data-source="data" :pagination="false">
         <template #patientName="text">
           <router-link to="patients-summary">{{
             text.text
@@ -35,7 +35,7 @@
   }
 </script>
 <style>
-  .common-card{
+  .common-card {
     min-height: 335px !important;
   }
 </style>

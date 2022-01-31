@@ -54,9 +54,31 @@ export const globalCodes = (state, data) => {
         if(element.name ==='Task Status'){
             state.taskStatus= element; 
         }
+
+        if(element.name ==='Insurance Name'){
+            state.insuranceName= element; 
+        }
+        if(element.name ==='Insurance Type'){
+            state.insuranceType= element; 
+        }
+        if(element.name ==='Document Tags'){
+            state.documentTags= element; 
+        }
+        if(element.name ==='Document Types'){
+            state.documentTypes= element; 
+        }
      });
 
 }
+
+export const successMsg = (state, data) => {
+    state.successMsg = data
+ }
+
+ export const errorMsg = (state, data) => {
+    state.errorMsg = data
+ }
+
 
 
 

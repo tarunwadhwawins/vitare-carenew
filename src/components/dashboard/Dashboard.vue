@@ -8,22 +8,7 @@
           <div class="filter" v-if="timeline">
 
             <a-button v-for="item in timeline['globalCode']" :key="item.id" @click="showButton(item.id)"
-              :class="button== item.id ? 'active' : ''"> {{item.name}}</a-button>
-            <!-- <a-button
-                    @click="showButton2"
-                    :class="button == 2 ? 'active' : ''"
-                    >Week</a-button
-                  >
-                  <a-button
-                    @click="showButton3"
-                    :class="button == 3 ? 'active' : ''"
-                    >Month</a-button
-                  >
-                  <a-button
-                    @click="showButton4"
-                    :class="button == 4 ? 'active' : ''"
-                    >Year</a-button -->
-
+              :class="timeLineButton== item.id ? 'active' : ''"> {{item.name}}</a-button>
           </div>
         </h2>
       </a-col>
@@ -75,6 +60,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="24">
+
       <a-col :sm="12" :xs="24" v-if="specialization">
 
         <ApexChart :title="$t('dashboard.cPTCodeBillingSummary')" type="bar" :height="350" :options="cptCodeValue.code"
@@ -94,14 +80,14 @@
       </a-col>
     </a-row>
     <a-row :gutter="24">
-      <a-col :sm="12" :xs="24" v-if="specialization">
+      <a-col :sm="12" :xs="24" v-if="totalPatientsChartValue">
 
         <ApexChart :title="$t('dashboard.totalPatientsChart')" type="area" :height="350"
           :options="totalPatientsChartValue.chartOptions" :series="totalPatientsChartValue.series"
           linkTo="manage-patients"></ApexChart>
 
       </a-col>
-      <a-col :sm="12" :xs="24" v-if="specialization">
+      <a-col :sm="12" :xs="24" v-if="appointmentChartValue">
         <ApexChart :title="$t('dashboard.appointmentSummary')" type="area" :height="350"
           :options="appointmentChartValue.chartOptions" :series="appointmentChartValue.series"
           linkTo="appointment-calendar"></ApexChart>
@@ -114,15 +100,13 @@
 </template>
 
 <script>
-  import Header from "../layout/header/Header";
-  import Sidebar from "../layout/sidebar/Sidebar";
-  import { useRouter } from "vue-router";
-  import { ref, watchEffect, computed } from 'vue'
-  import { useStore } from "vuex"
+
+  import { watchEffect, computed } from 'vue'
   import Card from "@/components/common/cards/Card"
   import Appointement from "./Appointment"
   import ApexChart from "@/components/common/charts/ApexChart";
   import moment from 'moment';
+  import { useStore } from 'vuex'
   const columns4 = [
     {
       title: "Patient Name",
@@ -135,11 +119,11 @@
     {
       title: "Date Time",
 
-      dataIndex: 'startDateTime',
+      dataIndex: 'date',
     },
     {
       title: "Appointment With",
-      dataIndex: "staff",
+      dataIndex: "staff['name']",
       slots: {
         customRender: "staff",
       },
@@ -224,36 +208,34 @@
 
     setup() {
       const store = useStore()
-
-      const router = useRouter();
       const timeline = computed(() => {
         return store.state.common.timeline
       })
-      const button = computed(() => {
-
-        return store.state.dashBoard.button
+      const timeLineButton = computed(() => {
+        return store.state.dashBoard.timeLineButton
       })
       function apiCall(data) {
-        store.dispatch("counterCard")
-        store.dispatch("todayAppointment")
-        store.dispatch("callStatus")
-        store.dispatch("specialization")
+        store.dispatch("counterCard", data.value)
+        store.dispatch("todayAppointment", data.value)
+        store.dispatch("callStatus", data.value)
+        store.dispatch("specialization", data.value)
 
-        store.dispatch("network")
+        store.dispatch("network", data.value)
 
-        store.dispatch("cptCode")
-        store.dispatch("financial")
-        store.dispatch("totalPatientsChart", data)
-        store.dispatch("appointmentChart", data)
+        store.dispatch("cptCode", data.value)
+        store.dispatch("financial", data.value)
+        store.dispatch("totalPatientsChart", data.value)
+        store.dispatch("appointmentChart", data.value)
       }
       watchEffect(() => {
-        apiCall(button)
+        apiCall(timeLineButton)
 
       })
       function dateFormat(data) {
+
         data.map(el => {
-          let date = moment(new Date(el.startDate));
-          el.startDateTime = date.format("MMM DD, YYYY") + " " + moment(el.startTime, "HH:mm:ss").format("hh:mm A")
+          let date = moment(new Date(el.date));
+          el.date = date.format("MMM DD, YYYY") + ", " + moment(el.time, "HH:mm:ss").format("hh:mm A")
         })
         return data
       }
@@ -309,8 +291,8 @@
 
 
       function showButton(id) {
-        store.state.dashBoard.button = id;
-        apiCall(button)
+        store.state.dashBoard.timeLineButton = id;
+        apiCall(timeLineButton)
       }
 
       return {
@@ -332,14 +314,9 @@
         columns5,
         data6,
         columns6,
-        button,
+        timeLineButton,
         showButton,
-        // showButton2,
-        // showButton3,
-        // showButton4,
         timeline
-
-        // todayApointment
       };
     },
   };
