@@ -4,10 +4,10 @@
         <h2>{{$t('global.specialization')}}</h2>
         <a-row :gutter="24">
             <a-col :xl="12"  :xs="24">
-            <LongCard backgroundColor="#8e60ff"  customClass="two" :count="2" text="Wellness"></LongCard>
+            <LongCard backgroundColor="#8e60ff" textColor="" customClass="two" :count="2" text="Wellness"></LongCard>
             </a-col>
             <a-col :xl="12"  :xs="24">
-            <LongCard customClass="four" backgroundColor="#ffa800"  :count="2" text="Behavior"></LongCard>
+            <LongCard customClass="four" backgroundColor="#ffa800" textColor="" :count="2" text="Behavior"></LongCard>
             </a-col>
         </a-row>
     </a-col>
@@ -15,10 +15,10 @@
         <h2>{{$t('global.network')}}</h2>
         <a-row :gutter="24">
             <a-col :xl="12"  :xs="24">
-            <LongCard customClass="six" backgroundColor="#267dff" :count="3" text="In"></LongCard>
+            <LongCard customClass="six" backgroundColor="#267dff" textColor="" :count="3" text="In"></LongCard>
             </a-col>
             <a-col :xl="12"  :xs="24">
-            <LongCard customClass="five" backgroundColor="#0fb5c2" :count="3" text="Out"></LongCard>
+            <LongCard customClass="five" backgroundColor="#0fb5c2" textColor="" :count="3" text="Out"></LongCard>
             </a-col>
         </a-row>
     </a-col>
@@ -45,7 +45,7 @@
 <script>
 import {
     watchEffect,
-    computed
+    computed,ref
 } from "vue";
 import LongCard from "@/components/common/cards/LongCard";
 import CoordinatorTable from "./tables/CoordinatorTable";
@@ -65,6 +65,7 @@ export default {
     },
     setup() {
         const store = useStore();
+        const searchoptions = ref([])
         watchEffect( () => {
             store.dispatch('staffs')
         })
@@ -72,6 +73,8 @@ export default {
         const columns  = computed(()=>{
           return store.state.careCoordinator.columns
       })
+       const handleChange = () => {
+        };
      
        const staffs = computed(()=>{ 
             return store.state.careCoordinator.staffs
@@ -81,9 +84,12 @@ export default {
         
 
         return {
+            searchoptions,
+            handleChange,
             columns,
             staffs,
-            
+            value2:ref(),
+            size:ref()
             // specializationTotal,
             // specializationText,
             // networkTotal,
