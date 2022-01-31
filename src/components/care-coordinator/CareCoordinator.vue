@@ -36,8 +36,8 @@
         </div>
     </a-col>
     <a-col :span="24">
-        <Loader />
         <CoordinatorTable v-if="staffs"  :columns="columns" :data-source="staffs" :scroll="{ x: 1200 }"></CoordinatorTable>
+        <Loader />
     </a-col>
 </a-row>
 </template>

@@ -23,10 +23,13 @@ export const demographics = async ({
 export const patients = async ({
   commit
 }) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("get", `patient`, null, null).then((response) => {
     commit('patients', response.data.data);
+    commit('loadingStatus', false)
   }).catch((error) => {
     commit('errorMsg', error);
+    commit('loadingStatus', false)
   })
 
 }

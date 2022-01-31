@@ -40,6 +40,7 @@
     </a-col>
     <a-col :span="24"> 
         <DataTable v-if="patients"  :columns="columns" :data-source="patients" :scroll="{ x: 1024 }" />
+        <Loader />
     </a-col>
 </a-row>
 
@@ -58,7 +59,7 @@ import { useStore } from "vuex"
 import PatientsModal from "@/components/modals/PatientsModal";
 import CounterCard from "./counter-card/CounterCard"
 import ShowModalButton from "./show-modal-button/ShowModalButton"
-
+import Loader from "../loader/Loader"
 export default {
     name: "Patients",
     components: {
@@ -67,6 +68,7 @@ export default {
         // WarningOutlined,
         CounterCard,
         ShowModalButton,
+        Loader,
         DataTable:defineAsyncComponent(
   () => import("./data-table/DataTable"))
     },
