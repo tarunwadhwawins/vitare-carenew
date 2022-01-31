@@ -220,7 +220,7 @@ export const specializationSuccess = (state, count) => {
     behavior: [
       {
         name: "Specialization",
-        data: count.map((item) => { return item.count }),
+        data: count.map((item) => { return item.total }),
       },
     ],
   };
@@ -289,7 +289,7 @@ export const networkSuccess = (state, count) => {
     Out: [
       {
         name: "Network",
-        data: count.map((item) => { return item.count }),
+        data: count.map((item) => { return item.total }),
       },
     ],
   };
