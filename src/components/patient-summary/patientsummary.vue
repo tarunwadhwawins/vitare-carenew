@@ -9,200 +9,764 @@
         <Sidebar />
         <a-layout-content>
           <a-row>
-            <a-col :span="24">
-              <h2 class="pageTittle">Patient Summary</h2>
+            <a-col :xl="5" :lg="10">
+              <h2 class="pageTittle">{{$t('patientSummary.patientSummary')}}</h2>
             </a-col>
-          </a-row>
-          <a-row :gutter="24" class="mb-24">
-            <a-col :sm="8" :xs="24">
-              <div class="patientInfo">
-                <div class="patientImg">
-                  <img src="../../assets/images/profile-4.jpg" alt="image" />
+
+            <a-col :xl="11" :lg="14">
+              <div class="pageTittle">
+                <div class="filter">
+                  <a-button
+                    @click="showButton1"
+                    :class="button == 1 ? 'active' : ''"
+                    >{{$t('patientSummary.default')}}</a-button
+                  >
+                  <a-button
+                    @click="showButton2"
+                    :class="button == 2 ? 'active' : ''"
+                    >{{$t('patientSummary.timeline')}}</a-button
+                  >
+                  <a-button
+                    @click="showButton3"
+                    :class="button == 3 ? 'active' : ''"
+                    >{{$t('patientSummary.carePlan')}}</a-button
+                  >
+                  <a-button
+                    @click="showButton4"
+                    :class="button == 4 ? 'active' : ''"
+                    >{{$t('patientSummary.patientVitals')}}</a-button
+                  >
                 </div>
-                <p class="name">Jane Doe</p>
-                <div class="pat-profile">
-                  <div class="pat-profile-inner">
-                    <div class="thumb-head">DOB</div>
-                    <div class="thumb-desc">Aug 05, 1988 (33)</div>
-                  </div>
-                  <div class="pat-profile-inner">
-                    <div class="thumb-head">Gender</div>
-                    <div class="thumb-desc">Male</div>
-                  </div>
-                  <div class="pat-profile-inner">
-                    <div class="thumb-head">EHR ID</div>
-                    <div class="thumb-desc">123THJ</div>
-                  </div>
-                  <div class="pat-profile-inner">
-                    <div class="thumb-head">Flag</div>
-                    <div class="thumb-desc">
-                      <span class="box redBgColor"></span>
-                      <span class="box yellowBgColor"></span>
-                    </div>
-                  </div>
-                </div>
+                <!-- <div class="filter">
+                  <button
+                    class="btn"
+                    :class="toggle ? 'active' : ''"
+                    @click="toggle = !toggle"
+                  >
+                    <span class="btn-content">Default</span>
+                  </button>
+                  <button
+                    class="btn"
+                    :class="toggle ? 'active' : ''"
+                    @click="toggle = !toggle"
+                  >
+                    <span class="btn-content">Timeline</span>
+                  </button>
+                  <button
+                    class="btn"
+                    :class="toggle ? 'active' : ''"
+                    @click="toggle = !toggle"
+                  >
+                    <span class="btn-content">Care Plan</span>
+                  </button>
+                  <button
+                    class="btn"
+                    :class="toggle ? '' : 'active'"
+                    @click="toggle = !toggle"
+                  >
+                    <span class="btn-content">Patient Vitals</span>
+                  </button>
+                </div> -->
               </div>
             </a-col>
-            <a-col :sm="16" :xs="24">
+            <a-col :xl="8" :lg="24">
+              <div class="timer">
+                <h3>{{$t('patientSummary.currentSession')}} : 0:00</h3>
+                <a-button class="primaryBtn" @click="showStopTimerModal"
+                  >{{$t('patientSummary.stopTimer')}}</a-button
+                >
+              </div>
+            </a-col>
+            <a-col :sm="24">
               <a-alert
-                description="Patient has dimentia. Talk to wife - Marry when calling. Prefers evening calling."
-                type="error"
                 class="mb-24"
+                message="Patient has dimentia. Talk to wife - Marry when calling. Prefers evening calling."
+                type="error"
                 closable
-                @close="onClose"
+                @close="onClose2"
               />
-              <div class="thumbDesc">
-                <a-collapse v-model:activeKey="activeKey5" :bordered="false">
-                  <a-collapse-panel key="1" header=" Patient Infomation">
-                    <p><strong>Language</strong> : English</p>
-                  </a-collapse-panel>
-                  <a-collapse-panel key="2" header=" Contact Infomation">
-                    <p><strong>Phone Number</strong> : (554) 856-5645</p>
-                  </a-collapse-panel>
-                  <a-collapse-panel key="3" header="Care Team">
-                    <a-row :gutter="24">
-                      <a-col :sm="8" :xs="24">
-                        <div class="care-team">
-                          <h2>
-                            Health Team
-                            <span class="plus-icon" @click="showModal7">
-                              <PlusOutlined />
-                            </span>
-                          </h2>
-                          <ul>
-                            <li>
-                              <div class="profileImg">
-                                <img
-                                  src="../../assets/images/profile-2.jpg"
-                                  alt="image"
-                                />
-                              </div>
-                              <div class="content">
-                                <p class="name">ICC Health (Mental Health)</p>
-                                <p class="role">Care Team</p>
-                              </div>
-                            </li>
-                            <li>
-                              <div class="profileImg">
-                                <img
-                                  src="../../assets/images/profile-3.jpg"
-                                  alt="image"
-                                />
-                              </div>
-                              <div class="content">
-                                <p class="name">ICC Health (Medical)</p>
-                                <p class="role">Care Team</p>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </a-col>
-                      <a-col :sm="8" :xs="24">
-                        <div class="care-team">
-                          <h2>
-                            Care Coordinators
-                            <span class="plus-icon" @click="showModal8">
-                              <PlusOutlined />
-                            </span>
-                          </h2>
-                          <ul>
-                            <li>
-                              <div class="profileImg">
-                                <img
-                                  src="../../assets/images/profile-2.jpg"
-                                  alt="image"
-                                />
-                              </div>
-                              <div class="content">
-                                <p class="name">ICC Health (Mental Health)</p>
-                                <p class="role">Care Team</p>
-                              </div>
-                            </li>
-                            <li>
-                              <div class="profileImg">
-                                <img
-                                  src="../../assets/images/profile-3.jpg"
-                                  alt="image"
-                                />
-                              </div>
-                              <div class="content">
-                                <p class="name">ICC Health (Medical)</p>
-                                <p class="role">Care Team</p>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </a-col>
-                      <a-col :sm="8" :xs="24">
-                        <div class="care-team">
-                          <h2>
-                            Family Coordinators
-                            <span class="plus-icon" @click="showModal9">
-                              <PlusOutlined />
-                            </span>
-                          </h2>
-                          <ul>
-                            <li>
-                              <div class="profileImg">
-                                <img
-                                  src="../../assets/images/profile-2.jpg"
-                                  alt="image"
-                                />
-                              </div>
-                              <div class="content">
-                                <p class="name">ICC Health (Mental Health)</p>
-                                <p class="role">Care Team</p>
-                              </div>
-                            </li>
-                            <li>
-                              <div class="profileImg">
-                                <img
-                                  src="../../assets/images/profile-3.jpg"
-                                  alt="image"
-                                />
-                              </div>
-                              <div class="content">
-                                <p class="name">ICC Health (Medical)</p>
-                                <p class="role">Care Team</p>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </a-col>
-                    </a-row>
-                  </a-collapse-panel>
-                  <a-collapse-panel key="4" header="Insurance Infomation">
-                    <p><strong>Primary Insurance</strong> : NA</p>
-                  </a-collapse-panel>
-                </a-collapse>
-              </div>
             </a-col>
-          </a-row>
-          <a-row :gutter="24">
             <a-col :sm="24" :xs="24">
-              <div class="summary-tabs">
-                <a-tabs v-model:activeKey="activeKey">
-                  <a-tab-pane key="1" tab="Care Plan">Content of Tab Pane 1</a-tab-pane>
-                  <a-tab-pane key="2" tab="Patient Vitals" force-render>
+              <div v-if="button == 1">
+                <div>
+                  <a-row :gutter="24">
+                    <a-col :xl="8" :lg="24">
+                      <div class="patientInfo">
+                        <div class="patientImg" @click="showModalCustom">
+                          <img
+                            src="../../assets/images/profile-4.jpg"
+                            alt="image"
+                          />
+                          <div class="info">
+                            <p>Jane Doe</p>
+                            <p>DOB : June 25, 1995</p>
+                            <p>
+                              <a href="mailto:jane@gmail.com"
+                                ><MailOutlined /> jane@gmail.com</a
+                              >
+                            </p>
+                            <p>
+                              <a href="tel:1234567890"
+                                ><PhoneOutlined :rotate="90" /> +343-3563-767</a
+                              >
+                            </p>
+                            <p>132, My Street, Kingston, New York 12401.</p>
+                          </div>
+                          <EditOutlined class="editIcon" @click="addPatient" />
+                        </div>
+
+                        <div class="pat-profile">
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">Flag</div>
+                            <div class="thumb-desc">
+                              <span class="box redBgColor"></span>
+                              <span class="box yellowBgColor"></span>
+                            </div>
+                          </div>
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">Non Compliance</div>
+                            <div class="thumb-desc">
+                              <WarningOutlined />
+                            </div>
+                          </div>
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">
+                              Appointments
+                              <PlusOutlined
+                                @click="showAddAppointmentModal"
+                              /><br />
+                            </div>
+                            <div class="thumb-desc">
+                              <router-link to="appointment-calendar">
+                                John Deer 20th 2021 (+1 more)
+                              </router-link>
+                            </div>
+                          </div>
+
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">
+                              Task
+                              <PlusOutlined @click="AddTaskModal" /><br />
+                            </div>
+                            <div class="thumb-desc">
+                              <router-link to="tasks"> Task 1 </router-link>
+                            </div>
+                          </div>
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">
+                              Vital Summary <PlusOutlined @click="showModal3" />
+                            </div>
+                            <div class="thumb-desc">
+                              <a href="javascript:void(0)"
+                                ><span @click="showBloodPressureDetailModal"
+                                  >BP 120 / 78 Dec 15 6 PM</span
+                                ></a
+                              >
+                            </div>
+                          </div>
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">
+                              Notes
+                              <PlusOutlined @click="showAddNoteModal" />
+                            </div>
+                            <div class="thumb-desc">
+                              <a
+                                href="javascript:void(0)"
+                                @click="showNoteModal"
+                                >John Clinical Dec 15 2021</a
+                              >
+                            </div>
+                          </div>
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">
+                              Documents <PlusOutlined @click="showModal" />
+                            </div>
+                            <div class="thumb-desc">
+                              <a
+                                href="javascript:void(0)"
+                                @click="showDocumentModal"
+                                >Program 1</a
+                              >
+                            </div>
+                          </div>
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">
+                              Care Team <PlusOutlined @click="showModal8" />
+                            </div>
+                            <div class="thumb-desc">
+                              <router-link to="corrdinator-summary"
+                                >John Smith (P) HT </router-link
+                              ><br />
+                          
+                            </div>
+                          </div>
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">
+                              TimeLogs <PlusOutlined @click="showModal1" />
+                            </div>
+                            <div class="thumb-desc">
+                              <a
+                                href="javascript:void(0)"
+                                @click="showTimeLogDetailModal"
+                                >Daily monitoring of vitals (Oct 25, 2021)</a
+                              >
+                            
+                            </div>
+                          </div>
+                          <div class="pat-profile-inner">
+                            <div class="thumb-head">
+                              Devices <PlusOutlined @click="showModal2" />
+                            </div>
+                            <div class="thumb-desc">
+                              <a
+                                href="javascript:void(0)"
+                                @click="showDeviceModal"
+                                >Blood Pressure(M-101)</a
+                              >
+                            
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </a-col>
+                    <a-col :xl="16" :lg="24">
+                      <div class="thumbDesc patientTimeline">
+                        <a-checkbox-group v-model:value="value10">
+                          <a-checkbox value="Notifications1"
+                            >Notifications</a-checkbox
+                          >
+                          <a-checkbox value="Visits1">Visits</a-checkbox>
+                          <a-checkbox value="Notes1">Notes</a-checkbox>
+                          <a-checkbox value="Appointments1"
+                            >Appointments</a-checkbox
+                          >
+                          <a-checkbox value="Documents1">Documents</a-checkbox>
+                          <a-checkbox value="Additional11"
+                            >Additional 1</a-checkbox
+                          >
+                          <a-checkbox value="Additional21"
+                            >Additional 2</a-checkbox
+                          >
+                        </a-checkbox-group>
+                         <a-timeline class="defaultTimeline">
+                          <a-timeline-item color="blue">
+                            <template #dot
+                              ><FolderOpenOutlined class="yellowIcon"
+                            /></template>
+                            <div class="timelineInner">
+                              <div class="timelineHeader">
+                                <div class="title">
+                                  <h4>Lorem Ipsum</h4>
+                                  <a-typography-text mark
+                                    >Read</a-typography-text
+                                  >
+                                  <span class="time">12:00 PM</span>
+                                </div>
+                                <div class="userImg">
+                                  <img
+                                    src="../../assets/images/profile-4.jpg"
+                                    alt="image"
+                                  />
+                                </div>
+                              </div>
+                              <div class="timelineBody">
+                                <div class="content">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit....
+                                  <a href="#">more</a>
+                                </div>
+                                <MailOutlined />
+                              </div>
+                            </div>
+                          </a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><HeatMapOutlined class="redIcon"
+                            /></template>
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Sit culpa assumenda quidem magnam
+                          </a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><ClockCircleOutlined class="orangeIcon"
+                            /></template>
+                            <div class="timelineInner">
+                              <div class="timelineHeader">
+                                <div class="title">
+                                  <h4>Lorem Ipsum</h4>
+                                  <a-typography-text mark
+                                    >Read</a-typography-text
+                                  >
+                                  <span class="time">12:00 PM</span>
+                                </div>
+                                <div class="userImg">
+                                  <img
+                                    src="../../assets/images/profile-4.jpg"
+                                    alt="image"
+                                  />
+                                </div>
+                              </div>
+                              <div class="timelineBody">
+                                <div class="content">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit....
+                                  <a href="#">more</a>
+                                </div>
+                                <MailOutlined />
+                              </div>
+                            </div>
+                          </a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><BellOutlined class="yellowIcon"
+                            /></template>
+                            <div class="timelineInner">
+                              <div class="timelineHeader">
+                                <div class="title">
+                                  <h4>Lorem Ipsum</h4>
+                                  <a-typography-text mark
+                                    >Read</a-typography-text
+                                  >
+                                  <span class="time">12:00 PM</span>
+                                </div>
+                                <div class="userImg">
+                                  <img
+                                    src="../../assets/images/profile-4.jpg"
+                                    alt="image"
+                                  />
+                                </div>
+                              </div>
+                              <div class="timelineBody">
+                                <div class="content">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit....
+                                  <a href="#">more</a>
+                                </div>
+                                <MailOutlined />
+                              </div>
+                            </div>
+                          </a-timeline-item>
+                          <a-timeline-item class="dateOuter"
+                            ><template #dot
+                              ><ClockCircleOutlined class="orangeIcon"
+                            /></template>
+                            <div class="date">
+                              <span>Dec 12, 2021</span>
+                            </div></a-timeline-item
+                          >
+                          <a-timeline-item color="blue">
+                            <template #dot
+                              ><FilePdfOutlined class="yellowIcon" /></template
+                            >Lorem ipsum
+                            <div class="timelineInner">
+                              <div class="timelineHeader">
+                                <div class="title">
+                                  <h4>Lorem Ipsum</h4>
+                                  <a-typography-text mark
+                                    >Read</a-typography-text
+                                  >
+                                  <span class="time">12:00 PM</span>
+                                </div>
+                                <div class="userImg">
+                                  <img
+                                    src="../../assets/images/profile-4.jpg"
+                                    alt="image"
+                                  />
+                                </div>
+                              </div>
+                              <div class="timelineBody">
+                                <div class="content">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit....
+                                  <a href="#">more</a>
+                                </div>
+                                <MailOutlined />
+                              </div></div
+                          ></a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><HeatMapOutlined class="redIcon"
+                            /></template>
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Sit culpa assumenda quidem magnam fuga quaerat
+                            pariatur labore exercitationem voluptate iusto,
+                            repellat debitis quis itaque nulla numquam, fugiat
+                            quas ullam. Minus.
+                          </a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><ClockCircleOutlined class="orangeIcon"
+                            /></template>
+                            <div class="timelineInner">
+                              <div class="timelineHeader">
+                                <div class="title">
+                                  <h4>Lorem Ipsum</h4>
+                                  <a-typography-text mark
+                                    >Read</a-typography-text
+                                  >
+                                  <span class="time">12:00 PM</span>
+                                </div>
+                                <div class="userImg">
+                                  <img
+                                    src="../../assets/images/profile-4.jpg"
+                                    alt="image"
+                                  />
+                                </div>
+                              </div>
+                              <div class="timelineBody">
+                                <div class="content">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit....
+                                  <a href="#">more</a>
+                                </div>
+                                <MailOutlined />
+                              </div>
+                            </div>
+                          </a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><BellOutlined class="yellowIcon"
+                            /></template>
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Sit culpa assumenda quidem magnam fuga quaerat
+                            pariatur labore exercitationem voluptate iusto,
+                            repellat debitis quis itaque nulla numquam, fugiat
+                            quas ullam. Minus.
+                          </a-timeline-item>
+                        </a-timeline>
+                      </div>
+                    </a-col>
+                  </a-row>
+                </div>
+              </div>
+
+              <div v-if="button == 2">
+                <div>
+                  <a-row :gutter="24">
+                    <a-col :sm="24" :xs="24">
+                      <div class="patientSummary">
+                        <img
+                          src="../../assets/images/profile-4.jpg"
+                          alt="image"
+                        />
+                        <div class="info">
+                          <h2>Jane Doe</h2>
+                          <p>DOB : June 25, 1995</p>
+                          <p>
+                            <a href="mailto:jane@gmail.com"
+                              ><MailOutlined /> jane@gmail.com</a
+                            >
+                          </p>
+                          <p>
+                            <a href="tel:1234567890"
+                              ><PhoneOutlined :rotate="90" /> +343-3563-767</a
+                            >
+                          </p>
+                          <p>132, My Street, Kingston, New York 12401.</p>
+                        </div>
+                        <EditOutlined @click="addPatient" />
+                      </div>
+                    </a-col>
+                    <a-col :sm="24" :xs="24">
+                      <div class="thumbDesc patientTimeline mt-28">
+                        <a-checkbox-group v-model:value="value10">
+                          <a-checkbox value="Notifications"
+                            >{{$t('patientSummary.notifications')}}</a-checkbox
+                          >
+                          <a-checkbox value="Visits">{{$t('patientSummary.visits')}}</a-checkbox>
+                          <a-checkbox value="Notes">{{$t('patientSummary.notes')}}</a-checkbox>
+                          <a-checkbox value="Appointments"
+                            >{{$t('patientSummary.appointments')}}</a-checkbox
+                          >
+                          <a-checkbox value="Documents">{{$t('patientSummary.documents')}}</a-checkbox>
+                          <a-checkbox value="Additional1"
+                            >Additional 1</a-checkbox
+                          >
+                          <a-checkbox value="Additional2"
+                            >Additional 2</a-checkbox
+                          >
+                        </a-checkbox-group>
+
+                        <a-timeline class="fullTimeline">
+                          <a-timeline-item color="blue">
+                            <template #dot
+                              ><FolderOpenOutlined class="yellowIcon"
+                            /></template>
+                            <div class="timelineInner">
+                              <div class="timelineHeader">
+                                <div class="title">
+                                  <h4>Lorem Ipsum</h4>
+                                  <a-typography-text mark
+                                    >Read</a-typography-text
+                                  >
+                                  <span class="time">12:00 PM</span>
+                                </div>
+                                <div class="userImg">
+                                  <img
+                                    src="../../assets/images/profile-4.jpg"
+                                    alt="image"
+                                  />
+                                </div>
+                              </div>
+                              <div class="timelineBody">
+                                <div class="content">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit....
+                                  <a href="#">more</a>
+                                </div>
+                                <MailOutlined />
+                              </div>
+                            </div>
+                          </a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><HeatMapOutlined class="redIcon"
+                            /></template>
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Sit culpa assumenda quidem magnam
+                          </a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><ClockCircleOutlined class="orangeIcon"
+                            /></template>
+                            <div class="timelineInner">
+                              <div class="timelineHeader">
+                                <div class="title">
+                                  <h4>Lorem Ipsum</h4>
+                                  <a-typography-text mark
+                                    >Read</a-typography-text
+                                  >
+                                  <span class="time">12:00 PM</span>
+                                </div>
+                                <div class="userImg">
+                                  <img
+                                    src="../../assets/images/profile-4.jpg"
+                                    alt="image"
+                                  />
+                                </div>
+                              </div>
+                              <div class="timelineBody">
+                                <div class="content">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit....
+                                  <a href="#">more</a>
+                                </div>
+                                <MailOutlined />
+                              </div>
+                            </div>
+                          </a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><BellOutlined class="yellowIcon"
+                            /></template>
+                            <div class="timelineInner">
+                              <div class="timelineHeader">
+                                <div class="title">
+                                  <h4>Lorem Ipsum</h4>
+                                  <a-typography-text mark
+                                    >Read</a-typography-text
+                                  >
+                                  <span class="time">12:00 PM</span>
+                                </div>
+                                <div class="userImg">
+                                  <img
+                                    src="../../assets/images/profile-4.jpg"
+                                    alt="image"
+                                  />
+                                </div>
+                              </div>
+                              <div class="timelineBody">
+                                <div class="content">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit....
+                                  <a href="#">more</a>
+                                </div>
+                                <MailOutlined />
+                              </div>
+                            </div>
+                          </a-timeline-item>
+                          <a-timeline-item class="dateOuter"
+                            ><template #dot
+                              ><ClockCircleOutlined class="orangeIcon"
+                            /></template>
+                            <div class="date">
+                              <span>Dec 12, 2021</span>
+                            </div></a-timeline-item
+                          >
+                          <a-timeline-item color="blue">
+                            <template #dot
+                              ><FilePdfOutlined class="yellowIcon" /></template
+                            >Lorem ipsum
+                            <div class="timelineInner">
+                              <div class="timelineHeader">
+                                <div class="title">
+                                  <h4>Lorem Ipsum</h4>
+                                  <a-typography-text mark
+                                    >Read</a-typography-text
+                                  >
+                                  <span class="time">12:00 PM</span>
+                                </div>
+                                <div class="userImg">
+                                  <img
+                                    src="../../assets/images/profile-4.jpg"
+                                    alt="image"
+                                  />
+                                </div>
+                              </div>
+                              <div class="timelineBody">
+                                <div class="content">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit....
+                                  <a href="#">more</a>
+                                </div>
+                                <MailOutlined />
+                              </div></div
+                          ></a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><HeatMapOutlined class="redIcon"
+                            /></template>
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Sit culpa assumenda quidem magnam fuga quaerat
+                            pariatur labore exercitationem voluptate iusto,
+                            repellat debitis quis itaque nulla numquam, fugiat
+                            quas ullam. Minus.
+                          </a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><ClockCircleOutlined class="orangeIcon"
+                            /></template>
+                            <div class="timelineInner">
+                              <div class="timelineHeader">
+                                <div class="title">
+                                  <h4>Lorem Ipsum</h4>
+                                  <a-typography-text mark
+                                    >Read</a-typography-text
+                                  >
+                                  <span class="time">12:00 PM</span>
+                                </div>
+                                <div class="userImg">
+                                  <img
+                                    src="../../assets/images/profile-4.jpg"
+                                    alt="image"
+                                  />
+                                </div>
+                              </div>
+                              <div class="timelineBody">
+                                <div class="content">
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit....
+                                  <a href="#">more</a>
+                                </div>
+                                <MailOutlined />
+                              </div>
+                            </div>
+                          </a-timeline-item>
+                          <a-timeline-item color="red">
+                            <template #dot
+                              ><BellOutlined class="yellowIcon"
+                            /></template>
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Sit culpa assumenda quidem magnam fuga quaerat
+                            pariatur labore exercitationem voluptate iusto,
+                            repellat debitis quis itaque nulla numquam, fugiat
+                            quas ullam. Minus.
+                          </a-timeline-item>
+                        </a-timeline>
+                      </div>
+                    </a-col>
+                  </a-row>
+                </div>
+              </div>
+
+              <div v-if="button == 3">
+                <a-row>
+                  <a-col :sm="24" :xs="24">
+                    <div class="patientSummary">
+                      <img
+                        src="../../assets/images/profile-4.jpg"
+                        alt="image"
+                      />
+                      <div class="info">
+                        <h2>Jane Doe</h2>
+                        <p>DOB : June 25, 1995</p>
+                        <p>
+                          <a href="mailto:jane@gmail.com"
+                            ><MailOutlined /> jane@gmail.com</a
+                          >
+                        </p>
+                        <p>
+                          <a href="tel:1234567890"
+                            ><PhoneOutlined :rotate="90" /> +343-3563-767</a
+                          >
+                        </p>
+                        <p>132, My Street, Kingston, New York 12401.</p>
+                      </div>
+                      <EditOutlined @click="addPatient" />
+                    </div>
+                  </a-col>
+                </a-row>
+                <div>Care Plan</div>
+              </div>
+
+              <div v-if="button == 4">
+                <div>
+                  <a-row :gutter="24">
+                    <a-col :sm="24" :xs="24">
+                      <div class="patientSummary">
+                        <img
+                          src="../../assets/images/profile-4.jpg"
+                          alt="image"
+                        />
+                        <div class="info">
+                          <h2>Jane Doe</h2>
+                          <p>DOB : June 25, 1995</p>
+                          <p>
+                            <a href="mailto:jane@gmail.com"
+                              ><MailOutlined /> jane@gmail.com</a
+                            >
+                          </p>
+                          <p>
+                            <a href="tel:1234567890"
+                              ><PhoneOutlined :rotate="90" /> +343-3563-767</a
+                            >
+                          </p>
+                          <p>132, My Street, Kingston, New York 12401.</p>
+                        </div>
+                        <EditOutlined @click="addPatient" />
+                      </div>
+                    </a-col>
+                  </a-row>
+                  <div class="patientsVitals">
                     <a-row :gutter="24">
                       <a-col :sm="12" :xs="24" class="mb-24">
                         <a-card title="Blood Pressure">
                           <a-tabs v-model:activeKey="activeKey1">
-                            <a-tab-pane key="7" tab="Graph">
-                              <apexchart
-                                type="area"
-                                height="350"
-                                :options="chartOptions"
-                                :series="series"
-                              ></apexchart>
-                            </a-tab-pane>
                             <a-tab-pane key="8" tab="Table" force-render>
+                              <!-- <div class="text-right mb-24">
+                                <a-button class="primaryBtn"
+                                  >Export to Excel</a-button
+                                >
+                              </div> -->
                               <a-table
                                 :columns="columns4"
                                 :data-source="data4"
                                 :pagination="false"
                                 @change="onChange"
-                              />
+                                ><template #value="text">
+                                  <span class="dangerValue">{{
+                                    text.text
+                                  }}</span>
+                                </template>
+                              </a-table>
+                            </a-tab-pane>
+                            <a-tab-pane key="7" tab="Graph">
+                              <apexchart
+                                type="area"
+                                height="210"
+                                :options="chartOptions"
+                                :series="series"
+                              ></apexchart>
                             </a-tab-pane>
                           </a-tabs>
                           <template #extra
@@ -216,21 +780,26 @@
                       <a-col :sm="12" :xs="24" class="mb-24">
                         <a-card title="Pulse">
                           <a-tabs v-model:activeKey="activeKey2">
-                            <a-tab-pane key="9" tab="Graph" force-render>
-                              <apexchart
-                                type="area"
-                                height="350"
-                                :options="chartOptions"
-                                :series="series"
-                              ></apexchart>
-                            </a-tab-pane>
-                            <a-tab-pane key="10" tab="Table">
+                            <a-tab-pane key="10" tab="Table" force-render>
+                              <!-- <div class="text-right mb-24">
+                                <a-button class="primaryBtn"
+                                  >Export to Excel</a-button
+                                >
+                              </div> -->
                               <a-table
                                 :columns="columns5"
                                 :data-source="data5"
                                 :pagination="false"
                                 @change="onChange"
                               />
+                            </a-tab-pane>
+                            <a-tab-pane key="9" tab="Graph">
+                              <apexchart
+                                type="area"
+                                height="210"
+                                :options="chartOptions"
+                                :series="series"
+                              ></apexchart>
                             </a-tab-pane>
                           </a-tabs>
                           <template #extra
@@ -244,21 +813,26 @@
                       <a-col :sm="12" :xs="24" class="mb-24">
                         <a-card title="Blood Glucose">
                           <a-tabs v-model:activeKey="activeKey3">
-                            <a-tab-pane key="11" tab="Graph">
-                              <apexchart
-                                type="area"
-                                height="350"
-                                :options="chartOptions"
-                                :series="series"
-                              ></apexchart>
-                            </a-tab-pane>
                             <a-tab-pane key="12" tab="Table" force-render>
+                              <!-- <div class="text-right mb-24">
+                                <a-button class="primaryBtn"
+                                  >Export to Excel</a-button
+                                >
+                              </div> -->
                               <a-table
                                 :columns="columns6"
                                 :data-source="data6"
                                 :pagination="false"
                                 @change="onChange"
                               />
+                            </a-tab-pane>
+                            <a-tab-pane key="11" tab="Graph">
+                              <apexchart
+                                type="area"
+                                height="210"
+                                :options="chartOptions"
+                                :series="series"
+                              ></apexchart>
                             </a-tab-pane>
                           </a-tabs>
                           <template #extra
@@ -272,21 +846,26 @@
                       <a-col :sm="12" :xs="24" class="mb-24">
                         <a-card title="Blood Oxygen Saturation">
                           <a-tabs v-model:activeKey="activeKey4">
-                            <a-tab-pane key="13" tab="Graph">
-                              <apexchart
-                                type="area"
-                                height="350"
-                                :options="chartOptions"
-                                :series="series"
-                              ></apexchart>
-                            </a-tab-pane>
                             <a-tab-pane key="14" tab="Table" force-render>
+                              <!-- <div class="text-right mb-24">
+                                <a-button class="primaryBtn"
+                                  >Export to Excel</a-button
+                                >
+                              </div> -->
                               <a-table
                                 :columns="columns6"
                                 :data-source="data6"
                                 :pagination="false"
                                 @change="onChange"
                               />
+                            </a-tab-pane>
+                            <a-tab-pane key="13" tab="Graph">
+                              <apexchart
+                                type="area"
+                                height="210"
+                                :options="chartOptions"
+                                :series="series"
+                              ></apexchart>
                             </a-tab-pane>
                           </a-tabs>
                           <template #extra
@@ -298,113 +877,8 @@
                         </a-card>
                       </a-col>
                     </a-row>
-                  </a-tab-pane>
-                  <a-tab-pane key="3" tab="Documents">
-                    <a-row :gutter="24">
-                      <a-col :sm="24" :xs="24">
-                        <div class="common-btn mb-24">
-                          <a-button class="btn blackBtn" @click="showModal"
-                            ><PlusOutlined
-                          /></a-button>
-                        </div>
-                      </a-col>
-                      <a-col :sm="24" :xs="24">
-                        <a-table
-                          :columns="columns"
-                          :data-source="data"
-                          :scroll="{ x: 900 }"
-                          :pagination="false"
-                          @change="onChange"
-                        >
-                          <template #action>
-                            <a class="icons"><EditOutlined /></a>
-                            <a class="icons"><DeleteOutlined /></a>
-                          </template>
-                        </a-table>
-                      </a-col>
-                    </a-row>
-                  </a-tab-pane>
-                  <a-tab-pane key="4" tab="Time Logs">
-                    <a-row :gutter="24">
-                      <a-col :sm="24" :xs="24">
-                        <div class="common-btn mb-24">
-                          <a-button class="btn blackBtn" @click="showModal1"
-                            ><PlusOutlined
-                          /></a-button>
-                        </div>
-                      </a-col>
-                      <a-col :sm="24" :xs="24">
-                        <a-table
-                          :columns="columns1"
-                          :data-source="data1"
-                          :scroll="{ x: 900 }"
-                          :pagination="false"
-                          @change="onChange"
-                        >
-                          <template #action>
-                            <a class="icons"><EditOutlined /></a>
-                            <a class="icons"><DeleteOutlined /></a>
-                          </template>
-                        </a-table>
-                      </a-col>
-                    </a-row>
-                  </a-tab-pane>
-                  <a-tab-pane key="5" tab="Devices">
-                    <a-row :gutter="24">
-                      <a-col :sm="24" :xs="24">
-                        <div class="common-btn mb-24">
-                          <a-button class="btn blackBtn" @click="showModal2"
-                            ><PlusOutlined
-                          /></a-button>
-                        </div>
-                      </a-col>
-                      <a-col :sm="24" :xs="24">
-                        <a-table
-                          :columns="columns2"
-                          :data-source="data2"
-                          :scroll="{ x: 900 }"
-                          :pagination="false"
-                          @change="onChange"
-                        >
-                          <template #active>
-                            <a-switch v-model:checked="checked" />
-                          </template>
-                          <template #action>
-                            <a class="icons"><DeleteOutlined /></a>
-                          </template>
-                        </a-table>
-                      </a-col>
-                    </a-row>
-                  </a-tab-pane>
-                  <a-tab-pane key="6" tab="Notes">
-                    <a-row :gutter="24">
-                      <a-col :sm="24" :xs="24">
-                        <div class="common-btn mb-24">
-                          <a-button class="btn blackBtn" @click="showModal2"
-                            ><PlusOutlined
-                          /></a-button>
-                        </div>
-                      </a-col>
-                      <a-col :sm="24" :xs="24">
-                        <a-table
-                          :columns="columns3"
-                          :data-source="data3"
-                          :pagination="false"
-                          @change="onChange"
-                        >
-                          <template #flags="{ text }">
-                            <span class="box" :class="text"></span>
-                            <span
-                              class="box"
-                              :class="(text = text.match(/yellowBgColor/g))"
-                              v-if="text.match(/yellowBgColor/g)"
-                            ></span>
-                          </template>
-                        </a-table>
-                      </a-col>
-                    </a-row>
-                  </a-tab-pane>
-                </a-tabs>
+                  </div>
+                </div>
               </div>
             </a-col>
           </a-row>
@@ -412,363 +886,52 @@
       </a-layout>
     </a-layout>
     <!--modals-->
-    <a-modal
-      v-model:visible="visible"
-      width="1000px"
-      title="Add Notes"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Name</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Document</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Type</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">Id Proof</a-select-option>
-              <a-select-option value="Yiminghe">Clinical</a-select-option>
-              <a-select-option value="Yiminghe">Insurance</a-select-option>
-            </a-select>
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Tags</label>
-            <a-select
-              v-model:value="selectedItemsForTag"
-              mode="multiple"
-              size="large"
-              placeholder="Please Select Roles"
-              style="width: 100%"
-              :options="filteredOptionsForTag.map((item) => ({ value: item }))"
-            />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <AddDocument v-model:visible="visible" @ok="handleOk" />
     <!---->
-    <a-modal
-      v-model:visible="visible1"
-      width="1000px"
-      title="Add Device "
-      centered
+    <AddTimeLogs v-model:visible="visible1" @ok="handleOk" />
+    <!--Add Device -->
+    <AddDevice v-model:visible="visible2" @ok="handleOk" />
+    <!--Add note -->
+    <AddNote v-model:visible="addnotesvisible" @ok="handleOk" />
+    <!--notes Detail -->
+    <NotesDetail v-model:visible="notevisible" @ok="handleOk" />
+    <!--Device Detail-->
+    <DeviceDetail v-model:visible="devicevisible" @ok="handleOk" />
+    <!--Document Detail-->
+    <DocumentDetail v-model:visible="documentvisible" @ok="handleOk" />
+    <!--Time Logs-->
+    <TimeLogsDetail v-model:visible="timelogsvisible" @ok="handleOk" />
+    <!-- Blood Pressure Detail Modal  -->
+    <BloodPressureDetail
+      v-model:visible="bloodpressurevisible"
       @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Category</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">Daily monitoring of vitals</a-select-option>
-              <a-select-option value="Yiminghe">Provider Order For Lab</a-select-option>
-            </a-select>
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Logged By</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Performed By</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Date</label>
-            <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Time Amount</label>
-            <a-time-picker
-              v-model:value="value"
-              format="HH:mm"
-              :size="size"
-              style="width: 100%"
-            />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
+    />
+    <!-- Blood Oxygen Saturation Detail Modal  -->
+    <BloodOxygenDetail v-model:visible="bloodoxygenvisible" @ok="handleOk" />
+    <!-- Blood Glucose Detail Modal  -->
+    <BloodGlucoseDetail v-model:visible="bloodglucosevisible" @ok="handleOk" />
     <!---->
-    <a-modal
-      v-model:visible="visible2"
-      width="1000px"
-      title="Add Device"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Device Name</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">Bloop Pressure</a-select-option>
-              <a-select-option value="Yiminghe">Spo2</a-select-option>
-              <a-select-option value="Yiminghe">Glucose</a-select-option>
-            </a-select>
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Status</label>
-            <a-switch v-model:checked="checked" />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
-
+    <AddAppointment v-model:visible="appointmentvisible" @ok="handleOk" />
     <!---->
-    <a-modal
-      v-model:visible="visible3"
-      width="1000px"
-      title="Add Blood Report"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="8" :xs="24">
-          <div class="form-group">
-            <label>Date & Time</label>
-            <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
-          </div>
-        </a-col>
-        <a-col :sm="8" :xs="24">
-          <div class="form-group">
-            <label>Systolic</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="8" :xs="24">
-          <div class="form-group">
-            <label>Diastoli</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
-
+    <TimeTracker v-model:visible="stoptimervisible" @ok="handleOk" />
+    <!--vital Summary-->
+    <VitalSummary v-model:visible="visible3" @ok="handleOk" />
     <!---->
-    <a-modal
-      v-model:visible="visible4"
-      width="1000px"
-      title="Add Pulse"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Date & Time</label>
-            <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Value</label>
-            <a-input v-model="value" size="large" placeholder="Add Heart Rate" />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <AddPulse v-model:visible="visible4" @ok="handleOk" />
     <!---->
-    <a-modal
-      v-model:visible="visible5"
-      width="1000px"
-      title="Add Blood Glucose"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="8" :xs="24">
-          <div class="form-group">
-            <label>Date & Time</label>
-            <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
-          </div>
-        </a-col>
-        <a-col :sm="8" :xs="24">
-          <div class="form-group">
-            <label>FBS</label>
-            <a-input v-model="value" size="large" placeholder="value" />
-          </div>
-        </a-col>
-        <a-col :sm="8" :xs="24">
-          <div class="form-group">
-            <label>RBS</label>
-            <a-input v-model="value" size="large" placeholder="value" />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <BloodGlucose v-model:visible="visible5" @ok="handleOk" />
     <!---->
-    <a-modal
-      v-model:visible="visible6"
-      width="1000px"
-      title="Blood Oxygen Saturation"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Date & Time</label>
-            <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Value</label>
-            <a-input v-model="value" size="large" placeholder="Value" />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <BloodOxygen v-model:visible="visible6" @ok="handleOk" />
     <!---->
-    <a-modal
-      v-model:visible="visible7"
-      width="1000px"
-      title="Add Health"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Date & Time</label>
-            <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Value</label>
-            <a-input v-model="value" size="large" placeholder="Value" />
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <AddHealth v-model:visible="visible7" @ok="handleOk" />
     <!---->
-    <a-modal
-      v-model:visible="visible8"
-      width="1000px"
-      title="Add Care Coordinators"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="24" :xs="24">
-          <a-row :gutter="24" class="mb-24">
-            <a-col :sm="20" :xs="24">
-              <a-input v-model="value" size="large" placeholder="Enter Search Here..." />
-            </a-col>
-            <a-col :sm="4" :xs="24">
-              <a-button class="btn primaryBtn" size="large"> Add New </a-button>
-            </a-col>
-          </a-row>
-        </a-col>
-        <a-col :sm="24" :xs="24">
-          <a-table
-            :columns="columns7"
-            :data-source="data7"
-            :pagination="false"
-            @change="onChange"
-          >
-            <template #checkbox>
-              <a-checkbox v-model:checked="checked"></a-checkbox>
-            </template>
-          </a-table>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <CareCoordinators v-model:visible="visible8" @ok="handleOk" />
     <!---->
-    <a-modal
-      v-model:visible="visible9"
-      width="1000px"
-      title="Add Family Coordinators"
-      centered
-      @ok="handleOk"
-    >
-      <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>First Name</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Last Name</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Email</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Phone No</label>
-            <a-input v-model="value" size="large" />
-          </div>
-        </a-col>
-        <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <label>Relationship</label>
-            <a-select
-              ref="select"
-              v-model="value1"
-              style="width: 100%"
-              size="large"
-              @focus="focus"
-              @change="handleChange"
-            >
-              <a-select-option value="lucy">Brother</a-select-option>
-              <a-select-option value="Yiminghe">Sister</a-select-option>
-              <a-select-option value="Yiminghe">Mother</a-select-option>
-              <a-select-option value="Yiminghe">Father</a-select-option>
-            </a-select>
-          </div>
-        </a-col>
-      </a-row>
-    </a-modal>
+    <FamilyCoordinators v-model:visible="visible9" @ok="handleOk" />
+    <!---->
+    <PatientsModal v-model:visible="PatientsModal" @ok="handleOk" />
+    <!---->
+    <TaskModal v-model:visible="TaskModal" @ok="handleOk" />
     <!---->
   </div>
 </template>
@@ -776,64 +939,45 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { useRouter } from "vue-router";
+import VitalSummary from "@/components/modals/VitalSummary";
+import FamilyCoordinators from "@/components/modals/FamilyCoordinators";
+import CareCoordinators from "@/components/modals/CareCoordinators";
+import AddHealth from "@/components/modals/AddHealth";
+import BloodOxygen from "@/components/modals/BloodOxygen";
+import BloodGlucose from "@/components/modals/BloodGlucose";
+import AddPulse from "@/components/modals/AddPulse";
+import TimeTracker from "@/components/modals/TimeTracker";
+import BloodGlucoseDetail from "@/components/modals/BloodGlucoseDetail";
+import BloodOxygenDetail from "@/components/modals/BloodOxygenDetail";
+import BloodPressureDetail from "@/components/modals/BloodPressureDetail";
+import TimeLogsDetail from "@/components/modals/TimeLogsDetail";
+import DocumentDetail from "@/components/modals/DocumentDetail";
+import DeviceDetail from "@/components/modals/DeviceDetail";
+import NotesDetail from "@/components/modals/NotesDetail";
+import AddNote from "@/components/modals/AddNote";
+import AddDevice from "@/components/modals/AddDevice";
+import AddDocument from "@/components/modals/AddDocument";
+import AddTimeLogs from "@/components/modals/AddTimeLogs";
+import AddAppointment from "@/components/modals/AddAppointment";
+import PatientsModal from "@/components/modals/PatientsModal";
+import TaskModal from "@/components/modals/TasksModal";
+
 import dayjs from "dayjs";
-import { defineComponent, ref, computed } from "vue";
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons-vue";
+import { ref, computed } from "vue";
+import {
+  EditOutlined,
+  PlusOutlined,
+  ClockCircleOutlined,
+  HeatMapOutlined,
+  FolderOpenOutlined,
+  FilePdfOutlined,
+  BellOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  WarningOutlined,
+} from "@ant-design/icons-vue";
 const OPTIONSTAG = ["Manger", "Billing Admin", "User Admin"];
 const value = ref(dayjs("12:08", "HH:mm"));
-
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-  },
-  {
-    title: "Document",
-    dataIndex: "document",
-  },
-  {
-    title: "Type",
-    dataIndex: "type",
-    sorter: {
-      compare: (a, b) => a.message - b.message,
-      multiple: 3,
-    },
-  },
-  {
-    title: "Tags",
-    dataIndex: "tags",
-    sorter: {
-      compare: (a, b) => a.patient - b.patient,
-      multiple: 2,
-    },
-  },
-  {
-    title: "Action",
-    dataIndex: "action",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
-const data = [
-  {
-    key: "1",
-    name: "Program 1",
-    document: "abc.pdf",
-    type: "Voter ID",
-    tags: "Voter ID",
-    action: "",
-  },
-  {
-    key: "2",
-    name: "Program 1",
-    document: "abc.pdf",
-    type: "Voter ID",
-    tags: "Voter ID",
-    action: "",
-  },
-];
 const columns1 = [
   {
     title: "Category",
@@ -895,40 +1039,6 @@ const data1 = [
     action: "",
   },
 ];
-const columns2 = [
-  {
-    title: "Device",
-    dataIndex: "device",
-  },
-  {
-    title: "Active/Inactive",
-    dataIndex: "active",
-    slots: {
-      customRender: "active",
-    },
-  },
-  {
-    title: "Action",
-    dataIndex: "action",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
-const data2 = [
-  {
-    key: "1",
-    device: "Blood Pressure",
-    active: "",
-    action: "",
-  },
-  {
-    key: "2",
-    device: "Glucose",
-    active: "",
-    action: "",
-  },
-];
 const columns3 = [
   {
     title: "Date",
@@ -937,6 +1047,10 @@ const columns3 = [
   {
     title: "Note",
     dataIndex: "note",
+  },
+  {
+    title: "Category",
+    dataIndex: "category",
   },
   {
     title: "Flag",
@@ -950,15 +1064,15 @@ const data3 = [
   {
     key: "1",
     date: "Nov 10, 2021",
-    note:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore voluptatibus dolore, vel error harum porro totam eveniet modi iusto eos, dolorum provident aliquid earum corporis veritatis? Officiis molestiae amet ullam?",
+    note: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore voluptatibus dolore, vel error harum porro totam eveniet modi iusto eos, dolorum provident aliquid earum corporis veritatis? Officiis molestiae amet ullam?",
+    category: "Admin",
     flag: "blueBgColor",
   },
   {
     key: "2",
     date: "Nov 11, 2021",
-    note:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore voluptatibus dolore, vel error harum porro totam eveniet modi iusto eos, dolorum provident aliquid earum corporis veritatis? Officiis molestiae amet ullam?",
+    note: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore voluptatibus dolore, vel error harum porro totam eveniet modi iusto eos, dolorum provident aliquid earum corporis veritatis? Officiis molestiae amet ullam?",
+    category: "Clinical",
     flag: "redBgColor",
   },
 ];
@@ -970,6 +1084,9 @@ const columns4 = [
   {
     title: "Value",
     dataIndex: "value",
+    slots: {
+      customRender: "value",
+    },
   },
 ];
 const data4 = [
@@ -1128,15 +1245,44 @@ export default {
   components: {
     Header,
     Sidebar,
-    DeleteOutlined,
     EditOutlined,
+    PhoneOutlined,
     PlusOutlined,
+    ClockCircleOutlined,
+    HeatMapOutlined,
+    FolderOpenOutlined,
+    FilePdfOutlined,
+    BellOutlined,
+    MailOutlined,
+    WarningOutlined,
+    VitalSummary,
+    FamilyCoordinators,
+    CareCoordinators,
+    AddHealth,
+    BloodOxygen,
+    BloodGlucose,
+    AddPulse,
+    TimeTracker,
+    BloodGlucoseDetail,
+    BloodOxygenDetail,
+    BloodPressureDetail,
+    TimeLogsDetail,
+    DocumentDetail,
+    DeviceDetail,
+    NotesDetail,
+    AddNote,
+    AddDevice,
+    AddDocument,
+    AddTimeLogs,
+    AddAppointment,
+    PatientsModal,
+    TaskModal,
   },
   data: function () {
     return {
       chartOptions: {
         chart: {
-          height: 350,
+          height: 210,
           type: "area",
         },
         dataLabels: {
@@ -1175,13 +1321,12 @@ export default {
       ],
     };
   },
-
   setup() {
     function logout() {
       localStorage.removeItem("auth");
       localStorage.clear();
     }
-    const activeKey5 = ref(["1"]);
+    // const activeKey5 = ref(["1"]);
     const checked = ref(false);
 
     const visible = ref(false);
@@ -1194,6 +1339,16 @@ export default {
     const visible7 = ref(false);
     const visible8 = ref(false);
     const visible9 = ref(false);
+    const notevisible = ref(false);
+    const devicevisible = ref(false);
+    const documentvisible = ref(false);
+    const addnotesvisible = ref(false);
+    const timelogsvisible = ref(false);
+    const bloodpressurevisible = ref(false);
+    const bloodoxygenvisible = ref(false);
+    const bloodglucosevisible = ref(false);
+    const appointmentvisible = ref(false);
+    const stoptimervisible = ref(false);
 
     const showModal = () => {
       visible.value = true;
@@ -1225,7 +1380,39 @@ export default {
     const showModal9 = () => {
       visible9.value = true;
     };
-
+    const showNoteModal = () => {
+      notevisible.value = true;
+    };
+    const showDeviceModal = () => {
+      devicevisible.value = true;
+    };
+    const showDocumentModal = () => {
+      documentvisible.value = true;
+    };
+    const AddTaskModal = () => {
+      TaskModal.value = true;
+    };
+    const showAddNoteModal = () => {
+      addnotesvisible.value = true;
+    };
+    const showTimeLogDetailModal = () => {
+      timelogsvisible.value = true;
+    };
+    const showBloodPressureDetailModal = () => {
+      bloodpressurevisible.value = true;
+    };
+    const showBloodOxygenDetailModal = () => {
+      bloodoxygenvisible.value = true;
+    };
+    const showBloodGlucoseDetailModal = () => {
+      bloodglucosevisible.value = true;
+    };
+    const showAddAppointmentModal = () => {
+      appointmentvisible.value = true;
+    };
+    const showStopTimerModal = () => {
+      stoptimervisible.value = true;
+    };
     const handleOk = (e) => {
       console.log(e);
       visible.value = false;
@@ -1239,13 +1426,66 @@ export default {
       console.log(e, "I was closed.");
     };
 
+    const custom = ref(false);
+    const current = ref(0);
+    const showModalCustom = () => {
+      custom.value = true;
+    };
+
+    const handleOkcustom = (e) => {
+      console.log(e);
+      custom.value = false;
+    };
+    const next = () => {
+      current.value++;
+    };
+
+    const prev = () => {
+      current.value--;
+    };
+
+    const handleChange = (value) => {
+      console.log(`selected ${value}`);
+    };
+
+    const PatientsModal = ref(false);
+    const TaskModal = ref(false);
+    const addPatient = () => {
+      PatientsModal.value = true;
+    };
+
+    const button = ref(1);
+
+    function showButton1() {
+      button.value = 1;
+    }
+    function showButton2() {
+      button.value = 2;
+    }
+    function showButton3() {
+      button.value = 3;
+    }
+    function showButton4() {
+      button.value = 4;
+    }
+
+    const onClose2 = (e) => {
+      console.log(e, "I was closed.");
+    };
+
     return {
-      data,
-      columns,
+      handleOkcustom,
+      showModalCustom,
+      custom,
+      next,
+      prev,
+      handleChange,
+      // data,
+      // columns,
       data1,
       columns1,
-      data2,
-      columns2,
+      // data2,
+      // columns2,
       data3,
       columns3,
       data4,
@@ -1267,6 +1507,16 @@ export default {
       visible7,
       visible8,
       visible9,
+      notevisible,
+      devicevisible,
+      documentvisible,
+      addnotesvisible,
+      timelogsvisible,
+      bloodpressurevisible,
+      bloodoxygenvisible,
+      bloodglucosevisible,
+      appointmentvisible,
+      stoptimervisible,
 
       showModal,
       showModal1,
@@ -1278,9 +1528,18 @@ export default {
       showModal7,
       showModal8,
       showModal9,
-
+      showNoteModal,
+      showDeviceModal,
+      showDocumentModal,
+      showAddNoteModal,
+      AddTaskModal,
+      showTimeLogDetailModal,
+      showBloodPressureDetailModal,
+      showBloodOxygenDetailModal,
+      showBloodGlucoseDetailModal,
+      showAddAppointmentModal,
+      showStopTimerModal,
       handleOk,
-
       logout,
       filteredOptionsForTag,
       selectedItemsForTag,
@@ -1288,17 +1547,53 @@ export default {
         console.log("params", pagination, filters, sorter, extra);
       },
       activeKey: ref("2"),
-      activeKey1: ref("7"),
-      activeKey2: ref("9"),
-      activeKey3: ref("11"),
-      activeKey4: ref("13"),
+      activeKey1: ref("8"),
+      activeKey2: ref("10"),
+      activeKey3: ref("12"),
+      activeKey4: ref("14"),
       value1: ref(),
       size: ref("large"),
+      value3: ref([]),
       value,
       dayjs,
       checked,
       onClose,
+      PatientsModal,
+      addPatient,
+      button,
+      showButton1,
+      showButton2,
+      showButton3,
+      showButton4,
+      value10: ref([]),
+      TaskModal,
+      onClose2,
     };
   },
 };
 </script>
+<style lang="scss">
+.timer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  @media (max-width: 1199px) {
+    margin: 0 0 20px;
+  }
+  h3 {
+    margin: 0 10px 0 0;
+  }
+}
+.dangerValue {
+  padding: 5px;
+  background-color: #f03131f3;
+  color: #fff;
+}
+.ant-alert-error {
+  background-color: #f8d7da;
+  border-color: #f5c2c7;
+  .ant-alert-message {
+    color: #842029;
+  }
+}
+</style>

@@ -1,172 +1,311 @@
 <template>
   <a-layout-content>
     <a-row>
-      <MainHeader heading="Dashboard" buttonText=""></MainHeader>
-      <a-col :span="24" v-if="totalPatients">
-        <a-row :gutter="24">
-          <Card customClass="one" :count="totalPatients ? totalPatients :''"></Card>
-          <Card customClass="two" :count="newPatients ? newPatients : ''"></Card>
-          <Card customClass="three" :count="criticalPatients ? criticalPatients : ''"></Card>
-          <Card customClass="four" :count="abnormalPatients ? abnormalPatients : ''"></Card>
-          <Card customClass="five" :count="activePatients ? activePatients : ''"></Card>
-          <Card customClass="six" :count="inactivePatients ? inactivePatients : ''"></Card>
+      <a-col :span="24">
+        <h2 class="pageTittle">
+          {{$t('global.dashboard')}}
+
+          <div class="filter" v-if="timeline">
+
+            <a-button v-for="item in timeline['globalCode']" :key="item.id" @click="showButton(item.id)"
+              :class="timeLineButton== item.id ? 'active' : ''"> {{item.name}}</a-button>
+          </div>
+        </h2>
+      </a-col>
+      <a-col :span="24">
+
+        <a-row :gutter="24" v-if="grid">
+
+          <Card v-for="item in totalPatients" :key="item.count" :count="item.total" :text='item.text'
+            link="manage-patients" :xl="grid.xlGrid" :color="item.color" :sm="grid.smGrid" :textColor="item.textColor">
+          </Card>
+
         </a-row>
       </a-col>
     </a-row>
-    <a-row :gutter="24" v-if="totalPatients">
-      <Appointment :todayappointment="todayappointment"></Appointment>
-      <VirtualWaitingRoom :newappointment="newappointment" :future="futureappointment"></VirtualWaitingRoom>
-      <PatientsChart :data="[newPatients.count,abnormalPatients.count,criticalPatients.count]"
-        :categories="[newPatients.text,abnormalPatients.text, criticalPatients.text]"></PatientsChart>
-      <a-col :sm="12" :xs="24">
-        <a-card title="Care Coordinator Stats " class="common-card">
-          <a-tabs v-model:activeKey="activeKey1">
-            <a-tab-pane key="1" tab="Specialization " v-if="specialization">
-              <SpecializationChart :data="[specialization.total,wellness.total]"
-                :categories="[specialization.specialization,wellness.specialization]"></SpecializationChart>
-            </a-tab-pane>
-            <a-tab-pane key="2" tab="Network " force-render v-if="totalPatients">
+    <a-row :gutter="24">
+      <Appointement v-if="data4" :appointment="data4" :columns="columns4"
+        :title="$t('dashboard.todayAppointment')">
+      </Appointement>
 
-              <NetworkChart :categories="[networkin.network,networkout.network]"
-                :data="[networkin.total,networkout.total]"></NetworkChart>
+      <a-col :sm="12" :xs="24" v-if="callStatus">
+        <ApexChart :title="$t('global.callQueue')" type="bar" :height="250" :options="callStatus.calloption"
+          :series="callStatus.callseries" linkTo="communications" />
+      </a-col>
+    </a-row>
+
+    <a-row :gutter="24">
+
+      <a-col :sm="12" :xs="24" v-if="patientsCondition">
+
+        <ApexChart title="Patients Stats" type="bar" :height="412" :options="patientsCondition.option1"
+          :series="patientsCondition.series1" linkTo="manage-patients">
+        </ApexChart>
+
+      </a-col>
+      <a-col :sm="12" :xs="24" v-if="specialization">
+        <a-card :title="$t('dashboard.careCoordinatorStats') " class="common-card">
+          <a-tabs default-active-key="activeKey1">
+            <a-tab-pane key="1" tab="Specialization" v-if="specialization">
+              <ApexChart type="bar" :height="350" :options="specialization.wellness" :series="specialization.behavior"
+                linkTo="manage-care-coordinator"></ApexChart>
+            </a-tab-pane>
+            <a-tab-pane key="2" tab="Network " force-render v-if="network">
+              <ApexChart type="bar" :height="350" v-if="network" :options="network.In" :series="network.Out"
+                linkTo="manage-care-coordinator">
+              </ApexChart>
             </a-tab-pane>
           </a-tabs>
         </a-card>
       </a-col>
-      <CptChart></CptChart>
-      <FinancialChart></FinancialChart>
     </a-row>
+    <a-row :gutter="24">
 
-    <a-row :gutter="24" v-if="totalPatients">
-      <TotalPatientsChart
-        :chart="[totalPatients.count, newPatients.count, criticalPatients.count, abnormalPatients.count, activePatients.count, inactivePatients.count]"
-        :lable="[totalPatients.text,newPatients.text,criticalPatients.text,abnormalPatients.text,activePatients.text,inactivePatients.text]">
-      </TotalPatientsChart>
-      <AppointmentSummary :data="appointmentcount.map((item) =>  item.total )"
-        :categories="appointmentcount.map((item) =>  item.month )"></AppointmentSummary>
+      <a-col :sm="12" :xs="24" v-if="specialization">
+
+        <ApexChart :title="$t('dashboard.cPTCodeBillingSummary')" type="bar" :height="350" :options="cptCodeValue.code"
+          :series="cptCodeValue.value" linkTo="cpt-codes"></ApexChart>
+
+      </a-col>
+      <a-col :sm="12" :xs="24" v-if="specialization">
+
+        <!-- <div class="list-group">
+                  <div class="list-group-item">
+                    <div class="name">Billed</div>
+                    <div class="value">4567 $</div>
+                  </div>
+                </div> -->
+        <ApexChart :title="$t('dashboard.financialStats')" type="pie" :height="362" :options="financialValue.billed"
+          :series="financialValue.due" linkTo="time-tracking-report"></ApexChart>
+      </a-col>
+    </a-row>
+    <a-row :gutter="24">
+      <a-col :sm="12" :xs="24" v-if="totalPatientsChartValue">
+
+        <ApexChart :title="$t('dashboard.totalPatientsChart')" type="area" :height="350"
+          :options="totalPatientsChartValue.chartOptions" :series="totalPatientsChartValue.series"
+          linkTo="manage-patients"></ApexChart>
+
+      </a-col>
+      <a-col :sm="12" :xs="24" v-if="appointmentChartValue">
+        <ApexChart :title="$t('dashboard.appointmentSummary')" type="area" :height="350"
+          :options="appointmentChartValue.chartOptions" :series="appointmentChartValue.series"
+          linkTo="appointment-calendar"></ApexChart>
+      </a-col>
     </a-row>
   </a-layout-content>
+
+  <!---->
+
 </template>
+
 <script>
-  import { ref, watchEffect, computed } from 'vue'
-  import MainHeader from "@/components/common/MainHeader";
-  import Card from "@/components/common/cards/Card";
-  import Appointment from "./Appointment";
-  import VirtualWaitingRoom from "./VirtualWaitingRoom";
-  import TotalPatientsChart from "./TotalPatientsChart";
-  import AppointmentSummary from "./AppointmentSummary";
-  import FinancialChart from "./FinancialChart"
-  import PatientsChart from "./PatientsChart"
-  import SpecializationChart from "./care-coordinator/SpecializationChart"
-  import NetworkChart from "./care-coordinator/NetworkChart"
-  import CptChart from "./CptChart"
-  import { useStore } from "vuex"
 
+  import { watchEffect, computed } from 'vue'
+  import Card from "@/components/common/cards/Card"
+  import Appointement from "./Appointment"
+  import ApexChart from "@/components/common/charts/ApexChart";
+  //import moment from 'moment';
+  import { useStore } from 'vuex'
+  const columns4 = [
+    {
+      title: "Patient Name",
+      dataIndex: "patient",
+      slots: {
+        customRender: "patientName",
+
+      },
+    },
+    {
+      title: "Date Time",
+
+      dataIndex: 'date',
+    },
+    {
+      title: "Appointment With",
+      dataIndex: "staff['name']",
+      slots: {
+        customRender: "staff",
+      },
+    },
+  ];
+
+  const columns5 = [
+    {
+      title: "Patient Name",
+      dataIndex: "patient",
+      slots: {
+        customRender: "patientName",
+      },
+    },
+    {
+      title: "Appointment Type",
+      dataIndex: "appt",
+    },
+    {
+      title: "Time",
+      dataIndex: "time",
+    },
+    {
+      title: "Action ",
+      dataIndex: "action",
+      slots: {
+        customRender: "action",
+      },
+    },
+  ];
+  const data5 = [
+    {
+      key: "1",
+      patient: "Steve Smith",
+      appt: "Wellness",
+      time: "01:30 PM",
+    },
+    {
+      key: "2",
+      patient: "Jane Doe",
+      appt: "Clinical",
+      time: "11:30 AM",
+    },
+  ];
+  const columns6 = [
+    {
+      title: "Patient Name",
+      dataIndex: "patient",
+      slots: {
+        customRender: "patientName",
+      },
+    },
+    {
+      title: "Appointment Type",
+      dataIndex: "appt",
+    },
+    {
+      title: "Time",
+      dataIndex: "time",
+    },
+  ];
+  const data6 = [
+    {
+      key: "1",
+      patient: "Robert",
+      appt: "Wellness",
+      time: "02:30 PM",
+    },
+    {
+      key: "2",
+      patient: "	Steve",
+      appt: "Clinical",
+      time: "10:30 AM",
+    },
+  ];
   export default {
-
     components: {
-      MainHeader,
       Card,
-      Appointment,
-      VirtualWaitingRoom,
-      PatientsChart,
-      SpecializationChart,
-      NetworkChart,
-      CptChart,
-      TotalPatientsChart,
-      AppointmentSummary,
-      FinancialChart,
+      Appointement,
+      ApexChart
     },
 
     setup() {
       const store = useStore()
-
-
+      const timeline = computed(() => {
+        return store.state.common.timeline
+      })
+      const timeLineButton = computed(() => {
+        return store.state.dashBoard.timeLineButton
+      })
+      function apiCall(data) {
+        store.dispatch("counterCard", data.value)
+        store.dispatch("todayAppointment", data.value)
+        store.dispatch("callStatus", data.value)
+        store.dispatch("specialization", data.value)
+        store.dispatch("network", data.value)
+        store.dispatch("cptCode", data.value)
+        store.dispatch("financial", data.value)
+        store.dispatch("totalPatientsChart", data.value)
+        store.dispatch("appointmentChart", data.value)
+      }
       watchEffect(() => {
-        store.dispatch("todayappointment")
-        store.dispatch("newPatients")
-        store.dispatch("abnormalPatients")
-        store.dispatch("activePatients")
-        store.dispatch("inactivePatients")
-        store.dispatch("criticalPatients")
-        store.dispatch("specialization", 1)
-        store.dispatch("specialization", 2)
-        store.dispatch("network", 1)
-        store.dispatch("network", 2)
-        store.dispatch("appointmentcount")
-        store.dispatch("appointment", 1)
-        store.dispatch("appointment", 2)   
-        store.dispatch("totalPatients")
-      })
+        apiCall(timeLineButton)
 
+      })
       const totalPatients = computed(() => {
-        return store.state.dashBoard.tcount
+        return store.state.counterCards.totalPatientcount
       })
-      const newPatients = computed(() => {
-        return store.state.dashBoard.ncount
+      const grid = computed(() => {
+        return store.state.counterCards.grid
       })
-      const criticalPatients = computed(() => {
-        return store.state.dashBoard.critcount
+      const patientsCondition = computed(() => {
+        return store.state.counterCards.patientsCondition
       })
-      const abnormalPatients = computed(() => {
-        return store.state.dashBoard.abcount
+      const data4 = computed(() => {
+        return store.state.dashBoard.todayAppointmentState
+
       })
-      const activePatients = computed(() => {
-        return store.state.dashBoard.activecount
-      })
-      const inactivePatients = computed(() => {
-        return store.state.dashBoard.inactivecount
+      const callStatus = computed(() => {
+        return store.state.dashBoard.callStatus
       })
       const specialization = computed(() => {
 
         return store.state.dashBoard.specialization
       })
-      const networkin = computed(() => {
 
-        return store.state.dashBoard.networkin
-      })
-      const networkout = computed(() => {
+      const network = computed(() => {
 
-        return store.state.dashBoard.networkout
-      })
-      const wellness = computed(() => {
-
-        return store.state.dashBoard.wellness
-      })
-      const appointmentcount = computed(() => {
-
-        return store.state.dashBoard.appointmentcount
-      })
-      const futureappointment = computed(() => {
-
-        return store.state.dashBoard.futureappointment
-      })
-      const todayappointment = computed(() => {
-
-        return store.state.dashBoard.todayappointment
-      })
-      const newappointment = computed(() => {
-
-        return store.state.dashBoard.newappointment
+        return store.state.dashBoard.network
       })
 
+      const cptCodeValue = computed(() => {
+
+        return store.state.dashBoard.cptCodeValue
+      })
+      const financialValue = computed(() => {
+
+        return store.state.dashBoard.financialValue
+      })
+      const totalPatientsChartValue = computed(() => {
+
+        return store.state.dashBoard.totalPatientsChartValue
+      })
+      const appointmentChartValue = computed(() => {
+
+        return store.state.dashBoard.appointmentChartValue
+      })
+
+
+
+      function logout() {
+        localStorage.removeItem("auth");
+        localStorage.clear();
+      }
+
+
+      function showButton(id) {
+        store.state.dashBoard.timeLineButton = id;
+        apiCall(timeLineButton)
+      }
 
       return {
+        grid,
         totalPatients,
-        newPatients,
-        criticalPatients,
-        abnormalPatients,
-        activePatients,
-        inactivePatients,
+        callStatus,
+        patientsCondition,
         specialization,
-        wellness,
-        networkin,
-        networkout,
-        appointmentcount,
-        futureappointment,
-        newappointment,
-        todayappointment,
-
+        network,
+        cptCodeValue,
+        financialValue,
+        totalPatientsChartValue,
+        appointmentChartValue,
+        logout,
+        data4,
+        columns4,
+        data5,
+        columns5,
+        data6,
+        columns6,
+        timeLineButton,
+        showButton,
+        timeline
       };
     },
   };

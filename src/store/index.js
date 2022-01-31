@@ -1,14 +1,19 @@
 import { createStore } from 'vuex'
-import { auth } from "./auth/index";
-import { careCoordinator } from "./care-coordinator/index";
-import { dashBoard } from "./dashboard/index";
-import createPersistedState from "vuex-persistedstate";
-
+import { dashBoard } from "./dashboard/index"
+import  { communications } from "./communications/index"
+import { patients } from "./patients/index"
+import { common } from "./common/index"
+import { counterCards } from "./counter-cards/index"
+import { careCoordinator } from "./careCoordinator/index"
+import { tasks } from "./tasks/index"
 export default createStore({
-  modules: {
-    auth,
-    careCoordinator,
-    dashBoard
+modules: {
+  dashBoard,
+  communications,
+  patients,
+  counterCards,
+  common,
+  careCoordinator,
+  tasks,
   },
-  plugins: [createPersistedState()]
 })

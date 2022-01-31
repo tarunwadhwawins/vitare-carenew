@@ -4,38 +4,74 @@
   >
     <div class="menuList">
       <a-menu>
-        <router-link to="/"
+        <router-link to="/dashboard"
           ><a-menu-item
-            ><HomeOutlined /><span class="menuItem">Dashboard</span></a-menu-item
+            ><HomeOutlined /><span class="menuItem"
+              >{{$t('global.dashboard')}}</span
+            ></a-menu-item
           ></router-link
         >
         <router-link to="/communications"
           ><a-menu-item
-            ><MailOutlined /><span class="menuItem">Communications</span></a-menu-item
+            ><MailOutlined /><span class="menuItem"
+              >{{$t('sidebar.communications')}}</span
+            ></a-menu-item
           ></router-link
         >
         <router-link to="/manage-care-coordinator"
           ><a-menu-item
             ><UserOutlined /><span class="menuItem"
-              >Manage Care Coordinator</span
+              >{{$t('sidebar.careCoordinator')}}</span
             ></a-menu-item
           ></router-link
         >
         <router-link to="/manage-patients"
           ><a-menu-item
-            ><UserOutlined /><span class="menuItem">Manage Patients</span></a-menu-item
+            ><UserOutlined /><span class="menuItem"
+              >{{$t('sidebar.patients')}}</span
+            ></a-menu-item
           ></router-link
         >
         <router-link to="/appointment-calendar"
           ><a-menu-item
             ><CalendarOutlined /><span class="menuItem"
-              >Appointment Calendar</span
+              >{{$t('sidebar.appointmentCalendar')}}</span
             ></a-menu-item
           ></router-link
         >
         <router-link to="/tasks"
           ><a-menu-item
-            ><CalendarOutlined /><span class="menuItem">Tasks</span></a-menu-item
+            ><CalendarOutlined /><span class="menuItem"
+              >{{$t('sidebar.tasks')}}</span
+            ></a-menu-item
+          ></router-link
+        >
+        <router-link to="/time-tracking-report"
+          ><a-menu-item
+            ><FileTextOutlined /><span class="menuItem"
+              >{{$t('sidebar.reports')}}</span
+            ></a-menu-item
+          ></router-link
+        >
+        <router-link to="/thresholds"
+          ><a-menu-item
+            ><FileTextOutlined /><span class="menuItem"
+              >{{$t('sidebar.generalParameters')}}</span
+            ></a-menu-item
+          ></router-link
+        >
+        <router-link to="/time-log-report"
+          ><a-menu-item
+            ><FileTextOutlined /><span class="menuItem"
+              >{{$t('sidebar.auditTimeLog')}}</span
+            ></a-menu-item
+          ></router-link
+        >
+        <router-link to="/cpt-codes"
+          ><a-menu-item
+            ><CalendarOutlined /><span class="menuItem"
+              >{{$t('sidebar.administration')}}
+            </span></a-menu-item
           ></router-link
         >
       </a-menu>
@@ -44,12 +80,14 @@
 </template>
 
 <script>
-import { defineComponent, ref, reactive, toRefs } from "vue";
+import { defineComponent, reactive, toRefs, onUnmounted } from "vue";
 import {
   HomeOutlined,
   MailOutlined,
   UserOutlined,
   CalendarOutlined,
+  FileTextOutlined,
+  // UnlockOutlined
 } from "@ant-design/icons-vue";
 export default defineComponent({
   components: {
@@ -57,10 +95,16 @@ export default defineComponent({
     MailOutlined,
     UserOutlined,
     CalendarOutlined,
+    FileTextOutlined,
+    // UnlockOutlined
   },
+
   setup() {
     const state = reactive({
       selectedKeys: ["1"],
+    });
+    onUnmounted(() => {
+      document.body.classList.remove("show");
     });
     return { ...toRefs(state) };
   },

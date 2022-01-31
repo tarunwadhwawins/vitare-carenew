@@ -4,45 +4,62 @@
         <Header />
     </a-layout-header>
     <a-layout>
-        <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
+        <a-layout-sider :style="{overflow: 'auto',height: '100vh',position: 'fixed',left: 0,}">
             <Sidebar />
         </a-layout-sider>
         <a-layout-content>
             <a-row>
-                <MainHeader :visibility="modalVisibility" @is-visible="changeVisibility($event)" heading="Manage Care Coordinator" buttonText="Add New Coordinator" modalScreen="coordinator"></MainHeader>
+                <a-col :span="24">
+                    <h2 class="pageTittle">
+                        {{ "Care Coordinator" }}
+                        <div class="commonBtn">
+                            <a-button class="btn primaryBtn" @click.prevent="showModal">{{"Add New Coordinator"}}</a-button>
+                        </div>
+                    </h2>
+                </a-col>
             </a-row>
-            <CareCoordinator @is-visible="changeVisibility($event)" />
+            <CareCoordinatorTable />
+            <CareCoordinatorModalForms v-model:visible="visible" @ok="handleOk"></CareCoordinatorModalForms>
         </a-layout-content>
     </a-layout>
 </a-layout>
 </template>
 
 <script>
-import { ref, watch } from "vue";
-import CareCoordinator from "@/components/care-coordinator/CareCoordinator";
+import {
+    ref
+} from "vue";
+import CareCoordinatorTable from "@/components/care-coordinator/CareCoordinator";
 import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/layout/sidebar/Sidebar";
-import MainHeader from "@/components/common/MainHeader";
+import CareCoordinatorModalForms from "@/components/modals/CoordinatorsModal";
 export default {
-    name: 'ViewManageCareCoordinator',
+    name: "ViewManageCareCoordinator",
     components: {
-        CareCoordinator,
+        CareCoordinatorTable,
         Header,
         Sidebar,
-        MainHeader
-
+        CareCoordinatorModalForms,
     },
     setup() {
-        const modalVisibility = ref(false)
-        const changeVisibility = (status) => {
-            modalVisibility.value = status
-            // alert('Modal Visibility Status : '+ modalVisibility.value)
-        }
-        return {
-            changeVisibility,
-            modalVisibility
-        }
-    }
+        const visible = ref(false);
+        const showModal = () => {
+            visible.value = true;
+        };
 
-}
+        const handleCancel = () => {
+            visible.value = false;
+        };
+
+        const handleOk = () => {
+            visible.value = false;
+        };
+        return {
+            visible,
+            showModal,
+            handleCancel,
+            handleOk,
+        };
+    },
+};
 </script>

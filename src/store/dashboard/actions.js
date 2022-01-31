@@ -1,108 +1,125 @@
-import DashboardService from '../../services/dashboard.service';
-import AuthService from '../../services/auth.service';
+import ServiceMethodService from '../../services/serviceMethod';
+import { API_ENDPOINTS } from "../../config/apiConfig"
+export const timeLine = async ({ commit }, id) => {
+    commit('timelineSuccess', id);
+    // await ServiceMethodService.common("get", API_ENDPOINTS['TimeLine'], null, null).then((response) => {
 
-export const totalPatients = async ({ commit }) => {
-    try {
-        let resp = await DashboardService.totalPatient()
-        commit('totalPatientsSuccess', resp.data.data);
-    } catch (error) {
+    //         commit('timelineSuccess', response.data.data);
 
-        if (error.message == "Request failed with status code 401") {
-            AuthService.logout();
+    // }).catch((error) => {
+    //     if (error.response.status == 401) {
+    //         //AuthService.logout();
+    //     }
+    //     commit('failure', error.response.data);
+    // })
+}
+export const todayAppointment = async ({ commit }, id) => {
+    await ServiceMethodService.common("get", API_ENDPOINTS['TodayAppointment'] + "?timelineId=" + id, null, null).then((response) => {
+        commit('todayAppointmentSuccess', response.data.data);
+    })
+        .catch((error) => {
+            commit('failure', error.response.data);
+        })
+
+}
+export const callStatus = async ({ commit }, id) => {
+    await ServiceMethodService.common("get", API_ENDPOINTS['CallStatus'] + "?timelineId=" + id, null, null).then((response) => {
+        commit('callStatusSuccess', response.data.data)
+
+    }).catch((error) => {
+        if (error.response.status == 401) {
+            //AuthService.logout();
         }
-        commit('Failure', error);
-    }
+        commit('failure', error.response.data);
+    })
 }
-export const newPatients = async ({ commit }) => {
-    try {
-        let resp = await DashboardService.newPatient()
-        commit('newPatientsSuccess', resp.data.data);
-    } catch (error) {
-        commit('Failure', error);
-    }
-}
-export const abnormalPatients = async ({ commit }) => {
-    try {
-        let resp = await DashboardService.abnormalPatient()
-        commit('abnormalPatientsSuccess', resp.data.data);
-    } catch (error) {
-        commit('Failure', error);
-    }
-}
-export const activePatients = async ({ commit }) => {
-    try {
-        let resp = await DashboardService.activePatient()
-        commit('activePatientsSuccess', resp.data.data);
-    } catch (error) {
-        commit('Failure', error);
-    }
-}
-export const inactivePatients = async ({ commit }) => {
-    try {
-        let resp = await DashboardService.inactivePatient()
-        commit('inactivePatientsSuccess', resp.data.data);
-    } catch (error) {
-        commit('Failure', error);
-    }
-}
-export const criticalPatients = async ({ commit }) => {
-    try {
-        let resp = await DashboardService.criticalPatient()
-        commit('criticalPatientsSuccess', resp.data.data);
-    } catch (error) {
-        commit('Failure', error);
-    }
-}
-export const appointment = async ({ commit }, id) => {
-    try {
-        let resp = await DashboardService.appointment(id)
-        if (id == 1) {
-            commit('newappointmentSuccess', resp.data.data);
-        } else {
-            commit('futureappointmentSuccess', resp.data.data);
-        }
+// export const patientsStats = async ({ commit }) => {
+//     await ServiceMethodService.common("get", API_ENDPOINTS['PatientCondition'], null, null).then((response) => {
+//         commit('patientsStatsSuccess', response.data.data);
+//     }).catch((error) => {
+//         if (error.response.status == 401) {
+//             //AuthService.logout();
+//         }
+//         commit('failure', error.response.data);
+//     })
+// }
 
-    } catch (error) {
-        commit('Failure', error);
-    }
-}
-export const todayappointment = async ({ commit }) => {
-    try {
-        let resp = await DashboardService.todayappointment()
-        commit('todayappointmentSuccess', resp.data.data);
-    } catch (error) {
-        commit('Failure', error);
-    }
-}
-export const appointmentcount = async ({ commit }) => {
-    try {
-        let resp = await DashboardService.appointmentcount()
-        commit('appointmentcountSuccess', resp.data);
-    } catch (error) {
-        commit('Failure', error);
-    }
-}
 export const specialization = async ({ commit }, id) => {
-    try {
-        let resp = await DashboardService.specialization(id)
-        if (id == 1) {
-            commit('wellnessSuccess', resp.data.data);
-        } else {
-            commit('specializationSuccess', resp.data.data);
+
+    await ServiceMethodService.common("get", API_ENDPOINTS['Specialization'] + "?timelineId=" + id, null, null).then((response) => {
+        commit('specializationSuccess', response.data.data);
+    }).catch((error) => {
+        if (error.response.status == 401) {
+            //AuthService.logout();
         }
-    } catch (error) {
-        commit('Failure', error);
-    }
+        commit('failure', error.response.data);
+    })
 }
+
+
 export const network = async ({ commit }, id) => {
-    try {
-        let resp = await DashboardService.network(id)
-        if (id == 1) {
-            commit('networkinSuccess', resp.data.data);
-        } else {
-            commit('networkoutSuccess', resp.data.data);
+
+    await ServiceMethodService.common("get", API_ENDPOINTS['Network'] + "?timelineId=" + id, null, null).then((response) => {
+
+        commit('networkSuccess', response.data.data);
+
+    }).catch((error) => {
+        if (error.response.status == 401) {
+            //AuthService.logout();
         }
-    } catch (error) {
-        commit('Failure', error);
-    }
+        commit('failure', error.response.data);
+    })
+}
+
+export const cptCode = async ({ commit }) => {
+    commit('cptCodeSuccess');
+    // await ServiceMethodService.common("get", API_ENDPOINTS['CptCode'], null, null).then((response) => {
+
+    //         commit('cptCodeSuccess', response.data.data);
+
+    // }).catch((error) => {
+    //     if (error.response.status == 401) {
+    //         //AuthService.logout();
+    //     }
+    //     commit('failure', error.response.data);
+    // })
+}
+export const financial = async ({ commit }) => {
+    commit('financialSuccess');
+    // await ServiceMethodService.common("get", API_ENDPOINTS['Financial'], null, null).then((response) => {
+
+    //         commit('financialSuccess', response.data.data);
+
+    // }).catch((error) => {
+    //     if (error.response.status == 401) {
+    //         //AuthService.logout();
+    //     }
+    //     commit('failure', error.response.data);
+    // })
+}
+export const totalPatientsChart = async ({ commit }, id) => {
+
+    await ServiceMethodService.common("get", API_ENDPOINTS['TotalPatientsChart'] + "?timelineId=" + id, null, null).then((response) => {
+
+        commit('totalPatientsChartSuccess', response.data.data);
+
+    }).catch((error) => {
+        if (error.response.status == 401) {
+            //AuthService.logout();
+        }
+        commit('failure', error.response.data);
+    })
+}
+export const appointmentChart = async ({ commit }, id) => {
+
+    await ServiceMethodService.common("get", API_ENDPOINTS['AppointmentChart'] + "?timelineId=" + id, null, null).then((response) => {
+
+        commit('appointmentChartSuccess', response.data.data);
+
+    }).catch((error) => {
+        if (error.response.status == 401) {
+            //AuthService.logout();
+        }
+        commit('failure', error.response.data);
+    })
 }

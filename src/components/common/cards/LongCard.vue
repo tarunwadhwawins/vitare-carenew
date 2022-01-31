@@ -1,11 +1,9 @@
 <template>
-  <a-col :sm="12" :xs="24">
-    <div class="colorBox" :class="customClass">
+    <div v-bind:style="{ backgroundColor: backgroundColor, color: textColor }" class="colorBox">
       <UserOutlined />
       <h3>{{ count }}</h3>
       <p>{{ text }}</p>
     </div>
-  </a-col>
 </template>
 
 <script>
@@ -15,15 +13,19 @@ export default {
     UserOutlined
   },
   props: {
+    backgroundColor: {
+      type: String,
+      required: true
+    },
+    textColor: {
+      type: String,
+      required: true
+    },
     count: {
       type: Number,
       required: true
     },
     text: {
-      type: Number,
-      required: true
-    },
-    customClass: {
       type: String,
       required: true
     },
