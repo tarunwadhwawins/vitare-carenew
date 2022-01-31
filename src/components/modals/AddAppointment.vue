@@ -76,12 +76,12 @@
   </a-modal>
 </template>
 <script>
-import { defineComponent, ref } from "vue";
-import moment from 'moment';
+import { ref } from "vue";
+// import moment from 'moment';
 
 export default {
   setup() {
-    const value = ref(moment('08:00:00', 'HH:mm:ss'));
+    // const value = ref(moment('08:00:00', 'HH:mm:ss'));
     return {
       size: ref("large"),
     };

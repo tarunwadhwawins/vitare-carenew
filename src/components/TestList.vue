@@ -6,6 +6,7 @@
         :columns="communicationsColumns"
         :data-source="communicationsList"
         :pagination="false">
+        
         <template #expandedRowRender="{ record }">
           <p style="margin: 0">
             {{ record.description }}
@@ -99,6 +100,7 @@
           </a-tooltip>
         </template>
       </a-table>
+      <div ref="intersectionTrigger"></div>
     </div>
   </div>
 </template>
@@ -160,49 +162,49 @@ const communicationsColumns = [
   },
 ];
 
-import { ref, watchEffect, onMounted, onUnmounted, computed } from "vue";
+import { ref, watchEffect, onMounted, computed } from "vue";
 import { useStore } from "vuex"
+// import { makeUseInfiniteScroll } from 'vue-use-infinite-scroll'
   export default {
     setup () {
       const store = useStore()
+      // const useInfiniteScroll = makeUseInfiniteScroll({})
+      var intersectionTrigger = ref(null)
+      // var pageRef = useInfiniteScroll(intersectionTrigger)
+      var scrollComponent = ref(null)
       var page = 1
+
       watchEffect(() => {
         store.dispatch('communicationsList', page)
       })
-      var communicationsList = computed(() => {
+
+      onMounted(() => {
+        window.addEventListener("scroll", () => {
+          // console.log("Scrolled Once")
+          // pageRef,
+          // (page) => {
+            // console.log("Scrolled Two")
+            let element = scrollComponent.value;
+            if (element.getBoundingClientRect().bottom < window.innerHeight) {
+              loadMoreData(page++);
+            }
+          // }
+        })
+      })
+      
+      async function loadMoreData(page) {
+        console.log("Scrolled Down", page)
+        store.dispatch('communicationsList', page)
+      }
+
+      const communicationsList = computed(() => {
         return store.state.communications.communicationsList
       })
-      const scrollComponent = ref(null)
       
-      async function loadMorePosts() {
-        communicationsList.value = [];
-        let newPosts = store.state.communications.communicationsList
-        // const index = communicationsList.value.findIndex(object => object.id === newPosts.id);
-        // if(index === -1) {
-          communicationsList.value.push(...newPosts)
-        // }
-        page++
-        // console.log('communicationsList', communicationsList.value)
-      }
-      
-      onMounted(() => {
-        window.addEventListener("scroll", handleScroll)
-      })
-
-      onUnmounted(() => {
-        window.removeEventListener("scroll", handleScroll)
-      })
-
-      const handleScroll = () => {
-        let element = scrollComponent.value;
-        if (element.getBoundingClientRect().bottom < window.innerHeight) {
-          loadMorePosts();
-        }
-      }
-      // console.log('Posts', communicationsList)
       return {
-        communicationsList,
+        intersectionTrigger,
         scrollComponent,
+        communicationsList,
         communicationsColumns,
       }
     }

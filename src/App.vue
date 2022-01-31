@@ -12,20 +12,20 @@
       </a-radio-group>
     </div> -->
     <a-config-provider :locale="locale === 'en' ? enUS : esES">
-      <div v-if="!auth">
+      <div>
         <router-view />
       </div>
-      <div v-else>
+      <!-- <div v-else>
         <router-view />
-      </div>
+      </div> -->
     </a-config-provider>
   </div>
 </template>
 
 <script>
- import { watchEffect } from "vue";
-// import enUS from "ant-design-vue/es/locale/en_US";
-// import esES from "ant-design-vue/es/locale/es_ES";
+ import { watchEffect,ref } from "vue";
+import enUS from "ant-design-vue/es/locale/en_US";
+import esES from "ant-design-vue/es/locale/es_ES";
 // import moment from "moment";
 // import 'moment/dist/locale/es';
 // import { onMounted } from "vue";
@@ -39,7 +39,7 @@ export default {
   setup() {
       const store = useStore()
 //     const auth = localStorage.getItem("auth");
-//     const locale = ref(enUS.locale);
+      const locale = ref(enUS.locale)
 watchEffect(() => {
       store.dispatch("globalCodes")
       store.dispatch("timeLine",123)
@@ -48,15 +48,16 @@ watchEffect(() => {
 //     onMounted(() => {
 //       document.body.classList.add("test");
 //     });
-//     return {
+return {
 //       auth,
-//       enUS,
-//       esES,
-//       locale,
+      enUS,
+      esES,
+       locale,
 //       moment,
 //     };
-  },
-};
+  }
+}
+}
 </script>
 
 <style lang="scss">

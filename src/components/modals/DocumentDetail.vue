@@ -19,7 +19,7 @@
   </a-modal>
 </template>
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 const columns = [
   {

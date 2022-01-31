@@ -1,7 +1,11 @@
 
-export const demographics = (state, data) => {
-    state.demographics = data
+export const addDemographic = (state, data) => {
+    state.addDemographic = data
  }
+ export const status = (state, data) => {
+    state.status = data
+ }
+ 
 
  export const patients = (state, data) => {
     // state.patientList = data;
@@ -220,13 +224,13 @@ export const demographics = (state, data) => {
           title: "Status",
           dataIndex: "status",
         },
-        {
-          title: "Actions",
-          dataIndex: "actions",
-          slots: {
-            customRender: "action",
-          },
-        },
+        // {
+        //   title: "Actions",
+        //   dataIndex: "actions",
+        //   slots: {
+        //     customRender: "action",
+        //   },
+        // },
       ];
     
  }
@@ -272,13 +276,13 @@ export const demographics = (state, data) => {
             customRender: "active",
           },
         },
-        {
-          title: "Action",
-          dataIndex: "action",
-          slots: {
-            customRender: "action",
-          },
-        },
+        // {
+        //   title: "Action",
+        //   dataIndex: "action",
+        //   slots: {
+        //     customRender: "action",
+        //   },
+        // },
       ];
       
  }
@@ -302,13 +306,13 @@ export const demographics = (state, data) => {
           title: "History",
           dataIndex: "history",
         },
-        {
-          title: "Actions",
-          dataIndex: "actions",
-          slots: {
-            customRender: "action",
-          },
-        },
+        // {
+        //   title: "Actions",
+        //   dataIndex: "actions",
+        //   slots: {
+        //     customRender: "action",
+        //   },
+        // },
       ];
  }
 
@@ -338,17 +342,17 @@ export const demographics = (state, data) => {
           title: "End Date",
           dataIndex: "endDate",
         },
-        {
-          title: "Status",
-          dataIndex: "status",
-        },
-        {
-          title: "Actions",
-          dataIndex: "actions",
-          slots: {
-            customRender: "action",
-          },
-        },
+        // {
+        //   title: "Status",
+        //   dataIndex: "status",
+        // },
+        // {
+        //   title: "Actions",
+        //   dataIndex: "actions",
+        //   slots: {
+        //     customRender: "action",
+        //   },
+        // },
       ];
  }
 
@@ -384,16 +388,20 @@ export const demographics = (state, data) => {
             customRender: "tags",
           },
         },
-        {
-          title: "Actions",
-          dataIndex: "actions",
-          slots: {
-            customRender: "action",
-          },
-        },
+        // {
+        //   title: "Actions",
+        //   dataIndex: "actions",
+        //   slots: {
+        //     customRender: "action",
+        //   },
+        // },
       ];
  }
  
  export const uploadFile = (state, data) => {
     state.uploadFile = data
+ }
+
+  export const errorMsg = (state, data) => {
+    state.errorMsg = data
  }

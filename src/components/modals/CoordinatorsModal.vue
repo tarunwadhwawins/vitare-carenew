@@ -13,7 +13,7 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation') }]">
                                     <a-input v-model:value="personalInfoData.firstName"  size="large" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.firstName[0]" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.firstName?errorMsg.firstName[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -21,7 +21,7 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.lastName')" name="lastName" :rules="[{ required: true, message: $t('global.lastName')+' '+$t('global.validation') }]">
                                     <a-input v-model:value="personalInfoData.lastName"  />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.lastName[0]" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.lastName?errorMsg.lastName[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -29,10 +29,10 @@
                             <div class="form-group">
                                 <a-form-item name="designationId" :label="$t('global.designation')"  :rules="[{ required: true, message: $t('global.designation')+' '+$t('global.validation') }]">
                                     <a-select ref="select"  v-model:value="personalInfoData.designationId" style="width: 100%" size="large"  @change="handleChange">
-                                        <!-- <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option> -->
+                                        <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
                                         <a-select-option  v-for="designation in careCordinator.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
                                     </a-select>
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.designationId[0]" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.designationId?errorMsg.designationId[0]:''" />
                                 </a-form-item>
                             </div>
 
@@ -41,9 +41,10 @@
                             <div class="form-group">
                                 <a-form-item name="genderId" :label="$t('global.gender')"  :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
                                     <a-select ref="select" v-model:value="personalInfoData.genderId" style="width: 100%" size="large"  @change="handleChange">
+                                        <a-select-option value="" disabled>{{'Select Gender'}}</a-select-option>
                                         <a-select-option v-for="gender in careCordinator.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
                                     </a-select>
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.genderId[0]" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.genderId?errorMsg.genderId[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -51,7 +52,7 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(),type: 'email' }]">
                                     <a-input v-model:value="personalInfoData.email" placeholder="test@test.com" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.email[0]" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -59,27 +60,29 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
                                     <a-input v-model:value="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber[0]" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.specialization')" name="specializationId" :rules="[{ required: true, message: $t('global.specialization')+' '+$t('global.validation') }]">
-                                    <a-select ref="select" v-model:value="personalInfoData.specializationId" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                    <a-select ref="select" v-model:value="personalInfoData.specializationId" style="width: 100%" size="large"  @change="handleChange">
+                                        <a-select-option value="" disabled>{{'Select Specialization'}}</a-select-option>
                                         <a-select-option v-for="network in careCordinator.specialization.globalCode" :key="network.id" :value="network.id">{{network.name}}</a-select-option>
                                     </a-select>
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.specializationId[0]" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.specializationId?errorMsg.specializationId[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.network')" name="networkId" :rules="[{ required: true, message: $t('global.network')+' '+$t('global.validation') }]">
-                                    <a-select ref="select" v-model:value="personalInfoData.networkId" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+                                    <a-select ref="select" v-model:value="personalInfoData.networkId" style="width: 100%" size="large"  @change="handleChange">
+                                        <a-select-option value="" disabled>{{'Select Network'}}</a-select-option>
                                         <a-select-option v-for="network in careCordinator.network.globalCode" :key="network.id" :value="network.id">{{network.name}}</a-select-option>
                                     </a-select>
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.networkId[0]" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.networkId?errorMsg.networkId[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -159,8 +162,7 @@ export default {
             providerId:1
 
         });
-        const next = values => {
-            console.log('Success:', values);
+        const next = () => {
             current.value++;
         }
 
@@ -179,14 +181,12 @@ export default {
             current.value--;
         }
 
-        const onFinishFailed = errorInfo => {
-            scrollToTop();
-            console.log('Failed:', errorInfo);
+        const onFinishFailed = () => {
+            scrollToTop()
         };
 
-        // const handleChange = (value) => {
-        //     console.log(`selected ${value}`);
-        // };
+        const handleChange = () => {
+        };
 
         const careCordinator = computed(() => {
             return store.state.common
@@ -202,6 +202,7 @@ export default {
 
 
         return {
+            handleChange,
             scrollToTop,
             regex,
             errorMsg,

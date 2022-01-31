@@ -16,7 +16,7 @@ export default {
     network:null,
     specialization:null,
     taskCategory:null,
-    errorMsg:null,
+    // errorMsg:null,
     successMsg:null, 
     insuranceName:null,
     insuranceType:null,

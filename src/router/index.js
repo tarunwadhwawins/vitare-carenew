@@ -173,6 +173,16 @@ const routes = [
     name: 'Test List',
     component: () => import( '../components/TestList.vue')
   },
+  {
+    path: '/scroll',
+    name: 'Scroll',
+    component: () => import( '../components/Scroll.vue')
+  },
+  {
+    path: '/infinite-scroll',
+    name: 'Infinite Scroll',
+    component: () => import( '../components/InfiniteScroll.vue')
+  },
 
 
 ]

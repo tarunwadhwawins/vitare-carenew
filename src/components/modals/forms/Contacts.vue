@@ -57,7 +57,7 @@
   </a-row>
 </template>
 <script>
-import { defineComponent, ref, reactive } from "vue";
+import { defineComponent, ref } from "vue";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
 const columns1 = [
   {

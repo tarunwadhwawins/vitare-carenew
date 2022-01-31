@@ -45,7 +45,7 @@
 </a-row>
 
 <!--modal-->
-<PatientsModal v-model:visible="PatientsModal" @ok="handleOk" />
+<PatientsModal v-model:visible="PatientsModal" @closeModal="handleOk($event)" />
 <!--end-->
 </template>
 
@@ -80,12 +80,10 @@ export default {
         const showModal = (value) => {
             PatientsModal.value = value; 
         };
-        const handleOk = (e) => {
-            console.log(e); 
-            PatientsModal.value = false;
+        const handleOk = (status) => {
+            PatientsModal.value = status;
         };
-        const handleChange = (value) => {
-            console.log(`selected ${value}`);
+        const handleChange = () => {
         };
 
         watchEffect( () => {
@@ -108,7 +106,8 @@ export default {
             handleOk,
             handleChange,
             searchoptions,
-            size: ref([]),
+            size: ref(),
+            value2:ref(),
             columns, 
             patients
         };

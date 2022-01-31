@@ -1,6 +1,6 @@
 <template>
   <a-modal width="1000px" title="Communications" centered>
-    <a-form :model="messageForm" layout="vertical" @finish="sendMessage" @finishFailed="onFinishFailed">
+    <a-form :model="messageForm" layout="vertical" @finish="sendMessage">
       <a-row :gutter="24">
         <!-- <a-col :sm="12" :xs="24">
           <div class="form-group">
@@ -142,8 +142,6 @@
       const store = useStore()
       const toggleTo = ref(true);
 
-      const staffId = localStorage.getItem('staffId');
-      const visible = ref(true);
       const handleCancel = () => {
         emit('is-visible', false);
       };
@@ -186,21 +184,21 @@
         messageForm.entityType = document.getElementById("entityType").value
         // console.log('entityType', document.getElementById("entityType").value)
         // console.log('Message Form', messageForm)
-        store.dispatch('addCommunication', messageForm).then(res => {
+        store.dispatch('addCommunication', messageForm).then(() => {
           store.dispatch('communicationsList')
         })
         emit('is-visible', false);
       }
 
-      const onFinishFailed = errorInfo => {
-          console.log('Failed:', errorInfo);
-      };
+     /*  const onFinishFailed = errorInfo => {
+        console.log('Failed:', errorInfo);
+      }; */
 
       const patientChange = (value) => {
         store.dispatch('patientDetails', value);
-        const patientDetails = computed(() => {
-          return store.state.communications.patientDetails;
-        });
+        // const patientDetails = computed(() => {
+        //   return store.state.communications.patientDetails;
+        // });
         // console.log('Patient Email', patientDetails.value);
         // messageForm.to = patientDetails.value.email;
       };
@@ -210,7 +208,7 @@
         patientChange,
         handleCancel,
         sendMessage,
-        onFinishFailed,
+        // onFinishFailed,
         patientsList,
         staffList,
         taskPriority,

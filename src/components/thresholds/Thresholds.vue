@@ -78,11 +78,11 @@
 <script>
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
-import { defineComponent, ref } from "vue";
+import { ref } from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import Thresholds from "@/components/modals/Thresholds";
 
-const renderContent = ({ text, index }) => {
+const renderContent = ({ text }) => {
   const obj = {
     children: text,
     props: { colSpan: null },
