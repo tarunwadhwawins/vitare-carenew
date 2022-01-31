@@ -182,7 +182,7 @@ import { useStore } from "vuex"
           communicationsList.value.push(...newPosts)
         // }
         page++
-        console.log('communicationsList', communicationsList.value)
+        // console.log('communicationsList', communicationsList.value)
       }
       
       onMounted(() => {

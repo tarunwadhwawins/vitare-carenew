@@ -83,8 +83,7 @@ const assignedToTags = ["Jane Doe", "Steve Smith", "Joseph William"];
 //const CategoryTags = ["Admin", "Clinical", "Office", "Personal"];
 export default {
   setup(props, {emit}) {
-    const editableTask = JSON.parse(localStorage.getItem('editableTask'));
-    console.log('editableTask', editableTask)
+    // const editableTask = JSON.parse(localStorage.getItem('editableTask'));
     const taskForm = reactive({
       title: '',
       description: '',
@@ -98,8 +97,7 @@ export default {
 
     const addNewTask = () => {
       ///console.log('task Form', taskForm)
-      store.dispatch("addTask", taskForm).then(res => {
-        console.log('task Form', res)
+      store.dispatch("addTask", taskForm).then(()=> {
         store.dispatch('tasksList')
       })
       emit('is-visible', false);

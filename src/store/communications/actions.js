@@ -53,7 +53,7 @@ export const communicationsList = async ({ commit }, page) => {
 
 export const patientsList = async ({ commit }) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['patientsList'], null, null).then((response) => {
-		console.log('patientsListSuccess', response.data.data);
+		// console.log('patientsListSuccess', response.data.data);
 		commit('patientsListSuccess', response.data.data);
 	})
 	.catch((error) => {

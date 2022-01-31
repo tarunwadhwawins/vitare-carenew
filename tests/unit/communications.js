@@ -1,8 +1,8 @@
 import { shallowMount } from '@vue/test-utils'
-import Login from '@/components/login/Login.vue'
+import Communications from '@/components/communications/Communications.vue'
 
 const factory = (values = {}) => {
-  return shallowMount(Login, {
+  return shallowMount(Communications, {
     data () {
       return {
         ...values
@@ -12,11 +12,9 @@ const factory = (values = {}) => {
 }
 
 
-describe('Login', () => {
-  it('does not render an error ', () => {
+describe('Communications', () => {
+  it('does not render an error', () => {
     const wrapper = factory()
     // expect(wrapper.find('.error').exists()).toBeFalsy()
   })
 })
-
-
