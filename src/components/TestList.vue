@@ -7,11 +7,6 @@
         :data-source="communicationsList"
         :pagination="false">
         
-        <template #expandedRowRender="{ record }">
-          <p style="margin: 0">
-            {{ record.description }}
-          </p>
-        </template>
         <template #resend>
           <a-tooltip placement="bottom">
             <template #title>
@@ -21,7 +16,7 @@
           </a-tooltip>
         </template>
         <template #patient="text">
-          <router-link to="patients-summary">
+          <router-link to="#">
             {{ text.text }}
           </router-link>
         </template>

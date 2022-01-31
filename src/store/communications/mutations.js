@@ -1,5 +1,6 @@
 
 import { timeOnly } from '../../commonMethods/commonMethod';
+import { dateFormat } from '../../commonMethods/commonMethod';
 export const callPlannedSuccess = (state, count) => {
   state.callPlanned = {
     calloption: {
@@ -87,21 +88,17 @@ export const communicationTypesSuccess = (state, response) => {
       array_value['data']=array_list[key];
       array_list_final.push(array_value);
     }
-    console.log('response', array_list_final)
   
     const communicationType = array_list_final
     callSeries = communicationType.map((item) => {
       return {
         name: item.text, data: item.data.map((data) => {
-          console.log('timeList', data.time)
           timeList.push(timeOnly(data.time))
           return data.count
         })
       }
     })
   }
-  console.log('timeList', timeList)
-  console.log('callSeries', callSeries)
   
   state.communicationTypes = {
     calloption: {
@@ -127,7 +124,10 @@ export const communicationsSuccess = async (state, communications) => {
   /* let data = [];
   data = state.communicationsList;
   state.communicationsList = data ? data.push(...communications) : communications; */
-  state.communicationsList = communications;
+  state.communicationsList = communications.map(communication => {
+    communication.createdAt = dateFormat(communication.createdAt);
+    return communication
+  })
 }
 export const addCommunicationSuccess = async (state, addCommunication) => {
   state.addCommunication = addCommunication;

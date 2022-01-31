@@ -1,9 +1,9 @@
 <template>
   <a-table
-  :key="1"
+    :rowKey="dataRecord.key"
     :columns="colomnsRecord"
     :data-source="dataRecord"
-    :pagination="false">
+    :pagination="pagination">
     <template #patientName="text">
       <router-link :to="linkTo">
         {{ text.text }}
@@ -17,7 +17,7 @@
 
 <script>
 export default {
-props:["colomnsRecord","dataRecord","linkTo"],
+props:["colomnsRecord","dataRecord","linkTo","rowKey","pagination"],
   setup() {
     
   //     const column = reactive(props.dataRecord)
