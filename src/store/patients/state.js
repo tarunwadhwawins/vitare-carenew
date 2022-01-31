@@ -1,6 +1,6 @@
 export default {
     counter:0,
-    demographics:null,
+    addDemographic:null,
     patientReferals:null,
     patientPhysician:null,
     addProgram:null,
@@ -22,6 +22,8 @@ export default {
     documentForm:null,
     documents:null,
     documentColumns:null,
-    uploadFile:null
+    uploadFile:null,
+    status:false,
+    errorMsg:null
 
 }

@@ -51,8 +51,7 @@ export default {
             visible.value = false;
         };
 
-        const handleOk = (e) => {
-            console.log(e);
+        const handleOk = () => {
             visible.value = false;
         };
         return {

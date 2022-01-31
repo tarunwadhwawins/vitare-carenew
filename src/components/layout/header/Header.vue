@@ -80,7 +80,7 @@
             </div>
           </div>
           <div class="search" :class="toggle ? 'show' : ''">
-            <a-input v-model="value" size="large" placeholder="Enter search" />
+            <a-input v-model:value="value" size="large" placeholder="Enter search" />
           </div>
           <div class="profile" :class="ellipse ? 'show' : ''">
             <div class="quick-actions d-flex align-items-center">
@@ -231,6 +231,7 @@ export default defineComponent({
   setup() {
     const toggle = ref(false);
     const ellipse = ref(false);
+    const value = ref();
     function barMenu() {
       document.body.classList.toggle("show");
     }
@@ -285,6 +286,7 @@ export default defineComponent({
     };
 
     return {
+      value,
       barMenu,
       toggle,
       ellipse,
