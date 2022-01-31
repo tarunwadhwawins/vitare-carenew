@@ -69,11 +69,9 @@ export const callPlannedSuccess = (state, count) => {
 }
 
 export const communicationTypesSuccess = (state, response) => {
-  if(response.length == 0) {
-    var timeList = [];
-    var callSeries = [];
-  }
-  else {
+  var timeList = [];
+  var callSeries = [];
+  if(response.length > 0) {
     var array_list = [];
     var array_list_final = [];
     response.forEach(function(value) {
@@ -88,16 +86,21 @@ export const communicationTypesSuccess = (state, response) => {
       array_value['data']=array_list[key];
       array_list_final.push(array_value);
     }
+    console.log('response', array_list_final)
   
     const communicationType = array_list_final
     callSeries = communicationType.map((item) => {
       return {
         name: item.text, data: item.data.map((data) => {
-          return data.time, data.count
+          console.log('timeList', data.time)
+          timeList.push(data.time)
+          return data.count
         })
       }
     })
   }
+  console.log('timeList', timeList)
+  console.log('callSeries', callSeries)
   
   state.communicationTypes = {
     calloption: {
@@ -120,11 +123,10 @@ export const communicationTypesSuccess = (state, response) => {
 }
 
 export const communicationsSuccess = async (state, communications) => {
-  let data = [];
+  /* let data = [];
   data = state.communicationsList;
-  console.log('STATE 1', state.communicationsList)
-  state.communicationsList = data ? data.push(...communications) : communications;
-  console.log('STATE 2', state.communicationsList)
+  state.communicationsList = data ? data.push(...communications) : communications; */
+  state.communicationsList = communications;
 }
 export const addCommunicationSuccess = async (state, addCommunication) => {
   state.addCommunication = addCommunication;

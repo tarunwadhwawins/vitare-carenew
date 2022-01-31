@@ -200,7 +200,7 @@ export default {
     const store = useStore()
 
     watchEffect(() => {
-      store.dispatch('communicationsList')
+      store.dispatch('communicationsList', 1)
     })
     const communicationsList = computed(() => {
       return store.state.communications.communicationsList

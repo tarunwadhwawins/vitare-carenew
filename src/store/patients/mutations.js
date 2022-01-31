@@ -269,13 +269,13 @@ export const addDemographic = (state, data) => {
           title: "Server Time",
           dataIndex: "serverTime",
         },
-        {
-          title: "Active/Inactive",
-          dataIndex: "active",
-          slots: {
-            customRender: "active",
-          },
-        },
+        // {
+        //   title: "Active/Inactive",
+        //   dataIndex: "active",
+        //   slots: {
+        //     customRender: "active",
+        //   },
+        // },
         // {
         //   title: "Action",
         //   dataIndex: "action",
