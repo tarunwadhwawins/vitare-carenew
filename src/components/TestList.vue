@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class='scrolling-component' ref='scrollComponent'>
-      <div ref="intersectionTrigger"></div>
       <a-table
         v-if="communicationsList"
         :columns="communicationsColumns"
@@ -99,11 +98,9 @@
               <MessageOutlined />
             </a>
           </a-tooltip>
-           
         </template>
-       
       </a-table>
-      
+      <div ref="intersectionTrigger"></div>
     </div>
   </div>
 </template>
@@ -165,64 +162,49 @@ const communicationsColumns = [
   },
 ];
 
-import { ref, watch, computed } from "vue";
+import { ref, watchEffect, onMounted, computed } from "vue";
 import { useStore } from "vuex"
-import { makeUseInfiniteScroll } from 'vue-use-infinite-scroll'
+// import { makeUseInfiniteScroll } from 'vue-use-infinite-scroll'
   export default {
     setup () {
       const store = useStore()
-      // var page = 1;
-      // watchEffect(() => {
-      //   store.dispatch('communicationsList', page, communicationsList)
-      // })
-      const useInfiniteScroll = makeUseInfiniteScroll({})
-      const intersectionTrigger = ref(null)
-      const pageRef = useInfiniteScroll(intersectionTrigger)
+      // const useInfiniteScroll = makeUseInfiniteScroll({})
+      var intersectionTrigger = ref(null)
+      // var pageRef = useInfiniteScroll(intersectionTrigger)
+      var scrollComponent = ref(null)
+      var page = 1
 
-      watch(
-        pageRef,
-        (page) => {
-          console.log("first")
-          fetchItems(page)
-        },
-        { immediate: true }
-      )
+      watchEffect(() => {
+        store.dispatch('communicationsList', page)
+      })
 
-      // const itemsRef = ref([])
-
-      async function fetchItems(page) {
+      onMounted(() => {
+        window.addEventListener("scroll", () => {
+          // console.log("Scrolled Once")
+          // pageRef,
+          // (page) => {
+            // console.log("Scrolled Two")
+            let element = scrollComponent.value;
+            if (element.getBoundingClientRect().bottom < window.innerHeight) {
+              loadMoreData(page++);
+            }
+          // }
+        })
+      })
+      
+      async function loadMoreData(page) {
+        console.log("Scrolled Down", page)
         store.dispatch('communicationsList', page)
       }
+
       const communicationsList = computed(() => {
         return store.state.communications.communicationsList
       })
-      // const scrollComponent = ref(null)
       
-      /* async function loadMorePosts() {
-        
-      }
-
-      console.log('communicationsList', communicationsList.value)
-      
-      onMounted(() => {
-        window.addEventListener("scroll", handleScroll)
-      })
-
-      onUnmounted(() => {
-        window.removeEventListener("scroll", handleScroll)
-      })
-
-      const handleScroll = () => {
-        let element = scrollComponent.value;
-        if (element.getBoundingClientRect().bottom < window.innerHeight) {
-          loadMorePosts();
-        }
-      } */
-      // console.log('Posts', communicationsList)
       return {
         intersectionTrigger,
+        scrollComponent,
         communicationsList,
-        // scrollComponent,
         communicationsColumns,
       }
     }
