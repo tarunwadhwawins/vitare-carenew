@@ -18,6 +18,7 @@
                 v-model:value="messageForm.from"
                 style="width: 100%"
                 size="large">
+                <a-select-option value="" disabled>{{'Select Staff'}}</a-select-option>
                 <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.name }}</a-select-option>
               </a-select>
             </a-form-item>
@@ -45,6 +46,7 @@
                 v-model:value="messageForm.referenceId"
                 style="width: 100%"
                 size="large">
+                <a-select-option value="" disabled>{{'Select Patient'}}</a-select-option>
                 <a-select-option v-for="patient in patientsList" :key="patient.id" :value="patient.id">{{ patient.firstName+' '+patient.middleName+' '+patient.lastName }}</a-select-option>
               </a-select>
             </a-form-item>
@@ -59,6 +61,7 @@
                 v-model:value="messageForm.referenceId"
                 style="width: 100%"
                 size="large">
+                <a-select-option value="" disabled>{{'Select Staff'}}</a-select-option>
                 <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.name }}</a-select-option>
               </a-select>
             </a-form-item>
@@ -73,6 +76,7 @@
                 v-model:value="messageForm.messageCategoryId"
                 style="width: 100%"
                 size="large">
+                <a-select-option value="" disabled>{{'Select Message Category'}}</a-select-option>
                 <a-select-option v-for="messageCategory in messageCategories.globalCode" :key="messageCategory.id" :value="messageCategory.id">{{ messageCategory.name }}
                 </a-select-option>
               </a-select>
@@ -88,6 +92,7 @@
                 v-model:value="messageForm.priorityId"
                 style="width: 100%"
                 size="large">
+                <a-select-option value="" disabled>{{'Select Priority'}}</a-select-option>
                 <a-select-option v-for="priority in taskPriority.globalCode" :key="priority.id" :value="priority.id">{{ priority.name }}</a-select-option>
               </a-select>
             </a-form-item>
@@ -101,6 +106,7 @@
                 v-model:value="messageForm.messageTypeId"
                 style="width: 100%"
                 size="large">
+                  <a-select-option value="" disabled>{{'Select Message Type'}}</a-select-option>
                   <template v-for="type in messageType.globalCode">
                     <a-select-option v-if="type.name == 'SMS' || type.name == 'Email'" :key="type.id" :value="type.id">{{ type.name }}</a-select-option>
                   </template>
