@@ -77,12 +77,9 @@ import getPosts from "../scripts/post-loader";
       
       const loadMorePosts = () => {
         let newPosts = store.dispatch('communicationsList', page)
-        console.log(newPosts)
         communicationsList.value.push(...newPosts)
         page++
       }
-
-      console.log('communicationsList', communicationsList.value)
       
       onMounted(() => {
         window.addEventListener("scroll", handleScroll)
