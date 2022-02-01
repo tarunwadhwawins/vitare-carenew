@@ -184,7 +184,6 @@ export default {
         // console.log("params", );
       },
       handleChange,
-      size: ref([]),
     };
   },
 };

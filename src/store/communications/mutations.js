@@ -88,21 +88,17 @@ export const communicationTypesSuccess = (state, response) => {
       array_value['data']=array_list[key];
       array_list_final.push(array_value);
     }
-    console.log('response', array_list_final)
   
     const communicationType = array_list_final
     callSeries = communicationType.map((item) => {
       return {
         name: item.text, data: item.data.map((data) => {
-          console.log('timeList', data.time)
           timeList.push(timeOnly(data.time))
           return data.count
         })
       }
     })
   }
-  console.log('timeList', timeList)
-  console.log('callSeries', callSeries)
   
   state.communicationTypes = {
     calloption: {

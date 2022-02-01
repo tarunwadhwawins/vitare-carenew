@@ -3,8 +3,6 @@
     <a-col :span="12">
       <a-select
         id="searchBox"
-        v-model:value="search"
-        :size="size"
         mode="tags"
         style="width: 100%"
         placeholder="Search..."
@@ -22,12 +20,11 @@
         :columns="columns"
         :data-source="communicationsList"
         :scroll="{ x: 900 }"
+        rowKey="id"
+        :pagination="true"
         @change="onChange">
-        <template #expandedRowRender="{ record }">
-          <p style="margin: 0">
-            {{ record.description }}
-          </p>
-        </template>
+        
+        
         <template #resend>
           <a-tooltip placement="bottom">
             <template #title>
@@ -123,8 +120,13 @@
 <script>
 const columns = [
   {
+  dataIndex: "id",
+  key: "id",
+  },
+  {
     title: "From",
     dataIndex: "from",
+    key: "from",
     sorter: {
       compare: (a, b) => a.from - b.from,
       multiple: 2,
@@ -133,6 +135,7 @@ const columns = [
   {
     title: "To",
     dataIndex: "to",
+    key: "to",
     sorter: {
       compare: (a, b) => a.to - b.to,
       multiple: 2,
@@ -141,6 +144,7 @@ const columns = [
   {
     title: "Type",
     dataIndex: "type",
+    key: "type",
     slots: {
       customRender: "type",
     },
@@ -148,6 +152,7 @@ const columns = [
   {
     title: "Priority",
     dataIndex: "priority",
+    key: "priority",
     slots: {
       customRender: "priority",
     },
@@ -155,6 +160,7 @@ const columns = [
   {
     title: "Category",
     dataIndex: "category",
+    key: "category",
     sorter: {
       compare: (a, b) => a.category - b.category,
       multiple: 2,
@@ -163,6 +169,7 @@ const columns = [
   {
     title: "Date Sent",
     dataIndex: "createdAt",
+    key: "createdAt",
     sorter: {
       compare: (a, b) => a.createdAt - b.createdAt,
       multiple: 2,
@@ -171,6 +178,7 @@ const columns = [
   {
     title: "Action",
     dataIndex: "action",
+    key: "action",
     slots: {
       customRender: "action",
     },
