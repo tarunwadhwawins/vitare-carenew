@@ -6,14 +6,17 @@ import { common } from "./common/index"
 import { counterCards } from "./counter-cards/index"
 import { careCoordinator } from "./careCoordinator/index"
 import { tasks } from "./tasks/index"
+import { globalCodes } from "./globalCodes/index"
+
 export default createStore({
-modules: {
-  dashBoard,
-  communications,
-  patients,
-  counterCards,
-  common,
-  careCoordinator,
-  tasks,
+  modules: {
+    dashBoard,
+    communications,
+    patients,
+    counterCards,
+    common,
+    careCoordinator,
+    tasks,
+    globalCodes,
   },
 })

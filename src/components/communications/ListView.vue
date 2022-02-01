@@ -1,13 +1,7 @@
 <template>
   <a-row>
     <a-col :span="12">
-      <a-select
-        id="searchBox"
-        mode="tags"
-        style="width: 100%"
-        placeholder="Search..."
-        @change="handleChange">
-      </a-select>
+      <SearchField @change="searchData"/>
     </a-col>
     <a-col :span="12">
       <div class="text-right mb-24">
@@ -187,6 +181,7 @@ const columns = [
 
 import { watchEffect, computed } from 'vue';
 import { useStore } from "vuex"
+import SearchField from "@/components/common/input/SearchField";
 import {
   EyeOutlined,
   MessageOutlined,
@@ -203,6 +198,7 @@ export default {
     PhoneOutlined,
     MailOutlined,
     AlertOutlined,
+    SearchField,
   },
   setup() {
     const store = useStore()
@@ -214,7 +210,7 @@ export default {
       return store.state.communications.communicationsList
     })
 
-    const handleChange = (value) => {
+    const searchData = (value) => {
       store.dispatch('searchCommunications', value)
     };
     const linkTo = "patients-summary"
@@ -222,7 +218,7 @@ export default {
     return {
       communicationsList,
       columns,
-      handleChange,
+      searchData,
       linkTo,
       onChange: () => {
         // console.log("params", );

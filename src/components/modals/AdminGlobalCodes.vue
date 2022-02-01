@@ -1,66 +1,100 @@
 <template>
   <a-modal max-width="1140px" width="100%" title="Add Global Codes">
-    <a-row :gutter="24">
-      <a-col :sm="8" :xs="24">
-        <div class="form-group">
-          <label>Category</label>
-          <a-select
-            ref="select"
-            v-model="value1"
-            style="width: 100%"
-            size="large"
-            @focus="focus"
-            @change="handleChange"
-          >
-            <a-select-option value="lucy">Choose Category</a-select-option>
-            <a-select-option value="Yiminghe">AppointmentType</a-select-option>
-            <a-select-option value="Yiminghe">Specialization </a-select-option>
-            <a-select-option value="Yiminghe">Communication Category</a-select-option>
-            <a-select-option value="Yiminghe">Communication Status</a-select-option>
-            <a-select-option value="Yiminghe">Task Status</a-select-option>
-            <a-select-option value="Yiminghe">Task Priority</a-select-option>
-            <a-select-option value="Yiminghe">Relationship</a-select-option>
-            <a-select-option value="Yiminghe">Gender</a-select-option>
-            <a-select-option value="Yiminghe">Health Conditions</a-select-option>
-            <a-select-option value="Yiminghe">Designation</a-select-option>
-            <a-select-option value="Yiminghe">Document Type</a-select-option>
-            <a-select-option value="Yiminghe">Insurance Type</a-select-option>
-          </a-select>
-        </div>
-      </a-col>
-      <a-col :sm="8" :xs="24">
-        <div class="form-group">
-          <label>Code Name</label>
-          <a-input v-model="value" size="large" />
-        </div>
-      </a-col>
-      <a-col :sm="8" :xs="24">
-        <div class="form-group">
-          <label>Data Type</label>
-          <a-input v-model="value" size="large" />
-        </div>
-      </a-col>
-      <a-col :sm="24" :xs="24">
-        <div class="form-group">
-          <label>Description </label>
-          <a-textarea v-model:value="value2" placeholder="Description" allow-clear />
-        </div>
-      </a-col>
-      <a-col :sm="12" :xs="24">
-        <div class="form-group">
-          <label>Active/Inactive</label>
-          <a-switch v-model:checked="checked" />
-        </div>
-      </a-col>
-    </a-row>
+    <a-form :model="globalCodeForm" layout="vertical" @finish="addGlobalCode">
+      <a-row :gutter="24">
+        <a-col :sm="8" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="$t('globalCodes.category')" name="globalCodeCategory" :rules="[{ required: true, message: $t('globalCodes.category')+' '+$t('global.validation')  }]">
+              <a-select
+                v-if="globalCodeCategories"
+                ref="select"
+                v-model:value="globalCodeForm.globalCodeCategory"
+                style="width: 100%"
+                size="large"
+                @focus="focus"
+                @change="handleChange">
+                <a-select-option value="" disabled>{{'Select Category'}}</a-select-option>
+                <a-select-option v-for="category in globalCodeCategories" :key="category.id" :value="category.id">{{ category.name }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :sm="8" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="$t('globalCodes.codeName')" name="name" :rules="[{ required: true, message: $t('globalCodes.codeName')+' '+$t('global.validation')  }]">
+              <a-input v-model:value="globalCodeForm.name" size="large" />
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :sm="8" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="$t('globalCodes.activeStatus')" name="status">
+              <a-switch v-model:checked="globalCodeForm.status" />
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :sm="24" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="$t('globalCodes.description')" name="description" :rules="[{ required: true, message: $t('globalCodes.description')+' '+$t('global.validation')  }]">
+              <a-textarea v-model:value="globalCodeForm.description" placeholder="Description" allow-clear />
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :sm="24" :span="24">
+          <div class="steps-action">
+            <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+              <a-button @click="handleCancel" html-type="reset">{{$t('global.cancel')}}</a-button>
+              <a-button type="primary" html-type="submit">{{$t('global.ok')}}</a-button>
+            </a-form-item>
+          </div>
+        </a-col>
+      </a-row>
+    </a-form>
   </a-modal>
 </template>
 <script>
-import { ref } from "vue";
+import { ref, reactive, computed, watch } from "vue";
+import { useStore } from "vuex"
 export default {
-  setup() {
+  setup(props, {emit}) {
+    const store = useStore()
     const checked = ref([false]);
+
+    const globalCodeDetails = computed(() => {
+      return store.state.globalCodes.globalCodeDetails;
+    })
+
+    console.log('globalCodeDetails', globalCodeDetails);
+    
+    const globalCodeForm = reactive({
+      globalCodeCategory: '',
+      name: '',
+      description: '',
+      status:  0,
+    });
+    
+    const globalCodeCategories = computed(() => {
+      return store.state.common.globalCodeCategories;
+    })
+
+    const addGlobalCode = () => {
+      console.log('globalCodeForm', globalCodeForm)
+      store.dispatch('addGlobalCode', globalCodeForm).then(() => {
+        store.dispatch('globalCodesList')
+      })
+      emit('is-visible', false);
+    }
+
+    const handleCancel = () => {
+      emit('is-visible', false);
+    };
+    
     return {
+      globalCodeDetails,
+      globalCodeForm,
+      addGlobalCode,
+      handleCancel,
+      globalCodeCategories,
       size: ref("large"),
       checked,
     };
