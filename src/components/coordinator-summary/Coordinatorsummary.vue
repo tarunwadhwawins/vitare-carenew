@@ -49,7 +49,7 @@
                       :pagination="false"
                     >
                       <template #patientName="text">
-                        <router-link to="patients-summary">{{
+                        <router-link :to="linkTo">{{
                           text.text
                         }}</router-link>
                       </template>
@@ -67,12 +67,12 @@
                       @change="onChange"
                     >
                       <template #firstName="text">
-                        <router-link to="patients-summary">{{
+                        <router-link :to="linkTo">{{
                           text.text
                         }}</router-link>
                       </template>
                       <template #lastName="text">
-                        <router-link to="patients-summary">{{
+                        <router-link :to="linkTo">{{
                           text.text
                         }}</router-link>
                       </template>
@@ -687,7 +687,9 @@ export default {
     const filteredOptionsForTag = computed(() =>
       OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
     );
+    const linkTo = "patients-summary"
     return {
+      linkTo,
       logout,
       data,
       columns,

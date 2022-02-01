@@ -34,7 +34,7 @@
           </a-tooltip>
         </template>
         <template #patient="text">
-          <router-link to="patients-summary">
+          <router-link :to="linkTo">
             {{ text.text }}
           </router-link>
         </template>
@@ -217,11 +217,13 @@ export default {
     const handleChange = (value) => {
       store.dispatch('searchCommunications', value)
     };
+    const linkTo = "patients-summary"
 
     return {
       communicationsList,
       columns,
       handleChange,
+      linkTo,
       onChange: () => {
         // console.log("params", );
       },

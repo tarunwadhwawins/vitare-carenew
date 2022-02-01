@@ -3,7 +3,7 @@
     <a-card :title="title" class="common-card">
       <a-table :columns="column" :data-source="data" :pagination="false">
         <template #patientName="text">
-          <router-link to="patients-summary">{{
+          <router-link :to="linkTo">{{
             text.text
             }}</router-link>
         </template>
@@ -34,9 +34,11 @@
     setup(props) {
       const data = reactive(props.appointment)
       const column = reactive(props.columns)
+      const linkTo = "patients-summary"
 
 
       return {
+        linkTo,
         data,
         column,
 

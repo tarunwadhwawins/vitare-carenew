@@ -1,6 +1,6 @@
 <template>
   <a-tab-pane :key="key" :tab="tab">
-    <PopulateWaitingRoomTable :key="key" :linkTo="linkTo" :colomnsRecord="columns" :dataRecord="dataSource" :pagination="pagination" />
+    <PopulateWaitingRoomTable :linkTo="linkTo" :colomnsRecord="columns" :dataRecord="dataSource" :pagination="pagination" />
   </a-tab-pane>
 </template>
 
@@ -12,10 +12,6 @@ export default {
   props: {
     linkTo: {
       type: String,
-      required: true
-    },
-    key: {
-      type: Number,
       required: true
     },
     tab: {

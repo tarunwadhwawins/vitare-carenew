@@ -1,10 +1,10 @@
 <template>
     <a-table >
     <template #name="text">
-        <router-link to="patients-summary">{{ text.text }}</router-link>
+        <router-link :to="linkTo">{{ text.text }}</router-link>
     </template>
     <template #action="text">
-        <router-link to="patients-summary">{{ text.text }}</router-link>
+        <router-link :to="linkTo">{{ text.text }}</router-link>
     </template>
     <!-- <template #compliance>
         <a class="icons">
@@ -24,8 +24,10 @@ export default {
     WarningOutlined,
   },
   setup() {
+    const linkTo = "patients-summary"
     return {
-    };
+      linkTo
+    }
   },
 };
 </script>
