@@ -168,17 +168,31 @@ export const addDemographic = (state, data) => {
 ];
  }
  
- export const conditions = (state, data) => {
-     state.conditions = data
+ export const addCondition = (state, data) => {
+     state.addCondition = data
   }
- 
- 
-  export const patientReferals = (state, data) => {
-     state.patientReferals = data
+  export const updateCondition = (state, data) => {
+    state.updateCondition = data
+ }
+  
+  export const addPatientReferals = (state, data) => {
+     state.addPatientReferals = data
   }
-  export const patientPhysician = (state, data) => {
-     state.patientPhysician = data
+
+  export const updatePatientReferals = (state, data) => {
+    state.updatePatientReferals = data
+ }
+
+  
+  export const addPatientPhysician = (state, data) => {
+     state.addPatientPhysician = data
   }
+
+  export const updatePatientPhysician = (state, data) => {
+    state.updatePatientPhysician = data
+ }
+
+  
 
   export const programList = (state, data) => {
     state.programList = data
@@ -190,6 +204,10 @@ export const addDemographic = (state, data) => {
  
   export const counterMinus = (state) => {
     state.counter--
+  }
+
+  export const resetCounter = (state) => {
+    state.counter = 0
   }
 
   export const addProgram = (state, data) => {
@@ -224,13 +242,13 @@ export const addDemographic = (state, data) => {
           title: "Status",
           dataIndex: "status",
         },
-        // {
-        //   title: "Actions",
-        //   dataIndex: "actions",
-        //   slots: {
-        //     customRender: "action",
-        //   },
-        // },
+        {
+          title: "Actions",
+          dataIndex: "actions",
+          slots: {
+            customRender: "action",
+          },
+        },
       ];
     
  }
@@ -239,6 +257,11 @@ export const addDemographic = (state, data) => {
  export const addDevice = (state, data) => {
     state.addDevice = data
  }
+
+ export const inventoryList = (state, data) => {
+  state.inventoryList = data
+}
+ 
 
  
 
@@ -261,28 +284,21 @@ export const addDemographic = (state, data) => {
           title: "MAC Address",
           dataIndex: "macAddress",
         },
+        
         {
-          title: "Device Time",
-          dataIndex: "deviceTime",
+          title: "Active/Inactive",
+          dataIndex: "active",
+          slots: {
+            customRender: "active",
+          },
         },
         {
-          title: "Server Time",
-          dataIndex: "serverTime",
+          title: "Action",
+          dataIndex: "action",
+          slots: {
+            customRender: "action",
+          },
         },
-        // {
-        //   title: "Active/Inactive",
-        //   dataIndex: "active",
-        //   slots: {
-        //     customRender: "active",
-        //   },
-        // },
-        // {
-        //   title: "Action",
-        //   dataIndex: "action",
-        //   slots: {
-        //     customRender: "action",
-        //   },
-        // },
       ];
       
  }
@@ -295,8 +311,8 @@ export const addDemographic = (state, data) => {
 
  
  
- export const clinicalHistory = (state, data) => {
-    state.clinicalHistory = data
+ export const addClinicalHistory = (state, data) => {
+    state.addClinicalHistory = data
  }
 
  export const clinicalHistoryList = (state, data) => {
@@ -306,19 +322,19 @@ export const addDemographic = (state, data) => {
           title: "History",
           dataIndex: "history",
         },
-        // {
-        //   title: "Actions",
-        //   dataIndex: "actions",
-        //   slots: {
-        //     customRender: "action",
-        //   },
-        // },
+        {
+          title: "Actions",
+          dataIndex: "actions",
+          slots: {
+            customRender: "action",
+          },
+        },
       ];
  }
 
  
- export const clinicalMedicat = (state, data) => {
-    state.clinicalMedicat = data
+ export const addClinicalMedicat = (state, data) => {
+    state.addClinicalMedicat = data
  }
 
  
@@ -346,24 +362,29 @@ export const addDemographic = (state, data) => {
         //   title: "Status",
         //   dataIndex: "status",
         // },
-        // {
-        //   title: "Actions",
-        //   dataIndex: "actions",
-        //   slots: {
-        //     customRender: "action",
-        //   },
-        // },
+        {
+          title: "Actions",
+          dataIndex: "actions",
+          slots: {
+            customRender: "action",
+          },
+        },
       ];
  }
 
  
- export const insuranceForm = (state, data) => {
-    state.insuranceForm = data
+ export const addInsurance = (state, data) => {
+    state.addInsurance = data
  }
 
+ export const updateInsurance = (state, data) => {
+  state.updateInsurance = data
+}
+ 
 
- export const documentForm = (state, data) => {
-    state.documentForm = data
+
+ export const addDocument = (state, data) => {
+    state.addDocument = data
  }
 
  export const documents = (state, data) => {
@@ -388,13 +409,13 @@ export const addDemographic = (state, data) => {
             customRender: "tags",
           },
         },
-        // {
-        //   title: "Actions",
-        //   dataIndex: "actions",
-        //   slots: {
-        //     customRender: "action",
-        //   },
-        // },
+        {
+          title: "Actions",
+          dataIndex: "actions",
+          slots: {
+            customRender: "action",
+          },
+        },
       ];
  }
  

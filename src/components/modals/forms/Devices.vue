@@ -1,154 +1,202 @@
 <template>
-  <a-row :gutter="24">
-    <a-col :md="8" :sm="12" :xs="24">
-      <div class="form-group">
-        <label>{{$t('patient.devices.deviceType')}}</label>
-        <a-select
-          ref="select"
-          v-model="value1"
-          style="width: 100%"
-          size="large"
-          @focus="focus"
-          @change="handleChange"
-        >
-          <a-select-option value="lucy">Blood Pressure</a-select-option>
-          <a-select-option value="Yiminghe">Oxymeter</a-select-option>
-          <a-select-option value="Yiminghe">Glucose</a-select-option>
-        </a-select>
-      </div>
-    </a-col>
-    <a-col :md="8" :sm="12" :xs="24">
-      <div class="form-group">
-        <label>{{$t('patient.devices.modelNo')}}</label>
-        <a-input v-model="value" size="large" />
-      </div>
-    </a-col>
-    <a-col :md="8" :sm="12" :xs="24">
-      <div class="form-group">
-        <label>{{$t('patient.devices.serialNo')}}</label>
-        <a-input v-model="value" size="large" />
-      </div>
-    </a-col>
-    <a-col :md="8" :sm="12" :xs="24">
-      <div class="form-group">
-        <label>{{$t('patient.devices.MACAddress')}}</label>
-        <a-input v-model="value" size="large" />
-      </div>
-    </a-col>
-    <a-col :md="8" :sm="12" :xs="24">
-      <div class="form-group">
-        <label>{{$t('patient.devices.deviceTime')}}</label>
-        <a-input v-model="value" size="large" />
-      </div>
-    </a-col>
-    <a-col :md="8" :sm="12" :xs="24">
-      <div class="form-group">
-        <label>{{$t('patient.devices.ServerTime')}}</label>
-        <a-input v-model="value" size="large" />
-      </div>
-    </a-col>
-  </a-row>
-  <a-row :gutter="24" class="mb-24">
-    <a-col :span="24">
-      <a-button class="btn primaryBtn">{{$t('global.add')}}</a-button>
-    </a-col>
-  </a-row>
-  <a-row :gutter="24" class="mb-24">
-    <a-col :span="24">
-      <a-table
-        :columns="columns5"
-        :data-source="data5"
-        :pagination="false"
-        :scroll="{ x: 900 }"
-      >
-        <template #active>
-          <a-switch v-model:checked="checked" />
-        </template>
-        <template #action>
-          <a class="icons"><DeleteOutlined /></a>
-        </template>
-      </a-table>
-    </a-col>
-  </a-row>
+<a-form :model="device" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDevice" @finishFailed="onFinishFailed">
+    <a-row :gutter="24">
+        <a-col :md="8" :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('patient.devices.deviceType')" name="deviceType" :rules="[{ required: true, message: $t('patient.devices.deviceType')+' '+$t('global.validation') }]">
+                    <a-select ref="select" v-model:value="device.deviceType" style="width: 100%" size="large" @change="handleInventory">
+                        <a-select-option value="" disabled>{{'Select Device Type'}}</a-select-option>
+                        <a-select-option v-for="device in globalCode.deviceType.globalCode" :key="device.id" :value="device.id">{{device.name}}</a-select-option>
+                    </a-select>
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <a-col :md="8" :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('patient.devices.inventory')" name="inventory" :rules="[{ required: true, message: $t('patient.devices.inventory')+' '+$t('global.validation') }]">
+                    <!-- <a-select ref="select" v-model:value="device.inventory" style="width: 100%" size="large" @change="handleChange">
+                        <a-select-option value="" disabled>{{'Select Inventory'}}</a-select-option>
+                        <a-select-option v-for="device in globalCode.deviceType.globalCode" :key="device.id" :value="device.id">{{device.name}}</a-select-option>
+                    </a-select> -->
+                    <a-select v-show="patients.inventoryList.length!=0" v-model:value="device.inventory" show-search  placeholder="Select a Inventory" style="width: 200px" :options="patients.inventoryList.map((item) => ({ label: item.modelNumber, value: item.id }))"  :filter-option="filterOption" @focus="handleFocus" @blur="handleBlur" @change="handleChange"></a-select>
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <a-col :md="8" :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('patient.devices.modelNo')" name="modelNumber" :rules="[{ required: false, message: $t('patient.devices.modelNo')+' '+$t('global.validation') }]">
+                    <!-- <a-input v-model:value="device.modelNumber" size="large" /> -->
+                    <div v-for="inventory in patients.inventoryList" :key="inventory.id">
+                        <a-input size="large" v-if="device.inventory==inventory.id"   :name="device.modelNumber" :value="device.modelNumber=inventory.modelNumber" disabled />
+                    </div>
+                    
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.modelNumber?errorMsg.modelNumber[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <a-col :md="8" :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('patient.devices.serialNo')" name="serialNumber" :rules="[{ required: false, message: $t('patient.devices.serialNo')+' '+$t('global.validation') }]">
+                    <!-- <a-input v-model:value="device.serialNumber" size="large" /> -->
+                    <div v-for="inventory in patients.inventoryList" :key="inventory.id">
+                        <a-input size="large" v-if="device.inventory==inventory.id"   :name="device.serialNumber" :value="device.serialNumber=inventory.serialNumber" disabled />
+                    </div>
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.serialNumber?errorMsg.serialNumber[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <a-col :md="8" :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('patient.devices.MACAddress')" name="macAddress" :rules="[{ required: false, message: $t('patient.devices.MACAddress')+' '+$t('global.validation') }]">
+                    <!-- <a-input v-model:value="device.macAddress" size="large" /> -->
+                    <div v-for="inventory in patients.inventoryList" :key="inventory.id">
+                        <a-input size="large" v-if="device.inventory==inventory.id"   :name="device.macAddress" :value="device.macAddress=inventory.macAddress" disabled />
+                    </div>
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.macAddress?errorMsg.macAddress[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <!-- <a-col :md="8" :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('patient.devices.deviceTime')" name="deviceTime" :rules="[{ required: true, message: $t('patient.devices.deviceTime')+' '+$t('global.validation') }]">
+                    <a-input v-model:value="device.deviceTime" size="large" />
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceTime?errorMsg.deviceTime[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <a-col :md="8" :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('patient.devices.ServerTime')" name="serverTime" :rules="[{ required: true, message: $t('patient.devices.ServerTime')+' '+$t('global.validation') }]">
+                    <a-input v-model:value="device.serverTime" size="large" />
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.serverTime?errorMsg.serverTime[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col> -->
+    </a-row>
+    <a-row :gutter="24" class="mb-24">
+        <a-col :span="24">
+            <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
+        </a-col>
+    </a-row>
+    <a-row :gutter="24" class="mb-24">
+        <a-col :span="24">
+            <a-table :columns="deviceColumns" :data-source="deviceData" :pagination="false" :scroll="{ x: 900 }">
+                <template #active="text">
+                    <a-switch @click="changeStatus(text.record.id,text.index)" v-model:checked="status[text.index]" />
+                </template>
+                <template #action="text">
+                    <a class="icons" @click="deleteDevice(text.record.id)">
+                        <DeleteOutlined />
+                    </a>
+                </template>
+            </a-table>
+            <Loader />
+        </a-col>
+    </a-row>
+</a-form>
 </template>
-<script>
-import { defineComponent, ref } from "vue";
-import { DeleteOutlined } from "@ant-design/icons-vue";
-const columns5 = [
-  {
-    title: "Device Type",
-    dataIndex: "home",
-  },
-  {
-    title: "Model No",
-    dataIndex: "model",
-  },
-  {
-    title: "Serial No",
-    dataIndex: "serial",
-  },
-  {
-    title: "MAC Address",
-    dataIndex: "mac",
-  },
-  {
-    title: "Device Time",
-    dataIndex: "device",
-  },
-  {
-    title: "Server Time",
-    dataIndex: "server",
-  },
-  {
-    title: "Active/Inactive",
-    dataIndex: "active",
-    slots: {
-      customRender: "active",
-    },
-  },
-  {
-    title: "Action",
-    dataIndex: "action",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
 
-const data5 = [
-  {
-    key: "1",
-    home: "Blood Pressure",
-    model: "M-101",
-    serial: "S-101",
-    mac: "Lorem",
-    device: "11:00 Am",
-    server: "11:30 Am",
-    active: "",
-    action: "",
-  },
-  {
-    key: "2",
-    home: "Oxymeter",
-    model: "M-102",
-    serial: "S-102",
-    mac: "Lorem",
-    device: "10:15 Am",
-    server: "10:30 Am",
-    active: "",
-    action: "",
-  },
-];
+<script>
+import {
+    defineComponent,
+    reactive,
+    computed,
+    ref
+} from "vue"
+import {
+    DeleteOutlined
+} from "@ant-design/icons-vue"
+import {
+    useStore
+} from "vuex"
+import Loader from "../../loader/Loader"
+import {
+    deleteSwal
+} from "../../../commonMethods/commonMethod"
 export default defineComponent({
-  components: {
-    DeleteOutlined,
-  },
-  setup() {
-    return {
-      data5,
-      columns5,
-      size: ref("large"),
-    };
-  },
+    components: {
+        DeleteOutlined,
+        Loader
+    },
+    setup() {
+        const store = useStore()
+        const status = ref([])
+        const device = reactive({
+            inventory: '',
+            deviceType: "",
+            modelNumber: "",
+            serialNumber: "",
+            macAddress: "",
+            // deviceTime: "",
+            // serverTime: "",
+        });
+        const addDevice = () => {
+            store.dispatch("addDevice", {
+                data: device,
+                id: patients.value.addDemographic.id,
+            });
+            setTimeout(() => {
+                store.dispatch("devices", patients.value.addDemographic.id);
+            }, 2000);
+        };
+
+        const globalCode = computed(() => {
+            return store.state.common;
+        })
+        const deviceData = computed(() => {
+            return store.state.patients.devices;
+        })
+
+        const deviceColumns = computed(() => {
+            return store.state.patients.devicesColumns;
+        })
+        const patients = computed(() => {
+            return store.state.patients;
+        })
+
+        function deleteDevice(id) {
+            deleteSwal().then((response) => {
+                if (response == true) {
+                    store.dispatch('deleteDevice', {
+                        id: patients.value.addDemographic.id,
+                        deviceId: id
+                    })
+                    setTimeout(() => {
+                        store.dispatch("devices", patients.value.addDemographic.id);
+                    }, 2000);
+                }
+            })
+        }
+
+        function changeStatus(id, index) {
+            console.log(status.value, index)
+            store.dispatch('changeStatus', {
+                id: patients.value.addDemographic.id,
+                statusId: id,
+                status: {
+                    status: status.value[index] == true ? 1 : 0
+                }
+            })
+        }
+
+        function handleInventory(id){
+            store.dispatch('inventoryList',{isAvailable:1,deviceType:id})
+        }
+        return {
+            handleInventory,
+            changeStatus,
+            status,
+            deleteSwal,
+            deleteDevice,
+            patients,
+            device,
+            addDevice,
+            globalCode,
+            deviceData,
+            deviceColumns
+        };
+    },
 });
 </script>

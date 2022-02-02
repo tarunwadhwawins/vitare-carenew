@@ -1,143 +1,156 @@
 <template>
-  <a-row :gutter="24">
-    <a-col :sm="12" :xs="24">
-      <div class="form-group">
-        <label>{{$t('global.name')}}</label>
-        <a-input v-model="value" size="large" />
-      </div>
-    </a-col>
-    <a-col :sm="12" :xs="24">
-      <div class="form-group">
-        <label>{{$t('global.document')}}</label>
-        <a-input v-model="value" size="large" type="file" />
-      </div>
-    </a-col>
-    <a-col :sm="12" :xs="24">
-      <div class="form-group">
-        <label> {{$t('global.type')}}</label>
-        <a-select
-          ref="select"
-          v-model="value1"
-          style="width: 100%"
-          size="large"
-          @focus="focus"
-          @change="handleChange"
-        >
-          <a-select-option value="lucy">Id Proof</a-select-option>
-          <a-select-option value="Yiminghe">Clinical</a-select-option>
-          <a-select-option value="Yiminghe">Insurance</a-select-option>
-        </a-select>
-      </div>
-    </a-col>
-    <a-col :sm="12" :xs="24">
-      <div class="form-group">
-        <label> {{$t('global.tags')}}</label>
-        <a-select
-          v-model:value="selectedItemsForTag"
-          mode="multiple"
-          size="large"
-          placeholder="Please Select Tags"
-          style="width: 100%"
-          :options="filteredOptionsForTag.map((item) => ({ value: item }))"
-        />
-      </div>
-    </a-col>
-  </a-row>
-  <a-row :gutter="24" class="mb-24">
-    <a-col :span="24">
-      <a-button class="btn primaryBtn">{{$t('global.add')}}</a-button>
-    </a-col>
-  </a-row>
-  <a-row :gutter="24" class="mb-24">
-    <a-col :span="24">
-      <a-table
-        :columns="columns4"
-        :data-source="data4"
-        :pagination="false"
-        :scroll="{ x: 900 }"
-      >
-        <template #action>
-          <a-tooltip placement="bottom">
-            <template #title>
-              <span>{{$t('global.edit')}}</span>
-            </template>
-            <a class="icons"><EditOutlined /></a>
-          </a-tooltip>
-          <a-tooltip placement="bottom">
-            <template #title>
-              <span>{{$t('global.delete')}}</span>
-            </template>
-            <a class="icons"> <DeleteOutlined /></a>
-          </a-tooltip>
-        </template>
-      </a-table>
-    </a-col>
-  </a-row>
+<a-form :model="documents" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDocument" @finishFailed="onFinishFailed">
+  <Loader />
+    <a-row :gutter="24">
+        <a-col :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
+                    <a-input v-model:value="documents.name" size="large" />
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: false, message: $t('global.document')+' '+$t('global.validation') }]">
+                    <a-input v-model:value="documents.document" name="document_file" size="large" type="file" @change="onFileUpload" />
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('global.type')" name="type" :rules="[{ required: false, message: $t('global.type')+' '+$t('global.validation') }]">
+                    <a-select ref="select" v-model:value="documents.type" style="width: 100%" size="large" @change="handleChange">
+                        <a-select-option value="" disabled>{{'Select Type'}}</a-select-option>
+                        <a-select-option v-for="documentType in globalCode.documentTypes.globalCode" :key="documentType.id" :value="documentType.id">{{documentType.name}}</a-select-option>
+                    </a-select>
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.type?errorMsg.type[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('global.tags')" name="tags" :rules="[{ required: false, message: $t('global.tags')+' '+$t('global.validation') }]">
+                    <a-select v-model:value="documents.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" />
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.tags?errorMsg.tags[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+    </a-row>
+    <a-row :gutter="24" class="mb-24">
+        <a-col :span="24">
+            <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
+        </a-col>
+    </a-row>
+    <a-row :gutter="24" class="mb-24">
+        <a-col :span="24">
+            <a-table :columns="documentColumns" :data-source="documentsData" :pagination="false" :scroll="{ x: 900 }">
+                <template #tags="text">
+                    <span v-for="tag in text.text.data" :key="tag.id">{{ tag.tag+ " "}}</span>
+                </template>
+                <template #action="text">
+                    <a-tooltip placement="bottom">
+                        <template #title>
+                            <span>{{$t('global.delete')}}</span>
+                        </template>
+                        <a class="icons" @click="deleteDocument(text.record.id)">
+                            <DeleteOutlined /></a>
+                    </a-tooltip>
+                </template>
+            </a-table>
+            <Loader />
+        </a-col>
+    </a-row>
+</a-form>
 </template>
-<script>
-import { defineComponent, ref, computed } from "vue";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
-const OPTIONSTAG = ["Tag1", "Tag2", "Tag3"];
-const columns4 = [
-  {
-    title: "Name",
-    dataIndex: "name",
-  },
-  {
-    title: "Document",
-    dataIndex: "document",
-  },
-  {
-    title: "	Type",
-    dataIndex: "type",
-  },
-  {
-    title: "	Tags",
-    dataIndex: "tags",
-  },
-  {
-    title: "Actions",
-    dataIndex: "actions",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
-const data4 = [
-  {
-    key: "1",
-    name: "Document 1",
-    document: "abc.pdf",
-    type: "Voter Id",
-    tags: "	Voter Id",
-    actions: "",
-  },
-  {
-    key: "2",
-    name: "Document 1",
-    document: "abc.pdf",
-    type: "Voter Id",
-    tags: "	Voter Id",
-    actions: "",
-  },
-];
-export default defineComponent({
-  components: {
-    EditOutlined,
-    DeleteOutlined,
-  },
-  setup() {
-    const selectedItemsForTag = ref(["Tag1"]);
-    const filteredOptionsForTag = computed(() =>
-      OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
-    );
 
-    return {
-      data4,
-      columns4,
-      filteredOptionsForTag,
-      selectedItemsForTag,
-    };
-  },
+<script>
+import {defineComponent,computed,reactive} from "vue"
+import {DeleteOutlined} from "@ant-design/icons-vue"
+import {useStore} from "vuex"
+import Loader from "../../loader/Loader"
+import {deleteSwal} from "../../../commonMethods/commonMethod"
+export default defineComponent({
+    components: {
+        DeleteOutlined,
+        Loader
+    },
+    setup() {
+        const store = useStore()
+        const onFileUpload = (event) => {
+            let doc_file = event.target.files[0];
+            let formData = new FormData();
+            formData.append("file", doc_file);
+            store.dispatch("uploadFile", formData);
+        }
+
+        const filePath = computed(() => {
+            return store.state.patients.uploadFile;
+        })
+
+        const documents = reactive({
+            name: "",
+            document: filePath.value ? filePath.value : "",
+            type: "",
+            tags: [],
+            entity: "patient",
+        })
+
+        const addDocument = () => {
+            store.dispatch("addDocument", {
+                data: {
+                    name: documents.name,
+                    document: filePath.value ? filePath.value : "",
+                    type: documents.type,
+                    tags: documents.tags,
+                    entity: "patient",
+                },
+                id: patients.value.addDemographic.id,
+            })
+            setTimeout(() => {
+                store.dispatch("documents", patients.value.addDemographic.id);
+            }, 2000)
+        }
+        const patients = computed(() => {
+            return store.state.patients;
+        })
+        const documentsData = computed(() => {
+            return store.state.patients.documents;
+        })
+
+        const documentColumns = computed(() => {
+            return store.state.patients.documentColumns;
+        })
+        const globalCode = computed(() => {
+            return store.state.common;
+        })
+
+        function deleteDocument(id){
+          deleteSwal().then((response) => {
+                if (response == true) {
+                    store.dispatch('deleteDocument', {
+                        id: patients.value.addDemographic.id,
+                        documentId: id
+                    })
+                    setTimeout(() => {
+                        store.dispatch("documents", patients.value.addDemographic.id);
+                    }, 2000);
+                }
+            })
+        }
+        return {
+            deleteDocument,
+            globalCode,
+            onFileUpload,
+            filePath,
+            documents,
+            addDocument,
+            patients,
+            documentColumns,
+            documentsData,
+
+        };
+    },
 });
 </script>
