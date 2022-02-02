@@ -22,7 +22,7 @@
               </a-col>
               <a-col :span="12">
                 <div class="text-right mb-24">
-                    <Button :name="exportButtonName" />
+                  <Button :name="exportButtonName" />
                 </div>
               </a-col>
             </a-row>
