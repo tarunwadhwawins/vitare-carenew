@@ -11,9 +11,13 @@ class ServiceMethodService {
             return axios.get
         } else if (method == 'post') {
             return axios.post
-        } else {
+        } else if (method == 'put'){
             return axios.put
-        }
+        } else if (method == 'patch') {
+            return axios.patch
+        } else{
+            return axios.delete
+        } 
     }
 
     common(method, endPoint, id, data) {

@@ -7,7 +7,7 @@
             <LongCard backgroundColor="#8e60ff" textColor="" customClass="two" :count="2" text="Wellness"></LongCard>
             </a-col>
             <a-col :xl="12"  :xs="24">
-            <LongCard customClass="four" backgroundColor="#ffa800" textColor="" :count="2" text="Behavior"></LongCard>
+            <LongCard customClass="four" backgroundColor="#ffa800" textColor="" :count="2" text="Behaviour"></LongCard>
             </a-col>
         </a-row>
     </a-col>

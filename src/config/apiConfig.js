@@ -2,30 +2,39 @@
 
 // API end points 
 export const API_ENDPOINTS = {
+    // Authentication
     LOGIN: "login",
     Logout: "logout",
-    CallPlanned:"call/staff",
-    communicationsList:"communication",
+
+    // Patients
     patientsList:"patient",
-    staffList:"staff",
     patientDetails:"patient",
-    
-    TodayAppointment:"appointment/today",
-    CallStatus:"call/status",
     CounterCard:"patient/count",
     Financial:"patient/count",
     CptCode:"patient/count",
-    Network:"staff/network",
-    Specialization:"staff/specialization",
     TotalPatientsChart:"patient/chart",
+    TimeLine:"patient/new",
+    
+    // Appointments
+    TodayAppointment:"appointment/today",
     AppointmentChart:"appointment/summary",
     futureAppointments:"appointment/future",
     newRequests:"appointment/new",
+
+    // Staff
+    staffList:"staff",
+    Specialization:"staff/specialization",
+    Network:"staff/network",
+
+    // Communications
+    communicationsList:"communication",
     communicationTypes:"communication/type",
     addCommunication:"communication",
-    TimeLine:"patient/new",
     communicationsCount:"communication/count",
+    CallStatus:"call/status",
+    CallPlanned:"call/staff",
 
+    // Tasks
     addTask:"task",
     tasksList:"task",
     taskStatus:"task/status",
@@ -34,6 +43,12 @@ export const API_ENDPOINTS = {
 
     addAppointment:"appointment",
     seacrhAppointment:"appointment/search",
+    // Global Codes
+    globalCodesList: 'globalCodeCategory',
+    globalCode: 'globalCode',
+
+    // inventory
+    inventory: 'inventory',
 };
 
 // export const getApiUrl = key => {

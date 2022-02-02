@@ -13,6 +13,9 @@ import thresholds from './english-modules/thresholds'
 import timeLogReport from './english-modules/timeLogReport'
 import patientSummary from './english-modules/patientSummary'
 import common from './english-modules/common'
+import globalCodes from './english-modules/globalCodes'
+import providers from './english-modules/providers'
+import inventory from './english-modules/inventory'
 
 const english = {
     global,
@@ -30,6 +33,9 @@ const english = {
     timeLogReport,
     patientSummary,
     common,
+    globalCodes,
+    providers,
+    inventory,
 }
 
 export default english

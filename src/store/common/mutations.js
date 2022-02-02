@@ -1,4 +1,5 @@
 export const globalCodes = (state, data) => {
+    state.globalCodeCategories = data;
      data.forEach(element => {
         if(element.name ==='Gender'){
             state.gender= element;
