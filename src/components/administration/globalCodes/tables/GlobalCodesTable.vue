@@ -27,7 +27,7 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { watchEffect, computed } from "vue";
 import { useStore } from "vuex";
-import swal from 'sweetalert';
+import swal from 'sweetalert2';
 export default {
   components: {
     DeleteOutlined,
