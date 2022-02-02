@@ -1,182 +1,215 @@
 <template>
-  <a-row :gutter="24">
+<a-form :model="clinicals" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="clinicalHistory" @finishFailed="onFinishFailed">
+    <div class="form-group">
+        <a-form-item :label="$t('patient.clinicalData.medicalHistory')" name="history" :rules="[{ required: true, message: $t('patient.clinicalData.medicalHistory')+' '+$t('global.validation') }]">
+            <a-input v-model:value="clinicals.history" size="large" />
+            <ErrorMessage v-if="errorMsg" :name="errorMsg.history?errorMsg.history[0]:''" />
+        </a-form-item>
+    </div>
+    <a-row :gutter="24" class="mb-24">
+        <a-col :span="24">
+            <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
+        </a-col>
+    </a-row>
+</a-form>
+<a-row :gutter="24" class="mb-24">
     <a-col :span="24">
-      <div class="formHeading">
-        <h2>{{$t('patient.clinicalData.medicalHistory')}}</h2>
-      </div>
-    </a-col>
-    <a-col :span="24">
-      <div class="form-group">
-        <label>{{$t('patient.clinicalData.medicalHistory')}}</label>
-        <a-textarea v-model="value2" allow-clear />
-      </div>
-    </a-col>
-  </a-row>
-  <a-row :gutter="24" class="mb-24">
-    <a-col :span="24">
-      <a-button class="btn primaryBtn">{{$t('global.add')}}</a-button>
-    </a-col>
-  </a-row>
-  <a-row :gutter="24" class="mb-24">
-    <a-col :span="24">
-      <a-table
-        :columns="columns2"
-        :data-source="data2"
-        :pagination="false"
-        :scroll="{ x: 900 }"
-      >
-        <template #action>
-         
-          <a-tooltip placement="bottom">
+        <a-table :columns="clinicalHistoryColumns" :data-source="clinicalsData" :scroll="{ x: 900 }">
+            <template #action="text">
+                <a-tooltip placement="bottom">
                     <template #title>
-                      <span>{{$t('global.edit')}}</span>
+                        <span>{{$t('global.delete')}}</span>
                     </template>
-                    <a class="icons"><EditOutlined /></a>
-                  </a-tooltip>
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>{{$t('global.delete')}}</span>
-                    </template>
-                    <a class="icons"> <DeleteOutlined /></a>
-                  </a-tooltip>
-        </template>
-      </a-table>
+                    <a class="icons" @click="deleteClinicalData(text.record.id,'deleteClinicalData')">
+                        <DeleteOutlined />
+                    </a>
+                </a-tooltip>
+            </template>
+        </a-table>
+        <Loader />
     </a-col>
-  </a-row>
-  <a-row :gutter="24">
+</a-row>
+
+<a-form :model="clinicalMedication" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="clinicalMedicat" @finishFailed="onFinishFailed">
+    <a-row :gutter="24">
+        <a-col :span="24">
+            <div class="formHeading">
+                <h2>{{$t('patient.clinicalData.medication')}}</h2>
+            </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('patient.clinicalData.medicine')" name="medicine" :rules="[{ required: true, message: $t('patient.clinicalData.medicine')+' '+$t('global.validation') }]">
+                    <a-input v-model:value="clinicalMedication.medicine" size="large" />
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.medicine?errorMsg.medicine[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+
+            <div class="form-group">
+                <a-form-item :label="$t('patient.clinicalData.frequency')" name="frequency" :rules="[{ required: true, message: $t('patient.clinicalData.frequency')+' '+$t('global.validation') }]">
+                    <a-input v-model:value="clinicalMedication.frequency" size="large" />
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.frequency?errorMsg.frequency[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('global.startDate')" name="startDate" :rules="[{ required: true, message: $t('global.startDate')+' '+$t('global.validation') }]">
+                    <a-date-picker v-model:value="clinicalMedication.startDate" format="MMM DD, YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.startDate?errorMsg.startDate[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('global.endDate')" name="endDate" :rules="[{ required: true, message: $t('global.endDate')+' '+$t('global.validation') }]">
+                    <a-date-picker v-model:value="clinicalMedication.endDate" format="MMM DD, YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.endDate?errorMsg.endDate[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+    </a-row>
+    <a-row :gutter="24" class="mb-24">
+        <a-col :span="24">
+            <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
+        </a-col>
+    </a-row>
+</a-form>
+<a-row :gutter="24" class="mb-24">
     <a-col :span="24">
-      <div class="formHeading">
-        <h2>{{$t('patient.clinicalData.medication')}}</h2>
-      </div>
-    </a-col>
-    <a-col :sm="12" :xs="24">
-      <div class="form-group">
-        <label>{{$t('patient.clinicalData.medicine')}}</label>
-        <a-input v-model="value" size="large" />
-      </div>
-    </a-col>
-    <a-col :sm="12" :xs="24">
-      <div class="form-group">
-        <label> {{$t('patient.clinicalData.frequency')}}</label>
-        <a-input v-model="value" size="large" />
-      </div>
-    </a-col>
-  </a-row>
-  <a-row :gutter="24" class="mb-24">
-    <a-col :span="24">
-      <a-button class="btn primaryBtn">{{$t('global.add')}}</a-button>
-    </a-col>
-  </a-row>
-  <a-row :gutter="24" class="mb-24">
-    <a-col :span="24">
-      <a-table
-        :columns="columns3"
-        :data-source="data3"
-        :pagination="false"
-        :scroll="{ x: 900 }"
-      >
-        <template #action>
-         <a-tooltip placement="bottom">
+        <a-table :columns="clinicalMedicatColumns" :data-source="clinicalMedicatData" :scroll="{ x: 900 }">
+            <template #action="text">
+                <a-tooltip placement="bottom">
                     <template #title>
-                      <span>{{$t('global.edit')}}</span>
+                        <span>{{$t('global.delete')}}</span>
                     </template>
-                    <a class="icons"><EditOutlined /></a>
-                  </a-tooltip>
-                  <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>{{$t('global.delete')}}</span>
-                    </template>
-                    <a class="icons"> <DeleteOutlined /></a>
-                  </a-tooltip>
-        </template>
-      </a-table>
+                    <a class="icons" @click="deleteClinicalData(text.record.id, null)">
+                        <DeleteOutlined />
+                    </a>
+                </a-tooltip>
+            </template>
+        </a-table>
+        <Loader />
     </a-col>
-  </a-row>
+</a-row>
 </template>
+
 <script>
-import { defineComponent, ref } from "vue";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
-const columns2 = [
-  {
-    title: "History",
-    dataIndex: "history",
-  },
-  {
-    title: "Actions",
-    dataIndex: "actions",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
-const data2 = [
-  {
-    key: "1",
-    history: "Program 1",
-    actions: "",
-  },
-  {
-    key: "2",
-    history: "Program 2",
-    actions: "",
-  },
-];
-const columns3 = [
-  {
-    title: "Medication List",
-    dataIndex: "program",
-  },
-  {
-    title: "Start Date",
-    dataIndex: "start",
-  },
-  {
-    title: "End Date",
-    dataIndex: "end",
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-  },
-  {
-    title: "Actions",
-    dataIndex: "actions",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
-const data3 = [
-  {
-    key: "1",
-    program: "Program 1",
-    start: "Nov 12, 2021",
-    end: "Dec 20, 2021",
-    status: "Active",
-    actions: "",
-  },
-  {
-    key: "2",
-    program: "Program 1",
-    start: "Nov 22, 2021",
-    end: "Dec 28, 2021",
-    status: "InActive",
-    actions: "",
-  },
-];
+import {
+    defineComponent,
+    reactive,
+    computed
+} from "vue";
+import {
+    DeleteOutlined
+} from "@ant-design/icons-vue";
+import {
+    useStore
+} from "vuex"
+import Loader from "../../loader/Loader.vue"
+import {
+    deleteSwal
+} from "../../../commonMethods/commonMethod"
 export default defineComponent({
-  components: {
-    EditOutlined,
-    DeleteOutlined,
-  },
-  setup() {
-    return {
-      data2,
-      columns2,
-      data3,
-      columns3,
-      size: ref("large"),
-    };
-  },
+    components: {
+        DeleteOutlined,
+        Loader
+    },
+    setup() {
+        const store = useStore()
+        const clinicals = reactive({
+            history: "",
+        });
+
+        const clinicalMedication = reactive({
+            medicine: "",
+            frequency: "",
+            startDate: "",
+            endDate: "",
+        });
+
+        const globalCode = computed(() => {
+            return store.state.common;
+        })
+
+        const clinicalHistory = () => {
+            store.dispatch("addClinicalHistory", {
+                data: clinicals,
+                id: patients.value.addDemographic.id,
+            });
+
+            setTimeout(() => {
+                store.dispatch("clinicalHistoryList", patients.value.addDemographic.id);
+            }, 2000);
+        };
+
+        const clinicalMedicat = () => {
+            store.dispatch("addClinicalMedicat", {
+                data: clinicalMedication,
+                id: patients.value.addDemographic.id,
+            });
+            setTimeout(() => {
+                store.dispatch("clinicalMedicatList", patients.value.addDemographic.id);
+            }, 2000);
+        };
+        const patients = computed(() => {
+            return store.state.patients;
+        })
+
+        const clinicalHistoryColumns = computed(() => {
+            return store.state.patients.clinicalHistoryListColumns;
+        });
+
+        const clinicalsData = computed(() => {
+            return store.state.patients.clinicalHistoryList;
+        });
+
+        const clinicalMedicatData = computed(() => {
+            return store.state.patients.clinicalMedicatList;
+        });
+
+        const clinicalMedicatColumns = computed(() => {
+            return store.state.patients.clinicalMedicatListColumns;
+        })
+
+        function deleteClinicalData(id, name) {
+            deleteSwal().then((response) => {
+                if (response == true) {
+                    if (name == 'deleteClinicalData') {
+                        store.dispatch('deleteClinicalData', {
+                            id: patients.value.addDemographic.id,
+                            clinicalId: id
+                        })
+                        setTimeout(() => {
+                            store.dispatch("clinicalHistoryList", patients.value.addDemographic.id);
+                        }, 3000);
+                    } else {
+                      store.dispatch('deleteClinicalMedicat', {
+                            id: patients.value.addDemographic.id,
+                            clinicalId: id
+                        })
+                        setTimeout(() => {
+                            store.dispatch("clinicalMedicatList", patients.value.addDemographic.id);
+                        }, 3000);
+                    }
+                }
+            })
+        }
+        return {
+            deleteClinicalData,
+            clinicalHistory,
+            clinicalMedicat,
+            clinicals,
+            clinicalMedication,
+            globalCode,
+            patients,
+            clinicalHistoryColumns,
+            clinicalsData,
+            clinicalMedicatData,
+            clinicalMedicatColumns
+        };
+    },
 });
 </script>

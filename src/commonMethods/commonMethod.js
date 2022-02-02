@@ -25,3 +25,21 @@ export function errorSwal(message){
     text: message,
   })
 }
+
+export async function deleteSwal(){
+   const result =  await Swal.fire({
+    title: "Are you sure?",
+    text: "Do you want to delete ?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes",
+  });
+  if (result.isConfirmed) {
+   return true
+  }else{
+    return false
+  }
+
+}

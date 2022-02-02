@@ -1,147 +1,125 @@
 <template>
-  <a-row :gutter="24">
-    <a-col :md="8" :sm="12" :xs="24">
-      <div class="form-group">
-        <label>{{$t('patient.programs.program')}}</label>
-        <a-select
-          ref="select"
-          v-model="value1"
-          style="width: 100%"
-          size="large"
-          @focus="focus"
-          @change="handleChange"
-        >
-          <a-select-option value="lucy">Choose Program</a-select-option>
-          <a-select-option value="Yiminghe">RPM</a-select-option>
-          <a-select-option value="Yiminghe">Mental Wellness</a-select-option>
-          <a-select-option value="Yiminghe">CCM Chronic Care Management</a-select-option>
-          <a-select-option value="Yiminghe"
-            >TCM- Transitional Care Managment</a-select-option
-          >
-        </a-select>
-      </div>
-    </a-col>
-    <a-col :md="8" :sm="6" :xs="24">
-      <div class="form-group">
-        <label>{{$t('patient.programs.onboardinScheduledDate')}}</label>
-        <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
-      </div>
-    </a-col>
-    <a-col :md="8" :sm="6" :xs="24">
-      <div class="form-group">
-        <label>{{$t('patient.programs.dischargeDate')}}</label>
-        <a-date-picker v-model:value="value2" :size="size" style="width: 100%" />
-      </div>
-    </a-col>
-    <a-col :md="8" :sm="12" :xs="24">
-      <div class="form-group">
-        <label>{{$t('global.status')}}</label>
-        <a-radio-group v-model:value="value">
-          <a-radio :style="radioStyle" :value="1">Active</a-radio>
-        </a-radio-group>
-        <a-radio-group v-model:value="value">
-          <a-radio :style="radioStyle" :value="2">Inactive</a-radio>
-        </a-radio-group>
-      </div>
-    </a-col>
-  </a-row>
-  <a-row :gutter="24" class="mb-24">
-    <a-col :span="24">
-      <a-button class="btn primaryBtn">{{$t('global.add')}}</a-button>
-    </a-col>
-  </a-row>
-  <a-row :gutter="24" class="mb-24">
-    <a-col :span="24">
-      <a-table
-        :columns="columns1"
-        :data-source="data1"
-        :pagination="false"
-        :scroll="{ x: 900 }"
-      >
-        <template #action>
-         <a-tooltip placement="bottom">
-                    <template #title>
-                      <span>{{$t('global.edit')}}</span>
-                    </template>
-                    <a class="icons"><EditOutlined /></a>
-                  </a-tooltip>
-               
-        </template>
-      </a-table>
-    </a-col>
-  </a-row>
+<a-form :model="program" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="programs" @finishFailed="onFinishFailed">
+    <a-row :gutter="24">
+        <a-col :md="8" :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('patient.programs.program')" name="program" :rules="[{ required: true, message: $t('patient.programs.program')+' '+$t('global.validation') }]">
+                    <a-select ref="select" v-model:value="program.program" style="width: 100%" size="large" @change="handleChange">
+                        <a-select-option value="" disabled>{{'Select Program'}}</a-select-option>
+                        <a-select-option v-for="program in patients.programList" :key="program.id" :value="program.id">{{program.description}}</a-select-option>
+                    </a-select>
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.program?errorMsg.program[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <a-col :md="8" :sm="6" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('patient.programs.onboardinScheduledDate')" name="onboardingScheduleDate" :rules="[{ required: true, message: $t('patient.programs.onboardinScheduledDate')+' '+$t('global.validation') }]">
+                    <a-date-picker v-model:value="program.onboardingScheduleDate" format="MMM DD, YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.onboardingScheduleDate?errorMsg.onboardingScheduleDate[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <a-col :md="8" :sm="6" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('patient.programs.dischargeDate')" name="dischargeDate" :rules="[{ required: true, message: $t('patient.programs.dischargeDate')+' '+$t('global.validation') }]">
+                    <a-date-picker v-model:value="program.dischargeDate" format="MMM DD, YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.dischargeDate?errorMsg.dischargeDate[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <a-col :md="8" :sm="12" :xs="24">
+            <div class="form-group">
+                <label>{{$t('global.status')}}</label>
+                <a-radio-group v-model:value="program.status">
+                    <a-radio :value="1">{{$t('global.active')}}</a-radio>
+                    <a-radio :value="0">{{$t('global.inactive')}}</a-radio>
+                </a-radio-group>
+            </div>
+        </a-col>
+    </a-row>
+    <a-row :gutter="24" class="mb-24">
+        <a-col :span="24">
+            <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
+        </a-col>
+    </a-row>
+    <a-row :gutter="24" class="mb-24">
+        <a-col :span="24">
+            <a-table :columns="columns" :data-source="programsData" :pagination="false" :scroll="{ x: 900 }">
+                <template #action="text">
+                    <a-tooltip placement="bottom">
+                        <a class="icons" @click="deleteProgram(text.record.id)">
+                            <DeleteOutlined />
+                        </a>
+                    </a-tooltip>
+                </template>
+            </a-table>
+            <Loader />
+        </a-col>
+    </a-row>
+</a-form>
 </template>
+
 <script>
-import { defineComponent, ref } from "vue";
-import { EditOutlined } from "@ant-design/icons-vue";
-const columns1 = [
-  {
-    title: "Program Name",
-    dataIndex: "program",
-  },
-  {
-    title: "Onboarding scheduled date",
-    dataIndex: "Onboarding",
-  },
-  {
-    title: "Start Date",
-    dataIndex: "start",
-  },
-  {
-    title: "End Date",
-    dataIndex: "end",
-  },
-  {
-    title: "Discharge Date",
-    dataIndex: "discharge",
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-  },
-  {
-    title: "Actions",
-    dataIndex: "actions",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
-const data1 = [
-  {
-    key: "1",
-    program: "RPM",
-    Onboarding: "Nov 12, 2021",
-    start: "Nov 13, 2021",
-    end: "Dec 20, 2021",
-    discharge: "Dec 20, 2021",
-    status: "Active",
-    actions: "",
-  },
-  {
-    key: "2",
-    program: "TCM- Transitional Care Managment",
-    Onboarding: "Dec 21, 2021",
-    start: "Dec 28, 2021",
-    end: "Jan 10, 2022",
-    discharge: "Jan 11, 2022",
-    status: "InActive",
-    actions: "",
-  },
-];
+import { defineComponent, reactive, computed } from "vue";
+import { DeleteOutlined } from "@ant-design/icons-vue";
+import { useStore } from "vuex";
+import Loader from "../../loader/Loader"
+import {deleteSwal} from "../../../commonMethods/commonMethod"
 export default defineComponent({
   components: {
-    EditOutlined,
+    DeleteOutlined,
+    Loader
   },
   setup() {
-    // const radioStyle = reactive({});
-    const value = ref("1");
+    const store = useStore();
+    const program = reactive({
+      program: "",
+      onboardingScheduleDate: "",
+      dischargeDate: "",
+      status: 1,
+    });
+    const programs = () => {
+      store.dispatch("addProgram", {
+        data: program,
+        id: patients.value.addDemographic.id,
+      });
+      setTimeout(() => {
+        store.dispatch("program", patients.value.addDemographic.id);
+      }, 2000);
+    };
+    const patients = computed(() => {
+      return store.state.patients;
+    });
+    const columns = computed(() => {
+      return store.state.patients.columns;
+    });
+
+    const programsData = computed(() => {
+      return store.state.patients.program;
+    });
+
+    function deleteProgram(id) {
+     deleteSwal().then((response)=>{
+       if(response==true){
+       store.dispatch('deleteProgram',{
+         id:patients.value.addDemographic.id,
+         programID:id
+       })
+      setTimeout(() => {
+        store.dispatch("program",patients.value.addDemographic.id);
+      }, 2000);
+       }
+     })
+      
+    }
     return {
-      data1,
-      columns1,
-      // radioStyle,
-      value,
-      size: ref("large"),
+      deleteProgram,
+      columns,
+      programsData,
+      patients,
+      program,
+      programs,
     };
   },
 });
