@@ -11,6 +11,8 @@ class ServiceMethodService {
             return axios.get
         } else if (method == 'post') {
             return axios.post
+        } else if (method == 'patch') {
+            return axios.patch
         } else if (method == 'delete') {
             return axios.delete
         } else {

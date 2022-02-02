@@ -3,6 +3,5 @@ export default {
   addGlobalCode:null,
   deleteGlobalCode:null,
   globalCodeDetails:null,
-  updateStatus:null,
   updateGlobalCode:null,
 }

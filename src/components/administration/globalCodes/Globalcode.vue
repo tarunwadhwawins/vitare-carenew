@@ -35,7 +35,7 @@
       </a-layout>
     </a-layout>
     <!--modals-->
-    <AdminGlobalCodes v-model:visible="visible" @ok="handleOk" @is-visible="handleOk" />
+    <AdminGlobalCodes v-if="visible" v-model:visible="visible" @ok="handleOk" @is-visible="handleOk" :isAdd="isAdd" />
     <!---->
   </div>
 </template>
@@ -47,7 +47,7 @@ import AdminGlobalCodes from "@/components/modals/AdminGlobalCodes";
 import GlobalCodesTable from "@/components/administration/globalCodes/tables/GlobalCodesTable";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -59,12 +59,14 @@ export default {
     SearchField,
     Button,
   },
-  setup(props, {emit}) {
+  setup() {
     const store = useStore()
     const checked = ref([false]);
     const visible = ref(false);
+    const isAdd = ref(false);
 
     const showModal = () => {
+      isAdd.value = true;
       visible.value = true;
     };
     const handleOk = (e) => {
@@ -76,11 +78,14 @@ export default {
     };
 
     const editGlobalCode = (id) => {
-      store.dispatch('globalCodeDetails', id)
-      visible.value = true;
+      isAdd.value = false;
+      store.dispatch('globalCodeDetails', id).then(() => {
+        visible.value = true;
+      })
     }
     
     return {
+      isAdd,
       buttonName: "Add Global Code",
       editGlobalCode,
       checked,

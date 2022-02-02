@@ -30,10 +30,6 @@ export const globalCodeDetailsSuccess = async (state, globalCode) => {
   state.globalCodeDetails = globalCode;
 }
 
-export const updateStatusSuccess = async (state, globalCode) => {
-  state.updateStatus = globalCode;
-}
-
 export const updateGlobalCodeSuccess = async (state, globalCode) => {
   state.updateGlobalCode = globalCode;
 }
