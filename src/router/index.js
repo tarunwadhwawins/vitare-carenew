@@ -153,9 +153,9 @@ const routes = [
   },
 
   {
-    path: '/roles-permission',
-    name: 'Roles Permission',
-    component: () => import( '../components/administration/roles-permissions/Rolespermissions')
+    path: '/roles-and-permissions',
+    name: 'Roles & Permissions',
+    component: () => import( '../components/administration/rolesAndPermissions/RolesAndPermissions')
   },
   {
     path: '/cpt-codes',

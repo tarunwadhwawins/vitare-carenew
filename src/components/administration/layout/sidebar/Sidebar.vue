@@ -29,7 +29,7 @@
             ><MailOutlined /><span class="menuItem">Providers</span></a-menu-item
           ></router-link
         >
-        <router-link to="/roles-permission"
+        <router-link to="/roles-and-permissions"
           ><a-menu-item
             ><SafetyOutlined /><span class="menuItem"
               >Roles & Permissions
