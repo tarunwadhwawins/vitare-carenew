@@ -141,26 +141,31 @@ const routes = [
   },
 
   {
-    path: '/manage-providers',
+    path: '/providers',
     name: 'Manage Providers',
-    component: () => import( '../components/administration/manage-providers/Manageproviders')
+    component: () => import( '../components/administration/providers/Providers')
   },
 
   {
     path: '/provider-summary',
     name: 'Provider Summary',
-    component: () => import( '../components/administration/provider-summary/Providersummary')
+    component: () => import( '../components/administration/providers/ProviderSummary')
   },
 
   {
-    path: '/roles-permission',
-    name: 'Roles Permission',
-    component: () => import( '../components/administration/roles-permissions/Rolespermissions')
+    path: '/roles-and-permissions',
+    name: 'Roles & Permissions',
+    component: () => import( '../components/administration/rolesAndPermissions/RolesAndPermissions')
   },
   {
     path: '/cpt-codes',
     name: 'CPT Codes',
     component: () => import( '../components/administration/cpt-codes/Cptcodes')
+  },
+  {
+    path: '/inventory',
+    name: 'Inventory',
+    component: () => import( '../components/administration/inventory/Inventory')
   },
 
   {

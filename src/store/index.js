@@ -7,6 +7,8 @@ import { counterCards } from "./counter-cards/index"
 import { careCoordinator } from "./careCoordinator/index"
 import { tasks } from "./tasks/index"
 import { globalCodes } from "./globalCodes/index"
+import { rolesAndPermissions } from "./rolesAndPermissions/index"
+import { inventory } from "./inventory/index"
 
 export default createStore({
   modules: {
@@ -18,5 +20,7 @@ export default createStore({
     careCoordinator,
     tasks,
     globalCodes,
+    rolesAndPermissions,
+    inventory,
   },
 })
