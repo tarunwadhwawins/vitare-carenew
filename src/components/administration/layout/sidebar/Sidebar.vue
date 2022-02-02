@@ -24,12 +24,12 @@
             ><MailOutlined /><span class="menuItem">Programs</span></a-menu-item
           ></router-link
         >
-        <router-link to="/manage-providers"
+        <router-link to="/providers"
           ><a-menu-item
             ><MailOutlined /><span class="menuItem">Providers</span></a-menu-item
           ></router-link
         >
-        <router-link to="/roles-permission"
+        <router-link to="/roles-and-permissions"
           ><a-menu-item
             ><SafetyOutlined /><span class="menuItem"
               >Roles & Permissions
@@ -53,6 +53,12 @@
             ><GlobalOutlined /><span class="menuItem">Global Codes</span></a-menu-item
           ></router-link
         >
+        <router-link to="/inventory">
+          <a-menu-item>
+            <FileDoneOutlined />
+            <span class="menuItem">{{$t('sidebar.inventory')}}</span>
+          </a-menu-item>
+        </router-link>
         <router-link to="/dashboard"
           ><a-menu-item
             ><HomeOutlined /><span class="menuItem">Home</span></a-menu-item
