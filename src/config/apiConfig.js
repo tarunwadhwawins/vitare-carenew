@@ -31,6 +31,9 @@ export const API_ENDPOINTS = {
     taskStatus:"task/status",
     taskPriority:"task/priority",
     searchTasks:"task/search",
+
+    addAppointment:"appointment",
+    seacrhAppointment:"appointment/search",
 };
 
 // export const getApiUrl = key => {

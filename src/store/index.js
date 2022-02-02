@@ -6,6 +6,7 @@ import { common } from "./common/index"
 import { counterCards } from "./counter-cards/index"
 import { careCoordinator } from "./careCoordinator/index"
 import { tasks } from "./tasks/index"
+import { appointment } from "./appointment/index"
 export default createStore({
 modules: {
   dashBoard,
@@ -15,5 +16,6 @@ modules: {
   common,
   careCoordinator,
   tasks,
+  appointment,
   },
 })

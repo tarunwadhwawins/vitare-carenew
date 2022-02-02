@@ -6,6 +6,7 @@ const appointmentCalendar = {
 
     addAppointment:{
         appointmentDetail:'Appointment Detail',
+        addAppointment:'Add Appointment',
         patient:'Patient',
         staff:'Staff',
         startDate:'Start Date',

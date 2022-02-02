@@ -22,7 +22,9 @@ export default {
     insuranceType:null,
     documentTags:null,
     documentTypes:null,
-    loadingStatus:false
+    loadingStatus:false,
+    duration:null,
+    typeOfVisit:null,
 
 
 
