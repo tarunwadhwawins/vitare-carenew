@@ -11,21 +11,22 @@
           <a-row :gutter="24">
             <a-col :xl="6" :sm="10" :xs="24" v-show="toggle">
               <div class="apptBtn">
-                <a-button class="btn primaryBtn" @click="showModal">
+                <a-button class="btn primaryBtn" @click="showModal(true)">
                   {{$t('appointmentCalendar.newAppointment')}}</a-button
                 >
               </div>
-             
+            
                 <Calendar /> 
-              <Physicians/>
+              <Physicians  v-if="staffList" :staff="staffList"/>
             </a-col>
             <a-col :xl="toggle == false ? 24 : 18" :sm="toggle == false ? 24 : 14" :xs="24">
               <a-tabs v-model:activeKey="activeKey">
+                
                 <a-tab-pane key="1" tab="Day">
-                  <DayAppointment/>
+                  <DayAppointment v-if="appointmentSearch" :todayRcord="appointmentSearch"/>
                 </a-tab-pane>
-                <a-tab-pane key="2" tab="Tomorrow" force-render>
-                 <TomorrowAppointment/>
+                <a-tab-pane key="2" tab="Tomorrow">
+                  <DayAppointment v-if="appointmentSearch" :todayRcord="appointmentSearch"/>
                 </a-tab-pane>
                 <a-tab-pane key="3" tab="Week">
                   
@@ -39,7 +40,7 @@
           </a-row>
         </a-layout-content>
     <!--modal-->
-    <AddAppointment v-model:visible="appointmentModal" @ok="handleOk" />
+    <AddAppointment v-if="staffList && patientsList" v-model:visible="appointmentModal" @ok="handleOk" @is-visible="showModal($event)" :staff="staffList" :patient="patientsList"/>
     
     <!---->
   </div>
@@ -52,11 +53,10 @@ import Title from "./Title"
 import Calendar from "./Calendar"
 import Physicians from "./Physicians"
 import DayAppointment from "./DayAppointment"
-import TomorrowAppointment from "./TomorrowAppointment"
 import MonthAppointment from "./MonthAppointment"
 import WeekAppointment from "./WeekAppointment"
-import {  ref } from "vue";
-
+import {  ref, watchEffect,computed } from "vue";
+import { useStore } from "vuex"
 export default {
   components: {
     AddAppointment,
@@ -64,14 +64,14 @@ export default {
     Calendar,
     Physicians,
     DayAppointment,
-    TomorrowAppointment,
+   
     MonthAppointment,
     WeekAppointment
   },
 
   setup() {
     const toggle = ref(true);
-  
+    const store = useStore()
     // const value = ref();
     // const onPanelChange = (value, mode) => {
     //   console.log(value, mode);
@@ -93,25 +93,41 @@ export default {
     //   }
     //   return years;
     // };
+    
+    watchEffect(() => {
+        store.dispatch("patientsList")
+        store.dispatch("staffList")
+        store.dispatch("searchAppointment","?fromDate=2022-01-21&toDate=2022-01-31")
+      })
+      const patientsList = computed(() => {
+        return store.state.communications.patientsList
+      })
+      const staffList = computed(() => {
+        return store.state.communications.staffList
+      })
 function calenderView(event){
   toggle.value=event
 }
     const appointmentModal = ref(false);
-    const showModal = () => {
-      appointmentModal.value = true;
+    const showModal = (event) => {
+      appointmentModal.value= event;
     };
     const handleOk = (e) => {
       console.log(e);
       appointmentModal.value = false;
     };
 
-   
+   const appointmentSearch = computed(() => {
+     return store.state.appointment.searchAppointmentRecords
+   })
     // const handleOk2 = (e) => {
     //   console.log(e);
     //   physicianModal.value = false;
     // };
 
     return {
+      patientsList,
+      staffList,
       calenderView,
       value1: ref(),
       toggle,
@@ -123,6 +139,7 @@ function calenderView(event){
       appointmentModal,
       handleOk,
       showModal,
+      appointmentSearch,
      // handleOk2,
      
       //physicianModal,

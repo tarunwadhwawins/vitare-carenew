@@ -41,6 +41,8 @@ export const API_ENDPOINTS = {
     taskPriority:"task/priority",
     searchTasks:"task/search",
 
+    addAppointment:"appointment",
+    seacrhAppointment:"appointment/search",
     // Global Codes
     globalCodesList: 'globalCodeCategory',
     globalCode: 'globalCode',

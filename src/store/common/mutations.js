@@ -68,6 +68,12 @@ export const globalCodes = (state, data) => {
         if(element.name ==='Document Types'){
             state.documentTypes= element; 
         }
+        if(element.name ==='Duration'){
+            state.duration= element; 
+        }
+        if(element.name ==='Appointment Type'){
+            state.typeOfVisit= element; 
+        }
      });
 
 }
