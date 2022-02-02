@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
 import { reactive } from "vue"
 import PopulateWaitingRoomTable from "@/components/communications/tables/PopulateWaitingRoomTable";
 export default {
@@ -39,7 +39,7 @@ export default {
     const link=reactive(props.linkTo)
     const columns=reactive(props.column)
     const dataSource= reactive(props.data)
-    const router = useRouter();
+    // const router = useRouter();
 
     return {
       columns,

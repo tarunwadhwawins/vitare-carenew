@@ -65,7 +65,7 @@ export default {
     const showModal = () => {
       visible.value = true;
     };
-    const searchData = (value) => {
+    const searchData = () => {
       
     };
 
