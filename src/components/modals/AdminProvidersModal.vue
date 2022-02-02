@@ -254,11 +254,10 @@ export default {
 
     const submitProviderForm = () => {
       current.value++;
-
     }
 
     const submitProviderLocationForm = () => {
-      alert()
+      
     }
 
     const next = () => {
