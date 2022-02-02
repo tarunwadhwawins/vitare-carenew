@@ -1,8 +1,8 @@
 import { shallowMount } from '@vue/test-utils'
-import CareCoordinate from '@/components/care-coordinator/CareCoordinator.vue'
+import Communications from '@/components/communications/Communications.vue'
 
 const factory = (values = {}) => {
-  return shallowMount(CareCoordinate, {
+  return shallowMount(Communications, {
     data () {
       return {
         ...values
@@ -12,7 +12,7 @@ const factory = (values = {}) => {
 }
 
 
-describe('CareCoordinate.vue', () => {
+describe('Communications.vue', () => {
   it('does not render an error', () => {
     const wrapper = factory()
     expect(wrapper.find('.error').exists()).toBeFalsy()

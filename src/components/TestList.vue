@@ -7,11 +7,6 @@
         :data-source="communicationsList"
         :pagination="false">
         
-        <template #expandedRowRender="{ record }">
-          <p style="margin: 0">
-            {{ record.description }}
-          </p>
-        </template>
         <template #resend>
           <a-tooltip placement="bottom">
             <template #title>
@@ -21,7 +16,7 @@
           </a-tooltip>
         </template>
         <template #patient="text">
-          <router-link to="patients-summary">
+          <router-link to="#">
             {{ text.text }}
           </router-link>
         </template>
@@ -180,10 +175,8 @@ import { useStore } from "vuex"
 
       onMounted(() => {
         window.addEventListener("scroll", () => {
-          // console.log("Scrolled Once")
           // pageRef,
           // (page) => {
-            // console.log("Scrolled Two")
             let element = scrollComponent.value;
             if (element.getBoundingClientRect().bottom < window.innerHeight) {
               loadMoreData(page++);
@@ -193,7 +186,6 @@ import { useStore } from "vuex"
       })
       
       async function loadMoreData(page) {
-        console.log("Scrolled Down", page)
         store.dispatch('communicationsList', page)
       }
 

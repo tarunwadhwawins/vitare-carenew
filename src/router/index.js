@@ -131,7 +131,7 @@ const routes = [
   {
     path: '/global-codes',
     name: 'Global Codes',
-    component: () => import( '../components/administration/global-codes/Globalcode')
+    component: () => import( '../components/administration/globalCodes/Globalcode')
   },
 
   {

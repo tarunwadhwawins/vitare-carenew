@@ -4,25 +4,24 @@
     <!-- Top Cards -->
     <template v-for="count in communicationsCount" :key="count.id">
       <a-col :xl="6"  :xs="24">
-      <LongCard :backgroundColor="count.backgroundColor" :count="count.count" :text="count.text" :textColor="textColor"></LongCard>
+      <LongCard :backgroundColor="count.backgroundColor" :count="count.count" :text="count.text" :textColor="count.textColor"></LongCard>
       </a-col>
     </template>
 
     <!-- Charts -->
     <a-col :sm="12" :xs="24" v-if="callPlanned">
-      <ApexChart :title="$t('communications.callPlanned')" type="bar" height="350" :options="callPlanned.calloption" :series="callPlanned.callseries" linkTo="corrdinator-summary" />
+      <ApexChart :title="$t('communications.callPlanned')" type="bar" :height="350" :options="callPlanned.calloption" :series="callPlanned.callseries" linkTo="corrdinator-summary" />
     </a-col>
 
     <a-col :sm="12" :xs="24" v-if="callStatus">
-      <ApexChart :title="$t('global.callQueue')" type="bar" height="350" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="communications" />
+      <ApexChart :title="$t('global.callQueue')" type="bar" :height="350" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="communications" />
     </a-col>
     
     <a-col :sm="12" :xs="24">
       <a-card :title="$t('communications.populateWaitingRoom')" class="common-card">
         <a-tabs v-model:activeKey="activeKey">
-          <PopulateWaitingRoomTab v-if="newRequestsData" key="1" tab="New Requests" :column="newRequestsColumns" :data="newRequestsData" linkTo="patients-summary" />
-          <PopulateWaitingRoomTab v-if="futureAppointmentsData" key="2" tab="Future Appointments" :column="futureAppointmentsColumns"
-            :data="futureAppointmentsData" linkTo="patients-summary" />
+          <PopulateWaitingRoomTab v-if="newRequestsData" :key="key1" tab="New Requests" :column="newRequestsColumns" :data="newRequestsData" :linkTo="linkTo" :pagination="false" />
+          <PopulateWaitingRoomTab v-if="futureAppointmentsData" :key="key2" tab="Future Appointments" :column="futureAppointmentsColumns" :data="futureAppointmentsData" :linkTo="linkTo" :pagination="false" />
         </a-tabs>
       </a-card>
     </a-col>
@@ -54,6 +53,7 @@
     setup() {
       const store = useStore()
       const dateTimeNow = moment(new Date()).format('YYYY-MM-DD')
+      const linkTo = "patients-summary"
 
       const newRequestsColumns = [
         {
@@ -124,10 +124,14 @@
       const communicationsCount = computed(() => {
         return store.state.communications.communicationsCount
       })
+      const key1 = 1;
+      const key2 = 2;
       
       return {
-        activeKey: ref("1"),
+        activeKey: ref(key1),
         callPlanned,
+        key1,
+        key2,
         newRequestsColumns,
         newRequestsData,
         futureAppointmentsColumns,
@@ -135,6 +139,7 @@
         communicationsCount,
         communicationTypes,
         callStatus,
+        linkTo
       };
     },
   };

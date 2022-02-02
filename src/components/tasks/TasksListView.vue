@@ -1,15 +1,7 @@
 <template>
   <a-row :gutter="24">
     <a-col :span="12">
-      <a-select
-        id="searchBox"
-        v-model:value="search"
-        :size="size"
-        mode="tags"
-        style="width: 100%"
-        placeholder="Search..."
-        @change="handleChange">
-      </a-select>
+      <SearchField @change="handleChange"/>
     </a-col>
     <a-col :span="12">
       <div class="text-right mb-24">
@@ -73,11 +65,14 @@ import {
 import { ref, watchEffect, computed } from "vue";
 import { useStore } from "vuex"
 import swal from 'sweetalert2';
+import SearchField from "@/components/common/input/SearchField";
+
 export default {
   components: {
     DeleteOutlined,
     EditOutlined,
     CalendarOutlined,
+    SearchField,
   },
   setup(props, {emit}) {
     const store = useStore()
