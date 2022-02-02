@@ -8,6 +8,7 @@
             <div class="steps-content" v-if="steps[current].title == 'Demographics'">
                 <!-- <Demographics /> -->
                 <a-form :model="demographics" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="demographic" @finishFailed="onFinishFailed">
+                    <Loader />
                     <a-row :gutter="24">
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
@@ -374,6 +375,7 @@
 
                 <!-- <Conditions /> -->
                 <a-form :model="conditions" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="condition" @finishFailed="onFinishFailed">
+                    <Loader />
                     <a-row :gutter="24">
                         <a-col :span="24">
                             <div class="formHeading">
@@ -573,6 +575,7 @@
             <div class="steps-content" v-if="steps[current].title == 'Insurance'">
                 <!-- <Insurance /> -->
                 <a-form :model="insuranceData" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="insuranceForm" @finishFailed="onFinishFailed">
+                    <Loader />
                     <a-row :gutter="24" v-for=" insuranceName,i in globalCode.insuranceType.globalCode" :key="insuranceName.id">
                         <a-col :span="24">
                             <div class="formHeading">
@@ -647,7 +650,7 @@ import ErrorMessage from "../common/messages/ErrorMessage.vue";
 // import serviceMethod from "../../services/serviceMethod";
 import {regex} from "../../RegularExpressions/regex"
 import {scrollToTop} from "../../commonMethods/commonMethod"
-// import Loader from "../loader/Loader"
+import Loader from "../loader/Loader"
 import {successSwal} from "../../commonMethods/commonMethod"
 // import dayjs from 'dayjs';
 // import {DeleteOutlined} from "@ant-design/icons-vue";
@@ -663,7 +666,7 @@ export default {
         Documents,
         // DataTable,
         ErrorMessage,
-        // Loader
+        Loader
     },
     setup(props, {emit}) {
         const store = useStore();

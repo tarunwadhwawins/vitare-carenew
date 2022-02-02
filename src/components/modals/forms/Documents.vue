@@ -1,6 +1,5 @@
 <template>
 <a-form :model="documents" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDocument" @finishFailed="onFinishFailed">
-  <Loader />
     <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
             <div class="form-group">
