@@ -1,4 +1,4 @@
-import { dateFormat } from '../../commonMethods/commonMethod';
+// import { dateFormat } from '../../commonMethods/commonMethod';
 
 export const addInventorySuccess = async (state, inventory) => {
   state.addInventory = inventory;

@@ -580,7 +580,7 @@
                         <a-col :span="24">
                             <div class="formHeading">
                                 <h2>{{insuranceName.name}}</h2>
-                                <input type="hidden" :name="insuranceData.insuranceType[i]" :value="insuranceData.insuranceType[i]=insuranceName.id">
+                                <a-input type="hidden" :name="insuranceData.insuranceType[i]" :value="insuranceData.insuranceType[i]=insuranceName.id" />
                                 <ErrorMessage v-if="errorMsg" :name="errorMsg.insuranceType?errorMsg.insuranceType[0]:''" />
                             </div>
                         </a-col>

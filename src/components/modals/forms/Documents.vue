@@ -12,7 +12,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: false, message: $t('global.document')+' '+$t('global.validation') }]">
-                    <a-input v-model:value="documents.document" name="document_file" size="large" type="file" @change="onFileUpload" />
+                    <a-input  name="document_file" size="large" type="file" @change="onFileUpload" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
                 </a-form-item>
             </div>
