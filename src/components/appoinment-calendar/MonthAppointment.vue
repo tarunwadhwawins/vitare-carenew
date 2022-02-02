@@ -1,5 +1,5 @@
 <template>
-    <a-row>
+    <!-- <a-row>
         <a-col :span="24">
           <div class="table-responsive">
             <div class="monthCalendar dayCalendar">
@@ -1144,19 +1144,31 @@
             </div>
           </div>
         </a-col>
-      </a-row>
+      </a-row> -->
+      <FullCalendar :options="calendarOptions" />
 </template>
 
 <script>
  //import { ref } from "vue"
-
+ import '@fullcalendar/core/vdom' // solves problem with Vite
+import FullCalendar from '@fullcalendar/vue3'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from '@fullcalendar/interaction'
 export default {
     components: {
-          
+      FullCalendar
         },
   setup() {
     const linkTo = "patients-summary"
+    function toggleWeekends () {
+      this.calendarOptions.weekends = !this.calendarOptions.weekends // toggle the boolean!
+    }
     return {
+      toggleWeekends,
+      calendarOptions: {
+        plugins: [ dayGridPlugin, interactionPlugin ],
+        initialView: 'dayGridMonth'
+      },
       linkTo
     }
   }

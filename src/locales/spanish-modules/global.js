@@ -30,6 +30,7 @@ const global = {
   delete:'Borrar',
   startTime:'Hora de inicio',
   time:'Hora',
+  duration:'Duración',
   chooseStartTime:'Elija la hora de inicio',
   endTime:'Hora de finalización',
   chooseEndTime:'Elija la hora de finalización',

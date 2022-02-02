@@ -35,6 +35,7 @@ const global = {
   delete:'Delete',
   startTime:'Start Time',
   time:'Time',
+  duration:'Duration',
   chooseStartTime:'Choose start Time',
   endTime:'End Time',
   chooseEndTime:'Choose End Time',
