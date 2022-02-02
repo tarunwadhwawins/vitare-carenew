@@ -35,6 +35,7 @@ export default {
       {
         title: "Provider Name",
         dataIndex: "name",
+        key: "name",
         sorter: {
           compare: (a, b) => a.name - b.name,
           multiple: 3,
@@ -46,6 +47,7 @@ export default {
       {
         title: "Provider Address",
         dataIndex: "description",
+        key: "description",
         sorter: {
           compare: (a, b) => a.description - b.description,
           multiple: 3,
@@ -54,6 +56,7 @@ export default {
       {
         title: "Active/Inactive",
         dataIndex: "active",
+        key: "active",
         slots: {
           customRender: "active",
         },
@@ -61,6 +64,7 @@ export default {
       {
         title: "Actions",
         dataIndex: "actions",
+        key: "actions",
         slots: {
           customRender: "actions",
         },
