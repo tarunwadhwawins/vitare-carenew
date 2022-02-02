@@ -24,7 +24,7 @@
             ><MailOutlined /><span class="menuItem">Programs</span></a-menu-item
           ></router-link
         >
-        <router-link to="/manage-providers"
+        <router-link to="/providers"
           ><a-menu-item
             ><MailOutlined /><span class="menuItem">Providers</span></a-menu-item
           ></router-link
