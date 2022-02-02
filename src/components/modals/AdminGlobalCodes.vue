@@ -53,24 +53,32 @@
   </a-modal>
 </template>
 <script>
-import { ref, reactive, computed, watch } from "vue";
+import { ref, reactive, computed, watchEffect } from "vue";
 import { useStore } from "vuex"
 export default {
+  props: {
+    globalCodeId: {
+      type: Number
+    }
+  },
   setup(props, {emit}) {
     const store = useStore()
     const checked = ref([false]);
 
+    watchEffect(() => {
+      store.dispatch('globalCodeDetails', props.globalCodeId)
+    })
     const globalCodeDetails = computed(() => {
       return store.state.globalCodes.globalCodeDetails;
     })
-
-    console.log('globalCodeDetails', globalCodeDetails);
+    const codeDetails = globalCodeDetails.value;
+    console.log('globalCodeDetails', codeDetails);
     
     const globalCodeForm = reactive({
-      globalCodeCategory: '',
-      name: '',
-      description: '',
-      status:  0,
+      globalCodeCategory: codeDetails ? codeDetails.globalCodeCategory : '',
+      name: codeDetails ? codeDetails.name : '',
+      description: codeDetails ? codeDetails.description : '',
+      status: codeDetails ? true : false,
     });
     
     const globalCodeCategories = computed(() => {
@@ -90,7 +98,6 @@ export default {
     };
     
     return {
-      globalCodeDetails,
       globalCodeForm,
       addGlobalCode,
       handleCancel,

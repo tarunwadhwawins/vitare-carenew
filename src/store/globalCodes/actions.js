@@ -62,7 +62,7 @@ export const globalCodeDetails = async ({ commit }, id) => {
 }
 
 export const updateStatus = async ({ commit }, {id, data}) => {
-	await ServiceMethodService.common("put", API_ENDPOINTS['globalCode'], id, data).then((response) => {
+	await ServiceMethodService.common("patch", API_ENDPOINTS['globalCode'], id, data).then((response) => {
 		commit('updateStatusSuccess', response.data.data);
 	})
 	.catch((error) => {
@@ -74,7 +74,7 @@ export const updateStatus = async ({ commit }, {id, data}) => {
 }
 
 export const updateGlobalCode = async ({ commit }, {id, data}) => {
-	await ServiceMethodService.common("put", API_ENDPOINTS['globalCode'], id, data).then((response) => {
+	await ServiceMethodService.common("patch", API_ENDPOINTS['globalCode'], id, data).then((response) => {
 		commit('updateGlobalCodeSuccess', response.data.data);
 	})
 	.catch((error) => {
