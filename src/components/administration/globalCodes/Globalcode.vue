@@ -35,7 +35,7 @@
       </a-layout>
     </a-layout>
     <!--modals-->
-    <AdminGlobalCodes v-if="visible" v-model:visible="visible" @ok="handleOk" @is-visible="handleOk" :globalCodeId="globalCodeId" />
+    <AdminGlobalCodes v-if="visible" v-model:visible="visible" @ok="handleOk" @is-visible="handleOk" :isAdd="isAdd" />
     <!---->
   </div>
 </template>
@@ -59,13 +59,14 @@ export default {
     SearchField,
     Button,
   },
-  setup(props, {emit}) {
+  setup() {
     const store = useStore()
     const checked = ref([false]);
     const visible = ref(false);
-    const globalCodeId = ref(null);
+    const isAdd = ref(false);
 
     const showModal = () => {
+      isAdd.value = true;
       visible.value = true;
     };
     const handleOk = (e) => {
@@ -77,12 +78,14 @@ export default {
     };
 
     const editGlobalCode = (id) => {
-      globalCodeId.value = id;
-      visible.value = true;
+      isAdd.value = false;
+      store.dispatch('globalCodeDetails', id).then(() => {
+        visible.value = true;
+      })
     }
     
     return {
-      globalCodeId,
+      isAdd,
       buttonName: "Add Global Code",
       editGlobalCode,
       checked,

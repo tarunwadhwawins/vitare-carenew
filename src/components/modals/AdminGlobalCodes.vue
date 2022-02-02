@@ -1,6 +1,6 @@
 <template>
-  <a-modal max-width="1140px" width="100%" title="Add Global Codes">
-    <a-form :model="globalCodeForm" layout="vertical" @finish="addGlobalCode">
+  <a-modal max-width="1140px" width="100%" :title="title">
+    <a-form :model="globalCodeForm" layout="vertical" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :sm="8" :xs="24">
           <div class="form-group">
@@ -12,6 +12,7 @@
                 style="width: 100%"
                 size="large"
                 @focus="focus"
+                :disabled="disabled"
                 @change="handleChange">
                 <a-select-option value="" disabled>{{'Select Category'}}</a-select-option>
                 <a-select-option v-for="category in globalCodeCategories" :key="category.id" :value="category.id">{{ category.name }}</a-select-option>
@@ -53,21 +54,25 @@
   </a-modal>
 </template>
 <script>
-import { ref, reactive, computed, watchEffect } from "vue";
+import { ref, reactive, computed } from "vue";
 import { useStore } from "vuex"
 export default {
   props: {
-    globalCodeId: {
-      type: Number
+    isAdd: {
+      type: Boolean
     }
   },
   setup(props, {emit}) {
     const store = useStore()
     const checked = ref([false]);
+    const title = props.isAdd ? "Add Global Code" : "Edit Global Code";
+    const isEdit = props.isAdd ? false : true;
+    const disabled = props.isAdd ? false : true;
+    
+    const handleCancel = () => {
+      emit('is-visible', false);
+    };
 
-    watchEffect(() => {
-      store.dispatch('globalCodeDetails', props.globalCodeId)
-    })
     const globalCodeDetails = computed(() => {
       return store.state.globalCodes.globalCodeDetails;
     })
@@ -75,31 +80,44 @@ export default {
     console.log('globalCodeDetails', codeDetails);
     
     const globalCodeForm = reactive({
-      globalCodeCategory: codeDetails ? codeDetails.globalCodeCategory : '',
-      name: codeDetails ? codeDetails.name : '',
-      description: codeDetails ? codeDetails.description : '',
-      status: codeDetails ? true : false,
+      globalCodeCategory: codeDetails && codeDetails.globalCodeCategory ? codeDetails.globalCodeCategory : '',
+      name: codeDetails && codeDetails.name ? codeDetails.name : '',
+      description: codeDetails && codeDetails.description ? codeDetails.description : '',
+      status: codeDetails && codeDetails.status ? true : false,
     });
     
     const globalCodeCategories = computed(() => {
       return store.state.common.globalCodeCategories;
     })
 
-    const addGlobalCode = () => {
-      console.log('globalCodeForm', globalCodeForm)
-      store.dispatch('addGlobalCode', globalCodeForm).then(() => {
-        store.dispatch('globalCodesList')
-      })
-      emit('is-visible', false);
+    const submitForm = () => {
+      if(isEdit) {
+        const data = {
+          "name": globalCodeForm.name,
+          "description": globalCodeForm.description,
+          "status": globalCodeForm.status,
+        }
+        const id = globalCodeDetails.value.id;
+        console.log('globalCodeForm', id)
+        store.dispatch('updateGlobalCode', {id, data}).then(() => {
+          store.dispatch('globalCodesList')
+        })
+        emit('is-visible', false);
+      }
+      else {
+        console.log('globalCodeForm', globalCodeForm)
+        store.dispatch('addGlobalCode', globalCodeForm).then(() => {
+          store.dispatch('globalCodesList')
+        })
+        emit('is-visible', false);
+      }
     }
-
-    const handleCancel = () => {
-      emit('is-visible', false);
-    };
     
     return {
+      disabled,
+      title,
       globalCodeForm,
-      addGlobalCode,
+      submitForm,
       handleCancel,
       globalCodeCategories,
       size: ref("large"),

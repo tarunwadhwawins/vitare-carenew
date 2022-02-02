@@ -61,19 +61,9 @@ export const globalCodeDetails = async ({ commit }, id) => {
 	})
 }
 
-export const updateStatus = async ({ commit }, {id, data}) => {
-	await ServiceMethodService.common("patch", API_ENDPOINTS['globalCode'], id, data).then((response) => {
-		commit('updateStatusSuccess', response.data.data);
-	})
-	.catch((error) => {
-		if (error.response.status == 401) {
-			//AuthService.logout();
-		}
-		commit('failure', error.response.data);
-	})
-}
-
 export const updateGlobalCode = async ({ commit }, {id, data}) => {
+	console.log('Edit Record Id', id)
+	console.log('Edit Record data', data)
 	await ServiceMethodService.common("patch", API_ENDPOINTS['globalCode'], id, data).then((response) => {
 		commit('updateGlobalCodeSuccess', response.data.data);
 	})

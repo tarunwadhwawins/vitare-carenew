@@ -50,7 +50,7 @@ export default {
       const data = {
         "status": status
       };
-      store.dispatch('updateStatus', {id, data}).then(() => {
+      store.dispatch('updateGlobalCode', {id, data}).then(() => {
         store.dispatch('globalCodesList')
       })
     }
@@ -146,7 +146,7 @@ export default {
     width: 150px;
   }
   td {
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
