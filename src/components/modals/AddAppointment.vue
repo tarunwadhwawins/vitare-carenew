@@ -117,17 +117,19 @@
       },
       patient:{
         type:Object
-      }
+      },
     },
     setup(props, { emit }) {
+      
       const store = useStore()
       const disabledDate = current => {
       // Can not select days before today and today
       return current && current < dayjs().endOf('day');
     };
       watchEffect(() => {
-        store.dispatch("patientsList")
-        store.dispatch("staffList")
+       
+        store.state.communications.patientsList ? "" : store.dispatch("patientsList")
+        store.state.communications.staffList ? "" : store.dispatch("staffList")
       })
       const onFinishFailed = () => {
         scrollToTop()
@@ -138,8 +140,12 @@
       const typeOfVisitList = computed(() => {
         return store.state.common.typeOfVisit;
       })
-      const patientsList = reactive(props.patient)
-      const staffList = reactive(props.staff)
+      const patientsList = props.patient ? reactive(props.patient) : computed(() => {
+        return store.state.communications.patientsList
+      })
+      const staffList = props.staff ? reactive(props.staff) : computed(() => {
+        return store.state.communications.staffList
+      })
       
       const appointmentForm = reactive({
         patientId: '',
