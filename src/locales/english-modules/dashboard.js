@@ -13,7 +13,8 @@ const dashboard = {
   appointmentSummary: 'Appointment Summary',
   Normal: 'Normal',
   High: 'High',
-  Critical: 'Critical'
+  Critical: 'Critical',
+  newPatientsChart:'New Patients Chart'
 }
 
 

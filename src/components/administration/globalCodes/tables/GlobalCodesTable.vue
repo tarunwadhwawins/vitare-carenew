@@ -10,7 +10,7 @@
         </template>
         <span class="icons"><EditOutlined @click="editGlobalCode(record.id)" /></span>
       </a-tooltip>
-      <a-tooltip placement="bottom" v-if="record.usedCount != 0">
+      <a-tooltip placement="bottom">
         <template #title>
           <span>Delete</span>
         </template>
@@ -78,7 +78,7 @@ export default {
         },
       },
       {
-        title: "Codename",
+        title: "Code Name",
         dataIndex: "name",
         key: "name",
         className: "codename",

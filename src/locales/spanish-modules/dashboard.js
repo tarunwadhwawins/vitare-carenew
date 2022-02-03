@@ -10,7 +10,8 @@ const dashboard = {
   cPTCodeBillingSummary: 'Resumen de facturación del código CPT',
   financialStats: 'Estadísticas financieras',
   totalPatientsChart: 'Gráfico de pacientes totales',
-  appointmentSummary: 'Resumen de la cita'
+  appointmentSummary: 'Resumen de la cita',
+  newPatientsChart:'Tabla de nuevas pacientes'
 }
 
 

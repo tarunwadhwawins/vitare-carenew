@@ -3,35 +3,37 @@
 // API end points 
 export const API_ENDPOINTS = {
     // Authentication
-    LOGIN: "login",
-    Logout: "logout",
+    login: "login",
+    logout: "logout",
 
     // Patients
     patientsList:"patient",
     patientDetails:"patient",
-    CounterCard:"patient/count",
-    Financial:"patient/count",
-    CptCode:"patient/count",
-    TotalPatientsChart:"patient/chart",
-    TimeLine:"patient/new",
+    counterCard:"patient/count",
+    financial:"patient/count",
+    cptCode:"patient/count",
+    totalPatientsChart:"patient/chart",
+    timeLine:"patient/new",
     
     // Appointments
-    TodayAppointment:"appointment/today",
-    AppointmentChart:"appointment/summary",
+    todayAppointment:"appointment/today",
+    appointmentChart:"appointment/summary",
     futureAppointments:"appointment/future",
     newRequests:"appointment/new",
+    addAppointment:"appointment",
+    seacrhAppointment:"appointment/search",
 
     // Staff
     staffList:"staff",
-    Specialization:"staff/specialization",
-    Network:"staff/network",
+    specialization:"staff/specialization",
+    network:"staff/network",
 
     // Communications
     communicationsList:"communication",
     communicationTypes:"communication/type",
     addCommunication:"communication",
     communicationsCount:"communication/count",
-    CallStatus:"call/status",
+    callStatus:"call/status",
     CallPlanned:"call/staff",
 
     // Tasks
@@ -41,8 +43,7 @@ export const API_ENDPOINTS = {
     taskPriority:"task/priority",
     searchTasks:"task/search",
 
-    addAppointment:"appointment",
-    seacrhAppointment:"appointment/search",
+    
     // Global Codes
     globalCodesList: 'globalCodeCategory',
     globalCode: 'globalCode',

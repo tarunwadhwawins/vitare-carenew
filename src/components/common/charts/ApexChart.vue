@@ -1,6 +1,6 @@
 <template>
   <a-card v-if="title" :title="title" class="common-card">
-    <apexchart :type="type" :height="height" :options="options" :series="series" @click="clickHandler(linkTo)">
+    <apexchart :type="type" :height="height" :options="options" :series="series">
     </apexchart>
   </a-card>
   <apexchart v-else :type="type" :height="height" :options="options" :series="series" @click="clickHandler(linkTo)">
@@ -8,8 +8,6 @@
 </template>
 
 <script>
-  import { useRouter } from "vue-router";
-  // import { reactive } from "vue"  
   export default {
     props: {
       linkTo: {
@@ -37,13 +35,7 @@
     },
 
     setup() {
-      const router = useRouter();
-      function clickHandler(linkTo) {
-        router.push({ path: linkTo });
-      }
-
       return {
-        clickHandler
       }
     },
   }
