@@ -1,6 +1,7 @@
 
 import { timeOnly } from '../../commonMethods/commonMethod';
 import { dateFormat } from '../../commonMethods/commonMethod';
+import { meridiemFormat } from '../../commonMethods/commonMethod';
 export const callPlannedSuccess = (state, count) => {
   state.callPlanned = {
     calloption: {
@@ -21,7 +22,6 @@ export const callPlannedSuccess = (state, count) => {
         ],
       },
       chart: {
-        height: 350,
         type: "bar",
       },
       plotOptions: {
@@ -53,7 +53,7 @@ export const callPlannedSuccess = (state, count) => {
         labels: {
           rotate: -45,
         },
-        categories: count.map((item) => {return item.staff}),
+        categories: count.map((item) => { return item.staff }),
       },
       yaxis: {
         title: {
@@ -63,7 +63,7 @@ export const callPlannedSuccess = (state, count) => {
     },
     callseries: [
       {
-        name: "Value",
+        name: "Calls Planned",
         data:  count.map((item) => {return item.count }),
       },
     ]
@@ -71,35 +71,52 @@ export const callPlannedSuccess = (state, count) => {
 }
 
 export const communicationTypesSuccess = (state, response) => {
+  const res = response.map(data => {
+    data.time = timeOnly(data.time);
+    return data.sort(function(a, b){return a.time - b.time})
+  })
+  console.log('res', res);
   var timeList = [];
   var callSeries = [];
-  if(response.length > 0) {
-    var array_list = [];
-    var array_list_final = [];
-    response.forEach(function(value) {
-      if(typeof array_list[value.text] === 'undefined') {
-        array_list[value.text] = [];
-      }
-      array_list[value.text].push(value);
-    });
-    for (const key in array_list) {
-      var array_value = [];
-      array_value['text']=key;
-      array_value['data']=array_list[key];
-      array_list_final.push(array_value);
-    }
+  // if(response.length > 0) {
+  //   var array_list = [];
+  //   var array_list_final = [];
+  //   res.forEach(function(value) {
+  //     if (!timeList.includes(value.time)) {
+  //       array_list.push({
+  //         name: value.text
+  //       })
+  //     }
+  //     /* if(typeof array_list[value.text] === 'undefined') {
+  //       array_list[value.text] = [];
+  //     }
+  //     array_list[value.text].push(value); */
+  //   });
+  //   console.log('array_list', array_list);
+  //   /* for (const key in array_list) {
+  //     var array_value = [];
+  //     array_value['text']=key;
+  //     array_value['data']=array_list[key];
+  //     array_list_final.push(array_value);
+  //   }
   
-    const communicationType = array_list_final
-    callSeries = communicationType.map((item) => {
-      return {
-        name: item.text, data: item.data.map((data) => {
-          timeList.push(timeOnly(data.time))
-          return data.count
-        })
-      }
-    })
-  }
+  //   const communicationType = array_list_final
+  //   callSeries = communicationType.map((item) => {
+  //     return {
+  //       name: item.text, data: item.data.map((data) => {
+  //         if (!timeList.includes(data.time)) {
+  //           timeList.push(Number(data.time))
+  //         }
+  //         return data.count
+  //       })
+  //     }
+  //   }) */
+  // }
   
+  const timesArray = timeList;
+  // const timesArray = timeList.sort(function(a, b){return a-b});
+  // console.log('timesArray', timesArray)
+
   state.communicationTypes = {
     calloption: {
       chart: {
@@ -113,7 +130,7 @@ export const communicationTypesSuccess = (state, response) => {
         curve: "straight",
       },
       xaxis: {
-        categories: timeList,
+        categories: timesArray,
       },
     },
     callseries: callSeries,
@@ -143,10 +160,16 @@ export const patientDetailsSuccess = async (state, patient) => {
 }
 
 export const futureAppointmentsSuccess = async (state, futureAppointments) => {
-  state.futureAppointments = futureAppointments;
+  state.futureAppointments = futureAppointments.map(appointment => {
+    appointment.startTime = meridiemFormat(appointment.startTime);
+    return appointment
+  });
 }
 export const newRequestsSuccess = async (state, newRequests) => {
-  state.newRequests = newRequests;
+  state.newRequests = newRequests.map(appointment => {
+    appointment.startTime = meridiemFormat(appointment.startTime);
+    return appointment
+  });
 }
 export const communicationsCountSuccess = async (state, count) => {
   state.communicationsCount = count;

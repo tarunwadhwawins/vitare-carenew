@@ -69,8 +69,7 @@ export default {
       
     };
 
-    const handleOk = (e) => {
-      console.log(e);
+    const handleOk = () => {
       visible.value = false;
     };
     const checked = ref([false]);

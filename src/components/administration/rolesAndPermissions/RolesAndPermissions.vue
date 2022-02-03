@@ -66,13 +66,11 @@ export default {
       visible.value = true;
     };
 
-    const handleOk = (e) => {
-      console.log(e);
+    const handleOk = () => {
       visible.value = false;
     };
 
-    const searchData = (value) => {
-      console.log(`selected ${value}`);
+    const searchData = () => {
     };
 
     return {
