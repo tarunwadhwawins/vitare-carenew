@@ -107,7 +107,7 @@ export const addPatientReferals = async ({
 export const updatePatientReferals = async ({commit}, data) => {
   await serviceMethod.common("put", `patient/${data.id}/referals/${data.referalID}`, null, data.data).then((response) => {
     commit('updatePatientReferals', response.data.data);
-    successSwal(response.data.message)
+    // successSwal(response.data.message)
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
@@ -270,8 +270,9 @@ export const devices = async ({
   await serviceMethod.common("get", `patient/${id}/inventory`, null, null).then((response) => {
     commit('devices', response.data.data);
     commit('loadingStatus', false)
-  }).catch(() => {
+  }).catch((error) => {
     commit('loadingStatus', false)
+    errorSwal(error.response.data.message)
   })
 }
 
@@ -279,12 +280,10 @@ export const devices = async ({
 export const inventoryList = async ({
   commit
 }, data) => {
-  commit('loadingStatus', true)
   await serviceMethod.common("get", `inventory?isAvailable=${data.isAvailable}&deviceType=${data.deviceType}`, null, null).then((response) => {
     commit('inventoryList', response.data.data);
-    commit('loadingStatus', false)
-  }).catch(() => {
-    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
   })
 }
 
@@ -355,8 +354,9 @@ export const clinicalHistoryList = async ({
   await serviceMethod.common("get", `patient/${id}/medicalHistory`, null, null).then((response) => {
     commit('clinicalHistoryList', response.data.data);
     commit('loadingStatus', false)
-  }).catch(() => {
+  }).catch((error) => {
     commit('loadingStatus', false)
+    errorSwal(error.response.data.message)
   })
 
 }
@@ -396,8 +396,9 @@ export const clinicalMedicatList = async ({
   await serviceMethod.common("get", `patient/${id}/medicalRoutine`, null, null).then((response) => {
     commit('clinicalMedicatList', response.data.data);
     commit('loadingStatus', false)
-  }).catch(() => {
+  }).catch((error) => {
     commit('loadingStatus', false)
+    errorSwal(error.response.data.message)
   })
 }
 
@@ -503,8 +504,9 @@ export const documents = async ({
   await serviceMethod.common("get", `patient/${id}/document`, null, null).then((response) => {
     commit('documents', response.data.data);
     commit('loadingStatus', false)
-  }).catch(() => {
+  }).catch((error) => {
     commit('loadingStatus', false)
+    errorSwal(error.response.data.message)
   })
 }
 
