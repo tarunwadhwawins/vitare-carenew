@@ -186,7 +186,7 @@ export default {
         ErrorMessage,
     },
     setup() {
-        const current = ref(1);
+        const current = ref(0);
         const store = useStore();
         const personalInfoData = reactive({
             firstName: '',
