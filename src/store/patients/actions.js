@@ -65,23 +65,7 @@ export const patients = async ({
 export const addCondition = async ({commit}, data) => {
   await serviceMethod.common("post", `patient/${data.id}/condition`, null, data.data).then((response) => {
     commit('addCondition', response.data.data);
-  }).then(function (data) {
-    // var secondId = data.someId
-    serviceMethod.common("post", `patient/${data.id}/referals`, null, data.data).then((response) => {
-      commit('addPatientReferals', response.data.data);
-    })
-}).then(function (data) {
-  // var secondId = data.someId
-  await serviceMethod.common("post", `patient/${data.id}/physician`, null, data.data).then((response) => {
-    commit('addPatientPhysician', response.data.data);
-    commit('counterPlus')
-    // successSwal(response.data.message)
-    commit('loadingStatus', false)
-  })
-})
-
-  
-  .catch((error) => {
+  }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
