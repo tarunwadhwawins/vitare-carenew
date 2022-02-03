@@ -90,8 +90,8 @@
         <a-col :span="24">
           <div class="steps-action">
             <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-              <a-button @click="handleCancel" html-type="reset">{{$t('global.cancel')}}</a-button>
-              <a-button type="primary" html-type="submit">{{$t('global.ok')}}</a-button>
+              <a-button @click="handleCancel" html-type="reset">{{$t('global.clear')}}</a-button>
+              <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
             </a-form-item>
             
           </div>
@@ -172,6 +172,7 @@
             if(store.state.appointment.successMsg){
               store.state.appointment.successMsg=null
               handleCancel()
+              emit('is-visible', false);
             }
             },3000)
       }
@@ -184,7 +185,7 @@
       const form = reactive({ ...appointmentForm })
       const handleCancel = () => {
         Object.assign(appointmentForm, form)
-        emit('is-visible', false);
+        //emit('is-visible', false);
       };
       return {
         form,
