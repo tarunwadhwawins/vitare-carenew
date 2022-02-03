@@ -95,6 +95,7 @@ export default {
     // };
     
     watchEffect(() => {
+
         store.dispatch("patientsList")
         store.dispatch("staffList")
         store.dispatch("searchAppointment","?fromDate=2022-01-21&toDate=2022-01-31")
