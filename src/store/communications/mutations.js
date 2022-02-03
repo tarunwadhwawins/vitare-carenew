@@ -1,45 +1,19 @@
 
 import { timeOnly } from '../../commonMethods/commonMethod';
 import { dateFormat } from '../../commonMethods/commonMethod';
+import { meridiemFormat } from '../../commonMethods/commonMethod';
+import { yaxis, dataLabels, plotOptions, annotations } from '../../commonMethods/commonMethod'
 export const callPlannedSuccess = (state, count) => {
   state.callPlanned = {
     calloption: {
-      annotations: {
-        points: [
-          {
-            x: "In",
-            seriesIndex: 0,
-            label: {
-              borderColor: "#775DD0",
-              offsetY: 0,
-              style: {
-                color: "#fff",
-                background: "#775DD0",
-              },
-            },
-          },
-        ],
-      },
+      annotations: annotations("In",0,"#775DD0",0,"#fff","#775DD0"),
       chart: {
-        height: 350,
         type: "bar",
       },
-      plotOptions: {
-        bar: {
-          borderRadius: 10,
-          columnWidth: "20%",
-          barHeight: "100%",
-          distributed: true,
-          horizontal: false,
-          dataLabels: {
-            position: "bottom",
-          },
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
+      plotOptions: plotOptions(10, "20%", "100%", true, false, "bottom"),
+      dataLabels: dataLabels(false),
       colors: ["#269b8f", "#269b8f", "#121258", "#218421"],
+      
       stroke: {
         width: 1,
         colors: ["#fff"],
@@ -53,17 +27,13 @@ export const callPlannedSuccess = (state, count) => {
         labels: {
           rotate: -45,
         },
-        categories: count.map((item) => {return item.staff}),
+        categories: count.map((item) => { return item.staff }),
       },
-      yaxis: {
-        title: {
-          text: "Number of Calls",
-        },
-      },
+      yaxis: yaxis("Number of Calls"),
     },
     callseries: [
       {
-        name: "Value",
+        name: "Calls Planned",
         data:  count.map((item) => {return item.count }),
       },
     ]
@@ -71,12 +41,31 @@ export const callPlannedSuccess = (state, count) => {
 }
 
 export const communicationTypesSuccess = (state, response) => {
+  // console.log('response', response)
+  
+  var timesArray = [];
+  const res = response.map(data => {
+    data.time = timeOnly(data.time);
+    return data
+  })
+  
+  const record = res.sort(function(a, b) {
+    return a.time - b.time
+  })
+  record.forEach(element => {
+    if (!timesArray.includes(element.time)) {
+      timesArray.push(element.time)
+    }
+  });
+  
+  console.log('record', record)
+  
   var timeList = [];
   var callSeries = [];
-  if(response.length > 0) {
+  if(record.length > 0) {
     var array_list = [];
     var array_list_final = [];
-    response.forEach(function(value) {
+    record.forEach(function(value) {
       if(typeof array_list[value.text] === 'undefined') {
         array_list[value.text] = [];
       }
@@ -100,20 +89,21 @@ export const communicationTypesSuccess = (state, response) => {
     })
   }
   
+  console.log('callSeries', callSeries)
+  console.log('timesArray', timesArray)
+
   state.communicationTypes = {
     calloption: {
       chart: {
         height: 350,
         type: "area",
       },
-      dataLabels: {
-        enabled: false,
-      },
+      dataLabels: dataLabels(false),
       stroke: {
         curve: "straight",
       },
       xaxis: {
-        categories: timeList,
+        categories: timesArray,
       },
     },
     callseries: callSeries,
@@ -143,10 +133,16 @@ export const patientDetailsSuccess = async (state, patient) => {
 }
 
 export const futureAppointmentsSuccess = async (state, futureAppointments) => {
-  state.futureAppointments = futureAppointments;
+  state.futureAppointments = futureAppointments.map(appointment => {
+    appointment.startTime = meridiemFormat(appointment.startTime);
+    return appointment
+  });
 }
 export const newRequestsSuccess = async (state, newRequests) => {
-  state.newRequests = newRequests;
+  state.newRequests = newRequests.map(appointment => {
+    appointment.startTime = meridiemFormat(appointment.startTime);
+    return appointment
+  });
 }
 export const communicationsCountSuccess = async (state, count) => {
   state.communicationsCount = count;

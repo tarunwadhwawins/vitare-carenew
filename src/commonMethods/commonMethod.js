@@ -48,7 +48,68 @@ export function dateFormat(date) {
   return String(day.format('MMM DD, yyyy, hh:mm A'));
 }
 
+export function meridiemFormat(time) {
+  time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+  if (time.length > 1) {
+    time = time.slice (1);
+    time[4] = +time[0] < 12 ? ' AM' : ' PM';
+    time[0] = +time[0] % 12 || 12;
+    var newTime = (time[0]+time[1]+time[2]+time[4]).toString();
+  }
+  return newTime;
+}
+
 export function timeOnly(date) {
   var day = moment.unix(new Date(date));
-  return String(day.format('H'));
+  return String(day.format('HH'));
+}
+export function yaxis(title){
+  return  {
+    "labels": {
+      "formatter": function (val) {
+          return val.toFixed(0)
+      }
+  },
+    title: {
+      text: title,
+    },
+  }
+}
+
+export function dataLabels(value){
+  return {
+    enabled: value,
+  }
+}
+export function plotOptions(borderRadius,columnWidth,barHeight,distributed,horizontal,position){
+  return {
+    bar: {
+      borderRadius: borderRadius,
+      columnWidth: columnWidth,
+      barHeight: barHeight,
+      distributed: distributed,
+      horizontal: horizontal,
+      dataLabels: {
+        position: position,
+      },
+    },
+  }
+}
+export function annotations(xname,seriesIndex,borderColor,offsetY,color,background){
+  return {
+    points: [
+      {
+        x: xname,
+        seriesIndex: seriesIndex,
+        label: {
+          borderColor: borderColor,
+          offsetY: offsetY,
+          style: {
+            color: color,
+            background: background,
+          },
+        },
+      },
+    ],
+  }
 }
