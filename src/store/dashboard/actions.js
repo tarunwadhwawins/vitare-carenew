@@ -14,7 +14,7 @@ export const timeLine = async ({ commit }, id) => {
     // })
 }
 export const todayAppointment = async ({ commit }, id) => {
-    await ServiceMethodService.common("get", API_ENDPOINTS['TodayAppointment'] + "?timelineId=" + id, null, null).then((response) => {
+    await ServiceMethodService.common("get", API_ENDPOINTS['todayAppointment'] + "?timelineId=" + id, null, null).then((response) => {
         commit('todayAppointmentSuccess', response.data.data);
     })
         .catch((error) => {
@@ -23,7 +23,7 @@ export const todayAppointment = async ({ commit }, id) => {
 
 }
 export const callStatus = async ({ commit }, id) => {
-    await ServiceMethodService.common("get", API_ENDPOINTS['CallStatus'] + "?timelineId=" + id, null, null).then((response) => {
+    await ServiceMethodService.common("get", API_ENDPOINTS['callStatus'] + "?timelineId=" + id, null, null).then((response) => {
         commit('callStatusSuccess', response.data.data)
 
     }).catch((error) => {
@@ -46,7 +46,7 @@ export const callStatus = async ({ commit }, id) => {
 
 export const specialization = async ({ commit }, id) => {
 
-    await ServiceMethodService.common("get", API_ENDPOINTS['Specialization'] + "?timelineId=" + id, null, null).then((response) => {
+    await ServiceMethodService.common("get", API_ENDPOINTS['specialization'] + "?timelineId=" + id, null, null).then((response) => {
         commit('specializationSuccess', response.data.data);
     }).catch((error) => {
         if (error.response.status == 401) {
@@ -59,7 +59,7 @@ export const specialization = async ({ commit }, id) => {
 
 export const network = async ({ commit }, id) => {
 
-    await ServiceMethodService.common("get", API_ENDPOINTS['Network'] + "?timelineId=" + id, null, null).then((response) => {
+    await ServiceMethodService.common("get", API_ENDPOINTS['network'] + "?timelineId=" + id, null, null).then((response) => {
 
         commit('networkSuccess', response.data.data);
 
@@ -99,7 +99,7 @@ export const financial = async ({ commit }) => {
 }
 export const totalPatientsChart = async ({ commit }, id) => {
 
-    await ServiceMethodService.common("get", API_ENDPOINTS['TotalPatientsChart'] + "?timelineId=" + id, null, null).then((response) => {
+    await ServiceMethodService.common("get", API_ENDPOINTS['totalPatientsChart'] + "?timelineId=" + id, null, null).then((response) => {
 
         commit('totalPatientsChartSuccess', response.data.data);
 
@@ -112,7 +112,7 @@ export const totalPatientsChart = async ({ commit }, id) => {
 }
 export const appointmentChart = async ({ commit }, id) => {
 
-    await ServiceMethodService.common("get", API_ENDPOINTS['AppointmentChart'] + "?timelineId=" + id, null, null).then((response) => {
+    await ServiceMethodService.common("get", API_ENDPOINTS['appointmentChart'] + "?timelineId=" + id, null, null).then((response) => {
 
         commit('appointmentChartSuccess', response.data.data);
 
