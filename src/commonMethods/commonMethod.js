@@ -61,7 +61,7 @@ export function meridiemFormat(time) {
 
 export function timeOnly(date) {
   var day = moment.unix(new Date(date));
-  return String(day.format('H'));
+  return String(day.format('HH'));
 }
 export function yaxis(title){
   return  {
