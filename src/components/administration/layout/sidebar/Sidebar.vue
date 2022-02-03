@@ -53,6 +53,12 @@
             ><GlobalOutlined /><span class="menuItem">Global Codes</span></a-menu-item
           ></router-link
         >
+        <router-link to="/inventory">
+          <a-menu-item>
+            <FileDoneOutlined />
+            <span class="menuItem">{{$t('sidebar.inventory')}}</span>
+          </a-menu-item>
+        </router-link>
         <router-link to="/dashboard"
           ><a-menu-item
             ><HomeOutlined /><span class="menuItem">Home</span></a-menu-item

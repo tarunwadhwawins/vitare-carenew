@@ -8,6 +8,7 @@ const sidebar = {
   generalParameters: 'General Parameters',
   auditTimeLog: 'Audit Time Log',
   administration: 'Administration',
+  inventory: 'Inventory',
 }
 
 

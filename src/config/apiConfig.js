@@ -44,6 +44,9 @@ export const API_ENDPOINTS = {
     // Global Codes
     globalCodesList: 'globalCodeCategory',
     globalCode: 'globalCode',
+
+    // inventory
+    inventory: 'inventory',
 };
 
 // export const getApiUrl = key => {

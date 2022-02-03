@@ -162,6 +162,11 @@ const routes = [
     name: 'CPT Codes',
     component: () => import( '../components/administration/cpt-codes/Cptcodes')
   },
+  {
+    path: '/inventory',
+    name: 'Inventory',
+    component: () => import( '../components/administration/inventory/Inventory')
+  },
 
   {
     path: '/test',

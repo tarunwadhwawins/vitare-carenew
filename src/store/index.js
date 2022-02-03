@@ -8,6 +8,7 @@ import { careCoordinator } from "./careCoordinator/index"
 import { tasks } from "./tasks/index"
 import { globalCodes } from "./globalCodes/index"
 import { rolesAndPermissions } from "./rolesAndPermissions/index"
+import { inventory } from "./inventory/index"
 
 export default createStore({
   modules: {
@@ -20,5 +21,6 @@ export default createStore({
     tasks,
     globalCodes,
     rolesAndPermissions,
+    inventory,
   },
 })
