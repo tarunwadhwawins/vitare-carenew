@@ -56,7 +56,8 @@ const patient = {
     serialNo:'Serial No',
     MACAddress:'MAC Address',
     deviceTime:'Device Time',
-    ServerTime:'Server Time'
+    ServerTime:'Server Time',
+    inventory:'Inventory'
   },
 
   parameters:{
