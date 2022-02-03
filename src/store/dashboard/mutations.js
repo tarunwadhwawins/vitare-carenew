@@ -1,4 +1,5 @@
 import { dateFormat } from '../../commonMethods/commonMethod';
+import { yaxis, dataLabels, plotOptions, annotations } from '../../commonMethods/commonMethod'
 export const timelineSuccess = (state, count) => {
 
   state.timeLineButton = count;
@@ -21,40 +22,12 @@ export const callStatusSuccess = (state, count) => {
 
   state.callStatus = {
     calloption: {
-      annotations: {
-        points: [
-          {
-            x: "In",
-            seriesIndex: 0,
-            label: {
-              borderColor: "#775DD0",
-              offsetY: 0,
-              style: {
-                color: "#fff",
-                background: "#775DD0",
-              },
-            },
-          },
-        ],
-      },
+      annotations: annotations("In",0,"#775DD0",0,"#fff","#775DD0"),
       chart: {
         type: "bar",
       },
-      plotOptions: {
-        bar: {
-          borderRadius: 10,
-          columnWidth: "20%",
-          barHeight: "100%",
-          distributed: true,
-          horizontal: false,
-          dataLabels: {
-            position: "bottom",
-          },
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
+      plotOptions: plotOptions(10, "20%", "100%", true, false, "bottom"),
+      dataLabels: dataLabels(false),
       colors: ["#121258", "#218421", "#ffb526"],
       stroke: {
         width: 1,
@@ -73,11 +46,7 @@ export const callStatusSuccess = (state, count) => {
         },
         categories: count.map((item) => { return item.text }),
       },
-      yaxis: {
-        title: {
-          text: "Number of Count",
-        },
-      },
+      yaxis: yaxis("Number of Count")
     },
     callseries: [
       {
@@ -88,116 +57,18 @@ export const callStatusSuccess = (state, count) => {
   };
 }
 
-// export const patientsStatsSuccess = (state, count) => {
-
-//     state.patientsCondition ={
-//       option1: {
-//         annotations: {
-//           points: [
-//             {
-//               x: "In",
-//               seriesIndex: 0,
-//               label: {
-//                 borderColor: "#775DD0",
-//                 offsetY: 0,
-//                 style: {
-//                   color: "#fff",
-//                   background: "#775DD0",
-//                 },
-//               },
-//             },
-//           ],
-//         },
-//         chart: {
-//           type: "bar",
-//         },
-//         plotOptions: {
-//           bar: {
-//             borderRadius: 10,
-//             columnWidth: "20%",
-//             barHeight: "100%",
-//             distributed: true,
-//             horizontal: false,
-//             dataLabels: {
-//               position: "bottom",
-//             },
-//           },
-//         },
-//         dataLabels: {
-//           enabled: false,
-//         },
-//         colors: count.map((item) => { return item.text=="Normal" || item.text=="High" || item.text=="Critical"  ? item.color :'' }),
-//         stroke: {
-//           width: 1,
-//           colors: ["#fff"],
-//         },
-
-//         grid: {
-//           row: {
-//             colors: ["#fff", "#f2f2f2"],
-//           },
-//         },
-//         xaxis: {
-//           labels: {
-//             rotate: -45,
-//           },
-//           categories: count.map((item) => { return item.text=="Normal" || item.text=="High" || item.text=="Critical" ? item.text :'' }),
-//         },
-//         yaxis: {
-//           title: {
-//             text: "Patients",
-//           },
-//         },
-//       },
-//       series1: [
-//         {
-//           name: "Patients",
-//           data: count.map((item) => { return item.text=="Normal" || item.text=="High" || item.text=="Critical" ? item.total :'' }),
-//         },
-//       ],
-
-//     };
-// }
 
 export const specializationSuccess = (state, count) => {
   state.specialization = {
     wellness: {
-      annotations: {
-        points: [
-          {
-            x: "Wellness",
-            seriesIndex: 0,
-            label: {
-              borderColor: "#ff0000",
-              offsetY: 0,
-              style: {
-                color: "#fff",
-                background: "#ff0000",
-              },
-              // text: "Bananas are good",
-            },
-          },
-        ],
-      },
+      annotations:annotations("Wellness",0,"#ff0000",0,"#fff","#ff0000"),
       chart: {
         type: "bar",
       },
-      plotOptions: {
-        bar: {
-          borderRadius: 10,
-          columnWidth: "20%",
-          barHeight: "100%",
-          distributed: true,
-          horizontal: false,
-          dataLabels: {
-            position: "bottom",
-          },
-        },
-      },
+      plotOptions: plotOptions(10, "20%", "100%", true, false, "bottom"),
+      dataLabels: dataLabels(false),
       colors: ["#8e60ff", "#ffa800"],
-      dataLabels: {
-        enabled: false,
-      },
+
       stroke: {
         width: 1,
         colors: ["#fff"],
@@ -214,11 +85,7 @@ export const specializationSuccess = (state, count) => {
         },
         categories: count.map((item) => { return item.text }),
       },
-      yaxis: {
-        title: {
-          text: "Specialization",
-        },
-      },
+      yaxis: yaxis("Specialization")
     },
     behavior: [
       {
@@ -233,39 +100,10 @@ export const specializationSuccess = (state, count) => {
 export const networkSuccess = (state, count) => {
   state.network = {
     In: {
-      annotations: {
-        points: [
-          {
-            x: "In",
-            seriesIndex: 0,
-            label: {
-              borderColor: "#775DD0",
-              offsetY: 0,
-              style: {
-                color: "#fff",
-                background: "#775DD0",
-              },
-              // text: "Bananas are good",
-            },
-          },
-        ],
-      },
+      annotations: annotations("In",0,"#775DD0",0,"#fff","#775DD0"),
 
-      plotOptions: {
-        bar: {
-          borderRadius: 10,
-          columnWidth: "20%",
-          barHeight: "100%",
-          distributed: true,
-          horizontal: false,
-          dataLabels: {
-            position: "bottom",
-          },
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
+      plotOptions: plotOptions(10, "20%", "100%", true, false, "bottom"),
+      dataLabels: dataLabels(false),
       colors: ["#267dff", "#0fb5c2"],
       stroke: {
         width: 1,
@@ -283,11 +121,7 @@ export const networkSuccess = (state, count) => {
         },
         categories: count.map((item) => { return item.text }),
       },
-      yaxis: {
-        title: {
-          text: "Network",
-        },
-      },
+      yaxis: yaxis("Network")
     },
     Out: [
       {
@@ -301,41 +135,12 @@ export const networkSuccess = (state, count) => {
 export const cptCodeSuccess = (state) => {
   state.cptCodeValue = {
     code: {
-      annotations: {
-        points: [
-          {
-            x: "In",
-            seriesIndex: 0,
-            label: {
-              borderColor: "#775DD0",
-              offsetY: 0,
-              style: {
-                color: "#fff",
-                background: "#775DD0",
-              },
-            },
-          },
-        ],
-      },
+      annotations:annotations("In",0,"#775DD0",0,"#fff","#775DD0"),
       chart: {
-
         type: "bar",
       },
-      plotOptions: {
-        bar: {
-          borderRadius: 10,
-          columnWidth: "20%",
-          barHeight: "100%",
-          distributed: true,
-          horizontal: false,
-          dataLabels: {
-            position: "bottom",
-          },
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
+      plotOptions: plotOptions(10, "20%", "100%", true, false, "bottom"),
+      dataLabels: dataLabels(false),
       colors: ["#3b72c5", "#ffb526", "#419541", "#343470"],
       stroke: {
         width: 1,
@@ -353,11 +158,7 @@ export const cptCodeSuccess = (state) => {
         },
         categories: ["99453", "99454", "99457", "99458 "],
       },
-      yaxis: {
-        title: {
-          text: "Minutes",
-        },
-      },
+      yaxis: yaxis("Minutes")
     },
     value: [
       {
@@ -450,9 +251,7 @@ export const totalPatientsChartSuccess = (state, count) => {
 
         type: "area",
       },
-      dataLabels: {
-        enabled: false,
-      },
+      dataLabels: dataLabels(false),
       stroke: {
         curve: "smooth",
       },
@@ -460,6 +259,7 @@ export const totalPatientsChartSuccess = (state, count) => {
         type: type,
         categories: categories
       },
+      yaxis: yaxis("Number of patients"),
       tooltip: {
         x: {
           format: format,
@@ -558,12 +358,9 @@ export const appointmentChartSuccess = (state, count) => {
   state.appointmentChartValue = {
     chartOptions: {
       chart: {
-
         type: "area",
       },
-      dataLabels: {
-        enabled: false,
-      },
+      dataLabels: dataLabels(false),
       stroke: {
         curve: "smooth",
       },
@@ -571,6 +368,7 @@ export const appointmentChartSuccess = (state, count) => {
         type: type,
         categories: categories,
       },
+      yaxis: yaxis("Number of appointment"),
       tooltip: {
         x: {
           format: format,

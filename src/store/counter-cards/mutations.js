@@ -1,3 +1,4 @@
+import { yaxis, dataLabels, plotOptions } from '../../commonMethods/commonMethod'
 export const counterCardSuccess = (state, count) => {
     state.grid = {
         xlGrid: parseInt(24 / count.length),
@@ -25,21 +26,8 @@ export const counterCardSuccess = (state, count) => {
           chart: {
             type: "bar",
           },
-          plotOptions: {
-            bar: {
-              borderRadius: 10,
-              columnWidth: "20%",
-              barHeight: "100%",
-              distributed: true,
-              horizontal: false,
-              dataLabels: {
-                position: "bottom",
-              },
-            },
-          },
-          dataLabels: {
-            enabled: false,
-          },
+          plotOptions: plotOptions(10,"20%","100%",true,false,"bottom"),
+          dataLabels: dataLabels(false),
           colors: count.map((item) => { return item.text=="Normal" || item.text=="High" || item.text=="Critical"  ? item.color :'' }),
           stroke: {
             width: 1,
@@ -57,11 +45,7 @@ export const counterCardSuccess = (state, count) => {
             },
             categories: count.map((item) => { return item.text=="Normal" || item.text=="High" || item.text=="Critical" ? item.text :'' }),
           },
-          yaxis: {
-            title: {
-              text: "Patients",
-            },
-          },
+          yaxis: yaxis("Patients")
         },
         series1: [
           {
@@ -75,22 +59,3 @@ export const counterCardSuccess = (state, count) => {
 export const failure = (state, error) => {
     state.errorMsg = error;
 }
-// export const newPatientsSuccess = (state, count) => {
-//     state.newPatientcount = count
-// }
-
-// export const abnormalPatientsSuccess = (state, count) => {
-//     state.abnormalPaitientcount = count
-// }
-
-// export const activePatientsSuccess = (state, count) => {
-//     state.activePaitientcount = count
-// }
-
-// export const inactivePatientsSuccess = (state, count) => {
-//     state.inActivePaitientcount = count
-// }
-
-// export const criticalPatientsSuccess = (state, count) => {
-//     state.criticalPaitientcount = count
-// }
