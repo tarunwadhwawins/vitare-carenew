@@ -77,7 +77,7 @@ export default {
         },
       },
       {
-        title: "Codename",
+        title: "Code Name",
         dataIndex: "name",
         key: "name",
         className: "codename",

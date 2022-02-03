@@ -41,15 +41,12 @@ export const callPlannedSuccess = (state, count) => {
 }
 
 export const communicationTypesSuccess = (state, response) => {
-  // console.log('response', response)
-  
   var timesArray = [];
-  const res = response.map(data => {
+  /* const res = response.map(data => {
     data.time = timeOnly(data.time);
     return data
-  })
-  
-  const record = res.sort(function(a, b) {
+  }) */
+  const record = response.sort(function(a, b) {
     return a.time - b.time
   })
   record.forEach(element => {
@@ -57,9 +54,6 @@ export const communicationTypesSuccess = (state, response) => {
       timesArray.push(element.time)
     }
   });
-  
-  console.log('record', record)
-  
   var timeList = [];
   var callSeries = [];
   if(record.length > 0) {
@@ -77,7 +71,26 @@ export const communicationTypesSuccess = (state, response) => {
       array_value['data']=array_list[key];
       array_list_final.push(array_value);
     }
-  
+    for (const key in array_list_final) {
+      for (const key_next in array_list_final) {
+        if(key != key_next){
+          for (const key_data in array_list_final[key].data){
+            let obj = array_list_final[key_next].data.find(o => o.time === array_list_final[key].data[key_data].time);
+            if(typeof obj === 'undefined'){
+              let value_obj = {
+                "text":array_list_final[key_next].data[0].text,
+                "count":0,
+                "time":array_list_final[key].data[key_data].time,
+              };
+              array_list_final[key_next].data.push(value_obj);
+            }
+          }
+          array_list_final[key_next].data = array_list_final[key_next].data.sort(function(a, b) {
+            return a.time - b.time;
+          });
+        }
+      }
+    }
     const communicationType = array_list_final
     callSeries = communicationType.map((item) => {
       return {
@@ -89,9 +102,6 @@ export const communicationTypesSuccess = (state, response) => {
     })
   }
   
-  console.log('callSeries', callSeries)
-  console.log('timesArray', timesArray)
-
   state.communicationTypes = {
     calloption: {
       chart: {
