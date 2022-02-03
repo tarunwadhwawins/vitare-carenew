@@ -28,6 +28,9 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { watchEffect, computed } from "vue";
 import { useStore } from "vuex";
 import swal from 'sweetalert';
+import {
+    deleteSwal
+} from "@/commonMethods/commonMethod"
 export default {
   components: {
     DeleteOutlined,
@@ -56,14 +59,8 @@ export default {
     }
 
     const deleteGlobalCode = (id) => {
-      swal({
-        title: "Are you sure?",
-        text: "Are you sure you want to delete this record?",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      }).then((willDelete) => {
-        if (willDelete) {
+      deleteSwal().then((response) => {
+        if (response == true) {
           store.dispatch('deleteGlobalCode', id).then(() => {
             store.dispatch('globalCodesList')
           })
@@ -133,6 +130,7 @@ export default {
       globalCodesColumns,
       globalCodesList,
       updateStatus,
+      deleteSwal,
     }
   }
 }
