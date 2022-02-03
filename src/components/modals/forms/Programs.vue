@@ -65,7 +65,8 @@ import { defineComponent, reactive, computed } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "../../loader/Loader"
-import {deleteSwal} from "../../../commonMethods/commonMethod"
+import {warningSwal} from "../../../commonMethods/commonMethod"
+import { messages } from "../../../config/messages";
 export default defineComponent({
   components: {
     DeleteOutlined,
@@ -100,7 +101,7 @@ export default defineComponent({
     });
 
     function deleteProgram(id) {
-     deleteSwal().then((response)=>{
+     warningSwal(messages.deleteWarning).then((response)=>{
        if(response==true){
        store.dispatch('deleteProgram',{
          id:patients.value.addDemographic.id,

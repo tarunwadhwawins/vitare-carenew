@@ -12,10 +12,13 @@ export const addDemographic = async ({commit}, data) => {
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
     } else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
     } else if (error.response.status === 401) {
       commit('errorMsg', error.response.data.message)
+      commit('loadingStatus', false)
     }
   })
 }
@@ -31,10 +34,13 @@ export const updateDemographic = async ({commit}, data) => {
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
     } else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
     } else if (error.response.status === 401) {
       commit('errorMsg', error.response.data.message)
+      commit('loadingStatus', false)
     }
   })
 }
@@ -132,10 +138,13 @@ export const addPatientPhysician = async ({
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
     } else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
     } else if (error.response.status === 401) {
       commit('errorMsg', error.response.data.message)
+      commit('loadingStatus', false)
     }
   })
 }
@@ -150,10 +159,13 @@ export const updatePatientPhysician = async ({commit}, data) => {
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
     } else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
     } else if (error.response.status === 401) {
       commit('errorMsg', error.response.data.message)
+      commit('loadingStatus', false)
     }
   })
 }
@@ -210,7 +222,8 @@ export const program = async ({
   await serviceMethod.common("get", `patient/${id}/program`, null, null).then((response) => {
     commit('program', response.data.data);
     commit('loadingStatus', false)
-  }).catch(() => {
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
 
@@ -355,8 +368,8 @@ export const clinicalHistoryList = async ({
     commit('clinicalHistoryList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    commit('loadingStatus', false)
     errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
   })
 
 }
@@ -427,10 +440,13 @@ export const addInsurance = async ({ commit }, data) => {
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
     } else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
     } else if (error.response.status === 401) {
       commit('errorMsg', error.response.data.message)
+      commit('loadingStatus', false)
     }
   })
 }
@@ -458,10 +474,13 @@ export const updateInsurance = async ({ commit }, data) => {
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
     } else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
     } else if (error.response.status === 401) {
       commit('errorMsg', error.response.data.message)
+      commit('loadingStatus', false)
     }
   })
 }
