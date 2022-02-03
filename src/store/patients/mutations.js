@@ -12,17 +12,17 @@ export const addDemographic = (state, data) => {
      data.forEach(element => {
          state.patientList.push({
             flags:element.patientFlags.data[0]?element.patientFlags.data[0].flags.data.color:'',
-            firstName:element.firstName?element.firstName:'',
+            name:element.name?element.name+" "+element.middleName+" "+element.lastName :'',
             lastReadingDate:element.lastReadingDate?element.lastReadingDate:'',
             weight:element.weight?element.weight:'',
-            //  reading: "",
-            //  compliance: "",
-            //  message: "",
-            //  readingvalues: "",
-            //  sp02: "",
-            //  bp: "",
-            //  glucose: "",
-            //  active:'',
+             reading: "",
+             compliance: "",
+             message: "",
+             readingvalues: "",
+             sp02: "",
+             bp: "",
+             glucose: "",
+             active:'',
             })
      });
     
@@ -35,7 +35,7 @@ export const addDemographic = (state, data) => {
     },
     {
         title: "Name",
-        dataIndex: "firstName",
+        dataIndex: "name",
         slots: {
             customRender: "firstName",
         },
@@ -397,6 +397,9 @@ export const addDemographic = (state, data) => {
         {
           title: "Document",
           dataIndex: "document",
+          slots: {
+            customRender: "document",
+          },
         },
         {
           title: "	Type",

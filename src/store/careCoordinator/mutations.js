@@ -12,7 +12,7 @@ export const staffs= async (state, data) => {
     state.columns = [
         {
           title: "Name",
-          dataIndex: "name",
+          dataIndex: "fullName",
           sorter: {
             compare: (a, b) => a.first_name - b.first_name,
             multiple: 3,
@@ -59,6 +59,9 @@ export const staffs= async (state, data) => {
           sorter: {
             compare: (a, b) => a.created_at - b.created_at,
             multiple: 1,
+          },
+          slots: {
+            customRender: "createdDate",
           },
         },
         {

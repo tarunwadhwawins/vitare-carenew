@@ -1,5 +1,7 @@
 import Swal from "sweetalert2"
 import moment from 'moment';
+
+
 export function scrollToTop() {
   window.scrollTo(0, 0);
 }
@@ -7,9 +9,9 @@ export function scrollToTop() {
 export function successSwal(message) {
   const Toast = Swal.mixin({
     toast: true,
-    position: 'bottom-end',
+    position: 'top-end',
     showConfirmButton: false,
-    timer: 5000,
+    timer: 8000,
     timerProgressBar: true,
   })
   Toast.fire({
@@ -26,10 +28,10 @@ export function errorSwal(message) {
   })
 }
 
-export async function deleteSwal(){
+export async function warningSwal(message){
    const result =  await Swal.fire({
     title: "Are you sure?",
-    text: "Do you want to delete ?",
+    text: message,
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
@@ -42,6 +44,8 @@ export async function deleteSwal(){
     return false
   }
 }
+
+
 
 export function dateFormat(date) {
   var day = moment.unix(new Date(date));

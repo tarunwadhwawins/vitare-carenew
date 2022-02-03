@@ -28,7 +28,8 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { watchEffect, computed } from "vue";
 import { useStore } from "vuex";
 // import swal from 'sweetalert2';
-import {deleteSwal} from "../../../../commonMethods/commonMethod"
+import {warningSwal} from "../../../../commonMethods/commonMethod"
+import { messages } from '../../../../config/messages';
 export default {
   components: {
     DeleteOutlined,
@@ -57,7 +58,7 @@ export default {
     }
 
     const deleteGlobalCode = (id) => {
-      deleteSwal().then((response) => {
+      warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
           store.dispatch('deleteGlobalCode', id).then(() => {
             store.dispatch('globalCodesList')
@@ -128,7 +129,7 @@ export default {
       globalCodesColumns,
       globalCodesList,
       updateStatus,
-      deleteSwal,
+      warningSwal,
     }
   }
 }
