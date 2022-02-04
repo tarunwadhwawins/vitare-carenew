@@ -19,13 +19,13 @@
           <router-link to="#" @click="showModal">{{ text.text }}</router-link>
         </template>
         <template #assignedBy="text">
-          <router-link to="corrdinator-summary">{{ text.text }}</router-link>
+          <router-link to="coordinator-summary">{{ text.text }}</router-link>
         </template>
         <template #status>
           <a-switch />
         </template>
         <template #category="{ record }">
-          <router-link v-for="category in record.categories" :key="category.id" to="corrdinator-summary">
+          <router-link v-for="category in record.categories" :key="category.id" to="coordinator-summary">
             {{ category }}
           </router-link>
         </template>

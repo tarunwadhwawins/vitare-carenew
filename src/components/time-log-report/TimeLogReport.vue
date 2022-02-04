@@ -54,7 +54,7 @@
                   @change="onChange"
                 >
                   <template #staff="text">
-                    <router-link to="corrdinator-summary">{{
+                    <router-link to="coordinator-summary">{{
                       text.text
                     }}</router-link>
                   </template>

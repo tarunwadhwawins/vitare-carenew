@@ -83,8 +83,8 @@
     <a-row :gutter="24" class="mb-24">
         <a-col :span="24">
             <a-table :columns="deviceColumns" :data-source="deviceData" :pagination="false" :scroll="{ x: 900 }">
-                <template #active="text">
-                    <a-switch @click="changeStatus(text.record.id,text.index)" v-model:checked="status[text.index]" />
+                <template #active="status">
+                    <a-switch @click="changeStatus(text.record.id,text.index)" v-model:checked="status.status" />{{status}}
                 </template>
                 <template #action="text">
                     <a class="icons" @click="deleteDevice(text.record.id)">
@@ -123,7 +123,9 @@ export default defineComponent({
     },
     setup() {
         const store = useStore()
-        const status = ref([])
+        const status = reactive({
+            status:''
+        })
         const device = reactive({
             inventory: '',
             deviceType: "",

@@ -115,12 +115,12 @@
                     </a-tooltip>
                   </template>
                   <template #first="text">
-                    <router-link to="corrdinator-summary">{{
+                    <router-link to="coordinator-summary">{{
                       text.text
                     }}</router-link>
                   </template>
                   <template #last="text">
-                    <router-link to="corrdinator-summary">{{
+                    <router-link to="coordinator-summary">{{
                       text.text
                     }}</router-link>
                   </template>

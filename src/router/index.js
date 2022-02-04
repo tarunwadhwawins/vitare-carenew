@@ -58,7 +58,7 @@ const routes = [
   },
   
   {
-    path: '/corrdinator-summary',
+    path: '/coordinator-summary',
     name: 'CoordinatorSummary',
     component: () => import( '../components/coordinator-summary/Coordinatorsummary')
   },
