@@ -136,12 +136,12 @@ export default defineComponent({
             // serverTime: "",
         });
         const addDevice = () => {
-            // store.dispatch("addDevice", {
-            //     data: device,
-            //     id: patients.value.addDemographic.id,
-            // });
+            store.dispatch("addDevice", {
+                data: device,
+                id: patients.value.addDemographic.id,
+            });
             setTimeout(() => {
-                store.dispatch("devices", 79)//patients.value.addDemographic.id);
+                store.dispatch("devices", patients.value.addDemographic.id);
             }, 2000);
         };
 
