@@ -925,7 +925,7 @@ export default {
 
         const demographicsFailed = () => {
             scrollToTop();
-            errorSwal(messages.fieldsRequired)
+            // errorSwal(messages.fieldsRequired)
         };
 
         const conditionsFailed = () => {
