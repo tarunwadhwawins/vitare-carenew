@@ -5,27 +5,11 @@
         <a-col :sm="8" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('globalCodes.category')" name="globalCodeCategory" :rules="[{ required: true, message: $t('globalCodes.category')+' '+$t('global.validation')  }]">
-              <!-- <a-auto-complete
+              <AutoComplete
                 :options="categories"
-                :filter-option="filterOption"
+                @on-select="onSelectOption($event)"
                 v-if="categories"
-                ref="select"
-                v-model:value="globalCodeForm.globalCodeCategory"
-                style="width: 100%"
-                size="large">
-              </a-auto-complete> -->
-              <a-select
-                v-if="globalCodeCategories"
-                ref="select"
-                v-model:value="globalCodeForm.globalCodeCategory"
-                style="width: 100%"
-                size="large"
-                @focus="focus"
-                :disabled="disabled"
-                @change="handleChange">
-                <a-select-option value="" disabled>{{'Select Category'}}</a-select-option>
-                <a-select-option v-for="category in globalCodeCategories" :key="category.id" :value="category.id">{{ category.name }}</a-select-option>
-              </a-select>
+                v-model:value="globalCodeForm.globalCodeCategory" />
             </a-form-item>
           </div>
         </a-col>
@@ -61,9 +45,11 @@
 import { ref, reactive, computed } from "vue";
 import { useStore } from "vuex"
 import ModalButtons from "@/components/common/button/ModalButtons";
+import AutoComplete from "@/components/common/input/AutoComplete";
 export default {
   components: {
-    ModalButtons
+    ModalButtons,
+    AutoComplete
   },
   props: {
     isAdd: {
@@ -81,7 +67,16 @@ export default {
     };
 
     const filterOption = (input, option) => {
-      return option.value.toUpperCase().indexOf(input.toUpperCase()) >= 0;
+      return option.value
+    };
+    
+    const codecategoryId = ref(null);
+    const onSelectOption = (selected) => {
+      categories.value.forEach(category => {
+        if(category.value == selected) {
+          codecategoryId.value = category.id
+        }
+      });
     };
 
     const globalCodeDetails = computed(() => {
@@ -112,9 +107,9 @@ export default {
     globalCodeCategories.value.forEach(element => {
       categories.value.push({
         value: element.name,
+        id: element.id,
       })
     });
-    console.log('categories', categories.value)
     
     const submitForm = () => {
       if(isEdit) {
@@ -124,14 +119,13 @@ export default {
           "status": globalCodeForm.status,
         }
         const id = globalCodeDetails.value.id;
-        console.log('globalCodeForm', id)
         store.dispatch('updateGlobalCode', {id, data}).then(() => {
           store.dispatch('globalCodesList')
         })
         emit('is-visible', false);
       }
       else {
-        console.log('globalCodeForm', globalCodeForm)
+        globalCodeForm.globalCodeCategory = codecategoryId.value;
         store.dispatch('addGlobalCode', globalCodeForm).then(() => {
           store.dispatch('globalCodesList')
         })
@@ -140,6 +134,7 @@ export default {
     }
     return {
       filterOption,
+      onSelectOption,
       globalCodeCategories,
       title,
       globalCodeForm,
