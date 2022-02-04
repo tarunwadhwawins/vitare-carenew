@@ -191,7 +191,7 @@
     <!---->
     <AddAppointment v-model:visible="appointmentModal" @is-visible="showModal($event)" @ok="apptOk" />
     <TasksModal v-model:visible="TasksModal" @ok="taskOk" />
-    <PatientsModal v-model:visible="PatientsModal" @ok="patientOk" />
+    <PatientsModal v-model:visible="PatientsModal" @ok="patientOk" @saveModal="closeAppointModal($event)" />
     <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" />
     <AddStartCall v-model:visible="AddStartCall" @ok="startOk" />
     <SendMessage v-model:visible="SendMessage" @ok="startOk" />
@@ -256,11 +256,12 @@ export default defineComponent({
     };
 
     const PatientsModal = ref(false);
+
     const addPatient = () => {
       PatientsModal.value = true;
     };
-    const patientOk = () => {
-      PatientsModal.value = false;
+    const closeAppointModal = (status) => {
+      PatientsModal.value = status;
     };
 
     const CoordinatorsModal = ref(false);
@@ -301,7 +302,7 @@ export default defineComponent({
 
       PatientsModal,
       addPatient,
-      patientOk,
+      closeAppointModal,
 
       CoordinatorsModal,
       addCare,

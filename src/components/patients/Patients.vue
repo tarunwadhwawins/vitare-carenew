@@ -45,7 +45,7 @@
 </a-row>
 
 <!--modal-->
-<PatientsModal v-model:visible="PatientsModal" @closeModal="handleOk($event)" />
+<PatientsModal v-model:visible="PatientsModal" @saveModal="handleOk($event)"  />
 <!--end-->
 </template>
 
@@ -60,6 +60,8 @@ import PatientsModal from "@/components/modals/PatientsModal";
 import CounterCard from "./counter-card/CounterCard"
 import ShowModalButton from "./show-modal-button/ShowModalButton"
 import Loader from "../loader/Loader"
+import {warningSwal} from "../../commonMethods/commonMethod"
+import { messages } from '../../config/messages';
 export default {
     name: "Patients",
     components: {
@@ -95,12 +97,14 @@ export default {
           return store.state.patients.column
       })
      
-    const patients = computed(()=>{
+        const patients = computed(()=>{
             return store.state.patients.patientList
         }) 
 
+        
        
         return {
+            
             PatientsModal,
             showModal,
             handleOk,

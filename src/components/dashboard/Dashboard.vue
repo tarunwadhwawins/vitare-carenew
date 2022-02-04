@@ -82,7 +82,7 @@
     <a-row :gutter="24">
       <a-col :sm="12" :xs="24" v-if="totalPatientsChartValue">
 
-        <ApexChart :title="$t('dashboard.totalPatientsChart')" type="area" :height="350"
+        <ApexChart :title="$t('dashboard.newPatientsChart')" type="area" :height="350"
           :options="totalPatientsChartValue.chartOptions" :series="totalPatientsChartValue.series"
           linkTo="manage-patients"></ApexChart>
 
@@ -123,7 +123,7 @@
     },
     {
       title: "Appointment With",
-      dataIndex: "staff['name']",
+      dataIndex: "staff['fullName']",
       slots: {
         customRender: "staff",
       },

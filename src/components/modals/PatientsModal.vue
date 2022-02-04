@@ -1,5 +1,6 @@
 <template>
-<a-modal max-width="1140px" width="100%" title="Add New Patients" centered :footer="null">
+<!-- <a-modal max-width="1140px" width="100%" title="Add New Patients" centered :footer="null"  :maskClosable="false" @cancel="closeModal()"> -->
+<a-modal max-width="1140px" width="100%" title="Add New Patients" centered :footer="null"  :maskClosable="false" >
     <a-row :gutter="24">
         <a-col :span="24">
             <a-steps :current="current">
@@ -28,9 +29,16 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.lastName')" name="lastName" :rules="[{ required: false, message: $t('global.lastName')+' '+$t('global.validation') }]">
+                                <a-form-item :label="$t('global.lastName')" name="lastName" :rules="[{ required: true, message: $t('global.lastName')+' '+$t('global.validation') }]">
                                     <a-input v-model:value="demographics.lastName" size="large" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.lastName?errorMsg.lastName[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('patient.demographics.nickName')" name="nickName" :rules="[{ required: false, message: $t('patient.demographics.nickName')+' '+$t('global.validation')}]">
+                                    <a-input v-model:value="demographics.nickName" size="large" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -39,6 +47,22 @@
                                 <a-form-item :label="$t('global.dateOfBirth')" name="dob" :rules="[{ required: true, message: $t('global.dateOfBirth')+' '+$t('global.validation') }]">
                                     <a-date-picker v-model:value="demographics.dob" format="MMM DD, YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.dob?errorMsg.dob[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
+                                    <a-input v-model:value="demographics.email" placeholder="test@test.com" size="large" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber}]">
+                                    <a-input v-model:value="demographics.phoneNumber" placeholder="Please enter 10 digit number" size="large" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -76,13 +100,6 @@
 
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('patient.demographics.nickName')" name="nickName" :rules="[{ required: false, message: $t('patient.demographics.nickName')+' '+$t('global.validation')}]">
-                                    <a-input v-model:value="demographics.nickName" size="large" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.weight')" name="weight" :rules="[{ required: false, message: $t('patient.demographics.weight')+' '+$t('global.validation'), pattern: regex.digitWithdecimal }]">
                                     <a-input v-model:value="demographics.weight" placeholder="Please enter weight in lbs" size="large" />
                                 </a-form-item>
@@ -95,22 +112,7 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                                    <a-input v-model:value="demographics.email" placeholder="test@test.com" size="large" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.email[0]" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber}]">
-                                    <a-input v-model:value="demographics.phoneNumber" placeholder="Please enter 10 digit number" size="large" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
+                        
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="contactType" :rules="[{ required: true, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
@@ -140,7 +142,7 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.country')" name="country" :rules="[{ required: true, message: $t('global.country')+' '+$t('global.validation') }]">
+                                <a-form-item :label="$t('global.country')" name="country" :rules="[{ required: false, message: $t('global.country')+' '+$t('global.validation') }]">
                                     <a-select ref="select" v-model:value="demographics.country" style="width: 100%" size="large" @change="handleChange">
                                         <a-select-option value="" disabled>{{'Select Country'}}</a-select-option>
                                         <a-select-option v-for="country in globalCode.country.globalCode" :key="country.id" :value="country.id">{{country.name}}</a-select-option>
@@ -276,18 +278,74 @@
                             </div>
                         </a-col>
                     </a-row>
-                    <a-row :gutter="24">
+                    <a-row>
                         <a-col :md="24" :sm="24" :xs="24" class="mb-24">
                             <a-checkbox v-model:checked="demographics.isPrimary">
                                 {{$t('patient.demographics.sameAsPrimaryFamilyMemberInfo')}}
                             </a-checkbox>
                         </a-col>
+                    </a-row>
+                        <a-row :gutter="24" v-if="demographics.isPrimary">
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item v-if="demographics.isPrimary" :label="$t('patient.demographics.fullName')" name="fullName" :rules="[{ required: true, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
-                                    <a-input v-model:value="demographics.fullName" size="large" />
+                                <a-form-item :label="$t('patient.demographics.fullName')" name="fullName" :rules="[{ required: false, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
+                                    <a-input v-model:value="demographics.fullName" size="large" disabled/>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.fullName?errorMsg.fullName[0]:''" />
                                 </a-form-item>
-                                <a-form-item v-else :label="$t('patient.demographics.fullName')" name="emergencyFullName" :rules="[{ required: true, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('patient.demographics.emailAddress')" name="familyEmail" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('patient.demographics.emailAddress').toLowerCase(), type: 'email' }]">
+                                    <a-input v-model:value="demographics.familyEmail" placeholder="test@test.com" size="large" disabled/>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.familyEmai?errorMsg.familyEmail[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
+                                    <a-input v-model:value="demographics.familyPhoneNumber" placeholder="Please enter 10 digit number" size="large" disabled/>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.familyPhoneNumber?errorMsg.familyPhoneNumber[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="familyContactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
+                                    <a-select v-model:value="demographics.familyContactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" disabled/>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactType?errorMsg.familyContactType[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="familyContactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
+                                    <a-select ref="select" v-model:value="demographics.familyContactTime" style="width: 100%" size="large" @change="handleChange" disabled>
+                                        <a-select-option value="" disabled>{{'Select Preferred Time'}}</a-select-option>
+                                        <a-select-option v-for="ptOfDayContact in globalCode.ptOfDayContact.globalCode" :key="ptOfDayContact.id" :value="ptOfDayContact.id">{{ptOfDayContact.name}}</a-select-option>
+                                    </a-select>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactTime?errorMsg.familyContactTime[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.gender')" name="familyGender" :rules="[{ required: false, message: $t('global.gender')+' '+$t('global.validation') }]">
+                                    <a-select ref="select" v-model:value="demographics.familyGender" style="width: 100%" size="large" @change="handleChange" disabled>
+                                        <a-select-option value="" disabled>{{'Select Gender'}}</a-select-option>
+                                        <a-select-option v-for="gender in globalCode.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
+                                    </a-select>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.familyGender?errorMsg.familyGender[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                    </a-row>
+                    <a-row :gutter="24" v-else>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item  :label="$t('patient.demographics.fullName')" name="emergencyFullName" :rules="[{ required: true, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
                                     <a-input v-model:value="demographics.emergencyFullName" size="large" />
                                 </a-form-item>
                                 <ErrorMessage v-if="errorMsg" :name="errorMsg.emergencyFullName?errorMsg.emergencyFullName[0]:''" />
@@ -295,10 +353,7 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item v-if="demographics.isPrimary" :label="$t('patient.demographics.emailAddress')" name="familyEmail" :rules="[{ required: true, message:$t('global.validValidation')+' '+$t('patient.demographics.emailAddress').toLowerCase(), type: 'email' }]">
-                                    <a-input v-model:value="demographics.familyEmail" placeholder="test@test.com" size="large" />
-                                </a-form-item>
-                                <a-form-item v-else :label="$t('patient.demographics.emailAddress')" name="emergencyEmail" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('patient.demographics.emailAddress').toLowerCase(), type: 'email' }]">
+                                <a-form-item :label="$t('patient.demographics.emailAddress')" name="emergencyEmail" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('patient.demographics.emailAddress').toLowerCase(), type: 'email' }]">
                                     <a-input v-model:value="demographics.emergencyEmail" placeholder="test@test.com" size="large" />
                                 </a-form-item>
                                 <ErrorMessage v-if="errorMsg" :name="errorMsg.emergencyEmail?errorMsg.emergencyEmail[0]:''" />
@@ -306,10 +361,7 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item v-if="demographics.isPrimary" :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
-                                    <a-input v-model:value="demographics.familyPhoneNumber" size="large" />
-                                </a-form-item>
-                                <a-form-item v-else :label="$t('global.phoneNo')" name="emergencyPhoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
+                                <a-form-item :label="$t('global.phoneNo')" name="emergencyPhoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
                                     <a-input v-model:value="demographics.emergencyPhoneNumber" placeholder="Please enter 10 digit number" size="large" />
                                 </a-form-item>
                                 <ErrorMessage v-if="errorMsg" :name="errorMsg.emergencyPhoneNumber?errorMsg.emergencyPhoneNumber[0]:''" />
@@ -317,10 +369,7 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item v-if="demographics.isPrimary" :label="$t('patient.demographics.preferredMethodofContact')" name="familyContactType" :rules="[{ required: true, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
-                                    <a-select v-model:value="demographics.familyContactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" />
-                                </a-form-item>
-                                <a-form-item v-else :label="$t('patient.demographics.preferredMethodofContact')" name="emergencyContactType" :rules="[{ required: true, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
+                                <a-form-item  :label="$t('patient.demographics.preferredMethodofContact')" name="emergencyContactType" :rules="[{ required: true, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
                                     <a-select v-model:value="demographics.emergencyContactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({ label: item.name,value: item.id }))" />
                                 </a-form-item>
                                 <ErrorMessage v-if="errorMsg" :name="errorMsg.emergencyContactType?errorMsg.emergencyContactType[0]:''" />
@@ -328,14 +377,8 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item v-if="demographics.isPrimary" :label="$t('patient.demographics.preferredTimeofDayforContact')" name="familyContactTime" :rules="[{ required: true, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
-                                    <a-select ref="select" v-model:value="demographics.familyContactTime" style="width: 100%" size="large" @change="handleChange">
-                                        <a-select-option value="" disabled>{{'Select Preferred Time'}}</a-select-option>
-                                        <a-select-option v-for="ptOfDayContact in globalCode.ptOfDayContact.globalCode" :key="ptOfDayContact.id" :value="ptOfDayContact.id">{{ptOfDayContact.name}}</a-select-option>
-                                    </a-select>
-                                </a-form-item>
-                                <a-form-item v-else :label="$t('patient.demographics.preferredTimeofDayforContact')" name="emergencyContactTime" :rules="[{ required: true, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
-                                    <a-select ref="select" v-model:value="demographics.emergencyContactTime" style="width: 100%" size="large" @change="handleChange">
+                                <a-form-item  :label="$t('patient.demographics.preferredTimeofDayforContact')" name="emergencyContactTime" :rules="[{ required: true, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
+                                    <a-select ref="select" v-model:value="demographics.emergencyContactTime" style="width: 100%" size="large" @change="handleChange" >
                                         <a-select-option value="" disabled>{{'Select Preferred Time'}}</a-select-option>
                                         <a-select-option v-for="ptOfDayContact in globalCode.ptOfDayContact.globalCode" :key="ptOfDayContact.id" :value="ptOfDayContact.id">{{ptOfDayContact.name}}</a-select-option>
                                     </a-select>
@@ -345,13 +388,7 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item v-if="demographics.isPrimary" :label="$t('global.gender')" name="familyGender" :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
-                                    <a-select ref="select" v-model:value="demographics.familyGender" style="width: 100%" size="large" @change="handleChange">
-                                        <a-select-option value="" disabled>{{'Select Gender'}}</a-select-option>
-                                        <a-select-option v-for="gender in globalCode.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
-                                    </a-select>
-                                </a-form-item>
-                                <a-form-item v-else :label="$t('global.gender')" name="emergencyGender" :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
+                                <a-form-item  :label="$t('global.gender')" name="emergencyGender" :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
                                     <a-select ref="select" v-model:value="demographics.emergencyGender" style="width: 100%" size="large" @change="handleChange">
                                         <a-select-option value="" disabled>{{'Select Gender'}}</a-select-option>
                                         <a-select-option v-for="gender in globalCode.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
@@ -424,17 +461,6 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <!-- <a-input v-model="value" size="large">
-                                    <template #addonAfter>
-                                        <a-select v-model:value="value4" style="width: 120px">
-                                            <a-select-option value="@yahoo">@yahoo.com</a-select-option>
-                                            <a-select-option value="@gmail.com">@gmail.com</a-select-option>
-                                            <a-select-option value="@hotmail.com">@hotmail.com</a-select-option>
-                                            <a-select-option value="@outlook.com">@outlook.com</a-select-option>
-                                            <a-select-option value="@aol.com">@aol.com</a-select-option>
-                                        </a-select>
-                                    </template>
-                                </a-input> -->
                                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
                                     <a-input v-model:value="conditions.email" placeholder="test@test.com" size="large">
                                     </a-input>
@@ -466,17 +492,63 @@
                             </div>
                         </a-col>
                     </a-row>
-                    <a-row :gutter="24">
+                    <a-row>
                         <a-col :md="24" :sm="24" :xs="24" class="mb-24">
                             <a-checkbox v-model:checked="conditions.checked"> {{$t('patient.conditions.sameAsabove')}} </a-checkbox>
                         </a-col>
+                    </a-row>
+                    <a-row :gutter="24" v-if="conditions.checked">
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item v-if="conditions.checked" :label="$t('global.name')" name="name" :rules="[{ required: true, message: $t('global.name')+' '+$t('global.validation') }]">
-                                    <a-input v-model:value="conditions.name" size="large" />
+                                <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
+                                    <a-input v-model:value="conditions.name" size="large" disabled/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
                                 </a-form-item>
-                                <a-form-item v-else :label="$t('global.name')" name="physicianName" :rules="[{ required: true, message: $t('global.name')+' '+$t('global.validation') }]">
+
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.designation')" name="designation" :rules="[{ required: false, message: $t('global.designation')+' '+$t('global.validation') }]">
+                                    <a-select ref="select" v-model:value="conditions.designation" style="width: 100%" size="large" @change="handleChange" disabled>
+                                        <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
+                                        <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
+                                    </a-select>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.designation?errorMsg.designation[0]:''" />
+                                </a-form-item>
+
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
+                                    <a-input v-model:value="conditions.email" placeholder="test@test.com" size="large" disabled>
+                                    </a-input>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
+                                    <a-input v-model:value="conditions.phoneNumber" placeholder="Please enter 10 digit number" size="large" disabled/>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('patient.conditions.fax')" name="fax" :rules="[{ required: false, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
+                                    <a-input v-model:value="conditions.fax" size="large" disabled/>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.fax?errorMsg.fax[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                    </a-row>
+                    <a-row :gutter="24" v-else>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.name')" name="physicianName" :rules="[{ required: true, message: $t('global.name')+' '+$t('global.validation') }]">
                                     <a-input v-model:value="conditions.physicianName" size="large" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
                                 </a-form-item>
@@ -484,14 +556,7 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item v-if="conditions.checked" :label="$t('global.designation')" name="designation" :rules="[{ required: true, message: $t('global.designation')+' '+$t('global.validation') }]">
-                                    <a-select ref="select" v-model:value="conditions.designation" style="width: 100%" size="large" @change="handleChange">
-                                        <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
-                                        <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
-                                    </a-select>
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.designation?errorMsg.designation[0]:''" />
-                                </a-form-item>
-                                <a-form-item v-else :label="$t('global.designation')" name="physicianDesignation" :rules="[{ required: true, message: $t('global.designation')+' '+$t('global.validation') }]">
+                                <a-form-item :label="$t('global.designation')" name="physicianDesignation" :rules="[{ required: true, message: $t('global.designation')+' '+$t('global.validation') }]">
                                     <a-select ref="select" v-model:value="conditions.physicianDesignation" style="width: 100%" size="large" @change="handleChange">
                                         <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
                                         <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
@@ -502,11 +567,7 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item v-if="conditions.checked" :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                                    <a-input v-model:value="conditions.email" placeholder="test@test.com" size="large" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" />
-                                </a-form-item>
-                                <a-form-item v-else :label="$t('global.email')" name="physicianEmail" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
+                                <a-form-item :label="$t('global.email')" name="physicianEmail" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
                                     <a-input v-model:value="conditions.physicianEmail" placeholder="test@test.com" size="large" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" />
                                 </a-form-item>
@@ -515,11 +576,7 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item v-if="conditions.checked" :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
-                                    <a-input v-model:value="conditions.phoneNumber" size="large" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
-                                </a-form-item>
-                                <a-form-item v-else :label="$t('global.phoneNo')" name="physicianPhoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
+                                <a-form-item :label="$t('global.phoneNo')" name="physicianPhoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
                                     <a-input v-model:value="conditions.physicianPhoneNumber" placeholder="Please enter 10 digit number" size="large" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
@@ -527,11 +584,7 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item v-if="conditions.checked" :label="$t('patient.conditions.fax')" name="fax" :rules="[{ required: true, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
-                                    <a-input v-model:value="conditions.fax" size="large" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.fax?errorMsg.fax[0]:''" />
-                                </a-form-item>
-                                <a-form-item v-else :label="$t('patient.conditions.fax')" name="physicianFax" :rules="[{ required: true, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
+                                <a-form-item  :label="$t('patient.conditions.fax')" name="physicianFax" :rules="[{ required: true, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
                                     <a-input v-model:value="conditions.physicianFax" size="large" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.fax?errorMsg.fax[0]:''" />
                                 </a-form-item>
@@ -624,8 +677,8 @@
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary">{{$t('global.next')}}</a-button>
-                    <a-button v-if="current == steps.length - 1" type="primary" @click="closeModal()">
-                        {{$t('global.done')}}
+                    <a-button v-if="current == steps.length - 1" type="primary" @click="saveModal()">
+                        {{$t('global.save')}}
                     </a-button>
                 </div>
             </div>
@@ -651,9 +704,11 @@ import ErrorMessage from "../common/messages/ErrorMessage.vue";
 import {regex} from "../../RegularExpressions/regex"
 import {scrollToTop} from "../../commonMethods/commonMethod"
 import Loader from "../loader/Loader"
-import {successSwal} from "../../commonMethods/commonMethod"
+import {successSwal,warningSwal} from "../../commonMethods/commonMethod"
 // import dayjs from 'dayjs';
 // import {DeleteOutlined} from "@ant-design/icons-vue";
+
+import {messages} from "../../config/messages"
 export default {
     components: {
         // Demographics,
@@ -689,7 +744,7 @@ export default {
             contactType: [],
             contactTime: "",
             medicalRecordNumber: "",
-            country: "",
+            country: 19,
             state: "",
             city: "",
             zipCode: "",
@@ -783,28 +838,28 @@ export default {
         };
 
         const condition = () => {
-            if ( patients.value.addCondition == null && patients.value.addPatientReferals == null && patients.value.addPatientPhysician == null) {
-                store.dispatch("addCondition", {
-                    data: conditions,
-                    id: patients.value.addDemographic.id,
-                });
-                store.dispatch("addPatientReferals", {
-                    data: conditions,
-                    id: patients.value.addDemographic.id,
-                });
+            if ( patients.value.addCondition == null || patients.value.addPatientReferals == null || patients.value.addPatientPhysician == null) {
+                // store.dispatch("addCondition", {
+                //     data: conditions,
+                //     id: patients.value.addDemographic.id,
+                // });
+                // store.dispatch("addPatientReferals", {
+                //     data: conditions,
+                //     id: patients.value.addDemographic.id,
+                // });
                 if (conditions.checked == false) {
                     (conditions.name = conditions.physicianName),
                     (conditions.designation = conditions.physicianDesignation),
                     (conditions.email = conditions.physicianEmail),
                     (conditions.phoneNumber = conditions.physicianPhoneNumber),
                     (conditions.fax = conditions.physicianFax);
-                    store.dispatch("addPatientPhysician", {
+                    store.dispatch("addCondition", {
                         data: conditions,
                         id: patients.value.addDemographic.id,
                     })
                 }
                 if (conditions.checked == true) {
-                    store.dispatch("addPatientPhysician", {
+                    store.dispatch("addCondition", {
                         data: conditions,
                         id: patients.value.addDemographic.id,
                     });
@@ -812,32 +867,34 @@ export default {
             }
 
             if ( patients.value.addPatientReferals.id && patients.value.addPatientPhysician.id) {
-                store.dispatch("addCondition", {
-                    data: conditions,
-                    id: patients.value.addDemographic.id,
-                });
-                store.dispatch("updatePatientReferals", {
-                    data: conditions,
-                    id: patients.value.addDemographic.id,
-                    referalID: patients.value.addPatientReferals.id
-                });
+                // store.dispatch("addCondition", {
+                //     data: conditions,
+                //     id: patients.value.addDemographic.id,
+                // });
+                // store.dispatch("updatePatientReferals", {
+                //     data: conditions,
+                //     id: patients.value.addDemographic.id,
+                //     referalID: patients.value.addPatientReferals.id
+                // });
                 if (conditions.checked == false) {
                     (conditions.name = conditions.physicianName),
                     (conditions.designation = conditions.physicianDesignation),
                     (conditions.email = conditions.physicianEmail),
                     (conditions.phoneNumber = conditions.physicianPhoneNumber),
                     (conditions.fax = conditions.physicianFax);
-                    store.dispatch("updatePatientPhysician", {
+                    store.dispatch("updateCondition", {
                         data: conditions,
                         id: patients.value.addDemographic.id,
-                        physicianId: patients.value.addPatientPhysician.id
+                        physicianId: patients.value.addPatientPhysician.id,
+                        referalID: patients.value.addPatientReferals.id,
                     })
                 }
                 if (conditions.checked == true) {
-                    store.dispatch("updatePatientPhysician", {
+                    store.dispatch("updateCondition", {
                         data: conditions,
                         id: patients.value.addDemographic.id,
-                        physicianId: patients.value.addPatientPhysician.id
+                        physicianId: patients.value.addPatientPhysician.id,
+                        referalID: patients.value.addPatientReferals.id
                     });
                 }
             }
@@ -895,23 +952,37 @@ export default {
             ...demographics
         });
 
-        function closeModal() {
-            emit('closeModal', false)
-            let message = 'Patient successfully added!'
-            successSwal(message);
-            console.log(form)
+        function saveModal() {
+            emit('saveModal', false)
+            successSwal(messages.formSuccess);
             Object.assign(demographics, form);
             store.dispatch('patients')
             store.commit('resetCounter')
         }
 
+        function closeModal(){
+            warningSwal(messages.modalWarning).then((response) => {
+                if (response == true) {
+                    emit('saveModal', false)
+                    Object.assign(demographics, form);
+                    store.dispatch('patients')
+                    store.commit('resetCounter')
+                }else{
+                    emit('saveModal', true)
+                }
+            })
+        }
+
+
+       
         return {
+            closeModal,
+            warningSwal,
             form,
             successSwal,
-            closeModal,
+            saveModal,
             regex,
             scrollToTop,
-
             insuranceForm,
             insuranceData,
             parameter,

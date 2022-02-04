@@ -6,7 +6,7 @@ const communications = {
   reminder:'Reminder',
   call:'Call',
   dashboardView:'Dashboard View',
-  callPlanned:'Call Planned',
+  callPlanned:'Calls Planned',
   populateWaitingRoom:'Populate Waiting Room',
   start:'Start',
   communicationType:'Communication Type',
