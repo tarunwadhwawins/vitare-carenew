@@ -89,7 +89,7 @@
         </a-col>
         <a-col :span="24">
           <div class="steps-action">
-            <Button @is_click="handleCancel"/> 
+            <ModalButtons @is_click="handleCancel"/> 
             
           </div>
         </a-col>
@@ -104,12 +104,11 @@
   import { scrollToTop } from "../../commonMethods/commonMethod"
   import moment from 'moment';
   import dayjs, { Dayjs } from 'dayjs';
-  import { timeStamp } from '../../commonMethods/commonMethod'
-  import Button from "../common/button/ModalButtons"
+  import ModalButtons from "@/components/common/button/ModalButtons";
   export default {
     components: {
       ErrorMessage,
-      Button,
+      ModalButtons,
     },
     props:{
       staff:{
