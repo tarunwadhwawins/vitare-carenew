@@ -10,7 +10,7 @@
                 size="large">
                 <a-select-option value="" disabled>{{'Select Patient'}}</a-select-option>
                 <a-select-option v-for="patient in patientsList" :key="patient.id" :value="patient.id">{{
-                  patient.firstName+' '+patient.middleName+' '+patient.lastName }}</a-select-option>
+                  patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option>
               </a-select>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.patientId?errorMsg.patientId[0]:''" />
             </a-form-item>
@@ -23,7 +23,7 @@
               <a-select ref="select" v-if="staffList" v-model:value="appointmentForm.staffId" style="width: 100%"
                 size="large">
                 <a-select-option value="" disabled>{{'Select Staff'}}</a-select-option>
-                <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.name }}
+                <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}
                 </a-select-option>
               </a-select>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.staffId?errorMsg.staffId[0]:''" />
@@ -157,13 +157,14 @@
         note: '',
       });
       const sendMessage = () => {
-
+        const date = appointmentForm.startDate
+   const  timeFormat = (moment(appointmentForm.startTime)).format('HH:mm');
 
         store.dispatch('addAppointment', {
           patientId: appointmentForm.patientId,
           staffId: appointmentForm.staffId,
-          startDate: moment(appointmentForm.startDate+" "(moment(appointmentForm.startTime)).format('HH:mm')).format("X"),
-          startTime: (moment(appointmentForm.startTime)).format('HH:mm'),
+          startDate: moment(date+" "+timeFormat).format("X"),
+          startTime: timeFormat,
           durationId: appointmentForm.durationId,
           appointmentTypeId: appointmentForm.typeOfVisit,
           note: appointmentForm.note
