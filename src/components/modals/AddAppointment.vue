@@ -1,6 +1,6 @@
 <template>
   <a-modal width="1000px" :title="$t('appointmentCalendar.addAppointment.addAppointment')" centered>
-    <a-form :model="appointmentForm" layout="vertical" @finish="sendMessage" @finishFailed="onFinishFailed">
+    <a-form  ref="formRef" :model="appointmentForm" layout="vertical" @finish="sendMessage" @finishFailed="onFinishFailed">
       <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
           <div class="form-group">
@@ -119,7 +119,7 @@
       },
     },
     setup(props, { emit }) {
-      
+      const formRef = ref();
       const store = useStore()
       const disabledDate = current => {
       // Can not select days before today and today
@@ -184,6 +184,7 @@
       }) 
       const form = reactive({ ...appointmentForm })
       const handleCancel = () => {
+        formRef.value.resetFields();
         Object.assign(appointmentForm, form)
         //emit('is-visible', false);
       };
@@ -201,6 +202,7 @@
         handleCancel,
         moment,
         disabledDate,
+        formRef
       };
     },
   };
