@@ -125,14 +125,14 @@ export default {
         store.dispatch('updateGlobalCode', {id, data}).then(() => {
           store.dispatch('globalCodesList')
         })
-        emit('is-visible', false);
+        emit('close-modal');
       }
       else {
         globalCodeForm.globalCodeCategory = codecategoryId.value;
         store.dispatch('addGlobalCode', globalCodeForm).then(() => {
           store.dispatch('globalCodesList')
         })
-        emit('is-visible', false);
+        emit('close-modal');
       }
     }
     return {
