@@ -342,7 +342,7 @@ export const totalPatientsChartSuccess = (state, count) => {
     },
     series: [
       {
-        name: "Patients",
+        name: "New Patients",
         data: data,
       },
     ],
@@ -494,7 +494,7 @@ export const appointmentChartSuccess = (state, count) => {
     },
     series: [
       {
-        name: "Appointment",
+        name: "New Appointment",
         data: data,
       },
     ],
