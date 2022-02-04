@@ -8,7 +8,7 @@
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.patient')+' '+$t('global.validation')  }]">
               <a-select ref="select" v-if="patientsList" v-model:value="appointmentForm.patientId" style="width: 100%"
                 size="large">
-                <a-select-option value="" disabled>{{'Select Patient'}}</a-select-option>
+                <a-select-option value="" hidden>{{'Select Patient'}}</a-select-option>
                 <a-select-option v-for="patient in patientsList" :key="patient.id" :value="patient.id">{{
                   patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option>
               </a-select>
@@ -22,7 +22,7 @@
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.staff')+' '+$t('global.validation')  }]">
               <a-select ref="select" v-if="staffList" v-model:value="appointmentForm.staffId" style="width: 100%"
                 size="large">
-                <a-select-option value="" disabled>{{'Select Staff'}}</a-select-option>
+                <a-select-option value="" hidden>{{'Select Staff'}}</a-select-option>
                 <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}
                 </a-select-option>
               </a-select>
@@ -107,6 +107,7 @@
   import { scrollToTop } from "../../commonMethods/commonMethod"
   import moment from 'moment';
   import dayjs, { Dayjs } from 'dayjs';
+  import { timeStamp } from '../../commonMethods/commonMethod'
   export default {
     components: {
       ErrorMessage,
@@ -163,7 +164,7 @@
         store.dispatch('addAppointment', {
           patientId: appointmentForm.patientId,
           staffId: appointmentForm.staffId,
-          startDate: moment(date+" "+timeFormat).format("X"),
+          startDate: timeStamp(date+" "+timeFormat),
           startTime: timeFormat,
           durationId: appointmentForm.durationId,
           appointmentTypeId: appointmentForm.typeOfVisit,

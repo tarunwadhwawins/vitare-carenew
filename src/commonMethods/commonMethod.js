@@ -117,3 +117,6 @@ export function annotations(xname,seriesIndex,borderColor,offsetY,color,backgrou
     ],
   }
 }
+export function timeStamp(date){
+  return moment(date).format("X")
+}

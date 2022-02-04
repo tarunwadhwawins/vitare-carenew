@@ -194,7 +194,7 @@ export const financialSuccess = (state) => {
   };
 }
 export const totalPatientsChartSuccess = (state, count) => {
-
+  console.log("total",state.timeLineButton)
   let categories = ''
   let format = ''
   let data = ''
@@ -285,7 +285,7 @@ export const totalPatientsChartSuccess = (state, count) => {
     data = count.map((item) => {
       return item.total
     })
-  } else {
+  } else{
     let month = []
     for (let k = 1; k < 13; k++) {
       month.push(moment(moment().toDate()).add(k, "month").startOf("month").format('MMMM'))
@@ -303,17 +303,17 @@ export const totalPatientsChartSuccess = (state, count) => {
         newPatient.push(obj);
       }
     })
-    count = newPatient;
-    type = "datetime"
-    categories = count.map((item) => {
+    const newAppointmentcount = newPatient;
+    type = "month"
+    categories = newAppointmentcount.map((item) => {
       return item.duration
     })
-    format = "MM,yyyy"
-    data = count.map((item) => {
+    format = "MM"
+    data = newAppointmentcount.map((item) => {
       return item.total
     })
+    
   } 
-
   // const check =count.map((item) => { 
   //   return item.data.map((data) =>{ return data.month})})
   //   const month=['January','February','March','April','May','June','July','August','September','October','November','December']
@@ -442,16 +442,17 @@ export const appointmentChartSuccess = (state, count) => {
     data = count.map((item) => {
       return item.total
     })
-  } else {
+  } else if(state.timeLineButton == 125){
     //const month=['February','March','April','May','June','July','August','September','October','November','December','January']
-    let newAppointment = [];
-    let month = []
+    const newAppointment = [];
+    const month = []
     for (let k = 1; k < 13; k++) {
       month.push(moment(moment().toDate()).add(k, "month").startOf("month").format('MMMM'))
     }
 
     month.forEach((item,i)=>{
-      let obj = count.find(o => o.duration === item);
+      
+      var obj = count.find(o => o.duration === item);
       if (typeof obj === 'undefined') {
         let value_obj = {
           "duration": item,
@@ -462,16 +463,21 @@ export const appointmentChartSuccess = (state, count) => {
         newAppointment.push(obj);
       }
     })
-    count = newAppointment;
-    type = "datetime"
-    categories = count.map((item) => {
+    const newAppointmentcount = newAppointment;
+    type = "month"
+    categories = newAppointmentcount.map((item) => {
       return item.duration
     })
-    format = "MM,yyyy"
-    data = count.map((item) => {
+    format = "MM"
+    data = newAppointmentcount.map((item) => {
       return item.total
     })
+  }else{
+    categories = null
+    format = "MM,yyyy"
+    data = null
   }
+ 
   state.appointmentChartValue = {
     chartOptions: {
       chart: {
