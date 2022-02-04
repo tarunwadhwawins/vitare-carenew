@@ -14,12 +14,12 @@
         </a-col>
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('patient.devices.inventory')" name="inventory" :rules="[{ required: true, message: $t('patient.devices.inventory')+' '+$t('global.validation') }]">
-                    <!-- <a-select ref="select" v-model:value="device.inventory" style="width: 100%" size="large" @change="handleChange">
+                <a-form-item  :label="$t('patient.devices.inventory')" name="inventory" :rules="[{ required: true, message: $t('patient.devices.inventory')+' '+$t('global.validation') }]">
+                    <a-select v-show="patients.inventoryList.length!=0" ref="select" v-model:value="device.inventory" style="width: 100%" size="large" @change="handleChange">
                         <a-select-option value="" disabled>{{'Select Inventory'}}</a-select-option>
-                        <a-select-option v-for="device in globalCode.deviceType.globalCode" :key="device.id" :value="device.id">{{device.name}}</a-select-option>
-                    </a-select> -->
-                    <a-select v-show="patients.inventoryList.length!=0" v-model:value="device.inventory"  placeholder="Select a Inventory" style="width: 200px" :options="patients.inventoryList.map((item) => ({ label: item.modelNumber, value: item.id }))"  :filter-option="filterOption" @focus="handleFocus" @blur="handleBlur" @change="handleChange"></a-select>
+                        <a-select-option v-for="device in patients.inventoryList" :key="device.id" :value="device.id">{{device.modelNumber}}</a-select-option>
+                    </a-select>
+                    <!-- <a-select v-show="patients.inventoryList.length!=0" v-model:value="device.inventory" show-search  placeholder="Select a Inventory" style="width: 200px" :options="patients.inventoryList.map((item) => ({ label: item.modelNumber, value: item.id }))"  :filter-option="filterOption" @focus="handleFocus" @blur="handleBlur" @change="handleChange"></a-select> -->
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" />
                 </a-form-item>
             </div>
@@ -29,7 +29,7 @@
                 <a-form-item :label="$t('patient.devices.modelNo')" name="modelNumber" :rules="[{ required: false, message: $t('patient.devices.modelNo')+' '+$t('global.validation') }]">
                     <!-- <a-input v-model:value="device.modelNumber" size="large" /> -->
                     <div v-for="inventory in patients.inventoryList" :key="inventory.id">
-                        <a-input size="large"    :name="device.modelNumber" :value="device.inventory==inventory.id?device.modelNumber=inventory.modelNumber:''" disabled />
+                        <a-input size="large" v-if="device.inventory==inventory.id"   :name="device.modelNumber" :value="device.modelNumber=inventory.modelNumber" disabled />
                     </div>
                     
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.modelNumber?errorMsg.modelNumber[0]:''" />
@@ -41,7 +41,7 @@
                 <a-form-item :label="$t('patient.devices.serialNo')" name="serialNumber" :rules="[{ required: false, message: $t('patient.devices.serialNo')+' '+$t('global.validation') }]">
                     <!-- <a-input v-model:value="device.serialNumber" size="large" /> -->
                     <div v-for="inventory in patients.inventoryList" :key="inventory.id">
-                        <a-input size="large"   :name="device.serialNumber" :value="device.inventory==inventory.id?device.serialNumber=inventory.serialNumber:''" disabled />
+                        <a-input size="large" v-if="device.inventory==inventory.id"   :name="device.serialNumber" :value="device.serialNumber=inventory.serialNumber" disabled />
                     </div>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.serialNumber?errorMsg.serialNumber[0]:''" />
                 </a-form-item>
@@ -52,7 +52,7 @@
                 <a-form-item :label="$t('patient.devices.MACAddress')" name="macAddress" :rules="[{ required: false, message: $t('patient.devices.MACAddress')+' '+$t('global.validation') }]">
                     <!-- <a-input v-model:value="device.macAddress" size="large" /> -->
                     <div v-for="inventory in patients.inventoryList" :key="inventory.id">
-                        <a-input size="large"   :name="device.macAddress" :value="device.inventory==inventory.id?device.macAddress=inventory.macAddress:''" disabled />
+                        <a-input size="large" v-if="device.inventory==inventory.id"   :name="device.macAddress" :value="device.macAddress=inventory.macAddress" disabled />
                     </div>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.macAddress?errorMsg.macAddress[0]:''" />
                 </a-form-item>
@@ -184,10 +184,14 @@ export default defineComponent({
 
         function handleInventory(id){
             store.dispatch('inventoryList',{isAvailable:1,deviceType:id})
+            device.inventory=null
         }
         // const deviceFailed = () => {
         //     errorSwal(messages.fieldsRequired)
         // };
+
+      
+
         
         return {
             // deviceFailed,
