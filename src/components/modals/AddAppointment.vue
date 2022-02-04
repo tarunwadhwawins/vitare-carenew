@@ -162,7 +162,7 @@
         store.dispatch('addAppointment', {
           patientId: appointmentForm.patientId,
           staffId: appointmentForm.staffId,
-          startDate: appointmentForm.startDate,
+          startDate: moment(appointmentForm.startDate+" "(moment(appointmentForm.startTime)).format('HH:mm')).format("X"),
           startTime: (moment(appointmentForm.startTime)).format('HH:mm'),
           durationId: appointmentForm.durationId,
           appointmentTypeId: appointmentForm.typeOfVisit,
