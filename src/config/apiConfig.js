@@ -50,6 +50,7 @@ export const API_ENDPOINTS = {
 
     // inventory
     inventory: 'inventory',
+    model: 'model',
 
     
 
