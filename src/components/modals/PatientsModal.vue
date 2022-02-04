@@ -839,27 +839,27 @@ export default {
 
         const condition = () => {
             if ( patients.value.addCondition == null || patients.value.addPatientReferals == null || patients.value.addPatientPhysician == null) {
-                store.dispatch("addCondition", {
-                    data: conditions,
-                    id: patients.value.addDemographic.id,
-                });
-                store.dispatch("addPatientReferals", {
-                    data: conditions,
-                    id: patients.value.addDemographic.id,
-                });
+                // store.dispatch("addCondition", {
+                //     data: conditions,
+                //     id: patients.value.addDemographic.id,
+                // });
+                // store.dispatch("addPatientReferals", {
+                //     data: conditions,
+                //     id: patients.value.addDemographic.id,
+                // });
                 if (conditions.checked == false) {
                     (conditions.name = conditions.physicianName),
                     (conditions.designation = conditions.physicianDesignation),
                     (conditions.email = conditions.physicianEmail),
                     (conditions.phoneNumber = conditions.physicianPhoneNumber),
                     (conditions.fax = conditions.physicianFax);
-                    store.dispatch("addPatientPhysician", {
+                    store.dispatch("addCondition", {
                         data: conditions,
                         id: patients.value.addDemographic.id,
                     })
                 }
                 if (conditions.checked == true) {
-                    store.dispatch("addPatientPhysician", {
+                    store.dispatch("addCondition", {
                         data: conditions,
                         id: patients.value.addDemographic.id,
                     });
@@ -867,32 +867,34 @@ export default {
             }
 
             if ( patients.value.addPatientReferals.id && patients.value.addPatientPhysician.id) {
-                store.dispatch("addCondition", {
-                    data: conditions,
-                    id: patients.value.addDemographic.id,
-                });
-                store.dispatch("updatePatientReferals", {
-                    data: conditions,
-                    id: patients.value.addDemographic.id,
-                    referalID: patients.value.addPatientReferals.id
-                });
+                // store.dispatch("addCondition", {
+                //     data: conditions,
+                //     id: patients.value.addDemographic.id,
+                // });
+                // store.dispatch("updatePatientReferals", {
+                //     data: conditions,
+                //     id: patients.value.addDemographic.id,
+                //     referalID: patients.value.addPatientReferals.id
+                // });
                 if (conditions.checked == false) {
                     (conditions.name = conditions.physicianName),
                     (conditions.designation = conditions.physicianDesignation),
                     (conditions.email = conditions.physicianEmail),
                     (conditions.phoneNumber = conditions.physicianPhoneNumber),
                     (conditions.fax = conditions.physicianFax);
-                    store.dispatch("updatePatientPhysician", {
+                    store.dispatch("updateCondition", {
                         data: conditions,
                         id: patients.value.addDemographic.id,
-                        physicianId: patients.value.addPatientPhysician.id
+                        physicianId: patients.value.addPatientPhysician.id,
+                        referalID: patients.value.addPatientReferals.id,
                     })
                 }
                 if (conditions.checked == true) {
-                    store.dispatch("updatePatientPhysician", {
+                    store.dispatch("updateCondition", {
                         data: conditions,
                         id: patients.value.addDemographic.id,
-                        physicianId: patients.value.addPatientPhysician.id
+                        physicianId: patients.value.addPatientPhysician.id,
+                        referalID: patients.value.addPatientReferals.id
                     });
                 }
             }

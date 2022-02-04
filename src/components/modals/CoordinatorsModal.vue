@@ -1,5 +1,5 @@
 <template>
-<a-modal max-width="1140px" width="100%" :title="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" centered :footer="null">
+<a-modal max-width="1140px" width="100%" :title="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" centered :footer="null" :maskClosable="false">
     <a-row :gutter="24">
         <a-col :span="24">
             <a-steps :current="current">
@@ -91,9 +91,7 @@
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                         <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
-                        <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
-                            {{$t('global.done')}}
-                        </a-button>
+                        
                     </div>
 
                 </a-form>
@@ -104,9 +102,6 @@
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
-                    <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
-                        {{$t('global.done')}}
-                    </a-button>
                 </div>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Availability'">
@@ -114,9 +109,7 @@
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
-                    <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
-                        {{$t('global.done')}}
-                    </a-button>
+                   
                 </div>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Roles'">
@@ -124,9 +117,6 @@
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
-                    <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
-                        {{$t('global.done')}}
-                    </a-button>
                 </div>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Documents'">
@@ -134,9 +124,6 @@
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
-                    <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
-                        {{$t('global.done')}}
-                    </a-button>
                 </div>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Providers'">
@@ -145,7 +132,7 @@
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
                     <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
-                        {{$t('global.done')}}
+                        {{$t('global.save')}}
                     </a-button>
                 </div>
             </div>
@@ -186,7 +173,7 @@ export default {
         ErrorMessage,
     },
     setup() {
-        const current = ref(1);
+        const current = ref(0);
         const store = useStore();
         const personalInfoData = reactive({
             firstName: '',
