@@ -89,10 +89,7 @@
         </a-col>
         <a-col :span="24">
           <div class="steps-action">
-            <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-              <a-button @click="handleCancel" html-type="reset">{{$t('global.clear')}}</a-button>
-              <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
-            </a-form-item>
+            <Button @is_click="handleCancel"/> 
             
           </div>
         </a-col>
@@ -107,9 +104,11 @@
   import { scrollToTop } from "../../commonMethods/commonMethod"
   import moment from 'moment';
   import dayjs, { Dayjs } from 'dayjs';
+  import Button from "../common/button/ModalButtons"
   export default {
     components: {
       ErrorMessage,
+      Button,
     },
     props:{
       staff:{
