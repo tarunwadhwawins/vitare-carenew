@@ -5,7 +5,7 @@
         <a-col :sm="8" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('globalCodes.category')" name="globalCodeCategory" :rules="[{ required: true, message: $t('globalCodes.category')+' '+$t('global.validation')  }]">
-              <a-auto-complete
+              <!-- <a-auto-complete
                 :options="categories"
                 :filter-option="filterOption"
                 v-if="categories"
@@ -13,9 +13,19 @@
                 v-model:value="globalCodeForm.globalCodeCategory"
                 style="width: 100%"
                 size="large">
-                <!-- <a-select-option value="" disabled>{{'Select Category'}}</a-select-option>
-                <a-select-option v-for="category in globalCodeCategories" :key="category.id" :value="category.id">{{ category.name }}</a-select-option> -->
-              </a-auto-complete>
+              </a-auto-complete> -->
+              <a-select
+                v-if="globalCodeCategories"
+                ref="select"
+                v-model:value="globalCodeForm.globalCodeCategory"
+                style="width: 100%"
+                size="large"
+                @focus="focus"
+                :disabled="disabled"
+                @change="handleChange">
+                <a-select-option value="" disabled>{{'Select Category'}}</a-select-option>
+                <a-select-option v-for="category in globalCodeCategories" :key="category.id" :value="category.id">{{ category.name }}</a-select-option>
+              </a-select>
             </a-form-item>
           </div>
         </a-col>
@@ -130,6 +140,7 @@ export default {
     }
     return {
       filterOption,
+      globalCodeCategories,
       title,
       globalCodeForm,
       submitForm,
