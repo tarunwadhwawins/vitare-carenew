@@ -7,7 +7,7 @@
             <a-form-item :label="$t('globalCodes.category')" name="globalCodeCategory" :rules="[{ required: true, message: $t('globalCodes.category')+' '+$t('global.validation')  }]">
               <AutoComplete
                 :options="categories"
-                @on-select="onSelectOption($event)"
+                @on-select="onSelectOption"
                 v-if="categories"
                 v-model:value="globalCodeForm.globalCodeCategory" />
             </a-form-item>
@@ -66,10 +66,6 @@ export default {
       emit('is-visible', false);
     };
 
-    const filterOption = (input, option) => {
-      return option.value
-    };
-    
     const codecategoryId = ref(null);
     const onSelectOption = (selected) => {
       categories.value.forEach(category => {
@@ -133,7 +129,6 @@ export default {
       }
     }
     return {
-      filterOption,
       onSelectOption,
       globalCodeCategories,
       title,
