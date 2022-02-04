@@ -53,6 +53,8 @@ const global = {
   startDate:'Fecha de inicio',
   endDate:'Fecha final',
   download:'Descargar',
+  save:'Ahorrar',
+  clear:'Clara'
 
 }
 

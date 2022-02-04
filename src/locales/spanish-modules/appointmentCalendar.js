@@ -11,7 +11,8 @@ const appointmentCalendar = {
       staff:'Personal',
       startDate:'Fecha de inicio',
       typeOfVisit:'Tipo de visita',
-      note:'Nota'
+      note:'Nota',
+     
   }
 }
 

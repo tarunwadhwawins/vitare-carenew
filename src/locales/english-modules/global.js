@@ -60,7 +60,8 @@ const global = {
   download:'Download',
   category:'Category',
   note:'Note',
-  save:'Save'
+  save:'Save',
+  clear:'Clear'
 
 }
 
