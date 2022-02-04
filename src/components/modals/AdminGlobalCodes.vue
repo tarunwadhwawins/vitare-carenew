@@ -5,7 +5,7 @@
         <a-col :sm="8" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('globalCodes.category')" name="globalCodeCategory" :rules="[{ required: true, message: $t('globalCodes.category')+' '+$t('global.validation')  }]">
-              <a-auto-complete
+              <!-- <a-auto-complete
                 :options="categories"
                 :filter-option="filterOption"
                 v-if="categories"
@@ -13,9 +13,19 @@
                 v-model:value="globalCodeForm.globalCodeCategory"
                 style="width: 100%"
                 size="large">
-                <!-- <a-select-option value="" disabled>{{'Select Category'}}</a-select-option>
-                <a-select-option v-for="category in globalCodeCategories" :key="category.id" :value="category.id">{{ category.name }}</a-select-option> -->
-              </a-auto-complete>
+              </a-auto-complete> -->
+              <a-select
+                v-if="globalCodeCategories"
+                ref="select"
+                v-model:value="globalCodeForm.globalCodeCategory"
+                style="width: 100%"
+                size="large"
+                @focus="focus"
+                :disabled="disabled"
+                @change="handleChange">
+                <a-select-option value="" disabled>{{'Select Category'}}</a-select-option>
+                <a-select-option v-for="category in globalCodeCategories" :key="category.id" :value="category.id">{{ category.name }}</a-select-option>
+              </a-select>
             </a-form-item>
           </div>
         </a-col>
@@ -41,12 +51,7 @@
           </div>
         </a-col>
         <a-col :sm="24" :span="24">
-          <div class="steps-action">
-            <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-              <a-button @click="handleCancel" html-type="reset">{{$t('global.cancel')}}</a-button>
-              <a-button type="primary" html-type="submit">{{$t('global.ok')}}</a-button>
-            </a-form-item>
-          </div>
+          <ModalButtons/>
         </a-col>
       </a-row>
     </a-form>
@@ -55,7 +60,11 @@
 <script>
 import { ref, reactive, computed } from "vue";
 import { useStore } from "vuex"
+import ModalButtons from "@/components/common/button/ModalButtons";
 export default {
+  components: {
+    ModalButtons
+  },
   props: {
     isAdd: {
       type: Boolean
@@ -123,14 +132,15 @@ export default {
       }
       else {
         console.log('globalCodeForm', globalCodeForm)
-        // store.dispatch('addGlobalCode', globalCodeForm).then(() => {
-        //   store.dispatch('globalCodesList')
-        // })
-        // emit('is-visible', false);
+        store.dispatch('addGlobalCode', globalCodeForm).then(() => {
+          store.dispatch('globalCodesList')
+        })
+        emit('is-visible', false);
       }
     }
     return {
       filterOption,
+      globalCodeCategories,
       title,
       globalCodeForm,
       submitForm,
