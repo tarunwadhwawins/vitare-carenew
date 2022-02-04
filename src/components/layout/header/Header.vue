@@ -189,7 +189,7 @@
       </div>
     </div>
     <!---->
-    <AddAppointment v-model:visible="appointmentModal" @ok="apptOk" />
+    <AddAppointment v-model:visible="appointmentModal" @is-visible="showModal($event)" @ok="apptOk" />
     <TasksModal v-model:visible="TasksModal" @ok="taskOk" />
     <PatientsModal v-model:visible="PatientsModal" @ok="patientOk" @saveModal="closeAppointModal($event)" />
     <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" />
@@ -240,6 +240,9 @@ export default defineComponent({
     const addAppt = () => {
       appointmentModal.value = true;
     };
+    function showModal (event){
+      appointmentModal.value =event
+    }
     const apptOk = () => {
       appointmentModal.value = false;
     };
@@ -308,7 +311,7 @@ export default defineComponent({
       startOk,
 
       handleOk,
-
+      showModal
       
     };
   },
