@@ -17,8 +17,8 @@
       },
     },
     setup(props, {emit}) {
-      const filterOption = (option) => {
-        return option.value
+      const filterOption = (input, option) => {
+        return option.value.toUpperCase().indexOf(input.toUpperCase()) >= 0;
       };
       const onSelectOption = (selected) => {
         emit('on-select', selected);
