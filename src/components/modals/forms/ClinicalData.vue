@@ -1,5 +1,5 @@
 <template>
-<a-form :model="clinicals" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="clinicalHistory" @finishFailed="onFinishFailed">
+<a-form :model="clinicals" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="clinicalHistory" @finishFailed="clinicalDataFailed">
     <div class="form-group">
         <a-form-item :label="$t('patient.clinicalData.medicalHistory')" name="history" :rules="[{ required: true, message: $t('patient.clinicalData.medicalHistory')+' '+$t('global.validation') }]">
             <a-input v-model:value="clinicals.history" size="large" />
@@ -110,7 +110,7 @@ import {
 } from "vuex"
 import Loader from "../../loader/Loader.vue"
 import {
-    warningSwal
+    warningSwal,errorSwal
 } from "../../../commonMethods/commonMethod"
 import { messages } from "../../../config/messages";
 export default defineComponent({
@@ -198,7 +198,11 @@ export default defineComponent({
                 }
             })
         }
+        // const clinicalDataFailed = () => {
+        //     errorSwal(messages.fieldsRequired)
+        // };
         return {
+            // clinicalDataFailed,
             deleteClinicalData,
             clinicalHistory,
             clinicalMedicat,

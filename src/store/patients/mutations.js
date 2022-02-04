@@ -266,7 +266,12 @@ export const addDemographic = (state, data) => {
  
 
  export const devices = (state, data) => {
-    state.devices = data
+
+    state.devices = data.map(element => {
+      element.status = element.status == 1 ? true : false
+      return element;
+    })
+
     state.devicesColumns =[
         {
           title: "Device Type",

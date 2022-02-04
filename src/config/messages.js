@@ -3,6 +3,7 @@ export const messages={
 
     deleteWarning:'Do you want to delete ?',
     modalWarning:'Your data will be loss!',
-    formSuccess:'Data successfully added!'
+    formSuccess:'Data successfully added!',
+    fieldsRequired:'Please fill all required fields.'
 
 }
