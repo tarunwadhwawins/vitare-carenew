@@ -1,6 +1,6 @@
 <template>
   <a-modal width="1000px" :title="$t('appointmentCalendar.addAppointment.addAppointment')" centered>
-    <a-form :model="appointmentForm" layout="vertical" @finish="sendMessage" @finishFailed="onFinishFailed">
+    <a-form  ref="formRef" :model="appointmentForm" layout="vertical" @finish="sendMessage" @finishFailed="onFinishFailed">
       <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
           <div class="form-group">
@@ -8,7 +8,7 @@
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.patient')+' '+$t('global.validation')  }]">
               <a-select ref="select" v-if="patientsList" v-model:value="appointmentForm.patientId" style="width: 100%"
                 size="large">
-                <a-select-option value="" disabled>{{'Select Patient'}}</a-select-option>
+                <a-select-option value="" hidden>{{'Select Patient'}}</a-select-option>
                 <a-select-option v-for="patient in patientsList" :key="patient.id" :value="patient.id">{{
                   patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option>
               </a-select>
@@ -22,7 +22,7 @@
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.staff')+' '+$t('global.validation')  }]">
               <a-select ref="select" v-if="staffList" v-model:value="appointmentForm.staffId" style="width: 100%"
                 size="large">
-                <a-select-option value="" disabled>{{'Select Staff'}}</a-select-option>
+                <a-select-option value="" hidden>{{'Select Staff'}}</a-select-option>
                 <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}
                 </a-select-option>
               </a-select>
@@ -89,10 +89,7 @@
         </a-col>
         <a-col :span="24">
           <div class="steps-action">
-            <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-              <a-button @click="handleCancel" html-type="reset">{{$t('global.clear')}}</a-button>
-              <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
-            </a-form-item>
+            <ModalButtons @is_click="handleCancel"/> 
             
           </div>
         </a-col>
@@ -107,9 +104,11 @@
   import { scrollToTop } from "../../commonMethods/commonMethod"
   import moment from 'moment';
   import dayjs, { Dayjs } from 'dayjs';
+  import ModalButtons from "@/components/common/button/ModalButtons";
   export default {
     components: {
       ErrorMessage,
+      ModalButtons,
     },
     props:{
       staff:{
@@ -120,7 +119,7 @@
       },
     },
     setup(props, { emit }) {
-      
+      const formRef = ref();
       const store = useStore()
       const disabledDate = current => {
       // Can not select days before today and today
@@ -163,7 +162,7 @@
         store.dispatch('addAppointment', {
           patientId: appointmentForm.patientId,
           staffId: appointmentForm.staffId,
-          startDate: moment(date+" "+timeFormat).format("X"),
+          startDate: timeStamp(date+" "+timeFormat),
           startTime: timeFormat,
           durationId: appointmentForm.durationId,
           appointmentTypeId: appointmentForm.typeOfVisit,
@@ -185,6 +184,7 @@
       }) 
       const form = reactive({ ...appointmentForm })
       const handleCancel = () => {
+        formRef.value.resetFields();
         Object.assign(appointmentForm, form)
         //emit('is-visible', false);
       };
@@ -202,6 +202,7 @@
         handleCancel,
         moment,
         disabledDate,
+        formRef
       };
     },
   };

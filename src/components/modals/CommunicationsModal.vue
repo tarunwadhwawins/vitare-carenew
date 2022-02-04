@@ -129,12 +129,7 @@
           </div>
         </a-col>
         <a-col :span="24">
-          <div class="steps-action">
-            <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-              <a-button @click="handleCancel" html-type="reset">{{$t('global.cancel')}}</a-button>
-              <a-button type="primary" html-type="submit">{{$t('global.ok')}}</a-button>
-            </a-form-item>
-          </div>
+          <ModalButtons/>
         </a-col>
       </a-row>
     </a-form>
@@ -143,7 +138,11 @@
 <script>
   import { ref, reactive, watchEffect, computed } from "vue";
   import { useStore } from "vuex"
+  import ModalButtons from "@/components/common/button/ModalButtons";
   export default {
+    components: {
+      ModalButtons
+    },
     setup(props, {emit}) {
       const store = useStore()
       const toggleTo = ref(true);
@@ -188,25 +187,14 @@
 
       const sendMessage = () => {
         messageForm.entityType = document.getElementById("entityType").value
-        // console.log('entityType', document.getElementById("entityType").value)
-        // console.log('Message Form', messageForm)
         store.dispatch('addCommunication', messageForm).then(() => {
           store.dispatch('communicationsList', 1)
         })
         emit('is-visible', false);
       }
 
-     /*  const onFinishFailed = errorInfo => {
-        console.log('Failed:', errorInfo);
-      }; */
-
       const patientChange = (value) => {
         store.dispatch('patientDetails', value);
-        // const patientDetails = computed(() => {
-        //   return store.state.communications.patientDetails;
-        // });
-        // console.log('Patient Email', patientDetails.value);
-        // messageForm.to = patientDetails.value.email;
       };
       
       return {
@@ -214,7 +202,6 @@
         patientChange,
         handleCancel,
         sendMessage,
-        // onFinishFailed,
         patientsList,
         staffList,
         taskPriority,

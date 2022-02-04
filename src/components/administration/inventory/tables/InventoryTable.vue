@@ -14,7 +14,7 @@
         <template #title>
           <span>Delete</span>
         </template>
-        <span class="icons"><DeleteOutlined /></span>
+        <span class="icons"><DeleteOutlined @click="deleteInventory(record.id)" /></span>
       </a-tooltip>
     </template>
     <template #isActive="{record}">
@@ -27,7 +27,8 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { watchEffect, computed } from "vue";
 import { useStore } from "vuex";
-// import swal from 'sweetalert2';
+import { warningSwal } from "../../../../commonMethods/commonMethod"
+import { messages } from '../../../../config/messages';
 export default {
   components: {
     DeleteOutlined,
@@ -53,6 +54,16 @@ export default {
       };
       store.dispatch('updateInventory', {id, data}).then(() => {
         store.dispatch('inventoriesList')
+      })
+    }
+
+    const deleteInventory = (id) => {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          store.dispatch('deleteInventory', id).then(() => {
+            store.dispatch('inventoriesList')
+          })
+        }
       })
     }
 
@@ -116,6 +127,7 @@ export default {
     ];
     
     return {
+      deleteInventory,
       editInventory,
       updateStatus,
       inventoryColumns,

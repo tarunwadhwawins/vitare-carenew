@@ -1,21 +1,15 @@
 <template>
   <a-modal max-width="1140px" width="100%" :title="title">
-    <a-form :model="globalCodeForm" layout="vertical" @finish="submitForm">
+    <a-form ref="formRef" :model="globalCodeForm" layout="vertical" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :sm="8" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('globalCodes.category')" name="globalCodeCategory" :rules="[{ required: true, message: $t('globalCodes.category')+' '+$t('global.validation')  }]">
-              <a-auto-complete
+              <AutoComplete
                 :options="categories"
-                :filter-option="filterOption"
+                @on-select="onSelectOption"
                 v-if="categories"
-                ref="select"
-                v-model:value="globalCodeForm.globalCodeCategory"
-                style="width: 100%"
-                size="large">
-                <!-- <a-select-option value="" disabled>{{'Select Category'}}</a-select-option>
-                <a-select-option v-for="category in globalCodeCategories" :key="category.id" :value="category.id">{{ category.name }}</a-select-option> -->
-              </a-auto-complete>
+                v-model:value="globalCodeForm.globalCodeCategory" />
             </a-form-item>
           </div>
         </a-col>
@@ -41,12 +35,7 @@
           </div>
         </a-col>
         <a-col :sm="24" :span="24">
-          <div class="steps-action">
-            <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-              <a-button @click="handleCancel" html-type="reset">{{$t('global.cancel')}}</a-button>
-              <a-button type="primary" html-type="submit">{{$t('global.ok')}}</a-button>
-            </a-form-item>
-          </div>
+          <ModalButtons @is_click="handleClear"/>
         </a-col>
       </a-row>
     </a-form>
@@ -55,7 +44,13 @@
 <script>
 import { ref, reactive, computed } from "vue";
 import { useStore } from "vuex"
+import ModalButtons from "@/components/common/button/ModalButtons";
+import AutoComplete from "@/components/common/input/AutoComplete";
 export default {
+  components: {
+    ModalButtons,
+    AutoComplete
+  },
   props: {
     isAdd: {
       type: Boolean
@@ -63,6 +58,7 @@ export default {
   },
   setup(props, {emit}) {
     const store = useStore()
+    const formRef = ref()
     const checked = ref([false]);
     const title = props.isAdd ? "Add Global Code" : "Edit Global Code";
     const isEdit = props.isAdd ? false : true;
@@ -71,8 +67,13 @@ export default {
       emit('is-visible', false);
     };
 
-    const filterOption = (input, option) => {
-      return option.value.toUpperCase().indexOf(input.toUpperCase()) >= 0;
+    const codecategoryId = ref(null);
+    const onSelectOption = (selected) => {
+      categories.value.forEach(category => {
+        if(category.value == selected) {
+          codecategoryId.value = category.id
+        }
+      });
     };
 
     const globalCodeDetails = computed(() => {
@@ -103,10 +104,16 @@ export default {
     globalCodeCategories.value.forEach(element => {
       categories.value.push({
         value: element.name,
+        id: element.id,
       })
     });
-    console.log('categories', categories.value)
     
+    const form = reactive({ ...globalCodeForm })
+    const handleClear = () => {
+      formRef.value.resetFields();
+      Object.assign(globalCodeForm, form)
+    }
+
     const submitForm = () => {
       if(isEdit) {
         const data = {
@@ -115,22 +122,24 @@ export default {
           "status": globalCodeForm.status,
         }
         const id = globalCodeDetails.value.id;
-        console.log('globalCodeForm', id)
         store.dispatch('updateGlobalCode', {id, data}).then(() => {
           store.dispatch('globalCodesList')
         })
-        emit('is-visible', false);
+        emit('close-modal');
       }
       else {
-        console.log('globalCodeForm', globalCodeForm)
-        // store.dispatch('addGlobalCode', globalCodeForm).then(() => {
-        //   store.dispatch('globalCodesList')
-        // })
-        // emit('is-visible', false);
+        globalCodeForm.globalCodeCategory = codecategoryId.value;
+        store.dispatch('addGlobalCode', globalCodeForm).then(() => {
+          store.dispatch('globalCodesList')
+        })
+        emit('close-modal');
       }
     }
     return {
-      filterOption,
+      formRef,
+      handleClear,
+      onSelectOption,
+      globalCodeCategories,
       title,
       globalCodeForm,
       submitForm,
