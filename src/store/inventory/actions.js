@@ -50,3 +50,16 @@ export const updateInventory = async ({ commit }, {id, data}) => {
 		commit('failure', error.response.data);
 	})
 }
+
+export const deleteInventory = async ({ commit }, id) => {
+  console.log('id', id)
+	await ServiceMethodService.common("delete", API_ENDPOINTS['inventory'], id, null).then((response) => {
+		commit('deleteInventorySuccess', response.data.data);
+	})
+	.catch((error) => {
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}

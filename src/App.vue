@@ -23,60 +23,63 @@
 </template>
 
 <script>
- import { watchEffect,ref } from "vue";
-import enUS from "ant-design-vue/es/locale/en_US";
-import esES from "ant-design-vue/es/locale/es_ES";
-// import moment from "moment";
-// import 'moment/dist/locale/es';
-// import { onMounted } from "vue";
-// import SelectLanguage from "./views/localization/SelectLanguage.vue";
-// moment.locale("en");
+  import { watchEffect, ref } from "vue";
+  import enUS from "ant-design-vue/es/locale/en_US";
+  import esES from "ant-design-vue/es/locale/es_ES";
+  // import moment from "moment";
+  // import 'moment/dist/locale/es';
+  // import { onMounted } from "vue";
+  // import SelectLanguage from "./views/localization/SelectLanguage.vue";
+  // moment.locale("en");
   import { useStore } from "vuex"
-export default {
-//   components: {
-//     SelectLanguage,
-//   },
-  setup() {
+  export default {
+    //   components: {
+    //     SelectLanguage,
+    //   },
+    setup() {
       const store = useStore()
-//     const auth = localStorage.getItem("auth");
+      //     const auth = localStorage.getItem("auth");
       const locale = ref(enUS.locale)
-watchEffect(() => {
-      store.dispatch("globalCodes")
-      store.dispatch("timeLine",123)
-//       moment.locale(val);
-     });
-//     onMounted(() => {
-//       document.body.classList.add("test");
-//     });
-return {
-//       auth,
-      enUS,
-      esES,
-       locale,
-//       moment,
-//     };
+      watchEffect(() => {
+        store.dispatch("globalCodes")
+        store.dispatch("timeLine", 122)
+        //       moment.locale(val);
+      });
+      //     onMounted(() => {
+      //       document.body.classList.add("test");
+      //     });
+      return {
+        //       auth,
+        enUS,
+        esES,
+        locale,
+        //       moment,
+        //     };
+      }
+    }
   }
-}
-}
 </script>
 
 <style lang="scss">
-#app {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
-#nav {
-  a {
-    font-weight: bold;
+  #app {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
+  }
+
+  #nav {
+    a {
+      font-weight: bold;
+      color: #2c3e50;
+
+      &.router-link-exact-active {
+        color: #42b983;
+      }
     }
   }
-}
-.SelectLanguage {
-  padding-top: 10px;
-  text-align: center;
-}
+
+  .SelectLanguage {
+    padding-top: 10px;
+    text-align: center;
+  }
 </style>
