@@ -9,9 +9,10 @@
 
 <script>
   export default {
-    setup() {
+    props:{},
+    setup(props, {emit}) {
       const handleClear = (event) => {
-        event.target.reset()
+        emit("is_click")
       }
 
       return {
