@@ -123,7 +123,7 @@
     },
     {
       title: "Appointment With",
-      dataIndex: "staff['name']",
+      dataIndex: "staff['fullName']",
       slots: {
         customRender: "staff",
       },
