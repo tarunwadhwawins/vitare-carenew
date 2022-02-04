@@ -1,6 +1,6 @@
 <template>
   <a-modal max-width="1140px" width="100%" :title="title">
-    <a-form :model="globalCodeForm" layout="vertical" @finish="submitForm">
+    <a-form ref="formRef" :model="globalCodeForm" layout="vertical" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :sm="8" :xs="24">
           <div class="form-group">
@@ -35,7 +35,7 @@
           </div>
         </a-col>
         <a-col :sm="24" :span="24">
-          <ModalButtons/>
+          <ModalButtons @is_click="handleClear"/>
         </a-col>
       </a-row>
     </a-form>
@@ -58,6 +58,7 @@ export default {
   },
   setup(props, {emit}) {
     const store = useStore()
+    const formRef = ref()
     const checked = ref([false]);
     const title = props.isAdd ? "Add Global Code" : "Edit Global Code";
     const isEdit = props.isAdd ? false : true;
@@ -107,6 +108,12 @@ export default {
       })
     });
     
+    const form = reactive({ ...globalCodeForm })
+    const handleClear = () => {
+      formRef.value.resetFields();
+      Object.assign(globalCodeForm, form)
+    }
+
     const submitForm = () => {
       if(isEdit) {
         const data = {
@@ -129,6 +136,8 @@ export default {
       }
     }
     return {
+      formRef,
+      handleClear,
       onSelectOption,
       globalCodeCategories,
       title,
