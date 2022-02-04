@@ -35,7 +35,7 @@
       </a-layout>
     </a-layout>
     <!--modals-->
-    <AdminGlobalCodes v-if="visible" v-model:visible="visible" @ok="handleOk" @is-visible="handleOk" :isAdd="isAdd" />
+    <AdminGlobalCodes v-if="visible" v-model:visible="visible" @close-modal="handleClose" :isAdd="isAdd" />
     <!---->
   </div>
 </template>
@@ -69,11 +69,11 @@ export default {
       isAdd.value = true;
       visible.value = true;
     };
-    const handleOk = () => {
+    const handleClose = () => {
       visible.value = false;
     };
     const searchData = (value) => {
-      store.dispatch('searchGlobalCodes', value)
+      // store.dispatch('searchGlobalCodes', value)
     };
 
     const editGlobalCode = (id) => {
@@ -90,7 +90,7 @@ export default {
       checked,
       visible,
       showModal,
-      handleOk,
+      handleClose,
       searchData,
       size: ref([]),
     };

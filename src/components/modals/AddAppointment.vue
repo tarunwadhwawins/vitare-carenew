@@ -1,6 +1,6 @@
 <template>
   <a-modal width="1000px" :title="$t('appointmentCalendar.addAppointment.addAppointment')" centered>
-    <a-form :model="appointmentForm" layout="vertical" @finish="sendMessage" @finishFailed="onFinishFailed">
+    <a-form  ref="formRef" :model="appointmentForm" layout="vertical" @finish="sendMessage" @finishFailed="onFinishFailed">
       <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
           <div class="form-group">
@@ -89,10 +89,7 @@
         </a-col>
         <a-col :span="24">
           <div class="steps-action">
-            <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-              <a-button @click="handleCancel" html-type="reset">{{$t('global.clear')}}</a-button>
-              <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
-            </a-form-item>
+            <Button @is_click="handleCancel"/> 
             
           </div>
         </a-col>
@@ -108,9 +105,11 @@
   import moment from 'moment';
   import dayjs, { Dayjs } from 'dayjs';
   import { timeStamp } from '../../commonMethods/commonMethod'
+  import Button from "../common/button/ModalButtons"
   export default {
     components: {
       ErrorMessage,
+      Button,
     },
     props:{
       staff:{
@@ -121,7 +120,7 @@
       },
     },
     setup(props, { emit }) {
-      
+      const formRef = ref();
       const store = useStore()
       const disabledDate = current => {
       // Can not select days before today and today
@@ -186,6 +185,7 @@
       }) 
       const form = reactive({ ...appointmentForm })
       const handleCancel = () => {
+        formRef.value.resetFields();
         Object.assign(appointmentForm, form)
         //emit('is-visible', false);
       };
@@ -203,6 +203,7 @@
         handleCancel,
         moment,
         disabledDate,
+        formRef
       };
     },
   };

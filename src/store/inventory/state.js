@@ -3,4 +3,5 @@ export default {
   inventoriesList: null,
   inventoryDetails: null,
   updateInventory: null,
+  deleteInventory: null,
 }
