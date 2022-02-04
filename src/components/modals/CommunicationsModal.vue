@@ -187,25 +187,14 @@
 
       const sendMessage = () => {
         messageForm.entityType = document.getElementById("entityType").value
-        // console.log('entityType', document.getElementById("entityType").value)
-        // console.log('Message Form', messageForm)
         store.dispatch('addCommunication', messageForm).then(() => {
           store.dispatch('communicationsList', 1)
         })
         emit('is-visible', false);
       }
 
-     /*  const onFinishFailed = errorInfo => {
-        console.log('Failed:', errorInfo);
-      }; */
-
       const patientChange = (value) => {
         store.dispatch('patientDetails', value);
-        // const patientDetails = computed(() => {
-        //   return store.state.communications.patientDetails;
-        // });
-        // console.log('Patient Email', patientDetails.value);
-        // messageForm.to = patientDetails.value.email;
       };
       
       return {
@@ -213,7 +202,6 @@
         patientChange,
         handleCancel,
         sendMessage,
-        // onFinishFailed,
         patientsList,
         staffList,
         taskPriority,
