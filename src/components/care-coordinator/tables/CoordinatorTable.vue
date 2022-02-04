@@ -3,6 +3,10 @@
     <template #name="text">
         <router-link :to="linkTo">{{ text.text }}</router-link>
     </template>
+
+    <template #createdDate="text">
+        <span>{{ dateFormat(text.text) }}</span>
+    </template>
     <template #action="text">
         <router-link :to="linkTo">{{ text.text }}</router-link>
     </template>
@@ -18,6 +22,7 @@
 </template>
 <script>
 import { WarningOutlined } from "@ant-design/icons-vue";
+import {dateFormat} from "../../../commonMethods/commonMethod"
 export default {
   name: "DataTable",
   components: {
@@ -26,7 +31,8 @@ export default {
   setup() {
     const linkTo = "patients-summary"
     return {
-      linkTo
+      linkTo,
+      dateFormat
     }
   },
 };

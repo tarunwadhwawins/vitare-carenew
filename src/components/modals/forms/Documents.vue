@@ -48,6 +48,9 @@
                 <template #tags="text">
                     <span v-for="tag in text.text.data" :key="tag.id">{{ tag.tag+ " "}}</span>
                 </template>
+                <template #document="text">
+                  <router-link :to="text.text"><FileOutlined /></router-link>
+                </template>
                 <template #action="text">
                     <a-tooltip placement="bottom">
                         <template #title>
@@ -66,14 +69,16 @@
 
 <script>
 import {defineComponent,computed,reactive} from "vue"
-import {DeleteOutlined} from "@ant-design/icons-vue"
+import {DeleteOutlined,FileOutlined} from "@ant-design/icons-vue"
 import {useStore} from "vuex"
 import Loader from "../../loader/Loader"
-import {deleteSwal} from "../../../commonMethods/commonMethod"
+import {warningSwal} from "../../../commonMethods/commonMethod"
+import { messages } from "../../../config/messages"
 export default defineComponent({
     components: {
         DeleteOutlined,
-        Loader
+        Loader,
+        FileOutlined
     },
     setup() {
         const store = useStore()
@@ -126,7 +131,7 @@ export default defineComponent({
         })
 
         function deleteDocument(id){
-          deleteSwal().then((response) => {
+          warningSwal(messages.deleteWarning).then((response) => {
                 if (response == true) {
                     store.dispatch('deleteDocument', {
                         id: patients.value.addDemographic.id,
@@ -139,6 +144,7 @@ export default defineComponent({
             })
         }
         return {
+            warningSwal,
             deleteDocument,
             globalCode,
             onFileUpload,

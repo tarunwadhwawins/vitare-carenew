@@ -51,7 +51,7 @@ export const callStatusSuccess = (state, count) => {
     },
     callseries: [
       {
-        name: "Value",
+        name: "Call Queue",
         data: count.map((item) => { return item.count }),
       },
     ],

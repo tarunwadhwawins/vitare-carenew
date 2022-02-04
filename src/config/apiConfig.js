@@ -50,6 +50,9 @@ export const API_ENDPOINTS = {
 
     // inventory
     inventory: 'inventory',
+
+    
+
 };
 
 // export const getApiUrl = key => {

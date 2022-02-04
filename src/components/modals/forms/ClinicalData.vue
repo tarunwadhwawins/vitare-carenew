@@ -110,8 +110,9 @@ import {
 } from "vuex"
 import Loader from "../../loader/Loader.vue"
 import {
-    deleteSwal
+    warningSwal
 } from "../../../commonMethods/commonMethod"
+import { messages } from "../../../config/messages";
 export default defineComponent({
     components: {
         DeleteOutlined,
@@ -175,7 +176,7 @@ export default defineComponent({
         })
 
         function deleteClinicalData(id, name) {
-            deleteSwal().then((response) => {
+            warningSwal(messages.deleteWarning).then((response) => {
                 if (response == true) {
                     if (name == 'deleteClinicalData') {
                         store.dispatch('deleteClinicalData', {

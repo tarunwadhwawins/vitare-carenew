@@ -5,18 +5,17 @@
         <a-col :sm="8" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('globalCodes.category')" name="globalCodeCategory" :rules="[{ required: true, message: $t('globalCodes.category')+' '+$t('global.validation')  }]">
-              <a-select
-                v-if="globalCodeCategories"
+              <a-auto-complete
+                :options="categories"
+                :filter-option="filterOption"
+                v-if="categories"
                 ref="select"
                 v-model:value="globalCodeForm.globalCodeCategory"
                 style="width: 100%"
-                size="large"
-                @focus="focus"
-                :disabled="disabled"
-                @change="handleChange">
-                <a-select-option value="" disabled>{{'Select Category'}}</a-select-option>
-                <a-select-option v-for="category in globalCodeCategories" :key="category.id" :value="category.id">{{ category.name }}</a-select-option>
-              </a-select>
+                size="large">
+                <!-- <a-select-option value="" disabled>{{'Select Category'}}</a-select-option>
+                <a-select-option v-for="category in globalCodeCategories" :key="category.id" :value="category.id">{{ category.name }}</a-select-option> -->
+              </a-auto-complete>
             </a-form-item>
           </div>
         </a-col>
@@ -67,29 +66,47 @@ export default {
     const checked = ref([false]);
     const title = props.isAdd ? "Add Global Code" : "Edit Global Code";
     const isEdit = props.isAdd ? false : true;
-    const disabled = props.isAdd ? false : true;
     
     const handleCancel = () => {
       emit('is-visible', false);
+    };
+
+    const filterOption = (input, option) => {
+      return option.value.toUpperCase().indexOf(input.toUpperCase()) >= 0;
     };
 
     const globalCodeDetails = computed(() => {
       return store.state.globalCodes.globalCodeDetails;
     })
     const codeDetails = globalCodeDetails.value;
-    console.log('globalCodeDetails', codeDetails);
+    
+    var switchOn;
+    if(isEdit) {
+      switchOn = codeDetails && codeDetails.status ? true : false;
+    }
+    else {
+      switchOn = true;
+    }
     
     const globalCodeForm = reactive({
-      globalCodeCategory: codeDetails && codeDetails.globalCodeCategory ? codeDetails.globalCodeCategory : '',
-      name: codeDetails && codeDetails.name ? codeDetails.name : '',
-      description: codeDetails && codeDetails.description ? codeDetails.description : '',
-      status: codeDetails && codeDetails.status ? true : false,
+      globalCodeCategory: codeDetails ? codeDetails.globalCodeCategory : '',
+      name: codeDetails ? codeDetails.name : '',
+      description: codeDetails ? codeDetails.description : '',
+      status: switchOn,
     });
     
     const globalCodeCategories = computed(() => {
       return store.state.common.globalCodeCategories;
     })
-
+    
+    const categories = ref([])
+    globalCodeCategories.value.forEach(element => {
+      categories.value.push({
+        value: element.name,
+      })
+    });
+    console.log('categories', categories.value)
+    
     const submitForm = () => {
       if(isEdit) {
         const data = {
@@ -106,20 +123,19 @@ export default {
       }
       else {
         console.log('globalCodeForm', globalCodeForm)
-        store.dispatch('addGlobalCode', globalCodeForm).then(() => {
-          store.dispatch('globalCodesList')
-        })
-        emit('is-visible', false);
+        // store.dispatch('addGlobalCode', globalCodeForm).then(() => {
+        //   store.dispatch('globalCodesList')
+        // })
+        // emit('is-visible', false);
       }
     }
-    
     return {
-      disabled,
+      filterOption,
       title,
       globalCodeForm,
       submitForm,
       handleCancel,
-      globalCodeCategories,
+      categories,
       size: ref("large"),
       checked,
     };

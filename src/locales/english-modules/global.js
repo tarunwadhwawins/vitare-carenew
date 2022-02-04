@@ -59,7 +59,8 @@ const global = {
   endDate:'End Date',
   download:'Download',
   category:'Category',
-  note:'Note'
+  note:'Note',
+  save:'Save'
 
 }
 
