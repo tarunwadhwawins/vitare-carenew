@@ -73,7 +73,7 @@ export default {
       visible.value = false;
     };
     const searchData = (value) => {
-      store.dispatch('searchGlobalCodes', value)
+      // store.dispatch('searchGlobalCodes', value)
     };
 
     const editGlobalCode = (id) => {
