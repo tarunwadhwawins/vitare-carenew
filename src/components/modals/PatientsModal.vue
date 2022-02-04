@@ -885,14 +885,16 @@ export default {
                     store.dispatch("updateCondition", {
                         data: conditions,
                         id: patients.value.addDemographic.id,
-                        physicianId: patients.value.addPatientPhysician.id
+                        physicianId: patients.value.addPatientPhysician.id,
+                        referalID: patients.value.addPatientReferals.id,
                     })
                 }
                 if (conditions.checked == true) {
                     store.dispatch("updateCondition", {
                         data: conditions,
                         id: patients.value.addDemographic.id,
-                        physicianId: patients.value.addPatientPhysician.id
+                        physicianId: patients.value.addPatientPhysician.id,
+                        referalID: patients.value.addPatientReferals.id
                     });
                 }
             }

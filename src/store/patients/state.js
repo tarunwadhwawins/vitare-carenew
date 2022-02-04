@@ -1,5 +1,5 @@
 export default {
-    counter:1,
+    counter:0,
     addDemographic:null,
     addCondition:null,
     updateCondition:null,
