@@ -33,7 +33,7 @@
           </router-link>
         </template>
         <template #staff="{ record }">
-          <router-link v-for="staff in record.staff.data" :key="staff.id" to="corrdinator-summary">
+          <router-link v-for="staff in record.staff.data" :key="staff.id" to="coordinator-summary">
             {{ staff.staff }}
           </router-link>
         </template>

@@ -29,7 +29,7 @@ export default {
     WarningOutlined,
   },
   setup() {
-    const linkTo = "patients-summary"
+    const linkTo = "coordinator-summary"
     return {
       linkTo,
       dateFormat

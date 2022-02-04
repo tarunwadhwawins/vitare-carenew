@@ -61,7 +61,7 @@
                     <a-switch v-model:checked="checked[key.record.key]" />
                   </template>
                   <template #name="text">
-                    <router-link to="corrdinator-summary">{{
+                    <router-link to="coordinator-summary">{{
                       text.text
                     }}</router-link>
                   </template>

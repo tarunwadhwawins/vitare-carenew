@@ -10,7 +10,7 @@
 
     <!-- Charts -->
     <a-col :sm="12" :xs="24" v-if="callPlanned">
-      <ApexChart :title="$t('communications.callPlanned')" type="bar" :height="350" :options="callPlanned.calloption" :series="callPlanned.callseries" linkTo="corrdinator-summary" />
+      <ApexChart :title="$t('communications.callPlanned')" type="bar" :height="350" :options="callPlanned.calloption" :series="callPlanned.callseries" linkTo="coordinator-summary" />
     </a-col>
 
     <a-col :sm="12" :xs="24" v-if="callStatus">

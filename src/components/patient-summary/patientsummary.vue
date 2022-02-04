@@ -194,7 +194,7 @@
                               Care Team <PlusOutlined @click="showModal8" />
                             </div>
                             <div class="thumb-desc">
-                              <router-link to="corrdinator-summary"
+                              <router-link to="coordinator-summary"
                                 >John Smith (P) HT </router-link
                               ><br />
                           
