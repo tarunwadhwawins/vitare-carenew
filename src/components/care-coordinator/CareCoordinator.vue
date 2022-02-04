@@ -3,23 +3,23 @@
     <a-col :sm="12" :xs="24">
         <h2>{{$t('global.specialization')}}</h2>
         <a-row :gutter="24">
-            <a-col :xl="12"  :xs="24">
-            <LongCard backgroundColor="#8e60ff" textColor="" customClass="two" :count="2" text="Wellness"></LongCard>
+            <a-col :xl="12"  :xs="24" v-for="special in staffs.specializationStaff" :key="special.id">
+            <LongCard backgroundColor="#8e60ff" textColor="" customClass="two" :count="special.total" :text="special.text" ></LongCard>
             </a-col>
-            <a-col :xl="12"  :xs="24">
-            <LongCard customClass="four" backgroundColor="#ffa800" textColor="" :count="2" text="Behaviour"></LongCard>
-            </a-col>
+            <!-- <a-col :xl="12"  :xs="24">
+            <LongCard customClass="four" backgroundColor="#ffa800" textColor="" :count="2" :text="Behaviour"></LongCard>
+            </a-col> -->
         </a-row>
     </a-col>
     <a-col :sm="12" :xs="24">
         <h2>{{$t('global.network')}}</h2>
         <a-row :gutter="24">
-            <a-col :xl="12"  :xs="24">
-            <LongCard customClass="six" backgroundColor="#267dff" textColor="" :count="3" text="In"></LongCard>
+            <a-col :xl="12"  :xs="24" v-for="network in staffs.networkStaff" :key="network.id">
+            <LongCard customClass="six" backgroundColor="#267dff" textColor="" :count="network.total" :text="network.text"></LongCard>
             </a-col>
-            <a-col :xl="12"  :xs="24">
+            <!-- <a-col :xl="12"  :xs="24">
             <LongCard customClass="five" backgroundColor="#0fb5c2" textColor="" :count="3" text="Out"></LongCard>
-            </a-col>
+            </a-col> -->
         </a-row>
     </a-col>
 </a-row> 
@@ -36,7 +36,7 @@
         </div>
     </a-col>
     <a-col :span="24">
-        <CoordinatorTable v-if="staffs"  :columns="columns" :data-source="staffs" :scroll="{ x: 1200 }"></CoordinatorTable>
+        <CoordinatorTable v-if="staffs.staffs"  :columns="columns" :data-source="staffs.staffs" :scroll="{ x: 1200 }"></CoordinatorTable>
         <Loader />
     </a-col>
 </a-row>
@@ -68,6 +68,8 @@ export default {
         const searchoptions = ref([])
         watchEffect( () => {
             store.dispatch('staffs')
+            store.dispatch('specializationStaff')
+            store.dispatch('networkStaff')
         })
 
         const columns  = computed(()=>{
@@ -77,7 +79,7 @@ export default {
         };
      
        const staffs = computed(()=>{ 
-            return store.state.careCoordinator.staffs
+            return store.state.careCoordinator
         }) 
 
         

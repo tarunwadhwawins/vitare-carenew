@@ -8,7 +8,7 @@
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Demographics'">
                 <!-- <Demographics /> -->
-                <a-form :model="demographics" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="demographic" @finishFailed="onFinishFailed">
+                <a-form :model="demographics" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="demographic" @finishFailed="demographicsFailed">
                     <Loader />
                     <a-row :gutter="24">
                         <a-col :md="8" :sm="12" :xs="24">
@@ -411,7 +411,7 @@
             <div class="steps-content" v-if="steps[current].title == 'Conditions'">
 
                 <!-- <Conditions /> -->
-                <a-form :model="conditions" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="condition" @finishFailed="onFinishFailed">
+                <a-form :model="conditions" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="condition" @finishFailed="conditionsFailed">
                     <Loader />
                     <a-row :gutter="24">
                         <a-col :span="24">
@@ -422,12 +422,16 @@
                     </a-row>
                     <a-row :gutter="24" class="mb-24">
                         <a-col :md="24" :sm="24" :xs="24" class="mb-24">
-                            <a-input-search v-model:value="value22" placeholder="Search..." style="width: 100%" size="large" @search="onSearch" />
+                            <a-input-search v-model:value="search" placeholder="Search..." style="width: 100%" size="large" @search="onSearch" />
                         </a-col>
-                        <a-col :md="9" :sm="9" :xs="9">
+                        <a-col :md="24" :sm="24" :xs="24">
+                            <div class="form-group">
+                            <a-form-item  name="condition" :rules="[{ required: true, message: $t('patient.conditions.healthConditions')+' '+$t('global.validation') }]">
                             <a-checkbox-group v-model:value="conditions.condition">
                                 <a-checkbox v-for="condition in globalCode.healthCondition.globalCode" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
                             </a-checkbox-group>
+                        </a-form-item>
+                            </div>
                         </a-col>
                     </a-row>
                     <a-row :gutter="24">
@@ -627,7 +631,7 @@
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Insurance'">
                 <!-- <Insurance /> -->
-                <a-form :model="insuranceData" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="insuranceForm" @finishFailed="onFinishFailed">
+                <a-form :model="insuranceData" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="insuranceForm" @finishFailed="insuranceDataFailed">
                     <Loader />
                     <a-row :gutter="24" v-for=" insuranceName,i in globalCode.insuranceType.globalCode" :key="insuranceName.id">
                         <a-col :span="24">
@@ -704,7 +708,7 @@ import ErrorMessage from "../common/messages/ErrorMessage.vue";
 import {regex} from "../../RegularExpressions/regex"
 import {scrollToTop} from "../../commonMethods/commonMethod"
 import Loader from "../loader/Loader"
-import {successSwal,warningSwal} from "../../commonMethods/commonMethod"
+import {successSwal,warningSwal,errorSwal} from "../../commonMethods/commonMethod"
 // import dayjs from 'dayjs';
 // import {DeleteOutlined} from "@ant-design/icons-vue";
 
@@ -919,10 +923,22 @@ export default {
 
         
 
-        const onFinishFailed = (value) => {
-            console.log(value)
+        const demographicsFailed = () => {
             scrollToTop();
+            errorSwal(messages.fieldsRequired)
         };
+
+        const conditionsFailed = () => {
+            scrollToTop();
+            // errorSwal(messages.fieldsRequired)
+        };
+
+        
+        const insuranceDataFailed = () => {
+            scrollToTop();
+            // errorSwal(messages.fieldsRequired)
+        };
+
         const handleChange = () => {};
 
         const globalCode = computed(() => {
@@ -968,7 +984,7 @@ export default {
                     store.dispatch('patients')
                     store.commit('resetCounter')
                 }else{
-                    emit('saveModal', true)
+                    emit('saveModal', true) 
                 }
             })
         }
@@ -976,6 +992,8 @@ export default {
 
        
         return {
+            insuranceDataFailed,
+            conditionsFailed,
             closeModal,
             warningSwal,
             form,
@@ -1031,10 +1049,11 @@ export default {
             next,
             prev,
             size: ref("large"),
+            search:ref(),
             handleChange,
             demographics,
             conditions,
-            onFinishFailed,
+            demographicsFailed,
         };
     },
 };

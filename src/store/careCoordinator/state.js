@@ -2,5 +2,7 @@ export default{
     addStaff:null,
     staffs:[],
     columns:[],
-    errorMsg:null
+    errorMsg:null,
+    specializationStaff:null,
+    networkStaff:null
 }

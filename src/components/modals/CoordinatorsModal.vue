@@ -162,6 +162,8 @@ import {
 import {
     scrollToTop
 } from "../../commonMethods/commonMethod"
+import{errorSwal} from "../../commonMethods/commonMethod"
+import { messages } from '../../config/messages';
 export default {
     components: {
         // PersonalInformation,
@@ -207,8 +209,10 @@ export default {
             current.value--;
         }
 
-        const onFinishFailed = () => {
+        const onFinishFailed = (value) => {
             scrollToTop()
+            errorSwal(messages.fieldsRequired)
+            console.log('test',value)
         };
 
         const handleChange = () => {};
@@ -227,7 +231,8 @@ export default {
             }
             return store.state.careCoordinator.errorMsg
         })
-
+        
+        
         return {
             handleChange,
             scrollToTop,
