@@ -201,26 +201,21 @@ export const totalPatientsChartSuccess = (state, count) => {
   let type = ''
   if (state.timeLineButton == 122) {
     const time=['08:00 AM','09:00 AM','10:00 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:00 PM','04:00 PM','05:00 PM','06:00 PM','07:00 PM','08:00 PM']
-    let days = [];
-    let today = moment();
-   
-    today.subtract(8, 'days')
+    let newPatient = [];
     time.forEach((item,i)=>{
-      //console.log("item",item)
-      let day = today.add(1, 'days');
       let obj = count.find(o => o.duration === item);
       if (typeof obj === 'undefined') {
         let value_obj = {
           "duration": item,
           "total": 0,
         };
-        days.push(value_obj);
+        newPatient.push(value_obj);
       } else {
-        days.push(obj);
+        newPatient.push(obj);
       }
     })
 
-    count = days;
+    count = newPatient;
     
     type = "time"
     categories = count.map((item) => {
@@ -233,10 +228,11 @@ export const totalPatientsChartSuccess = (state, count) => {
     })
 
   } else if (state.timeLineButton == 123) {
-    let days = [];
+    let newPatient = [];
     let today = moment();
     today.subtract(7, 'days')
-    for (var i = 0; i < 7; i++) {
+    for (let i = 0; i < 7; i++) {
+ 
       var day = today.add(1, 'days');
       let obj = count.find(o => o.duration === day.format('dddd'));
       if (typeof obj === 'undefined') {
@@ -244,12 +240,12 @@ export const totalPatientsChartSuccess = (state, count) => {
           "duration": day.format('dddd'),
           "total": 0,
         };
-        days.push(value_obj);
+        newPatient.push(value_obj);
       } else {
-        days.push(obj);
+        newPatient.push(obj);
       }
     }
-    count = days;
+    count = newPatient;
     type = "day"
 
     categories = count.map((item) => {
@@ -262,7 +258,7 @@ export const totalPatientsChartSuccess = (state, count) => {
     })
   } else if (state.timeLineButton == 124) {
     
-    let date = [];
+    let newPatient = [];
     let today = moment();
     today.subtract(30, 'days')
     for (let i = 0; i < 30; i++) {
@@ -273,12 +269,12 @@ export const totalPatientsChartSuccess = (state, count) => {
           "duration": day.format('MMM DD,yyyy'),
           "total": 0,
         };
-        date.push(value_obj);
+        newPatient.push(value_obj);
       } else {
-        date.push(obj);
+        newPatient.push(obj);
       }
     }
-    count = date;
+    count = newPatient;
     type = "day"
     categories =
       count.map((item) => {
@@ -290,8 +286,11 @@ export const totalPatientsChartSuccess = (state, count) => {
       return item.total
     })
   } else {
-    const month=['February','March','April','May','June','July','August','September','October','November','December','January']
-    let days = [];
+    let month = []
+    for (let k = 1; k < 13; k++) {
+      month.push(moment(moment().toDate()).add(k, "month").startOf("month").format('MMMM'))
+    }
+    let newPatient = [];
     month.forEach((item,i)=>{
       let obj = count.find(o => o.duration === item);
       if (typeof obj === 'undefined') {
@@ -299,12 +298,12 @@ export const totalPatientsChartSuccess = (state, count) => {
           "duration": item,
           "total": 0,
         };
-        days.push(value_obj);
+        newPatient.push(value_obj);
       } else {
-        days.push(obj);
+        newPatient.push(obj);
       }
     })
-    count = days;
+    count = newPatient;
     type = "datetime"
     categories = count.map((item) => {
       return item.duration
@@ -359,26 +358,21 @@ export const appointmentChartSuccess = (state, count) => {
   let type = ''
   if (state.timeLineButton == 122) {
     const time=['08:00 AM','09:00 AM','10:00 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:00 PM','04:00 PM','05:00 PM','06:00 PM','07:00 PM','08:00 PM']
-    let days = [];
-    let today = moment();
-   
-    today.subtract(8, 'days')
+    let newAppointment = [];
     time.forEach((item,i)=>{
-      //console.log("item",item)
-      let day = today.add(1, 'days');
       let obj = count.find(o => o.duration === item);
       if (typeof obj === 'undefined') {
         let value_obj = {
           "duration": item,
           "total": 0,
         };
-        days.push(value_obj);
+        newAppointment.push(value_obj);
       } else {
-        days.push(obj);
+        newAppointment.push(obj);
       }
     })
 
-    count = days;
+    count = newAppointment;
     
     type = "time"
     categories = count.map((item) => {
@@ -391,7 +385,7 @@ export const appointmentChartSuccess = (state, count) => {
     })
 
   } else if (state.timeLineButton == 123) {
-    let days = [];
+    let newAppointment = [];
     let today = moment();
     today.subtract(7, 'days')
     for (var i = 0; i < 7; i++) {
@@ -402,12 +396,12 @@ export const appointmentChartSuccess = (state, count) => {
           "duration": day.format('dddd'),
           "total": 0,
         };
-        days.push(value_obj);
+        newAppointment.push(value_obj);
       } else {
-        days.push(obj);
+        newAppointment.push(obj);
       }
     }
-    count = days;
+    count = newAppointment;
     type = "day"
 
     categories = count.map((item) => {
@@ -420,9 +414,10 @@ export const appointmentChartSuccess = (state, count) => {
     })
   } else if (state.timeLineButton == 124) {
     
-    let date = [];
+    let newAppointment = [];
     let today = moment();
-    today.subtract(30, 'days')
+    today.subtract(30, 'day')
+    
     for (let i = 0; i < 30; i++) {
       let day = today.add(1, 'days');
       let obj = count.find(o => o.duration === day.format('MMM DD,yyyy'));
@@ -431,12 +426,12 @@ export const appointmentChartSuccess = (state, count) => {
           "duration": day.format('MMM DD,yyyy'),
           "total": 0,
         };
-        date.push(value_obj);
+        newAppointment.push(value_obj);
       } else {
-        date.push(obj);
+        newAppointment.push(obj);
       }
     }
-    count = date;
+    count = newAppointment;
     type = "day"
     categories =
       count.map((item) => {
@@ -448,8 +443,13 @@ export const appointmentChartSuccess = (state, count) => {
       return item.total
     })
   } else {
-    const month=['February','March','April','May','June','July','August','September','October','November','December','January']
-    let days = [];
+    //const month=['February','March','April','May','June','July','August','September','October','November','December','January']
+    let newAppointment = [];
+    let month = []
+    for (let k = 1; k < 13; k++) {
+      month.push(moment(moment().toDate()).add(k, "month").startOf("month").format('MMMM'))
+    }
+
     month.forEach((item,i)=>{
       let obj = count.find(o => o.duration === item);
       if (typeof obj === 'undefined') {
@@ -457,12 +457,12 @@ export const appointmentChartSuccess = (state, count) => {
           "duration": item,
           "total": 0,
         };
-        days.push(value_obj);
+        newAppointment.push(value_obj);
       } else {
-        days.push(obj);
+        newAppointment.push(obj);
       }
     })
-    count = days;
+    count = newAppointment;
     type = "datetime"
     categories = count.map((item) => {
       return item.duration
