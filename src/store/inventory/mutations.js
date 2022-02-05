@@ -19,3 +19,7 @@ export const updateInventorySuccess = async (state, inventories) => {
 export const deleteInventorySuccess = async (state, inventories) => {
   state.deleteInventory = inventories;
 }
+
+export const deviceModalsListSuccess = async (state, inventories) => {
+  state.deviceModalsList = inventories;
+}
