@@ -1,126 +1,101 @@
 <template>
-  <a-row :gutter="24">
-    <a-col :sm="12" :xs="24">
-      <div class="form-group">
-        <label>{{$t('global.startTime')}}</label>
-        <a-select
-          ref="select"
-          v-model="value1"
-          style="width: 100%"
-          size="large"
-          @focus="focus"
-          @change="handleChange"
-        >
-          <a-select-option value="lucy">{{$t('global.chooseStartTime')}}</a-select-option>
-          <a-select-option value="Yiminghe">08:00 AM</a-select-option>
-          <a-select-option value="Yiminghe">08:30 AM</a-select-option>
-          <a-select-option value="Yiminghe">09:00 AM</a-select-option>
-          <a-select-option value="Yiminghe">09:30 AM</a-select-option>
-          <a-select-option value="Yiminghe">10:00 AM</a-select-option>
-          <a-select-option value="Yiminghe">10:30 AM</a-select-option>
-          <a-select-option value="Yiminghe">11:00 AM</a-select-option>
-        </a-select>
-      </div>
-    </a-col>
-    <a-col :sm="12" :xs="24">
-      <div class="form-group">
-        <label>{{$t('global.endTime')}}</label>
-        <a-select
-          ref="select"
-          v-model="value1"
-          style="width: 100%"
-          size="large"
-          @focus="focus"
-          @change="handleChange"
-        >
-          <a-select-option value="lucy">{{$t('global.chooseEndTime')}}</a-select-option>
-          <a-select-option value="Yiminghe">02:00 PM</a-select-option>
-          <a-select-option value="Yiminghe">02:30 PM</a-select-option>
-          <a-select-option value="Yiminghe">03:00 PM</a-select-option>
-          <a-select-option value="Yiminghe">03:30 PM</a-select-option>
-          <a-select-option value="Yiminghe">04:00 PM</a-select-option>
-          <a-select-option value="Yiminghe">04:30 PM</a-select-option>
-          <a-select-option value="Yiminghe">05:00 PM</a-select-option>
-          <a-select-option value="Yiminghe">05:30 PM</a-select-option>
-        </a-select>
-      </div>
-    </a-col>
-  </a-row>
-  <a-row :gutter="24" class="mb-24">
+<a-form :model="availability" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addAvailability" @finishFailed="availabilityDataFailed">
+    <a-row :gutter="24">
+        <a-col :md="8" :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('global.startTime')" name="startTime" :rules="[{ required: true, message: $t('global.startTime')+' '+$t('global.validation') }]">
+                    <a-time-picker v-model:value="availability.startTime" format="HH:mm" value-format="HH:mm" />
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.startTime?errorMsg.startTime[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+        <a-col :md="8" :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('global.endTime')" name="endTime" :rules="[{ required: true, message: $t('global.endTime')+' '+$t('global.validation') }]">
+                    <a-time-picker v-model:value="availability.endTime" format="HH:mm" value-format="HH:mm" />
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.endTime?errorMsg.endTime[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
+    </a-row>
+    <a-row :gutter="24" class="mb-24">
+        <a-col :span="24">
+            <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
+        </a-col>
+    </a-row>
+</a-form>
+<a-row :gutter="24">
     <a-col :span="24">
-      <a-button class="btn primaryBtn">{{$t('global.add')}}</a-button>
-    </a-col>
-  </a-row>
-  <a-row :gutter="24">
-    <a-col :span="24">
-      <a-table
-        :pagination="false"
-        :columns="columns2"
-        :data-source="data2"
-        :scroll="{ x: 900 }"
-      >
-        <template #action>
-          <a-tooltip placement="bottom">
-            <template #title>
-              <span>{{$t('global.edit')}}</span>
+        <a-table :pagination="false" :columns="staffs.availabilityListColms" :data-source="staffs.availabilityList" :scroll="{ x: 900 }">
+            <template #action="text">
+                <a-tooltip placement="bottom" @click="deleteAvailability(text.record.id)">
+                    <template #title>
+                        <span>{{$t('global.delete')}}</span>
+                    </template>
+                    <a class="icons">
+                        <DeleteOutlined /></a>
+                </a-tooltip>
             </template>
-            <a class="icons"><EditOutlined /></a>
-          </a-tooltip>
-          <a-tooltip placement="bottom">
-            <template #title>
-              <span>{{$t('global.delete')}}</span>
-            </template>
-            <a class="icons"> <DeleteOutlined /></a>
-          </a-tooltip>
-        </template>
-      </a-table>
+        </a-table>
+        <Loader />
     </a-col>
-  </a-row>
+</a-row>
 </template>
+
 <script>
-import { defineComponent, ref } from "vue";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
-const columns2 = [
-  {
-    title: "Start Time",
-    dataIndex: "start",
-  },
-  {
-    title: "End Time",
-    dataIndex: "end",
-  },
-  {
-    title: "Actions",
-    dataIndex: "actions",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
-const data2 = [
-  {
-    key: "1",
-    start: "08:00 AM",
-    end: "	02:30 PM",
-    actions: "",
-  },
-  {
-    key: "2",
-    start: "09:00 AM",
-    end: "03:30 PM",
-    actions: "",
-  },
-];
+import { defineComponent, reactive, ref, computed } from "vue";
+import { DeleteOutlined } from "@ant-design/icons-vue";
+import { useStore } from "vuex";
+import { warningSwal } from "@/commonMethods/commonMethod";
+import { messages } from "@/config/messages";
+import Loader from "@/components/loader/Loader";
 export default defineComponent({
   components: {
-    EditOutlined,
+    // EditOutlined,
     DeleteOutlined,
+    Loader,
   },
   setup() {
+    const store = useStore();
+    const availability = reactive({
+      startTime: "",
+      endTime: "",
+    });
+
+    const staffs = computed(() => {
+      return store.state.careCoordinator;
+    });
+
+    function addAvailability() {
+      store.dispatch("addAvailability", {
+        id: staffs.value.addStaff.id,
+        data: availability,
+      });
+      setTimeout(() => {
+        store.dispatch("availabilityList", staffs.value.addStaff.id);
+      }, 2000);
+    }
+
+    function deleteAvailability(id) {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          store.dispatch("deleteAvailability", {
+            id: staffs.value.addStaff.id,
+            availabilityID: id,
+          });
+          setTimeout(() => {
+            store.dispatch("availabilityList", 21);
+          }, 2000);
+        }
+      });
+    }
+
     return {
+      deleteAvailability,
+      staffs,
+      addAvailability,
+      availability,
       size: ref("large"),
-      data2,
-      columns2,
     };
   },
 });

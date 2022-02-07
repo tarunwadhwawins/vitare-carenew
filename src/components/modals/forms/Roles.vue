@@ -1,99 +1,91 @@
 <template>
-  <a-row :gutter="24">
-    <a-col :sm="12" :xs="24">
-      <div class="form-group">
-        <label>{{$t('careCoordinator.roles.role')}}</label>
-        <a-select
-          ref="select"
-          v-model="value1"
-          style="width: 100%"
-          size="large"
-          @focus="focus"
-          @change="handleChange"
-        >
-          <a-select-option value="Billing">Billing Admin</a-select-option>
-          <a-select-option value="Admin">Admin</a-select-option>
-          <a-select-option value="User">User Admin</a-select-option>
-          <a-select-option value="Standard">Standard</a-select-option>
-          <a-select-option value="Manager">Manager</a-select-option>
-        </a-select>
-      </div>
-    </a-col>
-  </a-row>
-  <a-row :gutter="24" class="mb-24">
+<a-form :model="roles" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addRole" @finishFailed="roleDataFailed">
+    <a-row :gutter="24">
+        <a-col :sm="12" :xs="24">
+            <div class="form-group">
+                <label>{{$t('careCoordinator.roles.role')}}</label>
+                <a-select v-if="staffs.roles!=null" v-model:value="roles.roleId" mode="multiple" size="large" placeholder="Select Role" style="width: 100%" :options="staffs.roles.map((item) => ({ label: item.name?item.name:'', value: item.id }))" @change="handleChange" />
+            </div>
+        </a-col>
+    </a-row>
+    <a-row :gutter="24" class="mb-24">
+        <a-col :span="24">
+            <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
+        </a-col>
+    </a-row>
+</a-form>
+<a-row :gutter="24">
     <a-col :span="24">
-      <a-button class="btn primaryBtn">{{$t('global.add')}}</a-button>
-    </a-col>
-  </a-row>
-  <a-row :gutter="24">
-    <a-col :span="24">
-      <a-table
-        :pagination="false"
-        :columns="rolecolumns"
-        :data-source="roledata"
-        :scroll="{ x: 900 }"
-      >
-        <template #action>
-          <a-tooltip placement="bottom">
-            <template #title>
-              <span>{{$t('global.edit')}}</span>
+        <a-table :pagination="false" :columns="rolecolumns" :data-source="roledata" :scroll="{ x: 900 }">
+            <template #action="text">
+                <a-tooltip placement="bottom" @click="deleteRole(text.record.id)">
+                    <template #title>
+                        <span>{{$t('global.delete')}}</span>
+                    </template>
+                    <a class="icons">
+                        <DeleteOutlined /></a>
+                </a-tooltip>
             </template>
-            <a class="icons"><EditOutlined /></a>
-          </a-tooltip>
-          <a-tooltip placement="bottom">
-            <template #title>
-              <span>{{$t('global.delete')}}</span>
-            </template>
-            <a class="icons"> <DeleteOutlined /></a>
-          </a-tooltip>
-        </template>
-      </a-table>
+        </a-table>
+        <Loader />
     </a-col>
-  </a-row>
+</a-row>
 </template>
+
 <script>
-import { defineComponent, ref } from "vue";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
-const rolecolumns = [
-  {
-    title: "Role",
-    dataIndex: "role",
-  },
-  {
-    title: "Actions",
-    dataIndex: "actions",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
-const roledata = [
-  {
-    key: "1",
-    role: "Billing Admin",
-    actions: "",
-  },
-  {
-    key: "2",
-    role: "User Admin",
-    actions: "",
-  },
-  {
-    key: "3",
-    role: "Standard",
-    actions: "",
-  },
-];
+import { defineComponent, reactive, ref, computed, watchEffect } from "vue";
+import { DeleteOutlined } from "@ant-design/icons-vue";
+import { useStore } from "vuex";
+import { warningSwal } from "@/commonMethods/commonMethod";
+import { messages } from "@/config/messages";
+import Loader from "@/components/loader/Loader";
 export default defineComponent({
   components: {
-    EditOutlined,
     DeleteOutlined,
+    Loader,
   },
   setup() {
+    const store = useStore();
+    const roles = reactive({
+      roleId: [],
+    });
+
+    function addRole() {
+      store.dispatch("addRole", {
+        id: staffs.value.addStaff.id,
+        data: roles,
+      });
+      setTimeout(() => {
+        store.dispatch("roleList", staffs.value.addStaff.id);
+      }, 2000);
+    }
+
+    function deleteRole(id) {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          store.dispatch("deleteRole", {
+            id: staffs.value.addStaff.id,
+            roleID: id,
+          });
+          setTimeout(() => {
+            store.dispatch("roleList", staffs.value.addStaff.id);
+          }, 2000);
+        }
+      });
+    }
+    const staffs = computed(() => {
+      return store.state.careCoordinator;
+    });
+
+    watchEffect(() => {
+      store.dispatch("roles");
+    });
     return {
+      staffs,
+      deleteRole,
+      addRole,
       size: ref("large"),
-      roledata,
-      rolecolumns,
+      roles,
     };
   },
 });

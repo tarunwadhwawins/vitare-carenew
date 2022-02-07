@@ -1,6 +1,6 @@
 <template>
 <!-- <a-modal max-width="1140px" width="100%" title="Add New Patients" centered :footer="null"  :maskClosable="false" @cancel="closeModal()"> -->
-<a-modal max-width="1140px" width="100%" title="Add New Patients" centered :footer="null"  :maskClosable="false" >
+<a-modal max-width="1140px" width="100%" title="Add New Patients" centered :footer="null" :maskClosable="false">
     <a-row :gutter="24">
         <a-col :span="24">
             <a-steps :current="current">
@@ -112,7 +112,7 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                        
+
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="contactType" :rules="[{ required: true, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
@@ -285,11 +285,11 @@
                             </a-checkbox>
                         </a-col>
                     </a-row>
-                        <a-row :gutter="24" v-if="demographics.isPrimary">
+                    <a-row :gutter="24" v-if="demographics.isPrimary">
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.fullName')" name="fullName" :rules="[{ required: false, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
-                                    <a-input v-model:value="demographics.fullName" size="large" disabled/>
+                                    <a-input v-model:value="demographics.fullName" size="large" disabled />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.fullName?errorMsg.fullName[0]:''" />
                                 </a-form-item>
                             </div>
@@ -297,7 +297,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.emailAddress')" name="familyEmail" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('patient.demographics.emailAddress').toLowerCase(), type: 'email' }]">
-                                    <a-input v-model:value="demographics.familyEmail" placeholder="test@test.com" size="large" disabled/>
+                                    <a-input v-model:value="demographics.familyEmail" placeholder="test@test.com" size="large" disabled />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyEmai?errorMsg.familyEmail[0]:''" />
                                 </a-form-item>
                             </div>
@@ -305,7 +305,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
-                                    <a-input v-model:value="demographics.familyPhoneNumber" placeholder="Please enter 10 digit number" size="large" disabled/>
+                                    <a-input v-model:value="demographics.familyPhoneNumber" placeholder="Please enter 10 digit number" size="large" disabled />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyPhoneNumber?errorMsg.familyPhoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -313,7 +313,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="familyContactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
-                                    <a-select v-model:value="demographics.familyContactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" disabled/>
+                                    <a-select v-model:value="demographics.familyContactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" disabled />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactType?errorMsg.familyContactType[0]:''" />
                                 </a-form-item>
                             </div>
@@ -345,7 +345,7 @@
                     <a-row :gutter="24" v-else>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item  :label="$t('patient.demographics.fullName')" name="emergencyFullName" :rules="[{ required: true, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
+                                <a-form-item :label="$t('patient.demographics.fullName')" name="emergencyFullName" :rules="[{ required: true, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
                                     <a-input v-model:value="demographics.emergencyFullName" size="large" />
                                 </a-form-item>
                                 <ErrorMessage v-if="errorMsg" :name="errorMsg.emergencyFullName?errorMsg.emergencyFullName[0]:''" />
@@ -369,7 +369,7 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item  :label="$t('patient.demographics.preferredMethodofContact')" name="emergencyContactType" :rules="[{ required: true, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
+                                <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="emergencyContactType" :rules="[{ required: true, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
                                     <a-select v-model:value="demographics.emergencyContactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({ label: item.name,value: item.id }))" />
                                 </a-form-item>
                                 <ErrorMessage v-if="errorMsg" :name="errorMsg.emergencyContactType?errorMsg.emergencyContactType[0]:''" />
@@ -377,8 +377,8 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item  :label="$t('patient.demographics.preferredTimeofDayforContact')" name="emergencyContactTime" :rules="[{ required: true, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
-                                    <a-select ref="select" v-model:value="demographics.emergencyContactTime" style="width: 100%" size="large" @change="handleChange" >
+                                <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="emergencyContactTime" :rules="[{ required: true, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
+                                    <a-select ref="select" v-model:value="demographics.emergencyContactTime" style="width: 100%" size="large" @change="handleChange">
                                         <a-select-option value="" disabled>{{'Select Preferred Time'}}</a-select-option>
                                         <a-select-option v-for="ptOfDayContact in globalCode.ptOfDayContact.globalCode" :key="ptOfDayContact.id" :value="ptOfDayContact.id">{{ptOfDayContact.name}}</a-select-option>
                                     </a-select>
@@ -388,7 +388,7 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item  :label="$t('global.gender')" name="emergencyGender" :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
+                                <a-form-item :label="$t('global.gender')" name="emergencyGender" :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
                                     <a-select ref="select" v-model:value="demographics.emergencyGender" style="width: 100%" size="large" @change="handleChange">
                                         <a-select-option value="" disabled>{{'Select Gender'}}</a-select-option>
                                         <a-select-option v-for="gender in globalCode.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
@@ -426,11 +426,11 @@
                         </a-col>
                         <a-col :md="24" :sm="24" :xs="24">
                             <div class="form-group">
-                            <a-form-item  name="condition" :rules="[{ required: true, message: $t('patient.conditions.healthConditions')+' '+$t('global.validation') }]">
-                            <a-checkbox-group v-model:value="conditions.condition">
-                                <a-checkbox v-for="condition in globalCode.healthCondition.globalCode" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
-                            </a-checkbox-group>
-                        </a-form-item>
+                                <a-form-item name="condition" :rules="[{ required: true, message: $t('patient.conditions.healthConditions')+' '+$t('global.validation') }]">
+                                    <a-checkbox-group v-model:value="conditions.condition">
+                                        <a-checkbox v-for="condition in globalCode.healthCondition.globalCode" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
+                                    </a-checkbox-group>
+                                </a-form-item>
                             </div>
                         </a-col>
                     </a-row>
@@ -505,7 +505,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
-                                    <a-input v-model:value="conditions.name" size="large" disabled/>
+                                    <a-input v-model:value="conditions.name" size="large" disabled />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
                                 </a-form-item>
 
@@ -535,7 +535,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
-                                    <a-input v-model:value="conditions.phoneNumber" placeholder="Please enter 10 digit number" size="large" disabled/>
+                                    <a-input v-model:value="conditions.phoneNumber" placeholder="Please enter 10 digit number" size="large" disabled />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -543,7 +543,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.conditions.fax')" name="fax" :rules="[{ required: false, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
-                                    <a-input v-model:value="conditions.fax" size="large" disabled/>
+                                    <a-input v-model:value="conditions.fax" size="large" disabled />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.fax?errorMsg.fax[0]:''" />
                                 </a-form-item>
                             </div>
@@ -588,7 +588,7 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item  :label="$t('patient.conditions.fax')" name="physicianFax" :rules="[{ required: true, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
+                                <a-form-item :label="$t('patient.conditions.fax')" name="physicianFax" :rules="[{ required: true, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
                                     <a-input v-model:value="conditions.physicianFax" size="large" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.fax?errorMsg.fax[0]:''" />
                                 </a-form-item>
@@ -607,11 +607,11 @@
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Programs'">
                 <Programs />
-                
-                    <div class="steps-action">
-                        <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                        <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
-                    </div>
+
+                <div class="steps-action">
+                    <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
+                    <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
+                </div>
                 <!-- end  -->
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Devices'">
@@ -623,7 +623,7 @@
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Clinical Data'">
                 <ClinicalData />
-                
+
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
@@ -677,7 +677,7 @@
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Documents'">
                 <Documents />
-                
+
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary">{{$t('global.next')}}</a-button>
@@ -692,7 +692,7 @@
 </template>
 
 <script>
-import {ref,computed,reactive} from "vue";
+import { ref, computed, reactive } from "vue";
 // import Demographics from "@/components/modals/forms/Demographics";
 // import Conditions from "@/components/modals/forms/Conditions";
 import Programs from "@/components/modals/forms/Programs";
@@ -701,408 +701,413 @@ import Devices from "@/components/modals/forms/Devices";
 import ClinicalData from "@/components/modals/forms/ClinicalData";
 // import Insurance from "@/components/modals/forms/Insurance";
 import Documents from "@/components/modals/forms/Documents";
-import {useStore} from "vuex";
+import { useStore } from "vuex";
 // import DataTable from "../patients/data-table/DataTable.vue"
 import ErrorMessage from "../common/messages/ErrorMessage.vue";
 // import serviceMethod from "../../services/serviceMethod";
-import {regex} from "../../RegularExpressions/regex"
-import {scrollToTop} from "../../commonMethods/commonMethod"
-import Loader from "../loader/Loader"
-import {successSwal,warningSwal,errorSwal} from "../../commonMethods/commonMethod"
+import { regex } from "../../RegularExpressions/regex";
+import { scrollToTop } from "../../commonMethods/commonMethod";
+import Loader from "../loader/Loader";
+import {successSwal,warningSwal,} from "../../commonMethods/commonMethod";
 // import dayjs from 'dayjs';
 // import {DeleteOutlined} from "@ant-design/icons-vue";
-
-import {messages} from "../../config/messages"
+import { messages } from "../../config/messages";
 export default {
-    components: {
-        // Demographics,
-        // Conditions,
-        Programs,
-        Devices,
-        // Parameters,
-        ClinicalData,
-        // Insurance,
-        Documents,
-        // DataTable,
-        ErrorMessage,
-        Loader
-    },
-    setup(props, {emit}) {
-        const store = useStore();
-        const current = computed(() => {
-            return store.state.patients.counter;
+  components: {
+    // Demographics,
+    // Conditions,
+    Programs,
+    Devices,
+    // Parameters,
+    ClinicalData,
+    // Insurance,
+    Documents,
+    // DataTable,
+    ErrorMessage,
+    Loader,
+  },
+  setup(props, { emit }) {
+    const store = useStore();
+    const current = computed(() => {
+      return store.state.patients.counter;
+    });
+    const demographics = reactive({
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      dob: "",
+      gender: "",
+      language: "",
+      otherLanguage: [],
+      nickName: "",
+      weight: "",
+      height: "",
+      email: "",
+      phoneNumber: "",
+      contactType: [],
+      contactTime: "",
+      medicalRecordNumber: "",
+      country: 19,
+      state: "",
+      city: "",
+      zipCode: "",
+      appartment: "",
+      address: "",
+      fullName: "",
+      familyEmail: "",
+      familyPhoneNumber: "",
+      familyContactType: [],
+      familyContactTime: "",
+      familyGender: "",
+      relation: "",
+      emergencyFullName: "",
+      emergencyEmail: "",
+      emergencyPhoneNumber: "",
+      emergencyContactType: [],
+      emergencyContactTime: "",
+      emergencyGender: "",
+      isPrimary: false,
+    });
+
+    const conditions = reactive({
+      condition: [],
+      name: "",
+      designation: "",
+      email: "",
+      phoneNumber: "",
+      fax: "",
+      checked: false,
+      physicianName: "",
+      physicianDesignation: "",
+      physicianEmail: "",
+      physicianPhoneNumber: "",
+      physicianFax: "",
+    });
+
+    const parameters = reactive([]);
+
+    const insuranceData = reactive({
+      insuranceNumber: [],
+      insuranceName: [],
+      expirationDate: [],
+      insuranceType: [],
+    });
+
+    const demographic = () => {
+      if (
+        demographics.isPrimary == true &&
+        patients.value.addDemographic == null
+      ) {
+        (demographics.emergencyFullName = demographics.fullName),
+          (demographics.emergencyEmail = demographics.familyEmail),
+          (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
+          (demographics.emergencyContactType = demographics.familyContactType),
+          (demographics.emergencyContactTime = demographics.familyContactTime),
+          (demographics.emergencyGender = demographics.familyGender),
+          store.dispatch("addDemographic", demographics);
+      }
+      if (
+        demographics.isPrimary == false &&
+        patients.value.addDemographic == null
+      ) {
+        store.dispatch("addDemographic", demographics);
+      }
+      if (patients.value.addDemographic.id && demographics.isPrimary == true) {
+        (demographics.emergencyFullName = demographics.fullName),
+          (demographics.emergencyEmail = demographics.familyEmail),
+          (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
+          (demographics.emergencyContactType = demographics.familyContactType),
+          (demographics.emergencyContactTime = demographics.familyContactTime),
+          (demographics.emergencyGender = demographics.familyGender),
+          store.dispatch("updateDemographic", {
+            data: demographics,
+            id: patients.value.addDemographic.id,
+            emergencyContactID:
+              patients.value.addDemographic.emergencyContact.data.id,
+            patientFamilyMemberID:
+              patients.value.addDemographic.patientFamilyMember.data.id,
+          });
+      }
+      if (patients.value.addDemographic.id && demographics.isPrimary == false) {
+        store.dispatch("updateDemographic", {
+          data: demographics,
+          id: patients.value.addDemographic.id,
+          emergencyContactID:
+            patients.value.addDemographic.emergencyContact.data.id,
+          patientFamilyMemberID:
+            patients.value.addDemographic.patientFamilyMember.data.id,
         });
-        const demographics = reactive({
-            firstName: "",
-            middleName: "",
-            lastName: "",
-            dob: "",
-            gender: "",
-            language: "",
-            otherLanguage: [],
-            nickName: "",
-            weight: "",
-            height: "",
-            email: "",
-            phoneNumber: "",
-            contactType: [],
-            contactTime: "",
-            medicalRecordNumber: "",
-            country: 19,
-            state: "",
-            city: "",
-            zipCode: "",
-            appartment: "",
-            address: "",
-            fullName: "",
-            familyEmail: "",
-            familyPhoneNumber: "",
-            familyContactType: [],
-            familyContactTime: "",
-            familyGender: "",
-            relation: "",
-            emergencyFullName: "",
-            emergencyEmail: "",
-            emergencyPhoneNumber: "",
-            emergencyContactType: [],
-            emergencyContactTime: "",
-            emergencyGender: "",
-            isPrimary: false,
-        });
+      }
+    };
 
-        const conditions = reactive({
-            condition: [],
-            name: "",
-            designation: "",
-            email: "",
-            phoneNumber: "",
-            fax: "",
-            checked: false,
-            physicianName: "",
-            physicianDesignation: "",
-            physicianEmail: "",
-            physicianPhoneNumber: "",
-            physicianFax: "",
-        });
+    const next = () => {
+      store.commit("counterPlus");
+    };
+    const prev = () => {
+      store.commit("counterMinus");
+    };
 
-        const parameters = reactive([]);
-
-        
-
-        const insuranceData = reactive({
-            insuranceNumber: [],
-            insuranceName: [],
-            expirationDate: [],
-            insuranceType: [],
-        });
-
-        const demographic = () => {
-            if (demographics.isPrimary == true && patients.value.addDemographic == null) {
-                (demographics.emergencyFullName = demographics.fullName),
-                (demographics.emergencyEmail = demographics.familyEmail),
-                (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
-                (demographics.emergencyContactType = demographics.familyContactType),
-                (demographics.emergencyContactTime = demographics.familyContactTime),
-                (demographics.emergencyGender = demographics.familyGender),
-                store.dispatch("addDemographic", demographics);
-            }
-            if (demographics.isPrimary == false && patients.value.addDemographic == null) {
-                store.dispatch("addDemographic", demographics);
-            }
-            if (patients.value.addDemographic.id && demographics.isPrimary == true) {
-                (demographics.emergencyFullName = demographics.fullName),
-                (demographics.emergencyEmail = demographics.familyEmail),
-                (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
-                (demographics.emergencyContactType = demographics.familyContactType),
-                (demographics.emergencyContactTime = demographics.familyContactTime),
-                (demographics.emergencyGender = demographics.familyGender),
-                store.dispatch("updateDemographic", {
-                    data: demographics,
-                    id: patients.value.addDemographic.id,
-                    emergencyContactID: patients.value.addDemographic.emergencyContact.data.id,
-                    patientFamilyMemberID: patients.value.addDemographic.patientFamilyMember.data.id
-                })
-            }
-            if (patients.value.addDemographic.id && demographics.isPrimary == false) {
-                store.dispatch("updateDemographic", {
-                    data: demographics,
-                    id: patients.value.addDemographic.id,
-                    emergencyContactID: patients.value.addDemographic.emergencyContact.data.id,
-                    patientFamilyMemberID: patients.value.addDemographic.patientFamilyMember.data.id
-                })
-            }
-
-        };
-
-        const next = () => {
-            store.commit('counterPlus')
-        };
-        const prev = () => {
-            store.commit('counterMinus')
-        };
-
-        const condition = () => {
-            if ( patients.value.addCondition == null || patients.value.addPatientReferals == null || patients.value.addPatientPhysician == null) {
-                // store.dispatch("addCondition", {
-                //     data: conditions,
-                //     id: patients.value.addDemographic.id,
-                // });
-                // store.dispatch("addPatientReferals", {
-                //     data: conditions,
-                //     id: patients.value.addDemographic.id,
-                // });
-                if (conditions.checked == false) {
-                    (conditions.name = conditions.physicianName),
-                    (conditions.designation = conditions.physicianDesignation),
-                    (conditions.email = conditions.physicianEmail),
-                    (conditions.phoneNumber = conditions.physicianPhoneNumber),
-                    (conditions.fax = conditions.physicianFax);
-                    store.dispatch("addCondition", {
-                        data: conditions,
-                        id: patients.value.addDemographic.id,
-                    })
-                }
-                if (conditions.checked == true) {
-                    store.dispatch("addCondition", {
-                        data: conditions,
-                        id: patients.value.addDemographic.id,
-                    });
-                }
-            }
-
-            if ( patients.value.addPatientReferals.id && patients.value.addPatientPhysician.id) {
-                // store.dispatch("addCondition", {
-                //     data: conditions,
-                //     id: patients.value.addDemographic.id,
-                // });
-                // store.dispatch("updatePatientReferals", {
-                //     data: conditions,
-                //     id: patients.value.addDemographic.id,
-                //     referalID: patients.value.addPatientReferals.id
-                // });
-                if (conditions.checked == false) {
-                    (conditions.name = conditions.physicianName),
-                    (conditions.designation = conditions.physicianDesignation),
-                    (conditions.email = conditions.physicianEmail),
-                    (conditions.phoneNumber = conditions.physicianPhoneNumber),
-                    (conditions.fax = conditions.physicianFax);
-                    store.dispatch("updateCondition", {
-                        data: conditions,
-                        id: patients.value.addDemographic.id,
-                        physicianId: patients.value.addPatientPhysician.id,
-                        referalID: patients.value.addPatientReferals.id,
-                    })
-                }
-                if (conditions.checked == true) {
-                    store.dispatch("updateCondition", {
-                        data: conditions,
-                        id: patients.value.addDemographic.id,
-                        physicianId: patients.value.addPatientPhysician.id,
-                        referalID: patients.value.addPatientReferals.id
-                    });
-                }
-            }
-        };
-
-        const parameter = () => {
-            store.dispatch("parameter", {
-                vital: parameters,
-                id: patients.value.addDemographic.id,
-            });
-        };
-
-        
-        const insuranceForm = () => {  
-            store.dispatch("addInsurance", {
-                data: {
-                    insurance: [insuranceData]
-                },
-                id: patients.value.addDemographic.id,
-            });
-        };
-
-        
-
-        const demographicsFailed = () => {
-            scrollToTop();
-            // errorSwal(messages.fieldsRequired)
-        };
-
-        const conditionsFailed = () => {
-            scrollToTop();
-            // errorSwal(messages.fieldsRequired)
-        };
-
-        
-        const insuranceDataFailed = () => {
-            scrollToTop();
-            // errorSwal(messages.fieldsRequired)
-        };
-
-        const handleChange = () => {};
-
-        const globalCode = computed(() => {
-            return store.state.common;
-        });
-
-        const patients = computed(() => {
-            return store.state.patients;
-        });
-
-
-     
-
-        const errorMsg = computed(() => {
-            return store.state.patients.errorMsg;
-        });
-
-        function parameterFields(id) {
-            store.dispatch("parameterFields", id);
+    const condition = () => {
+      if (
+        patients.value.addCondition == null ||
+        patients.value.addPatientReferals == null ||
+        patients.value.addPatientPhysician == null
+      ) {
+        // store.dispatch("addCondition", {
+        //     data: conditions,
+        //     id: patients.value.addDemographic.id,
+        // });
+        // store.dispatch("addPatientReferals", {
+        //     data: conditions,
+        //     id: patients.value.addDemographic.id,
+        // });
+        if (conditions.checked == false) {
+          (conditions.name = conditions.physicianName),
+            (conditions.designation = conditions.physicianDesignation),
+            (conditions.email = conditions.physicianEmail),
+            (conditions.phoneNumber = conditions.physicianPhoneNumber),
+            (conditions.fax = conditions.physicianFax);
+          store.dispatch("addCondition", {
+            data: conditions,
+            id: patients.value.addDemographic.id,
+          });
         }
-
-        const fields = computed(() => {
-            return store.state.patients.parameterFields;
-        });
-
-        const form = reactive({
-            ...demographics
-        });
-
-        function saveModal() {
-            emit('saveModal', false)
-            successSwal(messages.formSuccess);
-            Object.assign(demographics, form);
-            store.dispatch('patients')
-            store.commit('resetCounter')
+        if (conditions.checked == true) {
+          store.dispatch("addCondition", {
+            data: conditions,
+            id: patients.value.addDemographic.id,
+          });
         }
+      }
 
-        function closeModal(){
-            warningSwal(messages.modalWarning).then((response) => {
-                if (response == true) {
-                    emit('saveModal', false)
-                    Object.assign(demographics, form);
-                    store.dispatch('patients')
-                    store.commit('resetCounter')
-                }else{
-                    emit('saveModal', true) 
-                }
-            })
+      if (
+        patients.value.addPatientReferals.id &&
+        patients.value.addPatientPhysician.id
+      ) {
+        // store.dispatch("addCondition", {
+        //     data: conditions,
+        //     id: patients.value.addDemographic.id,
+        // });
+        // store.dispatch("updatePatientReferals", {
+        //     data: conditions,
+        //     id: patients.value.addDemographic.id,
+        //     referalID: patients.value.addPatientReferals.id
+        // });
+        if (conditions.checked == false) {
+          (conditions.name = conditions.physicianName),
+            (conditions.designation = conditions.physicianDesignation),
+            (conditions.email = conditions.physicianEmail),
+            (conditions.phoneNumber = conditions.physicianPhoneNumber),
+            (conditions.fax = conditions.physicianFax);
+          store.dispatch("updateCondition", {
+            data: conditions,
+            id: patients.value.addDemographic.id,
+            physicianId: patients.value.addPatientPhysician.id,
+            referalID: patients.value.addPatientReferals.id,
+          });
         }
+        if (conditions.checked == true) {
+          store.dispatch("updateCondition", {
+            data: conditions,
+            id: patients.value.addDemographic.id,
+            physicianId: patients.value.addPatientPhysician.id,
+            referalID: patients.value.addPatientReferals.id,
+          });
+        }
+      }
+    };
 
+    const parameter = () => {
+      store.dispatch("parameter", {
+        vital: parameters,
+        id: patients.value.addDemographic.id,
+      });
+    };
 
-       
-        return {
-            insuranceDataFailed,
-            conditionsFailed,
-            closeModal,
-            warningSwal,
-            form,
-            successSwal,
-            saveModal,
-            regex,
-            scrollToTop,
-            insuranceForm,
-            insuranceData,
-            parameter,
-            parameters,
-            fields,
-            parameterFields,
-            errorMsg,
-            patients,
-            current,
-            globalCode,
-            demographic,
-            condition,
-            steps: [{
-                    title: "Demographics",
-                    content: "First-content",
-                },
-                {
-                    title: "Conditions",
-                    content: "Second-content",
-                },
-                {
-                    title: "Programs",
-                    content: "Second-content",
-                },
-                {
-                    title: "Devices",
-                    content: "Second-content",
-                },
-                // {
-                //   title: "Parameters",
-                //   content: "Second-content",
-                // },
-                {
-                    title: "Clinical Data",
-                    content: "Second-content",
-                },
-                {
-                    title: "Insurance",
-                    content: "Second-content",
-                },
-                {
-                    title: "Documents",
-                    content: "Last-content",
-                },
-            ],
-            next,
-            prev,
-            size: ref("large"),
-            search:ref(),
-            handleChange,
-            demographics,
-            conditions,
-            demographicsFailed,
-        };
-    },
+    const insuranceForm = () => {
+      store.dispatch("addInsurance", {
+        data: {
+          insurance: [insuranceData],
+        },
+        id: patients.value.addDemographic.id,
+      });
+    };
+
+    const demographicsFailed = () => {
+      scrollToTop();
+      // errorSwal(messages.fieldsRequired)
+    };
+
+    const conditionsFailed = () => {
+      scrollToTop();
+      // errorSwal(messages.fieldsRequired)
+    };
+
+    const insuranceDataFailed = () => {
+      scrollToTop();
+      // errorSwal(messages.fieldsRequired)
+    };
+
+    const handleChange = () => {};
+
+    const globalCode = computed(() => {
+      return store.state.common;
+    });
+
+    const patients = computed(() => {
+      return store.state.patients;
+    });
+
+    const errorMsg = computed(() => {
+      return store.state.patients.errorMsg;
+    });
+
+    function parameterFields(id) {
+      store.dispatch("parameterFields", id);
+    }
+
+    const fields = computed(() => {
+      return store.state.patients.parameterFields;
+    });
+
+    const form = reactive({
+      ...demographics,
+    });
+
+    function saveModal() {
+      emit("saveModal", false);
+      successSwal(messages.formSuccess);
+      Object.assign(demographics, form);
+      store.dispatch("patients");
+      store.commit("resetCounter");
+    }
+
+    function closeModal() {
+      warningSwal(messages.modalWarning).then((response) => {
+        if (response == true) {
+          emit("saveModal", false);
+          Object.assign(demographics, form);
+          store.dispatch("patients");
+          store.commit("resetCounter");
+        } else {
+          emit("saveModal", true);
+        }
+      });
+    }
+
+    return {
+      insuranceDataFailed,
+      conditionsFailed,
+      closeModal,
+      warningSwal,
+      form,
+      successSwal,
+      saveModal,
+      regex,
+      scrollToTop,
+      insuranceForm,
+      insuranceData,
+      parameter,
+      parameters,
+      fields,
+      parameterFields,
+      errorMsg,
+      patients,
+      current,
+      globalCode,
+      demographic,
+      condition,
+      steps: [
+        {
+          title: "Demographics",
+          content: "First-content",
+        },
+        {
+          title: "Conditions",
+          content: "Second-content",
+        },
+        {
+          title: "Programs",
+          content: "Second-content",
+        },
+        {
+          title: "Devices",
+          content: "Second-content",
+        },
+        // {
+        //   title: "Parameters",
+        //   content: "Second-content",
+        // },
+        {
+          title: "Clinical Data",
+          content: "Second-content",
+        },
+        {
+          title: "Insurance",
+          content: "Second-content",
+        },
+        {
+          title: "Documents",
+          content: "Last-content",
+        },
+      ],
+      next,
+      prev,
+      size: ref("large"),
+      search: ref(),
+      handleChange,
+      demographics,
+      conditions,
+      demographicsFailed,
+    };
+  },
 };
 </script>
 
 <style lang="scss">
 @media (max-width: 1199px) {
-    .ant-steps-item {
-        display: flex;
+  .ant-steps-item {
+    display: flex;
 
-        .ant-steps-item-container {
-            text-align: center;
+    .ant-steps-item-container {
+      text-align: center;
 
-            .ant-steps-item-icon {
-                margin: 0;
-            }
+      .ant-steps-item-icon {
+        margin: 0;
+      }
 
-            .ant-steps-item-content {
-                display: block;
+      .ant-steps-item-content {
+        display: block;
 
-                .ant-steps-item-title {
-                    padding: 0;
-                    font-size: 13px;
+        .ant-steps-item-title {
+          padding: 0;
+          font-size: 13px;
 
-                    &::after {
-                        display: none;
-                    }
-                }
-            }
+          &::after {
+            display: none;
+          }
         }
+      }
     }
+  }
 }
 
 .steps-content {
-    margin-top: 16px;
-    border-radius: 6px;
-    min-height: 200px;
-    text-align: left;
-    padding: 12px 0;
-    overflow-x: hidden;
-    overflow-y: auto;
+  margin-top: 16px;
+  border-radius: 6px;
+  min-height: 200px;
+  text-align: left;
+  padding: 12px 0;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .steps-action {
-    text-align: right;
+  text-align: right;
 }
 
 .validation {
-    color: red;
+  color: red;
 }
 </style>
 

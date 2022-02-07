@@ -1,4 +1,16 @@
 
+ export const counterPlus = (state) => {
+  state.counter++
+}
+
+export const counterMinus = (state) => {
+  state.counter--
+}
+
+export const resetCounter = (state) => {
+  state.counter = 0
+}
+
 export const addStaff= async (state, data) => {
     state.addStaff = data;
 }
@@ -88,4 +100,122 @@ export const staffs= async (state, data) => {
           },
         },
       ];
+}
+
+
+
+export const addContacts = (state, data) => {
+  state.addContacts = data
+}
+
+export const staffContactList = (state, data) => {
+  state.staffContactList = data
+  state.staffContactColms = [{
+    title: "First Name",
+    dataIndex: "firstName",
+},
+{
+    title: "Last Name",
+    dataIndex: "lastName",
+},
+{
+    title: "Email",
+    dataIndex: "email",
+},
+{
+    title: "Phone No",
+    dataIndex: "phoneNumber",
+},
+{
+    title: "Actions",
+    dataIndex: "actions",
+    slots: {
+        customRender: "action",
+    },
+},
+];
+}
+
+
+
+export const addAvailability = (state, data) => {
+  state.addAvailability = data
+}
+
+export const availabilityList = (state, data) => {
+  state.availabilityList = data,
+  state.availabilityListColms =[{
+    title: "Start Time",
+    dataIndex: "startTime",
+  },
+  {
+    title: "End Time",
+    dataIndex: "endTime",
+  },
+  {
+    title: "Actions",
+    dataIndex: "actions",
+    slots: {
+        customRender: "action",
+    },
+  },
+  ];
+}
+
+
+export const addRole = (state, data) => {
+  state.addRole = data
+}
+
+export const roleList = (state, data) => {
+  state.roleList = data,
+  state.roleListColms = [
+    {
+      title: "Role",
+      dataIndex: "role",
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      slots: {
+        customRender: "action",
+      },
+    },
+  ];
+}
+
+
+export const addProvider = (state, data) => {
+  state.addProvider = data
+}
+
+
+export const providerList = (state, data) => {
+  state.providerList = data
+  state.providerListColms = [
+    {
+      title: "Provider Name",
+      dataIndex: "name",
+    },
+  
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      slots: {
+        customRender: "action",
+      },
+    },
+  ];
+  
+}
+
+
+
+export const roles = (state, data) => {
+  state.roles = data
+}
+
+
+export const providers = (state, data) => {
+  state.providers = data
 }
