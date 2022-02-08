@@ -1,16 +1,10 @@
 const careCoordinator = {
     specialization:'Especialización',
-    manageCareCoordinator:{
-        careCoordinator:'Coordinador de cuidados',
-        addNewCoordinator:'Agregar nuevo coordinador',
-        wellness:'Bienestar',
-        behavior:'Conducta',
-        in:'En',
-        out:'Fuera', 
-    },
-
+    
     coordinatorsModal:{
+        careCoordinator:'Care Coordinator',
         addNewCoordinator:'Agregar nueva coordinadora',
+        personalInformation:'Personal Information'
     }
 
   }

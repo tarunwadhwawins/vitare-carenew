@@ -21,18 +21,29 @@ export const addAppointment = async ({
 export const searchAppointment = async ({
   commit
 },from) => {
+  commit('loadingStatus', true)
   //console.log(to)
   await serviceMethod.common("get", API_ENDPOINTS['seacrhAppointment']+from, null, null).then((response) => {
     commit('searchAppointmentSuccess', response.data.data);
+    commit('loadingStatus', false)
   }).catch((error) => {
     if(error.response.status === 422){
+      commit('loadingStatus', true)
       commit('errorMsg', error.response.data)
     }else if(error.response.status === 500){
+      commit('loadingStatus', false)
       errorSwal(error.response.data.message)
     }else if(error.response.status === 401){
+      commit('loadingStatus', false)
       errorSwal(error.response.data.message)
     }
   })
+}
+export const weekName =({commit},date) =>{
+  commit('GetWeekName', date)
+}
+export const calendarDateSelect =({commit},date) =>{
+  commit('calendarDateSelect', date)
 }
 
 

@@ -1,8 +1,22 @@
 export default{
+    counter:0,
     addStaff:null,
     staffs:[],
     columns:[],
     errorMsg:null,
     specializationStaff:null,
-    networkStaff:null
+    networkStaff:null,
+    addContacts:null,
+    staffContactList:null,
+    staffContactColms:null,
+    addAvailability:null,
+    availabilityList:null,
+    addRole:null,
+    roleList:null,
+    roleListColms:null,
+    addProvider:null,
+    providerList:null,
+    providerListColms:null,
+    roles:null,
+    providers:null
 }

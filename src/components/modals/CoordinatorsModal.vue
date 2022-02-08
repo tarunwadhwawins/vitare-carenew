@@ -91,7 +91,6 @@
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                         <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
-                        
                     </div>
 
                 </a-form>
@@ -109,7 +108,7 @@
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
-                   
+
                 </div>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Roles'">
@@ -140,154 +139,145 @@
     </a-row>
 </a-modal>
 </template>
+
 <script>
-import {
-    ref,
-    reactive,
-    computed
-} from "vue";
+import {reactive, computed } from "vue";
 // import PersonalInformation from "@/components/modals/forms/PersonalInformation"
-import Contacts from "@/components/modals/forms/Contacts"
-import Availability from "@/components/modals/forms/Availability"
-import Roles from "@/components/modals/forms/Roles"
-import Documents from "@/components/modals/forms/Documents"
-import Providers from "@/components/modals/forms/Providers"
-import {
-    useStore
-} from "vuex"
-import ErrorMessage from "../common/messages/ErrorMessage"
-import {
-    regex
-} from "../../RegularExpressions/regex"
-import {
-    scrollToTop
-} from "../../commonMethods/commonMethod"
-import{errorSwal} from "../../commonMethods/commonMethod"
-import { messages } from '../../config/messages';
+import Contacts from "@/components/modals/forms/Contacts";
+import Availability from "@/components/modals/forms/Availability";
+import Roles from "@/components/modals/forms/Roles";
+import Documents from "@/components/modals/forms/Documents";
+import Providers from "@/components/modals/forms/Providers";
+import { useStore } from "vuex";
+import ErrorMessage from "../common/messages/ErrorMessage";
+import { regex } from "../../RegularExpressions/regex";
+import { scrollToTop } from "../../commonMethods/commonMethod";
+import { errorSwal } from "../../commonMethods/commonMethod";
+import { messages } from "../../config/messages";
 export default {
-    components: {
-        // PersonalInformation,
-        Contacts,
-        Availability,
-        Roles,
-        Documents,
-        Providers,
-        ErrorMessage,
-    },
-    setup() {
-        const current = ref(0);
-        const store = useStore();
-        const personalInfoData = reactive({
-            firstName: '',
-            lastName: '',
-            designationId: '',
-            genderId: '',
-            email: '',
-            phoneNumber: '',
-            specializationId: '',
-            networkId: '',
-            roleId: 3,
-            providerId: 1
+  components: {
+    // PersonalInformation,
+    Contacts,
+    Availability,
+    Roles,
+    Documents,
+    Providers,
+    ErrorMessage,
+  },
+  setup() {
+    const store = useStore();
+    const current = computed(() => {
+      return store.state.careCoordinator.counter;
+    });
+    const personalInfoData = reactive({
+      firstName: "",
+      lastName: "",
+      designationId: "",
+      genderId: "",
+      email: "",
+      phoneNumber: "",
+      specializationId: "",
+      networkId: "",
+      roleId: 3,
+      providerId: 1,
+    });
 
-        });
-        const next = () => {
-            current.value++;
+    const personalInfo = () => {
+      store.dispatch("addStaff", personalInfoData);
+      setTimeout(() => {
+        if (addStaff.value.id) {
+          store.dispatch("staffs");
+          current.value++;
         }
+      }, 2000);
+    };
 
-        const personalInfo = () => {
-            store.dispatch('addStaff', personalInfoData)
-            setTimeout(() => {
-                if (addStaff.value.id) {
-                    store.dispatch('staffs')
-                    current.value++;
-                }
-            }, 2000)
+    const next = () => {
+      store.commit("counterPlus");
+    };
+    const prev = () => {
+      store.commit("counterMinus");
+    };
 
-        }
+    const onFinishFailed = (value) => {
+      scrollToTop();
+      errorSwal(messages.fieldsRequired);
+      console.log("test", value);
+    };
 
-        const prev = () => {
-            current.value--;
-        }
+    const handleChange = () => {};
 
-        const onFinishFailed = (value) => {
-            scrollToTop()
-            errorSwal(messages.fieldsRequired)
-            console.log('test',value)
-        };
+    const careCordinator = computed(() => {
+      return store.state.common;
+    });
 
-        const handleChange = () => {};
+    const addStaff = computed(() => {
+      return store.state.careCoordinator.addStaff;
+    });
 
-        const careCordinator = computed(() => {
-            return store.state.common
-        })
+    const errorMsg = computed(() => {
+      if (store.state.careCoordinator.errorMsg) {
+        scrollToTop();
+      }
+      return store.state.careCoordinator.errorMsg;
+    });
 
-        const addStaff = computed(() => {
-            return store.state.careCoordinator.addStaff
-        })
-
-        const errorMsg = computed(() => {
-            if (store.state.careCoordinator.errorMsg) {
-                scrollToTop()
-            }
-            return store.state.careCoordinator.errorMsg
-        })
-        
-        
-        return {
-            handleChange,
-            scrollToTop,
-            regex,
-            errorMsg,
-            addStaff,
-            careCordinator,
-            personalInfoData,
-            current,
-            personalInfo,
-            steps: [{
-                    title: "Personal Information",
-                    content: "First-content",
-                },
-                {
-                    title: "Contacts",
-                    content: "Second-content",
-                },
-                {
-                    title: "Availability",
-                    content: "Second-content",
-                },
-                {
-                    title: "Roles",
-                    content: "Second-content",
-                },
-                {
-                    title: "Documents",
-                    content: "Second-content",
-                },
-                {
-                    title: "Providers",
-                    content: "Last-content",
-                },
-            ],
-            next,
-            prev,
-            onFinishFailed,
-        };
-    },
+    return {
+      handleChange,
+      scrollToTop,
+      regex,
+      errorMsg,
+      addStaff,
+      careCordinator,
+      personalInfoData,
+      current,
+      personalInfo,
+      steps: [
+        {
+          title: "Personal Information",
+          content: "First-content",
+        },
+        {
+          title: "Contacts",
+          content: "Second-content",
+        },
+        {
+          title: "Availability",
+          content: "Second-content",
+        },
+        {
+          title: "Roles",
+          content: "Second-content",
+        },
+        {
+          title: "Documents",
+          content: "Second-content",
+        },
+        {
+          title: "Providers",
+          content: "Last-content",
+        },
+      ],
+      next,
+      prev,
+      onFinishFailed,
+    };
+  },
 };
 </script>
 
 <style scoped>
 .steps-content {
-    margin-top: 16px;
-    border-radius: 6px;
-    min-height: 200px;
-    text-align: left;
-    padding: 12px 0;
-    overflow-x: hidden;
-    overflow-y: auto;
+  margin-top: 16px;
+  border-radius: 6px;
+  min-height: 200px;
+  text-align: left;
+  padding: 12px 0;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .steps-action {
-    text-align: right;
+  text-align: right;
 }
 </style>

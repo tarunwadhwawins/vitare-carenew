@@ -282,7 +282,7 @@ export const changeStatus = async ({
   commit
 }, data) => {
   await serviceMethod.common("put", `patient/${data.id}/inventory/${data.statusId}`, null, data.status).then((response) => {
-    // commit('changeStatus', response.data.data);
+    commit('changeStatus', response.data.data);
     // successSwal(response.data.message)
   }).catch((error) => {
     if (error.response.status === 422) {
@@ -325,6 +325,9 @@ export const inventoryList = async ({
 }, data) => {
   await serviceMethod.common("get", `inventory?isAvailable=${data.isAvailable}&deviceType=${data.deviceType}`, null, null).then((response) => {
     commit('inventoryList', response.data.data);
+    if(response.data.data[0]=='' || response.data.data.length==0){
+    errorSwal('Data not found!')
+    }
   }).catch((error) => {
     errorSwal(error.response.data.message)
   })
