@@ -60,17 +60,17 @@ export const addDemographic = (state, data) => {
             customRender: "patientVitals",
         },
         children: [{
-                title: "BP",
+                title: "BP(mmHg)",
                 dataIndex: "bp",
                 key: "bp",
             },
             {
-                title: "Spo2",
+                title: "Spo2(%)",
                 dataIndex: "spo2",
                 key: "spo2",
             },
             {
-                title: "Glucose",
+                title: "Glucose(mg/dL)",
                 dataIndex: "glucose",
                 key: "glucose",
             },

@@ -51,7 +51,7 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(),type: 'email' }]">
-                                    <a-input v-model:value="personalInfoData.email" placeholder="test@test.com" />
+                                    <a-input v-model:value="personalInfoData.email" placeholder="test@test.com" @input="emailChange()"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" />
                                 </a-form-item>
                             </div>
@@ -216,13 +216,15 @@ export default {
     });
 
     const errorMsg = computed(() => {
-      if (store.state.careCoordinator.errorMsg) {
-        scrollToTop();
-      }
       return store.state.careCoordinator.errorMsg;
     });
 
+    function emailChange(){
+        errorMsg.value.email?errorMsg.value.email[0]=null:''
+    }
+
     return {
+      emailChange,
       handleChange,
       scrollToTop,
       regex,
