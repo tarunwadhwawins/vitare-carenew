@@ -49,11 +49,13 @@ import { useStore } from "vuex";
 import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import Loader from "@/components/loader/Loader";
+import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 export default defineComponent({
   components: {
     // EditOutlined,
     DeleteOutlined,
     Loader,
+    ErrorMessage
   },
   setup() {
     const store = useStore();

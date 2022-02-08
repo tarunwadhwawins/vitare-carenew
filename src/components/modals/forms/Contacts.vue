@@ -64,7 +64,9 @@ import { useStore } from "vuex";
 import { regex } from "@/RegularExpressions/regex";
 import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
+import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import Loader from "@/components/loader/Loader";
+
 import {
   // EditOutlined,
   DeleteOutlined,
@@ -75,6 +77,7 @@ export default defineComponent({
     // EditOutlined,
     DeleteOutlined,
     Loader,
+    ErrorMessage
   },
   setup() {
     const store = useStore();

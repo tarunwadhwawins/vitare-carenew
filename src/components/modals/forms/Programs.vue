@@ -65,12 +65,14 @@ import { defineComponent, reactive, computed } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "../../loader/Loader"
-import {warningSwal,errorSwal} from "../../../commonMethods/commonMethod"
+import {warningSwal} from "../../../commonMethods/commonMethod"
 import { messages } from "../../../config/messages";
+import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 export default defineComponent({
   components: {
     DeleteOutlined,
-    Loader
+    Loader,
+    ErrorMessage
   },
   setup() {
     const store = useStore();

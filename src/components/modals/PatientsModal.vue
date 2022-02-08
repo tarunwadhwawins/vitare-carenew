@@ -15,7 +15,7 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation')  }]">
                                     <a-input v-model:value="demographics.firstName" size="large" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.firstName?errorMsg.firstName[0]:''" />
+                                    <ErrorMessage class="error" v-if="errorMsg" :name="errorMsg.firstName?errorMsg.firstName[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -935,6 +935,7 @@ export default {
 
     const demographicsFailed = () => {
       scrollToTop();
+     
       // errorSwal(messages.fieldsRequired)
     };
 

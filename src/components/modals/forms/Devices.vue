@@ -99,114 +99,102 @@
 </template>
 
 <script>
-import {
-    defineComponent,
-    reactive,
-    computed,
-    ref
-} from "vue"
-import {
-    DeleteOutlined,
-} from "@ant-design/icons-vue"
-import {
-    useStore
-} from "vuex"
-import Loader from "../../loader/Loader"
-import {
-    warningSwal, errorSwal
-} from "../../../commonMethods/commonMethod"
-import { messages } from "../../../config/messages"
+import { defineComponent, reactive, computed, ref } from "vue";
+import { DeleteOutlined } from "@ant-design/icons-vue";
+import { useStore } from "vuex";
+import Loader from "../../loader/Loader";
+import { warningSwal} from "../../../commonMethods/commonMethod";
+import { messages } from "../../../config/messages";
+import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 export default defineComponent({
-    components: {
-        DeleteOutlined,
-        Loader
-    },
-    setup() {
-        const store = useStore()
-        const status = ref([])
-        const device = reactive({
-            inventory: '',
-            deviceType: "",
-            modelNumber: "",
-            serialNumber: "",
-            macAddress: "",
-            // deviceTime: "",
-            // serverTime: "",
-        });
-        const addDevice = () => {
-            store.dispatch("addDevice", {
-                data: device,
-                id: patients.value.addDemographic.id,
-            });
-            setTimeout(() => {
-                store.dispatch("devices", patients.value.addDemographic.id);
-            }, 2000);
-        };
+  components: {
+    DeleteOutlined,
+    Loader,
+    ErrorMessage,
+  },
+  setup() {
+    const store = useStore();
+    const status = ref([]);
+    const device = reactive({
+      inventory: "",
+      deviceType: "",
+      modelNumber: "",
+      serialNumber: "",
+      macAddress: "",
+      // deviceTime: "",
+      // serverTime: "",
+    });
+    const addDevice = () => {
+      store.dispatch("addDevice", {
+        data: device,
+        id: patients.value.addDemographic.id,
+      });
+      setTimeout(() => {
+        store.dispatch("devices", patients.value.addDemographic.id);
+      }, 2000);
+    };
 
-        const globalCode = computed(() => {
-            return store.state.common;
-        })
-        const deviceData = computed(() => {
-            return store.state.patients.devices;
-        })
+    const globalCode = computed(() => {
+      return store.state.common;
+    });
+    const deviceData = computed(() => {
+      return store.state.patients.devices;
+    });
 
-        const deviceColumns = computed(() => {
-            return store.state.patients.devicesColumns;
-        })
-        const patients = computed(() => {
-            return store.state.patients;
-        })
+    const deviceColumns = computed(() => {
+      return store.state.patients.devicesColumns;
+    });
+    const patients = computed(() => {
+      return store.state.patients;
+    });
 
-        function deleteDevice(id) {
-            warningSwal(messages.deleteWarning).then((response) => {
-                if (response == true) {
-                    store.dispatch('deleteDevice', {
-                        id: patients.value.addDemographic.id,
-                        deviceId: id
-                    })
-                    setTimeout(() => {
-                        store.dispatch("devices", patients.value.addDemographic.id);
-                    }, 2000);
-                }
-            })
+    function deleteDevice(id) {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          store.dispatch("deleteDevice", {
+            id: patients.value.addDemographic.id,
+            deviceId: id,
+          });
+          setTimeout(() => {
+            store.dispatch("devices", patients.value.addDemographic.id);
+          }, 2000);
         }
+      });
+    }
 
-        function changeStatus(id, status) {
-            console.log(status)
-            store.dispatch('changeStatus', {
-                id: patients.value.addDemographic.id,
-                statusId: id,
-                status: {
-                    status: status //== true ? 1 : 0
-                }
-            })
-        }
+    function changeStatus(id, status) {
+      console.log(status);
+      store.dispatch("changeStatus", {
+        id: patients.value.addDemographic.id,
+        statusId: id,
+        status: {
+          status: status, //== true ? 1 : 0
+        },
+      });
+    }
 
-        function handleInventory(id){
-            store.dispatch('inventoryList',{isAvailable:1,deviceType:id})
-            device.inventory=null
-        }
-        // const deviceFailed = () => {
-        //     errorSwal(messages.fieldsRequired)
-        // };
+    function handleInventory(id) {
+      store.dispatch("inventoryList", { isAvailable: 1, deviceType: id });
+      device.inventory = null;
+    }
+    // const deviceFailed = () => {
+    //     errorSwal(messages.fieldsRequired)
+    // };
 
-      
-
-        
-        return {
-            // deviceFailed,
-            handleInventory,
-            changeStatus,
-            status,
-            warningSwal,
-            deleteDevice,
-            patients,
-            device,
-            addDevice,
-            globalCode,
-            deviceData,
-            deviceColumns
-        };
-    },
+    return {
+      // deviceFailed,
+      handleInventory,
+      changeStatus,
+      status,
+      warningSwal,
+      deleteDevice,
+      patients,
+      device,
+      addDevice,
+      globalCode,
+      deviceData,
+      deviceColumns,
+    };
+  },
 });
 </script>

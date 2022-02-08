@@ -9,14 +9,18 @@ export const addDemographic = (state, data) => {
 
  export const patients = (state, data) => {
     // state.patientList = data;
-    state.patientList=data.map(element => {
+    state.patientList=data
+    .map(element => {
             element.flags=element.patientFlags.data[0]?element.patientFlags.data[0].flags.data.color:'',
             element.name=element.name?element.name+" "+element.middleName+" "+element.lastName :'',
             element.lastReadingDate=element.lastReadingDate?element.lastReadingDate:'',
-            element.weight=element.weight?element.weight:''
+            element.weight=element.weight?element.weight:'',
+            element.bp = element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='Systolic'){return JSON.parse(vitalData.value)}if(vitalData.vitalField=='Diastolic'){return '/'+JSON.parse(vitalData.value)}}),
+            element.spo2 = element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='SPO2'){return JSON.parse(vitalData.value)}}),
+            element.glucose = element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='Random Blood Sugar'){return JSON.parse(vitalData.value)}})
             return element
      })
-    
+    console.log('=>',state.patientList)
     state.column= [{
         title: "Flags",
         dataIndex: "flags",
@@ -47,13 +51,13 @@ export const addDemographic = (state, data) => {
    
     {
         title: "Last Reading Values",
-        dataIndex: "readingvalues",
+        dataIndex: "patientVitals",
         sorter: {
             compare: (a, b) => a.readingvalues - b.readingvalues,
             multiple: 1,
         },
         slots: {
-            customRender: "lastReadingValues",
+            customRender: "patientVitals",
         },
         children: [{
                 title: "BP",
@@ -61,9 +65,9 @@ export const addDemographic = (state, data) => {
                 key: "bp",
             },
             {
-                title: "Sp02",
-                dataIndex: "sp02",
-                key: "sp02",
+                title: "Spo2",
+                dataIndex: "spo2",
+                key: "spo2",
             },
             {
                 title: "Glucose",
@@ -71,7 +75,7 @@ export const addDemographic = (state, data) => {
                 key: "glucose",
             },
             {
-                title: "Weight",
+                title: "Weight(LBS)",
                 dataIndex: "weight",
                 key: "weight",
             },

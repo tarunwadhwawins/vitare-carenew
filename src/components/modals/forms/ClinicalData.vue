@@ -1,3 +1,4 @@
+
 <template>
 <a-form :model="clinicals" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="clinicalHistory" @finishFailed="clinicalDataFailed">
     <div class="form-group">
@@ -95,126 +96,123 @@
     </a-col>
 </a-row>
 </template>
-
 <script>
-import {
-    defineComponent,
-    reactive,
-    computed
-} from "vue";
-import {
-    DeleteOutlined
-} from "@ant-design/icons-vue";
-import {
-    useStore
-} from "vuex"
-import Loader from "../../loader/Loader.vue"
-import {
-    warningSwal,errorSwal
-} from "../../../commonMethods/commonMethod"
+import { defineComponent, reactive, computed } from "vue";
+import { DeleteOutlined } from "@ant-design/icons-vue";
+import { useStore } from "vuex";
+import Loader from "../../loader/Loader.vue";
+import { warningSwal} from "../../../commonMethods/commonMethod";
 import { messages } from "../../../config/messages";
+import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 export default defineComponent({
-    components: {
-        DeleteOutlined,
-        Loader
-    },
-    setup() {
-        const store = useStore()
-        const clinicals = reactive({
-            history: "",
-        });
+  components: {
+    DeleteOutlined,
+    Loader,
+    ErrorMessage
+  },
+  setup() {
+    const store = useStore();
+    const clinicals = reactive({
+      history: "",
+    });
 
-        const clinicalMedication = reactive({
-            medicine: "",
-            frequency: "",
-            startDate: "",
-            endDate: "",
-        });
+    const clinicalMedication = reactive({
+      medicine: "",
+      frequency: "",
+      startDate: "",
+      endDate: "",
+    });
 
-        const globalCode = computed(() => {
-            return store.state.common;
-        })
+    const globalCode = computed(() => {
+      return store.state.common;
+    });
 
-        const clinicalHistory = () => {
-            store.dispatch("addClinicalHistory", {
-                data: clinicals,
-                id: patients.value.addDemographic.id,
+    const clinicalHistory = () => {
+      store.dispatch("addClinicalHistory", {
+        data: clinicals,
+        id: patients.value.addDemographic.id,
+      });
+
+      setTimeout(() => {
+        store.dispatch("clinicalHistoryList", patients.value.addDemographic.id);
+      }, 2000);
+    };
+
+    const clinicalMedicat = () => {
+      store.dispatch("addClinicalMedicat", {
+        data: clinicalMedication,
+        id: patients.value.addDemographic.id,
+      });
+      setTimeout(() => {
+        store.dispatch("clinicalMedicatList", patients.value.addDemographic.id);
+      }, 2000);
+    };
+    const patients = computed(() => {
+      return store.state.patients;
+    });
+
+    const clinicalHistoryColumns = computed(() => {
+      return store.state.patients.clinicalHistoryListColumns;
+    });
+
+    const clinicalsData = computed(() => {
+      return store.state.patients.clinicalHistoryList;
+    });
+
+    const clinicalMedicatData = computed(() => {
+      return store.state.patients.clinicalMedicatList;
+    });
+
+    const clinicalMedicatColumns = computed(() => {
+      return store.state.patients.clinicalMedicatListColumns;
+    });
+
+    function deleteClinicalData(id, name) {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          if (name == "deleteClinicalData") {
+            store.dispatch("deleteClinicalData", {
+              id: patients.value.addDemographic.id,
+              clinicalId: id,
             });
-
             setTimeout(() => {
-                store.dispatch("clinicalHistoryList", patients.value.addDemographic.id);
-            }, 2000);
-        };
-
-        const clinicalMedicat = () => {
-            store.dispatch("addClinicalMedicat", {
-                data: clinicalMedication,
-                id: patients.value.addDemographic.id,
+              store.dispatch(
+                "clinicalHistoryList",
+                patients.value.addDemographic.id
+              );
+            }, 3000);
+          } else {
+            store.dispatch("deleteClinicalMedicat", {
+              id: patients.value.addDemographic.id,
+              clinicalId: id,
             });
             setTimeout(() => {
-                store.dispatch("clinicalMedicatList", patients.value.addDemographic.id);
-            }, 2000);
-        };
-        const patients = computed(() => {
-            return store.state.patients;
-        })
-
-        const clinicalHistoryColumns = computed(() => {
-            return store.state.patients.clinicalHistoryListColumns;
-        });
-
-        const clinicalsData = computed(() => {
-            return store.state.patients.clinicalHistoryList;
-        });
-
-        const clinicalMedicatData = computed(() => {
-            return store.state.patients.clinicalMedicatList;
-        });
-
-        const clinicalMedicatColumns = computed(() => {
-            return store.state.patients.clinicalMedicatListColumns;
-        })
-
-        function deleteClinicalData(id, name) {
-            warningSwal(messages.deleteWarning).then((response) => {
-                if (response == true) {
-                    if (name == 'deleteClinicalData') {
-                        store.dispatch('deleteClinicalData', {
-                            id: patients.value.addDemographic.id,
-                            clinicalId: id
-                        })
-                        setTimeout(() => {
-                            store.dispatch("clinicalHistoryList", patients.value.addDemographic.id);
-                        }, 3000);
-                    } else {
-                      store.dispatch('deleteClinicalMedicat', {
-                            id: patients.value.addDemographic.id,
-                            clinicalId: id
-                        })
-                        setTimeout(() => {
-                            store.dispatch("clinicalMedicatList", patients.value.addDemographic.id);
-                        }, 3000);
-                    }
-                }
-            })
+              store.dispatch(
+                "clinicalMedicatList",
+                patients.value.addDemographic.id
+              );
+            }, 3000);
+          }
         }
-        // const clinicalDataFailed = () => {
-        //     errorSwal(messages.fieldsRequired)
-        // };
-        return {
-            // clinicalDataFailed,
-            deleteClinicalData,
-            clinicalHistory,
-            clinicalMedicat,
-            clinicals,
-            clinicalMedication,
-            globalCode,
-            patients,
-            clinicalHistoryColumns,
-            clinicalsData,
-            clinicalMedicatData,
-            clinicalMedicatColumns
-        };
-    },
+      });
+    }
+    // const clinicalDataFailed = () => {
+    //     errorSwal(messages.fieldsRequired)
+    // };
+    return {
+      // clinicalDataFailed,
+      deleteClinicalData,
+      clinicalHistory,
+      clinicalMedicat,
+      clinicals,
+      clinicalMedication,
+      globalCode,
+      patients,
+      clinicalHistoryColumns,
+      clinicalsData,
+      clinicalMedicatData,
+      clinicalMedicatColumns,
+    };
+  },
 });
 </script>
