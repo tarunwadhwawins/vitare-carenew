@@ -114,10 +114,6 @@
 <script>
 const columns = [
   {
-  dataIndex: "id",
-  key: "id",
-  },
-  {
     title: "From",
     dataIndex: "from",
     key: "from",
