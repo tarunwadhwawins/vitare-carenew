@@ -10,6 +10,7 @@ import { globalCodes } from "./globalCodes/index"
 import { rolesAndPermissions } from "./rolesAndPermissions/index"
 import { inventory } from "./inventory/index"
 import { appointment } from "./appointment/index"
+import { authentication } from "./authentication/index"
 
 export default createStore({
   modules: {
@@ -23,6 +24,7 @@ export default createStore({
     globalCodes,
     rolesAndPermissions,
     inventory,
-    appointment
+    appointment,
+    authentication
   },
 })

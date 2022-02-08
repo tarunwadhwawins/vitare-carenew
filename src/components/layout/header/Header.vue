@@ -163,7 +163,7 @@
             <div class="profile-menu">
               <a-dropdown :trigger="['click']">
                 <a class="ant-dropdown-link" @click.prevent>
-                  <div class="name">Jane Doe <strong>Admin</strong></div>
+                  <div class="name" v-if="loggedInUser">{{ loggedInUser.user.name }} <strong>{{ loggedInUser.user.designation }}</strong></div>
                   <div class="image">
                     <img
                       src="../../../assets/images/profile-1.jpg"
@@ -179,7 +179,9 @@
                     <a-menu-item key="1">
                       <a href="javascript:void(0)">{{$t('header.settings')}}</a>
                     </a-menu-item>
-                    <a-menu-item key="3"> <a href="#">{{$t('header.logout')}}</a></a-menu-item>
+                    <a-menu-item key="3" @click="logoutUser">
+                      <a href="javascript:void(0)">{{$t('header.logout')}}</a>
+                    </a-menu-item>
                   </a-menu>
                 </template>
               </a-dropdown>
@@ -200,7 +202,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import AddAppointment from "@/components/modals/AddAppointment";
 import TasksModal from "@/components/modals/TasksModal";
 import PatientsModal from "@/components/modals/PatientsModal";
@@ -214,6 +216,7 @@ import {
   SearchOutlined,
   MoreOutlined,
 } from "@ant-design/icons-vue";
+import { useStore } from "vuex";
 export default defineComponent({
   components: {
     NotificationOutlined,
@@ -232,6 +235,16 @@ export default defineComponent({
     const toggle = ref(false);
     const ellipse = ref(false);
     const value = ref();
+    const store = useStore()
+
+    const loggedInUser = computed(() => {
+      return store.state.authentication.loggedInUser
+    })
+    
+    const logoutUser = () => {
+      store.dispatch('logoutUser')
+    };
+
     function barMenu() {
       document.body.classList.toggle("show");
     }
@@ -285,13 +298,14 @@ export default defineComponent({
     };
 
     return {
+      loggedInUser,
       value,
       barMenu,
       toggle,
       ellipse,
       SendMessage,
       addsendMessage,
-
+      logoutUser,
       appointmentModal,
       apptOk,
       addAppt,

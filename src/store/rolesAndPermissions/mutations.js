@@ -1,2 +1,27 @@
-// import { dateFormat } from '../../commonMethods/commonMethod';
+export const rolesListSuccess = async (state, roles) => {
+  state.rolesList = roles.map(role => {
+    role.status = role.status == 1 ? true : false;
+    return role
+  })
+}
+
+export const rolePermissionsSuccess = async (state, roles) => {
+  state.rolePermissions = roles;
+}
+
+export const addRoleSuccess = async (state, role) => {
+  state.addRole = role
+}
+
+export const roleDetailsSuccess = async (state, role) => {
+  state.roleDetails = role
+}
+
+export const deleteRoleSuccess = async (state, role) => {
+  state.deleteRole = role
+}
+
+export const UpdateRoleSuccess = async (state, role) => {
+  state.UpdateRole = role
+}
 

@@ -5,6 +5,7 @@ export const API_ENDPOINTS = {
     // Authentication
     login: "login",
     logout: "logout",
+    refreshToken: "refreshToken",
 
     // Patients
     patientsList:"patient",
@@ -51,6 +52,12 @@ export const API_ENDPOINTS = {
     // inventory
     inventory: 'inventory',
     model: 'model',
+
+    // Roles & Permissions
+    role: 'role',
+    rolesList: 'roleList',
+    rolePermissions: 'permissionList',
+    roleDetails: 'roleDetails',
 
     
 
