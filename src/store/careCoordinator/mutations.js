@@ -7,6 +7,14 @@ export const errorMsg = (state, data) => {
   state.errorMsg = data
 }
 
+export const specializationStaff = (state, data) => {
+  state.specializationStaff = data
+}
+
+export const networkStaff = (state, data) => {
+  state.networkStaff = data
+}
+
 export const staffs= async (state, data) => {
     state.staffs = data;
     state.columns = [

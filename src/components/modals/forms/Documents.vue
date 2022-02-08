@@ -1,5 +1,5 @@
 <template>
-<a-form :model="documents" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDocument" @finishFailed="onFinishFailed">
+<a-form :model="documents" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDocument" @finishFailed="documentsFailed">
     <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
             <div class="form-group">
@@ -72,7 +72,7 @@ import {defineComponent,computed,reactive} from "vue"
 import {DeleteOutlined,FileOutlined} from "@ant-design/icons-vue"
 import {useStore} from "vuex"
 import Loader from "../../loader/Loader"
-import {warningSwal} from "../../../commonMethods/commonMethod"
+import {warningSwal,errorSwal} from "../../../commonMethods/commonMethod"
 import { messages } from "../../../config/messages"
 export default defineComponent({
     components: {
@@ -143,7 +143,12 @@ export default defineComponent({
                 }
             })
         }
+
+        // const documentsFailed = () => {
+        //     errorSwal(messages.fieldsRequired)
+        // };
         return {
+            // documentsFailed,
             warningSwal,
             deleteDocument,
             globalCode,

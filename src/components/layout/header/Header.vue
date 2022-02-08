@@ -191,7 +191,7 @@
     <!---->
     <AddAppointment v-model:visible="appointmentModal" @is-visible="showModal($event)" @ok="apptOk" />
     <TasksModal v-model:visible="TasksModal" @ok="taskOk" />
-    <PatientsModal v-model:visible="PatientsModal" @ok="patientOk" @saveModal="closeAppointModal($event)" />
+    <PatientsModal v-model:visible="PatientsModal"  @saveModal="closeAppointModal($event)" />
     <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" />
     <AddStartCall v-model:visible="AddStartCall" @ok="startOk" />
     <SendMessage v-model:visible="SendMessage" @ok="startOk" />

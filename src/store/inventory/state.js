@@ -4,4 +4,5 @@ export default {
   inventoryDetails: null,
   updateInventory: null,
   deleteInventory: null,
+  deviceModalsList: null,
 }

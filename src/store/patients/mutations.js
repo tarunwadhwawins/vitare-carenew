@@ -9,22 +9,13 @@ export const addDemographic = (state, data) => {
 
  export const patients = (state, data) => {
     // state.patientList = data;
-     data.forEach(element => {
-         state.patientList.push({
-            flags:element.patientFlags.data[0]?element.patientFlags.data[0].flags.data.color:'',
-            name:element.name?element.name+" "+element.middleName+" "+element.lastName :'',
-            lastReadingDate:element.lastReadingDate?element.lastReadingDate:'',
-            weight:element.weight?element.weight:'',
-             reading: "",
-             compliance: "",
-             message: "",
-             readingvalues: "",
-             sp02: "",
-             bp: "",
-             glucose: "",
-             active:'',
-            })
-     });
+    state.patientList=data.map(element => {
+            element.flags=element.patientFlags.data[0]?element.patientFlags.data[0].flags.data.color:'',
+            element.name=element.name?element.name+" "+element.middleName+" "+element.lastName :'',
+            element.lastReadingDate=element.lastReadingDate?element.lastReadingDate:'',
+            element.weight=element.weight?element.weight:''
+            return element
+     })
     
     state.column= [{
         title: "Flags",
@@ -266,7 +257,12 @@ export const addDemographic = (state, data) => {
  
 
  export const devices = (state, data) => {
-    state.devices = data
+
+    state.devices = data.map(element => {
+      element.status = element.status == 1 ? true : false
+      return element;
+    })
+
     state.devicesColumns =[
         {
           title: "Device Type",

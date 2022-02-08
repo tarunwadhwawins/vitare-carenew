@@ -1,5 +1,5 @@
 <template>
-<a-form :model="program" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="programs" @finishFailed="onFinishFailed">
+<a-form :model="program" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="programs" @finishFailed="programFailed">
     <a-row :gutter="24">
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
@@ -65,7 +65,7 @@ import { defineComponent, reactive, computed } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "../../loader/Loader"
-import {warningSwal} from "../../../commonMethods/commonMethod"
+import {warningSwal,errorSwal} from "../../../commonMethods/commonMethod"
 import { messages } from "../../../config/messages";
 export default defineComponent({
   components: {
@@ -114,7 +114,11 @@ export default defineComponent({
      })
       
     }
+    // const programFailed = () => {
+    //         errorSwal(messages.fieldsRequired)
+    //     };
     return {
+      // programFailed,
       deleteProgram,
       columns,
       programsData,
