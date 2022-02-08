@@ -8,14 +8,19 @@
           <tbody v-for="week,k in weekName" :key="k">
             <tr>
               <th>{{week}}</th>
-              <div v-if="appointmentSearch">
-                <td></td>
+              <div v-if="appointmentSearch" :text="count=0">
+                
+                <td v-for="(appointment,i) in appointmentSearch" :key="i" >
+                  
+                  <div v-if="week === (moment(dateFormat(appointment.date))).format('dddd')" >
+                   <AppointmentCardList 
+                     :cardData="appointment" :count="count=count+1"></AppointmentCardList>
+                   </div>
+                 </td>
               </div>
-              <div else>
-                <td v-for="appointment,i in appointmentSearch" :key="i">
-                  <AppointmentCardList v-if="week == (moment(dateFormat(appointment.date))).format('dddd')"
-                    :cardData="appointment" :count="1"></AppointmentCardList>
-                </td>
+
+              <div v-else>
+                <td></td>
               </div>
             </tr>
           </tbody>
