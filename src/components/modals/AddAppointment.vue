@@ -6,12 +6,14 @@
           <div class="form-group">
             <a-form-item :label="$t('appointmentCalendar.addAppointment.patient')" name="patientId"
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.patient')+' '+$t('global.validation')  }]">
+   
+  
               <a-select ref="select" v-if="patientsList" v-model:value="appointmentForm.patientId" style="width: 100%"
                 size="large">
                 <a-select-option value="" hidden>{{'Select Patient'}}</a-select-option>
                 <a-select-option v-for="patient in patientsList" :key="patient.id" :value="patient.id">{{
-                  patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option>
-              </a-select>
+                  patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option> 
+              </a-select> 
               <ErrorMessage v-if="errorMsg" :name="errorMsg.patientId?errorMsg.patientId[0]:''" />
             </a-form-item>
           </div>
@@ -34,7 +36,7 @@
           <div class="form-group">
             <a-form-item :label="$t('appointmentCalendar.addAppointment.startDate')" name="startDate"
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.startDate')+' '+$t('global.validation') }]">
-              <a-date-picker :disabled-date="disabledDate" v-model:value="appointmentForm.startDate" format="MMM DD, YYYY" value-format="YYYY-MM-DD"
+              <a-date-picker  v-model:value="appointmentForm.startDate" format="MMM DD, YYYY" value-format="YYYY-MM-DD"
                 :size="size" style="width: 100%" />
               <ErrorMessage v-if="errorMsg" :name="errorMsg.startDate?errorMsg.startDate[0]:''" />
             </a-form-item>
@@ -56,7 +58,7 @@
               :rules="[{ required: true, message: $t('global.duration') +' '+$t('global.time')+' '+$t('global.validation')  }]">
               <a-select ref="select" v-if="durationList" v-model:value="appointmentForm.durationId" style="width: 100%"
                 size="large">
-                <a-select-option value="" disabled>{{'Select Duration Time'}}</a-select-option>
+                <a-select-option value="" hidden>{{'Select Duration Time'}}</a-select-option>
                 <a-select-option v-for="duration in durationList['globalCode']" :key="duration.id" :value="duration.id">
                   {{ duration.name }}</a-select-option>
               </a-select>
@@ -89,8 +91,7 @@
         </a-col>
         <a-col :span="24">
           <div class="steps-action">
-            <ModalButtons @is_click="handleCancel"/> 
-            
+            <ModalButtons @is_click="handleCancel"/>   
           </div>
         </a-col>
       </a-row>
@@ -101,10 +102,10 @@
   import { ref, watchEffect, computed, reactive } from "vue"
   import { useStore } from "vuex"
   import ErrorMessage from "../common/messages/ErrorMessage"
-  import { scrollToTop } from "../../commonMethods/commonMethod"
+  import { scrollToTop, timeStamp } from "../../commonMethods/commonMethod"
   import moment from 'moment';
-  import dayjs, { Dayjs } from 'dayjs';
   import ModalButtons from "@/components/common/button/ModalButtons";
+
   export default {
     components: {
       ErrorMessage,
@@ -121,10 +122,9 @@
     setup(props, { emit }) {
       const formRef = ref();
       const store = useStore()
-      const disabledDate = current => {
-      // Can not select days before today and today
-      return current && current < dayjs().endOf('day');
-    };
+    //   const disabledDate = current => {
+    //   return current && current < dayjs().endOf('day');
+    // };
       watchEffect(() => {
        
         store.state.communications.patientsList ? "" : store.dispatch("patientsList")
@@ -133,6 +133,7 @@
       const onFinishFailed = () => {
         scrollToTop()
       };
+      const list = ref([])
       const durationList = computed(() => {
         return store.state.common.duration;
       })
@@ -146,6 +147,7 @@
         return store.state.communications.staffList
       })
       
+      
       const appointmentForm = reactive({
         patientId: '',
         staffId: '',
@@ -157,7 +159,7 @@
       });
       const sendMessage = () => {
         const date = appointmentForm.startDate
-   const  timeFormat = (moment(appointmentForm.startTime)).format('HH:mm');
+        const  timeFormat = (moment(appointmentForm.startTime)).format('HH:mm');
 
         store.dispatch('addAppointment', {
           patientId: appointmentForm.patientId,
@@ -201,8 +203,9 @@
         onFinishFailed,
         handleCancel,
         moment,
-        disabledDate,
-        formRef
+        //disabledDate,
+        formRef,
+        list
       };
     },
   };

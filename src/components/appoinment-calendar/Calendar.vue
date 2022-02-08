@@ -1,20 +1,32 @@
 <template>
   <div :style="{ width: '300px', border: '1px solid #d9d9d9', borderRadius: '4px' }">
-    <a-calendar v-model:value="value" :fullscreen="false" @select="onSelect" @panelChange="onPanelChange" />
+  
+    <a-calendar :value="date" :fullscreen="false" @select="onSelect" @panelChange="onPanelChange" />
   </div>
+  
 </template>
 <script>
-import { defineComponent, ref } from 'vue';
-import dayjs from 'dayjs';
+import { defineComponent, ref, computed } from 'vue';
+import { useStore } from "vuex"
+//import moment from "moment"
+//import dayjs from 'dayjs';
 export default defineComponent({
-  setup() {
-    const value = ref();
-    const date = ref(dayjs('2017-01-25'));
-    const selectedValue = ref(dayjs('2017-01-25'));
+  props:{
+    
+  },
+  setup(props, {emit}) {
+    const store = useStore()
+    const date = computed(() =>{
+      return store.state.appointment.calendarDate
+    })
+ 
+   
+    const selectedValue = ref();
 
     const onSelect = value => {
-      date.value = value;
+      store.state.appointment.calendarDate = value;
       selectedValue.value = value;
+      emit("is-click",value)
       
     };
     const onPanelChange = (value, mode) => {
@@ -25,7 +37,7 @@ export default defineComponent({
       date,
       selectedValue,
       onSelect,
-      value,
+     
       onPanelChange,
     };
   },

@@ -1,43 +1,66 @@
 <template>
-    <a-row>
-        <a-col :span="24">
-          <div class="dayCalendar">
-            <table class="table table-bordered">
-              <tbody v-for="time,i in appointmentsRecord" :key="i">
-                
-                <tr>
-                  <th>{{time.time}}</th>
-                  <td >
-                  <AppointmentCardList  v-for="appointment,i in time.data" :key="i" :cardData="appointment"></AppointmentCardList>
+
+  <a-row>
+    <a-col :span="24">
+
+      <div class="dayCalendar">
+        <Loader />
+        <table class="table table-bordered" v-if="appointmentSearch">
+          <tbody v-for="timeHeding,k in officeTime" :key="k">
+            <tr>
+              <th>{{timeHeding}}</th>
+              <div v-if="appointmentSearch">
+                <td></td>
+              </div>
+              <div else>
+                <td v-for="appointment,i in appointmentSearch" :key="i">
+                  <AppointmentCardList v-if="timeHeding === timeStampToTime(appointment.time,'hh:00 A')"
+                    :cardData="appointment" :count="i"></AppointmentCardList>
                 </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </a-col>
-      </a-row>
+              </div>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </a-col>
+  </a-row>
 </template>
 <script>
-    import {  reactive } from "vue";
-    
-    import AppointmentCardList from "./AppointmentCardList"
-    export default{
-        components: {
-    AppointmentCardList,
-  },
-  props:{
-    todayRcord:{
-      type:Array
+  import AppointmentCardList from "./AppointmentCardList"
+  import { timeStampToTime } from "../../commonMethods/commonMethod"
+  import Loader from "../loader/Loader"
+  import { computed } from "vue";
+  import { useStore } from "vuex"
+  export default {
+    components: {
+      AppointmentCardList,
+      Loader
+    },
+    props: {
+
+    },
+    setup() {
+      const store = useStore()
+      const officeTime = computed(() => {
+        return store.state.appointment.officeTime
+      })
+
+      //console.log(appointment)
+      const linkTo = "patients-summary"
+      const appointmentSearch = computed(() => {
+        return store.state.appointment.searchAppointmentRecords
+      })
+      return {
+        officeTime,
+        timeStampToTime,
+        linkTo,
+        appointmentSearch
+      }
     }
-  },
-        setup(props) {
-          const appointmentsRecord = reactive(props.todayRcord)
-          //console.log(appointment)
-          const linkTo = "patients-summary"
-          return {
-            linkTo,
-            appointmentsRecord
-          }
-        }
-    }
+  }
 </script>
+<style>
+  .dayCalendar {
+    min-height: 150px;
+  }
+</style>
