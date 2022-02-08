@@ -1,71 +1,37 @@
 <template>
-  <a-form :model="loginForm" layout="vertical" @finish="loginUser">
+<form>
     <div class="field">
-      <a-form-item name="email" :rules="[{ required: true, message: $t('login.email')+' '+$t('global.validation')  }]">
-        <a-input v-model:value="loginForm.email" :placeholder="$t('login.ePlaceholder')" size="large" />
-      </a-form-item>
+        <a-input v-model:value="value" :placeholder="$t('login.ePlaceholder')" size="large" />
     </div>
     <div class="field">
-      <a-form-item name="password" :rules="[{ required: true, message: $t('login.password')+' '+$t('global.validation')  }]">
-        <a-input-password v-model:value="loginForm.password" :placeholder="$t('login.psdPlaceholder')" size="large" />
-      </a-form-item>
-    </div>
-    <div class="field">
-      <span class="error">{{ loginErrorMsg }}</span>
+        <a-input v-model:value="value" :placeholder="$t('login.psdPlaceholder')" size="large" />
     </div>
     <div class="buttons">
-      <a-button class="btn primaryBtn" html-type="submit">{{$t("login.login")}}</a-button>
-      <a class=""> {{ $t("login.forgotPassword") }}  </a>
+        <a-button class="btn primaryBtn" @click="login()">{{$t("login.login")}}</a-button>
+        <a class=""> {{ $t("login.forgotPassword") }}  </a>
     </div>
-  </a-form>
+</form>
 </template>
 
 <script>
-import { computed, reactive } from "vue";
+import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useStore } from "vuex";
-export default {
+export default defineComponent({
   setup() {
-    const store = useStore()
+    const value = ref("");
     const router = useRouter();
 
-    const loginForm = reactive({
-      email: "",
-      password: "",
-    })
-
-    const loginUser = () => {
-      store.dispatch('login', loginForm).then(() => {
-        if(loginErrorMsg.value == null) {
-          localStorage.setItem("auth", true);
-          router.push({
-            path: "/dashboard",
-          });
-        }
-      })
+    function login() {
+      localStorage.setItem("auth", true);
+      router.push({
+        path: "/dashboard",
+      });
     }
-
-    const loggedInUser = computed(() => {
-      return store.state.authentication.loggedInUser
-    })
-
-    const loginErrorMsg = computed(() => {
-      return store.state.authentication.loginErrorMsg
-    })
-
     return {
-      loginErrorMsg,
-      loginForm,
-      loginUser,
+      value,
+      login,
       router,
-      loggedInUser,
     };
   },
-};
+});
 </script>
-
-<style scoped>
-span.error {
-  color: #ff0000;
-}
-</style>

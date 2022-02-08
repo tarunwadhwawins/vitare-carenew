@@ -5,7 +5,6 @@ export const API_ENDPOINTS = {
     // Authentication
     login: "login",
     logout: "logout",
-    refreshToken: "refreshToken",
 
     // Patients
     patientsList:"patient",

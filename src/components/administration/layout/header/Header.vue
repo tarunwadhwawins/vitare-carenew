@@ -107,7 +107,7 @@
             <div class="profile-menu">
               <a-dropdown :trigger="['click']">
                 <a class="ant-dropdown-link" @click.prevent>
-                  <div class="name" v-if="loggedInUser">{{ loggedInUser.user.name }} <strong>{{ loggedInUser.user.designation }}</strong></div>
+                  <div class="name">Jane Doe <strong>Admin</strong></div>
                   <div class="image">
                     <img src="@/assets/images/profile-1.jpg" alt="image" />
                   </div>
@@ -120,9 +120,7 @@
                     <a-menu-item key="1">
                       <a href="javascript:void(0)">Settings</a>
                     </a-menu-item>
-                    <a-menu-item key="3" @click="logoutUser">
-                      <a href="javascript:void(0)">Logout</a>
-                    </a-menu-item>
+                    <a-menu-item key="3"> <a href="#">Logout</a></a-menu-item>
                   </a-menu>
                 </template>
               </a-dropdown>
@@ -141,7 +139,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import AddAppointment from "@/components/modals/AddAppointment";
 import TasksModal from "@/components/modals/TasksModal";
 import PatientsModal from "@/components/modals/PatientsModal";
@@ -153,8 +151,6 @@ import {
   SearchOutlined,
   MoreOutlined,
 } from "@ant-design/icons-vue";
-import { useStore } from "vuex";
-// import { useRouter } from "vue-router";
 export default defineComponent({
   components: {
     NotificationOutlined,
@@ -168,15 +164,8 @@ export default defineComponent({
     CoordinatorsModal,
   },
   setup() {
-    const store = useStore()
     const toggle = ref(false);
     const ellipse = ref(false);
-    // const router = useRouter();
-    
-    const logoutUser = () => {
-      store.dispatch('logoutUser')
-    };
-    
     function barMenu() {
       document.body.classList.toggle("show");
     }
@@ -217,16 +206,11 @@ export default defineComponent({
       CoordinatorsModal.value = false;
     };
 
-    const loggedInUser = computed(() => {
-      return store.state.authentication.loggedInUser
-    })
-    
     return {
-      loggedInUser,
       barMenu,
       toggle,
       ellipse,
-      logoutUser,
+
       appointmentModal,
       apptOk,
       addAppt,
