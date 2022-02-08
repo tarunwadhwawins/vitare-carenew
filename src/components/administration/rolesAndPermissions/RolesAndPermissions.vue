@@ -36,7 +36,7 @@
     </a-layout>
 
     <!-- Modal -->
-    <RolesAndPermissionsModal v-if="visible" v-model:visible="visible" @ok="handleOk"/>
+    <RolesAndPermissionsModal v-if="visible" v-model:visible="visible" @ok="handleOk" @on-submit="handleOk"/>
 
   </div>
 </template>
@@ -46,7 +46,7 @@ import Header from "@/components/administration/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import RolesAndPermissionsTable from "@/components/administration/rolesAndPermissions/tables/RolesAndPermissionsTable";
 import SearchField from "@/components/common/input/SearchField";
-import RolesAndPermissionsModal from "@/components/modals/RolesAndPermissions";
+import RolesAndPermissionsModal from "@/components/modals/RolesAndPermissionsModal";
 import Button from "@/components/common/button/Button";
 import { ref } from "vue";
 

@@ -52,6 +52,12 @@ export const API_ENDPOINTS = {
     inventory: 'inventory',
     model: 'model',
 
+    // Roles & Permissions
+    role: 'role',
+    rolesList: 'roleList',
+    rolePermissions: 'permissionList',
+    roleDetails: 'roleDetails',
+
     
 
 };

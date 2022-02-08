@@ -1,58 +1,106 @@
 <template>
   <a-table
     rowKey="id"
-    :columns="columns"
-    :data-source="data">
-    <template #actions>
+    :columns="rolesColumns"
+    :data-source="rolesList">
+    <template #actions="{record}">
       <a-tooltip placement="bottom">
         <template #title>
           <span>Edit</span>
         </template>
-        <a class="icons"><EditOutlined /></a>
+        <a class="icons" @click="editRole(record.id)"><EditOutlined /></a>
       </a-tooltip>
       <a-tooltip placement="bottom">
         <template #title>
           <span>Delete</span>
         </template>
-        <a class="icons"> <DeleteOutlined /></a>
+        <a class="icons" @click="deleteRole(record.id)"> <DeleteOutlined /></a>
+      </a-tooltip>
+      <a-tooltip placement="bottom">
+        <template #title>
+          <span>Copy</span>
+        </template>
+        <a class="icons" @click="copyRole(record.id)"> <CopyOutlined /></a>
       </a-tooltip>
     </template>
     <template #status="{record}">
-      <a-switch v-model:checked="record.status" />
+      <a-switch v-model:checked="record.status" @change="UpdateRoleStatus(record.id, $event)" />
     </template>
   </a-table>
 </template>
 
 <script>
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import { DeleteOutlined, EditOutlined, CopyOutlined } from "@ant-design/icons-vue";
+import { useStore } from "vuex";
+import { computed, watchEffect } from 'vue-demi';
+import {warningSwal} from "../../../../commonMethods/commonMethod";
+import { messages } from '../../../../config/messages';
 export default {
   components: {
     DeleteOutlined,
     EditOutlined,
+    CopyOutlined,
   },
   setup() {
-    const columns = [
+    const store = useStore()
+
+    watchEffect(() => {
+      store.dispatch('rolesList')
+    })
+
+    const rolesList = computed(() => {
+      return store.state.rolesAndPermissions.rolesList
+    })
+
+    const editRole = (id) => {
+      store.dispatch('roleDetails', id)
+    }
+
+    const deleteRole = (id) => {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          store.dispatch('deleteRole', id).then(() => {
+            store.dispatch('rolesList')
+          })
+        }
+      })
+    }
+
+    const copyRole = (id) => {
+      store.dispatch('roleDetails', id)
+    }
+
+    const UpdateRoleStatus = (id, status) => {
+      const data = {
+        "isActive": status
+      };
+      store.dispatch('UpdateRole', {id, data}).then(() => {
+        store.dispatch('rolesList')
+      })
+    }
+
+    const rolesColumns = [
       {
         title: "Role Name",
-        dataIndex: "rolename",
+        dataIndex: "name",
         sorter: {
-          compare: (a, b) => a.rolename - b.rolename,
+          compare: (a, b) => a.name - b.name,
           multiple: 3,
         },
       },
       {
         title: "Type of Role ",
-        dataIndex: "role",
+        dataIndex: "roleType",
         sorter: {
-          compare: (a, b) => a.role - b.role,
+          compare: (a, b) => a.roleType - b.roleType,
           multiple: 3,
         },
       },
       {
         title: "Description",
-        dataIndex: "description",
+        dataIndex: "roleDescription",
         sorter: {
-          compare: (a, b) => a.description - b.description,
+          compare: (a, b) => a.roleDescription - b.roleDescription,
           multiple: 3,
         },
       },
@@ -71,36 +119,14 @@ export default {
         },
       },
     ];
-    const data = [
-      {
-        key: "1",
-        rolename: "Billing Admin",
-        role: "Predefined",
-        description: "Full System Access",
-        active: "",
-        action: "",
-      },
-      {
-        key: "2",
-        rolename: "Manager",
-        role: "Predefined",
-        description: "Full System Access",
-        active: "",
-        action: "",
-      },
-      {
-        key: "3",
-        rolename: "User Admin",
-        role: "Predefined",
-        description: "Full System Access",
-        active: "",
-        action: "",
-      },
-    ];
 
     return {
-      columns,
-      data,
+      rolesColumns,
+      rolesList,
+      editRole,
+      deleteRole,
+      copyRole,
+      UpdateRoleStatus,
     }
 }
 }
