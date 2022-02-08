@@ -82,7 +82,7 @@ export const addDemographic = (state, data) => {
         ],
     },
     {
-        title: "Non Compliance",
+        title: "Compliance",
         dataIndex: "compliance",
         sorter: {
             compare: (a, b) => a.reading - b.reading,

@@ -53,7 +53,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                                    <a-input v-model:value="demographics.email" placeholder="test@test.com" size="large" />
+                                    <a-input v-model:value="demographics.email" placeholder="test@test.com" size="large" @input="emailChange()"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" />
                                 </a-form-item>
                             </div>
@@ -215,7 +215,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.emailAddress')" name="familyEmail" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('patient.demographics.emailAddress').toLowerCase(), type: 'email' }]">
-                                    <a-input v-model:value="demographics.familyEmail" placeholder="test@test.com" size="large" />
+                                    <a-input v-model:value="demographics.familyEmail" placeholder="test@test.com" size="large" @input="emailChange()"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyEmai?errorMsg.familyEmail[0]:''" />
                                 </a-form-item>
                             </div>
@@ -297,7 +297,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.emailAddress')" name="familyEmail" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('patient.demographics.emailAddress').toLowerCase(), type: 'email' }]">
-                                    <a-input v-model:value="demographics.familyEmail" placeholder="test@test.com" size="large" disabled />
+                                    <a-input v-model:value="demographics.familyEmail" placeholder="test@test.com" size="large" disabled  />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyEmai?errorMsg.familyEmail[0]:''" />
                                 </a-form-item>
                             </div>
@@ -354,7 +354,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.emailAddress')" name="emergencyEmail" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('patient.demographics.emailAddress').toLowerCase(), type: 'email' }]">
-                                    <a-input v-model:value="demographics.emergencyEmail" placeholder="test@test.com" size="large" />
+                                    <a-input v-model:value="demographics.emergencyEmail" placeholder="test@test.com" size="large" @input="emailChange()" />
                                 </a-form-item>
                                 <ErrorMessage v-if="errorMsg" :name="errorMsg.emergencyEmail?errorMsg.emergencyEmail[0]:''" />
                             </div>
@@ -466,9 +466,9 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                                    <a-input v-model:value="conditions.email" placeholder="test@test.com" size="large">
-                                    </a-input>
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" />
+                                    <a-input v-model:value="conditions.email" placeholder="test@test.com" size="large" @input="emailChange()" />
+                
+                                    <ErrorMessage v-if="errorMsg && conditions.email!=null" :name="errorMsg.email?errorMsg.email[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -528,7 +528,7 @@
                                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
                                     <a-input v-model:value="conditions.email" placeholder="test@test.com" size="large" disabled>
                                     </a-input>
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" />
+                                    <ErrorMessage v-if="errorMsg && conditions.email!=null" :name="errorMsg.email?errorMsg.email[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -572,8 +572,8 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="physicianEmail" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                                    <a-input v-model:value="conditions.physicianEmail" placeholder="test@test.com" size="large" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" />
+                                    <a-input v-model:value="conditions.physicianEmail" placeholder="test@test.com" size="large" @input="emailChange()" />
+                                    <ErrorMessage v-if="errorMsg && conditions.physicianEmail!=null" :name="errorMsg.email?errorMsg.email[0]:''" />
                                 </a-form-item>
 
                             </div>
@@ -996,7 +996,12 @@ export default {
       });
     }
 
+    function emailChange(){
+        errorMsg.value.email?errorMsg.value.email[0]=null:''
+    }
+
     return {
+        emailChange,
       insuranceDataFailed,
       conditionsFailed,
       closeModal,
