@@ -1001,7 +1001,7 @@ export default {
     }
 
     return {
-        emailChange,
+      emailChange,
       insuranceDataFailed,
       conditionsFailed,
       closeModal,
