@@ -1,0 +1,1683 @@
+{
+  "modules": [
+      {
+          "name": "Roles and Permissions",
+          "description": "This module is use to give rolls and permission to the users",
+          "screens": [
+              {
+                  "name": "Roles & Permissions List",
+                  "moduleId": 1,
+                  "actions": [
+                      {
+                          "name": "Add Role",
+                          "controller": "RollController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Edit Role",
+                          "controller": "RollController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Delete Role",
+                          "controller": "RollController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Active/Inactive Role",
+                          "controller": "RollController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Export Roles",
+                          "controller": "RollController",
+                          "function": ""
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "name": "Global Codes",
+          "description": "All the values of keys in global codes are stored.",
+          "screens": [
+              {
+                  "name": "Global Codes List",
+                  "moduleId": 2,
+                  "actions": [
+                      {
+                          "name": "Add Global Codes",
+                          "controller": "GlobalCodeController",
+                          "function": "createGlobalCode"
+                      },
+                      {
+                          "name": "Update Global Codes",
+                          "controller": "GlobalCodeController",
+                          "function": "updateGlobalCode"
+                      },
+                      {
+                          "name": "Delete Global Codes",
+                          "controller": "GlobalCodeController",
+                          "function": "deleteGlobalCode"
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "name": "CPT Codes",
+          "description": "CPT codes are the billing codes defined by the American Medical Association",
+          "screens": [
+              {
+                  "name": "CPT Codes List",
+                  "moduleId": 3,
+                  "actions": [
+                      {
+                          "name": "Add CPT Code",
+                          "controller": "CPTCodeController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Edit CPT Code",
+                          "controller": "CPTCodeController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Delete CPT Code",
+                          "controller": "CPTCodeController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Active/Inactive CPT Code",
+                          "controller": "CPTCodeController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Export CPT Code",
+                          "controller": "CPTCodeController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Search CPT Codes",
+                          "controller": "CPTCodeController",
+                          "function": ""
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "name": "Documents",
+          "description": "Documents like id-proof, clinical proof etc are stored",
+          "screens": []
+      },
+      {
+          "name": "Programs",
+          "description": "Programs that a particular provider will provide to its patients.",
+          "screens": [
+              {
+                  "name": "Programs List",
+                  "moduleId": 5,
+                  "actions": [
+                      {
+                          "name": "Add Program",
+                          "controller": "ProgramController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Edit Program",
+                          "controller": "ProgramController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Delete Program",
+                          "controller": "ProgramController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Active/Inactive Program",
+                          "controller": "ProgramController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Export Program",
+                          "controller": "ProgramController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Search Program",
+                          "controller": "ProgramController",
+                          "function": ""
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "name": "Providers",
+          "description": "Providers are the facilities that will be using the SAAS based platform that the virtare health  is providing.",
+          "screens": [
+              {
+                  "name": "Providers List",
+                  "moduleId": 6,
+                  "actions": [
+                      {
+                          "name": "Search Providers",
+                          "controller": "ProviderController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Provider",
+                          "controller": "ProviderController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Edit Provider",
+                          "controller": "ProviderController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Delete Provider",
+                          "controller": "ProviderController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Active/Inactive Provider",
+                          "controller": "ProviderController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Export Provider",
+                          "controller": "ProviderController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Provider Appointments List",
+                          "controller": "ProviderController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Provider Patients List",
+                          "controller": "ProviderController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Provider Permissions List",
+                          "controller": "ProviderController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Provider Documents List",
+                          "controller": "ProviderController",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Provider Summary",
+                  "moduleId": 6,
+                  "actions": [
+                      {
+                          "name": "Provider Locations List",
+                          "controller": "ProviderController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Provider Location",
+                          "controller": "ProviderController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Edit Provider Location",
+                          "controller": "ProviderController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Delete Provider Location",
+                          "controller": "ProviderController",
+                          "function": ""
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "name": "Reports",
+          "description": "Different types of reports will be  For Example AuditLog, timeLogs, staffReports, patientReports.",
+          "screens": [
+              {
+                  "name": "Download Report",
+                  "moduleId": 7,
+                  "actions": [
+                      {
+                          "name": "Search Report",
+                          "controller": "ReportController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Download Report",
+                          "controller": "ReportController",
+                          "function": ""
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "name": "Staff",
+          "description": "Staff of virtare health or staff of provider  we can diffrentiate between them with network which is a global code category",
+          "screens": [
+              {
+                  "name": "Care Coordinators List",
+                  "moduleId": 8,
+                  "actions": [
+                      {
+                          "name": "Add Care Coordinator",
+                          "controller": "CareCoordinatorController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Edit Care Coordinator",
+                          "controller": "CareCoordinatorController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Delete Care Coordinator",
+                          "controller": "CareCoordinatorController",
+                          "function": ""
+                      },
+                      {
+                          "name": "View Care Coordinator",
+                          "controller": "CareCoordinatorController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Export Care Coordinators",
+                          "controller": "CareCoordinatorController",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Care Coordinator Summary",
+                  "moduleId": 8,
+                  "actions": [
+                      {
+                          "name": "Care Coordinator Appointments List",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Care Coordinator Patients List",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Care Coordinator Permissions List",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Care Coordinator Documents List",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Care Coordinator Contacts List",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Care Coordinator Contact",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Edit Care Coordinator Contact",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Delete Care Coordinator Contact",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Care Coordinator Availability List",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Care Coordinator Availability",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Edit Care Coordinator Availability",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Delete Care Coordinator Availability",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Care Coordinator Roles List",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Care Coordinator Role",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Edit Care Coordinator Role",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Delete Care Coordinator Role",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Care Coordinator Documents List",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Care Coordinator Document",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Edit Care Coordinator Document",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Delete Care Coordinator Document",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "name": "Patients",
+          "description": "Patients demographics that are enrolling under providers to treatment.",
+          "screens": [
+              {
+                  "name": "Patients List",
+                  "moduleId": 9,
+                  "actions": [
+                      {
+                          "name": "Add Patient",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Edit Patient",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Delete Patient",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "View Patient",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Export Patients",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Patient Demographics",
+                          "controller": "PatientController",
+                          "function": "createPatient"
+                      },
+                      {
+                          "name": "Add Patient Conditions",
+                          "controller": "PatientController",
+                          "function": "createPatientCondition"
+                      },
+                      {
+                          "name": "Add Patient Programs",
+                          "controller": "PatientController",
+                          "function": "createPatientProgram"
+                      },
+                      {
+                          "name": "Edit Patient Program",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Patient Device",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Active/Inactive Patient Device",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Delete Patient Device",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Patient Parameters",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Patient Medical History",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Edit Patient Medical History",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Delete Patient Medical History",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Patient Medication",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Edit Patient Medication",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Delete Patient Medication",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Patient Insurance",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Patient Document",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Edit Patient Document",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Delete Patient Document",
+                          "controller": "PatientController",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Patient Summary",
+                  "moduleId": 9,
+                  "actions": [
+                      {
+                          "name": "Patient Notifications List",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Patient Visits List",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Patient Notes List",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Patient Appointments List",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Patient Documents List",
+                          "controller": "PatientController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Patient Time Tracked",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Appointment",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Vital Summary",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Vitals",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "View Vitals",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Notes",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Patient Notes Detail",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Patient Document Detail",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Patient Time Logs Detail",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Edit Patient Time Logs",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Delete Patient Time Logs",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Patient Device Detail",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Edit Patient Device",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Documents",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Care Team",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add TimeLogs",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Devices",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "name": "Time Track",
+          "description": "Keeps the track spend by physician on patient monitoring.",
+          "screens": []
+      },
+      {
+          "name": "Communications",
+          "description": "Contains the information about all the commmunications",
+          "screens": [
+              {
+                  "name": "Communications Dashboard View",
+                  "moduleId": 11,
+                  "actions": [
+                      {
+                          "name": "Start Call",
+                          "controller": "CommunicationController",
+                          "function": ""
+                      },
+                      {
+                          "name": "End Call",
+                          "controller": "CommunicationController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Send Message",
+                          "controller": "CommunicationController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Export Communications",
+                          "controller": "CommunicationController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Notes",
+                          "controller": "CommunicationController",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Communications List View",
+                  "moduleId": 11,
+                  "actions": []
+              }
+          ]
+      },
+      {
+          "name": "Appointments",
+          "description": "It includes details of all the appointments of the staffs.",
+          "screens": [
+              {
+                  "name": "Appointment Calendar",
+                  "moduleId": 12,
+                  "actions": [
+                      {
+                          "name": "Add Appointment",
+                          "controller": "AppointmentController",
+                          "function": ""
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "name": "Tasks",
+          "description": "Tasks assigned to staff members.",
+          "screens": [
+              {
+                  "name": "Tasks Dashboard View",
+                  "moduleId": 13,
+                  "actions": [
+                      {
+                          "name": "Add Task",
+                          "controller": "TaskController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Filter Tasks",
+                          "controller": "TaskController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Edit Task",
+                          "controller": "TaskController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Delete Task",
+                          "controller": "TaskController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Active/Inactive Task",
+                          "controller": "TaskController",
+                          "function": ""
+                      },
+                      {
+                          "name": "Export Tasks",
+                          "controller": "TaskController",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Tasks List View",
+                  "moduleId": 13,
+                  "actions": []
+              }
+          ]
+      },
+      {
+          "name": "General Parameters",
+          "description": "general parameters includes all the vitals parameters groups with normal range vitals",
+          "screens": [
+              {
+                  "name": "General parameters",
+                  "moduleId": 14,
+                  "actions": []
+              }
+          ]
+      },
+      {
+          "name": "Audit Logs",
+          "description": "Audit log keeps the records of Staff and patient time with each other spend during appointment",
+          "screens": [
+              {
+                  "name": "Audit Time Log",
+                  "moduleId": 15,
+                  "actions": []
+              }
+          ]
+      },
+      {
+          "name": "Triggers",
+          "description": "It stores all triggers after every action performed",
+          "screens": []
+      },
+      {
+          "name": "Mobile",
+          "description": "This is mobile module where all screen and action performed.",
+          "screens": [
+              {
+                  "name": "LogIn",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "Family member",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Patient",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "PatLogIn as Care Teamient",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "HomeScreen",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "Care Team",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "VitalHistory",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Dashboard",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Vitals",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Messagees",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Set Up Devices",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Settings",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "FAQ",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Share",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Contact Us",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "ScrollButton",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "CareTeam",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "Staff:Messages",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Staff:Video Call",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Staff:Profile",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Staff_coordinator:Appointments",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Staff_coordinator:Messages",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Staff_coordinator:Profile",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "client_coordinator:Messages",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "client_coordinator:Call",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "client_coordinator:Profile",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Family Member",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Staff Coordinator Profile",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "Message",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Email",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Request Appointment",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Notes Section",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Appointment",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "select appointment Date",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "select timing slot",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "request now",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "month dropdown section",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Confirm",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Cancel",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "ValidationAlert",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "VitalsHistory",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "GoogleFit_Steps",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "GoogleFit_Distance",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "GoogleFit_Calories",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "FitBit_Steps",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "FitBit_HearRate",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "FitBit_Calories",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "FitBit_Floors",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "AppleHealth_HeartRate",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "AppleHealth_Steps",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "AppleHealth_Hydration",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "AppleHealth_Sleep",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Dashboard",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "Add Viats-Oxygen",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Viats-Bp",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Vital Glucose",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "View All",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Vital Button",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Vitals-Add Vitals Range_Blood Pressure",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Vitals-Add Vitals Range_Oxygen Saturation",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Vitals-Add Vitals Range_Glucose",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Vitals-Add Vitals Range_Steps",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Vitals-Add Vitals Range_Sleep",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Vitals-Add Vitals Range_Weight",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Vitals-Add Vitals Range_Temperature",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Add Vital Close",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Add Vitals",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "Blood Pressure",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Oxygen Saturation",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Glucose",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Temperature",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Steps",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Sleep",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Weight",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "SetUp new Device",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "Blood Pressure-Ihealth",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Pluse Oximeter",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Glucose",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Apple",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Google FIt",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Fitbit",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Settings",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "Health Kit",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Notification",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Text Size_Small",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Text Size_Medium",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Text Size_Large",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Halth Kit",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Theme",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "GeoLocation",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "About",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Goals",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Finger Printer Login",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Language_Toggle-es-en",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Change Your Pin",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Log out_Ok",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Log out_Cancel",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Contact Us",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "Request A call",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Text Us",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Email",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "StaffProfile",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "Message",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Email",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Notes Section",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Request Appointment",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "FamilyMemberProfile",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "ChangeImage",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "EditProfile",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Text US",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "Submit",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Request Call",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "timeSlot",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Submit",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Email",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "Submit",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "FamilyDashboard",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "AddButton",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "ModalClose",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "FamilyLogInUserProfile",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "EditProfile",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "PatientLogInProfile",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "EditProfile",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Log Out",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Demographics",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Appointments",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Claim",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Log Out Confirm",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "LogOut Cancel",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "EditProfile",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "NickName",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "mobile no.",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Change Modal ok",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Change Modal Cancel",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "profile photo",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "UpdateProfile",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "ImageAction Modal",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "Camera",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Gallery",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Remove",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Footer",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "Back",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "CareTeam",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Messages",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Profile",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Notifications",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Appointments",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Header",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "Home",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Notifications",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "FamilyDrawer",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "CareTeamDrawer",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "ProfileSelectScreen",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "SelectProfile",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "FamilyLogInEditProfile",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "NickName",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "MobileNo",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "UpdateProfile",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "ChangeImage",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "ModalOk",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "ModalCancel",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              },
+              {
+                  "name": "Family Drawer",
+                  "moduleId": 18,
+                  "actions": [
+                      {
+                          "name": "Family Member",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Vitals",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Notifications",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Appointment",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "My Profile",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "FAQ",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Log Out",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "CloseDrawer",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Log Out Confirm",
+                          "controller": "",
+                          "function": ""
+                      },
+                      {
+                          "name": "Log Out Cancel",
+                          "controller": "",
+                          "function": ""
+                      }
+                  ]
+              }
+          ]
+      }
+  ]
+}

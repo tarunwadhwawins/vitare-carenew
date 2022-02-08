@@ -5,22 +5,22 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('inventory.deviceType')" name="deviceType" :rules="[{ required: true, message: $t('inventory.deviceType')+' '+$t('global.validation')  }]">
-              <a-select
+              <AutoComplete
+                :options="deviceTypes"
+                @on-select="onSelectOption"
                 v-if="deviceTypes"
-                ref="select"
-                v-model:value="inventoryForm.deviceType"
-                style="width: 100%"
-                size="large">
-                <a-select-option value="" hidden>Select Device Type</a-select-option>
-                <a-select-option v-for="device in deviceTypes.globalCode" :key="device.id" :value="device.id">{{ device.name }}</a-select-option>
-              </a-select>
+                v-model:value="inventoryForm.deviceType" />
             </a-form-item>
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item :label="$t('inventory.modelNumber')" name="modelNumber" :rules="[{ required: true, message: $t('inventory.modelNumber')+' '+$t('global.validation')  }]">
-              <a-input v-model:value="inventoryForm.modelNumber" size="large" />
+            <a-form-item :label="$t('inventory.deviceModelId')" name="deviceModelId" :rules="[{ required: true, message: $t('inventory.deviceModelId')+' '+$t('global.validation')  }]">
+              <AutoComplete
+                :options="deviceModals"
+                @on-select="onSelectModal"
+                v-if="deviceModals"
+                v-model:value="inventoryForm.deviceModelId" />
             </a-form-item>
           </div>
         </a-col>
@@ -53,12 +53,14 @@
   </a-modal>
 </template>
 <script>
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, watchEffect } from "vue";
 import { useStore } from "vuex"
 import ModalButtons from "@/components/common/button/ModalButtons";
+import AutoComplete from "@/components/common/input/AutoComplete";
 export default {
   components: {
-    ModalButtons
+    ModalButtons,
+    AutoComplete,
   },
   props: {
     isAdd: {
@@ -83,36 +85,73 @@ export default {
     
     const inventoryForm = reactive({
       deviceType:  inventoryDetail && inventoryDetail.deviceType ? inventoryDetail.deviceType : '',
-      modelNumber:  inventoryDetail && inventoryDetail.modelNumber ? inventoryDetail.modelNumber : '',
+      deviceModelId:  inventoryDetail && inventoryDetail.deviceModelId ? inventoryDetail.deviceModelId : '',
       serialNumber:  inventoryDetail && inventoryDetail.serialNumber ? inventoryDetail.serialNumber : '',
       macAddress:  inventoryDetail && inventoryDetail.macAddress ? inventoryDetail.macAddress : '',
       isActive:  inventoryDetail && inventoryDetail.isActive ? inventoryDetail.isActive : false,
     });
     
-    const deviceTypes = computed(() => {
+    const inventoryTypes = computed(() => {
       return store.state.common.deviceType;
     })
+    
+    const deviceTypes = ref([])
+    inventoryTypes.value.globalCode.forEach(element => {
+      deviceTypes.value.push({
+        value: element.name,
+        id: element.id,
+      })
+    });
+
+    const onSelectOption = (selected) => {
+      deviceTypes.value.forEach(type => {
+        if(type.value == selected) {
+          store.dispatch('deviceModalsList', type.id)
+        }
+      });
+    };
+    
+    const deviceModals = ref([])
+    watchEffect(() => {
+      const deviceModalsList = computed(() => {
+        return store.state.inventory.deviceModalsList
+      });
+      if(deviceModalsList.value != null) {
+        deviceModalsList.value.forEach(element => {
+          deviceModals.value.push({
+            value: element.modelNumber,
+            id: element.id,
+          })
+        });
+      }
+    })
+
+    const deviceModelId = ref(null);
+    const onSelectModal = (selected) => {
+      deviceModals.value.forEach(modal => {
+        if(modal.value == selected) {
+          deviceModelId.value = modal.id;
+        }
+      });
+    };
 
     const submitForm = () => {
       if(isEdit) {
         const data = {
           "deviceType": inventoryForm.deviceType,
-          "modelNumber": inventoryForm.modelNumber,
+          "deviceModelId": inventoryForm.deviceModelId,
           "serialNumber": inventoryForm.serialNumber,
           "macAddress": inventoryForm.macAddress,
           "isActive": inventoryForm.isActive,
         }
         const id = '5';
-        // const id = inventoryDetails.value.id;
-        console.log('inventoryForm', id)
-        console.log('inventoryForm data', data)
         store.dispatch('updateInventory', {id, data}).then(() => {
           store.dispatch('inventoriesList')
         })
         emit('is-visible', false);
       }
       else {
-        console.log('inventoryForm', inventoryForm)
+        inventoryForm.deviceModelId = deviceModelId.value;
         store.dispatch('addInventory', inventoryForm).then(() => {
           store.dispatch('inventoriesList')
         })
@@ -121,6 +160,8 @@ export default {
     }
     
     return {
+      onSelectModal,
+      deviceModals,
       disabled,
       title,
       inventoryForm,
@@ -129,6 +170,7 @@ export default {
       deviceTypes,
       size: ref("large"),
       checked,
+      onSelectOption,
     };
   },
 };
