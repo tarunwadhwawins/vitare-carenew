@@ -3,4 +3,7 @@ export default{
     successMsg:null,
     searchAppointmentRecords:null,
     todayDate:null,
+    officeTime:null,
+    weekName:null,
+    calendarDate:null,
 }
