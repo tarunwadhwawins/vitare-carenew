@@ -11,6 +11,9 @@
         <a class="icons">
             <WarningOutlined /></a>
     </template> -->
+     <template #patientVitals>
+        <WarningOutlined />
+      </template>
 
     <template #lastReadingDate>
         <WarningOutlined /> 

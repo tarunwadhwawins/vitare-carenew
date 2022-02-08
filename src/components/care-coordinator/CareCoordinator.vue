@@ -1,29 +1,27 @@
 <template>
+<a-row>
+    <a-col :span="24">
+        <ShowModalButton @isVisible="showModal($event)" :headingText="$t('careCoordinator.coordinatorsModal.careCoordinator')" :buttonText="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" />
+    </a-col>
+</a-row>
 <a-row class="mb-24" :gutter="24">
     <a-col :sm="12" :xs="24">
         <h2>{{$t('global.specialization')}}</h2>
         <a-row :gutter="24">
-            <a-col :xl="12"  :xs="24" v-for="special in staffs.specializationStaff" :key="special.id">
-            <LongCard backgroundColor="#8e60ff" textColor="" customClass="two" :count="special.total" :text="special.text" ></LongCard>
+            <a-col :xl="12" :xs="24" v-for="special in staffs.specializationStaff" :key="special.id">
+                <LongCard :backgroundColor="special.text=='Wellness'?'#8e60ff':'#ffa800'" textColor="" customClass="two" :count="special.total" :text="special.text"></LongCard>
             </a-col>
-            <!-- <a-col :xl="12"  :xs="24">
-            <LongCard customClass="four" backgroundColor="#ffa800" textColor="" :count="2" :text="Behaviour"></LongCard>
-            </a-col> -->
         </a-row>
     </a-col>
     <a-col :sm="12" :xs="24">
         <h2>{{$t('global.network')}}</h2>
         <a-row :gutter="24">
-            <a-col :xl="12"  :xs="24" v-for="network in staffs.networkStaff" :key="network.id">
-            <LongCard customClass="six" backgroundColor="#267dff" textColor="" :count="network.total" :text="network.text"></LongCard>
+            <a-col :xl="12" :xs="24" v-for="network in staffs.networkStaff" :key="network.id">
+                <LongCard customClass="six" :backgroundColor="network.text=='In'?'#267dff':'#0fb5c2'" textColor="" :count="network.total" :text="network.text"></LongCard>
             </a-col>
-            <!-- <a-col :xl="12"  :xs="24">
-            <LongCard customClass="five" backgroundColor="#0fb5c2" textColor="" :count="3" text="Out"></LongCard>
-            </a-col> -->
         </a-row>
     </a-col>
-</a-row> 
-
+</a-row>
 
 <a-row>
     <a-col :span="12">
@@ -36,24 +34,27 @@
         </div>
     </a-col>
     <a-col :span="24">
-        <CoordinatorTable v-if="staffs.staffs"  :columns="columns" :data-source="staffs.staffs" :scroll="{ x: 1200 }"></CoordinatorTable>
+        <CoordinatorTable v-if="staffs.staffs" :columns="columns" :data-source="staffs.staffs" :scroll="{ x: 1200 }"></CoordinatorTable>
         <Loader />
     </a-col>
+    <CareCoordinatorModalForms v-model:visible="visible" @ok="handleOk"></CareCoordinatorModalForms>
 </a-row>
 </template>
 
 <script>
 import {
     watchEffect,
-    computed,ref
-} from "vue";
-import LongCard from "@/components/common/cards/LongCard";
-import CoordinatorTable from "./tables/CoordinatorTable";
+    computed,
+    ref
+} from "vue"
+import LongCard from "@/components/common/cards/LongCard"
+import CoordinatorTable from "./tables/CoordinatorTable"
+import CareCoordinatorModalForms from "@/components/modals/CoordinatorsModal"
 import Loader from "../loader/Loader"
 import {
     useStore
-} from "vuex";
-
+} from "vuex"
+import ShowModalButton from "@/components/common/show-modal-button/ShowModalButton"
 export default {
     data() {
         return {};
@@ -61,37 +62,46 @@ export default {
     components: {
         LongCard,
         CoordinatorTable,
-        Loader
+        Loader,
+        CareCoordinatorModalForms,
+        ShowModalButton
     },
     setup() {
-        const store = useStore();
+        const store = useStore()
         const searchoptions = ref([])
-        watchEffect( () => {
+        const visible = ref(false)
+        watchEffect(() => {
             store.dispatch('staffs')
             store.dispatch('specializationStaff')
             store.dispatch('networkStaff')
         })
 
-        const columns  = computed(()=>{
-          return store.state.careCoordinator.columns
-      })
-       const handleChange = () => {
-        };
-     
-       const staffs = computed(()=>{ 
-            return store.state.careCoordinator
-        }) 
+        const columns = computed(() => {
+            return store.state.careCoordinator.columns
+        })
+        const handleChange = () => {};
 
-        
-        
+        const staffs = computed(() => {
+            return store.state.careCoordinator
+        })
+        const handleOk = () => {
+            visible.value = false;
+        }
+
+        const showModal = (value) => {
+            visible.value = value;
+        };
 
         return {
+            showModal,
+            visible,
+            handleOk,
             searchoptions,
             handleChange,
             columns,
             staffs,
-            value2:ref(),
-            size:ref()
+            value2: ref(),
+            size: ref()
             // specializationTotal,
             // specializationText,
             // networkTotal,

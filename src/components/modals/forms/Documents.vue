@@ -1,5 +1,5 @@
 <template>
-<a-form :model="documents" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDocument" @finishFailed="documentsFailed">
+<a-form :model="documents" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDocument" @finishFailed="onFinishFailed">
     <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
             <div class="form-group">
@@ -12,7 +12,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: false, message: $t('global.document')+' '+$t('global.validation') }]">
-                    <a-input  name="document_file" size="large" type="file" @change="onFileUpload" />
+                    <a-input name="document_file" size="large" type="file" @change="onFileUpload" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
                 </a-form-item>
             </div>
@@ -31,7 +31,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.tags')" name="tags" :rules="[{ required: false, message: $t('global.tags')+' '+$t('global.validation') }]">
-                    <a-select v-model:value="documents.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" />
+                    <a-select v-model:value="documents.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" @change="handleChange" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.tags?errorMsg.tags[0]:''" />
                 </a-form-item>
             </div>
@@ -49,7 +49,9 @@
                     <span v-for="tag in text.text.data" :key="tag.id">{{ tag.tag+ " "}}</span>
                 </template>
                 <template #document="text">
-                  <router-link :to="text.text"><FileOutlined /></router-link>
+                    <router-link :to="text.text">
+                        <FileOutlined />
+                    </router-link>
                 </template>
                 <template #action="text">
                     <a-tooltip placement="bottom">
@@ -68,99 +70,103 @@
 </template>
 
 <script>
-import {defineComponent,computed,reactive} from "vue"
-import {DeleteOutlined,FileOutlined} from "@ant-design/icons-vue"
-import {useStore} from "vuex"
-import Loader from "../../loader/Loader"
-import {warningSwal,errorSwal} from "../../../commonMethods/commonMethod"
-import { messages } from "../../../config/messages"
+import { defineComponent, computed, reactive } from "vue";
+import { DeleteOutlined, FileOutlined } from "@ant-design/icons-vue";
+import { useStore } from "vuex";
+import Loader from "@/components/loader/Loader";
+import { warningSwal } from "@/commonMethods/commonMethod";
+import { messages } from "@/config/messages";
+import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 export default defineComponent({
-    components: {
-        DeleteOutlined,
-        Loader,
-        FileOutlined
-    },
-    setup() {
-        const store = useStore()
-        const onFileUpload = (event) => {
-            let doc_file = event.target.files[0];
-            let formData = new FormData();
-            formData.append("file", doc_file);
-            store.dispatch("uploadFile", formData);
+  components: {
+    DeleteOutlined,
+    Loader,
+    FileOutlined,
+    ErrorMessage,
+  },
+  setup() {
+    const store = useStore();
+    const onFileUpload = (event) => {
+      let doc_file = event.target.files[0];
+      let formData = new FormData();
+      formData.append("file", doc_file);
+      store.dispatch("uploadFile", formData);
+    };
+
+    const filePath = computed(() => {
+      return store.state.patients.uploadFile;
+    });
+
+    const documents = reactive({
+      name: "",
+      document: filePath.value ? filePath.value : "",
+      type: "",
+      tags: [],
+      entity: "patient",
+    });
+
+    const addDocument = () => {
+      store.dispatch("addDocument", {
+        data: {
+          name: documents.name,
+          document: filePath.value ? filePath.value : "",
+          type: documents.type,
+          tags: documents.tags,
+          entity: "patient",
+        },
+        id: patients.value.addDemographic.id,
+      });
+      setTimeout(() => {
+        store.dispatch("documents", patients.value.addDemographic.id);
+      }, 2000);
+    };
+    const patients = computed(() => {
+      return store.state.patients;
+    });
+    const documentsData = computed(() => {
+      return store.state.patients.documents;
+    });
+
+    const documentColumns = computed(() => {
+      return store.state.patients.documentColumns;
+    });
+    const globalCode = computed(() => {
+      return store.state.common;
+    });
+
+    function deleteDocument(id) {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          store.dispatch("deleteDocument", {
+            id: patients.value.addDemographic.id,
+            documentId: id,
+          });
+          setTimeout(() => {
+            store.dispatch("documents", patients.value.addDemographic.id);
+          }, 2000);
         }
+      });
+    }
+    const handleChange = (value) => {
+      console.log(`selected ${value}`);
+    };
 
-        const filePath = computed(() => {
-            return store.state.patients.uploadFile;
-        })
-
-        const documents = reactive({
-            name: "",
-            document: filePath.value ? filePath.value : "",
-            type: "",
-            tags: [],
-            entity: "patient",
-        })
-
-        const addDocument = () => {
-            store.dispatch("addDocument", {
-                data: {
-                    name: documents.name,
-                    document: filePath.value ? filePath.value : "",
-                    type: documents.type,
-                    tags: documents.tags,
-                    entity: "patient",
-                },
-                id: patients.value.addDemographic.id,
-            })
-            setTimeout(() => {
-                store.dispatch("documents", patients.value.addDemographic.id);
-            }, 2000)
-        }
-        const patients = computed(() => {
-            return store.state.patients;
-        })
-        const documentsData = computed(() => {
-            return store.state.patients.documents;
-        })
-
-        const documentColumns = computed(() => {
-            return store.state.patients.documentColumns;
-        })
-        const globalCode = computed(() => {
-            return store.state.common;
-        })
-
-        function deleteDocument(id){
-          warningSwal(messages.deleteWarning).then((response) => {
-                if (response == true) {
-                    store.dispatch('deleteDocument', {
-                        id: patients.value.addDemographic.id,
-                        documentId: id
-                    })
-                    setTimeout(() => {
-                        store.dispatch("documents", patients.value.addDemographic.id);
-                    }, 2000);
-                }
-            })
-        }
-
-        // const documentsFailed = () => {
-        //     errorSwal(messages.fieldsRequired)
-        // };
-        return {
-            // documentsFailed,
-            warningSwal,
-            deleteDocument,
-            globalCode,
-            onFileUpload,
-            filePath,
-            documents,
-            addDocument,
-            patients,
-            documentColumns,
-            documentsData,
-
-        };
-    },
+    const onFinishFailed = () => {};
+    return {
+      onFinishFailed,
+      handleChange,
+      warningSwal,
+      deleteDocument,
+      globalCode,
+      onFileUpload,
+      filePath,
+      documents,
+      addDocument,
+      patients,
+      documentColumns,
+      documentsData,
+      errorMsg: patients.value.errorMsg,
+    };
+  },
 });
 </script>
