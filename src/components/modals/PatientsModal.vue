@@ -134,8 +134,8 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('patient.demographics.MRN')" name="medicalRecordNumber" :rules="[{ required: true, message: $t('patient.demographics.MRN')+' '+$t('global.validation')}]">
-                                    <a-input v-model:value="demographics.medicalRecordNumber" placeholder="" size="large" />
+                                <a-form-item :label="$t('patient.demographics.MRN')" name="medicalRecordNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('patient.demographics.MRN'),pattern: regex.alphaNumeric}]">
+                                    <a-input v-model:value="demographics.medicalRecordNumber" placeholder="Please enter 12 alphanumeric " size="large" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.medicalRecordNumber?errorMsg.medicalRecordNumber[0]:''" />
                                 </a-form-item>
                             </div>

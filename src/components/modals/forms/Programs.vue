@@ -127,6 +127,7 @@ export default defineComponent({
       patients,
       program,
       programs,
+      errorMsg:patients.value.errorMsg
     };
   },
 });

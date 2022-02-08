@@ -194,6 +194,7 @@ export default defineComponent({
       globalCode,
       deviceData,
       deviceColumns,
+      errorMsg:patients.value.errorMsg
     };
   },
 });

@@ -212,6 +212,7 @@ export default defineComponent({
       clinicalsData,
       clinicalMedicatData,
       clinicalMedicatColumns,
+      errorMsg:patients.value.errorMsg
     };
   },
 });
