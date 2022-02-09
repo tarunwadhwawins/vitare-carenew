@@ -90,6 +90,8 @@
               <div v-if="button == 1">
                 <div>
                   <a-row :gutter="24">
+
+                    <!-- Left Section -->
                     <a-col :xl="8" :lg="24">
                       <div class="patientInfo">
                         <div class="patientImg" @click="showModalCustom">
@@ -229,6 +231,8 @@
                         </div>
                       </div>
                     </a-col>
+
+                    <!-- Right Section -->
                     <a-col :xl="16" :lg="24">
                       <div class="thumbDesc patientTimeline">
                         <a-checkbox-group v-model:value="value10">
