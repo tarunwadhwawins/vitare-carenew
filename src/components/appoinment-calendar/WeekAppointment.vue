@@ -8,7 +8,7 @@
           <tbody v-for="week,k in weekName" :key="k">
             <tr>
               <th>{{week}}</th>
-              <div v-if="appointmentSearch" :text="count=0">
+              <div v-if="appointmentSearch" v-bind="count=0">
                 
                 <td v-for="(appointment,i) in appointmentSearch" :key="i" >
                   

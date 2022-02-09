@@ -6,16 +6,18 @@
       <div class="dayCalendar">
         <Loader />
         <table class="table table-bordered" v-if="appointmentSearch">
-          <tbody v-for="timeHeding,k in officeTime" :key="k">
+          <tbody v-for="timeHeding,k in officeTime" :key="k" >
             <tr>
               <th>{{timeHeding}}</th>
-              <div v-if="appointmentSearch" :text="count=0">
-                
-                <td v-for="(appointment,i) in appointmentSearch" :key="i" >
+              <div v-if="appointmentSearch" >
+                <div hidden> {{count=0}}</div>
+                <td v-for="appointment,i in appointmentSearch" :key="i" >
                   
                   <div v-if="timeHeding === timeStampToTime(appointment.time,'hh:00 A')" >
+                    
                    <AppointmentCardList 
-                     :cardData="appointment" :count="count=count+1"></AppointmentCardList>
+                     :cardData="appointment"  :count="count"></AppointmentCardList>
+                     
                    </div>
                  </td>
               </div>

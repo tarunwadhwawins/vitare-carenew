@@ -1,5 +1,5 @@
 <template>
-  
+
 <div v-if="count <= 3">
  
   <a-dropdown :placement="topLeft" :trigger="['click']" overlayClassName="valueItem">
