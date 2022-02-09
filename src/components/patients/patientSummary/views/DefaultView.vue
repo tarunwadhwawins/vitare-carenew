@@ -30,7 +30,6 @@ export default {
     return {
       showModalCustom,
       custom,
-      selectedTimeline: ref([]),
       value10: ref([]),
     }
   }
