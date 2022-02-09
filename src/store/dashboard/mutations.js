@@ -1,5 +1,5 @@
-import { dateFormat } from '../../commonMethods/commonMethod';
-import { yaxis, dataLabels, plotOptions, annotations } from '../../commonMethods/commonMethod'
+
+import { yaxis, dataLabels, plotOptions, annotations,dateFormat } from '../../commonMethods/commonMethod'
 import moment from 'moment';
 export const timelineSuccess = (state, count) => {
 
@@ -203,15 +203,20 @@ export const totalPatientsChartSuccess = (state, count) => {
     const time=['08:00 AM','09:00 AM','10:00 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:00 PM','04:00 PM','05:00 PM','06:00 PM','07:00 PM','08:00 PM']
     let newPatient = [];
     time.forEach((item,i)=>{
-      let obj = count.find(o => o.duration === item);
+      let obj = count.find(o =>moment(dateFormat(o.duration)).format('hh:00 A') === item);
       if (typeof obj === 'undefined') {
         let value_obj = {
+          "key":i,
           "duration": item,
           "total": 0,
         };
         newPatient.push(value_obj);
       } else {
-        newPatient.push(obj);
+        let value_obj_get = {
+          "duration": moment(dateFormat(obj.duration)).format('hh:00 A'),
+          "total": obj.total,
+        };
+        newPatient.push(value_obj_get);
       }
     })
 
@@ -237,6 +242,7 @@ export const totalPatientsChartSuccess = (state, count) => {
       let obj = count.find(o => o.duration === day.format('dddd'));
       if (typeof obj === 'undefined') {
         let value_obj = {
+          "key":i,
           "duration": day.format('dddd'),
           "total": 0,
         };
@@ -295,6 +301,7 @@ export const totalPatientsChartSuccess = (state, count) => {
       let obj = count.find(o => o.duration === item);
       if (typeof obj === 'undefined') {
         let value_obj = {
+          "key":i,
           "duration": item,
           "total": 0,
         };
@@ -360,20 +367,24 @@ export const appointmentChartSuccess = (state, count) => {
     const time=['08:00 AM','09:00 AM','10:00 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:00 PM','04:00 PM','05:00 PM','06:00 PM','07:00 PM','08:00 PM']
     let newAppointment = [];
     time.forEach((item,i)=>{
-      let obj = count.find(o => o.duration === item);
+      let obj = count.find(o =>moment(dateFormat(o.duration)).format('hh:00 A') === item);
       if (typeof obj === 'undefined') {
         let value_obj = {
+          "key":i,
           "duration": item,
           "total": 0,
         };
         newAppointment.push(value_obj);
       } else {
-        newAppointment.push(obj);
+        let value_obj_get = {
+          "duration": moment(dateFormat(obj.duration)).format('hh:00 A'),
+          "total": obj.total,
+        };
+        newAppointment.push(value_obj_get);
       }
     })
 
     count = newAppointment;
-    
     type = "time"
     categories = count.map((item) => {
       return item.duration
@@ -455,6 +466,7 @@ export const appointmentChartSuccess = (state, count) => {
       var obj = count.find(o => o.duration === item);
       if (typeof obj === 'undefined') {
         let value_obj = {
+          "key":i,
           "duration": item,
           "total": 0,
         };
