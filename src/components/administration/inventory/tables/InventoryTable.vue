@@ -10,12 +10,12 @@
         </template>
         <span class="icons"><EditOutlined @click="editInventory(record.id)" /></span>
       </a-tooltip>
-      <a-tooltip placement="bottom">
+      <!-- <a-tooltip placement="bottom">
         <template #title>
           <span>Delete</span>
         </template>
         <span class="icons"><DeleteOutlined @click="deleteInventory(record.id)" /></span>
-      </a-tooltip>
+      </a-tooltip> -->
     </template>
     <template #isActive="{record}">
       <a-switch v-model:checked="record.status" @change="updateStatus(record.id, $event)" />
@@ -24,14 +24,17 @@
 </template>
 
 <script>
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import {
+  // DeleteOutlined,
+  EditOutlined
+} from "@ant-design/icons-vue";
 import { watchEffect, computed } from "vue";
 import { useStore } from "vuex";
 import { warningSwal } from "../../../../commonMethods/commonMethod"
 import { messages } from '../../../../config/messages';
 export default {
   components: {
-    DeleteOutlined,
+    // DeleteOutlined,
     EditOutlined,
   },
   setup(props, {emit}) {
