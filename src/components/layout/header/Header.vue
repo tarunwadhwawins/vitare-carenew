@@ -179,7 +179,9 @@
                     <a-menu-item key="1">
                       <a href="javascript:void(0)">{{$t('header.settings')}}</a>
                     </a-menu-item>
-                    <a-menu-item key="3"> <a href="#">{{$t('header.logout')}}</a></a-menu-item>
+                    <a-menu-item key="3" @click="logoutUser">
+                      <a href="javascript:void(0)">Logout</a>
+                    </a-menu-item>
                   </a-menu>
                 </template>
               </a-dropdown>
@@ -207,6 +209,7 @@ import PatientsModal from "@/components/modals/PatientsModal";
 import CoordinatorsModal from "@/components/modals/CoordinatorsModal";
 import AddStartCall from "@/components/modals/AddStartCall";
 import SendMessage from "@/components/modals/SendMessage";
+import { useStore } from "vuex";
 import {
   NotificationOutlined,
   DownOutlined,
@@ -229,8 +232,12 @@ export default defineComponent({
     SendMessage
   },
   setup() {
+    const store = useStore()
     const toggle = ref(false);
     const ellipse = ref(false);
+    const logoutUser = () => {
+      store.dispatch('logoutUser')
+    };
     const value = ref();
     function barMenu() {
       document.body.classList.toggle("show");
@@ -285,6 +292,7 @@ export default defineComponent({
     };
 
     return {
+      logoutUser,
       value,
       barMenu,
       toggle,

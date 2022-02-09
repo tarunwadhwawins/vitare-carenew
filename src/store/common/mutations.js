@@ -1,3 +1,4 @@
+
 export const globalCodes = (state, data) => {
     state.globalCodeCategories = data;
      data.forEach(element => {
@@ -90,4 +91,5 @@ export const successMsg = (state, data) => {
  export const loadingStatus = (state, data) => {
     state.loadingStatus = data
  }
+
 
