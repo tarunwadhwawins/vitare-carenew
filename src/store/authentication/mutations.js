@@ -1,11 +1,13 @@
 
 export const loginSuccess = async (state, login) => {
-  state.loggedInUser = login;
+  console.log("login",login)
+  state.token = login;
   state.loginErrorMsg = null;
 }
 
 export const logoutSuccess = async (state, logout) => {
   state.logout = logout;
+  state.token = '';
   state.loginErrorMsg = null;
 }
 
