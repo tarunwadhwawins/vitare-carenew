@@ -54,7 +54,7 @@ const routes = [
   {
     path: '/patients-summary',
     name: 'PatientSummary',
-    component: () => import( '../components/patientSummary/PatientSummary')
+    component: () => import( '../components/patients/patientSummary/PatientSummary')
   },
   
   {
