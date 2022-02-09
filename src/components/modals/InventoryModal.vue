@@ -15,7 +15,7 @@
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item :label="$t('inventory.deviceModelId')" name="deviceModelId" :rules="[{ required: true, message: $t('inventory.deviceModelId')+' '+$t('global.validation')  }]">
+            <a-form-item :label="$t('inventory.modelNumber')" name="deviceModelId" :rules="[{ required: true, message: $t('inventory.deviceModelId')+' '+$t('global.validation')  }]">
               <AutoComplete
                 :options="deviceModals"
                 @on-select="onSelectModal"
@@ -104,6 +104,7 @@ export default {
     });
 
     const onSelectOption = (selected) => {
+      deviceModalsList.value = null;
       deviceTypes.value.forEach(type => {
         if(type.value == selected) {
           store.dispatch('deviceModalsList', type.id)
@@ -112,10 +113,12 @@ export default {
     };
     
     const deviceModals = ref([])
+    var deviceModalsList = ref(null)
     watchEffect(() => {
-      const deviceModalsList = computed(() => {
+      deviceModalsList = computed(() => {
         return store.state.inventory.deviceModalsList
       });
+      deviceModals.value = [];
       if(deviceModalsList.value != null) {
         deviceModalsList.value.forEach(element => {
           deviceModals.value.push({
@@ -126,11 +129,11 @@ export default {
       }
     })
 
-    const deviceModelId = ref(null);
+    const modelId = ref(null);
     const onSelectModal = (selected) => {
       deviceModals.value.forEach(modal => {
         if(modal.value == selected) {
-          deviceModelId.value = modal.id;
+          modelId.value = modal.id;
         }
       });
     };
@@ -151,7 +154,7 @@ export default {
         emit('is-visible', false);
       }
       else {
-        inventoryForm.deviceModelId = deviceModelId.value;
+        inventoryForm.deviceModelId = modelId.value;
         store.dispatch('addInventory', inventoryForm).then(() => {
           store.dispatch('inventoriesList')
         })

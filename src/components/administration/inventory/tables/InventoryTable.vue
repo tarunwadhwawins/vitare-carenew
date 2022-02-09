@@ -18,7 +18,7 @@
       </a-tooltip>
     </template>
     <template #isActive="{record}">
-      <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
+      <a-switch v-model:checked="record.status" @change="updateStatus(record.id, $event)" />
     </template>
   </a-table>
 </template>
@@ -112,7 +112,7 @@ export default {
         sorter: {
           compare: (a, b) => a.isActive - b.isActive,
         },
-        slot: {
+        slots: {
           customRender: "isActive",
         },
       },
