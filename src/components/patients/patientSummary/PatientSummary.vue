@@ -68,7 +68,6 @@
     <AddHealth v-model:visible="visible7" @ok="handleOk" />
     <CareCoordinators v-model:visible="visible8" @ok="handleOk" />
     <FamilyCoordinators v-model:visible="visible9" @ok="handleOk" />
-    <PatientsModal v-model:visible="PatientsModal" @ok="handleOk" />
     <TaskModal v-model:visible="TaskModal" @ok="handleOk" />
   </div>
 </template>
@@ -96,7 +95,6 @@ import AddDevice from "@/components/modals/AddDevice";
 import AddDocument from "@/components/modals/AddDocument";
 import AddTimeLogs from "@/components/modals/AddTimeLogs";
 import AddAppointment from "@/components/modals/AddAppointment";
-import PatientsModal from "@/components/modals/PatientsModal";
 import TaskModal from "@/components/modals/TasksModal";
 import DefaultView from "@/components/patients/patientSummary/views/DefaultView";
 import TimelineView from "@/components/patients/patientSummary/views/TimelineView";
@@ -104,8 +102,7 @@ import CarePlanView from "@/components/patients/patientSummary/views/CarePlanVie
 import PatientVitalsView from "@/components/patients/patientSummary/views/PatientVitalsView";
 
 import dayjs from "dayjs";
-import { ref, computed } from "vue";
-const OPTIONSTAG = ["Manger", "Billing Admin", "User Admin"];
+import { ref } from "vue";
 const value = ref(dayjs("12:08", "HH:mm"));
 
 export default {
@@ -132,7 +129,6 @@ export default {
     AddDocument,
     AddTimeLogs,
     AddAppointment,
-    PatientsModal,
     TaskModal,
     DefaultView,
     TimelineView,
@@ -140,8 +136,6 @@ export default {
     PatientVitalsView,
   },
   setup() {
-    const checked = ref(false);
-
     const visible = ref(false);
     const visible1 = ref(false);
     const visible2 = ref(false);
@@ -190,11 +184,7 @@ export default {
       console.log(`selected ${value}`);
     };
 
-    const PatientsModal = ref(false);
     const TaskModal = ref(false);
-    const addPatient = () => {
-      PatientsModal.value = true;
-    };
 
     const button = ref(1);
 
@@ -254,10 +244,7 @@ export default {
       value3: ref([]),
       value,
       dayjs,
-      checked,
       onClose,
-      PatientsModal,
-      addPatient,
       button,
       showButton1,
       showButton2,
