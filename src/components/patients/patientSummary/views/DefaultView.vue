@@ -5,7 +5,7 @@
         <PatientInfoLeft/>
       </a-col>
       <a-col :xl="16" :lg="24">
-        <PatientTimeline/>
+        <PatientTimeline className="thumbDesc patientTimeline"/>
       </a-col>
     </a-row>
   </div>

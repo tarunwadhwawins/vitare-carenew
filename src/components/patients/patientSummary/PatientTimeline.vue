@@ -1,5 +1,5 @@
 <template>
-  <div class="thumbDesc patientTimeline">
+  <div :class="className">
     <a-checkbox-group v-model:value="value10">
       <a-checkbox value="Notifications1">Notifications</a-checkbox>
       <a-checkbox value="Visits1">Visits</a-checkbox>
@@ -166,6 +166,11 @@ export default {
     HeatMapOutlined,
     ClockCircleOutlined,
     MailOutlined,
+  },
+  props: {
+    className: {
+      type: String
+    }
   },
   setup() {
     const custom = ref(false);

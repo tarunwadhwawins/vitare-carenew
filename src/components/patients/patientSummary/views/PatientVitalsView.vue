@@ -2,7 +2,7 @@
   <div>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
-        <PatientInfo/>
+        <PatientInfoTop/>
       </a-col>
     </a-row>
     <div class="patientsVitals">
@@ -105,7 +105,7 @@ import VitalSummary from "@/components/modals/VitalSummary";
 import AddPulse from "@/components/modals/AddPulse";
 import BloodGlucose from "@/components/modals/BloodGlucose";
 import BloodOxygen from "@/components/modals/BloodOxygen";
-import PatientInfo from "@/components/patients/patientSummary/PatientInfo";
+import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
 export default {
   components: {
     PlusOutlined,
@@ -113,7 +113,7 @@ export default {
     AddPulse,
     BloodGlucose,
     BloodOxygen,
-    PatientInfo,
+    PatientInfoTop,
   },
   setup() {
     const visible3 = ref(false);

@@ -1,7 +1,7 @@
 <template>
   <a-row>
     <a-col :sm="24" :xs="24">
-      <PatientInfo/>
+      <PatientInfoTop/>
     </a-col>
     <a-col :span="24">
       <div class="text-right mb-24">
@@ -34,14 +34,14 @@ import {
   EditOutlined,
 } from "@ant-design/icons-vue";
 import CarePlan from "@/components/modals/CarePlan";
-import PatientInfo from "@/components/patients/patientSummary/PatientInfo";
+import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
 import { ref } from 'vue-demi';
 export default {
   components: {
     DeleteOutlined,
     EditOutlined,
     CarePlan,
-    PatientInfo,
+    PatientInfoTop,
   },
   setup() {
     const CarePlan = ref(false);
