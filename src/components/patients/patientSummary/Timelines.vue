@@ -1,4 +1,5 @@
 <template>
+  <div>
     <a-col :xl="8" :lg="24">
       <div class="patientInfo">
         <div class="patientImg" @click="showModalCustom">
@@ -285,15 +286,20 @@
         </a-timeline>
       </div>
     </a-col>
+  </div>
 </template>
 
 <script>
 import {
   WarningOutlined,
 } from "@ant-design/icons-vue";
+import PatientInfo from "@/components/patients/patientSummary/PatientInfo";
+import Timelines from "@/components/patients/patientSummary/Timelines";
 export default {
   components: {
     WarningOutlined,
+    PatientInfo,
+    Timelines,
   },
 }
 </script>
