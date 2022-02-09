@@ -9,7 +9,6 @@ class AuthService {
     return axios.post(API_URL + 'login', {
         email: user.email,
         password: user.password,
-        role: "Admin"
       })
   }
 

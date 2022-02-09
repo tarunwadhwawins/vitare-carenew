@@ -21,6 +21,7 @@ export function successSwal(message) {
 }
 
 export function errorSwal(message) {
+  console.log(message)
   Swal.fire({
     icon: 'error',
     title: 'Oops...',

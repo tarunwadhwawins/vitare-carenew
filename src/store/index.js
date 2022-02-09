@@ -10,6 +10,8 @@ import { globalCodes } from "./globalCodes/index"
 import { rolesAndPermissions } from "./rolesAndPermissions/index"
 import { inventory } from "./inventory/index"
 import { appointment } from "./appointment/index"
+import { authentication } from "./authentication/index"
+import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
   modules: {
@@ -23,6 +25,15 @@ export default createStore({
     globalCodes,
     rolesAndPermissions,
     inventory,
-    appointment
+    appointment,
+    authentication
   },
+  plugins: [ createPersistedState({
+    reducer(state) {
+     
+    return {
+      token: state.authentication.token
+      }
+    }
+  })]
 })

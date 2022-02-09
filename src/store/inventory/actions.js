@@ -14,7 +14,7 @@ export const addInventory = async ({ commit }, data) => {
 }
 
 export const inventoriesList = async ({ commit }) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['inventory']+"?isAvailable=1&deviceType=100", null, null).then((response) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['inventory'], null, null).then((response) => {
 		commit('inventoriesListSuccess', response.data.data);
 	})
 	.catch((error) => {
