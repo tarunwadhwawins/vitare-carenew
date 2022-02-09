@@ -9,14 +9,18 @@
           <tbody v-for="timeHeding,k in officeTime" :key="k">
             <tr>
               <th>{{timeHeding}}</th>
-              <div v-if="appointmentSearch">
-                <td></td>
+              <div v-if="appointmentSearch" :text="count=0">
+                
+                <td v-for="(appointment,i) in appointmentSearch" :key="i" >
+                  
+                  <div v-if="timeHeding === timeStampToTime(appointment.time,'hh:00 A')" >
+                   <AppointmentCardList 
+                     :cardData="appointment" :count="count=count+1"></AppointmentCardList>
+                   </div>
+                 </td>
               </div>
-              <div else>
-                <td v-for="appointment,i in appointmentSearch" :key="i">
-                  <AppointmentCardList v-if="timeHeding === timeStampToTime(appointment.time,'hh:00 A')"
-                    :cardData="appointment" :count="i"></AppointmentCardList>
-                </td>
+              <div v-else>
+                <td></td>
               </div>
             </tr>
           </tbody>
@@ -29,7 +33,7 @@
   import AppointmentCardList from "./AppointmentCardList"
   import { timeStampToTime } from "../../commonMethods/commonMethod"
   import Loader from "../loader/Loader"
-  import { computed } from "vue";
+  import { computed, ref } from "vue";
   import { useStore } from "vuex"
   export default {
     components: {
@@ -41,6 +45,7 @@
     },
     setup() {
       const store = useStore()
+      const count = ref(0)
       const officeTime = computed(() => {
         return store.state.appointment.officeTime
       })
@@ -54,7 +59,8 @@
         officeTime,
         timeStampToTime,
         linkTo,
-        appointmentSearch
+        appointmentSearch,
+        count
       }
     }
   }
