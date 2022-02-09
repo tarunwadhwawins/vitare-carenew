@@ -8,7 +8,7 @@
             </a-col>
             <a-col :span="12" v-for="staff in stafflist" :key="staff.id">
                 <div class="phyInner">
-                    <a-avatar :size="80" src="{{ stafflist.profile_photo }}" />
+                    <a-avatar :size="80" src="http://ditstekdemo.com/ditstek-care/img/profile-4.jpg" />
                     <span class="checkIcon">
                         <CloseOutlined />
                     </span>
