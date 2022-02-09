@@ -126,11 +126,11 @@ export default {
       }
     })
 
-    const deviceModelId = ref(null);
+    const modelId = ref(null);
     const onSelectModal = (selected) => {
       deviceModals.value.forEach(modal => {
         if(modal.value == selected) {
-          deviceModelId.value = modal.id;
+          modelId.value = modal.id;
         }
       });
     };
@@ -151,7 +151,7 @@ export default {
         emit('is-visible', false);
       }
       else {
-        inventoryForm.deviceModelId = deviceModelId.value;
+        inventoryForm.deviceModelId = modelId.value;
         store.dispatch('addInventory', inventoryForm).then(() => {
           store.dispatch('inventoriesList')
         })
