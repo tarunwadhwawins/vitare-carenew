@@ -125,3 +125,6 @@ export function timeStamp(date){
 export function timeStampToTime(time,format){
   return moment.unix(time).format(format)
 }
+export function arrayToObjact(data,id){
+return data.find(o => o.id===id)
+}
