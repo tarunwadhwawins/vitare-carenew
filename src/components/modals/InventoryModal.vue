@@ -104,6 +104,7 @@ export default {
     });
 
     const onSelectOption = (selected) => {
+      deviceModalsList.value = null;
       deviceTypes.value.forEach(type => {
         if(type.value == selected) {
           store.dispatch('deviceModalsList', type.id)
@@ -112,10 +113,12 @@ export default {
     };
     
     const deviceModals = ref([])
+    var deviceModalsList = ref(null)
     watchEffect(() => {
-      const deviceModalsList = computed(() => {
+      deviceModalsList = computed(() => {
         return store.state.inventory.deviceModalsList
       });
+      deviceModals.value = [];
       if(deviceModalsList.value != null) {
         deviceModalsList.value.forEach(element => {
           deviceModals.value.push({
