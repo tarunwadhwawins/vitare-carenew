@@ -35,14 +35,7 @@ export default {
     })
 
     const loginUser = () => {
-      store.dispatch('login', loginForm).then(() => {
-        if(loginErrorMsg.value == null) {
-          localStorage.setItem("auth", true);
-          router.push({
-            path: "/dashboard",
-          });
-        }
-      })
+      store.dispatch('login', loginForm)
     }
 
     const loggedInUser = computed(() => {
