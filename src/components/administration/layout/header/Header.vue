@@ -14,7 +14,9 @@
           <div class="location d-flex align-items-center">
             <a-dropdown :trigger="['click']">
               <a class="ant-dropdown-link" @click.prevent>
-                <div class="name">Location <DownOutlined /></div>
+                <div class="name">Location
+                  <DownOutlined />
+                </div>
               </a>
               <template #overlay>
                 <a-menu>
@@ -25,18 +27,22 @@
                     <a href="javascript:void(0)">Organisation 2</a>
                   </a-menu-item>
                   <a-menu-item key="3">
-                    <a href="javascript:void(0)">Organisation 3</a></a-menu-item
-                  >
+                    <a href="javascript:void(0)">Organisation 3</a>
+                  </a-menu-item>
                   <a-menu-item key="4">
-                    <a href="javascript:void(0)">Organisation 4</a></a-menu-item
-                  >
+                    <a href="javascript:void(0)">Organisation 4</a>
+                  </a-menu-item>
                 </a-menu>
               </template>
             </a-dropdown>
           </div>
           <div class="bar-menu">
-            <div class="search-icon" @click="toggle = !toggle"><SearchOutlined /></div>
-            <div class="ellipse-icon" @click="ellipse = !ellipse"><MoreOutlined /></div>
+            <div class="search-icon" @click="toggle = !toggle">
+              <SearchOutlined />
+            </div>
+            <div class="ellipse-icon" @click="ellipse = !ellipse">
+              <MoreOutlined />
+            </div>
           </div>
           <div class="search" :class="toggle ? 'show' : ''">
             <a-input v-model="value" size="large" placeholder="Enter search" />
@@ -45,7 +51,9 @@
             <div class="quick-actions d-flex align-items-center">
               <a-dropdown :trigger="['click']">
                 <a class="ant-dropdown-link" @click.prevent>
-                  <div class="name">Quick Action <DownOutlined /></div>
+                  <div class="name">Quick Action
+                    <DownOutlined />
+                  </div>
                 </a>
                 <template #overlay>
                   <a-menu>
@@ -61,10 +69,8 @@
                       ></a-menu-item
                     > -->
                     <a-menu-item key="4">
-                      <a href="javascript:void(0)" @click="addTask"
-                        >Add Task</a
-                      ></a-menu-item
-                    >
+                      <a href="javascript:void(0)" @click="addTask">Add Task</a>
+                    </a-menu-item>
                   </a-menu>
                 </template>
               </a-dropdown>
@@ -72,7 +78,9 @@
             <div class="notifications">
               <a-dropdown :trigger="['click']" overlayClassName="notifications">
                 <a class="ant-dropdown-link" @click.prevent>
-                  <div class="icon"><NotificationOutlined /></div>
+                  <div class="icon">
+                    <NotificationOutlined />
+                  </div>
                 </a>
                 <template #overlay>
                   <a-menu>
@@ -107,7 +115,7 @@
             <div class="profile-menu">
               <a-dropdown :trigger="['click']">
                 <a class="ant-dropdown-link" @click.prevent>
-                  <div class="name" v-if="loggedInUser">{{ loggedInUser.user.name }} <strong>{{ loggedInUser.user.designation }}</strong></div>
+                  <div class="name">{{userName}} </div>
                   <div class="image">
                     <img src="@/assets/images/profile-1.jpg" alt="image" />
                   </div>
@@ -141,106 +149,109 @@
 </template>
 
 <script>
-import { computed, defineComponent, ref } from "vue";
-import AddAppointment from "@/components/modals/AddAppointment";
-import TasksModal from "@/components/modals/TasksModal";
-import PatientsModal from "@/components/modals/PatientsModal";
-import CoordinatorsModal from "@/components/modals/CoordinatorsModal";
-import {
-  NotificationOutlined,
-  DownOutlined,
-  MenuOutlined,
-  SearchOutlined,
-  MoreOutlined,
-} from "@ant-design/icons-vue";
-import { useStore } from "vuex";
-// import { useRouter } from "vue-router";
-export default defineComponent({
-  components: {
+  import { computed, defineComponent, ref } from "vue";
+  import AddAppointment from "@/components/modals/AddAppointment";
+  import TasksModal from "@/components/modals/TasksModal";
+  import PatientsModal from "@/components/modals/PatientsModal";
+  import CoordinatorsModal from "@/components/modals/CoordinatorsModal";
+  import {
     NotificationOutlined,
     DownOutlined,
     MenuOutlined,
     SearchOutlined,
     MoreOutlined,
-    AddAppointment,
-    TasksModal,
-    PatientsModal,
-    CoordinatorsModal,
-  },
-  setup() {
-    const store = useStore()
-    const toggle = ref(false);
-    const ellipse = ref(false);
-    const logoutUser = () => {
-      store.dispatch('logoutUser')
-    };
-    
-    function barMenu() {
-      document.body.classList.toggle("show");
-    }
-
-    const appointmentModal = ref(false);
-    const addAppt = () => {
-      appointmentModal.value = true;
-    };
-    const apptOk = (e) => {
-      console.log(e);
-      appointmentModal.value = false;
-    };
-
-    const TasksModal = ref(false);
-    const addTask = () => {
-      TasksModal.value = true;
-    };
-    const taskOk = (e) => {
-      console.log(e);
-      TasksModal.value = false;
-    };
-
-    const PatientsModal = ref(false);
-    const addPatient = () => {
-      PatientsModal.value = true;
-    };
-    const patientOk = (e) => {
-      console.log(e);
-      PatientsModal.value = false;
-    };
-
-    const CoordinatorsModal = ref(false);
-    const addCare = () => {
-      CoordinatorsModal.value = true;
-    };
-    const handleOk = (e) => {
-      console.log(e);
-      CoordinatorsModal.value = false;
-    };
-
-    const loggedInUser = computed(() => {
-      return store.state.authentication.loggedInUser
-    })
-    
-    return {
-      loggedInUser,
-      barMenu,
-      toggle,
-      ellipse,
-      logoutUser,
-      appointmentModal,
-      apptOk,
-      addAppt,
-
+  } from "@ant-design/icons-vue";
+  import { useStore } from "vuex";
+  // import { useRouter } from "vue-router";
+  export default defineComponent({
+    components: {
+      NotificationOutlined,
+      DownOutlined,
+      MenuOutlined,
+      SearchOutlined,
+      MoreOutlined,
+      AddAppointment,
       TasksModal,
-      addTask,
-      taskOk,
-
       PatientsModal,
-      addPatient,
-      patientOk,
-
       CoordinatorsModal,
-      addCare,
-      handleOk,
-    };
-  },
-});
+    },
+    setup() {
+      const store = useStore()
+      const toggle = ref(false);
+      const ellipse = ref(false);
+      const logoutUser = () => {
+        store.dispatch('logoutUser')
+      };
+      const userName = computed(() => {
+        return localStorage.getItem('user')
+      })
+      function barMenu() {
+        document.body.classList.toggle("show");
+      }
+
+      const appointmentModal = ref(false);
+      const addAppt = () => {
+        appointmentModal.value = true;
+      };
+      const apptOk = (e) => {
+        console.log(e);
+        appointmentModal.value = false;
+      };
+
+      const TasksModal = ref(false);
+      const addTask = () => {
+        TasksModal.value = true;
+      };
+      const taskOk = (e) => {
+        console.log(e);
+        TasksModal.value = false;
+      };
+
+      const PatientsModal = ref(false);
+      const addPatient = () => {
+        PatientsModal.value = true;
+      };
+      const patientOk = (e) => {
+        console.log(e);
+        PatientsModal.value = false;
+      };
+
+      const CoordinatorsModal = ref(false);
+      const addCare = () => {
+        CoordinatorsModal.value = true;
+      };
+      const handleOk = (e) => {
+        console.log(e);
+        CoordinatorsModal.value = false;
+      };
+
+      // const loggedInUser = computed(() => {
+      //   return store.state.authentication.loggedInUser
+      // })
+
+      return {
+        userName,
+        // loggedInUser,
+        barMenu,
+        toggle,
+        ellipse,
+        logoutUser,
+        appointmentModal,
+        apptOk,
+        addAppt,
+
+        TasksModal,
+        addTask,
+        taskOk,
+
+        PatientsModal,
+        addPatient,
+        patientOk,
+
+        CoordinatorsModal,
+        addCare,
+        handleOk,
+      };
+    },
+  });
 </script>

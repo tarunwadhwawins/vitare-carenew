@@ -138,6 +138,7 @@
       }
       const appointmentModal = ref(false);
       const showModal = (event) => {
+        searchApi()
         appointmentModal.value = event;
       };
       const handleOk = (e) => {

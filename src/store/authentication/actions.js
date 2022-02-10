@@ -6,7 +6,7 @@ import router from "@/router"
 export const login = async ({ commit }, user) => {
 
 	await ServiceMethodService.login(user).then((response) => {
-		localStorage.setItem('user', JSON.stringify(response.data.user));
+		localStorage.setItem('user', response.data.user.name);
 		localStorage.setItem('token', response.data.token);
 		localStorage.setItem('auth', response.data);
 		commit('loginSuccess', response.data.user);
@@ -61,8 +61,7 @@ export const logoutUser = async ({ commit }) => {
 
 export const refreshToken = async ({ commit }) => {
 	await ServiceMethodService.common("post", API_ENDPOINTS['refreshToken'], null, null).then((response) => {
-		console.log('response', response);
-		console.log('refreshTokenSuccess', response.data);
+		
 		commit('refreshTokenSuccess', response.data.data);
 	})
 	.catch((error) => {
