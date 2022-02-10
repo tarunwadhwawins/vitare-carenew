@@ -433,89 +433,37 @@ export const addDemographic = (state, data) => {
 
  export const patientsPermissions = (state, auth) => {
   console.log(auth)
-   if (auth == "SuperAdmin") {
+  if (auth == 1) {
 
-       state.permssions = [{
-           id: 1,
-           name: "Patients widgets"
-       },
+    state.patientsPermissions = [{
+        id: 1,
+        name: "Add New Patients"
+    },
 
-       {
-           id: 2,
-           name: "Today Appointment"
-       },
-       {
-           id: 3,
-           name: "Call Queue"
-       },
-       {
-           id: 4,
-           name: "Patients Stats"
-       },
-       {
-           id: 5,
-           name: "Care Coordinator"
-       },
-       {
-           id: 6,
-           name: "Cpt Code"
-       },
-       {
-           id: 7,
-           name: "Financial Stats"
-       },
-       {
-           id: 8,
-           name: "New Patients Chart"
-       },
-       {
-           id: 9,
-           name: "New Appointment Chart"
-       }]
-   }else if(auth == "Staff"){
-       state.permssions = [{
-           id: 1,
-           name: "Patients widgets"
-       },
-
-       {
-           id: 2,
-           name: "Today Appointment"
-       },
-       {
-           id: 3,
-           name: "Call Queue"
-       },
-       {
-           id: 4,
-           name: "Patients Stats"
-       },
-       {
-           id: 5,
-           name: "Care Coordinator"
-       },
-       {
-           id: 8,
-           name: "New Patients Chart"
-       },
-       {
-           id: 9,
-           name: "New Appointment Chart"
-       }]
-   }else if(auth == "Accountent"){
-       state.permssions = [
-       {
-           id: 6,
-           name: "Cpt Code"
-       },
-       {
-           id: 7,
-           name: "Financial Stats"
-       },
-       ]
-   }else{
-       state.permssions =[]
-   }
+    {
+        id: 2,
+        name: "Counter Card"
+    },
+    {
+        id: 3,
+        name: "Export to Excel"
+    },
+    {
+        id: 4,
+        name: "List Table"
+    }]
+}else if(auth == 2){
+    state.permssions = [
+ {
+     id: 2,
+     name: "Counter Card"
+ },
+ 
+ {
+     id: 4,
+     name: "List Table"
+ }]
+}
 
 }
 

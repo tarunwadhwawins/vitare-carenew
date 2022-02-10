@@ -1,6 +1,7 @@
 export default{
     counter:0,
     addStaff:null,
+    updateStaff:null,
     staffs:[],
     columns:[],
     errorMsg:null,
@@ -18,5 +19,6 @@ export default{
     providerList:null,
     providerListColms:null,
     roles:null,
-    providers:null
+    providers:null,
+    staffPermissions:[]
 }

@@ -186,13 +186,19 @@ export default {
     });
 
     const personalInfo = () => {
-      store.dispatch("addStaff", personalInfoData);
-      setTimeout(() => {
-        if (addStaff.value.id) {
-          store.dispatch("staffs");
-          current.value++;
+      
+      // setTimeout(() => {
+        if(addStaff.value==null){
+          store.dispatch("addStaff", personalInfoData);
         }
-      }, 2000);
+        if (addStaff.value!=null) {
+          // store.dispatch("staffs");
+          store.dispatch("updateStaff", {
+           id:addStaff.value.id,
+           data:personalInfoData
+           });
+        }
+      // }, 2000);
     };
 
     const next = () => {

@@ -19,6 +19,25 @@ export const addStaff = async ({
   })
 }
 
+
+
+export const updateStaff = async ({
+  commit
+}, data) => {
+  await serviceMethod.common("post", `staff/${data.id}`, null, data.data).then((response) => {
+    commit('updateStaff', response.data.data);
+    commit('counterPlus')
+  }).catch((error) => {
+    if(error.response.status === 422){
+      commit('errorMsg', error.response.data)
+    }else if(error.response.status === 500){
+      errorSwal(error.response.data.message)
+    }else if(error.response.status === 401){
+      commit('errorMsg', error.response.data.message)
+    }
+  })
+}
+
 export const staffs = async ({commit}, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", "staff", null, data).then((response) => {
