@@ -229,12 +229,10 @@ export const providers = (state, data) => {
 export const staffPermissions = (state, auth) => {
   console.log(auth)
   if (auth == 1) {
-
     state.staffPermissions = [{
         id: 1,
         name: "Add New Coordinator"
     },
-
     {
         id: 2,
         name: "Counter Card"
@@ -248,7 +246,7 @@ export const staffPermissions = (state, auth) => {
         name: "List Table"
     }]
 }else if(auth == 2){
-    state.permssions = [
+    state.staffPermissions = [
  {
      id: 2,
      name: "Counter Card"

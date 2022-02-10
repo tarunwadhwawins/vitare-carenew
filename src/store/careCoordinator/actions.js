@@ -24,7 +24,7 @@ export const addStaff = async ({
 export const updateStaff = async ({
   commit
 }, data) => {
-  await serviceMethod.common("post", `staff/${data.id}`, null, data.data).then((response) => {
+  await serviceMethod.common("put", `staff/${data.id}`, null, data.data).then((response) => {
     commit('updateStaff', response.data.data);
     commit('counterPlus')
   }).catch((error) => {

@@ -453,7 +453,7 @@ export const addDemographic = (state, data) => {
         name: "List Table"
     }]
 }else if(auth == 2){
-    state.permssions = [
+    state.patientsPermissions = [
  {
      id: 2,
      name: "Counter Card"
