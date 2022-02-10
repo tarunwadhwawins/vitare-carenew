@@ -1,10 +1,10 @@
 <template>
 <a-row>
-    <a-col :span="24">
+    <a-col :span="24" v-if="arrayToObjact(staffs.staffPermissions,1)">
         <ShowModalButton @isVisible="showModal($event)" :headingText="$t('careCoordinator.coordinatorsModal.careCoordinator')" :buttonText="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" />
     </a-col>
 </a-row>
-<a-row class="mb-24" :gutter="24">
+<a-row class="mb-24" :gutter="24" v-if="arrayToObjact(staffs.staffPermissions,2)">
     <a-col :sm="12" :xs="24">
         <h2>{{$t('global.specialization')}}</h2>
         <a-row :gutter="24">
@@ -28,12 +28,12 @@
         <a-select v-model:value="value2" :size="size" mode="tags" style="width: 100%" placeholder="Search . . ." :options="searchoptions" @change="handleChange">
         </a-select>
     </a-col>
-    <a-col :span="12">
+    <a-col :span="12" v-if="arrayToObjact(staffs.staffPermissions,3)">
         <div class="text-right mb-24">
             <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
         </div>
     </a-col>
-    <a-col :span="24">
+    <a-col :span="24" v-if="arrayToObjact(staffs.staffPermissions,4)">
         <CoordinatorTable v-if="staffs.staffs" :columns="columns" :data-source="staffs.staffs" :scroll="{ x: 1200 }"></CoordinatorTable>
         <Loader />
     </a-col>
@@ -55,6 +55,7 @@ import {
     useStore
 } from "vuex"
 import ShowModalButton from "@/components/common/show-modal-button/ShowModalButton"
+import {arrayToObjact} from "../../commonMethods/commonMethod"
 export default {
     data() {
         return {};
@@ -93,6 +94,7 @@ export default {
         };
 
         return {
+            arrayToObjact,
             showModal,
             visible,
             handleOk,
