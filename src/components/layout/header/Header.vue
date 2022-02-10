@@ -287,7 +287,7 @@
 
       return {
         userName,
-        //logoutUser,
+        logoutUser,
         value,
         barMenu,
         toggle,
