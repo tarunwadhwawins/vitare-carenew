@@ -67,8 +67,9 @@
             ></a-menu-item
           ></router-link
         >
+
         <router-link to="/cpt-codes"
-          ><a-menu-item
+          v-if="roles==1"><a-menu-item
             ><CalendarOutlined /><span class="menuItem"
               >{{$t('sidebar.administration')}}
             </span></a-menu-item
@@ -80,7 +81,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, toRefs, onUnmounted } from "vue";
+import { defineComponent, reactive, toRefs, onUnmounted, computed } from "vue";
 import {
   HomeOutlined,
   MailOutlined,
@@ -103,10 +104,15 @@ export default defineComponent({
     const state = reactive({
       selectedKeys: ["1"],
     });
+    const roles = computed(() =>{
+return localStorage.getItem('roleAuth')
+    })
     onUnmounted(() => {
       document.body.classList.remove("show");
     });
-    return { ...toRefs(state) };
+    return { 
+      roles,
+      ...toRefs(state) };
   },
 });
 </script>

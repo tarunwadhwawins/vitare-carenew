@@ -71,12 +71,12 @@
         type:Object
       },
     },
-        setup(props, {emit}) {
+        setup(props) {
             const physicianModal = ref(false);
             const showModal2 = () => {
 
                 physicianModal.value = true;
-                console.log(physicianModal.value)
+                //console.log(physicianModal.value)
             };
             const handleOk2 = () => {
                 physicianModal.value = false;

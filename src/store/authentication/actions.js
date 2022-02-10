@@ -16,17 +16,17 @@ export const login = async ({ commit }, user) => {
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {
-			commit('failure', 'Invalid Login Credentials');
+			commit('loginFailure', 'Invalid Login Credentials');
 		}
 		else {
-			commit('failure', error);
+			commit('loginFailure', error);
 		}
 	})
 }
  const roleAccess = async () =>{
 	await ServiceMethodService.common("get", "staff/access", null, null).then((response) => {
-		//console.log(response.data.data[0][0].accessRoleId)
-		localStorage.setItem('roleAuth', response.data.data[0][0].accessRoleId);
+		//console.log(response.data.data[0])
+		localStorage.setItem('roleAuth', response.data.data[0].roleId);
 		router.push({
             path: "/dashboard",
           });
@@ -38,7 +38,8 @@ export const login = async ({ commit }, user) => {
 	})
 }
 export const logoutUser = async ({ commit }) => {
-	localStorage.removeItem('user');
+	
+		localStorage.removeItem('user');
 	localStorage.removeItem('token');
     localStorage.removeItem('auth');
 	localStorage.removeItem('roleAuth');
