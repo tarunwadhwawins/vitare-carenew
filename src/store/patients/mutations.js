@@ -1,3 +1,4 @@
+import moment from 'moment';
 
 export const addDemographic = (state, data) => {
     state.addDemographic = data
@@ -425,6 +426,11 @@ export const addDemographic = (state, data) => {
  export const uploadFile = (state, data) => {
     state.uploadFile = data
  }
+
+export const patientDetailsSuccess = (state, patient) => {
+  patient.dob = moment(patient.dob).format('MMMM DD, YYYY')
+  state.patientDetails = patient
+}
 
   export const errorMsg = (state, data) => {
     state.errorMsg = data

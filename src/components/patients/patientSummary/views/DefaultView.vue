@@ -2,10 +2,10 @@
   <div>
     <a-row :gutter="24">
       <a-col :xl="8" :lg="24">
-        <PatientInfoLeft/>
+        <PatientInfoLeft :patientDetails="patientDetails"/>
       </a-col>
       <a-col :xl="16" :lg="24">
-        <PatientTimeline className="thumbDesc patientTimeline"/>
+        <PatientTimeline className="thumbDesc patientTimeline" :patientDetails="patientDetails"/>
       </a-col>
     </a-row>
   </div>
@@ -19,10 +19,13 @@ export default {
     PatientInfoLeft,
     PatientTimeline,
   },
+  props: {
+    patientDetails:{
+      type: Array
+    }
+  },
   setup() {
-
     return {
-      
     }
   }
 }

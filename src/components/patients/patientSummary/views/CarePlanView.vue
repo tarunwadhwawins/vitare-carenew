@@ -1,7 +1,7 @@
 <template>
   <a-row>
     <a-col :sm="24" :xs="24">
-      <PatientInfoTop/>
+      <PatientInfoTop :patientDetails="patientDetails"/>
     </a-col>
     <a-col :span="24">
       <CarePlanTable/>
@@ -12,11 +12,15 @@
 <script>
 import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
 import CarePlanTable from "@/components/patients/patientSummary/CarePlanTable";
-import { ref } from 'vue-demi';
 export default {
   components: {
     PatientInfoTop,
     CarePlanTable,
+  },
+  props: {
+    patientDetails:{
+      type: Array
+    }
   },
   setup() {
 

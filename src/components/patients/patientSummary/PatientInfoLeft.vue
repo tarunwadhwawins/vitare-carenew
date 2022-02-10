@@ -3,13 +3,13 @@
     <div class="patientImg" @click="showModalCustom">
       <img src="@/assets//images/profile-4.jpg" alt="image"/>
       <div class="info">
-        <p>Jane Doe</p>
-        <p>DOB : June 25, 1995</p>
-        <p><a href="mailto:jane@gmail.com"><MailOutlined /> jane@gmail.com</a>
+        <p>{{ patientDetail.name+' '+patientDetail.middleName+' '+patientDetail.lastName }}</p>
+        <p>DOB : {{ patientDetail.dob }}</p>
+        <p><a :href="patientDetail.email"><MailOutlined /> {{ patientDetail.email }}</a>
         </p>
-        <p><a href="tel:1234567890"><PhoneOutlined :rotate="90" /> +343-3563-767</a>
+        <p><a href="tel:{{patientDetail.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetail.phoneNumber }}</a>
         </p>
-        <p>132, My Street, Kingston, New York 12401.</p>
+        <p>{{ patientDetail.address }}</p>
       </div>
       <EditOutlined class="editIcon" @click="addPatient" />
     </div>
@@ -124,7 +124,7 @@ import {
   EditOutlined,
   PhoneOutlined,
 } from "@ant-design/icons-vue";
-import { ref } from 'vue-demi';
+import { reactive, ref } from 'vue-demi';
 import PatientsModal from "@/components/modals/PatientsModal";
 import AddAppointmentModal from "@/components/modals/AddAppointment";
 import AddTasksModal from "@/components/modals/TasksModal";
@@ -161,7 +161,12 @@ export default {
     DeviceDetailModal,
     BloodPressureDetail,
   },
-  setup() {
+  props: {
+    patientDetails:{
+      type: Object
+    }
+  },
+  setup(props) {
     const custom = ref(false);
     const patientsModalVisible = ref(false);
     const addAppointmentVisible = ref(false);
@@ -177,6 +182,8 @@ export default {
     const timeLogsDetailVisible = ref(false);
     const addDeviceVisible = ref(false);
     const deviceDetailVisible = ref(false);
+    const patientDetail = reactive(props.patientDetails);
+    // console.log('Patient Info patientDetail', patientDetail)
     
     const showModalCustom = () => {
       custom.value = true;
@@ -272,6 +279,8 @@ export default {
       showTimelogModal,
       addDeviceModal,
       showDeviceModal,
+
+      patientDetail,
     }
   }
 }

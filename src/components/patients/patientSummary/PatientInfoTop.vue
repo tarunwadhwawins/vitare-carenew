@@ -2,12 +2,12 @@
   <div class="patientSummary">
     <img src="@/assets/images/profile-4.jpg" alt="image" />
     <div class="info">
-      <h2>Jane Doe</h2>
-      <p>Patient Id : #3432</p>
-      <p>DOB : June 25, 1995</p>
-      <p><a href="mailto:jane@gmail.com"><MailOutlined /> jane@gmail.com</a></p>
-      <p><a href="tel:1234567890"><PhoneOutlined :rotate="90" /> +343-3563-767</a></p>
-      <p>132, My Street, Kingston, New York 12401.</p>
+      <h2>{{ patientDetail.name }}</h2>
+      <p>Patient Id : #{{ patientDetail.udid }}</p>
+      <p>DOB : {{ patientDetail.dob }}</p>
+      <p><a href="mailto:{{patientDetail.email}}"><MailOutlined /> {{ patientDetail.email }}</a></p>
+      <p><a href="tel:{{patientDetail.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetail.phoneNumber }}</a></p>
+      <p>{{ patientDetail.address }}</p>
     </div>
     <EditOutlined @click="addPatient" />
   </div>
@@ -21,7 +21,7 @@ import {
   EditOutlined,
 } from "@ant-design/icons-vue";
 import PatientsModal from "@/components/modals/PatientsModal";
-import { ref } from 'vue-demi';
+import { ref, reactive } from 'vue-demi';
 export default {
   components: {
     MailOutlined,
@@ -29,14 +29,21 @@ export default {
     EditOutlined,
     PatientsModal,
   },
-  setup() {
+  props: {
+    patientDetails:{
+      type: Object
+    }
+  },
+  setup(props) {
     const PatientsModal = ref(false);
+    const patientDetail = reactive(props.patientDetails);
     const addPatient = () => {
       PatientsModal.value = true;
     };
     return {
       addPatient,
       PatientsModal,
+      patientDetail,
     }
   }
 }

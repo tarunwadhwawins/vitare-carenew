@@ -8,6 +8,7 @@ export const API_ENDPOINTS = {
     refreshToken: "refreshToken",
 
     // Patients
+    patient:"patient",
     patientsList:"patient",
     patientDetails:"patient",
     counterCard:"patient/count",

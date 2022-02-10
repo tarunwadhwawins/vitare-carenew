@@ -27,7 +27,7 @@
   </a-modal>
 </template>
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 const columns3 = [
   {
     title: "Date",

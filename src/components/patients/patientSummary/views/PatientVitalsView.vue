@@ -2,7 +2,7 @@
   <div>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
-        <PatientInfoTop/>
+        <PatientInfoTop :patientDetails="patientDetails"/>
       </a-col>
     </a-row>
     <div class="patientsVitals">
@@ -114,6 +114,11 @@ export default {
     BloodGlucose,
     BloodOxygen,
     PatientInfoTop,
+  },
+  props: {
+    patientDetails:{
+      type: Array
+    }
   },
   setup() {
     const visible3 = ref(false);

@@ -30,18 +30,18 @@
             <a-col :sm="24">
               <a-alert class="mb-24" message="Patient has dimentia. Talk to wife - Marry when calling. Prefers evening calling." type="error" closable @close="onClose2"/>
             </a-col>
-            <a-col :sm="24" :xs="24">
+            <a-col :sm="24" :xs="24" v-if="patientDetails">
               <div v-if="button == 1">
-                <DefaultView/>
+                <DefaultView :patientDetails="patientDetails"/>
               </div>
               <div v-if="button == 2">
-                <TimelineView/>
+                <TimelineView :patientDetails="patientDetails"/>
               </div>
               <div v-if="button == 3">
-                <CarePlanView/>
+                <CarePlanView :patientDetails="patientDetails"/>
               </div>
               <div v-if="button == 4">
-                <PatientVitalsView/>
+                <PatientVitalsView :patientDetails="patientDetails"/>
               </div>
             </a-col>
           </a-row>
@@ -74,7 +74,9 @@ import CarePlanView from "@/components/patients/patientSummary/views/CarePlanVie
 import PatientVitalsView from "@/components/patients/patientSummary/views/PatientVitalsView";
 
 import dayjs from "dayjs";
-import { ref } from "vue";
+import { computed, ref, watchEffect } from "vue";
+import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 const value = ref(dayjs("12:08", "HH:mm"));
 
 export default {
@@ -94,6 +96,9 @@ export default {
     PatientVitalsView,
   },
   setup() {
+    const route = useRoute();
+    const store = useStore()
+
     const visible = ref(false);
     const visible1 = ref(false);
     const visible2 = ref(false);
@@ -108,6 +113,14 @@ export default {
     const bloodoxygenvisible = ref(false);
     const bloodglucosevisible = ref(false);
     const stoptimervisible = ref(false);
+
+    watchEffect(() => {
+      store.dispatch('patientDetails', route.params.udid)
+    })
+    const patientDetails = computed(() => {
+      return store.state.patients.patientDetails
+    })
+    // console.log('patientDetails', patientDetails)
 
     const showStopTimerModal = () => {
       stoptimervisible.value = true;
@@ -205,6 +218,7 @@ export default {
       showButton4,
       value10: ref([]),
       onClose2,
+      patientDetails
     };
   },
 };
