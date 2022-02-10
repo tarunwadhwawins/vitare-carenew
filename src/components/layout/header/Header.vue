@@ -163,7 +163,7 @@
             <div class="profile-menu">
               <a-dropdown :trigger="['click']">
                 <a class="ant-dropdown-link" @click.prevent>
-                  <div class="name">Jane Doe <strong>Admin</strong></div>
+                  <div class="name">{{userName.name}} <strong>Admin</strong></div>
                   <div class="image">
                     <img
                       src="../../../assets/images/profile-1.jpg"
@@ -202,7 +202,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import AddAppointment from "@/components/modals/AddAppointment";
 import TasksModal from "@/components/modals/TasksModal";
 import PatientsModal from "@/components/modals/PatientsModal";
@@ -235,6 +235,10 @@ export default defineComponent({
     const store = useStore()
     const toggle = ref(false);
     const ellipse = ref(false);
+    const userName = computed(() =>{
+      return localStorage.getItem('user')
+    })
+    
     const logoutUser = () => {
       store.state.authentication.errorMsg=''
       store.dispatch('logoutUser')
@@ -293,6 +297,7 @@ export default defineComponent({
     };
 
     return {
+      userName,
       logoutUser,
       value,
       barMenu,
