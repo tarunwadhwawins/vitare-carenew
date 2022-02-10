@@ -96,7 +96,7 @@ export const staffContactList = async ({commit},id) => {
 
 
 export const deleteContact = async ({commit},data) => {
-  await serviceMethod.common("delete", `staff/${data.id}/conatct/${data.contactId}`, null, null).then((response) => {
+  await serviceMethod.common("delete", `staff/${data.id}/contact/${data.contactId}`, null, null).then((response) => {
     commit('deleteContact', response.data.data);
     successSwal(response.data.message)
   }).catch((error) => { 
@@ -173,11 +173,12 @@ export const roles = async ({commit}) => {
 
 
 
-export const addRole = async ({
+export const addStaffRole = async ({
   commit
 }, data) => {
+  console.log('addRole',data.data)
   await serviceMethod.common("post", `staff/${data.id}/role`, null, data.data).then((response) => {
-    commit('addRole', response.data.data);
+    commit('addStaffRole', response.data.data);
   }).catch((error) => {
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)

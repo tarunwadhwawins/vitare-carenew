@@ -14,11 +14,13 @@ export const globalCodes = async ({
     commit('failure', error.response.data);
   })
 }
-export const permssions = async ({
+export const permissions = async ({
   commit
 }) => {
 
-    commit('permssions', localStorage.getItem('auth'));
+    commit('dashboardPermissions', localStorage.getItem('auth'));
+
+    commit('patientsPermissions', localStorage.getItem('auth'));
  
 }
 
