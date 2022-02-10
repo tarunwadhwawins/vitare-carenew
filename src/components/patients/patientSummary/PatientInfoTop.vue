@@ -1,9 +1,10 @@
 <template>
   <div class="patientSummary">
-    <img src="@/assets/images/profile-4.jpg" alt="image" />
+      <img v-if="patientDetail.profileImage" :src="patientDetail.profileImage" alt="image"/>
+      <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
     <div class="info">
       <h2>{{ patientDetail.name }}</h2>
-      <p>Patient Id : #{{ patientDetail.udid }}</p>
+      <p>Patient Id : #{{ patientDetail.medicalRecordNumber ? patientDetail.medicalRecordNumber : '130291' }}</p>
       <p>DOB : {{ patientDetail.dob }}</p>
       <p><a href="mailto:{{patientDetail.email}}"><MailOutlined /> {{ patientDetail.email }}</a></p>
       <p><a href="tel:{{patientDetail.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetail.phoneNumber }}</a></p>
@@ -51,7 +52,7 @@ export default {
 
 <style lang="scss">
 .patientSummary img {
-  height: 160px;
+  height: 150px;
   width: 150px;
   -o-object-fit: cover;
   object-fit: cover;

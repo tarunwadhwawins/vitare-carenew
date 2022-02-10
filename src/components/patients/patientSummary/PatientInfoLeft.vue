@@ -1,7 +1,8 @@
 <template>
   <div class="patientInfo">
     <div class="patientImg" @click="showModalCustom">
-      <img src="@/assets//images/profile-4.jpg" alt="image"/>
+      <img v-if="patientDetail.profileImage" :src="patientDetail.profileImage" alt="image"/>
+      <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
       <div class="info">
         <p>{{ patientDetail.name+' '+patientDetail.middleName+' '+patientDetail.lastName }}</p>
         <p>DOB : {{ patientDetail.dob }}</p>
@@ -17,7 +18,8 @@
     <div class="pat-profile">
       <div class="pat-profile-inner">
         <div class="thumb-head">Flag</div>
-        <div class="thumb-desc">
+        <div class="thumb-desc" v-for="flag in patientDetail.patientFlags" :key="flag.id">
+          <span class="box" v-bind:class="flag.color"></span>
           <span class="box redBgColor"></span>
           <span class="box yellowBgColor"></span>
         </div>

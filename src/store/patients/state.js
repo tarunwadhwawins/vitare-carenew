@@ -31,6 +31,7 @@ export default {
     uploadFile:null,
     status:false,
     patientDetails:null,
+    patientTimeline:null,
     errorMsg:null
 
 }

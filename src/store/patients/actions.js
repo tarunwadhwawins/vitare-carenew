@@ -588,3 +588,11 @@ export const patientDetails = async ({commit}, id) => {
     errorSwal(error.response.data.message)
   })
 }
+
+export const patientTimeline = async ({commit}, id) => {
+  await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/timeLine', null, null).then((response) => {
+    commit('patientTimelineSuccess', response.data.data);
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+  })
+}
