@@ -159,7 +159,8 @@ export default {
     return {
       showModalCustom,
       custom,
-      value10: ref([]),
+      value10: 'Notifications1',
+      // value10: ref([]),
       patientTimeline,
     }
   }
