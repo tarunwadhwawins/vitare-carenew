@@ -1,19 +1,18 @@
 
-import serviceMethod from '../../services/serviceMethod'
+import ServiceMethodService from '../../services/serviceMethod'
 import { API_ENDPOINTS } from "../../config/apiConfig"
 import router from "@/router"
 
 export const login = async ({ commit }, user) => {
 
-	await serviceMethod.login(user).then((response) => {
-		//console.log(response.data)
-		localStorage.setItem('auth', response.data.user.roleId.name);
+	await ServiceMethodService.login(user).then((response) => {
 		localStorage.setItem('user', JSON.stringify(response.data.user));
-		localStorage.setItem('token', JSON.stringify(response.data.token));
+		localStorage.setItem('token', response.data.token);
+		localStorage.setItem('auth', response.data);
 		commit('loginSuccess', response.data.user);
-		router.push({
-            path: "/dashboard",
-          });
+		roleAccess()
+		
+		
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {
@@ -24,11 +23,25 @@ export const login = async ({ commit }, user) => {
 		}
 	})
 }
-
+ const roleAccess = async () =>{
+	await ServiceMethodService.common("get", "staff/access", null, null).then((response) => {
+		//console.log(response.data.data[0][0].accessRoleId)
+		localStorage.setItem('roleAuth', response.data.data[0][0].accessRoleId);
+		router.push({
+            path: "/dashboard",
+          });
+	})
+	.catch((error) => {
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+	})
+}
 export const logoutUser = async ({ commit }) => {
 	localStorage.removeItem('user');
 	localStorage.removeItem('token');
     localStorage.removeItem('auth');
+	localStorage.removeItem('roleAuth');
 	commit('logoutSuccess', 'Success');
 	router.push("/")
 	
@@ -46,7 +59,7 @@ export const logoutUser = async ({ commit }) => {
 }
 
 export const refreshToken = async ({ commit }) => {
-	await serviceMethod.common("post", API_ENDPOINTS['refreshToken'], null, null).then((response) => {
+	await ServiceMethodService.common("post", API_ENDPOINTS['refreshToken'], null, null).then((response) => {
 		console.log('response', response);
 		console.log('refreshTokenSuccess', response.data);
 		commit('refreshTokenSuccess', response.data.data);

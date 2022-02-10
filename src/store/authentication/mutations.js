@@ -1,6 +1,6 @@
 
 export const loginSuccess = async (state, login) => {
-  console.log("login",login)
+  //console.log("login",login)
   state.token = login;
   state.loginErrorMsg = null;
 }
