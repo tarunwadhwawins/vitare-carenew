@@ -11,7 +11,7 @@ export default{
     staffContactColms:null,
     addAvailability:null,
     availabilityList:null,
-    addRole:null,
+    addStaffRole:null,
     roleList:null,
     roleListColms:null,
     addProvider:null,

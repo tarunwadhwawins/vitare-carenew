@@ -123,9 +123,12 @@
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
+                    <a-button v-if="current == steps.length - 1" type="primary" @click="saveModal()">
+                        {{$t('global.save')}}
+                    </a-button>
                 </div>
             </div>
-            <div class="steps-content" v-if="steps[current].title == 'Providers'">
+            <!-- <div class="steps-content" v-if="steps[current].title == 'Providers'">
                 <Providers />
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
@@ -134,7 +137,7 @@
                         {{$t('global.save')}}
                     </a-button>
                 </div>
-            </div>
+            </div> -->
         </a-col>
     </a-row>
 </a-modal>
@@ -147,12 +150,12 @@ import Contacts from "@/components/modals/forms/Contacts";
 import Availability from "@/components/modals/forms/Availability";
 import Roles from "@/components/modals/forms/Roles";
 import Documents from "@/components/modals/forms/Documents";
-import Providers from "@/components/modals/forms/Providers";
+// import Providers from "@/components/modals/forms/Providers";
 import { useStore } from "vuex";
 import ErrorMessage from "../common/messages/ErrorMessage";
 import { regex } from "../../RegularExpressions/regex";
 import { scrollToTop } from "../../commonMethods/commonMethod";
-import { errorSwal } from "../../commonMethods/commonMethod";
+import { errorSwal,successSwal } from "../../commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 export default {
   components: {
@@ -161,10 +164,10 @@ export default {
     Availability,
     Roles,
     Documents,
-    Providers,
+    // Providers,
     ErrorMessage,
   },
-  setup() {
+  setup(props, { emit }) {
     const store = useStore();
     const current = computed(() => {
       return store.state.careCoordinator.counter;
@@ -223,7 +226,21 @@ export default {
         errorMsg.value.email?errorMsg.value.email[0]=null:''
     }
 
+    const form = reactive({
+      ...personalInfoData,
+    });
+
+    function saveModal() {
+      emit("saveModal", false);
+      successSwal(messages.formSuccess);
+      Object.assign(personalInfoData, form);
+      store.dispatch("staffs");
+      store.commit("resetCounter");
+    }
+
     return {
+      form,
+      saveModal,
       emailChange,
       handleChange,
       scrollToTop,
@@ -255,10 +272,10 @@ export default {
           title: "Documents",
           content: "Second-content",
         },
-        {
-          title: "Providers",
-          content: "Last-content",
-        },
+        // {
+        //   title: "Providers",
+        //   content: "Last-content",
+        // },
       ],
       next,
       prev,
