@@ -4,7 +4,7 @@
       <img v-if="patientDetails.profilePhoto" :src="patientDetails.profilePhoto" alt="image"/>
       <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
       <div class="info">
-        <p>{{ patientDetails.name+' '+patientDetails.middleName+' '+patientDetails.lastName }}</p>
+        <p>{{ patientDetails.fullName }}</p>
         <p>DOB : {{ patientDetails.dob }}</p>
         <p><a :href="patientDetails.email"><MailOutlined /> {{ patientDetails.email }}</a>
         </p>
@@ -36,7 +36,7 @@
           <PlusOutlined @click="showAddAppointmentModal"/><br />
         </div>
         <div class="thumb-desc">
-          <router-link to="appointment-calendar">
+          <router-link to="/appointment-calendar">
             John Deer 20th 2021 (+1 more)
           </router-link>
         </div>
@@ -47,7 +47,7 @@
           Task <PlusOutlined @click="addTaskModal" /><br />
         </div>
         <div class="thumb-desc">
-          <router-link to="tasks"> Task 1 </router-link>
+          <router-link to="/tasks"> Task 1 </router-link>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -81,7 +81,7 @@
           Care Team <PlusOutlined @click="addCateTeamModal" />
         </div>
         <div class="thumb-desc">
-          <router-link to="corrdinator-summary">John Smith (P) HT </router-link><br />
+          <router-link to="/coordinator-summary">John Smith (P) HT </router-link><br />
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -109,7 +109,7 @@
   <BloodPressureDetail v-model:visible="bloodPressureVisible" @ok="handleOk" />
   <AddNotesModal v-model:visible="addNoteVisible" @ok="handleOk" />
   <NotesDetailModal v-model:visible="notesDetailVisible" @ok="handleOk" />
-  <AddDocumentModal v-model:visible="addDocumentVisible" @ok="handleOk" />
+  <AddDocumentModal v-if="addDocumentVisible" v-model:visible="addDocumentVisible" @ok="handleOk" />
   <DocumentDetailModal v-model:visible="documentDetailVisible" @ok="handleOk" />
   <AddCareTeamModal v-model:visible="careCoordinatorsVisible" @ok="handleOk" />
   <AddTimeLogsModal v-model:visible="addTimeLogsVisible" @ok="handleOk" />
