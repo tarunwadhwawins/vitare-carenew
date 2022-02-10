@@ -11,7 +11,7 @@
       </a-form-item>
     </div>
     <div class="field">
-      <span class="error">{{ loginErrorMsg }}</span>
+      <span class="error">{{ errorMsg.errorMsg }}</span>
     </div>
     <div class="buttons">
       <a-button class="btn primaryBtn" html-type="submit">{{$t("login.login")}}</a-button>
@@ -42,12 +42,12 @@ export default {
       return store.state.authentication.loggedInUser
     })
 
-    const loginErrorMsg = computed(() => {
-      return store.state.authentication.loginErrorMsg
+    const errorMsg = computed(() => {
+      return store.state.authentication
     })
-
+    console.log(errorMsg.value)
     return {
-      loginErrorMsg,
+      errorMsg,
       loginForm,
       loginUser,
       router,

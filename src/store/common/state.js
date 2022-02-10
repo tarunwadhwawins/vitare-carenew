@@ -25,7 +25,7 @@ export default {
     loadingStatus:false,
     duration:null,
     typeOfVisit:null,
-    permssions:null,
+   
 
 
 
