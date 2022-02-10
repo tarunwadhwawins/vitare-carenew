@@ -209,10 +209,10 @@ export const addStaffRole = async ({
   })
 }
 
-export const roleyList = async ({commit},id) => {
+export const roleList = async ({commit},id) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", `staff/${id}/role`, null, null).then((response) => {
-    commit('roleyList', response.data.data);
+    commit('roleList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => { 
     commit('errorMsg', error);

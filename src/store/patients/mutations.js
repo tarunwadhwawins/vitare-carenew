@@ -1,4 +1,6 @@
 
+import { dobFormat, meridiemFormatFromTimestamp } from '../../commonMethods/commonMethod';
+
 export const addDemographic = (state, data) => {
     state.addDemographic = data
  }
@@ -425,6 +427,18 @@ export const addDemographic = (state, data) => {
  export const uploadFile = (state, data) => {
     state.uploadFile = data
  }
+
+export const patientDetailsSuccess = (state, patient) => {
+  patient.dob = dobFormat(patient.dob)
+  state.patientDetails = patient
+}
+
+export const patientTimelineSuccess = (state, timeline) => {
+  state.patientTimeline = timeline.map(data => {
+    data.createdAt = meridiemFormatFromTimestamp(data.createdAt);
+    return data;
+  })
+}
 
   export const errorMsg = (state, data) => {
     state.errorMsg = data

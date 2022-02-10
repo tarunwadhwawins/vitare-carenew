@@ -59,7 +59,7 @@ const routes = [
   },
 
   {
-    path: '/patients-summary',
+    path: '/patients-summary/:udid',
     name: 'PatientSummary',
     component: () => import( '../components/patients/patientSummary/PatientSummary'),
     meta: { authAdmin: true }

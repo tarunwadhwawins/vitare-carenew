@@ -56,7 +56,7 @@ export default defineComponent({
         data: roles,
       });
       setTimeout(() => {
-        store.dispatch("roleList", 26/staffs.value.addStaff.id);
+        store.dispatch("roleList", staffs.value.addStaff.id);
       }, 2000);
     }
 
@@ -68,7 +68,7 @@ export default defineComponent({
             roleID: id,
           });
           setTimeout(() => {
-            store.dispatch("roleList", staffs.value.addStaff.id);
+            store.dispatch("roleList",staffs.value.addStaff.id);
           }, 2000);
         }
       });
