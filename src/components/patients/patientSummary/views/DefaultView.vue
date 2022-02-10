@@ -2,10 +2,10 @@
   <div>
     <a-row :gutter="24">
       <a-col :xl="8" :lg="24">
-        <PatientInfoLeft :patientDetails="patientDetails"/>
+        <PatientInfoLeft/>
       </a-col>
       <a-col :xl="16" :lg="24">
-        <PatientTimeline className="thumbDesc patientTimeline" :patientDetails="patientDetails"/>
+        <PatientTimeline className="thumbDesc patientTimeline"/>
       </a-col>
     </a-row>
   </div>
@@ -18,11 +18,6 @@ export default {
   components: {
     PatientInfoLeft,
     PatientTimeline,
-  },
-  props: {
-    patientDetails:{
-      type: Array
-    }
   },
   setup() {
     return {
