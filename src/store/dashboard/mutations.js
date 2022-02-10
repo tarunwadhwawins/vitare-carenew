@@ -1,5 +1,5 @@
 
-import { yaxis, dataLabels, plotOptions, annotations,dateFormat } from '../../commonMethods/commonMethod'
+import { yaxis, dataLabels, plotOptions, annotations, dateFormat } from '../../commonMethods/commonMethod'
 import moment from 'moment';
 export const timelineSuccess = (state, count) => {
 
@@ -194,19 +194,19 @@ export const financialSuccess = (state) => {
   };
 }
 export const totalPatientsChartSuccess = (state, count) => {
-  console.log("total",state.timeLineButton)
+  console.log("total", state.timeLineButton)
   let categories = ''
   let format = ''
   let data = ''
   let type = ''
   if (state.timeLineButton == 122) {
-    const time=['08:00 AM','09:00 AM','10:00 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:00 PM','04:00 PM','05:00 PM','06:00 PM','07:00 PM','08:00 PM']
+    const time = ['08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM', '06:00 PM', '07:00 PM', '08:00 PM']
     let newPatient = [];
-    time.forEach((item,i)=>{
-      let obj = count.find(o =>moment(dateFormat(o.duration)).format('hh:00 A') === item);
+    time.forEach((item, i) => {
+      let obj = count.find(o => moment(dateFormat(o.duration)).format('hh:00 A') === item);
       if (typeof obj === 'undefined') {
         let value_obj = {
-          "key":i,
+          "key": i,
           "duration": item,
           "total": 0,
         };
@@ -221,7 +221,7 @@ export const totalPatientsChartSuccess = (state, count) => {
     })
 
     count = newPatient;
-    
+
     type = "time"
     categories = count.map((item) => {
       return item.duration
@@ -237,12 +237,12 @@ export const totalPatientsChartSuccess = (state, count) => {
     let today = moment();
     today.subtract(7, 'days')
     for (let i = 0; i < 7; i++) {
- 
+
       var day = today.add(1, 'days');
       let obj = count.find(o => o.duration === day.format('dddd'));
       if (typeof obj === 'undefined') {
         let value_obj = {
-          "key":i,
+          "key": i,
           "duration": day.format('dddd'),
           "total": 0,
         };
@@ -263,7 +263,7 @@ export const totalPatientsChartSuccess = (state, count) => {
       return item.total
     })
   } else if (state.timeLineButton == 124) {
-    
+
     let newPatient = [];
     let today = moment();
     today.subtract(30, 'days')
@@ -291,17 +291,17 @@ export const totalPatientsChartSuccess = (state, count) => {
     data = count.map((item) => {
       return item.total
     })
-  } else{
+  } else {
     let month = []
     for (let k = 1; k < 13; k++) {
       month.push(moment(moment().toDate()).add(k, "month").startOf("month").format('MMMM'))
     }
     let newPatient = [];
-    month.forEach((item,i)=>{
+    month.forEach((item, i) => {
       let obj = count.find(o => o.duration === item);
       if (typeof obj === 'undefined') {
         let value_obj = {
-          "key":i,
+          "key": i,
           "duration": item,
           "total": 0,
         };
@@ -319,8 +319,8 @@ export const totalPatientsChartSuccess = (state, count) => {
     data = newAppointmentcount.map((item) => {
       return item.total
     })
-    
-  } 
+
+  }
   // const check =count.map((item) => { 
   //   return item.data.map((data) =>{ return data.month})})
   //   const month=['January','February','March','April','May','June','July','August','September','October','November','December']
@@ -353,24 +353,23 @@ export const totalPatientsChartSuccess = (state, count) => {
       },
     ],
   };
-  // console.log("check",state.totalPatientsChartValue)
 }
 
 export const appointmentChartSuccess = (state, count) => {
 
-  
+
   let categories = ''
   let format = ''
   let data = ''
   let type = ''
   if (state.timeLineButton == 122) {
-    const time=['08:00 AM','09:00 AM','10:00 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:00 PM','04:00 PM','05:00 PM','06:00 PM','07:00 PM','08:00 PM']
+    const time = ['08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM', '06:00 PM', '07:00 PM', '08:00 PM']
     let newAppointment = [];
-    time.forEach((item,i)=>{
-      let obj = count.find(o =>moment(dateFormat(o.duration)).format('hh:00 A') === item);
+    time.forEach((item, i) => {
+      let obj = count.find(o => moment(dateFormat(o.duration)).format('hh:00 A') === item);
       if (typeof obj === 'undefined') {
         let value_obj = {
-          "key":i,
+          "key": i,
           "duration": item,
           "total": 0,
         };
@@ -424,11 +423,11 @@ export const appointmentChartSuccess = (state, count) => {
       return item.total
     })
   } else if (state.timeLineButton == 124) {
-    
+
     let newAppointment = [];
     let today = moment();
     today.subtract(30, 'day')
-    
+
     for (let i = 0; i < 30; i++) {
       let day = today.add(1, 'days');
       let obj = count.find(o => o.duration === day.format('MMM DD,yyyy'));
@@ -453,7 +452,7 @@ export const appointmentChartSuccess = (state, count) => {
     data = count.map((item) => {
       return item.total
     })
-  } else if(state.timeLineButton == 125){
+  } else if (state.timeLineButton == 125) {
     //const month=['February','March','April','May','June','July','August','September','October','November','December','January']
     const newAppointment = [];
     const month = []
@@ -461,12 +460,12 @@ export const appointmentChartSuccess = (state, count) => {
       month.push(moment(moment().toDate()).add(k, "month").startOf("month").format('MMMM'))
     }
 
-    month.forEach((item,i)=>{
-      
+    month.forEach((item, i) => {
+
       var obj = count.find(o => o.duration === item);
       if (typeof obj === 'undefined') {
         let value_obj = {
-          "key":i,
+          "key": i,
           "duration": item,
           "total": 0,
         };
@@ -484,12 +483,12 @@ export const appointmentChartSuccess = (state, count) => {
     data = newAppointmentcount.map((item) => {
       return item.total
     })
-  }else{
+  } else {
     categories = null
     format = "MM,yyyy"
     data = null
   }
- 
+
   state.appointmentChartValue = {
     chartOptions: {
       chart: {

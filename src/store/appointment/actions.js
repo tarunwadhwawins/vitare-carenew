@@ -23,8 +23,8 @@ export const searchAppointment = async ({
 },from) => {
   commit('loadingStatus', true)
   //console.log(to)
-  await serviceMethod.common("get", API_ENDPOINTS['seacrhAppointment']+from, null, null).then((response) => {
-    commit('searchAppointmentSuccess', response.data.data);
+  await serviceMethod.common("get", API_ENDPOINTS['seacrhAppointment']+"?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {
+    commit('searchAppointmentSuccess', {data:response.data.data,key:from.tabId});
     commit('loadingStatus', false)
   }).catch((error) => {
     if(error.response.status === 422){

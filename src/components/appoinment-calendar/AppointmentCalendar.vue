@@ -124,7 +124,8 @@
       function searchApi() {
         store.state.appointment.calendarDate=''
         store.dispatch("calendarDateSelect", datePick)
-        store.dispatch("searchAppointment", "?fromDate=" + fromDate.value + "&toDate=" + toDate.value)
+
+        store.dispatch("searchAppointment", {fromDate:fromDate.value,toDate:toDate.value,tabId:activeKey.value})
       }
       const patientsList = computed(() => {
         return store.state.communications.patientsList
@@ -160,19 +161,12 @@
         calenderView,
         value1: ref(),
         toggle,
-        // value,
-        // onPanelChange,
-        // getMonths,
-        // getYears,
         tabClick,
         appointmentModal,
         handleOk,
         showModal,
         searchApi,
         datePick,
-        // handleOk2,
-
-        //physicianModal,
       };
     },
   };
