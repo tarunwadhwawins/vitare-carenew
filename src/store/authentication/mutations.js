@@ -8,7 +8,7 @@ export const loginSuccess = async (state, login) => {
 export const logoutSuccess = async (state, logout) => {
   state.logout = logout;
   state.token = '';
-  state.loginErrorMsg = null;
+  state.errorMsg = '';
 }
 
 export const refreshTokenSuccess = async (state, token) => {
@@ -16,6 +16,7 @@ export const refreshTokenSuccess = async (state, token) => {
   state.loginErrorMsg = null;
 }
 
-export const failure = (state, error) => {
-  state.loginErrorMsg = error;
+export const loginFailure = (state, error) => {
+  
+  state.errorMsg = error;
 }

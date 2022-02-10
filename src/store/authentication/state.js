@@ -3,5 +3,5 @@ export default {
   logout: null,
   token:null,
   refreshToken: null,
-  loginErrorMsg: null,
+  errorMsg: null,
 }

@@ -236,6 +236,7 @@ export default defineComponent({
     const toggle = ref(false);
     const ellipse = ref(false);
     const logoutUser = () => {
+      store.state.authentication.errorMsg=''
       store.dispatch('logoutUser')
     };
     const value = ref();
