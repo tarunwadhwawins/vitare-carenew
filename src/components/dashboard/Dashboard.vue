@@ -213,7 +213,7 @@
         return store.state.dashBoard.timeLineButton
       })
       const permission = computed(() => {
-        return store.state.common.permssions
+        return store.state.dashBoard.permissions
       })
 
       function apiCall(data) {
