@@ -518,7 +518,7 @@ export const appointmentChartSuccess = (state, count) => {
   };
 }
 export const dashboardPermissions = (state, auth) => {
-  console.log(auth)
+  console.log("auth",auth)
    if (auth == 1) {
 
        state.permissions = [{
