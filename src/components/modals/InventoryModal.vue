@@ -83,12 +83,19 @@ export default {
     })
     const inventoryDetail = inventoryDetails.value;
     
+    var switchOn;
+    if(isEdit) {
+      switchOn = inventoryDetail && inventoryDetail.status ? true : false;
+    }
+    else {
+      switchOn = true;
+    }
     const inventoryForm = reactive({
       deviceType:  inventoryDetail && inventoryDetail.deviceType ? inventoryDetail.deviceType : '',
       deviceModelId:  inventoryDetail && inventoryDetail.deviceModelId ? inventoryDetail.deviceModelId : '',
       serialNumber:  inventoryDetail && inventoryDetail.serialNumber ? inventoryDetail.serialNumber : '',
       macAddress:  inventoryDetail && inventoryDetail.macAddress ? inventoryDetail.macAddress : '',
-      isActive:  inventoryDetail && inventoryDetail.isActive ? inventoryDetail.isActive : false,
+      isActive:  switchOn,
     });
     
     const inventoryTypes = computed(() => {

@@ -1,71 +1,122 @@
 <template>
-  <a-modal
-    v-model:visible="visible"
-    width="1000px"
-    title="Add Document"
-    centered
-    @ok="handleOk"
-  >
-    <a-row :gutter="24">
-      <a-col :sm="12" :xs="24">
-        <div class="form-group">
-          <label>Name</label>
-          <a-input v-model="value" size="large" />
-        </div>
-      </a-col>
-      <a-col :sm="12" :xs="24">
-        <div class="form-group">
-          <label>Document</label>
-          <a-input v-model="value" size="large" />
-        </div>
-      </a-col>
-      <a-col :sm="12" :xs="24">
-        <div class="form-group">
-          <label>Type</label>
-          <a-select
-            ref="select"
-            v-model="value1"
-            style="width: 100%"
-            size="large"
-            @focus="focus"
-            @change="handleChange"
-          >
-            <a-select-option value="lucy">Id Proof</a-select-option>
-            <a-select-option value="Yiminghe">Clinical</a-select-option>
-            <a-select-option value="Yiminghe">Insurance</a-select-option>
-          </a-select>
-        </div>
-      </a-col>
-      <a-col :sm="12" :xs="24">
-        <div class="form-group">
-          <label>Tags</label>
-          <a-select
-            v-model:value="selectedItemsForTag"
-            mode="multiple"
-            size="large"
-            placeholder="Please Select Tags"
-            style="width: 100%"
-            :options="filteredOptionsForTag.map((item) => ({ value: item }))"
-          />
-        </div>
-      </a-col>
-    </a-row>
+  <a-modal v-model:visible="visible" width="1000px" title="Add Document" centered @ok="handleOk">
+    <a-form ref="formRef" :model="addDocumentForm" layout="vertical" @finish="submitForm">
+      <a-row :gutter="24">
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="$t('documents.name')" name="name" :rules="[{ required: true, message: $t('commondocuments')+' '+$t('global.validation') }]">
+              <a-input v-model:value="addDocumentForm.name" size="large" />
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="$t('documents.document')" name="document" :rules="[{ required: true, message: $t('commondocuments')+' '+$t('global.validation') }]">
+              <a-input v-model:value="addDocumentForm.document" size="large" type="file" @change="onFileUpload" />
+              <!-- <a-input v-model:value="addDocumentForm.id" type="hidden" /> -->
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="$t('documents.type')" name="type" :rules="[{ required: true, message: $t('commondocuments')+' '+$t('global.validation') }]">
+              <a-select ref="select" v-model:value="addDocumentForm.type" style="width: 100%" size="large">
+                <a-select-option value="" hidden>{{'Select Type'}}</a-select-option>
+                <a-select-option v-for="documentType in globalCode.documentTypes.globalCode" :key="documentType.id" :value="documentType.id">{{documentType.name}}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="$t('documents.tags')" name="tags" :rules="[{ required: true, message: $t('commondocuments')+' '+$t('global.validation') }]">
+              <a-select v-model:value="addDocumentForm.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" />
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :sm="24" :span="24">
+          <ModalButtons @is_click="handleClear"/>
+        </a-col>
+      </a-row>
+    </a-form>
   </a-modal>
 </template>
 <script>
-import { defineComponent, ref, computed } from "vue";
-const OPTIONSTAG = ["Tag1", "Tag2", "Tag3"];
+import { defineComponent, ref, computed, reactive, watchEffect } from "vue";
+import { useStore } from 'vuex';
+import ModalButtons from "@/components/common/button/ModalButtons";
+import { useRoute } from "vue-router";
 export default defineComponent({
-  components: {},
+  components: {
+    ModalButtons,
+  },
   setup() {
-    const selectedItemsForTag = ref(["Tag1"]);
-    const filteredOptionsForTag = computed(() =>
-      OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
-    );
+    const store = useStore();
+    const route = useRoute();
+    const formRef = ref();
+    const visible = ref(true);
+
+    watchEffect(() => {
+      store.dispatch('patientDetails', route.params.udid)
+    });
+    const patientDetails = computed(() => {
+      return store.state.patients.patientDetails;
+    })
+    
+    const form = reactive({ ...addDocumentForm })
+    const handleClear = () => {
+      formRef.value.resetFields();
+      Object.assign(addDocumentForm, form)
+    }
+    
+    const onFileUpload = (event) => {
+      let doc_file = event.target.files[0];
+      let formData = new FormData();
+      formData.append("file", doc_file);
+      store.dispatch("uploadFile", formData);
+    };
+
+    const filePath = computed(() => {
+      return store.state.patients.uploadFile;
+    });
+
+    const addDocumentForm = reactive({
+      name: '',
+      document: '',
+      type: '',
+      tags: '',
+      entity: 'patients',
+    })
+    const globalCode = computed(() => {
+      return store.state.common;
+    });
+
+    const submitForm = () => {
+      console.log('filePath', filePath.value)
+      const documentFormData = {
+        data: {
+          "name": addDocumentForm.name,
+          "document": filePath.value ? filePath.value : addDocumentForm.document,
+          "type": addDocumentForm.type,
+          "tags": addDocumentForm.tags,
+          "entity": addDocumentForm.entity,
+        },
+        id: patientDetails.value.id,
+      }
+      console.log("addDocument", documentFormData);
+      visible.value = false;
+      // store.dispatch("addDocument", documentFormData);
+    }
+
     return {
-      filteredOptionsForTag,
-      selectedItemsForTag,
+      formRef,
+      handleClear,
       size: ref("large"),
+      addDocumentForm,
+      onFileUpload,
+      submitForm,
+      globalCode,
+      visible,
     };
   },
 });
