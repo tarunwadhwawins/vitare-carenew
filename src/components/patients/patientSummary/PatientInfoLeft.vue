@@ -1,16 +1,16 @@
 <template>
-  <div class="patientInfo">
+  <div class="patientInfo" v-if="patientDetails">
     <div class="patientImg" @click="showModalCustom">
-      <img v-if="patientDetail.profilePhoto" :src="patientDetail.profilePhoto" alt="image"/>
+      <img v-if="patientDetails.profilePhoto" :src="patientDetails.profilePhoto" alt="image"/>
       <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
       <div class="info">
-        <p>{{ patientDetail.name+' '+patientDetail.middleName+' '+patientDetail.lastName }}</p>
-        <p>DOB : {{ patientDetail.dob }}</p>
-        <p><a :href="patientDetail.email"><MailOutlined /> {{ patientDetail.email }}</a>
+        <p>{{ patientDetails.name+' '+patientDetails.middleName+' '+patientDetails.lastName }}</p>
+        <p>DOB : {{ patientDetails.dob }}</p>
+        <p><a :href="patientDetails.email"><MailOutlined /> {{ patientDetails.email }}</a>
         </p>
-        <p><a href="tel:{{patientDetail.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetail.phoneNumber }}</a>
+        <p><a href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a>
         </p>
-        <p>{{ patientDetail.address }}</p>
+        <p>{{ patientDetails.address }}</p>
       </div>
       <EditOutlined class="editIcon" @click="addPatient" />
     </div>
@@ -18,7 +18,7 @@
     <div class="pat-profile">
       <div class="pat-profile-inner">
         <div class="thumb-head">Flag</div>
-        <div class="thumb-desc" v-for="flag in patientDetail.patientFlags" :key="flag.id">
+        <div class="thumb-desc" v-for="flag in patientDetails.patientFlags" :key="flag.id">
           <span class="box" v-bind:class="flag.color"></span>
           <span class="box redBgColor"></span>
           <span class="box yellowBgColor"></span>
@@ -126,7 +126,7 @@ import {
   EditOutlined,
   PhoneOutlined,
 } from "@ant-design/icons-vue";
-import { reactive, ref } from 'vue-demi';
+import { ref, watchEffect, computed } from 'vue-demi';
 import PatientsModal from "@/components/modals/PatientsModal";
 import AddAppointmentModal from "@/components/modals/AddAppointment";
 import AddTasksModal from "@/components/modals/TasksModal";
@@ -141,6 +141,8 @@ import TimeLogsDetailModal from "@/components/modals/TimeLogsDetail";
 import AddDeviceModal from "@/components/modals/AddDevice";
 import DeviceDetailModal from "@/components/modals/DeviceDetail";
 import BloodPressureDetail from "@/components/modals/BloodPressureDetail";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 export default {
   components: {
     WarningOutlined,
@@ -163,12 +165,9 @@ export default {
     DeviceDetailModal,
     BloodPressureDetail,
   },
-  props: {
-    patientDetails:{
-      type: Object
-    }
-  },
-  setup(props) {
+  setup() {
+    const store = useStore();
+    const route = useRoute();
     const custom = ref(false);
     const patientsModalVisible = ref(false);
     const addAppointmentVisible = ref(false);
@@ -184,8 +183,13 @@ export default {
     const timeLogsDetailVisible = ref(false);
     const addDeviceVisible = ref(false);
     const deviceDetailVisible = ref(false);
-    const patientDetail = reactive(props.patientDetails);
-    // console.log('Patient Info patientDetail', patientDetail)
+
+    watchEffect(() => {
+      store.dispatch('patientDetails', route.params.udid)
+    })
+    const patientDetails = computed(() => {
+      return store.state.patients.patientDetails
+    })
     
     const showModalCustom = () => {
       custom.value = true;
@@ -282,7 +286,7 @@ export default {
       addDeviceModal,
       showDeviceModal,
 
-      patientDetail,
+      patientDetails,
     }
   }
 }
