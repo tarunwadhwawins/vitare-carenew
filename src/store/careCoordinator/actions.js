@@ -211,7 +211,7 @@ export const addStaffRole = async ({
 
 export const roleList = async ({commit},id) => {
   commit('loadingStatus', true)
-  await serviceMethod.common("get", `staff/${id}/role`, null, null).then((response) => {
+  await serviceMethod.common("get", `staff/${id}/access`, null, null).then((response) => {
     commit('roleList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => { 
@@ -224,9 +224,9 @@ export const roleList = async ({commit},id) => {
 }
 
 
-export const deleteRole = async ({commit},data) => {
-  await serviceMethod.common("delete", `staff/${data.id}/Role/${data.roleID}`, null, null).then((response) => {
-    commit('deleteRole', response.data.data);
+export const deleteStaffRole = async ({commit},data) => {
+  await serviceMethod.common("delete", `staff/${data.id}/role/${data.roleID}`, null, null).then((response) => {
+    commit('deleteStaffRole', response.data.data);
     successSwal(response.data.message)
   }).catch((error) => { 
     commit('errorMsg', error);

@@ -217,7 +217,6 @@
       })
 
       function apiCall(data) {
-        store.dispatch("permissions")
         store.dispatch("counterCard", data.value)
         store.dispatch("todayAppointment", data.value)
         store.dispatch("callStatus", data.value)

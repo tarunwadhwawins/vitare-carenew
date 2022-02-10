@@ -17,7 +17,7 @@
                 <a-form-item  :label="$t('patient.devices.inventory')" name="inventory" :rules="[{ required: true, message: $t('patient.devices.inventory')+' '+$t('global.validation') }]">
                     <a-select :disabled="patients.inventoryList.length==0" ref="select" v-model:value="device.inventory" style="width: 100%" size="large" @change="handleChange(device.inventory)">
                         <a-select-option value="" disabled>{{'Select Inventory'}}</a-select-option>
-                        <a-select-option v-for="device in patients.inventoryList" :key="device.id" :value="device.id">{{device.modelNumber}}</a-select-option>
+                        <a-select-option v-for="device in patients.inventoryList" :key="device.id" :value="device.id">{{device.modelNumber +' ('+device.macAddress+')'}}</a-select-option>
                     </a-select>
                     <!-- <a-select v-show="patients.inventoryList.length!=0" v-model:value="device.inventory" show-search  placeholder="Select a Inventory" style="width: 200px" :options="patients.inventoryList.map((item) => ({ label: item.modelNumber, value: item.id }))"  :filter-option="filterOption" @focus="handleFocus" @blur="handleBlur" @change="()"></a-select> -->
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" />

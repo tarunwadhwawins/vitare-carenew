@@ -9,7 +9,7 @@
         <h2>{{$t('global.specialization')}}</h2>
         <a-row :gutter="24">
             <a-col :xl="12" :xs="24" v-for="special in staffs.specializationStaff" :key="special.id">
-                <LongCard :backgroundColor="special.text=='Wellness'?'#8e60ff':'#ffa800'" textColor="" customClass="two" :count="special.total" :text="special.text"></LongCard>
+                <LongCard :backgroundColor="special.text=='Wellness'?'#8e60ff':'#ffa800'" textColor="" customClass="two" :count="special.total?special.total:0" :text="special.text"></LongCard>
             </a-col>
         </a-row>
     </a-col>
@@ -17,7 +17,7 @@
         <h2>{{$t('global.network')}}</h2>
         <a-row :gutter="24">
             <a-col :xl="12" :xs="24" v-for="network in staffs.networkStaff" :key="network.id">
-                <LongCard customClass="six" :backgroundColor="network.text=='In'?'#267dff':'#0fb5c2'" textColor="" :count="network.total" :text="network.text"></LongCard>
+                <LongCard customClass="six" :backgroundColor="network.text=='In'?'#267dff':'#0fb5c2'" textColor="" :count="network.total?network.total:0" :text="network.text"></LongCard>
             </a-col>
         </a-row>
     </a-col>
