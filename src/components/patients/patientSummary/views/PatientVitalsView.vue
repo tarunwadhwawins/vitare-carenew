@@ -90,7 +90,7 @@
       </a-row>
     </div>
   </div>
-  <VitalSummary v-model:visible="visible3" @ok="handleOk" />
+  <AddVitals v-model:visible="visible3" @ok="handleOk" />
   <AddPulse v-model:visible="visible4" @ok="handleOk" />
   <BloodGlucose v-model:visible="visible5" @ok="handleOk" />
   <BloodOxygen v-model:visible="visible6" @ok="handleOk" />
@@ -101,7 +101,7 @@ import {
   PlusOutlined,
 } from "@ant-design/icons-vue";
 import { ref } from 'vue-demi';
-import VitalSummary from "@/components/modals/VitalSummary";
+import AddVitals from "@/components/modals/AddVitals";
 import AddPulse from "@/components/modals/AddPulse";
 import BloodGlucose from "@/components/modals/BloodGlucose";
 import BloodOxygen from "@/components/modals/BloodOxygen";
@@ -109,7 +109,7 @@ import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop"
 export default {
   components: {
     PlusOutlined,
-    VitalSummary,
+    AddVitals,
     AddPulse,
     BloodGlucose,
     BloodOxygen,
@@ -354,33 +354,9 @@ export default {
 </script>
 
 <style lang="scss">
-.timer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  @media (max-width: 1199px) {
-    margin: 0 0 20px;
-  }
-  h3 {
-    margin: 0 10px 0 0;
-  }
-}
 .dangerValue {
   padding: 5px;
   background-color: #f03131f3;
   color: #fff;
-}
-.ant-alert-error {
-  background-color: #f8d7da;
-  border-color: #f5c2c7;
-  .ant-alert-message {
-    color: #842029;
-  }
-}
-.patientSummary img {
-  height: 160px;
-  width: 150px;
-  -o-object-fit: cover;
-  object-fit: cover;
 }
 </style>

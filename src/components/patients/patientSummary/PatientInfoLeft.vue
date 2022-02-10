@@ -42,7 +42,7 @@
 
       <div class="pat-profile-inner">
         <div class="thumb-head">
-          Task <PlusOutlined @click="AddTaskModal" /><br />
+          Task <PlusOutlined @click="addTaskModal" /><br />
         </div>
         <div class="thumb-desc">
           <router-link to="tasks"> Task 1 </router-link>
@@ -50,33 +50,33 @@
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
-          Vital Summary <PlusOutlined @click="showModal3" />
+          Vital Summary <PlusOutlined @click="addVitalsModel" />
         </div>
         <div class="thumb-desc">
           <a href="javascript:void(0)">
-            <span @click="showBloodPressureDetailModal">BP 120 / 78 Dec 15 6 PM</span>
+            <span @click="showVitalssModal">BP 120 / 78 Dec 15 6 PM</span>
           </a>
         </div>
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
-          Notes <PlusOutlined @click="showAddNoteModal" />
+          Notes <PlusOutlined @click="addNotesModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showNoteModal" >John Clinical Dec 15 2021</a>
+          <a href="javascript:void(0)" @click="showNotesModal" >John Clinical Dec 15 2021</a>
         </div>
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
-          Documents <PlusOutlined @click="showModal" />
+          Documents <PlusOutlined @click="addDocumentsModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showDocumentModal" >Program 1</a>
+          <a href="javascript:void(0)" @click="showDocumentsModal" >Program 1</a>
         </div>
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
-          Care Team <PlusOutlined @click="showModal8" />
+          Care Team <PlusOutlined @click="addCateTeamModal" />
         </div>
         <div class="thumb-desc">
           <router-link to="corrdinator-summary">John Smith (P) HT </router-link><br />
@@ -84,15 +84,15 @@
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
-          TimeLogs <PlusOutlined @click="showModal1" />
+          TimeLogs <PlusOutlined @click="addTimelogModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showTimeLogDetailModal" >Daily monitoring of vitals (Oct 25, 2021)</a>
+          <a href="javascript:void(0)" @click="showTimelogModal" >Daily monitoring of vitals (Oct 25, 2021)</a>
         </div>
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
-          Devices <PlusOutlined @click="showModal2" />
+          Devices <PlusOutlined @click="addDeviceModal" />
         </div>
         <div class="thumb-desc">
           <a href="javascript:void(0)" @click="showDeviceModal" >Blood Pressure(M-101)</a>
@@ -100,7 +100,20 @@
       </div>
     </div>
   </div>
-  <PatientsModal v-model:visible="PatientsModal" @ok="handleOk" />
+  <PatientsModal v-model:visible="patientsModalVisible" @ok="handleOk" />
+  <AddAppointmentModal v-model:visible="addAppointmentVisible" @ok="handleOk" />
+  <AddTasksModal v-model:visible="taskModalVisible" @ok="handleOk" />
+  <AddVitalsModal v-model:visible="addVitalsVisible" @ok="handleOk" />
+  <BloodPressureDetail v-model:visible="bloodPressureVisible" @ok="handleOk" />
+  <AddNotesModal v-model:visible="addNoteVisible" @ok="handleOk" />
+  <NotesDetailModal v-model:visible="notesDetailVisible" @ok="handleOk" />
+  <AddDocumentModal v-model:visible="addDocumentVisible" @ok="handleOk" />
+  <DocumentDetailModal v-model:visible="documentDetailVisible" @ok="handleOk" />
+  <AddCareTeamModal v-model:visible="careCoordinatorsVisible" @ok="handleOk" />
+  <AddTimeLogsModal v-model:visible="addTimeLogsVisible" @ok="handleOk" />
+  <TimeLogsDetailModal v-model:visible="timeLogsDetailVisible" @ok="handleOk" />
+  <AddDeviceModal v-model:visible="addDeviceVisible" @ok="handleOk" />
+  <DeviceDetailModal v-model:visible="deviceDetailVisible" @ok="handleOk" />
 </template>
 
 <script>
@@ -113,6 +126,19 @@ import {
 } from "@ant-design/icons-vue";
 import { ref } from 'vue-demi';
 import PatientsModal from "@/components/modals/PatientsModal";
+import AddAppointmentModal from "@/components/modals/AddAppointment";
+import AddTasksModal from "@/components/modals/TasksModal";
+import AddVitalsModal from "@/components/modals/AddVitals";
+import AddNotesModal from "@/components/modals/AddNote";
+import NotesDetailModal from "@/components/modals/NotesDetail";
+import AddDocumentModal from "@/components/modals/AddDocument";
+import DocumentDetailModal from "@/components/modals/DocumentDetail";
+import AddCareTeamModal from "@/components/modals/CareCoordinators";
+import AddTimeLogsModal from "@/components/modals/AddTimeLogs";
+import TimeLogsDetailModal from "@/components/modals/TimeLogsDetail";
+import AddDeviceModal from "@/components/modals/AddDevice";
+import DeviceDetailModal from "@/components/modals/DeviceDetail";
+import BloodPressureDetail from "@/components/modals/BloodPressureDetail";
 export default {
   components: {
     WarningOutlined,
@@ -121,25 +147,131 @@ export default {
     EditOutlined,
     PhoneOutlined,
     PatientsModal,
+    AddAppointmentModal,
+    AddTasksModal,
+    AddVitalsModal,
+    AddNotesModal,
+    NotesDetailModal,
+    AddDocumentModal,
+    DocumentDetailModal,
+    AddCareTeamModal,
+    AddTimeLogsModal,
+    TimeLogsDetailModal,
+    AddDeviceModal,
+    DeviceDetailModal,
+    BloodPressureDetail,
   },
   setup() {
     const custom = ref(false);
-
-    const PatientsModal = ref(false);
-    const addPatient = () => {
-      PatientsModal.value = true;
-    };
+    const patientsModalVisible = ref(false);
+    const addAppointmentVisible = ref(false);
+    const taskModalVisible = ref(false);
+    const addVitalsVisible = ref(false);
+    const bloodPressureVisible = ref(false);
+    const addNoteVisible = ref(false);
+    const notesDetailVisible = ref(false);
+    const addDocumentVisible = ref(false);
+    const documentDetailVisible = ref(false);
+    const careCoordinatorsVisible = ref(false);
+    const addTimeLogsVisible = ref(false);
+    const timeLogsDetailVisible = ref(false);
+    const addDeviceVisible = ref(false);
+    const deviceDetailVisible = ref(false);
     
     const showModalCustom = () => {
       custom.value = true;
     };
 
+    const addPatient = () => {
+      patientsModalVisible.value = true;
+    };
+    const showAddAppointmentModal = () => {
+      addAppointmentVisible.value = true;
+    };
+
+    const addTaskModal = () => {
+      taskModalVisible.value = true;
+    }
+
+    const addVitalsModel = () => {
+      addVitalsVisible.value = true;
+    }
+
+    const showVitalssModal = () => {
+      bloodPressureVisible.value = true;
+    }
+
+    const addNotesModal = () => {
+      addNoteVisible.value = true;
+    }
+
+    const showNotesModal = () => {
+      notesDetailVisible.value = true;
+    }
+
+    const addDocumentsModal = () => {
+      addDocumentVisible.value = true;
+    }
+
+    const showDocumentsModal = () => {
+      documentDetailVisible.value = true;
+    }
+
+    const addCateTeamModal = () => {
+      careCoordinatorsVisible.value = true;
+    }
+
+    const addTimelogModal = () => {
+      addTimeLogsVisible.value = true;
+    }
+
+    const showTimelogModal = () => {
+      timeLogsDetailVisible.value = true;
+    }
+
+    const addDeviceModal = () => {
+      addDeviceVisible.value = true;
+    }
+
+    const showDeviceModal = () => {
+      deviceDetailVisible.value = true;
+    }
+
+
     return {
-      PatientsModal,
+      showAddAppointmentModal,
       addPatient,
       showModalCustom,
       custom,
       value10: ref([]),
+
+      patientsModalVisible,
+      addAppointmentVisible,
+      taskModalVisible,
+      addVitalsVisible,
+      bloodPressureVisible,
+      addNoteVisible,
+      notesDetailVisible,
+      addDocumentVisible,
+      documentDetailVisible,
+      careCoordinatorsVisible,
+      addTimeLogsVisible,
+      timeLogsDetailVisible,
+      addDeviceVisible,
+      deviceDetailVisible,
+
+      addTaskModal,
+      addVitalsModel,
+      showVitalssModal,
+      addNotesModal,
+      showNotesModal,
+      addDocumentsModal,
+      showDocumentsModal,
+      addCateTeamModal,
+      addTimelogModal,
+      showTimelogModal,
+      addDeviceModal,
+      showDeviceModal,
     }
   }
 }

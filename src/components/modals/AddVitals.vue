@@ -2,71 +2,87 @@
   <a-modal width="1024px" wrapClassName="full-modal" title="Add Vitals" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
-        <h2>{{$t('patientSummary.vitalSummary.BP')}}</h2>
+        <h3>BP</h3>
       </a-col>
       <a-col :sm="8" :xs="24">
         <div class="form-group">
-          <label>{{$t('patientSummary.vitalSummary.dateTime')}}</label>
-          <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
+          <label>Date & Time</label>
+          <a-date-picker
+            v-model:value="value1"
+            :size="size"
+            style="width: 100%"
+          />
         </div>
       </a-col>
       <a-col :sm="8" :xs="24">
         <div class="form-group">
-          <label>{{$t('patientSummary.vitalSummary.systolic')}}</label>
+          <label>Systolic</label>
           <a-input v-model="value" size="large" />
         </div>
       </a-col>
       <a-col :sm="8" :xs="24">
         <div class="form-group">
-          <label>{{$t('patientSummary.vitalSummary.diastoli')}}</label>
-          <a-input v-model="value" size="large" />
-        </div>
-      </a-col>
-
-      <a-col :sm="24" :xs="24">
-        <h2>{{$t('patientSummary.vitalSummary.SpO2')}}</h2>
-      </a-col>
-      <a-col :sm="8" :xs="24">
-        <div class="form-group">
-          <label>{{$t('patientSummary.vitalSummary.dateTime')}}</label>
-          <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
-        </div>
-      </a-col>
-      <a-col :sm="8" :xs="24">
-        <div class="form-group">
-          <label>{{$t('patientSummary.vitalSummary.value')}}</label>
+          <label>Diastoli</label>
           <a-input v-model="value" size="large" />
         </div>
       </a-col>
 
       <a-col :sm="24" :xs="24">
-        <h2>{{$t('patientSummary.vitalSummary.glucose')}}</h2>
+        <h3>SpO2</h3>
       </a-col>
       <a-col :sm="8" :xs="24">
         <div class="form-group">
-          <label>{{$t('patientSummary.vitalSummary.dateTime')}}</label>
-          <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
+          <label>Date & Time</label>
+          <a-date-picker
+            v-model:value="value2"
+            :size="size"
+            style="width: 100%"
+          />
         </div>
       </a-col>
       <a-col :sm="8" :xs="24">
         <div class="form-group">
-          <label>{{$t('patientSummary.vitalSummary.value')}}</label>
+          <label>Value</label>
           <a-input v-model="value" size="large" />
         </div>
       </a-col>
 
       <a-col :sm="24" :xs="24">
-        <h2>{{$t('patientSummary.vitalSummary.weight')}}</h2>
+        <h3>Glucose</h3>
       </a-col>
       <a-col :sm="8" :xs="24">
         <div class="form-group">
-          <label>{{$t('patientSummary.vitalSummary.dateTime')}}</label>
-          <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
+          <label>Date & Time</label>
+          <a-date-picker
+            v-model:value="value3"
+            :size="size"
+            style="width: 100%"
+          />
         </div>
       </a-col>
       <a-col :sm="8" :xs="24">
         <div class="form-group">
-          <label>{{$t('patientSummary.vitalSummary.value')}}</label>
+          <label>Value</label>
+          <a-input v-model="value" size="large" />
+        </div>
+      </a-col>
+
+      <a-col :sm="24" :xs="24">
+        <h3>Weight</h3>
+      </a-col>
+      <a-col :sm="8" :xs="24">
+        <div class="form-group">
+          <label>Date & Time</label>
+          <a-date-picker
+            v-model:value="value4"
+            :size="size"
+            style="width: 100%"
+          />
+        </div>
+      </a-col>
+      <a-col :sm="8" :xs="24">
+        <div class="form-group">
+          <label>Value</label>
           <a-input v-model="value" size="large" />
         </div>
       </a-col>
@@ -79,6 +95,10 @@ export default defineComponent({
   setup() {
     return {
       size: ref("large"),
+      value1: ref(),
+      value2: ref(),
+      value3: ref(),
+      value4: ref(),
     };
   },
 });

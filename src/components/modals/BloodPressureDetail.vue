@@ -31,7 +31,7 @@
       </a-col>
     </a-row>
     <!---->
-    <VitalSummary v-model:visible="visible3" @ok="handleOk" />
+    <AddVitals v-model:visible="visible3" @ok="handleOk" />
     <!---->
   </a-modal>
 </template>
@@ -81,7 +81,7 @@ const data4 = [
 export default defineComponent({
   components: {
     PlusOutlined,
-    VitalSummary: defineAsyncComponent(() => import("./VitalSummary")),
+    AddVitals: defineAsyncComponent(() => import("./AddVitals")),
   },
   data: function () {
     return {

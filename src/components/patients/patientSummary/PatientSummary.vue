@@ -48,54 +48,26 @@
         </a-layout-content>
       </a-layout>
     </a-layout>
-    <AddDocument v-model:visible="visible" @ok="handleOk" />
-    <AddTimeLogs v-model:visible="visible1" @ok="handleOk" />
-    <AddDevice v-model:visible="visible2" @ok="handleOk" />
-    <AddNote v-model:visible="addnotesvisible" @ok="handleOk" />
-    <NotesDetail v-model:visible="notevisible" @ok="handleOk" />
-    <DeviceDetail v-model:visible="devicevisible" @ok="handleOk" />
-    <DocumentDetail v-model:visible="documentvisible" @ok="handleOk" />
-    <TimeLogsDetail v-model:visible="timelogsvisible" @ok="handleOk" />
-    <BloodPressureDetail v-model:visible="bloodpressurevisible" @ok="handleOk" />
+    <TimeTracker v-model:visible="stoptimervisible" @ok="handleOk" />
     <BloodOxygenDetail v-model:visible="bloodoxygenvisible" @ok="handleOk" />
     <BloodGlucoseDetail v-model:visible="bloodglucosevisible" @ok="handleOk" />
-    <AddAppointment v-model:visible="appointmentvisible" @ok="handleOk" />
-    <TimeTracker v-model:visible="stoptimervisible" @ok="handleOk" />
-    <VitalSummary v-model:visible="visible3" @ok="handleOk" />
     <AddPulse v-model:visible="visible4" @ok="handleOk" />
     <BloodGlucose v-model:visible="visible5" @ok="handleOk" />
     <BloodOxygen v-model:visible="visible6" @ok="handleOk" />
-    <AddHealth v-model:visible="visible7" @ok="handleOk" />
-    <CareCoordinators v-model:visible="visible8" @ok="handleOk" />
     <FamilyCoordinators v-model:visible="visible9" @ok="handleOk" />
-    <TaskModal v-model:visible="TaskModal" @ok="handleOk" />
   </div>
 </template>
 
 <script>
 import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/layout/sidebar/Sidebar";
-import VitalSummary from "@/components/modals/VitalSummary";
 import FamilyCoordinators from "@/components/modals/FamilyCoordinators";
-import CareCoordinators from "@/components/modals/CareCoordinators";
-import AddHealth from "@/components/modals/AddHealth";
 import BloodOxygen from "@/components/modals/BloodOxygen";
 import BloodGlucose from "@/components/modals/BloodGlucose";
 import AddPulse from "@/components/modals/AddPulse";
 import TimeTracker from "@/components/modals/TimeTracker";
 import BloodGlucoseDetail from "@/components/modals/BloodGlucoseDetail";
 import BloodOxygenDetail from "@/components/modals/BloodOxygenDetail";
-import BloodPressureDetail from "@/components/modals/BloodPressureDetail";
-import TimeLogsDetail from "@/components/modals/TimeLogsDetail";
-import DocumentDetail from "@/components/modals/DocumentDetail";
-import DeviceDetail from "@/components/modals/DeviceDetail";
-import NotesDetail from "@/components/modals/NotesDetail";
-import AddNote from "@/components/modals/AddNote";
-import AddDevice from "@/components/modals/AddDevice";
-import AddDocument from "@/components/modals/AddDocument";
-import AddTimeLogs from "@/components/modals/AddTimeLogs";
-import AddAppointment from "@/components/modals/AddAppointment";
-import TaskModal from "@/components/modals/TasksModal";
 import DefaultView from "@/components/patients/patientSummary/views/DefaultView";
 import TimelineView from "@/components/patients/patientSummary/views/TimelineView";
 import CarePlanView from "@/components/patients/patientSummary/views/CarePlanView";
@@ -109,27 +81,13 @@ export default {
   components: {
     Header,
     Sidebar,
-    VitalSummary,
     FamilyCoordinators,
-    CareCoordinators,
-    AddHealth,
     BloodOxygen,
     BloodGlucose,
     AddPulse,
     TimeTracker,
     BloodGlucoseDetail,
     BloodOxygenDetail,
-    BloodPressureDetail,
-    TimeLogsDetail,
-    DocumentDetail,
-    DeviceDetail,
-    NotesDetail,
-    AddNote,
-    AddDevice,
-    AddDocument,
-    AddTimeLogs,
-    AddAppointment,
-    TaskModal,
     DefaultView,
     TimelineView,
     CarePlanView,
@@ -147,10 +105,8 @@ export default {
     const documentvisible = ref(false);
     const addnotesvisible = ref(false);
     const timelogsvisible = ref(false);
-    const bloodpressurevisible = ref(false);
     const bloodoxygenvisible = ref(false);
     const bloodglucosevisible = ref(false);
-    const appointmentvisible = ref(false);
     const stoptimervisible = ref(false);
 
     const showStopTimerModal = () => {
@@ -184,7 +140,6 @@ export default {
       console.log(`selected ${value}`);
     };
 
-    const TaskModal = ref(false);
 
     const button = ref(1);
 
@@ -223,10 +178,8 @@ export default {
       documentvisible,
       addnotesvisible,
       timelogsvisible,
-      bloodpressurevisible,
       bloodoxygenvisible,
       bloodglucosevisible,
-      appointmentvisible,
       stoptimervisible,
 
       showStopTimerModal,
@@ -251,7 +204,6 @@ export default {
       showButton3,
       showButton4,
       value10: ref([]),
-      TaskModal,
       onClose2,
     };
   },
@@ -268,18 +220,6 @@ export default {
   }
   h3 {
     margin: 0 10px 0 0;
-  }
-}
-.dangerValue {
-  padding: 5px;
-  background-color: #f03131f3;
-  color: #fff;
-}
-.ant-alert-error {
-  background-color: #f8d7da;
-  border-color: #f5c2c7;
-  .ant-alert-message {
-    color: #842029;
   }
 }
 </style>
