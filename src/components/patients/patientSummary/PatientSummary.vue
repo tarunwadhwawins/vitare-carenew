@@ -90,11 +90,13 @@
               <div v-if="button == 1">
                 <div>
                   <a-row :gutter="24">
+
+                    <!-- Left Section -->
                     <a-col :xl="8" :lg="24">
                       <div class="patientInfo">
                         <div class="patientImg" @click="showModalCustom">
                           <img
-                            src="../../assets/images/profile-4.jpg"
+                            src="@/assets/images/profile-4.jpg"
                             alt="image"
                           />
                           <div class="info">
@@ -229,6 +231,8 @@
                         </div>
                       </div>
                     </a-col>
+
+                    <!-- Right Section -->
                     <a-col :xl="16" :lg="24">
                       <div class="thumbDesc patientTimeline">
                         <a-checkbox-group v-model:value="value10">
@@ -264,7 +268,7 @@
                                 </div>
                                 <div class="userImg">
                                   <img
-                                    src="../../assets/images/profile-4.jpg"
+                                    src="@/assets/images/profile-4.jpg"
                                     alt="image"
                                   />
                                 </div>
@@ -301,7 +305,7 @@
                                 </div>
                                 <div class="userImg">
                                   <img
-                                    src="../../assets/images/profile-4.jpg"
+                                    src="@/assets/images/profile-4.jpg"
                                     alt="image"
                                   />
                                 </div>
@@ -331,7 +335,7 @@
                                 </div>
                                 <div class="userImg">
                                   <img
-                                    src="../../assets/images/profile-4.jpg"
+                                    src="@/assets/images/profile-4.jpg"
                                     alt="image"
                                   />
                                 </div>
@@ -369,7 +373,7 @@
                                 </div>
                                 <div class="userImg">
                                   <img
-                                    src="../../assets/images/profile-4.jpg"
+                                    src="@/assets/images/profile-4.jpg"
                                     alt="image"
                                   />
                                 </div>
@@ -408,7 +412,7 @@
                                 </div>
                                 <div class="userImg">
                                   <img
-                                    src="../../assets/images/profile-4.jpg"
+                                    src="@/assets/images/profile-4.jpg"
                                     alt="image"
                                   />
                                 </div>
@@ -446,7 +450,7 @@
                     <a-col :sm="24" :xs="24">
                       <div class="patientSummary">
                         <img
-                          src="../../assets/images/profile-4.jpg"
+                          src="@/assets/images/profile-4.jpg"
                           alt="image"
                         />
                         <div class="info">
@@ -503,7 +507,7 @@
                                 </div>
                                 <div class="userImg">
                                   <img
-                                    src="../../assets/images/profile-4.jpg"
+                                    src="@/assets/images/profile-4.jpg"
                                     alt="image"
                                   />
                                 </div>
@@ -540,7 +544,7 @@
                                 </div>
                                 <div class="userImg">
                                   <img
-                                    src="../../assets/images/profile-4.jpg"
+                                    src="@/assets/images/profile-4.jpg"
                                     alt="image"
                                   />
                                 </div>
@@ -570,7 +574,7 @@
                                 </div>
                                 <div class="userImg">
                                   <img
-                                    src="../../assets/images/profile-4.jpg"
+                                    src="@/assets/images/profile-4.jpg"
                                     alt="image"
                                   />
                                 </div>
@@ -608,7 +612,7 @@
                                 </div>
                                 <div class="userImg">
                                   <img
-                                    src="../../assets/images/profile-4.jpg"
+                                    src="@/assets/images/profile-4.jpg"
                                     alt="image"
                                   />
                                 </div>
@@ -647,7 +651,7 @@
                                 </div>
                                 <div class="userImg">
                                   <img
-                                    src="../../assets/images/profile-4.jpg"
+                                    src="@/assets/images/profile-4.jpg"
                                     alt="image"
                                   />
                                 </div>
@@ -684,7 +688,7 @@
                   <a-col :sm="24" :xs="24">
                     <div class="patientSummary">
                       <img
-                        src="../../assets/images/profile-4.jpg"
+                        src="@/assets/images/profile-4.jpg"
                         alt="image"
                       />
                       <div class="info">
@@ -715,7 +719,7 @@
                     <a-col :sm="24" :xs="24">
                       <div class="patientSummary">
                         <img
-                          src="../../assets/images/profile-4.jpg"
+                          src="@/assets/images/profile-4.jpg"
                           alt="image"
                         />
                         <div class="info">
@@ -937,8 +941,8 @@
 </template>
 
 <script>
-import Header from "../layout/header/Header";
-import Sidebar from "../layout/sidebar/Sidebar";
+import Header from "@/components/layout/header/Header";
+import Sidebar from "@/components/layout/sidebar/Sidebar";
 import VitalSummary from "@/components/modals/VitalSummary";
 import FamilyCoordinators from "@/components/modals/FamilyCoordinators";
 import CareCoordinators from "@/components/modals/CareCoordinators";
