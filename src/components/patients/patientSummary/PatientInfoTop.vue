@@ -1,14 +1,14 @@
 <template>
-  <div class="patientSummary">
-      <img v-if="patientDetail.profilePhoto" :src="patientDetail.profilePhoto" alt="image"/>
+  <div class="patientSummary" v-if="patientDetails">
+      <img v-if="patientDetails.profilePhoto" :src="patientDetails.profilePhoto" alt="image"/>
       <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
     <div class="info">
-      <h2>{{ patientDetail.name }}</h2>
-      <p>Patient Id : #{{ patientDetail.medicalRecordNumber ? patientDetail.medicalRecordNumber : '130291' }}</p>
-      <p>DOB : {{ patientDetail.dob }}</p>
-      <p><a href="mailto:{{patientDetail.email}}"><MailOutlined /> {{ patientDetail.email }}</a></p>
-      <p><a href="tel:{{patientDetail.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetail.phoneNumber }}</a></p>
-      <p>{{ patientDetail.address }}</p>
+      <h2>{{ patientDetails.name }}</h2>
+      <p>Patient Id : #{{ patientDetails.medicalRecordNumber ? patientDetails.medicalRecordNumber : '130291' }}</p>
+      <p>DOB : {{ patientDetails.dob }}</p>
+      <p><a href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
+      <p><a href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
+      <p>{{ patientDetails.address }}</p>
     </div>
     <EditOutlined @click="addPatient" />
   </div>
@@ -22,7 +22,9 @@ import {
   EditOutlined,
 } from "@ant-design/icons-vue";
 import PatientsModal from "@/components/modals/PatientsModal";
-import { ref, reactive } from 'vue-demi';
+import { ref, watchEffect, computed } from 'vue-demi';
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 export default {
   components: {
     MailOutlined,
@@ -30,21 +32,26 @@ export default {
     EditOutlined,
     PatientsModal,
   },
-  props: {
-    patientDetails:{
-      type: Object
-    }
-  },
-  setup(props) {
+  setup() {
+    const store = useStore();
+    const route = useRoute();
     const PatientsModal = ref(false);
-    const patientDetail = reactive(props.patientDetails);
+    
     const addPatient = () => {
       PatientsModal.value = true;
     };
+
+    watchEffect(() => {
+      store.dispatch('patientDetails', route.params.udid)
+    })
+    const patientDetails = computed(() => {
+      return store.state.patients.patientDetails
+    })
+    
     return {
       addPatient,
       PatientsModal,
-      patientDetail,
+      patientDetails,
     }
   }
 }
