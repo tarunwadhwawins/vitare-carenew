@@ -14,5 +14,12 @@ export const globalCodes = async ({
     commit('failure', error.response.data);
   })
 }
+export const permssions = async ({
+  commit
+}) => {
+
+    commit('permssions', localStorage.getItem('auth'));
+ 
+}
 
 

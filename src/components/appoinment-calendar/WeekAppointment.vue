@@ -5,17 +5,16 @@
       <div class="dayCalendar">
         <Loader />
         <table class="table table-bordered" v-if="appointmentSearch">
-          <tbody v-for="week,k in weekName" :key="k">
+          <tbody v-for="week,k in appointmentSearch" :key="k">
             <tr>
-              <th>{{week}}</th>
+              <th>{{week.time}}</th>
               <div v-if="appointmentSearch" >
                 
-                <td v-for="(appointment,i) in appointmentSearch" :key="i" >
-                  
-                  <div v-if="week === (moment(dateFormat(appointment.date))).format('dddd')" >
+                <td v-for="appointment,i in week.data" :key="i" >
+                 
+                   
                    <AppointmentCardList 
-                     :cardData="appointment" :count="1"></AppointmentCardList>
-                   </div>
+                     :cardData="appointment" :count="i"></AppointmentCardList>
                  </td>
               </div>
 
