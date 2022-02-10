@@ -2,6 +2,11 @@
   <a-modal width="1000px" title="Notes Detail" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
+        <div class="text-right mb-24">
+          <a-button class="btn blueBtn" @click="showModal"
+                    >Export to Excel/PDF</a-button
+                  >
+        </div>
         <a-table
           :columns="columns3"
           :data-source="data3"
@@ -37,6 +42,10 @@ const columns3 = [
     dataIndex: "category",
   },
   {
+    title: "Added By",
+    dataIndex: "addedby",
+  },
+  {
     title: "Flag",
     dataIndex: "flag",
     slots: {
@@ -51,6 +60,7 @@ const data3 = [
     note:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore voluptatibus dolore, vel error harum porro totam eveniet modi iusto eos, dolorum provident aliquid earum corporis veritatis? Officiis molestiae amet ullam?",
     category: "Admin",
+    addedby: "Steve Smith",
     flag: "blueBgColor",
   },
   {
@@ -59,6 +69,7 @@ const data3 = [
     note:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore voluptatibus dolore, vel error harum porro totam eveniet modi iusto eos, dolorum provident aliquid earum corporis veritatis? Officiis molestiae amet ullam?",
     category: "Clinical",
+    addedby: "Jane Doe",
     flag: "redBgColor",
   },
 ];

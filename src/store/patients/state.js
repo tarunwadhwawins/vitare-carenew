@@ -30,6 +30,8 @@ export default {
     documentColumns:null,
     uploadFile:null,
     status:false,
+    patientDetails:null,
+    patientTimeline:null,
     errorMsg:null
 
 }

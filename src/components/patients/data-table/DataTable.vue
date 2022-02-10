@@ -1,7 +1,7 @@
 <template>
     <a-table >
-    <template #firstName="text">
-        <router-link :to="linkTo">{{ text.text }}</router-link>
+    <template #firstName="{text, record}">
+        <router-link :to="'/patients-summary/'+record.udid">{{ text }}</router-link>
     </template>
     <template #flags="text">
         <span class="box" :style="{'background-color':text.text}" ></span>

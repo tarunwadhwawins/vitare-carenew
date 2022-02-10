@@ -64,6 +64,14 @@ export function meridiemFormat(time) {
   return newTime;
 }
 
+export function meridiemFormatFromTimestamp(time) {
+  return moment(time).format('hh:mm A');
+}
+
+export function dobFormat(date) {
+  return moment(date).format('MMMM DD, YYYY');
+}
+
 export function timeOnly(date) {
   var day = moment.unix(new Date(date));
   return String(day.format('HH'));
