@@ -163,8 +163,8 @@ export const availabilityList = (state, data) => {
 }
 
 
-export const addRole = (state, data) => {
-  state.addRole = data
+export const addStaffRole = (state, data) => {
+  state.addStaffRole = data
 }
 
 export const roleList = (state, data) => {

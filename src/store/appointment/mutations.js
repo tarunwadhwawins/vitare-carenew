@@ -14,45 +14,55 @@ export const searchAppointmentSuccess = async (state, data) => {
 
   let record = []
   if (data.key == 3) {
-
     state.weekName.forEach(element => {
-      let obj = data.data.find(appointment => (moment(dateFormat(appointment.date))).format('dddd') === element)
-      if (typeof obj === 'undefined') {
+      let recordList = []
+      data.data.forEach(value => {
+        if ((moment(dateFormat(value.date))).format('dddd') === element) {
+          recordList.push(value);
+        }
+
+      });
+      if (recordList.length > 0) {
+        let value_obj_get = {
+          "time": element,
+          "data": recordList
+        }
+        record.push(value_obj_get);
+      } else {
         let value_obj = {
           "time": element,
           "data": [],
 
         };
         record.push(value_obj);
-      } else {
-        let value_obj_get = {
-          "time": element,
-          "data": [obj]
-        }
-        record.push(value_obj_get);
       }
-    })
+    });
   } else {
     const officeTime = ["08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM", "08:00 PM"]
     officeTime.forEach(element => {
-      let obj = data.data.find(appointment => timeStampToTime(appointment.time, 'hh:00 A') === element)
-      if (typeof obj === 'undefined') {
+      let recordList = []
+      data.data.forEach(value => {
+        if (timeStampToTime(value.time, 'hh:00 A') === element) {
+          recordList.push(value);
+        }
+
+      });
+      if (recordList.length > 0) {
+        let value_obj_get = {
+          "time": element,
+          "data": recordList
+        }
+        record.push(value_obj_get);
+      } else {
         let value_obj = {
           "time": element,
           "data": [],
 
         };
         record.push(value_obj);
-      } else {
-        let value_obj_get = {
-          "time": element,
-          "data": [obj]
-        }
-        record.push(value_obj_get);
       }
     });
   }
-  console.log(record)
   state.searchAppointmentRecords = record;
 
 }

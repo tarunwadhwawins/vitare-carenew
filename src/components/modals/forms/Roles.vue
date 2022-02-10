@@ -4,7 +4,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <label>{{$t('careCoordinator.roles.role')}}</label>
-                <a-select v-if="staffs.roles!=null" v-model:value="roles.roleId" mode="multiple" size="large" placeholder="Select Role" style="width: 100%" :options="staffs.roles.map((item) => ({ label: item.name?item.name:'', value: item.id }))" @change="handleChange" />
+                <a-select v-if="staffs.roles!=null" v-model:value="roles.roles" mode="multiple" size="large" placeholder="Select Role" style="width: 100%" :options="staffs.roles.map((item) => ({ label: item.name?item.name:'', value: item.id }))" @change="handleChange" />
             </div>
         </a-col>
     </a-row>
@@ -47,16 +47,16 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const roles = reactive({
-      roleId: [],
+      roles: [],
     });
 
     function addRole() {
-      store.dispatch("addRole", {
+      store.dispatch("addStaffRole", {
         id: staffs.value.addStaff.id,
         data: roles,
       });
       setTimeout(() => {
-        store.dispatch("roleList", staffs.value.addStaff.id);
+        store.dispatch("roleList", 26/staffs.value.addStaff.id);
       }, 2000);
     }
 

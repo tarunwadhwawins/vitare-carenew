@@ -235,7 +235,7 @@ router.beforeEach((to, from, next) => {
 if (to.matched.some(record => record.meta.authAdmin) ) {
   
     if (!isLoggedIn()) {
-      console.log("login",isLoggedIn())
+     
         next({
             name: "Login",
             query: { redirect: to.fullPath },

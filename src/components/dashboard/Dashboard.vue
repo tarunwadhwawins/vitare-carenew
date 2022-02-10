@@ -213,10 +213,11 @@
         return store.state.dashBoard.timeLineButton
       })
       const permission = computed(() => {
-        return store.state.common.permssions
+        return store.state.dashBoard.permissions
       })
 
       function apiCall(data) {
+        store.dispatch("permissions")
         store.dispatch("counterCard", data.value)
         store.dispatch("todayAppointment", data.value)
         store.dispatch("callStatus", data.value)
@@ -226,6 +227,7 @@
         store.dispatch("financial", data.value)
         store.dispatch("totalPatientsChart", data.value)
         store.dispatch("appointmentChart", data.value)
+
       }
       watchEffect(() => {
         apiCall(timeLineButton)

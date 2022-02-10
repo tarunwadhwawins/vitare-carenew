@@ -42,7 +42,7 @@ class ServiceMethodService {
 
     }
     login(data){
-        return axios.post(API_URL + "/login", {
+        return axios.post(API_URL + "login", {
             email: data.email,
             password: data.password,
           }, { headers: authHeader() })
