@@ -1,5 +1,5 @@
 
-import { dobFormat, meridiemFormatFromTimestamp } from '../../commonMethods/commonMethod';
+import { dobFormat, meridiemFormatFromTimestamp,dateFormat } from '../../commonMethods/commonMethod';
 
 export const addDemographic = (state, data) => {
     state.addDemographic = data
@@ -213,7 +213,11 @@ export const addDemographic = (state, data) => {
 
 
  export const program = (state, data) => {
-    state.program = data
+    state.program = data.map(element => {
+      element.onboardingScheduleDate = dateFormat(element.onboardingScheduleDate),
+      element.dischargeDate = dateFormat(element.dischargeDate)
+      return element;
+    })
     state.columns = [
         {
           title: "Program Name",
@@ -342,7 +346,11 @@ export const addDemographic = (state, data) => {
  
 
  export const clinicalMedicatList = (state, data) => {
-    state.clinicalMedicatList = data
+    state.clinicalMedicatList = data.map(element => {
+      element.startDate = dateFormat(element.startDate),
+      element.endDate = dateFormat(element.endDate)
+      return element;
+    })
     state.clinicalMedicatListColumns=[
         {
           title: "Medication List",

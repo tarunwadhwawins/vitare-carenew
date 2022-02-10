@@ -241,6 +241,8 @@ export default {
       successSwal(messages.formSuccess);
       Object.assign(personalInfoData, form);
       store.dispatch("staffs");
+      store.dispatch('specializationStaff')
+      store.dispatch('networkStaff')
       store.commit("resetCounter");
     }
 

@@ -9,7 +9,7 @@
         <h2>{{$t('global.specialization')}}</h2>
         <a-row :gutter="24">
             <a-col :xl="12" :xs="24" v-for="special in staffs.specializationStaff" :key="special.id">
-                <LongCard :backgroundColor="special.text=='Wellness'?'#8e60ff':'#ffa800'" textColor="" customClass="two" :count="special.total?special.total:0" :text="special.text"></LongCard>
+                <LongCard  :backgroundColor="special.text=='Wellness'?'#8e60ff':'#ffa800'" textColor="" customClass="two" :count="special.total?special.total:0" :text="special.text"></LongCard>
             </a-col>
         </a-row>
     </a-col>
@@ -17,7 +17,7 @@
         <h2>{{$t('global.network')}}</h2>
         <a-row :gutter="24">
             <a-col :xl="12" :xs="24" v-for="network in staffs.networkStaff" :key="network.id">
-                <LongCard customClass="six" :backgroundColor="network.text=='In'?'#267dff':'#0fb5c2'" textColor="" :count="network.total?network.total:0" :text="network.text"></LongCard>
+                <LongCard  :backgroundColor="network.text=='In'?'#267dff':'#0fb5c2'" textColor="" :count="network.total?network.total:0" :text="network.text"></LongCard>
             </a-col>
         </a-row>
     </a-col>
@@ -37,7 +37,7 @@
         <CoordinatorTable v-if="staffs.staffs" :columns="columns" :data-source="staffs.staffs" :scroll="{ x: 1200 }"></CoordinatorTable>
         <Loader />
     </a-col>
-    <CareCoordinatorModalForms v-model:visible="visible" @ok="handleOk"></CareCoordinatorModalForms>
+    <CareCoordinatorModalForms v-model:visible="visible" @saveModal="handleOk($event)"></CareCoordinatorModalForms>
 </a-row>
 </template>
 
@@ -85,8 +85,8 @@ export default {
         const staffs = computed(() => {
             return store.state.careCoordinator
         })
-        const handleOk = () => {
-            visible.value = false;
+        const handleOk = (value) => {
+            visible.value = value;
         }
 
         const showModal = (value) => {
