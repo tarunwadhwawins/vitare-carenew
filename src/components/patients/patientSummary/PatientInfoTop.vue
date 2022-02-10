@@ -1,6 +1,6 @@
 <template>
   <div class="patientSummary">
-      <img v-if="patientDetail.profileImage" :src="patientDetail.profileImage" alt="image"/>
+      <img v-if="patientDetail.profilePhoto" :src="patientDetail.profilePhoto" alt="image"/>
       <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
     <div class="info">
       <h2>{{ patientDetail.name }}</h2>

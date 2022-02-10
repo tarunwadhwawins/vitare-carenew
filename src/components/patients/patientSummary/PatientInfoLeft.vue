@@ -1,7 +1,7 @@
 <template>
   <div class="patientInfo">
     <div class="patientImg" @click="showModalCustom">
-      <img v-if="patientDetail.profileImage" :src="patientDetail.profileImage" alt="image"/>
+      <img v-if="patientDetail.profilePhoto" :src="patientDetail.profilePhoto" alt="image"/>
       <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
       <div class="info">
         <p>{{ patientDetail.name+' '+patientDetail.middleName+' '+patientDetail.lastName }}</p>
