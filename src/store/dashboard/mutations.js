@@ -194,7 +194,7 @@ export const financialSuccess = (state) => {
   };
 }
 export const totalPatientsChartSuccess = (state, count) => {
-  console.log("total", state.timeLineButton)
+
   let categories = ''
   let format = ''
   let data = ''
@@ -518,7 +518,6 @@ export const appointmentChartSuccess = (state, count) => {
   };
 }
 export const dashboardPermissions = (state, auth) => {
-  console.log("auth",auth)
    if (auth == 1) {
 
        state.permissions = [{

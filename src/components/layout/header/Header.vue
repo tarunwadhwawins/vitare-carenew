@@ -86,7 +86,9 @@
             <div class="quick-actions d-flex align-items-center">
               <a-dropdown :trigger="['click']">
                 <a class="ant-dropdown-link" @click.prevent>
-                  <div class="name">{{$t('header.quickAction')}} <DownOutlined /></div>
+                  <div class="name">{{$t('header.quickAction')}}
+                    <DownOutlined />
+                  </div>
                 </a>
                 <template #overlay>
                   <a-menu>
@@ -102,15 +104,11 @@
                       ></a-menu-item
                     > -->
                     <a-menu-item key="4">
-                      <a href="javascript:void(0)" @click="addTask"
-                        >{{$t('header.addTask')}}</a
-                      ></a-menu-item
-                    >
+                      <a href="javascript:void(0)" @click="addTask">{{$t('header.addTask')}}</a>
+                    </a-menu-item>
                     <a-menu-item key="4">
-                      <a href="javascript:void(0)" @click="addStart"
-                        >{{$t('header.startCall')}}</a
-                      ></a-menu-item
-                    >
+                      <a href="javascript:void(0)" @click="addStart">{{$t('header.startCall')}}</a>
+                    </a-menu-item>
                   </a-menu>
                 </template>
               </a-dropdown>
@@ -118,7 +116,9 @@
             <div class="notifications">
               <a-dropdown :trigger="['click']" overlayClassName="notifications">
                 <a class="ant-dropdown-link" @click.prevent>
-                  <div class="icon"><NotificationOutlined /></div>
+                  <div class="icon">
+                    <NotificationOutlined />
+                  </div>
                 </a>
                 <template #overlay>
                   <a-menu>
@@ -126,11 +126,7 @@
                     <li class="listing">
                       <a class="d-flex align-items-center" href="#">
                         <div class="flex-shrink-0 imgProfile">
-                          <img
-                            src="../../../assets/images/user-2.jpg"
-                            alt="image"
-                            width="50"
-                          />
+                          <img src="../../../assets/images/user-2.jpg" alt="image" width="50" />
                         </div>
                         <div class="flex-grow-1 ms-3 summary">
                           <p>Just a reminder that you have appoinment</p>
@@ -141,11 +137,7 @@
                     <li class="listing">
                       <a class="d-flex align-items-center" href="#">
                         <div class="flex-shrink-0 imgProfile">
-                          <img
-                            src="../../../assets/images/user-1.jpg"
-                            alt="image"
-                            width="50"
-                          />
+                          <img src="../../../assets/images/user-1.jpg" alt="image" width="50" />
                         </div>
                         <div class="flex-grow-1 ms-3 summary">
                           <p>Just a reminder that you have appoinment</p>
@@ -163,12 +155,9 @@
             <div class="profile-menu">
               <a-dropdown :trigger="['click']">
                 <a class="ant-dropdown-link" @click.prevent>
-                  <div class="name">Jane Doe <strong>Admin</strong></div>
+                  <div class="name">{{userName}} </div>
                   <div class="image">
-                    <img
-                      src="../../../assets/images/profile-1.jpg"
-                      alt="image"
-                    />
+                    <img src="../../../assets/images/profile-1.jpg" alt="image" />
                   </div>
                 </a>
                 <template #overlay>
@@ -193,7 +182,7 @@
     <!---->
     <AddAppointment v-model:visible="appointmentModal" @is-visible="showModal($event)" @ok="apptOk" />
     <TasksModal v-model:visible="TasksModal" @ok="taskOk" />
-    <PatientsModal v-model:visible="PatientsModal"  @saveModal="closeAppointModal($event)" />
+    <PatientsModal v-model:visible="PatientsModal" @saveModal="closeAppointModal($event)" />
     <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" />
     <AddStartCall v-model:visible="AddStartCall" @ok="startOk" />
     <SendMessage v-model:visible="SendMessage" @ok="startOk" />
@@ -202,127 +191,132 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
-import AddAppointment from "@/components/modals/AddAppointment";
-import TasksModal from "@/components/modals/TasksModal";
-import PatientsModal from "@/components/modals/PatientsModal";
-import CoordinatorsModal from "@/components/modals/CoordinatorsModal";
-import AddStartCall from "@/components/modals/AddStartCall";
-import SendMessage from "@/components/modals/SendMessage";
-import { useStore } from "vuex";
-import {
-  NotificationOutlined,
-  DownOutlined,
-  MenuOutlined,
-  SearchOutlined,
-  MoreOutlined,
-} from "@ant-design/icons-vue";
-export default defineComponent({
-  components: {
+  import { defineComponent, ref, computed } from "vue";
+  import AddAppointment from "@/components/modals/AddAppointment";
+  import TasksModal from "@/components/modals/TasksModal";
+  import PatientsModal from "@/components/modals/PatientsModal";
+  import CoordinatorsModal from "@/components/modals/CoordinatorsModal";
+  import AddStartCall from "@/components/modals/AddStartCall";
+  import SendMessage from "@/components/modals/SendMessage";
+  import { useStore } from "vuex";
+  import {
     NotificationOutlined,
     DownOutlined,
     MenuOutlined,
     SearchOutlined,
     MoreOutlined,
-    AddAppointment,
-    TasksModal,
-    PatientsModal,
-    CoordinatorsModal,
-    AddStartCall,
-    SendMessage
-  },
-  setup() {
-    const store = useStore()
-    const toggle = ref(false);
-    const ellipse = ref(false);
-    const logoutUser = () => {
-      store.state.authentication.errorMsg=''
-      store.dispatch('logoutUser')
-    };
-    const value = ref();
-    function barMenu() {
-      document.body.classList.toggle("show");
-    }
-
-    const appointmentModal = ref(false);
-    const addAppt = () => {
-      appointmentModal.value = true;
-    };
-    function showModal (event){
-      appointmentModal.value =event
-    }
-    const apptOk = () => {
-      appointmentModal.value = false;
-    };
-
-    const TasksModal = ref(false);
-    const addTask = () => {
-      TasksModal.value = true;
-    };
-    const taskOk = () => {
-      TasksModal.value = false;
-    };
-
-    const PatientsModal = ref(false);
-
-    const addPatient = () => {
-      PatientsModal.value = true;
-    };
-    const closeAppointModal = (status) => {
-      PatientsModal.value = status;
-    };
-
-    const CoordinatorsModal = ref(false);
-    const addCare = () => {
-      CoordinatorsModal.value = true;
-    };
-    const handleOk = () => {
-      CoordinatorsModal.value = false;
-    };
-
-    const AddStartCall = ref(false);
-    const addStart = () => {
-      AddStartCall.value = true;
-    };
-    const SendMessage = ref(false);
-    const addsendMessage = () => {
-      SendMessage.value = true;
-    };
-    const startOk = () => {
-      AddStartCall.value = false;
-    };
-
-    return {
-      logoutUser,
-      value,
-      barMenu,
-      toggle,
-      ellipse,
-      SendMessage,
-      addsendMessage,
-
-      appointmentModal,
-      apptOk,
-      addAppt,
-
+  } from "@ant-design/icons-vue";
+  export default defineComponent({
+    components: {
+      NotificationOutlined,
+      DownOutlined,
+      MenuOutlined,
+      SearchOutlined,
+      MoreOutlined,
+      AddAppointment,
       TasksModal,
-      addTask,
-      taskOk,
-
       PatientsModal,
-      addPatient,
-      closeAppointModal,
-
       CoordinatorsModal,
-      addCare,
       AddStartCall,
-      addStart,
-      startOk,
+      SendMessage
+    },
+    setup() {
+      const store = useStore()
+      const toggle = ref(false);
+      const ellipse = ref(false);
+      const userName = computed(() => {
+        return localStorage.getItem('user')
+      })
 
-      handleOk,
-      showModal
-      
-    };
-  },
-});
+      const logoutUser = () => {
+        store.state.authentication.errorMsg = ''
+        store.dispatch('logoutUser')
+      };
+      const value = ref();
+      function barMenu() {
+        document.body.classList.toggle("show");
+      }
+
+      const appointmentModal = ref(false);
+      const addAppt = () => {
+        appointmentModal.value = true;
+      };
+      function showModal(event) {
+        appointmentModal.value = event
+      }
+      const apptOk = () => {
+        appointmentModal.value = false;
+      };
+
+      const TasksModal = ref(false);
+      const addTask = () => {
+        TasksModal.value = true;
+      };
+      const taskOk = () => {
+        TasksModal.value = false;
+      };
+
+      const PatientsModal = ref(false);
+
+      const addPatient = () => {
+        PatientsModal.value = true;
+      };
+      const closeAppointModal = (status) => {
+        PatientsModal.value = status;
+      };
+
+      const CoordinatorsModal = ref(false);
+      const addCare = () => {
+        CoordinatorsModal.value = true;
+      };
+      const handleOk = () => {
+        CoordinatorsModal.value = false;
+      };
+
+      const AddStartCall = ref(false);
+      const addStart = () => {
+        AddStartCall.value = true;
+      };
+      const SendMessage = ref(false);
+      const addsendMessage = () => {
+        SendMessage.value = true;
+      };
+      const startOk = () => {
+        AddStartCall.value = false;
+      };
+
+      return {
+        userName,
+        logoutUser,
+        value,
+        barMenu,
+        toggle,
+        ellipse,
+        SendMessage,
+        addsendMessage,
+
+        appointmentModal,
+        apptOk,
+        addAppt,
+
+        TasksModal,
+        addTask,
+        taskOk,
+
+        PatientsModal,
+        addPatient,
+        closeAppointModal,
+
+        CoordinatorsModal,
+        addCare,
+        AddStartCall,
+        addStart,
+        startOk,
+
+        handleOk,
+        showModal
+
+      };
+    },
+  });
 </script>
