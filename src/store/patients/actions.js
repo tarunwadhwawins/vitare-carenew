@@ -1,5 +1,6 @@
 import serviceMethod from '../../services/serviceMethod';
 import { successSwal, errorSwal } from '../../commonMethods/commonMethod';
+import { API_ENDPOINTS } from "../../config/apiConfig"
 
 export const addDemographic = async ({commit}, data) => {
   commit('loadingStatus', true)
@@ -575,6 +576,22 @@ export const uploadFile = async ({
 }, data) => {
   await serviceMethod.common("post", `file`, null, data).then((response) => {
     commit('uploadFile', response.data.data.path);
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+  })
+}
+
+export const patientDetails = async ({commit}, id) => {
+  await serviceMethod.common("get", API_ENDPOINTS['patient'], id, null).then((response) => {
+    commit('patientDetailsSuccess', response.data.data);
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+  })
+}
+
+export const patientTimeline = async ({commit}, id) => {
+  await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/timeLine', null, null).then((response) => {
+    commit('patientTimelineSuccess', response.data.data);
   }).catch((error) => {
     errorSwal(error.response.data.message)
   })
