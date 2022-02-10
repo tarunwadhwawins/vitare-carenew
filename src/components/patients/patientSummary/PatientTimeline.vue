@@ -146,7 +146,9 @@ export default {
     const route = useRoute();
 
     watchEffect(() => {
-      store.dispatch('patientTimeline', route.params.udid);
+      if(route.params.udid) {
+        store.dispatch('patientTimeline', route.params.udid);
+      }
     })
     const patientTimeline = computed(() => {
       return store.state.patients.patientTimeline;
