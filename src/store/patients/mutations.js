@@ -476,6 +476,17 @@ export const patientTimelineSuccess = (state, timeline) => {
   })
 }
 
+export const patientDocumentsSuccess = (state, documents) => {
+  state.patientDocuments = documents.map(data => {
+    data.createdAt = meridiemFormatFromTimestamp(data.createdAt);
+    return data;
+  })
+}
+
+  export const deleteDocument = (state, data) => {
+    state.deleteDocument = data
+ }
+
   export const errorMsg = (state, data) => {
     state.errorMsg = data
  }

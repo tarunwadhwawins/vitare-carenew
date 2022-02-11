@@ -1,6 +1,6 @@
 <template>
   <a-modal width="1000px" title="Communications" centered>
-    <a-form :model="messageForm" layout="vertical" @finish="sendMessage">
+    <a-form ref="formRef" :model="messageForm" layout="vertical" @finish="sendMessage">
       <a-row :gutter="24">
         <!-- <a-col :sm="12" :xs="24">
           <div class="form-group">
@@ -171,7 +171,7 @@
         return store.state.communications.patientsList
       })
       const staffList = computed(() => {
-        return store.state.communications.staffList
+        return store.state.common.staffList
       })
 
       const messageForm = reactive({
@@ -185,12 +185,17 @@
         message: '',
       });
 
+      const formRef = ref();
+      const form = reactive({ ...messageForm })
       const sendMessage = () => {
         messageForm.entityType = document.getElementById("entityType").value
         store.dispatch('addCommunication', messageForm).then(() => {
           store.dispatch('communicationsList', 1)
+          store.dispatch('communicationTypes')
         })
         emit('is-visible', false);
+        formRef.value.resetFields();
+        Object.assign(messageForm, form)
       }
 
       const patientChange = (value) => {
@@ -208,6 +213,7 @@
         messageCategories,
         messageType,
         messageForm,
+        formRef,
       };
     },
   };

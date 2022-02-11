@@ -1,17 +1,21 @@
 <template>
-  <a-modal width="1000px" title="Document Detail" centered>
+  <a-modal width="90%" title="Document Detail" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <a-table
-          :columns="columns"
-          :data-source="data"
+          rowKey="id"
+          :columns="documentsColumns"
+          :data-source="patientDocuments"
           :scroll="{ x: 900 }"
-          :pagination="false"
-          @change="onChange"
-        >
-          <template #action>
-            <a class="icons"><EditOutlined /></a>
-            <a class="icons"><DeleteOutlined /></a>
+          :pagination="false">
+          <template #tags="{record}">
+            <div v-for="tag in record.tags.data" :key="tag.id">
+              <span class="tags">{{ tag.tag }}</span>
+            </div>
+          </template>
+          <template #action="{record}">
+            <!-- <a class="icons"><EditOutlined /></a> -->
+            <a class="icons"><DeleteOutlined @click="deleteDocument(record.id)" /></a>
           </template>
         </a-table>
       </a-col>
@@ -19,69 +23,108 @@
   </a-modal>
 </template>
 <script>
-import { defineComponent } from "vue";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-  },
-  {
-    title: "Document",
-    dataIndex: "document",
-  },
-  {
-    title: "Type",
-    dataIndex: "type",
-    sorter: {
-      compare: (a, b) => a.message - b.message,
-      multiple: 3,
-    },
-  },
-  {
-    title: "Tags",
-    dataIndex: "tags",
-    sorter: {
-      compare: (a, b) => a.patient - b.patient,
-      multiple: 2,
-    },
-  },
-  {
-    title: "Action",
-    dataIndex: "action",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
-const data = [
-  {
-    key: "1",
-    name: "Program 1",
-    document: "abc.pdf",
-    type: "Voter ID",
-    tags: "Voter ID",
-    action: "",
-  },
-  {
-    key: "2",
-    name: "Program 1",
-    document: "abc.pdf",
-    type: "Voter ID",
-    tags: "Voter ID",
-    action: "",
-  },
-];
+import { computed, defineComponent, watchEffect, reactive } from "vue";
+import {
+  DeleteOutlined,
+  // EditOutlined
+} from "@ant-design/icons-vue";
+import { useStore } from "vuex";
+import {warningSwal} from "@/commonMethods/commonMethod"
+import { messages } from '@/config/messages';
+
 export default defineComponent({
   components: {
     DeleteOutlined,
-    EditOutlined,
+    // EditOutlined,
   },
-  setup() {
+  props: {
+    patientDetails: {
+      type: Array
+    }
+  },
+  setup(props) {
+    const store = useStore();
+    const patientId = reactive(props.patientDetails.id);
+    const documentsColumns = [
+      {
+        title: "Name",
+        dataIndex: "name",
+        key: "name",
+        className: "doc-name",
+        sorter: {
+          compare: (a, b) => a.name - b.name,
+          multiple: 3,
+        },
+      },
+      {
+        title: "Document",
+        dataIndex: "document",
+        key: "document",
+        className: "patient-document",
+      },
+      {
+        title: "Type",
+        dataIndex: "type",
+        key: "type",
+        className: "doc-type",
+        sorter: {
+          compare: (a, b) => a.type - b.type,
+          multiple: 3,
+        },
+      },
+      {
+        title: "Tags",
+        dataIndex: "tags",
+        key: "tags",
+        className: "doc-tags",
+        slots: {
+          customRender: "tags",
+        },
+      },
+      {
+        title: "Action",
+        dataIndex: "action",
+        className: "doc-actions",
+        slots: {
+          customRender: "action",
+        },
+      },
+    ];
+    watchEffect(() => {
+      store.dispatch('patientDocuments', patientId)
+    })
+    const patientDocuments = computed(() => {
+      return store.state.patients.patientDocuments;
+    })
+
+    const deleteDocument = (id) => {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          const data = {
+            id: patientId,
+            documentId: id,
+          }
+          console.log('data', data);
+          store.dispatch('deleteDocument', data).then(() => {
+            store.dispatch('patientDocuments', patientId)
+          })
+        }
+      })
+    }
+
     return {
-      data,
-      columns,
+      documentsColumns,
+      patientDocuments,
+      deleteDocument,
     };
   },
 });
 </script>
+
+<style>
+  .doc-name { width: 200px; }
+  .patient-document { width: 400px; }
+  th.doc-type, td.doc-type { width: 200px; text-align: center !important; }
+  th.doc-tags, td.doc-tags { width: 200px; text-align: center !important; }
+  .doc-actions { width: 80px; }
+</style>

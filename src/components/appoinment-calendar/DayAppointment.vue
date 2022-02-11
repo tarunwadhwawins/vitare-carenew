@@ -30,7 +30,7 @@
   import AppointmentCardList from "./AppointmentCardList"
   import { timeStampToTime } from "../../commonMethods/commonMethod"
   import Loader from "../loader/Loader"
-  import { computed, ref } from "vue";
+  import { computed } from "vue";
   import { useStore } from "vuex"
   export default {
     components: {
@@ -42,7 +42,6 @@
     },
     setup() {
       const store = useStore()
-      const count = ref(0)
       const officeTime = computed(() => {
         return store.state.appointment.officeTime
       })
@@ -57,7 +56,6 @@
         timeStampToTime,
         linkTo,
         appointmentSearch,
-        count
       }
     }
   }

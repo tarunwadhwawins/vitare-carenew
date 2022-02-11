@@ -83,6 +83,10 @@ export const successMsg = (state, data) => {
     state.successMsg = data
 }
 
+export const staffListSuccess = (state, data) => {
+    state.staffList = data
+}
+
 //  export const errorMsg = (state, data) => {
 //     state.errorMsg = data
 //  }

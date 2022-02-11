@@ -34,7 +34,6 @@
   import { useStore } from "vuex"
   import AppointmentCardList from "./AppointmentCardList"
   import Loader from "../loader/Loader"
-  import moment from "moment"
   import { dateFormat } from "../../commonMethods/commonMethod"
   export default {
     components: {
@@ -53,7 +52,6 @@
       return {
         weekName,
         appointmentSearch,
-        moment,
         dateFormat,
       }
     }

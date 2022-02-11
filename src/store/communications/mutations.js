@@ -1,8 +1,4 @@
-
-import { timeOnly } from '../../commonMethods/commonMethod';
-import { dateFormat } from '../../commonMethods/commonMethod';
-import { meridiemFormat } from '../../commonMethods/commonMethod';
-import { yaxis, dataLabels, plotOptions, annotations } from '../../commonMethods/commonMethod'
+import { yaxis, dataLabels, plotOptions, annotations, dateFormat, timeOnly, meridiemFormat } from '../../commonMethods/commonMethod'
 export const callPlannedSuccess = (state, count) => {
   state.callPlanned = {
     calloption: {
@@ -115,6 +111,7 @@ export const communicationTypesSuccess = (state, response) => {
       xaxis: {
         categories: timesArray,
       },
+      yaxis: yaxis(''),
     },
     callseries: callSeries,
   }
@@ -135,9 +132,7 @@ export const addCommunicationSuccess = async (state, addCommunication) => {
 export const patientsListSuccess = async (state, patients) => {
   state.patientsList = patients;
 }
-export const staffListSuccess = async (state, patients) => {
-  state.staffList = patients;
-}
+
 export const patientDetailsSuccess = async (state, patient) => {
   state.patientDetails = patient;
 }
