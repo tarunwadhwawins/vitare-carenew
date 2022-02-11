@@ -24,7 +24,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="24">
-      <Appointement v-if="arrayToObjact(permission,2) && data4" :appointment="data4" :columns="columns4"
+      <Appointement v-if="arrayToObjact(permission,2) && todayAppointment" :appointment="todayAppointment" :columns="columns4"
         :title="$t('dashboard.todayAppointment')">
       </Appointement>
 
@@ -242,7 +242,7 @@
       const patientsCondition = computed(() => {
         return store.state.counterCards.patientsCondition
       })
-      const data4 = computed(() => {
+      const todayAppointment = computed(() => {
         return store.state.dashBoard.todayAppointmentState
 
       })
@@ -301,7 +301,7 @@
         totalPatientsChartValue,
         appointmentChartValue,
         logout,
-        data4,
+        todayAppointment,
         columns4,
         data5,
         columns5,

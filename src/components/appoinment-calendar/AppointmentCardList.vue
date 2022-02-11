@@ -2,7 +2,7 @@
 
 <div v-if="count <= 3">
  
-  <a-dropdown :placement="topLeft" :trigger="['click']" overlayClassName="valueItem">
+  <a-dropdown  :trigger="['click']" overlayClassName="valueItem">
     <a class="ant-dropdown-link one" @click.prevent>
       <div class="dropdown">
         <p>
