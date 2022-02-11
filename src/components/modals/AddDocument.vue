@@ -4,14 +4,14 @@
       <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item :label="$t('documents.name')" name="name" :rules="[{ required: true, message: $t('commondocuments')+' '+$t('global.validation') }]">
+            <a-form-item :label="$t('documents.name')" name="name" :rules="[{ required: true, message: $t('documents.name')+' '+$t('global.validation') }]">
               <a-input v-model:value="addDocumentForm.name" size="large" />
             </a-form-item>
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item :label="$t('documents.document')" name="document" :rules="[{ required: true, message: $t('commondocuments')+' '+$t('global.validation') }]">
+            <a-form-item :label="$t('documents.document')" name="document" :rules="[{ required: true, message: $t('documents.document')+' '+$t('global.validation') }]">
               <a-input v-model:value="addDocumentForm.document" size="large" type="file" @change="onFileUpload" />
               <!-- <a-input v-model:value="addDocumentForm.id" type="hidden" /> -->
             </a-form-item>
@@ -19,7 +19,7 @@
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item :label="$t('documents.type')" name="type" :rules="[{ required: true, message: $t('commondocuments')+' '+$t('global.validation') }]">
+            <a-form-item :label="$t('documents.type')" name="type" :rules="[{ required: true, message: $t('documents.type')+' '+$t('global.validation') }]">
               <a-select ref="select" v-model:value="addDocumentForm.type" style="width: 100%" size="large">
                 <a-select-option value="" hidden>{{'Select Type'}}</a-select-option>
                 <a-select-option v-for="documentType in documentTypes.globalCode" :key="documentType.id" :value="documentType.id">{{documentType.name}}</a-select-option>
@@ -29,7 +29,7 @@
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item :label="$t('documents.tags')" name="tags" :rules="[{ required: true, message: $t('commondocuments')+' '+$t('global.validation') }]">
+            <a-form-item :label="$t('documents.tags')" name="tags" :rules="[{ required: true, message: $t('documents.tags')+' '+$t('global.validation') }]">
               <a-select v-model:value="addDocumentForm.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" />
             </a-form-item>
           </div>
