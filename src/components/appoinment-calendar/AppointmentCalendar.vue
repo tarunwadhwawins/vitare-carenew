@@ -41,7 +41,7 @@
       </a-row>
     </a-layout-content>
     <!--modal-->
-    <AddAppointment v-if="staffList && patientsList" v-model:visible="appointmentModal" @ok="handleOk"
+    <AddAppointment v-if="staffList && patientsList" :maskClosable = "maskebale" v-model:visible="appointmentModal" @ok="handleOk"
       @is-visible="showModal($event)" :staff="staffList" :patient="patientsList" />
 
     <!---->
@@ -60,7 +60,7 @@
   import { ref, watchEffect, computed } from "vue";
   import { useStore } from "vuex"
   import moment from "moment"
-  import { timeStamp } from "../../commonMethods/commonMethod"
+
   //import Loader from "../loader/Loader"
   export default {
     components: {
@@ -76,47 +76,47 @@
 
     setup() {
       const toggle = ref(true);
+      const maskebale=ref(false)
       const activeKey = ref('1');
       const store = useStore()
-      const fromDate = ref(timeStamp(moment()))
-      const toDate = ref(timeStamp(moment()))
+
+      const fromDate = ref(moment())
+      const toDate = ref(moment())
       let datePick = moment()
+
       function tabClick(event) {
-      
+
         activeKey.value = ref('1')
         store.state.appointment.searchAppointmentRecords = ""
-        
-        fromDate.value = timeStamp(moment(event))
-         toDate.value = timeStamp(moment(event))
-         console.log("date",event)
+
+        fromDate.value = moment(event)
+        toDate.value = moment(event)
         datePick = event
         searchApi()
       }
-
       function selectDate(value) {
         store.state.appointment.searchAppointmentRecords = ""
-        //console.log("dfsd",value)
         if (value == 1) {
           activeKey.value = ref('1')
           datePick = moment()
-          fromDate.value = timeStamp(moment())
-          toDate.value = timeStamp(moment())
+          fromDate.value = moment()
+          toDate.value = moment()
         } else if (value == 2) {
           datePick = moment().add(1, 'days')
-          fromDate.value = timeStamp(moment().add(1, 'days'))
-          toDate.value = timeStamp(moment().add(1, 'days'))
+          fromDate.value = moment().add(1, 'days')
+          toDate.value = moment().add(1, 'days')
         } else if (value == 3) {
           datePick = moment(moment().add(1, 'days')).startOf('week')
           store.dispatch("weekName", { from: moment(moment().add(1, 'days')).startOf('week'), to: moment(moment()).endOf('week') })
-          fromDate.value = timeStamp(moment())
-          toDate.value = timeStamp(moment().add(7, 'days'))
+          fromDate.value = moment(moment().add(1, 'days')).startOf('week')
+          toDate.value = moment(moment()).endOf('week')
         } else if (value == 4) {
           datePick = moment()
-          fromDate.value = timeStamp(moment())
-          toDate.value = timeStamp(moment().add(30, 'days'))
+          fromDate.value = moment()
+          toDate.value = moment().add(30, 'days')
         } else {
           datePick = moment()
-          toDate.value = timeStamp(moment().add(1, 'days'))
+          toDate.value = moment().add(1, 'days')
         }
         searchApi()
       }
@@ -126,10 +126,9 @@
         searchApi()
       })
       function searchApi() {
-        store.state.appointment.calendarDate=''
+        store.state.appointment.calendarDate = ''
         store.dispatch("calendarDateSelect", datePick)
-        
-        store.dispatch("searchAppointment", {fromDate:fromDate.value,toDate:toDate.value,tabId:activeKey.value})
+        store.dispatch("searchAppointment", { fromDate: fromDate.value, toDate: toDate.value, tabId: activeKey.value })
       }
       const patientsList = computed(() => {
         return store.state.communications.patientsList
@@ -157,6 +156,7 @@
       // };
 
       return {
+        maskebale,
         activeKey,
         selectDate,
         fromDate,

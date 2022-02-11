@@ -1,6 +1,6 @@
 import serviceMethod from '../../services/serviceMethod'
 import { API_ENDPOINTS } from "../../config/apiConfig"
-import { successSwal, errorSwal } from '../../commonMethods/commonMethod'
+import { successSwal, errorSwal, startimeAdd, endTimeAdd, timeStamp } from '../../commonMethods/commonMethod'
 
 export const addAppointment = async ({
   commit
@@ -23,7 +23,7 @@ export const searchAppointment = async ({
 },from) => {
   commit('loadingStatus', true)
   //console.log(to)
-  await serviceMethod.common("get", API_ENDPOINTS['seacrhAppointment']+"?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {
+  await serviceMethod.common("get", API_ENDPOINTS['seacrhAppointment']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null, null).then((response) => {
     commit('searchAppointmentSuccess', {data:response.data.data,key:from.tabId});
     commit('loadingStatus', false)
   }).catch((error) => {

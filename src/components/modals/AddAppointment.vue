@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" :title="$t('appointmentCalendar.addAppointment.addAppointment')" centered>
+  <a-modal width="1000px" :title="$t('appointmentCalendar.addAppointment.addAppointment')" centered :maskClosable="maskebale">
     <a-form  ref="formRef" :model="appointmentForm" layout="vertical" @finish="sendMessage" @finishFailed="onFinishFailed">
       <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
@@ -46,7 +46,7 @@
           <div class="form-group">
             <a-form-item :label="$t('global.startTime')" name="startTime"
               :rules="[{ required: true, message: $t('global.startTime')+' '+$t('global.validation') }]">
-              <a-time-picker format="HH:mm " v-model:value="appointmentForm.startTime" :size="size"
+              <a-time-picker use12-hours format="hh:mm A" v-model:value="appointmentForm.startTime" :size="size"
                 style="width: 100%" />
               <ErrorMessage v-if="errorMsg" :name="errorMsg.startTime?errorMsg.startTime[0]:''" />
             </a-form-item>
@@ -118,6 +118,9 @@
       patient:{
         type:Object
       },
+      maskebale:{
+        type:Boolean
+      }
     },
     setup(props, { emit }) {
       const formRef = ref();
