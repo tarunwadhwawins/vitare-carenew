@@ -1,6 +1,6 @@
 <template>
-<!-- <a-modal max-width="1140px" width="100%" title="Add New Patients" centered :footer="null"  :maskClosable="false" @cancel="closeModal()"> -->
-<a-modal max-width="1140px" width="100%" title="Add New Patients" centered :footer="null" :maskClosable="false">
+<a-modal max-width="1140px" width="100%" title="Add New Patients" centered :footer="null"  :maskClosable="false" @cancel="closeModal()">
+<!-- <a-modal max-width="1140px" width="100%" title="Add New Patients" centered :footer="null" :maskClosable="false"> -->
     <a-row :gutter="24">
         <a-col :span="24">
             <a-steps :current="current">
@@ -990,6 +990,7 @@ export default {
           Object.assign(demographics, form);
           store.dispatch("patients");
           store.commit("resetCounter");
+          store.state.patients.addDemographic = null
         } else {
           emit("saveModal", true);
         }
