@@ -1,15 +1,15 @@
 <template>
 <a-row>
-    <a-col :span="24">
+    <a-col :span="24" v-if="arrayToObjact(staffs.staffPermissions,1)">
         <ShowModalButton @isVisible="showModal($event)" :headingText="$t('careCoordinator.coordinatorsModal.careCoordinator')" :buttonText="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" />
     </a-col>
 </a-row>
-<a-row class="mb-24" :gutter="24">
+<a-row class="mb-24" :gutter="24" v-if="arrayToObjact(staffs.staffPermissions,2)">
     <a-col :sm="12" :xs="24">
         <h2>{{$t('global.specialization')}}</h2>
         <a-row :gutter="24">
             <a-col :xl="12" :xs="24" v-for="special in staffs.specializationStaff" :key="special.id">
-                <LongCard :backgroundColor="special.text=='Wellness'?'#8e60ff':'#ffa800'" textColor="" customClass="two" :count="special.total" :text="special.text"></LongCard>
+                <LongCard  :backgroundColor="special.text=='Wellness'?'#8e60ff':'#ffa800'" textColor="" customClass="two" :count="special.total?special.total:0" :text="special.text"></LongCard>
             </a-col>
         </a-row>
     </a-col>
@@ -17,7 +17,7 @@
         <h2>{{$t('global.network')}}</h2>
         <a-row :gutter="24">
             <a-col :xl="12" :xs="24" v-for="network in staffs.networkStaff" :key="network.id">
-                <LongCard customClass="six" :backgroundColor="network.text=='In'?'#267dff':'#0fb5c2'" textColor="" :count="network.total" :text="network.text"></LongCard>
+                <LongCard  :backgroundColor="network.text=='In'?'#267dff':'#0fb5c2'" textColor="" :count="network.total?network.total:0" :text="network.text"></LongCard>
             </a-col>
         </a-row>
     </a-col>
@@ -28,16 +28,16 @@
         <a-select v-model:value="value2" :size="size" mode="tags" style="width: 100%" placeholder="Search . . ." :options="searchoptions" @change="handleChange">
         </a-select>
     </a-col>
-    <a-col :span="12">
+    <a-col :span="12" v-if="arrayToObjact(staffs.staffPermissions,3)">
         <div class="text-right mb-24">
             <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
         </div>
     </a-col>
-    <a-col :span="24">
+    <a-col :span="24" v-if="arrayToObjact(staffs.staffPermissions,4)">
         <CoordinatorTable v-if="staffs.staffs" :columns="columns" :data-source="staffs.staffs" :scroll="{ x: 1200 }"></CoordinatorTable>
         <Loader />
     </a-col>
-    <CareCoordinatorModalForms v-model:visible="visible" @ok="handleOk"></CareCoordinatorModalForms>
+    <CareCoordinatorModalForms v-model:visible="visible" @saveModal="handleOk($event)"></CareCoordinatorModalForms>
 </a-row>
 </template>
 
@@ -55,6 +55,7 @@ import {
     useStore
 } from "vuex"
 import ShowModalButton from "@/components/common/show-modal-button/ShowModalButton"
+import {arrayToObjact} from "../../commonMethods/commonMethod"
 export default {
     data() {
         return {};
@@ -84,8 +85,8 @@ export default {
         const staffs = computed(() => {
             return store.state.careCoordinator
         })
-        const handleOk = () => {
-            visible.value = false;
+        const handleOk = (value) => {
+            visible.value = value;
         }
 
         const showModal = (value) => {
@@ -93,6 +94,7 @@ export default {
         };
 
         return {
+            arrayToObjact,
             showModal,
             visible,
             handleOk,

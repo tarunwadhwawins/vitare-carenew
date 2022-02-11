@@ -65,7 +65,7 @@ import { defineComponent, reactive, computed } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "../../loader/Loader"
-import {warningSwal} from "../../../commonMethods/commonMethod"
+import {warningSwal,timeStamp} from "../../../commonMethods/commonMethod"
 import { messages } from "../../../config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 export default defineComponent({
@@ -84,7 +84,12 @@ export default defineComponent({
     });
     const programs = () => {
       store.dispatch("addProgram", {
-        data: program,
+        data: {
+          program: program.program,
+      onboardingScheduleDate: timeStamp(program.onboardingScheduleDate),
+      dischargeDate:timeStamp(program.dischargeDate),
+      status: program.status,
+        },
         id: patients.value.addDemographic.id,
       });
       setTimeout(() => {
@@ -121,6 +126,7 @@ export default defineComponent({
     //     };
     return {
       // programFailed,
+      timeStamp,
       deleteProgram,
       columns,
       programsData,

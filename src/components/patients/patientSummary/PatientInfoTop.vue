@@ -3,8 +3,8 @@
       <img v-if="patientDetails.profilePhoto" :src="patientDetails.profilePhoto" alt="image"/>
       <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
     <div class="info">
-      <h2>{{ patientDetails.name }}</h2>
-      <p>Patient Id : #{{ patientDetails.medicalRecordNumber ? patientDetails.medicalRecordNumber : '130291' }}</p>
+      <h2>{{ patientDetails.fullName }}</h2>
+      <p>Patient Id : #{{ patientDetails.medicalRecordNumber }}</p>
       <p>DOB : {{ patientDetails.dob }}</p>
       <p><a href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
       <p><a href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>

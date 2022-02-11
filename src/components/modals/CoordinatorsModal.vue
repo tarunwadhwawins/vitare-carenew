@@ -1,5 +1,5 @@
 <template>
-<a-modal max-width="1140px" width="100%" :title="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" centered :footer="null" :maskClosable="false">
+<a-modal max-width="1140px" width="100%" :title="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <a-col :span="24">
             <a-steps :current="current">
@@ -155,7 +155,7 @@ import { useStore } from "vuex";
 import ErrorMessage from "../common/messages/ErrorMessage";
 import { regex } from "../../RegularExpressions/regex";
 import { scrollToTop } from "../../commonMethods/commonMethod";
-import { errorSwal,successSwal } from "../../commonMethods/commonMethod";
+import { errorSwal,successSwal,warningSwal } from "../../commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 export default {
   components: {
@@ -186,13 +186,19 @@ export default {
     });
 
     const personalInfo = () => {
-      store.dispatch("addStaff", personalInfoData);
-      setTimeout(() => {
-        if (addStaff.value.id) {
-          store.dispatch("staffs");
-          current.value++;
+      
+      // setTimeout(() => {
+        if(addStaff.value==null){
+          store.dispatch("addStaff", personalInfoData);
         }
-      }, 2000);
+        if (addStaff.value!=null) {
+          // store.dispatch("staffs");
+          store.dispatch("updateStaff", {
+           id:addStaff.value.id,
+           data:personalInfoData
+           });
+        }
+      // }, 2000);
     };
 
     const next = () => {
@@ -235,10 +241,30 @@ export default {
       successSwal(messages.formSuccess);
       Object.assign(personalInfoData, form);
       store.dispatch("staffs");
+      store.dispatch('specializationStaff')
+      store.dispatch('networkStaff')
       store.commit("resetCounter");
     }
 
+    function closeModal() {
+      warningSwal(messages.modalWarning).then((response) => {
+        if (response == true) {
+          emit("saveModal", false);
+          Object.assign(personalInfoData, form);
+          store.dispatch("staffs");
+          store.dispatch('specializationStaff')
+          store.dispatch('networkStaff')
+          store.commit("resetCounter");
+          store.state.careCoordinator.addStaff =null
+         
+        } else {
+          emit("saveModal", true);
+        }
+      });
+    }
+
     return {
+      closeModal,
       form,
       saveModal,
       emailChange,

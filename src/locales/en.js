@@ -17,6 +17,7 @@ import globalCodes from './english-modules/globalCodes'
 import providers from './english-modules/providers'
 import inventory from './english-modules/inventory'
 import roles from './english-modules/roles'
+import documents from './english-modules/documents'
 
 const english = {
     global,
@@ -38,6 +39,7 @@ const english = {
     providers,
     inventory,
     roles,
+    documents,
 }
 
 export default english

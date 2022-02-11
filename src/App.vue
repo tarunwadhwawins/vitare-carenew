@@ -43,6 +43,7 @@
       watchEffect(() => {
         store.dispatch("globalCodes")
         store.dispatch("timeLine", 122)
+        store.dispatch("permissions")
         
         
         //       moment.locale(val);

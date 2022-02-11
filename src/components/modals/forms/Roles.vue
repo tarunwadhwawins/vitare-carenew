@@ -4,7 +4,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <label>{{$t('careCoordinator.roles.role')}}</label>
-                <a-select v-if="staffs.roles!=null" v-model:value="roles.roles" mode="multiple" size="large" placeholder="Select Role" style="width: 100%" :options="staffs.roles.map((item) => ({ label: item.name?item.name:'', value: item.id }))" @change="handleChange" />
+                <a-select v-if="staffs.roles!=null" v-model:value="roles.roles"  size="large" placeholder="Select Role" style="width: 100%" :options="staffs.roles.map((item) => ({ label: item.name?item.name:'', value: item.id }))" @change="handleChange" />
             </div>
         </a-col>
     </a-row>
@@ -16,7 +16,10 @@
 </a-form>
 <a-row :gutter="24">
     <a-col :span="24">
-        <a-table :pagination="false" :columns="rolecolumns" :data-source="roledata" :scroll="{ x: 900 }">
+        <a-table :pagination="false" :columns="staffs.roleListColms" :data-source="staffs.roleList" :scroll="{ x: 900 }">
+          <!-- <template #role="text">
+                    <span >{{ text}}</span>
+          </template> -->
             <template #action="text">
                 <a-tooltip placement="bottom" @click="deleteRole(text.record.id)">
                     <template #title>
@@ -53,22 +56,22 @@ export default defineComponent({
     function addRole() {
       store.dispatch("addStaffRole", {
         id: staffs.value.addStaff.id,
-        data: roles,
+        data: {roles:Object.values(roles)},
       });
       setTimeout(() => {
-        store.dispatch("roleList", 26/staffs.value.addStaff.id);
+        store.dispatch("roleList", staffs.value.addStaff.id);
       }, 2000);
     }
 
     function deleteRole(id) {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
-          store.dispatch("deleteRole", {
+          store.dispatch("deleteStaffRole", {
             id: staffs.value.addStaff.id,
             roleID: id,
           });
           setTimeout(() => {
-            store.dispatch("roleList", staffs.value.addStaff.id);
+            store.dispatch("roleList",staffs.value.addStaff.id);
           }, 2000);
         }
       });
