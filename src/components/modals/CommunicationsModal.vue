@@ -19,7 +19,7 @@
                 style="width: 100%"
                 size="large">
                 <a-select-option value="" disabled>{{'Select Staff'}}</a-select-option>
-                <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.name }}</a-select-option>
+                <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}</a-select-option>
               </a-select>
             </a-form-item>
           </div>
@@ -62,7 +62,7 @@
                 style="width: 100%"
                 size="large">
                 <a-select-option value="" disabled>{{'Select Staff'}}</a-select-option>
-                <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.name }}</a-select-option>
+                <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}</a-select-option>
               </a-select>
             </a-form-item>
           </div>
