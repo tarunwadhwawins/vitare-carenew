@@ -16,7 +16,7 @@
               {{$t('appointmentCalendar.newAppointment')}}</a-button>
           </div>
 
-          <Calendar @is-click="tabClick($event)" :tabType="activeKey" />
+          <Calendar @is-click="tabClick($event)" />
           <Physicians v-if="staffList" :staff="staffList" />
         </a-col>
         <a-col :xl="toggle == false ? 24 : 18" :sm="toggle == false ? 24 : 14" :xs="24">
@@ -82,10 +82,13 @@
       const toDate = ref(timeStamp(moment()))
       let datePick = moment()
       function tabClick(event) {
-        store.state.appointment.searchAppointmentRecords = ""
+      
         activeKey.value = ref('1')
-        fromDate.value = timeStamp(event)
-        toDate.value = timeStamp(event)
+        store.state.appointment.searchAppointmentRecords = ""
+        
+        fromDate.value = timeStamp(moment(event))
+         toDate.value = timeStamp(moment(event))
+         console.log("date",event)
         datePick = event
         searchApi()
       }
@@ -94,6 +97,7 @@
         store.state.appointment.searchAppointmentRecords = ""
         //console.log("dfsd",value)
         if (value == 1) {
+          activeKey.value = ref('1')
           datePick = moment()
           fromDate.value = timeStamp(moment())
           toDate.value = timeStamp(moment())
@@ -124,7 +128,7 @@
       function searchApi() {
         store.state.appointment.calendarDate=''
         store.dispatch("calendarDateSelect", datePick)
-
+        
         store.dispatch("searchAppointment", {fromDate:fromDate.value,toDate:toDate.value,tabId:activeKey.value})
       }
       const patientsList = computed(() => {
