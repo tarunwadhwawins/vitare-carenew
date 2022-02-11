@@ -191,6 +191,7 @@
         messageForm.entityType = document.getElementById("entityType").value
         store.dispatch('addCommunication', messageForm).then(() => {
           store.dispatch('communicationsList', 1)
+          store.dispatch('communicationTypes')
         })
         emit('is-visible', false);
         formRef.value.resetFields();
