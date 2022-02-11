@@ -14,3 +14,7 @@ export const searchTasksSuccess = async (state, result) => {
   state.tasksList = result;
 }
 
+export const addTaskSuccess = async (state, result) => {
+  state.addTaskSuccess = result;
+}
+

@@ -171,7 +171,7 @@
         return store.state.communications.patientsList
       })
       const staffList = computed(() => {
-        return store.state.communications.staffList
+        return store.state.common.staffList
       })
 
       const messageForm = reactive({

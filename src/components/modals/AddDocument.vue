@@ -22,7 +22,7 @@
             <a-form-item :label="$t('documents.type')" name="type" :rules="[{ required: true, message: $t('commondocuments')+' '+$t('global.validation') }]">
               <a-select ref="select" v-model:value="addDocumentForm.type" style="width: 100%" size="large">
                 <a-select-option value="" hidden>{{'Select Type'}}</a-select-option>
-                <a-select-option v-for="documentType in globalCode.documentTypes.globalCode" :key="documentType.id" :value="documentType.id">{{documentType.name}}</a-select-option>
+                <a-select-option v-for="documentType in documentTypes.globalCode" :key="documentType.id" :value="documentType.id">{{documentType.name}}</a-select-option>
               </a-select>
             </a-form-item>
           </div>
@@ -30,7 +30,7 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('documents.tags')" name="tags" :rules="[{ required: true, message: $t('commondocuments')+' '+$t('global.validation') }]">
-              <a-select v-model:value="addDocumentForm.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" />
+              <a-select v-model:value="addDocumentForm.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" />
             </a-form-item>
           </div>
         </a-col>
@@ -42,26 +42,24 @@
   </a-modal>
 </template>
 <script>
-import { defineComponent, ref, computed, reactive, watchEffect } from "vue";
+import { defineComponent, ref, computed, reactive } from "vue";
 import { useStore } from 'vuex';
 import ModalButtons from "@/components/common/button/ModalButtons";
-import { useRoute } from "vue-router";
 export default defineComponent({
   components: {
     ModalButtons,
   },
-  setup() {
+  props: {
+    patientDetails: {
+      type: Array
+    }
+  },
+  setup(props, {emit}) {
     const store = useStore();
-    const route = useRoute();
     const formRef = ref();
     const visible = ref(true);
 
-    watchEffect(() => {
-      store.dispatch('patientDetails', route.params.udid)
-    });
-    const patientDetails = computed(() => {
-      return store.state.patients.patientDetails;
-    })
+    const patientDetails = ref(props.patientDetails);
     
     const form = reactive({ ...addDocumentForm })
     const handleClear = () => {
@@ -85,10 +83,18 @@ export default defineComponent({
       document: '',
       type: '',
       tags: '',
-      entity: 'patients',
+      entity: 'patient',
     })
     const globalCode = computed(() => {
       return store.state.common;
+    });
+
+    const documentTags = computed(() => {
+      return store.state.common.documentTags;
+    });
+
+    const documentTypes = computed(() => {
+      return store.state.common.documentTypes;
     });
 
     const submitForm = () => {
@@ -104,8 +110,9 @@ export default defineComponent({
         id: patientDetails.value.id,
       }
       console.log("addDocument", documentFormData);
-      visible.value = false;
-      // store.dispatch("addDocument", documentFormData);
+      store.dispatch("addDocument", documentFormData).then(() => {
+        emit('closeModal');
+      })
     }
 
     return {
@@ -117,6 +124,8 @@ export default defineComponent({
       submitForm,
       globalCode,
       visible,
+      documentTags,
+      documentTypes,
     };
   },
 });

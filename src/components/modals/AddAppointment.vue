@@ -128,7 +128,7 @@
       watchEffect(() => {
        
         store.state.communications.patientsList ? "" : store.dispatch("patientsList")
-        store.state.communications.staffList ? "" : store.dispatch("staffList")
+        store.state.common.staffList ? "" : store.dispatch("staffList")
       })
       const onFinishFailed = () => {
         scrollToTop()
@@ -144,7 +144,7 @@
         return store.state.communications.patientsList
       })
       const staffList = props.staff ? reactive(props.staff) : computed(() => {
-        return store.state.communications.staffList
+        return store.state.common.staffList
       })
       
       

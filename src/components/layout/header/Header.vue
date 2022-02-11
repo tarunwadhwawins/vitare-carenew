@@ -181,7 +181,7 @@
     </div>
     <!---->
     <AddAppointment v-model:visible="appointmentModal" @is-visible="showModal($event)" @ok="apptOk" />
-    <TasksModal v-model:visible="TasksModal" @ok="taskOk" />
+    <TasksModal v-if="TasksModal" v-model:visible="TasksModal" @ok="taskOk" />
     <PatientsModal v-model:visible="PatientsModal" @saveModal="closeAppointModal($event)" />
     <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" />
     <AddStartCall v-model:visible="AddStartCall" @ok="startOk" />
