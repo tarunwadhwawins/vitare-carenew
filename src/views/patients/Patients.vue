@@ -2,10 +2,10 @@
 <div>
     <a-layout>
         <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
-            <Header />
+            <Header @collapsMenu="collapsMenu($event)"/>
         </a-layout-header>
         <a-layout>
-            <a-layout-sider :style="{overflow: 'auto', height: '100vh',position: 'fixed',left: 0,}">
+            <a-layout-sider v-show="toggleMenu" :style="{overflow: 'auto', height: '100vh',position: 'fixed',left: 0,}">
                 <Sidebar />
             </a-layout-sider>
             <a-layout-content>
@@ -20,6 +20,7 @@
 import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/layout/sidebar/Sidebar";
 import Patients from "@/components/patients/Patients";
+import { ref } from 'vue-demi';
 export default {
     components: {
         Header,
@@ -28,7 +29,13 @@ export default {
     },
 
     setup() {
+        const toggleMenu = ref(true)
+        // function collapsMenu(value){
+        //     toggleMenu.value= value
+        // }
         return {
+            toggleMenu,
+            // collapsMenu
 
         };
     },

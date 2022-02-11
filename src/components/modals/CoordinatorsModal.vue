@@ -2,7 +2,7 @@
 <a-modal max-width="1140px" width="100%" :title="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <a-col :span="24">
-            <a-steps :current="current">
+            <a-steps v-model:current="current" >
                 <a-step v-for="item in steps" :key="item.title" :title="item.title?item.title:''" />
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Personal Information'">
@@ -103,7 +103,7 @@
                     <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
                 </div>
             </div>
-            <div class="steps-content" v-if="steps[current].title == 'Availability'">
+            <div class="steps-content" v-if="steps[current].title == 'Availability'"  @click="stepperClick(2)">
                 <Availability />
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
@@ -140,6 +140,7 @@
             </div> -->
         </a-col>
     </a-row>
+    
 </a-modal>
 </template>
 
@@ -169,9 +170,18 @@ export default {
   },
   setup(props, { emit }) {
     const store = useStore();
-    const current = computed(() => {
-      return store.state.careCoordinator.counter;
-    });
+
+
+    const current= computed({
+      get: () =>
+        store.state.careCoordinator.counter,
+      set: (value) => {
+        store.state.careCoordinator.counter = value;
+      },
+    })
+
+  
+    
     const personalInfoData = reactive({
       firstName: "",
       lastName: "",
@@ -186,7 +196,6 @@ export default {
     });
 
     const personalInfo = () => {
-      
       // setTimeout(() => {
         if(addStaff.value==null){
           store.dispatch("addStaff", personalInfoData);
@@ -199,6 +208,7 @@ export default {
            });
         }
       // }, 2000);
+      return addStaff.value!=null?true:false
     };
 
     const next = () => {
