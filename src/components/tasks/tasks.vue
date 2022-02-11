@@ -47,7 +47,7 @@
       </a-layout>
     </a-layout>
     <!---->
-    <TasksModal v-model:visible="visible" @ok="handleOk" @is-visible="handleOk" />
+    <TasksModal v-if="visible" v-model:visible="visible" @ok="handleOk" @is-visible="handleOk" />
     <!---->
   </div>
 </template>

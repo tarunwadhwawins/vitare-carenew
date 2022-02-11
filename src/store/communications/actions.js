@@ -64,18 +64,6 @@ export const patientsList = async ({ commit }) => {
 	})
 }
 
-export const staffList = async ({ commit }) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['staffList'], null, null).then((response) => {
-		commit('staffListSuccess', response.data.data);
-	})
-	.catch((error) => {
-		if (error.response.status == 401) {
-			//AuthService.logout();
-		}
-		commit('failure', error.response.data);
-	})
-}
-
 export const patientDetails = async ({ commit }, id) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['patientDetails'], id, null).then((response) => {
 		commit('patientDetailsSuccess', response.data.data);

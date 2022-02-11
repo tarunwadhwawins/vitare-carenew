@@ -1,6 +1,6 @@
 <template>
   <a-modal width="1000px" :title="$t('tasks.tasksModal.addTask')" centered>
-    <a-form :model="taskForm" layout="vertical" @finish="addNewTask">
+    <a-form :model="taskForm" layout="vertical" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :span="24">
           <div class="form-group">
@@ -37,14 +37,28 @@
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.assignedTo')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.assignedTo')+' '+$t('global.validation')  }]">
-              <a-select v-model:value="taskForm.assignedTo" mode="multiple" size="large" placeholder="Please Select Roles" style="width: 100%" :options="staffList.map((item) => ({ value: item.name }))"/>
+              <a-select
+                mode="tags"
+                size="large"
+                placeholder="Please Select Staff"
+                style="width: 100%"
+                v-model:value="taskForm.assignedTo"
+                :options="staffList"
+              />
             </a-form-item>
           </div>
         </a-col>
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.category')" name="taskCategory" :rules="[{ required: true, message: $t('tasks.tasksModal.category')+' '+$t('global.validation')  }]">
-              <a-select v-model:value="taskForm.taskCategory" mode="multiple" size="large" placeholder="Please Select Category" style="width: 100%" :options="taskCategory.globalCode.map((item) => ({ value: item.name }))"/>
+              <a-select
+                mode="multiple"
+                size="large"
+                placeholder="Please Select Category"
+                style="width: 100%"
+                v-model:value="taskForm.taskCategory"
+                :options="taskCategory"
+              />
             </a-form-item>
           </div>
         </a-col>
@@ -71,46 +85,40 @@
 </template>
 
 <script>
-import { ref, reactive, watchEffect, computed } from "vue";
+import { defineComponent, ref, reactive, watchEffect, computed } from "vue";
 import { useStore } from "vuex"
 import ModalButtons from "@/components/common/button/ModalButtons";
-
-const assignedToTags = ["Jane Doe", "Steve Smith", "Joseph William"];
-//const CategoryTags = ["Admin", "Clinical", "Office", "Personal"];
-export default {
+export default defineComponent({
   components: {
     ModalButtons
   },
   setup(props, {emit}) {
-    // const editableTask = JSON.parse(localStorage.getItem('editableTask'));
     const taskForm = reactive({
       title: '',
       description: '',
       taskStatus: '',
       priority: '',
-      selectedItems: '',
+      assignedTo: '',
       taskCategory: '',
       startDate: '',
       dueDate: '',
     });
 
-    const addNewTask = () => {
-      ///console.log('task Form', taskForm)
-      store.dispatch("addTask", taskForm).then(()=> {
-        store.dispatch('tasksList')
-      })
-      emit('is-visible', false);
+    const submitForm = () => {
+      console.log('task Form', taskForm)
+      store.dispatch("addTask", taskForm)
+      emit('closeModal');
     }
     const visible = ref(true);
     const handleCancel = () => {
-      emit('is-visible', false);
+      emit('closeModal', false);
     };
     const store = useStore()
     watchEffect(() => {
       store.dispatch("globalCodes")
       store.dispatch("staffList")
     })
-    const taskCategory = computed(() => {
+    const taskCategoriesList = computed(() => {
       return store.state.common.taskCategory;
     })
     const taskPriority = computed(() => {
@@ -119,26 +127,28 @@ export default {
     const taskStatus = computed(() => {
       return store.state.common.taskStatus
     })
-    const staffList = computed(() => {
-      return store.state.communications.staffList
+    const staff = computed(() => {
+      return store.state.common.staffList
     })
     
-    const selectedItems = ref(["Jane Doe"]);
-    const filteredOptions = computed(() =>
-      assignedToTags.filter((o) => !selectedItems.value.includes(o))
-    );
+    const staffList = ref([])
+    staff.value.forEach(element => {
+      staffList.value.push({
+        label: element.fullName,
+        value: element.id,
+      })
+    })
+    
+    const taskCategory = ref([])
+    taskCategoriesList.value.globalCode.forEach(element => {
+      taskCategory.value.push({
+        label: element.name,
+        value: element.id,
+      })
+    })
 
-    /* const selectedItemsForTag = ref(["Admin"]);
-    const filteredOptionsForTag = computed(() =>
-      CategoryTags.filter((o) => !selectedItemsForTag.value.includes(o))
-    ); */
-    // console.log('taskCategories', taskCategories)
     const value = ref('');
     return {
-      selectedItems,
-      filteredOptions,
-      // filteredOptionsForTag,
-      // selectedItemsForTag,
       size: ref("large"),
       value,
       taskCategory,
@@ -146,12 +156,12 @@ export default {
       taskPriority,
       taskForm,
       staffList,
-      addNewTask,
+      submitForm,
       visible,
       handleCancel,
     };
   },
-};
+});
 </script>
 
 <style>

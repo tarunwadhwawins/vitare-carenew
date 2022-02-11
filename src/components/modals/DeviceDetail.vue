@@ -3,8 +3,8 @@
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <a-table
-          :columns="columns2"
-          :data-source="data2"
+          :columns="devicesColumns"
+          :data-source="devicesList"
           :pagination="false"
           @change="onChange"
         >
@@ -29,81 +29,57 @@
   </a-modal>
 </template>
 <script>
-import { defineComponent } from "vue";
+import { computed, defineComponent, reactive, watchEffect } from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-const columns2 = [
-  {
-    title: "Home Unit Type",
-    dataIndex: "home",
-  },
-  {
-    title: "Model No",
-    dataIndex: "model",
-  },
-  {
-    title: "Serial No",
-    dataIndex: "serial",
-  },
-  {
-    title: "MAC Address",
-    dataIndex: "mac",
-  },
-  {
-    title: "Device Time",
-    dataIndex: "device",
-  },
-  {
-    title: "Server Time",
-    dataIndex: "server",
-  },
-  {
-    title: "Active/Inactive",
-    dataIndex: "active",
-    slots: {
-      customRender: "active",
-    },
-  },
-  {
-    title: "Action",
-    dataIndex: "action",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
-const data2 = [
-  {
-    key: "1",
-    home: "Blood Pressure",
-    model: "M-101",
-    serial: "S-101",
-    mac: "Lorem",
-    device: "11:00 Am",
-    server: "11:30 Am",
-    active: "",
-    action: "",
-  },
-  {
-    key: "2",
-    home: "Oxymeter",
-    model: "M-102",
-    serial: "S-102",
-    mac: "Lorem",
-    device: "10:15 Am",
-    server: "10:30 Am",
-    active: "",
-    action: "",
-  },
-];
+import { useStore } from "vuex";
 export default defineComponent({
   components: {
     DeleteOutlined,
     EditOutlined,
   },
-  setup() {
+  props: {
+    patientDetails: {
+      type: Object
+    }
+  },
+  setup(props) {
+    const store = useStore();
+    const patientDetail = reactive(props.patientDetails);
+    watchEffect(() => {
+      store.dispatch('devices', patientDetail.id)
+    })
+    const devicesList = computed(() => {
+      return store.state.patients.devices
+    })
+    const devicesColumns = [
+      {
+        title: "Home Unit Type",
+        dataIndex: "deviceType",
+      },
+      {
+        title: "Model No",
+        dataIndex: "modelNumber",
+      },
+      {
+        title: "Serial No",
+        dataIndex: "serialNumber",
+      },
+      {
+        title: "MAC Address",
+        dataIndex: "macAddress",
+      },
+      {
+        title: "Action",
+        dataIndex: "action",
+        slots: {
+          customRender: "action",
+        },
+      },
+    ];
+
     return {
-      data2,
-      columns2,
+      devicesColumns,
+      devicesList,
     };
   },
 });
