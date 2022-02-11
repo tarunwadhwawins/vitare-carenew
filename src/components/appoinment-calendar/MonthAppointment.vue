@@ -1145,30 +1145,55 @@
           </div>
         </a-col>
       </a-row> -->
-      <FullCalendar :options="calendarOptions" />
+      
+        <FullCalendar :options="calendarOptions" />
+ 
 </template>
 
 <script>
- //import { ref } from "vue"
- import '@fullcalendar/core/vdom' // solves problem with Vite
+ import { ref } from 'vue'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import TimeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import ListPlugin from '@fullcalendar/list'
 export default {
     components: {
       FullCalendar
         },
   setup() {
     const linkTo = "patients-summary"
-    function toggleWeekends () {
-      this.calendarOptions.weekends = !this.calendarOptions.weekends // toggle the boolean!
+    // function toggleWeekends () {
+    //   this.calendarOptions.weekends = !this.calendarOptions.weekends // toggle the boolean!
+    // }
+    function handleDateClick(arg) {
+      console.log('date click! ' + arg.dateStr)
+    }
+    const events = ref([
+        { title: 'Event Title', date: '2022-02-02',backgroundColor:'green' },
+        { title: 'Another event', date: '2022-02-02',extendedProps: {isHTML: 'YES',html: '<a href="#">Any HTML here</a>'}, }
+])
+    const calendarOptions = {
+        plugins: [ dayGridPlugin, interactionPlugin,TimeGridPlugin,ListPlugin ],
+        headerToolbar:{
+            left:'prev next',
+            center:'title',
+            right:'',
+        },
+        timeZone: 'UTC',
+        contentHeight:"auto",
+        initialView: 'dayGridMonth',
+        dateClick: handleDateClick,
+        showNonCurrentDates: true,
+        events: events.value,       
+    }
+    function headerToolbar(value){
+      console.log(value)
     }
     return {
-      toggleWeekends,
-      calendarOptions: {
-        plugins: [ dayGridPlugin, interactionPlugin ],
-        initialView: 'dayGridMonth'
-      },
+      headerToolbar,
+      handleDateClick,
+      calendarOptions,
       linkTo
     }
   }
