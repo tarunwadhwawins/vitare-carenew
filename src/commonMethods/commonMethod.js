@@ -136,3 +136,40 @@ export function timeStampToTime(time,format){
 export function arrayToObjact(data,id){
 return data.find(o => o.id===id)
 }
+export function startimeAdd(value){
+  let timeStart =  '00:00:00'
+ 
+  return (moment(value.format('DD/MM/YYYY') + ' ' + timeStart)).format('DD/MM/YYYY HH:mm:ss')
+}
+export function endTimeAdd(value){
+  let endTime = '23:59:59' 
+  return (moment(value.format('DD/MM/YYYY') + ' ' + endTime)).format('DD/MM/YYYY HH:mm:ss')
+}
+export function responseConvert(time,data,format){
+  let record =[]
+  time.forEach(element => {
+    let recordList = []
+    data.forEach(value => {
+     
+      if ((moment(dateFormat(value.date))).format(format) === element) {
+        recordList.push(value);
+      }
+
+    });
+    if (recordList.length > 0) {
+      let value_obj_get = {
+        "time": element,
+        "data": recordList
+      }
+      record.push(value_obj_get);
+    } else {
+      let value_obj = {
+        "time": element,
+        "data": [],
+
+      };
+      record.push(value_obj);
+    }
+  });
+  return record
+}
