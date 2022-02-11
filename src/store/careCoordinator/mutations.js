@@ -15,6 +15,11 @@ export const addStaff= async (state, data) => {
     state.addStaff = data;
 }
 
+
+export const updateStaff= async (state, data) => {
+  state.updateStaff = data;
+}
+
 export const errorMsg = (state, data) => {
   state.errorMsg = data
 }
@@ -218,4 +223,39 @@ export const roles = (state, data) => {
 
 export const providers = (state, data) => {
   state.providers = data
+}
+
+
+export const staffPermissions = (state, auth) => {
+  console.log(auth)
+  if (auth == 1) {
+    state.staffPermissions = [{
+        id: 1,
+        name: "Add New Coordinator"
+    },
+    {
+        id: 2,
+        name: "Counter Card"
+    },
+    {
+        id: 3,
+        name: "Export to Excel"
+    },
+    {
+        id: 4,
+        name: "List Table"
+    }]
+}else if(auth == 2){
+    state.staffPermissions = [
+ {
+     id: 2,
+     name: "Counter Card"
+ },
+ 
+ {
+     id: 4,
+     name: "List Table"
+ }]
+}
+
 }

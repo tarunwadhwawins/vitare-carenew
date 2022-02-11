@@ -101,7 +101,7 @@ import { defineComponent, reactive, computed } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "../../loader/Loader.vue";
-import { warningSwal} from "../../../commonMethods/commonMethod";
+import { warningSwal,timeStamp} from "../../../commonMethods/commonMethod";
 import { messages } from "../../../config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 export default defineComponent({
@@ -140,7 +140,10 @@ export default defineComponent({
 
     const clinicalMedicat = () => {
       store.dispatch("addClinicalMedicat", {
-        data: clinicalMedication,
+        data: {medicine: clinicalMedication.medicine,
+      frequency: clinicalMedication.frequency,
+      startDate: timeStamp(clinicalMedication.startDate ),
+      endDate: timeStamp(clinicalMedication.endDate )},
         id: patients.value.addDemographic.id,
       });
       setTimeout(() => {

@@ -25,7 +25,7 @@ export const login = async ({ commit }, user) => {
 }
  const roleAccess = async () =>{
 	await ServiceMethodService.common("get", "staff/access", null, null).then((response) => {
-		//console.log(response.data.data[0])
+		console.log(response.data.data[0])
 		localStorage.setItem('roleAuth', response.data.data[0].roleId);
 		router.push({
             path: "/dashboard",

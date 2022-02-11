@@ -19,6 +19,25 @@ export const addStaff = async ({
   })
 }
 
+
+
+export const updateStaff = async ({
+  commit
+}, data) => {
+  await serviceMethod.common("put", `staff/${data.id}`, null, data.data).then((response) => {
+    commit('updateStaff', response.data.data);
+    commit('counterPlus')
+  }).catch((error) => {
+    if(error.response.status === 422){
+      commit('errorMsg', error.response.data)
+    }else if(error.response.status === 500){
+      errorSwal(error.response.data.message)
+    }else if(error.response.status === 401){
+      commit('errorMsg', error.response.data.message)
+    }
+  })
+}
+
 export const staffs = async ({commit}, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", "staff", null, data).then((response) => {
@@ -190,10 +209,10 @@ export const addStaffRole = async ({
   })
 }
 
-export const roleyList = async ({commit},id) => {
+export const roleList = async ({commit},id) => {
   commit('loadingStatus', true)
-  await serviceMethod.common("get", `staff/${id}/role`, null, null).then((response) => {
-    commit('roleyList', response.data.data);
+  await serviceMethod.common("get", `staff/${id}/access`, null, null).then((response) => {
+    commit('roleList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => { 
     commit('errorMsg', error);
@@ -205,9 +224,9 @@ export const roleyList = async ({commit},id) => {
 }
 
 
-export const deleteRole = async ({commit},data) => {
-  await serviceMethod.common("delete", `staff/${data.id}/Role/${data.roleID}`, null, null).then((response) => {
-    commit('deleteRole', response.data.data);
+export const deleteStaffRole = async ({commit},data) => {
+  await serviceMethod.common("delete", `staff/${data.id}/role/${data.roleID}`, null, null).then((response) => {
+    commit('deleteStaffRole', response.data.data);
     successSwal(response.data.message)
   }).catch((error) => { 
     commit('errorMsg', error);
