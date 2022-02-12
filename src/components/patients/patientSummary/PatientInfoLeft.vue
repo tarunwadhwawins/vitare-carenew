@@ -116,7 +116,7 @@
   <AddTimeLogsModal v-if="addTimeLogsVisible == true" v-model:visible="addTimeLogsVisible" />
   <TimeLogsDetailModal v-if="timeLogsDetailVisible == true" v-model:visible="timeLogsDetailVisible" />
   <AddDeviceModal v-if="addDeviceVisible == true" v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
-  <DeviceDetailModal v-if="deviceDetailVisible == true" v-model:visible="deviceDetailVisible" />
+  <DeviceDetailModal v-if="deviceDetailVisible == true" v-model:visible="deviceDetailVisible" :patientDetails="patientDetails" />
 </template>
 
 <script>
