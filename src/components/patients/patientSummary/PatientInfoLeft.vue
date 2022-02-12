@@ -115,7 +115,7 @@
   <AddCareTeamModal v-if="careCoordinatorsVisible == true" v-model:visible="careCoordinatorsVisible" />
   <AddTimeLogsModal v-if="addTimeLogsVisible == true" v-model:visible="addTimeLogsVisible" />
   <TimeLogsDetailModal v-if="timeLogsDetailVisible == true" v-model:visible="timeLogsDetailVisible" />
-  <AddDeviceModal v-if="addDeviceVisible == true" v-model:visible="addDeviceVisible" />
+  <AddDeviceModal v-if="addDeviceVisible == true" v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
   <DeviceDetailModal v-if="deviceDetailVisible == true" v-model:visible="deviceDetailVisible" />
 </template>
 

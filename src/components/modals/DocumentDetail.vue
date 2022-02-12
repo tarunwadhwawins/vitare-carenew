@@ -14,7 +14,7 @@
             </div>
           </template>
           <template #action="{record}">
-            <a class="icons"><EditOutlined /></a>
+            <!-- <a class="icons"><EditOutlined /></a> -->
             <a class="icons"><DeleteOutlined @click="deleteDocument(record.id)" /></a>
           </template>
         </a-table>
@@ -24,7 +24,10 @@
 </template>
 <script>
 import { computed, defineComponent, watchEffect, reactive } from "vue";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import {
+  DeleteOutlined,
+  // EditOutlined
+} from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import {warningSwal} from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
@@ -32,7 +35,7 @@ import { messages } from '@/config/messages';
 export default defineComponent({
   components: {
     DeleteOutlined,
-    EditOutlined,
+    // EditOutlined,
   },
   props: {
     patientDetails: {
