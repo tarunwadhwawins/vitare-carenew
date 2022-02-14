@@ -53,6 +53,7 @@
 import { computed, defineComponent, reactive, ref, watchEffect } from "vue";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { useStore } from "vuex";
+import { timeStamp } from '../../commonMethods/commonMethod';
 export default defineComponent({
   components: {
     ModalButtons,
@@ -80,6 +81,7 @@ export default defineComponent({
       category: "",
       type: "",
       note: "",
+      entityType: "patient",
     })
 
     const handleClear = () => {
@@ -88,6 +90,7 @@ export default defineComponent({
     }
 
     const submitForm = () => {
+      addNoteForm.date = timeStamp(addNoteForm.date);
       console.log('addNoteForm', addNoteForm);
       store.dispatch('addNote', addNoteForm);
     }

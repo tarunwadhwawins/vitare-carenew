@@ -19,7 +19,7 @@
       <div class="pat-profile-inner">
         <div class="thumb-head">Flag</div>
         <div class="thumb-desc" v-for="flag in patientDetails.patientFlags" :key="flag.id">
-          <span class="box" v-bind:class="flag.color"></span>
+          <Flags :class="flag.color" />
           <span class="box redBgColor"></span>
           <span class="box yellowBgColor"></span>
         </div>
@@ -142,6 +142,7 @@ import TimeLogsDetailModal from "@/components/modals/TimeLogsDetail";
 import AddDeviceModal from "@/components/modals/AddDevice";
 import DeviceDetailModal from "@/components/modals/DeviceDetail";
 import BloodPressureDetail from "@/components/modals/BloodPressureDetail";
+import Flags from "@/components/common/flags/Flags";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 export default {
@@ -165,6 +166,7 @@ export default {
     AddDeviceModal,
     DeviceDetailModal,
     BloodPressureDetail,
+    Flags,
   },
   setup() {
     const store = useStore();
