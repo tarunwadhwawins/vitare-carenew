@@ -63,6 +63,10 @@ export const API_ENDPOINTS = {
     // Notes
     notes: 'patient/notes',
 
+    // timeLogs
+    timeLog: 'patient/timeLog',
+    deleteTimeLog: 'deleteTimeLog',
+
     
 
 };

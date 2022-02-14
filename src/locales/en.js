@@ -19,6 +19,7 @@ import inventory from './english-modules/inventory'
 import roles from './english-modules/roles'
 import documents from './english-modules/documents'
 import notes from './english-modules/notes'
+import timeLogs from './english-modules/timeLogs'
 
 const english = {
     global,
@@ -42,6 +43,7 @@ const english = {
     roles,
     documents,
     notes,
+    timeLogs,
 }
 
 export default english
