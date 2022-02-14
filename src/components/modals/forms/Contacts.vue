@@ -4,7 +4,7 @@
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation')  }]">
-                    <a-input v-model:value="contact.firstName" size="large" />
+                    <a-input v-model:value="contact.firstName" size="large" name="firstName" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.firstName?errorMsg.firstName[0]:''" />
                 </a-form-item>
             </div>

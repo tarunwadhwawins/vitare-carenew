@@ -1,6 +1,6 @@
-import serviceMethod from '../../services/serviceMethod';
-import { successSwal, errorSwal } from '../../commonMethods/commonMethod';
-import { API_ENDPOINTS } from "../../config/apiConfig"
+import serviceMethod from '@/services/serviceMethod';
+import { successSwal, errorSwal } from '@/commonMethods/commonMethod';
+import { API_ENDPOINTS } from "@/config/apiConfig"
 
 export const addDemographic = async ({commit}, data) => {
   commit('loadingStatus', true)

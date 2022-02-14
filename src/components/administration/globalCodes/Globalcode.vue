@@ -72,7 +72,7 @@ export default {
     const handleClose = () => {
       visible.value = false;
     };
-    const searchData = (value) => {
+    const searchData = () => {
       // store.dispatch('searchGlobalCodes', value)
     };
 

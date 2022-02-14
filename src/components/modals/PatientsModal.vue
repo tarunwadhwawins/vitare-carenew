@@ -702,12 +702,11 @@ import ClinicalData from "@/components/modals/forms/ClinicalData";
 import Documents from "@/components/modals/forms/Documents";
 import { useStore } from "vuex";
 // import DataTable from "../patients/data-table/DataTable.vue"
-import ErrorMessage from "../common/messages/ErrorMessage.vue";
+import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 // import serviceMethod from "../../services/serviceMethod";
-import { regex } from "../../RegularExpressions/regex";
-import { scrollToTop } from "../../commonMethods/commonMethod";
-import Loader from "../loader/Loader";
-import {successSwal,warningSwal,} from "../../commonMethods/commonMethod";
+import { regex } from "@/RegularExpressions/regex";
+import Loader from "@/components/loader/Loader";
+import {successSwal,warningSwal,scrollToTop } from "@/commonMethods/commonMethod";
 // import dayjs from 'dayjs';
 // import {DeleteOutlined} from "@ant-design/icons-vue";
 import { messages } from "../../config/messages";

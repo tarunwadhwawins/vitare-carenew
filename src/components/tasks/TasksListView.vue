@@ -10,8 +10,8 @@
     </a-col>
     <a-col :sm="24">
       <a-table
-        :columns="tasksColumns"
-        :data-source="tasksList"
+        :columns="tasksList.tasksListColumns"
+        :data-source="tasksList.tasksList"
         :scroll="{ x: 900 }"
         :pagination="false"
         @change="onChange">
@@ -21,8 +21,9 @@
         <template #assignedBy="text">
           <router-link to="coordinator-summary">{{ text.text }}</router-link>
         </template>
-        <template #status>
-          <a-switch />
+        <template #status="text">
+          <!-- <a-switch /> -->
+          <a-switch @click="changeStatus(text.record.id,text.record.status)"   v-model:checked="text.record.status"   />
         </template>
         <template #category="{ record }">
           <router-link v-for="category in record.categories" :key="category.id" to="coordinator-summary">
@@ -64,8 +65,10 @@ import {
 } from "@ant-design/icons-vue";
 import { ref, watchEffect, computed } from "vue";
 import { useStore } from "vuex"
-import swal from 'sweetalert2';
+// import swal from 'sweetalert2';
 import SearchField from "@/components/common/input/SearchField";
+import { messages } from '@/config/messages';
+import { warningSwal } from "@/commonMethods/commonMethod"
 
 export default {
   components: {
@@ -81,26 +84,37 @@ export default {
     })
       
     const tasksList = computed(() => {
-      return store.state.tasks.tasksList
+      return store.state.tasks
     })
 
     const handleChange = (value) => {
       store.dispatch('searchTasks', value)
     };
 
-    const deleteTask = () => {
-      swal({
-        title: "Are you sure?",
-        text: "Are you sure you want to delete this record?",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      }).then((willDelete) => {
-        if (willDelete) {
-          store.dispatch("tasksList")
+    // const deleteTask = () => {
+    //   swal({
+    //     title: "Are you sure?",
+    //     text: "Are you sure you want to delete this record?",
+    //     icon: "warning",
+    //     buttons: true,
+    //     dangerMode: true,
+    //   }).then((willDelete) => {
+    //     if (willDelete) {
+    //       store.dispatch("tasksList")
+    //     }
+    //   });
+    // };
+
+    function deleteTask(id) {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          store.dispatch("tasksDelete", id);
+          setTimeout(() => {
+            store.dispatch("tasksList");
+          }, 2000);
         }
       });
-    };
+    }
 
     const editTask = () => {
       emit('isEdit', true);
@@ -114,104 +128,11 @@ export default {
       // console.log('createAppointment', id)
     };
 
-    const tasksColumns = [
-      {
-        title: "Task Name",
-        dataIndex: "taskName",
-        slots: {
-          customRender: "taskName",
-        },
-        filters: [
-          {
-            text: "Task 1",
-            value: "task 1",
-          },
-          {
-            text: "Task 2",
-            value: "task 2",
-          },
-        ],
-        onFilter: (value, record) => record.taskName.indexOf(value) === 0,
-      },
-      {
-        title: "Status ",
-        dataIndex: "status",
-        slots: {
-          customRender: "status",
-        },
-      },
-      {
-        title: "Priority ",
-        dataIndex: "priority",
-        filters: [
-          {
-            text: "High",
-            value: "high",
-          },
-          {
-            text: "Normal",
-            value: "normal",
-          },
-          {
-            text: "Urgent",
-            value: "urgent",
-          },
-        ],
-        onFilter: (value, record) => record.status.indexOf(value) === 0,
-      },
-      {
-        title: "Category",
-        dataIndex: "category",
-        slots: {
-          customRender: "category",
-        },
-      },
-      {
-        title: "Due Date ",
-        dataIndex: "dueDate",
-        filters: [
-          {
-            text: "Dec 24, 2021",
-            value: "Dec 24, 2021",
-          },
-          {
-            text: "Dec 28, 2021",
-            value: "Dec 28, 2021",
-          },
-        ],
-        onFilter: (value, record) => record.dueDate.indexOf(value) === 0,
-      },
-      {
-        title: "Assigned By",
-        dataIndex: "assignedBy",
-        filters: [
-          {
-            text: "John",
-            value: "John",
-          },
-          {
-            text: "	Devin",
-            value: "	Devin",
-          },
-        ],
-        slots: {
-          customRender: "assigned",
-        },
-        onFilter: (value, record) => record.assignedBy.indexOf(value) === 0,
-      },
-      {
-        title: "Actions",
-        dataIndex: "actions",
-        slots: {
-          customRender: "action",
-        },
-      },
-    ];
 
    return {
       size: ref([]),
       handleChange,
-      tasksColumns,
+      // tasksColumns,
       tasksList,
       deleteTask,
       editTask,
