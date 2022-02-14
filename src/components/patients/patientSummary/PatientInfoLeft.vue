@@ -19,7 +19,7 @@
       <div class="pat-profile-inner">
         <div class="thumb-head">Flag</div>
         <div class="thumb-desc" v-for="flag in patientDetails.patientFlags" :key="flag.id">
-          <span class="box" v-bind:class="flag.color"></span>
+          <Flags :class="flag.color" />
           <span class="box redBgColor"></span>
           <span class="box yellowBgColor"></span>
         </div>
@@ -102,20 +102,21 @@
       </div>
     </div>
   </div>
-  <PatientsModal v-model:visible="patientsModalVisible" @ok="handleOk" />
-  <AddAppointmentModal v-model:visible="addAppointmentVisible" @ok="handleOk" />
-  <AddTasksModal v-model:visible="taskModalVisible" @ok="handleOk" />
-  <AddVitalsModal v-model:visible="addVitalsVisible" @ok="handleOk" />
-  <BloodPressureDetail v-model:visible="bloodPressureVisible" @ok="handleOk" />
-  <AddNotesModal v-model:visible="addNoteVisible" @ok="handleOk" />
-  <NotesDetailModal v-model:visible="notesDetailVisible" @ok="handleOk" />
-  <AddDocumentModal v-if="addDocumentVisible" v-model:visible="addDocumentVisible" @ok="handleOk" />
-  <DocumentDetailModal v-model:visible="documentDetailVisible" @ok="handleOk" />
-  <AddCareTeamModal v-model:visible="careCoordinatorsVisible" @ok="handleOk" />
-  <AddTimeLogsModal v-model:visible="addTimeLogsVisible" @ok="handleOk" />
-  <TimeLogsDetailModal v-model:visible="timeLogsDetailVisible" @ok="handleOk" />
-  <AddDeviceModal v-model:visible="addDeviceVisible" @ok="handleOk" />
-  <DeviceDetailModal v-model:visible="deviceDetailVisible" @ok="handleOk" />
+  
+  <PatientsModal v-if="patientsModalVisible == true" v-model:visible="patientsModalVisible" />
+  <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" />
+  <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" @closeModal="handleOk" />
+  <AddVitalsModal v-if="addVitalsVisible == true" v-model:visible="addVitalsVisible" />
+  <BloodPressureDetail v-if="bloodPressureVisible == true" v-model:visible="bloodPressureVisible" />
+  <AddNotesModal v-if="addNoteVisible == true" v-model:visible="addNoteVisible" />
+  <NotesDetailModal v-if="notesDetailVisible == true" v-model:visible="notesDetailVisible" @closeModal="handleOk" />
+  <AddDocumentModal v-if="addDocumentVisible == true" v-model:visible="addDocumentVisible" :patientDetails="patientDetails" />
+  <DocumentDetailModal v-if="documentDetailVisible == true" v-model:visible="documentDetailVisible" :patientDetails="patientDetails" />
+  <AddCareTeamModal v-if="careCoordinatorsVisible == true" v-model:visible="careCoordinatorsVisible" />
+  <AddTimeLogsModal v-if="addTimeLogsVisible == true" v-model:visible="addTimeLogsVisible" />
+  <TimeLogsDetailModal v-if="timeLogsDetailVisible == true" v-model:visible="timeLogsDetailVisible" />
+  <AddDeviceModal v-if="addDeviceVisible == true" v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
+  <DeviceDetailModal v-if="deviceDetailVisible == true" v-model:visible="deviceDetailVisible" :patientDetails="patientDetails" />
 </template>
 
 <script>
@@ -141,6 +142,7 @@ import TimeLogsDetailModal from "@/components/modals/TimeLogsDetail";
 import AddDeviceModal from "@/components/modals/AddDevice";
 import DeviceDetailModal from "@/components/modals/DeviceDetail";
 import BloodPressureDetail from "@/components/modals/BloodPressureDetail";
+import Flags from "@/components/common/flags/Flags";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 export default {
@@ -164,11 +166,13 @@ export default {
     AddDeviceModal,
     DeviceDetailModal,
     BloodPressureDetail,
+    Flags,
   },
   setup() {
     const store = useStore();
     const route = useRoute();
     const custom = ref(false);
+    
     const patientsModalVisible = ref(false);
     const addAppointmentVisible = ref(false);
     const taskModalVisible = ref(false);
@@ -190,6 +194,25 @@ export default {
     const patientDetails = computed(() => {
       return store.state.patients.patientDetails
     })
+    
+    const handleOk = () => {
+      taskModalVisible.value = false;
+      notesDetailVisible.value = false;
+      patientsModalVisible.value = false;
+      addAppointmentVisible.value = false;
+      taskModalVisible.value = false;
+      addVitalsVisible.value = false;
+      bloodPressureVisible.value = false;
+      addNoteVisible.value = false;
+      notesDetailVisible.value = false;
+      addDocumentVisible.value = false;
+      documentDetailVisible.value = false;
+      careCoordinatorsVisible.value = false;
+      addTimeLogsVisible.value = false;
+      timeLogsDetailVisible.value = false;
+      addDeviceVisible.value = false;
+      deviceDetailVisible.value = false;
+    };
     
     const showModalCustom = () => {
       custom.value = true;
@@ -252,6 +275,8 @@ export default {
 
 
     return {
+      handleOk,
+      
       showAddAppointmentModal,
       addPatient,
       showModalCustom,

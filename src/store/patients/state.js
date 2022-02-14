@@ -34,5 +34,7 @@ export default {
     patientsPermissions:[],
     patientDetails:null,
     patientTimeline:null,
+    patientDocuments:null,
+    deleteDocument:null,
 
 }

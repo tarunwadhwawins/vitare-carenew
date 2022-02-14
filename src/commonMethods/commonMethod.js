@@ -48,6 +48,10 @@ export async function warningSwal(message){
 }
 
 
+export function dateOnlyFormat(timeStamp) {
+  var day = moment.unix(new Date(timeStamp));
+  return String(day.format('MMM DD, yyyy'));
+}
 
 export function dateFormat(date) {
   var day = moment.unix(new Date(date));

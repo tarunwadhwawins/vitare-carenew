@@ -23,7 +23,7 @@
             </a-tabs>
             <template #extra>
               <a>
-                <a-button class="btn blackBtn" @click="showModal3">
+                <a-button class="btn blackBtn" @click="showAddBPModal">
                   <PlusOutlined/>
                 </a-button>
               </a>
@@ -42,7 +42,7 @@
             </a-tabs>
             <template #extra>
               <a>
-                <a-button class="btn blackBtn" @click="showModal4">
+                <a-button class="btn blackBtn" @click="showAddPulseModal">
                   <PlusOutlined/>
                 </a-button>
               </a>
@@ -61,7 +61,7 @@
             </a-tabs>
             <template #extra>
               <a>
-                <a-button class="btn blackBtn" @click="showModal5">
+                <a-button class="btn blackBtn" @click="showBloodGlucoseModal">
                   <PlusOutlined/>
                 </a-button>
               </a>
@@ -80,7 +80,7 @@
             </a-tabs>
             <template #extra>
               <a>
-                <a-button class="btn blackBtn" @click="showModal6">
+                <a-button class="btn blackBtn" @click="showBloodOxygenModal">
                   <PlusOutlined/>
                 </a-button>
               </a>
@@ -90,10 +90,10 @@
       </a-row>
     </div>
   </div>
-  <AddVitals v-model:visible="visible3" @ok="handleOk" />
-  <AddPulse v-model:visible="visible4" @ok="handleOk" />
-  <BloodGlucose v-model:visible="visible5" @ok="handleOk" />
-  <BloodOxygen v-model:visible="visible6" @ok="handleOk" />
+  <AddVitals v-model:visible="visibleAddVitals" @ok="handleOk" />
+  <AddPulse v-model:visible="visibleAddPulse" @ok="handleOk" />
+  <BloodGlucose v-model:visible="visibleBloodGlucose" @ok="handleOk" />
+  <BloodOxygen v-model:visible="visibleBloodOxygen" @ok="handleOk" />
 </template>
 
 <script>
@@ -121,21 +121,21 @@ export default {
     }
   },
   setup() {
-    const visible3 = ref(false);
-    const visible4 = ref(false);
-    const visible5 = ref(false);
-    const visible6 = ref(false);
-    const showModal3 = () => {
-      visible3.value = true;
+    const visibleAddVitals = ref(false);
+    const visibleAddPulse = ref(false);
+    const visibleBloodGlucose = ref(false);
+    const visibleBloodOxygen = ref(false);
+    const showAddBPModal = () => {
+      visibleAddVitals.value = true;
     };
-    const showModal4 = () => {
-      visible4.value = true;
+    const showAddPulseModal = () => {
+      visibleAddPulse.value = true;
     };
-    const showModal5 = () => {
-      visible5.value = true;
+    const showBloodGlucoseModal = () => {
+      visibleBloodGlucose.value = true;
     };
-    const showModal6 = () => {
-      visible6.value = true;
+    const showBloodOxygenModal = () => {
+      visibleBloodOxygen.value = true;
     };
     const patientSummaryColumns = [
       {
@@ -331,14 +331,14 @@ export default {
       },
     ];
     return {
-      visible3,
-      visible4,
-      visible5,
-      visible6,
-      showModal3,
-      showModal4,
-      showModal5,
-      showModal6,
+      visibleAddVitals,
+      visibleAddPulse,
+      visibleBloodGlucose,
+      visibleBloodOxygen,
+      showAddBPModal,
+      showAddPulseModal,
+      showBloodGlucoseModal,
+      showBloodOxygenModal,
       patientSummaryColumns,
       patientSummaryData,
       columns4,

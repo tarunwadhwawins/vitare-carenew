@@ -11,6 +11,7 @@ import { rolesAndPermissions } from "./rolesAndPermissions/index"
 import { inventory } from "./inventory/index"
 import { appointment } from "./appointment/index"
 import { authentication } from "./authentication/index"
+import { notes } from "./notes/index"
 import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
@@ -26,7 +27,8 @@ export default createStore({
     rolesAndPermissions,
     inventory,
     appointment,
-    authentication
+    authentication,
+    notes,
   },
   plugins: [ createPersistedState({
     reducer(state) {

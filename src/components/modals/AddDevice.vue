@@ -1,63 +1,189 @@
 <template>
-  <a-modal width="1000px" title="Add Device" centered>
-    <a-row :gutter="24">
-      <a-col :sm="12" :xs="24">
-        <div class="form-group">
-          <label>Home Unit Type</label>
-          <a-select
-            ref="select"
-            v-model="value1"
-            style="width: 100%"
-            size="large"
-            @focus="focus"
-            @change="handleChange"
-          >
-            <a-select-option value="lucy">Blood Pressure</a-select-option>
-            <a-select-option value="Yiminghe">Oxymeter</a-select-option>
-            <a-select-option value="Yiminghe">Glucose</a-select-option>
-          </a-select>
-        </div>
-      </a-col>
-      <a-col :sm="12" :xs="24">
-        <div class="form-group">
-          <label>Model No</label>
-          <a-input v-model="value" size="large" />
-        </div>
-      </a-col>
-      <a-col :sm="12" :xs="24">
-        <div class="form-group">
-          <label>Serial No</label>
-          <a-input v-model="value" size="large" />
-        </div>
-      </a-col>
-      <a-col :sm="12" :xs="24">
-        <div class="form-group">
-          <label>MAC Address</label>
-          <a-input v-model="value" size="large" />
-        </div>
-      </a-col>
-      <a-col :sm="12" :xs="24">
-        <div class="form-group">
-          <label>Device Time</label>
-          <a-input v-model="value" size="large" />
-        </div>
-      </a-col>
-      <a-col :sm="12" :xs="24">
-        <div class="form-group">
-          <label>Server Time</label>
-          <a-input v-model="value" size="large" />
-        </div>
-      </a-col>
-    </a-row>
+  <a-modal width="60%" title="Add Device" centered>
+    <a-form ref="formRef" :model="inventoryForm" name="basic" layout="vertical" @finish="submitForm">
+      <a-row :gutter="24">
+        <a-col :md="12" :sm="12" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="$t('patient.devices.deviceType')" name="deviceType" :rules="[{ required: true, message: $t('patient.devices.deviceType')+' '+$t('global.validation') }]">
+              <a-select ref="select" v-model:value="inventoryForm.deviceType" style="width: 100%" size="large" @change="handleInventory">
+                <a-select-option value="" disabled>{{'Select Device Type'}}</a-select-option>
+                <a-select-option v-for="device in globalCode.deviceType.globalCode" :key="device.id" :value="device.id">{{device.name}}</a-select-option>
+              </a-select>
+              <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" />
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :md="12" :sm="12" :xs="24">
+          <div class="form-group">
+            <a-form-item  :label="$t('patient.devices.inventory')" name="inventory" :rules="[{ required: true, message: $t('patient.devices.inventory')+' '+$t('global.validation') }]">
+              <a-select :disabled="patients.inventoryList.length==0" ref="select" v-model:value="inventoryForm.inventory" style="width: 100%" size="large" @change="handleChange(inventoryForm.inventory)">
+                <a-select-option value="" disabled>{{'Select Inventory'}}</a-select-option>
+                <a-select-option v-for="device in patients.inventoryList" :key="device.id" :value="device.id">{{device.modelNumber +' ('+device.macAddress+')'}}</a-select-option>
+              </a-select>
+                <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" />
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :md="12" :sm="12" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="$t('patient.devices.modelNo')" name="modelNumber" :rules="[{ required: false, message: $t('patient.devices.modelNo')+' '+$t('global.validation') }]">
+              <div >
+                <a-input size="large"   v-model:value="inventoryForm.modelNumber"  disabled />
+              </div>
+              <ErrorMessage v-if="errorMsg" :name="errorMsg.modelNumber?errorMsg.modelNumber[0]:''" />
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :md="12" :sm="12" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="$t('patient.devices.serialNo')" name="serialNumber" :rules="[{ required: false, message: $t('patient.devices.serialNo')+' '+$t('global.validation') }]">
+              <div >
+                <a-input size="large"    v-model:value="inventoryForm.serialNumber"  disabled />
+              </div>
+              <ErrorMessage v-if="errorMsg" :name="errorMsg.serialNumber?errorMsg.serialNumber[0]:''" />
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :md="12" :sm="12" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="$t('patient.devices.MACAddress')" name="macAddress" :rules="[{ required: false, message: $t('patient.devices.MACAddress')+' '+$t('global.validation') }]">
+              <div >
+                <a-input size="large"   v-model:value="inventoryForm.macAddress"  disabled />
+              </div>
+              <ErrorMessage v-if="errorMsg" :name="errorMsg.macAddress?errorMsg.macAddress[0]:''" />
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :sm="24" :span="24">
+          <ModalButtons @is_click="handleCancel"/>
+        </a-col>
+      </a-row>
+    </a-form>
   </a-modal>
 </template>
+
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, reactive, computed, ref } from "vue";
+import { useStore } from "vuex";
+import { warningSwal} from "@/commonMethods/commonMethod";
+import { messages } from "@/config/messages";
+import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
+import ModalButtons from "@/components/common/button/ModalButtons";
 export default defineComponent({
-  components: {},
-  setup() {
+  components: {
+    ErrorMessage,
+    ModalButtons
+  },
+  props: {
+    patientDetails: {
+      type: Object
+    }
+  },
+  setup(props) {
+    const store = useStore();
+    const status = ref([]);
+    const patientDetail = reactive(props.patientDetails);
+    const inventoryForm = reactive({
+      inventory: "",
+      deviceType: "",
+      modelNumber: "",
+      serialNumber: "",
+      macAddress: "",
+    });
+    const submitForm = () => {
+      const inventoryFormData = {
+        data: {
+          inventory: inventoryForm.inventory,
+          deviceType: inventoryForm.deviceType,
+          modelNumber: inventoryForm.modelNumber,
+          serialNumber: inventoryForm.serialNumber,
+          macAddress: inventoryForm.macAddress,
+        },
+        id: patientDetail.id,
+      }
+      console.log('DATA', inventoryFormData)
+      store.dispatch("addDevice", inventoryFormData);
+    };
+
+    const globalCode = computed(() => {
+      return store.state.common;
+    });
+    const deviceData = computed(() => {
+      return store.state.patients.devices;
+    });
+
+    const deviceColumns = computed(() => {
+      return store.state.patients.devicesColumns;
+    });
+    const patients = computed(() => {
+      return store.state.patients;
+    });
+
+    function deleteDevice(id) {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          store.dispatch("deleteDevice", {
+            id: patients.value.addDemographic.id,
+            deviceId: id,
+          });
+          setTimeout(() => {
+            store.dispatch("devices", patients.value.addDemographic.id);
+          }, 2000);
+        }
+      });
+    }
+
+    function changeStatus(id, status) {
+      console.log(status);
+      store.dispatch("changeStatus", {
+        id: patients.value.addDemographic.id,
+        statusId: id,
+        status: {
+          status: status,
+        },
+      });
+    }
+
+    function handleInventory(id) {
+      store.dispatch("inventoryList", { isAvailable: 1, deviceType: id });
+      inventoryForm.inventory = null;
+      inventoryForm.modelNumber = null,
+      inventoryForm.serialNumber =null,
+      inventoryForm.macAddress = null
+    }
+
+    function handleChange(id){
+      patients.value.inventoryList.forEach(element => {
+        if(element.id==id)
+        inventoryForm.modelNumber = element.modelNumber,
+        inventoryForm.serialNumber =element.serialNumber,
+        inventoryForm.macAddress = element.macAddress
+      });
+    }
+
+    const form = reactive({ ...inventoryForm })
+    const formRef = ref();
+    const handleCancel = () => {
+      formRef.value.resetFields();
+      Object.assign(inventoryForm, form)
+    };
+
     return {
-      size: ref("large"),
+      formRef,
+      handleCancel,
+      handleChange,
+      handleInventory,
+      changeStatus,
+      status,
+      warningSwal,
+      deleteDevice,
+      patients,
+      inventoryForm,
+      submitForm,
+      globalCode,
+      deviceData,
+      deviceColumns,
+      errorMsg:patients.value.errorMsg
     };
   },
 });

@@ -75,12 +75,22 @@ export const globalCodes = (state, data) => {
         if (element.name === 'Appointment Type') {
             state.typeOfVisit = element;
         }
+        if (element.name === 'Note Types') {
+            state.noteTypes = element;
+        }
+        if (element.name === 'Note Category') {
+            state.noteCategories = element;
+        }
     });
 
 }
 
 export const successMsg = (state, data) => {
     state.successMsg = data
+}
+
+export const staffListSuccess = (state, data) => {
+    state.staffList = data
 }
 
 //  export const errorMsg = (state, data) => {
