@@ -989,6 +989,7 @@ export default {
     }
 
     function closeModal() {
+    if(demographics.firstName!='' ||demographics.lastName!='' || demographics.email!=''){
       warningSwal(messages.modalWarning).then((response) => {
         if (response == true) {
           emit("saveModal", false);
@@ -999,7 +1000,8 @@ export default {
         } else {
           emit("saveModal", true);
         }
-      });
+      })
+    }
     }
 
     function emailChange(){

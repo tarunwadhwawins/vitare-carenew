@@ -39,7 +39,7 @@
 
               <!-- List View -->
             <div class="list-view" v-show="!toggle">
-                <TasksListView @isEdit="showModal"/>
+                <TasksListView @isEdit="showModal($event)"/>
             </div>
 
           </div>
@@ -47,7 +47,7 @@
       </a-layout>
     </a-layout>
     <!---->
-    <TasksModal v-if="visible" v-model:visible="visible" @saveModal="handleOk($event)"  />
+    <TasksModal   v-model:visible="visible" @saveModal="handleOk($event)"  :taskId="taskID" />
     <!---->
   </div>
 </template>
@@ -60,7 +60,7 @@ import { ref } from "vue";
 import Button from "@/components/common/button/Button";
 import TasksDashboardView from "@/components/tasks/TasksDashboardView";
 import TasksListView from "@/components/tasks/TasksListView";
-
+import {useStore} from "vuex"
 export default {
   components: {
     Header,
@@ -71,15 +71,23 @@ export default {
     TasksListView,
   },
   setup() {
+    const store = useStore();
     const toggle = ref(true);
     const visible = ref(false);
-    const showModal = () => {
+    const taskID =ref();
+    const showModal = (task) => {
+      // console.log('==>',task)
+      if(task.id){
+      store.dispatch('editTask',task.id)
+      }
+      taskID.value=task.id
       visible.value = true;
     };
     const handleOk = (value) => {
       visible.value = value;
     };
     return {
+      taskID,
       buttonName: "Add New Task",
       toggle,
       visible,

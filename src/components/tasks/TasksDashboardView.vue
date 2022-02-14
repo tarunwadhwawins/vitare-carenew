@@ -1,22 +1,17 @@
 <template>
   <a-row class="mb-24" :gutter="24">
-    <a-col :xl="6" :sm="8" :xs="12">
-      <FilterCard :filterCount="CompletedTasksFilterCount" count="100" class="blockLists five" :heading="$t('tasks.completedTasks')" />
+    <a-col :xl="6" :sm="8" :xs="12" v-for="status in tasks.taskStatus" :key="status.id" >
+      <FilterCard :filterCount="CompletedTasksFilterCount" :count="status.total?status.total:0" :color="status.color" class="blockLists five" :heading="status.text" />
     </a-col>
-    <a-col :xl="6" :sm="8" :xs="12">
+    <!-- <a-col :xl="6" :sm="8" :xs="12">
       <FilterCard :filterCount="OverdueTasksFilterCount" count="18" class="blockLists six" :heading="$t('tasks.overdueTasks')" />
     </a-col>
     <a-col :xl="6" :sm="8" :xs="12">
       <FilterCard :filterCount="IncompleteTasksFilterCount" count="0" class="blockLists three" :heading="$t('tasks.inCompleteTasks')" />
     </a-col>
     <a-col :xl="6" :sm="8" :xs="12">
-      <div class="blockLists two">
-        <h4>{{$t('tasks.totalTasks')}}</h4>
-        <div class="filter"></div>
-        <h5>118</h5>
-        <p>{{$t('global.taskCount')}}</p>
-      </div>
-    </a-col>
+      <FilterCard :filterCount="IncompleteTasksFilterCount" count="118" class="blockLists two" :heading="$t('tasks.totalTasks')" />
+    </a-col> -->
   </a-row>
   <a-row :gutter="24">
     <a-col :xl="8" :sm="12" :xs="24">
@@ -58,14 +53,14 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, watchEffect,computed } from "vue";
 import FilterCard from "@/components/common/cards/FilterCard";
 import ApexChart from "@/components/common/charts/ApexChart";
 import IncompleteTasksFilter from "@/components/tasks/chartFilters/IncompleteTasks";
 import TeamMemberFilter from "@/components/tasks/chartFilters/TeamMember";
 import AllTasksFilter from "@/components/tasks/chartFilters/AllTasks";
 import CategoryViewFilter from "@/components/tasks/chartFilters/CategoryView";
-
+import {useStore} from "vuex"
 export default {
   components: {
     FilterCard,
@@ -76,6 +71,7 @@ export default {
     CategoryViewFilter,
   },
   setup() {
+    const store = useStore();
     const toggle = ref(true);
     function clickHandler() {
       toggle.value = false;
@@ -83,20 +79,11 @@ export default {
     function clickHandler2() {
       toggle.value = false;
     }
-    const checked = ref([false]);
-    const checked1 = ref(false);
-    const checked2 = ref(false);
-    const checked3 = ref(false);
-    const checked4 = ref(false);
-    const checked5 = ref(false);
-    const checked6 = ref(false);
-    const checked7 = ref(false);
-    const checked8 = ref(false);
-    const checked9 = ref(false);
-    const checked10 = ref(false);
-    const checked11 = ref(false);
-    const checked12 = ref(false);
-    const checked13 = ref(false);
+
+    watchEffect(()=>{
+      store.dispatch('taskStatus')
+    })
+   
 
     const incompleteOptions = {
       annotations: {
@@ -339,24 +326,15 @@ export default {
       link: 'http://www.taobao.com/',
     }];
 
+    const tasks = computed(()=>{
+      return store.state.tasks
+    })
+
     return {
+      tasks,
       clickHandler,
       clickHandler2,
       toggle,
-      checked,
-      checked1,
-      checked2,
-      checked3,
-      checked4,
-      checked5,
-      checked6,
-      checked7,
-      checked8,
-      checked9,
-      checked10,
-      checked11,
-      checked12,
-      checked13,
       incompleteOptions,
       incompleteSeries,
       teamOptions,

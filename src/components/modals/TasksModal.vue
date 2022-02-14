@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" :title="$t('tasks.tasksModal.addTask')" :footer="null" :maskClosable="false"  @cancel="closeModal()" centered>
+  <a-modal width="1000px" :title="taskId?'Edit Task':$t('tasks.tasksModal.addTask')" :footer="null" :maskClosable="false"  @cancel="closeModal()" centered>
     <a-form :model="taskForm"  autocomplete="off" layout="vertical" @finish="submitForm" @finishFailed="taskFormFailed">
       <a-row :gutter="24">
         <a-col :span="24">
@@ -69,7 +69,7 @@
               <a-select
                 ref="select"
                 mode="multiple"
-                v-if="patients"
+                
                 v-model:value="taskForm.assignedTo"
                 style="width: 100%"
                  placeholder="Please Select Patient"
@@ -94,13 +94,13 @@
                 <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}</a-select-option>
               </a-select> -->
             <a-select
-                v-if="staffList"
+                
                 mode="tags"
                 size="large"
                 placeholder="Please Select Staff"
                 style="width: 100%"
                 v-model:value="taskForm.assignedTo"
-                :options="staffList"
+                :options="tasks.staffList.map((item) => ({label: item.fullName, value: item.id }))"
               />
             </a-form-item>
           </div>
@@ -114,7 +114,7 @@
                 placeholder="Please Select Category"
                 style="width: 100%"
                 v-model:value="taskForm.taskCategory"
-                :options="taskCategory"
+                :options="tasks.taskCategory.globalCode.map((item) => ({label: item.name, value: item.id }))"
               />
             </a-form-item>
           </div>
@@ -151,6 +151,9 @@ export default defineComponent({
   components: {
     ModalButtons
   },
+  props:{
+    taskId:Number
+  },
   setup(props, {emit}) {
     const store = useStore()
     const toggleTo= ref(false)
@@ -170,6 +173,7 @@ export default defineComponent({
       entityType:''
     });
 
+    
     const submitForm = () => {
       store.dispatch("addTask", {
       title: taskForm.title,
@@ -183,6 +187,7 @@ export default defineComponent({
       entityType:taskForm.entityType
       })
       emit('closeModal');
+      
     }
     const form = reactive({ ...taskForm })
     const handleCancel = () => {
@@ -195,39 +200,50 @@ export default defineComponent({
       store.dispatch("globalCodes")
       store.dispatch("staffList")
     })
-    const taskCategoriesList = computed(() => {
-      return store.state.common.taskCategory;
-    })
+    // const taskCategoriesList = computed(() => {
+    //   return store.state.common.taskCategory;
+    // })
     const taskPriority = computed(() => {
       return store.state.common.taskPriority;
     })
     const taskStatus = computed(() => {
       return store.state.common.taskStatus
     })
-    const staff = computed(() => {
-      return store.state.common.staffList
+    // const staff = computed(() => {
+    //   return store.state.common.staffList
+    // })
+
+     const tasks = computed(() => {
+      return store.state.common
+    })
+
+    const editTask =computed(() => {
+      return store.state.tasks.editTask
     })
 
     const patients = computed(() => {
       return store.state.communications.patientsList
     })
     
-    const staffList = ref([])
-    staff.value.forEach(element => {
-      staffList.value.push({
-        label: element.fullName,
-        value: element.id,
-      })
-    })
+    // const staffList = ref([])
+    // if(staff.value!=null){
+    // staff.value.forEach(element => {
+    //   staffList.value.push({
+    //     label: element.fullName,
+    //     value: element.id,
+    //   })
+    // })
+    // }
     
-    const taskCategory = ref([])
-    taskCategoriesList.value.globalCode.forEach(element => {
-      taskCategory.value.push({
-        label: element.name,
-        value: element.id,
-      })
-    })
-
+    // const taskCategory = ref([])
+    // if(taskCategoriesList.value!=null){
+    // taskCategoriesList.value.globalCode.forEach(element => {
+    //   taskCategory.value.push({
+    //     label: element.name,
+    //     value: element.id,
+    //   })
+    // })
+    // }
     
 
    function  buttonToggle(){
@@ -256,6 +272,8 @@ export default defineComponent({
 
 
     return {
+      editTask,
+      tasks,
       closeModal,
       form,
       formRef,
@@ -265,11 +283,11 @@ export default defineComponent({
       toggleTo,
       size: ref("large"),
       value,
-      taskCategory,
+      // taskCategory,
       taskStatus,
       taskPriority,
       taskForm,
-      staffList,
+      // staffList,
       submitForm,
       visible,
       handleCancel,

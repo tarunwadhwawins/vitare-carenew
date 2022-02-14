@@ -21,10 +21,7 @@
         <template #assignedBy="text">
           <router-link to="coordinator-summary">{{ text.text }}</router-link>
         </template>
-        <template #status="text">
-          <!-- <a-switch /> -->
-          <a-switch @click="changeStatus(text.record.id,text.record.status)"   v-model:checked="text.record.status"   />
-        </template>
+       
         <template #category="{ record }">
           <router-link v-for="category in record.categories" :key="category.id" to="coordinator-summary">
             {{ category }}
@@ -53,6 +50,7 @@
           </a-tooltip>
         </template>
       </a-table>
+      <Loader />
     </a-col>
   </a-row>
 </template>
@@ -69,6 +67,7 @@ import { useStore } from "vuex"
 import SearchField from "@/components/common/input/SearchField";
 import { messages } from '@/config/messages';
 import { warningSwal } from "@/commonMethods/commonMethod"
+import Loader from "@/components/loader/Loader";
 
 export default {
   components: {
@@ -76,6 +75,7 @@ export default {
     EditOutlined,
     CalendarOutlined,
     SearchField,
+    Loader
   },
   setup(props, {emit}) {
     const store = useStore()
@@ -116,8 +116,8 @@ export default {
       });
     }
 
-    const editTask = () => {
-      emit('isEdit', true);
+    const editTask = (id) => {
+      emit('isEdit', {check:true,id:id});
     };
 
     const updateTask = () => {

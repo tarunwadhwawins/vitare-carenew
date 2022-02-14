@@ -12,21 +12,21 @@ export const tasksListSuccess = async (state, tasks) => {
       slots: {
         customRender: "taskName",
       },
-      filters: [
-        {
-          text: "Task 1",
-          value: "task 1",
-        },
-        {
-          text: "Task 2",
-          value: "task 2",
-        },
-      ],
-      onFilter: (value, record) => record.taskName.indexOf(value) === 0,
+      // filters: [
+      //   {
+      //     text: "Task 1",
+      //     value: "task 1",
+      //   },
+      //   {
+      //     text: "Task 2",
+      //     value: "task 2",
+      //   },
+      // ],
+      // onFilter: (value, record) => record.taskName.indexOf(value) === 0,
     },
     {
-      title: "Status ",
-      dataIndex: "status",
+      title: "Task Status ",
+      dataIndex: "taskStatus",
       slots: {
         customRender: "status",
       },
@@ -34,21 +34,21 @@ export const tasksListSuccess = async (state, tasks) => {
     {
       title: "Priority ",
       dataIndex: "priority",
-      filters: [
-        {
-          text: "High",
-          value: "high",
-        },
-        {
-          text: "Normal",
-          value: "normal",
-        },
-        {
-          text: "Urgent",
-          value: "urgent",
-        },
-      ],
-      onFilter: (value, record) => record.status.indexOf(value) === 0,
+    //   filters: [
+    //     {
+    //       text: "High",
+    //       value: "high",
+    //     },
+    //     {
+    //       text: "Normal",
+    //       value: "normal",
+    //     },
+    //     {
+    //       text: "Urgent",
+    //       value: "urgent",
+    //     },
+    //   ],
+    //   onFilter: (value, record) => record.status.indexOf(value) === 0,
     },
     {
       title: "Category",
@@ -60,35 +60,35 @@ export const tasksListSuccess = async (state, tasks) => {
     {
       title: "Due Date ",
       dataIndex: "dueDate",
-      filters: [
-        {
-          text: "Dec 24, 2021",
-          value: "Dec 24, 2021",
-        },
-        {
-          text: "Dec 28, 2021",
-          value: "Dec 28, 2021",
-        },
-      ],
-      onFilter: (value, record) => record.dueDate.indexOf(value) === 0,
+    //   filters: [
+    //     {
+    //       text: "Dec 24, 2021",
+    //       value: "Dec 24, 2021",
+    //     },
+    //     {
+    //       text: "Dec 28, 2021",
+    //       value: "Dec 28, 2021",
+    //     },
+    //   ],
+    //   onFilter: (value, record) => record.dueDate.indexOf(value) === 0,
     },
     {
       title: "Assigned By",
       dataIndex: "assignedBy",
-      filters: [
-        {
-          text: "John",
-          value: "John",
-        },
-        {
-          text: "	Devin",
-          value: "	Devin",
-        },
-      ],
+      // filters: [
+      //   {
+      //     text: "John",
+      //     value: "John",
+      //   },
+      //   {
+      //     text: "	Devin",
+      //     value: "	Devin",
+      //   },
+      // ],
       slots: {
         customRender: "assigned",
       },
-      onFilter: (value, record) => record.assignedBy.indexOf(value) === 0,
+      // onFilter: (value, record) => record.assignedBy.indexOf(value) === 0,
     },
     {
       title: "Actions",
@@ -115,4 +115,9 @@ export const searchTasksSuccess = async (state, result) => {
 export const addTaskSuccess = async (state, result) => {
   state.addTaskSuccess = result;
 }
+
+export const editTask = async (state, result) => {
+  state.editTask = result;
+}
+
 

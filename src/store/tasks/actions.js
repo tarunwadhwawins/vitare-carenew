@@ -3,9 +3,11 @@ import { successSwal, errorSwal } from '@/commonMethods/commonMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
 
 export const tasksList = async ({ commit }) => {
+	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", API_ENDPOINTS['tasksList'], null, null).then((response) => {
 		// console.log('tasksListSuccess', response.data.data)
 		commit('tasksListSuccess', response.data.data);
+		commit('loadingStatus', false)
 	})
 		.catch((error) => {
 			if (error.response.status == 401) {
@@ -13,6 +15,7 @@ export const tasksList = async ({ commit }) => {
 			}
 			commit('failure', error.response.data);
 			errorSwal(error.response.data.message)
+			commit('loadingStatus', false)
 		})
 }
 
@@ -21,6 +24,49 @@ export const addTask = async ({ commit }, data) => {
 		// console.log('addTaskSuccess', response.data.data);
 		successSwal(response.data.message)
 		commit('addTaskSuccess', response.data.data);
+	})
+		.catch((error) => {
+			if (error.response.status === 422) {
+				commit('errorMsg', error.response.data)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 500) {
+				errorSwal(error.response.data.message)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 401) {
+				// commit('errorMsg', error.response.data.message)
+				commit('loadingStatus', false)
+			}
+		})
+}
+
+
+
+export const editTask = async ({ commit }, id) => {
+	commit('loadingStatus', true)
+	await ServiceMethodService.common("get", `task/${id}`, null, null).then((response) => {
+		commit('editTask', response.data.data);
+		commit('loadingStatus', false)
+	})
+		.catch((error) => {
+			if (error.response.status === 422) {
+				commit('errorMsg', error.response.data)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 500) {
+				errorSwal(error.response.data.message)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 401) {
+				// commit('errorMsg', error.response.data.message)
+				commit('loadingStatus', false)
+			}
+		})
+}
+
+export const tasksDelete = async ({ commit }, id) => {
+	commit('loadingStatus', true)
+	await ServiceMethodService.common("delete", `task/${id}`, null, null).then((response) => {
+		successSwal(response.data.message)
+		commit('tasksDelete', response.data.data);
+		commit('loadingStatus', false)
 	})
 		.catch((error) => {
 			if (error.response.status === 422) {

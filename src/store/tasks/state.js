@@ -4,4 +4,5 @@ export default {
   taskStatus: null,
   taskPriority: null,
   addTaskSuccess: null,
+  editTask:null
 }
