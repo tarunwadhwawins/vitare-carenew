@@ -75,6 +75,15 @@ export const globalCodes = (state, data) => {
         if (element.name === 'Appointment Type') {
             state.typeOfVisit = element;
         }
+        if (element.name === 'Note Types') {
+            state.noteTypes = element;
+        }
+        if (element.name === 'Note Category') {
+            state.noteCategories = element;
+        }
+        if (element.name === 'Patient Time Logs Category') {
+            state.timeLogCategories = element;
+        }
     });
 
 }

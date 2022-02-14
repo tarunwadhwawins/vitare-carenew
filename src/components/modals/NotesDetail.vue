@@ -3,23 +3,11 @@
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <div class="text-right mb-24">
-          <a-button class="btn blueBtn" @click="showModal"
-                    >Export to Excel/PDF</a-button
-                  >
+          <a-button class="btn blueBtn" @click="showModal">Export to Excel/PDF</a-button>
         </div>
-        <a-table
-          :columns="columns3"
-          :data-source="data3"
-          :pagination="false"
-          @change="onChange"
-        >
-          <template #flags="{ text }">
-            <span class="box" :class="text"></span>
-            <span
-              class="box"
-              :class="(text = text.match(/yellowBgColor/g))"
-              v-if="text.match(/yellowBgColor/g)"
-            ></span>
+        <a-table rowKey="id" :columns="notesColumns" :data-source="notesList" :pagination="false">
+          <template #flags="{ record }">
+            <Flags :flag="record.flag" />
           </template>
         </a-table>
       </a-col>
@@ -27,58 +15,63 @@
   </a-modal>
 </template>
 <script>
-import { defineComponent } from "vue";
-const columns3 = [
-  {
-    title: "Date",
-    dataIndex: "date",
-  },
-  {
-    title: "Note",
-    dataIndex: "note",
-  },
-  {
-    title: "Category",
-    dataIndex: "category",
-  },
-  {
-    title: "Added By",
-    dataIndex: "addedby",
-  },
-  {
-    title: "Flag",
-    dataIndex: "flag",
-    slots: {
-      customRender: "flags",
-    },
-  },
-];
-const data3 = [
-  {
-    key: "1",
-    date: "Nov 10, 2021",
-    note:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore voluptatibus dolore, vel error harum porro totam eveniet modi iusto eos, dolorum provident aliquid earum corporis veritatis? Officiis molestiae amet ullam?",
-    category: "Admin",
-    addedby: "Steve Smith",
-    flag: "blueBgColor",
-  },
-  {
-    key: "2",
-    date: "Nov 11, 2021",
-    note:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore voluptatibus dolore, vel error harum porro totam eveniet modi iusto eos, dolorum provident aliquid earum corporis veritatis? Officiis molestiae amet ullam?",
-    category: "Clinical",
-    addedby: "Jane Doe",
-    flag: "redBgColor",
-  },
-];
+import { computed, defineComponent, watchEffect } from "vue";
+import { useStore } from "vuex";
+import Flags from "@/components/common/flags/Flags";
 export default defineComponent({
-  components: {},
+  components: {
+    Flags,
+  },
   setup() {
+    const store = useStore();
+
+    watchEffect(() => {
+      store.dispatch('notesList');
+    })
+
+    const notesList = computed(() => {
+      return store.state.notes.notesList
+    })
+
+    const notesColumns = [
+      {
+        title: "Date",
+        dataIndex: "date",
+        key: "date",
+      },
+      {
+        title: "Category",
+        dataIndex: "category",
+        key: "category",
+      },
+      {
+        title: "Type",
+        dataIndex: "type",
+        key: "type",
+      },
+      {
+        title: "Note",
+        dataIndex: "note",
+        key: "note",
+      },
+      {
+        title: "Added By",
+        dataIndex: "addedBy",
+        key: "addedBy",
+      },
+      {
+        title: "Flag",
+        dataIndex: "flag",
+        key: "flag",
+        slots: {
+          customRender: "flags",
+        },
+      },
+    ];
+
     return {
-      data3,
-      columns3,
+      notesList,
+      notesColumns,
     };
   },
 });

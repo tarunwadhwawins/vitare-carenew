@@ -19,7 +19,7 @@
       <div class="pat-profile-inner">
         <div class="thumb-head">Flag</div>
         <div class="thumb-desc" v-for="flag in patientDetails.patientFlags" :key="flag.id">
-          <span class="box" v-bind:class="flag.color"></span>
+          <Flags :class="flag.color" />
           <span class="box redBgColor"></span>
           <span class="box yellowBgColor"></span>
         </div>
@@ -113,8 +113,8 @@
   <AddDocumentModal v-if="addDocumentVisible == true" v-model:visible="addDocumentVisible" :patientDetails="patientDetails" />
   <DocumentDetailModal v-if="documentDetailVisible == true" v-model:visible="documentDetailVisible" :patientDetails="patientDetails" />
   <AddCareTeamModal v-if="careCoordinatorsVisible == true" v-model:visible="careCoordinatorsVisible" />
-  <AddTimeLogsModal v-if="addTimeLogsVisible == true" v-model:visible="addTimeLogsVisible" />
-  <TimeLogsDetailModal v-if="timeLogsDetailVisible == true" v-model:visible="timeLogsDetailVisible" />
+  <AddTimeLogsModal v-if="addTimeLogsVisible == true" v-model:visible="addTimeLogsVisible" :timeLogUdid="timeLogUdid" :isEdit="isEdit" />
+  <TimeLogsDetailModal v-if="timeLogsDetailVisible == true" v-model:visible="timeLogsDetailVisible" @editTimeLog="editTimeLog($event)" />
   <AddDeviceModal v-if="addDeviceVisible == true" v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
   <DeviceDetailModal v-if="deviceDetailVisible == true" v-model:visible="deviceDetailVisible" :patientDetails="patientDetails" />
 </template>
@@ -142,6 +142,7 @@ import TimeLogsDetailModal from "@/components/modals/TimeLogsDetail";
 import AddDeviceModal from "@/components/modals/AddDevice";
 import DeviceDetailModal from "@/components/modals/DeviceDetail";
 import BloodPressureDetail from "@/components/modals/BloodPressureDetail";
+import Flags from "@/components/common/flags/Flags";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 export default {
@@ -165,6 +166,7 @@ export default {
     AddDeviceModal,
     DeviceDetailModal,
     BloodPressureDetail,
+    Flags,
   },
   setup() {
     const store = useStore();
@@ -271,10 +273,18 @@ export default {
       deviceDetailVisible.value = true;
     }
 
+    const timeLogUdid = ref(null);
+    const isEdit = ref(false);
+    const editTimeLog = (value) => {
+      timeLogUdid.value = value;
+      isEdit.value = true;
+      // addTimeLogsVisible.value = true;
+    }
+
 
     return {
       handleOk,
-      
+      editTimeLog,
       showAddAppointmentModal,
       addPatient,
       showModalCustom,
@@ -310,6 +320,7 @@ export default {
       showDeviceModal,
 
       patientDetails,
+      timeLogUdid,
     }
   }
 }

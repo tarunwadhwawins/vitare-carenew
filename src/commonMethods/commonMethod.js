@@ -48,10 +48,23 @@ export async function warningSwal(message){
 }
 
 
+export function dateOnlyFormatSImple(timeStamp) {
+  var day = moment.unix(new Date(timeStamp));
+  return day.format('yyyy-MM-DD');
+}
+
+export function timeFormatSimple(timeStamp) {
+  var day = moment.unix(new Date(timeStamp));
+  return day.format('HH:mm');
+}
+
+export function dateOnlyFormat(timeStamp) {
+  var day = moment.unix(new Date(timeStamp));
+  return day.format('MMM DD, yyyy');
+}
 
 export function dateFormat(date) {
-  var day = moment.unix(new Date(date));
-  return String(day.format('MMM DD, yyyy, hh:mm A'));
+  return moment.unix(date).format('MMM DD, yyyy, hh:mm A');
 }
 
 export function meridiemFormat(time) {
@@ -66,7 +79,7 @@ export function meridiemFormat(time) {
 }
 
 export function meridiemFormatFromTimestamp(time) {
-  return moment(time).format('hh:mm A');
+  return moment.unix(time).format('hh:mm A');
 }
 
 export function dobFormat(date) {
@@ -140,11 +153,11 @@ return data.find(o => o.id===id)
 export function startimeAdd(value){
   let timeStart =  '00:00:00'
  
-  return (moment(value.format('DD/MM/YYYY') + ' ' + timeStart)).format('DD/MM/YYYY HH:mm:ss')
+  return (moment(value.format('MM/DD/YYYY') + ' ' + timeStart)).format()
 }
 export function endTimeAdd(value){
   let endTime = '23:59:59' 
-  return (moment(value.format('DD/MM/YYYY') + ' ' + endTime)).format('DD/MM/YYYY HH:mm:ss')
+  return (moment(value.format('MM/DD/YYYY') + ' ' + endTime)).format()
 }
 export function responseConvert(time,data,format){
   let record =[]

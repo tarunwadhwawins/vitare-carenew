@@ -22,7 +22,6 @@ export const searchAppointment = async ({
   commit
 },from) => {
   commit('loadingStatus', true)
-  //console.log(to)
   await serviceMethod.common("get", API_ENDPOINTS['seacrhAppointment']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null, null).then((response) => {
     commit('searchAppointmentSuccess', {data:response.data.data,key:from.tabId});
     commit('loadingStatus', false)

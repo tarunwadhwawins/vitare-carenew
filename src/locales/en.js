@@ -18,6 +18,8 @@ import providers from './english-modules/providers'
 import inventory from './english-modules/inventory'
 import roles from './english-modules/roles'
 import documents from './english-modules/documents'
+import notes from './english-modules/notes'
+import timeLogs from './english-modules/timeLogs'
 
 const english = {
     global,
@@ -40,6 +42,8 @@ const english = {
     inventory,
     roles,
     documents,
+    notes,
+    timeLogs,
 }
 
 export default english

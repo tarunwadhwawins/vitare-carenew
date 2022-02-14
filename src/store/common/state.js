@@ -26,6 +26,8 @@ export default {
     duration:null,
     typeOfVisit:null,
     staffList:null,
+    noteTypes:null,
+    noteCategories:null,
    
 
 

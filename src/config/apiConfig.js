@@ -60,6 +60,13 @@ export const API_ENDPOINTS = {
     rolePermissions: 'permissionList',
     roleDetails: 'roleDetails',
 
+    // Notes
+    notes: 'patient/notes',
+
+    // timeLogs
+    timeLog: 'patient/timeLog',
+    deleteTimeLog: 'deleteTimeLog',
+
     
 
 };
