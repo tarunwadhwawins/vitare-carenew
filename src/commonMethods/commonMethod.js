@@ -144,11 +144,11 @@ return data.find(o => o.id===id)
 export function startimeAdd(value){
   let timeStart =  '00:00:00'
  
-  return (moment(value.format('DD/MM/YYYY') + ' ' + timeStart)).format('DD/MM/YYYY HH:mm:ss')
+  return (moment(value.format('MM/DD/YYYY') + ' ' + timeStart)).format()
 }
 export function endTimeAdd(value){
   let endTime = '23:59:59' 
-  return (moment(value.format('DD/MM/YYYY') + ' ' + endTime)).format('DD/MM/YYYY HH:mm:ss')
+  return (moment(value.format('MM/DD/YYYY') + ' ' + endTime)).format()
 }
 export function responseConvert(time,data,format){
   let record =[]

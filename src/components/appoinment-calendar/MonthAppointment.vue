@@ -1145,33 +1145,43 @@
           </div>
         </a-col>
       </a-row> -->
-      
-        <FullCalendar :options="calendarOptions" />
- 
+     
+        <FullCalendar :options="calendarOptions"    ref="cal">
+          
+          </FullCalendar>
+
 </template>
 
 <script>
- import { ref } from 'vue'
+ import { ref   } from 'vue'
+
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import TimeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import ListPlugin from '@fullcalendar/list'
+import moment from 'moment'
 export default {
     components: {
-      FullCalendar
+      FullCalendar,
+    
         },
   setup() {
     const linkTo = "patients-summary"
+    const cal = ref(null);
     // function toggleWeekends () {
     //   this.calendarOptions.weekends = !this.calendarOptions.weekends // toggle the boolean!
-    // }
-    function handleDateClick(arg) {
-      console.log('date click! ' + arg.dateStr)
+    // 
+    function handleDateClick(e) {
+     
+        console.log('date click! ' + e.date)
+      
     }
     const events = ref([
-        { title: 'Event Title', date: '2022-02-02',backgroundColor:'green' },
-        { title: 'Another event', date: '2022-02-02',extendedProps: {isHTML: 'YES',html: '<a href="#">Any HTML here</a>'}, }
+        { title: 'Event Title', date: '2022-02-01',backgroundColor:'grey',"id":1 },
+        { title: 'Event Title', date: '2022-02-01',backgroundColor:'grey',"id":2 },
+        { title: 'Event Title', date: '2022-02-02',backgroundColor:'grey',"id":3 },
+        { title: 'Another event', date: '2022-02-02',"id":4 }
 ])
     const calendarOptions = {
         plugins: [ dayGridPlugin, interactionPlugin,TimeGridPlugin,ListPlugin ],
@@ -1180,21 +1190,84 @@ export default {
             center:'title',
             right:'',
         },
+        defaultDate: moment('2017/02/09'),
         timeZone: 'UTC',
         contentHeight:"auto",
         initialView: 'dayGridMonth',
         dateClick: handleDateClick,
         showNonCurrentDates: true,
-        events: events.value,       
+        events: events.value,
+         eventContent:renderEventContent,
+        customButtons: { 
+        prev: { // this overrides the prev button
+          text: "dfs", 
+          click: () => {           
+            
+            let calendarApi = cal.value.getApi();
+            
+            calendarApi.prev();
+            getDate(calendarApi.currentData.currentDate)
+          }
+        },
+        next: { // this overrides the next button
+          text: "PRfdfsdEV",
+          click: () => {
+            
+             let calendarApi = cal.value.getApi();
+             calendarApi.next();
+             getDate(calendarApi.currentData.currentDate)
+          }
+        }
+      } 
+         
     }
-    function headerToolbar(value){
-      console.log(value)
+    function eventRender(info){
+      console.log("info",info)
     }
+    function renderEventContent(clickInfo) {
+  
+      
+      
+var customHtml = '';
+            customHtml += `<a-dropdown  :trigger="['click']" overlayClassName="valueItem"><a class="ant-dropdown-link one" @click.prevent>`
+              customHtml += '<div class="dropdown"><p><strong><span >appointmentType</span></strong><span>.patient </span>'
+                customHtml += '</p><img src="../../assets/images/profile-1.jpg" alt="image" /></div></a><template #overlay><a-menu><a-menu-item key="1"><div class="calendarDropdown">'
+                customHtml += '<div class="itemWrapper"><div class="leftWrapper">Appointment Type</div><div class="rightWrapper">appointmentType</div>'
+                customHtml += ` </div><div class="itemWrapper"><div class="leftWrapper">Date Time</div><div class="rightWrapper">`
+              customHtml += `dateFormat</div></div><div class="itemWrapper"><div class="leftWrapper">Coordinator</div><div class="rightWrapper"><router-link :to="linkToCoordinator">`
+              customHtml += `staff</router-link></div></div><div class="itemWrapper">`
+              customHtml += `<div class="leftWrapper">Patient</div>`
+              customHtml += `<div class="rightWrapper">`
+              customHtml += `<router-link :to="linkTo">.patient</router-link>`
+              customHtml += `</div></div><div class="itemWrapper"><div class="leftWrapper">Start Time</div><div class="rightWrapper"> moment(dateFormat(cardRecords.date)).format('hh:mm A') </div>`
+              customHtml += `</div><div class="itemWrapper"><div class="leftWrapper">Duration</div>`
+              customHtml += `<div class="rightWrapper"> cardRecords.duration </div>`
+              customHtml += `</div><div class="notesWrapper">`
+                customHtml += `<span>Notes</span><p>cardRecords.notes</p></div>`
+                customHtml += `<div class="createTask"><a-tooltip placement="left">`
+                  customHtml += `<template #title><span>Add Task</span></template>`
+                  customHtml += `<router-link to="tasks"><FileAddOutlined /></router-link></a-tooltip></div></div></a-menu-item>`
+                  customHtml += `</a-menu></template></a-dropdown>`
+            
+                  console.log("clickInfo",clickInfo)    
+return {html:customHtml}
+}
+   
+    
+function getDate(value){
+console.log("date",value)
+}
+      const linkToCoordinator = "coordinator-summary"
     return {
-      headerToolbar,
+      eventRender,
+        linkToCoordinator,
+      cal,
+      getDate,
+      renderEventContent,
       handleDateClick,
       calendarOptions,
-      linkTo
+      linkTo,
+      
     }
   }
 }
