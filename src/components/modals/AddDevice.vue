@@ -2,7 +2,7 @@
   <a-modal width="60%" title="Add Device" centered>
     <a-form ref="formRef" :model="inventoryForm" name="basic" layout="vertical" @finish="submitForm">
       <a-row :gutter="24">
-        <a-col :md="8" :sm="12" :xs="24">
+        <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('patient.devices.deviceType')" name="deviceType" :rules="[{ required: true, message: $t('patient.devices.deviceType')+' '+$t('global.validation') }]">
               <a-select ref="select" v-model:value="inventoryForm.deviceType" style="width: 100%" size="large" @change="handleInventory">
@@ -13,7 +13,7 @@
             </a-form-item>
           </div>
         </a-col>
-        <a-col :md="8" :sm="12" :xs="24">
+        <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item  :label="$t('patient.devices.inventory')" name="inventory" :rules="[{ required: true, message: $t('patient.devices.inventory')+' '+$t('global.validation') }]">
               <a-select :disabled="patients.inventoryList.length==0" ref="select" v-model:value="inventoryForm.inventory" style="width: 100%" size="large" @change="handleChange(inventoryForm.inventory)">
@@ -24,7 +24,7 @@
             </a-form-item>
           </div>
         </a-col>
-        <a-col :md="8" :sm="12" :xs="24">
+        <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('patient.devices.modelNo')" name="modelNumber" :rules="[{ required: false, message: $t('patient.devices.modelNo')+' '+$t('global.validation') }]">
               <div >
@@ -34,7 +34,7 @@
             </a-form-item>
           </div>
         </a-col>
-        <a-col :md="8" :sm="12" :xs="24">
+        <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('patient.devices.serialNo')" name="serialNumber" :rules="[{ required: false, message: $t('patient.devices.serialNo')+' '+$t('global.validation') }]">
               <div >
@@ -44,7 +44,7 @@
             </a-form-item>
           </div>
         </a-col>
-        <a-col :md="8" :sm="12" :xs="24">
+        <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('patient.devices.MACAddress')" name="macAddress" :rules="[{ required: false, message: $t('patient.devices.MACAddress')+' '+$t('global.validation') }]">
               <div >
