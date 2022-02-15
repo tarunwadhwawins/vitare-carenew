@@ -4,4 +4,5 @@ export default {
   deleteTimeLog: null,
   timeLogDetails: null,
   updateTimeLog: null,
+  latestTimeLog: null,
 }

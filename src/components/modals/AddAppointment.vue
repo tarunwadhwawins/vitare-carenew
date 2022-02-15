@@ -105,6 +105,7 @@
   import { scrollToTop, timeStamp } from "../../commonMethods/commonMethod"
   import moment from 'moment';
   import ModalButtons from "@/components/common/button/ModalButtons";
+import { useRoute } from 'vue-router'
 
   export default {
     components: {
@@ -124,6 +125,7 @@
     },
     setup(props, { emit }) {
       const formRef = ref();
+      const route = useRoute();
       const store = useStore()
     //   const disabledDate = current => {
     //   return current && current < dayjs().endOf('day');
@@ -172,7 +174,10 @@
           durationId: appointmentForm.durationId,
           appointmentTypeId: appointmentForm.typeOfVisit,
           note: appointmentForm.note
-        })
+        }).then(() => {
+          store.dispatch('latestAppointment', route.params.udid)
+          emit('closeModal');
+        });
         setTimeout(()=>{
             if(store.state.appointment.successMsg){
               store.state.appointment.successMsg=null
