@@ -2,17 +2,17 @@
 <a-modal max-width="1140px" width="100%" :title="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <a-col :span="24">
-            <a-steps :current="current">
+            <a-steps v-model:current="current" >
                 <a-step v-for="item in steps" :key="item.title" :title="item.title?item.title:''" />
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Personal Information'">
-                <a-form :model="personalInfoData" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="personalInfo" @finishFailed="onFinishFailed">
+                <a-form :model="personalInfoData" class="basic" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="personalInfo" @finishFailed="onFinishFailed">
                     <!-- <PersonalInformation /> -->
                     <a-row :gutter="24">
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation') }]">
-                                    <a-input v-model:value="personalInfoData.firstName" size="large" />
+                                    <a-input v-model:value="personalInfoData.firstName" size="large" class="firstName"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.firstName?errorMsg.firstName[0]:''" />
                                 </a-form-item>
                             </div>
@@ -97,13 +97,13 @@
             </div>
 
             <div class="steps-content" v-if="steps[current].title == 'Contacts'">
-                <Contacts />
+                <Contacts  id="contact"/>
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
                 </div>
             </div>
-            <div class="steps-content" v-if="steps[current].title == 'Availability'">
+            <div class="steps-content" v-if="steps[current].title == 'Availability'"  @click="stepperClick(2)">
                 <Availability />
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
@@ -140,6 +140,7 @@
             </div> -->
         </a-col>
     </a-row>
+    
 </a-modal>
 </template>
 
@@ -152,10 +153,9 @@ import Roles from "@/components/modals/forms/Roles";
 import Documents from "@/components/modals/forms/Documents";
 // import Providers from "@/components/modals/forms/Providers";
 import { useStore } from "vuex";
-import ErrorMessage from "../common/messages/ErrorMessage";
-import { regex } from "../../RegularExpressions/regex";
-import { scrollToTop } from "../../commonMethods/commonMethod";
-import { errorSwal,successSwal,warningSwal } from "../../commonMethods/commonMethod";
+import ErrorMessage from "@/components/common/messages/ErrorMessage";
+import { regex } from "@/RegularExpressions/regex";
+import { errorSwal,successSwal,warningSwal,scrollToTop } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 export default {
   components: {
@@ -169,9 +169,18 @@ export default {
   },
   setup(props, { emit }) {
     const store = useStore();
-    const current = computed(() => {
-      return store.state.careCoordinator.counter;
-    });
+
+
+    const current= computed({
+      get: () =>
+        store.state.careCoordinator.counter,
+      set: (value) => {
+        store.state.careCoordinator.counter = value;
+      },
+    })
+
+  
+    
     const personalInfoData = reactive({
       firstName: "",
       lastName: "",
@@ -181,12 +190,11 @@ export default {
       phoneNumber: "",
       specializationId: "",
       networkId: "",
-      roleId: 3,
-      providerId: 1,
+      roleId: '',
+      providerId: '',
     });
 
     const personalInfo = () => {
-      
       // setTimeout(() => {
         if(addStaff.value==null){
           store.dispatch("addStaff", personalInfoData);
@@ -199,6 +207,7 @@ export default {
            });
         }
       // }, 2000);
+      return addStaff.value!=null?true:false
     };
 
     const next = () => {
@@ -247,20 +256,28 @@ export default {
     }
 
     function closeModal() {
+
+      let comments = document.forms.contact;
+      var formData = new FormData(comments);
+      var contactName = formData.get('firstName');
+      console.log('=>',contactName)
+      
+      if(personalInfoData.firstName!='' || personalInfoData.lastName!='' || contactName!=''){
       warningSwal(messages.modalWarning).then((response) => {
         if (response == true) {
-          emit("saveModal", false);
+          emit("saveModal", false)
           Object.assign(personalInfoData, form);
-          store.dispatch("staffs");
+          store.dispatch("staffs")
           store.dispatch('specializationStaff')
           store.dispatch('networkStaff')
-          store.commit("resetCounter");
+          store.commit("resetCounter")
           store.state.careCoordinator.addStaff =null
          
         } else {
           emit("saveModal", true);
         }
       });
+      }
     }
 
     return {

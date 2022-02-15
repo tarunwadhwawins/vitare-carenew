@@ -1,5 +1,6 @@
 export default {
-  tasksList: null,
+  tasksList:null,
+  tasksListColumns:null,
   taskStatus: null,
   taskPriority: null,
   addTaskSuccess: null,
