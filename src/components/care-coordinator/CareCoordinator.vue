@@ -50,12 +50,10 @@ import {
 import LongCard from "@/components/common/cards/LongCard"
 import CoordinatorTable from "./tables/CoordinatorTable"
 import CareCoordinatorModalForms from "@/components/modals/CoordinatorsModal"
-import Loader from "../loader/Loader"
-import {
-    useStore
-} from "vuex"
+import Loader from "@/components/loader/Loader"
+import {useStore} from "vuex"
 import ShowModalButton from "@/components/common/show-modal-button/ShowModalButton"
-import {arrayToObjact} from "../../commonMethods/commonMethod"
+import {arrayToObjact} from "@/commonMethods/commonMethod"
 export default {
     data() {
         return {};

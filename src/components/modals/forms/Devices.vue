@@ -103,7 +103,7 @@ import { defineComponent, reactive, computed, ref } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "../../loader/Loader";
-import { warningSwal} from "../../../commonMethods/commonMethod";
+import { warningSwal, arrayToObjact} from "../../../commonMethods/commonMethod";
 import { messages } from "../../../config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 export default defineComponent({
@@ -185,16 +185,14 @@ export default defineComponent({
     // };
 
     function handleChange(id){
-      patients.value.inventoryList.forEach(element => {
-        if(element.id==id)
-        // console.log('==>',element.id,id)
-        device.modelNumber = element.modelNumber,
-        device.serialNumber =element.serialNumber,
-        device.macAddress = element.macAddress
-      });
+      let temp = arrayToObjact(patients.value.inventoryList,id)
+        device.modelNumber = temp.modelNumber,
+        device.serialNumber =temp.serialNumber,
+        device.macAddress = temp.macAddress
     }
 
     return {
+      arrayToObjact,
       handleChange,
       // deviceFailed,
       handleInventory,

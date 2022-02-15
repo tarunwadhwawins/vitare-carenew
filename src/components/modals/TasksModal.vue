@@ -1,6 +1,6 @@
 <template>
-  <a-modal width="1000px" :title="$t('tasks.tasksModal.addTask')" centered>
-    <a-form :model="taskForm" layout="vertical" @finish="submitForm">
+  <a-modal width="1000px" :title="$t('tasks.tasksModal.addTask')" :footer="null" :maskClosable="false"  @cancel="closeModal()" centered>
+    <a-form :model="taskForm"  autocomplete="off" layout="vertical" @finish="submitForm" @finishFailed="taskFormFailed">
       <a-row :gutter="24">
         <a-col :span="24">
           <div class="form-group">
@@ -19,7 +19,8 @@
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.status')" name="taskStatus" :rules="[{ required: true, message: $t('tasks.tasksModal.status')+' '+$t('global.validation')  }]">
-              <a-select v-model:value="taskForm.taskStatus" ref="select" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+              <a-select v-model:value="taskForm.taskStatus" ref="select" style="width: 100%" size="large"  >
+                <a-select-option value="" disabled>{{'Select Status'}}</a-select-option>
                 <a-select-option v-for="status in taskStatus.globalCode" :key="status.id" :value="status.id">{{ status.name }}</a-select-option>
               </a-select>
             </a-form-item>
@@ -28,16 +29,72 @@
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.priority')" name="priority" :rules="[{ required: true, message: $t('tasks.tasksModal.priority')+' '+$t('global.validation')  }]">
-              <a-select v-model:value="taskForm.priority" ref="select" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+              <a-select v-model:value="taskForm.priority" ref="select" style="width: 100%" size="large" >
+                <a-select-option value="" disabled>{{'Select Priority'}}</a-select-option>
                 <a-select-option v-for="priority in taskPriority.globalCode" :key="priority.id" :value="priority.id">{{ priority.name }}</a-select-option>
               </a-select>
             </a-form-item>
           </div>
         </a-col>
-        <a-col :span="12">
+        <!-- <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.assignedTo')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.assignedTo')+' '+$t('global.validation')  }]">
               <a-select
+                mode="tags"
+                size="large"
+                placeholder="Please Select Staff"
+                style="width: 100%"
+                v-model:value="taskForm.assignedTo"
+                :options="staffList"
+              />
+            </a-form-item>
+          </div>
+        </a-col> -->
+       <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <a-form-item :label="$t('tasks.tasksModal.to')" name="to">
+              <div class="btn toggleButton" :class="toggleTo ? 'active' : ''" @click="buttonToggle()">
+                <span class="btn-content">{{ $t('tasks.tasksModal.patient') }}</span>
+              </div>
+              <div class="btn toggleButton" :class="toggleTo ? '' : 'active'" @click="buttonToggle()">
+                <span class="btn-content">{{ $t('tasks.tasksModal.staff') }}</span>
+              </div>
+              <a-input type="hidden" id="entityType"  :value="toggleTo?taskForm.entityType= 'patient' : taskForm.entityType='staff'" />
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24" v-show="toggleTo">
+          <div class="form-group">
+            <a-form-item :label="$t('tasks.tasksModal.patient')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.patient')+' '+$t('global.validation')  }]">
+              <a-select
+                ref="select"
+                mode="multiple"
+                v-if="patients"
+                v-model:value="taskForm.assignedTo"
+                style="width: 100%"
+                 placeholder="Please Select Patient"
+                size="large">
+                <a-select-option value="" disabled>{{'Select Patient'}}</a-select-option>
+                <a-select-option v-for="patient in patients" :key="patient.id" :value="patient.id">{{ patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option>
+              </a-select>
+            
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :sm="12" :xs="24" v-show="!toggleTo">
+          <div class="form-group">
+            <a-form-item :label="$t('tasks.tasksModal.staff')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.staff')+' '+$t('global.validation')  }]">
+              <!-- <a-select
+                ref="select"
+                v-if="staffList"
+                v-model:value="taskForm.assignedTo"
+                style="width: 100%"
+                size="large">
+                <a-select-option value="" disabled>{{'Select Staff'}}</a-select-option>
+                <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}</a-select-option>
+              </a-select> -->
+            <a-select
+                v-if="staffList"
                 mode="tags"
                 size="large"
                 placeholder="Please Select Staff"
@@ -65,14 +122,14 @@
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.startDate')" name="startDate" :rules="[{ required: true, message: $t('tasks.tasksModal.startDate')+' '+$t('global.validation')  }]">
-              <a-date-picker v-model:value="taskForm.startDate" :size="size" style="width: 100%" />
+              <a-date-picker v-model:value="taskForm.startDate" format="MMM DD, YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
             </a-form-item>
           </div>
         </a-col>
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.dueDate')" name="dueDate" :rules="[{ required: true, message: $t('tasks.tasksModal.dueDate')+' '+$t('global.validation')  }]">
-              <a-date-picker v-model:value="taskForm.dueDate" :size="size" style="width: 100%" />
+              <a-date-picker v-model:value="taskForm.dueDate" format="MMM DD, YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
             </a-form-item>
           </div>
         </a-col>
@@ -88,32 +145,52 @@
 import { defineComponent, ref, reactive, watchEffect, computed } from "vue";
 import { useStore } from "vuex"
 import ModalButtons from "@/components/common/button/ModalButtons";
+import {timeStamp,warningSwal } from "@/commonMethods/commonMethod";
+import { messages } from "../../config/messages";
 export default defineComponent({
   components: {
     ModalButtons
   },
   setup(props, {emit}) {
+    const store = useStore()
+    const toggleTo= ref(false)
+    const formRef =ref()
+    const visible = ref(true)
+    const value = ref('')
+
     const taskForm = reactive({
       title: '',
       description: '',
       taskStatus: '',
       priority: '',
-      assignedTo: '',
-      taskCategory: '',
+      assignedTo:[],
+      taskCategory: [],
       startDate: '',
       dueDate: '',
+      entityType:''
     });
 
     const submitForm = () => {
-      console.log('task Form', taskForm)
-      store.dispatch("addTask", taskForm)
+      store.dispatch("addTask", {
+      title: taskForm.title,
+      description: taskForm.description,
+      taskStatus: taskForm.taskStatus,
+      priority: taskForm.priority,
+      assignedTo:taskForm.assignedTo,
+      taskCategory: taskForm.taskCategory,
+      startDate: timeStamp(taskForm.startDate),
+      dueDate: timeStamp(taskForm.dueDate),
+      entityType:taskForm.entityType
+      })
       emit('closeModal');
     }
-    const visible = ref(true);
+    const form = reactive({ ...taskForm })
     const handleCancel = () => {
+      formRef.value.resetFields();
       emit('closeModal', false);
+      Object.assign(taskForm, form)
     };
-    const store = useStore()
+    
     watchEffect(() => {
       store.dispatch("globalCodes")
       store.dispatch("staffList")
@@ -129,6 +206,10 @@ export default defineComponent({
     })
     const staff = computed(() => {
       return store.state.common.staffList
+    })
+
+    const patients = computed(() => {
+      return store.state.communications.patientsList
     })
     
     const staffList = ref([])
@@ -147,8 +228,41 @@ export default defineComponent({
       })
     })
 
-    const value = ref('');
+    
+
+   function  buttonToggle(){
+     if(toggleTo.value==true){
+     toggleTo.value =!toggleTo.value
+     taskForm.assignedTo=[]
+     }else{
+       toggleTo.value =!toggleTo.value
+       taskForm.assignedTo=[]
+     }
+   }
+
+
+   function closeModal() {
+      if(taskForm.title!='' || taskForm.description!='' ){
+      warningSwal(messages.modalWarning).then((response) => {
+        if (response == true) {
+          emit("saveModal", false);
+        } else {
+          emit("saveModal", true);
+        }
+      })
+      }
+    }
+
+
+
     return {
+      closeModal,
+      form,
+      formRef,
+      timeStamp,
+      buttonToggle,
+      patients,
+      toggleTo,
       size: ref("large"),
       value,
       taskCategory,
@@ -167,5 +281,16 @@ export default defineComponent({
 <style>
 .ant-modal-footer {
   display: none;
+}
+.toggleButton {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 6px 16px;
+  display: inline-block;
+  cursor: pointer;
+  width: 100px;
+}
+.toggleButton.active {
+  background-color: #777;
+  color: #fff;
 }
 </style>
