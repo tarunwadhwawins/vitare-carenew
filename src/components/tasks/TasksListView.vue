@@ -23,8 +23,8 @@
         </template>
        
         <template #category="{ record }">
-          <span v-for="category in record.category" :key="category.id" to="coordinator-summary">
-            {{ category +" " }}
+          <span v-for="category,i in record.category" :key="category.id" to="coordinator-summary">
+           {{i==0?' ':','}} {{ category }}
           </span>
         </template>
         <template #action="{ record }">
