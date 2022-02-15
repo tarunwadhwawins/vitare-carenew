@@ -37,7 +37,7 @@
         </div>
         <div class="thumb-desc">
           <router-link :to="'/appointment-calendar/'+patientDetails.udid">
-          {{ latestAppointment.staff.fullName }} 20th 2021 (+1 more)
+          {{ latestAppointment.staff.fullName }} {{ latestAppointment.date }}
           </router-link>
         </div>
       </div>

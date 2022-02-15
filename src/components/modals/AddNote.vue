@@ -54,12 +54,14 @@ import { computed, defineComponent, reactive, ref, watchEffect } from "vue";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { useStore } from "vuex";
 import { timeStamp } from '@/commonMethods/commonMethod';
+import { useRoute } from "vue-router";
 export default defineComponent({
   components: {
     ModalButtons,
   },
   setup(props, {emit}) {
     const store = useStore();
+    const route = useRoute()
     const formRef = ref();
     const form = reactive({ ...addNoteForm });
 
@@ -82,6 +84,7 @@ export default defineComponent({
       type: "",
       note: "",
       entityType: "patient",
+      id: "",
     })
 
     const handleClear = () => {
@@ -91,9 +94,12 @@ export default defineComponent({
 
     const submitForm = () => {
       addNoteForm.date = timeStamp(addNoteForm.date);
+      addNoteForm.id = route.params.udid;
       console.log('addNoteForm', addNoteForm);
-      store.dispatch('addNote', addNoteForm);
-      emit('closeModal');
+      store.dispatch('addNote', addNoteForm).then(() => {
+        store.dispatch('latestNotes', route.params.udid)
+        emit('closeModal');
+      });
     }
 
     return {

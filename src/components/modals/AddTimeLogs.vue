@@ -102,7 +102,7 @@ export default defineComponent({
       performedBy: "",
       date: "",
       timeAmount: "",
-      patientId: route.params.udid,
+      id: route.params.udid,
       // category: timeLogDetails.value != null ? timeLogDetails.value.categoryId : "",
       // loggedBy: timeLogDetails.value != null ? timeLogDetails.value.loggedId : "",
       // performedBy: timeLogDetails.value != null ? timeLogDetails.value.performedId : "",
@@ -122,7 +122,9 @@ export default defineComponent({
         // store.dispatch('updateTimeLog', {timeLogId, addTimeLogForm});
       }
       else {
-        store.dispatch('addTimeLog', addTimeLogForm);
+        store.dispatch('addTimeLog', addTimeLogForm).then(() => {
+          store.dispatch('latestTimeLog', route.params.udid)
+        });
       }
       formRef.value.resetFields();
       Object.assign(addTimeLogForm, form)

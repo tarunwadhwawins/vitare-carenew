@@ -734,9 +734,9 @@ export default {
   },
   setup(props, { emit }) {
     const store = useStore();
-    const current = computed(() => {
-      return store.state.patients.counter;
-    });
+    // const current = computed(() => {
+    //   return store.state.patients.counter;
+    // });
     const idPatient = reactive(props.patientId)
     console.log('idPatient', idPatient)
 
@@ -826,10 +826,10 @@ export default {
     });
 
     const demographic = () => {
-        alert(idPatient)
       if (
         demographics.isPrimary == true &&
-        patients.value.addDemographic == null
+        patients.value.addDemographic == null &&
+        idPatient == null
       ) {
         (demographics.emergencyFullName = demographics.fullName),
           (demographics.emergencyEmail = demographics.familyEmail),
@@ -841,7 +841,8 @@ export default {
       }
       if (
         demographics.isPrimary == false &&
-        patients.value.addDemographic == null
+        patients.value.addDemographic == null &&
+        idPatient == null
       ) {
         store.dispatch("addDemographic", demographics);
       }
@@ -854,7 +855,7 @@ export default {
           (demographics.emergencyGender = demographics.familyGender),
           store.dispatch("updateDemographic", {
             data: demographics,
-            id: patients.value.addDemographic.id,
+            id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
             emergencyContactID:
               patients.value.addDemographic.emergencyContact.data.id,
             patientFamilyMemberID:
@@ -864,7 +865,7 @@ export default {
       if ((patients.value.addDemographic.id && demographics.isPrimary == false) || idPatient != null) {
         store.dispatch("updateDemographic", {
           data: demographics,
-          id: patients.value.addDemographic.id,
+          id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
           emergencyContactID:
             patients.value.addDemographic.emergencyContact.data.id,
           patientFamilyMemberID:
