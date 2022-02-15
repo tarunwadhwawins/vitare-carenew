@@ -69,6 +69,7 @@ import { warningSwal} from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import ModalButtons from "@/components/common/button/ModalButtons";
+import { useRoute } from "vue-router";
 export default defineComponent({
   components: {
     ErrorMessage,
@@ -81,6 +82,7 @@ export default defineComponent({
   },
   setup(props, {emit}) {
     const store = useStore();
+    const route = useRoute();
     const status = ref([]);
     const patientDetail = reactive(props.patientDetails);
     const inventoryForm = reactive({
@@ -102,8 +104,10 @@ export default defineComponent({
         id: patientDetail.id,
       }
       console.log('DATA', inventoryFormData)
-      store.dispatch("addDevice", inventoryFormData);
-      emit('closeModal');
+      store.dispatch("addDevice", inventoryFormData).then(() => {
+        store.dispatch('latestDevice', route.params.udid)
+        emit('closeModal');
+      });
     };
 
     const globalCode = computed(() => {

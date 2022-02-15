@@ -46,3 +46,15 @@ export const calendarDateSelect =({commit},date) =>{
 }
 
 
+export const latestAppointment = async ({ commit }, id) => {
+	await serviceMethod.common("get", API_ENDPOINTS['appointment']+'?latest=latest&id='+id, null, null).then((response) => {
+		commit('latestAppointmentSuccess', response.data.data);
+	})
+	.catch((error) => {
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}
+

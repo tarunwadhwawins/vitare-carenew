@@ -10,3 +10,8 @@ export const notesListSuccess = async (state, notes) => {
     return note;
   });
 }
+
+export const latestNotesSuccess = async (state, note) => {
+  note.date = dateOnlyFormat(note.date);
+  state.latestNotes = note;
+}

@@ -605,3 +605,27 @@ export const patientDocuments = async ({commit}, id) => {
     errorSwal(error.response.data.message)
   })
 }
+
+export const latestDocument = async ({ commit }, id) => {
+	await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/document?latest=latest', null, null).then((response) => {
+		commit('latestDocumentSuccess', response.data.data);
+	})
+	.catch((error) => {
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}
+
+export const latestDevice = async ({ commit }, id) => {
+	await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/inventory?latest=latest', null, null).then((response) => {
+		commit('latestDeviceSuccess', response.data.data);
+	})
+	.catch((error) => {
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}
