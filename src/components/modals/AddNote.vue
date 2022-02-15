@@ -58,7 +58,7 @@ export default defineComponent({
   components: {
     ModalButtons,
   },
-  setup() {
+  setup(props, {emit}) {
     const store = useStore();
     const formRef = ref();
     const form = reactive({ ...addNoteForm });
@@ -93,6 +93,7 @@ export default defineComponent({
       addNoteForm.date = timeStamp(addNoteForm.date);
       console.log('addNoteForm', addNoteForm);
       store.dispatch('addNote', addNoteForm);
+      emit('closeModal');
     }
 
     return {

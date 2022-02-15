@@ -79,7 +79,7 @@ export default defineComponent({
       type: Object
     }
   },
-  setup(props) {
+  setup(props, {emit}) {
     const store = useStore();
     const status = ref([]);
     const patientDetail = reactive(props.patientDetails);
@@ -103,6 +103,7 @@ export default defineComponent({
       }
       console.log('DATA', inventoryFormData)
       store.dispatch("addDevice", inventoryFormData);
+      emit('closeModal');
     };
 
     const globalCode = computed(() => {
