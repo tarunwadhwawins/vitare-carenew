@@ -57,11 +57,11 @@ export default defineComponent({
   setup(props, {emit}) {
     const store = useStore();
     const formRef = ref();
+    const form = reactive({ ...addDocumentForm })
     const visible = ref(true);
 
     const patientDetails = ref(props.patientDetails);
     
-    const form = reactive({ ...addDocumentForm })
     const handleClear = () => {
       formRef.value.resetFields();
       Object.assign(addDocumentForm, form)
@@ -98,7 +98,6 @@ export default defineComponent({
     });
 
     const submitForm = () => {
-      console.log('filePath', filePath.value)
       const documentFormData = {
         data: {
           "name": addDocumentForm.name,
@@ -109,10 +108,10 @@ export default defineComponent({
         },
         id: patientDetails.value.id,
       }
-      console.log("addDocument", documentFormData);
-      store.dispatch("addDocument", documentFormData).then(() => {
-        emit('closeModal');
-      })
+      store.dispatch("addDocument", documentFormData)
+      formRef.value.resetFields();
+      Object.assign(addDocumentForm, form)
+      emit('closeModal');
     }
 
     return {
