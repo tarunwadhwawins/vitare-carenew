@@ -1,4 +1,9 @@
-import { dateOnlyFormat, meridiemFormatFromTimestamp, dateOnlyFormatSImple, timeFormatSimple } from '../../commonMethods/commonMethod';
+import {
+  dateOnlyFormat,
+  meridiemFormatFromTimestamp,
+  // dateOnlyFormatSImple,
+  // timeFormatSimple
+} from '../../commonMethods/commonMethod';
 export const addTimeLogSuccess = async (state, timeLog) => {
   state.addTimeLog = timeLog;
 }
@@ -16,8 +21,9 @@ export const deleteTimeLogSuccess = async (state, deleteTimeLog) => {
 }
 
 export const timeLogDetailsSuccess = async (state, timeLogDetails) => {
-  timeLogDetails.date = dateOnlyFormatSImple(timeLogDetails.date);
-  timeLogDetails.timeAmount = timeFormatSimple(timeLogDetails.timeAmount);
+  // console.log('timeLogDetails in Mutation', timeLogDetails)
+  // timeLogDetails.date = dateOnlyFormatSImple(timeLogDetails.date);
+  // timeLogDetails.timeAmount = timeFormatSimple(timeLogDetails.timeAmount);
   state.timeLogDetails = timeLogDetails;
 }
 

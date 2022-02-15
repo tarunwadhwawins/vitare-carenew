@@ -173,6 +173,7 @@
           appointmentTypeId: appointmentForm.typeOfVisit,
           note: appointmentForm.note
         })
+        emit('closeModal');
         setTimeout(()=>{
             if(store.state.appointment.successMsg){
               store.state.appointment.successMsg=null

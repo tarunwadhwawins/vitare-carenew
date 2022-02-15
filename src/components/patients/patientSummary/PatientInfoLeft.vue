@@ -103,20 +103,20 @@
     </div>
   </div>
   
-  <PatientsModal v-if="patientsModalVisible == true" v-model:visible="patientsModalVisible" />
-  <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" />
+  <PatientsModal v-if="patientsModalVisible == true" v-model:visible="patientsModalVisible" @closeModal="handleOk" />
+  <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" @closeModal="handleOk" />
   <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" @closeModal="handleOk" />
-  <AddVitalsModal v-if="addVitalsVisible == true" v-model:visible="addVitalsVisible" />
-  <BloodPressureDetail v-if="bloodPressureVisible == true" v-model:visible="bloodPressureVisible" />
-  <AddNotesModal v-if="addNoteVisible == true" v-model:visible="addNoteVisible" />
+  <AddVitalsModal v-if="addVitalsVisible == true" v-model:visible="addVitalsVisible" @closeModal="handleOk" />
+  <BloodPressureDetail v-if="bloodPressureVisible == true" v-model:visible="bloodPressureVisible" @closeModal="handleOk" />
+  <AddNotesModal v-if="addNoteVisible == true" v-model:visible="addNoteVisible" @closeModal="handleOk" />
   <NotesDetailModal v-if="notesDetailVisible == true" v-model:visible="notesDetailVisible" @closeModal="handleOk" />
-  <AddDocumentModal v-if="addDocumentVisible == true" v-model:visible="addDocumentVisible" :patientDetails="patientDetails" />
+  <AddDocumentModal v-if="addDocumentVisible == true" v-model:visible="addDocumentVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
   <DocumentDetailModal v-if="documentDetailVisible == true" v-model:visible="documentDetailVisible" :patientDetails="patientDetails" />
-  <AddCareTeamModal v-if="careCoordinatorsVisible == true" v-model:visible="careCoordinatorsVisible" />
-  <AddTimeLogsModal v-if="addTimeLogsVisible == true" v-model:visible="addTimeLogsVisible" :timeLogUdid="timeLogUdid" :isEdit="isEdit" />
+  <AddCareTeamModal v-if="careCoordinatorsVisible == true" v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" />
+  <AddTimeLogsModal v-if="addTimeLogsVisible" v-model:visible="addTimeLogsVisible" :timeLogDetails="timeLogDetails" :isEditForm="isEditForm" @closeModal="handleOk" />
   <TimeLogsDetailModal v-if="timeLogsDetailVisible == true" v-model:visible="timeLogsDetailVisible" @editTimeLog="editTimeLog($event)" />
   <AddDeviceModal v-if="addDeviceVisible == true" v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
-  <DeviceDetailModal v-if="deviceDetailVisible == true" v-model:visible="deviceDetailVisible" :patientDetails="patientDetails" />
+  <DeviceDetailModal v-if="deviceDetailVisible == true" v-model:visible="deviceDetailVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
 </template>
 
 <script>
@@ -259,6 +259,7 @@ export default {
 
     const addTimelogModal = () => {
       addTimeLogsVisible.value = true;
+      isEditForm.value = false;
     }
 
     const showTimelogModal = () => {
@@ -273,11 +274,11 @@ export default {
       deviceDetailVisible.value = true;
     }
 
-    const timeLogUdid = ref(null);
-    const isEdit = ref(false);
+    const timeLogDetails = ref(null);
+    const isEditForm = ref(false);
     const editTimeLog = (value) => {
-      timeLogUdid.value = value;
-      isEdit.value = true;
+      timeLogDetails.value = value;
+      isEditForm.value = true;
       // addTimeLogsVisible.value = true;
     }
 
@@ -320,7 +321,8 @@ export default {
       showDeviceModal,
 
       patientDetails,
-      timeLogUdid,
+      timeLogDetails,
+      isEditForm,
     }
   }
 }

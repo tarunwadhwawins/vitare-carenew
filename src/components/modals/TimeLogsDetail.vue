@@ -94,7 +94,11 @@ export default defineComponent({
     }
 
     const editTimeLog = (udid) => {
-      emit('editTimeLog', udid)
+      store.dispatch('timeLogDetails', udid)
+      const timeLogDetails = computed(() => {
+        return store.state.timeLogs.timeLogDetails;
+      })
+      emit('editTimeLog', timeLogDetails)
     }
 
     return {

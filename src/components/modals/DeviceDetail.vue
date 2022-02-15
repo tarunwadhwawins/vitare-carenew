@@ -19,9 +19,9 @@
           <template #active>
             <a-switch v-model:checked="checked" />
           </template>
-          <template #action>
-            <a class="icons"><EditOutlined /></a>
-            <a class="icons"><DeleteOutlined /></a>
+          <template #action="{record}">
+            <a class="icons"><EditOutlined @click="editDevice(record.id)" /></a>
+            <a class="icons"><DeleteOutlined @click="deleteDevice(record.id)" /></a>
           </template>
         </a-table>
       </a-col>
@@ -32,6 +32,8 @@
 import { computed, defineComponent, reactive, watchEffect } from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
+import {warningSwal} from "@/commonMethods/commonMethod"
+import { messages } from '@/config/messages';
 export default defineComponent({
   components: {
     DeleteOutlined,
@@ -77,9 +79,27 @@ export default defineComponent({
       },
     ];
 
+    const editDevice = (id) => {
+      console.log(id)
+    }
+    const deleteDevice = (id) => {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+      store.dispatch('deleteDevice', {
+        id: patientDetail.id,
+        deviceId: id,
+      }).then(() => {
+        store.dispatch('devices', patientDetail.id);
+      });
+      }
+      })
+    }
+
     return {
       devicesColumns,
       devicesList,
+      editDevice,
+      deleteDevice,
     };
   },
 });
