@@ -47,7 +47,7 @@
       </a-layout>
     </a-layout>
     <!---->
-    <TasksModal   v-model:visible="visible" @saveModal="handleOk($event)"  :taskId="taskID" />
+    <TasksModal   v-model:visible="visible" @saveTaskModal="handleOk($event)"  :taskId="taskID" />
     <!---->
   </div>
 </template>

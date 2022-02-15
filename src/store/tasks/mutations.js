@@ -1,7 +1,7 @@
-import { dateFormat,dateOnlyFormatSImple,yaxis, dataLabels, plotOptions } from '../../commonMethods/commonMethod';
+import { dateOnlyFormatSImple,yaxis, dataLabels, plotOptions ,dateOnlyFormat } from '../../commonMethods/commonMethod';
 export const tasksListSuccess = async (state, tasks) => {
   state.tasksList = tasks.map(element => {
-    element.dueDate = dateFormat(element.dueDate)
+    element.dueDate = dateOnlyFormat(element.dueDate)
     element.category = element.category.map(item=>item.taskCategory)
     return element;
   });
@@ -101,6 +101,8 @@ export const tasksListSuccess = async (state, tasks) => {
   ];
 }
 
+
+
 export const taskStatusSuccess = async (state, status) => {
   state.taskStatus = status;
 }
@@ -109,7 +111,7 @@ export const taskPriority = async (state, priorities) => {
   
 
   state.taskPriority ={
-    option1: {
+    optionPriority: {
       annotations: {
         points: [
           {
@@ -148,17 +150,102 @@ export const taskPriority = async (state, priorities) => {
         },
         categories: priorities.map((item) => { return  item.text }),
       },
-      yaxis: yaxis("Patients")
+      yaxis: yaxis("Task Count")
     },
-    series1: [
+    seriesPriority: [
       {
-        name: "Patients",
+        name: "Task Count",
         data: priorities.map((item) => { return  item.total }),
       },
     ],
 
   };
 }
+
+
+export const taskTeamMember = async (state, TeamMember) => {
+  
+
+  state.taskTeamMember ={
+    optionTeamMember: {
+      annotations: {
+        points: [
+          {
+            x: "In",
+            seriesIndex: 0,
+            label: {
+              borderColor: "#775DD0",
+              offsetY: 0,
+              style: {
+                color: "#fff",
+                background: "#775DD0",
+              },
+            },
+          },
+        ],
+      },
+      chart: {
+        type: "bar",
+      },
+      plotOptions: plotOptions(10,"20%","100%",true,false,"bottom"),
+      dataLabels: dataLabels(false),
+      // colors: TeamMember.map((item) => { return  item.color  }),
+      stroke: {
+        width: 1,
+        colors: ["#fff"],
+      },
+
+      grid: {
+        row: {
+          colors: ["#fff", "#f2f2f2"],
+        },
+      },
+      xaxis: {
+        labels: {
+          rotate: -45,
+        },
+        categories: TeamMember.map((item) => { return  item.text }),
+      },
+      yaxis: yaxis("Task Count")
+    },
+    seriesTeamMember: [
+      {
+        name: "Task Count",
+        data: TeamMember.map((item) => { return  item.total }),
+      },
+    ],
+
+  };
+}
+
+export const taskCategory = async (state, TeamMember) => {
+
+  state.taskCategory.business = TeamMember.map(item=>item.total) 
+  state.taskCategory.premium =  {
+      chart: {
+        width: 412,
+        type: "pie",
+      },
+      labels: TeamMember.map(item=>item.text) ,
+      colors: ["#0fb5c2", "#40a9ff", "#267dff", "#8e60ff"],
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200,
+            },
+            legend: {
+              position: "bottom",
+            },
+          },
+        },
+      ],
+    };
+  }
+
+
+  
 
 export const searchTasksSuccess = async (state, result) => {
   state.tasksList = result;

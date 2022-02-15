@@ -215,8 +215,11 @@ export default defineComponent({
       setTimeout(() => {
         if(tasks.value.addTask!=null || tasks.value.updateTask!=null){
         store.dispatch("tasksList")
+        store.dispatch('taskStatus')
+        store.dispatch('taskPriority')
+        store.dispatch('taskTeamMember')
         Object.assign(taskForm, form)
-        emit('saveModal', false)
+        emit('saveTaskModal', false)
         }
       }, 2000);
     }
@@ -259,10 +262,10 @@ export default defineComponent({
       if((taskForm.title!='' || taskForm.description!='') && tasks.value.addTask==null){
       warningSwal(messages.modalWarning).then((response) => {
         if (response == true) {
-          emit("saveModal", false);
+          emit("saveTaskModal", false);
           Object.assign(taskForm, form)
         } else {
-          emit("saveModal", true);
+          emit("saveTaskModal", true);
         }
       })
       }

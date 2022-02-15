@@ -118,12 +118,35 @@ export const taskStatus = async ({ commit }) => {
 
 export const taskPriority = async ({ commit }) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['taskPriority'], null, null).then((response) => {
-		// console.log('taskPrioritySuccess', response.data.data);
 		commit('taskPriority', response.data.data);
 	})
 		.catch((error) => {
 			if (error.response.status == 401) {
-				//AuthService.logout();
+				//
+			}
+			commit('failure', error.response.data);
+		})
+}
+
+export const taskTeamMember = async ({ commit }) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['taskTeamMember'], null, null).then((response) => {
+		commit('taskTeamMember', response.data.data);
+	})
+		.catch((error) => {
+			if (error.response.status == 401) {
+				//
+			}
+			commit('failure', error.response.data);
+		})
+}
+
+export const taskCategory = async ({ commit }) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['taskCategory'], null, null).then((response) => {
+		commit('taskCategory', response.data.data);
+	})
+		.catch((error) => {
+			if (error.response.status == 401) {
+				//
 			}
 			commit('failure', error.response.data);
 		})

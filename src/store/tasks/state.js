@@ -6,5 +6,10 @@ export default {
   addTask: null,
   editTask:null,
   updateTask:null,
+  taskTeamMember:null,
+  taskCategory:{
+    business:null,
+    premium:null
+  },
 
 }

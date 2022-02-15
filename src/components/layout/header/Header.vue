@@ -181,7 +181,7 @@
     </div>
     <!---->
     <AddAppointment v-model:visible="appointmentModal" @is-visible="showModal($event)" @ok="apptOk" />
-    <TasksModal v-if="TasksModal" v-model:visible="TasksModal" @ok="taskOk" />
+    <TasksModal v-if="tasksModal" v-model:visible="tasksModal" @saveTaskModal="handleTaskOk($event)"  />
     <PatientsModal v-model:visible="PatientsModal" @saveModal="closeAppointModal($event)" />
     <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" />
     <AddStartCall v-model:visible="AddStartCall" @ok="startOk" />
@@ -224,6 +224,7 @@
       const store = useStore()
       const toggle = ref(false);
       const ellipse = ref(false);
+      const tasksModal = ref(false);
       const userName = computed(() => {
         return localStorage.getItem('user')
       })
@@ -253,13 +254,13 @@
         appointmentModal.value = false;
       };
 
-      const TasksModal = ref(false);
+      
       const addTask = () => {
-        TasksModal.value = true;
+        tasksModal.value = true;
       };
-      const taskOk = () => {
-        TasksModal.value = false;
-      };
+      // const taskOk = () => {
+      //   TasksModal.value = false;
+      // };
 
       const PatientsModal = ref(false);
 
@@ -278,6 +279,10 @@
         CoordinatorsModal.value = false;
       };
 
+      const handleTaskOk = (status) => {
+        tasksModal.value = status;
+      };
+
       const AddStartCall = ref(false);
       const addStart = () => {
         AddStartCall.value = true;
@@ -291,6 +296,7 @@
       };
 
       return {
+        handleTaskOk,
         collapsMenu,
         userName,
         logoutUser,
@@ -305,9 +311,9 @@
         apptOk,
         addAppt,
 
-        TasksModal,
+        tasksModal,
         addTask,
-        taskOk,
+        // taskOk,
 
         PatientsModal,
         addPatient,

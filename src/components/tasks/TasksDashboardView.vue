@@ -8,13 +8,13 @@
     <a-col :xl="8" :sm="12" :xs="24">
       <a-card title="Task Priority" class="common-card">
         <IncompleteTasksFilter/>
-        <ApexChart type="bar" :height="250" v-if="tasks.taskPriority" :options="tasks.taskPriority.option1" :series="tasks.taskPriority.series1" />
+        <ApexChart type="bar" :height="250" v-if="tasks.taskPriority" :options="tasks.taskPriority.optionPriority" :series="tasks.taskPriority.seriesPriority" />
       </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
       <a-card title="Team Member" class="common-card">
         <TeamMemberFilter/>
-        <ApexChart type="bar" :height="250" :options="teamOptions" :series="teamSeries" />
+        <ApexChart type="bar" :height="250" v-if="tasks.taskTeamMember" :options="tasks.taskTeamMember.optionTeamMember" :series="tasks.taskTeamMember.seriesTeamMember" />
       </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
@@ -31,7 +31,7 @@
     <a-col :xl="8" :sm="12" :xs="24">
       <a-card title="Category View" class="common-card">
         <CategoryViewFilter/>
-        <ApexChart type="pie" :height="3050" :options="premium" :series="business" />
+        <ApexChart type="pie" v-if="tasks.taskCategory.premium"  :height="3050" :options="tasks.taskCategory.premium" :series="tasks.taskCategory.business" />
       </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
@@ -74,6 +74,8 @@ export default {
     watchEffect(()=>{
       store.dispatch('taskStatus')
       store.dispatch('taskPriority')
+      store.dispatch('taskTeamMember')
+      store.dispatch('taskCategory')
     })
    
 
@@ -143,71 +145,71 @@ export default {
     //   },
     // ];
 
-    const teamOptions = {
-      annotations: {
-        points: [
-          {
-            x: "In",
-            seriesIndex: 0,
-            label: {
-              borderColor: "#775DD0",
-              offsetY: 0,
-              style: {
-                color: "#fff",
-                background: "#775DD0",
-              },
-            },
-          },
-        ],
-      },
-      chart: {
-        height: 412,
-        type: "bar",
-      },
-      plotOptions: {
-        bar: {
-          borderRadius: 10,
-          columnWidth: "20%",
-          barHeight: "100%",
-          distributed: true,
-          horizontal: false,
-          dataLabels: {
-            position: "bottom",
-          },
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      colors: ["#3b72c5", "#ffb526", "#419541", "#343470"],
-      stroke: {
-        width: 1,
-        colors: ["#fff"],
-      },
+    // const teamOptions = {
+    //   annotations: {
+    //     points: [
+    //       {
+    //         x: "In",
+    //         seriesIndex: 0,
+    //         label: {
+    //           borderColor: "#775DD0",
+    //           offsetY: 0,
+    //           style: {
+    //             color: "#fff",
+    //             background: "#775DD0",
+    //           },
+    //         },
+    //       },
+    //     ],
+    //   },
+    //   chart: {
+    //     height: 412,
+    //     type: "bar",
+    //   },
+    //   plotOptions: {
+    //     bar: {
+    //       borderRadius: 10,
+    //       columnWidth: "20%",
+    //       barHeight: "100%",
+    //       distributed: true,
+    //       horizontal: false,
+    //       dataLabels: {
+    //         position: "bottom",
+    //       },
+    //     },
+    //   },
+    //   dataLabels: {
+    //     enabled: false,
+    //   },
+    //   colors: ["#3b72c5", "#ffb526", "#419541", "#343470"],
+    //   stroke: {
+    //     width: 1,
+    //     colors: ["#fff"],
+    //   },
 
-      grid: {
-        row: {
-          colors: ["#fff", "#f2f2f2"],
-        },
-      },
-      xaxis: {
-        labels: {
-          rotate: -45,
-        },
-        categories: ["Badger ", "Devin ", "Matt ", "John"],
-      },
-      yaxis: {
-        title: {
-          text: "Task Count",
-        },
-      },
-    };
-    const teamSeries = [
-        {
-          name: "Task Count",
-          data: [34, 23, 12, 15],
-        },
-    ];
+    //   grid: {
+    //     row: {
+    //       colors: ["#fff", "#f2f2f2"],
+    //     },
+    //   },
+    //   xaxis: {
+    //     labels: {
+    //       rotate: -45,
+    //     },
+    //     categories: ["Badger ", "Devin ", "Matt ", "John"],
+    //   },
+    //   yaxis: {
+    //     title: {
+    //       text: "Task Count",
+    //     },
+    //   },
+    // };
+    // const teamSeries = [
+    //     {
+    //       name: "Task Count",
+    //       data: [34, 23, 12, 15],
+    //     },
+    // ];
 
     const chartOptions = {
       chart: {
@@ -264,28 +266,28 @@ export default {
       ],
     };
 
-    const business = [45, 12, 23, 20];
-    const premium = {
-      chart: {
-        width: 412,
-        type: "pie",
-      },
-      labels: ["Clinical", "Comm", "Admin", "Internal"],
-      colors: ["#0fb5c2", "#40a9ff", "#267dff", "#8e60ff"],
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200,
-            },
-            legend: {
-              position: "bottom",
-            },
-          },
-        },
-      ],
-    };
+    // const business = [45, 12, 23, 20];
+    // const premium = {
+    //   chart: {
+    //     width: 412,
+    //     type: "pie",
+    //   },
+    //   labels: ["Clinical", "Comm", "Admin", "Internal"],
+    //   colors: ["#0fb5c2", "#40a9ff", "#267dff", "#8e60ff"],
+    //   responsive: [
+    //     {
+    //       breakpoint: 480,
+    //       options: {
+    //         chart: {
+    //           width: 200,
+    //         },
+    //         legend: {
+    //           position: "bottom",
+    //         },
+    //       },
+    //     },
+    //   ],
+    // };
     
     const CompletedTasksFilterCount = [{
       key: 0,
@@ -329,14 +331,14 @@ export default {
       toggle,
       // incompleteOptions,
       // incompleteSeries,
-      teamOptions,
-      teamSeries,
+      // teamOptions,
+      // teamSeries,
       chartOptions,
       chartSeries,
       incomplete,
       completed,
-      business,
-      premium,
+      // business,
+      // premium,
       CompletedTasksFilterCount,
       IncompleteTasksFilterCount,
       OverdueTasksFilterCount,
