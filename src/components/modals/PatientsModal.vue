@@ -726,11 +726,20 @@ export default {
     ErrorMessage,
     Loader,
   },
+  props: {
+    isEditPatient: {
+        type: Boolean
+    },
+    patientDetails: {
+        type: Object
+    },
+  },
   setup(props, { emit }) {
     const store = useStore();
     const current = computed(() => {
       return store.state.patients.counter;
     });
+    const patientDetail = reactive(props.patientDetails)
     const demographics = reactive({
       firstName: "",
       middleName: "",
@@ -1066,6 +1075,7 @@ export default {
       demographics,
       conditions,
       demographicsFailed,
+      patientDetail,
     };
   },
 };

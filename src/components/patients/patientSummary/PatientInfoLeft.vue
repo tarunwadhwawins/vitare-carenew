@@ -12,7 +12,7 @@
         </p>
         <p>{{ patientDetails.address }}</p>
       </div>
-      <EditOutlined class="editIcon" @click="addPatient" />
+      <EditOutlined class="editIcon" @click="editPatient" />
     </div>
 
     <div class="pat-profile">
@@ -36,7 +36,7 @@
           <PlusOutlined @click="showAddAppointmentModal"/><br />
         </div>
         <div class="thumb-desc">
-          <router-link to="/appointment-calendar">
+          <router-link :to="'/appointment-calendar/'+patientDetails.udid">
             John Deer 20th 2021 (+1 more)
           </router-link>
         </div>
@@ -103,7 +103,7 @@
     </div>
   </div>
   
-  <PatientsModal v-if="patientsModalVisible == true" v-model:visible="patientsModalVisible" @closeModal="handleOk" />
+  <PatientsModal v-if="patientsModalVisible == true" v-model:visible="patientsModalVisible" :patientDetails="patientDetails" :isEditPatient="isEditPatient" @closeModal="handleOk" />
   <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" @closeModal="handleOk" />
   <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" @closeModal="handleOk" />
   <AddVitalsModal v-if="addVitalsVisible == true" v-model:visible="addVitalsVisible" @closeModal="handleOk" />
@@ -113,7 +113,7 @@
   <AddDocumentModal v-if="addDocumentVisible == true" v-model:visible="addDocumentVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
   <DocumentDetailModal v-if="documentDetailVisible == true" v-model:visible="documentDetailVisible" :patientDetails="patientDetails" />
   <AddCareTeamModal v-if="careCoordinatorsVisible == true" v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" />
-  <AddTimeLogsModal v-if="addTimeLogsVisible" v-model:visible="addTimeLogsVisible" :timeLogDetails="timeLogDetails" :isEditForm="isEditForm" @closeModal="handleOk" />
+  <AddTimeLogsModal v-if="addTimeLogsVisible" v-model:visible="addTimeLogsVisible" :timeLogDetails="timeLogDetails" :isEditTimeLog="isEditTimeLog" @closeModal="handleOk" />
   <TimeLogsDetailModal v-if="timeLogsDetailVisible == true" v-model:visible="timeLogsDetailVisible" @editTimeLog="editTimeLog($event)" />
   <AddDeviceModal v-if="addDeviceVisible == true" v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
   <DeviceDetailModal v-if="deviceDetailVisible == true" v-model:visible="deviceDetailVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
@@ -172,6 +172,7 @@ export default {
     const store = useStore();
     const route = useRoute();
     const custom = ref(false);
+    const isEditPatient = ref(false);
     
     const patientsModalVisible = ref(false);
     const addAppointmentVisible = ref(false);
@@ -218,7 +219,8 @@ export default {
       custom.value = true;
     };
 
-    const addPatient = () => {
+    const editPatient = () => {
+      isEditPatient.value = true;
       patientsModalVisible.value = true;
     };
     const showAddAppointmentModal = () => {
@@ -259,7 +261,7 @@ export default {
 
     const addTimelogModal = () => {
       addTimeLogsVisible.value = true;
-      isEditForm.value = false;
+      isEditTimeLog.value = false;
     }
 
     const showTimelogModal = () => {
@@ -275,10 +277,10 @@ export default {
     }
 
     const timeLogDetails = ref(null);
-    const isEditForm = ref(false);
+    const isEditTimeLog = ref(false);
     const editTimeLog = (value) => {
       timeLogDetails.value = value;
-      isEditForm.value = true;
+      isEditTimeLog.value = true;
       // addTimeLogsVisible.value = true;
     }
 
@@ -287,7 +289,7 @@ export default {
       handleOk,
       editTimeLog,
       showAddAppointmentModal,
-      addPatient,
+      editPatient,
       showModalCustom,
       custom,
       value10: ref([]),
@@ -322,7 +324,8 @@ export default {
 
       patientDetails,
       timeLogDetails,
-      isEditForm,
+      isEditTimeLog,
+      isEditPatient,
     }
   }
 }
