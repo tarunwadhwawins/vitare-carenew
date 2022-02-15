@@ -1,14 +1,15 @@
-import { dateFormat } from '../../commonMethods/commonMethod';
+import { dateFormat,dateOnlyFormatSImple,yaxis, dataLabels, plotOptions } from '../../commonMethods/commonMethod';
 export const tasksListSuccess = async (state, tasks) => {
   state.tasksList = tasks.map(element => {
     element.dueDate = dateFormat(element.dueDate)
+    element.category = element.category.map(item=>item.taskCategory)
     return element;
   });
 
   state.tasksListColumns = [
     {
       title: "Task Name",
-      dataIndex: "taskName",
+      dataIndex: "title",
       slots: {
         customRender: "taskName",
       },
@@ -104,20 +105,87 @@ export const taskStatusSuccess = async (state, status) => {
   state.taskStatus = status;
 }
 
-export const taskPrioritySuccess = async (state, priorities) => {
-  state.taskPriority = priorities;
+export const taskPriority = async (state, priorities) => {
+  
+
+  state.taskPriority ={
+    option1: {
+      annotations: {
+        points: [
+          {
+            x: "In",
+            seriesIndex: 0,
+            label: {
+              borderColor: "#775DD0",
+              offsetY: 0,
+              style: {
+                color: "#fff",
+                background: "#775DD0",
+              },
+            },
+          },
+        ],
+      },
+      chart: {
+        type: "bar",
+      },
+      plotOptions: plotOptions(10,"20%","100%",true,false,"bottom"),
+      dataLabels: dataLabels(false),
+      colors: priorities.map((item) => { return  item.color  }),
+      stroke: {
+        width: 1,
+        colors: ["#fff"],
+      },
+
+      grid: {
+        row: {
+          colors: ["#fff", "#f2f2f2"],
+        },
+      },
+      xaxis: {
+        labels: {
+          rotate: -45,
+        },
+        categories: priorities.map((item) => { return  item.text }),
+      },
+      yaxis: yaxis("Patients")
+    },
+    series1: [
+      {
+        name: "Patients",
+        data: priorities.map((item) => { return  item.total }),
+      },
+    ],
+
+  };
 }
 
 export const searchTasksSuccess = async (state, result) => {
   state.tasksList = result;
 }
 
-export const addTaskSuccess = async (state, result) => {
-  state.addTaskSuccess = result;
+export const addTask = async (state, result) => {
+  state.addTask = result;
 }
 
 export const editTask = async (state, result) => {
   state.editTask = result;
+  state.editTask.assignedTo = state.editTask.assignedTo.map((item) => item.id)
+  state.editTask.taskCategory = state.editTask.category.map((item) => item.id)
+  state.editTask.dueDate = dateOnlyFormatSImple(state.editTask.dueDate)
+  state.editTask.startDate = dateOnlyFormatSImple(state.editTask.startDate)
+  state.editTask.priority = state.editTask.priorityId,
+  state.editTask.taskStatus = state.editTask.taskStatusId
+  
+  
+  // state.editTask.assignedTo = JSON.parse(state.editTask.assignedTo)
+  // state.editTask.taskCategory = JSON.parse(state.editTask.taskCategory)
+  state.editTask
+}
+
+
+export const updateTask = async (state, result) => {
+  state.updateTask = result;
 }
 
 

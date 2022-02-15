@@ -23,9 +23,9 @@
         </template>
        
         <template #category="{ record }">
-          <router-link v-for="category in record.categories" :key="category.id" to="coordinator-summary">
-            {{ category }}
-          </router-link>
+          <span v-for="category in record.category" :key="category.id" to="coordinator-summary">
+            {{ category +" " }}
+          </span>
         </template>
         <template #action="{ record }">
           <a-tooltip placement="bottom">

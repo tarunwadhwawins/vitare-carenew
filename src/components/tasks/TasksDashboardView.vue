@@ -3,21 +3,12 @@
     <a-col :xl="6" :sm="8" :xs="12" v-for="status in tasks.taskStatus" :key="status.id" >
       <FilterCard :filterCount="CompletedTasksFilterCount" :count="status.total?status.total:0" :color="status.color" class="blockLists five" :heading="status.text" />
     </a-col>
-    <!-- <a-col :xl="6" :sm="8" :xs="12">
-      <FilterCard :filterCount="OverdueTasksFilterCount" count="18" class="blockLists six" :heading="$t('tasks.overdueTasks')" />
-    </a-col>
-    <a-col :xl="6" :sm="8" :xs="12">
-      <FilterCard :filterCount="IncompleteTasksFilterCount" count="0" class="blockLists three" :heading="$t('tasks.inCompleteTasks')" />
-    </a-col>
-    <a-col :xl="6" :sm="8" :xs="12">
-      <FilterCard :filterCount="IncompleteTasksFilterCount" count="118" class="blockLists two" :heading="$t('tasks.totalTasks')" />
-    </a-col> -->
   </a-row>
   <a-row :gutter="24">
     <a-col :xl="8" :sm="12" :xs="24">
-      <a-card title="Incomplete Tasks" class="common-card">
+      <a-card title="Task Priority" class="common-card">
         <IncompleteTasksFilter/>
-        <ApexChart type="bar" :height="250" :options="incompleteOptions" :series="incompleteSeries" />
+        <ApexChart type="bar" :height="250" v-if="tasks.taskPriority" :options="tasks.taskPriority.option1" :series="tasks.taskPriority.series1" />
       </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
@@ -82,74 +73,75 @@ export default {
 
     watchEffect(()=>{
       store.dispatch('taskStatus')
+      store.dispatch('taskPriority')
     })
    
 
-    const incompleteOptions = {
-      annotations: {
-        points: [
-          {
-            x: "In",
-            seriesIndex: 0,
-            label: {
-              borderColor: "#775DD0",
-              offsetY: 0,
-              style: {
-                color: "#fff",
-                background: "#775DD0",
-              },
-            },
-          },
-        ],
-      },
-      chart: {
-        height: 350,
-        type: "bar",
-      },
-      plotOptions: {
-        bar: {
-          borderRadius: 10,
-          columnWidth: "20%",
-          barHeight: "100%",
-          distributed: true,
-          horizontal: false,
-          dataLabels: {
-            position: "bottom",
-          },
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      colors: ["#E30D2A", "#00897b", "#267dff"],
-      stroke: {
-        width: 1,
-        colors: ["#fff"],
-      },
+    // const incompleteOptions = {
+    //   annotations: {
+    //     points: [
+    //       {
+    //         x: "In",
+    //         seriesIndex: 0,
+    //         label: {
+    //           borderColor: "#775DD0",
+    //           offsetY: 0,
+    //           style: {
+    //             color: "#fff",
+    //             background: "#775DD0",
+    //           },
+    //         },
+    //       },
+    //     ],
+    //   },
+    //   chart: {
+    //     height: 350,
+    //     type: "bar",
+    //   },
+    //   plotOptions: {
+    //     bar: {
+    //       borderRadius: 10,
+    //       columnWidth: "20%",
+    //       barHeight: "100%",
+    //       distributed: true,
+    //       horizontal: false,
+    //       dataLabels: {
+    //         position: "bottom",
+    //       },
+    //     },
+    //   },
+    //   dataLabels: {
+    //     enabled: false,
+    //   },
+    //   colors: ["#E30D2A", "#00897b", "#267dff"],
+    //   stroke: {
+    //     width: 1,
+    //     colors: ["#fff"],
+    //   },
 
-      grid: {
-        row: {
-          colors: ["#fff", "#f2f2f2"],
-        },
-      },
-      xaxis: {
-        labels: {
-          rotate: -45,
-        },
-        categories: ["Urgent  ", "High", "Normal"],
-      },
-      yaxis: {
-        title: {
-          text: "Task Count",
-        },
-      },
-    };
-    const incompleteSeries = [
-      {
-        name: "Task Count",
-        data: [45, 32, 23],
-      },
-    ];
+    //   grid: {
+    //     row: {
+    //       colors: ["#fff", "#f2f2f2"],
+    //     },
+    //   },
+    //   xaxis: {
+    //     labels: {
+    //       rotate: -45,
+    //     },
+    //     categories: ["Urgent  ", "High", "Normal"],
+    //   },
+    //   yaxis: {
+    //     title: {
+    //       text: "Task Count",
+    //     },
+    //   },
+    // };
+    // const incompleteSeries = [
+    //   {
+    //     name: "Task Count",
+    //     data: [45, 32, 23],
+    //   },
+    // ];
 
     const teamOptions = {
       annotations: {
@@ -335,8 +327,8 @@ export default {
       clickHandler,
       clickHandler2,
       toggle,
-      incompleteOptions,
-      incompleteSeries,
+      // incompleteOptions,
+      // incompleteSeries,
       teamOptions,
       teamSeries,
       chartOptions,

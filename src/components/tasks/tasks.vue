@@ -76,7 +76,7 @@ export default {
     const visible = ref(false);
     const taskID =ref();
     const showModal = (task) => {
-      // console.log('==>',task)
+      // console.log('=>',task)
       if(task.id){
       store.dispatch('editTask',task.id)
       }

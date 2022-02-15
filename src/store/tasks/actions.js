@@ -23,7 +23,7 @@ export const addTask = async ({ commit }, data) => {
 	await ServiceMethodService.common("post", API_ENDPOINTS['addTask'], null, data).then((response) => {
 		// console.log('addTaskSuccess', response.data.data);
 		successSwal(response.data.message)
-		commit('addTaskSuccess', response.data.data);
+		commit('addTask', response.data.data);
 	})
 		.catch((error) => {
 			if (error.response.status === 422) {
@@ -82,6 +82,27 @@ export const tasksDelete = async ({ commit }, id) => {
 		})
 }
 
+export const updateTask = async ({ commit }, data) => {
+	commit('loadingStatus', true)
+	await ServiceMethodService.common("put", `task/${data.id}`, null, data.data).then((response) => {
+		commit('updateTask', response.data.data);
+		successSwal(response.data.message)
+		commit('loadingStatus', false)
+	})
+		.catch((error) => {
+			if (error.response.status === 422) {
+				commit('errorMsg', error.response.data)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 500) {
+				errorSwal(error.response.data.message)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 401) {
+				// commit('errorMsg', error.response.data.message)
+				commit('loadingStatus', false)
+			}
+		})
+}
+
 export const taskStatus = async ({ commit }) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['taskStatus'], null, null).then((response) => {
 		// console.log('taskStatusSuccess', response.data.data);
@@ -98,7 +119,7 @@ export const taskStatus = async ({ commit }) => {
 export const taskPriority = async ({ commit }) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['taskPriority'], null, null).then((response) => {
 		// console.log('taskPrioritySuccess', response.data.data);
-		commit('taskPrioritySuccess', response.data.data);
+		commit('taskPriority', response.data.data);
 	})
 		.catch((error) => {
 			if (error.response.status == 401) {
