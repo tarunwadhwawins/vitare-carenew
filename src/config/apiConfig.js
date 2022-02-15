@@ -18,6 +18,7 @@ export const API_ENDPOINTS = {
     timeLine:"patient/new",
     
     // Appointments
+    appointment:"appointment",
     todayAppointment:"appointment/today",
     appointmentChart:"appointment/summary",
     futureAppointments:"appointment/future",

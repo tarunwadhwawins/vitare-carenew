@@ -63,6 +63,7 @@ import {
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { useStore } from "vuex";
 import { timeStamp } from '@/commonMethods/commonMethod';
+import { useRoute } from "vue-router";
 export default defineComponent({
   components: {
     ModalButtons,
@@ -77,6 +78,7 @@ export default defineComponent({
   },
   setup(props, {emit}) {
     const store = useStore();
+    const route = useRoute()
     const formRef = ref();
     const form = reactive({ ...addTimeLogForm });
     const timeLogDetail = reactive(props.timeLogDetails);
@@ -100,6 +102,7 @@ export default defineComponent({
       performedBy: "",
       date: "",
       timeAmount: "",
+      patientId: route.params.udid,
       // category: timeLogDetails.value != null ? timeLogDetails.value.categoryId : "",
       // loggedBy: timeLogDetails.value != null ? timeLogDetails.value.loggedId : "",
       // performedBy: timeLogDetails.value != null ? timeLogDetails.value.performedId : "",

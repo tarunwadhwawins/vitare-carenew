@@ -692,7 +692,7 @@
 </template>
 
 <script>
-import { ref, computed, reactive } from "vue";
+import { ref, computed, reactive, watchEffect } from "vue";
 // import Demographics from "@/components/modals/forms/Demographics";
 // import Conditions from "@/components/modals/forms/Conditions";
 import Programs from "@/components/modals/forms/Programs";
@@ -730,8 +730,8 @@ export default {
     isEditPatient: {
         type: Boolean
     },
-    patientDetails: {
-        type: Object
+    patientId: {
+        type: Number
     },
   },
   setup(props, { emit }) {
@@ -739,7 +739,15 @@ export default {
     const current = computed(() => {
       return store.state.patients.counter;
     });
-    const patientDetail = reactive(props.patientDetails)
+    const idPatient = reactive(props.patientId)
+    console.log('idPatient', idPatient)
+
+    const patients = computed(() => {
+      return store.state.patients;
+    });
+    const patientDetail = patients.value.patientDetails;
+    console.log('patientDetail', patientDetail);
+
     const demographics = reactive({
       firstName: "",
       middleName: "",
@@ -778,6 +786,13 @@ export default {
       isPrimary: false,
     });
 
+
+    watchEffect(() => {
+        if(idPatient) {
+            Object.assign(demographics, patientDetail);
+        }
+    })
+
     const conditions = reactive({
       condition: [],
       name: "",
@@ -803,6 +818,7 @@ export default {
     });
 
     const demographic = () => {
+        alert(idPatient)
       if (
         demographics.isPrimary == true &&
         patients.value.addDemographic == null
@@ -821,7 +837,7 @@ export default {
       ) {
         store.dispatch("addDemographic", demographics);
       }
-      if (patients.value.addDemographic.id && demographics.isPrimary == true) {
+      if ((patients.value.addDemographic.id && demographics.isPrimary == true) || idPatient != null) {
         (demographics.emergencyFullName = demographics.fullName),
           (demographics.emergencyEmail = demographics.familyEmail),
           (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
@@ -837,7 +853,7 @@ export default {
               patients.value.addDemographic.patientFamilyMember.data.id,
           });
       }
-      if (patients.value.addDemographic.id && demographics.isPrimary == false) {
+      if ((patients.value.addDemographic.id && demographics.isPrimary == false) || idPatient != null) {
         store.dispatch("updateDemographic", {
           data: demographics,
           id: patients.value.addDemographic.id,
@@ -964,10 +980,6 @@ export default {
       return store.state.common;
     });
 
-    const patients = computed(() => {
-      return store.state.patients;
-    });
-
     const errorMsg = computed(() => {
       return store.state.patients.errorMsg;
     });
@@ -1075,7 +1087,7 @@ export default {
       demographics,
       conditions,
       demographicsFailed,
-      patientDetail,
+      idPatient,
     };
   },
 };

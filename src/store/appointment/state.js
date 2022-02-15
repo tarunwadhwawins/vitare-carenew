@@ -6,4 +6,5 @@ export default{
     officeTime:null,
     weekName:null,
     calendarDate:null,
+    latestAppointment:null,
 }

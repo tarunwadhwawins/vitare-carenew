@@ -12,7 +12,7 @@
         </p>
         <p>{{ patientDetails.address }}</p>
       </div>
-      <EditOutlined class="editIcon" @click="editPatient" />
+      <EditOutlined class="editIcon" @click="editPatient(patientDetails.udid)" />
     </div>
 
     <div class="pat-profile">
@@ -37,7 +37,7 @@
         </div>
         <div class="thumb-desc">
           <router-link :to="'/appointment-calendar/'+patientDetails.udid">
-            John Deer 20th 2021 (+1 more)
+          {{ latestAppointment.staff.fullName }} 20th 2021 (+1 more)
           </router-link>
         </div>
       </div>
@@ -65,7 +65,7 @@
           Notes <PlusOutlined @click="addNotesModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showNotesModal" >John Clinical Dec 15 2021</a>
+          <a href="javascript:void(0)" @click="showNotesModal" >{{ latestNotes.note }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -73,7 +73,7 @@
           Documents <PlusOutlined @click="addDocumentsModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showDocumentsModal" >Program 1</a>
+          <a href="javascript:void(0)" @click="showDocumentsModal" >{{ latestDocument.name }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -89,7 +89,7 @@
           TimeLogs <PlusOutlined @click="addTimelogModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showTimelogModal" >Daily monitoring of vitals (Oct 25, 2021)</a>
+          <a href="javascript:void(0)" @click="showTimelogModal" >{{ latestTimeLog.category }}({{ latestTimeLog.date }})</a>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -97,13 +97,13 @@
           Devices <PlusOutlined @click="addDeviceModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showDeviceModal" >Blood Pressure(M-101)</a>
+          <a href="javascript:void(0)" @click="showDeviceModal" >{{ latestDevice.deviceType }} ({{ latestDevice.modelNumber }})</a>
         </div>
       </div>
     </div>
   </div>
   
-  <PatientsModal v-if="patientsModalVisible == true" v-model:visible="patientsModalVisible" :patientDetails="patientDetails" :isEditPatient="isEditPatient" @closeModal="handleOk" />
+  <PatientsModal v-if="patientsModalVisible == true" v-model:visible="patientsModalVisible" :patientId="patientId" :isEditPatient="isEditPatient" @closeModal="handleOk" />
   <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" @closeModal="handleOk" />
   <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" @closeModal="handleOk" />
   <AddVitalsModal v-if="addVitalsVisible == true" v-model:visible="addVitalsVisible" @closeModal="handleOk" />
@@ -127,7 +127,15 @@ import {
   EditOutlined,
   PhoneOutlined,
 } from "@ant-design/icons-vue";
-import { ref, watchEffect, computed } from 'vue-demi';
+import {
+  ref,
+  // reactive,
+  watchEffect,
+  computed
+} from 'vue-demi';
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+
 import PatientsModal from "@/components/modals/PatientsModal";
 import AddAppointmentModal from "@/components/modals/AddAppointment";
 import AddTasksModal from "@/components/modals/TasksModal";
@@ -143,8 +151,7 @@ import AddDeviceModal from "@/components/modals/AddDevice";
 import DeviceDetailModal from "@/components/modals/DeviceDetail";
 import BloodPressureDetail from "@/components/modals/BloodPressureDetail";
 import Flags from "@/components/common/flags/Flags";
-import { useStore } from "vuex";
-import { useRoute } from "vue-router";
+
 export default {
   components: {
     WarningOutlined,
@@ -191,9 +198,31 @@ export default {
 
     watchEffect(() => {
       store.dispatch('patientDetails', route.params.udid)
+      store.dispatch('latestAppointment', route.params.udid)
+      store.dispatch('latestNotes', route.params.udid)
+      store.dispatch('latestDocument', route.params.udid)
+      store.dispatch('latestTimeLog', route.params.udid)
+      store.dispatch('latestDevice', route.params.udid)
     })
     const patientDetails = computed(() => {
       return store.state.patients.patientDetails
+    })
+    const patientId = 1;
+    // const patientId = patientDetails.value.id;
+    const latestNotes = computed(() => {
+      return store.state.notes.latestNotes
+    })
+    const latestAppointment = computed(() => {
+      return store.state.appointment.latestAppointment
+    })
+    const latestDocument = computed(() => {
+      return store.state.patients.latestDocument
+    })
+    const latestTimeLog = computed(() => {
+      return store.state.timeLogs.latestTimeLog
+    })
+    const latestDevice = computed(() => {
+      return store.state.patients.latestDevice
     })
     
     const handleOk = () => {
@@ -219,7 +248,8 @@ export default {
       custom.value = true;
     };
 
-    const editPatient = () => {
+    const editPatient = (value) => {
+      store.dispatch('patientDetails', value)
       isEditPatient.value = true;
       patientsModalVisible.value = true;
     };
@@ -323,9 +353,16 @@ export default {
       showDeviceModal,
 
       patientDetails,
+      patientId,
       timeLogDetails,
       isEditTimeLog,
       isEditPatient,
+
+      latestAppointment,
+      latestNotes,
+      latestDocument,
+      latestTimeLog,
+      latestDevice,
     }
   }
 }

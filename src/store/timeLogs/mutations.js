@@ -30,3 +30,8 @@ export const timeLogDetailsSuccess = async (state, timeLogDetails) => {
 export const updateTimeLogSuccess = async (state, updateTimeLog) => {
   state.updateTimeLog = updateTimeLog;
 }
+
+export const latestTimeLogSuccess = async (state, latestTimeLog) => {
+  latestTimeLog.date = dateOnlyFormat(latestTimeLog.date);
+  state.latestTimeLog = latestTimeLog;
+}

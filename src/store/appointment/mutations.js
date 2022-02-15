@@ -32,3 +32,6 @@ export const GetWeekName = (state, date) => {
 export const calendarDateSelect = (state, date) => {
   state.calendarDate = date
 }
+export const latestAppointmentSuccess = (state, data) => {
+  state.latestAppointment = data
+}

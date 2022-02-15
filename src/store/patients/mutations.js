@@ -1,5 +1,5 @@
 
-import { dobFormat, meridiemFormatFromTimestamp,dateFormat } from '../../commonMethods/commonMethod';
+import { meridiemFormatFromTimestamp,dateFormat } from '../../commonMethods/commonMethod';
 
 export const addDemographic = (state, data) => {
     state.addDemographic = data
@@ -437,7 +437,6 @@ export const addDemographic = (state, data) => {
  }
 
 export const patientDetailsSuccess = (state, patient) => {
-  patient.dob = dobFormat(patient.dob)
   state.patientDetails = patient
 }
 
@@ -457,6 +456,14 @@ export const patientDocumentsSuccess = (state, documents) => {
 
   export const deleteDocument = (state, data) => {
     state.deleteDocument = data
+ }
+
+  export const latestDocumentSuccess = (state, data) => {
+    state.latestDocument = data
+ }
+
+  export const latestDeviceSuccess = (state, data) => {
+    state.latestDevice = data
  }
 
   export const errorMsg = (state, data) => {

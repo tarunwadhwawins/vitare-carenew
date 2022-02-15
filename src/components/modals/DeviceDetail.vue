@@ -20,7 +20,7 @@
             <a-switch v-model:checked="checked" />
           </template>
           <template #action="{record}">
-            <a class="icons"><EditOutlined @click="editDevice(record.id)" /></a>
+            <!-- <a class="icons"><EditOutlined @click="editDevice(record.id)" /></a> -->
             <a class="icons"><DeleteOutlined @click="deleteDevice(record.id)" /></a>
           </template>
         </a-table>
@@ -30,14 +30,17 @@
 </template>
 <script>
 import { computed, defineComponent, reactive, watchEffect } from "vue";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import {
+  DeleteOutlined,
+  // EditOutlined
+} from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import {warningSwal} from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
 export default defineComponent({
   components: {
     DeleteOutlined,
-    EditOutlined,
+    // EditOutlined,
   },
   props: {
     patientDetails: {
@@ -79,9 +82,9 @@ export default defineComponent({
       },
     ];
 
-    const editDevice = (id) => {
-      console.log(id)
-    }
+    // const editDevice = (id) => {
+    //   console.log(id)
+    // }
     const deleteDevice = (id) => {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
@@ -98,7 +101,7 @@ export default defineComponent({
     return {
       devicesColumns,
       devicesList,
-      editDevice,
+      // editDevice,
       deleteDevice,
     };
   },

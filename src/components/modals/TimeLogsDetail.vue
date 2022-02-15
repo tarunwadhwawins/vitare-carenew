@@ -4,7 +4,7 @@
       <a-col :sm="24" :xs="24">
         <a-table rowKey="id" :columns="timeLogColumns" :data-source="timeLogsList" :scroll="{ x: 900 }" :pagination="false" >
           <template #action="{record}">
-            <a class="icons"><EditOutlined @click="editTimeLog(record.id)" /></a>
+            <!-- <a class="icons"><EditOutlined @click="editTimeLog(record.id)" /></a> -->
             <a class="icons"><DeleteOutlined @click="deleteTimeLog(record.id)"/></a>
           </template>
         </a-table>
@@ -15,7 +15,10 @@
 
 <script>
 import { computed, defineComponent, watchEffect } from "vue";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import {
+  DeleteOutlined,
+  // EditOutlined
+} from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import {warningSwal} from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
@@ -23,9 +26,9 @@ import { messages } from '@/config/messages';
 export default defineComponent({
   components: {
     DeleteOutlined,
-    EditOutlined,
+    // EditOutlined,
   },
-  setup(props, {emit}) {
+  setup() {
     const store = useStore();
     
     const timeLogColumns = [
@@ -93,19 +96,19 @@ export default defineComponent({
       })
     }
 
-    const editTimeLog = (udid) => {
-      store.dispatch('timeLogDetails', udid)
-      const timeLogDetails = computed(() => {
-        return store.state.timeLogs.timeLogDetails;
-      })
-      emit('editTimeLog', timeLogDetails)
-    }
+    // const editTimeLog = (udid) => {
+    //   store.dispatch('timeLogDetails', udid)
+    //   const timeLogDetails = computed(() => {
+    //     return store.state.timeLogs.timeLogDetails;
+    //   })
+    //   emit('editTimeLog', timeLogDetails)
+    // }
 
     return {
       timeLogColumns,
       timeLogsList,
       deleteTimeLog,
-      editTimeLog,
+      // editTimeLog,
     };
   },
 });
