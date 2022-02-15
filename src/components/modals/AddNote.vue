@@ -1,6 +1,6 @@
 <template>
   <a-modal width="1000px" title="Add Note" centered>
-    <a-form layout="vertical" ref="formRef" :model="addNoteForm" @finish="submitForm">  
+    <a-form layout="vertical" ref="formRef" :model="addNoteForm" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :sm="8" :xs="24">
           <div class="form-group">
@@ -53,7 +53,7 @@
 import { computed, defineComponent, reactive, ref, watchEffect } from "vue";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { useStore } from "vuex";
-import { timeStamp } from '../../commonMethods/commonMethod';
+import { timeStamp } from '@/commonMethods/commonMethod';
 export default defineComponent({
   components: {
     ModalButtons,

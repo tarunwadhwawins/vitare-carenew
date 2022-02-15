@@ -2,95 +2,106 @@
   <a-modal width="1000px" title="Time Logs Detail" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
-        <a-table
-          :columns="columns1"
-          :data-source="data1"
-          :scroll="{ x: 900 }"
-          :pagination="false"
-          @change="onChange"
-        >
-          <template #action>
-            <a class="icons"><EditOutlined /></a>
-            <a class="icons"><DeleteOutlined /></a>
+        <a-table rowKey="id" :columns="timeLogColumns" :data-source="timeLogsList" :scroll="{ x: 900 }" :pagination="false" >
+          <template #action="{record}">
+            <a class="icons"><EditOutlined @click="editTimeLog(record.id)" /></a>
+            <a class="icons"><DeleteOutlined @click="deleteTimeLog(record.id)"/></a>
           </template>
         </a-table>
       </a-col>
     </a-row>
   </a-modal>
 </template>
+
 <script>
-import { defineComponent } from "vue";
+import { computed, defineComponent, watchEffect } from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-const columns1 = [
-  {
-    title: "Category",
-    dataIndex: "category",
-  },
-  {
-    title: "Logged By",
-    dataIndex: "logged",
-  },
-  {
-    title: "Performed By",
-    dataIndex: "performed",
-    sorter: {
-      compare: (a, b) => a.performed - b.performed,
-      multiple: 3,
-    },
-  },
-  {
-    title: "Date",
-    dataIndex: "date",
-    sorter: {
-      compare: (a, b) => a.date - b.date,
-      multiple: 2,
-    },
-  },
-  {
-    title: "Time Amount",
-    dataIndex: "time",
-    sorter: {
-      compare: (a, b) => a.time - b.time,
-      multiple: 2,
-    },
-  },
-  {
-    title: "Action",
-    dataIndex: "action",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
-const data1 = [
-  {
-    key: "1",
-    category: "Daily monitoring of vitals",
-    logged: "Jane Doe",
-    performed: "Steve Smith",
-    date: "Oct 25, 2021",
-    time: "3:00",
-    action: "",
-  },
-  {
-    key: "2",
-    category: "Provider Order For Lab",
-    logged: "Jane Doe",
-    performed: "Steve Smith",
-    date: "Oct 28, 2021",
-    time: "2:00",
-    action: "",
-  },
-];
+import { useStore } from "vuex";
+import {warningSwal} from "@/commonMethods/commonMethod"
+import { messages } from '@/config/messages';
+
 export default defineComponent({
   components: {
     DeleteOutlined,
     EditOutlined,
   },
-  setup() {
+  setup(props, {emit}) {
+    const store = useStore();
+    
+    const timeLogColumns = [
+      {
+        title: "Category",
+        dataIndex: "category",
+        key: "category",
+      },
+      {
+        title: "Logged By",
+        dataIndex: "loggedBy",
+        key: "loggedBy",
+      },
+      {
+        title: "Performed By",
+        dataIndex: "performedBy",
+        key: "performedBy",
+        sorter: {
+          compare: (a, b) => a.performedBy - b.performedBy,
+          multiple: 3,
+        },
+      },
+      {
+        title: "Date",
+        dataIndex: "date",
+        key: "date",
+        sorter: {
+          compare: (a, b) => a.date - b.date,
+          multiple: 2,
+        },
+      },
+      {
+        title: "Time Amount",
+        dataIndex: "timeAmount",
+        key: "timeAmount",
+        sorter: {
+          compare: (a, b) => a.timeAmount - b.timeAmount,
+          multiple: 2,
+        },
+      },
+      {
+        title: "Action",
+        dataIndex: "action",
+        slots: {
+          customRender: "action",
+        },
+      },
+    ];
+    
+    watchEffect(() => {
+      store.dispatch('timeLogsList')
+    })
+
+    const timeLogsList =  computed(() => {
+      return store.state.timeLogs.timeLogsList
+    })
+
+    const deleteTimeLog = (udid) => {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          store.dispatch('deleteTimeLog', udid).then(() => {
+            store.dispatch('timeLogsList');
+          });
+        }
+      })
+    }
+
+    const editTimeLog = (udid) => {
+      emit('editTimeLog', udid)
+    }
+
     return {
-      data1,
-      columns1,
+      timeLogColumns,
+      timeLogsList,
+      deleteTimeLog,
+      editTimeLog,
     };
   },
 });
