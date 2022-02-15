@@ -129,7 +129,6 @@
       function searchApi() {
         store.state.appointment.calendarDate = ''
         store.dispatch("calendarDateSelect", datePick)
-        console.log("check",fromDate.value,"toDate.value",toDate.value)
         store.dispatch("searchAppointment", { fromDate: fromDate.value, toDate: toDate.value, tabId: activeKey.value })
       }
       const patientsList = computed(() => {
