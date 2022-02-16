@@ -79,6 +79,7 @@
 </div>
 <div v-else-if="count==4">Load More</div>
 <div v-else></div>
+
 </template>
 <script>
   import { reactive } from "vue"
@@ -96,6 +97,9 @@
       count: {
         type: Number
       },
+      length:{
+        type:Number
+      }
     },
     setup(props) {
       const linkTo = "patients-summary"
