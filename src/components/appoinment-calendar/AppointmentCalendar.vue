@@ -34,7 +34,7 @@
               <WeekAppointment></WeekAppointment>
             </a-tab-pane>
             <a-tab-pane key="4" tab="Month">
-              <MonthAppointment />
+              <MonthAppointment v-if="appointmentSearch" @is-dateClick="tabClick($event)"></MonthAppointment>
             </a-tab-pane>
           </a-tabs>
         </a-col>
@@ -85,13 +85,11 @@
       let datePick = moment()
 
       function tabClick(event) {
-
         activeKey.value = ref('1')
         store.state.appointment.searchAppointmentRecords = ""
-
         fromDate.value = moment(event)
         toDate.value = moment(event)
-        datePick = event
+        datePick = moment(event)
         searchApi()
       }
       function selectDate(value) {
@@ -112,8 +110,8 @@
           toDate.value = moment(moment()).endOf('week')
         } else if (value == 4) {
           datePick = moment()
-          fromDate.value = moment()
-          toDate.value = moment().add(1, 'days')
+          fromDate.value = moment().startOf('month')
+          toDate.value = moment().endOf('month')
         } else {
           datePick = moment()
           fromDate.value = moment()
@@ -142,6 +140,7 @@
       }
       const appointmentModal = ref(false);
       const showModal = (event) => {
+        
         searchApi()
         appointmentModal.value = event;
       };
@@ -150,13 +149,16 @@
         appointmentModal.value = false;
       };
 
-
+      const appointmentSearch = computed(() => {
+        return store.state.appointment.searchAppointmentRecords
+      })
       // const handleOk2 = (e) => {
       //   console.log(e);
       //   physicianModal.value = false;
       // };
 
       return {
+        appointmentSearch,
         maskebale,
         activeKey,
         selectDate,

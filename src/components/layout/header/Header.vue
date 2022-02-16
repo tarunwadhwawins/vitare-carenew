@@ -220,7 +220,10 @@
       AddStartCall,
       SendMessage
     },
-    setup(props,{emit}) {
+    props:{
+
+    },
+    setup(props, {emit}) {
       const store = useStore()
       const toggle = ref(false);
       const ellipse = ref(false);
@@ -247,7 +250,9 @@
         appointmentModal.value = true;
       };
       function showModal(event) {
+
         appointmentModal.value = event
+        emit('is-visible',event)
       }
       const apptOk = () => {
         appointmentModal.value = false;
