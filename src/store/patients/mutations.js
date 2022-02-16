@@ -465,6 +465,22 @@ export const addDemographic = (state, data) => {
  }
 
 export const patientDetailsSuccess = (state, patient) => {
+  patient.emergencyFullName = patient.emergencyContact.fullName
+  patient.emergencyEmail = patient.emergencyContact.email
+  patient.emergencyPhoneNumber = patient.emergencyContact.phoneNumber
+  patient.emergencyContactType = patient.emergencyContact.contactTypeId
+  patient.emergencyContactTime = patient.emergencyContact.contactTimeId
+  patient.emergencyGender = patient.emergencyContact.gender
+  
+  patient.fullName = patient.patientFamilyMember.fullName
+  patient.familyEmail = patient.patientFamilyMember.email
+  patient.familyPhoneNumber = patient.patientFamilyMember.phoneNumber
+  patient.familyContactType = patient.patientFamilyMember.contactTypeId
+  patient.familyContactTime = patient.patientFamilyMember.contactTimeId
+  patient.familyGender = patient.patientFamilyMember.gender
+  
+  patient.isPrimary = patient.patientFamilyMember.fullName == patient.emergencyContact.fullName ? true : false
+
   state.patientDetails = patient
 }
 

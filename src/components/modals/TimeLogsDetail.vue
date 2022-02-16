@@ -22,6 +22,7 @@ import {
 import { useStore } from "vuex";
 import {warningSwal} from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -30,6 +31,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
+    const route = useRoute();
     
     const timeLogColumns = [
       {
@@ -91,6 +93,7 @@ export default defineComponent({
         if (response == true) {
           store.dispatch('deleteTimeLog', udid).then(() => {
             store.dispatch('timeLogsList');
+            store.dispatch('latestTimeLog', route.params.udid)
           });
         }
       })
