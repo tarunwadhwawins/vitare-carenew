@@ -833,17 +833,17 @@ export default {
                 emergencyId: patients.value.patientDetails.patientFamilyMember.length > 0 ? patients.value.patientDetails.patientFamilyMember.data.id : null,
             });
         }
-        if (demographics.isPrimary == true && patients.value.addDemographic == null && idPatient == null) {
+        if ((demographics.isPrimary == true && patients.value.addDemographic == null) && idPatient != null) {
             (demographics.emergencyFullName = demographics.fullName),
             (demographics.emergencyEmail = demographics.familyEmail),
             (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
             (demographics.emergencyContactType = demographics.familyContactType),
             (demographics.emergencyContactTime = demographics.familyContactTime),
             (demographics.emergencyGender = demographics.familyGender),
-            store.dispatch("addDemographic", demographics);
-        }
-        if (demographics.isPrimary == false && patients.value.addDemographic == null && idPatient == null) {
-            store.dispatch("addDemographic", demographics);
+            store.dispatch("updateDemographic", {
+                data: demographics,
+                id: idPatient,
+            });
         }
         if ((patients.value.addDemographic.id && demographics.isPrimary == true) && idPatient != null) {
             (demographics.emergencyFullName = demographics.fullName),
@@ -880,6 +880,18 @@ export default {
             patientFamilyMemberID:
                 patients.value.addDemographic.patientFamilyMember.data.id,
             });
+        }
+        if ((demographics.isPrimary == true && patients.value.addDemographic == null) && idPatient == null) {
+            (demographics.emergencyFullName = demographics.fullName),
+            (demographics.emergencyEmail = demographics.familyEmail),
+            (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
+            (demographics.emergencyContactType = demographics.familyContactType),
+            (demographics.emergencyContactTime = demographics.familyContactTime),
+            (demographics.emergencyGender = demographics.familyGender),
+            store.dispatch("addDemographic", demographics);
+        }
+        if (demographics.isPrimary == false && patients.value.addDemographic == null && idPatient == null) {
+            store.dispatch("addDemographic", demographics);
         }
     };
 
