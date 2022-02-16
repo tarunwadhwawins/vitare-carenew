@@ -89,7 +89,7 @@
           TimeLogs <PlusOutlined @click="addTimelogModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showTimelogModal" >{{ latestTimeLog != null ? latestTimeLog.category+' '+latestTimeLog.date : '' }})</a>
+          <a href="javascript:void(0)" @click="showTimelogModal" >{{ latestTimeLog && latestTimeLog.category != null ? latestTimeLog.category+' '+latestTimeLog.date : '' }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -97,7 +97,7 @@
           Devices <PlusOutlined @click="addDeviceModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showDeviceModal" >{{ latestDevice != null ? latestDevice.deviceType+'('+latestDevice.modelNumber+')' : '' }}</a>
+          <a href="javascript:void(0)" @click="showDeviceModal" >{{ latestDevice != null && latestDevice.deviceType ? latestDevice.deviceType+'('+latestDevice.modelNumber+')' : '' }}</a>
         </div>
       </div>
     </div>
