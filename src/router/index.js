@@ -59,6 +59,13 @@ const routes = [
   },
 
   {
+    path: '/appointment-calendar/:udid',
+    name: 'Appointmnet Calendar for Patient',
+    component: () => import( '@/views/appoinment-calendar/AppointmentCalendar'),
+    meta: { authAdmin: true }
+  },
+
+  {
     path: '/patients-summary/:udid',
     name: 'PatientSummary',
     component: () => import( '../components/patients/patientSummary/PatientSummary'),

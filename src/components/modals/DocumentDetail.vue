@@ -44,7 +44,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    const patientId = reactive(props.patientDetails.id);
+    const patientId = reactive(props.patientDetails.udid);
     const documentsColumns = [
       {
         title: "Name",

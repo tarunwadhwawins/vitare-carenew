@@ -45,6 +45,7 @@
 import { defineComponent, ref, computed, reactive } from "vue";
 import { useStore } from 'vuex';
 import ModalButtons from "@/components/common/button/ModalButtons";
+import { useRoute } from "vue-router";
 export default defineComponent({
   components: {
     ModalButtons,
@@ -56,12 +57,13 @@ export default defineComponent({
   },
   setup(props, {emit}) {
     const store = useStore();
+    const route = useRoute();
     const formRef = ref();
+    const form = reactive({ ...addDocumentForm })
     const visible = ref(true);
 
     const patientDetails = ref(props.patientDetails);
     
-    const form = reactive({ ...addDocumentForm })
     const handleClear = () => {
       formRef.value.resetFields();
       Object.assign(addDocumentForm, form)
@@ -84,6 +86,7 @@ export default defineComponent({
       type: '',
       tags: '',
       entity: 'patient',
+      id: '',
     })
     const globalCode = computed(() => {
       return store.state.common;
@@ -98,7 +101,6 @@ export default defineComponent({
     });
 
     const submitForm = () => {
-      console.log('filePath', filePath.value)
       const documentFormData = {
         data: {
           "name": addDocumentForm.name,
@@ -106,13 +108,16 @@ export default defineComponent({
           "type": addDocumentForm.type,
           "tags": addDocumentForm.tags,
           "entity": addDocumentForm.entity,
+          "id": route.params.udid ? route.params.udid : '',
         },
         id: patientDetails.value.id,
       }
-      console.log("addDocument", documentFormData);
       store.dispatch("addDocument", documentFormData).then(() => {
+        store.dispatch('latestDocument', route.params.udid)
+        formRef.value.resetFields();
+        Object.assign(addDocumentForm, form)
         emit('closeModal');
-      })
+      });
     }
 
     return {

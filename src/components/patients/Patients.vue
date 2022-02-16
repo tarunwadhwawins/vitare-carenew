@@ -55,8 +55,8 @@ import { useStore } from "vuex";
 import PatientsModal from "@/components/modals/PatientsModal";
 import CounterCard from "./counter-card/CounterCard";
 import ShowModalButton from "@/components/common/show-modal-button/ShowModalButton";
-import Loader from "../loader/Loader";
-import { arrayToObjact } from "../../commonMethods/commonMethod";
+import Loader from "@/components/loader/Loader";
+import { arrayToObjact } from "@/commonMethods/commonMethod";
 // import { messages } from "../../config/messages";
 
 export default {

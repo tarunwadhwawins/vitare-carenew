@@ -7,7 +7,7 @@
             <img src="../../../assets/images/logo.png" alt="image" />
           </router-link>
         </div>
-        <div class="icon" @click="barMenu">
+        <div class="icon" @click="collapsMenu">
           <MenuOutlined />
         </div>
       </div>
@@ -236,8 +236,13 @@
         store.dispatch('logoutUser')
       };
       const value = ref();
-      function barMenu() {
-        document.body.classList.toggle("show");
+      // function barMenu() {
+      //   document.body.classList.toggle("show");
+      // }
+
+      function collapsMenu(){
+        toggle.value=!toggle.value
+        emit('collapsMenu',toggle.value)
       }
 
       const appointmentModal = ref(false);
@@ -291,10 +296,11 @@
       };
 
       return {
+        collapsMenu,
         userName,
         logoutUser,
         value,
-        barMenu,
+        // barMenu,
         toggle,
         ellipse,
         SendMessage,

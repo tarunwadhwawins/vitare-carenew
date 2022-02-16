@@ -1,5 +1,5 @@
 
-import { responseConvert,dateFormat } from "../../commonMethods/commonMethod"
+import { responseConvert,dateFormat, dateOnlyFormat } from "../../commonMethods/commonMethod"
 import moment from 'moment'
 
 export const addStaff = async (state, data) => {
@@ -39,4 +39,8 @@ export const GetWeekName = (state, date) => {
 }
 export const calendarDateSelect = (state, date) => {
   state.calendarDate = date
+}
+export const latestAppointmentSuccess = (state, data) => {
+  data.date = dateOnlyFormat(data.date);
+  state.latestAppointment = data;
 }

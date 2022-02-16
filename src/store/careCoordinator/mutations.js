@@ -227,7 +227,6 @@ export const providers = (state, data) => {
 
 
 export const staffPermissions = (state, auth) => {
-  console.log(auth)
   if (auth == 1) {
     state.staffPermissions = [{
         id: 1,

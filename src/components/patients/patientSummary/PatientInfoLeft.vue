@@ -12,7 +12,7 @@
         </p>
         <p>{{ patientDetails.address }}</p>
       </div>
-      <EditOutlined class="editIcon" @click="addPatient" />
+      <EditOutlined class="editIcon" @click="editPatient(patientDetails.udid)" />
     </div>
 
     <div class="pat-profile">
@@ -36,8 +36,8 @@
           <PlusOutlined @click="showAddAppointmentModal"/><br />
         </div>
         <div class="thumb-desc">
-          <router-link to="/appointment-calendar">
-            John Deer 20th 2021 (+1 more)
+          <router-link :to="'/appointment-calendar/'+patientDetails.udid">
+          {{ latestAppointment.staff.fullName }} {{ latestAppointment.date }}
           </router-link>
         </div>
       </div>
@@ -65,7 +65,7 @@
           Notes <PlusOutlined @click="addNotesModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showNotesModal" >John Clinical Dec 15 2021</a>
+          <a href="javascript:void(0)" @click="showNotesModal" >{{ latestNotes.note }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -73,7 +73,7 @@
           Documents <PlusOutlined @click="addDocumentsModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showDocumentsModal" >Program 1</a>
+          <a href="javascript:void(0)" @click="showDocumentsModal" >{{ latestDocument.name }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -89,7 +89,7 @@
           TimeLogs <PlusOutlined @click="addTimelogModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showTimelogModal" >Daily monitoring of vitals (Oct 25, 2021)</a>
+          <a href="javascript:void(0)" @click="showTimelogModal" >{{ latestTimeLog.category }}({{ latestTimeLog.date }})</a>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -97,26 +97,26 @@
           Devices <PlusOutlined @click="addDeviceModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showDeviceModal" >Blood Pressure(M-101)</a>
+          <a href="javascript:void(0)" @click="showDeviceModal" >{{ latestDevice.deviceType }} ({{ latestDevice.modelNumber }})</a>
         </div>
       </div>
     </div>
   </div>
   
-  <PatientsModal v-if="patientsModalVisible == true" v-model:visible="patientsModalVisible" />
-  <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" />
+  <PatientsModal v-if="patientsModalVisible == true" v-model:visible="patientsModalVisible" :patientId="patientId" :isEditPatient="isEditPatient" @closeModal="handleOk" />
+  <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" @closeModal="handleOk" />
   <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" @closeModal="handleOk" />
-  <AddVitalsModal v-if="addVitalsVisible == true" v-model:visible="addVitalsVisible" />
-  <BloodPressureDetail v-if="bloodPressureVisible == true" v-model:visible="bloodPressureVisible" />
-  <AddNotesModal v-if="addNoteVisible == true" v-model:visible="addNoteVisible" />
+  <AddVitalsModal v-if="addVitalsVisible == true" v-model:visible="addVitalsVisible" @closeModal="handleOk" />
+  <BloodPressureDetail v-if="bloodPressureVisible == true" v-model:visible="bloodPressureVisible" @closeModal="handleOk" />
+  <AddNotesModal v-if="addNoteVisible == true" v-model:visible="addNoteVisible" @closeModal="handleOk" />
   <NotesDetailModal v-if="notesDetailVisible == true" v-model:visible="notesDetailVisible" @closeModal="handleOk" />
-  <AddDocumentModal v-if="addDocumentVisible == true" v-model:visible="addDocumentVisible" :patientDetails="patientDetails" />
+  <AddDocumentModal v-if="addDocumentVisible == true" v-model:visible="addDocumentVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
   <DocumentDetailModal v-if="documentDetailVisible == true" v-model:visible="documentDetailVisible" :patientDetails="patientDetails" />
-  <AddCareTeamModal v-if="careCoordinatorsVisible == true" v-model:visible="careCoordinatorsVisible" />
-  <AddTimeLogsModal v-if="addTimeLogsVisible == true" v-model:visible="addTimeLogsVisible" :timeLogUdid="timeLogUdid" :isEdit="isEdit" />
+  <AddCareTeamModal v-if="careCoordinatorsVisible == true" v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" />
+  <AddTimeLogsModal v-if="addTimeLogsVisible" v-model:visible="addTimeLogsVisible" :timeLogDetails="timeLogDetails" :isEditTimeLog="isEditTimeLog" @closeModal="handleOk" />
   <TimeLogsDetailModal v-if="timeLogsDetailVisible == true" v-model:visible="timeLogsDetailVisible" @editTimeLog="editTimeLog($event)" />
   <AddDeviceModal v-if="addDeviceVisible == true" v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
-  <DeviceDetailModal v-if="deviceDetailVisible == true" v-model:visible="deviceDetailVisible" :patientDetails="patientDetails" />
+  <DeviceDetailModal v-if="deviceDetailVisible == true" v-model:visible="deviceDetailVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
 </template>
 
 <script>
@@ -127,7 +127,15 @@ import {
   EditOutlined,
   PhoneOutlined,
 } from "@ant-design/icons-vue";
-import { ref, watchEffect, computed } from 'vue-demi';
+import {
+  ref,
+  // reactive,
+  watchEffect,
+  computed
+} from 'vue-demi';
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+
 import PatientsModal from "@/components/modals/PatientsModal";
 import AddAppointmentModal from "@/components/modals/AddAppointment";
 import AddTasksModal from "@/components/modals/TasksModal";
@@ -143,8 +151,7 @@ import AddDeviceModal from "@/components/modals/AddDevice";
 import DeviceDetailModal from "@/components/modals/DeviceDetail";
 import BloodPressureDetail from "@/components/modals/BloodPressureDetail";
 import Flags from "@/components/common/flags/Flags";
-import { useStore } from "vuex";
-import { useRoute } from "vue-router";
+
 export default {
   components: {
     WarningOutlined,
@@ -172,6 +179,7 @@ export default {
     const store = useStore();
     const route = useRoute();
     const custom = ref(false);
+    const isEditPatient = ref(false);
     
     const patientsModalVisible = ref(false);
     const addAppointmentVisible = ref(false);
@@ -190,9 +198,31 @@ export default {
 
     watchEffect(() => {
       store.dispatch('patientDetails', route.params.udid)
+      store.dispatch('latestAppointment', route.params.udid)
+      store.dispatch('latestNotes', route.params.udid)
+      store.dispatch('latestDocument', route.params.udid)
+      store.dispatch('latestTimeLog', route.params.udid)
+      store.dispatch('latestDevice', route.params.udid)
     })
     const patientDetails = computed(() => {
       return store.state.patients.patientDetails
+    })
+    const patientId = 1;
+    // const patientId = patientDetails.value.id;
+    const latestNotes = computed(() => {
+      return store.state.notes.latestNotes
+    })
+    const latestAppointment = computed(() => {
+      return store.state.appointment.latestAppointment
+    })
+    const latestDocument = computed(() => {
+      return store.state.patients.latestDocument
+    })
+    const latestTimeLog = computed(() => {
+      return store.state.timeLogs.latestTimeLog
+    })
+    const latestDevice = computed(() => {
+      return store.state.patients.latestDevice
     })
     
     const handleOk = () => {
@@ -218,7 +248,9 @@ export default {
       custom.value = true;
     };
 
-    const addPatient = () => {
+    const editPatient = (value) => {
+      store.dispatch('patientDetails', value)
+      isEditPatient.value = true;
       patientsModalVisible.value = true;
     };
     const showAddAppointmentModal = () => {
@@ -259,6 +291,7 @@ export default {
 
     const addTimelogModal = () => {
       addTimeLogsVisible.value = true;
+      isEditTimeLog.value = false;
     }
 
     const showTimelogModal = () => {
@@ -273,11 +306,11 @@ export default {
       deviceDetailVisible.value = true;
     }
 
-    const timeLogUdid = ref(null);
-    const isEdit = ref(false);
+    const timeLogDetails = ref(null);
+    const isEditTimeLog = ref(false);
     const editTimeLog = (value) => {
-      timeLogUdid.value = value;
-      isEdit.value = true;
+      timeLogDetails.value = value;
+      isEditTimeLog.value = true;
       // addTimeLogsVisible.value = true;
     }
 
@@ -286,7 +319,7 @@ export default {
       handleOk,
       editTimeLog,
       showAddAppointmentModal,
-      addPatient,
+      editPatient,
       showModalCustom,
       custom,
       value10: ref([]),
@@ -320,7 +353,16 @@ export default {
       showDeviceModal,
 
       patientDetails,
-      timeLogUdid,
+      patientId,
+      timeLogDetails,
+      isEditTimeLog,
+      isEditPatient,
+
+      latestAppointment,
+      latestNotes,
+      latestDocument,
+      latestTimeLog,
+      latestDevice,
     }
   }
 }

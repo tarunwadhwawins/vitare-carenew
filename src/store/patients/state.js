@@ -36,5 +36,7 @@ export default {
     patientTimeline:null,
     patientDocuments:null,
     deleteDocument:null,
+    latestDocument:null,
+    latestDevice:null,
 
 }

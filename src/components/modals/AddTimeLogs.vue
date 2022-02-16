@@ -54,44 +54,43 @@
   </a-modal>
 </template>
 <script>
-import { computed, defineComponent, reactive, ref, watchEffect } from "vue";
+import {
+  computed,
+  defineComponent,
+  reactive,
+  ref,
+} from "vue";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { useStore } from "vuex";
 import { timeStamp } from '@/commonMethods/commonMethod';
+import { useRoute } from "vue-router";
 export default defineComponent({
   components: {
     ModalButtons,
   },
   props: {
-    timeLogUdid: {
-      type: Number
+    timeLogDetails: {
+      type: Object
     },
-    isEdit: {
+    isEditForm: {
       type: Boolean
     }
   },
-  setup(props) {
+  setup(props, {emit}) {
     const store = useStore();
+    const route = useRoute()
     const formRef = ref();
     const form = reactive({ ...addTimeLogForm });
-    const timeLogId = reactive(props.timeLogUdid);
-    // const isEditValue = reactive(props.isEdit);
-    // console.log('isEditValue', isEditValue)
-    // const isAdd = isEditValue == true ? false : true;
-    
-    watchEffect(() => {
-      store.dispatch("staffList")
-      store.dispatch('timeLogDetails', timeLogId)
-    })
+    const timeLogDetail = reactive(props.timeLogDetails);
+    console.log('timeLogDetails', timeLogDetail)
+    // const timeLogId = reactive(props.timeLogDetails.id);
+    const isEdit = reactive(props.isEditForm);
+
+    // console.log('timeLogId', timeLogId)
 
     const staffList = computed(() => {
       return store.state.common.staffList
     })
-
-    const timeLogDetails = computed(() => {
-      return store.state.timeLogs.timeLogDetails;
-    })
-    console.log('timeLogDetails', timeLogDetails.value)
 
     const timeLogCategories = computed(() => {
       return store.state.common.timeLogCategories
@@ -103,6 +102,7 @@ export default defineComponent({
       performedBy: "",
       date: "",
       timeAmount: "",
+      id: route.params.udid,
       // category: timeLogDetails.value != null ? timeLogDetails.value.categoryId : "",
       // loggedBy: timeLogDetails.value != null ? timeLogDetails.value.loggedId : "",
       // performedBy: timeLogDetails.value != null ? timeLogDetails.value.performedId : "",
@@ -118,14 +118,23 @@ export default defineComponent({
     const submitForm = () => {
       addTimeLogForm.date = timeStamp(addTimeLogForm.date);
       addTimeLogForm.timeAmount = timeStamp(addTimeLogForm.timeAmount);
+      if(isEdit) {
+        // store.dispatch('updateTimeLog', {timeLogId, addTimeLogForm});
+      }
+      else {
+        store.dispatch('addTimeLog', addTimeLogForm).then(() => {
+          store.dispatch('latestTimeLog', route.params.udid)
+        });
+      }
+      formRef.value.resetFields();
+      Object.assign(addTimeLogForm, form)
+      emit('closeModal');
       // console.log('timeLogId', timeLogId);
       // console.log('addTimeLogForm', addTimeLogForm);
       // if(isAdd == true) {
-        store.dispatch('addTimeLog', addTimeLogForm);
       // }
       // else {
       //   alert("Edit")
-      //   store.dispatch('updateTimeLog', {timeLogId, addTimeLogForm});
       // }
     }
 
@@ -137,7 +146,7 @@ export default defineComponent({
       addTimeLogForm,
       staffList,
       timeLogCategories,
-      timeLogDetails,
+      // timeLogDetails,
     };
   },
 });

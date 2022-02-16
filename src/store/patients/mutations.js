@@ -1,5 +1,5 @@
 
-import { dobFormat, meridiemFormatFromTimestamp,dateFormat } from '../../commonMethods/commonMethod';
+import { meridiemFormatFromTimestamp,dateFormat } from '../../commonMethods/commonMethod';
 
 export const addDemographic = (state, data) => {
     state.addDemographic = data
@@ -14,15 +14,16 @@ export const addDemographic = (state, data) => {
     state.patientList=data
     .map(element => {
             element.flags=element.patientFlags.data[0]?element.patientFlags.data[0].flags.data.color:'',
-            element.name=element.name?element.name+" "+element.middleName+" "+element.lastName :'',
+            element.lastName=element.lastName?element.lastName :'',
+            element.firstName=element.name?element.name :'',
             element.lastReadingDate=element.lastReadingDate?element.lastReadingDate:'',
             element.weight=element.weight?element.weight:'',
             element.bp = element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='Systolic'){return JSON.parse(vitalData.value)}if(vitalData.vitalField=='Diastolic'){return '/'+JSON.parse(vitalData.value)}}),
             element.spo2 = element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='SPO2'){return JSON.parse(vitalData.value)}}),
-            element.glucose = element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='Random Blood Sugar'){return JSON.parse(vitalData.value)}})
+            element.glucose = element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='Random Blood Sugar'){return JSON.parse(vitalData.value)}}),
+            element.dob = Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10)>0?Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10):1
             return element
      })
-    console.log('=>',state.patientList)
     state.column= [{
         title: "Flags",
         dataIndex: "flags",
@@ -31,19 +32,30 @@ export const addDemographic = (state, data) => {
         },
     },
     {
-        title: "Name",
-        dataIndex: "name",
+        title: "Last Name",
+        dataIndex: "lastName",
         slots: {
-            customRender: "firstName",
+            customRender: "lastName",
         },
         sorter: {
             compare: (a, b) => a.reading - b.reading,
             multiple: 1,
         },
     },
+    {
+      title: "First Name",
+      dataIndex: "firstName",
+      slots: {
+          customRender: "firstName",
+      },
+      sorter: {
+          compare: (a, b) => a.reading - b.reading,
+          multiple: 1,
+      },
+  },
     
     {
-        title: "Last Reading Date",
+        title: "Date of Readings ",
         dataIndex: "lastReadingDate",
         sorter: {
             compare: (a, b) => a.reading - b.reading,
@@ -52,7 +64,7 @@ export const addDemographic = (state, data) => {
     },
    
     {
-        title: "Last Reading Values",
+        title: "Readings ",
         dataIndex: "patientVitals",
         sorter: {
             compare: (a, b) => a.readingvalues - b.readingvalues,
@@ -83,43 +95,43 @@ export const addDemographic = (state, data) => {
             },
         ],
     },
+    // {
+    //     title: "Non Compliant",
+    //     dataIndex: "compliance",
+    //     sorter: {
+    //         compare: (a, b) => a.reading - b.reading,
+    //         multiple: 1,
+    //     },
+    //     filters: [{
+    //             text: "Flag",
+    //             value: "flag",
+    //         },
+    //         {
+    //             text: "Name",
+    //             value: "name",
+    //         },
+    //         {
+    //             text: "Last Reading Date",
+    //             value: "readdate",
+    //         },
+    //         {
+    //             text: "Last Reading Value",
+    //             value: "readvalue",
+    //         },
+    //         {
+    //             text: "Non Compliance ",
+    //             value: "noncompliance",
+    //         },
+    //         {
+    //             text: "Last Message Seen",
+    //             value: "messagseen",
+    //         },
+    //     ],
+    //     onFilter: (value, record) => record.name.indexOf(value) === 0,
+    // },
     {
-        title: "Compliance",
-        dataIndex: "compliance",
-        sorter: {
-            compare: (a, b) => a.reading - b.reading,
-            multiple: 1,
-        },
-        filters: [{
-                text: "Flag",
-                value: "flag",
-            },
-            {
-                text: "Name",
-                value: "name",
-            },
-            {
-                text: "Last Reading Date",
-                value: "readdate",
-            },
-            {
-                text: "Last Reading Value",
-                value: "readvalue",
-            },
-            {
-                text: "Non Compliance ",
-                value: "noncompliance",
-            },
-            {
-                text: "Last Message Seen",
-                value: "messagseen",
-            },
-        ],
-        onFilter: (value, record) => record.name.indexOf(value) === 0,
-    },
-    {
-        title: "Non Compliance",
-        dataIndex: "compliance",
+        title: "Non Compliant",
+        dataIndex: "nonCompliance",
         sorter: {
             compare: (a, b) => a.compliance - b.compliance,
             multiple: 1,
@@ -130,38 +142,54 @@ export const addDemographic = (state, data) => {
     },
     {
         title: "Last Message Sent",
-        dataIndex: "message",
+        dataIndex: "lastMessageSent",
         sorter: {
             compare: (a, b) => a.message - b.message,
             multiple: 1,
         },
-        filters: [{
-                text: "Flag",
-                value: "flag",
-            },
-            {
-                text: "Name",
-                value: "name",
-            },
-            {
-                text: "Last Reading Date",
-                value: "readdate",
-            },
-            {
-                text: "Last Reading Value",
-                value: "readvalue",
-            },
-            {
-                text: "Non Compliance ",
-                value: "noncompliance",
-            },
-            {
-                text: "Last Message Seen",
-                value: "messagseen",
-            },
-        ],
+        // filters: [{
+        //         text: "Flag",
+        //         value: "flag",
+        //     },
+        //     {
+        //         text: "Name",
+        //         value: "name",
+        //     },
+        //     {
+        //         text: "Last Reading Date",
+        //         value: "readdate",
+        //     },
+        //     {
+        //         text: "Last Reading Value",
+        //         value: "readvalue",
+        //     },
+        //     {
+        //         text: "Non Compliance ",
+        //         value: "noncompliance",
+        //     },
+        //     {
+        //         text: "Last Message Seen",
+        //         value: "messagseen",
+        //     },
+        // ],
         onFilter: (value, record) => record.name.indexOf(value) === 0,
     },
+    {
+    title: "Age ",
+    dataIndex: "dob",
+    sorter: {
+        compare: (a, b) => a.reading - b.reading,
+        multiple: 1,
+    },
+  },
+    {
+      title: "Sex ",
+      dataIndex: "gender",
+      sorter: {
+          compare: (a, b) => a.reading - b.reading,
+          multiple: 1,
+      },
+}
 ];
  }
  
@@ -437,7 +465,6 @@ export const addDemographic = (state, data) => {
  }
 
 export const patientDetailsSuccess = (state, patient) => {
-  patient.dob = dobFormat(patient.dob)
   state.patientDetails = patient
 }
 
@@ -459,13 +486,20 @@ export const patientDocumentsSuccess = (state, documents) => {
     state.deleteDocument = data
  }
 
+  export const latestDocumentSuccess = (state, data) => {
+    state.latestDocument = data
+ }
+
+  export const latestDeviceSuccess = (state, data) => {
+    state.latestDevice = data
+ }
+
   export const errorMsg = (state, data) => {
     state.errorMsg = data
  }
 
 
  export const patientsPermissions = (state, auth) => {
-  console.log(auth)
   if (auth == 1) {
 
     state.patientsPermissions = [{
