@@ -105,11 +105,75 @@ export const tasksListSuccess = async (state, tasks) => {
 
 export const taskStatusSuccess = async (state, status) => {
   state.taskStatus = status;
-}
+  state.incompleteAllTask = status.map(item=>item.total)
+  state.completedAllTask = {
+      chart: {
+        type: "pie",
+      },
+      labels: status.map(item=>item.text),
+      colors: status.map(item=>item.color),
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200,
+            },
+            legend: {
+              position: "bottom",
+            },
+          },
+        },
+      ],
+    }
+
+
+
+// for completion
+
+state.completionSeries = status.map(item=>{
+  item.name =item.text,
+  item.data= status.map(item=>item.total)
+  return item
+})
+
+
+// [
+//   {
+//     name: "Complete",
+//     data: status.map(item=>item.total)
+//   },
+//   {
+//     name: "Incomplete",
+//     data: status.map(item=>item.total)
+//   },
+// ];
+  state.completionOptions = {
+    chart: {
+      height: 412,
+      type: "area",
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    colors: ["#0fb5c2", "#ff6061"],
+    stroke: {
+      curve: "smooth",
+    },
+    // xaxis: {
+    //   type: "datetime",
+    //   categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z"],
+    // },
+    tooltip: {
+      x: {
+        format: "dd/MM/yy HH:mm",
+      },
+    },
+  };
+
+  }
 
 export const taskPriority = async (state, priorities) => {
-  
-
   state.taskPriority ={
     optionPriority: {
       annotations: {
@@ -164,8 +228,6 @@ export const taskPriority = async (state, priorities) => {
 
 
 export const taskTeamMember = async (state, TeamMember) => {
-  
-
   state.taskTeamMember ={
     optionTeamMember: {
       annotations: {

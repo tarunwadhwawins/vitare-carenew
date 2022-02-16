@@ -21,10 +21,10 @@
                     <Button :name="buttonName" @click="showModal" />
                   </div>
                   <div class="filter">
-                    <button class="btn" :class="toggle ? 'active' : ''" @click="toggle = !toggle">
+                    <button class="btn" :class="toggle ? 'active' : ''" @click="toggleButton()">
                       <span class="btn-content">{{$t('tasks.dashboardView')}}</span>
                     </button>
-                    <button class="btn" :class="toggle ? '' : 'active'" @click="toggle = !toggle">
+                    <button class="btn" :class="toggle ? '' : 'active'" @click="toggleButton()">
                       <span class="btn-content">{{$t('global.listView')}}</span>
                     </button>
                   </div>
@@ -43,6 +43,7 @@
             </div>
 
           </div>
+          <Loader />
         </a-layout-content>
       </a-layout>
     </a-layout>
@@ -61,6 +62,7 @@ import Button from "@/components/common/button/Button";
 import TasksDashboardView from "@/components/tasks/TasksDashboardView";
 import TasksListView from "@/components/tasks/TasksListView";
 import {useStore} from "vuex"
+import Loader from "@/components/loader/Loader";
 export default {
   components: {
     Header,
@@ -69,6 +71,7 @@ export default {
     Button,
     TasksDashboardView,
     TasksListView,
+    Loader
   },
   setup() {
     const store = useStore();
@@ -86,7 +89,16 @@ export default {
     const handleOk = (value) => {
       visible.value = value;
     };
+
+    function toggleButton(){
+      store.commit('loadingStatus', true)
+      setTimeout(()=>{
+        toggle.value=!toggle.value
+        store.commit('loadingStatus', false)
+      },1000)
+    }
     return {
+      toggleButton,
       taskID,
       buttonName: "Add New Task",
       toggle,

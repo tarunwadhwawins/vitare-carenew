@@ -13,6 +13,7 @@ import { appointment } from "./appointment/index"
 import { authentication } from "./authentication/index"
 import { notes } from "./notes/index"
 import { timeLogs } from "./timeLogs/index"
+import { timeLogReport } from "./timeLogReport/index"
 import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
@@ -31,6 +32,7 @@ export default createStore({
     authentication,
     notes,
     timeLogs,
+    timeLogReport
   },
   plugins: [ createPersistedState({
     reducer(state) {

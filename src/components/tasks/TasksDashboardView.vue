@@ -19,13 +19,13 @@
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
       <a-card title="Task Completion over" class="common-card">
-        <ApexChart type="area" :height="250" :options="chartOptions" :series="chartSeries" />
+        <ApexChart type="area" v-if="tasks.completionOptions" :height="250" :options="tasks.completionOptions" :series="tasks.completionSeries" />
       </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
       <a-card title="All Tasks" class="common-card">
         <AllTasksFilter/>
-        <ApexChart type="pie" :height="350" :options="completed" :series="incomplete" />
+        <ApexChart type="pie" v-if="tasks.completedAllTask" :height="350" :options="tasks.completedAllTask" :series="tasks.incompleteAllTask" />
       </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
@@ -77,218 +77,8 @@ export default {
       store.dispatch('taskTeamMember')
       store.dispatch('taskCategory')
     })
-   
 
-    // const incompleteOptions = {
-    //   annotations: {
-    //     points: [
-    //       {
-    //         x: "In",
-    //         seriesIndex: 0,
-    //         label: {
-    //           borderColor: "#775DD0",
-    //           offsetY: 0,
-    //           style: {
-    //             color: "#fff",
-    //             background: "#775DD0",
-    //           },
-    //         },
-    //       },
-    //     ],
-    //   },
-    //   chart: {
-    //     height: 350,
-    //     type: "bar",
-    //   },
-    //   plotOptions: {
-    //     bar: {
-    //       borderRadius: 10,
-    //       columnWidth: "20%",
-    //       barHeight: "100%",
-    //       distributed: true,
-    //       horizontal: false,
-    //       dataLabels: {
-    //         position: "bottom",
-    //       },
-    //     },
-    //   },
-    //   dataLabels: {
-    //     enabled: false,
-    //   },
-    //   colors: ["#E30D2A", "#00897b", "#267dff"],
-    //   stroke: {
-    //     width: 1,
-    //     colors: ["#fff"],
-    //   },
 
-    //   grid: {
-    //     row: {
-    //       colors: ["#fff", "#f2f2f2"],
-    //     },
-    //   },
-    //   xaxis: {
-    //     labels: {
-    //       rotate: -45,
-    //     },
-    //     categories: ["Urgent  ", "High", "Normal"],
-    //   },
-    //   yaxis: {
-    //     title: {
-    //       text: "Task Count",
-    //     },
-    //   },
-    // };
-    // const incompleteSeries = [
-    //   {
-    //     name: "Task Count",
-    //     data: [45, 32, 23],
-    //   },
-    // ];
-
-    // const teamOptions = {
-    //   annotations: {
-    //     points: [
-    //       {
-    //         x: "In",
-    //         seriesIndex: 0,
-    //         label: {
-    //           borderColor: "#775DD0",
-    //           offsetY: 0,
-    //           style: {
-    //             color: "#fff",
-    //             background: "#775DD0",
-    //           },
-    //         },
-    //       },
-    //     ],
-    //   },
-    //   chart: {
-    //     height: 412,
-    //     type: "bar",
-    //   },
-    //   plotOptions: {
-    //     bar: {
-    //       borderRadius: 10,
-    //       columnWidth: "20%",
-    //       barHeight: "100%",
-    //       distributed: true,
-    //       horizontal: false,
-    //       dataLabels: {
-    //         position: "bottom",
-    //       },
-    //     },
-    //   },
-    //   dataLabels: {
-    //     enabled: false,
-    //   },
-    //   colors: ["#3b72c5", "#ffb526", "#419541", "#343470"],
-    //   stroke: {
-    //     width: 1,
-    //     colors: ["#fff"],
-    //   },
-
-    //   grid: {
-    //     row: {
-    //       colors: ["#fff", "#f2f2f2"],
-    //     },
-    //   },
-    //   xaxis: {
-    //     labels: {
-    //       rotate: -45,
-    //     },
-    //     categories: ["Badger ", "Devin ", "Matt ", "John"],
-    //   },
-    //   yaxis: {
-    //     title: {
-    //       text: "Task Count",
-    //     },
-    //   },
-    // };
-    // const teamSeries = [
-    //     {
-    //       name: "Task Count",
-    //       data: [34, 23, 12, 15],
-    //     },
-    // ];
-
-    const chartOptions = {
-      chart: {
-        height: 412,
-        type: "area",
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      colors: ["#0fb5c2", "#ff6061"],
-      stroke: {
-        curve: "smooth",
-      },
-      // xaxis: {
-      //   type: "datetime",
-      //   categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z"],
-      // },
-      tooltip: {
-        x: {
-          format: "dd/MM/yy HH:mm",
-        },
-      },
-    };
-    const chartSeries = [
-      {
-        name: "Complete",
-        data: [50, 90],
-      },
-      {
-        name: "Incomplete",
-        data: [8, 10],
-      },
-    ];
-
-    const incomplete = [4567, 1000];
-    const completed = {
-      chart: {
-        type: "pie",
-      },
-      labels: ["Completed", "Incomplete"],
-      colors: ["#0fb5c2", "#ff6061"],
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200,
-            },
-            legend: {
-              position: "bottom",
-            },
-          },
-        },
-      ],
-    };
-
-    // const business = [45, 12, 23, 20];
-    // const premium = {
-    //   chart: {
-    //     width: 412,
-    //     type: "pie",
-    //   },
-    //   labels: ["Clinical", "Comm", "Admin", "Internal"],
-    //   colors: ["#0fb5c2", "#40a9ff", "#267dff", "#8e60ff"],
-    //   responsive: [
-    //     {
-    //       breakpoint: 480,
-    //       options: {
-    //         chart: {
-    //           width: 200,
-    //         },
-    //         legend: {
-    //           position: "bottom",
-    //         },
-    //       },
-    //     },
-    //   ],
-    // };
-    
     const CompletedTasksFilterCount = [{
       key: 0,
       text: 'Urgent',
@@ -299,26 +89,7 @@ export default {
       text: '2nd Menu Item',
       link: 'http://www.taobao.com/',
     }];
-    const IncompleteTasksFilterCount = [{
-      key: 0,
-      text: '1st Menu Item',
-      link: 'http://www.alipay.com/',
-    },
-    {
-      key: 1,
-      text: '2nd Menu Item',
-      link: 'http://www.taobao.com/',
-    }];
-    const OverdueTasksFilterCount = [{
-      key: 0,
-      text: '1st Menu Item',
-      link: 'http://www.alipay.com/',
-    },
-    {
-      key: 1,
-      text: '2nd Menu Item',
-      link: 'http://www.taobao.com/',
-    }];
+    
 
     const tasks = computed(()=>{
       return store.state.tasks
@@ -329,19 +100,7 @@ export default {
       clickHandler,
       clickHandler2,
       toggle,
-      // incompleteOptions,
-      // incompleteSeries,
-      // teamOptions,
-      // teamSeries,
-      chartOptions,
-      chartSeries,
-      incomplete,
-      completed,
-      // business,
-      // premium,
       CompletedTasksFilterCount,
-      IncompleteTasksFilterCount,
-      OverdueTasksFilterCount,
     }
   }
 }

@@ -50,7 +50,7 @@
           </a-tooltip>
         </template>
       </a-table>
-      <Loader />
+      <!-- <Loader /> -->
     </a-col>
   </a-row>
 </template>
@@ -67,7 +67,7 @@ import { useStore } from "vuex"
 import SearchField from "@/components/common/input/SearchField";
 import { messages } from '@/config/messages';
 import { warningSwal } from "@/commonMethods/commonMethod"
-import Loader from "@/components/loader/Loader";
+// import Loader from "@/components/loader/Loader";
 
 export default {
   components: {
@@ -75,7 +75,7 @@ export default {
     EditOutlined,
     CalendarOutlined,
     SearchField,
-    Loader
+    // Loader
   },
   setup(props, {emit}) {
     const store = useStore()

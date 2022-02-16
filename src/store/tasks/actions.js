@@ -8,14 +8,17 @@ export const tasksList = async ({ commit }) => {
 		// console.log('tasksListSuccess', response.data.data)
 		commit('tasksListSuccess', response.data.data);
 		commit('loadingStatus', false)
-	})
-		.catch((error) => {
-			if (error.response.status == 401) {
-				//AuthService.logout();
+	}).catch((error) => {
+			if (error.response.status === 422) {
+				commit('errorMsg', error.response.data)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 500) {
+				errorSwal(error.response.data.message)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 401) {
+				// commit('errorMsg', error.response.data.message)
+				commit('loadingStatus', false)
 			}
-			commit('failure', error.response.data);
-			errorSwal(error.response.data.message)
-			commit('loadingStatus', false)
 		})
 }
 
@@ -24,8 +27,7 @@ export const addTask = async ({ commit }, data) => {
 		// console.log('addTaskSuccess', response.data.data);
 		successSwal(response.data.message)
 		commit('addTask', response.data.data);
-	})
-		.catch((error) => {
+	}).catch((error) => {
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data)
 				commit('loadingStatus', false)
@@ -46,8 +48,7 @@ export const editTask = async ({ commit }, id) => {
 	await ServiceMethodService.common("get", `task/${id}`, null, null).then((response) => {
 		commit('editTask', response.data.data);
 		commit('loadingStatus', false)
-	})
-		.catch((error) => {
+	}).catch((error) => {
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data)
 				commit('loadingStatus', false)
@@ -67,8 +68,7 @@ export const tasksDelete = async ({ commit }, id) => {
 		successSwal(response.data.message)
 		commit('tasksDelete', response.data.data);
 		commit('loadingStatus', false)
-	})
-		.catch((error) => {
+	}).catch((error) => {
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data)
 				commit('loadingStatus', false)
@@ -88,8 +88,7 @@ export const updateTask = async ({ commit }, data) => {
 		commit('updateTask', response.data.data);
 		successSwal(response.data.message)
 		commit('loadingStatus', false)
-	})
-		.catch((error) => {
+	}).catch((error) => {
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data)
 				commit('loadingStatus', false)
@@ -104,62 +103,95 @@ export const updateTask = async ({ commit }, data) => {
 }
 
 export const taskStatus = async ({ commit }) => {
+	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", API_ENDPOINTS['taskStatus'], null, null).then((response) => {
 		// console.log('taskStatusSuccess', response.data.data);
 		commit('taskStatusSuccess', response.data.data);
-	})
-		.catch((error) => {
-			if (error.response.status == 401) {
-				//AuthService.logout();
+		commit('loadingStatus', false)
+	}).catch((error) => {
+			if (error.response.status === 422) {
+				commit('errorMsg', error.response.data)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 500) {
+				errorSwal(error.response.data.message)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 401) {
+				// commit('errorMsg', error.response.data.message)
+				commit('loadingStatus', false)
 			}
-			commit('failure', error.response.data);
 		})
 }
 
 export const taskPriority = async ({ commit }) => {
+	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", API_ENDPOINTS['taskPriority'], null, null).then((response) => {
 		commit('taskPriority', response.data.data);
-	})
-		.catch((error) => {
-			if (error.response.status == 401) {
-				//
+		commit('loadingStatus', false)
+	}).catch((error) => {
+			if (error.response.status === 422) {
+				commit('errorMsg', error.response.data)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 500) {
+				errorSwal(error.response.data.message)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 401) {
+				// commit('errorMsg', error.response.data.message)
+				commit('loadingStatus', false)
 			}
-			commit('failure', error.response.data);
 		})
 }
 
 export const taskTeamMember = async ({ commit }) => {
+	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", API_ENDPOINTS['taskTeamMember'], null, null).then((response) => {
 		commit('taskTeamMember', response.data.data);
-	})
-		.catch((error) => {
-			if (error.response.status == 401) {
-				//
+		commit('loadingStatus', false)
+	}).catch((error) => {
+			if (error.response.status === 422) {
+				commit('errorMsg', error.response.data)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 500) {
+				errorSwal(error.response.data.message)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 401) {
+				// commit('errorMsg', error.response.data.message)
+				commit('loadingStatus', false)
 			}
-			commit('failure', error.response.data);
 		})
 }
 
 export const taskCategory = async ({ commit }) => {
+	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", API_ENDPOINTS['taskCategory'], null, null).then((response) => {
 		commit('taskCategory', response.data.data);
-	})
-		.catch((error) => {
-			if (error.response.status == 401) {
-				//
+		commit('loadingStatus', false)
+	}).catch((error) => {
+			if (error.response.status === 422) {
+				commit('errorMsg', error.response.data)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 500) {
+				errorSwal(error.response.data.message)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 401) {
+				// commit('errorMsg', error.response.data.message)
+				commit('loadingStatus', false)
 			}
-			commit('failure', error.response.data);
 		})
 }
 
 export const searchTasks = async ({ commit }, params) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['searchTasks'] + '?search=' + params, null, null).then((response) => {
 		commit('searchTasksSuccess', response.data.data);
-	})
-		.catch((error) => {
-			if (error.response.status == 401) {
-				//AuthService.logout();
+	}).catch((error) => {
+			if (error.response.status === 422) {
+				commit('errorMsg', error.response.data)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 500) {
+				errorSwal(error.response.data.message)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 401) {
+				// commit('errorMsg', error.response.data.message)
+				commit('loadingStatus', false)
 			}
-			commit('failure', error.response.data);
 		})
 }

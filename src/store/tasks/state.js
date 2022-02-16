@@ -11,5 +11,10 @@ export default {
     business:null,
     premium:null
   },
+  incompleteAllTask:null,
+  completedAllTask:null,
+  completionSeries:null,
+  completionOptions:null
+
 
 }

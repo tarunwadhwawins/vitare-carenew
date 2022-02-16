@@ -218,6 +218,7 @@ export default defineComponent({
         store.dispatch('taskStatus')
         store.dispatch('taskPriority')
         store.dispatch('taskTeamMember')
+        store.dispatch('taskCategory')
         Object.assign(taskForm, form)
         emit('saveTaskModal', false)
         }
