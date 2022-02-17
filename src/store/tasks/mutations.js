@@ -116,3 +116,7 @@ export const addTaskSuccess = async (state, result) => {
   state.addTaskSuccess = result;
 }
 
+export const letastTaskSuccess = async (state, result) => {
+  state.letastTask = result;
+}
+
