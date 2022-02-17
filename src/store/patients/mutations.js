@@ -469,30 +469,30 @@ export const addDemographic = (state, data) => {
  }
 
 export const patientDetailsSuccess = (state, patient) => {
-  patient.emergencyFullName = patient.emergencyContact.data.fullName
-  patient.emergencyEmail = patient.emergencyContact.data.email
-  patient.emergencyPhoneNumber = patient.emergencyContact.data.phoneNumber
-  patient.emergencyContactType = JSON.parse(patient.emergencyContact.data.contactType)
-  patient.emergencyContactTime = JSON.parse(patient.emergencyContact.data.contactTimeId)
-  patient.emergencyGender = patient.emergencyContact.data.genderId
+  patient.emergencyFullName = patient.emergencyContact.data.fullName;
+  patient.emergencyEmail = patient.emergencyContact.data.email;
+  patient.emergencyPhoneNumber = patient.emergencyContact.data.phoneNumber;
+  patient.emergencyContactType = patient.emergencyContact.data.contactType ? JSON.parse(patient.emergencyContact.data.contactType) : [];
+  patient.emergencyContactTime = patient.emergencyContact.data.contactTimeId ? JSON.parse(patient.emergencyContact.data.contactTimeId) : null;
+  patient.emergencyGender = patient.emergencyContact.data.genderId;
   
-  patient.fullName = patient.patientFamilyMember.data.fullName
-  patient.familyEmail = patient.patientFamilyMember.data.email
-  patient.familyPhoneNumber = patient.patientFamilyMember.data.phoneNumber
-  patient.familyContactType = JSON.parse(patient.patientFamilyMember.data.contactType)
-  patient.familyContactTime = JSON.parse(patient.patientFamilyMember.data.contactTimeId)
-  patient.familyGender = patient.patientFamilyMember.data.genderId
+  patient.fullName = patient.patientFamilyMember.data.fullName;
+  patient.familyEmail = patient.patientFamilyMember.data.email;
+  patient.familyPhoneNumber = patient.patientFamilyMember.data.phoneNumber;
+  patient.familyContactType = patient.patientFamilyMember.data.contactType ? JSON.parse(patient.patientFamilyMember.data.contactType) : [];
+  patient.familyContactTime = patient.patientFamilyMember.data.contactTimeId ? JSON.parse(patient.patientFamilyMember.data.contactTimeId) : null;
+  patient.familyGender = patient.patientFamilyMember.data.genderId;
   
-  patient.isPrimary = patient.patientFamilyMember.data.fullName == patient.emergencyContact.data.fullName ? true : false
+  patient.isPrimary = patient.patientFamilyMember.data.fullName == patient.emergencyContact.data.fullName ? true : false;
   
-  patient.relation = patient.patientFamilyMember.data.relationId
-  patient.country = patient.countryId
-  patient.state = patient.stateId
-  patient.language = patient.languageId
-  patient.gender = patient.genderId
-  patient.contactTime = patient.contactTimeId
-  patient.contactType = JSON.parse(patient.contactType)
-  patient.otherLanguage = JSON.parse(patient.otherLanguage)
+  patient.relation = patient.patientFamilyMember.data.relationId;
+  patient.country = patient.countryId;
+  patient.state = patient.stateId;
+  patient.language = patient.languageId;
+  patient.gender = patient.genderId;
+  patient.contactTime = patient.contactTimeId;
+  patient.contactType = patient.contactType ? JSON.parse(patient.contactType) : null;
+  patient.otherLanguage = patient.otherLanguage ? JSON.parse(patient.otherLanguage) : null;
 
   console.log('patient', patient)
 
