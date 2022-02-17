@@ -125,8 +125,8 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="contactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
                                     <a-select ref="select" v-model:value="demographics.contactTime" style="width: 100%" size="large" @change="handleChange">
-                                        <a-select-option value="" disabled>{{'Select Preferred Time'}}</a-select-option>
-                                        <a-select-option v-for="ptOfDayContact in globalCode.ptOfDayContact.globalCode" :key="ptOfDayContact.id" :value="ptOfDayContact.id">{{ptOfDayContact.name}}</a-select-option>
+                                        <a-select-option value="" hidden>{{'Select Preferred Time'}}</a-select-option>
+                                        <a-select-option v-for="ptOfDayContact in globalCode.ptOfDayContact.globalCode" :key="ptOfDayContact.id" :value="patientDetail != null ? patientDetail.contactTime : ptOfDayContact.id">{{ptOfDayContact.name}}</a-select-option>
                                     </a-select>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.contactTime?errorMsg.contactTime[0]:''" />
                                 </a-form-item>
@@ -252,7 +252,7 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.gender')" name="familyGender" :rules="[{ required: false, message: $t('global.gender')+' '+$t('global.validation') }]">
                                     <a-select ref="select" v-model:value="demographics.familyGender" style="width: 100%" size="large" @change="handleChange">
-                                        <a-select-option value="" disabled>{{'Select Gender'}}</a-select-option>
+                                        <a-select-option value="" hidden>{{'Select Gender'}}</a-select-option>
                                         <a-select-option v-for="gender in globalCode.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
                                     </a-select>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyGender?errorMsg.familyGender[0]:''" />
@@ -263,8 +263,8 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.relation')" name="relation" :rules="[{ required: false, message: $t('global.relation')+' '+$t('global.validation') }]">
                                     <a-select ref="select" v-model:value="demographics.relation" style="width: 100%" size="large" @change="handleChange">
-                                        <a-select-option value="" disabled>{{'Select Relation'}}</a-select-option>
-                                        <a-select-option v-for="relation in globalCode.relation.globalCode" :key="relation.id" :value="relation.id">{{relation.name}}</a-select-option>
+                                        <a-select-option value="" hidden>{{'Select Relation'}}</a-select-option>
+                                        <a-select-option v-for="relation in globalCode.relation.globalCode" :key="relation.id" :value="patientDetail.patientFamilyMember.data ? patientDetail.patientFamilyMember.data.relation : relation.id">{{relation.name}}</a-select-option>
                                     </a-select>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.relation?errorMsg.relation[0]:''" />
                                 </a-form-item>
@@ -737,14 +737,12 @@ export default {
     // const current = computed(() => {
     //   return store.state.patients.counter;
     // });
-    const idPatient = reactive(props.patientId)
-    console.log('idPatient', idPatient)
+    const idPatient = props.patientId ? reactive(props.patientId) : null;
 
     const patients = computed(() => {
       return store.state.patients;
     });
     const patientDetail = patients.value.patientDetails;
-    console.log('patientDetail', patientDetail);
 
     const current= computed({
       get: () =>
@@ -792,6 +790,8 @@ export default {
       emergencyContactTime: "",
       emergencyGender: "",
       isPrimary: false,
+      familyMemberId: '',
+      emergencyId: '',
     });
 
 
@@ -826,52 +826,96 @@ export default {
     });
 
     const demographic = () => {
-      if (
-        demographics.isPrimary == true &&
-        patients.value.addDemographic == null &&
-        idPatient == null
-      ) {
-        (demographics.emergencyFullName = demographics.fullName),
-          (demographics.emergencyEmail = demographics.familyEmail),
-          (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
-          (demographics.emergencyContactType = demographics.familyContactType),
-          (demographics.emergencyContactTime = demographics.familyContactTime),
-          (demographics.emergencyGender = demographics.familyGender),
-          store.dispatch("addDemographic", demographics);
-      }
-      if (
-        demographics.isPrimary == false &&
-        patients.value.addDemographic == null &&
-        idPatient == null
-      ) {
-        store.dispatch("addDemographic", demographics);
-      }
-      if ((patients.value.addDemographic.id && demographics.isPrimary == true) || idPatient != null) {
-        (demographics.emergencyFullName = demographics.fullName),
-          (demographics.emergencyEmail = demographics.familyEmail),
-          (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
-          (demographics.emergencyContactType = demographics.familyContactType),
-          (demographics.emergencyContactTime = demographics.familyContactTime),
-          (demographics.emergencyGender = demographics.familyGender),
-          store.dispatch("updateDemographic", {
-            data: demographics,
-            id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
-            emergencyContactID:
-              patients.value.addDemographic.emergencyContact.data.id,
-            patientFamilyMemberID:
-              patients.value.addDemographic.patientFamilyMember.data.id,
-          });
-      }
-      if ((patients.value.addDemographic.id && demographics.isPrimary == false) || idPatient != null) {
-        store.dispatch("updateDemographic", {
-          data: demographics,
-          id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
-          emergencyContactID:
-            patients.value.addDemographic.emergencyContact.data.id,
-          patientFamilyMemberID:
-            patients.value.addDemographic.patientFamilyMember.data.id,
-        });
-      }
+        if(idPatient != null) {
+            if(patients.value.addDemographic == null) {
+                if(demographics.isPrimary == false) {
+                    (demographics.emergencyId = patients.value.patientDetails.emergencyContact.length > 0 ? patients.value.patientDetails.emergencyContact.data.id : ''),
+                    (demographics.familyMemberId = patients.value.patientDetails.patientFamilyMember.length > 0 ? patients.value.patientDetails.patientFamilyMember.data.id : ''),
+                    store.dispatch("updateDemographic", {
+                        data: demographics,
+                        id: idPatient,
+                    });
+                }
+                else if(demographics.isPrimary == true) {
+                    (demographics.emergencyFullName = demographics.fullName),
+                    (demographics.emergencyEmail = demographics.familyEmail),
+                    (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
+                    (demographics.emergencyContactType = demographics.familyContactType),
+                    (demographics.emergencyContactTime = demographics.familyContactTime),
+                    (demographics.emergencyGender = demographics.familyGender),
+                    (demographics.emergencyId = patients.value.patientDetails.emergencyContact.data ? patients.value.patientDetails.emergencyContact.data.id : ''),
+                    (demographics.familyMemberId = patients.value.patientDetails.patientFamilyMember.data ? patients.value.patientDetails.patientFamilyMember.data.id : ''),
+                    store.dispatch("updateDemographic", {
+                        data: demographics,
+                        id: idPatient,
+                    });
+                }
+            }
+            else if(patients.value.addDemographic != null && patients.value.addDemographic.id) {
+                if(demographics.isPrimary == false) {
+                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.length > 0 ? patients.value.addDemographic.emergencyContact.data.id : ''),
+                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.length > 0 ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
+                    store.dispatch("updateDemographic", {
+                        data: demographics,
+                        id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
+                    });
+                }
+                else if(demographics.isPrimary == true) {
+                    (demographics.emergencyFullName = demographics.fullName),
+                    (demographics.emergencyEmail = demographics.familyEmail),
+                    (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
+                    (demographics.emergencyContactType = demographics.familyContactType),
+                    (demographics.emergencyContactTime = demographics.familyContactTime),
+                    (demographics.emergencyGender = demographics.familyGender),
+                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.length > 0 ? patients.value.addDemographic.emergencyContact.data.id : ''),
+                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.length > 0 ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
+                    store.dispatch("updateDemographic", {
+                        data: demographics,
+                        id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
+                    });
+                }
+            }
+        }
+        else {
+            if(patients.value.addDemographic == null) {
+                if(demographics.isPrimary == false) {
+                    store.dispatch("addDemographic", demographics);
+                }
+                else if(demographics.isPrimary == true) {
+                    (demographics.emergencyFullName = demographics.fullName),
+                    (demographics.emergencyEmail = demographics.familyEmail),
+                    (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
+                    (demographics.emergencyContactType = demographics.familyContactType),
+                    (demographics.emergencyContactTime = demographics.familyContactTime),
+                    (demographics.emergencyGender = demographics.familyGender),
+                    store.dispatch("addDemographic", demographics);
+                }
+            }
+            else if(patients.value.addDemographic != null && patients.value.addDemographic.id) {
+                if(demographics.isPrimary == false) {
+                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.length > 0 ? patients.value.addDemographic.emergencyContact.data.id : ''),
+                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.length > 0 ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
+                    store.dispatch("updateDemographic", {
+                        data: demographics,
+                        id: patients.value.addDemographic.id,
+                    });
+                }
+                else if(demographics.isPrimary == true) {
+                    (demographics.emergencyFullName = demographics.fullName),
+                    (demographics.emergencyEmail = demographics.familyEmail),
+                    (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
+                    (demographics.emergencyContactType = demographics.familyContactType),
+                    (demographics.emergencyContactTime = demographics.familyContactTime),
+                    (demographics.emergencyGender = demographics.familyGender),
+                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.length > 0 ? patients.value.addDemographic.emergencyContact.data.id : ''),
+                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.length > 0 ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
+                    store.dispatch("updateDemographic", {
+                        data: demographics,
+                        id: patients.value.addDemographic.id,
+                    });
+                }
+            }
+        }
     };
 
     const next = () => {
@@ -1102,6 +1146,7 @@ export default {
       conditions,
       demographicsFailed,
       idPatient,
+      patientDetail,
     };
   },
 };

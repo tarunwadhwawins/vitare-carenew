@@ -1,9 +1,9 @@
 import ServiceMethodService from '../../services/serviceMethod';
 import { API_ENDPOINTS } from "../../config/apiConfig"
 
-export const addNote = async ({ commit }, data) => {
+export const addNote = async ({ commit }, {id, data}) => {
 	console.log('data', data)
-	await ServiceMethodService.common("post", API_ENDPOINTS['notes'], null, data).then((response) => {
+	await ServiceMethodService.common("post", API_ENDPOINTS['patient']+'/'+id+'/notes', null, data).then((response) => {
 		commit('addNoteSuccess', response.data.data);
 	})
 	.catch((error) => {
@@ -14,8 +14,8 @@ export const addNote = async ({ commit }, data) => {
 	})
 }
 
-export const notesList = async ({ commit }) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['notes'], null, null).then((response) => {
+export const notesList = async ({ commit }, id) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['patient']+'/'+id+'/notes', null, null).then((response) => {
 		commit('notesListSuccess', response.data.data);
 	})
 	.catch((error) => {
@@ -27,7 +27,7 @@ export const notesList = async ({ commit }) => {
 }
 
 export const latestNotes = async ({ commit }, id) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['notes']+'?latest=latest&id='+id, null, null).then((response) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['patient']+'/'+id+'/notes'+'?latest=latest&id='+id, null, null).then((response) => {
 		commit('latestNotesSuccess', response.data.data);
 	})
 	.catch((error) => {

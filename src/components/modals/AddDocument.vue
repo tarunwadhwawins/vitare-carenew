@@ -84,7 +84,7 @@ export default defineComponent({
       name: '',
       document: '',
       type: '',
-      tags: '',
+      tags: ref([]),
       entity: 'patient',
       id: '',
     })

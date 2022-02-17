@@ -147,12 +147,14 @@ import { useStore } from "vuex"
 import ModalButtons from "@/components/common/button/ModalButtons";
 import {timeStamp,warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
+import { useRoute } from "vue-router";
 export default defineComponent({
   components: {
     ModalButtons
   },
   setup(props, {emit}) {
     const store = useStore()
+    const route = useRoute()
     const toggleTo= ref(false)
     const formRef =ref()
     const visible = ref(true)
@@ -182,6 +184,7 @@ export default defineComponent({
       dueDate: timeStamp(taskForm.dueDate),
       entityType:taskForm.entityType
       })
+      store.dispatch('letastTask', route.params.udid)
       emit('closeModal');
     }
     const form = reactive({ ...taskForm })

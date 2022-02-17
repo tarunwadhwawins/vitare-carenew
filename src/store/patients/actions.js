@@ -26,7 +26,7 @@ export const addDemographic = async ({commit}, data) => {
 
 export const updateDemographic = async ({commit}, data) => {
   commit('loadingStatus', true)
-  await serviceMethod.common("put", `patient/${data.id}/familyMember/${data.patientFamilyMemberID}/emergency/${data.emergencyContactID}`, null, data.data).then((response) => {
+  await serviceMethod.common("put", `patient/${data.id}`, null, data.data).then((response) => {
     commit('updateDemographic', response.data.data);
     // successSwal(response.data.message)
     commit('loadingStatus', false)

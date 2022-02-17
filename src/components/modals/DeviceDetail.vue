@@ -37,6 +37,7 @@ import {
 import { useStore } from "vuex";
 import {warningSwal} from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
+import { useRoute } from "vue-router";
 export default defineComponent({
   components: {
     DeleteOutlined,
@@ -49,6 +50,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
+    const route = useRoute();
     const patientDetail = reactive(props.patientDetails);
     watchEffect(() => {
       store.dispatch('devices', patientDetail.id)
@@ -88,12 +90,13 @@ export default defineComponent({
     const deleteDevice = (id) => {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
-      store.dispatch('deleteDevice', {
-        id: patientDetail.id,
-        deviceId: id,
-      }).then(() => {
-        store.dispatch('devices', patientDetail.id);
-      });
+        store.dispatch('deleteDevice', {
+          id: patientDetail.id,
+          deviceId: id,
+        }).then(() => {
+          store.dispatch('devices', patientDetail.id);
+          store.dispatch('latestDevice', route.params.udid)
+        });
       }
       })
     }

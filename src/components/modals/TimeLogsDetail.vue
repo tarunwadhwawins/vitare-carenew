@@ -22,6 +22,7 @@ import {
 import { useStore } from "vuex";
 import {warningSwal} from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -30,6 +31,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
+    const route = useRoute();
     
     const timeLogColumns = [
       {
@@ -79,18 +81,20 @@ export default defineComponent({
     ];
     
     watchEffect(() => {
-      store.dispatch('timeLogsList')
+      store.dispatch('timeLogsList', route.params.udid)
     })
 
     const timeLogsList =  computed(() => {
       return store.state.timeLogs.timeLogsList
     })
 
-    const deleteTimeLog = (udid) => {
+    const deleteTimeLog = (timeLogId) => {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
-          store.dispatch('deleteTimeLog', udid).then(() => {
-            store.dispatch('timeLogsList');
+          const patientId = route.params.udid;
+          store.dispatch('deleteTimeLog', {patientId, timeLogId}).then(() => {
+            store.dispatch('timeLogsList', patientId);
+            store.dispatch('latestTimeLog', patientId)
           });
         }
       })

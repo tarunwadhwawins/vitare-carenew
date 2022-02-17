@@ -31,6 +31,7 @@ import {
 import { useStore } from "vuex";
 import {warningSwal} from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -44,6 +45,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
+    const route = useRoute();
     const patientId = reactive(props.patientDetails.udid);
     const documentsColumns = [
       {
@@ -107,6 +109,7 @@ export default defineComponent({
           console.log('data', data);
           store.dispatch('deleteDocument', data).then(() => {
             store.dispatch('patientDocuments', patientId)
+            store.dispatch('latestDocument', route.params.udid)
           })
         }
       })

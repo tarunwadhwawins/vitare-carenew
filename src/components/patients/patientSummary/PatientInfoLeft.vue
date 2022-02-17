@@ -4,7 +4,7 @@
       <img v-if="patientDetails.profilePhoto" :src="patientDetails.profilePhoto" alt="image"/>
       <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
       <div class="info">
-        <p>{{ patientDetails.fullName }}</p>
+        <p>{{ patientDetails.patientFullName }}</p>
         <p>DOB : {{ patientDetails.dob }}</p>
         <p><a href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a>
         </p>
@@ -37,7 +37,7 @@
         </div>
         <div class="thumb-desc">
           <router-link :to="'/appointment-calendar/'+patientDetails.udid">
-          {{ latestAppointment.staff.fullName }} {{ latestAppointment.date }}
+          {{ latestAppointment != null && latestAppointment.staff ? latestAppointment.staff.fullName+' '+latestAppointment.date : '' }}
           </router-link>
         </div>
       </div>
@@ -47,7 +47,7 @@
           Task <PlusOutlined @click="addTaskModal" /><br />
         </div>
         <div class="thumb-desc">
-          <router-link to="/tasks"> Task 1 </router-link>
+          <router-link to="/tasks">{{ letastTask ? letastTask.title : ''}}</router-link>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -65,7 +65,7 @@
           Notes <PlusOutlined @click="addNotesModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showNotesModal" >{{ latestNotes.note }}</a>
+          <a href="javascript:void(0)" @click="showNotesModal" >{{ latestNotes != null ? latestNotes.note : '' }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -73,7 +73,7 @@
           Documents <PlusOutlined @click="addDocumentsModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showDocumentsModal" >{{ latestDocument.name }}</a>
+          <a href="javascript:void(0)" @click="showDocumentsModal" >{{ latestDocument != null ? latestDocument.name : '' }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -89,7 +89,7 @@
           TimeLogs <PlusOutlined @click="addTimelogModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showTimelogModal" >{{ latestTimeLog.category }}({{ latestTimeLog.date }})</a>
+          <a href="javascript:void(0)" @click="showTimelogModal" >{{ latestTimeLog && latestTimeLog.category != null ? latestTimeLog.category+' '+latestTimeLog.date : '' }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -97,16 +97,16 @@
           Devices <PlusOutlined @click="addDeviceModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showDeviceModal" >{{ latestDevice.deviceType }} ({{ latestDevice.modelNumber }})</a>
+          <a href="javascript:void(0)" @click="showDeviceModal" >{{ latestDevice != null && latestDevice.deviceType ? latestDevice.deviceType+'('+latestDevice.modelNumber+')' : '' }}</a>
         </div>
       </div>
     </div>
   </div>
   
-  <PatientsModal v-if="patientsModalVisible == true" v-model:visible="patientsModalVisible" :patientId="patientId" :isEditPatient="isEditPatient" @closeModal="handleOk" />
+  <PatientsModal v-if="patientsModalVisible == true" v-model:visible="patientsModalVisible" :patientId="patientDetails.id" :isEditPatient="isEditPatient" @closeModal="handleOk" />
   <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" @closeModal="handleOk" />
   <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" @closeModal="handleOk" />
-  <AddVitalsModal v-if="addVitalsVisible == true" v-model:visible="addVitalsVisible" @closeModal="handleOk" />
+  <AddVitalsModal v-if="addVitalsVisible == true" v-model:visible="addVitalsVisible" @closeModal="handleOk" :patientId="patientDetails.id" />
   <BloodPressureDetail v-if="bloodPressureVisible == true" v-model:visible="bloodPressureVisible" @closeModal="handleOk" />
   <AddNotesModal v-if="addNoteVisible == true" v-model:visible="addNoteVisible" @closeModal="handleOk" />
   <NotesDetailModal v-if="notesDetailVisible == true" v-model:visible="notesDetailVisible" @closeModal="handleOk" />
@@ -197,23 +197,28 @@ export default {
     const deviceDetailVisible = ref(false);
 
     watchEffect(() => {
-      store.dispatch('patientDetails', route.params.udid)
-      store.dispatch('latestAppointment', route.params.udid)
-      store.dispatch('latestNotes', route.params.udid)
-      store.dispatch('latestDocument', route.params.udid)
-      store.dispatch('latestTimeLog', route.params.udid)
-      store.dispatch('latestDevice', route.params.udid)
+      if(route.params.udid) {
+        store.dispatch('patientDetails', route.params.udid)
+        store.dispatch('latestAppointment', route.params.udid)
+        store.dispatch('letastTask', route.params.udid)
+        store.dispatch('latestNotes', route.params.udid)
+        store.dispatch('latestDocument', route.params.udid)
+        store.dispatch('latestTimeLog', route.params.udid)
+        store.dispatch('latestDevice', route.params.udid)
+      }
     })
     const patientDetails = computed(() => {
       return store.state.patients.patientDetails
     })
-    const patientId = 1;
-    // const patientId = patientDetails.value.id;
+    
     const latestNotes = computed(() => {
       return store.state.notes.latestNotes
     })
     const latestAppointment = computed(() => {
       return store.state.appointment.latestAppointment
+    })
+    const letastTask = computed(() => {
+      return store.state.tasks.letastTask
     })
     const latestDocument = computed(() => {
       return store.state.patients.latestDocument
@@ -353,12 +358,12 @@ export default {
       showDeviceModal,
 
       patientDetails,
-      patientId,
       timeLogDetails,
       isEditTimeLog,
       isEditPatient,
 
       latestAppointment,
+      letastTask,
       latestNotes,
       latestDocument,
       latestTimeLog,
