@@ -57,13 +57,14 @@
                                     <span v-if="text.match(/two/g)"><img class="reportFlag" src="../../assets/images/flag-red.svg" alt="image" /></span>
                                 </template>
                                 <template #actions="text">
-                                    <!-- <a-tooltip placement="bottom" @click="editTimeLog(text.text)">
+                                    <a-tooltip placement="bottom" @click="editTimeLog(text.text)">
+                                      <AuditTimeLog v-model:visible="visible" @ok="handleOk($event)"  :Id="text.text"/>
                                         <template #title>
                                             <span>{{$t('global.edit')}}</span>
                                         </template>
                                         <a class="icons">
                                             <EditOutlined /></a>
-                                    </a-tooltip> -->
+                                    </a-tooltip>
                                     <a-tooltip placement="bottom" @click="deleteTimeLog(text.text)">
                                         <template #title>
                                             <span>{{$t('global.delete')}}</span>
@@ -89,13 +90,15 @@
 <script>
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
+import AuditTimeLog from "../modals/AuditTimeLogs"
 import {
     ref,
     watchEffect,
     computed
 } from "vue";
 import {
-    DeleteOutlined
+    DeleteOutlined,
+    EditOutlined
 } from "@ant-design/icons-vue";
 import {
     useStore
@@ -112,8 +115,9 @@ export default {
         Header,
         Sidebar,
         DeleteOutlined,
-        // EditOutlined,
-        Loader
+        EditOutlined,
+        Loader,
+        AuditTimeLog
     },
 
     setup() {
@@ -122,8 +126,10 @@ export default {
         const visible = ref(false);
         const linkTo = "patients-summary";
 
-        const showModal = () => {
-            visible.value = true;
+        const editTimeLog = (id) => {
+          console.log(id)
+          store.dispatch('editAuditTimeLog',id)
+          visible.value = true;
         };
 
         watchEffect(() => {
@@ -136,7 +142,6 @@ export default {
         };
 
         const timeLogReports = computed(() => {
-
             return store.state.timeLogReport
         })
 
@@ -152,12 +157,12 @@ export default {
         }
 
         return {
+            editTimeLog,
             deleteTimeLog,
             timeLogReports,
             linkTo,
             checked,
             visible,
-            showModal,
             handleOk,
             value1: ref(),
             size: ref("large"),

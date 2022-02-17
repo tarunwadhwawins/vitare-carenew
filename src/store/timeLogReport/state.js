@@ -1,5 +1,6 @@
 export default {
   timeLogReportList: null,
-  timeLogReportColumns:null
+  timeLogReportColumns:null,
+  editAuditTimeLog:null
  
 }

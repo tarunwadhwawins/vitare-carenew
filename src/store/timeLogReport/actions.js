@@ -24,6 +24,24 @@ export const timeLogReportList = async ({ commit }) => {
 }
 
 
+export const editAuditTimeLog = async ({ commit },id) => {
+	await ServiceMethodService.common("get", `timeLog/${id}`, null, null).then((response) => {
+		commit('editAuditTimeLog', response.data.data);
+	}).catch((error) => {
+		if (error.response.status === 422) {
+			commit('errorMsg', error.response.data)
+			commit('loadingStatus', false)
+		} else if (error.response.status === 500) {
+			errorSwal(error.response.data.message)
+			commit('loadingStatus', false)
+		} else if (error.response.status === 401) {
+			// commit('errorMsg', error.response.data.message)
+			commit('loadingStatus', false)
+		}
+	})
+}
+
+
 export const updateTimeLog = async ({ commit },data) => {
 	await ServiceMethodService.common("put", `timeLog/${data.uuid}`, null, data).then((response) => {
 		commit('updateTimeLog', response.data.data);

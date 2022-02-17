@@ -1,7 +1,10 @@
 const timeLogReport = {
     auditTimeLog:'Audit Time Log',
     filterBy:'Filter By',
-    view:'View'
+    view:'View',
+    staff:'Staff',
+    patient:'Patient',
+    note:'Note'
   }
 
 

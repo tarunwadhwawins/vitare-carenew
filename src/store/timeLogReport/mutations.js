@@ -59,3 +59,7 @@ export const timeLogReportList = async (state, data) => {
   ];
 }
 
+
+export const editAuditTimeLog = async (state, data) => {
+  state.editAuditTimeLog = data
+}
