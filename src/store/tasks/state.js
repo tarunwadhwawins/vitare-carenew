@@ -14,7 +14,7 @@ export default {
   incompleteAllTask:null,
   completedAllTask:null,
   completionSeries:null,
-  completionOptions:null
-
-
+  completionOptions:null,
+  addTaskSuccess: null,
+  letastTask: null,
 }

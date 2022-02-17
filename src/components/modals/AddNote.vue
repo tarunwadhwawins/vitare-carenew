@@ -84,7 +84,6 @@ export default defineComponent({
       type: "",
       note: "",
       entityType: "patient",
-      id: "",
     })
 
     const handleClear = () => {
@@ -94,10 +93,9 @@ export default defineComponent({
 
     const submitForm = () => {
       addNoteForm.date = timeStamp(addNoteForm.date);
-      addNoteForm.id = route.params.udid;
-      console.log('addNoteForm', addNoteForm);
-      store.dispatch('addNote', addNoteForm).then(() => {
-        store.dispatch('latestNotes', route.params.udid)
+      const patientId = route.params.udid;
+      store.dispatch('addNote', {id: patientId, data: addNoteForm}).then(() => {
+        store.dispatch('latestNotes', patientId)
         emit('closeModal');
       });
     }

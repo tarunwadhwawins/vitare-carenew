@@ -465,21 +465,21 @@ export const addDemographic = (state, data) => {
  }
 
 export const patientDetailsSuccess = (state, patient) => {
-  patient.emergencyFullName = patient.emergencyContact.fullName
-  patient.emergencyEmail = patient.emergencyContact.email
-  patient.emergencyPhoneNumber = patient.emergencyContact.phoneNumber
-  patient.emergencyContactType = patient.emergencyContact.contactTypeId
-  patient.emergencyContactTime = patient.emergencyContact.contactTimeId
-  patient.emergencyGender = patient.emergencyContact.gender
+  patient.emergencyFullName = patient.emergencyContact.data.fullName
+  patient.emergencyEmail = patient.emergencyContact.data.email
+  patient.emergencyPhoneNumber = patient.emergencyContact.data.phoneNumber
+  patient.emergencyContactType = patient.emergencyContact.data.contactTypeId
+  patient.emergencyContactTime = patient.emergencyContact.data.contactTimeId
+  patient.emergencyGender = patient.emergencyContact.data.gender
   
-  patient.fullName = patient.patientFamilyMember.fullName
-  patient.familyEmail = patient.patientFamilyMember.email
-  patient.familyPhoneNumber = patient.patientFamilyMember.phoneNumber
-  patient.familyContactType = patient.patientFamilyMember.contactTypeId
-  patient.familyContactTime = patient.patientFamilyMember.contactTimeId
-  patient.familyGender = patient.patientFamilyMember.gender
+  patient.fullName = patient.patientFamilyMember.data.fullName
+  patient.familyEmail = patient.patientFamilyMember.data.email
+  patient.familyPhoneNumber = patient.patientFamilyMember.data.phoneNumber
+  patient.familyContactType = patient.patientFamilyMember.data.contactTypeId
+  patient.familyContactTime = patient.patientFamilyMember.data.contactTimeId
+  patient.familyGender = patient.patientFamilyMember.data.gender
   
-  patient.isPrimary = patient.patientFamilyMember.fullName == patient.emergencyContact.fullName ? true : false
+  patient.isPrimary = patient.patientFamilyMember.data.fullName == patient.emergencyContact.data.fullName ? true : false
 
   state.patientDetails = patient
 }

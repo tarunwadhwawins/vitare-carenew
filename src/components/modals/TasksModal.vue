@@ -150,6 +150,7 @@ import ModalButtons from "@/components/common/button/ModalButtons";
 import {timeStamp,warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 import Loader from "@/components/loader/Loader";
+import { useRoute } from "vue-router";
 export default defineComponent({
   components: {
     ModalButtons,
@@ -160,6 +161,7 @@ export default defineComponent({
   },
   setup(props, {emit}) {
     const store = useStore()
+    const route = useRoute()
     const toggleTo= ref(false)
     const formRef =ref()
     const visible = ref(true)
@@ -223,6 +225,8 @@ export default defineComponent({
         emit('saveTaskModal', false)
         }
       }, 2000);
+      store.dispatch('letastTask', route.params.udid)
+      emit('closeModal');
     }
 
     const form = reactive({ ...taskForm })

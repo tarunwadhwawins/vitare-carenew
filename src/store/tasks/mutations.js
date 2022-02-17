@@ -338,3 +338,7 @@ export const updateTask = async (state, result) => {
 }
 
 
+export const letastTaskSuccess = async (state, result) => {
+  state.letastTask = result;
+}
+
