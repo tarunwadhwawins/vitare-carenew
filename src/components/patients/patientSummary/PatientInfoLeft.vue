@@ -197,13 +197,15 @@ export default {
     const deviceDetailVisible = ref(false);
 
     watchEffect(() => {
-      store.dispatch('patientDetails', route.params.udid)
-      store.dispatch('latestAppointment', route.params.udid)
-      store.dispatch('letastTask', route.params.udid)
-      store.dispatch('latestNotes', route.params.udid)
-      store.dispatch('latestDocument', route.params.udid)
-      store.dispatch('latestTimeLog', route.params.udid)
-      store.dispatch('latestDevice', route.params.udid)
+      if(route.params.udid) {
+        store.dispatch('patientDetails', route.params.udid)
+        store.dispatch('latestAppointment', route.params.udid)
+        store.dispatch('letastTask', route.params.udid)
+        store.dispatch('latestNotes', route.params.udid)
+        store.dispatch('latestDocument', route.params.udid)
+        store.dispatch('latestTimeLog', route.params.udid)
+        store.dispatch('latestDevice', route.params.udid)
+      }
     })
     const patientDetails = computed(() => {
       return store.state.patients.patientDetails
