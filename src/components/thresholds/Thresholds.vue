@@ -1,12 +1,9 @@
 <template>
-  <div>
+  
     <!---->
-    <a-layout>
-      <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
-        <Header />
-      </a-layout-header>
-      <a-layout>
-        <Sidebar />
+   
+   
+      
         <a-layout-content>
           <div class="common-bg">
             <a-row>
@@ -41,46 +38,22 @@
                   <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
                 </div>
               </a-col>
-              <a-col :sm="24" :xs="24">
-                <a-table
-                  :columns="columns"
-                  :data-source="data"
-                  :scroll="{ x: 900 }"
-                  @change="onChange"
-                >
-                  <template #actions>
-                    <a-tooltip placement="bottom">
-                      <template #title>
-                        <span>{{$t('global.edit')}}</span>
-                      </template>
-                      <a class="icons"><EditOutlined /></a>
-                    </a-tooltip>
-                    <a-tooltip placement="bottom">
-                      <template #title>
-                        <span>{{$t('global.delete')}}</span>
-                      </template>
-                      <a class="icons"> <DeleteOutlined /></a>
-                    </a-tooltip>
-                  </template>
-                  <template #active="key">
-                    <a-switch v-model:checked="checked[key.record.key]" />
-                  </template>
-                </a-table>
-              </a-col>
-            </a-row>
+              <ThresholdsTable :columns="columns" :thresholdsData="data"></ThresholdsTable>
+              </a-row>
           </div>
         </a-layout-content>
-      </a-layout>
-    </a-layout>
+     
+
     <Thresholds v-model:visible="Thresholds" @ok="handleOk" />
-  </div>
+  
 </template>
 <script>
-import Sidebar from "../layout/sidebar/Sidebar";
-import Header from "../layout/header/Header";
+
+
 import { ref } from "vue";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+
 import Thresholds from "@/components/modals/Thresholds";
+import ThresholdsTable from "./ThresholdsTable"
 
 const renderContent = ({ text }) => {
   const obj = {
@@ -283,10 +256,7 @@ const data = [
 ];
 export default {
   components: {
-    Header,
-    Sidebar,
-    DeleteOutlined,
-    EditOutlined,
+    ThresholdsTable,
     Thresholds,
   },
 
