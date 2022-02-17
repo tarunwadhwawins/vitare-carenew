@@ -18,15 +18,17 @@
 import { computed, defineComponent, watchEffect } from "vue";
 import { useStore } from "vuex";
 import Flags from "@/components/common/flags/Flags";
+import { useRoute } from "vue-router";
 export default defineComponent({
   components: {
     Flags,
   },
   setup() {
     const store = useStore();
+    const route = useRoute();
 
     watchEffect(() => {
-      store.dispatch('notesList');
+      store.dispatch('notesList', route.params.udid);
     })
 
     const notesList = computed(() => {
