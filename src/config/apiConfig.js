@@ -45,6 +45,8 @@ export const API_ENDPOINTS = {
     taskStatus:"task/status",
     taskPriority:"task/priority",
     searchTasks:"task/search",
+    taskTeamMember:'task/staff',
+    taskCategory:'task/category',
 
     
     // Global Codes

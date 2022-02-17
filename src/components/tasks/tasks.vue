@@ -21,10 +21,10 @@
                     <Button :name="buttonName" @click="showModal" />
                   </div>
                   <div class="filter">
-                    <button class="btn" :class="toggle ? 'active' : ''" @click="toggle = !toggle">
+                    <button class="btn" :class="toggle ? 'active' : ''" @click="toggleButton()">
                       <span class="btn-content">{{$t('tasks.dashboardView')}}</span>
                     </button>
-                    <button class="btn" :class="toggle ? '' : 'active'" @click="toggle = !toggle">
+                    <button class="btn" :class="toggle ? '' : 'active'" @click="toggleButton()">
                       <span class="btn-content">{{$t('global.listView')}}</span>
                     </button>
                   </div>
@@ -39,15 +39,16 @@
 
               <!-- List View -->
             <div class="list-view" v-show="!toggle">
-                <TasksListView @isEdit="showModal"/>
+                <TasksListView @isEdit="showModal($event)"/>
             </div>
 
           </div>
+          <Loader />
         </a-layout-content>
       </a-layout>
     </a-layout>
     <!---->
-    <TasksModal v-if="visible" v-model:visible="visible" @saveModal="handleOk($event)"  />
+    <TasksModal   v-model:visible="visible" @saveTaskModal="handleOk($event)"  :taskId="taskID" />
     <!---->
   </div>
 </template>
@@ -60,7 +61,8 @@ import { ref } from "vue";
 import Button from "@/components/common/button/Button";
 import TasksDashboardView from "@/components/tasks/TasksDashboardView";
 import TasksListView from "@/components/tasks/TasksListView";
-
+import {useStore} from "vuex"
+import Loader from "@/components/loader/Loader";
 export default {
   components: {
     Header,
@@ -69,17 +71,35 @@ export default {
     Button,
     TasksDashboardView,
     TasksListView,
+    Loader
   },
   setup() {
+    const store = useStore();
     const toggle = ref(true);
     const visible = ref(false);
-    const showModal = () => {
+    const taskID =ref();
+    const showModal = (task) => {
+      // console.log('=>',task)
+      if(task.id){
+      store.dispatch('editTask',task.id)
+      }
+      taskID.value=task.id
       visible.value = true;
     };
     const handleOk = (value) => {
       visible.value = value;
     };
+
+    function toggleButton(){
+      store.commit('loadingStatus', true)
+      setTimeout(()=>{
+        toggle.value=!toggle.value
+        store.commit('loadingStatus', false)
+      },1000)
+    }
     return {
+      toggleButton,
+      taskID,
       buttonName: "Add New Task",
       toggle,
       visible,

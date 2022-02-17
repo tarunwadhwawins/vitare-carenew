@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" :title="$t('tasks.tasksModal.addTask')" :footer="null" :maskClosable="false"  @cancel="closeModal()" centered>
+  <a-modal width="1000px" :title="taskId?'Edit Task':$t('tasks.tasksModal.addTask')" :footer="null" :maskClosable="false"  @cancel="closeModal()" centered>
     <a-form :model="taskForm"  autocomplete="off" layout="vertical" @finish="submitForm" @finishFailed="taskFormFailed">
       <a-row :gutter="24">
         <a-col :span="24">
@@ -21,7 +21,7 @@
             <a-form-item :label="$t('tasks.tasksModal.status')" name="taskStatus" :rules="[{ required: true, message: $t('tasks.tasksModal.status')+' '+$t('global.validation')  }]">
               <a-select v-model:value="taskForm.taskStatus" ref="select" style="width: 100%" size="large"  >
                 <a-select-option value="" disabled>{{'Select Status'}}</a-select-option>
-                <a-select-option v-for="status in taskStatus.globalCode" :key="status.id" :value="status.id">{{ status.name }}</a-select-option>
+                <a-select-option v-for="status in common.taskStatus.globalCode" :key="status.id" :value="status.id">{{ status.name }}</a-select-option>
               </a-select>
             </a-form-item>
           </div>
@@ -31,7 +31,7 @@
             <a-form-item :label="$t('tasks.tasksModal.priority')" name="priority" :rules="[{ required: true, message: $t('tasks.tasksModal.priority')+' '+$t('global.validation')  }]">
               <a-select v-model:value="taskForm.priority" ref="select" style="width: 100%" size="large" >
                 <a-select-option value="" disabled>{{'Select Priority'}}</a-select-option>
-                <a-select-option v-for="priority in taskPriority.globalCode" :key="priority.id" :value="priority.id">{{ priority.name }}</a-select-option>
+                <a-select-option v-for="priority in common.taskPriority.globalCode" :key="priority.id" :value="priority.id">{{ priority.name }}</a-select-option>
               </a-select>
             </a-form-item>
           </div>
@@ -50,9 +50,9 @@
             </a-form-item>
           </div>
         </a-col> -->
-       <a-col :sm="12" :xs="24">
+       <a-col :sm="12" :xs="24"  v-show="taskId==null">
           <div class="form-group">
-            <a-form-item :label="$t('tasks.tasksModal.to')" name="to">
+            <a-form-item :label="$t('tasks.tasksModal.to')" name="to" >
               <div class="btn toggleButton" :class="toggleTo ? 'active' : ''" @click="buttonToggle()">
                 <span class="btn-content">{{ $t('tasks.tasksModal.patient') }}</span>
               </div>
@@ -69,7 +69,7 @@
               <a-select
                 ref="select"
                 mode="multiple"
-                v-if="patients"
+                :disabled="taskId?true:false"
                 v-model:value="taskForm.assignedTo"
                 style="width: 100%"
                  placeholder="Please Select Patient"
@@ -94,13 +94,13 @@
                 <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}</a-select-option>
               </a-select> -->
             <a-select
-                v-if="staffList"
+                :disabled="taskId?true:false"
                 mode="tags"
                 size="large"
                 placeholder="Please Select Staff"
                 style="width: 100%"
                 v-model:value="taskForm.assignedTo"
-                :options="staffList"
+                :options="common.staffList.map((item) => ({label: item.fullName, value: item.id }))"
               />
             </a-form-item>
           </div>
@@ -109,12 +109,13 @@
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.category')" name="taskCategory" :rules="[{ required: true, message: $t('tasks.tasksModal.category')+' '+$t('global.validation')  }]">
               <a-select
+              :disabled="taskId?true:false"
                 mode="multiple"
                 size="large"
                 placeholder="Please Select Category"
                 style="width: 100%"
                 v-model:value="taskForm.taskCategory"
-                :options="taskCategory"
+                :options="common.taskCategory.globalCode.map((item) => ({label: item.name, value: item.id }))"
               />
             </a-form-item>
           </div>
@@ -122,22 +123,23 @@
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.startDate')" name="startDate" :rules="[{ required: true, message: $t('tasks.tasksModal.startDate')+' '+$t('global.validation')  }]">
-              <a-date-picker v-model:value="taskForm.startDate" format="MMM DD, YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+              <a-date-picker :disabled="taskId?true:false" v-model:value="taskForm.startDate" format="MMM DD, YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
             </a-form-item>
           </div>
         </a-col>
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.dueDate')" name="dueDate" :rules="[{ required: true, message: $t('tasks.tasksModal.dueDate')+' '+$t('global.validation')  }]">
-              <a-date-picker v-model:value="taskForm.dueDate" format="MMM DD, YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+              <a-date-picker :disabled="taskId?true:false" v-model:value="taskForm.dueDate" format="MMM DD, YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
             </a-form-item>
           </div>
         </a-col>
         <a-col :span="24">
-          <ModalButtons/>
+          <ModalButtons :Id="taskId"/>
         </a-col>
       </a-row>
     </a-form>
+    <Loader />
   </a-modal>
 </template>
 
@@ -147,10 +149,15 @@ import { useStore } from "vuex"
 import ModalButtons from "@/components/common/button/ModalButtons";
 import {timeStamp,warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
+import Loader from "@/components/loader/Loader";
 import { useRoute } from "vue-router";
 export default defineComponent({
   components: {
-    ModalButtons
+    ModalButtons,
+    Loader
+  },
+  props:{
+    taskId:Number
   },
   setup(props, {emit}) {
     const store = useStore()
@@ -172,7 +179,26 @@ export default defineComponent({
       entityType:''
     });
 
+
+    const tasks =computed(() => {
+      return store.state.tasks
+    })
+    
     const submitForm = () => {
+    //  console.log('=>', Object.assign(taskForm, tasks.value.editTask))
+    if(props.taskId!=null){
+      store.dispatch("updateTask", {data:{
+      title: taskForm.title,
+      description: taskForm.description,
+      taskStatus: taskForm.taskStatus,
+      priority: taskForm.priority,
+      assignedTo:taskForm.assignedTo,
+      taskCategory: taskForm.taskCategory,
+      startDate: timeStamp(taskForm.startDate),
+      dueDate: timeStamp(taskForm.dueDate),
+      entityType:taskForm.entityType
+      },id:props.taskId})
+      }else{
       store.dispatch("addTask", {
       title: taskForm.title,
       description: taskForm.description,
@@ -184,54 +210,47 @@ export default defineComponent({
       dueDate: timeStamp(taskForm.dueDate),
       entityType:taskForm.entityType
       })
+      }
+
+      
+      
+      setTimeout(() => {
+        if(tasks.value.addTask!=null || tasks.value.updateTask!=null){
+        store.dispatch("tasksList")
+        store.dispatch('taskStatus')
+        store.dispatch('taskPriority')
+        store.dispatch('taskTeamMember')
+        store.dispatch('taskCategory')
+        Object.assign(taskForm, form)
+        emit('saveTaskModal', false)
+        }
+      }, 2000);
       store.dispatch('letastTask', route.params.udid)
       emit('closeModal');
     }
+
     const form = reactive({ ...taskForm })
     const handleCancel = () => {
       formRef.value.resetFields();
-      emit('closeModal', false);
       Object.assign(taskForm, form)
     };
     
     watchEffect(() => {
-      store.dispatch("globalCodes")
       store.dispatch("staffList")
+      if(props.taskId!=null){
+        Object.assign(taskForm, tasks.value.editTask)
+      }
     })
-    const taskCategoriesList = computed(() => {
-      return store.state.common.taskCategory;
+  
+     const common = computed(() => {
+      return store.state.common
     })
-    const taskPriority = computed(() => {
-      return store.state.common.taskPriority;
-    })
-    const taskStatus = computed(() => {
-      return store.state.common.taskStatus
-    })
-    const staff = computed(() => {
-      return store.state.common.staffList
-    })
+
+   
 
     const patients = computed(() => {
       return store.state.communications.patientsList
     })
-    
-    const staffList = ref([])
-    staff.value.forEach(element => {
-      staffList.value.push({
-        label: element.fullName,
-        value: element.id,
-      })
-    })
-    
-    const taskCategory = ref([])
-    taskCategoriesList.value.globalCode.forEach(element => {
-      taskCategory.value.push({
-        label: element.name,
-        value: element.id,
-      })
-    })
-
-    
 
    function  buttonToggle(){
      if(toggleTo.value==true){
@@ -245,12 +264,13 @@ export default defineComponent({
 
 
    function closeModal() {
-      if(taskForm.title!='' || taskForm.description!='' ){
+      if((taskForm.title!='' || taskForm.description!='') && tasks.value.addTask==null){
       warningSwal(messages.modalWarning).then((response) => {
         if (response == true) {
-          emit("saveModal", false);
+          emit("saveTaskModal", false);
+          Object.assign(taskForm, form)
         } else {
-          emit("saveModal", true);
+          emit("saveTaskModal", true);
         }
       })
       }
@@ -259,6 +279,8 @@ export default defineComponent({
 
 
     return {
+      tasks,
+      common,
       closeModal,
       form,
       formRef,
@@ -268,11 +290,7 @@ export default defineComponent({
       toggleTo,
       size: ref("large"),
       value,
-      taskCategory,
-      taskStatus,
-      taskPriority,
       taskForm,
-      staffList,
       submitForm,
       visible,
       handleCancel,

@@ -2,14 +2,17 @@
   <div class="steps-action">
     <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
       <a-button class="modal-button" @click="handleClear()" html-type="reset">{{$t('global.clear')}}</a-button>
-      <a-button class="modal-button" type="primary" html-type="submit">{{$t('global.save')}}</a-button>
+      <a-button v-if="Id" class="modal-button" type="primary" html-type="submit">{{$t('global.update')}}</a-button>
+      <a-button v-else class="modal-button" type="primary" html-type="submit">{{$t('global.save')}}</a-button>
     </a-form-item>
   </div>
 </template>
 
 <script>
   export default {
-    props:{},
+    props:{
+      Id:String
+    },
     setup(props, {emit}) {
       const handleClear = () => {
         emit("is_click")

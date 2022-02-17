@@ -1,11 +1,11 @@
 <template>
-  <div :class="className">
+  <div :class="className" v-bind:style="{ backgroundColor:color }">
     <h4>{{ heading }}</h4>
     <div class="filter">
       <a-dropdown :trigger="['click']">
-        <a class="ant-dropdown-link" @click.prevent>
+        <!-- <a class="ant-dropdown-link" @click.prevent>
           <FilterOutlined /> {{$t('global.filter')}}
-        </a>
+        </a> -->
         <template #overlay>
           <a-menu>
             <a-menu-item v-for="data in filterCount" :key="data.key">
@@ -21,12 +21,12 @@
 </template>
 
 <script>
-import {
-  FilterOutlined,
-} from "@ant-design/icons-vue";
+// import {
+//   FilterOutlined,
+// } from "@ant-design/icons-vue";
 export default {
   components: {
-    FilterOutlined,
+    // FilterOutlined,
   },
   props: {
     filterCount: {
@@ -41,6 +41,9 @@ export default {
     heading: {
       type: String
     },
+    color:{
+      type:String
+    }
   },
   setup() {
     return {
