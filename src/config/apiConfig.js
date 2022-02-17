@@ -52,7 +52,7 @@ export const API_ENDPOINTS = {
     // Global Codes
     globalCodesList: 'globalCodeCategory',
     globalCode: 'globalCode',
-
+    
     // inventory
     inventory: 'inventory',
     model: 'model',
@@ -69,6 +69,10 @@ export const API_ENDPOINTS = {
     // timeLogs
     timeLog: 'patient/timeLog',
     deleteTimeLog: 'deleteTimeLog',
+
+    //Thresholds
+    getVital:'field',
+    generalParameter:'generalParameterGroup',
 
     
 

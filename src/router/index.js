@@ -87,7 +87,7 @@ const routes = [
   {
     path: '/thresholds',
     name: 'Thresholds',
-    component: () => import( '../components/thresholds/Thresholds'),
+    component: () => import( '@/views/thresholds/Thresholds'),
     meta: { authAdmin: true }
   },
   {

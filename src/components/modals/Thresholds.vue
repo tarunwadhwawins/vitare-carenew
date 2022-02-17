@@ -1,60 +1,158 @@
 <template>
-  <a-modal width="1000px" :title="$t('thresholds.thresholdModal.generalParameters')" centered>
-    <a-row :gutter="24">
-      <a-col :sm="6" :xs="24">
-        <div class="form-group">
-          <label>{{$t('thresholds.thresholdModal.generalParametersGroup')}}</label>
-          <a-input v-model="value" size="large" />
-        </div>
-      </a-col>
-      <a-col :sm="6" :xs="24">
-        <div class="form-group">
-          <label>{{$t('global.type')}} </label>
-          <a-select
-            ref="select"
-            v-model="value1"
-            style="width: 100%"
-            size="large"
-            @focus="focus"
-            @change="handleChange"
-          >
-            <a-select-option value="Blood">Blood Glucose Fasting </a-select-option>
-            <a-select-option value="NonFastBlood">Blood Glucose Non-Fasting </a-select-option>
-            <a-select-option value="Systolic">Systolic BP</a-select-option>
-            <a-select-option value="Diastolic">Diastolic BP</a-select-option>
-            <a-select-option value="Pulse">Pulse (BP Cuff)</a-select-option>
-            <a-select-option value="Weight">Weight</a-select-option>
-            <a-select-option value="Spo2">Spo2</a-select-option>
-          </a-select>
-        </div>
-      </a-col>
-      <a-col :sm="6" :xs="24">
-        <div class="form-group">
-          <label>{{$t('thresholds.thresholdModal.highLimit')}}</label>
-          <!-- <a-input v-model="value" size="large" /> -->
-          <a-input-number v-model:value="value" :min="0" :max="10" :step="0.1" size="large" style="width:100%"/>
-        </div>
-      </a-col>
-      <a-col :sm="6" :xs="24">
-        <div class="form-group">
-          <label>{{$t('thresholds.thresholdModal.lowLimit')}} </label>
-          <!-- <a-input v-model="value" size="large" /> -->
-          <a-input-number v-model:value="value2" :min="0" :max="10" :step="0.1" size="large" style="width:100%"/>
-        </div>
-      </a-col>
-    </a-row>
+  <a-modal
+    width="1000px"
+    :title="$t('thresholds.thresholdModal.generalParameters')"
+    centered
+  >
+    <a-form
+      ref="formRef"
+      :model="thresholdForm"
+      layout="vertical"
+      @finish="submitForm"
+    >
+      <a-row :gutter="24">
+        <a-col :sm="12" :xs="24">
+          <div class="form-group">
+            <a-form-item
+              :label="$t('thresholds.thresholdModal.generalParametersGroup')"
+              name="generalParametersGroup"
+              :rules="[
+                {
+                  required: true,
+                  message:
+                    $t('thresholds.thresholdModal.generalParametersGroup') +
+                    ' ' +
+                    $t('global.validation'),
+                },
+              ]"
+            >
+              <a-input
+                v-model:value="thresholdForm.generalParametersGroup"
+                size="large"
+              />
+            </a-form-item>
+          </div>
+        </a-col>
+        <a-col :md="12" :sm="12" :xs="24">
+          <div class="form-group">
+            <a-form-item
+              :label="$t('global.type')"
+              name="deviceType"
+              :rules="[
+                {
+                  required: true,
+                  message: $t('global.type') + ' ' + $t('global.validation'),
+                },
+              ]"
+            >
+              <a-select
+                v-if="globalCode.deviceType.globalCode"
+                ref="select"
+                v-model:value="thresholdForm.deviceType"
+                style="width: 100%"
+                size="large"
+                placeholder="Select Device Type"
+                mode="multiple"
+                @change="handleDevice"
+              >
+                <!-- <a-select-option value="" disabled>{{'Select Device Type'}}</a-select-option> -->
+                <a-select-option
+                  v-for="device in globalCode.deviceType.globalCode"
+                  :key="device.id"
+                  :value="device.id"
+                  >{{ device.name }}</a-select-option
+                >
+              </a-select>
+              <ErrorMessage
+                v-if="errorMsg"
+                :name="errorMsg.deviceType ? errorMsg.deviceType[0] : ''"
+              />
+            </a-form-item>
+          </div>
+        </a-col>
+      </a-row>
+      <div v-if="vitalData">
+        <a-row :gutter="24" v-for="(vital, i) in vitalData" :key="i">
+          <a-col :md="12" :sm="12" :xs="24">
+            <div class="form-group">
+              <a-form-item
+                :label="
+                  $t('thresholds.thresholdModal.highLimit') +
+                  '(' +
+                  vital.field +
+                  ')'
+                "
+                name="vital.field"
+              >
+                <!-- <a-input v-model="value" size="large" /> -->
+                <a-input
+                  v-model:value="thresholdForm.generalParametershigh[vital.id]"
+                  size="large"
+                  style="width: 100%"
+                />
+                <ErrorMessage
+                  v-if="errorMsg"
+                  :name="errorMsg.note ? errorMsg.high[0] : ''"
+                />
+              </a-form-item>
+            </div>
+          </a-col>
+          <a-col :md="12" :sm="12" :xs="24">
+            <div class="form-group">
+              <a-form-item
+                :label="
+                  $t('thresholds.thresholdModal.lowLimit') +
+                  '(' +
+                  vital.field +
+                  ')'
+                "
+                name="vital.field"
+              >
+                <!-- <a-input v-model="value" size="large" /> -->
+                <a-input
+                  v-model:value="thresholdForm.generalParameterslow[vital.id]"
+                  size="large"
+                  style="width: 100%"
+                />
+                <ErrorMessage
+                  v-if="errorMsg"
+                  :name="errorMsg.note ? errorMsg.low[0] : ''"
+                />
+              </a-form-item>
+            </div>
+          </a-col>
+        </a-row>
+      </div>
+      <a-row :gutter="24">
+        <a-col :span="24">
+          <div class="steps-action">
+            <ModalButtons @is_click="handleCancel" />
+          </div>
+        </a-col>
+      </a-row>
+    </a-form>
   </a-modal>
 </template>
 
 <script>
-import { ref, computed } from "vue";
-
+import { ref, reactive, computed } from "vue";
+import ModalButtons from "@/components/common/button/ModalButtons";
+import ErrorMessage from "../common/messages/ErrorMessage";
+import { useStore } from "vuex";
 const OPTIONS = ["Jane Doe", "Steve Smith", "Joseph William"];
 const OPTIONSTAG = ["Admin", "Clinical", "Office", "Personal"];
 export default {
-  setup() {
-     const value = ref();
-     const value2 = ref();
+  components: {
+    ErrorMessage,
+    ModalButtons,
+  },
+  props: {},
+  setup(props, { emit }) {
+    const store = useStore();
+
+    const value = ref();
+    const value2 = ref();
+    const formRef = ref();
     const selectedItems = ref(["Jane Doe"]);
     const filteredOptions = computed(() =>
       OPTIONS.filter((o) => !selectedItems.value.includes(o))
@@ -64,7 +162,58 @@ export default {
     const filteredOptionsForTag = computed(() =>
       OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
     );
+    
+    const thresholdForm = reactive({
+      deviceType: [],
+      generalParametersGroup: "",
+      generalParametershigh: [],
+      generalParameterslow: [],
+    });
+    const globalCode = computed(() => {
+      return store.state.common;
+    });
+
+    const vitalData = computed(() => {
+      return store.state.thresholds.vitalData;
+    });
+    function handleDevice() {
+      store.state.thresholds.vitalData = null;
+      store.dispatch("getVital", thresholdForm.deviceType);
+    }
+    const submitForm = () => {
+      let parameter = [];
+      thresholdForm.generalParameterslow.forEach(function (Element, i) {
+        parameter.push({
+          type: i,
+          lowLimit: Element,
+          highLimit: thresholdForm.generalParametershigh[i],
+        });
+      });
+      store.dispatch("addGeneralParameterGroup", {
+        generalParameterGroup: thresholdForm.generalParametersGroup,
+        parameter: parameter,
+      });
+      setTimeout(() => {
+
+        handleCancel();
+        store.dispatch('generalParameterList')
+        emit("is-visible", false);
+      }, 3000);
+    };
+    const form = reactive({ ...thresholdForm });
+    const handleCancel = () => {
+      store.state.thresholds.vitalData = null;
+      formRef.value.resetFields();
+
+      Object.assign(thresholdForm, form);
+    };
     return {
+      handleDevice,
+      globalCode,
+      thresholdForm,
+      vitalData,
+      handleCancel,
+      submitForm,
       selectedItems,
       filteredOptions,
       filteredOptionsForTag,
@@ -72,6 +221,7 @@ export default {
       size: ref("large"),
       value,
       value2,
+      formRef,
     };
   },
 };
