@@ -485,6 +485,7 @@ export const patientDetailsSuccess = (state, patient) => {
   
   patient.isPrimary = patient.patientFamilyMember.data.fullName == patient.emergencyContact.data.fullName ? true : false
   
+  patient.relation = patient.patientFamilyMember.data.relationId
   patient.country = patient.countryId
   patient.state = patient.stateId
   patient.language = patient.languageId
