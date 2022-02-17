@@ -1,5 +1,5 @@
 import ServiceMethodService from '@/services/serviceMethod'
-import { errorSwal } from '@/commonMethods/commonMethod'
+import { successSwal, errorSwal } from '@/commonMethods/commonMethod';
 // import { API_ENDPOINTS } from "@/config/apiConfig"
 
 
@@ -42,9 +42,10 @@ export const editAuditTimeLog = async ({ commit },id) => {
 }
 
 
-export const updateTimeLog = async ({ commit },data) => {
-	await ServiceMethodService.common("put", `timeLog/${data.uuid}`, null, data).then((response) => {
+export const updateAuditTimeLog = async ({ commit },data) => {
+	await ServiceMethodService.common("put", `timeLog/${data.id}`, null, data.data).then((response) => {
 		commit('updateTimeLog', response.data.data);
+		successSwal(response.data.message)
 	}).catch((error) => {
 		if (error.response.status === 422) {
 			commit('errorMsg', error.response.data)

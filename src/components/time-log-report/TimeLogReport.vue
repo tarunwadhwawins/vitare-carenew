@@ -58,7 +58,7 @@
                                 </template>
                                 <template #actions="text">
                                     <a-tooltip placement="bottom" @click="editTimeLog(text.text)">
-                                      <AuditTimeLog v-model:visible="visible" @ok="handleOk($event)"  :Id="text.text"/>
+                                      <AuditTimeLog v-model:visible="visible" @saveAuditTimeLog="handleOk($event)" :Id="text.text"/>
                                         <template #title>
                                             <span>{{$t('global.edit')}}</span>
                                         </template>
