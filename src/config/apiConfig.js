@@ -69,7 +69,8 @@ export const API_ENDPOINTS = {
     deleteTimeLog: 'deleteTimeLog',
 
     //Thresholds
-    getVital:'field'
+    getVital:'field',
+    generalParameter:'generalParameterGroup',
 
     
 

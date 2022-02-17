@@ -39,23 +39,79 @@
       thresholdsData: {
         type: Array,
       },
-      columns: {
-        type: Array,
-      },
-      title: {
-        type: String,
-        required: true
-      }
+
     },
     setup(props) {
+      const renderContent = ({ text }) => {
+        const obj = {
+          children: text,
+          props: { colSpan: null },
+        };
+
+        return obj;
+      };
+      const columns = [
+        {
+          title: "General Parameters Group",
+          dataIndex: "data",
+          sorter: {
+            compare: (a, b) => a.template - b.template,
+            multiple: 3,
+          },
+          customRender: ({ text, index }) => {
+            const obj = {
+              children: data[index].generalParameterGroup,
+              props: {},
+            };
+
+            obj.props.rowSpan = text;
+            return obj;
+          },
+        },
+        {
+          title: "Type",
+          dataIndex: "vitalFieldName",
+          sorter: {
+            compare: (a, b) => a.template - b.template,
+            multiple: 3,
+          },
+          customRender: renderContent,
+        },
+        {
+          title: "High Limit ",
+          dataIndex: "highLimit",
+          sorter: {
+            compare: (a, b) => a.template - b.template,
+            multiple: 3,
+          },
+          customRender: renderContent,
+        },
+        {
+          title: "Low Limit ",
+          dataIndex: "lowLimit",
+          sorter: {
+            compare: (a, b) => a.template - b.template,
+            multiple: 3,
+          },
+          customRender: renderContent,
+        },
+
+        {
+          title: "Actions",
+          dataIndex: "actions",
+          slots: {
+            customRender: "actions",
+          },
+        },
+      ];
       const data = reactive(props.thresholdsData)
-      const column = reactive(props.columns)
+
 
 
 
       return {
         data,
-        column,
+        columns,
 
       }
     }

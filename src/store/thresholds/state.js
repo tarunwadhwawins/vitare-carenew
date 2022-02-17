@@ -8,4 +8,6 @@ export default{
     calendarDate:null,
     latestAppointment:null,
     vitalData:null,
+    vitalSuccessMsg:null,
+    vitalList:null,
 }
