@@ -24,6 +24,7 @@ export default {
     clinicalMedicatList:null,
     clinicalMedicatListColumns:null,
     addInsurance:null,
+    updateDemographic:null,
     updateInsurance:null,
     addDocument:null,
     documents:null,
