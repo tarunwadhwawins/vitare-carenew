@@ -9,16 +9,13 @@
           <tbody v-for="timeHeding,k in appointmentSearch" :key="k" >
             <tr>
               <th>{{timeHeding.time}}</th>
-              <div v-if="appointmentSearch" >
-                <td v-for="appointment,i in timeHeding.data" :key="i" >
+              
+                <td  v-if="appointmentSearch">
                   
-                   <AppointmentCardList 
+                   <AppointmentCardList v-for="appointment,i in timeHeding.data" :key="i"
                      :cardData="appointment"  :count="i" :length="(timeHeding.data).length" tabName="day" :data="timeHeding.data"></AppointmentCardList>
                  </td>
-              </div>
-              <div v-else>
-                <td></td>
-              </div>
+                <td v-else></td>
             </tr>
           </tbody>
         </table>

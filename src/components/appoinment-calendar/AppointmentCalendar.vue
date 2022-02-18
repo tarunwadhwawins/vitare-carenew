@@ -16,8 +16,10 @@
               {{$t('appointmentCalendar.newAppointment')}}</a-button>
           </div>
 
-          <Calendar @is-click="selectDate($event)" />
-          <Physicians v-if="staffList" :staff="staffList" />
+          <Calendar v-if="appointmentSearch" @is-click="selectDate($event)" />
+          <Physicians v-if="staffList && appointmentSearch" :staff="staffList" />
+          <Loader v-else/>
+          
         </a-col>
         <a-col :xl="toggle == false ? 24 : 18" :sm="toggle == false ? 24 : 14" :xs="24">
           <a-tabs v-model:activeKey="activeKey" @change="tabClick(activeKey)">
@@ -60,7 +62,7 @@
   import { ref, watchEffect, computed } from "vue";
   import { useStore } from "vuex"
   import moment from "moment"
-
+  import Loader from "../loader/Loader"
   //import Loader from "../loader/Loader"
   export default {
     components: {
@@ -71,7 +73,7 @@
       DayAppointment,
       MonthAppointment,
       WeekAppointment,
-      // Loader
+       Loader
     },
 
     setup() {
