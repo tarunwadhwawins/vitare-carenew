@@ -13,15 +13,15 @@ export const timeLine = async ({ commit }, id) => {
     //     commit('failure', error.response.data);
     // })
 }
-export const todayAppointment = async ({ commit }, id) => {
-    await ServiceMethodService.common("get", API_ENDPOINTS['todayAppointment'] + "?timelineId=" + id, null, null).then((response) => {
-        commit('todayAppointmentSuccess', response.data.data);
-    })
-        .catch((error) => {
-            commit('failure', error.response.data);
-        })
+// export const todayAppointment = async ({ commit }, id) => {
+//     await ServiceMethodService.common("get", API_ENDPOINTS['todayAppointment'] + "?timelineId=" + id, null, null).then((response) => {
+//         commit('todayAppointmentSuccess', response.data.data);
+//     })
+//         .catch((error) => {
+//             commit('failure', error.response.data);
+//         })
 
-}
+// }
 export const callStatus = async ({ commit }, id) => {
     await ServiceMethodService.common("get", API_ENDPOINTS['callStatus'] + "?timelineId=" + id, null, null).then((response) => {
         commit('callStatusSuccess', response.data.data)
