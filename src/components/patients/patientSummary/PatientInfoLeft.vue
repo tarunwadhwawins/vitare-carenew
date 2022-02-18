@@ -12,7 +12,7 @@
         </p>
         <p>{{ patientDetails.address }}</p>
       </div>
-      <EditOutlined class="editIcon" @click="editPatient(patientDetails.udid)" />
+      <EditOutlined class="editIcon" @click="editPatient({udid: patientDetails.udid, id: patientDetails.id})" />
     </div>
 
     <div class="pat-profile">
@@ -103,7 +103,7 @@
     </div>
   </div>
   
-  <PatientsModal v-if="patientsModalVisible == true" v-model:visible="patientsModalVisible" :patientId="patientDetails.id" :isEditPatient="isEditPatient" @closeModal="handleOk" />
+  <PatientsModal v-if="patientsModalVisible == true && patientDetails" v-model:visible="patientsModalVisible" :patientId="patientDetails.id" :isEditPatient="isEditPatient" @closeModal="handleOk" />
   <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" @closeModal="handleOk" />
   <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" @closeModal="handleOk" />
   <AddVitalsModal v-if="addVitalsVisible == true" v-model:visible="addVitalsVisible" @closeModal="handleOk" :patientId="patientDetails.id" />
@@ -253,8 +253,11 @@ export default {
       custom.value = true;
     };
 
-    const editPatient = (value) => {
-      store.dispatch('patientDetails', value)
+    const editPatient = ({udid, id}) => {
+      console.log('udid', udid)
+      console.log('id', id)
+      store.dispatch('patientConditions', id)
+      // store.dispatch('patientDetails', value)
       isEditPatient.value = true;
       patientsModalVisible.value = true;
     };
