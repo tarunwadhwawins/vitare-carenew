@@ -40,7 +40,24 @@ export const GetWeekName = (state, date) => {
 export const calendarDateSelect = (state, date) => {
   state.calendarDate = date
 }
+export const showMoreRecords = (state, data) => {
+  let getRecord=[]
+  data.data.forEach((element,index) => {
+    
+    if(index>(data.to-1)){
+      element['key']=index
+      element['satartTime']=moment(dateFormat(element.date)).format('hh:mm A')
+      element['date']=dateFormat(element.date)
+      
+      getRecord.push(element)
+    }
+  });
+  console.log(getRecord)
+  state.showMoreRecords = getRecord
+}
+
 export const latestAppointmentSuccess = (state, data) => {
   data.date = dateOnlyFormat(data.date);
   state.latestAppointment = data;
 }
+

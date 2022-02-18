@@ -11,7 +11,7 @@
           <router-link :to="'/patients-summary/'+record.patient_id">{{ text }}</router-link>
       </template>
         <template #staff="{record}">
-          <router-link to="'/coordinator-summary'+record.staff_id">{{
+          <router-link :to="'/coordinator-summary/'+record.staff_id">{{
           record.staff
             }}</router-link>
         </template>

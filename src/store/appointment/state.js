@@ -7,4 +7,5 @@ export default{
     weekName:null,
     calendarDate:null,
     latestAppointment:null,
+    showMoreRecords:null
 }
