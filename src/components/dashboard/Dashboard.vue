@@ -221,7 +221,7 @@
       function apiCall(data) {
         store.dispatch("permissions")
         store.dispatch("counterCard", data.value)
-        store.dispatch("searchAppointment", { fromDate: fromDate.value, toDate: toDate.value, tabId: 5 })
+        store.dispatch("searchAppointment", { fromDate: fromDate.value, toDate: toDate.value, tabId: "today" })
         store.dispatch("callStatus", data.value)
         store.dispatch("specialization", data.value)
         store.dispatch("network", data.value)

@@ -34,7 +34,8 @@
             <div class="itemWrapper">
               <div class="leftWrapper">Coordinator</div>
               <div class="rightWrapper">
-                <router-link :to="linkToCoordinator">
+                <router-link :to="'/coordinator-summary/'+cardRecords.staff_id">
+                  
                   {{cardRecords.staff}}
                 </router-link>
               </div>
@@ -42,7 +43,8 @@
             <div class="itemWrapper">
               <div class="leftWrapper">Patient</div>
               <div class="rightWrapper">
-                <router-link :to="linkTo">
+                
+                <router-link :to="'/patients-summary/'+cardRecords.patient_id">
                   {{cardRecords.patient}}
                 </router-link>
               </div>
@@ -77,16 +79,65 @@
     </template>
   </a-dropdown>
 </div>
-<div v-else-if="count==4">Load More</div>
-<div v-else></div>
+<div v-else-if="count==4" >
+ 
+  <div  v-if="tab=='week'" >
+     <a-button class="loadMore" type="primary" @click="showRecord(dateFormat(cardRecords.date))">Load More+{{length-4}}</a-button>
+    </div>
+  <div v-else> <a-button class="loadMore" type="primary" @click="showModal(allRecord)">Load More+{{length-4}}</a-button></div>
 
+</div>
+<div v-else></div>
+<a-modal v-model:visible="visible" title="Appointment" @ok="handleOk">
+  <a-table :columns="columns" :data-source="getMoreAppointment">
+
+  </a-table>
+</a-modal>
 </template>
 <script>
-  import { reactive } from "vue"
+  import { ref, reactive,computed } from "vue"
   import { FileAddOutlined } from "@ant-design/icons-vue";
   import { timeStamp, dateFormat, timeStampToTime } from "../../commonMethods/commonMethod"
   import moment from "moment"
+  import { useStore } from "vuex"
+  const columns = [{
+  title: 'Appointment Type',
+  dataIndex: 'appointmentType',
+  key: 'appointmentType',
+}, {
+  title: 'Staff',
+  dataIndex: 'staff',
+  key: 'staff',
+  
+}, {
+  title: 'Patient',
+  dataIndex: 'patient',
+  key: 'patient',
+ 
+},  {
+  title: 'Date',
+  dataIndex: 'date',
+  key: 'date',
+  
+}, {
+  title: 'Duration',
+  dataIndex: 'duration',
+  key: 'duration',
+ 
+},
+{
+  title: 'Start Time',
+  dataIndex: 'satartTime',
+  
+ 
+},{
+  title: 'Notes',
+  dataIndex: 'notes',
+  key: 'notes',
+  ellipsis: true,
+},];
    export default {
+
     components: {
       FileAddOutlined
     },
@@ -99,20 +150,45 @@
       },
       length:{
         type:Number
+      },
+      tabName:{
+        type:String,
+      },
+      data:{
+type:Array,
       }
     },
-    setup(props) {
-      const linkTo = "patients-summary"
-      const linkToCoordinator = "coordinator-summary"
+    setup(props,{emit}) {
+      const visible = ref(false);
+      const store = useStore()
+      const allRecord=reactive(props.data)
       const cardRecords = reactive(props.cardData)
+      const tab=reactive(props.tabName)
+      function showRecord(date){
+       emit('is-showrecordByday',date)
+      }
+      function showModal(appointmentRecord){
+        //appointment show after 4 records
+      store.dispatch('showMoreRecords',{data:appointmentRecord,to:4})
+      visible.value = true;
+      }
+      const getMoreAppointment = computed(() => {
+        return store.state.appointment.showMoreRecords
+      })
+      
       return {
-        linkTo,
-        linkToCoordinator,
+        visible,
+        getMoreAppointment,
+        allRecord,
+        tab,
+        showModal,
         cardRecords,
         timeStamp,
         dateFormat,
         timeStampToTime,
-        moment
+        moment,
+        showRecord,
+        columns
       
       }
     }
