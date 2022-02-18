@@ -264,7 +264,7 @@
                                 <a-form-item :label="$t('global.relation')" name="relation" :rules="[{ required: false, message: $t('global.relation')+' '+$t('global.validation') }]">
                                     <a-select ref="select" v-model:value="demographics.relation" style="width: 100%" size="large" @change="handleChange">
                                         <a-select-option value="" hidden>{{'Select Relation'}}</a-select-option>
-                                        <a-select-option v-for="relation in globalCode.relation.globalCode" :key="relation.id" :value="patientDetail.patientFamilyMember.data ? patientDetail.patientFamilyMember.data.relation : relation.id">{{relation.name}}</a-select-option>
+                                        <a-select-option v-for="relation in globalCode.relation.globalCode" :key="relation.id" :value="relation.id">{{relation.name}}</a-select-option>
                                     </a-select>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.relation?errorMsg.relation[0]:''" />
                                 </a-form-item>
@@ -761,13 +761,13 @@ export default {
       dob: "",
       gender: "",
       language: "",
-      otherLanguage: [],
+      otherLanguage: ref([]),
       nickName: "",
       weight: "",
       height: "",
       email: "",
       phoneNumber: "",
-      contactType: [],
+      contactType: ref([]),
       contactTime: "",
       medicalRecordNumber: "",
       country: 19,
@@ -779,14 +779,14 @@ export default {
       fullName: "",
       familyEmail: "",
       familyPhoneNumber: "",
-      familyContactType: [],
+      familyContactType: ref([]),
       familyContactTime: "",
       familyGender: "",
       relation: "",
       emergencyFullName: "",
       emergencyEmail: "",
       emergencyPhoneNumber: "",
-      emergencyContactType: [],
+      emergencyContactType: ref([]),
       emergencyContactTime: "",
       emergencyGender: "",
       isPrimary: false,
@@ -1058,6 +1058,7 @@ export default {
     }
 
     function closeModal() {
+    if(demographics.firstName!='' ||demographics.lastName!='' || demographics.email!=''){
       warningSwal(messages.modalWarning).then((response) => {
         if (response == true) {
           emit("saveModal", false);
@@ -1068,7 +1069,8 @@ export default {
         } else {
           emit("saveModal", true);
         }
-      });
+      })
+    }
     }
 
     function emailChange(){

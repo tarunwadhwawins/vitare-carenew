@@ -1,5 +1,5 @@
 
-import { meridiemFormatFromTimestamp,dateFormat } from '../../commonMethods/commonMethod';
+import { meridiemFormatFromTimestamp,dateOnlyFormat } from '../../commonMethods/commonMethod';
 
 export const addDemographic = (state, data) => {
     state.addDemographic = data
@@ -246,8 +246,8 @@ export const addDemographic = (state, data) => {
 
  export const program = (state, data) => {
     state.program = data.map(element => {
-      element.onboardingScheduleDate = dateFormat(element.onboardingScheduleDate),
-      element.dischargeDate = dateFormat(element.dischargeDate)
+      element.onboardingScheduleDate = dateOnlyFormat(element.onboardingScheduleDate),
+      element.dischargeDate = dateOnlyFormat(element.dischargeDate)
       return element;
     })
     state.columns = [
@@ -379,8 +379,8 @@ export const addDemographic = (state, data) => {
 
  export const clinicalMedicatList = (state, data) => {
     state.clinicalMedicatList = data.map(element => {
-      element.startDate = dateFormat(element.startDate),
-      element.endDate = dateFormat(element.endDate)
+      element.startDate = dateOnlyFormat(element.startDate),
+      element.endDate = dateOnlyFormat(element.endDate)
       return element;
     })
     state.clinicalMedicatListColumns=[
@@ -469,30 +469,30 @@ export const addDemographic = (state, data) => {
  }
 
 export const patientDetailsSuccess = (state, patient) => {
-  patient.emergencyFullName = patient.emergencyContact.data.fullName
-  patient.emergencyEmail = patient.emergencyContact.data.email
-  patient.emergencyPhoneNumber = patient.emergencyContact.data.phoneNumber
-  patient.emergencyContactType = JSON.parse(patient.emergencyContact.data.contactType)
-  patient.emergencyContactTime = JSON.parse(patient.emergencyContact.data.contactTimeId)
-  patient.emergencyGender = patient.emergencyContact.data.genderId
+  patient.emergencyFullName = patient.emergencyContact.data.fullName;
+  patient.emergencyEmail = patient.emergencyContact.data.email;
+  patient.emergencyPhoneNumber = patient.emergencyContact.data.phoneNumber;
+  patient.emergencyContactType = patient.emergencyContact.data.contactType ? JSON.parse(patient.emergencyContact.data.contactType) : [];
+  patient.emergencyContactTime = patient.emergencyContact.data.contactTimeId ? JSON.parse(patient.emergencyContact.data.contactTimeId) : null;
+  patient.emergencyGender = patient.emergencyContact.data.genderId;
   
-  patient.fullName = patient.patientFamilyMember.data.fullName
-  patient.familyEmail = patient.patientFamilyMember.data.email
-  patient.familyPhoneNumber = patient.patientFamilyMember.data.phoneNumber
-  patient.familyContactType = JSON.parse(patient.patientFamilyMember.data.contactType)
-  patient.familyContactTime = JSON.parse(patient.patientFamilyMember.data.contactTimeId)
-  patient.familyGender = patient.patientFamilyMember.data.genderId
+  patient.fullName = patient.patientFamilyMember.data.fullName;
+  patient.familyEmail = patient.patientFamilyMember.data.email;
+  patient.familyPhoneNumber = patient.patientFamilyMember.data.phoneNumber;
+  patient.familyContactType = patient.patientFamilyMember.data.contactType ? JSON.parse(patient.patientFamilyMember.data.contactType) : [];
+  patient.familyContactTime = patient.patientFamilyMember.data.contactTimeId ? JSON.parse(patient.patientFamilyMember.data.contactTimeId) : null;
+  patient.familyGender = patient.patientFamilyMember.data.genderId;
   
-  patient.isPrimary = patient.patientFamilyMember.data.fullName == patient.emergencyContact.data.fullName ? true : false
+  patient.isPrimary = patient.patientFamilyMember.data.fullName == patient.emergencyContact.data.fullName ? true : false;
   
-  patient.relation = patient.patientFamilyMember.data.relationId
-  patient.country = patient.countryId
-  patient.state = patient.stateId
-  patient.language = patient.languageId
-  patient.gender = patient.genderId
-  patient.contactTime = patient.contactTimeId
-  patient.contactType = JSON.parse(patient.contactType)
-  patient.otherLanguage = JSON.parse(patient.otherLanguage)
+  patient.relation = patient.patientFamilyMember.data.relationId;
+  patient.country = patient.countryId;
+  patient.state = patient.stateId;
+  patient.language = patient.languageId;
+  patient.gender = patient.genderId;
+  patient.contactTime = patient.contactTimeId;
+  patient.contactType = patient.contactType ? JSON.parse(patient.contactType) : null;
+  patient.otherLanguage = patient.otherLanguage ? JSON.parse(patient.otherLanguage) : null;
 
   console.log('patient', patient)
 
