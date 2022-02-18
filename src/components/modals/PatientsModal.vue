@@ -837,12 +837,6 @@ export default {
             }
         }
     })
-    
-    // const checkStep = (stepKey) => {
-        // if(stepKey == 'conditions') {
-            
-        // }
-    // }
 
     const parameters = reactive([]);
 
@@ -1127,7 +1121,6 @@ export default {
     }
 
     return {
-    //   checkStep,
       stepperClick,
       emailChange,
       insuranceDataFailed,
