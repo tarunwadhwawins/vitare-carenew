@@ -82,7 +82,7 @@
                   vital.field +
                   ')'
                 "
-                name="vital.field"
+                name="high"
               >
                 <!-- <a-input v-model="value" size="large" /> -->
                 <a-input
@@ -106,7 +106,8 @@
                   vital.field +
                   ')'
                 "
-                name="vital.field"
+                name="low"
+                
               >
                 <!-- <a-input v-model="value" size="large" /> -->
                 <a-input
@@ -139,6 +140,7 @@ import { ref, reactive, computed } from "vue";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import ErrorMessage from "../common/messages/ErrorMessage";
 import { useStore } from "vuex";
+import { regex } from "@/RegularExpressions/regex";
 const OPTIONS = ["Jane Doe", "Steve Smith", "Joseph William"];
 const OPTIONSTAG = ["Admin", "Clinical", "Office", "Personal"];
 export default {
@@ -198,14 +200,16 @@ export default {
         handleCancel();
         store.dispatch('generalParameterList')
         emit("is-visible", false);
+        handleCancel();
       }, 3000);
     };
     const form = reactive({ ...thresholdForm });
     const handleCancel = () => {
+     
       store.state.thresholds.vitalData = null;
       formRef.value.resetFields();
-
-      Object.assign(thresholdForm, form);
+ Object.assign(thresholdForm, form);
+      
     };
     return {
       handleDevice,
@@ -222,6 +226,7 @@ export default {
       value,
       value2,
       formRef,
+      regex,
     };
   },
 };
