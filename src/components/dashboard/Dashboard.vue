@@ -98,13 +98,13 @@
 
 <script>
 
-  import { watchEffect, computed } from 'vue'
+  import { ref,watchEffect, computed } from 'vue'
   import Card from "@/components/common/cards/Card"
   import Appointement from "./Appointment"
   import ApexChart from "@/components/common/charts/ApexChart"
   import { arrayToObjact } from "../../commonMethods/commonMethod"
-  //import moment from 'moment';
   import { useStore } from 'vuex'
+  import moment from "moment"
   const columns4 = [
     {
       title: "Patient Name",
@@ -121,7 +121,7 @@
     },
     {
       title: "Appointment With",
-      dataIndex: "staff['fullName']",
+      dataIndex: "staff",
       slots: {
         customRender: "staff",
       },
@@ -206,6 +206,8 @@
 
     setup() {
       const store = useStore()
+      const fromDate = ref(moment())
+      const toDate = ref(moment())
       const timeline = computed(() => {
         return store.state.common.timeline
       })
@@ -219,7 +221,7 @@
       function apiCall(data) {
         store.dispatch("permissions")
         store.dispatch("counterCard", data.value)
-        store.dispatch("todayAppointment", data.value)
+        store.dispatch("searchAppointment", { fromDate: fromDate.value, toDate: toDate.value, tabId: 5 })
         store.dispatch("callStatus", data.value)
         store.dispatch("specialization", data.value)
         store.dispatch("network", data.value)

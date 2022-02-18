@@ -73,7 +73,7 @@ const routes = [
   },
   
   {
-    path: '/coordinator-summary',
+    path: '/coordinator-summary/:udid',
     name: 'CoordinatorSummary',
     component: () => import( '../components/coordinator-summary/Coordinatorsummary'),
     meta: { authAdmin: true }
