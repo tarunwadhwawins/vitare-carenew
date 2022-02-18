@@ -2,7 +2,7 @@
 
   <a-col :sm="24" :xs="24">
     <a-table :columns="columns" :data-source="data" :scroll="{ x: 900 }" @change="onChange">
-      <template #actions>
+      <template #actions="text">
         <a-tooltip placement="bottom">
           <template #title>
             <span>{{$t('global.edit')}}</span>
@@ -15,7 +15,7 @@
           <template #title>
             <span>{{$t('global.delete')}}</span>
           </template>
-          <a class="icons">
+          <a class="icons" @click="deleteDocument(text.record.id)">
             <DeleteOutlined />
           </a>
         </a-tooltip>
@@ -24,16 +24,22 @@
         <a-switch v-model:checked="checked[key.record.key]" />
       </template>
     </a-table>
+   
   </a-col>
 </template>
 
 <script>
   import { reactive } from "vue"
   import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+  import { warningSwal } from "@/commonMethods/commonMethod";
+  import { messages } from "@/config/messages";
+ 
+  import { useStore } from "vuex";
   export default {
     components: {
       DeleteOutlined,
       EditOutlined,
+    
     },
     props: {
       thresholdsData: {
@@ -42,6 +48,7 @@
 
     },
     setup(props) {
+      const store = useStore();
       const renderContent = ({ text }) => {
         const obj = {
           children: text,
@@ -50,6 +57,19 @@
 
         return obj;
       };
+      function deleteDocument(id) {
+        console.log(id)
+        warningSwal(messages.deleteWarning).then((response) => {
+          if (response == true) {
+            store.dispatch('generalParameterDelete', id)
+            setTimeout(() => {
+              store.state.thresholds.vitalList = ''
+              store.dispatch("generalParameterList");
+            }, 2000);
+          }
+        });
+
+      }
       const columns = [
         {
           title: "General Parameters Group",
@@ -110,6 +130,7 @@
 
 
       return {
+        deleteDocument,
         data,
         columns,
 

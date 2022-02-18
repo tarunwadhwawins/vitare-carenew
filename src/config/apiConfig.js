@@ -73,6 +73,7 @@ export const API_ENDPOINTS = {
     //Thresholds
     getVital:'field',
     generalParameter:'generalParameterGroup',
+    deleteParameter:'generalParameter',
 
     
 
