@@ -39,5 +39,10 @@ export default {
     deleteDocument:null,
     latestDocument:null,
     latestDevice:null,
+    addCareTeam:null,
+    careTeamList:null,
+    patientConditions:null,
+    patientReferralSource:null,
+    patientPrimaryPhysician:null,
 
 }

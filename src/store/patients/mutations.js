@@ -513,9 +513,34 @@ export const patientDocumentsSuccess = (state, documents) => {
   })
 }
 
-  export const deleteDocument = (state, data) => {
-    state.deleteDocument = data
- }
+export const patientConditions = (state, conditions) => {
+  const array = conditions.map(condition => {
+    condition = condition.conditionId
+    return condition;
+  })
+  console.log('array', array)
+  state.patientConditions = array
+}
+
+export const patientReferralSource = (state, referralSource) => {
+  referralSource.designation = referralSource.designationId;
+  state.patientReferralSource = referralSource;
+}
+
+export const patientPrimaryPhysician = (state, primaryPhysician) => {
+  primaryPhysician.designation = primaryPhysician.designationId;
+  state.patientPrimaryPhysician = primaryPhysician;
+}
+
+export const deleteDocument = (state, data) => {
+  state.deleteDocument = data
+}
+export const addCareTeamSuccess = (state, data) => {
+  state.addCareTeam = data
+}
+export const careTeamListSuccess = (state, data) => {
+  state.careTeamList = data
+}
 
   export const latestDocumentSuccess = (state, data) => {
     state.latestDocument = data
