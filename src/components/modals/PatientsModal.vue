@@ -4,7 +4,7 @@
     <a-row :gutter="24">
         <a-col :span="24">
             <a-steps v-model:current="current">
-                <a-step v-for="item in steps" :key="item.title" :title="item.title" @click="checkStep(item.key)" />
+                <a-step v-for="item in steps" :key="item.title" :title="item.title" />
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Demographics'">
                 <!-- <Demographics /> -->
@@ -816,35 +816,33 @@ export default {
     watchEffect(() => {
         if(idPatient) {
             Object.assign(demographics, patientDetail);
+            Object.assign(conditions.condition, patients.value.patientConditions)
+            if(patients.value.patientReferralSource != null) {
+                Object.assign(conditions, {
+                    name: patients.value.patientReferralSource.name,
+                    designation: patients.value.patientReferralSource.designation,
+                    email: patients.value.patientReferralSource.email,
+                    phoneNumber: patients.value.patientReferralSource.phoneNumber,
+                    fax: patients.value.patientReferralSource.fax,
+                });
+            }
+            if(patients.value.patientPrimaryPhysician != null) {
+                Object.assign(conditions, {
+                    physicianName: patients.value.patientPrimaryPhysician.name,
+                    physicianDesignation: patients.value.patientPrimaryPhysician.designation,
+                    physicianEmail: patients.value.patientPrimaryPhysician.email,
+                    physicianPhoneNumber: patients.value.patientPrimaryPhysician.phoneNumber,
+                    physicianFax: patients.value.patientPrimaryPhysician.fax,
+                });
+            }
         }
     })
     
-    const checkStep = (stepKey) => {
-        if(stepKey == 'conditions') {
-            Object.assign(conditions.condition, patients.value.patientConditions)
-            const patientReferralSource = patients.value.patientReferralSource;
-            const patientPrimaryPhysician = patients.value.patientPrimaryPhysician;
+    // const checkStep = (stepKey) => {
+        // if(stepKey == 'conditions') {
             
-            if(patientReferralSource != null) {
-                Object.assign(conditions, {
-                    name: patientReferralSource.name,
-                    designation: patientReferralSource.designation,
-                    email: patientReferralSource.email,
-                    phoneNumber: patientReferralSource.phoneNumber,
-                    fax: patientReferralSource.fax,
-                });
-            }
-            if(patientPrimaryPhysician != null) {
-                Object.assign(conditions, {
-                    physicianName: patientPrimaryPhysician.name,
-                    physicianDesignation: patientPrimaryPhysician.designation,
-                    physicianEmail: patientPrimaryPhysician.email,
-                    physicianPhoneNumber: patientPrimaryPhysician.phoneNumber,
-                    physicianFax: patientPrimaryPhysician.fax,
-                });
-            }
-        }
-    }
+        // }
+    // }
 
     const parameters = reactive([]);
 
@@ -1129,7 +1127,7 @@ export default {
     }
 
     return {
-      checkStep,
+    //   checkStep,
       stepperClick,
       emailChange,
       insuranceDataFailed,
