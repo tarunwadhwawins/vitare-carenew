@@ -7,20 +7,12 @@
         <table class="table table-bordered" v-if="appointmentSearch">
           <tbody v-for="week,k in appointmentSearch" :key="k">
             <tr>
-              <th>{{week.time}}</th>
-              <div v-if="appointmentSearch" >
-                
-                <td v-for="appointment,i in week.data" :key="i" >
-                 
-                   
-                   <AppointmentCardList 
+              <th>{{week.time}}</th>   
+                <td v-if="appointmentSearch" >   
+                   <AppointmentCardList v-for="appointment,i in week.data" :key="i"
                      :cardData="appointment" :count="i" :length="week.data.length" @is-showrecordByday="showrecordByday($event)" tabName="week" :data="week.data"></AppointmentCardList>
-                 </td>
-              </div>
-
-              <div v-else>
-                <td></td>
-              </div>
+                    </td>
+                <td v-else></td>
             </tr>
           </tbody>
         </table>

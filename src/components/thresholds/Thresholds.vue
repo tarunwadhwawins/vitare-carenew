@@ -32,8 +32,10 @@
        
         <ThresholdsTable v-if="vitalList" :thresholdsData="vitalList" ></ThresholdsTable>
         <div v-else><Loader /></div>
+        
       </a-row>
     </div>
+    
   </a-layout-content>
 
   <Thresholds v-model:visible="Thresholds" @is-visible="showModal($event)" />

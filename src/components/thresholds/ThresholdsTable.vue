@@ -7,7 +7,7 @@
           <template #title>
             <span>{{$t('global.edit')}}</span>
           </template>
-          <a class="icons">
+          <a class="icons" @click="editParameter(text.record)">
             <EditOutlined />
           </a>
         </a-tooltip>
@@ -15,7 +15,7 @@
           <template #title>
             <span>{{$t('global.delete')}}</span>
           </template>
-          <a class="icons" @click="deleteDocument(text.record.id)">
+          <a class="icons" @click="deleteParameter(text.record.id)">
             <DeleteOutlined />
           </a>
         </a-tooltip>
@@ -57,8 +57,11 @@
 
         return obj;
       };
-      function deleteDocument(id) {
-        console.log(id)
+      function editParameter(getRecord) {
+        console.log(getRecord)
+      }
+      function deleteParameter(id) {
+        
         warningSwal(messages.deleteWarning).then((response) => {
           if (response == true) {
             store.dispatch('generalParameterDelete', id)
@@ -130,7 +133,8 @@
 
 
       return {
-        deleteDocument,
+        deleteParameter,
+        editParameter,
         data,
         columns,
 

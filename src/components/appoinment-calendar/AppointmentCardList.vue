@@ -1,12 +1,10 @@
 <template>
 
-<div v-if="count <= 3">
- 
-  <a-dropdown  :trigger="['click']" overlayClassName="valueItem">
+  <a-dropdown v-if="count <= 3" :trigger="['click']" overlayClassName="valueItem">
     <a class="ant-dropdown-link one" @click.prevent>
       <div class="dropdown">
         <p>
-          <strong><span >{{cardRecords.appointmentType}}</span></strong>
+          <strong><span>{{cardRecords.appointmentType}}</span></strong>
           <span>{{cardRecords.patient}} </span>
          <!-- <span>{{ moment(dateFormat(cardRecords.date)).format('hh:mm A') +' '+ moment(dateFormat(cardRecords.date)).add(2,'hours').format('hh:mm A')}}</span>  -->
         
@@ -19,9 +17,7 @@
         <a-menu-item key="1">
           <div class="calendarDropdown">
             <div class="itemWrapper">
-              <div class="leftWrapper">
-                Appointment Type
-              </div>
+              <div class="leftWrapper">Appointment Type</div>
               <div class="rightWrapper">{{cardRecords.appointmentType}}</div>
             </div>
             <div class="itemWrapper">
@@ -78,17 +74,12 @@
       </a-menu>
     </template>
   </a-dropdown>
-</div>
 <div v-else-if="count==4" >
- 
-  <div  v-if="tab=='week'" >
-     <a-button class="loadMore" type="primary" @click="showRecord(dateFormat(cardRecords.date))">Load More+{{length-4}}</a-button>
-    </div>
-  <div v-else> <a-button class="loadMore" type="primary" @click="showModal(allRecord)">Load More+{{length-4}}</a-button></div>
 
-</div>
+     <a-button class="loadMore" type="primary" @click="showModal(allRecord)">{{length-4}}+</a-button>
+     </div>
 <div v-else></div>
-<a-modal v-model:visible="visible" title="Appointment" @ok="handleOk">
+<a-modal width="1100px" centered v-model:visible="visible" title="Appointment" @ok="handleOk">
   <a-table :columns="columns" :data-source="getMoreAppointment">
 
   </a-table>
@@ -158,15 +149,12 @@
 type:Array,
       }
     },
-    setup(props,{emit}) {
+    setup(props) {
       const visible = ref(false);
       const store = useStore()
       const allRecord=reactive(props.data)
       const cardRecords = reactive(props.cardData)
       const tab=reactive(props.tabName)
-      function showRecord(date){
-       emit('is-showrecordByday',date)
-      }
       function showModal(appointmentRecord){
         //appointment show after 4 records
       store.dispatch('showMoreRecords',{data:appointmentRecord,to:4})
@@ -187,7 +175,6 @@ type:Array,
         dateFormat,
         timeStampToTime,
         moment,
-        showRecord,
         columns
       
       }
