@@ -51,22 +51,10 @@
 
 <script>
 import { defineComponent, reactive, computed, watchEffect } from "vue";
-
 import { useStore } from "vuex";
-
-// import {
-//     warningSwal,
-//     arrayToObjact
-// } from "../../../commonMethods/commonMethod";
-// import {
-//     messages
-// } from "../../../config/messages";
-// import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import ModalButtons from "@/components/common/button/ModalButtons";
 export default defineComponent({
   components: {
-    // Loader,
-    // ErrorMessage,
     ModalButtons,
   },
   props:{
@@ -106,7 +94,7 @@ export default defineComponent({
     watchEffect(()=>{
         if(props.Id){
         Object.assign(auditTimeLog,timeLogReports.value)
-        console.log('-->',Object.assign(auditTimeLog,timeLogReports.value))
+        // console.log('-->',Object.assign(auditTimeLog,timeLogReports.value))
         }
     })
 

@@ -18,7 +18,8 @@
             <a-row :gutter="24">
               <a-col :xl="16" :lg="14">
                 <div class="videoCall">
-                  <img  class="largeImg" src="../../assets/images/patient.png" />
+                  <video  width="800" height="500" ref="root" ></video>
+                  <!-- <img  class="largeImg" src="../../assets/images/patient.png" /> -->
                   <!-- <div class="participant">
                     <div class="participantBox">
                       <img src="../../assets/images/video-call-thumb-1.png" />
@@ -138,7 +139,7 @@
                     </a-row>
                   </div>
                   <div class="footer">
-                    <a-button class="endCall" :size="size" block
+                    <a-button class="endCall" :size="size" block @click="hangUp()"
                       >End Call</a-button
                     >
                   </div>
@@ -155,7 +156,8 @@
 <script>
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
-import { ref } from "vue";
+import { ref,inject,onMounted } from "vue";
+import {useRouter} from "vue-router"
 
 export default {
   components: {
@@ -164,9 +166,34 @@ export default {
   },
 
   setup() {
+    const root = ref()
+    const router = useRouter()
+    const session = inject('sipSession')
+
+  onMounted(() => {
+      // the DOM element will be assigned to the ref after initial render
+      console.log(root.value) // this is your $el
+      if(session){
+      session.options.media.remote = {video:root.value};
+      session.answer();
+  }else{
+    router.push('/dashboard')
+  }
+      })
+  // Answer call
+  function hangUp(){
+    session.hangup().then(()=>{
+      router.push('/dashboard')
+    })
+  }
+  
+ 
     return {
+      hangUp,
+      root,
       size: ref("large"),
     };
+
   },
 };
 </script>
