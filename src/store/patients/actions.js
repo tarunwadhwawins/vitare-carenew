@@ -228,28 +228,6 @@ export const patientConditions = async ({ commit }, id) => {
   })
 }
 
-/* export const patientReferralSource = async ({ commit }, id) => {
-  commit('loadingStatus', true)
-  await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/referals', null, null).then((response) => {
-    commit('patientReferralSource', response.data.data);
-    commit('loadingStatus', false)
-  }).catch((error) => {
-    commit('loadingStatus', false)
-    errorSwal(error.response.data.message)
-  })
-}
-
-export const patientPrimaryPhysician = async ({ commit }, id) => {
-  commit('loadingStatus', true)
-  await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/physician', null, null).then((response) => {
-    commit('patientPrimaryPhysician', response.data.data);
-    commit('loadingStatus', false)
-  }).catch((error) => {
-    commit('loadingStatus', false)
-    errorSwal(error.response.data.message)
-  })
-} */
-
 export const programList = async ({
   commit
 }, data) => {
