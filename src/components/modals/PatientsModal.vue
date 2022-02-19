@@ -4,7 +4,7 @@
     <a-row :gutter="24">
         <a-col :span="24">
             <a-steps v-model:current="current">
-                <a-step v-for="item in steps" :key="item.title" :title="item.title" />
+                <a-step v-for="item in steps" :key="item.title" :title="item.title" @click="checkStep(item.key)" />
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Demographics'">
                 <!-- <Demographics /> -->
@@ -737,6 +737,10 @@ export default {
     // const current = computed(() => {
     //   return store.state.patients.counter;
     // });
+
+    const globalCode = computed(() => {
+      return store.state.common;
+    });
     const idPatient = props.patientId ? reactive(props.patientId) : null;
 
     const patients = computed(() => {
@@ -794,13 +798,6 @@ export default {
       emergencyId: '',
     });
 
-
-    watchEffect(() => {
-        if(idPatient) {
-            Object.assign(demographics, patientDetail);
-        }
-    })
-
     const conditions = reactive({
       condition: [],
       name: "",
@@ -815,6 +812,39 @@ export default {
       physicianPhoneNumber: "",
       physicianFax: "",
     });
+
+    watchEffect(() => {
+        if(idPatient) {
+            Object.assign(demographics, patientDetail);
+        }
+    })
+    
+    const checkStep = (stepKey) => {
+        if(stepKey == 'conditions') {
+            Object.assign(conditions.condition, patients.value.patientConditions)
+            const patientReferralSource = patients.value.patientReferralSource;
+            const patientPrimaryPhysician = patients.value.patientPrimaryPhysician;
+            
+            if(patientReferralSource != null) {
+                Object.assign(conditions, {
+                    name: patientReferralSource.name,
+                    designation: patientReferralSource.designation,
+                    email: patientReferralSource.email,
+                    phoneNumber: patientReferralSource.phoneNumber,
+                    fax: patientReferralSource.fax,
+                });
+            }
+            if(patientPrimaryPhysician != null) {
+                Object.assign(conditions, {
+                    physicianName: patientPrimaryPhysician.name,
+                    physicianDesignation: patientPrimaryPhysician.designation,
+                    physicianEmail: patientPrimaryPhysician.email,
+                    physicianPhoneNumber: patientPrimaryPhysician.phoneNumber,
+                    physicianFax: patientPrimaryPhysician.fax,
+                });
+            }
+        }
+    }
 
     const parameters = reactive([]);
 
@@ -926,73 +956,94 @@ export default {
     };
 
     const condition = () => {
-      if (
-        patients.value.addCondition == null ||
-        patients.value.addPatientReferals == null ||
-        patients.value.addPatientPhysician == null
-      ) {
-        // store.dispatch("addCondition", {
-        //     data: conditions,
-        //     id: patients.value.addDemographic.id,
-        // });
-        // store.dispatch("addPatientReferals", {
-        //     data: conditions,
-        //     id: patients.value.addDemographic.id,
-        // });
-        if (conditions.checked == false) {
-          (conditions.name = conditions.physicianName),
-            (conditions.designation = conditions.physicianDesignation),
-            (conditions.email = conditions.physicianEmail),
-            (conditions.phoneNumber = conditions.physicianPhoneNumber),
-            (conditions.fax = conditions.physicianFax);
-          store.dispatch("addCondition", {
-            data: conditions,
-            id: patients.value.addDemographic.id,
-          });
+        if(idPatient != null) {
+            if ( patients.value.patientConditions == null || patients.value.patientReferralSource == null || patients.value.patientPrimaryPhysician == null ) {
+                if(conditions.checked == false) {
+                    (conditions.name = conditions.physicianName),
+                    (conditions.designation = conditions.physicianDesignation),
+                    (conditions.email = conditions.physicianEmail),
+                    (conditions.phoneNumber = conditions.physicianPhoneNumber),
+                    (conditions.fax = conditions.physicianFax);
+                    store.dispatch("addCondition", {
+                        data: conditions,
+                        id: idPatient,
+                    });
+                }
+                if (conditions.checked == true) {
+                    store.dispatch("addCondition", {
+                        data: conditions,
+                        id: idPatient,
+                    });
+                }
+            }
+            else if ((patients.value.patientConditions != null || patients.value.patientReferralSource != null || patients.value.patientPrimaryPhysician != null) && patients.value.patientPrimaryPhysician.id || patients.value.patientReferralSource.id ) {
+                if (conditions.checked == false) {
+                    (conditions.name = conditions.physicianName),
+                    (conditions.designation = conditions.physicianDesignation),
+                    (conditions.email = conditions.physicianEmail),
+                    (conditions.phoneNumber = conditions.physicianPhoneNumber),
+                    (conditions.fax = conditions.physicianFax);
+                    store.dispatch("updateCondition", {
+                        data: conditions,
+                        id: idPatient,
+                        physicianId: patients.value.patientPrimaryPhysician.id,
+                        referalID: patients.value.patientReferralSource.id,
+                    });
+                }
+                if (conditions.checked == true) {
+                    store.dispatch("updateCondition", {
+                        data: conditions,
+                        id: idPatient,
+                        physicianId: patients.value.patientPrimaryPhysician.id,
+                        referalID: patients.value.patientReferralSource.id,
+                    });
+                }
+            }
         }
-        if (conditions.checked == true) {
-          store.dispatch("addCondition", {
-            data: conditions,
-            id: patients.value.addDemographic.id,
-          });
+        else {
+            if (patients.value.addCondition == null || patients.value.addPatientReferals == null || patients.value.addPatientPhysician == null) {
+                if (conditions.checked == false) {
+                    (conditions.name = conditions.physicianName),
+                    (conditions.designation = conditions.physicianDesignation),
+                    (conditions.email = conditions.physicianEmail),
+                    (conditions.phoneNumber = conditions.physicianPhoneNumber),
+                    (conditions.fax = conditions.physicianFax);
+                    store.dispatch("addCondition", {
+                        data: conditions,
+                        id: patients.value.addDemographic.id,
+                    });
+                }
+                if (conditions.checked == true) {
+                    store.dispatch("addCondition", {
+                        data: conditions,
+                        id: patients.value.addDemographic.id,
+                    });
+                }
+            }
+            if (patients.value.addPatientReferals.id && patients.value.addPatientPhysician.id) {
+                if (conditions.checked == false) {
+                    (conditions.name = conditions.physicianName),
+                    (conditions.designation = conditions.physicianDesignation),
+                    (conditions.email = conditions.physicianEmail),
+                    (conditions.phoneNumber = conditions.physicianPhoneNumber),
+                    (conditions.fax = conditions.physicianFax);
+                    store.dispatch("updateCondition", {
+                        data: conditions,
+                        id: patients.value.addDemographic.id,
+                        physicianId: patients.value.addPatientPhysician.id,
+                        referalID: patients.value.addPatientReferals.id,
+                    });
+                }
+                if (conditions.checked == true) {
+                    store.dispatch("updateCondition", {
+                        data: conditions,
+                        id: patients.value.addDemographic.id,
+                        physicianId: patients.value.addPatientPhysician.id,
+                        referalID: patients.value.addPatientReferals.id,
+                    });
+                }
+            }
         }
-      }
-
-      if (
-        patients.value.addPatientReferals.id &&
-        patients.value.addPatientPhysician.id
-      ) {
-        // store.dispatch("addCondition", {
-        //     data: conditions,
-        //     id: patients.value.addDemographic.id,
-        // });
-        // store.dispatch("updatePatientReferals", {
-        //     data: conditions,
-        //     id: patients.value.addDemographic.id,
-        //     referalID: patients.value.addPatientReferals.id
-        // });
-        if (conditions.checked == false) {
-          (conditions.name = conditions.physicianName),
-            (conditions.designation = conditions.physicianDesignation),
-            (conditions.email = conditions.physicianEmail),
-            (conditions.phoneNumber = conditions.physicianPhoneNumber),
-            (conditions.fax = conditions.physicianFax);
-          store.dispatch("updateCondition", {
-            data: conditions,
-            id: patients.value.addDemographic.id,
-            physicianId: patients.value.addPatientPhysician.id,
-            referalID: patients.value.addPatientReferals.id,
-          });
-        }
-        if (conditions.checked == true) {
-          store.dispatch("updateCondition", {
-            data: conditions,
-            id: patients.value.addDemographic.id,
-            physicianId: patients.value.addPatientPhysician.id,
-            referalID: patients.value.addPatientReferals.id,
-          });
-        }
-      }
     };
 
     const parameter = () => {
@@ -1028,10 +1079,6 @@ export default {
     };
 
     const handleChange = () => {};
-
-    const globalCode = computed(() => {
-      return store.state.common;
-    });
 
     const errorMsg = computed(() => {
       return store.state.patients.errorMsg;
@@ -1082,6 +1129,7 @@ export default {
     }
 
     return {
+      checkStep,
       stepperClick,
       emailChange,
       insuranceDataFailed,
@@ -1108,18 +1156,22 @@ export default {
       steps: [
         {
           title: "Demographics",
+          key: "demographics",
           content: "First-content",
         },
         {
           title: "Conditions",
+          key: "conditions",
           content: "Second-content",
         },
         {
           title: "Programs",
+          key: "programs",
           content: "Second-content",
         },
         {
           title: "Devices",
+          key: "devices",
           content: "Second-content",
         },
         // {
@@ -1128,14 +1180,17 @@ export default {
         // },
         {
           title: "Clinical Data",
+          key: "clinicalData",
           content: "Second-content",
         },
         {
           title: "Insurance",
+          key: "insurance",
           content: "Second-content",
         },
         {
           title: "Documents",
+          key: "documents",
           content: "Last-content",
         },
       ],
