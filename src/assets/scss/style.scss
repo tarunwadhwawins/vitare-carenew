@@ -274,6 +274,7 @@
                     border-style: solid;
                 }
                 td {
+                    vertical-align: middle;
                     .ant-dropdown-link {
                         display: inline-block;
                         border-radius: 0.25rem;
@@ -1249,4 +1250,9 @@
     .ant-dropdown-menu {
         padding: 0;
     }
+}
+
+.loadMore.ant-btn {
+    height: 53px;
+    border-radius: 0.25rem;
 }

@@ -14,7 +14,7 @@
                  
                    
                    <AppointmentCardList 
-                     :cardData="appointment" :count="i"></AppointmentCardList>
+                     :cardData="appointment" :count="i" :length="week.data.length" @is-showrecordByday="showrecordByday($event)" tabName="week" :data="week.data"></AppointmentCardList>
                  </td>
               </div>
 
@@ -40,7 +40,9 @@
       AppointmentCardList,
       Loader
     },
-    setup() {
+    props:{
+    },
+    setup(props,{emit}) {
       const store = useStore()
       const appointmentSearch = computed(() => {
         return store.state.appointment.searchAppointmentRecords
@@ -48,11 +50,15 @@
       const weekName = computed(() => {
         return store.state.appointment.weekName
       })
-
+      function showrecordByday(event){
+       emit('is-dateClick',event)
+      }
+      
       return {
         weekName,
         appointmentSearch,
         dateFormat,
+        showrecordByday,
       }
     }
   }

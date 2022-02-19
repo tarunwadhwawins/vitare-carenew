@@ -16,25 +16,25 @@
               {{$t('appointmentCalendar.newAppointment')}}</a-button>
           </div>
 
-          <Calendar @is-click="tabClick($event)" />
+          <Calendar @is-click="selectDate($event)" />
           <Physicians v-if="staffList" :staff="staffList" />
         </a-col>
         <a-col :xl="toggle == false ? 24 : 18" :sm="toggle == false ? 24 : 14" :xs="24">
-          <a-tabs v-model:activeKey="activeKey" @change="selectDate(activeKey)">
+          <a-tabs v-model:activeKey="activeKey" @change="tabClick(activeKey)">
 
             <a-tab-pane key="1" tab="Day">
 
-              <DayAppointment />
+              <DayAppointment  />
             </a-tab-pane>
-            <a-tab-pane key="2" tab="Tomorrow">
-              <DayAppointment />
+            <a-tab-pane key="2" tab="Tomorrow" >
+              <DayAppointment  />
             </a-tab-pane>
             <a-tab-pane key="3" tab="Week">
 
-              <WeekAppointment></WeekAppointment>
+              <WeekAppointment @is-dateClick="selectDate($event)" tabName="week"></WeekAppointment>
             </a-tab-pane>
             <a-tab-pane key="4" tab="Month">
-              <MonthAppointment v-if="appointmentSearch" @is-dateClick="tabClick($event)"></MonthAppointment>
+              <MonthAppointment v-if="appointmentSearch" @is-dateClick="selectDate($event)"></MonthAppointment>
             </a-tab-pane>
           </a-tabs>
         </a-col>
@@ -83,8 +83,8 @@
       const fromDate = ref(moment())
       const toDate = ref(moment())
       let datePick = moment()
-
-      function tabClick(event) {
+///This fuction is working for date select in calendar and view appointment according select date
+      function selectDate(event) {
         activeKey.value = ref('1')
         store.state.appointment.searchAppointmentRecords = ""
         fromDate.value = moment(event)
@@ -92,7 +92,7 @@
         datePick = moment(event)
         searchApi()
       }
-      function selectDate(value) {
+      function tabClick(value) {
         store.state.appointment.searchAppointmentRecords = ""
         if (value == 1) {
           activeKey.value = ref('1')

@@ -23,8 +23,13 @@ export const searchAppointment = async ({
 },from) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", API_ENDPOINTS['seacrhAppointment']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null, null).then((response) => {
+    
+    if(from.tabId=='today'){
+      commit('todayAppointmentSuccess', response.data.data) 
+    }else{
     commit('searchAppointmentSuccess', {data:response.data.data,key:from.tabId});
     commit('loadingStatus', false)
+    }
   }).catch((error) => {
     if(error.response.status === 422){
       commit('loadingStatus', true)
@@ -44,6 +49,9 @@ export const weekName =({commit},date) =>{
 export const calendarDateSelect =({commit},date) =>{
   commit('calendarDateSelect', date)
 }
+export const showMoreRecords =({commit},data) =>{
+  commit('showMoreRecords', data)
+}
 
 
 export const latestAppointment = async ({ commit }, id) => {
@@ -57,4 +65,5 @@ export const latestAppointment = async ({ commit }, id) => {
 		commit('failure', error.response.data);
 	})
 }
+
 

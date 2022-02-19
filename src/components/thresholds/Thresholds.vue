@@ -27,7 +27,11 @@
               }}</a-button>
           </div>
         </a-col>
-        <ThresholdsTable v-if="vitalList" :thresholdsData="vitalList"></ThresholdsTable>
+       
+          
+       
+        <ThresholdsTable v-if="vitalList" :thresholdsData="vitalList" ></ThresholdsTable>
+        <div v-else><Loader /></div>
       </a-row>
     </div>
   </a-layout-content>
@@ -39,11 +43,13 @@
   import Thresholds from "@/components/modals/Thresholds";
   import ThresholdsTable from "./ThresholdsTable";
   import { useStore } from "vuex";
+  import Loader from "@/components/loader/Loader";
 
   export default {
     components: {
       ThresholdsTable,
       Thresholds,
+      Loader
     },
 
     setup() {
@@ -95,6 +101,7 @@
       ]);
 
       return {
+        
         vitalList,
         checked,
         Thresholds,

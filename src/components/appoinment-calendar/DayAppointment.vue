@@ -13,7 +13,7 @@
                 <td v-for="appointment,i in timeHeding.data" :key="i" >
                   
                    <AppointmentCardList 
-                     :cardData="appointment"  :count="i" :length="(timeHeding.data).length"></AppointmentCardList>
+                     :cardData="appointment"  :count="i" :length="(timeHeding.data).length" tabName="day" :data="timeHeding.data"></AppointmentCardList>
                  </td>
               </div>
               <div v-else>

@@ -78,6 +78,25 @@ export const generalParameterList = async ({
 }) => {
   await serviceMethod.common("get", API_ENDPOINTS['generalParameter'], null, null).then((response) => {
     commit('vitalSuccessList', response.data.data)
+  
+  }).catch((error) => {
+    if (error.response.status === 422) {
+      errorSwal(error.response.data)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      errorSwal(error.response.data.message)
+    }
+  })
+
+
+}
+export const generalParameterDelete = async ({
+  commit
+},id) => {
+  await serviceMethod.common("delete", API_ENDPOINTS['deleteParameter'], id, null).then((response) => {
+    successSwal(response.data.message)
+    commit('vitalSuccessMsg', '')
   }).catch((error) => {
     if (error.response.status === 422) {
       errorSwal(error.response.data)
