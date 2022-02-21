@@ -18,7 +18,7 @@
             <a-row :gutter="24">
               <a-col :xl="16" :lg="14">
                 <div class="videoCall">
-                  <video  width="800" height="500" ref="root" ></video>
+                  <video  width="800" height="500" ref="root" id="root"></video>
                   <!-- <img  class="largeImg" src="../../assets/images/patient.png" /> -->
                   <!-- <div class="participant">
                     <div class="participantBox">
@@ -166,20 +166,19 @@ export default {
   },
 
   setup() {
+    // the DOM element(video) will be assigned to the ref after initial render
     const root = ref()
     const router = useRouter()
     const session = inject('sipSession')
-
   onMounted(() => {
-      // the DOM element will be assigned to the ref after initial render
       console.log(root.value) // this is your $el
       if(session){
       session.options.media.remote = {video:root.value};
       session.answer();
   }else{
     router.push('/dashboard')
-  }
-      })
+    }
+    })
   // Answer call
   function hangUp(){
     session.hangup().then(()=>{

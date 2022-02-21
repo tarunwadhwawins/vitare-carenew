@@ -75,39 +75,23 @@
         <a-row :gutter="24" v-for="(vital, i) in vitalData" :key="i">
           <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
-              <a-form-item
-                :label="
-                  $t('thresholds.thresholdModal.highLimit') +
-                  '(' +
-                  vital.field +
-                  ')'
-                "
-                name="vital.field"
-              >
+              <a-form-item :label="$t('thresholds.thresholdModal.highLimit') + '(' +vital.field + ')'" name="generalParametershigh" :rules="[{required:false, message:'Only number is required.',pattern:new RegExp(/\d+(\.\d{1,2})?$/g)}]">
                 <!-- <a-input v-model="value" size="large" /> -->
                 <a-input
                   v-model:value="thresholdForm.generalParametershigh[vital.id]"
                   size="large"
                   style="width: 100%"
                 />
-                <ErrorMessage
+                <!-- <ErrorMessage
                   v-if="errorMsg"
                   :name="errorMsg.note ? errorMsg.high[0] : ''"
-                />
+                /> -->
               </a-form-item>
             </div>
           </a-col>
           <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
-              <a-form-item
-                :label="
-                  $t('thresholds.thresholdModal.lowLimit') +
-                  '(' +
-                  vital.field +
-                  ')'
-                "
-                name="vital.field"
-              >
+              <a-form-item :label="$t('thresholds.thresholdModal.lowLimit') + '(' +vital.field +')'" name="generalParameterslow" :rules="[{required:false, message:'Only number is required',pattern:new RegExp(/\d+(\.\d{1,2})?$/g)}]">
                 <!-- <a-input v-model="value" size="large" /> -->
                 <a-input
                   v-model:value="thresholdForm.generalParameterslow[vital.id]"
@@ -139,8 +123,10 @@ import { ref, reactive, computed } from "vue";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import ErrorMessage from "../common/messages/ErrorMessage";
 import { useStore } from "vuex";
+import { regex } from "@/RegularExpressions/regex";
 const OPTIONS = ["Jane Doe", "Steve Smith", "Joseph William"];
 const OPTIONSTAG = ["Admin", "Clinical", "Office", "Personal"];
+
 export default {
   components: {
     ErrorMessage,
@@ -208,6 +194,7 @@ export default {
       Object.assign(thresholdForm, form);
     };
     return {
+      regex,
       handleDevice,
       globalCode,
       thresholdForm,

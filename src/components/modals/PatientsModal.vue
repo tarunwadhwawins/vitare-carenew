@@ -8,7 +8,7 @@
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Demographics'">
                 <!-- <Demographics /> -->
-                <a-form :model="demographics" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="demographic" @finishFailed="demographicsFailed">
+                <a-form :model="demographics" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="demographic" @finishFailed="demographicsFailed">
                     <Loader />
                     <a-row :gutter="24">
                         <a-col :md="8" :sm="12" :xs="24">
@@ -706,7 +706,7 @@ import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 // import serviceMethod from "../../services/serviceMethod";
 import { regex } from "@/RegularExpressions/regex";
 import Loader from "@/components/loader/Loader";
-import {successSwal,warningSwal,scrollToTop } from "@/commonMethods/commonMethod";
+import {successSwal,warningSwal } from "@/commonMethods/commonMethod";
 // import dayjs from 'dayjs';
 // import {DeleteOutlined} from "@ant-design/icons-vue";
 import { messages } from "../../config/messages";
@@ -1012,18 +1012,18 @@ export default {
     };
 
     const demographicsFailed = () => {
-      scrollToTop();
+    //   scrollToTop();
      
       // errorSwal(messages.fieldsRequired)
     };
 
     const conditionsFailed = () => {
-      scrollToTop();
+    //   scrollToTop();
       // errorSwal(messages.fieldsRequired)
     };
 
     const insuranceDataFailed = () => {
-      scrollToTop();
+    //   scrollToTop();
       // errorSwal(messages.fieldsRequired)
     };
 
@@ -1092,7 +1092,7 @@ export default {
       successSwal,
       saveModal,
       regex,
-      scrollToTop,
+    //   scrollToTop,
       insuranceForm,
       insuranceData,
       parameter,
