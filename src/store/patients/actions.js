@@ -630,18 +630,24 @@ export const uploadFile = async ({
 }
 
 export const patientDetails = async ({commit}, id) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("get", API_ENDPOINTS['patient'], id, null).then((response) => {
     commit('patientDetailsSuccess', response.data.data);
+    commit('loadingStatus', false)
   }).catch((error) => {
     errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
   })
 }
 
 export const patientTimeline = async ({commit}, id) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/timeLine', null, null).then((response) => {
     commit('patientTimelineSuccess', response.data.data);
+    commit('loadingStatus', false)
   }).catch((error) => {
     errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
   })
 }
 
