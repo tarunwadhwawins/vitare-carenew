@@ -196,7 +196,6 @@ export default {
       
     };
     return {
-      regex,
       handleDevice,
       globalCode,
       thresholdForm,
