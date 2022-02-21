@@ -747,7 +747,9 @@ export default {
       return store.state.patients;
     });
     const patientDetail = patients.value.patientDetails;
-
+    const patientReferralSource = patients.value.patientReferralSource;
+    const patientPrimaryPhysician = patients.value.patientPrimaryPhysician;
+    
     const current= computed({
       get: () =>
         store.state.patients.counter,
@@ -817,22 +819,22 @@ export default {
         if(idPatient) {
             Object.assign(demographics, patientDetail);
             Object.assign(conditions.condition, patients.value.patientConditions)
-            if(patients.value.patientReferralSource != null) {
+            if(patientReferralSource != null) {
                 Object.assign(conditions, {
-                    name: patients.value.patientReferralSource.name,
-                    designation: patients.value.patientReferralSource.designation,
-                    email: patients.value.patientReferralSource.email,
-                    phoneNumber: patients.value.patientReferralSource.phoneNumber,
-                    fax: patients.value.patientReferralSource.fax,
+                    name: patientReferralSource.name,
+                    designation: patientReferralSource.designation,
+                    email: patientReferralSource.email,
+                    phoneNumber: patientReferralSource.phoneNumber,
+                    fax: patientReferralSource.fax,
                 });
             }
-            if(patients.value.patientPrimaryPhysician != null) {
+            if(patientPrimaryPhysician != null) {
                 Object.assign(conditions, {
-                    physicianName: patients.value.patientPrimaryPhysician.name,
-                    physicianDesignation: patients.value.patientPrimaryPhysician.designation,
-                    physicianEmail: patients.value.patientPrimaryPhysician.email,
-                    physicianPhoneNumber: patients.value.patientPrimaryPhysician.phoneNumber,
-                    physicianFax: patients.value.patientPrimaryPhysician.fax,
+                    physicianName: patientPrimaryPhysician.name,
+                    physicianDesignation: patientPrimaryPhysician.designation,
+                    physicianEmail: patientPrimaryPhysician.email,
+                    physicianPhoneNumber: patientPrimaryPhysician.phoneNumber,
+                    physicianFax: patientPrimaryPhysician.fax,
                 });
             }
         }
@@ -948,14 +950,10 @@ export default {
     };
 
     const condition = () => {
+        const patientConditions = patients.value.patientConditions;
         if(idPatient != null) {
-            if ( patients.value.patientConditions == null || patients.value.patientReferralSource == null || patients.value.patientPrimaryPhysician == null ) {
+            if ( patientConditions == null || patientReferralSource == null || patientPrimaryPhysician == null ) {
                 if(conditions.checked == false) {
-                    (conditions.name = conditions.physicianName),
-                    (conditions.designation = conditions.physicianDesignation),
-                    (conditions.email = conditions.physicianEmail),
-                    (conditions.phoneNumber = conditions.physicianPhoneNumber),
-                    (conditions.fax = conditions.physicianFax);
                     store.dispatch("addCondition", {
                         data: conditions,
                         id: idPatient,
@@ -968,7 +966,7 @@ export default {
                     });
                 }
             }
-            else if ((patients.value.patientConditions != null || patients.value.patientReferralSource != null || patients.value.patientPrimaryPhysician != null) && patients.value.patientPrimaryPhysician.id || patients.value.patientReferralSource.id ) {
+            else if ((patientConditions != null || patientReferralSource != null || patientPrimaryPhysician != null) && patientPrimaryPhysician.id || patientReferralSource.id ) {
                 if (conditions.checked == false) {
                     (conditions.name = conditions.physicianName),
                     (conditions.designation = conditions.physicianDesignation),
@@ -978,16 +976,16 @@ export default {
                     store.dispatch("updateCondition", {
                         data: conditions,
                         id: idPatient,
-                        physicianId: patients.value.patientPrimaryPhysician.id,
-                        referalID: patients.value.patientReferralSource.id,
+                        physicianId: patientPrimaryPhysician.id,
+                        referalID: patientReferralSource.id,
                     });
                 }
                 if (conditions.checked == true) {
                     store.dispatch("updateCondition", {
                         data: conditions,
                         id: idPatient,
-                        physicianId: patients.value.patientPrimaryPhysician.id,
-                        referalID: patients.value.patientReferralSource.id,
+                        physicianId: patientPrimaryPhysician.id,
+                        referalID: patientReferralSource.id,
                     });
                 }
             }
