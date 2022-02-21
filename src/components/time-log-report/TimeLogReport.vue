@@ -38,7 +38,7 @@
                     </a-row>
                     <a-row>
                         <a-col :sm="24" :xs="24">
-                            <a-table :columns="timeLogReports.timeLogReportColumns" :data-source="timeLogReports.timeLogReportList" :scroll="{ x: 900 }" @change="onChange">
+                            <a-table :columns="timeLogReports.timeLogReportColumns" :pagination="true" :data-source="timeLogReports.timeLogReportList" :scroll="{ x: 900 }" @change="onChange">
                                 <template #staff="text">
                                     <!-- <router-link to="coordinator-summary">{{
                       text.text
@@ -90,84 +90,71 @@
 <script>
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
-import AuditTimeLog from "../modals/AuditTimeLogs"
-import {
-    ref,
-    watchEffect,
-    computed
-} from "vue";
-import {
-    DeleteOutlined,
-    EditOutlined
-} from "@ant-design/icons-vue";
-import {
-    useStore
-} from "vuex"
-import Loader from "@/components/loader/Loader"
-import {
-    warningSwal
-} from "@/commonMethods/commonMethod";
-import {
-    messages
-} from '../../config/messages';
+import AuditTimeLog from "../modals/AuditTimeLogs";
+import { ref, watchEffect } from "vue";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import { useStore } from "vuex";
+import Loader from "@/components/loader/Loader";
+import { warningSwal } from "@/commonMethods/commonMethod";
+import { messages } from "../../config/messages";
 export default {
-    components: {
-        Header,
-        Sidebar,
-        DeleteOutlined,
-        EditOutlined,
-        Loader,
-        AuditTimeLog
-    },
+  components: {
+    Header,
+    Sidebar,
+    DeleteOutlined,
+    EditOutlined,
+    Loader,
+    AuditTimeLog,
+  },
 
-    setup() {
-        const store = useStore()
-        const checked = ref([false]);
-        const visible = ref(false);
-        const linkTo = "patients-summary";
+  setup() {
+    const store = useStore();
+    const checked = ref([false]);
+    const visible = ref(false);
+    const linkTo = "patients-summary";
 
-        const editTimeLog = (id) => {
-          console.log(id)
-          store.dispatch('editAuditTimeLog',id)
-          visible.value = true;
-        };
+    const editTimeLog = (id) => {
+      console.log(id);
+      store.dispatch("editAuditTimeLog", id);
+      visible.value = true;
+    };
 
-        watchEffect(() => {
-            store.dispatch('timeLogReportList')
-        })
+    watchEffect(() => {
+      store.dispatch("timeLogReportList");
+    });
 
-        const handleOk = (e) => {
-            console.log(e);
-            visible.value = false;
-        };
+    const handleOk = (e) => {
+      console.log(e);
+      visible.value = false;
+    };
 
-        const timeLogReports = computed(() => {
-            return store.state.timeLogReport
-        })
+    // const timeLogReports = computed(() => {
+    //   return store.state.timeLogReport;
+    // });
 
-        function deleteTimeLog(id) {
-            warningSwal(messages.deleteWarning).then((response) => {
-                if (response == true) {
-                    store.dispatch('deleteTimeLog', id)
-                    setTimeout(() => {
-                        store.dispatch("timeLogReportList");
-                    }, 2000);
-                }
-            });
+    function deleteTimeLog(id) {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          store.dispatch("deleteTimeLog", id);
+          setTimeout(() => {
+            store.dispatch("timeLogReportList");
+          }, 2000);
         }
+      });
+    }
 
-        return {
-            editTimeLog,
-            deleteTimeLog,
-            timeLogReports,
-            linkTo,
-            checked,
-            visible,
-            handleOk,
-            value1: ref(),
-            size: ref("large"),
-        };
-    },
+    return {
+      editTimeLog,
+      deleteTimeLog,
+      linkTo,
+      checked,
+      visible,
+      handleOk,
+      value1: ref(),
+      size: ref("large"),
+      timeLogReports:store.getters.timeLogReports
+    };
+  },
 };
 </script>
 

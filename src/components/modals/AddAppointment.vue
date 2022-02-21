@@ -102,7 +102,7 @@
   import { ref, watchEffect, computed, reactive } from "vue"
   import { useStore } from "vuex"
   import ErrorMessage from "../common/messages/ErrorMessage"
-  import { scrollToTop, timeStamp } from "../../commonMethods/commonMethod"
+  import { timeStamp } from "../../commonMethods/commonMethod"
   import moment from 'moment';
   import ModalButtons from "@/components/common/button/ModalButtons";
 import { useRoute } from 'vue-router'
@@ -136,7 +136,7 @@ import { useRoute } from 'vue-router'
         store.state.common.staffList ? "" : store.dispatch("staffList")
       })
       const onFinishFailed = () => {
-        scrollToTop()
+        // 
       };
       const list = ref([])
       const durationList = computed(() => {
@@ -192,7 +192,7 @@ import { useRoute } from 'vue-router'
       }
       const errorMsg = computed(() => {
         if (store.state.careCoordinator.errorMsg) {
-          scrollToTop()
+          // scrollToTop()
         }
         return store.state.careCoordinator.errorMsg
       }) 

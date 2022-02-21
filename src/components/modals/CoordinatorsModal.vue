@@ -6,7 +6,7 @@
                 <a-step v-for="item in steps" :key="item.title" :title="item.title?item.title:''" />
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Personal Information'">
-                <a-form :model="personalInfoData" class="basic" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="personalInfo" @finishFailed="onFinishFailed">
+                <a-form :model="personalInfoData" class="basic" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="personalInfo" @finishFailed="onFinishFailed">
                     <!-- <PersonalInformation /> -->
                     <a-row :gutter="24">
                         <a-col :sm="12" :xs="24">
@@ -155,7 +155,7 @@ import Documents from "@/components/modals/forms/Documents";
 import { useStore } from "vuex";
 import ErrorMessage from "@/components/common/messages/ErrorMessage";
 import { regex } from "@/RegularExpressions/regex";
-import { errorSwal,successSwal,warningSwal,scrollToTop } from "@/commonMethods/commonMethod";
+import { successSwal,warningSwal, } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 export default {
   components: {
@@ -221,10 +221,9 @@ export default {
       store.commit("counterMinus");
     };
 
-    const onFinishFailed = (value) => {
-      scrollToTop();
-      errorSwal(messages.fieldsRequired);
-      console.log("test", value);
+    const onFinishFailed = () => {
+      // errorSwal(messages.fieldsRequired);
+      // console.log("test", value);
     };
 
     const handleChange = () => {};
@@ -290,7 +289,7 @@ export default {
       saveModal,
       emailChange,
       handleChange,
-      scrollToTop,
+      // scrollToTop,
       regex,
       errorMsg,
       addStaff,

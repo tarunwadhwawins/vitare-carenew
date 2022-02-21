@@ -7,6 +7,19 @@ import i18n from './locales/i18n'
 import store from './store'
 import './assets/scss/common.scss'
 import VueApexCharts from "vue3-apexcharts";
-createApp(App).use(Antd).use(VueApexCharts).use(store).use(router).use(i18n).mount('#app')
+
+
+
+
+const app = createApp(App)
+
+// video call config
+if(store.state.authentication.loggedInUser){
+store.getters.videoCall;
+}
+
+ 
+
+app.use(Antd).use(VueApexCharts).use(store).use(router).use(i18n).mount('#app')
 
 
