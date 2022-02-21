@@ -255,8 +255,9 @@ export default {
 
     const editPatient = ({udid, id}) => {
       console.log('udid', udid)
-      console.log('id', id)
       store.dispatch('patientConditions', id)
+      store.dispatch("programList");
+      store.dispatch("patientInsurance", id);
       // store.dispatch('patientDetails', value)
       isEditPatient.value = true;
       patientsModalVisible.value = true;

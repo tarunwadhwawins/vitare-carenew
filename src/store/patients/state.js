@@ -26,6 +26,7 @@ export default {
     addInsurance:null,
     updateDemographic:null,
     updateInsurance:null,
+    patientInsurance:null,
     addDocument:null,
     documents:null,
     documentColumns:null,
@@ -44,5 +45,6 @@ export default {
     patientConditions:null,
     patientReferralSource:null,
     patientPrimaryPhysician:null,
+    programList:null,
 
 }

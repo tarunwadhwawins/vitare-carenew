@@ -22,9 +22,8 @@ import {
   EditOutlined,
 } from "@ant-design/icons-vue";
 import PatientsModal from "@/components/modals/PatientsModal";
-import { ref, watchEffect, computed } from 'vue-demi';
+import { ref, computed } from 'vue-demi';
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
 export default {
   components: {
     MailOutlined,
@@ -34,16 +33,12 @@ export default {
   },
   setup() {
     const store = useStore();
-    const route = useRoute();
     const PatientsModal = ref(false);
     
     const addPatient = () => {
       PatientsModal.value = true;
     };
 
-    watchEffect(() => {
-      store.dispatch('patientDetails', route.params.udid)
-    })
     const patientDetails = computed(() => {
       return store.state.patients.patientDetails
     })
