@@ -822,7 +822,7 @@ export default {
                 Object.assign(conditions.condition, patients.value.patientConditions)
             }
             if(patients.value.patientInsurance != null) {
-                Object.assign(insuranceData, patients.value.patientInsurance)
+                // Object.assign(insuranceData, patients.value.patientInsurance)
             }
             if(patientReferralSource != null) {
                 Object.assign(conditions, {
