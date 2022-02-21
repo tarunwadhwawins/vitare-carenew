@@ -63,18 +63,23 @@ export const patients = async ({
 }
 
 
-export const addCondition = async ({commit}, data) => {
+export const addCondition = async ({commit}, request) => {
+  const data = request.data;
+  const patientId = request.id;
   commit('loadingStatus', true)
-  if(data.data.designation || data.data.email || data.data.fax || data.data.name || data.data.phoneNumber || data.data.physicianDesignation || data.data.physicianEmail || data.data.physicianFax || data.data.physicianName || data.data.physicianPhoneNumber) {
-    await serviceMethod.common("post", `patient/${data.id}/condition`, null, data.data).then((response) => {
-      commit('addCondition', response.data.data);
+  if(data.designation || data.email || data.fax || data.name || data.phoneNumber || data.physicianDesignation || data.physicianEmail || data.physicianFax || data.physicianName || data.physicianPhoneNumber) {
+    await serviceMethod.common("post", `patient/${patientId}/condition`, null, data).then((response) => {
+      commit('addCondition', response.data);
+      commit('loadingStatus', false)
     }).then(()=> {
-      serviceMethod.common("post", `patient/${data.id}/referals`, null, data.data).then((response) => {
-        commit('addPatientReferals', response.data.data);
+      serviceMethod.common("post", `patient/${patientId}/referals`, null, data).then((response) => {
+        commit('addPatientReferals', response.data);
+        commit('loadingStatus', false)
       })
     }).then(()=> {
-      serviceMethod.common("post", `patient/${data.id}/physician`, null, data.data).then((response) => {
-        commit('addPatientPhysician', response.data.data);
+      serviceMethod.common("post", `patient/${patientId}/physician`, null, data).then((response) => {
+        commit('addPatientPhysician', response.data);
+        commit('loadingStatus', false)
         commit('counterPlus')
         // successSwal(response.data.message)
         commit('loadingStatus', false)
@@ -95,19 +100,30 @@ export const addCondition = async ({commit}, data) => {
       commit('counterPlus')
     })
   }
+  else {
+    await serviceMethod.common("post", `patient/${patientId}/condition`, null, data).then((response) => {
+      commit('addCondition', response.data.data);
+      commit('loadingStatus', false)
+      commit('counterPlus')
+    })
+  }
 }
 
-export const updateCondition = async ({commit}, data) => {
+export const updateCondition = async ({commit}, request) => {
+  const data = request.data;
+  const patientId = request.id;
   commit('loadingStatus', true)
-  if(data.data.designation || data.data.email || data.data.fax || data.data.name || data.data.phoneNumber || data.data.physicianDesignation || data.data.physicianEmail || data.data.physicianFax || data.data.physicianName || data.data.physicianPhoneNumber) {
-    await serviceMethod.common("post", `patient/${data.id}/condition`, null, data.data).then((response) => {
-      commit('addCondition', response.data.data);
+  if(data.designation || data.email || data.fax || data.name || data.phoneNumber || data.physicianDesignation || data.physicianEmail || data.physicianFax || data.physicianName || data.physicianPhoneNumber) {
+    await serviceMethod.common("post", `patient/${patientId}/condition`, null, data).then((response) => {
+      commit('updateCondition', response.data.data);
+      commit('loadingStatus', false)
     }).then(()=> {
-      serviceMethod.common("put", `patient/${data.id}/referals/${data.referalID}`, null, data.data).then((response) => {
+      serviceMethod.common("put", `patient/${patientId}/referals/${data.referalID}`, null, data).then((response) => {
         commit('updatePatientReferals', response.data.data);
+        commit('loadingStatus', false)
       })
     }).then(()=> {
-      serviceMethod.common("put", `patient/${data.id}/physician/${data.physicianId}`, null, data.data).then((response) => {
+      serviceMethod.common("put", `patient/${patientId}/physician/${data.physicianId}`, null, data).then((response) => {
         commit('updatePatientPhysician', response.data.data);
         commit('counterPlus')
         // successSwal(response.data.message)
@@ -123,13 +139,16 @@ export const updateCondition = async ({commit}, data) => {
           // commit('errorMsg', error.response.data.message)
           errorSwal(error.response.data.message)
           commit('loadingStatus', false)
+          commit('counterPlus')
         }
       })
     })
   }
   else {
-    await serviceMethod.common("post", `patient/${data.id}/condition`, null, data.data).then((response) => {
+    await serviceMethod.common("post", `patient/${patientId}/condition`, null, data).then((response) => {
       commit('addCondition', response.data.data);
+      commit('loadingStatus', false)
+      commit('counterPlus')
     })
   }
 }
