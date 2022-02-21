@@ -257,6 +257,7 @@ export default {
       console.log('udid', udid)
       store.dispatch('patientConditions', id)
       store.dispatch("programList");
+      store.dispatch("patientInsurance", id);
       // store.dispatch('patientDetails', value)
       isEditPatient.value = true;
       patientsModalVisible.value = true;

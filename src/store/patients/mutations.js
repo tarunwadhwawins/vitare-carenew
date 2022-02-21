@@ -422,8 +422,11 @@ export const addDemographic = (state, data) => {
  export const updateInsurance = (state, data) => {
   state.updateInsurance = data
 }
- 
 
+export const patientInsurance = (state, data) => {
+  state.patientInsurance = data
+}
+ 
 
  export const addDocument = (state, data) => {
     state.addDocument = data
