@@ -40,6 +40,7 @@
       const store = useStore()
       //     const auth = localStorage.getItem("auth");
       const locale = ref(enUS.locale)
+      
       watchEffect(() => {
         store.dispatch("globalCodes")
         store.dispatch("timeLine", 122)
@@ -49,6 +50,7 @@
         //       moment.locale(val);
       });
           onMounted(() => {
+          
             document.body.classList.add("test");
           });
       return {

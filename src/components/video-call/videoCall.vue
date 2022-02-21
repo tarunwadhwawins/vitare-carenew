@@ -12,13 +12,14 @@
             <a-row>
               <a-col :span="24">
                 <div class="videoCallHeading">
-                <h2 class="pageTittle">Video Call </h2> <span>- Steve Smith (64 - Male)</span><img width="30" src="../../assets/images/flag-orange.svg"></div>
+                <h2 class="pageTittle">Video Call </h2> <span></span><img width="30" src="../../assets/images/flag-orange.svg"></div>
               </a-col>
             </a-row>
             <a-row :gutter="24">
               <a-col :xl="16" :lg="14">
+                <Loader />
                 <div class="videoCall">
-                  <video  width="800" height="500" ref="root" id="root"></video>
+                  <video  ref="videoCall" ></video>
                   <!-- <img  class="largeImg" src="../../assets/images/patient.png" /> -->
                   <!-- <div class="participant">
                     <div class="participantBox">
@@ -156,32 +157,47 @@
 <script>
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
-import { ref,inject,onMounted } from "vue";
+import { ref,onMounted, computed } from "vue";
 import {useRouter} from "vue-router"
+import { useStore } from 'vuex';
+import Loader from "@/components/loader/Loader";
 
 export default {
   components: {
     Header,
     Sidebar,
+    Loader
   },
 
   setup() {
     // the DOM element(video) will be assigned to the ref after initial render
-    const root = ref()
+    const store = useStore();
+    const videoCall = ref()
     const router = useRouter()
-    const session = inject('sipSession')
+    // const session = inject('sipSession')
+    // const session = localStorage.getItem('sipSession');
+
+    const session = computed(()=>{
+      return store.state.authentication.simpleUser
+    })
+    console.log('sipSession',session.value);
+     
   onMounted(() => {
-      console.log(root.value) // this is your $el
-      if(session){
-      session.options.media.remote = {video:root.value};
-      session.answer();
+      store.commit('loadingStatus', true)
+      console.log(videoCall.value) // this is your $el
+      if(session.value){
+      session.value.options.media.remote = {video:videoCall.value};
+      session.value.answer();
+      setTimeout(()=>{
+      store.commit('loadingStatus', false)
+    },5000)
   }else{
     router.push('/dashboard')
     }
     })
   // Answer call
   function hangUp(){
-    session.hangup().then(()=>{
+    session.value.hangup().then(()=>{
       router.push('/dashboard')
     })
   }
@@ -189,7 +205,7 @@ export default {
  
     return {
       hangUp,
-      root,
+      videoCall,
       size: ref("large"),
     };
 

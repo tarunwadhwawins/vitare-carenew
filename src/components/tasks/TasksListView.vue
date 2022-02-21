@@ -13,7 +13,7 @@
         :columns="tasksList.tasksListColumns"
         :data-source="tasksList.tasksList"
         :scroll="{ x: 900 }"
-        :pagination="false"
+        :pagination="true"
         @change="onChange">
         <template #taskName="text">
           <router-link to="#" @click="showModal">{{ text.text }}</router-link>

@@ -8,7 +8,7 @@ export const login = async ({ commit }, user) => {
 	await ServiceMethodService.login(user).then((response) => {
 		localStorage.setItem('user', response.data.user.name);
 		localStorage.setItem('token', response.data.token);
-		localStorage.setItem('auth', response.data);
+		localStorage.setItem('auth', JSON.stringify(response.data));
 		commit('loginSuccess', response.data.user);
 		roleAccess()
 		

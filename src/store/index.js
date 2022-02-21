@@ -39,7 +39,7 @@ export default createStore({
   },
   plugins: [ createPersistedState({
     reducer(state) {
-     
+   
     return {
       token: state.authentication.token
       }

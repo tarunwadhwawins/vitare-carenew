@@ -38,7 +38,7 @@
                     </a-row>
                     <a-row>
                         <a-col :sm="24" :xs="24">
-                            <a-table :columns="timeLogReports.timeLogReportColumns" :data-source="timeLogReports.timeLogReportList" :scroll="{ x: 900 }" @change="onChange">
+                            <a-table :columns="timeLogReports.timeLogReportColumns" :pagination="true" :data-source="timeLogReports.timeLogReportList" :scroll="{ x: 900 }" @change="onChange">
                                 <template #staff="text">
                                     <!-- <router-link to="coordinator-summary">{{
                       text.text
