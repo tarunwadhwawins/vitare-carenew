@@ -469,7 +469,7 @@ export const addDemographic = (state, data) => {
  }
 
 export const patientDetailsSuccess = (state, patient) => {
-  if(patient.emergencyContact.length > 0) {
+  if(patient.emergencyContact.data) {
     patient.emergencyFullName = patient.emergencyContact.data.fullName;
     patient.emergencyEmail = patient.emergencyContact.data.email;
     patient.emergencyPhoneNumber = patient.emergencyContact.data.phoneNumber;
@@ -479,7 +479,7 @@ export const patientDetailsSuccess = (state, patient) => {
     patient.emergencyGender = patient.emergencyContact.data.genderId;
   }
   
-  if(patient.patientFamilyMember.length > 0) {
+  if(patient.patientFamilyMember.data) {
     patient.fullName = patient.patientFamilyMember.data.fullName;
     patient.familyEmail = patient.patientFamilyMember.data.email;
     patient.familyPhoneNumber = patient.patientFamilyMember.data.phoneNumber;
