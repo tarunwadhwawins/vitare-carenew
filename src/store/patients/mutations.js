@@ -500,8 +500,6 @@ export const patientDetailsSuccess = (state, patient) => {
   patient.contactType = patient.contactType.length > 0 ? JSON.parse(patient.contactType) : null;
   patient.otherLanguage = patient.otherLanguage.length > 0 ? JSON.parse(patient.otherLanguage) : null;
 
-  console.log('patient', patient)
-
   state.patientDetails = patient
 }
 
