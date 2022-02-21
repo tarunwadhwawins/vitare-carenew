@@ -70,13 +70,14 @@
 </template>
 
 <script>
-import { defineComponent, computed, reactive } from "vue";
+import { defineComponent, computed, reactive, watchEffect } from "vue";
 import { DeleteOutlined, FileOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "@/components/loader/Loader";
 import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
+import { useRoute } from "vue-router";
 export default defineComponent({
   components: {
     DeleteOutlined,
@@ -84,14 +85,28 @@ export default defineComponent({
     FileOutlined,
     ErrorMessage,
   },
-  setup() {
+  props: {
+    idPatient: {
+      type: Number
+    }
+  },
+  setup(props) {
     const store = useStore();
+    const route = useRoute();
+    const patientId = reactive(props.idPatient);
+    const patientUdid = route.params.udid;
     const onFileUpload = (event) => {
       let doc_file = event.target.files[0];
       let formData = new FormData();
       formData.append("file", doc_file);
       store.dispatch("uploadFile", formData);
     };
+
+    watchEffect(() => {
+      if(patientId != null) {
+        store.dispatch("documents", patientUdid);
+      }
+    })
 
     const filePath = computed(() => {
       return store.state.patients.uploadFile;
@@ -106,19 +121,35 @@ export default defineComponent({
     });
 
     const addDocument = () => {
-      store.dispatch("addDocument", {
-        data: {
-          name: documents.name,
-          document: filePath.value ? filePath.value : "",
-          type: documents.type,
-          tags: documents.tags,
-          entity: "patient",
-        },
-        id: patients.value.addDemographic.id,
-      });
-      setTimeout(() => {
-        store.dispatch("documents", patients.value.addDemographic.id);
-      }, 2000);
+      if(patientId != null) {
+        store.dispatch("addDocument", {
+          data: {
+            name: documents.name,
+            document: filePath.value ? filePath.value : "",
+            type: documents.type,
+            tags: documents.tags,
+            entity: "patient",
+          },
+          id: patientId,
+        }).then(() => {
+          store.dispatch("documents", patientUdid);
+        });
+      }
+      else {
+        store.dispatch("addDocument", {
+          data: {
+            name: documents.name,
+            document: filePath.value ? filePath.value : "",
+            type: documents.type,
+            tags: documents.tags,
+            entity: "patient",
+          },
+          id: patients.value.addDemographic.id,
+        });
+        setTimeout(() => {
+          store.dispatch("documents", patientUdid);
+        }, 2000);
+      }
     };
     const patients = computed(() => {
       return store.state.patients;
@@ -137,13 +168,24 @@ export default defineComponent({
     function deleteDocument(id) {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
-          store.dispatch("deleteDocument", {
-            id: patients.value.addDemographic.id,
-            documentId: id,
-          });
-          setTimeout(() => {
-            store.dispatch("documents", patients.value.addDemographic.id);
-          }, 2000);
+          if(patientId != null) {
+            store.dispatch("deleteDocument", {
+              id: patientId,
+              documentId: id,
+            });
+            setTimeout(() => {
+              store.dispatch("documents", patientUdid);
+            }, 2000);
+          }
+          else {
+            store.dispatch("deleteDocument", {
+              id: patients.value.addDemographic.id,
+              documentId: id,
+            });
+            setTimeout(() => {
+              store.dispatch("documents", patients.value.addDemographic.id);
+            }, 2000);
+          }
         }
       });
     }

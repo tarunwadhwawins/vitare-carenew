@@ -7,6 +7,7 @@
       <a-layout>
         <Sidebar />
         <a-layout-content>
+          <Loader />
           <a-row>
             <a-col :xl="5" :lg="10">
               <h2 class="pageTittle">{{$t('patientSummary.patientSummary')}}</h2>
@@ -72,6 +73,7 @@ import DefaultView from "@/components/patients/patientSummary/views/DefaultView"
 import TimelineView from "@/components/patients/patientSummary/views/TimelineView";
 import CarePlanView from "@/components/patients/patientSummary/views/CarePlanView";
 import PatientVitalsView from "@/components/patients/patientSummary/views/PatientVitalsView";
+import Loader from "@/components/loader/Loader";
 
 import dayjs from "dayjs";
 import { ref } from "vue";
@@ -92,6 +94,7 @@ export default {
     TimelineView,
     CarePlanView,
     PatientVitalsView,
+    Loader,
   },
   setup() {
     const visible = ref(false);

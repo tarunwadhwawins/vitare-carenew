@@ -605,7 +605,7 @@
                 <!--  -->
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Programs'">
-                <Programs />
+                <Programs :idPatient="idPatient" />
 
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
@@ -614,14 +614,14 @@
                 <!-- end  -->
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Devices'">
-                <Devices />
+                <Devices :idPatient="idPatient" />
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
                 </div>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Clinical Data'">
-                <ClinicalData />
+                <ClinicalData :idPatient="idPatient" />
 
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
@@ -675,7 +675,7 @@
                 </a-form>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Documents'">
-                <Documents />
+                <Documents :idPatient="idPatient" />
 
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
