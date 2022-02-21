@@ -853,8 +853,8 @@ export default {
         if(idPatient != null) {
             if(patients.value.addDemographic == null) {
                 if(demographics.isPrimary == false) {
-                    (demographics.emergencyId = patients.value.patientDetails.emergencyContact.length > 0 ? patients.value.patientDetails.emergencyContact.data.id : ''),
-                    (demographics.familyMemberId = patients.value.patientDetails.patientFamilyMember.length > 0 ? patients.value.patientDetails.patientFamilyMember.data.id : ''),
+                    (demographics.emergencyId = patients.value.patientDetails.emergencyContact.data ? patients.value.patientDetails.emergencyContact.data.id : ''),
+                    (demographics.familyMemberId = patients.value.patientDetails.patientFamilyMember.data ? patients.value.patientDetails.patientFamilyMember.data.id : ''),
                     store.dispatch("updateDemographic", {
                         data: demographics,
                         id: idPatient,
@@ -877,8 +877,8 @@ export default {
             }
             else if(patients.value.addDemographic != null && patients.value.addDemographic.id) {
                 if(demographics.isPrimary == false) {
-                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.length > 0 ? patients.value.addDemographic.emergencyContact.data.id : ''),
-                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.length > 0 ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
+                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
+                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
                     store.dispatch("updateDemographic", {
                         data: demographics,
                         id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
@@ -891,8 +891,8 @@ export default {
                     (demographics.emergencyContactType = demographics.familyContactType),
                     (demographics.emergencyContactTime = demographics.familyContactTime),
                     (demographics.emergencyGender = demographics.familyGender),
-                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.length > 0 ? patients.value.addDemographic.emergencyContact.data.id : ''),
-                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.length > 0 ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
+                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
+                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
                     store.dispatch("updateDemographic", {
                         data: demographics,
                         id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
@@ -917,8 +917,8 @@ export default {
             }
             else if(patients.value.addDemographic != null && patients.value.addDemographic.id) {
                 if(demographics.isPrimary == false) {
-                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.length > 0 ? patients.value.addDemographic.emergencyContact.data.id : ''),
-                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.length > 0 ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
+                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
+                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
                     store.dispatch("updateDemographic", {
                         data: demographics,
                         id: patients.value.addDemographic.id,
@@ -931,8 +931,8 @@ export default {
                     (demographics.emergencyContactType = demographics.familyContactType),
                     (demographics.emergencyContactTime = demographics.familyContactTime),
                     (demographics.emergencyGender = demographics.familyGender),
-                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.length > 0 ? patients.value.addDemographic.emergencyContact.data.id : ''),
-                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.length > 0 ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
+                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
+                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
                     store.dispatch("updateDemographic", {
                         data: demographics,
                         id: patients.value.addDemographic.id,
