@@ -254,6 +254,7 @@ export default {
     };
 
     const editPatient = ({udid, id}) => {
+      console.log('udid', udid)
       store.dispatch('patientConditions', id)
       // store.dispatch('patientDetails', value)
       isEditPatient.value = true;
