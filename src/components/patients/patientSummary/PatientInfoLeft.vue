@@ -89,7 +89,7 @@
           TimeLogs <PlusOutlined @click="addTimelogModal" />
         </div>
         <div class="thumb-desc">
-          <a v-if="latestTimeLog != null" href="javascript:void(0)" @click="showTimelogModal" >{{ latestTimeLog.category+' '+latestTimeLog.date }}</a>
+          <a v-if="latestTimeLog.length > 0" href="javascript:void(0)" @click="showTimelogModal" >{{ latestTimeLog.category+' '+latestTimeLog.date }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -97,7 +97,7 @@
           Devices <PlusOutlined @click="addDeviceModal" />
         </div>
         <div class="thumb-desc">
-          <a v-if="latestDevice != null" href="javascript:void(0)" @click="showDeviceModal" >{{ latestDevice.deviceType+'('+latestDevice.modelNumber+')' }}</a>
+          <a v-if="latestDevice.length > 0" href="javascript:void(0)" @click="showDeviceModal" >{{ latestDevice.deviceType+'('+latestDevice.modelNumber+')' }}</a>
         </div>
       </div>
     </div>
@@ -105,7 +105,7 @@
   
   <PatientsModal v-if="patientsModalVisible == true && patientDetails" v-model:visible="patientsModalVisible" :patientId="patientDetails.id" :isEditPatient="isEditPatient" @closeModal="handleOk" />
   <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" @closeModal="handleOk" />
-  <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" @closeModal="handleOk" />
+  <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
   <AddVitalsModal v-if="addVitalsVisible == true" v-model:visible="addVitalsVisible" @closeModal="handleOk" :patientId="patientDetails.id" />
   <BloodPressureDetail v-if="bloodPressureVisible == true" v-model:visible="bloodPressureVisible" @closeModal="handleOk" />
   <AddNotesModal v-if="addNoteVisible == true" v-model:visible="addNoteVisible" @closeModal="handleOk" />
