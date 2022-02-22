@@ -36,8 +36,8 @@
           <PlusOutlined @click="showAddAppointmentModal"/><br />
         </div>
         <div class="thumb-desc">
-          <router-link :to="'/appointment-calendar/'+patientDetails.udid">
-          {{ latestAppointment != null && latestAppointment.staff ? latestAppointment.staff.fullName+' '+latestAppointment.date : '' }}
+          <router-link v-if="latestAppointment && latestAppointment.length > 0" :to="'/appointment-calendar/'+patientDetails.udid">
+          {{ latestAppointment.staff.fullName+' '+latestAppointment.date }}
           </router-link>
         </div>
       </div>
@@ -47,7 +47,7 @@
           Task <PlusOutlined @click="addTaskModal" /><br />
         </div>
         <div class="thumb-desc">
-          <router-link to="/tasks">{{ letastTask ? letastTask.title : ''}}</router-link>
+          <router-link v-if="letastTask != null" to="/tasks">{{ letastTask.title }}</router-link>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -65,7 +65,7 @@
           Notes <PlusOutlined @click="addNotesModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showNotesModal" >{{ latestNotes != null ? latestNotes.note : '' }}</a>
+          <a v-if="latestNotes != null" href="javascript:void(0)" @click="showNotesModal" >{{ latestNotes.note }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -73,7 +73,7 @@
           Documents <PlusOutlined @click="addDocumentsModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showDocumentsModal" >{{ latestDocument != null ? latestDocument.name : '' }}</a>
+          <a v-if="latestDocument != null" href="javascript:void(0)" @click="showDocumentsModal" >{{ latestDocument.name }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -81,7 +81,7 @@
           Care Team <PlusOutlined @click="addCateTeamModal" />
         </div>
         <div class="thumb-desc">
-          <router-link :to="{ name: 'CoordinatorSummary', params: { udid: latestCareTeam.id  }}">{{ latestCareTeam != null ? latestCareTeam.staff : ''}}</router-link>
+          <router-link v-if="latestCareTeam != null" :to="{ name: 'CoordinatorSummary', params: { udid: latestCareTeam.id  }}">{{ latestCareTeam.staff }}</router-link>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -89,7 +89,7 @@
           TimeLogs <PlusOutlined @click="addTimelogModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showTimelogModal" >{{ latestTimeLog && latestTimeLog.category != null ? latestTimeLog.category+' '+latestTimeLog.date : '' }}</a>
+          <a v-if="latestTimeLog != null" href="javascript:void(0)" @click="showTimelogModal" >{{ latestTimeLog.category+' '+latestTimeLog.date }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -97,7 +97,7 @@
           Devices <PlusOutlined @click="addDeviceModal" />
         </div>
         <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showDeviceModal" >{{ latestDevice != null && latestDevice.deviceType ? latestDevice.deviceType+'('+latestDevice.modelNumber+')' : '' }}</a>
+          <a v-if="latestDevice != null" href="javascript:void(0)" @click="showDeviceModal" >{{ latestDevice.deviceType+'('+latestDevice.modelNumber+')' }}</a>
         </div>
       </div>
     </div>
