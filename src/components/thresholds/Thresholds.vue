@@ -30,15 +30,16 @@
        
           
        
-        <ThresholdsTable v-if="vitalList" :thresholdsData="vitalList" ></ThresholdsTable>
+        <ThresholdsTable v-if="vitalList" :thresholdsData="vitalList" @is-edit="showEdit($event)"></ThresholdsTable>
         <div v-else><Loader /></div>
         
       </a-row>
     </div>
-    
+    {{threshodsId}}
   </a-layout-content>
 
-  <Thresholds v-model:visible="Thresholds" @is-visible="showModal($event)" />
+  <Thresholds v-if="threshodsId" v-model:visible="Thresholds" @is-visible="showModal($event)" :threshodId="threshodsId? threshodsId:''" />
+  <Thresholds v-else v-model:visible="Thresholds" @is-visible="showModal($event)" />
 </template>
 <script>
   import { ref, watchEffect, computed } from "vue";
@@ -56,12 +57,16 @@
 
     setup() {
       const store = useStore();
+      const threshodsId = ref()
       watchEffect(() => {
         store.dispatch("generalParameterList");
       });
       const vitalList = computed(() => {
         return store.state.thresholds.vitalList;
       });
+      function nullId (){
+        threshodsId.value=''
+      }
       const handleChange = (value) => {
         console.log(`selected ${value}`);
       };
@@ -69,8 +74,13 @@
 
       const Thresholds = ref(false);
       const showModal = (e) => {
+        threshodsId.value=null
         Thresholds.value = e;
       };
+      const showEdit = (e) =>{
+      threshodsId.value=e.id
+        Thresholds.value = e.check;
+      }
       const options = ref([
         {
           value: "Group One",
@@ -112,6 +122,9 @@
         handleChange,
         options,
         size: ref([]),
+        threshodsId,
+        showEdit,
+        nullId
       };
     },
   };

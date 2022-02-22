@@ -15,7 +15,7 @@
           <template #title>
             <span>{{$t('global.delete')}}</span>
           </template>
-          <a class="icons" @click="deleteParameter(text.record.id)">
+          <a class="icons" @click="deleteParameter(text.record)">
             <DeleteOutlined />
           </a>
         </a-tooltip>
@@ -47,7 +47,7 @@
       },
 
     },
-    setup(props) {
+    setup(props,{emit}) {
       const store = useStore();
       const renderContent = ({ text }) => {
         const obj = {
@@ -58,13 +58,13 @@
         return obj;
       };
       function editParameter(getRecord) {
-        console.log(getRecord)
+        store.dispatch('generalParameterEdit',getRecord.generalparameterId)
+        emit('is-edit',{check:true,id:getRecord.generalparameterId})
       }
       function deleteParameter(id) {
-        
         warningSwal(messages.deleteWarning).then((response) => {
           if (response == true) {
-            store.dispatch('generalParameterDelete', id)
+            store.dispatch('generalParameterDelete', id.id)
             setTimeout(() => {
               store.state.thresholds.vitalList = ''
               store.dispatch("generalParameterList");
@@ -84,6 +84,23 @@
           customRender: ({ text, index }) => {
             const obj = {
               children: data[index].generalParameterGroup,
+              props: {},
+            };
+
+            obj.props.rowSpan = text;
+            return obj;
+          },
+        },
+        {
+          title: "Device Type",
+          dataIndex: "data",
+          sorter: {
+            compare: (a, b) => a.template - b.template,
+            multiple: 3,
+          },
+          customRender: ({ text, index }) => {
+            const obj = {
+              children: data[index].deviceType,
               props: {},
             };
 

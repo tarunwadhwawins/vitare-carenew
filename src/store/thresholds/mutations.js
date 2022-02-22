@@ -9,12 +9,17 @@ export const vitalSuccessMsg = async (state, data) => {
   state.vitalSuccessMsg = data
 
 }
-export const vitalSuccessList = async (state, data) => {
-  state.vitalList=''
+export const vitalNull = async (state) => {
+  state.vitalData = ''
+}
+export const vitalSuccessList = async (state, vitalRecord) => {
+  state.vitalList = ''
   let record = []
-  data.map(element => {
+  vitalRecord.map(element => {
     let count = element.generalparameter.data.length
     element.generalparameter.data.forEach((data, index) => {
+      data['generalparameterId'] = element.id
+      data['deviceType'] = element.deviceType
       data['key'] = index
       if (index == 0)
         data['data'] = count
@@ -24,7 +29,32 @@ export const vitalSuccessList = async (state, data) => {
       record.push(data)
     })
   });
-  console.log("check",record)
+  //console.log("check",vitalRecord)
   state.vitalList = record
+
+}
+export const vitalEdit = async (state, vitaledit) => {
+  state.vitalEdit = ''
+  let record = []
+  let high = []
+  let low = []
+  let udid = []
+
+  vitaledit.generalparameter.data.forEach((data) => {
+    let index = data.vitalFieldId
+    high[index] =data.highLimit;
+    low[index] = data.lowLimit;
+    udid[index]= data.id;
+   
+  })
+ 
+  record['generalParametersGroup'] = vitaledit.name
+  record['generalParametershigh'] = high
+  record['generalParameterslow'] = low
+  record['udid'] = udid
+  record['deviceTypeId'] = vitaledit.deviceTypeId
+  record.push(record)
+ 
+  state.vitalEdit = record
 
 }
