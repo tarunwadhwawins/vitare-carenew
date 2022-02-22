@@ -1237,7 +1237,7 @@ const  calendarOptions = {
         return '+'+e.num+' More items';
     },
         showNonCurrentDates: true,
-        events: appointmentSearch,
+        events: appointmentSearch.value,
         eventContent: renderEventContent,
         customButtons: {
           prev: { // this overrides the prev button
