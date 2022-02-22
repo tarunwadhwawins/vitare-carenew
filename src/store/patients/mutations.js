@@ -423,8 +423,20 @@ export const addDemographic = (state, data) => {
   state.updateInsurance = data
 }
 
-export const patientInsurance = (state, data) => {
-  state.patientInsurance = data
+export const patientInsurance = (state, insurances) => {
+  let insuranceData = {
+    insuranceNumber: [],
+    insuranceName: [],
+    expirationDate: [],
+    insuranceType: [],
+  };
+  insurances.map(insurance => {
+    insuranceData.expirationDate.push(insurance.expirationDate)
+    insuranceData.insuranceName.push(insurance.insuranceNameId)
+    insuranceData.insuranceNumber.push(insurance.insuranceNumber)
+    insuranceData.insuranceType.push(insurance.insuranceTypeId)
+  })
+  state.patientInsurance = insuranceData
 }
  
 
