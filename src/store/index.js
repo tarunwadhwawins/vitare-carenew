@@ -5,6 +5,7 @@ import { patients } from "./patients/index"
 import { common } from "./common/index"
 import { counterCards } from "./counter-cards/index"
 import { careCoordinator } from "./careCoordinator/index"
+import { careCoordinatorSummary } from "./careCoordinatorSummary/index"
 import { tasks } from "./tasks/index"
 import { globalCodes } from "./globalCodes/index"
 import { rolesAndPermissions } from "./rolesAndPermissions/index"
@@ -26,6 +27,7 @@ export default createStore({
     counterCards,
     common,
     careCoordinator,
+    careCoordinatorSummary,
     tasks,
     globalCodes,
     rolesAndPermissions,

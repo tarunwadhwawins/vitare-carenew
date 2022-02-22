@@ -19,22 +19,22 @@
                             <div class="patientImg">
                                 <img src="../../assets/images/profile-4.jpg" alt="image" />
                                 <div class="info">
-                                    <p>Jane Doe</p>
-                                    <p>DOB : June 25, 1988 (33)</p>
+                                    <p>Name: {{getstaffSummary?getstaffSummary.fullName:''}}</p>
+                                    <p>Designation : {{getstaffSummary?getstaffSummary.designation:''}}</p>
                                 </div>
                             </div>
                             <div class="pat-profile">
                                 <div class="pat-profile-inner">
                                     <div class="thumb-head">Gender</div>
-                                    <div class="thumb-desc">Male</div>
+                                    <div class="thumb-desc">{{getstaffSummary?getstaffSummary.gender:''}}</div>
                                 </div>
-                                <div class="pat-profile-inner">
+                                <!-- <div class="pat-profile-inner">
                                     <div class="thumb-head">EHR ID</div>
-                                    <div class="thumb-desc">123THJ</div>
-                                </div>
+                                    <div class="thumb-desc">{{}}</div>
+                                </div> -->
                                 <div class="pat-profile-inner">
                                     <div class="thumb-head">Specialization</div>
-                                    <div class="thumb-desc">Clinical</div>
+                                    <div class="thumb-desc">{{getstaffSummary?getstaffSummary.specialization:''}}</div>
                                 </div>
                             </div>
                         </div>
@@ -314,12 +314,14 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { ref, computed } from "vue";
+import { ref, computed,onMounted } from "vue";
 import {
   DeleteOutlined,
   EditOutlined,
   PlusOutlined,
 } from "@ant-design/icons-vue";
+import {useStore} from "vuex"
+import { useRoute } from "vue-router";
 const OPTIONSTAG = ["Tag1", "Tag2", "Tag3"];
 const columns = [
   {
@@ -590,10 +592,26 @@ export default {
     PlusOutlined,
   },
   setup() {
+    const store = useStore()
+    const router = useRoute()
+    console.log('id=>',router.params.udid);
+    
+
+
+    onMounted(()=>{
+      store.dispatch('staffSummary',router.params.udid)
+      // store.dispatch('staffSummaryAppointment',router.params.udid)
+    })
+
+
     function logout() {
       localStorage.removeItem("auth");
       localStorage.clear();
     }
+
+    const getstaffSummary = computed(()=>{
+       return store.state.careCoordinatorSummary.staffSummary
+    }) 
 
     const visible = ref(false);
     const visible1 = ref(false);
@@ -623,7 +641,10 @@ export default {
       OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
     );
     const linkTo = "patients-summary";
+
+    
     return {
+      getstaffSummary,
       linkTo,
       logout,
       data,

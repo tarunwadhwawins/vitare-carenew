@@ -1,8 +1,8 @@
 <template>
     <a-table >
-    <template #name="{text,record}">
+    <template #name="{text,record}" >
         <!-- <router-link :to="linkTo">{{ text.text }}</router-link> -->
-        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.udid?record.udid:'eyrer8758458958495'  }}">{{ text }}</router-link>
+        <router-link @click="staffSummery(record.uuid)" :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}">{{ text }}</router-link>
     </template>
 
     <template #createdDate="text">
@@ -22,17 +22,22 @@
 </a-table>
 </template>
 <script>
-import { WarningOutlined } from "@ant-design/icons-vue";
+import { WarningOutlined } from "@ant-design/icons-vue"
 import {dateFormat} from "../../../commonMethods/commonMethod"
+// import {useStore} from "vuex"
 export default {
   name: "DataTable",
   components: {
     WarningOutlined,
   },
   setup() {
-    const linkTo = "coordinator-summary"
+    // const store = useStore()
+    function staffSummery(uuid){
+      console.log('value',uuid);
+      // store.dispatch('staffSummary',uuid)
+    }
     return {
-      linkTo,
+      staffSummery,
       dateFormat
     }
   },
