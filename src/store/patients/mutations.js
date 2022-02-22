@@ -556,13 +556,6 @@ export const patientPrimaryPhysician = (state, primaryPhysician) => {
 export const deleteDocument = (state, data) => {
   state.deleteDocument = data
 }
-export const addCareTeamSuccess = (state, data) => {
-  state.addCareTeam = data
-}
-export const careTeamListSuccess = (state, data) => {
-  state.careTeamList = data
-}
-
   export const latestDocumentSuccess = (state, data) => {
     state.latestDocument = data
  }

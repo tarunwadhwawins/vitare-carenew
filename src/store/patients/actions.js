@@ -691,27 +691,3 @@ export const latestDevice = async ({ commit }, id) => {
 		commit('failure', error.response.data);
 	})
 }
-
-export const addCareTeam = async ({ commit }, {id, data}) => {
-	await serviceMethod.common("post", API_ENDPOINTS['patient']+'/'+id+'/staff', null, data).then((response) => {
-		commit('addCareTeamSuccess', response.data.data);
-	})
-	.catch((error) => {
-		if (error.response.status == 401) {
-			//AuthService.logout();
-		}
-		commit('failure', error.response.data);
-	})
-}
-
-export const careTeamList = async ({ commit }, {id, data}) => {
-	await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/staff', null, data).then((response) => {
-		commit('careTeamListSuccess', response.data.data);
-	})
-	.catch((error) => {
-		if (error.response.status == 401) {
-			//AuthService.logout();
-		}
-		commit('failure', error.response.data);
-	})
-}

@@ -15,6 +15,7 @@ import { notes } from "./notes/index"
 import { thresholds } from "./thresholds/index"
 import { timeLogs } from "./timeLogs/index"
 import { timeLogReport } from "./timeLogReport/index"
+import { careTeam } from "./careTeam/index"
 
 import createPersistedState from "vuex-persistedstate";
 
@@ -36,6 +37,7 @@ export default createStore({
     timeLogs,
     timeLogReport,
     thresholds,
+    careTeam,
   },
   plugins: [ createPersistedState({
     reducer(state) {
