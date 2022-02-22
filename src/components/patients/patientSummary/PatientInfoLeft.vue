@@ -81,7 +81,7 @@
           Care Team <PlusOutlined @click="addCateTeamModal" />
         </div>
         <div class="thumb-desc">
-          <router-link to="/coordinator-summary">John Smith (P) HT </router-link><br />
+          <router-link to="/coordinator-summary">{{ latestCareTeam != null ? latestCareTeam.staff : ''}}</router-link><br />
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -203,6 +203,7 @@ export default {
         store.dispatch('letastTask', route.params.udid)
         store.dispatch('latestNotes', route.params.udid)
         store.dispatch('latestDocument', route.params.udid)
+        store.dispatch('careTeamList', route.params.udid)
         store.dispatch('latestTimeLog', route.params.udid)
         store.dispatch('latestDevice', route.params.udid)
       }
@@ -222,6 +223,9 @@ export default {
     })
     const latestDocument = computed(() => {
       return store.state.patients.latestDocument
+    })
+    const latestCareTeam = computed(() => {
+      return store.state.careTeam.latestCareTeam
     })
     const latestTimeLog = computed(() => {
       return store.state.timeLogs.latestTimeLog
@@ -370,6 +374,7 @@ export default {
       letastTask,
       latestNotes,
       latestDocument,
+      latestCareTeam,
       latestTimeLog,
       latestDevice,
     }
