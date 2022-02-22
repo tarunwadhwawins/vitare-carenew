@@ -11,7 +11,7 @@
           </a-form-item>
         </a-col>
         <a-col :sm="4" :xs="24">
-          <a-button class="modal-button" size="large" html-type="submit">Add</a-button>
+          <a-button class="add-button" size="large" html-type="submit">Add</a-button>
         </a-col>
       </a-row>
     </a-form>
@@ -20,6 +20,12 @@
         <a-table rowKey="id" :columns="careTeamColumns" :data-source="careTeamList" :pagination="false" @change="onChange">
           
           <template #actions="{record}">
+            <!-- <a-tooltip placement="bottom">
+              <template #title>
+                <span>View</span>
+              </template>
+              <router-link class="icons" :to="{ name: 'CoordinatorSummary', params: { udid: record.id  }}"><EyeOutlined/></router-link>
+            </a-tooltip> -->
             <a-tooltip placement="bottom">
               <template #title>
                 <span>Delete</span>
@@ -39,15 +45,20 @@
 
 <script>
 import { computed, defineComponent, reactive, ref, watchEffect } from "vue";
-import { DeleteOutlined } from "@ant-design/icons-vue";
+import {
+  DeleteOutlined,
+  // EyeOutlined,
+} from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import Loader from "@/components/loader/Loader";
-import {warningSwal} from "@/commonMethods/commonMethod"
+import {warningSwal} from "@/commonMethods/commonMethod";
 import { messages } from '@/config/messages';
+
 export default defineComponent({
   components: {
     DeleteOutlined,
+    // EyeOutlined,
     Loader,
   },
   setup() {
@@ -113,20 +124,24 @@ export default defineComponent({
       deleteStaff,
       addCareTeamForm,
       submitForm,
+      formRef,
       staffList,
     };
   },
 });
 </script>
 
-<style scoped>
-  .modal-button {
+<style>
+  .add-button {
     color: #fff;
     background: #1890ff;
     border-color: #1890ff;
     width: 70%;
   }
-  td.staffCol {
-    width: 70%;
+  th.staffCol {
+    width: 70% !important;
+  }
+  th.actions, td.actions {
+    text-align: center !important;
   }
 </style>
