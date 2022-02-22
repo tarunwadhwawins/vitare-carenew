@@ -572,7 +572,16 @@ export const updateInsurance = async ({ commit }, data) => {
   })
 }
 
-
+export const patientInsurance = async ({ commit }, id) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("get", `patient/${id}/insurance`, null, null).then((response) => {
+    commit('patientInsurance', response.data.data);
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
+  })
+}
 
 export const addDocument = async ({commit}, data) => {
   await serviceMethod.common("post", `patient/${data.id}/document`, null, data.data).then((response) => {

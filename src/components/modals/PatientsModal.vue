@@ -818,7 +818,12 @@ export default {
     watchEffect(() => {
         if(idPatient) {
             Object.assign(demographics, patientDetail);
-            Object.assign(conditions.condition, patients.value.patientConditions)
+            if(patients.value.patientConditions != null) {
+                Object.assign(conditions.condition, patients.value.patientConditions)
+            }
+            if(patients.value.patientInsurance != null) {
+                Object.assign(insuranceData, patients.value.patientInsurance)
+            }
             if(patientReferralSource != null) {
                 Object.assign(conditions, {
                     name: patientReferralSource.name,
@@ -1044,12 +1049,22 @@ export default {
     };
 
     const insuranceForm = () => {
-      store.dispatch("addInsurance", {
-        data: {
-          insurance: [insuranceData],
-        },
-        id: patients.value.addDemographic.id,
-      });
+        if(idPatient != null) {
+            store.dispatch("addInsurance", {
+                data: {
+                insurance: [insuranceData],
+                },
+                id: idPatient,
+            });
+        }
+        else {
+            store.dispatch("addInsurance", {
+                data: {
+                insurance: [insuranceData],
+                },
+                id: patients.value.addDemographic.id,
+            });
+        }
     };
 
     const demographicsFailed = () => {
