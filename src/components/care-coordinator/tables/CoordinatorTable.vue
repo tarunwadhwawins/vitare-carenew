@@ -1,7 +1,8 @@
 <template>
     <a-table >
-    <template #name="text">
-        <router-link :to="linkTo">{{ text.text }}</router-link>
+    <template #name="{text,record}">
+        <!-- <router-link :to="linkTo">{{ text.text }}</router-link> -->
+        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.udid?record.udid:'eyrer8758458958495'  }}">{{ text }}</router-link>
     </template>
 
     <template #createdDate="text">
