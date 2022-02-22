@@ -815,6 +815,13 @@ export default {
       physicianFax: "",
     });
 
+    const insuranceData = reactive({
+      insuranceNumber: [],
+      insuranceName: [],
+      expirationDate: [],
+      insuranceType: [],
+    });
+
     watchEffect(() => {
         if(idPatient) {
             Object.assign(demographics, patientDetail);
@@ -822,7 +829,23 @@ export default {
                 Object.assign(conditions.condition, patients.value.patientConditions)
             }
             if(patients.value.patientInsurance != null) {
-                // Object.assign(insuranceData, patients.value.patientInsurance)
+                patients.value.patientInsurance.map(insurance => {
+                    if(insurance.insuranceType == "Primary Insurance") {
+                        insuranceData.insuranceNumber[0] = insurance.insuranceNumber
+                        insuranceData.insuranceName[0] = insurance.insuranceNameId
+                        insuranceData.expirationDate[0] = insurance.expirationDate
+                    }
+                    else if(insurance.insuranceType == "Secondary Insurance") {
+                        insuranceData.insuranceNumber[1] = insurance.insuranceNumber
+                        insuranceData.insuranceName[1] = insurance.insuranceNameId
+                        insuranceData.expirationDate[1] = insurance.expirationDate
+                    }
+                    else if(insurance.insuranceType == "Tertiary Insurance") {
+                        insuranceData.insuranceNumber[2] = insurance.insuranceNumber
+                        insuranceData.insuranceName[2] = insurance.insuranceNameId
+                        insuranceData.expirationDate[2] = insurance.expirationDate
+                    }
+                });
             }
             if(patientReferralSource != null) {
                 Object.assign(conditions, {
@@ -846,13 +869,6 @@ export default {
     })
 
     const parameters = reactive([]);
-
-    const insuranceData = reactive({
-      insuranceNumber: [],
-      insuranceName: [],
-      expirationDate: [],
-      insuranceType: [],
-    });
 
     const demographic = () => {
         if(idPatient != null) {
