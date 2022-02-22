@@ -1145,7 +1145,7 @@
           </div>
         </a-col>
       </a-row> -->
-{{appointmentSearch}}
+
   <FullCalendar v-if="appointmentSearch" :options="calendarOptions"  ref="cal">
 
   </FullCalendar>

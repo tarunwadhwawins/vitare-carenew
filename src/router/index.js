@@ -206,7 +206,7 @@ const routes = [
     path: '/test',
     name: 'Test',
     component: () => import( '../components/Test.vue'),
-    meta: { authAdmin: false  }
+    meta: { authAdmin: true  }
   },
   {
     path: '/test-list',
