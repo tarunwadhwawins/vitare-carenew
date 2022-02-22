@@ -2,11 +2,13 @@
  <template>
   <div>
     <span>{{ errorMessageRef }}</span>
-    <ul>
+    {{itemsRef}}
+    <!-- <ul>
       <li v-for="item in itemsRef" :key="item.id">{{ item }}</li>
       <div ref="intersectionTrigger"></div>
-    </ul>
+    </ul> -->
   </div>
+  <a-table v-if="itemsRef" :columns="columns" :data-source="itemsRef" :scroll="{ x: 900 }" ></a-table>
 </template>
 
 <script>
@@ -22,6 +24,7 @@ export default {
     watch(
       pageRef,
       (page) => {
+        console.log(page)
         fetchItems(page)
       },
       { immediate: true }
@@ -31,13 +34,36 @@ export default {
     const errorMessageRef = ref('')
 
     async function fetchItems(page) {
+      
       fetch(`https://jsonplaceholder.typicode.com/comments?_page=${page}&_limit=10`)
         .then((res) => res.json())
-        .then((data) => itemsRef.value.push(...data))
+        .then((data) =>  itemsRef.value.push(...data))
         .catch((error) => (errorMessageRef.value = error.message))
-    }
 
+    }
+   // itemsRef.value = computed(() =>{return itemsRef.value})
+    const columns = [
+        {
+          title: "General",
+          dataIndex: "postId",
+
+        },
+        {
+          title: "Device Type",
+          dataIndex: "name",
+         
+        },
+        {
+          title: "email",
+          dataIndex: "email",
+        },
+        {
+          title: "id",
+          dataIndex: "id",
+        },
+      ];
     return {
+      columns,
 			intersectionTrigger,
 			itemsRef,
 			errorMessageRef

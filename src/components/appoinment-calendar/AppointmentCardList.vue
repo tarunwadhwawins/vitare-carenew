@@ -29,20 +29,12 @@
             </div>
             <div class="itemWrapper">
               <div class="leftWrapper">Coordinator</div>
-              <div class="rightWrapper">
-                <router-link :to="'/coordinator-summary/'+cardRecords.staff_id">
-                  
-                  {{cardRecords.staff}}
-                </router-link>
+              <div class="rightWrapper"><router-link :to="'/coordinator-summary/'+cardRecords.staff_id">{{cardRecords.staff}}</router-link>
               </div>
             </div>
             <div class="itemWrapper">
               <div class="leftWrapper">Patient</div>
-              <div class="rightWrapper">
-                
-                <router-link :to="'/patients-summary/'+cardRecords.patient_id">
-                  {{cardRecords.patient}}
-                </router-link>
+              <div class="rightWrapper"><router-link :to="'/patients-summary/'+cardRecords.patient_id">{{cardRecords.patient}}</router-link>
               </div>
             </div>
             <div class="itemWrapper">
