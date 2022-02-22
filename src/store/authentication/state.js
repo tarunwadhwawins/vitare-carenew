@@ -4,7 +4,7 @@ export default {
   token:null,
   refreshToken: null,
   errorMsg: null,
-  options:'test',
+  options:null,
   server:'wss://dev.icc-health.com:7443',
   simpleUser:null
 

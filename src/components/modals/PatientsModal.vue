@@ -742,6 +742,7 @@ export default {
       return store.state.common;
     });
     const idPatient = props.patientId ? reactive(props.patientId) : null;
+    var isEdit = props.isEditPatient == true ? true : false;
 
     const patients = computed(() => {
       return store.state.patients;
@@ -825,27 +826,12 @@ export default {
     watchEffect(() => {
         if(idPatient) {
             Object.assign(demographics, patientDetail);
-            if(patients.value.patientConditions != null) {
+            if(isEdit && patients.value.patientConditions != null) {
                 Object.assign(conditions.condition, patients.value.patientConditions)
+                isEdit = false;
             }
             if(patients.value.patientInsurance != null) {
-                patients.value.patientInsurance.map(insurance => {
-                    if(insurance.insuranceType == "Primary Insurance") {
-                        insuranceData.insuranceNumber[0] = insurance.insuranceNumber
-                        insuranceData.insuranceName[0] = insurance.insuranceNameId
-                        insuranceData.expirationDate[0] = insurance.expirationDate
-                    }
-                    else if(insurance.insuranceType == "Secondary Insurance") {
-                        insuranceData.insuranceNumber[1] = insurance.insuranceNumber
-                        insuranceData.insuranceName[1] = insurance.insuranceNameId
-                        insuranceData.expirationDate[1] = insurance.expirationDate
-                    }
-                    else if(insurance.insuranceType == "Tertiary Insurance") {
-                        insuranceData.insuranceNumber[2] = insurance.insuranceNumber
-                        insuranceData.insuranceName[2] = insurance.insuranceNameId
-                        insuranceData.expirationDate[2] = insurance.expirationDate
-                    }
-                });
+                Object.assign(insuranceData, patients.value.patientInsurance)
             }
             if(patientReferralSource != null) {
                 Object.assign(conditions, {
@@ -963,13 +949,6 @@ export default {
         }
     };
 
-    const next = () => {
-      store.commit("counterPlus");
-    };
-    const prev = () => {
-      store.commit("counterMinus");
-    };
-
     const condition = () => {
         const patientConditions = patients.value.patientConditions;
         if(idPatient != null) {
@@ -1081,6 +1060,13 @@ export default {
                 id: patients.value.addDemographic.id,
             });
         }
+    };
+
+    const next = () => {
+      store.commit("counterPlus");
+    };
+    const prev = () => {
+      store.commit("counterMinus");
     };
 
     const demographicsFailed = () => {

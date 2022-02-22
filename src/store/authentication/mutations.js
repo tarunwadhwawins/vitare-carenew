@@ -3,14 +3,13 @@ import router from '@/router/index'
 // import { warningSwal } from "@/commonMethods/commonMethod";
 import { h } from 'vue'
 import { notification, Button } from "ant-design-vue";
-
 const key = `open${Date.now()}`;
 export const loginSuccess = async (state, login) => {
   state.token = login;
   state.loggedInUser=JSON.parse(localStorage.getItem('auth'))
   state.loginErrorMsg = null;
-
-console.log('loginDetails=>',state.loggedInUser.user.sipId);
+  let callNotification = 0
+// console.log('loginDetails=>',state.loggedInUser.user.sipId);
 state.options= Web.SimpleUserOptions = {
     aor:`sip:${state.loggedInUser.user.sipId}@dev.icc-heaalth.com`,
     media: {
@@ -22,32 +21,19 @@ state.options= Web.SimpleUserOptions = {
     },
     delegate: {
         onCallReceived: async () => {
-        //   console.log('Incoming Call!');
-          // console.log('simpleUser',simpleUser);
-         // simpleUser.answer();
-         //warningSwal(simpleUser.session.incomingInviteRequest.message.from._displayName).then((response) => {
-            //if (response == true) {
-                // provide('sipSession', simpleUser)
-                // localStorage.setItem('sipSession', JSON.stringify(simpleUser));
-        //         state.simpleUser =simpleUser
-        //         router.push('/video-call')
-        //     } else {
-        //         simpleUser.hangup()
-        //     }
-        // })
-
+        callNotification=1
         notification.open({
           message: <h3>Call from...</h3>,
           description: <h1>{`${simpleUser.session.incomingInviteRequest.message.from._displayName}`} </h1>,
           btn: [
               h(Button,{
-                  onClick: () => {simpleUser.hangup(),notification.close(key)},
+                  onClick: () => { callNotification=0,simpleUser.hangup(),notification.close(key)},
                 },
                 "Cancel "
               ),
               h(Button,{
                   type: "primary",
-                  onClick: () =>  {state.simpleUser = simpleUser,
+                  onClick: () =>  {callNotification=0,state.simpleUser = simpleUser,
                           router.push('/video-call'),notification.close(key)}
                 },
                 "Accept"
@@ -55,13 +41,18 @@ state.options= Web.SimpleUserOptions = {
              
             ],
             key,
-          onClose: ()=>{simpleUser.hangup(),notification.close(key)},
+          onClose: ()=>{callNotification=0,simpleUser.hangup(),notification.close(key)},
          duration:null,
          placement:'bottomRight'
           
-        })
-         
-        }
+        }) 
+        },
+        onCallHangup: async () => {
+          if(callNotification==1){
+              console.log('callHangValue',callNotification);
+              notification.close(key)
+          }
+          }
       },
     userAgentOptions: {
       // logLevel: "debug",
