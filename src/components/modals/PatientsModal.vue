@@ -829,7 +829,7 @@ export default {
                 Object.assign(conditions.condition, patients.value.patientConditions)
             }
             if(patients.value.patientInsurance != null) {
-                patients.value.patientInsurance.map(insurance => {
+                /* patients.value.patientInsurance.map(insurance => {
                     if(insurance.insuranceType == "Primary Insurance") {
                         insuranceData.insuranceNumber[0] = insurance.insuranceNumber
                         insuranceData.insuranceName[0] = insurance.insuranceNameId
@@ -845,7 +845,7 @@ export default {
                         insuranceData.insuranceName[2] = insurance.insuranceNameId
                         insuranceData.expirationDate[2] = insurance.expirationDate
                     }
-                });
+                }); */
             }
             if(patientReferralSource != null) {
                 Object.assign(conditions, {
