@@ -81,7 +81,7 @@
           Care Team <PlusOutlined @click="addCateTeamModal" />
         </div>
         <div class="thumb-desc">
-          <router-link to="/coordinator-summary">{{ latestCareTeam != null ? latestCareTeam.staff : ''}}</router-link><br />
+          <router-link :to="{ name: 'CoordinatorSummary', params: { udid: latestCareTeam.id  }}">{{ latestCareTeam != null ? latestCareTeam.staff : ''}}</router-link>
         </div>
       </div>
       <div class="pat-profile-inner">
