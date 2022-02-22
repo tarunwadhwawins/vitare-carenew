@@ -27,6 +27,7 @@ module.exports = {
     // "vue/no-multiple-template-root": "off",
     // "vue/valid-template-root": "off",
     // "vue/no-v-model-argument": 'off',
+    // "@typescript-eslint/no-explicit-any": "off",
      'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
      'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     //  'vue/script-setup-uses-vars': 'error',

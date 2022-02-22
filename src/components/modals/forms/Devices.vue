@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, computed, ref } from "vue";
+import { defineComponent, reactive, computed, ref, watchEffect } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "../../loader/Loader";
@@ -112,8 +112,14 @@ export default defineComponent({
     Loader,
     ErrorMessage,
   },
-  setup() {
+  props: {
+    idPatient: {
+      type: Number
+    }
+  },
+  setup(props) {
     const store = useStore();
+    const patientId = reactive(props.idPatient);
     const status = ref([]);
     const device = reactive({
       inventory: "",
@@ -124,14 +130,32 @@ export default defineComponent({
       // deviceTime: "",
       // serverTime: "",
     });
+
+    watchEffect(() => {
+      alert(patientId)
+      if(patientId != null) {
+        store.dispatch("devices", patientId);
+      }
+    })
+
     const addDevice = () => {
-      store.dispatch("addDevice", {
-        data: device,
-        id: patients.value.addDemographic.id,
-      });
-      setTimeout(() => {
-        store.dispatch("devices", patients.value.addDemographic.id);
-      }, 2000);
+      if(patientId != null) {
+        store.dispatch("addDevice", {
+          data: device,
+          id: patientId,
+        }).then(() => {
+          store.dispatch("devices", patientId);
+        });
+      }
+      else {
+        store.dispatch("addDevice", {
+          data: device,
+          id: patients.value.addDemographic.id,
+        });
+        setTimeout(() => {
+          store.dispatch("devices", patients.value.addDemographic.id);
+        }, 2000);
+      }
     };
 
     const globalCode = computed(() => {
@@ -151,13 +175,22 @@ export default defineComponent({
     function deleteDevice(id) {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
-          store.dispatch("deleteDevice", {
-            id: patients.value.addDemographic.id,
-            deviceId: id,
-          });
-          setTimeout(() => {
-            store.dispatch("devices", patients.value.addDemographic.id);
-          }, 2000);
+          if(patientId != null) {
+            store.dispatch("deleteDevice", {
+              id: patientId,
+              deviceId: id,
+            }).then(() => {
+              store.dispatch("devices", patientId);
+            });
+          }
+          else {
+            store.dispatch("deleteDevice", {
+              id: patients.value.addDemographic.id,
+              deviceId: id,
+            }).then(() => {
+              store.dispatch("devices", patients.value.addDemographic.id);
+            });
+          }
         }
       });
     }

@@ -12,13 +12,15 @@
             <a-row>
               <a-col :span="24">
                 <div class="videoCallHeading">
-                <h2 class="pageTittle">Video Call </h2> <span>- Steve Smith (64 - Male)</span><img width="30" src="../../assets/images/flag-orange.svg"></div>
+                <h2 class="pageTittle">Video Call </h2> <span></span><img width="30" src="../../assets/images/flag-orange.svg"></div>
               </a-col>
             </a-row>
             <a-row :gutter="24">
               <a-col :xl="16" :lg="14">
+                <Loader />
                 <div class="videoCall">
-                  <img  class="largeImg" src="../../assets/images/patient.png" />
+                  <video  ref="videoCall" ></video>
+                  <!-- <img  class="largeImg" src="../../assets/images/patient.png" /> -->
                   <!-- <div class="participant">
                     <div class="participantBox">
                       <img src="../../assets/images/video-call-thumb-1.png" />
@@ -138,7 +140,7 @@
                     </a-row>
                   </div>
                   <div class="footer">
-                    <a-button class="endCall" :size="size" block
+                    <a-button class="endCall" :size="size" block @click="hangUp()"
                       >End Call</a-button
                     >
                   </div>
@@ -155,18 +157,58 @@
 <script>
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
-import { ref } from "vue";
+import { ref,onMounted, computed } from "vue";
+import {useRouter} from "vue-router"
+import { useStore } from 'vuex';
+import Loader from "@/components/loader/Loader";
 
 export default {
   components: {
     Header,
     Sidebar,
+    Loader
   },
 
   setup() {
+    // the DOM element(video) will be assigned to the ref after initial render
+    const store = useStore();
+    const videoCall = ref()
+    const router = useRouter()
+    // const session = inject('sipSession')
+    // const session = localStorage.getItem('sipSession');
+
+    const session = computed(()=>{
+      return store.state.authentication.simpleUser
+    })
+    console.log('sipSession',session.value);
+     
+  onMounted(() => {
+      store.commit('loadingStatus', true)
+      console.log(videoCall.value) // this is your $el
+      if(session.value){
+      session.value.options.media.remote = {video:videoCall.value};
+      session.value.answer();
+      setTimeout(()=>{
+      store.commit('loadingStatus', false)
+    },5000)
+  }else{
+    router.push('/dashboard')
+    }
+    })
+  // Answer call
+  function hangUp(){
+    session.value.hangup().then(()=>{
+      router.push('/dashboard')
+    })
+  }
+  
+ 
     return {
+      hangUp,
+      videoCall,
       size: ref("large"),
     };
+
   },
 };
 </script>

@@ -8,7 +8,7 @@
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Demographics'">
                 <!-- <Demographics /> -->
-                <a-form :model="demographics" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="demographic" @finishFailed="demographicsFailed">
+                <a-form :model="demographics" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="demographic" @finishFailed="demographicsFailed">
                     <Loader />
                     <a-row :gutter="24">
                         <a-col :md="8" :sm="12" :xs="24">
@@ -605,7 +605,7 @@
                 <!--  -->
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Programs'">
-                <Programs />
+                <Programs :idPatient="idPatient" />
 
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
@@ -614,14 +614,14 @@
                 <!-- end  -->
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Devices'">
-                <Devices />
+                <Devices :idPatient="idPatient" />
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
                 </div>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Clinical Data'">
-                <ClinicalData />
+                <ClinicalData :idPatient="idPatient" />
 
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
@@ -675,7 +675,7 @@
                 </a-form>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Documents'">
-                <Documents />
+                <Documents :idPatient="idPatient" />
 
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
@@ -706,7 +706,7 @@ import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 // import serviceMethod from "../../services/serviceMethod";
 import { regex } from "@/RegularExpressions/regex";
 import Loader from "@/components/loader/Loader";
-import {successSwal,warningSwal,scrollToTop } from "@/commonMethods/commonMethod";
+import {successSwal,warningSwal } from "@/commonMethods/commonMethod";
 // import dayjs from 'dayjs';
 // import {DeleteOutlined} from "@ant-design/icons-vue";
 import { messages } from "../../config/messages";
@@ -747,7 +747,9 @@ export default {
       return store.state.patients;
     });
     const patientDetail = patients.value.patientDetails;
-
+    const patientReferralSource = patients.value.patientReferralSource;
+    const patientPrimaryPhysician = patients.value.patientPrimaryPhysician;
+    
     const current= computed({
       get: () =>
         store.state.patients.counter,
@@ -813,33 +815,6 @@ export default {
       physicianFax: "",
     });
 
-    watchEffect(() => {
-        if(idPatient) {
-            Object.assign(demographics, patientDetail);
-            Object.assign(conditions.condition, patients.value.patientConditions)
-            if(patients.value.patientReferralSource != null) {
-                Object.assign(conditions, {
-                    name: patients.value.patientReferralSource.name,
-                    designation: patients.value.patientReferralSource.designation,
-                    email: patients.value.patientReferralSource.email,
-                    phoneNumber: patients.value.patientReferralSource.phoneNumber,
-                    fax: patients.value.patientReferralSource.fax,
-                });
-            }
-            if(patients.value.patientPrimaryPhysician != null) {
-                Object.assign(conditions, {
-                    physicianName: patients.value.patientPrimaryPhysician.name,
-                    physicianDesignation: patients.value.patientPrimaryPhysician.designation,
-                    physicianEmail: patients.value.patientPrimaryPhysician.email,
-                    physicianPhoneNumber: patients.value.patientPrimaryPhysician.phoneNumber,
-                    physicianFax: patients.value.patientPrimaryPhysician.fax,
-                });
-            }
-        }
-    })
-
-    const parameters = reactive([]);
-
     const insuranceData = reactive({
       insuranceNumber: [],
       insuranceName: [],
@@ -847,12 +822,60 @@ export default {
       insuranceType: [],
     });
 
+    watchEffect(() => {
+        if(idPatient) {
+            Object.assign(demographics, patientDetail);
+            if(patients.value.patientConditions != null) {
+                Object.assign(conditions.condition, patients.value.patientConditions)
+            }
+            if(patients.value.patientInsurance != null) {
+                patients.value.patientInsurance.map(insurance => {
+                    if(insurance.insuranceType == "Primary Insurance") {
+                        insuranceData.insuranceNumber[0] = insurance.insuranceNumber
+                        insuranceData.insuranceName[0] = insurance.insuranceNameId
+                        insuranceData.expirationDate[0] = insurance.expirationDate
+                    }
+                    else if(insurance.insuranceType == "Secondary Insurance") {
+                        insuranceData.insuranceNumber[1] = insurance.insuranceNumber
+                        insuranceData.insuranceName[1] = insurance.insuranceNameId
+                        insuranceData.expirationDate[1] = insurance.expirationDate
+                    }
+                    else if(insurance.insuranceType == "Tertiary Insurance") {
+                        insuranceData.insuranceNumber[2] = insurance.insuranceNumber
+                        insuranceData.insuranceName[2] = insurance.insuranceNameId
+                        insuranceData.expirationDate[2] = insurance.expirationDate
+                    }
+                });
+            }
+            if(patientReferralSource != null) {
+                Object.assign(conditions, {
+                    name: patientReferralSource.name,
+                    designation: patientReferralSource.designation,
+                    email: patientReferralSource.email,
+                    phoneNumber: patientReferralSource.phoneNumber,
+                    fax: patientReferralSource.fax,
+                });
+            }
+            if(patientPrimaryPhysician != null) {
+                Object.assign(conditions, {
+                    physicianName: patientPrimaryPhysician.name,
+                    physicianDesignation: patientPrimaryPhysician.designation,
+                    physicianEmail: patientPrimaryPhysician.email,
+                    physicianPhoneNumber: patientPrimaryPhysician.phoneNumber,
+                    physicianFax: patientPrimaryPhysician.fax,
+                });
+            }
+        }
+    })
+
+    const parameters = reactive([]);
+
     const demographic = () => {
         if(idPatient != null) {
             if(patients.value.addDemographic == null) {
                 if(demographics.isPrimary == false) {
-                    (demographics.emergencyId = patients.value.patientDetails.emergencyContact.length > 0 ? patients.value.patientDetails.emergencyContact.data.id : ''),
-                    (demographics.familyMemberId = patients.value.patientDetails.patientFamilyMember.length > 0 ? patients.value.patientDetails.patientFamilyMember.data.id : ''),
+                    (demographics.emergencyId = patients.value.patientDetails.emergencyContact.data ? patients.value.patientDetails.emergencyContact.data.id : ''),
+                    (demographics.familyMemberId = patients.value.patientDetails.patientFamilyMember.data ? patients.value.patientDetails.patientFamilyMember.data.id : ''),
                     store.dispatch("updateDemographic", {
                         data: demographics,
                         id: idPatient,
@@ -875,8 +898,8 @@ export default {
             }
             else if(patients.value.addDemographic != null && patients.value.addDemographic.id) {
                 if(demographics.isPrimary == false) {
-                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.length > 0 ? patients.value.addDemographic.emergencyContact.data.id : ''),
-                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.length > 0 ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
+                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
+                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
                     store.dispatch("updateDemographic", {
                         data: demographics,
                         id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
@@ -889,8 +912,8 @@ export default {
                     (demographics.emergencyContactType = demographics.familyContactType),
                     (demographics.emergencyContactTime = demographics.familyContactTime),
                     (demographics.emergencyGender = demographics.familyGender),
-                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.length > 0 ? patients.value.addDemographic.emergencyContact.data.id : ''),
-                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.length > 0 ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
+                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
+                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
                     store.dispatch("updateDemographic", {
                         data: demographics,
                         id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
@@ -915,8 +938,8 @@ export default {
             }
             else if(patients.value.addDemographic != null && patients.value.addDemographic.id) {
                 if(demographics.isPrimary == false) {
-                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.length > 0 ? patients.value.addDemographic.emergencyContact.data.id : ''),
-                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.length > 0 ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
+                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
+                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
                     store.dispatch("updateDemographic", {
                         data: demographics,
                         id: patients.value.addDemographic.id,
@@ -929,8 +952,8 @@ export default {
                     (demographics.emergencyContactType = demographics.familyContactType),
                     (demographics.emergencyContactTime = demographics.familyContactTime),
                     (demographics.emergencyGender = demographics.familyGender),
-                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.length > 0 ? patients.value.addDemographic.emergencyContact.data.id : ''),
-                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.length > 0 ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
+                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
+                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
                     store.dispatch("updateDemographic", {
                         data: demographics,
                         id: patients.value.addDemographic.id,
@@ -948,14 +971,10 @@ export default {
     };
 
     const condition = () => {
+        const patientConditions = patients.value.patientConditions;
         if(idPatient != null) {
-            if ( patients.value.patientConditions == null || patients.value.patientReferralSource == null || patients.value.patientPrimaryPhysician == null ) {
+            if ( patientConditions == null || patientReferralSource == null || patientPrimaryPhysician == null ) {
                 if(conditions.checked == false) {
-                    (conditions.name = conditions.physicianName),
-                    (conditions.designation = conditions.physicianDesignation),
-                    (conditions.email = conditions.physicianEmail),
-                    (conditions.phoneNumber = conditions.physicianPhoneNumber),
-                    (conditions.fax = conditions.physicianFax);
                     store.dispatch("addCondition", {
                         data: conditions,
                         id: idPatient,
@@ -968,7 +987,7 @@ export default {
                     });
                 }
             }
-            else if ((patients.value.patientConditions != null || patients.value.patientReferralSource != null || patients.value.patientPrimaryPhysician != null) && patients.value.patientPrimaryPhysician.id || patients.value.patientReferralSource.id ) {
+            else if ((patientConditions != null || patientReferralSource != null || patientPrimaryPhysician != null) && patientPrimaryPhysician.id || patientReferralSource.id ) {
                 if (conditions.checked == false) {
                     (conditions.name = conditions.physicianName),
                     (conditions.designation = conditions.physicianDesignation),
@@ -978,16 +997,16 @@ export default {
                     store.dispatch("updateCondition", {
                         data: conditions,
                         id: idPatient,
-                        physicianId: patients.value.patientPrimaryPhysician.id,
-                        referalID: patients.value.patientReferralSource.id,
+                        physicianId: patientPrimaryPhysician.id,
+                        referalID: patientReferralSource.id,
                     });
                 }
                 if (conditions.checked == true) {
                     store.dispatch("updateCondition", {
                         data: conditions,
                         id: idPatient,
-                        physicianId: patients.value.patientPrimaryPhysician.id,
-                        referalID: patients.value.patientReferralSource.id,
+                        physicianId: patientPrimaryPhysician.id,
+                        referalID: patientReferralSource.id,
                     });
                 }
             }
@@ -1046,27 +1065,37 @@ export default {
     };
 
     const insuranceForm = () => {
-      store.dispatch("addInsurance", {
-        data: {
-          insurance: [insuranceData],
-        },
-        id: patients.value.addDemographic.id,
-      });
+        if(idPatient != null) {
+            store.dispatch("addInsurance", {
+                data: {
+                insurance: [insuranceData],
+                },
+                id: idPatient,
+            });
+        }
+        else {
+            store.dispatch("addInsurance", {
+                data: {
+                insurance: [insuranceData],
+                },
+                id: patients.value.addDemographic.id,
+            });
+        }
     };
 
     const demographicsFailed = () => {
-      scrollToTop();
+    //   scrollToTop();
      
       // errorSwal(messages.fieldsRequired)
     };
 
     const conditionsFailed = () => {
-      scrollToTop();
+    //   scrollToTop();
       // errorSwal(messages.fieldsRequired)
     };
 
     const insuranceDataFailed = () => {
-      scrollToTop();
+    //   scrollToTop();
       // errorSwal(messages.fieldsRequired)
     };
 
@@ -1131,7 +1160,7 @@ export default {
       successSwal,
       saveModal,
       regex,
-      scrollToTop,
+    //   scrollToTop,
       insuranceForm,
       insuranceData,
       parameter,
