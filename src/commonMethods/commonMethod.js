@@ -11,7 +11,7 @@ export function successSwal(message) {
     toast: true,
     position: 'top-end',
     showConfirmButton: false,
-    timer: 8000,
+    timer: 5000,
     timerProgressBar: true,
   })
   Toast.fire({

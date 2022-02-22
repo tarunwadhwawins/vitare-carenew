@@ -76,7 +76,7 @@ const routes = [
     path: '/coordinator-summary/:udid',
     name: 'CoordinatorSummary',
     component: () => import( '../components/coordinator-summary/Coordinatorsummary'),
-    // meta: { authAdmin: true }
+    meta: { authAdmin: true }
   },
   {
     path: '/time-tracking-report',
