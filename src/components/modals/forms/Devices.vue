@@ -132,7 +132,6 @@ export default defineComponent({
     });
 
     watchEffect(() => {
-      alert(patientId)
       if(patientId != null) {
         store.dispatch("devices", patientId);
       }
