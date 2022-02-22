@@ -10,4 +10,5 @@ export default{
     vitalData:null,
     vitalSuccessMsg:null,
     vitalList:null,
+    vitalEdit:null,
 }

@@ -1145,7 +1145,7 @@
           </div>
         </a-col>
       </a-row> -->
-
+{{appointmentSearch}}
   <FullCalendar v-if="appointmentSearch" :options="calendarOptions"  ref="cal">
 
   </FullCalendar>
@@ -1185,10 +1185,9 @@ props:{
       const linkTo = "patients-summary"
       const cal = ref(null);
       const store = useStore()
-      const appointmentSearch = computed(() => {
+      const appointmentSearch =computed(() =>{
         return store.state.appointment.searchAppointmentRecords
       })
-
       function handleDateClick(e) {
 emit("is-dateClick",e)
         console.log('date click! ' + e)
@@ -1238,7 +1237,7 @@ const  calendarOptions = {
         return '+'+e.num+' More items';
     },
         showNonCurrentDates: true,
-        events: appointmentSearch.value,
+        events: appointmentSearch,
         eventContent: renderEventContent,
         customButtons: {
           prev: { // this overrides the prev button
