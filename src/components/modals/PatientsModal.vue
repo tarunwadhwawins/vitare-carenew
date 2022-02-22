@@ -742,6 +742,7 @@ export default {
       return store.state.common;
     });
     const idPatient = props.patientId ? reactive(props.patientId) : null;
+    var isEdit = props.isEditPatient == true ? true : false;
 
     const patients = computed(() => {
       return store.state.patients;
@@ -825,8 +826,9 @@ export default {
     watchEffect(() => {
         if(idPatient) {
             Object.assign(demographics, patientDetail);
-            if(patients.value.patientConditions != null) {
+            if(isEdit && patients.value.patientConditions != null) {
                 Object.assign(conditions.condition, patients.value.patientConditions)
+                isEdit = false;
             }
             if(patients.value.patientInsurance != null) {
                 Object.assign(insuranceData, patients.value.patientInsurance)
@@ -947,13 +949,6 @@ export default {
         }
     };
 
-    const next = () => {
-      store.commit("counterPlus");
-    };
-    const prev = () => {
-      store.commit("counterMinus");
-    };
-
     const condition = () => {
         const patientConditions = patients.value.patientConditions;
         if(idPatient != null) {
@@ -1065,6 +1060,13 @@ export default {
                 id: patients.value.addDemographic.id,
             });
         }
+    };
+
+    const next = () => {
+      store.commit("counterPlus");
+    };
+    const prev = () => {
+      store.commit("counterMinus");
     };
 
     const demographicsFailed = () => {
