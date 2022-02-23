@@ -19,14 +19,18 @@
         </a-col>
     </a-row>
     <a-row :gutter="24" class="mb-24">
-        <a-col :span="24">
+      <a-col :span="24" v-if="paramId">
+        <a-button  html-type="reset" style="margin-right: 8px" @click="reset()">{{$t('global.clear')}}</a-button>
+        <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
+        </a-col>
+        <a-col :span="24" v-else>
             <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
         </a-col>
     </a-row>
 </a-form>
-<a-row :gutter="24">
+<a-row :gutter="24" v-show="!paramId">
     <a-col :span="24">
-        <a-table :pagination="false" :columns="staffs.availabilityListColms" :data-source="staffs.availabilityList" :scroll="{ x: 900 }">
+        <!-- <a-table :pagination="false" :columns="staffs.availabilityListColms" :data-source="staffs.availabilityList" :scroll="{ x: 900 }">
             <template #action="text">
                 <a-tooltip placement="bottom" @click="deleteAvailability(text.record.id)">
                     <template #title>
@@ -36,7 +40,8 @@
                         <DeleteOutlined /></a>
                 </a-tooltip>
             </template>
-        </a-table>
+        </a-table> -->
+        <AvailabilityTable :Id="Id" />
         <Loader />
     </a-col>
 </a-row>
@@ -44,20 +49,23 @@
 
 <script>
 import { defineComponent, reactive, ref, computed } from "vue";
-import { DeleteOutlined } from "@ant-design/icons-vue";
+// import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
-import { warningSwal } from "@/commonMethods/commonMethod";
-import { messages } from "@/config/messages";
 import Loader from "@/components/loader/Loader";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
+import AvailabilityTable from "../../care-coordinator/tables/AvailabilityTable.vue";
 export default defineComponent({
   components: {
     // EditOutlined,
-    DeleteOutlined,
+    // DeleteOutlined,
     Loader,
-    ErrorMessage
+    ErrorMessage,
+    AvailabilityTable
   },
-  setup() {
+  props:{
+    paramId:String
+  },
+  setup(props) {
     const store = useStore();
     const availability = reactive({
       startTime: "",
@@ -70,30 +78,25 @@ export default defineComponent({
 
     function addAvailability() {
       store.dispatch("addAvailability", {
-        id: staffs.value.addStaff.id,
+        id: props.paramId?props.paramId:staffs.value.addStaff.id,
         data: availability,
       });
       setTimeout(() => {
-        store.dispatch("availabilityList", staffs.value.addStaff.id);
+        store.dispatch("availabilityList", props.paramId?props.paramId:staffs.value.addStaff.id);
       }, 2000);
     }
 
-    function deleteAvailability(id) {
-      warningSwal(messages.deleteWarning).then((response) => {
-        if (response == true) {
-          store.dispatch("deleteAvailability", {
-            id: staffs.value.addStaff.id,
-            availabilityID: id,
-          });
-          setTimeout(() => {
-            store.dispatch("availabilityList", 21);
-          }, 2000);
-        }
-      });
-    }
+    const Id = staffs.value.addStaff?staffs.value.addStaff.id:''
 
+    const form = reactive({
+      ...availability,
+    });
+    function reset(){
+      Object.assign(availability,form)
+    }
     return {
-      deleteAvailability,
+      reset,
+      Id,
       staffs,
       addAvailability,
       availability,

@@ -38,13 +38,17 @@
         </a-col>
     </a-row>
     <a-row :gutter="24" class="mb-24">
-        <a-col :span="24">
+        <a-col :span="24" v-if="paramId">
+        <a-button  html-type="reset" style="margin-right: 8px" @click="reset()">{{$t('global.clear')}}</a-button>
+        <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
+        </a-col>
+        <a-col :span="24" v-else>
             <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
         </a-col>
     </a-row>
-    <a-row :gutter="24" class="mb-24">
+    <a-row :gutter="24" class="mb-24" v-show="!paramId">
         <a-col :span="24">
-            <a-table :columns="documentColumns" :data-source="documentsData" :pagination="false" :scroll="{ x: 900 }">
+            <!-- <a-table :columns="documentColumns" :data-source="documentsData" :pagination="false" :scroll="{ x: 900 }">
                 <template #tags="text">
                     <span v-for="tag in text.text.data" :key="tag.id">{{ tag.tag+ " "}}</span>
                 </template>
@@ -62,7 +66,8 @@
                             <DeleteOutlined /></a>
                     </a-tooltip>
                 </template>
-            </a-table>
+            </a-table> -->
+            <DocumentTable :Id="Id"/>
             <Loader />
         </a-col>
     </a-row>
@@ -71,20 +76,28 @@
 
 <script>
 import { defineComponent, computed, reactive } from "vue";
-import { DeleteOutlined, FileOutlined } from "@ant-design/icons-vue";
+// import { DeleteOutlined, FileOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "@/components/loader/Loader";
-import { warningSwal } from "@/commonMethods/commonMethod";
-import { messages } from "@/config/messages";
+// import { warningSwal } from "@/commonMethods/commonMethod";
+// import { messages } from "@/config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
+import DocumentTable from "../../care-coordinator/tables/DocumentTable.vue";
+
 export default defineComponent({
   components: {
-    DeleteOutlined,
+    // DeleteOutlined,
     Loader,
-    FileOutlined,
+    // FileOutlined,
     ErrorMessage,
+    DocumentTable,
   },
-  setup() {
+  props:{
+    entity:String,
+    paramId:String
+
+  },
+  setup(props) {
     const store = useStore();
     const onFileUpload = (event) => {
       let doc_file = event.target.files[0];
@@ -105,7 +118,16 @@ export default defineComponent({
       entity: "patient",
     });
 
+    const patients = computed(() => {
+      return store.state.patients;
+    });
+
+    const addStaff = computed(() => {
+      return store.state.careCoordinator.addStaff;
+    });
+
     const addDocument = () => {
+      if(props.entity=="patient"){
       store.dispatch("addDocument", {
         data: {
           name: documents.name,
@@ -119,10 +141,23 @@ export default defineComponent({
       setTimeout(() => {
         store.dispatch("documents", patients.value.addDemographic.id);
       }, 2000);
-    };
-    const patients = computed(() => {
-      return store.state.patients;
-    });
+      }else if(props.entity=="staff"){
+        store.dispatch("addDocument", {
+        data: {
+          name: documents.name,
+          document: filePath.value ? filePath.value : "",
+          type: documents.type,
+          tags: documents.tags,
+          entity: "staff",
+        },
+        id: props.paramId?props.paramId:addStaff.value.id,
+      });
+      setTimeout(() => {
+        store.dispatch("documents",  props.paramId?props.paramId:addStaff.value.id);
+      }, 2000);
+      }
+    }
+    
     const documentsData = computed(() => {
       return store.state.patients.documents;
     });
@@ -134,29 +169,43 @@ export default defineComponent({
       return store.state.common;
     });
 
-    function deleteDocument(id) {
-      warningSwal(messages.deleteWarning).then((response) => {
-        if (response == true) {
-          store.dispatch("deleteDocument", {
-            id: patients.value.addDemographic.id,
-            documentId: id,
-          });
-          setTimeout(() => {
-            store.dispatch("documents", patients.value.addDemographic.id);
-          }, 2000);
-        }
-      });
-    }
+    // function deleteDocument(id) {
+    //   warningSwal(messages.deleteWarning).then((response) => {
+    //     if (response == true) {
+    //       store.dispatch("deleteDocument", {
+    //         id: patients.value.addDemographic.id,
+    //         documentId: id,
+    //       });
+    //       setTimeout(() => {
+    //         store.dispatch("documents", patients.value.addDemographic.id);
+    //       }, 2000);
+    //     }
+    //   });
+    // }
     const handleChange = (value) => {
       console.log(`selected ${value}`);
     };
-
     const onFinishFailed = () => {};
+    let Id = null
+    if(props.paramId){
+     Id = props.paramId?props.paramId:addStaff.value.id
+    }else{
+     Id = patients.value.addDemographic?patients.value.addDemographic.id:''
+    }
+
+    const form = reactive({
+      ...documents,
+    });
+    function reset(){
+      Object.assign(documents,form)
+    }
     return {
+      reset,
+      Id,
       onFinishFailed,
       handleChange,
-      warningSwal,
-      deleteDocument,
+      // warningSwal,
+      // deleteDocument,
       globalCode,
       onFileUpload,
       filePath,

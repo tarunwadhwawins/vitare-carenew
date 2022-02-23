@@ -675,7 +675,7 @@
                 </a-form>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Documents'">
-                <Documents />
+                <Documents entity="patient"/>
 
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
