@@ -42,7 +42,7 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.timeAmount')" name="timeAmount" :rules="[{ required: true, message: $t('timeLogs.timeAmount')+' '+$t('global.validation')  }]">
-              <a-time-picker :disabled="isDisabled" v-model:value="addTimeLogForm.timeAmount" :default-value="defaultValue" format="HH:mm" :size="size" style="width: 100%"/>
+              <a-time-picker :disabled="isDisabled" v-model:value="addTimeLogForm.timeAmount" :default-value="defaultValue" format="HH:mm:ss" :size="size" style="width: 100%"/>
             </a-form-item>
           </div>
         </a-col>
@@ -94,12 +94,13 @@ export default defineComponent({
     const isTimerLog = reactive(props.isTimeLog);
     const isDisabled = props.isTimeLog == true ? true : false;
     const loggedInUserDetails = JSON.parse(localStorage.getItem('auth'))
-    const seconds = moment(props.timerValue, "HH:mm:ss").format('ss')
+    /* const seconds = moment(props.timerValue, "HH:mm:ss").format('ss')
     const timer = ref(null);
     timer.value = seconds != 0 ?
                   moment(props.timerValue, "HH:mm:ss").add(1, 'minutes').format('HH:mm') :
                   moment(props.timerValue, "HH:mm:ss").format('HH:mm');
-    const timerVal = ref(moment(timer.value, "HH:mm"));
+    const timerVal = ref(moment(timer.value, "HH:mm")); */
+    const timerVal = ref(moment(props.timerValue, "HH:mm:ss"));
 
     const staffList = computed(() => {
       return store.state.common.staffList

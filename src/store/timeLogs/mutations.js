@@ -1,6 +1,6 @@
 import {
   dateOnlyFormat,
-  meridiemFormatFromTimestamp,
+  timerFromTimestamp,
   // dateOnlyFormatSImple,
   // timeFormatSimple
 } from '../../commonMethods/commonMethod';
@@ -11,7 +11,7 @@ export const addTimeLogSuccess = async (state, timeLog) => {
 export const timeLogsListSuccess = async (state, timeLogs) => {
   state.timeLogsList = timeLogs.map(timelog => {
     timelog.date = dateOnlyFormat(timelog.date);
-    timelog.timeAmount = meridiemFormatFromTimestamp(timelog.timeAmount);
+    timelog.timeAmount = timerFromTimestamp(timelog.timeAmount);
     return timelog;
   })
 }

@@ -88,7 +88,7 @@
         <div class="thumb-head">
           TimeLogs <PlusOutlined @click="addTimelogModal" />
         </div>
-        <div v-if="Object(latestTimeLog).length > 0 && Object(latestTimeLog).length != 0" class="thumb-desc">
+        <div v-if="Object(latestTimeLog).length != 0" class="thumb-desc">
           <a href="javascript:void(0)" @click="showTimelogModal" >{{ latestTimeLog.category+' '+latestTimeLog.date }}</a>
         </div>
       </div>
@@ -96,7 +96,7 @@
         <div class="thumb-head">
           Devices <PlusOutlined @click="addDeviceModal" />
         </div>
-        <div v-if="Object(latestDevice).length > 0 || Object(latestDevice).length != 0" class="thumb-desc">
+        <div v-if="Object(latestDevice).length != 0" class="thumb-desc">
           <a href="javascript:void(0)" @click="showDeviceModal" >{{ latestDevice.deviceType+'('+latestDevice.modelNumber+')' }}</a>
         </div>
       </div>
