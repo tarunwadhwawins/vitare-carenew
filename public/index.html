@@ -18,20 +18,21 @@
     <!-- built files will be auto injected -->
  <script>
     function popupShow(event) {
-    var card = document.getElementById(event);
-    var divsToHide = document.getElementsByClassName("ant-dropdown")
-    for(var i = 0; i < divsToHide.length; i++){
-        //divsToHide[i].style.visibility = "hidden"; // or
-        if (divsToHide[i].style.display === "block") {
-          divsToHide[i].style.display = "none";
+    
+    var drowdown = document.getElementsByClassName("ant-dropdown")
+    for(var i = 0; i < drowdown.length; i++){
+
+        if (drowdown[i].style.display === "block") {
+          drowdown[i].style.display = "none";
     }
+    }
+    var card = document.getElementById(event);
+    if (card.style.display === "block") {
+      card.style.display = "none";
+    } else {
+      card.style.display = "block";
     }
     
-    if (card.style.display === "none") {
-      card.style.display = "block";
-    } else {
-      card.style.display = "none";
-    }
   }
  </script>
     <!-- <script

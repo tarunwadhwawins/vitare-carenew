@@ -14,9 +14,9 @@ import VueApexCharts from "vue3-apexcharts";
 const app = createApp(App)
 
 // video call config
-if(store.state.authentication.loggedInUser){
-store.getters.videoCall;
-}
+// if(store.state.authentication.loggedInUser){
+// store.getters.videoCall;
+// }
 
  
 

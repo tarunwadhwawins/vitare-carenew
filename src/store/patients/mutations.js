@@ -10,8 +10,8 @@ export const addDemographic = (state, data) => {
  
 
  export const patients = (state, data) => {
-    // state.patientList = data;
-    state.patientList=data
+     state.patientMeta = data.meta.pagination;
+    state.patientList=data.data
     .map(element => {
             element.flags=element.patientFlags.data[0]?element.patientFlags.data[0].flags.data.color:'',
             element.lastName=element.lastName?element.lastName :'',

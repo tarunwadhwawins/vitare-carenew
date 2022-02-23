@@ -13,9 +13,10 @@ export const vitalNull = async (state) => {
   state.vitalData = ''
 }
 export const vitalSuccessList = async (state, vitalRecord) => {
+  state.generalParameterMeta = vitalRecord.meta.pagination
   state.vitalList = ''
   let record = []
-  vitalRecord.map(element => {
+  vitalRecord.data.map(element => {
     let count = element.generalparameter.data.length
     element.generalparameter.data.forEach((data, index) => {
       data['generalparameterId'] = element.id
@@ -29,8 +30,8 @@ export const vitalSuccessList = async (state, vitalRecord) => {
       record.push(data)
     })
   });
-  //console.log("check",vitalRecord)
   state.vitalList = record
+  
 
 }
 export const vitalEdit = async (state, vitaledit) => {

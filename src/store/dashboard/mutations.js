@@ -281,7 +281,7 @@ export const appointmentChartSuccess = (state, count) => {
         type: type,
         categories: categories,
       },
-      yaxis: yaxis("Number of appointment"),
+      yaxis: yaxis("Number of appointments"),
       tooltip: {
         x: {
           format: format,

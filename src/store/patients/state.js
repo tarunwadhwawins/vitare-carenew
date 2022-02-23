@@ -44,5 +44,6 @@ export default {
     patientReferralSource:null,
     patientPrimaryPhysician:null,
     programList:null,
+    patientMeta:null,
 
 }

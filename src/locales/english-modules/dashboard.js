@@ -10,7 +10,7 @@ const dashboard = {
   cPTCodeBillingSummary: 'CPT Code Billing Summary',
   financialStats: 'Financial Stats',
   totalPatientsChart: 'Total Patients Chart',
-  appointmentSummary: 'Appointment Summary',
+  appointmentSummary: 'Appointments Summary',
   Normal: 'Normal',
   High: 'High',
   Critical: 'Critical',

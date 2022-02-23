@@ -40,8 +40,9 @@
         </div>
     </a-col>
     <a-col :span="24" v-if="arrayToObjact(patients.patientsPermissions,4)">
-        <DataTable v-if="patients.patientList" :columns="columns" :data-source="patients.patientList" :scroll="{ x: 1024 }" />
-        <Loader />
+
+        <DataTable v-if="patients.column" :columns="patients.column" :patientRecords="patients.patientList"  />
+     
     </a-col>
 </a-row>
 
@@ -50,15 +51,15 @@
 <!--end-->
 </template>
 <script>
-import { computed, ref, watchEffect, defineAsyncComponent } from "vue";
+import {  ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 import PatientsModal from "@/components/modals/PatientsModal";
 import CounterCard from "./counter-card/CounterCard";
 import ShowModalButton from "@/components/common/show-modal-button/ShowModalButton";
-import Loader from "@/components/loader/Loader";
+
 import { arrayToObjact } from "@/commonMethods/commonMethod";
 // import { messages } from "../../config/messages";
-
+import DataTable from "./data-table/DataTable"
 export default {
   name: "Patients",
   components: {
@@ -67,8 +68,7 @@ export default {
     // WarningOutlined,
     CounterCard,
     ShowModalButton,
-    Loader,
-    DataTable: defineAsyncComponent(() => import("./data-table/DataTable")),
+    DataTable
   },
 
   setup() {
@@ -84,17 +84,15 @@ export default {
     const handleChange = () => {};
 
     watchEffect(() => {
+      store.getters.patientsRecord.patientList=""
       store.dispatch("programList");
       store.dispatch("patients");
     });
 
-    const columns = computed(() => {
-      return store.state.patients.column;
-    });
+   
 
-    const patients = computed(() => {
-      return store.state.patients;
-    });
+ 
+     
 
     return {
       arrayToObjact,
@@ -105,8 +103,8 @@ export default {
       searchoptions,
       size: ref(),
       value2: ref(),
-      columns,
-      patients,
+      patients:store.getters.patientsRecord,
+     
     };
   },
 };

@@ -1,7 +1,6 @@
 import { computed } from "vue";
-import state from "./state"
-export function vitalDataGetters(){
-    computed(()=> {
-    return state.vitalData
-  })
-}
+  export const vitalDataGetters = (state)=>{
+      return computed(()=>{
+          return state
+      })
+    }

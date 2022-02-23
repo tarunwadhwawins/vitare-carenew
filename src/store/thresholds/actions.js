@@ -64,9 +64,10 @@ export const addGeneralParameterGroup = async ({
 }
 export const generalParameterList = async ({
   commit
-}) => {
-  await serviceMethod.common("get", API_ENDPOINTS['generalParameter'], null, null).then((response) => {
-    commit('vitalSuccessList', response.data.data)
+},page) => {
+  let link=page? API_ENDPOINTS['generalParameter']+page:API_ENDPOINTS['generalParameter']
+  await serviceMethod.common("get", link, null, null).then((response) => {
+    commit('vitalSuccessList', response.data)
   
   }).catch((error) => {
     if (error.response.status === 422) {
