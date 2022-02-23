@@ -35,8 +35,8 @@
           Appointments
           <PlusOutlined @click="showAddAppointmentModal"/><br />
         </div>
-        <div class="thumb-desc">
-          <router-link v-if="latestAppointment && latestAppointment.length > 0" :to="'/appointment-calendar/'+patientDetails.udid">
+        <div v-if="Object(latestAppointment).length != 0" class="thumb-desc">
+          <router-link :to="'/appointment-calendar/'+patientDetails.udid">
           {{ latestAppointment.staff.fullName+' '+latestAppointment.date }}
           </router-link>
         </div>
@@ -46,8 +46,8 @@
         <div class="thumb-head">
           Task <PlusOutlined @click="addTaskModal" /><br />
         </div>
-        <div class="thumb-desc">
-          <router-link v-if="letastTask != null" to="/tasks">{{ letastTask.title }}</router-link>
+        <div v-if="latestTask != null" class="thumb-desc">
+          <router-link to="/tasks">{{ latestTask.title }}</router-link>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -64,40 +64,40 @@
         <div class="thumb-head">
           Notes <PlusOutlined @click="addNotesModal" />
         </div>
-        <div class="thumb-desc">
-          <a v-if="latestNotes != null" href="javascript:void(0)" @click="showNotesModal" >{{ latestNotes.note }}</a>
+        <div v-if="latestNotes != null" class="thumb-desc">
+          <a href="javascript:void(0)" @click="showNotesModal" >{{ latestNotes.note }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
           Documents <PlusOutlined @click="addDocumentsModal" />
         </div>
-        <div class="thumb-desc">
-          <a v-if="latestDocument != null" href="javascript:void(0)" @click="showDocumentsModal" >{{ latestDocument.name }}</a>
+        <div v-if="latestDocument != null" class="thumb-desc">
+          <a href="javascript:void(0)" @click="showDocumentsModal" >{{ latestDocument.name }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
           Care Team <PlusOutlined @click="addCateTeamModal" />
         </div>
-        <div class="thumb-desc">
-          <router-link v-if="latestCareTeam != null" :to="{ name: 'CoordinatorSummary', params: { udid: latestCareTeam.id  }}">{{ latestCareTeam.staff }}</router-link>
+        <div v-if="latestCareTeam != null" class="thumb-desc">
+          <router-link :to="{ name: 'CoordinatorSummary', params: { udid: latestCareTeam.id  }}">{{ latestCareTeam.staff }}</router-link>
         </div>
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
           TimeLogs <PlusOutlined @click="addTimelogModal" />
         </div>
-        <div class="thumb-desc">
-          <a v-if="latestTimeLog && latestTimeLog.length > 0" href="javascript:void(0)" @click="showTimelogModal" >{{ latestTimeLog.category+' '+latestTimeLog.date }}</a>
+        <div v-if="Object(latestTimeLog).length != 0" class="thumb-desc">
+          <a href="javascript:void(0)" @click="showTimelogModal" >{{ latestTimeLog.category+' '+latestTimeLog.date }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
           Devices <PlusOutlined @click="addDeviceModal" />
         </div>
-        <div class="thumb-desc">
-          <a v-if="latestDevice && latestDevice.length > 0" href="javascript:void(0)" @click="showDeviceModal" >{{ latestDevice.deviceType+'('+latestDevice.modelNumber+')' }}</a>
+        <div v-if="Object(latestDevice).length != 0" class="thumb-desc">
+          <a href="javascript:void(0)" @click="showDeviceModal" >{{ latestDevice.deviceType+'('+latestDevice.modelNumber+')' }}</a>
         </div>
       </div>
     </div>
@@ -180,6 +180,7 @@ export default {
     const route = useRoute();
     const custom = ref(false);
     const isEditPatient = ref(false);
+    const isEditTimeLog = ref(false);
     
     const patientsModalVisible = ref(false);
     const addAppointmentVisible = ref(false);
@@ -200,7 +201,7 @@ export default {
       if(route.params.udid) {
         store.dispatch('patientDetails', route.params.udid)
         store.dispatch('latestAppointment', route.params.udid)
-        store.dispatch('letastTask', route.params.udid)
+        store.dispatch('latestTask', route.params.udid)
         store.dispatch('latestNotes', route.params.udid)
         store.dispatch('latestDocument', route.params.udid)
         store.dispatch('careTeamList', route.params.udid)
@@ -218,8 +219,8 @@ export default {
     const latestAppointment = computed(() => {
       return store.state.appointment.latestAppointment
     })
-    const letastTask = computed(() => {
-      return store.state.tasks.letastTask
+    const latestTask = computed(() => {
+      return store.state.tasks.latestTask
     })
     const latestDocument = computed(() => {
       return store.state.patients.latestDocument
@@ -320,7 +321,6 @@ export default {
     }
 
     const timeLogDetails = ref(null);
-    const isEditTimeLog = ref(false);
     const editTimeLog = (value) => {
       timeLogDetails.value = value;
       isEditTimeLog.value = true;
@@ -371,7 +371,7 @@ export default {
       isEditPatient,
 
       latestAppointment,
-      letastTask,
+      latestTask,
       latestNotes,
       latestDocument,
       latestCareTeam,

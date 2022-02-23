@@ -94,7 +94,13 @@ export const successMsg = (state, data) => {
 }
 
 export const staffListSuccess = (state, data) => {
-    state.staffList = data
+    const staffList = []
+    data.map(item => {
+        if(item.id != '') {
+            staffList.push(item);
+        }
+    });
+    state.staffList = staffList;
 }
 
 //  export const errorMsg = (state, data) => {

@@ -15,9 +15,9 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.loggedBy')" name="loggedBy" :rules="[{ required: true, message: $t('timeLogs.loggedBy')+' '+$t('global.validation')  }]">
-              <a-select ref="select" v-model:value="addTimeLogForm.loggedBy" style="width: 100%" size="large">
+              <a-select ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.loggedBy" style="width: 100%" size="large">
                 <a-select-option value="" hidden>Select Logged By</a-select-option>
-                <a-select-option v-for="staff in staffList" :key="staff.id">{{ staff.fullName }}</a-select-option>
+                <a-select-option v-for="staff in staffList" :value="staff.id" :key="staff.id">{{ staff.fullName }}</a-select-option>
               </a-select>
             </a-form-item>
           </div>
@@ -25,9 +25,9 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.performedBy')" name="performedBy" :rules="[{ required: true, message: $t('timeLogs.performedBy')+' '+$t('global.validation')  }]">
-              <a-select ref="select" v-model:value="addTimeLogForm.performedBy" style="width: 100%" size="large">
+              <a-select ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.performedBy" style="width: 100%" size="large">
                 <a-select-option value="" hidden>Select Performed By</a-select-option>
-                <a-select-option v-for="staff in staffList" :key="staff.id">{{ staff.fullName }}</a-select-option>
+                <a-select-option v-for="staff in staffList" :value="staff.id" :key="staff.id">{{ staff.fullName }}</a-select-option>
               </a-select>
             </a-form-item>
           </div>
@@ -35,14 +35,14 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.date')" name="date" :rules="[{ required: true, message: $t('timeLogs.date')+' '+$t('global.validation')  }]">
-              <a-date-picker v-model:value="addTimeLogForm.date" :size="size" style="width: 100%" />
+              <a-date-picker :disabled="isDisabled" v-model:value="addTimeLogForm.date" :size="size" style="width: 100%" />
             </a-form-item>
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.timeAmount')" name="timeAmount" :rules="[{ required: true, message: $t('timeLogs.timeAmount')+' '+$t('global.validation')  }]">
-              <a-time-picker v-model:value="addTimeLogForm.timeAmount" format="HH:mm" :size="size" style="width: 100%"/>
+              <a-time-picker :disabled="isDisabled" v-model:value="addTimeLogForm.timeAmount" :default-value="defaultValue" format="HH:mm:ss" :size="size" style="width: 100%"/>
             </a-form-item>
           </div>
         </a-col>
@@ -59,11 +59,14 @@ import {
   defineComponent,
   reactive,
   ref,
+  watchEffect,
 } from "vue";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { useStore } from "vuex";
 import { timeStamp } from '@/commonMethods/commonMethod';
 import { useRoute } from "vue-router";
+import moment from "moment";
+
 export default defineComponent({
   components: {
     ModalButtons,
@@ -74,19 +77,30 @@ export default defineComponent({
     },
     isEditForm: {
       type: Boolean
-    }
+    },
+    isTimeLog: {
+      type: Boolean
+    },
+    timerValue: {
+      type: String
+    },
   },
   setup(props, {emit}) {
     const store = useStore();
     const route = useRoute()
     const formRef = ref();
     const form = reactive({ ...addTimeLogForm });
-    const timeLogDetail = reactive(props.timeLogDetails);
-    console.log('timeLogDetails', timeLogDetail)
-    // const timeLogId = reactive(props.timeLogDetails.id);
     const isEdit = reactive(props.isEditForm);
-
-    // console.log('timeLogId', timeLogId)
+    const isTimerLog = reactive(props.isTimeLog);
+    const isDisabled = props.isTimeLog == true ? true : false;
+    const loggedInUserDetails = JSON.parse(localStorage.getItem('auth'))
+    /* const seconds = moment(props.timerValue, "HH:mm:ss").format('ss')
+    const timer = ref(null);
+    timer.value = seconds != 0 ?
+                  moment(props.timerValue, "HH:mm:ss").add(1, 'minutes').format('HH:mm') :
+                  moment(props.timerValue, "HH:mm:ss").format('HH:mm');
+    const timerVal = ref(moment(timer.value, "HH:mm")); */
+    const timerVal = ref(moment(props.timerValue, "HH:mm:ss"));
 
     const staffList = computed(() => {
       return store.state.common.staffList
@@ -101,13 +115,25 @@ export default defineComponent({
       loggedBy: "",
       performedBy: "",
       date: "",
-      timeAmount: "",
-      // id: route.params.udid,
-      // category: timeLogDetails.value != null ? timeLogDetails.value.categoryId : "",
-      // loggedBy: timeLogDetails.value != null ? timeLogDetails.value.loggedId : "",
-      // performedBy: timeLogDetails.value != null ? timeLogDetails.value.performedId : "",
-      // date: timeLogDetails.value != null ? timeLogDetails.value.date : "",
-      // timeAmount: timeLogDetails.value != null ? timeLogDetails.value.timeAmount : "",
+      timeAmount: ref(),
+    })
+
+    const loggedInUserId = ref(null);
+    staffList.value.forEach(staff => {
+      if(staff.uuid == loggedInUserDetails.user.staffUdid) {
+        loggedInUserId.value = staff.uuid;
+      }
+    });
+
+    watchEffect(() => {
+      if(isTimerLog == true) {
+        Object.assign(addTimeLogForm, {
+          loggedBy: loggedInUserId.value != null ? loggedInUserId.value : "",
+          performedBy: loggedInUserId.value != null ? loggedInUserId.value : "",
+          date: moment(),
+          timeAmount: timerVal.value ? timerVal.value : ""
+        })
+      }
     })
 
     const handleClear = () => {
@@ -116,27 +142,21 @@ export default defineComponent({
     }
 
     const submitForm = () => {
-      addTimeLogForm.date = timeStamp(addTimeLogForm.date);
-      addTimeLogForm.timeAmount = timeStamp(addTimeLogForm.timeAmount);
       if(isEdit) {
         // store.dispatch('updateTimeLog', {timeLogId, addTimeLogForm});
       }
       else {
+        addTimeLogForm.date = timeStamp(addTimeLogForm.date);
+        addTimeLogForm.timeAmount = timeStamp(addTimeLogForm.timeAmount);
         const patientId = route.params.udid;
+        console.log('addTimeLogForm', addTimeLogForm);
         store.dispatch('addTimeLog', {id: patientId, data: addTimeLogForm}).then(() => {
           store.dispatch('latestTimeLog', route.params.udid)
+          formRef.value.resetFields();
+          Object.assign(addTimeLogForm, form)
+          emit('closeModal');
         });
       }
-      formRef.value.resetFields();
-      Object.assign(addTimeLogForm, form)
-      emit('closeModal');
-      // console.log('timeLogId', timeLogId);
-      // console.log('addTimeLogForm', addTimeLogForm);
-      // if(isAdd == true) {
-      // }
-      // else {
-      //   alert("Edit")
-      // }
     }
 
     return {
@@ -147,7 +167,7 @@ export default defineComponent({
       addTimeLogForm,
       staffList,
       timeLogCategories,
-      // timeLogDetails,
+      isDisabled,
     };
   },
 });

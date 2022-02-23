@@ -226,6 +226,18 @@ const routes = [
     component: () => import( '../components/InfiniteScroll.vue'),
     meta: { authAdmin: true }
   },
+  {
+    path: '/test-timer',
+    name: 'TestTimer',
+    component: () => import( '@/components/TestTimer.vue'),
+    meta: { authAdmin: true }
+  },
+  {
+    path: '/test-countdown',
+    name: 'TestCountdown',
+    component: () => import( '@/components/TestCountdown.vue'),
+    meta: { authAdmin: true }
+  },
 
 
 ]

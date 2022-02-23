@@ -61,6 +61,11 @@ export function dateOnlyFormat(timeStamp) {
   return day.format('MMM DD, yyyy');
 }
 
+export function timerFromTimestamp(timeStamp) {
+  var day = moment.unix(new Date(timeStamp));
+  return day.format('HH:mm:ss');
+}
+
 export function dateFormat(date) {
   return moment.unix(date).format('MMM DD, yyyy, hh:mm A');
 }
