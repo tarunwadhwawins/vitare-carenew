@@ -3,6 +3,7 @@ import { h } from 'vue'
 import router from '@/router/index'
 import state from './state';
 import { notification, Button } from "ant-design-vue";
+import { successSwal } from '@/commonMethods/commonMethod';
 
 
 export function videoCall() {
@@ -52,8 +53,11 @@ export function videoCall() {
             
             onCallHangup: async () => {
             if(callNotification==1){
-                console.log('callHangValue',callNotification);
+                // console.log('callHangValue',callNotification);
                 notification.close(key)
+            }else{
+                successSwal('Call Ended! Thank You')
+                router.push('/dashboard')
             }
             }
         },

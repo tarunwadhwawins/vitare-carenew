@@ -1,6 +1,6 @@
 import { Web } from '@/assets/js/sip-0.20.0'
 import router from '@/router/index'
-// import { warningSwal } from "@/commonMethods/commonMethod";
+import { successSwal } from "@/commonMethods/commonMethod";
 import { h } from 'vue'
 import { notification, Button } from "ant-design-vue";
 const key = `open${Date.now()}`;
@@ -51,6 +51,9 @@ state.options= Web.SimpleUserOptions = {
           if(callNotification==1){
               console.log('callHangValue',callNotification);
               notification.close(key)
+          }else{
+            successSwal('Call Ended! Thank You')
+            router.push('/dashboard')
           }
           }
       },

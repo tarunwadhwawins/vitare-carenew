@@ -1191,7 +1191,7 @@ nextOrPrev('prev')
 
 <script>
   import {  dateFormat } from "../../commonMethods/commonMethod"
-  import { reactive ,ref ,onMounted} from 'vue'
+  import { reactive ,ref } from 'vue'
   import FullCalendar from '@fullcalendar/vue3'
   import dayGridPlugin from '@fullcalendar/daygrid'
   import TimeGridPlugin from '@fullcalendar/timegrid'
@@ -1260,9 +1260,7 @@ emit("is-dateClick",e)
       }
 
       const linkToCoordinator = "coordinator-summary"
-onMounted(()=>{
-  
-})
+
 
 function nextOrPrev(text){
 let calendarApi = cal.value.getApi();
