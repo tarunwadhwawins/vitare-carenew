@@ -30,19 +30,19 @@
        
           
        
-        <ThresholdsTable v-if="vitalList" :thresholdsData="vitalList" @is-edit="showEdit($event)"></ThresholdsTable>
+        <ThresholdsTable v-if="vitalList.vitalList" :thresholdsData="vitalList.vitalList" @is-edit="showEdit($event)"></ThresholdsTable>
         <div v-else><Loader /></div>
         
       </a-row>
     </div>
-    {{threshodsId}}
+
   </a-layout-content>
 
   <Thresholds v-if="threshodsId" v-model:visible="Thresholds" @is-visible="showModal($event)" :threshodId="threshodsId? threshodsId:''" />
   <Thresholds v-else v-model:visible="Thresholds" @is-visible="showModal($event)" />
 </template>
 <script>
-  import { ref, watchEffect, computed } from "vue";
+  import { ref, watchEffect } from "vue";
   import Thresholds from "@/components/modals/Thresholds";
   import ThresholdsTable from "./ThresholdsTable";
   import { useStore } from "vuex";
@@ -59,11 +59,10 @@
       const store = useStore();
       const threshodsId = ref()
       watchEffect(() => {
+        store.state.thresholds.vitalList=""
         store.dispatch("generalParameterList");
       });
-      const vitalList = computed(() => {
-        return store.state.thresholds.vitalList;
-      });
+      const vitalList = store.getters.vitalDataGetters
       function nullId (){
         threshodsId.value=''
       }

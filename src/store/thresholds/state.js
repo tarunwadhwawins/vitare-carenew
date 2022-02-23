@@ -11,4 +11,5 @@ export default{
     vitalSuccessMsg:null,
     vitalList:null,
     vitalEdit:null,
+    generalParameterMeta:null,
 }
