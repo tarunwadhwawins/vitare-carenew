@@ -1236,7 +1236,7 @@ emit("is-dateClick",e)
       //   { title: 'Event Title', date: '2022-02-02', backgroundColor: 'grey' },
       //   { title: 'Another event', date: '2022-02-02', "id": 4 }
       // ]
-      console.log("appointmentSearch", appointmentSearch.value)
+     // console.log("appointmentSearch", appointmentSearch.value)
       //console.log(events)
     
       
