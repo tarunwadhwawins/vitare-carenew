@@ -98,7 +98,23 @@
 </template>
 
 <script>
+import {
+  EyeOutlined,
+  MessageOutlined,
+  CommentOutlined,
+  PhoneOutlined,
+  MailOutlined,
+  AlertOutlined,
+} from "@ant-design/icons-vue";
 export default {
+  components: {
+    EyeOutlined,
+    MessageOutlined,
+    CommentOutlined,
+    PhoneOutlined,
+    MailOutlined,
+    AlertOutlined,
+  },
   props: {
     communicationColumns: {
       type: Array
