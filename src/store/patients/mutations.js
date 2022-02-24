@@ -618,6 +618,14 @@ export const patientSearchWithBitrix = (state, data) => {
       dataIndex: "TITLE",
     },
     {
+      title: "Type",
+      dataIndex: "TYPE_ID",
+    },
+    {
+      title: "Stage",
+      dataIndex: "STAGE_ID",
+    },
+    {
       title: "Actions",
       dataIndex: "actions",
       slots: {

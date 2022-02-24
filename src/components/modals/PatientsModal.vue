@@ -4,7 +4,7 @@
     <a-row :gutter="24">
         <div class="common-btn mb-24">
           <a-button type="primary" @click="showSearchPatient">
-            Export From Bitrix
+            Bitrix Lookup
          </a-button>
         </div>
         <a-col :span="24">
