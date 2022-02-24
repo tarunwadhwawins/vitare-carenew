@@ -1,5 +1,5 @@
 
-import { meridiemFormatFromTimestamp,dateOnlyFormat,dobFormat2 } from '../../commonMethods/commonMethod';
+import { meridiemFormatFromTimestamp,dateOnlyFormat,dobFormat2,arrayToObjact } from '../../commonMethods/commonMethod';
 
 export const addDemographic = (state, data) => {
     state.addDemographic = data
@@ -637,10 +637,15 @@ export const patientSearchWithBitrix = (state, data) => {
 
 
 export const fetchFromBitrix = (state, data) => {
+  let email = arrayToObjact(data.EMAIL)
+  let phone = arrayToObjact(data.PHONE)
+  console.log('object=>',email,phone);
   state.fetchFromBitrix = {
     firstName :data.NAME,
     lastName :data.LAST_NAME,
     dob:dobFormat2(data.BIRTHDATE),
+    // email:email.VALUE,
+    // phoneNumber:phone.VALUE
     
   }
 }

@@ -842,11 +842,11 @@ export default defineComponent( {
     });
 
     watchEffect(() => {
-        if(patients.value.fetchFromBitrix){
-            
+        // Bitrix data assign 
+        if(patients.value.fetchFromBitrix){ 
             Object.assign(demographics, patients.value.fetchFromBitrix);
-            console.log('object',Object.assign(demographics, patients.value.fetchFromBitrix));
-        }
+        }//end 
+
         if(idPatient) {
             Object.assign(demographics, patientDetail);
             if(isEdit && patients.value.patientConditions != null) {
