@@ -19,22 +19,8 @@ import { watchEffect, computed } from 'vue';
 import { useStore } from "vuex"
 import SearchField from "@/components/common/input/SearchField";
 import ListViewTable from "@/components/communications/tables/ListViewTable";
-import {
-  EyeOutlined,
-  MessageOutlined,
-  CommentOutlined,
-  PhoneOutlined,
-  MailOutlined,
-  AlertOutlined,
-} from "@ant-design/icons-vue";
 export default {
   components: {
-    EyeOutlined,
-    MessageOutlined,
-    CommentOutlined,
-    PhoneOutlined,
-    MailOutlined,
-    AlertOutlined,
     SearchField,
     ListViewTable,
   },
