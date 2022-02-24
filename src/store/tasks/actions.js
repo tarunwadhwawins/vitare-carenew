@@ -2,11 +2,12 @@ import ServiceMethodService from '@/services/serviceMethod';
 import { successSwal, errorSwal } from '@/commonMethods/commonMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
 
-export const tasksList = async ({ commit }) => {
+export const tasksList  = async ({commit}, page) => {
+	let link = page ? API_ENDPOINTS['tasksList']+page : API_ENDPOINTS['tasksList']
 	commit('loadingStatus', true)
-	await ServiceMethodService.common("get", API_ENDPOINTS['tasksList'], null, null).then((response) => {
+	await ServiceMethodService.common("get", link, null, null).then((response) => {
 		// console.log('tasksListSuccess', response.data.data)
-		commit('tasksListSuccess', response.data.data);
+		commit('tasksListSuccess', response.data);
 		commit('loadingStatus', false)
 	}).catch((error) => {
 			if (error.response.status === 422) {

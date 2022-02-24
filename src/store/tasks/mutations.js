@@ -1,11 +1,11 @@
 import { dateOnlyFormatSImple,yaxis, dataLabels, plotOptions ,dateOnlyFormat } from '../../commonMethods/commonMethod';
 export const tasksListSuccess = async (state, tasks) => {
-  state.tasksList = tasks.map(element => {
+  state.tasksList = tasks.data.map(element => {
     element.dueDate = dateOnlyFormat(element.dueDate)
     element.category = element.category.map(item=>item.taskCategory)
     return element;
   });
-
+ state.taskMeta= tasks.meta.pagination
   state.tasksListColumns = [
     {
       title: "Task Name",

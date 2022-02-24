@@ -34,7 +34,8 @@
         </div>
     </a-col>
     <a-col :span="24" v-if="arrayToObjact(staffs.staffPermissions,4)">
-        <CoordinatorTable v-if="staffs.staffs" :columns="columns" :data-source="staffs.staffs" :scroll="{ x: 1200 }"></CoordinatorTable>
+      
+        <CoordinatorTable v-if="staffs.staffs"  :staffRecords="staffs" ></CoordinatorTable>
         <Loader />
     </a-col>
     <CareCoordinatorModalForms v-model:visible="visible" @saveModal="handleOk($event)"></CareCoordinatorModalForms>
@@ -44,7 +45,7 @@
 <script>
 import {
     watchEffect,
-    computed,
+   
     ref
 } from "vue"
 import LongCard from "@/components/common/cards/LongCard"
@@ -70,19 +71,20 @@ export default {
         const searchoptions = ref([])
         const visible = ref(false)
         watchEffect(() => {
+            store.getters.staffRecord.staffs=""
             store.dispatch('staffs')
             store.dispatch('specializationStaff')
             store.dispatch('networkStaff')
         })
 
-        const columns = computed(() => {
-            return store.state.careCoordinator.columns
-        })
-        const handleChange = () => {};
+        // const columns = computed(() => {
+        //     return store.state.careCoordinator.columns
+        // })
+         const handleChange = () => {};
 
-        const staffs = computed(() => {
-            return store.state.careCoordinator
-        })
+        // const staffs = computed(() => {
+        //     return store.state.careCoordinator
+        // })
         const handleOk = (value) => {
             visible.value = value;
         }
@@ -98,8 +100,7 @@ export default {
             handleOk,
             searchoptions,
             handleChange,
-            columns,
-            staffs,
+            staffs:store.getters.staffRecord.value,
             value2: ref(),
             size: ref()
             // specializationTotal,
