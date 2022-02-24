@@ -40,8 +40,11 @@ export const communicationTypes = async ({ commit }) => {
 }
 
 export const communicationsList = async ({ commit }, page) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['communicationsList']+'?page='+page, null, null).then((response) => {
-		commit('communicationsSuccess', response.data.data);
+	let link = page ?API_ENDPOINTS['communicationsList']+page : API_ENDPOINTS['communicationsList']
+	commit('loadingStatus', true)
+	await ServiceMethodService.common("get", link, null, null).then((response) => {
+		commit('communicationsSuccess', response.data);
+		commit('loadingStatus', false)
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {

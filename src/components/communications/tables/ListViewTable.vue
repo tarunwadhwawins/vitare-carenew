@@ -1,10 +1,11 @@
 <template>
   <a-table
+ 
     :columns="communicationColumns"
-    :data-source="communicationsList"
-    :scroll="{ x: 900 }"
+    :data-source="data"
+    :scroll="{ x: 900,y:450 }"
     rowKey="id"
-    :pagination="true"
+    :pagination="false"
     @change="onChange">
     
     <template #resend>
@@ -95,9 +96,13 @@
       </a-tooltip>
     </template>
   </a-table>
+  <Loader v-if="loader" />
 </template>
 
 <script>
+  import { ref, reactive,  onMounted } from "vue"
+import { useStore } from "vuex";
+import Loader from "@/components/loader/Loader";
 import {
   EyeOutlined,
   MessageOutlined,
@@ -114,13 +119,14 @@ export default {
     PhoneOutlined,
     MailOutlined,
     AlertOutlined,
+    Loader,
   },
   props: {
     communicationsList: {
       type: Array
     },
   },
-  setup() {
+  setup(props) {
     const communicationColumns = [
       {
         title: "From",
@@ -183,8 +189,48 @@ export default {
         },
       },
     ];
+    const store = useStore();
+            
+            const data = reactive(props.communicationsList)
+         
+            const meta = store.getters.communicationRecord
+            const loader = ref(false)
+            
+            onMounted(() => {
+                var tableContent = document.querySelector('.ant-table-body')
+                tableContent.addEventListener('scroll', (event) => {
+                    let maxScroll = event.target.scrollHeight - event.target.clientHeight
+                    let currentScroll = event.target.scrollTop + 2
+                    console.log(currentScroll)
+                    if (currentScroll >= maxScroll) {
+    
+                      let current_page = meta.value.communicationMeta.current_page + 1
+                      
+                        if (current_page <= meta.value.communicationMeta.total_pages) {
+                            loader.value = true
+                            meta.value.communicationMeta = ""
+                            store.dispatch("communicationsList", "?page=" + current_page)
+                            setTimeout(() => {
+                                loadMoredata()
+                            }, 1000)
+    
+                        }
+                    }
+                })
+            })
+    
+            function loadMoredata() {
+                const newData = meta.value.communicationsList
+                
+                newData.forEach(element => {
+                    data.push(element)
+                });
+                loader.value = false
+            }
     return {
-      communicationColumns
+      communicationColumns,
+      data,
+      loader,
     }
   }
 }

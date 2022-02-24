@@ -1,8 +1,9 @@
 <template>
+  <a-col :sm="24">
     <a-table
     :columns="fields"
     :data-source="data"
-    :scroll="{ x: 900 ,y:350 }"
+    :scroll="{ x: 900 ,y:200 }"
     :pagination="false"
     @change="onChange">
     <template #taskName="text">
@@ -40,6 +41,8 @@
       </a-tooltip>
     </template>
   </a-table>
+  <Loader v-if="loader" />
+</a-col>
     </template>
     
     <script>
@@ -49,12 +52,14 @@
     import {  DeleteOutlined, EditOutlined, CalendarOutlined } from "@ant-design/icons-vue";
     import { messages } from '@/config/messages';
     import { warningSwal } from "@/commonMethods/commonMethod" 
+    import Loader from "@/components/loader/Loader"
     export default {
         name: "TaskTable",
         components: {
             DeleteOutlined,
             EditOutlined,
             CalendarOutlined,
+            Loader,
            
         },
         props: {
@@ -70,6 +75,7 @@
             const data = reactive(props.taskRecords.tasksList)
             const meta = store.getters.taskRecords
             const loader = ref(false)
+            
             onMounted(() => {
                 var tableContent = document.querySelector('.ant-table-body')
                 tableContent.addEventListener('scroll', (event) => {
@@ -77,12 +83,11 @@
                     let currentScroll = event.target.scrollTop + 2
                     if (currentScroll >= maxScroll) {
     
-                        let current_page = meta.value.taskMeta.current_page + 1
-    
+                      let current_page = meta.value.taskMeta.current_page + 1
                         if (current_page <= meta.value.taskMeta.total_pages) {
                             loader.value = true
-                            meta.value.patientMeta = ""
-                            store.dispatch("patients", "?page=" + current_page)
+                            meta.value.taskMeta = ""
+                            store.dispatch("tasksList", "?page=" + current_page)
                             setTimeout(() => {
                                 loadMoredata()
                             }, 1000)

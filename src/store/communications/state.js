@@ -9,4 +9,5 @@ export default {
   addCommunication: null,
   communicationsCount: null,
   searchCommunications: null,
+  communicationMeta:null,
 }

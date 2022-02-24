@@ -8,11 +8,11 @@
         <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
       </div>
     </a-col>
-    <a-col :sm="24">
+    
    
      <TaskTable v-if="tasksList.tasksListColumns" :taskRecords="tasksList" @is-Edit="editTask($event)"></TaskTable>
-       <Loader /> 
-    </a-col>
+      
+    
   </a-row>
 </template>
 
@@ -23,18 +23,19 @@ import { useStore } from "vuex"
 // import swal from 'sweetalert2';
 import SearchField from "@/components/common/input/SearchField";
 
- import Loader from "@/components/loader/Loader";
+
  import TaskTable from "./TaskTable"
 
 export default {
   components: {
     SearchField,
     TaskTable,
-     Loader
+    // Loader
   },
   setup(props, {emit}) {
     const store = useStore()
     watchEffect(() => {
+      store.getters.taskRecords.tasksList=""
       store.dispatch("tasksList")
     })
 
