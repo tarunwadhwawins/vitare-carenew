@@ -1,6 +1,6 @@
 <template>
     <a-col :sm="24" :xs="24" >
-        <a-table  :columns="fields" :pagination="false" :data-source="data" :scroll="{ y: 400 }" @change="onChange">
+        <a-table  :columns="fields" :pagination="false" :data-source="data" :scroll="{ y: 450 }" @change="onChange">
             <template #staff="text">
                 <!-- <router-link to="coordinator-summary">{{
   text.text
@@ -39,7 +39,7 @@
                 <a-switch v-model:checked="checked[key.record.key]" />
             </template>
         </a-table>
-        <Loader />
+        <InfiniteLoader  v-if="loader"/>
     </a-col>
     </template>
     
@@ -48,7 +48,7 @@
       import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
       import AuditTimeLog from "../modals/AuditTimeLogs";
       import { messages } from "@/config/messages";
-      import Loader from "@/components/loader/Loader";
+      import InfiniteLoader from "@/components/loader/InfiniteLoader";
       
       import { useStore } from "vuex";
       import { warningSwal } from "@/commonMethods/commonMethod";
@@ -57,7 +57,7 @@
         components: {
             DeleteOutlined,
             EditOutlined,
-            Loader,
+            InfiniteLoader,
             AuditTimeLog,
         },
         props: {

@@ -52,10 +52,10 @@ export const patients = async ({
   commit
 },page) => {
   let link = page? "patient"+page : "patient"
-  commit('loadingStatus', true)
+  //commit('loadingStatus', true)
   await serviceMethod.common("get", link, null, null).then((response) => {
     commit('patients', response.data);
-    commit('loadingStatus', false)
+    //commit('loadingStatus', false)
   }).catch((error) => {
     errorSwal(error.response.data.message)
     commit('loadingStatus', false)

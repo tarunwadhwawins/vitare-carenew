@@ -188,7 +188,7 @@ export default {
                 });
             }
             setTimeout(() => {
-                store.state.thresholds.vitalList = null;
+                store.getters.vitalDataGetters.vitalList=""
                 store.dispatch("generalParameterList");
                 emit("is-visible", false);
                 handleCancel();

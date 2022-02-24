@@ -3,10 +3,9 @@
  
     :columns="communicationColumns"
     :data-source="data"
-    :scroll="{ x: 900,y:450 }"
-    rowKey="id"
+    :scroll="{ x: 900,y:300 }"
     :pagination="false"
-    @change="onChange">
+    >
     
     <template #resend>
       <a-tooltip placement="bottom">
@@ -96,13 +95,13 @@
       </a-tooltip>
     </template>
   </a-table>
-  <Loader v-if="loader" />
+  <InfiniteLoader v-if="loader" />
 </template>
 
 <script>
   import { ref, reactive,  onMounted } from "vue"
 import { useStore } from "vuex";
-import Loader from "@/components/loader/Loader";
+import InfiniteLoader from "@/components/loader/InfiniteLoader";
 import {
   EyeOutlined,
   MessageOutlined,
@@ -119,7 +118,7 @@ export default {
     PhoneOutlined,
     MailOutlined,
     AlertOutlined,
-    Loader,
+    InfiniteLoader,
   },
   props: {
     communicationsList: {
@@ -195,13 +194,15 @@ export default {
          
             const meta = store.getters.communicationRecord
             const loader = ref(false)
-            
             onMounted(() => {
+              
                 var tableContent = document.querySelector('.ant-table-body')
+                console.log(tableContent)
                 tableContent.addEventListener('scroll', (event) => {
+                  
                     let maxScroll = event.target.scrollHeight - event.target.clientHeight
                     let currentScroll = event.target.scrollTop + 2
-                    console.log(currentScroll)
+                    //console.log(currentScroll)
                     if (currentScroll >= maxScroll) {
     
                       let current_page = meta.value.communicationMeta.current_page + 1
@@ -217,6 +218,8 @@ export default {
                         }
                     }
                 })
+           
+              
             })
     
             function loadMoredata() {

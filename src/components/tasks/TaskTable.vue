@@ -3,7 +3,7 @@
     <a-table
     :columns="fields"
     :data-source="data"
-    :scroll="{ x: 900 ,y:200 }"
+    :scroll="{ x: 900 ,y:450 }"
     :pagination="false"
     @change="onChange">
     <template #taskName="text">
@@ -41,7 +41,7 @@
       </a-tooltip>
     </template>
   </a-table>
-  <Loader v-if="loader" />
+  <InfiniteLoader v-if="loader" />
 </a-col>
     </template>
     
@@ -52,14 +52,14 @@
     import {  DeleteOutlined, EditOutlined, CalendarOutlined } from "@ant-design/icons-vue";
     import { messages } from '@/config/messages';
     import { warningSwal } from "@/commonMethods/commonMethod" 
-    import Loader from "@/components/loader/Loader"
+    import InfiniteLoader from "@/components/loader/InfiniteLoader"
     export default {
         name: "TaskTable",
         components: {
             DeleteOutlined,
             EditOutlined,
             CalendarOutlined,
-            Loader,
+            InfiniteLoader,
            
         },
         props: {
