@@ -90,14 +90,15 @@ export default defineComponent({
     const deleteDevice = (id) => {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
-        store.dispatch('deleteDevice', {
-          id: patientDetail.id,
-          deviceId: id,
-        }).then(() => {
-          store.dispatch('devices', patientDetail.id);
-          store.dispatch('latestDevice', route.params.udid)
-        });
-      }
+          store.dispatch('deleteDevice', {
+            id: patientDetail.id,
+            deviceId: id,
+          }).then(() => {
+            store.dispatch('devices', patientDetail.id);
+            store.dispatch('latestDevice', route.params.udid)
+            store.dispatch('patientTimeline', route.params.udid);
+          });
+        }
       })
     }
 

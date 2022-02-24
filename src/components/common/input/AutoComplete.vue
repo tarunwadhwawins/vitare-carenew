@@ -1,6 +1,6 @@
 <template>
   <a-auto-complete
-    :options="categories"
+    :options="options"
     :filter-option="filterOption"
     :onSelect="onSelectOption"
     ref="select"
@@ -12,7 +12,7 @@
 <script>
   export default {
     props: {
-      categories: {
+      options: {
         type: Array
       },
     },

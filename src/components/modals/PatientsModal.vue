@@ -710,6 +710,7 @@ import {successSwal,warningSwal } from "@/commonMethods/commonMethod";
 // import dayjs from 'dayjs';
 // import {DeleteOutlined} from "@ant-design/icons-vue";
 import { messages } from "../../config/messages";
+import { useRoute } from 'vue-router';
 export default {
   components: {
     // Demographics,
@@ -734,6 +735,7 @@ export default {
   },
   setup(props, { emit }) {
     const store = useStore();
+    const route = useRoute();
     // const current = computed(() => {
     //   return store.state.patients.counter;
     // });
@@ -947,6 +949,7 @@ export default {
                 }
             }
         }
+        store.dispatch('patientDetails', route.params.udid)
     };
 
     const condition = () => {
@@ -1109,6 +1112,7 @@ export default {
       Object.assign(demographics, form);
       store.dispatch("patients");
       store.commit("resetCounter");
+      emit("closeModal");
     }
 
     function closeModal() {
