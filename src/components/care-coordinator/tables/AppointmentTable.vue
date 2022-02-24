@@ -1,10 +1,10 @@
 <template>
   <a-table :columns="appointments.staffSummaryAppointmentCols" :data-source="appointments.staffSummaryAppointment" :pagination="false">
-    <template #patientName="text">
-      <router-link :to="linkTo">{{ text.text }}</router-link>
-    </template>
+    <!-- <template #patientName="text">
+      <router-link :to="linkTo">{{ text }}</router-link>
+    </template> -->
     <template #appt="text">
-      <router-link to="manage-care-coordinator">{{ text.text }}</router-link>
+      <span >{{ text.text }}</span>
     </template>
      <template #action="">
         <a-tooltip placement="bottom" >

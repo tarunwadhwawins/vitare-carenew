@@ -1,10 +1,14 @@
+import{meridiemFormatFromTimestamp,dateOnlyFormat} from "../../commonMethods/commonMethod"
 
 export const staffSummary= async (state, data) => {
     state.staffSummary = data;
 }
 
 export const staffSummaryAppointment= async (state, data) => {
-    state.staffSummaryAppointment = data;
+    state.staffSummaryAppointment = data.map(item=>{
+      item.date = dateOnlyFormat(item.date)+' '+meridiemFormatFromTimestamp(item.time)
+      return item
+    });
     state.staffSummaryAppointmentCols =[
         {
           title: "Patient Name",
@@ -18,19 +22,19 @@ export const staffSummaryAppointment= async (state, data) => {
           dataIndex: "date",
         },
         {
-          title: "	Appointment With",
-          dataIndex: "appt",
+          title: "	Appointment Type",
+          dataIndex: "appointmentType",
           slots: {
             customRender: "appt",
           },
         },
-        {
-            title: "Actions",
-            dataIndex: "actions",
-            slots: {
-                customRender: "action",
-            },
-          },
+        // {
+        //     title: "Actions",
+        //     dataIndex: "actions",
+        //     slots: {
+        //         customRender: "action",
+        //     },
+        //   },
       ];
 }
 
@@ -87,12 +91,12 @@ export const staffSummaryPatient= async (state, data) => {
             multiple: 1,
           },
         },
-        {
-            title: "Actions",
-            dataIndex: "actions",
-            slots: {
-                customRender: "action",
-            },
-          },
+        // {
+        //     title: "Actions",
+        //     dataIndex: "actions",
+        //     slots: {
+        //         customRender: "action",
+        //     },
+        //   },
       ];
 }
