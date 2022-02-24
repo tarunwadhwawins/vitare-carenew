@@ -587,7 +587,7 @@ export const patientInsurance = async ({ commit }, id) => {
 export const addDocument = async ({commit}, data) => {
   await serviceMethod.common("post", `patient/${data.id}/document`, null, data.data).then((response) => {
     commit('addDocument', response.data.data);
-    // successSwal(response.data.message)
+    successSwal(response.data.message)
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)

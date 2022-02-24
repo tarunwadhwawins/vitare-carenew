@@ -119,7 +119,7 @@
                 </div>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Documents'">
-                <Documents />
+                <Documents  entity="staff"/>
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
@@ -263,7 +263,6 @@ export default {
       let comments = document.forms.contact;
       var formData = new FormData(comments);
       var contactName = formData.get('firstName');
-      console.log('=>',contactName)
 
       if(personalInfoData.firstName!='' || personalInfoData.lastName!='' || contactName!=''){
       warningSwal(messages.modalWarning).then((response) => {
@@ -282,8 +281,10 @@ export default {
       });
       }
     }
-
+    
+    const paramId = addStaff.value?addStaff.value.id:''
     return {
+      paramId,
       closeModal,
       form,
       saveModal,

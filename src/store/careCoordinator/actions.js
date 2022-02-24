@@ -86,6 +86,7 @@ export const addContacts = async ({
 }, data) => {
   await serviceMethod.common("post", `staff/${data.id}/contact`, null, data.data).then((response) => {
     commit('addContacts', response.data.data);
+    successSwal(response.data.message)
   }).catch((error) => {
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
@@ -134,6 +135,7 @@ export const addAvailability = async ({
 }, data) => {
   await serviceMethod.common("post", `staff/${data.id}/availability`, null, data.data).then((response) => {
     commit('addAvailability', response.data.data);
+    successSwal(response.data.message)
   }).catch((error) => {
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
@@ -198,6 +200,8 @@ export const addStaffRole = async ({
   console.log('addRole',data.data)
   await serviceMethod.common("post", `staff/${data.id}/role`, null, data.data).then((response) => {
     commit('addStaffRole', response.data.data);
+    successSwal(response.data.message)
+
   }).catch((error) => {
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)

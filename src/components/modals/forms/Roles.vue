@@ -9,17 +9,18 @@
         </a-col>
     </a-row>
     <a-row :gutter="24" class="mb-24">
-        <a-col :span="24">
+        <a-col :span="24" v-if="paramId">
+        <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
+        </a-col>
+        <a-col :span="24" v-else>
             <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
         </a-col>
     </a-row>
 </a-form>
-<a-row :gutter="24">
+
+<a-row :gutter="24" v-show="!paramId">
     <a-col :span="24">
-        <a-table :pagination="false" :columns="staffs.roleListColms" :data-source="staffs.roleList" :scroll="{ x: 900 }">
-          <!-- <template #role="text">
-                    <span >{{ text}}</span>
-          </template> -->
+        <!-- <a-table :pagination="false" :columns="staffs.roleListColms" :data-source="staffs.roleList" :scroll="{ x: 900 }">
             <template #action="text">
                 <a-tooltip placement="bottom" @click="deleteRole(text.record.id)">
                     <template #title>
@@ -29,7 +30,8 @@
                         <DeleteOutlined /></a>
                 </a-tooltip>
             </template>
-        </a-table>
+        </a-table> -->
+        <RoleTable :Id="Id" />
         <Loader />
     </a-col>
 </a-row>
@@ -37,17 +39,22 @@
 
 <script>
 import { defineComponent, reactive, ref, computed, watchEffect } from "vue";
-import { DeleteOutlined } from "@ant-design/icons-vue";
+// import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
-import { warningSwal } from "@/commonMethods/commonMethod";
-import { messages } from "@/config/messages";
+// import { warningSwal } from "@/commonMethods/commonMethod";
+// import { messages } from "@/config/messages";
 import Loader from "@/components/loader/Loader";
+import RoleTable from "../../care-coordinator/tables/RoleTable";
 export default defineComponent({
   components: {
-    DeleteOutlined,
+    // DeleteOutlined,
     Loader,
+    RoleTable,
   },
-  setup() {
+  props:{
+    paramId:String
+  },
+  setup(props) {
     const store = useStore();
     const roles = reactive({
       roles: [],
@@ -55,27 +62,27 @@ export default defineComponent({
 
     function addRole() {
       store.dispatch("addStaffRole", {
-        id: staffs.value.addStaff.id,
+        id: props.paramId?props.paramId:staffs.value.addStaff.id,
         data: {roles:Object.values(roles)},
       });
       setTimeout(() => {
-        store.dispatch("roleList", staffs.value.addStaff.id);
+        store.dispatch("roleList", props.paramId?props.paramId:staffs.value.addStaff.id);
       }, 2000);
     }
 
-    function deleteRole(id) {
-      warningSwal(messages.deleteWarning).then((response) => {
-        if (response == true) {
-          store.dispatch("deleteStaffRole", {
-            id: staffs.value.addStaff.id,
-            roleID: id,
-          });
-          setTimeout(() => {
-            store.dispatch("roleList",staffs.value.addStaff.id);
-          }, 2000);
-        }
-      });
-    }
+    // function deleteRole(id) {
+    //   warningSwal(messages.deleteWarning).then((response) => {
+    //     if (response == true) {
+    //       store.dispatch("deleteStaffRole", {
+    //         id: staffs.value.addStaff.id,
+    //         roleID: id,
+    //       });
+    //       setTimeout(() => {
+    //         store.dispatch("roleList",staffs.value.addStaff.id);
+    //       }, 2000);
+    //     }
+    //   });
+    // }
     const staffs = computed(() => {
       return store.state.careCoordinator;
     });
@@ -83,9 +90,12 @@ export default defineComponent({
     watchEffect(() => {
       store.dispatch("roles");
     });
+
+    const Id = staffs.value.addStaff?staffs.value.addStaff.id:''
     return {
+      Id,
       staffs,
-      deleteRole,
+      // deleteRole,
       addRole,
       size: ref("large"),
       roles,

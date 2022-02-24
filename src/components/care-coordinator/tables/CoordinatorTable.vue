@@ -24,17 +24,14 @@
 <script>
 import { WarningOutlined } from "@ant-design/icons-vue"
 import {dateFormat} from "../../../commonMethods/commonMethod"
-// import {useStore} from "vuex"
 export default {
   name: "DataTable",
   components: {
     WarningOutlined,
   },
   setup() {
-    // const store = useStore()
     function staffSummery(uuid){
       console.log('value',uuid);
-      // store.dispatch('staffSummary',uuid)
     }
     return {
       staffSummery,

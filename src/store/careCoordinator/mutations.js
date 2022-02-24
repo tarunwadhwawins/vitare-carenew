@@ -1,4 +1,4 @@
-
+ import{timeFormatSimple} from "../../commonMethods/commonMethod"
  export const counterPlus = (state) => {
   state.counter++
 }
@@ -148,7 +148,11 @@ export const addAvailability = (state, data) => {
 }
 
 export const availabilityList = (state, data) => {
-  state.availabilityList = data,
+  state.availabilityList = data.map((item)=>{
+   item.startTime = timeFormatSimple(item.startTime)
+   item.endTime = timeFormatSimple(item.endTime)
+   return item
+  }),
   state.availabilityListColms =[{
     title: "Start Time",
     dataIndex: "startTime",
