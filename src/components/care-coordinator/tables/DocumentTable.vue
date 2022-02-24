@@ -13,7 +13,7 @@
             <template #title>
                 <span>{{$t('global.delete')}}</span>
             </template>
-            <a class="icons" @click="deleteDocument(text.record.id)">{{text.record.id}}
+            <a class="icons" @click="deleteDocument(text.record.id)">
                 <DeleteOutlined /></a>
         </a-tooltip>
     </template>
