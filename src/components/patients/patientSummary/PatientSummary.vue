@@ -25,7 +25,8 @@
             <a-col :xl="8" :lg="24">
               <div class="timer">
                 <h3>{{$t('patientSummary.currentSession')}} : {{formattedElapsedTime}}</h3>
-                <a-button class="primaryBtn" @click="showStopTimerModal">{{$t('patientSummary.stopTimer')}}</a-button>
+                <a-button v-if="startOn" class="primaryBtn" @click="start">{{$t('patientSummary.startTimer')}}</a-button>
+                <a-button v-if="!startOn" class="primaryBtn" @click="showStopTimerModal">{{$t('patientSummary.stopTimer')}}</a-button>
               </div>
             </a-col>
             <a-col :sm="24">
@@ -114,6 +115,8 @@ export default {
     const bloodoxygenvisible = ref(false);
     const bloodglucosevisible = ref(false);
     const stoptimervisible = ref(false);
+    
+    const startOn = ref(false);
 
     const onClose = (e) => {
       console.log(e, "I was closed.");
@@ -175,10 +178,11 @@ export default {
       }, 1000);
     })
 
-    const start = () => {  
+    const start = () => {
       timer.value = setInterval(() => {
         elapsedTime.value += 1000;
       }, 1000);
+      startOn.value = false;
     }
 
     const isTimeLog = ref(false);
@@ -190,12 +194,10 @@ export default {
 
     const handleOk = (e) => {
       elapsedTime.value = 0;
+      startOn.value = true;
       console.log(e);
       visible.value = false;
       stoptimervisible.value = false;
-      timer.value = setInterval(() => {
-        elapsedTime.value += 1000;
-      }, 1000);
     };
 
     return {
@@ -247,6 +249,7 @@ export default {
       showButton4,
       value10: ref([]),
       onClose2,
+      startOn,
     };
   },
 };
