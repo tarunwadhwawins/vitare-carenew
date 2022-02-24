@@ -103,8 +103,8 @@
     </div>
   </div>
   
-  <PatientsModal v-if="patientsModalVisible == true && patientDetails" v-model:visible="patientsModalVisible" :patientId="patientDetails.id" :isEditPatient="isEditPatient" @closeModal="handleOk" />
-  <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" @closeModal="handleOk" />
+  <PatientsModal v-if="patientsModalVisible == true && patientDetails" v-model:visible="patientsModalVisible" :patientId="patientDetails.id" :isEditPatient="isEditPatient" @closeModal="handleOk" @saveModal="handleOk($event)" />
+  <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" :patientId="patientDetails.id" :patientName="patientDetails.patientFullName" @closeModal="handleOk" />
   <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
   <AddVitalsModal v-if="addVitalsVisible == true" v-model:visible="addVitalsVisible" @closeModal="handleOk" :patientId="patientDetails.id" />
   <BloodPressureDetail v-if="bloodPressureVisible == true" v-model:visible="bloodPressureVisible" @closeModal="handleOk" />
@@ -235,10 +235,10 @@ export default {
       return store.state.patients.latestDevice
     })
     
-    const handleOk = () => {
+    const handleOk = (value) => {
       taskModalVisible.value = false;
       notesDetailVisible.value = false;
-      patientsModalVisible.value = false;
+      patientsModalVisible.value = value ? value : false;
       addAppointmentVisible.value = false;
       taskModalVisible.value = false;
       addVitalsVisible.value = false;
