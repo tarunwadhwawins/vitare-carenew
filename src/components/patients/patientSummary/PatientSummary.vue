@@ -24,7 +24,7 @@
             </a-col>
             <a-col :xl="8" :lg="24">
               <div class="timer">
-                <h3>{{$t('patientSummary.currentSession')}} : 0:00</h3>
+                <h3>{{$t('patientSummary.currentSession')}} : {{formattedElapsedTime}}</h3>
                 <a-button class="primaryBtn" @click="showStopTimerModal">{{$t('patientSummary.stopTimer')}}</a-button>
               </div>
             </a-col>
@@ -49,7 +49,8 @@
         </a-layout-content>
       </a-layout>
     </a-layout>
-    <TimeTracker v-model:visible="stoptimervisible" @ok="handleOk" />
+    <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isTimeLog="isTimeLog" :timerValue="formattedElapsedTime" @closeModal="handleOk" @cancel="start" />
+    <!-- <TimeTracker v-model:visible="stoptimervisible" @ok="handleOk" /> -->
     <BloodOxygenDetail v-model:visible="bloodoxygenvisible" @ok="handleOk" />
     <BloodGlucoseDetail v-model:visible="bloodglucosevisible" @ok="handleOk" />
     <AddPulse v-model:visible="visible4" @ok="handleOk" />
@@ -66,7 +67,7 @@ import FamilyCoordinators from "@/components/modals/FamilyCoordinators";
 import BloodOxygen from "@/components/modals/BloodOxygen";
 import BloodGlucose from "@/components/modals/BloodGlucose";
 import AddPulse from "@/components/modals/AddPulse";
-import TimeTracker from "@/components/modals/TimeTracker";
+// import TimeTracker from "@/components/modals/TimeTracker";
 import BloodGlucoseDetail from "@/components/modals/BloodGlucoseDetail";
 import BloodOxygenDetail from "@/components/modals/BloodOxygenDetail";
 import DefaultView from "@/components/patients/patientSummary/views/DefaultView";
@@ -74,9 +75,10 @@ import TimelineView from "@/components/patients/patientSummary/views/TimelineVie
 import CarePlanView from "@/components/patients/patientSummary/views/CarePlanView";
 import PatientVitalsView from "@/components/patients/patientSummary/views/PatientVitalsView";
 import Loader from "@/components/loader/Loader";
+import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 
 import dayjs from "dayjs";
-import { ref } from "vue";
+import { ref, computed, watchEffect } from "vue";
 const value = ref(dayjs("12:08", "HH:mm"));
 
 export default {
@@ -87,7 +89,7 @@ export default {
     BloodOxygen,
     BloodGlucose,
     AddPulse,
-    TimeTracker,
+    // TimeTracker,
     BloodGlucoseDetail,
     BloodOxygenDetail,
     DefaultView,
@@ -95,6 +97,7 @@ export default {
     CarePlanView,
     PatientVitalsView,
     Loader,
+    AddTimeLogModal,
   },
   setup() {
     const visible = ref(false);
@@ -111,14 +114,6 @@ export default {
     const bloodoxygenvisible = ref(false);
     const bloodglucosevisible = ref(false);
     const stoptimervisible = ref(false);
-
-    const showStopTimerModal = () => {
-      stoptimervisible.value = true;
-    };
-    const handleOk = (e) => {
-      console.log(e);
-      visible.value = false;
-    };
 
     const onClose = (e) => {
       console.log(e, "I was closed.");
@@ -163,7 +158,52 @@ export default {
       console.log(e, "I was closed.");
     };
 
+    // Countdown Timer
+    const elapsedTime = ref(0)
+    const timer = ref(undefined)
+    
+    const formattedElapsedTime = computed(() => {
+      const date = new Date(null);
+      date.setSeconds(elapsedTime.value / 1000);
+      const utc = date.toUTCString();
+      return utc.substr(utc.indexOf(":") - 2, 8);
+    })
+    
+    watchEffect(() => {
+      timer.value = setInterval(() => {
+        elapsedTime.value += 1000;
+      }, 1000);
+    })
+
+    const start = () => {  
+      timer.value = setInterval(() => {
+        elapsedTime.value += 1000;
+      }, 1000);
+    }
+
+    const isTimeLog = ref(false);
+    const showStopTimerModal = () => {
+      clearInterval(timer.value);
+      stoptimervisible.value = true;
+      isTimeLog.value = true;
+    };
+
+    const handleOk = (e) => {
+      elapsedTime.value = 0;
+      console.log(e);
+      visible.value = false;
+      stoptimervisible.value = false;
+      timer.value = setInterval(() => {
+        elapsedTime.value += 1000;
+      }, 1000);
+    };
+
     return {
+      showStopTimerModal,
+      formattedElapsedTime,
+      isTimeLog,
+      start,
+
       handleOkcustom,
       custom,
       next,
@@ -185,7 +225,6 @@ export default {
       bloodglucosevisible,
       stoptimervisible,
 
-      showStopTimerModal,
       handleOk,
       onChange: (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
