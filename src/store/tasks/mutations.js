@@ -339,6 +339,9 @@ export const updateTask = async (state, result) => {
 
 
 export const latestTaskSuccess = async (state, result) => {
-  state.latestTask = result;
+  if(result.length > 0) {
+    result.date = dateOnlyFormat(result.date);
+    state.latestTask = result;
+  }
 }
 
