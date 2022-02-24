@@ -45,5 +45,8 @@ export default {
     patientPrimaryPhysician:null,
     programList:null,
     patientMeta:null,
+    patientSearchWithBitrix:null,
+    patientSearchWithBitrixCols:null,
+    fetchFromBitrix:null
 
 }

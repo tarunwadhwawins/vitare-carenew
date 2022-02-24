@@ -89,6 +89,10 @@ export function dobFormat(date) {
   return moment(date).format('MMMM DD, YYYY');
 }
 
+export function dobFormat2(date) {
+  return moment(date).format('YYYY-MM-DD');
+}
+
 export function timeOnly(date) {
   var day = moment.unix(new Date(date));
   return String(day.format('HH'));

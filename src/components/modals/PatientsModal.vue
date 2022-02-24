@@ -2,6 +2,11 @@
 <a-modal max-width="1140px" width="100%" title="Add New Patients" centered :footer="null"  :maskClosable="false" @cancel="closeModal()">
 <!-- <a-modal max-width="1140px" width="100%" title="Add New Patients" centered :footer="null" :maskClosable="false"> -->
     <a-row :gutter="24">
+        <div class="common-btn mb-24">
+          <a-button type="primary" @click="showSearchPatient">
+            Export From Bitrix
+         </a-button>
+        </div>
         <a-col :span="24">
             <a-steps v-model:current="current">
                 <a-step v-for="item in steps" :key="item.title" :title="item.title" />
@@ -687,11 +692,13 @@
             </div>
         </a-col>
     </a-row>
+    <PatientSearch v-model:visible="patientSearch" @closeSearchPatient="closeSearchPatient($event)"/>
 </a-modal>
+
 </template>
 
 <script>
-import { ref, computed, reactive, watchEffect } from "vue";
+import { ref, computed, reactive, watchEffect, defineComponent, defineAsyncComponent } from "vue";
 // import Demographics from "@/components/modals/forms/Demographics";
 // import Conditions from "@/components/modals/forms/Conditions";
 import Programs from "@/components/modals/forms/Programs";
@@ -708,11 +715,12 @@ import { regex } from "@/RegularExpressions/regex";
 import Loader from "@/components/loader/Loader";
 import {successSwal,warningSwal } from "@/commonMethods/commonMethod";
 // import dayjs from 'dayjs';
-// import {DeleteOutlined} from "@ant-design/icons-vue";
+// import {PlusOutlined} from "@ant-design/icons-vue";
 import { messages } from "../../config/messages";
 import { useRoute } from 'vue-router';
-export default {
+export default defineComponent( {
   components: {
+    //   PlusOutlined,
     // Demographics,
     // Conditions,
     Programs,
@@ -724,6 +732,7 @@ export default {
     // DataTable,
     ErrorMessage,
     Loader,
+    PatientSearch: defineAsyncComponent(() => import("../modals/search/PatientModal")),
   },
   props: {
     isEditPatient: {
@@ -739,7 +748,14 @@ export default {
     // const current = computed(() => {
     //   return store.state.patients.counter;
     // });
+    const patientSearch =ref(false)
 
+    const showSearchPatient = ()=>{
+        patientSearch.value =true
+    }
+    const closeSearchPatient = (value)=>{
+       patientSearch.value =value 
+    }
     const globalCode = computed(() => {
       return store.state.common;
     });
@@ -826,6 +842,11 @@ export default {
     });
 
     watchEffect(() => {
+        if(patients.value.fetchFromBitrix){
+            
+            Object.assign(demographics, patients.value.fetchFromBitrix);
+            console.log('object',Object.assign(demographics, patients.value.fetchFromBitrix));
+        }
         if(idPatient) {
             Object.assign(demographics, patientDetail);
             if(isEdit && patients.value.patientConditions != null) {
@@ -1140,6 +1161,9 @@ export default {
     }
 
     return {
+    closeSearchPatient,
+     showSearchPatient,
+      patientSearch,
       stepperClick,
       emailChange,
       insuranceDataFailed,
@@ -1216,7 +1240,8 @@ export default {
       patientDetail,
     };
   },
-};
+});
+
 </script>
 
 <style lang="scss">
@@ -1266,4 +1291,4 @@ export default {
 }
 </style>
 
-z
+
