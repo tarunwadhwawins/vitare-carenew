@@ -24,7 +24,7 @@
             <a-switch v-model:checked="checked[key.record.key]" />
         </template>
     </a-table>
-    <Loader v-if="loader" />
+    <InfiniteLoader v-if="loader" />
 
 </a-col>
 </template>
@@ -34,14 +34,14 @@
   import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
   import { warningSwal } from "@/commonMethods/commonMethod";
   import { messages } from "@/config/messages";
-  import Loader from "@/components/loader/Loader";
+  import InfiniteLoader from "@/components/loader/InfiniteLoader";
   import { useStore } from "vuex";
 export default {
 
     components: {
         DeleteOutlined,
         EditOutlined,
-        Loader
+        InfiniteLoader
     },
     props: {
         thresholdsData: {

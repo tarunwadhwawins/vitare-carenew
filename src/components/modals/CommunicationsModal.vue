@@ -189,6 +189,7 @@
       const form = reactive({ ...messageForm })
       const sendMessage = () => {
         messageForm.entityType = document.getElementById("entityType").value
+        store.getters.communicationRecord.communicationsList=""
         store.dispatch('addCommunication', messageForm).then(() => {
           store.dispatch('communicationsList')
           store.dispatch('communicationTypes')

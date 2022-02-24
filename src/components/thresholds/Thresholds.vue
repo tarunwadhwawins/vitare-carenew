@@ -59,7 +59,7 @@
       const store = useStore();
       const threshodsId = ref()
       watchEffect(() => {
-        store.state.thresholds.vitalList=""
+        store.getters.vitalDataGetters.vitalList=""
         store.dispatch("generalParameterList");
       });
       const vitalList = store.getters.vitalDataGetters

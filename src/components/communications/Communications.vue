@@ -26,7 +26,8 @@
                   <ToolTip :boxTitle="$t('communications.communicationsModal.call')"  boxName="call" @open="openNotification($event)"></ToolTip>
                 </div>
                 
-                <div class="filter">
+      
+        <div class="filter" >
                   <button class="btn" :class="toggle ? 'active' : ''" @click="toggle = !toggle">
                     <span class="btn-content">{{ $t('communications.dashboardView') }}</span>
                   </button>
@@ -73,7 +74,7 @@ import StartCall from "@/components/communications/top/StartCall";
 import SendMessage from "@/components/communications/top/SendMessage";
 import ToolTip from "@/components/communications/toolTip/ToolTip";
 import { notification, Button } from "ant-design-vue";
-
+//import { useStore } from "vuex";
 const close = () => {
   // console.log(
   //   "Notification was closed. Either the close button was clicked or duration time elapsed."
@@ -96,7 +97,7 @@ export default {
     const handleChange = () => {
       // console.log(`selected ${value}`);
     };
-
+    //const store = useStore()
     const openNotification = (data) => {
       var key = `open${Date.now()}`;
       var message = "";
@@ -174,6 +175,7 @@ export default {
         key: key,
         onClose: close,
         placement,
+       // listLoad:store.getters.communicationRecord.communicationsList
       });
     };
 
@@ -184,6 +186,7 @@ export default {
         // console.log("params", );
       },
       handleChange,
+
     };
   },
 };

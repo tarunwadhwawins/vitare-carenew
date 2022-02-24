@@ -229,9 +229,11 @@ export default defineComponent({
       
       setTimeout(() => {
         if(tasks.value.addTask!=null || tasks.value.updateTask!=null){
+          store.getters.taskRecords.tasksList=""
           if(route.params.udid == null) {
             store.dispatch("tasksList")
           }
+
         store.dispatch('taskStatus')
         store.dispatch('taskPriority')
         store.dispatch('taskTeamMember')

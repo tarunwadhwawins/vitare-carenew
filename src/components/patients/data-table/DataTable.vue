@@ -1,5 +1,5 @@
 <template>
-<a-table :columns="fields" :data-source="data" :scroll="{ y: 420 ,x: 1020}" :pagination=false>
+<a-table :columns="fields" :data-source="data" :scroll="{ y: 300 ,x: 1020}" :pagination=false>
     <template #firstName="{text, record}">
         <router-link :to="{ name: 'PatientSummary', params: { udid:record.udid  }}">{{ text }}</router-link>
     </template>
@@ -19,19 +19,19 @@
         <WarningOutlined />
     </template>
 </a-table>
-<Loader />
+<InfiniteLoader v-if="loader" />
 </template>
 
 <script>
 import { WarningOutlined } from "@ant-design/icons-vue";
 import { ref, reactive,  onMounted } from "vue"
 import { useStore } from "vuex";
-import Loader from "@/components/loader/Loader";
+import InfiniteLoader from "@/components/loader/InfiniteLoader";
 export default {
     name: "DataTable",
     components: {
         WarningOutlined,
-        Loader
+        InfiniteLoader
     },
     props: {
         columns: {

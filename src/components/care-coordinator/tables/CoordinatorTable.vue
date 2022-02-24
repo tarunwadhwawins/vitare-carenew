@@ -21,16 +21,19 @@
         <WarningOutlined /> 
     </template>
 </a-table>
+<InfiniteLoader v-if="loader" />
 </template>
 <script>
 import { WarningOutlined } from "@ant-design/icons-vue"
 import {dateFormat} from "../../../commonMethods/commonMethod"
 import { ref, reactive,  onMounted } from "vue"
 import { useStore } from "vuex";
+import InfiniteLoader from "@/components/loader/InfiniteLoader";
 export default {
   name: "DataTable",
   components: {
     WarningOutlined,
+    InfiniteLoader
   },
   props: {
         
