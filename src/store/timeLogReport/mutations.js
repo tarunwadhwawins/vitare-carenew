@@ -47,8 +47,8 @@ export const timeLogReportList = async (state, data) => {
         },
       },
       {
-        title: "Notes ",
-        dataIndex: "notes",
+        title: "Notes ", 
+        dataIndex: "note",
       },
 
       {
@@ -64,8 +64,8 @@ export const timeLogReportList = async (state, data) => {
 
 export const editAuditTimeLog = async (state, data) => {
   state.editAuditTimeLog = data
-    // data.staff = data.staffId,
-    // data.patient = data.patientId
+    data.staff = data.staffId,
+    data.patient = data.patientId
     data.timeAmount = timeFormatSimple(data.timeAmount)
     return data
 

@@ -7,17 +7,17 @@
             <a-form-item :label="$t('appointmentCalendar.addAppointment.patient')" name="patientId"
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.patient')+' '+$t('global.validation')  }]">
               
-              <AutoComplete
+              <!-- <AutoComplete
                 :options="patients"
                 @on-select="onSelectOption"
-                v-model:value="appointmentForm.patientId" />
+                v-model:value="appointmentForm.patientId" /> -->
   
-              <!-- <a-select ref="select" v-if="patientsList" v-model:value="appointmentForm.patientId" style="width: 100%"
+              <a-select ref="select" v-if="patientsList" v-model:value="appointmentForm.patientId" style="width: 100%"
                 size="large">
                 <a-select-option value="" hidden>{{'Select Patient'}}</a-select-option>
                 <a-select-option v-for="patient in patientsList" :key="patient.id" :value="patient.id">{{
                   patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option> 
-              </a-select> -->
+              </a-select>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.patientId?errorMsg.patientId[0]:''" />
             </a-form-item>
           </div>
@@ -109,14 +109,14 @@
   import { timeStamp } from "../../commonMethods/commonMethod"
   import moment from 'moment';
   import ModalButtons from "@/components/common/button/ModalButtons";
-import AutoComplete from "@/components/common/input/AutoComplete";
+// import AutoComplete from "@/components/common/input/AutoComplete";
 import { useRoute } from 'vue-router'
 
   export default {
     components: {
       ErrorMessage,
       ModalButtons,
-      AutoComplete,
+      // AutoComplete,
     },
     props:{
       staff:{
@@ -160,7 +160,7 @@ import { useRoute } from 'vue-router'
       watchEffect(() => {
         if(idPatient != null) {
           Object.assign(appointmentForm, {
-            patientId: patientName
+            patientId: idPatient
           })
         }
         store.state.communications.patientsList ? "" : store.dispatch("patientsList")
@@ -214,7 +214,7 @@ import { useRoute } from 'vue-router'
           appointmentTypeId: appointmentForm.typeOfVisit,
           note: appointmentForm.note
         }).then(() => {
-          if(idPatient != null) {
+          if(idPatient != null && route.name == 'PatientSummary') {
             store.dispatch('latestAppointment', patientUdid)
             store.dispatch('patientTimeline', patientUdid);
           }

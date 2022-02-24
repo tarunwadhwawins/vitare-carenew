@@ -557,11 +557,15 @@ export const deleteDocument = (state, data) => {
   state.deleteDocument = data
 }
   export const latestDocumentSuccess = (state, data) => {
-    state.latestDocument = data
+    if(data.length > 0) {
+      state.latestDocument = data
+    }
  }
 
   export const latestDeviceSuccess = (state, data) => {
-    state.latestDevice = data
+    if(data.length > 0) {
+      state.latestDevice = data
+    }
  }
 
   export const errorMsg = (state, data) => {
@@ -612,6 +616,14 @@ export const patientSearchWithBitrix = (state, data) => {
     {
       title: "Title",
       dataIndex: "TITLE",
+    },
+    {
+      title: "Type",
+      dataIndex: "TYPE_ID",
+    },
+    {
+      title: "Stage",
+      dataIndex: "STAGE_ID",
     },
     {
       title: "Actions",

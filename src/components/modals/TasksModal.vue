@@ -218,6 +218,10 @@ export default defineComponent({
           startDate: timeStamp(taskForm.startDate),
           dueDate: timeStamp(taskForm.dueDate),
           entityType: isPatientTask ? 'patient' : taskForm.entityType
+        }).then(() => {
+          if(route.name == 'PatientSummary') {
+            store.dispatch('latestTask', route.params.udid)
+          }
         })
       }
 
@@ -238,7 +242,6 @@ export default defineComponent({
         emit('saveTaskModal', false)
         }
       }, 2000);
-      store.dispatch('latestTask', route.params.udid)
       emit('closeModal');
     }
 

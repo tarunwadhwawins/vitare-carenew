@@ -146,7 +146,7 @@ export default {
     const route = useRoute();
 
     watchEffect(() => {
-      if(route.params.udid) {
+      if(route.name == 'PatientSummary') {
         store.dispatch('patientTimeline', route.params.udid);
       }
     })
