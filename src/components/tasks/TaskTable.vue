@@ -113,6 +113,7 @@
         if (response == true) {
           store.dispatch("tasksDelete", id);
           setTimeout(() => {
+            store.getters.taskRecords.tasksList=""
             store.dispatch("tasksList");
           }, 2000);
         }

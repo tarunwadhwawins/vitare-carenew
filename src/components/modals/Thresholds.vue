@@ -187,8 +187,9 @@ export default {
                     parameter: parameter,
                 });
             }
+           
             setTimeout(() => {
-                store.getters.vitalDataGetters.vitalList=""
+                store.getters.vitalDataGetters.value.vitalList=''
                 store.dispatch("generalParameterList");
                 emit("is-visible", false);
                 handleCancel();

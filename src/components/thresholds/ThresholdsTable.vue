@@ -80,7 +80,7 @@ export default {
                 if (response == true) {
                     store.dispatch('generalParameterDelete', id.id)
                     setTimeout(() => {
-                        store.state.thresholds.vitalList = ''
+                        store.getters.vitalDataGetters.value.vitalList=''
                         store.dispatch("generalParameterList");
                     }, 2000);
                 }

@@ -62,7 +62,7 @@ export default {
       size: ref([]),
       handleChange,
       // tasksColumns,
-      tasksList:store.getters.taskRecords,
+      tasksList:store.getters.taskRecords.value,
       editTask,
       updateTask,
       createAppointment,

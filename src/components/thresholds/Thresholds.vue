@@ -62,7 +62,7 @@
         store.getters.vitalDataGetters.vitalList=""
         store.dispatch("generalParameterList");
       });
-      const vitalList = store.getters.vitalDataGetters
+      const vitalList = store.getters.vitalDataGetters.value
       function nullId (){
         threshodsId.value=''
       }
