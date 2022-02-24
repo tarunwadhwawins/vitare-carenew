@@ -116,12 +116,76 @@ export default {
     AlertOutlined,
   },
   props: {
-    communicationColumns: {
-      type: Array
-    },
     communicationsList: {
       type: Array
     },
+  },
+  setup() {
+    const communicationColumns = [
+      {
+        title: "From",
+        dataIndex: "from",
+        key: "from",
+        sorter: {
+          compare: (a, b) => a.from - b.from,
+          multiple: 2,
+        },
+      },
+      {
+        title: "To",
+        dataIndex: "to",
+        key: "to",
+        sorter: {
+          compare: (a, b) => a.to - b.to,
+          multiple: 2,
+        },
+      },
+      {
+        title: "Type",
+        dataIndex: "type",
+        key: "type",
+        slots: {
+          customRender: "type",
+        },
+      },
+      {
+        title: "Priority",
+        dataIndex: "priority",
+        key: "priority",
+        slots: {
+          customRender: "priority",
+        },
+      },
+      {
+        title: "Category",
+        dataIndex: "category",
+        key: "category",
+        sorter: {
+          compare: (a, b) => a.category - b.category,
+          multiple: 2,
+        },
+      },
+      {
+        title: "Date Sent",
+        dataIndex: "createdAt",
+        key: "createdAt",
+        sorter: {
+          compare: (a, b) => a.createdAt - b.createdAt,
+          multiple: 2,
+        },
+      },
+      {
+        title: "Action",
+        dataIndex: "action",
+        key: "action",
+        slots: {
+          customRender: "action",
+        },
+      },
+    ];
+    return {
+      communicationColumns
+    }
   }
 }
 </script>
