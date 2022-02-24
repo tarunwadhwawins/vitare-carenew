@@ -214,7 +214,7 @@ import { useRoute } from 'vue-router'
           appointmentTypeId: appointmentForm.typeOfVisit,
           note: appointmentForm.note
         }).then(() => {
-          if(idPatient != null) {
+          if(idPatient != null && route.name == 'PatientSummary') {
             store.dispatch('latestAppointment', patientUdid)
             store.dispatch('patientTimeline', patientUdid);
           }

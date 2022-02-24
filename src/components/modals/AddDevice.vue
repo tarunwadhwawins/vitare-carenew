@@ -105,8 +105,10 @@ export default defineComponent({
       }
       console.log('DATA', inventoryFormData)
       store.dispatch("addDevice", inventoryFormData).then(() => {
-        store.dispatch('latestDevice', route.params.udid)
-        store.dispatch('patientTimeline', route.params.udid);
+        if(route.name == 'PatientSummary') {
+          store.dispatch('latestDevice', route.params.udid)
+          store.dispatch('patientTimeline', route.params.udid);
+        }
         emit('closeModal');
       });
     };
