@@ -8,113 +8,42 @@
         <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
       </div>
     </a-col>
-    <a-col :sm="24">
-      <a-table
-        :columns="tasksList.tasksListColumns"
-        :data-source="tasksList.tasksList"
-        :scroll="{ x: 900 }"
-        :pagination="true"
-        @change="onChange">
-        <template #taskName="text">
-          <router-link to="#" @click="showModal">{{ text.text }}</router-link>
-        </template>
-        <template #assignedBy="text">
-          <router-link to="coordinator-summary">{{ text.text }}</router-link>
-        </template>
-       
-        <template #category="{ record }">
-          <span v-for="category,i in record.category" :key="category.id" to="coordinator-summary">
-           {{i==0?' ':','}} {{ category }}
-          </span>
-        </template>
-        <template #action="{ record }">
-          <a-tooltip placement="bottom">
-            <template #title>
-              <span>{{ $t('global.edit') }}</span>
-            </template>
-            <a class="icons"><EditOutlined @click="editTask(record.id)" /></a>
-          </a-tooltip>
-          <a-tooltip placement="bottom">
-            <template #title>
-              <span>{{$t('global.delete')}}</span>
-            </template>
-            <a class="icons"> <DeleteOutlined @click="deleteTask(record.id)" /></a>
-          </a-tooltip>
-          <a-tooltip placement="bottom">
-            <template #title>
-              <span>{{$t('tasks.createAppointment')}}</span>
-            </template>
-            <router-link to="appointment-calendar" class="icons">
-              <CalendarOutlined @click="createAppointment(record.id)"/>
-            </router-link>
-          </a-tooltip>
-        </template>
-      </a-table>
-      <!-- <Loader /> -->
-    </a-col>
+    
+   
+     <TaskTable v-if="tasksList.tasksListColumns" :taskRecords="tasksList" @is-Edit="editTask($event)"></TaskTable>
+      
+    
   </a-row>
 </template>
 
 <script>
-import { 
-  DeleteOutlined,
-  EditOutlined,
-  CalendarOutlined,
-} from "@ant-design/icons-vue";
-import { ref, watchEffect, computed } from "vue";
+
+import { ref, watchEffect } from "vue";
 import { useStore } from "vuex"
 // import swal from 'sweetalert2';
 import SearchField from "@/components/common/input/SearchField";
-import { messages } from '@/config/messages';
-import { warningSwal } from "@/commonMethods/commonMethod"
-// import Loader from "@/components/loader/Loader";
+
+
+ import TaskTable from "./TaskTable"
 
 export default {
   components: {
-    DeleteOutlined,
-    EditOutlined,
-    CalendarOutlined,
     SearchField,
+    TaskTable,
     // Loader
   },
   setup(props, {emit}) {
     const store = useStore()
     watchEffect(() => {
+      store.getters.taskRecords.tasksList=""
       store.dispatch("tasksList")
-    })
-      
-    const tasksList = computed(() => {
-      return store.state.tasks
     })
 
     const handleChange = (value) => {
       store.dispatch('searchTasks', value)
     };
 
-    // const deleteTask = () => {
-    //   swal({
-    //     title: "Are you sure?",
-    //     text: "Are you sure you want to delete this record?",
-    //     icon: "warning",
-    //     buttons: true,
-    //     dangerMode: true,
-    //   }).then((willDelete) => {
-    //     if (willDelete) {
-    //       store.dispatch("tasksList")
-    //     }
-    //   });
-    // };
-
-    function deleteTask(id) {
-      warningSwal(messages.deleteWarning).then((response) => {
-        if (response == true) {
-          store.dispatch("tasksDelete", id);
-          setTimeout(() => {
-            store.dispatch("tasksList");
-          }, 2000);
-        }
-      });
-    }
+   
 
     const editTask = (id) => {
       emit('isEdit', {check:true,id:id});
@@ -133,8 +62,7 @@ export default {
       size: ref([]),
       handleChange,
       // tasksColumns,
-      tasksList,
-      deleteTask,
+      tasksList:store.getters.taskRecords,
       editTask,
       updateTask,
       createAppointment,

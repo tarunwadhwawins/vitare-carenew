@@ -121,10 +121,11 @@ export const communicationsSuccess = async (state, communications) => {
   /* let data = [];
   data = state.communicationsList;
   state.communicationsList = data ? data.push(...communications) : communications; */
-  state.communicationsList = communications.map(communication => {
+  state.communicationsList = communications.data.map(communication => {
     communication.createdAt = dateFormat(communication.createdAt);
     return communication
   })
+  state.communicationMeta=communications.meta.pagination
 }
 export const addCommunicationSuccess = async (state, addCommunication) => {
   state.addCommunication = addCommunication;

@@ -9,13 +9,14 @@
       </div>
     </a-col>
     <a-col :span="24">
-      <ListViewTable :data="communicationsList" />
+
+      <ListViewTable v-if="communicationsList.communicationsList" :communicationsList="communicationsList.communicationsList" />
     </a-col>
   </a-row>
 </template>
 
 <script>
-import { watchEffect, computed } from 'vue';
+import { watchEffect } from 'vue';
 import { useStore } from "vuex"
 import SearchField from "@/components/common/input/SearchField";
 import ListViewTable from "@/components/communications/tables/ListViewTable";
@@ -29,18 +30,16 @@ export default {
     const linkTo = "patients-summary"
 
     watchEffect(() => {
-      store.dispatch('communicationsList', 1)
+      store.dispatch('communicationsList')
     })
-    const communicationsList = computed(() => {
-      return store.state.communications.communicationsList
-    })
-
+   
     const searchData = (value) => {
+      store.getters.communicationRecord.communicationsList=""
       store.dispatch('searchCommunications', value)
     };
 
     return {
-      communicationsList,
+      communicationsList:store.getters.communicationRecord,
       searchData,
       linkTo,
       onChange: () => {

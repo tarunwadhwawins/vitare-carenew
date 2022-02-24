@@ -1,5 +1,5 @@
 <template>
-<a-table :columns="fields" :data-source="data" :scroll="{ y: 420 }" :pagination=false>
+<a-table :columns="fields" :data-source="data" :scroll="{ y: 420 ,x: 1020}" :pagination=false>
     <template #firstName="{text, record}">
         <router-link :to="{ name: 'PatientSummary', params: { udid:record.udid  }}">{{ text }}</router-link>
     </template>

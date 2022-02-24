@@ -2,8 +2,8 @@ export default{
     counter:0,
     addStaff:null,
     updateStaff:null,
-    staffs:[],
-    columns:[],
+    staffs:null,
+    columns:null,
     errorMsg:null,
     specializationStaff:null,
     networkStaff:null,
@@ -20,5 +20,6 @@ export default{
     providerListColms:null,
     roles:null,
     providers:null,
-    staffPermissions:[]
+    staffPermissions:[],
+    staffMeta:null,
 }

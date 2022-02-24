@@ -33,7 +33,7 @@ export const networkStaff = (state, data) => {
 }
 
 export const staffs= async (state, data) => {
-    state.staffs = data;
+    
     state.columns = [
         {
           title: "Name",
@@ -105,6 +105,8 @@ export const staffs= async (state, data) => {
         //   },
         // },
       ];
+      state.staffs = data.data;
+      state.staffMeta= data.meta.pagination
 }
 
 
