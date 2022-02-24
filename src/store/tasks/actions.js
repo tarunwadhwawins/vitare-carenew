@@ -197,9 +197,9 @@ export const searchTasks = async ({ commit }, params) => {
 		})
 }
 
-export const letastTask = async ({ commit }, id) => {
+export const latestTask = async ({ commit }, id) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['patient']+'/'+id+'/task?latest=latest', null, null).then((response) => {
-		commit('letastTaskSuccess', response.data.data);
+		commit('latestTaskSuccess', response.data.data);
 	})
 		.catch((error) => {
 			if (error.response.status == 401) {

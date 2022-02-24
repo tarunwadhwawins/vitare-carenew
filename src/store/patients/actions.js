@@ -692,3 +692,30 @@ export const latestDevice = async ({ commit }, id) => {
 		commit('failure', error.response.data);
 	})
 }
+
+
+
+export const patientSearchWithBitrix = async ({ commit }, data) => {
+	await serviceMethod.common("get", `bitrix/deal?title=${data.search}`, null, null).then((response) => {
+		commit('patientSearchWithBitrix', response.data.result);
+	})
+	.catch((error) => {
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}
+
+
+export const fetchFromBitrix = async ({ commit }, id) => {
+	await serviceMethod.common("get", `bitrix/deal/${id}`, null, null).then((response) => {
+		commit('fetchFromBitrix', response.data.result);
+	})
+	.catch((error) => {
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}

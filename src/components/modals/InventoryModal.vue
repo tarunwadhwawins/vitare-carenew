@@ -15,7 +15,7 @@
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item :label="$t('inventory.modelNumber')" name="deviceModelId" :rules="[{ required: true, message: $t('inventory.deviceModelId')+' '+$t('global.validation')  }]">
+            <a-form-item :label="$t('inventory.modelNumber')" name="deviceModelId" :rules="[{ required: true, message: $t('inventory.modelNumber')+' '+$t('global.validation')  }]">
               <AutoComplete
                 :options="deviceModals"
                 @on-select="onSelectModal"

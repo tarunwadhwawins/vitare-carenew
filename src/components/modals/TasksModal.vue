@@ -236,7 +236,7 @@ export default defineComponent({
         emit('saveTaskModal', false)
         }
       }, 2000);
-      store.dispatch('letastTask', route.params.udid)
+      store.dispatch('latestTask', route.params.udid)
       emit('closeModal');
     }
 
