@@ -2,38 +2,47 @@ import ServiceMethodService from '@/services/serviceMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
 
 export const addTimeLog = async ({ commit }, {id, data}) => {
+  commit('loadingStatus', true)
 	await ServiceMethodService.common("post", API_ENDPOINTS['patient']+"/"+id+"/timeLog", null, data).then((response) => {
 		commit('addTimeLogSuccess', response.data.data);
+		commit('loadingStatus', false)
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
+		commit('loadingStatus', false)
 	})
 }
 
 export const timeLogsList = async ({ commit }, id) => {
+  commit('loadingStatus', true)
 	await ServiceMethodService.common("get", API_ENDPOINTS['patient']+"/"+id+"/timeLog", null, null).then((response) => {
 		commit('timeLogsListSuccess', response.data.data);
+		commit('loadingStatus', false)
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
+		commit('loadingStatus', false)
 	})
 }
 
 export const deleteTimeLog = async ({ commit }, {id, timeLogId}) => {
+  commit('loadingStatus', true)
 	await ServiceMethodService.common("delete", API_ENDPOINTS['patient']+"/"+id+"/timeLog", timeLogId, null).then((response) => {
 		commit('deleteTimeLogSuccess', response.data.data);
+		commit('loadingStatus', false)
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
+		commit('loadingStatus', false)
 	})
 }
 
