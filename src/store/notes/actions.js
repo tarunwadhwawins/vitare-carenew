@@ -27,7 +27,7 @@ export const notesList = async ({ commit }, id) => {
 }
 
 export const latestNotes = async ({ commit }, id) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['patient']+'/'+id+'/notes'+'?latest=latest&id='+id, null, null).then((response) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['patient']+'/'+id+'/notes'+'?latest=latest', null, null).then((response) => {
 		commit('latestNotesSuccess', response.data.data);
 	})
 	.catch((error) => {
