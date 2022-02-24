@@ -2,7 +2,7 @@
   <div>
     <!---->
 
-    <a-layout-content>
+    <a-layout-content v-if="appointmentSearch">
 
       <Title :title="$t('appointmentCalendar.appointmentCalendar')" @calenderToggle="calenderView($event)"
         :isActive="toggle" :button="{
@@ -18,7 +18,7 @@
 
           <Calendar v-if="appointmentSearch" @is-click="selectDate($event)" />
           <Physicians v-if="staffList && appointmentSearch" :staff="staffList" />
-          <Loader v-else/>
+          
           
         </a-col>
         <a-col :xl="toggle == false ? 24 : 18" :sm="toggle == false ? 24 : 14" :xs="24">
@@ -36,12 +36,15 @@
               <WeekAppointment @is-dateClick="selectDate($event)" tabName="week"></WeekAppointment>
             </a-tab-pane>
             <a-tab-pane key="4" tab="Month">
-              <MonthAppointment v-if="appointmentSearch" @is-dateClick="selectDate($event)"></MonthAppointment>
+              
+              <MonthAppointment v-if="appointmentSearch" :appointment="appointmentSearch" @is-dateClick="selectDate($event)"  @is-month="monthDate($event)" :seclectDate="month"></MonthAppointment>
+           
             </a-tab-pane>
           </a-tabs>
         </a-col>
       </a-row>
     </a-layout-content>
+    <Loader v-else/>
     <!--modal-->
     <AddAppointment v-if="staffList && patientsList" :maskClosable = "maskebale" v-model:visible="appointmentModal" @ok="handleOk"
       @is-visible="showModal($event)" :staff="staffList" :patient="patientsList" />
@@ -81,7 +84,7 @@
       const maskebale=ref(false)
       const activeKey = ref('1');
       const store = useStore()
-
+     const month=ref(moment())
       const fromDate = ref(moment())
       const toDate = ref(moment())
       let datePick = moment()
@@ -120,6 +123,16 @@
           toDate.value = moment().add(1, 'days')
         }
         searchApi()
+      }
+      function monthDate(event){
+        activeKey.value = ref('4')
+        month.value = moment(event)
+        store.state.appointment.searchAppointmentRecords=''
+        datePick = moment(event)
+          fromDate.value = moment(event).startOf('month')
+          toDate.value = moment(event).endOf('month')
+          store.dispatch("searchAppointment", { fromDate: fromDate.value, toDate: toDate.value, tabId: 4 })
+          
       }
       watchEffect(() => {
         store.dispatch("patientsList")
@@ -160,6 +173,7 @@
       // };
 
       return {
+        month,
         appointmentSearch,
         maskebale,
         activeKey,
@@ -177,6 +191,7 @@
         showModal,
         searchApi,
         datePick,
+        monthDate,
       };
     },
   };

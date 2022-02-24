@@ -16,7 +16,24 @@
       
     </div>
     <!-- built files will be auto injected -->
- 
+ <script>
+    function popupShow(event) {
+    var card = document.getElementById(event);
+    var divsToHide = document.getElementsByClassName("ant-dropdown")
+    for(var i = 0; i < divsToHide.length; i++){
+        //divsToHide[i].style.visibility = "hidden"; // or
+        if (divsToHide[i].style.display === "block") {
+          divsToHide[i].style.display = "none";
+    }
+    }
+    
+    if (card.style.display === "none") {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+  }
+ </script>
     <!-- <script
       src="./demo/dist/demo-2.js?v3"
       onerror="alert('To run this demo you must first build the library and demo source! See the README.')"
