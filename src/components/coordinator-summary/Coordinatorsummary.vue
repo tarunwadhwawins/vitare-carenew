@@ -28,10 +28,6 @@
                                     <div class="thumb-head">Gender</div>
                                     <div class="thumb-desc">{{getstaffSummary?getstaffSummary.gender:''}}</div>
                                 </div>
-                                <!-- <div class="pat-profile-inner">
-                                    <div class="thumb-head">EHR ID</div>
-                                    <div class="thumb-desc">{{}}</div>
-                                </div> -->
                                 <div class="pat-profile-inner">
                                     <div class="thumb-head">Specialization</div>
                                     <div class="thumb-desc">{{getstaffSummary?getstaffSummary.specialization:''}}</div>
@@ -43,44 +39,14 @@
                         <div class="summary-tabs">
                             <a-tabs v-model:activeKey="activeKey1">
                                 <a-tab-pane key="1" tab="Appointments">
-                                    <a-table :columns="columns" :data-source="data" :pagination="false">
-                                        <template #patientName="text">
-                                            <router-link :to="linkTo">{{
-                          text.text
-                        }}</router-link>
-                                        </template>
-                                        <template #appt="text">
-                                            <router-link to="manage-care-coordinator">{{
-                          text.text
-                        }}</router-link>
-                                        </template>
-                                    </a-table>
+                                    <!-- AppointmentTable Table -->
+                                    <AppointmentTable />
+                                    <Loader />
                                 </a-tab-pane>
                                 <a-tab-pane key="2" tab="Patients">
-                                    <a-table :columns="columns1" :data-source="data1" @change="onChange">
-                                        <template #firstName="text">
-                                            <router-link :to="linkTo">{{
-                          text.text
-                        }}</router-link>
-                                        </template>
-                                        <template #lastName="text">
-                                            <router-link :to="linkTo">{{
-                          text.text
-                        }}</router-link>
-                                        </template>
-                                        <template #flags="{ text }">
-                                            <span class="box" :class="text"></span>
-                                            <span class="box" :class="(text = text.match(/yellowBgColor/g))" v-if="text.match(/yellowBgColor/g)"></span>
-                                        </template>
-                                        <template #compliance>
-                                            <a class="icons">
-                                                <WarningOutlined /></a>
-                                        </template>
-
-                                        <template #lastReadingValues>
-                                            <WarningOutlined />
-                                        </template>
-                                    </a-table>
+                                    <!-- PatientTable Table -->
+                                    <PatientTable />
+                                    <Loader />
                                 </a-tab-pane>
                                 <a-tab-pane key="3" tab="Availability">
                                     <a-row :gutter="24">
@@ -92,24 +58,9 @@
                                             </div>
                                         </a-col>
                                         <a-col :span="24">
-                                            <a-table :pagination="false" :columns="columns4" :data-source="data4" :scroll="{ x: 600 }">
-                                                <template #action>
-                                                    <a-tooltip placement="bottom">
-                                                        <template #title>
-                                                            <span>Edit</span>
-                                                        </template>
-                                                        <a class="icons">
-                                                            <EditOutlined /></a>
-                                                    </a-tooltip>
-                                                    <a-tooltip placement="bottom">
-                                                        <template #title>
-                                                            <span>Delete</span>
-                                                        </template>
-                                                        <a class="icons">
-                                                            <DeleteOutlined /></a>
-                                                    </a-tooltip>
-                                                </template>
-                                            </a-table>
+                                            <!--Availability Table -->
+                                            <AvailabilityTable />
+                                            <Loader />
                                         </a-col>
                                     </a-row>
                                 </a-tab-pane>
@@ -123,24 +74,9 @@
                                             </div>
                                         </a-col>
                                         <a-col :span="24">
-                                            <a-table :pagination="false" :columns="columns3" :data-source="data3" :scroll="{ x: 600 }">
-                                                <template #action>
-                                                    <a-tooltip placement="bottom">
-                                                        <template #title>
-                                                            <span>Edit</span>
-                                                        </template>
-                                                        <a class="icons">
-                                                            <EditOutlined /></a>
-                                                    </a-tooltip>
-                                                    <a-tooltip placement="bottom">
-                                                        <template #title>
-                                                            <span>Delete</span>
-                                                        </template>
-                                                        <a class="icons">
-                                                            <DeleteOutlined /></a>
-                                                    </a-tooltip>
-                                                </template>
-                                            </a-table>
+                                            <!-- Contacts Table -->
+                                            <ContactTable />
+                                            <Loader />
                                         </a-col>
                                     </a-row>
                                 </a-tab-pane>
@@ -154,24 +90,9 @@
                                             </div>
                                         </a-col>
                                         <a-col :span="24">
-                                            <a-table :pagination="false" :columns="columns5" :data-source="data5" :scroll="{ x: 600 }">
-                                                <template #action>
-                                                    <a-tooltip placement="bottom">
-                                                        <template #title>
-                                                            <span>Edit</span>
-                                                        </template>
-                                                        <a class="icons">
-                                                            <EditOutlined /></a>
-                                                    </a-tooltip>
-                                                    <a-tooltip placement="bottom">
-                                                        <template #title>
-                                                            <span>Delete</span>
-                                                        </template>
-                                                        <a class="icons">
-                                                            <DeleteOutlined /></a>
-                                                    </a-tooltip>
-                                                </template>
-                                            </a-table>
+                                            <!-- Roles Table -->
+                                            <RoleTable />
+                                            <Loader />
                                         </a-col>
                                     </a-row>
                                 </a-tab-pane>
@@ -185,24 +106,9 @@
                                     </a-col>
                                     <a-row :gutter="24">
                                         <a-col :sm="24" :xs="24">
-                                            <a-table :columns="columns2" :data-source="data2" :scroll="{ x: 600 }" :pagination="false" @change="onChange">
-                                                <template #action>
-                                                    <a-tooltip placement="bottom">
-                                                        <template #title>
-                                                            <span>Edit</span>
-                                                        </template>
-                                                        <a class="icons">
-                                                            <EditOutlined /></a>
-                                                    </a-tooltip>
-                                                    <a-tooltip placement="bottom">
-                                                        <template #title>
-                                                            <span>Delete</span>
-                                                        </template>
-                                                        <a class="icons">
-                                                            <DeleteOutlined /></a>
-                                                    </a-tooltip>
-                                                </template>
-                                            </a-table>
+                                            <!-- Documents Table -->
+                                            <DocumentTable />
+                                            <Loader />
                                         </a-col>
                                     </a-row>
                                 </a-tab-pane>
@@ -214,98 +120,20 @@
         </a-layout>
     </a-layout>
     <!--modals-->
-    <a-modal v-model:visible="visible" title="Add Documents" centered @ok="handleOk">
-        <a-row :gutter="24">
-            <a-col :sm="12" :xs="24">
-                <div class="form-group">
-                    <label>Name</label>
-                    <a-input v-model="value" size="large" />
-                </div>
-            </a-col>
-            <a-col :sm="12" :xs="24">
-                <div class="form-group">
-                    <label>Document</label>
-                    <a-input v-model="value" size="large" />
-                </div>
-            </a-col>
-            <a-col :sm="12" :xs="24">
-                <div class="form-group">
-                    <label>Type</label>
-                    <a-select ref="select" v-model="value1" style="width: 100%" size="large" @focus="focus" @change="handleChange">
-                        <a-select-option value="lucy">Id Proof</a-select-option>
-                        <a-select-option value="Yiminghe">Clinical</a-select-option>
-                        <a-select-option value="Yiminghe">Insurance</a-select-option>
-                    </a-select>
-                </div>
-            </a-col>
-            <a-col :sm="12" :xs="24">
-                <div class="form-group">
-                    <label>Tags</label>
-                    <a-select v-model:value="selectedItemsForTag" mode="multiple" size="large" placeholder="Please Select Roles" style="width: 100%" :options="filteredOptionsForTag.map((item) => ({ value: item }))" />
-                </div>
-            </a-col>
-        </a-row>
+    <a-modal width="50%" v-model:visible="visible" title="Add Documents" :maskClosable="false" centered @ok="handleOk">
+        <DocumentForm entity="staff" :paramId="paramId" />
     </a-modal>
     <!---->
-    <a-modal v-model:visible="visible1" title="Add Roles" centered @ok="handleOk">
-        <a-row :gutter="24">
-            <a-col :sm="24" :xs="24">
-                <div class="form-group">
-                    <label>Role</label>
-                    <a-select ref="select" v-model="value1" style="width: 100%" size="large" @focus="focus" @change="handleChange">
-                        <a-select-option value="lucy">Billing Admin</a-select-option>
-                        <a-select-option value="Yiminghe">Manager</a-select-option>
-                        <a-select-option value="Yiminghe">User Admin</a-select-option>
-                    </a-select>
-                </div>
-            </a-col>
-        </a-row>
+    <a-modal width="50%" v-model:visible="visible1" title="Add Roles" :maskClosable="false" centered @ok="handleOk">
+        <RoleForm :paramId="paramId" />
     </a-modal>
     <!------>
-    <a-modal v-model:visible="visible2" title="Add Availability" centered @ok="handleOk">
-        <a-row :gutter="24">
-            <a-col :sm="12" :xs="24">
-                <div class="form-group">
-                    <label>Start Time</label>
-                    <a-input v-model="value" size="large" />
-                </div>
-            </a-col>
-            <a-col :sm="12" :xs="24">
-                <div class="form-group">
-                    <label>End Time</label>
-                    <a-input v-model="value" size="large" />
-                </div>
-            </a-col>
-        </a-row>
+    <a-modal width="50%" v-model:visible="visible2" title="Add Availability" :maskClosable="false" centered @ok="handleOk">
+        <AvailabilityForm :paramId="paramId" />
     </a-modal>
     <!---->
-    <a-modal v-model:visible="visible3" title="Add Contacts" centered @ok="handleOk">
-        <a-row :gutter="24">
-            <a-col :sm="12" :xs="24">
-                <div class="form-group">
-                    <label>First Name</label>
-                    <a-input v-model="value" size="large" />
-                </div>
-            </a-col>
-            <a-col :sm="12" :xs="24">
-                <div class="form-group">
-                    <label>Last Name</label>
-                    <a-input v-model="value" size="large" />
-                </div>
-            </a-col>
-            <a-col :sm="12" :xs="24">
-                <div class="form-group">
-                    <label> Email</label>
-                    <a-input v-model="value" size="large" />
-                </div>
-            </a-col>
-            <a-col :sm="12" :xs="24">
-                <div class="form-group">
-                    <label> Phone No</label>
-                    <a-input v-model="value" size="large" />
-                </div>
-            </a-col>
-        </a-row>
+    <a-modal width="60%" v-model:visible="visible3" title="Add Contacts" :maskClosable="false" centered @ok="handleOk">
+        <ContactForm :paramId="paramId" />
     </a-modal>
     <!---->
 </div>
@@ -314,304 +142,68 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { ref, computed,onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import {
-  DeleteOutlined,
-  EditOutlined,
+  // DeleteOutlined,
+  // EditOutlined,
   PlusOutlined,
 } from "@ant-design/icons-vue";
-import {useStore} from "vuex"
+import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-const OPTIONSTAG = ["Tag1", "Tag2", "Tag3"];
-const columns = [
-  {
-    title: "Patient Name",
-    dataIndex: "patient",
-    slots: {
-      customRender: "patientName",
-    },
-  },
-  {
-    title: "Date Time ",
-    dataIndex: "date",
-  },
-  {
-    title: "	Appointment With",
-    dataIndex: "appt",
-    slots: {
-      customRender: "appt",
-    },
-  },
-];
-const data = [
-  {
-    key: "1",
-    patient: "Steve Smith",
-    date: "Dec 20, 2021 - 01:30 PM",
-    appt: "Joseph",
-  },
-  {
-    key: "2",
-    patient: "Jane Doe",
-    date: "Dec 23, 2021 - 11:30 AM",
-    appt: "Robert",
-  },
-];
-const columns1 = [
-  {
-    title: "Flags",
-    dataIndex: "flags",
-    slots: {
-      customRender: "flags",
-    },
-  },
-  {
-    title: "Name",
-    dataIndex: "name",
-    slots: {
-      customRender: "name",
-    },
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    sorter: {
-      compare: (a, b) => a.age - b.age,
-      multiple: 3,
-    },
-  },
-  {
-    title: "Sex",
-    dataIndex: "sex",
-    sorter: {
-      compare: (a, b) => a.sex - b.sex,
-      multiple: 2,
-    },
-  },
-  {
-    title: "Last Reading Date",
-    dataIndex: "reading",
-    sorter: {
-      compare: (a, b) => a.reading - b.reading,
-      multiple: 1,
-    },
-  },
-];
-const data1 = [
-  {
-    key: "1",
-    flags: "redBgColor",
-    name: "Jane",
-    age: "85",
-    sex: "male",
-    reading: "5 months ago",
-  },
-  {
-    key: "2",
-    flags: "purpleBgColor",
-    name: "Steve",
-    age: "78",
-    sex: "Female",
-    reading: "15 days ago",
-  },
-  {
-    key: "3",
-    flags: "blueBgColor yellowBgColor ",
-    name: "Joseph",
-    age: "72",
-    sex: "male",
-    reading: "2 months ago",
-  },
-  {
-    key: "4",
-    flags: "greenBgColor",
-    name: "Robert",
-    age: "79",
-    sex: "Female",
-    reading: "4 months ago",
-  },
-];
-const columns2 = [
-  {
-    title: "Name",
-    dataIndex: "name",
-  },
-  {
-    title: "Document",
-    dataIndex: "document",
-  },
-  {
-    title: "Type",
-    dataIndex: "type",
-    sorter: {
-      compare: (a, b) => a.message - b.message,
-      multiple: 3,
-    },
-  },
-  {
-    title: "Tags",
-    dataIndex: "tags",
-    sorter: {
-      compare: (a, b) => a.patient - b.patient,
-      multiple: 2,
-    },
-  },
-  {
-    title: "Action",
-    dataIndex: "action",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
-const data2 = [
-  {
-    key: "1",
-    name: "Program 1",
-    document: "abc.pdf",
-    type: "Voter ID",
-    tags: "Voter ID",
-    action: "",
-  },
-  {
-    key: "2",
-    name: "Program 1",
-    document: "abc.pdf",
-    type: "Voter ID",
-    tags: "Voter ID",
-    action: "",
-  },
-];
-const columns3 = [
-  {
-    title: "First Name",
-    dataIndex: "first",
-  },
-  {
-    title: "Last Name",
-    dataIndex: "last",
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-  },
-  {
-    title: "Phone No",
-    dataIndex: "phone",
-  },
-  {
-    title: "Actions",
-    dataIndex: "actions",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
-const data3 = [
-  {
-    key: "1",
-    first: "Jane",
-    last: "Doe",
-    email: "john@aa.com",
-    phone: "999-2222-111",
-    actions: "In",
-  },
-  {
-    key: "2",
-    first: "Steve",
-    last: "	Smith",
-    email: "steve@smith.com",
-    phone: "999-2222-111",
-    actions: "In",
-  },
-];
-const columns4 = [
-  {
-    title: "Start Time",
-    dataIndex: "start",
-  },
-  {
-    title: "End Time",
-    dataIndex: "end",
-  },
-  {
-    title: "Actions",
-    dataIndex: "actions",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
-const data4 = [
-  {
-    key: "1",
-    start: "08:00 AM",
-    end: "	02:30 PM",
-    actions: "",
-  },
-  {
-    key: "2",
-    start: "09:00 AM",
-    end: "03:30 PM",
-    actions: "",
-  },
-];
-const columns5 = [
-  {
-    title: "Role",
-    dataIndex: "role",
-  },
-
-  {
-    title: "Actions",
-    dataIndex: "actions",
-    slots: {
-      customRender: "action",
-    },
-  },
-];
-const data5 = [
-  {
-    key: "1",
-    role: "Manager",
-    actions: "",
-  },
-  {
-    key: "2",
-    role: "Billing Admin",
-    actions: "",
-  },
-];
-
+// import { warningSwal } from "@/commonMethods/commonMethod";
+// import { messages } from "@/config/messages";
+import AppointmentTable from ".././care-coordinator/tables/AppointmentTable";
+import PatientTable from ".././care-coordinator/tables/PatientTable";
+import AvailabilityTable from ".././care-coordinator/tables/AvailabilityTable";
+import AvailabilityForm from ".././modals/forms/Availability";
+import ContactTable from ".././care-coordinator/tables/ContactTable";
+import ContactForm from ".././modals/forms/Contacts";
+import RoleTable from ".././care-coordinator/tables/RoleTable";
+import RoleForm from ".././modals/forms/Roles";
+import DocumentTable from ".././care-coordinator/tables/DocumentTable";
+import DocumentForm from ".././modals/forms/Documents";
+import Loader from "../loader/Loader"
 export default {
   components: {
     Header,
     Sidebar,
-    DeleteOutlined,
-    EditOutlined,
+    // DeleteOutlined,
+    // EditOutlined,
     PlusOutlined,
+    AppointmentTable,
+    PatientTable,
+    AvailabilityForm,
+    AvailabilityTable,
+    ContactTable,
+    ContactForm,
+    DocumentTable,
+    DocumentForm,
+    RoleTable,
+    RoleForm,
+    Loader,
   },
   setup() {
-    const store = useStore()
-    const router = useRoute()
-    console.log('id=>',router.params.udid);
-    
+    const store = useStore();
+    const router = useRoute();
+    console.log("id=>", router.params.udid);
 
+    onMounted(() => {
+      store.dispatch("staffSummary", router.params.udid);
+      store.dispatch("availabilityList", router.params.udid);
+      store.dispatch("staffContactList", router.params.udid);
+      store.dispatch("roleList", router.params.udid);
+      store.dispatch("documents", router.params.udid);
+      store.dispatch("staffSummaryAppointment", router.params.udid);
+      store.dispatch("staffSummaryPatient", router.params.udid);
+    });
 
-    onMounted(()=>{
-      store.dispatch('staffSummary',router.params.udid)
-      // store.dispatch('staffSummaryAppointment',router.params.udid)
-    })
+    const staffs = computed(() => {
+      return store.state.careCoordinator;
+    });
 
-
-    function logout() {
-      localStorage.removeItem("auth");
-      localStorage.clear();
-    }
-
-    const getstaffSummary = computed(()=>{
-       return store.state.careCoordinatorSummary.staffSummary
-    }) 
+    const getstaffSummary = computed(() => {
+      return store.state.careCoordinatorSummary.staffSummary;
+    });
 
     const visible = ref(false);
     const visible1 = ref(false);
@@ -636,34 +228,12 @@ export default {
       visible.value = false;
     };
 
-    const selectedItemsForTag = ref(["Tag1"]);
-    const filteredOptionsForTag = computed(() =>
-      OPTIONSTAG.filter((o) => !selectedItemsForTag.value.includes(o))
-    );
-    const linkTo = "patients-summary";
-
-    
     return {
+      paramId: router.params.udid,
+      staffs,
       getstaffSummary,
-      linkTo,
-      logout,
-      data,
-      columns,
-      data1,
-      columns1,
-      data2,
-      columns2,
-      data3,
-      columns3,
-      data4,
-      columns4,
-      data5,
-      columns5,
       activeKey: ref("1"),
       activeKey1: ref("1"),
-      filteredOptionsForTag,
-      selectedItemsForTag,
-
       visible,
       visible1,
       visible2,

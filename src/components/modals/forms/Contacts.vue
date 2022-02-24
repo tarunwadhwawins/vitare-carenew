@@ -35,13 +35,17 @@
         </a-col>
     </a-row>
     <a-row :gutter="24" class="mb-24">
-        <a-col :span="24">
+        <a-col :span="24" v-if="paramId">
+        <a-button  html-type="reset" style="margin-right: 8px" @click="reset()">{{$t('global.clear')}}</a-button>
+        <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
+        </a-col>
+        <a-col :span="24" v-else>
             <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
         </a-col>
     </a-row>
-    <a-row :gutter="24">
+    <a-row :gutter="24" v-show="!paramId">
         <a-col :span="24">
-            <a-table :pagination="false" :columns="staffs.staffContactColms" :data-source="staffs.staffContactList" :scroll="{ x: 900 }">
+            <!-- <a-table :pagination="false" :columns="staffs.staffContactColms" :data-source="staffs.staffContactList" :scroll="{ x: 900 }">
                 <template #action="text">
                     <a-tooltip placement="bottom" @click="deleteContact(text.record.id)">
                         <template #title>
@@ -51,7 +55,8 @@
                             <DeleteOutlined /></a>
                     </a-tooltip>
                 </template>
-            </a-table>
+            </a-table> -->
+            <ContactTable :Id="Id"/>
             <Loader />
         </a-col>
     </a-row>
@@ -62,24 +67,29 @@
 import { defineComponent, reactive, ref, computed } from "vue";
 import { useStore } from "vuex";
 import { regex } from "@/RegularExpressions/regex";
-import { warningSwal } from "@/commonMethods/commonMethod";
-import { messages } from "@/config/messages";
+// import { warningSwal } from "@/commonMethods/commonMethod";
+// import { messages } from "@/config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import Loader from "@/components/loader/Loader";
 
 import {
   // EditOutlined,
-  DeleteOutlined,
+  // DeleteOutlined,
 } from "@ant-design/icons-vue";
+import ContactTable from "../../care-coordinator/tables/ContactTable.vue";
 
 export default defineComponent({
   components: {
     // EditOutlined,
-    DeleteOutlined,
+    // DeleteOutlined,
     Loader,
-    ErrorMessage
+    ErrorMessage,
+    ContactTable
   },
-  setup() {
+  props:{
+    paramId:String
+  },
+  setup(props) {
     const store = useStore();
     const contact = reactive({
       firstName: "",
@@ -90,32 +100,29 @@ export default defineComponent({
 
     function addContacts() {
       store.dispatch("addContacts", {
-        id: staffs.value.addStaff.id,
+        id: props.paramId?props.paramId:staffs.value.addStaff.id,
         data: contact,
       });
       setTimeout(() => {
-        store.dispatch("staffContactList", staffs.value.addStaff.id);
+        store.dispatch("staffContactList", props.paramId?props.paramId:staffs.value.addStaff.id);
       }, 2000);
     }
     const staffs = computed(() => {
       return store.state.careCoordinator;
     });
 
-    function deleteContact(id) {
-      warningSwal(messages.deleteWarning).then((response) => {
-        if (response == true) {
-          store.dispatch("deleteContact", {
-            id: staffs.value.addStaff.id,
-            contactId: id,
-          });
-          setTimeout(() => {
-            store.dispatch("staffContactList", staffs.value.addStaff.id);
-          }, 2000);
-        }
-      });
+    const Id = staffs.value.addStaff?staffs.value.addStaff.id:''
+
+     const form = reactive({
+      ...contact,
+    });
+    function reset(){
+      Object.assign(contact,form)
     }
     return {
-      deleteContact,
+      reset,
+      Id,
+      // deleteContact,
       addContacts,
       contact,
       size: ref("large"),
