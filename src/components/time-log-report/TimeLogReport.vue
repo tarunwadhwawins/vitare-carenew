@@ -86,7 +86,7 @@ export default {
       checked,
       value1: ref(),
       size: ref("large"),
-      timeLogReports:store.getters.timeLogReports,
+      timeLogReports:store.getters.timeLogReports.value,
     };
   },
 };

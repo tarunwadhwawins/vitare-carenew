@@ -39,7 +39,7 @@ export default {
     };
 
     return {
-      communicationsList:store.getters.communicationRecord,
+      communicationsList:store.getters.communicationRecord.value,
       searchData,
       linkTo,
       onChange: () => {
