@@ -1,5 +1,5 @@
 
-import { meridiemFormatFromTimestamp,dateOnlyFormat } from '../../commonMethods/commonMethod';
+import { meridiemFormatFromTimestamp,dateOnlyFormat,dobFormat2 } from '../../commonMethods/commonMethod';
 
 export const addDemographic = (state, data) => {
     state.addDemographic = data
@@ -604,3 +604,31 @@ export const deleteDocument = (state, data) => {
 
 }
 
+
+
+export const patientSearchWithBitrix = (state, data) => {
+  state.patientSearchWithBitrix = data.filter(item=>item.CONTACT_ID),
+  state.patientSearchWithBitrixCols = [
+    {
+      title: "Title",
+      dataIndex: "TITLE",
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      slots: {
+        customRender: "action",
+      },
+    },
+  ];
+}
+
+
+export const fetchFromBitrix = (state, data) => {
+  state.fetchFromBitrix = {
+    firstName :data.NAME,
+    lastName :data.LAST_NAME,
+    dob:dobFormat2(data.BIRTHDATE),
+    
+  }
+}
