@@ -157,15 +157,15 @@ export default {
         const id = '5';
         store.dispatch('updateInventory', {id, data}).then(() => {
           store.dispatch('inventoriesList')
+          emit('is-visible', false);
         })
-        emit('is-visible', false);
       }
       else {
         inventoryForm.deviceModelId = modelId.value;
         store.dispatch('addInventory', inventoryForm).then(() => {
           store.dispatch('inventoriesList')
+          emit('is-visible', false);
         })
-        emit('is-visible', false);
       }
     }
     
