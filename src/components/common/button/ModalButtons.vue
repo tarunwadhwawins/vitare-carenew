@@ -4,7 +4,7 @@
       <a-button v-if="!Id" class="modal-button" @click="handleClear()" html-type="reset">{{$t('global.clear')}}</a-button>
       <a-button v-if="Id" class="modal-button" type="primary" html-type="submit">{{$t('global.update')}}</a-button>
       <a-button v-else class="modal-button" type="primary" html-type="submit">{{$t('global.save')}}</a-button>
-       <a-button v-show="name=='communication'" class="modal-button" type="primary" html-type="submit">{{$t('global.send')}}</a-button>
+       <a-button v-show="name=='communication' && Id" class="modal-button" type="primary" html-type="submit">{{$t('global.send')}}</a-button>
     </a-form-item>
   </div>
 </template>
