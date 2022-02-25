@@ -111,7 +111,7 @@ export default {
         if (response == true) {
           store.dispatch("tasksDelete", id);
           setTimeout(() => {
-            store.getters.taskRecords.tasksList = "";
+            store.state.tasks.tasksList=null
             store.dispatch("tasksList");
           }, 2000);
         }

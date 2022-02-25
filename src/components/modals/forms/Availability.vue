@@ -4,7 +4,7 @@
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.startTime')" name="startTime" :rules="[{ required: true, message: $t('global.startTime')+' '+$t('global.validation') }]">
-                    <a-time-picker v-model:value="availability.startTime" format="HH:mm" value-format="HH:mm" />
+                    <a-time-picker  use12-hours format="hh:mm A" v-model:value="availability.startTime"  value-format="HH:mm" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.startTime?errorMsg.startTime[0]:''" />
                 </a-form-item>
             </div>
@@ -12,7 +12,7 @@
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.endTime')" name="endTime" :rules="[{ required: true, message: $t('global.endTime')+' '+$t('global.validation') }]">
-                    <a-time-picker v-model:value="availability.endTime" format="HH:mm" value-format="HH:mm" />
+                    <a-time-picker v-model:value="availability.endTime" use12-hours format="hh:mm A" value-format="HH:mm" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.endTime?errorMsg.endTime[0]:''" />
                 </a-form-item>
             </div>
@@ -54,6 +54,8 @@ import { useStore } from "vuex";
 import Loader from "@/components/loader/Loader";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import AvailabilityTable from "../../care-coordinator/tables/AvailabilityTable.vue";
+import moment from  "moment"
+import {  timeStamp } from '../../../commonMethods/commonMethod'
 export default defineComponent({
   components: {
     // EditOutlined,
@@ -77,11 +79,14 @@ export default defineComponent({
     });
 
     function addAvailability() {
+      console.log("rere", )
       store.dispatch("addAvailability", {
         id: props.paramId?props.paramId:staffs.value.addStaff.id,
-        data: availability,
+        data:  {startTime: timeStamp(moment().format('MM/DD/YYYY')+ ' ' + availability.startTime+':00'),
+      endTime:timeStamp(moment().format('MM/DD/YYYY') + ' ' + availability.endTime+':00')}
       });
       setTimeout(() => {
+        reset()
         store.dispatch("availabilityList", props.paramId?props.paramId:staffs.value.addStaff.id);
       }, 2000);
     }

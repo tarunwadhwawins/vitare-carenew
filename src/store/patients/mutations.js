@@ -566,6 +566,9 @@ export const deleteDocument = (state, data) => {
     if(data.length > 0) {
       state.latestDevice = data
     }
+    else {
+      state.latestDevice = null
+    }
  }
 
   export const errorMsg = (state, data) => {

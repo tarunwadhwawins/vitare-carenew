@@ -1146,44 +1146,7 @@
         </a-col>
       </a-row> -->
 
-  <FullCalendar  :options="{
-    plugins: [dayGridPlugin, interactionPlugin, TimeGridPlugin, ListPlugin],
-    headerToolbar: {
-      left: 'prev next',
-      center: 'title',
-      right: '',
-    },
-    initialDate: moment(seclectDate).format('YYYY-MM-DD'),
-    initialView: 'dayGridMonth',
-    timeZone: 'UTC',
-    contentHeight: 'auto',
-    dayMaxEvents:2,
-    moreLinkClick:function(e){    
-      handleDateClick(e.date)
-    return '+'+e.num+' More items';
-},
-    showNonCurrentDates: true,
-    events: appointmentSearch,
-    eventContent: renderEventContent,
-    customButtons: {
-      prev: { // this overrides the prev button
-        text: 'prev',
-        click: () => {
-nextOrPrev('prev')
-        
-        }
-      },
-      next: { // this overrides the next button
-        text: 'next',
-        click: () => {
-          nextOrPrev('next')
-
-          
-        }
-      }
-    }
-
-  }"  ref="cal">
+  <FullCalendar  :options="option"  ref="cal">
 
   </FullCalendar>
   <div  @click="popupShow()"></div>
@@ -1218,26 +1181,53 @@ appointment:{
       const linkTo = "patients-summary"
       const cal = ref(null);
       const store = useStore()
-      const appointmentSearch =reactive(props.appointment)
+      const seclectDate =reactive(props.seclectDate)
       function handleDateClick(e) {
 emit("is-dateClick",e)
-        //console.log('date click! ' + e)
-
+       
       }
-      // const events = ref();
         
+     const option = {
+    plugins: [dayGridPlugin, interactionPlugin, TimeGridPlugin, ListPlugin],
+    headerToolbar: {
+      left: 'prev next',
+      center: 'title',
+      right: '',
+    },
+    initialDate: moment(seclectDate).format('YYYY-MM-DD'),
+    initialView: 'dayGridMonth',
+    timeZone: 'UTC',
+    contentHeight: 'auto',
+    dayMaxEvents:2,
+    moreLinkClick:function(e){    
+      handleDateClick(e.date)
+    return '+'+e.num+' More items';
+},
+    showNonCurrentDates: true,
+    events: store.getters.appointmentRecords.value.searchAppointmentRecords,
+    eventContent: renderEventContent,
+    customButtons: {
+      prev: { // this overrides the prev button
+        text: 'prev',
+        click: () => {
+nextOrPrev('prev')
         
+        }
+      },
+      next: { // this overrides the next button
+        text: 'next',
+        click: () => {
+          nextOrPrev('next')
+
+          
+        }
+      }
+    }
+
+  }   
     
       
 
-      // const events = [
-      //   { "id": 1,title: 'Event Title', date: '2022-02-01', backgroundColor: 'grey' },
-      //   { "id": 2,title: 'Event Title', date: '2022-02-01', backgroundColor: 'grey'  },
-      //   { title: 'Event Title', date: '2022-02-02', backgroundColor: 'grey' },
-      //   { title: 'Another event', date: '2022-02-02', "id": 4 }
-      // ]
-     // console.log("appointmentSearch", appointmentSearch.value)
-      //console.log(events)
     
       
       function renderEventContent(clickInfo) {
@@ -1247,8 +1237,8 @@ emit("is-dateClick",e)
         customHtml += `<div><a class="ant-dropdown-link one ant-dropdown-trigger custom" onclick="popupShow('monthCalendarDropDown`+ getData.extendedProps.time +`')"><div class="dropdown"><p><strong><span>`+getData.extendedProps.appointmentType+`</span></strong><span>`+getData.extendedProps.patient+`</span></p></div></a></div>`
         customHtml += `<div id="monthCalendarDropDown` + getData.extendedProps.time + `" class="monthCalendarDropDown ant-dropdown valueItem ant-dropdown-placement-bottomLeft" style="display:none"><ul class="ant-dropdown-menu ant-dropdown-menu-root ant-dropdown-menu-vertical ant-dropdown-menu-light ant-dropdown-content"><li class="ant-dropdown-menu-item ant-dropdown-menu-item-only-child" role="menuitem" tabindex="-1" data-menu-id="1" aria-disabled="false"><div class="calendarDropdown"><div class="itemWrapper"><div class="leftWrapper"> Appointment Type </div>`
         customHtml += `<div class="rightWrapper">`+getData.extendedProps.appointmentType+`</div></div><div class="itemWrapper"><div class="leftWrapper">Date Time</div><div class="rightWrapper">`+dateFormat(getData.extendedProps.time)+`</div></div><div class="itemWrapper"><div class="leftWrapper">Coordinator</div><div class="rightWrapper"><a href="#/coordinator-summary/" class="">`+getData.extendedProps.staff+`</a></div></div><div class="itemWrapper"><div class="leftWrapper">Patient</div><div class="rightWrapper"><a href="#/patients-summary" class="">`+getData.extendedProps.patient+`</a></div></div>`
-        customHtml += ` <div class="itemWrapper"><div class="leftWrapper">Start Time</div><div class="rightWrapper">`+ moment(dateFormat(getData.extendedProps.time)).format('hh:mm A')+`04:52 PM</div></div> <div class="itemWrapper"><div class="leftWrapper">Duration</div><div class="rightWrapper">`+getData.extendedProps.duration+`</div></div></div></li></ul></div>`
-        //console.log("clickInfo", getData.clickInfo )
+        customHtml += ` <div class="itemWrapper"><div class="leftWrapper">Start Time</div><div class="rightWrapper">`+ moment(dateFormat(getData.extendedProps.time)).format('hh:mm A')+`04:52 PM</div></div> <div class="itemWrapper"><div class="leftWrapper">Duration</div><div class="rightWrapper">`+getData.extendedProps.timeGet+`</div></div></div></li></ul></div>`
+        //console.log("clickInfo", clickInfo )
         return { html: customHtml }
       }
 
@@ -1288,7 +1278,7 @@ calendarApi.prev();
         handleDateClick,
         nextOrPrev,
         linkTo,
-        appointmentSearch,
+        option,
        
 
       }

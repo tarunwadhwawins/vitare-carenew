@@ -1,11 +1,10 @@
-import { meridiemFormatFromTimestamp, timeFormatSimple } from '../../commonMethods/commonMethod';
+import { timerFromTimestamp, timeFormatSimple } from '../../commonMethods/commonMethod';
 
 
 export const timeLogReportList = async (state, data) => {
-
   state.timeLogeMeta = data.meta.pagination
   state.timeLogReportList = data.data.map(item => {
-    item.timeAmount = meridiemFormatFromTimestamp(item.timeAmount)
+    item.timeAmount = timerFromTimestamp(item.timeAmount)
     return item
   }),
     state.timeLogReportColumns = [

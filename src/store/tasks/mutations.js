@@ -400,7 +400,7 @@ export const taskPermissions = (state, auth) => {
       },
     ]
   }else{
-    state.taskPermissions =[]
+    state.patientsPermissions =[]
   }
 
 }

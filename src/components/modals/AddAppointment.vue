@@ -16,7 +16,7 @@
                 size="large">
                 <a-select-option value="" hidden>{{'Select Patient'}}</a-select-option>
                 <a-select-option v-for="patient in allPatients" :key="patient.id" :value="patient.id">{{
-                  patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option> 
+                  patient.name+' '+patient.id+' '+patient.lastName }}</a-select-option> 
               </a-select>
              
               <ErrorMessage v-if="errorMsg" :name="errorMsg.patientId?errorMsg.patientId[0]:''" />
@@ -163,10 +163,10 @@ import { useRoute } from 'vue-router'
       watchEffect(() => {
         if(idPatient != null) {
           Object.assign(appointmentForm, {
-            patientId: patientName
+            patientId: idPatient
           })
         }
-        store.state.communications.patientsList ? "" : store.dispatch("patientsList")
+        store.state.patients.patientsList ? "" : store.dispatch("patientsList")
         store.state.common.staffList ? "" : store.dispatch("staffList")
       })
       const onFinishFailed = () => {
@@ -189,8 +189,8 @@ import { useRoute } from 'vue-router'
         return store.state.common.staffList
       })
       
-      //const patients = ref([])
-      //console.log("obj",staffList.value);
+      // const patients = ref([])
+      // console.log("obj",staffList.value);
       // if(allPatients.value != null) {
         
       //   allPatients.value.forEach(element => {
@@ -211,9 +211,10 @@ import { useRoute } from 'vue-router'
       // };
 
       const sendMessage = () => {
-        Object.assign(appointmentForm, {
-          patientId: idPatient
-        })
+        // Object.assign(appointmentForm, {
+        //   patientId: idPatient
+        // })
+        
         const date = appointmentForm.startDate
         const  timeFormat = (moment(appointmentForm.startTime)).format('HH:mm');
         store.dispatch('addAppointment', {
@@ -234,11 +235,11 @@ import { useRoute } from 'vue-router'
         setTimeout(()=>{
             if(store.state.appointment.successMsg){
               store.dispatch("calendarDateSelect", moment(date))
-          store.dispatch("searchAppointment", { fromDate: moment(date), toDate: moment(date), tabId: 1 })
-          store.dispatch("searchAppointment", { fromDate: moment(), toDate: moment(), tabId: "today" })
+         // store.dispatch("searchAppointment", { fromDate: moment(date), toDate: moment(date), tabId: 1 })
+          //store.dispatch("searchAppointment", { fromDate: moment(), toDate: moment(), tabId: "today" })
               store.state.appointment.successMsg=null
               handleCancel()
-              emit('is-visible', false);
+              emit('is-visible', {check:false,date:moment(date)});
             }
             },3000)
       }
@@ -272,7 +273,7 @@ import { useRoute } from 'vue-router'
         formRef,
         list,
         //onSelectOption,
-       // patients,
+        //patients,
       };
     },
   };

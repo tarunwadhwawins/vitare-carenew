@@ -113,7 +113,21 @@
         customRender: "patientName",
 
       },
-    },
+      width: '30%',
+      onCell: () => {
+         return {
+            style: {
+               whiteSpace: 'nowrap',
+               maxWidth: 10,
+            }
+         }
+      },
+      render: (text) => (
+         <Tooltip title={text}>
+            <div style={{textOverflow: 'ellipsis', overflow: 'hidden'}}>{text}</div>
+         </Tooltip>
+      )
+  },
     {
       title: "Date Time",
 
