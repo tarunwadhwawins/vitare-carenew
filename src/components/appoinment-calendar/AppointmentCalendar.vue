@@ -2,7 +2,7 @@
   <div>
     <!---->
 
-    <a-layout-content v-if="appointmentSearch">
+    <a-layout-content v-if="appointmentSearch.searchAppointmentRecords">
 
       <Title :title="$t('appointmentCalendar.appointmentCalendar')" @calenderToggle="calenderView($event)"
         :isActive="toggle" :button="{
@@ -16,8 +16,8 @@
               {{$t('appointmentCalendar.newAppointment')}}</a-button>
           </div>
 
-          <Calendar v-if="appointmentSearch" @is-click="selectDate($event)" />
-          <Physicians v-if="staffList && appointmentSearch" :staff="staffList" />
+          <Calendar  @is-click="selectDate($event)" />
+          <Physicians v-if="staffList " :staff="staffList" />
           
           
         </a-col>
@@ -37,7 +37,7 @@
             </a-tab-pane>
             <a-tab-pane key="4" tab="Month">
               
-              <MonthAppointment v-if="appointmentSearch" :appointment="appointmentSearch" @is-dateClick="selectDate($event)"  @is-month="monthDate($event)" :seclectDate="month"></MonthAppointment>
+              <MonthAppointment v-if="appointmentSearch.searchAppointmentRecords" :appointment="appointmentSearch.searchAppointmentRecords" @is-dateClick="selectDate($event)"  @is-month="monthDate($event)" :seclectDate="month"></MonthAppointment>
            
             </a-tab-pane>
           </a-tabs>
@@ -155,18 +155,22 @@
       }
       const appointmentModal = ref(false);
       const showModal = (event) => {
+        if(event.date){
+          selectDate(event.date)
+          appointmentModal.value = event.check;
+        }else{
+          appointmentModal.value = event;
+        }
         
-        searchApi()
-        appointmentModal.value = event;
+        
       };
       const handleOk = (e) => {
         console.log(e);
         appointmentModal.value = false;
       };
 
-      const appointmentSearch = computed(() => {
-        return store.state.appointment.searchAppointmentRecords
-      })
+      const appointmentSearch = store.getters.appointmentRecords.value
+    
       // const handleOk2 = (e) => {
       //   console.log(e);
       //   physicianModal.value = false;

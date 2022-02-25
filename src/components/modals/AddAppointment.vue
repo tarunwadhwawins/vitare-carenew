@@ -235,11 +235,11 @@ import { useRoute } from 'vue-router'
         setTimeout(()=>{
             if(store.state.appointment.successMsg){
               store.dispatch("calendarDateSelect", moment(date))
-          store.dispatch("searchAppointment", { fromDate: moment(date), toDate: moment(date), tabId: 1 })
-          store.dispatch("searchAppointment", { fromDate: moment(), toDate: moment(), tabId: "today" })
+         // store.dispatch("searchAppointment", { fromDate: moment(date), toDate: moment(date), tabId: 1 })
+          //store.dispatch("searchAppointment", { fromDate: moment(), toDate: moment(), tabId: "today" })
               store.state.appointment.successMsg=null
               handleCancel()
-              emit('is-visible', false);
+              emit('is-visible', {check:false,date:moment(date)});
             }
             },3000)
       }
