@@ -12,7 +12,7 @@
         </p>
         <p>{{ patientDetails.address }}</p>
       </div>
-      <EditOutlined class="editIcon" @click="editPatient({udid: patientDetails.udid, id: patientDetails.id})" />
+      <EditOutlined class="editIcon" @click="editPatient({udid: patientDetails.id, id: patientDetails.id})" />
     </div>
 
     <div class="pat-profile">
@@ -36,7 +36,7 @@
           <PlusOutlined @click="showAddAppointmentModal"/><br />
         </div>
         <div v-if="latestAppointment != null" class="thumb-desc">
-          <router-link :to="'/appointment-calendar/'+patientDetails.udid">
+          <router-link :to="'/appointment-calendar/'+patientDetails.id">
           {{ latestAppointment[0].staff.fullName+' '+latestAppointment[0].date }}
           </router-link>
         </div>
@@ -89,7 +89,7 @@
           TimeLogs <PlusOutlined @click="addTimelogModal" />
         </div>
         <div v-if="latestTimeLog != null" class="thumb-desc">
-          <a href="javascript:void(0)" @click="showTimelogModal" >{{ latestTimeLog[0].category.name+' '+latestTimeLog[0].date }}</a>
+          <a href="javascript:void(0)" @click="showTimelogModal" >{{ latestTimeLog[0].category+' '+latestTimeLog[0].date }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
