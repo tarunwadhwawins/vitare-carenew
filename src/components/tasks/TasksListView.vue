@@ -9,7 +9,7 @@
       </div>
     </a-col>
     
-   {{tasksList.tasksList}}
+   
      <TaskTable v-if="tasksList.tasksList" :taskRecords="tasksList" @is-Edit="editTask($event)"></TaskTable>
       
     
