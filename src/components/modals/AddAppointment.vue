@@ -16,7 +16,7 @@
                 size="large">
                 <a-select-option value="" hidden>{{'Select Patient'}}</a-select-option>
                 <a-select-option v-for="patient in allPatients" :key="patient.id" :value="patient.id">{{
-                  patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option> 
+                  patient.name+' '+patient.id+' '+patient.lastName }}</a-select-option> 
               </a-select>
              
               <ErrorMessage v-if="errorMsg" :name="errorMsg.patientId?errorMsg.patientId[0]:''" />
@@ -166,7 +166,7 @@ import { useRoute } from 'vue-router'
             patientId: idPatient
           })
         }
-        store.state.communications.patientsList ? "" : store.dispatch("patientsList")
+        store.state.patients.patientsList ? "" : store.dispatch("patientsList")
         store.state.common.staffList ? "" : store.dispatch("staffList")
       })
       const onFinishFailed = () => {
@@ -189,8 +189,8 @@ import { useRoute } from 'vue-router'
         return store.state.common.staffList
       })
       
-      //const patients = ref([])
-      //console.log("obj",staffList.value);
+      // const patients = ref([])
+      // console.log("obj",staffList.value);
       // if(allPatients.value != null) {
         
       //   allPatients.value.forEach(element => {
@@ -214,6 +214,7 @@ import { useRoute } from 'vue-router'
         // Object.assign(appointmentForm, {
         //   patientId: idPatient
         // })
+        
         const date = appointmentForm.startDate
         const  timeFormat = (moment(appointmentForm.startTime)).format('HH:mm');
         store.dispatch('addAppointment', {
@@ -272,7 +273,7 @@ import { useRoute } from 'vue-router'
         formRef,
         list,
         //onSelectOption,
-       // patients,
+        //patients,
       };
     },
   };

@@ -97,13 +97,16 @@ export default defineComponent({
       email: "",
       phoneNumber: "",
     });
-
+   
     function addContacts() {
       store.dispatch("addContacts", {
         id: props.paramId?props.paramId:staffs.value.addStaff.id,
         data: contact,
       });
+   
+        
       setTimeout(() => {
+        reset()
         store.dispatch("staffContactList", props.paramId?props.paramId:staffs.value.addStaff.id);
       }, 2000);
     }

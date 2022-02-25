@@ -53,4 +53,6 @@
   .common-card {
     min-height: 335px !important;
   }
+
+
 </style>

@@ -46,7 +46,8 @@ export const addTask = async ({ commit }, data) => {
 
 export const editTask = async ({ commit }, id) => {
 	commit('loadingStatus', true)
-	await ServiceMethodService.common("get", `task/${id}`, null, null).then((response) => {
+	
+	await ServiceMethodService.common("get", `task/`+id.id, null, null).then((response) => {
 		commit('editTask', response.data.data);
 		commit('loadingStatus', false)
 	}).catch((error) => {
