@@ -106,6 +106,7 @@
                 loader.value = false
             }
             const editTask = (id) => {
+  
       emit('is-Edit', {check:true,id:id});
     };
     function deleteTask(id) {

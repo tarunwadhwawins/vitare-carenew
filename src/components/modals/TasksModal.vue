@@ -147,10 +147,11 @@
 import { defineComponent, ref, reactive, watchEffect, computed } from "vue";
 import { useStore } from "vuex"
 import ModalButtons from "@/components/common/button/ModalButtons";
-import {timeStamp,warningSwal } from "@/commonMethods/commonMethod";
+import {timeStamp,warningSwal,endTimeAdd } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 import Loader from "@/components/loader/Loader";
 import { useRoute } from "vue-router";
+import moment from "moment"
 export default defineComponent({
   components: {
     ModalButtons,
@@ -200,8 +201,8 @@ export default defineComponent({
           priority: taskForm.priority,
           assignedTo:taskForm.assignedTo,
           taskCategory: taskForm.taskCategory,
-          startDate: timeStamp(taskForm.startDate),
-          dueDate: timeStamp(taskForm.dueDate),
+          startDate: timeStamp(endTimeAdd(moment(taskForm.startDate))),
+          dueDate: timeStamp(endTimeAdd(moment(taskForm.dueDate))),
           entityType:taskForm.entityType
         },
         id:props.taskId
@@ -215,8 +216,8 @@ export default defineComponent({
           priority: taskForm.priority,
           assignedTo: isPatientTask ? [idPatient] : taskForm.assignedTo,
           taskCategory: taskForm.taskCategory,
-          startDate: timeStamp(taskForm.startDate),
-          dueDate: timeStamp(taskForm.dueDate),
+          startDate: timeStamp(endTimeAdd(moment(taskForm.startDate))),
+          dueDate: timeStamp(endTimeAdd(moment(taskForm.dueDate))),
           entityType: isPatientTask ? 'patient' : taskForm.entityType
         }).then(() => {
           if(route.name == 'PatientSummary') {
