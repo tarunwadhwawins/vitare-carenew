@@ -58,7 +58,7 @@ export const showMoreRecords = (state, data) => {
 
 export const latestAppointmentSuccess = (state, data) => {
   if(data.length > 0) {
-    data.date = dateOnlyFormat(data.date);
+    data[0].date = dateOnlyFormat(data[0].date);
     state.latestAppointment = data;
   }
 }
