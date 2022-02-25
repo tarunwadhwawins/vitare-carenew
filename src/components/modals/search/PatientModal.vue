@@ -16,8 +16,8 @@
         <a-col :sm="24" :xs="24">
             <a-table :pagination="false" :columns="patientsData.patientSearchWithBitrixCols" :data-source="patientsData.patientSearchWithBitrix" :scroll="{ x: 900 }">
                 <template #action="text">
-                        <a class="icons" @click="fetchFromBitrix(text.record.CONTACT_ID)">
-                           <FileOutlined />
+                        <a class="icons"  @click="fetchFromBitrix(text.record.CONTACT_ID)">
+                          <span class="arrowIcon" > Fill </span> <arrow-right-outlined :style="{fontSize: '20px', color: '#08c'}"/>
                         </a>
                 </template>
             </a-table>
@@ -31,11 +31,11 @@
 import { reactive, computed } from "vue";
 import { useStore } from "vuex";
 import Loader from "@/components/loader/Loader";
-import {FileOutlined} from "@ant-design/icons-vue";
+import {ArrowRightOutlined} from "@ant-design/icons-vue";
 export default {
     components:{
         Loader,
-        FileOutlined
+        ArrowRightOutlined
     },
   setup(props,{emit}) {
     const store = useStore();
@@ -64,4 +64,7 @@ export default {
 </script>
 
 <style>
+.arrowIcon{
+    font-size:18px
+}
 </style>

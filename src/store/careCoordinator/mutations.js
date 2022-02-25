@@ -261,6 +261,8 @@ export const staffPermissions = (state, auth) => {
      id: 4,
      name: "List Table"
  }]
+}else{
+  state.staffPermissions =[]
 }
 
 }

@@ -1,6 +1,7 @@
 
 import ServiceMethodService from '../../services/serviceMethod'
 import { API_ENDPOINTS } from "../../config/apiConfig"
+import { errorSwal } from '../../commonMethods/commonMethod'
 import router from "@/router"
 
 export const login = async ({ commit }, user) => {
@@ -26,7 +27,8 @@ export const login = async ({ commit }, user) => {
  const roleAccess = async () =>{
 	await ServiceMethodService.common("get", "staff/access", null, null).then((response) => {
 		console.log(response.data.data[0])
-		localStorage.setItem('roleAuth', response.data.data[0].roleId);
+		localStorage.setItem('access', true);
+		localStorage.setItem('roleAuth', response.data.data[0]?response.data.data[0].roleId:'');
 		router.push({
             path: "/dashboard",
           });
@@ -35,14 +37,16 @@ export const login = async ({ commit }, user) => {
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
+		errorSwal(error.response.data.message)
 	})
 }
 export const logoutUser = async ({ commit }) => {
 	
-		localStorage.removeItem('user');
+	localStorage.removeItem('user');
 	localStorage.removeItem('token');
     localStorage.removeItem('auth');
 	localStorage.removeItem('roleAuth');
+	localStorage.removeItem('access');
 	commit('logoutSuccess', 'Success');
 	router.push("/")
 	

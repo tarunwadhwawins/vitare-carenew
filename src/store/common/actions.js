@@ -25,6 +25,7 @@ export const permissions = async ({
   commit('patientsPermissions', localStorage.getItem('roleAuth'));
   commit('staffPermissions', localStorage.getItem('roleAuth'));
   commit('taskPermissions', localStorage.getItem('roleAuth'));
+  commit('auditTimePermissions', localStorage.getItem('roleAuth'));
 
 }
 

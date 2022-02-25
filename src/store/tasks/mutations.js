@@ -1,11 +1,11 @@
-import { dateOnlyFormatSImple,yaxis, dataLabels, plotOptions ,dateOnlyFormat } from '../../commonMethods/commonMethod';
+import { dateOnlyFormatSImple, yaxis, dataLabels, plotOptions, dateOnlyFormat } from '../../commonMethods/commonMethod';
 export const tasksListSuccess = async (state, tasks) => {
   state.tasksList = tasks.data.map(element => {
     element.dueDate = dateOnlyFormat(element.dueDate)
-    element.category = element.category.map(item=>item.taskCategory)
+    element.category = element.category.map(item => item.taskCategory)
     return element;
   });
- state.taskMeta= tasks.meta.pagination
+  state.taskMeta = tasks.meta.pagination
   state.tasksListColumns = [
     {
       title: "Task Name",
@@ -35,21 +35,21 @@ export const tasksListSuccess = async (state, tasks) => {
     {
       title: "Priority ",
       dataIndex: "priority",
-    //   filters: [
-    //     {
-    //       text: "High",
-    //       value: "high",
-    //     },
-    //     {
-    //       text: "Normal",
-    //       value: "normal",
-    //     },
-    //     {
-    //       text: "Urgent",
-    //       value: "urgent",
-    //     },
-    //   ],
-    //   onFilter: (value, record) => record.status.indexOf(value) === 0,
+      //   filters: [
+      //     {
+      //       text: "High",
+      //       value: "high",
+      //     },
+      //     {
+      //       text: "Normal",
+      //       value: "normal",
+      //     },
+      //     {
+      //       text: "Urgent",
+      //       value: "urgent",
+      //     },
+      //   ],
+      //   onFilter: (value, record) => record.status.indexOf(value) === 0,
     },
     {
       title: "Category",
@@ -61,17 +61,17 @@ export const tasksListSuccess = async (state, tasks) => {
     {
       title: "Due Date ",
       dataIndex: "dueDate",
-    //   filters: [
-    //     {
-    //       text: "Dec 24, 2021",
-    //       value: "Dec 24, 2021",
-    //     },
-    //     {
-    //       text: "Dec 28, 2021",
-    //       value: "Dec 28, 2021",
-    //     },
-    //   ],
-    //   onFilter: (value, record) => record.dueDate.indexOf(value) === 0,
+      //   filters: [
+      //     {
+      //       text: "Dec 24, 2021",
+      //       value: "Dec 24, 2021",
+      //     },
+      //     {
+      //       text: "Dec 28, 2021",
+      //       value: "Dec 28, 2021",
+      //     },
+      //   ],
+      //   onFilter: (value, record) => record.dueDate.indexOf(value) === 0,
     },
     {
       title: "Assigned By",
@@ -105,49 +105,49 @@ export const tasksListSuccess = async (state, tasks) => {
 
 export const taskStatusSuccess = async (state, status) => {
   state.taskStatus = status;
-  state.incompleteAllTask = status.map(item=>item.total)
+  state.incompleteAllTask = status.map(item => item.total)
   state.completedAllTask = {
-      chart: {
-        type: "pie",
-      },
-      labels: status.map(item=>item.text),
-      colors: status.map(item=>item.color),
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200,
-            },
-            legend: {
-              position: "bottom",
-            },
+    chart: {
+      type: "pie",
+    },
+    labels: status.map(item => item.text),
+    colors: status.map(item => item.color),
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200,
+          },
+          legend: {
+            position: "bottom",
           },
         },
-      ],
-    }
+      },
+    ],
+  }
 
 
 
-// for completion
+  // for completion
 
-state.completionSeries = status.map(item=>{
-  item.name =item.text,
-  item.data= status.map(item=>item.total)
-  return item
-})
+  state.completionSeries = status.map(item => {
+    item.name = item.text,
+      item.data = status.map(item => item.total)
+    return item
+  })
 
 
-// [
-//   {
-//     name: "Complete",
-//     data: status.map(item=>item.total)
-//   },
-//   {
-//     name: "Incomplete",
-//     data: status.map(item=>item.total)
-//   },
-// ];
+  // [
+  //   {
+  //     name: "Complete",
+  //     data: status.map(item=>item.total)
+  //   },
+  //   {
+  //     name: "Incomplete",
+  //     data: status.map(item=>item.total)
+  //   },
+  // ];
   state.completionOptions = {
     chart: {
       height: 412,
@@ -171,10 +171,10 @@ state.completionSeries = status.map(item=>{
     },
   };
 
-  }
+}
 
 export const taskPriority = async (state, priorities) => {
-  state.taskPriority ={
+  state.taskPriority = {
     optionPriority: {
       annotations: {
         points: [
@@ -195,9 +195,9 @@ export const taskPriority = async (state, priorities) => {
       chart: {
         type: "bar",
       },
-      plotOptions: plotOptions(10,"20%","100%",true,false,"bottom"),
+      plotOptions: plotOptions(10, "20%", "100%", true, false, "bottom"),
       dataLabels: dataLabels(false),
-      colors: priorities.map((item) => { return  item.color  }),
+      colors: priorities.map((item) => { return item.color }),
       stroke: {
         width: 1,
         colors: ["#fff"],
@@ -212,14 +212,14 @@ export const taskPriority = async (state, priorities) => {
         labels: {
           rotate: -45,
         },
-        categories: priorities.map((item) => { return  item.text }),
+        categories: priorities.map((item) => { return item.text }),
       },
       yaxis: yaxis("Task Count")
     },
     seriesPriority: [
       {
         name: "Task Count",
-        data: priorities.map((item) => { return  item.total }),
+        data: priorities.map((item) => { return item.total }),
       },
     ],
 
@@ -228,7 +228,7 @@ export const taskPriority = async (state, priorities) => {
 
 
 export const taskTeamMember = async (state, TeamMember) => {
-  state.taskTeamMember ={
+  state.taskTeamMember = {
     optionTeamMember: {
       annotations: {
         points: [
@@ -249,7 +249,7 @@ export const taskTeamMember = async (state, TeamMember) => {
       chart: {
         type: "bar",
       },
-      plotOptions: plotOptions(10,"20%","100%",true,false,"bottom"),
+      plotOptions: plotOptions(10, "20%", "100%", true, false, "bottom"),
       dataLabels: dataLabels(false),
       // colors: TeamMember.map((item) => { return  item.color  }),
       stroke: {
@@ -266,14 +266,14 @@ export const taskTeamMember = async (state, TeamMember) => {
         labels: {
           rotate: -45,
         },
-        categories: TeamMember.map((item) => { return  item.text }),
+        categories: TeamMember.map((item) => { return item.text }),
       },
       yaxis: yaxis("Task Count")
     },
     seriesTeamMember: [
       {
         name: "Task Count",
-        data: TeamMember.map((item) => { return  item.total }),
+        data: TeamMember.map((item) => { return item.total }),
       },
     ],
 
@@ -282,32 +282,32 @@ export const taskTeamMember = async (state, TeamMember) => {
 
 export const taskCategory = async (state, TeamMember) => {
 
-  state.taskCategory.business = TeamMember.map(item=>item.total) 
-  state.taskCategory.premium =  {
-      chart: {
-        width: 412,
-        type: "pie",
-      },
-      labels: TeamMember.map(item=>item.text) ,
-      colors: ["#0fb5c2", "#40a9ff", "#267dff", "#8e60ff"],
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200,
-            },
-            legend: {
-              position: "bottom",
-            },
+  state.taskCategory.business = TeamMember.map(item => item.total)
+  state.taskCategory.premium = {
+    chart: {
+      width: 412,
+      type: "pie",
+    },
+    labels: TeamMember.map(item => item.text),
+    colors: ["#0fb5c2", "#40a9ff", "#267dff", "#8e60ff"],
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200,
+          },
+          legend: {
+            position: "bottom",
           },
         },
-      ],
-    };
-  }
+      },
+    ],
+  };
+}
 
 
-  
+
 
 export const searchTasksSuccess = async (state, result) => {
   state.tasksList = result;
@@ -324,9 +324,9 @@ export const editTask = async (state, result) => {
   state.editTask.dueDate = dateOnlyFormatSImple(state.editTask.dueDate)
   state.editTask.startDate = dateOnlyFormatSImple(state.editTask.startDate)
   state.editTask.priority = state.editTask.priorityId,
-  state.editTask.taskStatus = state.editTask.taskStatusId
-  
-  
+    state.editTask.taskStatus = state.editTask.taskStatusId
+
+
   // state.editTask.assignedTo = JSON.parse(state.editTask.assignedTo)
   // state.editTask.taskCategory = JSON.parse(state.editTask.taskCategory)
   state.editTask
@@ -339,7 +339,7 @@ export const updateTask = async (state, result) => {
 
 
 export const latestTaskSuccess = async (state, result) => {
-  if(result.length > 0) {
+  if (result.length > 0) {
     result.date = dateOnlyFormat(result.date);
     state.latestTask = result;
   }
@@ -350,33 +350,57 @@ export const taskPermissions = (state, auth) => {
   if (auth == 1) {
 
     state.taskPermissions = [{
-        id: 1,
-        name: "Add New Patients"
+      id: 1,
+      name: "Add New Task"
+    },
+    {
+      id: 2,
+      name: "Dashboard View"
+    },
+    {
+      id: 3,
+      name: "List View"
     },
 
     {
-        id: 2,
-        name: "Counter Card"
+      id: 4,
+      name: "Counter Card"
     },
     {
-        id: 3,
-        name: "Export to Excel"
+      id: 5,
+      name: "Task Bar"
     },
     {
-        id: 4,
-        name: "List Table"
-    }]
-}else if(auth == 2){
+      id: 6,
+      name: "List Table"
+    },
+    {
+      id: 7,
+      name: "Table Action"
+    }
+  ]
+  } else if (auth == 2) {
     state.taskPermissions = [
- {
-     id: 2,
-     name: "Counter Card"
- },
- 
- {
-     id: 4,
-     name: "List Table"
- }]
-}
+      {
+        id: 2,
+        name: "Dashboard View"
+      },
+      {
+        id: 3,
+        name: "List View"
+      },
+      {
+        id: 4,
+        name: "Counter Card"
+      },
+
+      {
+        id: 6,
+        name: "List Table"
+      },
+    ]
+  }else{
+    state.taskPermissions =[]
+  }
 
 }

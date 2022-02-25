@@ -1,10 +1,10 @@
 <template>
-  <a-row class="mb-24" :gutter="24">
+  <a-row class="mb-24" :gutter="24" v-if="arrayToObjact(tasks.taskPermissions,4)">
     <a-col :xl="6" :sm="8" :xs="12" v-for="status in tasks.taskStatus" :key="status.id" >
       <FilterCard :filterCount="CompletedTasksFilterCount" :count="status.total?status.total:0" :color="status.color" class="blockLists five" :heading="status.text" />
     </a-col>
   </a-row>
-  <a-row :gutter="24">
+  <a-row :gutter="24" v-if="arrayToObjact(tasks.taskPermissions,5)">
     <a-col :xl="8" :sm="12" :xs="24">
       <a-card title="Task Priority" class="common-card">
         <IncompleteTasksFilter/>
@@ -52,6 +52,7 @@ import TeamMemberFilter from "@/components/tasks/chartFilters/TeamMember";
 import AllTasksFilter from "@/components/tasks/chartFilters/AllTasks";
 import CategoryViewFilter from "@/components/tasks/chartFilters/CategoryView";
 import {useStore} from "vuex"
+import { arrayToObjact } from "@/commonMethods/commonMethod";
 export default {
   components: {
     FilterCard,
@@ -96,6 +97,7 @@ export default {
     })
 
     return {
+      arrayToObjact,
       tasks,
       clickHandler,
       clickHandler2,
