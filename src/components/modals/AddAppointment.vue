@@ -176,16 +176,22 @@ import { useRoute } from 'vue-router'
       const typeOfVisitList = computed(() => {
         return store.state.common.typeOfVisit;
       })
-      const patientsList = props.patient ? reactive(props.patient) : computed(() => {
-        return store.state.communications.patientsList
-      })
+      const allPatients = ref(null)
+      if(route.name == "AppointmnetCalendar") {
+        allPatients.value = reactive(props.patient)
+      }
+      else {
+        allPatients.value = computed(() => {
+          return store.state.patients.patients
+        })
+      }
       const staffList = props.staff ? reactive(props.staff) : computed(() => {
         return store.state.common.staffList
       })
       
       const patients = ref([])
-      if(patientsList.value != null) {
-        patientsList.value.forEach(element => {
+      if(allPatients.value && allPatients.value != null) {
+        allPatients.value.forEach(element => {
           patients.value.push({
             value: element.fullName,
             id: element.id,
@@ -249,7 +255,7 @@ import { useRoute } from 'vue-router'
       return {
         form,
         errorMsg,
-        patientsList,
+        // patientsList,
         staffList,
         appointmentForm,
         sendMessage,
