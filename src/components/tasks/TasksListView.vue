@@ -9,8 +9,8 @@
       </div>
     </a-col>
     
-   
-     <TaskTable v-if="tasksList.tasksListColumns" :taskRecords="tasksList" @is-Edit="editTask($event)"></TaskTable>
+   {{tasksList.tasksList}}
+     <TaskTable v-if="tasksList.tasksList" :taskRecords="tasksList" @is-Edit="editTask($event)"></TaskTable>
       
     
   </a-row>
@@ -56,13 +56,13 @@ export default {
     const createAppointment = () => {
       // console.log('createAppointment', id)
     };
-
+    const tasksList = store.getters.taskRecords.value
 
    return {
       size: ref([]),
       handleChange,
       // tasksColumns,
-      tasksList:store.getters.taskRecords.value,
+      tasksList,
       editTask,
       updateTask,
       createAppointment,
