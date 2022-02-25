@@ -195,7 +195,7 @@ export default {
       specializationId: "",
       networkId: "",
       roleId: '',
-      providerId: '',
+      
     });
 
     const personalInfo = () => {
