@@ -227,10 +227,10 @@ export default defineComponent({
       }
 
       
-      
+      store.state.tasks.tasksList=null
       setTimeout(() => {
         if(tasks.value.addTask!=null || tasks.value.updateTask!=null){
-          store.getters.taskRecords.value.tasksList=""
+         
           if(route.params.udid == null) {
             store.dispatch("tasksList")
           }
