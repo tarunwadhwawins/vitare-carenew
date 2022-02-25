@@ -234,11 +234,12 @@ export default defineComponent({
           if(route.params.udid == null) {
             store.dispatch("tasksList")
           }
-
-        store.dispatch('taskStatus')
-        store.dispatch('taskPriority')
-        store.dispatch('taskTeamMember')
-        store.dispatch('taskCategory')
+        if(route.name != 'PatientSummary') {
+          store.dispatch('taskStatus')
+          store.dispatch('taskPriority')
+          store.dispatch('taskTeamMember')
+          store.dispatch('taskCategory')
+        }
         Object.assign(taskForm, form)
         emit('saveTaskModal', false)
         }
