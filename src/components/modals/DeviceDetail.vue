@@ -53,7 +53,12 @@ export default defineComponent({
     const route = useRoute();
     const patientDetail = reactive(props.patientDetails);
     watchEffect(() => {
-      store.dispatch('devices', patientDetail.id)
+      if(route.name == 'PatientSummary') {
+        store.dispatch('devices', route.params.udid)
+      }
+      else {
+        store.dispatch('devices', patientDetail.id)
+      }
     })
     const devicesList = computed(() => {
       return store.state.patients.devices
@@ -94,7 +99,12 @@ export default defineComponent({
             id: patientDetail.id,
             deviceId: id,
           }).then(() => {
-            store.dispatch('devices', patientDetail.id);
+            if(route.name == 'PatientSummary') {
+              store.dispatch('devices', route.params.udid)
+            }
+            else {
+              store.dispatch('devices', patientDetail.id)
+            }
             if(route.name == 'PatientSummary') {
               store.dispatch('latestDevice', route.params.udid)
               store.dispatch('patientTimeline', route.params.udid);

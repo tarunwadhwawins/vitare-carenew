@@ -3,9 +3,9 @@
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <a-table rowKey="id" :columns="timeLogColumns" :data-source="timeLogsList" :scroll="{ x: 900 }" :pagination="false" >
-          <template #category="{record}">
+          <!-- <template #category="{record}">
             <span>{{record.category.name}}</span>
-          </template>
+          </template> -->
           <template #action="{record}">
             <!-- <a class="icons"><EditOutlined @click="editTimeLog(record.id)" /></a> -->
             <a class="icons"><DeleteOutlined @click="deleteTimeLog(record.id)"/></a>
@@ -44,9 +44,9 @@ export default defineComponent({
         title: "Category",
         dataIndex: "category",
         key: "category",
-        slots: {
+        /* slots: {
           customRender: 'category'
-        }
+        } */
       },
       {
         title: "Logged By",

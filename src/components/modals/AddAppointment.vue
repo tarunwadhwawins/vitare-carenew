@@ -163,7 +163,7 @@ import { useRoute } from 'vue-router'
       watchEffect(() => {
         if(idPatient != null) {
           Object.assign(appointmentForm, {
-            patientId: patientName
+            patientId: idPatient
           })
         }
         store.state.patients.patientsList ? "" : store.dispatch("patientsList")
@@ -211,6 +211,9 @@ import { useRoute } from 'vue-router'
       // };
 
       const sendMessage = () => {
+        // Object.assign(appointmentForm, {
+        //   patientId: idPatient
+        // })
         
         const date = appointmentForm.startDate
         const  timeFormat = (moment(appointmentForm.startTime)).format('HH:mm');

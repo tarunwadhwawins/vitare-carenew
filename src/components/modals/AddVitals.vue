@@ -109,6 +109,7 @@
 </template>
 <script>
 import { computed, defineComponent, reactive, ref, watchEffect } from "vue";
+import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 export default defineComponent({
   props: {
@@ -119,9 +120,15 @@ export default defineComponent({
   setup(props) {
     const deviceType = ref('');
     const store = useStore();
+    const route = useRoute();
     const idPatient = reactive(props.patientId);
     watchEffect(() => {
-      store.dispatch('devices', idPatient)
+      if(route.name == 'PatientSummary') {
+        store.dispatch('devices', route.params.udid)
+      }
+      else {
+        store.dispatch('devices', idPatient)
+      }
     })
     const patientDevice = computed(() => {
       return store.state.patients.devices

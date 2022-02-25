@@ -46,7 +46,7 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const route = useRoute();
-    const patientId = reactive(props.patientDetails.udid);
+    const patientId = reactive(props.patientDetails.id);
     const documentsColumns = [
       {
         title: "Name",
