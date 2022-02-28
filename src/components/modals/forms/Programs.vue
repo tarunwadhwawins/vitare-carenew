@@ -101,7 +101,7 @@ export default defineComponent({
     
     const programs = () => {
       if(patientId != null) {
-        store.dispatch("addProgram", {
+        store.dispatch("addPatientProgram", {
           data: {
             program: program.program,
             onboardingScheduleDate: timeStamp(program.onboardingScheduleDate),
@@ -114,7 +114,7 @@ export default defineComponent({
         });
       }
       else {
-        store.dispatch("addProgram", {
+        store.dispatch("addPatientProgram", {
           data: {
             program: program.program,
             onboardingScheduleDate: timeStamp(program.onboardingScheduleDate),

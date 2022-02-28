@@ -62,7 +62,7 @@ export default defineComponent({
     const form = reactive({ ...addDocumentForm })
     const visible = ref(true);
 
-    const patientDetails = ref(props.patientDetails);
+    // const patientDetails = ref(props.patientDetails);
     
     const handleClear = () => {
       formRef.value.resetFields();
@@ -110,7 +110,7 @@ export default defineComponent({
           "entity": addDocumentForm.entity,
           "id": route.params.udid ? route.params.udid : '',
         },
-        id: patientDetails.value.id,
+        id: route.params.udid,
       }
       store.dispatch("addDocument", documentFormData).then(() => {
         store.dispatch('latestDocument', route.params.udid)

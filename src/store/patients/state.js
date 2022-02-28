@@ -7,7 +7,7 @@ export default {
     updatePatientReferals:null,
     addPatientPhysician:null,
     updatePatientPhysician:null,
-    addProgram:null,
+    addPatientProgram:null,
     program:null,
     addDevice:null,
     devices:null,

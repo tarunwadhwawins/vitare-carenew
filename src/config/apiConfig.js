@@ -75,6 +75,8 @@ export const API_ENDPOINTS = {
     generalParameter:'generalParameterGroup',
     deleteParameter:'generalParameter',
 
+    //Programs
+    programsList:"program",
     // CPT Codes
     cptCodes: 'cptCode',
 

@@ -208,6 +208,7 @@ export function chartTimeCount(timeLine,count){
         };
         newPatient.push(value_obj);
       } else {
+       // console.log("obj.duration",obj.duration)
         let value_obj_get = {
           "duration": moment(dateFormat(obj.duration)).format('hh:00 A'),
           "total": obj.total,
