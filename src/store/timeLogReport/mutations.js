@@ -1,11 +1,10 @@
-import { meridiemFormatFromTimestamp, timeFormatSimple } from '../../commonMethods/commonMethod';
+import { timerFromTimestamp, timeFormatSimple } from '../../commonMethods/commonMethod';
 
 
 export const timeLogReportList = async (state, data) => {
-
   state.timeLogeMeta = data.meta.pagination
   state.timeLogReportList = data.data.map(item => {
-    item.timeAmount = meridiemFormatFromTimestamp(item.timeAmount)
+    item.timeAmount = timerFromTimestamp(item.timeAmount)
     return item
   }),
     state.timeLogReportColumns = [
@@ -53,7 +52,7 @@ export const timeLogReportList = async (state, data) => {
 
       {
         title: "Actions",
-        dataIndex: "id",
+        dataIndex: "actions",
         slots: {
           customRender: "actions",
         },
@@ -68,5 +67,29 @@ export const editAuditTimeLog = async (state, data) => {
     data.patient = data.patientId
     data.timeAmount = timeFormatSimple(data.timeAmount)
     return data
+}
+
+export const auditTimePermissions = (state, auth) => {
+  if (auth == 1) {
+
+    state.auditTimePermissions = [{
+      id: 1,
+      name: "List Table"
+    },
+    {
+      id: 2,
+      name: "Table Action"
+    }
+  ]
+  } else if (auth == 2) {
+    state.auditTimePermissions = [{
+      id: 1,
+      name: "List Table"
+    },
+    
+    ]
+  }else{
+    state.auditTimePermissions =[]
+  }
 
 }

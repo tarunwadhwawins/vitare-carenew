@@ -62,7 +62,8 @@ const global = {
   category:'Category',
   note:'Note',
   save:'Save',
-  clear:'Clear'
+  clear:'Clear',
+  send:'Send'
 
 }
 

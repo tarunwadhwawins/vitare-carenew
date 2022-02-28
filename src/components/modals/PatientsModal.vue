@@ -889,7 +889,10 @@ export default defineComponent( {
                         data: demographics,
                         id: idPatient,
                     });
-                    store.dispatch('patientDetails', route.params.udid)
+                    
+                    if(route.name == 'PatientSummary') {
+                        store.dispatch('patientDetails', route.params.udid)
+                    }
                 }
                 else if(demographics.isPrimary == true) {
                     (demographics.emergencyFullName = demographics.fullName),
@@ -904,7 +907,10 @@ export default defineComponent( {
                         data: demographics,
                         id: idPatient,
                     });
-                    store.dispatch('patientDetails', route.params.udid)
+                    
+                    if(route.name == 'PatientSummary') {
+                        store.dispatch('patientDetails', route.params.udid)
+                    }
                 }
             }
             else if(patients.value.addDemographic != null && patients.value.addDemographic.id) {
@@ -915,7 +921,10 @@ export default defineComponent( {
                         data: demographics,
                         id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
                     });
-                    store.dispatch('patientDetails', route.params.udid)
+                    
+                    if(route.name == 'PatientSummary') {
+                        store.dispatch('patientDetails', route.params.udid)
+                    }
                 }
                 else if(demographics.isPrimary == true) {
                     (demographics.emergencyFullName = demographics.fullName),
@@ -930,7 +939,10 @@ export default defineComponent( {
                         data: demographics,
                         id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
                     });
-                    store.dispatch('patientDetails', route.params.udid)
+                    
+                    if(route.name == 'PatientSummary') {
+                        store.dispatch('patientDetails', route.params.udid)
+                    }
                 }
             }
         }
@@ -938,7 +950,10 @@ export default defineComponent( {
             if(patients.value.addDemographic == null) {
                 if(demographics.isPrimary == false) {
                     store.dispatch("addDemographic", demographics);
-                    store.dispatch('patientDetails', route.params.udid)
+                    
+                    if(route.name == 'PatientSummary') {
+                        store.dispatch('patientDetails', route.params.udid)
+                    }
                 }
                 else if(demographics.isPrimary == true) {
                     (demographics.emergencyFullName = demographics.fullName),
@@ -948,7 +963,10 @@ export default defineComponent( {
                     (demographics.emergencyContactTime = demographics.familyContactTime),
                     (demographics.emergencyGender = demographics.familyGender),
                     store.dispatch("addDemographic", demographics);
-                    store.dispatch('patientDetails', route.params.udid)
+                    
+                    if(route.name == 'PatientSummary') {
+                        store.dispatch('patientDetails', route.params.udid)
+                    }
                 }
             }
             else if(patients.value.addDemographic != null && patients.value.addDemographic.id) {
@@ -959,7 +977,10 @@ export default defineComponent( {
                         data: demographics,
                         id: patients.value.addDemographic.id,
                     });
-                    store.dispatch('patientDetails', route.params.udid)
+                    
+                    if(route.name == 'PatientSummary') {
+                        store.dispatch('patientDetails', route.params.udid)
+                    }
                 }
                 else if(demographics.isPrimary == true) {
                     (demographics.emergencyFullName = demographics.fullName),
@@ -974,7 +995,10 @@ export default defineComponent( {
                         data: demographics,
                         id: patients.value.addDemographic.id,
                     });
-                    store.dispatch('patientDetails', route.params.udid)
+                    
+                    if(route.name == 'PatientSummary') {
+                        store.dispatch('patientDetails', route.params.udid)
+                    }
                 }
             }
         }

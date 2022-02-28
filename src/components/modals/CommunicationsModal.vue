@@ -129,7 +129,8 @@
           </div>
         </a-col>
         <a-col :span="24">
-          <ModalButtons/>
+          <ModalButtons name="communication"/>
+          
         </a-col>
       </a-row>
     </a-form>

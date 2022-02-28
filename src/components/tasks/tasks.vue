@@ -17,14 +17,14 @@
               <a-col :span="24">
                 <h2 class="pageTittle">
                   {{$t('tasks.tasks')}}
-                  <div class="addtaskButton">
+                  <div class="addtaskButton"  v-if="arrayToObjact(tasks.taskPermissions,1)">
                     <Button :name="buttonName" @click="showModal" />
                   </div>
                   <div class="filter">
-                    <button class="btn" :class="toggle ? 'active' : ''" @click="toggleButton()">
+                    <button class="btn" :class="toggle ? 'active' : ''" @click="toggleButton()"  v-if="arrayToObjact(tasks.taskPermissions,2)">
                       <span class="btn-content">{{$t('tasks.dashboardView')}}</span>
                     </button>
-                    <button class="btn" :class="toggle ? '' : 'active'" @click="toggleButton()">
+                    <button class="btn" :class="toggle ? '' : 'active'" @click="toggleButton()" v-if="arrayToObjact(tasks.taskPermissions,3)">
                       <span class="btn-content">{{$t('global.listView')}}</span>
                     </button>
                   </div>
@@ -33,7 +33,7 @@
             </a-row>
 
               <!-- Dashboard View -->
-            <div class="dashboard-view" v-show="toggle">
+            <div class="dashboard-view" v-show="toggle" >
                 <TasksDashboardView/>
             </div>
 
@@ -57,12 +57,13 @@
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
 import TasksModal from "@/components/modals/TasksModal";
-import { ref } from "vue";
+import { ref,computed } from "vue";
 import Button from "@/components/common/button/Button";
 import TasksDashboardView from "@/components/tasks/TasksDashboardView";
 import TasksListView from "@/components/tasks/TasksListView";
 import {useStore} from "vuex"
 import Loader from "@/components/loader/Loader";
+import { arrayToObjact } from "@/commonMethods/commonMethod";
 export default {
   components: {
     Header,
@@ -97,7 +98,12 @@ export default {
         store.commit('loadingStatus', false)
       },1000)
     }
+    const tasks = computed(()=>{
+      return store.state.tasks
+    })
     return {
+      tasks,
+      arrayToObjact,
       toggleButton,
       taskID,
       buttonName: "Add New Task",

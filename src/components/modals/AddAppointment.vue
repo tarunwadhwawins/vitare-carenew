@@ -7,17 +7,18 @@
             <a-form-item :label="$t('appointmentCalendar.addAppointment.patient')" name="patientId"
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.patient')+' '+$t('global.validation')  }]">
               
-              <AutoComplete
+              <!-- <AutoComplete
                 :options="patients"
                 @on-select="onSelectOption"
-                v-model:value="appointmentForm.patientId" />
+                v-model:value="appointmentForm.patientId" /> -->
   
-              <!-- <a-select ref="select" v-if="patientsList" v-model:value="appointmentForm.patientId" style="width: 100%"
+              <a-select ref="select" v-if="allPatients" v-model:value="appointmentForm.patientId" style="width: 100%"
                 size="large">
                 <a-select-option value="" hidden>{{'Select Patient'}}</a-select-option>
-                <a-select-option v-for="patient in patientsList" :key="patient.id" :value="patient.id">{{
-                  patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option> 
-              </a-select> -->
+                <a-select-option v-for="patient in allPatients" :key="patient.id" :value="patient.id">{{
+                  patient.name+' '+patient.id+' '+patient.lastName }}</a-select-option> 
+              </a-select>
+             
               <ErrorMessage v-if="errorMsg" :name="errorMsg.patientId?errorMsg.patientId[0]:''" />
             </a-form-item>
           </div>
@@ -109,14 +110,14 @@
   import { timeStamp } from "../../commonMethods/commonMethod"
   import moment from 'moment';
   import ModalButtons from "@/components/common/button/ModalButtons";
-import AutoComplete from "@/components/common/input/AutoComplete";
+//import AutoComplete from "@/components/common/input/AutoComplete";
 import { useRoute } from 'vue-router'
 
   export default {
     components: {
       ErrorMessage,
       ModalButtons,
-      AutoComplete,
+      //AutoComplete,
     },
     props:{
       staff:{
@@ -142,6 +143,8 @@ import { useRoute } from 'vue-router'
       const patientUdid = route.params.udid;
       const idPatient = reactive(props.patientId);
       const patientName = reactive(props.patientName);
+
+      
       console.log('patientName', patientName)
     //   const disabledDate = current => {
     //   return current && current < dayjs().endOf('day');
@@ -160,10 +163,10 @@ import { useRoute } from 'vue-router'
       watchEffect(() => {
         if(idPatient != null) {
           Object.assign(appointmentForm, {
-            patientId: patientName
+            patientId: idPatient
           })
         }
-        store.state.communications.patientsList ? "" : store.dispatch("patientsList")
+        store.state.patients.patientsList ? "" : store.dispatch("patientsList")
         store.state.common.staffList ? "" : store.dispatch("staffList")
       })
       const onFinishFailed = () => {
@@ -176,36 +179,42 @@ import { useRoute } from 'vue-router'
       const typeOfVisitList = computed(() => {
         return store.state.common.typeOfVisit;
       })
-      const patientsList = props.patient ? reactive(props.patient) : computed(() => {
-        return store.state.communications.patientsList
-      })
+     
+        const allPatients =  computed(() => {
+          return store.state.communications.patientsList
+        })
+
+      
       const staffList = props.staff ? reactive(props.staff) : computed(() => {
         return store.state.common.staffList
       })
       
-      const patients = ref([])
-      if(patientsList.value != null) {
-        patientsList.value.forEach(element => {
-          patients.value.push({
-            value: element.fullName,
-            id: element.id,
-          })
-        });
-      }
+      // const patients = ref([])
+      // console.log("obj",staffList.value);
+      // if(allPatients.value != null) {
+        
+      //   allPatients.value.forEach(element => {
+      //     patients.value.push({
+      //       value: element.fullName,
+      //       id: element.id,
+      //     })
+      //   });
+      // }
       
-      const selectedOptionId = ref(null);
-      const onSelectOption = (selected) => {
-        patients.value.forEach(patient => {
-          if(patient.value == selected) {
-            selectedOptionId.value = patient.id
-          }
-        });
-      };
+      // const selectedOptionId = ref(null);
+      // const onSelectOption = (selected) => {
+      //   patients.value.forEach(patient => {
+      //     if(patient.value == selected) {
+      //       selectedOptionId.value = patient.id
+      //     }
+      //   });
+      // };
 
       const sendMessage = () => {
-        Object.assign(appointmentForm, {
-          patientId: idPatient
-        })
+        // Object.assign(appointmentForm, {
+        //   patientId: idPatient
+        // })
+        
         const date = appointmentForm.startDate
         const  timeFormat = (moment(appointmentForm.startTime)).format('HH:mm');
         store.dispatch('addAppointment', {
@@ -226,11 +235,11 @@ import { useRoute } from 'vue-router'
         setTimeout(()=>{
             if(store.state.appointment.successMsg){
               store.dispatch("calendarDateSelect", moment(date))
-          store.dispatch("searchAppointment", { fromDate: moment(date), toDate: moment(date), tabId: 1 })
-          store.dispatch("searchAppointment", { fromDate: moment(), toDate: moment(), tabId: "today" })
+         // store.dispatch("searchAppointment", { fromDate: moment(date), toDate: moment(date), tabId: 1 })
+          //store.dispatch("searchAppointment", { fromDate: moment(), toDate: moment(), tabId: "today" })
               store.state.appointment.successMsg=null
               handleCancel()
-              emit('is-visible', false);
+              emit('is-visible', {check:false,date:moment(date)});
             }
             },3000)
       }
@@ -247,9 +256,10 @@ import { useRoute } from 'vue-router'
         //emit('is-visible', false);
       };
       return {
+        allPatients,
         form,
         errorMsg,
-        patientsList,
+        // patientsList,
         staffList,
         appointmentForm,
         sendMessage,
@@ -262,8 +272,8 @@ import { useRoute } from 'vue-router'
         //disabledDate,
         formRef,
         list,
-        onSelectOption,
-        patients,
+        //onSelectOption,
+        //patients,
       };
     },
   };

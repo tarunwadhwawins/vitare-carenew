@@ -46,7 +46,8 @@ export const addTask = async ({ commit }, data) => {
 
 export const editTask = async ({ commit }, id) => {
 	commit('loadingStatus', true)
-	await ServiceMethodService.common("get", `task/${id}`, null, null).then((response) => {
+	
+	await ServiceMethodService.common("get", `task/`+id.id, null, null).then((response) => {
 		commit('editTask', response.data.data);
 		commit('loadingStatus', false)
 	}).catch((error) => {
@@ -85,7 +86,8 @@ export const tasksDelete = async ({ commit }, id) => {
 
 export const updateTask = async ({ commit }, data) => {
 	commit('loadingStatus', true)
-	await ServiceMethodService.common("put", `task/${data.id}`, null, data.data).then((response) => {
+	
+	await ServiceMethodService.common("put", `task/${data.id.id}`, null, data.data).then((response) => {
 		commit('updateTask', response.data.data);
 		successSwal(response.data.message)
 		commit('loadingStatus', false)

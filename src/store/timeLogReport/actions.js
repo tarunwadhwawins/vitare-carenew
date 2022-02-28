@@ -66,7 +66,9 @@ export const deleteTimeLog = async ({ commit },uuid) => {
 	commit('loadingStatus', true)
 	await ServiceMethodService.common("delete", `timeLog/${uuid}`, null, null).then((response) => {
 		commit('deleteTimeLog', response.data.data);
+		successSwal(response.data.message)
 		commit('loadingStatus', false)
+
 	}).catch((error) => {
 		if (error.response.status === 422) {
 			commit('errorMsg', error.response.data)

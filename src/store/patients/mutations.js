@@ -74,7 +74,7 @@ export const addDemographic = (state, data) => {
             customRender: "patientVitals",
         },
         children: [{
-                title: "BP(mmHg)",
+                title:<p>BP <p>(mmHg)</p></p>,
                 dataIndex: "bp",
                 key: "bp",
             },
@@ -84,12 +84,12 @@ export const addDemographic = (state, data) => {
                 key: "spo2",
             },
             {
-                title: "Glucose(mg/dL)",
+                title: <p>Glucose <p>(mg/dL)</p></p> ,
                 dataIndex: "glucose",
                 key: "glucose",
             },
             {
-                title: "Weight(LBS)",
+                title:<p>Weight <p>(LBS)</p></p>,
                 dataIndex: "weight",
                 key: "weight",
             },
@@ -566,6 +566,9 @@ export const deleteDocument = (state, data) => {
     if(data.length > 0) {
       state.latestDevice = data
     }
+    else {
+      state.latestDevice = null
+    }
  }
 
   export const errorMsg = (state, data) => {
@@ -604,6 +607,8 @@ export const deleteDocument = (state, data) => {
      id: 4,
      name: "List Table"
  }]
+}else{
+  state.patientsPermissions =[]
 }
 
 }
@@ -620,10 +625,6 @@ export const patientSearchWithBitrix = (state, data) => {
     {
       title: "Type",
       dataIndex: "TYPE_ID",
-    },
-    {
-      title: "Stage",
-      dataIndex: "STAGE_ID",
     },
     {
       title: "Actions",

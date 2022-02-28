@@ -123,6 +123,7 @@ export default defineComponent({
           },
           id: patients.value.addDemographic.id,
         });
+        reset()
         setTimeout(() => {
           store.dispatch("program", patients.value.addDemographic.id);
         }, 2000);
@@ -135,7 +136,12 @@ export default defineComponent({
     const programsData = computed(() => {
       return store.state.patients.program;
     });
-
+    const form = reactive({
+      ...program,
+    });
+    function reset(){
+      Object.assign(program,form)
+    }
     function deleteProgram(id) {
       if(patientId != null) {
         warningSwal(messages.deleteWarning).then((response) => {
@@ -175,7 +181,8 @@ export default defineComponent({
       patients,
       program,
       programs,
-      errorMsg:patients.value.errorMsg
+      errorMsg:patients.value.errorMsg,
+      reset,
     };
   },
 });

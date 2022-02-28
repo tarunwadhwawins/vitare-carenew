@@ -17,8 +17,10 @@ export const searchAppointmentSuccess = async (state, data) => {
   if (data.key == 3) {
     state.searchAppointmentRecords = responseConvert(state.weekName, data.data, 'dddd')
   } else if(data.key == 4){
+    console.log("clickInfo", data.data )
     state.searchAppointmentRecords = data.data.map((item) => {
       item.title = item.appointmentType
+      item.timeGet=item.duration
       item.date = moment(dateFormat(item.date)).format('YYYY-MM-DD')
       return { ...item }
     })
@@ -58,7 +60,7 @@ export const showMoreRecords = (state, data) => {
 
 export const latestAppointmentSuccess = (state, data) => {
   if(data.length > 0) {
-    data.date = dateOnlyFormat(data.date);
+    data[0].date = dateOnlyFormat(data[0].date);
     state.latestAppointment = data;
   }
 }

@@ -197,12 +197,12 @@ export default {
             onMounted(() => {
               
                 var tableContent = document.querySelector('.ant-table-body')
-                console.log(tableContent)
+              
                 tableContent.addEventListener('scroll', (event) => {
                   
                     let maxScroll = event.target.scrollHeight - event.target.clientHeight
                     let currentScroll = event.target.scrollTop + 2
-                    //console.log(currentScroll)
+                    console.log(currentScroll)
                     if (currentScroll >= maxScroll) {
     
                       let current_page = meta.value.communicationMeta.current_page + 1

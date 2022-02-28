@@ -1,4 +1,4 @@
- import{timeFormatSimple} from "../../commonMethods/commonMethod"
+ import{meridiemFormatFromTimestamp} from "../../commonMethods/commonMethod"
  export const counterPlus = (state) => {
   state.counter++
 }
@@ -151,8 +151,8 @@ export const addAvailability = (state, data) => {
 
 export const availabilityList = (state, data) => {
   state.availabilityList = data.map((item)=>{
-   item.startTime = timeFormatSimple(item.startTime)
-   item.endTime = timeFormatSimple(item.endTime)
+   item.startTime = meridiemFormatFromTimestamp(item.startTime)
+   item.endTime = meridiemFormatFromTimestamp(item.endTime)
    return item
   }),
   state.availabilityListColms =[{
@@ -261,6 +261,8 @@ export const staffPermissions = (state, auth) => {
      id: 4,
      name: "List Table"
  }]
+}else{
+  state.staffPermissions =[]
 }
 
 }

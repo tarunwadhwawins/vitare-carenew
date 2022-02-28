@@ -247,14 +247,12 @@ const router = createRouter({
   routes
 })
 function isLoggedIn() {
-  return localStorage.getItem("auth");
+  return localStorage.getItem("access");
 }
 
 router.beforeEach((to, from, next) => {
 if (to.matched.some(record => record.meta.authAdmin) ) {
-  
     if (!isLoggedIn()) {
-     
         next({
             name: "Login",
             query: { redirect: to.fullPath },
