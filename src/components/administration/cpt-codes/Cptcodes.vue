@@ -56,9 +56,7 @@ export default {
     SearchField,
     Button,
   },
-
   setup() {
-
     const visible = ref(false);
     const showModal = () => {
       visible.value = true;
