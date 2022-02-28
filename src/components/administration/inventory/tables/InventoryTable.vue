@@ -10,32 +10,35 @@
         </template>
         <span class="icons"><EditOutlined @click="editInventory(record.id)" /></span>
       </a-tooltip>
-      <!-- <a-tooltip placement="bottom">
+      <a-tooltip placement="bottom">
         <template #title>
           <span>Delete</span>
         </template>
         <span class="icons"><DeleteOutlined @click="deleteInventory(record.id)" /></span>
-      </a-tooltip> -->
+      </a-tooltip>
     </template>
     <template #isActive="{record}">
       <a-switch v-model:checked="record.status" @change="updateStatus(record.id, $event)" />
     </template>
   </a-table>
+  <Loader/>
 </template>
 
 <script>
 import {
-  // DeleteOutlined,
+  DeleteOutlined,
   EditOutlined
 } from "@ant-design/icons-vue";
 import { watchEffect, computed } from "vue";
 import { useStore } from "vuex";
-import { warningSwal } from "../../../../commonMethods/commonMethod"
-import { messages } from '../../../../config/messages';
+import { warningSwal } from "@/commonMethods/commonMethod";
+import { messages } from '@/config/messages';
+import Loader from "@/components/loader/Loader";
 export default {
   components: {
-    // DeleteOutlined,
+    DeleteOutlined,
     EditOutlined,
+    Loader,
   },
   setup(props, {emit}) {
     const store = useStore()
@@ -48,11 +51,13 @@ export default {
     })
 
     const editInventory = (id) => {
+      // store.dispatch('inventoryDetails', id)
       emit('edit-inventory', id)
     }
 
     const updateStatus = (id, status) => {
       const data = {
+        "inventoryStatus": true,
         "isActive": status
       };
       store.dispatch('updateInventory', {id, data}).then(() => {
