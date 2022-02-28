@@ -192,13 +192,13 @@ const routes = [
   {
     path: '/cpt-codes',
     name: 'CptCodes',
-    component: () => import( '../components/administration/cpt-codes/CptCodes'),
+    component: () => import( '@/components/administration/cpt-codes/CptCodes'),
     meta: { authAdmin: true }
   },
   {
     path: '/inventory',
     name: 'Inventory',
-    component: () => import( '../components/administration/inventory/Inventory'),
+    component: () => import( '@/components/administration/inventory/Inventory'),
     meta: { authAdmin: true }
   },
 

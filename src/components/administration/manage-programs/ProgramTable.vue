@@ -25,8 +25,8 @@
                 </a>
             </a-tooltip>
         </template>
-          <template #active="key">
-            <a-switch v-model:checked="checked[key.record.key]" />
+          <template #status="{record}">
+            <a-switch v-model:checked="record.status" @change="UpdateProgramStatus(record.udid, $event)"/>
           </template>
         </a-table>
       </a-col>
@@ -78,7 +78,14 @@ type:Array
                 }
             });
         }
-
+        const UpdateProgramStatus = (id, status) => {
+      const data = {
+        "isActive": status
+      };
+     
+      store.dispatch('updateProgram', {id, data}).then(() => {
+      })
+    }
         //ifinitescroller
         const meta = store.getters.programsRecord
         const loader = ref(false)
@@ -118,7 +125,8 @@ type:Array
           columns,
           data,
           deleteProgram,
-          editProgram
+          editProgram,
+          UpdateProgramStatus
         };
       },
     };
