@@ -18,6 +18,7 @@ import { timeLogs } from "./timeLogs/index"
 import { timeLogReport } from "./timeLogReport/index"
 import { careTeam } from "./careTeam/index"
 import { programs } from "./programs/index"
+import { cptCodes } from "./cptCodes/index"
 
 import createPersistedState from "vuex-persistedstate";
 
@@ -42,6 +43,7 @@ export default createStore({
     thresholds,
     careTeam,
     programs,
+    cptCodes,
   },
   plugins: [ createPersistedState({
     reducer(state) {

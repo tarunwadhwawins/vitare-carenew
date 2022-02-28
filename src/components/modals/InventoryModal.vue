@@ -53,7 +53,7 @@
   </a-modal>
 </template>
 <script>
-import { ref, reactive, computed, watchEffect } from "vue";
+import { ref, reactive, computed, watchEffect, onMounted } from "vue";
 import { useStore } from "vuex"
 import ModalButtons from "@/components/common/button/ModalButtons";
 import AutoComplete from "@/components/common/input/AutoComplete";
@@ -78,28 +78,36 @@ export default {
       emit('is-visible', false);
     };
 
-    const inventoryDetails = computed(() => {
-      return store.state.globalCodes.inventoryDetails;
+    const inventory = computed(() => {
+      return store.state.inventory;
     })
-    const inventoryDetail = inventoryDetails.value;
+    console.log('inventory', inventory)
+    const inventoryDetail = inventory.value.inventoryDetails;
     
     var switchOn;
     if(isEdit) {
-      switchOn = inventoryDetail && inventoryDetail.status ? true : false;
+      switchOn = inventoryDetail && inventoryDetail.isActive ? true : false;
     }
     else {
       switchOn = true;
     }
-    const inventoryForm = reactive({
-      deviceType:  inventoryDetail && inventoryDetail.deviceType ? inventoryDetail.deviceType : '',
-      deviceModelId:  inventoryDetail && inventoryDetail.deviceModelId ? inventoryDetail.deviceModelId : '',
-      serialNumber:  inventoryDetail && inventoryDetail.serialNumber ? inventoryDetail.serialNumber : '',
-      macAddress:  inventoryDetail && inventoryDetail.macAddress ? inventoryDetail.macAddress : '',
-      isActive:  switchOn,
-    });
     
     const inventoryTypes = computed(() => {
       return store.state.common.deviceType;
+    })
+    
+    const inventoryForm = reactive({
+      deviceType: '',
+      deviceModelId: '',
+      serialNumber: '',
+      macAddress: '',
+      isActive: switchOn,
+    });
+
+    onMounted(() => {
+      if(isEdit) {
+        Object.assign(inventoryForm, inventory.value.inventoryDetails);
+      }
     })
     
     const deviceTypes = ref([])
@@ -148,13 +156,13 @@ export default {
     const submitForm = () => {
       if(isEdit) {
         const data = {
-          "deviceType": inventoryForm.deviceType,
-          "deviceModelId": inventoryForm.deviceModelId,
+          "deviceModelId": modelId.value != null ? modelId.value : inventoryDetail.modelId,
           "serialNumber": inventoryForm.serialNumber,
           "macAddress": inventoryForm.macAddress,
           "isActive": inventoryForm.isActive,
         }
-        const id = '5';
+        console.log('data', data)
+        const id = inventoryDetail.id;
         store.dispatch('updateInventory', {id, data}).then(() => {
           store.dispatch('inventoriesList')
           emit('is-visible', false);
