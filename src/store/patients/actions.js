@@ -262,11 +262,11 @@ export const programList = async ({
 }
 
 
-export const addProgram = async ({
+export const addPatientProgram = async ({
   commit
 }, data) => {
   await serviceMethod.common("post", `patient/${data.id}/program`, null, data.data).then((response) => {
-    commit('addProgram', response.data.data);
+    commit('addPatientProgram', response.data.data);
     // successSwal(response.data.message)
   }).catch((error) => {
     if (error.response.status === 422) {

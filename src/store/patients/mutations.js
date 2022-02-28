@@ -239,8 +239,8 @@ export const addDemographic = (state, data) => {
     state.counter = 0
   }
 
-  export const addProgram = (state, data) => {
-    state.addProgram = data
+  export const addPatientProgram = (state, data) => {
+    state.addPatientProgram = data
  }
 
 
