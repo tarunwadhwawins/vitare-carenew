@@ -47,6 +47,7 @@ export default {
     patientMeta:null,
     patientSearchWithBitrix:null,
     patientSearchWithBitrixCols:null,
-    fetchFromBitrix:null
+    fetchFromBitrix:null,
+    patientVitals:null,
 
 }

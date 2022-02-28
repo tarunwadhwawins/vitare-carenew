@@ -719,3 +719,15 @@ export const fetchFromBitrix = async ({ commit }, id) => {
 		commit('failure', error.response.data);
 	})
 }
+
+export const patientVitals = async ({ commit }, id) => {
+	await serviceMethod.common("get", `patient/${id}/vital`, null, null).then((response) => {
+		commit('patientVitals', response.data.vital);
+	})
+	.catch((error) => {
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}

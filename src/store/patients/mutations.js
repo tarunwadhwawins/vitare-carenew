@@ -1,5 +1,5 @@
 
-import { meridiemFormatFromTimestamp,dateOnlyFormat,dobFormat2 } from '../../commonMethods/commonMethod';
+import { meridiemFormatFromTimestamp,dateOnlyFormat,dobFormat2, responseConvert } from '../../commonMethods/commonMethod';
 
 export const addDemographic = (state, data) => {
     state.addDemographic = data
@@ -644,4 +644,8 @@ export const fetchFromBitrix = (state, data) => {
     dob:dobFormat2(data.BIRTHDATE),
     
   }
+}
+
+export const patientVitals = (state, data) => {
+  state.patientVitals = responseConvert(data.takeTime, data.value, 'hh:00 A')
 }
