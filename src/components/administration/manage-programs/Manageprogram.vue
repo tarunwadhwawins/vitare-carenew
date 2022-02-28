@@ -14,7 +14,7 @@
                 <h2 class="pageTittle">
                   Programs
                   <div class="commonBtn">
-                    <a-button class="btn primaryBtn" @click="showModal"
+                    <a-button class="btn primaryBtn" @click="showModal(true)"
                       >Add New Program</a-button
                     >
                   </div>
@@ -37,39 +37,15 @@
                   <a-button class="primaryBtn">Export to Excel</a-button>
                 </div>
               </a-col>
-              <a-col :span="24">
-                <a-table
-                  :columns="columns"
-                  :data-source="data"
-                  :scroll="{ x: 900 }"
-                  @change="onChange"
-                >
-                  <template #actions>
-                    <a-tooltip placement="bottom">
-                      <template #title>
-                        <span>Edit</span>
-                      </template>
-                      <a class="icons"><EditOutlined /></a>
-                    </a-tooltip>
-                    <a-tooltip placement="bottom">
-                      <template #title>
-                        <span>Delete</span>
-                      </template>
-                      <a class="icons"> <DeleteOutlined /></a>
-                    </a-tooltip>
-                  </template>
-                  <template #active="key">
-                    <a-switch v-model:checked="checked[key.record.key]" />
-                  </template>
-                </a-table>
-              </a-col>
+              <ProgramTable v-if="programsList.programList" :programData="programsList" @is-edit="showEdit($event)"></ProgramTable>
             </a-row>
           </div>
         </a-layout-content>
       </a-layout>
     </a-layout>
     <!--modals-->
-    <AdminPrograms v-model:visible="visible" @ok="handleOk" />
+    <AdminPrograms v-if="programId" v-model:visible="visible" @ok="handleOk" @is-visible="showModal($event)" :idProgram="programId" />
+    <AdminPrograms v-else v-model:visible="visible" @ok="handleOk" @is-visible="showModal($event)"  />
     <!---->
   </div>
 </template>
@@ -78,80 +54,50 @@
 import Header from "@/components/administration/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import AdminPrograms from "@/components/modals/AdminPrograms";
-import { ref } from "vue";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-const columns = [
-  {
-    title: "Program Name",
-    dataIndex: "name",
-    sorter: {
-      compare: (a, b) => a.name - b.name,
-      multiple: 3,
-    },
-  },
-  {
-    title: "Description",
-    dataIndex: "description",
-    sorter: {
-      compare: (a, b) => a.description - b.description,
-      multiple: 3,
-    },
-  },
-  {
-    title: "Active/Inactive",
-    dataIndex: "active",
-    slots: {
-      customRender: "active",
-    },
-  },
-  {
-    title: "Actions",
-    dataIndex: "actions",
-    slots: {
-      customRender: "actions",
-    },
-  },
-];
-const data = [
-  {
-    key: "1",
-    name: "RPM - Remote Patient Monitor",
-    description: "Lorem Ipsum",
-    active: "",
-    action: "",
-  },
-  {
-    key: "2",
-    name: "BHI - Behaviour Health Integration",
-    description: "Lorem Ipsum",
-    active: "",
-    action: "",
-  },
-  {
-    key: "3",
-    name: "CCM - Chronic Care Management",
-    description: "Lorem Ipsum",
-    active: "",
-    action: "",
-  },
-];
+import { ref,watchEffect } from "vue";
+import ProgramTable from "./ProgramTable"
+import { useStore } from "vuex";
+ 
+// const data = [
+//   {
+//     key: "1",
+//     name: "RPM - Remote Patient Monitor",
+//     description: "Lorem Ipsum",
+//     active: "",
+//     action: "",
+//   },
+//   {
+//     key: "2",
+//     name: "BHI - Behaviour Health Integration",
+//     description: "Lorem Ipsum",
+//     active: "",
+//     action: "",
+//   },
+//   {
+//     key: "3",
+//     name: "CCM - Chronic Care Management",
+//     description: "Lorem Ipsum",
+//     active: "",
+//     action: "",
+//   },
+// ];
 export default {
   components: {
     Header,
     Sidebar,
-    DeleteOutlined,
-    EditOutlined,
+   
     AdminPrograms,
+    ProgramTable,
   },
 
   setup() {
-    const checked = ref([false]);
-
+    
+const store = useStore()
     const visible = ref(false);
-    const showModal = () => {
-      visible.value = true;
+    const showModal = (e) => {
+      visible.value = e;
     };
-
+const programId=ref(null)
     const handleOk = (e) => {
       console.log(e);
       visible.value = false;
@@ -159,7 +105,9 @@ export default {
      const handleChange2 = (value) => {
       console.log(`selected ${value}`);
     };
-
+watchEffect(() =>{
+  store.dispatch('programList')
+})
     const searchoptions = ref([
       {
         value: "RPM - Remote Patient Monitor",
@@ -175,17 +123,22 @@ export default {
       },
     
     ]);
+    const programsList = store.getters.programsRecord.value
+    const showEdit = (e) =>{
+      programId.value=e.id
+      visible.value = e.check;
+      //console.log("check",programId.value)
+      }
     return {
-      columns,
-      data,
-      checked,
+      programId,
+      showEdit,
       handleChange2,
       searchoptions,
       size: ref([]),
-
       visible,
       showModal,
       handleOk,
+      programsList
     };
   },
 };

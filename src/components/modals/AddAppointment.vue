@@ -16,7 +16,7 @@
                 size="large">
                 <a-select-option value="" hidden>{{'Select Patient'}}</a-select-option>
                 <a-select-option v-for="patient in allPatients" :key="patient.id" :value="patient.id">{{
-                  patient.name+' '+patient.id+' '+patient.lastName }}</a-select-option> 
+                  patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option> 
               </a-select>
              
               <ErrorMessage v-if="errorMsg" :name="errorMsg.patientId?errorMsg.patientId[0]:''" />
