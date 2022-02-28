@@ -84,7 +84,7 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const status = ref([]);
-    const patientDetail = reactive(props.patientDetails);
+    // const patientDetail = reactive(props.patientDetails);
     const inventoryForm = reactive({
       inventory: "",
       deviceType: "",
@@ -101,7 +101,7 @@ export default defineComponent({
           serialNumber: inventoryForm.serialNumber,
           macAddress: inventoryForm.macAddress,
         },
-        id: patientDetail.id,
+        id: route.params.udid,
       }
       console.log('DATA', inventoryFormData)
       store.dispatch("addDevice", inventoryFormData).then(() => {
