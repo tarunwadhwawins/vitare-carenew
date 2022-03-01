@@ -645,7 +645,8 @@ export const patientDetails = async ({commit}, id) => {
     commit('patientDetailsSuccess', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorSwal(error.response.data.message)
+    // errorSwal(error.response.data.message)
+    console.log('Error', error)
     commit('loadingStatus', false)
   })
 }
