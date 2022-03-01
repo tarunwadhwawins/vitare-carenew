@@ -119,7 +119,7 @@
                 </div>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Documents'">
-                <Documents  entity="staff"/>
+                <StaffDocuments  entity="staff"/>
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
@@ -150,7 +150,7 @@ import {reactive, computed } from "vue";
 import Contacts from "@/components/modals/forms/Contacts";
 import Availability from "@/components/modals/forms/Availability";
 import Roles from "@/components/modals/forms/Roles";
-import Documents from "@/components/modals/forms/Documents";
+import StaffDocuments from "@/components/modals/forms/StaffDocuments";
 // import Providers from "@/components/modals/forms/Providers";
 import { useStore } from "vuex";
 import ErrorMessage from "@/components/common/messages/ErrorMessage";
@@ -163,7 +163,7 @@ export default {
     Contacts,
     Availability,
     Roles,
-    Documents,
+    StaffDocuments,
     // Providers,
     ErrorMessage,
   },

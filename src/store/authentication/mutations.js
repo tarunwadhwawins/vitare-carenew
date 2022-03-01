@@ -108,6 +108,10 @@ export const refreshTokenSuccess = async (state, token) => {
 }
 
 export const loginFailure = (state, error) => {
-  
   state.errorMsg = error;
+}
+
+
+export const accessPermission = (state, data) => {
+  state.accessPermission = data;
 }
