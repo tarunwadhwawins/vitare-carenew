@@ -264,5 +264,46 @@ export const staffPermissions = (state, auth) => {
 }else{
   state.staffPermissions =[]
 }
+}
 
+
+
+
+export const addStaffDocument = (state, data) => {
+  state.addStaffDocument = data
+}
+
+export const staffDocuments = (state, data) => {
+  state.staffDocuments = data
+  state.documentColumns=[
+      {
+        title: "Name",
+        dataIndex: "name",
+      },
+      {
+        title: "Document",
+        dataIndex: "document",
+        slots: {
+          customRender: "document",
+        },
+      },
+      {
+        title: "	Type",
+        dataIndex: "type",
+      },
+      {
+        title: "	Tags",
+        dataIndex: "tags",
+        slots: {
+          customRender: "tags",
+        },
+      },
+      {
+        title: "Actions",
+        dataIndex: "actions",
+        slots: {
+          customRender: "action",
+        },
+      },
+    ];
 }

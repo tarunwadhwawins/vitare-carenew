@@ -1,5 +1,5 @@
 <template>
-  <a-layout-sider
+  <a-layout-sider v-show="accessPermission!=0"
     :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"
   >
     <div class="menuList">
@@ -90,6 +90,7 @@ import {
   FileTextOutlined,
   // UnlockOutlined
 } from "@ant-design/icons-vue";
+import {useStore} from "vuex"
 export default defineComponent({
   components: {
     HomeOutlined,
@@ -101,16 +102,22 @@ export default defineComponent({
   },
 
   setup() {
+    const store = useStore()
     const state = reactive({
       selectedKeys: ["1"],
     });
     const roles = computed(() =>{
-return localStorage.getItem('roleAuth')
+      return localStorage.getItem('roleAuth')
     })
     onUnmounted(() => {
       document.body.classList.remove("show");
     });
+
+    const accessPermission = computed(()=>{
+      return store.state.authentication.accessPermission
+    })
     return { 
+      accessPermission,
       roles,
       ...toRefs(state) };
   },
