@@ -65,3 +65,8 @@ export const latestAppointmentSuccess = (state, data) => {
   }
 }
 
+
+export const appointmentConference = (state, data) => {
+  state.appointmentConference = data
+}
+

@@ -42,13 +42,13 @@ export default {
     function deleteDocument(id) {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
-          store.dispatch("deleteStaffDocument", {
+          store.dispatch("deleteDocument", {
             id: props.Id ? props.Id : router.params.udid,
             documentId: id,
           });
           setTimeout(() => {
             store.dispatch(
-              "staffDocuments",
+              "documents",
               props.Id ? props.Id : router.params.udid
             );
           }, 2000);
@@ -56,11 +56,11 @@ export default {
       });
     }
     const documentsData = computed(() => {
-      return store.state.careCoordinator.staffDocuments;
+      return store.state.patients.documents;
     });
 
     const documentColumns = computed(() => {
-      return store.state.careCoordinator.documentColumns;
+      return store.state.patients.documentColumns;
     });
     return {
       documentColumns,

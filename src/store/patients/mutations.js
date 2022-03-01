@@ -491,33 +491,30 @@ export const patientInsurance = (state, insurances) => {
 
 export const patientDetailsSuccess = (state, patient) => {
   if(patient.emergencyContact.data) {
-    patient.emergencyFullName = patient.emergencyContact.data.fullName;
-    patient.emergencyEmail = patient.emergencyContact.data.email;
-    patient.emergencyPhoneNumber = patient.emergencyContact.data.phoneNumber;
+    patient.emergencyFullName = patient.emergencyContact.data.fullName ? patient.emergencyContact.data.fullName : null;
+    patient.emergencyEmail = patient.emergencyContact.data.email ? patient.emergencyContact.data.email : null;
+    patient.emergencyPhoneNumber = patient.emergencyContact.data.phoneNumber ? patient.emergencyContact.data.phoneNumber : null;
     patient.emergencyContactType = patient.emergencyContact.data.contactType.length > 0 ? JSON.parse(patient.emergencyContact.data.contactType) : [];
-    patient.emergencyContactTime = patient.emergencyContact.data.contactTimeId ? JSON.parse(patient.emergencyContact.data.contactTimeId) : null;
+    patient.emergencyContactTime = patient.emergencyContact.data.contactTimeId.length > 0 ? JSON.parse(patient.emergencyContact.data.contactTimeId) : null;
     patient.isPrimary = patient.patientFamilyMember.data.fullName == patient.emergencyContact.data.fullName ? true : false;
     patient.emergencyGender = patient.emergencyContact.data.genderId;
   }
   
   if(patient.patientFamilyMember.data) {
-    patient.fullName = patient.patientFamilyMember.data.fullName;
-    patient.familyEmail = patient.patientFamilyMember.data.email;
-    patient.familyPhoneNumber = patient.patientFamilyMember.data.phoneNumber;
+    patient.fullName = patient.patientFamilyMember.data.fullName ? patient.patientFamilyMember.data.fullName : null;
+    patient.familyEmail = patient.patientFamilyMember.data.email ? patient.patientFamilyMember.data.email : null;
+    patient.familyPhoneNumber = patient.patientFamilyMember.data.phoneNumber ? patient.patientFamilyMember.data.phoneNumber : null;
     patient.familyContactType = patient.patientFamilyMember.data.contactType.length > 0 ? JSON.parse(patient.patientFamilyMember.data.contactType) : [];
-    patient.familyContactTime = patient.patientFamilyMember.data.contactTimeId ? JSON.parse(patient.patientFamilyMember.data.contactTimeId) : null;
+    patient.familyContactTime = patient.patientFamilyMember.data.contactTimeId.length > 0 ? JSON.parse(patient.patientFamilyMember.data.contactTimeId) : null;
     patient.familyGender = patient.patientFamilyMember.data.genderId;
     patient.relation = patient.patientFamilyMember.data.relationId;
   }
-  else {
-    patient.fullName = '';
-  }
   
-  patient.country = patient.countryId;
-  patient.state = patient.stateId;
-  patient.language = patient.languageId;
-  patient.gender = patient.genderId;
-  patient.contactTime = patient.contactTimeId;
+  patient.country = patient.countryId ? patient.countryId : null;
+  patient.state = patient.stateId ? patient.stateId : null;
+  patient.language = patient.languageId ? patient.languageId : null;
+  patient.gender = patient.genderId ? patient.genderId : null;
+  patient.contactTime = patient.contactTimeId ? patient.contactTimeId : null;
   patient.contactType = patient.contactType.length > 0 ? JSON.parse(patient.contactType) : null;
   patient.otherLanguage = patient.otherLanguage.length > 0 ? JSON.parse(patient.otherLanguage) : null;
 
@@ -622,7 +619,8 @@ export const deleteDocument = (state, data) => {
 
 
 export const patientSearchWithBitrix = (state, data) => {
-  state.patientSearchWithBitrix = data.filter(item=>item.CONTACT_ID),
+  // state.patientSearchWithBitrix = data.filter(item=>item.CONTACT_ID),
+  state.patientSearchWithBitrix = data,
   state.patientSearchWithBitrixCols = [
     {
       title: "Title",
@@ -643,13 +641,165 @@ export const patientSearchWithBitrix = (state, data) => {
 }
 
 
+
+export const getBitrixFieldsName = (state, data) => {
+  state.getBitrixFieldsName = data
+}
+
+
 export const fetchFromBitrix = (state, data) => {
+  // let email = arrayToObjact(data.EMAIL)
+  // let phone = arrayToObjact(data.PHONE)
+  state.fetchFromBitrixStatus =true
   state.fetchFromBitrix = {
-    firstName :data.NAME,
-    lastName :data.LAST_NAME,
-    dob:dobFormat2(data.BIRTHDATE),
-    
+    firstName :'',
+    lastName :'',
+    dob:'',
+    email:'',
+    phoneNumber:'',
+    gender: "",
+    language: "",
+    otherLanguage: [],
+    nickName: "",
+    weight: "",
+    height: "",
+    contactType: [],
+    contactTime: "",
+    medicalRecordNumber: "",
+    country: 19,
+    state: "",
+    city: "",
+    zipCode: "",
+    appartment: "",
+    address: "",
+    fullName: "",
+    familyEmail: "",
+    familyPhoneNumber: "",
+    familyContactType: [],
+    familyContactTime: "",
+    familyGender: "",
+    relation: "",
+    emergencyFullName: "",
+    emergencyEmail: "",
+    emergencyPhoneNumber: "",
+    emergencyContactType: [],
+    emergencyContactTime: "",
+    emergencyGender: "",
+    isPrimary: false,
+    familyMemberId: '',
+    emergencyId: '',
   }
+  state.getBitrixFieldsName.map(item =>{
+    if(item.patientId=="firstName"){
+     state.fetchFromBitrix.firstName = data[item.bitrixId]
+    }
+    if(item.patientId=="lastName"){
+    state.fetchFromBitrix.lastName = data[item.bitrixId] 
+    }
+    if(item.patientId=="dob"){
+      state.fetchFromBitrix.dob = dobFormat2(data[item.bitrixId]) 
+    }
+    if(item.patientId=="email"){
+      state.fetchFromBitrix.email = data[item.bitrixId]
+    }
+    if(item.patientId=="phoneNumber"){
+      state.fetchFromBitrix.phoneNumber = data[item.bitrixId]
+    }
+    if(item.patientId=="gender"){
+      state.fetchFromBitrix.gender = data[item.bitrixId]
+    }
+    if(item.patientId=="language"){
+      state.fetchFromBitrix.language = data[item.bitrixId]
+    }
+    if(item.patientId=="otherLanguage"){
+      state.fetchFromBitrix.otherLanguage = data[item.bitrixId]
+    }
+    if(item.patientId=="nickName"){
+      state.fetchFromBitrix.nickName = data[item.bitrixId]
+    }
+    if(item.patientId=="weight"){
+      state.fetchFromBitrix.weight = data[item.bitrixId]
+    }
+    if(item.patientId=="height"){
+      state.fetchFromBitrix.height = data[item.bitrixId]
+    }
+    if(item.patientId=="contactType"){
+      state.fetchFromBitrix.contactType = data[item.bitrixId]
+    }
+    if(item.patientId=="contactTime"){
+      state.fetchFromBitrix.contactTime = data[item.bitrixId]
+    }
+    if(item.patientId=="medicalRecordNumber"){
+      state.fetchFromBitrix.medicalRecordNumber = data[item.bitrixId]
+    }
+    if(item.patientId=="country"){
+      state.fetchFromBitrix.country = data[item.bitrixId]
+    }
+    if(item.patientId=="state"){
+      state.fetchFromBitrix.state = data[item.bitrixId]
+    }
+    if(item.patientId=="city"){
+      state.fetchFromBitrix.city = data[item.bitrixId]
+    }
+    if(item.patientId=="zipCode"){
+      state.fetchFromBitrix.zipCode = data[item.bitrixId]
+    }
+    if(item.patientId=="appartment"){
+      state.fetchFromBitrix.appartment = data[item.bitrixId]
+    }
+    if(item.patientId=="address"){
+      state.fetchFromBitrix.address = data[item.bitrixId]
+    }
+    if(item.patientId=="fullName"){
+      state.fetchFromBitrix.fullName = data[item.bitrixId]
+    }
+    if(item.patientId=="familyEmail"){
+      state.fetchFromBitrix.familyEmail = data[item.bitrixId]
+    }
+    if(item.patientId=="familyPhoneNumber"){
+      state.fetchFromBitrix.familyPhoneNumber = data[item.bitrixId]
+    }
+    if(item.patientId=="familyContactType"){
+      state.fetchFromBitrix.familyContactType = data[item.bitrixId]
+    }
+    if(item.patientId=="familyContactTime"){
+      state.fetchFromBitrix.familyContactTime = data[item.bitrixId]
+    }
+    if(item.patientId=="familyGender"){
+      state.fetchFromBitrix.familyGender = data[item.bitrixId]
+    }
+
+    if(item.patientId=="relation"){
+      state.fetchFromBitrix.relation = data[item.bitrixId]
+    }
+    if(item.patientId=="emergencyFullName"){
+      state.fetchFromBitrix.emergencyFullName = data[item.bitrixId]
+    }
+    if(item.patientId=="emergencyEmail"){
+      state.fetchFromBitrix.emergencyEmail = data[item.bitrixId]
+    }
+    if(item.patientId=="emergencyPhoneNumber"){
+      state.fetchFromBitrix.emergencyPhoneNumber = data[item.bitrixId]
+    }
+    if(item.patientId=="emergencyContactType"){
+      state.fetchFromBitrix.emergencyContactType = data[item.bitrixId]
+    }
+    if(item.patientId=="emergencyContactTime"){
+      state.fetchFromBitrix.emergencyContactTime = data[item.bitrixId]
+    }
+    if(item.patientId=="emergencyGender"){
+      state.fetchFromBitrix.emergencyGender = data[item.bitrixId]
+    }
+    if(item.patientId=="isPrimary"){
+      state.fetchFromBitrix.isPrimary = data[item.bitrixId]
+    }
+    if(item.patientId=="familyMemberId"){
+      state.fetchFromBitrix.familyMemberId = data[item.bitrixId]
+    }
+    if(item.patientId=="emergencyId"){
+      state.fetchFromBitrix.emergencyId = data[item.bitrixId]
+    }
+  })
 }
 
 export const bloodPressure = (state, vitals) => {

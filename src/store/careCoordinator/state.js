@@ -22,4 +22,6 @@ export default{
     providers:null,
     staffPermissions:[],
     staffMeta:null,
+    addStaffDocument:null,
+    staffDocuments:null
 }

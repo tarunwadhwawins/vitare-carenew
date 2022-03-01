@@ -17,7 +17,7 @@
       <a-col :md="12" :sm="12" :xs="24">
         <div class="form-group">
             <a-form-item :label="$t('global.type')" name="typeId" :rules="[{required: true,message: $t('global.type') + ' ' + $t('global.validation'),},]">
-                <a-select v-if="globalCode.programCategories.globalCode" ref="select" v-model:value="program.typeId" style="width: 100%" size="large" :disabled="threshodId ? true : false" placeholder="Select Device Type" @change="handleDevice">
+                <a-select v-if="globalCode.programCategories.globalCode" ref="select" v-model:value="program.typeId" style="width: 100%" size="large" :disabled="programId ? true : false" placeholder="Select Device Type" @change="handleDevice">
                     <a-select-option value hidden disabled>
                         {{ "Select Program Type" }}
                     </a-select-option>
@@ -42,7 +42,7 @@
       <a-col :sm="12" :xs="24">
         <div class="form-group">
           <label>Active/Inactive</label>
-          <a-switch v-model:checked="program.isActive" />
+          <a-switch v-model:checked="program.isActive" @change="UpdateProgramStatus($event)"/>
         </div>
       </a-col>
       <a-col :span="24">
@@ -104,7 +104,9 @@ export default {
                 }
       }
     })
-    
+    function UpdateProgramStatus(event){
+      program.isActive=event
+    }
     const programs = () => {
      
       if(programId != null) {
@@ -113,7 +115,7 @@ export default {
             name: program.name,
             description: program.description,
             typeId:program.typeId,
-            isActive: program.status ? 1 : 0,
+            isActive: program.isActive ? 1 : 0,
           },
           id: programId,
         })
@@ -125,7 +127,7 @@ export default {
             name: program.name,  
             description:program.description,
             typeId:program.typeId,
-            isActive: program.status ? 1 : 0,
+            isActive: program.isActive ? 1 : 0,
           }
         });   
       }
@@ -168,6 +170,7 @@ export default {
       programId,
       globalCode,
       programEdit,
+      UpdateProgramStatus,
     };
   },
 };

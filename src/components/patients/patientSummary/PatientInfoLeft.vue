@@ -4,13 +4,11 @@
       <img v-if="patientDetails.profilePhoto" :src="patientDetails.profilePhoto" alt="image"/>
       <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
       <div class="info">
-        <p>{{ patientDetails.patientFullName }}</p>
-        <p>DOB : {{ patientDetails.dob }}</p>
-        <p><a href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a>
-        </p>
-        <p><a href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a>
-        </p>
-        <p>{{ patientDetails.address }}</p>
+        <p v-if="patientDetails.patientFullName">{{ patientDetails.patientFullName }}</p>
+        <p v-if="patientDetails.dob">DOB : {{ patientDetails.dob }}</p>
+        <p v-if="patientDetails.email"><a href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
+        <p v-if="patientDetails.phoneNumber"><a href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
+        <p v-if="patientDetails.address">{{ patientDetails.address }}</p>
       </div>
       <EditOutlined class="editIcon" @click="editPatient({udid: patientDetails.id, id: patientDetails.id})" />
     </div>

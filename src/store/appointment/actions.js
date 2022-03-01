@@ -67,3 +67,14 @@ export const latestAppointment = async ({ commit }, id) => {
 }
 
 
+
+export const appointmentConference = async ({ commit }) => {
+	await serviceMethod.common("get", API_ENDPOINTS['appointmentConference'], null, null).then((response) => {
+		commit('appointmentConference', response.data.data);
+	})
+	.catch((error) => {
+		commit('failure', error.response.data);
+	})
+}
+
+

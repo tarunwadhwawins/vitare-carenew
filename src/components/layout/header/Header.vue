@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="header-wrapper">
+    <div class="header-wrapper" >
       <div class="logo">
         <div class="logoInner">
           <router-link to="/dashboard">
@@ -11,15 +11,15 @@
           <MenuOutlined />
         </div>
       </div>
-      <div class="header-control">
+      <div class="header-control" >
         <div class="header-inner">
-          <div class="location d-flex align-items-center">
-            <a-dropdown>
+          <div class="location d-flex align-items-center" >
+            <a-dropdown v-if="accessPermission!=0">
               <a class="ant-dropdown-link" @click.prevent>
                 {{$t('header.organisationLocation')}}
                 <DownOutlined />
               </a>
-              <template #overlay>
+              <template #overlay >
                 <a-menu>
                   <a-sub-menu key="test1" :title="$t('header.organisation')+' 1'">
                     <a-menu-item>{{$t('header.location')}} 1</a-menu-item>
@@ -79,18 +79,18 @@
               <MoreOutlined />
             </div>
           </div>
-          <div class="search" :class="toggle ? 'show' : ''">
+          <div class="search" :class="toggle ? 'show' : ''"  v-if="accessPermission!=0">
             <a-input v-model:value="value" size="large" placeholder="Enter search" />
           </div>
           <div class="profile" :class="ellipse ? 'show' : ''">
-            <div class="quick-actions d-flex align-items-center">
-              <a-dropdown :trigger="['click']">
+            <div class="quick-actions d-flex align-items-center" >
+              <a-dropdown :trigger="['click']" v-if="accessPermission!=0">
                 <a class="ant-dropdown-link" @click.prevent>
                   <div class="name">{{$t('header.quickAction')}}
                     <DownOutlined />
                   </div>
                 </a>
-                <template #overlay>
+                <template  #overlay>
                   <a-menu>
                     <a-menu-item key="0">
                       <a href="javascript:void(0)" @click="addAppt">{{$t('header.addAppointment')}}</a>
@@ -300,7 +300,12 @@
         AddStartCall.value = false;
       };
 
+      const accessPermission = computed(()=>{
+        return store.state.authentication.accessPermission
+      })
+
       return {
+        accessPermission,
         handleTaskOk,
         // collapsMenu,
         userName,

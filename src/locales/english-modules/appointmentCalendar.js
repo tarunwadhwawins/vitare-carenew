@@ -1,4 +1,5 @@
 const appointmentCalendar = {
+    appointment:'Appointment',
     appointmentCalendar:'Appointment Calendar',
     newAppointment:'New Appointment',
     fullCalendarView:'Full Calendar View',

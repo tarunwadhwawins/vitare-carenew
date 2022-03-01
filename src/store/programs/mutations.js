@@ -19,9 +19,9 @@ export const programList = async (state, data) => {
     },
     {
       title: "Active/Inactive",
-      dataIndex: "active",
+      dataIndex: "status",
       slots: {
-        customRender: "active",
+        customRender: "status",
       },
     },
     {
@@ -32,16 +32,19 @@ export const programList = async (state, data) => {
       },
     },
   ]
-  state.programList = data.data
-  //console.log(data.meta.pagination)
-  state.programMeta = data.meta.pagination
+  state.programList = data.data ? data.data.map((item,index)=>{
+    item.status = item.status== 1 ? true : false
+    item.key = index
+    return  item
+  }) : ''
+  state.programMeta = data.meta ? data.meta.pagination : ''
 }
 export const programMsg = async (state, data) => {
  state.programMsg = data
 }
 export const editProgram = async (state, data) => {
  state.editProgram=data.map((item)=>{
-  item.isActive = item.isActive== 1 ? true : false
+  item.isActive = item.status== 1 ? true : false
   return  item
 })
 }
