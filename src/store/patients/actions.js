@@ -701,12 +701,22 @@ export const patientSearchWithBitrix = async ({ commit }, data) => {
 		commit('patientSearchWithBitrix', response.data.result);
 	})
 	.catch((error) => {
-		if (error.response.status == 401) {
-			//AuthService.logout();
-		}
+    errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
 }
+
+
+export const getBitrixFieldsName = async ({ commit }) => {
+	await serviceMethod.common("get", `bitrix/fields`, null, null).then((response) => {
+		commit('getBitrixFieldsName', response.data.data);
+	})
+	.catch((error) => {
+    errorSwal(error.response.data.message)
+		commit('failure', error.response.data);
+	})
+}
+
 
 
 export const fetchFromBitrix = async ({ commit }, id) => {
@@ -714,9 +724,7 @@ export const fetchFromBitrix = async ({ commit }, id) => {
 		commit('fetchFromBitrix', response.data.result);
 	})
 	.catch((error) => {
-		if (error.response.status == 401) {
-			//AuthService.logout();
-		}
+    errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
 }

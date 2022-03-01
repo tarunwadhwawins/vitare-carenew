@@ -121,7 +121,7 @@
     </a-layout>
     <!--modals-->
     <a-modal width="50%" v-model:visible="visible" title="Add Documents" :maskClosable="false" centered @ok="handleOk">
-        <DocumentForm entity="staff" :paramId="paramId" />
+        <StaffDocumentForm entity="staff" :paramId="paramId" />
     </a-modal>
     <!---->
     <a-modal width="50%" v-model:visible="visible1" title="Add Roles" :maskClosable="false" centered @ok="handleOk">
@@ -161,7 +161,7 @@ import ContactForm from ".././modals/forms/Contacts";
 import RoleTable from ".././care-coordinator/tables/RoleTable";
 import RoleForm from ".././modals/forms/Roles";
 import DocumentTable from ".././care-coordinator/tables/DocumentTable";
-import DocumentForm from ".././modals/forms/Documents";
+import StaffDocumentForm from ".././modals/forms/StaffDocuments";
 import Loader from "../loader/Loader"
 export default {
   components: {
@@ -177,7 +177,7 @@ export default {
     ContactTable,
     ContactForm,
     DocumentTable,
-    DocumentForm,
+    StaffDocumentForm,
     RoleTable,
     RoleForm,
     Loader,
@@ -192,7 +192,7 @@ export default {
       store.dispatch("availabilityList", router.params.udid);
       store.dispatch("staffContactList", router.params.udid);
       store.dispatch("roleList", router.params.udid);
-      store.dispatch("documents", router.params.udid);
+      store.dispatch("staffDocuments", router.params.udid);
       store.dispatch("staffSummaryAppointment", router.params.udid);
       store.dispatch("staffSummaryPatient", router.params.udid);
     });

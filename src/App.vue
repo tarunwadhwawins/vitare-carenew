@@ -45,7 +45,7 @@
         store.dispatch("globalCodes")
         store.dispatch("timeLine", 122)
         store.dispatch("permissions")
-        
+        store.dispatch("appointmentConference")
         
         //       moment.locale(val);
       });

@@ -25,6 +25,7 @@ export const API_ENDPOINTS = {
     newRequests:"appointment/new",
     addAppointment:"appointment",
     seacrhAppointment:"appointment/search",
+    appointmentConference:'appointment/conference',
 
     // Staff
     staffList:"staff",
