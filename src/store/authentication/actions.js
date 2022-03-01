@@ -10,7 +10,7 @@ export const login = async ({ commit }, user) => {
 		localStorage.setItem('token', response.data.token);
 		localStorage.setItem('auth', JSON.stringify(response.data));
 		commit('loginSuccess', response.data.user);
-		roleAccess()
+		roleAccess({commit})
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {
@@ -21,9 +21,10 @@ export const login = async ({ commit }, user) => {
 		}
 	})
 }
- export const roleAccess = async ({ commit }) =>{
+ const roleAccess = async ({ commit }) =>{
 	await ServiceMethodService.common("get", "staff/access", null, null).then((response) => {
 		commit('accessPermission', response.data.data.length)
+		localStorage.setItem('accessPermission', response.data.data.length)
 		console.log("access",response.data.data)
 		localStorage.setItem('access', true)
 		localStorage.setItem('roleAuth', response.data.data[0]?response.data.data[0].roleId:'');

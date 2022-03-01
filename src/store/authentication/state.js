@@ -8,6 +8,6 @@ export default {
   options:null,
   server:'wss://dev.icc-health.com:7443',
   simpleUser:null,
-  accessPermission:null
+  accessPermission:JSON.parse(localStorage.getItem('accessPermission'))
 
 }
