@@ -1,5 +1,11 @@
 
-import { meridiemFormatFromTimestamp,dateOnlyFormat,dobFormat2, responseConvert } from '../../commonMethods/commonMethod';
+import {
+  meridiemFormatFromTimestamp,
+  dateOnlyFormat,
+  dobFormat2,
+  dateFormat,
+  // timeFormatSimple
+} from '../../commonMethods/commonMethod';
 
 export const addDemographic = (state, data) => {
     state.addDemographic = data
@@ -646,6 +652,36 @@ export const fetchFromBitrix = (state, data) => {
   }
 }
 
-export const patientVitals = (state, data) => {
-  state.patientVitals = responseConvert(data.takeTime, data.value, 'hh:00 A')
+export const bloodPressure = (state, vitals) => {
+  var timeTakenArray = [];
+  // var vitalsArray = [];
+  vitals.map(vital => {
+    timeTakenArray[vital.takeTime] = [];
+    for(const key in timeTakenArray) {
+      if(key == vital.takeTime) {
+        timeTakenArray[vital.takeTime].push(vital);
+      }
+    }
+    // timeTakenArray[vital.takeTime].push({
+    //   type: vital.vitalField,
+    //   value: vital.value
+    // });
+  })
+  console.log('timeTakenArray', timeTakenArray)
+  // console.log('timeTakenArrayFinal', timeTakenArrayFinal)
+  // state.bloodPressure = vitalsArray;
+}
+
+export const bloodGlucose = (state, vitals) => {
+  state.bloodGlucose = vitals.map(vital => {
+    vital.takeTime = dateFormat(vital.takeTime)
+    return vital
+  })
+}
+
+export const bloodOxygen = (state, vitals) => {
+  state.bloodOxygen = vitals.map(vital => {
+    vital.takeTime = dateFormat(vital.takeTime)
+    return vital
+  })
 }

@@ -1,12 +1,13 @@
 <template>
   <a-row :gutter="24">
+  
     <a-col :sm="12" :xs="24" class="mb-24">
       <a-card title="Blood Pressure">
         <a-tabs v-model:activeKey="activeKey1">
-          <a-tab-pane key="8" tab="Table" force-render>
-            <Table :columns="columns4" :data="data4" />
+          <a-tab-pane key="1" tab="Table" force-render>
+            <Table :columns="vitalColumns" :data="bloodPressure" />
           </a-tab-pane>
-          <a-tab-pane key="7" tab="Graph">
+          <a-tab-pane key="4" tab="Graph">
             <ApexChart type="area" height="210" :options="chartOptions" :series="chartSeries" />
           </a-tab-pane>
         </a-tabs>
@@ -19,32 +20,14 @@
         </template>
       </a-card>
     </a-col>
-    <a-col :sm="12" :xs="24" class="mb-24">
-      <a-card title="Pulse">
-        <a-tabs v-model:activeKey="activeKey2">
-          <a-tab-pane key="10" tab="Table" force-render>
-            <Table :columns="columns5" :data="data5" />
-          </a-tab-pane>
-          <a-tab-pane key="9" tab="Graph">
-            <ApexChart type="area" height="210" :options="chartOptions" :series="chartSeries" />
-          </a-tab-pane>
-        </a-tabs>
-        <template #extra>
-          <a>
-            <a-button class="btn blackBtn" @click="showAddPulseModal">
-              <PlusOutlined/>
-            </a-button>
-          </a>
-        </template>
-      </a-card>
-    </a-col>
+    
     <a-col :sm="12" :xs="24" class="mb-24">
       <a-card title="Blood Glucose">
-        <a-tabs v-model:activeKey="activeKey3">
-          <a-tab-pane key="12" tab="Table" force-render>
-            <Table :columns="columns6" :data="data6" />
+        <a-tabs v-model:activeKey="activeKey2">
+          <a-tab-pane key="2" tab="Table" force-render>
+            <Table :columns="vitalColumns" :data="bloodGlucose" />
           </a-tab-pane>
-          <a-tab-pane key="11" tab="Graph">
+          <a-tab-pane key="5" tab="Graph">
             <ApexChart type="area" height="210" :options="chartOptions" :series="chartSeries" />
           </a-tab-pane>
         </a-tabs>
@@ -57,13 +40,14 @@
         </template>
       </a-card>
     </a-col>
+    
     <a-col :sm="12" :xs="24" class="mb-24">
       <a-card title="Blood Oxygen Saturation">
-        <a-tabs v-model:activeKey="activeKey4">
-          <a-tab-pane key="14" tab="Table" force-render>
-            <Table :columns="columns6" :data="data6" />
+        <a-tabs v-model:activeKey="activeKey3">
+          <a-tab-pane key="3" tab="Table" force-render>
+            <Table :columns="vitalColumns" :data="bloodOxygen" />
           </a-tab-pane>
-          <a-tab-pane key="13" tab="Graph">
+          <a-tab-pane key="6" tab="Graph">
             <ApexChart type="area" height="210" :options="chartOptions" :series="chartSeries" />
           </a-tab-pane>
         </a-tabs>
@@ -76,6 +60,7 @@
         </template>
       </a-card>
     </a-col>
+
   </a-row>
   <AddVitals v-model:visible="visibleAddVitals" @ok="handleOk" />
   <AddPulse v-model:visible="visibleAddPulse" @ok="handleOk" />
@@ -87,7 +72,7 @@
 import {
   PlusOutlined,
 } from "@ant-design/icons-vue";
-import { reactive, ref, watchEffect } from 'vue-demi';
+import { computed, reactive, ref, watchEffect } from 'vue-demi';
 import AddVitals from "@/components/modals/AddVitals";
 import AddPulse from "@/components/modals/AddPulse";
 import BloodGlucose from "@/components/modals/BloodGlucose";
@@ -119,8 +104,21 @@ export default {
     const visibleBloodOxygen = ref(false);
 
     watchEffect(() => {
-      alert(idPatient)
-      store.dispatch('patientVitals', idPatient);
+      store.dispatch('patientVital', {patientId: idPatient, deviceType: 99});
+      store.dispatch('patientVital', {patientId: idPatient, deviceType: 100});
+      store.dispatch('patientVital', {patientId: idPatient, deviceType: 101});
+    })
+
+    const bloodPressure = computed(() => {
+      return store.state.patients.bloodPressure
+    })
+
+    const bloodGlucose = computed(() => {
+      return store.state.patients.bloodGlucose
+    })
+
+    const bloodOxygen = computed(() => {
+      return store.state.patients.bloodOxygen
     })
 
     const showAddBPModal = () => {
@@ -136,118 +134,19 @@ export default {
       visibleBloodOxygen.value = true;
     };
 
-    const columns4 = [
+    const vitalColumns = [
       {
         title: "Date Recorded",
-        dataIndex: "recorded",
+        dataIndex: "takeTime",
+        key: "takeTime",
       },
       {
         title: "Value",
         dataIndex: "value",
+        key: "value",
         slots: {
           customRender: "value",
         },
-      },
-    ];
-    const data4 = [
-      {
-        key: "1",
-        recorded: "Nov 05, 2021 10:00 AM",
-        value: "120/80",
-      },
-      {
-        key: "2",
-        recorded: "Nov 06, 2021 10:00 AM",
-        value: "122/80",
-      },
-      {
-        key: "3",
-        recorded: "Nov 08, 2021 10:00 AM",
-        value: "122/80",
-      },
-      {
-        key: "4",
-        recorded: "Nov 09, 2021 10:00 AM",
-        value: "122/80",
-      },
-      {
-        key: "5",
-        recorded: "Nov 11, 2021 10:00 AM",
-        value: "122/80",
-      },
-    ];
-    const columns5 = [
-      {
-        title: "Date Recorded",
-        dataIndex: "recorded",
-      },
-      {
-        title: "Value",
-        dataIndex: "value",
-      },
-    ];
-    const data5 = [
-      {
-        key: "1",
-        recorded: "Nov 05, 2021 10:00 AM",
-        value: "68",
-      },
-      {
-        key: "2",
-        recorded: "Nov 06, 2021 10:00 AM",
-        value: "70",
-      },
-      {
-        key: "3",
-        recorded: "Nov 08, 2021 10:00 AM",
-        value: "75",
-      },
-      {
-        key: "4",
-        recorded: "Nov 09, 2021 10:00 AM",
-        value: "80",
-      },
-      {
-        key: "5",
-        recorded: "Nov 11, 2021 10:00 AM",
-        value: "60",
-      },
-    ];
-    const columns6 = [
-      {
-        title: "Date Recorded",
-        dataIndex: "recorded",
-      },
-      {
-        title: "Value",
-        dataIndex: "value",
-      },
-    ];
-    const data6 = [
-      {
-        key: "1",
-        recorded: "Nov 05, 2021 10:00 AM",
-        value: "105",
-      },
-      {
-        key: "2",
-        recorded: "Nov 06, 2021 10:00 AM",
-        value: "100",
-      },
-      {
-        key: "3",
-        recorded: "Nov 08, 2021 10:00 AM",
-        value: "95",
-      },
-      {
-        key: "4",
-        recorded: "Nov 09, 2021 10:00 AM",
-        value: "120",
-      },
-      {
-        key: "5",
-        recorded: "Nov 11, 2021 10:00 AM",
-        value: "130",
       },
     ];
     
@@ -300,18 +199,15 @@ export default {
       visibleAddPulse,
       visibleBloodGlucose,
       visibleBloodOxygen,
-      activeKey1: ref("8"),
-      activeKey2: ref("10"),
-      activeKey3: ref("12"),
-      activeKey4: ref("14"),
-      columns4,
-      data4,
-      columns5,
-      data5,
-      columns6,
-      data6,
+      activeKey1: ref("1"),
+      activeKey2: ref("2"),
+      activeKey3: ref("3"),
+      vitalColumns,
       chartOptions,
       chartSeries,
+      bloodPressure,
+      bloodGlucose,
+      bloodOxygen,
     }
   }
 }

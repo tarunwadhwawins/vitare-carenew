@@ -107,7 +107,7 @@
   <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" :patientId="patientDetails.id" :patientName="patientDetails.patientFullName" @closeModal="handleOk" />
   <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
   <AddVitalsModal v-if="addVitalsVisible == true" v-model:visible="addVitalsVisible" @closeModal="handleOk" :patientId="patientDetails.id" />
-  <PatientVitalsDetail v-if="patientVitalsVisible == true" v-model:visible="patientVitalsVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
+  <PatientVitalsDetailsModal v-if="patientVitalsVisible == true" v-model:visible="patientVitalsVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
   <AddNotesModal v-if="addNoteVisible == true" v-model:visible="addNoteVisible" @closeModal="handleOk" />
   <NotesDetailModal v-if="notesDetailVisible == true" v-model:visible="notesDetailVisible" @closeModal="handleOk" />
   <AddDocumentModal v-if="addDocumentVisible == true" v-model:visible="addDocumentVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
@@ -149,7 +149,7 @@ import AddTimeLogsModal from "@/components/modals/AddTimeLogs";
 import TimeLogsDetailModal from "@/components/modals/TimeLogsDetail";
 import AddDeviceModal from "@/components/modals/AddDevice";
 import DeviceDetailModal from "@/components/modals/DeviceDetail";
-import PatientVitalsDetail from "@/components/modals/PatientVitalsDetail";
+import PatientVitalsDetailsModal from "@/components/modals/PatientVitalsDetailsModal";
 import Flags from "@/components/common/flags/Flags";
 
 export default {
@@ -172,7 +172,7 @@ export default {
     TimeLogsDetailModal,
     AddDeviceModal,
     DeviceDetailModal,
-    PatientVitalsDetail,
+    PatientVitalsDetailsModal,
     Flags,
   },
   setup() {

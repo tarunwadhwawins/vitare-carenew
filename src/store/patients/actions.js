@@ -720,14 +720,31 @@ export const fetchFromBitrix = async ({ commit }, id) => {
 	})
 }
 
-export const patientVitals = async ({ commit }, id) => {
-	await serviceMethod.common("get", `patient/${id}/vital`, null, null).then((response) => {
-		commit('patientVitals', response.data.vital);
+export const patientVital = async ({ commit }, {patientId, deviceType}) => {
+  /* a[taketime]=[{
+    type:bpm,
+    value=23
+  }] */
+  commit('loadingStatus', true)
+	await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+patientId+'/vital?deviceType='+deviceType, null, null).then((response) => {
+    if(deviceType == 99) {
+      commit('bloodPressure', response.data.data);
+      commit('loadingStatus', false)
+    }
+    if(deviceType == 100) {
+      commit('bloodGlucose', response.data.data);
+      commit('loadingStatus', false)
+    }
+    if(deviceType == 101) {
+      commit('bloodOxygen', response.data.data);
+      commit('loadingStatus', false)
+    }
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
+    commit('loadingStatus', false)
 	})
 }

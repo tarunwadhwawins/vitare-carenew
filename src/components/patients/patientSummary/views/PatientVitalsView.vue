@@ -6,7 +6,7 @@
       </a-col>
     </a-row>
     <div class="patientsVitals">
-      <PatientVitalsGrid />
+      <PatientVitalsGrid :patientId="patientDetails.id" />
     </div>
   </div>
 </template>
@@ -14,17 +14,15 @@
 <script>
 import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
 import PatientVitalsGrid from "@/components/patients/patientSummary/views/PatientVitalsGrid";
+import { computed } from 'vue-demi';
+import { useStore } from 'vuex';
 export default {
   components: {
     PatientInfoTop,
     PatientVitalsGrid,
   },
-  props: {
-    patientDetails:{
-      type: Array
-    }
-  },
   setup() {
+    const store = useStore();
     const patientSummaryColumns = [
       {
         title: "Date Recorded",
@@ -65,9 +63,13 @@ export default {
         value: "122/80",
       },
     ];
+    const patientDetails = computed(() => {
+      return store.state.patients.patientDetails;
+    })
     return {
       patientSummaryColumns,
       patientSummaryData,
+      patientDetails,
     }
   }
 }

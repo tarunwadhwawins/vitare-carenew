@@ -1,8 +1,8 @@
 <template>
-  <a-table :columns="columns" :data-source="data" :pagination="false" >
-    <template #value="text">
-      <span class="dangerValue">{{ text.text }}</span>
-    </template>
+  <a-table rowKey="id" :columns="columns" height="210" :data-source="data" :pagination="false" >
+    <!-- <template #value="{record}">
+      <span class="dangerValue">{{ record.value }}</span>
+    </template> -->
   </a-table>
 </template>
 
