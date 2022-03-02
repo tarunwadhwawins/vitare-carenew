@@ -60,10 +60,11 @@ export default {
                     if (current_page <= meta.value.staffMeta.total_pages) {
                         loader.value = true
                         meta.value.staffMeta = ""
-                        store.dispatch("staffs", "?page=" + current_page)
-                        setTimeout(() => {
-                            loadMoredata()
-                        }, 1000)
+                        store.state.careCoordinator.staffs = ""
+                        store.dispatch("staffs", "?page=" + current_page).then(()=>{
+                            loadMoredata() 
+                        })
+                       
 
                     }
                 }

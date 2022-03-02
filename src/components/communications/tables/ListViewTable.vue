@@ -210,10 +210,12 @@ export default {
                         if (current_page <= meta.value.communicationMeta.total_pages) {
                             loader.value = true
                             meta.value.communicationMeta = ""
-                            store.dispatch("communicationsList", "?page=" + current_page)
-                            setTimeout(() => {
-                                loadMoredata()
-                            }, 1000)
+                            store.state.communications.communicationsList= ""
+                            store.dispatch("communicationsList", "?page=" + current_page).then(()=>{
+                            //console.log('response',response)
+                            loadMoredata()
+                        })
+                            
     
                         }
                     }
