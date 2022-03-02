@@ -1,6 +1,6 @@
 <template>
     <a-col :span="24">
-        <a-table
+        <a-table  rowKey="id"
           :columns="columns"
           :data-source="data"
           :scroll="{ x: 900 ,y : 430 }"

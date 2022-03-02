@@ -11,7 +11,7 @@
           <a-card title="Blood Pressure">
             <a-tabs v-model:activeKey="activeKey1">
               <a-tab-pane key="8" tab="Table" force-render>
-                <a-table :columns="columns4" :data-source="data4" :pagination="false" @change="onChange" >
+                <a-table  rowKey="id" :columns="columns4" :data-source="data4" :pagination="false" @change="onChange" >
                   <template #value="text">
                     <span class="dangerValue">{{ text.text }}</span>
                   </template>
@@ -34,7 +34,7 @@
           <a-card title="Pulse">
             <a-tabs v-model:activeKey="activeKey2">
               <a-tab-pane key="10" tab="Table" force-render>
-                <a-table :columns="columns5" :data-source="data5" :pagination="false" @change="onChange" />
+                <a-table  rowKey="id" :columns="columns5" :data-source="data5" :pagination="false" @change="onChange" />
               </a-tab-pane>
               <a-tab-pane key="9" tab="Graph">
                 <apexchart type="area" height="210" :options="chartOptions" :series="chartSeries"></apexchart>
@@ -53,7 +53,7 @@
           <a-card title="Blood Glucose">
             <a-tabs v-model:activeKey="activeKey3">
               <a-tab-pane key="12" tab="Table" force-render>
-                <a-table :columns="columns6" :data-source="data6" :pagination="false" @change="onChange"/>
+                <a-table  rowKey="id" :columns="columns6" :data-source="data6" :pagination="false" @change="onChange"/>
               </a-tab-pane>
               <a-tab-pane key="11" tab="Graph">
                 <apexchart type="area" height="210" :options="chartOptions" :series="chartSeries"></apexchart>
@@ -72,7 +72,7 @@
           <a-card title="Blood Oxygen Saturation">
             <a-tabs v-model:activeKey="activeKey4">
               <a-tab-pane key="14" tab="Table" force-render>
-                <a-table :columns="columns6" :data-source="data6" :pagination="false" @change="onChange"/>
+                <a-table  rowKey="id" :columns="columns6" :data-source="data6" :pagination="false" @change="onChange"/>
               </a-tab-pane>
               <a-tab-pane key="13" tab="Graph">
                 <apexchart type="area" height="210" :options="chartOptions" :series="chartSeries" />

@@ -16,7 +16,7 @@
 </a-form>
 <a-row :gutter="24">
     <a-col :span="24">
-        <a-table :pagination="false" :columns="columns4" :data-source="data4" :scroll="{ x: 900 }">
+        <a-table  rowKey="id" :pagination="false" :columns="columns4" :data-source="data4" :scroll="{ x: 900 }">
             <template #action="text">
                 <a-tooltip placement="bottom" @click="deleteProvider(text.record.id)">
                     <template #title>

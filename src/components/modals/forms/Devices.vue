@@ -82,7 +82,7 @@
     </a-row>
     <a-row :gutter="24" class="mb-24">
         <a-col :span="24">
-            <a-table :columns="deviceColumns" :data-source="deviceData" :pagination="false" :scroll="{ x: 900 }">
+            <a-table  rowKey="id" :columns="deviceColumns" :data-source="deviceData" :pagination="false" :scroll="{ x: 900 }">
                 <template #active="text">
                     <a-switch @click="changeStatus(text.record.id,text.record.status)"   v-model:checked="text.record.status"   />
                 </template>

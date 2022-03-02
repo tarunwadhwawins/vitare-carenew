@@ -55,7 +55,7 @@
       </div>
     </a-col>
     <a-col :md="24" :sm="24" :xs="24">
-      <a-table
+      <a-table  rowKey="id"
         :columns="columns2"
         :data-source="data2"
         :scroll="{ x: 900 }"

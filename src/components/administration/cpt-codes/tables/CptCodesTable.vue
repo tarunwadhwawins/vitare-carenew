@@ -1,5 +1,5 @@
 <template>
-  <a-table
+  <a-table  rowKey="id"
     :columns="cptCodesColumns"
     :data-source="cptCodesList"
     :scroll="{ x: 900 }"

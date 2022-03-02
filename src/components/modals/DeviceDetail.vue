@@ -2,7 +2,7 @@
   <a-modal width="1000px" title="Device Detail" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
-        <a-table
+        <a-table  rowKey="id"
           :columns="devicesColumns"
           :data-source="devicesList"
           :pagination="false"

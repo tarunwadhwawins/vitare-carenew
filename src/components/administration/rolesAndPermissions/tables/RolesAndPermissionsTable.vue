@@ -1,6 +1,6 @@
 <template>
-  <a-table
-    rowKey="id"
+  <a-table  rowKey="id"
+
     :columns="rolesColumns"
     :data-source="rolesList">
     <template #actions="{record}">

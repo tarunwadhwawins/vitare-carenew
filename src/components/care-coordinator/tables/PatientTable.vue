@@ -1,5 +1,5 @@
 <template>
-<a-table :columns="patients.staffSummaryPatientCols" :data-source="patients.staffSummaryPatient" :pagination="false" @change="onChange">
+<a-table  rowKey="id" :columns="patients.staffSummaryPatientCols" :data-source="patients.staffSummaryPatient" :pagination="false" @change="onChange">
     <template #firstName="text">
         <router-link :to="linkTo">{{ text.text }}</router-link>
     </template>

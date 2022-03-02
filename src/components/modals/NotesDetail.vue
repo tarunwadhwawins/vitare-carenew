@@ -5,7 +5,7 @@
         <div class="text-right mb-24">
           <a-button class="btn blueBtn" @click="showModal">Export to Excel/PDF</a-button>
         </div>
-        <a-table rowKey="id" :columns="notesColumns" :data-source="notesList" :pagination="false">
+        <a-table  rowKey="id"  :columns="notesColumns" :data-source="notesList" :pagination="false">
           <template #flags="{ record }">
             <Flags :flag="record.flag" />
           </template>
