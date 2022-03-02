@@ -89,7 +89,7 @@ h6 {
 	margin-top: 28px;
 }
 img.reportFlag {
-    max-width: 30px;
+	max-width: 30px;
 }
 .p-15 {
 	padding: 15px;
@@ -118,6 +118,7 @@ img.reportFlag {
 	padding-top: 64px;
 	min-height: calc(100vh - 64px);
 	padding-left: 200px;
+	transition: all 0.5s !important;
 	@media screen and (max-width: 991px) {
 		padding-left: 0px;
 	}
@@ -167,8 +168,8 @@ img.reportFlag {
 	background-color: #0fb5c2;
 }
 
-.red-color{
- color:$red-color;
+.red-color {
+	color: $red-color;
 }
 /*----*/
 
@@ -183,9 +184,14 @@ img.reportFlag {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		span{
+		span {
 			margin: 0 0 0 5px;
 		}
+	}
+}
+.conditionsCheckboxs {
+	.ant-checkbox-wrapper {
+		margin-left: 0;
 	}
 }
 
@@ -322,6 +328,7 @@ body {
 	&.show {
 		.ant-layout {
 			.ant-layout-has-sider {
+				transition: all 0.5s !important;
 				.ant-layout-sider {
 					left: 0px !important;
 					z-index: 99;

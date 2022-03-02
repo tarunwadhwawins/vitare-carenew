@@ -177,11 +177,11 @@ export default {
                     if (current_page <= meta.value.generalParameterMeta.total_pages) {
                         loader.value = true
                         store.state.thresholds.generalParameterMeta = ""
-                        store.dispatch("generalParameterList", "?page=" + current_page)
-                        setTimeout(() => {
+                        store.state.thresholds.vitalList= ""
+                        store.dispatch("generalParameterList", "?page=" + current_page).then(()=>{
                             loadMoredata()
-                        }, 1000)
-
+                        })
+                        
                     }
                 }
             })

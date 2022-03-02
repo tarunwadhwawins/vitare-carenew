@@ -91,7 +91,7 @@
                   </div>
                 </a>
                 <template  #overlay>
-                  <a-menu>
+                  <a-menu class="headerDropdown">
                     <a-menu-item key="0">
                       <a href="javascript:void(0)" @click="addAppt">{{$t('header.addAppointment')}}</a>
                     </a-menu-item>
@@ -121,7 +121,7 @@
                   </div>
                 </a>
                 <template #overlay>
-                  <a-menu>
+                  <a-menu class="headerDropdown">
                     <li class="title">{{$t('header.notification')}}</li>
                     <li class="listing">
                       <a class="d-flex align-items-center" href="#">
@@ -161,7 +161,7 @@
                   </div>
                 </a>
                 <template #overlay>
-                  <a-menu>
+                  <a-menu class="headerDropdown">
                     <a-menu-item key="0">
                       <a href="javascript:void(0)">{{$t('header.myProfile')}}</a>
                     </a-menu-item>

@@ -102,10 +102,11 @@ type:Array
                     if (current_page <= meta.value.programMeta.total_pages) {
                         loader.value = true
                         store.state.program.programMeta = ""
-                        store.dispatch("programList", "?page=" + current_page)
-                        setTimeout(() => {
-                            loadMoredata()
-                        }, 1000)
+                        store.state.programs.programList = ""
+                        store.dispatch("programList", "?page=" + current_page).then(()=>{
+                          loadMoredata()
+                        })
+                        
 
                     }
                 }
