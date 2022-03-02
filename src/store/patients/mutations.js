@@ -3,8 +3,8 @@ import {
   meridiemFormatFromTimestamp,
   dateOnlyFormat,
   dobFormat2,
-  dateFormat,
   // timeFormatSimple
+  convertResponse
 } from '../../commonMethods/commonMethod';
 
 export const addDemographic = (state, data) => {
@@ -803,35 +803,55 @@ export const fetchFromBitrix = (state, data) => {
 }
 
 export const bloodPressure = (state, vitals) => {
-  var timeTakenArray = [];
-  // var vitalsArray = [];
+  var timeArray = [];
+  var vitalsArray = [];
   vitals.map(vital => {
-    timeTakenArray[vital.takeTime] = [];
-    for(const key in timeTakenArray) {
-      if(key == vital.takeTime) {
-        timeTakenArray[vital.takeTime].push(vital);
-      }
+    vitalsArray.push({
+      id: vital.id,
+      takeTime: vital.takeTime,
+      vitalField: vital.vitalField,
+      value: vital.value,
+    })
+    if(!timeArray.includes(vital.takeTime)) {
+      timeArray.push(vital.takeTime);
     }
-    // timeTakenArray[vital.takeTime].push({
-    //   type: vital.vitalField,
-    //   value: vital.value
-    // });
   })
-  console.log('timeTakenArray', timeTakenArray)
-  // console.log('timeTakenArrayFinal', timeTakenArrayFinal)
-  // state.bloodPressure = vitalsArray;
+  const bloodPressure = convertResponse(timeArray, vitalsArray)
+  state.bloodPressure = bloodPressure;
 }
 
 export const bloodGlucose = (state, vitals) => {
-  state.bloodGlucose = vitals.map(vital => {
-    vital.takeTime = dateFormat(vital.takeTime)
-    return vital
+  var timeArray = [];
+  var vitalsArray = [];
+  vitals.map(vital => {
+    vitalsArray.push({
+      id: vital.id,
+      takeTime: vital.takeTime,
+      vitalField: vital.vitalField,
+      value: vital.value,
+    })
+    if(!timeArray.includes(vital.takeTime)) {
+      timeArray.push(vital.takeTime);
+    }
   })
+  const bloodGlucose = convertResponse(timeArray, vitalsArray)
+  state.bloodGlucose = bloodGlucose;
 }
 
 export const bloodOxygen = (state, vitals) => {
-  state.bloodOxygen = vitals.map(vital => {
-    vital.takeTime = dateFormat(vital.takeTime)
-    return vital
+  var timeArray = [];
+  var vitalsArray = [];
+  vitals.map(vital => {
+    vitalsArray.push({
+      id: vital.id,
+      takeTime: vital.takeTime,
+      vitalField: vital.vitalField,
+      value: vital.value,
+    })
+    if(!timeArray.includes(vital.takeTime)) {
+      timeArray.push(vital.takeTime);
+    }
   })
+  const bloodOxygen = convertResponse(timeArray, vitalsArray)
+  state.bloodOxygen = bloodOxygen;
 }

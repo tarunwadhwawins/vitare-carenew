@@ -5,7 +5,7 @@
       <a-card title="Blood Pressure">
         <a-tabs v-model:activeKey="activeKey1">
           <a-tab-pane key="1" tab="Table" force-render>
-            <Table :columns="vitalColumns" :data="bloodPressure" />
+            <Table :columns="vitalColumns" :data="bloodPressure" className="dangerValue" />
           </a-tab-pane>
           <a-tab-pane key="4" tab="Graph">
             <ApexChart type="area" height="210" :options="chartOptions" :series="chartSeries" />
@@ -139,6 +139,9 @@ export default {
         title: "Date Recorded",
         dataIndex: "takeTime",
         key: "takeTime",
+        slots: {
+          customRender: "takeTime",
+        },
       },
       {
         title: "Value",

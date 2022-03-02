@@ -275,3 +275,27 @@ export function chartTimeCount(timeLine,count){
   }
   return newPatient
 }
+
+
+export function convertResponse(timeArray, recordsArray) {
+  let records = []
+  timeArray.forEach(time => {
+    let recordList = []
+    recordsArray.forEach(record => {
+      if(record.takeTime === time) {
+        recordList.push(record);
+      }
+    });
+    if(recordList.length > 0) {
+      let valuesObject = {
+        "takeTime": dateFormat(time),
+        "data": recordList.map(item => {
+          item.takeTime = dateFormat(item.takeTime)
+          return item
+        })
+      }
+      records.push(valuesObject);
+    }
+  });
+  return records
+}

@@ -675,10 +675,10 @@ export const latestDocument = async ({ commit }, id) => {
 		commit('latestDocumentSuccess', response.data.data);
 	})
 	.catch((error) => {
-		if (error.response.status == 401) {
+		/* if (error.response.status == 401) {
 			//AuthService.logout();
-		}
-		commit('failure', error.response.data);
+		} */
+		commit('failure', error);
 	})
 }
 
@@ -687,10 +687,10 @@ export const latestDevice = async ({ commit }, id) => {
 		commit('latestDeviceSuccess', response.data.data);
 	})
 	.catch((error) => {
-		if (error.response.status == 401) {
+		/* if (error.response.status == 401) {
 			//AuthService.logout();
-		}
-		commit('failure', error.response.data);
+		} */
+		commit('failure', error);
 	})
 }
 
@@ -734,6 +734,21 @@ export const patientVital = async ({ commit }, {patientId, deviceType}) => {
     type:bpm,
     value=23
   }] */
+  /* const combinedItems = (arr = []) => {
+    const res = arr.reduce((acc, obj) => {
+      let found = false;
+      for (let i = 0; i < acc.length; i++) {
+        if (acc[i].takeTime === obj.takeTime) {
+          found = true;
+        }
+      }
+      if (!found) {
+        acc.push(obj);
+      }
+      return acc;
+    }, []);
+    return res;
+  } */
   commit('loadingStatus', true)
 	await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+patientId+'/vital?deviceType='+deviceType, null, null).then((response) => {
     if(deviceType == 99) {
@@ -750,10 +765,10 @@ export const patientVital = async ({ commit }, {patientId, deviceType}) => {
     }
 	})
 	.catch((error) => {
-		if (error.response.status == 401) {
+		/* if (error.response.status == 401) {
 			//AuthService.logout();
-		}
-		commit('failure', error.response.data);
+		} */
+		commit('failure', error);
     commit('loadingStatus', false)
 	})
 }
