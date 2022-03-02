@@ -156,3 +156,8 @@ export const communicationsCountSuccess = async (state, count) => {
 export const searchCommunicationsSuccess = async (state, result) => {
   state.communicationsList = result;
 }
+
+
+export const conferenceId = async (state, data) => {
+  state.conferenceId = data;
+}

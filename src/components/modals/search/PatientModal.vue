@@ -14,7 +14,7 @@
     </a-form>
     <a-row :span="24">
         <a-col :sm="24" :xs="24">
-            <a-table :pagination="false" :columns="patientsData.patientSearchWithBitrixCols" :data-source="patientsData.patientSearchWithBitrix" :scroll="{ x: 900 }">
+            <a-table  rowKey="id" :pagination="false" :columns="patientsData.patientSearchWithBitrixCols" :data-source="patientsData.patientSearchWithBitrix" :scroll="{ x: 900 }">
                 <template #action="text">
                         <a class="icons"  @click="fetchFromBitrix(text.record.ID)">
                           <span class="arrowIcon" > Fill </span> <arrow-right-outlined :style="{fontSize: '20px', color: '#08c'}"/>

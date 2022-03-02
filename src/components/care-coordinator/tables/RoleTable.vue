@@ -1,6 +1,6 @@
 
 <template>
-<a-table :pagination="false" :columns="staffs.roleListColms" :data-source="staffs.roleList" :scroll="{ x: 900 }">
+<a-table  rowKey="id" :pagination="false" :columns="staffs.roleListColms" :data-source="staffs.roleList" :scroll="{ x: 900 }">
     <template #action="text">
         <a-tooltip placement="bottom" @click="deleteRole(text.record.id)">
             <template #title>

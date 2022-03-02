@@ -1,5 +1,5 @@
 <template>
-  <a-table rowKey="id" :columns="columns" :data-source="data">
+  <a-table  rowKey="id"  :columns="columns" :data-source="data">
     <template #actions>
       <a-tooltip placement="bottom">
         <template #title>

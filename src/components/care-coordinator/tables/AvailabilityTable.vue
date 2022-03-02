@@ -1,5 +1,5 @@
 <template>
-<a-table :pagination="false" :columns="staffs.availabilityListColms" :data-source="staffs.availabilityList" :scroll="{ x: 900 }">
+<a-table  rowKey="id" :pagination="false" :columns="staffs.availabilityListColms" :data-source="staffs.availabilityList" :scroll="{ x: 900 }">
     <template #action="text">
         <a-tooltip placement="bottom" @click="deleteAvailability(text.record.id)">
             <template #title>

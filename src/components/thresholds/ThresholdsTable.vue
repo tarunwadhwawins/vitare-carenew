@@ -1,7 +1,7 @@
 <template>
 <a-col :sm="24" :xs="24">
 
-    <a-table :columns="columns" :data-source="data" :scroll="{ y: 420 }" :pagination=false>
+    <a-table  rowKey="id" :columns="columns" :data-source="data" :scroll="{ y: 420 }" :pagination=false>
         <template #actions="text">
             <a-tooltip placement="bottom">
                 <template #title>

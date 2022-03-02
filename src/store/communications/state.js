@@ -10,4 +10,5 @@ export default {
   communicationsCount: null,
   searchCommunications: null,
   communicationMeta:null,
+  conferenceId:null
 }

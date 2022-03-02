@@ -15,7 +15,7 @@
 </a-form>
 <a-row :gutter="24" class="mb-24">
     <a-col :span="24">
-        <a-table :columns="clinicalHistoryColumns" :data-source="clinicalsData" :scroll="{ x: 900 }">
+        <a-table  rowKey="id" :columns="clinicalHistoryColumns" :data-source="clinicalsData" :scroll="{ x: 900 }">
             <template #action="text">
                 <a-tooltip placement="bottom">
                     <template #title>
@@ -80,7 +80,7 @@
 </a-form>
 <a-row :gutter="24" class="mb-24">
     <a-col :span="24">
-        <a-table :columns="clinicalMedicatColumns" :data-source="clinicalMedicatData" :scroll="{ x: 900 }">
+        <a-table  rowKey="id" :columns="clinicalMedicatColumns" :data-source="clinicalMedicatData" :scroll="{ x: 900 }">
             <template #action="text">
                 <a-tooltip placement="bottom">
                     <template #title>

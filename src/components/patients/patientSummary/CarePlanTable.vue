@@ -2,7 +2,7 @@
   <div class="text-right mb-24">
     <a-button class="primaryBtn" @click="AddCarePlan">Add Goal</a-button>
   </div>
-  <a-table :columns="carePlanColumns" :data-source="carePlanData" :pagination="false" @change="onChange" >
+  <a-table  rowKey="id" :columns="carePlanColumns" :data-source="carePlanData" :pagination="false" @change="onChange" >
     <template #actions>
       <a-tooltip placement="bottom">
         <template #title>

@@ -45,7 +45,7 @@
     </a-row>
     <a-row :gutter="24" class="mb-24">
         <a-col :span="24">
-            <a-table :columns="columns" :data-source="programsData" :pagination="false" :scroll="{ x: 900 }">
+            <a-table  rowKey="id" :columns="columns" :data-source="programsData" :pagination="false" :scroll="{ x: 900 }">
                 <template #action="text">
                     <a-tooltip placement="bottom">
                         <a class="icons" @click="deleteProgram(text.record.id)">
