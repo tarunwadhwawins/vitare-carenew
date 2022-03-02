@@ -16,6 +16,9 @@ export const addRoleSuccess = async (state, role) => {
 export const roleDetailsSuccess = async (state, role) => {
   state.roleDetails = role
 }
+export const editRoleSuccess = async (state, role) => {
+  state.editRolesAndPermissions = role
+}
 
 export const deleteRoleSuccess = async (state, role) => {
   state.deleteRole = role

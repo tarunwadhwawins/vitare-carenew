@@ -5,4 +5,5 @@ export default {
   roleDetails: null,
   deleteRole: null,
   UpdateRole: null,
+  editRolesAndPermissions:null, 
 }

@@ -60,6 +60,7 @@ export const API_ENDPOINTS = {
     // Roles & Permissions
     role: 'role',
     rolesList: 'roleList',
+    addPermissions:'rolePermission',
     rolePermissions: 'permissionList',
     roleDetails: 'roleDetails',
 
