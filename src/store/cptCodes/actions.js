@@ -6,9 +6,6 @@ export const cptCodesList = async ({ commit }) => {
 		commit('cptCodesList', response.data.data);
 	})
 	.catch((error) => {
-		if (error.response.status == 401) {
-			//AuthService.logout();
-		}
 		commit('failure', error.response.data);
 	})
 }
@@ -18,9 +15,6 @@ export const addCptCode = async ({ commit }, data) => {
 		commit('addCptCode', response.data.data);
 	})
 	.catch((error) => {
-		if (error.response.status == 401) {
-			//AuthService.logout();
-		}
 		commit('failure', error.response.data);
 	})
 }
@@ -30,9 +24,7 @@ export const deleteCptCode = async ({ commit }, id) => {
 		commit('deleteCptCode', response.data.data);
 	})
 	.catch((error) => {
-		if (error.response.status == 401) {
-			//AuthService.logout();
-		}
+	
 		commit('failure', error.response.data);
 	})
 }
@@ -42,9 +34,7 @@ export const cptCodeDetails = async ({ commit }, id) => {
 		commit('cptCodeDetails', response.data.data);
 	})
 	.catch((error) => {
-		if (error.response.status == 401) {
-			//AuthService.logout();
-		}
+	
 		commit('failure', error.response.data);
 	})
 }
@@ -52,13 +42,20 @@ export const cptCodeDetails = async ({ commit }, id) => {
 export const updateCptCode = async ({ commit }, {id, data}) => {
 	console.log('Edit Record Id', id)
 	console.log('Edit Record data', data)
-	await ServiceMethodService.common("patch", API_ENDPOINTS['cptCodes'], id, data).then((response) => {
+	await ServiceMethodService.common("put", API_ENDPOINTS['cptCodes'], id, data).then((response) => {
 		commit('updateCptCode', response.data.data);
 	})
 	.catch((error) => {
-		if (error.response.status == 401) {
-			//AuthService.logout();
-		}
+	
+		commit('failure', error.response.data);
+	})
+}
+export const serviceList = async ({ commit } ) => {
+	
+	await ServiceMethodService.common("get", API_ENDPOINTS['service'], null, null).then((response) => {
+		commit('service', response.data.data);
+	})
+	.catch((error) => {
 		commit('failure', error.response.data);
 	})
 }

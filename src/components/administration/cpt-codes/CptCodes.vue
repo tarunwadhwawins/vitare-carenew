@@ -12,7 +12,7 @@
               <h2 class="pageTittle">
                 CPT Codes
                 <div class="commonBtn">
-                  <Button :name="buttonName" @click="showModal" />
+                  <Button :name="buttonName" @click="showModal(true)" />
                 </div>
               </h2>
             </a-col>
@@ -43,10 +43,10 @@ import Header from "@/components/administration/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import CptCodesModal from "@/components/modals/CptCodesModal";
 import CptCodesTable from "@/components/administration/cpt-codes/tables/CptCodesTable";
-import { ref } from "vue";
+import { ref,watchEffect } from "vue";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
-
+import { useStore } from "vuex"
 export default {
   components: {
     Header,
@@ -58,19 +58,21 @@ export default {
   },
   setup() {
     const visible = ref(false);
-    const showModal = () => {
-      visible.value = true;
+    const showModal = (e) => {
+      visible.value = e;
     };
-
-    const handleOk = (e) => {
-      console.log(e);
+    const store = useStore()
+    const handleOk = () => {
+      
       visible.value = false;
     };
 
     const searchData = (value) => {
       console.log('searchGlobalCodes', value)
     };
-    
+    watchEffect(()=>{
+      store.dispatch('serviceList')
+    })
     const cptCodesList = [
       {
         key: 1,

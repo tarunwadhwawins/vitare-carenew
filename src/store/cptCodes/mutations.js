@@ -17,3 +17,6 @@ export const cptCodeDetails = async (state, cptCode) => {
 export const updateCptCode = async (state, cptCode) => {
   state.updateCptCode = cptCode;
 }
+export const service = async (state, service) => {
+  state.service = service;
+}
