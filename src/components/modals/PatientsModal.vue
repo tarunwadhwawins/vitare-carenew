@@ -429,7 +429,7 @@
                             <a-input-search v-model:value="search" placeholder="Search..." style="width: 100%" size="large" @search="onSearch" />
                         </a-col>
                         <a-col :md="24" :sm="24" :xs="24">
-                            <div class="form-group">
+                            <div class="form-group conditionsCheckboxs">
                                 <a-form-item name="condition" :rules="[{ required: true, message: $t('patient.conditions.healthConditions')+' '+$t('global.validation') }]">
                                     <a-checkbox-group v-model:value="conditions.condition">
                                         <a-checkbox v-for="condition in globalCode.healthCondition.globalCode" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>

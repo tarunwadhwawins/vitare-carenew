@@ -1,5 +1,5 @@
 <template>
-  <a-modal max-width="1140px" width="100%" title="Add CPT Codes">
+  <a-modal width="800px" title="Add CPT Codes">
     <a-row :gutter="24">
       <a-col :sm="12" :xs="24">
         <div class="form-group">
