@@ -138,6 +138,7 @@ export const cptCodeSuccess = (state) => {
       annotations: annotations("In", 0, "#775DD0", 0, "#fff", "#775DD0"),
       chart: {
         type: "bar",
+
       },
       plotOptions: plotOptions(10, "20%", "100%", true, false, "bottom"),
       dataLabels: dataLabels(false),
@@ -175,6 +176,7 @@ export const financialSuccess = (state) => {
     billed: {
       chart: {
         type: "pie",
+        height:"400px"
       },
       labels: ["Billed", "Due"],
       colors: ["#267dff", "#E30D2A"],
