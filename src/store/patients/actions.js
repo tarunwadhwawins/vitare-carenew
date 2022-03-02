@@ -729,45 +729,13 @@ export const fetchFromBitrix = async ({ commit }, id) => {
 	})
 }
 
-export const patientVital = async ({ commit }, {patientId, deviceType}) => {
-  /* a[taketime]=[{
-    type:bpm,
-    value=23
-  }] */
-  /* const combinedItems = (arr = []) => {
-    const res = arr.reduce((acc, obj) => {
-      let found = false;
-      for (let i = 0; i < acc.length; i++) {
-        if (acc[i].takeTime === obj.takeTime) {
-          found = true;
-        }
-      }
-      if (!found) {
-        acc.push(obj);
-      }
-      return acc;
-    }, []);
-    return res;
-  } */
+export const patientVitals = async ({ commit }, {patientId, deviceType}) => {
   commit('loadingStatus', true)
 	await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+patientId+'/vital?deviceType='+deviceType, null, null).then((response) => {
-    if(deviceType == 99) {
-      commit('bloodPressure', response.data.data);
-      commit('loadingStatus', false)
-    }
-    if(deviceType == 100) {
-      commit('bloodGlucose', response.data.data);
-      commit('loadingStatus', false)
-    }
-    if(deviceType == 101) {
-      commit('bloodOxygen', response.data.data);
-      commit('loadingStatus', false)
-    }
+    commit('patientVitals', response.data.data)
+    commit('loadingStatus', false)
 	})
 	.catch((error) => {
-		/* if (error.response.status == 401) {
-			//AuthService.logout();
-		} */
 		commit('failure', error);
     commit('loadingStatus', false)
 	})

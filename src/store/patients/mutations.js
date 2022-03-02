@@ -802,7 +802,7 @@ export const fetchFromBitrix = (state, data) => {
   })
 }
 
-export const bloodPressure = (state, vitals) => {
+export const patientVitals = (state, vitals) => {
   var timeArray = [];
   var vitalsArray = [];
   vitals.map(vital => {
@@ -810,48 +810,28 @@ export const bloodPressure = (state, vitals) => {
       id: vital.id,
       takeTime: vital.takeTime,
       vitalField: vital.vitalField,
+      deviceType: vital.deviceType,
       value: vital.value,
     })
     if(!timeArray.includes(vital.takeTime)) {
       timeArray.push(vital.takeTime);
     }
   })
-  const bloodPressure = convertResponse(timeArray, vitalsArray)
-  state.bloodPressure = bloodPressure;
-}
-
-export const bloodGlucose = (state, vitals) => {
-  var timeArray = [];
-  var vitalsArray = [];
-  vitals.map(vital => {
-    vitalsArray.push({
-      id: vital.id,
-      takeTime: vital.takeTime,
-      vitalField: vital.vitalField,
-      value: vital.value,
-    })
-    if(!timeArray.includes(vital.takeTime)) {
-      timeArray.push(vital.takeTime);
+  const patientVitals = convertResponse(timeArray, vitalsArray)
+  console.log('patientVitals', patientVitals)
+  vitalsArray.forEach(vital => {
+    switch (vital.deviceType) {
+      case 'Blood Pressure':
+        state.bloodPressure = patientVitals;
+        break;
+      case 'Oxymeter':
+        state.bloodOxygen = patientVitals;
+        break;
+      case 'Glucose':
+        state.bloodGlucose = patientVitals;
+        break;
+      default:
+        break;
     }
-  })
-  const bloodGlucose = convertResponse(timeArray, vitalsArray)
-  state.bloodGlucose = bloodGlucose;
-}
-
-export const bloodOxygen = (state, vitals) => {
-  var timeArray = [];
-  var vitalsArray = [];
-  vitals.map(vital => {
-    vitalsArray.push({
-      id: vital.id,
-      takeTime: vital.takeTime,
-      vitalField: vital.vitalField,
-      value: vital.value,
-    })
-    if(!timeArray.includes(vital.takeTime)) {
-      timeArray.push(vital.takeTime);
-    }
-  })
-  const bloodOxygen = convertResponse(timeArray, vitalsArray)
-  state.bloodOxygen = bloodOxygen;
+  });
 }
