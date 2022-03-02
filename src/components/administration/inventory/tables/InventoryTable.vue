@@ -1,6 +1,6 @@
 <template>
-  <a-table
-    rowKey="id"
+  <a-table  rowKey="id"
+    
     :columns="inventoryColumns"
     :data-source="inventoriesList">
     <template #actions="{record}">

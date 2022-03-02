@@ -1,7 +1,7 @@
 <template>
   <a-row>
     <a-col :span="24">
-      <a-table :columns="communicationsColumns" :data-source="communicationsData" :scroll="{ x: 1500 }" @change="onChange" />
+      <a-table  rowKey="id" :columns="communicationsColumns" :data-source="communicationsData" :scroll="{ x: 1500 }" @change="onChange" />
       <template #bodyCell="{ column }">
         <template v-if="column.key === 'type'">
           <span>

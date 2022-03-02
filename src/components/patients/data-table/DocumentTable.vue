@@ -1,5 +1,5 @@
 <template>
-<a-table :columns="documentColumns" :data-source="documentsData" :pagination="false" :scroll="{ x: 900 }">
+<a-table  rowKey="id" :columns="documentColumns" :data-source="documentsData" :pagination="false" :scroll="{ x: 900 }">
     <template #tags="text">
         <span v-for="tag in text.text.data" :key="tag.id">{{ tag.tag+ " "}}</span>
     </template>

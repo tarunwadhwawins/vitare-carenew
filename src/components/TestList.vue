@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class='scrolling-component' ref='scrollComponent'>
-      <a-table
+      <a-table  rowKey="id"
         v-if="communicationsList"
         :columns="communicationsColumns"
         :data-source="communicationsList"

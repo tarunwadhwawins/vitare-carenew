@@ -1,6 +1,6 @@
 <template>
   <a-col :sm="24" v-if="arrayToObjact(tasks.taskPermissions,6)">
-    <a-table 
+    <a-table  rowKey="id" 
     :columns="fields"
     :data-source="data"
     :scroll="{ x: 900 ,y:450 }"

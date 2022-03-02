@@ -48,7 +48,7 @@
     </a-row>
     <a-row :gutter="24" class="mb-24" v-show="!paramId">
         <a-col :span="24">
-            <!-- <a-table :columns="documentColumns" :data-source="documentsData" :pagination="false" :scroll="{ x: 900 }">
+            <!-- <a-table  rowKey="id" :columns="documentColumns" :data-source="documentsData" :pagination="false" :scroll="{ x: 900 }">
                 <template #tags="text">
                     <span v-for="tag in text.text.data" :key="tag.id">{{ tag.tag+ " "}}</span>
                 </template>

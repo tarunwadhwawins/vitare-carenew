@@ -47,7 +47,7 @@
             <a-col :sm="16" :xs="24">
               <div class="summary-tabs">
                 <h2 class="mb-24">Locations</h2>
-                <a-table
+                <a-table  rowKey="id"
                   :pagination="false"
                   :columns="columns3"
                   :data-source="data3"

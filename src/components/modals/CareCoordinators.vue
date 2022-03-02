@@ -19,7 +19,7 @@
     </a-form>
     <a-row :span="24">
       <a-col :sm="24" :xs="24">
-        <a-table rowKey="id" :columns="careTeamColumns" :data-source="careTeamList" :pagination="false"
+        <a-table  rowKey="id"  :columns="careTeamColumns" :data-source="careTeamList" :pagination="false"
           @change="onChange">
 
           <template #actions="{record}">

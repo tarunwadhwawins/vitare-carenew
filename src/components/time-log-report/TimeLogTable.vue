@@ -1,7 +1,7 @@
 
 <template>
 <a-col :sm="24" :xs="24" v-if="arrayToObjact(auditTimes.auditTimePermissions,1)">
-    <a-table :columns="fields" :pagination="false" :data-source="data" :scroll="{ y: 450 }" @change="onChange">
+    <a-table  rowKey="id" :columns="fields" :pagination="false" :data-source="data" :scroll="{ y: 450 }" @change="onChange">
         <template #staff="text">
             <!-- <router-link to="coordinator-summary">{{
   text.text

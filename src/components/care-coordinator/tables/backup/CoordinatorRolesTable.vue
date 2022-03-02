@@ -1,7 +1,7 @@
 <template>
   <a-row :gutter="24">
     <a-col :span="24">
-      <a-table :columns="rolesColumns" :data-source="rolesData" :scroll="{ x: 900 }">
+      <a-table  rowKey="id" :columns="rolesColumns" :data-source="rolesData" :scroll="{ x: 900 }">
         <template #action="{ record }">
           <a class="icons" @click ="onClickDeleteButton({coordinatorId: record.coordinator_id, roleId: record.id})"><DeleteOutlined /></a>
         </template>

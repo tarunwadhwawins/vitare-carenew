@@ -2,7 +2,7 @@
   <a-modal width="1000px" title="Time Logs Detail" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
-        <a-table rowKey="id" :columns="timeLogColumns" :data-source="timeLogsList" :scroll="{ x: 900 }" :pagination="false" >
+        <a-table  rowKey="id"  :columns="timeLogColumns" :data-source="timeLogsList" :scroll="{ x: 900 }" :pagination="false" >
           <!-- <template #category="{record}">
             <span>{{record.category.name}}</span>
           </template> -->

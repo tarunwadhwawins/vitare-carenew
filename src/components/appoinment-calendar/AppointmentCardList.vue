@@ -72,7 +72,7 @@
      </div>
 <div v-else></div>
 <a-modal width="1100px" centered v-model:visible="visible" title="Appointment" @ok="handleOk">
-  <a-table :columns="columns" :data-source="getMoreAppointment">
+  <a-table  rowKey="id" :columns="columns" :data-source="getMoreAppointment">
 
   </a-table>
 </a-modal>

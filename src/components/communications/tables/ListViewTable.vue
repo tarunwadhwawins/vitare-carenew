@@ -1,5 +1,5 @@
 <template>
-  <a-table
+  <a-table  rowKey="id"
  
     :columns="communicationColumns"
     :data-source="data"

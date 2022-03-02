@@ -7,7 +7,7 @@ export default {
   errorMsg: null,
   options:null,
   server:'wss://dev.icc-health.com:7443',
-  simpleUser:null,
+  simpleUser:null,//localStorage.getItem("simpleUser"),
   accessPermission:JSON.parse(localStorage.getItem('accessPermission'))
 
 }
