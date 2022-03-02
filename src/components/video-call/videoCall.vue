@@ -201,9 +201,15 @@ export default {
       router.push('/dashboard')
     })
   }
+
+   const conferenceId = computed(()=>{
+       return store.state.communications.conferenceId
+     })
+ 
   
  
     return {
+      conferenceId,
       hangUp,
       videoCall,
       size: ref("large"),

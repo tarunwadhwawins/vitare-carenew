@@ -695,7 +695,7 @@ export const fetchFromBitrix = (state, data) => {
     state.fetchFromBitrix.lastName = data[item.bitrixId] 
     }
     if(item.patientId=="dob"){
-      state.fetchFromBitrix.dob = dobFormat2(data[item.bitrixId]) 
+      state.fetchFromBitrix.dob = data[item.bitrixId]?dobFormat2(data[item.bitrixId]):''
     }
     if(item.patientId=="email"){
       state.fetchFromBitrix.email = data[item.bitrixId]
