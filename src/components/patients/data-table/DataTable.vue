@@ -60,11 +60,11 @@ export default {
                     if (current_page <= meta.value.patientMeta.total_pages) {
                         loader.value = true
                         meta.value.patientMeta = ""
-                        store.dispatch("patients", "?page=" + current_page)
-                        setTimeout(() => {
+                        store.state.patients.patientList=""
+                        store.dispatch("patients", "?page=" + current_page).then(()=>{
+                            //console.log('response',response)
                             loadMoredata()
-                        }, 1000)
-
+                        })
                     }
                 }
             })
