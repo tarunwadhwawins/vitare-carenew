@@ -3,7 +3,7 @@
    
     <!-- Top Cards -->
     <template v-for="count in communicationsCount" :key="count.id">
-      <a-col :xl="6"  :xs="24">
+      <a-col :xl="6" :md="12"  :xs="24">
       <LongCard :backgroundColor="count.backgroundColor" :count="count.count" :text="count.text" :textColor="count.textColor"></LongCard>
       </a-col>
     </template>
