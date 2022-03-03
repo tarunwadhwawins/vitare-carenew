@@ -124,10 +124,10 @@ export default defineComponent({
     const idPatient = reactive(props.patientId);
     watchEffect(() => {
       if(route.name == 'PatientSummary') {
-        store.dispatch('devices', route.params.udid)
+        // store.dispatch('devices', route.params.udid)
       }
       else {
-        store.dispatch('devices', idPatient)
+        // store.dispatch('devices', idPatient)
       }
     })
     const patientDevice = computed(() => {
