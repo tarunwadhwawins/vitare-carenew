@@ -195,8 +195,8 @@ export default {
     })
     console.log('bloodPressureGraph', bloodPressureGraph.value)
 
-    const bloodPressureSeries = []
-    const bloodPressureTimesArray = []
+    const bloodPressureSeries = bloodPressureGraph.value.series
+    const bloodPressureTimesArray = bloodPressureGraph.value.timesArray
 
     const bloodOxygenGraph = computed(() => {
       return store.state.patients.bloodOxygenGraph
