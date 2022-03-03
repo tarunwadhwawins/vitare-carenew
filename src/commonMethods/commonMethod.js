@@ -275,3 +275,46 @@ export function chartTimeCount(timeLine,count){
   }
   return newPatient
 }
+
+
+export function convertResponse(timeArray, recordsArray) {
+  let records = []
+  timeArray.forEach(time => {
+    let recordList = []
+    recordsArray.forEach(record => {
+      if(record.takeTime === time) {
+        recordList.push(record);
+      }
+    });
+    if(recordList.length > 0) {
+      let valuesObject = {
+        "takeTime": time,
+        "data": recordList.map(item => {
+          var field = (item.vitalField).replace(/ /g,'_').toLowerCase()
+          item[field] = item.value
+          return item
+        })
+      }
+      records.push(valuesObject);
+    }
+  });
+  return records
+}
+
+export function convertData(patientVitals) {
+  let records = []
+  patientVitals.forEach(element => {
+    let itemObject = {}
+    element.data.forEach(item => {
+      var field = (item.deviceType+'_'+item.vitalField).replace(/ /g,'_').toLowerCase()
+      element.data = [];
+        itemObject['id'] = item.id
+        itemObject['takeTime'] = dateFormat(item.takeTime)
+        itemObject['vitalField'] = item.vitalField
+        itemObject['deviceType'] = item.deviceType
+        itemObject[field] = item.value
+    })
+    records.push(itemObject);
+  });
+  return records;
+}

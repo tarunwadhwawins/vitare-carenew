@@ -73,7 +73,7 @@
                     <div class="value">4567 $</div>
                   </div>
                 </div> -->
-        <ApexChart :title="$t('dashboard.financialStats')" type="pie" :height="362" :options="financialValue.billed"
+        <ApexChart :title="$t('dashboard.financialStats')" type="pie" :height="400" :options="financialValue.billed"
           :series="financialValue.due" linkTo="time-tracking-report"></ApexChart>
       </a-col>
 
