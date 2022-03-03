@@ -4,7 +4,8 @@ import {
   dateOnlyFormat,
   dobFormat2,
   // timeFormatSimple
-  convertResponse
+  convertResponse,
+  convertData,
 } from '../../commonMethods/commonMethod';
 
 export const addDemographic = (state, data) => {
@@ -804,6 +805,7 @@ export const fetchFromBitrix = (state, data) => {
 
 export const patientVitals = (state, vitals) => {
   var timeArray = [];
+  var vitalFieldsArray = [];
   var vitalsArray = [];
   vitals.map(vital => {
     vitalsArray.push({
@@ -816,19 +818,22 @@ export const patientVitals = (state, vitals) => {
     if(!timeArray.includes(vital.takeTime)) {
       timeArray.push(vital.takeTime);
     }
+    if(!vitalFieldsArray.includes(vital.vitalField)) {
+      vitalFieldsArray.push(vital.vitalField);
+    }
   })
   const patientVitals = convertResponse(timeArray, vitalsArray)
-  console.log('patientVitals', patientVitals)
+  const finalVitals = convertData(patientVitals)
   vitalsArray.forEach(vital => {
     switch (vital.deviceType) {
       case 'Blood Pressure':
-        state.bloodPressure = patientVitals;
+        state.bloodPressure = finalVitals;
         break;
       case 'Oxymeter':
-        state.bloodOxygen = patientVitals;
+        state.bloodOxygen = finalVitals;
         break;
       case 'Glucose':
-        state.bloodGlucose = patientVitals;
+        state.bloodGlucose = finalVitals;
         break;
       default:
         break;

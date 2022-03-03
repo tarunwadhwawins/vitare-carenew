@@ -288,9 +288,10 @@ export function convertResponse(timeArray, recordsArray) {
     });
     if(recordList.length > 0) {
       let valuesObject = {
-        "takeTime": dateFormat(time),
+        "takeTime": time,
         "data": recordList.map(item => {
-          item.takeTime = dateFormat(item.takeTime)
+          var field = (item.vitalField).replace(/ /g,'_').toLowerCase()
+          item[field] = item.value
           return item
         })
       }
@@ -298,4 +299,22 @@ export function convertResponse(timeArray, recordsArray) {
     }
   });
   return records
+}
+
+export function convertData(patientVitals) {
+  let records = []
+  patientVitals.forEach(element => {
+    let itemObject = {}
+    element.data.forEach(item => {
+      var field = (item.deviceType+'_'+item.vitalField).replace(/ /g,'_').toLowerCase()
+      element.data = [];
+        itemObject['id'] = item.id
+        itemObject['takeTime'] = dateFormat(item.takeTime)
+        itemObject['vitalField'] = item.vitalField
+        itemObject['deviceType'] = item.deviceType
+        itemObject[field] = item.value
+    })
+    records.push(itemObject);
+  });
+  return records;
 }

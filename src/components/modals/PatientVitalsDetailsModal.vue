@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" :title="$t('patientSummary.bloodPressureDetails.bloodPressureDetail')" centered>
+  <a-modal width="90%" :title="$t('patientSummary.bloodPressureDetails.bloodPressureDetail')" centered>
     <PatientVitalsGrid :patientId="patientDetails.id" />
     <Loader />
   </a-modal>

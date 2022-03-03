@@ -1,65 +1,38 @@
 <template>
   <a-row :gutter="24">
-  
-    <a-col :sm="12" :xs="24" class="mb-24">
-      <a-card title="Blood Pressure">
-        <a-tabs v-model:activeKey="activeKey1">
-          <a-tab-pane key="1" tab="Table" force-render>
-            <Table :columns="vitalColumns" :data="bloodPressure" className="dangerValue" />
-          </a-tab-pane>
-          <a-tab-pane key="4" tab="Graph">
-            <ApexChart type="area" height="210" :options="chartOptions" :series="chartSeries" />
-          </a-tab-pane>
-        </a-tabs>
-        <template #extra>
-          <a>
-            <a-button class="btn blackBtn" @click="showAddBPModal">
-              <PlusOutlined/>
-            </a-button>
-          </a>
-        </template>
-      </a-card>
-    </a-col>
-    
-    <a-col :sm="12" :xs="24" class="mb-24">
-      <a-card title="Blood Glucose">
-        <a-tabs v-model:activeKey="activeKey2">
-          <a-tab-pane key="2" tab="Table" force-render>
-            <Table :columns="vitalColumns" :data="bloodGlucose" />
-          </a-tab-pane>
-          <a-tab-pane key="5" tab="Graph">
-            <ApexChart type="area" height="210" :options="chartOptions" :series="chartSeries" />
-          </a-tab-pane>
-        </a-tabs>
-        <template #extra>
-          <a>
-            <a-button class="btn blackBtn" @click="showBloodGlucoseModal">
-              <PlusOutlined/>
-            </a-button>
-          </a>
-        </template>
-      </a-card>
-    </a-col>
-    
-    <a-col :sm="12" :xs="24" class="mb-24">
-      <a-card title="Blood Oxygen Saturation">
-        <a-tabs v-model:activeKey="activeKey3">
-          <a-tab-pane key="3" tab="Table" force-render>
-            <Table :columns="vitalColumns" :data="bloodOxygen" />
-          </a-tab-pane>
-          <a-tab-pane key="6" tab="Graph">
-            <ApexChart type="area" height="210" :options="chartOptions" :series="chartSeries" />
-          </a-tab-pane>
-        </a-tabs>
-        <template #extra>
-          <a>
-            <a-button class="btn blackBtn" @click="showBloodOxygenModal">
-              <PlusOutlined/>
-            </a-button>
-          </a>
-        </template>
-      </a-card>
-    </a-col>
+
+    <VitalsGrid
+      title="Blood Pressure"
+      :activeKey="activeKey1"
+      className="dangerValue"
+      :tableColumns="bloodPressureColumns"
+      :tableData="bloodPressure"
+      :chartOptions="chartOptions"
+      :chartSeries="chartSeries"
+      @showModal="showAddBPModal"
+    />
+
+    <VitalsGrid
+      title="Blood Glucose"
+      :activeKey="activeKey2"
+      className="dangerValue"
+      :tableColumns="bloodGlucoseColumns"
+      :tableData="bloodGlucose"
+      :chartOptions="chartOptions"
+      :chartSeries="chartSeries"
+      @showModal="showBloodGlucoseModal"
+    />
+
+    <VitalsGrid
+      title="Blood Oxygen Saturation"
+      :activeKey="activeKey3"
+      className="dangerValue"
+      :tableColumns="bloodOxygetColumns"
+      :tableData="bloodOxygen"
+      :chartOptions="chartOptions"
+      :chartSeries="chartSeries"
+      @showModal="showBloodOxygenModal"
+    />
 
   </a-row>
   <AddVitals v-model:visible="visibleAddVitals" @ok="handleOk" />
@@ -69,26 +42,20 @@
 </template>
 
 <script>
-import {
-  PlusOutlined,
-} from "@ant-design/icons-vue";
 import { computed, reactive, ref, watchEffect } from 'vue-demi';
 import AddVitals from "@/components/modals/AddVitals";
 import AddPulse from "@/components/modals/AddPulse";
 import BloodGlucose from "@/components/modals/BloodGlucose";
 import BloodOxygen from "@/components/modals/BloodOxygen";
-import Table from "@/components/patients/patientSummary/views/table/Table";
-import ApexChart from "@/components/common/charts/ApexChart";
+import VitalsGrid from "@/components/patients/patientSummary/common/VitalsGrid";
 import { useStore } from 'vuex';
 export default {
   components: {
-    PlusOutlined,
     AddVitals,
     AddPulse,
     BloodGlucose,
     BloodOxygen,
-    Table,
-    ApexChart,
+    VitalsGrid,
   },
   props: {
     patientId: {
@@ -104,9 +71,9 @@ export default {
     const visibleBloodOxygen = ref(false);
 
     watchEffect(() => {
-      store.dispatch('patientVital', {patientId: idPatient, deviceType: 99});
-      store.dispatch('patientVital', {patientId: idPatient, deviceType: 100});
-      store.dispatch('patientVital', {patientId: idPatient, deviceType: 101});
+      store.dispatch('patientVitals', {patientId: idPatient, deviceType: 99});
+      store.dispatch('patientVitals', {patientId: idPatient, deviceType: 100});
+      store.dispatch('patientVitals', {patientId: idPatient, deviceType: 101});
     })
 
     const bloodPressure = computed(() => {
@@ -134,7 +101,7 @@ export default {
       visibleBloodOxygen.value = true;
     };
 
-    const vitalColumns = [
+    const bloodPressureColumns = [
       {
         title: "Date Recorded",
         dataIndex: "takeTime",
@@ -144,11 +111,81 @@ export default {
         },
       },
       {
-        title: "Value",
-        dataIndex: "value",
-        key: "value",
+        title: "Systolic",
+        dataIndex: "blood_pressure_systolic",
+        key: "blood_pressure_systolic",
         slots: {
-          customRender: "value",
+          customRender: "blood_pressure_systolic",
+        },
+      },
+      {
+        title: "Diastolic",
+        dataIndex: "blood_pressure_diastolic",
+        key: "blood_pressure_diastolic",
+        slots: {
+          customRender: "blood_pressure_diastolic",
+        },
+      },
+      {
+        title: "BPM",
+        dataIndex: "blood_pressure_bpm",
+        key: "blood_pressure_bpm",
+        slots: {
+          customRender: "blood_pressure_bpm",
+        },
+      },
+    ];
+
+    const bloodGlucoseColumns = [
+      {
+        title: "Date Recorded",
+        dataIndex: "takeTime",
+        key: "takeTime",
+        slots: {
+          customRender: "takeTime",
+        },
+      },
+      {
+        title: "Random Blood Sugar",
+        dataIndex: "glucose_random_blood_sugar",
+        key: "glucose_random_blood_sugar",
+        slots: {
+          customRender: "glucose_random_blood_sugar",
+        },
+      },
+      {
+        title: "Fasting Blood Sugar",
+        dataIndex: "glucose_fasting_blood_sugar",
+        key: "glucose_fasting_blood_sugar",
+        slots: {
+          customRender: "glucose_fasting_blood_sugar",
+        },
+      },
+    ];
+
+    const bloodOxygetColumns = [
+      {
+        title: "Date Recorded",
+        dataIndex: "takeTime",
+        key: "takeTime",
+        slots: {
+          customRender: "takeTime",
+        },
+      },
+      {
+        title: "SPO2",
+        dataIndex: "oxymeter_spo2",
+        key: "oxymeter_spo2",
+        slots: {
+          customRender: "oxymeter_spo2",
+        },
+      },
+      {
+        title: "BPM",
+        dataIndex: "oxymeter_bpm",
+        key: "oxymeter_bpm",
+        slots: {
+          customRender: "oxymeter_bpm",
         },
       },
     ];
@@ -205,12 +242,16 @@ export default {
       activeKey1: ref("1"),
       activeKey2: ref("2"),
       activeKey3: ref("3"),
-      vitalColumns,
+      
       chartOptions,
       chartSeries,
       bloodPressure,
       bloodGlucose,
       bloodOxygen,
+
+      bloodPressureColumns,
+      bloodGlucoseColumns,
+      bloodOxygetColumns,
     }
   }
 }

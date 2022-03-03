@@ -1,5 +1,9 @@
 
-import { responseConvert,dateFormat, dateOnlyFormat } from "../../commonMethods/commonMethod"
+import {
+  responseConvert,
+  dateFormat,
+  dateOnlyFormat
+} from "../../commonMethods/commonMethod"
 import moment from 'moment'
 
 export const addStaff = async (state, data) => {
@@ -58,8 +62,10 @@ export const showMoreRecords = (state, data) => {
   state.showMoreRecords = getRecord
 }
 
-export const latestAppointmentSuccess = (state, data) => {
-  if(data.length > 0) {
+export const latestAppointmentSuccess = (state, response) => {
+  if(response.length > 0) {
+    const data = response[0].value
+    console.log('latestAppointmentSuccess', data)
     data[0].date = dateOnlyFormat(data[0].date);
     state.latestAppointment = data;
   }
