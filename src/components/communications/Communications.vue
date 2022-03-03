@@ -1,24 +1,21 @@
 <template>
   <div>
     <a-layout>
-
       <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
         <Header />
       </a-layout-header>
-
       <a-layout>
         <a-layout-sider
           :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"
           ><Sidebar
         /></a-layout-sider>
-
         <a-layout-content>
           <a-row>
             <a-col :span="24">
               <h2 class="pageTittle">
                 {{ $t('communications.communications') }}
                 <div class="addtaskButton">
-                  <StartCall></StartCall>
+                  <StartCall @click="showStartCallModal"></StartCall>
                   <SendMessage></SendMessage>
                   <ToolTip :boxTitle="$t('communications.communicationsModal.email')"  boxName="email" @open="openNotification($event)"></ToolTip>
                   <ToolTip :boxTitle="$t('communications.communicationsModal.sms')"  boxName="sms" @open="openNotification($event)"></ToolTip>
@@ -60,7 +57,7 @@
       </a-layout>
 
     </a-layout>
-
+  <AddStartCall v-model:visible="AddStartCall" @ok="startOk" />
   </div>
 </template>
 
@@ -74,6 +71,7 @@ import StartCall from "@/components/communications/top/StartCall";
 import SendMessage from "@/components/communications/top/SendMessage";
 import ToolTip from "@/components/communications/toolTip/ToolTip";
 import { notification, Button } from "ant-design-vue";
+import AddStartCall from "@/components/modals/AddStartCall";
 //import { useStore } from "vuex";
 const close = () => {
   // console.log(
@@ -90,10 +88,12 @@ export default {
     StartCall,
     SendMessage,
     ToolTip,
+    AddStartCall
   },
   
   setup() {
     const toggle = ref(true);
+    const AddStartCall = ref()
     const handleChange = () => {
       // console.log(`selected ${value}`);
     };
@@ -179,7 +179,17 @@ export default {
       });
     };
 
+    function showStartCallModal(){
+      AddStartCall.value =true
+    }
+    function closeStartCallModal(){
+      AddStartCall.value =false
+    }
+
     return {
+      closeStartCallModal,
+      showStartCallModal,
+      AddStartCall,
       toggle,
       openNotification,
       onChange: () => {
