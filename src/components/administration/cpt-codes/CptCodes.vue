@@ -25,7 +25,7 @@
               </div>
             </a-col>
             <a-col :span="24">
-              <CptCodesTable :cptCodesList="cptCodesList" />
+              <CptCodesTable v-if="cptCodesList.cptCodesList" :cptCodesList="cptCodesList" />
             </a-col>
           </a-row>
         </div>
@@ -34,7 +34,7 @@
   </a-layout>
 
   <!-- Add CPT Code Modal -->
-  <CptCodesModal v-model:visible="visible" @ok="handleOk" />
+  <CptCodesModal v-model:visible="visible" @ok="handleOk" @is-visible="showModal($event)" />
 
 </template>
 
@@ -72,57 +72,60 @@ export default {
     };
     watchEffect(()=>{
       store.dispatch('serviceList')
+      store.dispatch('cptCodesList')
+
     })
-    const cptCodesList = [
-      {
-        key: 1,
-        cpt: "90791",
-        description: "Evaluation",
-        billing: "$150",
-        active: "",
-        action: "",
-      },
-      {
-        key: 2,
-        cpt: "90832",
-        description: "LCSW Ongoing Services",
-        billing: "$200",
-        active: "",
-        action: "",
-      },
-      {
-        key: 3,
-        cpt: "96130",
-        description: "Deep Dive",
-        billing: "$120",
-        active: "",
-        action: "",
-      },
-      {
-        key: 4,
-        cpt: "96138",
-        description: "M3 Screening - MSW",
-        billing: "$160",
-        active: "",
-        action: "",
-      },
-      {
-        key: 5,
-        cpt: "99358",
-        description: "Patient Discharge",
-        billing: "$300",
-        active: "",
-        action: "",
-      },
-      {
-        key: 6,
-        cpt: "99453",
-        description: "(ES Team) Setup and patient education for use of RPM equipment",
-        billing: "$150",
-        active: "",
-        action: "",
-      },
-    ];
+    const cptCodesList = store.getters.cptRecords.value
+    // const cptCodesList = [
+    //   {
+    //     key: 1,
+    //     cpt: "90791",
+    //     description: "Evaluation",
+    //     billing: "$150",
+    //     active: "",
+    //     action: "",
+    //   },
+    //   {
+    //     key: 2,
+    //     cpt: "90832",
+    //     description: "LCSW Ongoing Services",
+    //     billing: "$200",
+    //     active: "",
+    //     action: "",
+    //   },
+    //   {
+    //     key: 3,
+    //     cpt: "96130",
+    //     description: "Deep Dive",
+    //     billing: "$120",
+    //     active: "",
+    //     action: "",
+    //   },
+    //   {
+    //     key: 4,
+    //     cpt: "96138",
+    //     description: "M3 Screening - MSW",
+    //     billing: "$160",
+    //     active: "",
+    //     action: "",
+    //   },
+    //   {
+    //     key: 5,
+    //     cpt: "99358",
+    //     description: "Patient Discharge",
+    //     billing: "$300",
+    //     active: "",
+    //     action: "",
+    //   },
+    //   {
+    //     key: 6,
+    //     cpt: "99453",
+    //     description: "(ES Team) Setup and patient education for use of RPM equipment",
+    //     billing: "$150",
+    //     active: "",
+    //     action: "",
+    //   },
+    // ];
 
     return {
       cptCodesList,

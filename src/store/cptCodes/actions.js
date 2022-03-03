@@ -1,9 +1,10 @@
 import ServiceMethodService from '../../services/serviceMethod';
 import { API_ENDPOINTS } from "../../config/apiConfig"
-
-export const cptCodesList = async ({ commit }) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['cptCodes'], null, null).then((response) => {
-		commit('cptCodesList', response.data.data);
+import { successSwal, errorSwal} from '../../commonMethods/commonMethod'
+export const cptCodesList = async ({ commit },page) => {
+	let link = page? API_ENDPOINTS['cptCodes']+page: API_ENDPOINTS['cptCodes']
+	await ServiceMethodService.common("get", link, null, null).then((response) => {
+		commit('cptCodesList', response.data);
 	})
 	.catch((error) => {
 		commit('failure', error.response.data);
@@ -11,10 +12,14 @@ export const cptCodesList = async ({ commit }) => {
 }
 
 export const addCptCode = async ({ commit }, data) => {
+
 	await ServiceMethodService.common("post", API_ENDPOINTS['cptCodes'], null, data).then((response) => {
+		successSwal(response.data.message)
 		commit('addCptCode', response.data.data);
+
 	})
 	.catch((error) => {
+		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
 }

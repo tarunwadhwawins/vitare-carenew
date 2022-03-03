@@ -4,5 +4,7 @@ export default {
   deleteCptCode: null,
   cptCodeDetails: null,
   updateCptCode: null,
-  service: null
+  service: null,
+  cptCodesColumns:null,
+  cptMeta:null,
 }
