@@ -48,6 +48,9 @@ export default {
     patientSearchWithBitrix:null,
     patientSearchWithBitrixCols:null,
     fetchFromBitrix:null,
+    bloodPressure:null,
+    bloodGlucose:null,
+    bloodOxygen:null,
     getBitrixFieldsName:null,
     fetchFromBitrixStatus:null
 

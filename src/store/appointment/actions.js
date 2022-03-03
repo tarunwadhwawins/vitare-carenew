@@ -55,7 +55,7 @@ export const showMoreRecords =({commit},data) =>{
 
 
 export const latestAppointment = async ({ commit }, id) => {
-	await serviceMethod.common("get", API_ENDPOINTS['appointment']+'?latest=latest&id='+id, null, null).then((response) => {
+	await serviceMethod.common("get", API_ENDPOINTS['appointment']+'/'+id, null, null).then((response) => {
 		commit('latestAppointmentSuccess', response.data.data);
 	})
 	.catch((error) => {
