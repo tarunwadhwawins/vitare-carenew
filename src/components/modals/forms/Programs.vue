@@ -6,7 +6,7 @@
                 <a-form-item :label="$t('patient.programs.program')" name="program" :rules="[{ required: true, message: $t('patient.programs.program')+' '+$t('global.validation') }]">
                     <a-select ref="select" v-model:value="program.program" style="width: 100%" size="large" @change="handleChange">
                         <a-select-option value="" disabled>{{'Select Program'}}</a-select-option>
-                        <a-select-option v-for="program in patients.programList" :key="program.id" :value="program.id">{{program.description}}</a-select-option>
+                        <a-select-option v-for="program in patients.programList.data" :key="program.id" :value="program.id">{{program.description}}</a-select-option>
                     </a-select>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.program?errorMsg.program[0]:''" />
                 </a-form-item>
@@ -111,6 +111,7 @@ export default defineComponent({
           id: patientId,
         }).then(() => {
           store.dispatch("program", patientId);
+          reset()
         });
       }
       else {
@@ -121,11 +122,12 @@ export default defineComponent({
             dischargeDate:timeStamp(program.dischargeDate),
             status: program.status,
           },
-          id: patients.value.addDemographic.id,
+          id: 'e388ea38-bfec-4172-965a-f3cdeccd9745'//patients.value.addDemographic.id,
         });
-        reset()
+        
         setTimeout(() => {
-          store.dispatch("program", patients.value.addDemographic.id);
+          store.dispatch("program", 'e388ea38-bfec-4172-965a-f3cdeccd9745');
+          reset()
         }, 2000);
       }
     };

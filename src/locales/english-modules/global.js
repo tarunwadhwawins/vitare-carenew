@@ -63,7 +63,8 @@ const global = {
   note:'Note',
   save:'Save',
   clear:'Clear',
-  send:'Send'
+  send:'Send',
+  service:'Service'
 
 }
 
