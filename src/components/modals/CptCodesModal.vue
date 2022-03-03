@@ -1,5 +1,5 @@
 <template>
-<a-modal max-width="1140px" width="100%" title="Add CPT Codes" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal max-width="1140px" width="100%" :title="cptCodeId ? 'Edit CPT Codes' : 'Add CPT Codes'" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
     <a-form ref="formRef" :model="cptCodeForm" layout="vertical" @finish="submitForm" @finishFailed="onFinishFailed">
         <a-row :gutter="24">
             <a-col :sm="12" :xs="24">
