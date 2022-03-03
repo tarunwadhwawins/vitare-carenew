@@ -25,16 +25,19 @@
                         </div>
                     </a-col>
                     <a-col :span="24">
-                        <CptCodesTable v-if="cptCodesList.cptCodesList" :cptCodesList="cptCodesList" />
+                        <CptCodesTable v-if="cptCodesList.cptCodesList" :cptCodesList="cptCodesList" @is-visible="editModal($event)" />
                     </a-col>
                 </a-row>
             </div>
+
         </a-layout-content>
     </a-layout>
+
 </a-layout>
 
 <!-- Add CPT Code Modal -->
-<CptCodesModal v-model:visible="visible" @ok="handleOk" @is-visible="showModal($event)" />
+<CptCodesModal v-if="editId" v-model:visible="visible" @ok="handleOk" @is-visible="showModal($event)" :cptId="editId" />
+<CptCodesModal v-else v-model:visible="visible" @ok="handleOk" @is-visible="showModal($event)" />
 </template>
 
 <script>
@@ -51,6 +54,7 @@ import Button from "@/components/common/button/Button";
 import {
     useStore
 } from "vuex"
+
 export default {
     components: {
         Header,
@@ -59,12 +63,23 @@ export default {
         CptCodesTable,
         SearchField,
         Button,
+
     },
     setup() {
         const visible = ref(false);
         const showModal = (e) => {
+            editId.value = null
             visible.value = e;
+
         };
+        const editModal = (e) => {
+            //console.log(e)
+
+            editId.value = e.id
+            visible.value = e.check;
+
+        };
+        const editId = ref(null)
         const store = useStore()
         const handleOk = () => {
 
@@ -137,6 +152,8 @@ export default {
             visible,
             showModal,
             handleOk,
+            editId,
+            editModal,
             buttonName: 'Add CPT Code',
         };
     },

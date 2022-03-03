@@ -44,10 +44,9 @@ export const cptCodeDetails = async ({ commit }, id) => {
 	})
 }
 
-export const updateCptCode = async ({ commit }, {id, data}) => {
-	console.log('Edit Record Id', id)
-	console.log('Edit Record data', data)
-	await ServiceMethodService.common("put", API_ENDPOINTS['cptCodes'], id, data).then((response) => {
+export const updateCptCode = async ({ commit }, data) => {
+
+	await ServiceMethodService.common("put", API_ENDPOINTS['cptCodes'], data.id, data.data).then((response) => {
 		commit('updateCptCode', response.data.data);
 	})
 	.catch((error) => {
