@@ -124,6 +124,7 @@ export default defineComponent({
     const idPatient = reactive(props.patientId);
     watchEffect(() => {
       if(route.name == 'PatientSummary') {
+        console.log('idPatient', idPatient)
         // store.dispatch('devices', route.params.udid)
       }
       else {
