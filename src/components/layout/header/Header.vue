@@ -91,7 +91,7 @@
                   </div>
                 </a>
                 <template  #overlay>
-                  <a-menu>
+                  <a-menu class="headerDropdown">
                     <a-menu-item key="0">
                       <a href="javascript:void(0)" @click="addAppt">{{$t('header.addAppointment')}}</a>
                     </a-menu-item>
@@ -107,7 +107,7 @@
                       <a href="javascript:void(0)" @click="addTask">{{$t('header.addTask')}}</a>
                     </a-menu-item>
                     <a-menu-item key="4">
-                      <a href="javascript:void(0)" @click="addStart">{{$t('header.startCall')}}</a>
+                      <a href="javascript:void(0)" @click="showStartCallModal">{{$t('header.startCall')}}</a>
                     </a-menu-item>
                   </a-menu>
                 </template>
@@ -121,7 +121,7 @@
                   </div>
                 </a>
                 <template #overlay>
-                  <a-menu>
+                  <a-menu class="headerDropdown">
                     <li class="title">{{$t('header.notification')}}</li>
                     <li class="listing">
                       <a class="d-flex align-items-center" href="#">
@@ -161,7 +161,7 @@
                   </div>
                 </a>
                 <template #overlay>
-                  <a-menu>
+                  <a-menu class="headerDropdown">
                     <a-menu-item key="0">
                       <a href="javascript:void(0)">{{$t('header.myProfile')}}</a>
                     </a-menu-item>
@@ -184,7 +184,7 @@
     <TasksModal  v-model:visible="tasksModal" @saveTaskModal="handleTaskOk($event)"  />
     <PatientsModal v-model:visible="PatientsModal" @saveModal="closeAppointModal($event)" />
     <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" />
-    <AddStartCall v-model:visible="AddStartCall" @ok="startOk" />
+    <AddStartCall v-model:visible="AddStartCall" @ok="closeStartCallModal" />
     <SendMessage v-model:visible="SendMessage" @ok="startOk" />
     <!---->
   </div>
@@ -289,14 +289,17 @@
       };
 
       const AddStartCall = ref(false);
-      const addStart = () => {
+      const showStartCallModal = () => {
         AddStartCall.value = true;
       };
       const SendMessage = ref(false);
       const addsendMessage = () => {
         SendMessage.value = true;
       };
-      const startOk = () => {
+      const startOk= ()=>{
+        SendMessage.value = false;
+      }
+      const closeStartCallModal = () => {
         AddStartCall.value = false;
       };
 
@@ -332,7 +335,8 @@
         CoordinatorsModal,
         addCare,
         AddStartCall,
-        addStart,
+        showStartCallModal,
+        closeStartCallModal,
         startOk,
 
         handleOk,

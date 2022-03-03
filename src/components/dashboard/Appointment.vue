@@ -1,7 +1,7 @@
 <template>
   <a-col :sm="12" :xs="24">
     <a-card :title="title" class="common-card">
-      <a-table  rowKey="id" :columns="column" :data-source="data" :pagination="false">
+      <a-table  rowKey="id" :columns="column" :data-source="data" :scroll="{ y:187 }" :pagination="false">
         <!-- <template #patientName="text">
           <router-link :to="linkTo">{{
             text.text
