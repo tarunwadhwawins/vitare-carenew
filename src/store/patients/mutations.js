@@ -6,6 +6,7 @@ import {
   // timeFormatSimple
   convertResponse,
   convertData,
+  areaChartResponse,
 } from '../../commonMethods/commonMethod';
 
 export const addDemographic = (state, data) => {
@@ -822,18 +823,33 @@ export const patientVitals = (state, vitals) => {
       vitalFieldsArray.push(vital.vitalField);
     }
   })
-  const patientVitals = convertResponse(timeArray, vitalsArray)
-  const finalVitals = convertData(patientVitals)
+  const convertedResponse = convertResponse(timeArray, vitalsArray)
+  const patientVitals = convertData(convertedResponse)
+  const patientGraphData = areaChartResponse(vitalsArray)
+
+  // console.log('patientGraphData', patientGraphData);
+
+  const series = patientGraphData.series
+  const timesArray = patientGraphData.timesArray
+  const graphData = {
+    series: series,
+    timesArray: timesArray
+  }
+  console.log('graphData', JSON.stringify(graphData));
+
   vitalsArray.forEach(vital => {
     switch (vital.deviceType) {
       case 'Blood Pressure':
-        state.bloodPressure = finalVitals;
+        state.bloodPressure = patientVitals;
+        state.bloodPressureGraph = graphData;
         break;
       case 'Oxymeter':
-        state.bloodOxygen = finalVitals;
+        state.bloodOxygen = patientVitals;
+        state.bloodOxygenGraph = graphData;
         break;
       case 'Glucose':
-        state.bloodGlucose = finalVitals;
+        state.bloodGlucose = patientVitals;
+        state.bloodGlucoseGraph = graphData;
         break;
       default:
         break;

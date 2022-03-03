@@ -7,8 +7,8 @@
       className="dangerValue"
       :tableColumns="bloodPressureColumns"
       :tableData="bloodPressure"
-      :chartOptions="chartOptions"
-      :chartSeries="chartSeries"
+      :chartOptions="bloodPressureOptions"
+      :chartSeries="bloodPressureSeries"
       @showModal="showAddBPModal"
     />
 
@@ -18,8 +18,8 @@
       className="dangerValue"
       :tableColumns="bloodGlucoseColumns"
       :tableData="bloodGlucose"
-      :chartOptions="chartOptions"
-      :chartSeries="chartSeries"
+      :chartOptions="bloodPressureOptions"
+      :chartSeries="bloodPressureSeries"
       @showModal="showBloodGlucoseModal"
     />
 
@@ -29,8 +29,8 @@
       className="dangerValue"
       :tableColumns="bloodOxygetColumns"
       :tableData="bloodOxygen"
-      :chartOptions="chartOptions"
-      :chartSeries="chartSeries"
+      :chartOptions="bloodPressureOptions"
+      :chartSeries="bloodPressureSeries"
       @showModal="showBloodOxygenModal"
     />
 
@@ -189,8 +189,24 @@ export default {
         },
       },
     ];
+
+    const bloodPressureGraph = computed(() => {
+      return store.state.patients.bloodPressureGraph
+    })
+    console.log('bloodPressureGraph', bloodPressureGraph.value)
+
+    const bloodPressureSeries = []
+    const bloodPressureTimesArray = []
+
+    const bloodOxygenGraph = computed(() => {
+      return store.state.patients.bloodOxygenGraph
+    })
+
+    const bloodGlucoseGraph = computed(() => {
+      return store.state.patients.bloodGlucoseGraph
+    })
     
-    const chartOptions = {
+    const bloodPressureOptions = {
       chart: {
         height: 210,
         type: "area",
@@ -203,32 +219,14 @@ export default {
       },
       xaxis: {
         type: "datetime",
-        categories: [
-          "2018-09-19T00:00:00.000Z",
-          "2018-09-19T01:30:00.000Z",
-          "2018-09-19T02:30:00.000Z",
-          "2018-09-19T03:30:00.000Z",
-          "2018-09-19T04:30:00.000Z",
-          "2018-09-19T05:30:00.000Z",
-          "2018-09-19T06:30:00.000Z",
-        ],
+        categories: bloodPressureTimesArray,
       },
       tooltip: {
         x: {
-          format: "dd/MM/yy HH:mm",
+          format: "HH:mm",
         },
       },
     };
-    const chartSeries = [
-      {
-        name: "series1",
-        data: [31, 40, 28, 51, 42, 109, 100],
-      },
-      {
-        name: "series2",
-        data: [11, 32, 45, 32, 34, 52, 41],
-      },
-    ];
 
     return {
       showAddBPModal,
@@ -243,8 +241,9 @@ export default {
       activeKey2: ref("2"),
       activeKey3: ref("3"),
       
-      chartOptions,
-      chartSeries,
+      bloodPressureOptions,
+      bloodPressureSeries,
+
       bloodPressure,
       bloodGlucose,
       bloodOxygen,
@@ -252,6 +251,10 @@ export default {
       bloodPressureColumns,
       bloodGlucoseColumns,
       bloodOxygetColumns,
+
+      bloodPressureGraph,
+      bloodOxygenGraph,
+      bloodGlucoseGraph,
     }
   }
 }

@@ -318,3 +318,101 @@ export function convertData(patientVitals) {
   });
   return records;
 }
+
+// export function areaChartResponse(response) {
+//   var timesArray = [];
+//   response.forEach(element => {
+//     if (!timesArray.includes(element.takeTime)) {
+//       timesArray.push(element.takeTime)
+//     }
+//   });
+  
+//   // var series = [];
+//   if(response.length > 0) {
+//     var object = {};
+//     var array_list = [];
+//     // var array_list_final = [];
+//     var field = null;
+//     response.forEach(function(element) {
+//       console.log('element', element.field)
+//       field = (element.deviceType+'_'+element.vitalField).replace(/ /g,'_').toLowerCase()
+//       console.log('element', element[field])
+//       object['name'] = element.vitalField;
+//       object[field] = field;
+//       object['value'] = element[field];
+//       object['data'] = [];
+//       // object.data.push(element[field]);
+//     });
+//     array_list.push(object);
+//     array_list.map(list => {
+//       list.data.push(list.value);
+//     })
+//     console.log('array_list', array_list)
+//     /* for (const key in array_list) {
+//       var array_value = [];
+//       array_list.data.push(array_list[key]);
+//       array_list_final.push(array_value);
+//     } */
+//     // console.log('array_list_final', array_list_final)
+//     /* array_list.map(list => {
+//       list.data = array_list.value;
+//       array_list_final.push(object);
+//     })
+//     console.log('array_list_final', array_list_final) */
+//     /* for (const key in array_list_final) {
+//       for (const key_next in array_list_final) {
+//         if(key != key_next){
+//           for (const key_data in array_list_final[key].data){
+//             let obj = array_list_final[key_next].data.find(o => o.takeTime === array_list_final[key].data[key_data].takeTime);
+//             if(typeof obj === 'undefined'){
+//               let value_obj = {
+//                 "name": array_list_final[key_next].data[0].vitalField,
+//                 "count": 0,
+//                 "time": array_list_final[key].data[key_data].takeTime,
+//               };
+//               array_list_final[key_next].data.push(value_obj);
+//             }
+//           }
+//           array_list_final[key_next].data = array_list_final[key_next].data.sort(function(a, b) {
+//             return a.takeTime - b.takeTime;
+//           });
+//         }
+//       }
+//     }
+//     const finalList = array_list_final
+//     series = finalList.map((item) => {
+//       return {
+//         name: item.vitalField,
+//         data: item.value
+//       }
+//     }) */
+//   }
+//   // return { timesArray: timesArray, series: series }
+// }
+
+export function areaChartResponse(response) {
+  var timesArray = [];
+  response.forEach(element => {
+    if (!timesArray.includes(element.takeTime)) {
+      timesArray.push(element.takeTime)
+    }
+  });
+  
+  if(response.length > 0) {
+    var object = {};
+    var series = [];
+    object['data'] = []
+    console.log('response', response)
+    response.forEach(function(element) {
+      // const field = (element.vitalField).replace(/ /g,'_').toLowerCase()
+      object['name'] = element.vitalField;
+      object['data'].push(Number(element.value));
+      series.push(object)
+    });
+    
+    return {
+      timesArray: timesArray,
+      series: series
+    }
+  }
+}
