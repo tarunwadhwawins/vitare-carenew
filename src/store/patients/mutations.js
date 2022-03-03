@@ -512,6 +512,7 @@ export const patientDetailsSuccess = (state, patient) => {
     patient.relation = patient.patientFamilyMember.data.relationId;
   }
   
+  patient.email = patient.user.data.email ? patient.user.data.email : null;
   patient.country = patient.countryId ? patient.countryId : null;
   patient.state = patient.stateId ? patient.stateId : null;
   patient.language = patient.languageId ? patient.languageId : null;
@@ -824,8 +825,9 @@ export const patientVitals = (state, vitals) => {
     }
   })
   const convertedResponse = convertResponse(timeArray, vitalsArray)
+  console.log('convertedResponse', convertedResponse)
   const patientVitals = convertData(convertedResponse)
-  const patientGraphData = areaChartResponse(vitalsArray)
+  const patientGraphData = areaChartResponse(convertedResponse)
 
   // console.log('patientGraphData', patientGraphData);
 
@@ -835,7 +837,7 @@ export const patientVitals = (state, vitals) => {
     series: series,
     timesArray: timesArray
   }
-  console.log('graphData', JSON.stringify(graphData));
+  // console.log('graphData', graphData);
 
   vitalsArray.forEach(vital => {
     switch (vital.deviceType) {
