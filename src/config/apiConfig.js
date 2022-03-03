@@ -78,9 +78,10 @@ export const API_ENDPOINTS = {
 
     //Programs
     programsList:"program",
+
     // CPT Codes
     cptCodes: 'cptCode',
-
+    service: 'service'
     
 
 };
