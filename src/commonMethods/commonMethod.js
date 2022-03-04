@@ -318,3 +318,71 @@ export function convertData(patientVitals) {
   });
   return records;
 }
+
+export function convertChartResponse(vitaldFieldsArray, recordsArray) {
+  var timesArray = [];
+  recordsArray.forEach(element => {
+    if (!timesArray.includes(timeFormatSimple(element.takeTime))) {
+      timesArray.push(timeFormatSimple(element.takeTime))
+    }
+  });
+  let records = []
+  vitaldFieldsArray.forEach(vitalField => {
+    let recordList = []
+    recordsArray.forEach(record => {
+      if(record.vitalField === vitalField) {
+        recordList.push(record);
+      }
+    });
+    if(recordList.length > 0) {
+      let valuesObject = {
+        "name": vitalField,
+        "data": recordList.map(item => {
+          return item.value
+        })
+      }
+      records.push(valuesObject);
+    }
+  });
+  return {
+    records,
+    timesArray,
+  }
+}
+
+export function createDynamicColumns(patientVitals) {
+  let itemObject = {
+    tableName: '',
+    columns: [{
+      title: 'Date Recorded',
+      dataIndex: 'takeTime',
+      key: 'takeTime',
+      slots: {
+        customRender: 'takeTime'
+      },
+    }
+  ]
+  }
+  if(patientVitals.length > 0) {
+    patientVitals.map(item => {
+      var field = (item.deviceType+'_'+item.vitalField).replace(/ /g,'_').toLowerCase()
+      var exists = (itemObject.columns).some(function(dataIndex) {
+        return dataIndex.dataIndex === field;
+      });
+      if(!exists) {
+        // console.log('patientVitals exists', exists)
+        // itemObject.tableName = item.deviceType;
+        // itemObject.columns.push({
+        //   title: item.vitalField,
+        //   dataIndex: field,
+        //   key: field,
+        //   slots: {
+        //     customRender: field
+        //   },
+        // })
+      }
+    })
+  }
+  // console.log('patientVitals itemObject', itemObject)
+  return itemObject;
+}

@@ -52,6 +52,14 @@ export default {
     bloodGlucose:null,
     bloodOxygen:null,
     getBitrixFieldsName:null,
-    fetchFromBitrixStatus:null
+    fetchFromBitrixStatus:null,
+
+    bloodPressureGraph:null,
+    bloodOxygenGraph:null,
+    bloodGlucoseGraph:null,
+
+    bloodPressureColumns:null,
+    bloodOxygenColumns:null,
+    bloodGlucoseColumns:null,
 
 }
