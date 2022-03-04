@@ -1,9 +1,10 @@
 <template>
-<a-modal max-width="1140px" width="100%" title="Add CPT Codes" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal max-width="1140px" width="100%" :title="cptCodeId ? 'Edit CPT Codes' : 'Add CPT Codes'" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
     <a-form ref="formRef" :model="cptCodeForm" layout="vertical" @finish="submitForm" @finishFailed="onFinishFailed">
         <a-row :gutter="24">
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
+                   
                     <a-form-item :label="$t('global.service')" name="serviceId" :rules="[{ required: true, message: $t('global.service') +' '+$t('global.service')+' '+$t('global.validation')  }]">
                         <a-select ref="select" v-if="cptCodesGetters.service" v-model:value="cptCodeForm.serviceId" style="width: 100%" size="large">
                             <a-select-option value="" hidden>{{'Select Service Type'}}</a-select-option>
@@ -64,8 +65,9 @@
                 </div>
             </a-col>
             <a-col :span="24">
+            
                 <div class="steps-action">
-                    <ModalButtons @is_click="reset" :disabled="formButton" />
+                    <ModalButtons @is_click="reset" :disabled="formButton" :Id="cptCodeId"/>
                 </div>
             </a-col>
         </a-row>
@@ -77,14 +79,17 @@
 <script>
 import {
     ref,
-    reactive
+    reactive,
+    watchEffect,
+
+    
 } from "vue";
 import {
     useStore
 } from "vuex"
 import ModalButtons from "@/components/common/button/ModalButtons";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
-import Loader from "./../loader/Loader"
+import Loader from "@/components/loader/Loader"
 import {
     warningSwal
 } from "./../../commonMethods/commonMethod"
@@ -97,13 +102,18 @@ export default {
         Loader,
         ErrorMessage
     },
-    props: {},
+    props: {
+        cptId: {
+            type: String
+        }
+    },
     setup(props, {
         emit
     }) {
         const store = useStore()
         const checked = ref([false]);
         const formRef = ref(false)
+const cptCodeId = reactive(props.cptId);
         const cptCodeForm = reactive({
             serviceId: '',
             name: '',
@@ -117,20 +127,39 @@ export default {
         const onFinishFailed = () => {
             // 
         };
-        const cptCodesGetters = store.getters.cptRecords.value
+        const cptCodesGetters = store.getters.cptRecords
 
         function UpdateProgramStatus(event) {
             cptCodeForm.status = event
         }
         const formButton = ref(false)
         const durationList = store.getters.commonRecords.value
+        watchEffect(() => {
+            
+            if (cptCodeId) {
+              store.commit('loadingStatus', true)
+                if(cptCodesGetters.value.cptCodeDetails){
+                    Object.assign(cptCodeForm, cptCodesGetters.value.cptCodeDetails)
+                    
+                }
+                store.commit('loadingStatus', false)
+
+            }
+        })
         const submitForm = () => {
             formButton.value = true
-            store.dispatch("addCptCode", cptCodeForm).then(() => {
-                store.state.cptCodes.cptCodesList = ""
+            store.state.cptCodes.cptCodesList = ""
+            if (props.cptId != null) {
+              store.dispatch("updateCptCode", {data:cptCodeForm,id:props.cptId})
+            }else{
+            store.dispatch("addCptCode", cptCodeForm)
+               
+            }
+             
                 reset()
+                
                 store.dispatch('cptCodesList')
-            })
+                emit("is-visible", false);
 
         }
         const form = reactive({
@@ -140,7 +169,7 @@ export default {
         function reset() {
             formRef.value.resetFields();
             Object.assign(cptCodeForm, form)
-            emit("is-visible", false);
+
         }
 
         function closeModal() {
@@ -148,6 +177,7 @@ export default {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
                         reset()
+                        emit("is-visible", false);
                     } else {
 
                         emit("is-visible", true);
@@ -167,7 +197,9 @@ export default {
             submitForm,
             formRef,
             reset,
-            closeModal
+            closeModal,
+            cptCodeId,
+
         };
     },
 };
