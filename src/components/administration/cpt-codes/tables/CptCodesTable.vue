@@ -1,9 +1,10 @@
 <template>
 <a-table rowKey="id" :columns="cptCodesColumns" :data-source="data" :scroll="{ y: 400 }" :pagination="false" @change="onChange">
     <template #actions="{record}">
-        <a-tooltip placement="bottom">
+        <a-tooltip placement="bottom" @click="editCpt(record.udid)">
+
             <template #title>
-                <span>Edit</span>
+                <span>{{$t('global.edit')}}</span>
             </template>
             <a class="icons">
                 <EditOutlined /></a>
@@ -17,7 +18,7 @@
         </a-tooltip>
     </template>
     <template #status="{record}">
-        <a-switch v-model:checked="record.status" />
+        <a-switch v-model:checked="record.status" @change="UpdateCptStatus(record.udid, $event)" />
     </template>
 </a-table>
 <InfiniteLoader v-if="loader" />
@@ -54,13 +55,15 @@ export default {
             type: Array
         }
     },
-    setup(props) {
+    setup(props, {
+        emit
+    }) {
         const cptCodesColumns = reactive(props.cptCodesList.cptCodesColumns)
         const data = reactive(props.cptCodesList.cptCodesList)
         const store = useStore()
 
         function deleteCpt(id) {
-            console.log(id)
+
             warningSwal(messages.deleteWarning).then((response) => {
                 if (response == true) {
                     store.dispatch("deleteCptCode", id).then(() => {
@@ -68,6 +71,24 @@ export default {
                         store.dispatch('cptCodesList')
                     })
                 }
+            });
+        }
+        const UpdateCptStatus = (id, status) => {
+            const data = {
+                "status": status
+            };
+
+            store.dispatch('updateCptCode', {
+                id,
+                data
+            }).then(() => {})
+        }
+
+        function editCpt(id) {
+            store.dispatch("cptCodeDetails", id)
+            emit("is-visible", {
+                check: true,
+                id: id
             });
         }
 
@@ -109,6 +130,8 @@ export default {
             data,
             loader,
             deleteCpt,
+            editCpt,
+            UpdateCptStatus,
         }
     }
 }

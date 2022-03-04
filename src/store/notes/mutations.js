@@ -12,8 +12,11 @@ export const notesListSuccess = async (state, notes) => {
 }
 
 export const latestNotesSuccess = async (state, note) => {
-  if(note.length > 0) {
+  if(note && note.length > 0) {
     note.date = dateOnlyFormat(note.date);
     state.latestNotes = note;
+  }
+  else {
+    state.latestNotes = null;
   }
 }

@@ -122,11 +122,11 @@ export default defineComponent({
             dischargeDate:timeStamp(program.dischargeDate),
             status: program.status,
           },
-          id: 'e388ea38-bfec-4172-965a-f3cdeccd9745'//patients.value.addDemographic.id,
+          id: patients.value.addDemographic.id,
         });
         
         setTimeout(() => {
-          store.dispatch("program", 'e388ea38-bfec-4172-965a-f3cdeccd9745');
+          store.dispatch("program", patients.value.addDemographic.id);
           reset()
         }, 2000);
       }

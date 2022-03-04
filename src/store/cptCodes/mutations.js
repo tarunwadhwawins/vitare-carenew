@@ -52,6 +52,7 @@ export const deleteCptCode = async (state, cptCode) => {
 }
 
 export const cptCodeDetails = async (state, cptCode) => {
+  //console.log(cptCode)
   state.cptCodeDetails = cptCode;
 }
 

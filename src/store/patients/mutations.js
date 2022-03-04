@@ -563,13 +563,16 @@ export const deleteDocument = (state, data) => {
   state.deleteDocument = data
 }
   export const latestDocumentSuccess = (state, data) => {
-    if(data.length > 0) {
+    if(data && data.length > 0) {
       state.latestDocument = data
+    }
+    else {
+      state.latestDocument = null
     }
  }
 
   export const latestDeviceSuccess = (state, data) => {
-    if(data.length > 0) {
+    if(data && data.length > 0) {
       state.latestDevice = data
     }
     else {
