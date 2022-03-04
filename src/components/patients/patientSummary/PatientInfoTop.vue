@@ -3,14 +3,14 @@
       <img v-if="patientDetails.profilePhoto" :src="patientDetails.profilePhoto" alt="image"/>
       <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
     <div class="info">
-      <h2>{{ patientDetails.patientFullName }}</h2>
+      <h2 v-if="patientDetails.patientFullName">{{ patientDetails.patientFullName }}</h2>
       <p v-if="patientDetails.medicalRecordNumber">Patient Id : #{{ patientDetails.medicalRecordNumber }}</p>
-      <p>DOB : {{ patientDetails.dob }}</p>
-      <p><a href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
-      <p><a href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
-      <p>{{ patientDetails.address }}</p>
+      <p v-if="patientDetails.dob">DOB : {{ patientDetails.dob }}</p>
+      <p v-if="patientDetails.email"><a href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
+      <p v-if="patientDetails.phoneNumber"><a href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
+      <p v-if="patientDetails.address">{{ patientDetails.address }}</p>
     </div>
-    <EditOutlined @click="addPatient" />
+    <!-- <EditOutlined @click="addPatient" /> -->
   </div>
   <PatientsModal v-model:visible="PatientsModal" @ok="handleOk" />
 </template>
@@ -19,7 +19,7 @@
 import {
   MailOutlined,
   PhoneOutlined,
-  EditOutlined,
+  // EditOutlined,
 } from "@ant-design/icons-vue";
 import PatientsModal from "@/components/modals/PatientsModal";
 import { ref, computed } from 'vue-demi';
@@ -28,7 +28,7 @@ export default {
   components: {
     MailOutlined,
     PhoneOutlined,
-    EditOutlined,
+    // EditOutlined,
     PatientsModal,
   },
   setup() {
