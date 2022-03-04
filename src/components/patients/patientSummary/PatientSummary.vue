@@ -80,6 +80,8 @@ import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 
 import dayjs from "dayjs";
 import { ref, computed, watchEffect } from "vue";
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 const value = ref(dayjs("12:08", "HH:mm"));
 
 export default {
@@ -101,6 +103,8 @@ export default {
     AddTimeLogModal,
   },
   setup() {
+    const store = useStore();
+    const route = useRoute();
     const visible = ref(false);
     const visible1 = ref(false);
     const visible2 = ref(false);
@@ -173,6 +177,9 @@ export default {
     })
     
     watchEffect(() => {
+      store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 99});
+      store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 100});
+      store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 101});
       timer.value = setInterval(() => {
         elapsedTime.value += 1000;
       }, 1000);

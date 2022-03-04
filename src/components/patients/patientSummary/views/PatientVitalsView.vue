@@ -6,7 +6,7 @@
       </a-col>
     </a-row>
     <div class="patientsVitals">
-      <PatientVitalsGrid :patientId="patientDetails.id" />
+      <PatientVitalsGrid />
     </div>
   </div>
 </template>

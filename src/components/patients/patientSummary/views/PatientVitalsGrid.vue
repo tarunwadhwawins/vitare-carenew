@@ -1,6 +1,6 @@
 <template>
   <a-row :gutter="24">
-
+    
     <VitalsGrid
       v-if="bloodPressure"
       title="Blood Pressure"
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { computed, reactive, ref, watchEffect } from 'vue-demi';
+import { computed, ref } from 'vue-demi';
 import AddVitals from "@/components/modals/AddVitals";
 import AddPulse from "@/components/modals/AddPulse";
 import BloodGlucose from "@/components/modals/BloodGlucose";
@@ -60,14 +60,8 @@ export default {
     BloodOxygen,
     VitalsGrid,
   },
-  props: {
-    patientId: {
-      type: Number
-    },
-  },
-  setup(props) {
+  setup() {
     const store = useStore();
-    const idPatient = reactive(props.patientId);
     const visibleAddVitals = ref(false);
     const visibleAddPulse = ref(false);
     const visibleBloodGlucose = ref(false);
@@ -82,13 +76,6 @@ export default {
     const patients = computed(() => {
       return store.state.patients
     })
-
-    watchEffect(() => {
-      store.dispatch('patientVitals', {patientId: idPatient, deviceType: 99});
-      store.dispatch('patientVitals', {patientId: idPatient, deviceType: 100});
-      store.dispatch('patientVitals', {patientId: idPatient, deviceType: 101});
-    })
-
 
     const bloodPressure = patients.value.bloodPressure
     const bloodGlucose = patients.value.bloodGlucose
