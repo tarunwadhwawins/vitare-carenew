@@ -6,7 +6,7 @@ import {
   // timeFormatSimple
   convertResponse,
   convertData,
-  areaChartResponse,
+  convertChartResponse,
 } from '../../commonMethods/commonMethod';
 
 export const addDemographic = (state, data) => {
@@ -809,52 +809,51 @@ export const patientVitals = (state, vitals) => {
   var timeArray = [];
   var vitalFieldsArray = [];
   var vitalsArray = [];
-  vitals.map(vital => {
-    vitalsArray.push({
-      id: vital.id,
-      takeTime: vital.takeTime,
-      vitalField: vital.vitalField,
-      deviceType: vital.deviceType,
-      value: vital.value,
+  if(vitals && (vitals.length > 0 || vitals != null)) {
+    vitals.map(vital => {
+      vitalsArray.push({
+        id: vital.id,
+        takeTime: vital.takeTime,
+        vitalField: vital.vitalField,
+        deviceType: vital.deviceType,
+        value: vital.value,
+      })
+      if(!timeArray.includes(vital.takeTime)) {
+        timeArray.push(vital.takeTime);
+      }
+      if(!vitalFieldsArray.includes(vital.vitalField)) {
+        vitalFieldsArray.push(vital.vitalField);
+      }
     })
-    if(!timeArray.includes(vital.takeTime)) {
-      timeArray.push(vital.takeTime);
-    }
-    if(!vitalFieldsArray.includes(vital.vitalField)) {
-      vitalFieldsArray.push(vital.vitalField);
-    }
-  })
-  const convertedResponse = convertResponse(timeArray, vitalsArray)
-  console.log('convertedResponse', convertedResponse)
-  const patientVitals = convertData(convertedResponse)
-  const patientGraphData = areaChartResponse(convertedResponse)
+    const convertedResponse = convertResponse(timeArray, vitalsArray)
+    const patientVitals = convertData(convertedResponse)
+    const patientGraphData = convertChartResponse(vitalFieldsArray, vitalsArray)
 
-  // console.log('patientGraphData', patientGraphData);
-
-  const series = patientGraphData.series
-  const timesArray = patientGraphData.timesArray
-  const graphData = {
-    series: series,
-    timesArray: timesArray
+    vitalsArray.forEach(vital => {
+      switch (vital.deviceType) {
+        case 'Blood Pressure':
+          state.bloodPressure = patientVitals;
+          state.bloodPressureGraph = patientGraphData;
+          break;
+        case 'Oxymeter':
+          state.bloodOxygen = patientVitals;
+          state.bloodOxygenGraph = patientGraphData;
+          break;
+        case 'Glucose':
+          state.bloodGlucose = patientVitals;
+          state.bloodGlucoseGraph = patientGraphData;
+          break;
+        default:
+          break;
+      }
+    });
   }
-  // console.log('graphData', graphData);
-
-  vitalsArray.forEach(vital => {
-    switch (vital.deviceType) {
-      case 'Blood Pressure':
-        state.bloodPressure = patientVitals;
-        state.bloodPressureGraph = graphData;
-        break;
-      case 'Oxymeter':
-        state.bloodOxygen = patientVitals;
-        state.bloodOxygenGraph = graphData;
-        break;
-      case 'Glucose':
-        state.bloodGlucose = patientVitals;
-        state.bloodGlucoseGraph = graphData;
-        break;
-      default:
-        break;
-    }
-  });
+  else {
+    state.bloodPressure = null;
+    state.bloodPressureGraph = null;
+    state.bloodOxygen = null;
+    state.bloodOxygenGraph = null;
+    state.bloodGlucose = null;
+    state.bloodGlucoseGraph = null;
+  }
 }

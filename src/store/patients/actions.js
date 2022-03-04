@@ -732,7 +732,12 @@ export const fetchFromBitrix = async ({ commit }, id) => {
 export const patientVitals = async ({ commit }, {patientId, deviceType}) => {
   commit('loadingStatus', true)
 	await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+patientId+'/vital?deviceType='+deviceType, null, null).then((response) => {
-    commit('patientVitals', response.data.data)
+    if(response.data.data.length > 0) {
+      commit('patientVitals', response.data.data)
+    }
+    else {
+      commit('patientVitals', null)
+    }
     commit('loadingStatus', false)
 	})
 	.catch((error) => {

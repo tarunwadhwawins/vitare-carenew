@@ -2,6 +2,7 @@
   <a-row :gutter="24">
 
     <VitalsGrid
+      v-if="bloodPressure"
       title="Blood Pressure"
       :activeKey="activeKey1"
       className="dangerValue"
@@ -13,24 +14,26 @@
     />
 
     <VitalsGrid
+      v-if="bloodGlucose"
       title="Blood Glucose"
       :activeKey="activeKey2"
       className="dangerValue"
       :tableColumns="bloodGlucoseColumns"
       :tableData="bloodGlucose"
-      :chartOptions="bloodPressureOptions"
-      :chartSeries="bloodPressureSeries"
+      :chartOptions="bloodGlucoseOptions"
+      :chartSeries="bloodGlucoseSeries"
       @showModal="showBloodGlucoseModal"
     />
 
     <VitalsGrid
+      v-if="bloodOxygen"
       title="Blood Oxygen Saturation"
       :activeKey="activeKey3"
       className="dangerValue"
-      :tableColumns="bloodOxygetColumns"
+      :tableColumns="bloodOxygenColumns"
       :tableData="bloodOxygen"
-      :chartOptions="bloodPressureOptions"
-      :chartSeries="bloodPressureSeries"
+      :chartOptions="bloodOxygenOptions"
+      :chartSeries="bloodOxygenSeries"
       @showModal="showBloodOxygenModal"
     />
 
@@ -69,6 +72,16 @@ export default {
     const visibleAddPulse = ref(false);
     const visibleBloodGlucose = ref(false);
     const visibleBloodOxygen = ref(false);
+    const bloodPressureSeries = ref(null)
+    const bloodPressureTimesArray = ref(null)
+    const bloodGlucoseSeries = ref(null)
+    const bloodGlucoseTimesArray = ref(null)
+    const bloodOxygenSeries = ref(null)
+    const bloodOxygenTimesArray = ref(null)
+
+    const patients = computed(() => {
+      return store.state.patients
+    })
 
     watchEffect(() => {
       store.dispatch('patientVitals', {patientId: idPatient, deviceType: 99});
@@ -76,17 +89,13 @@ export default {
       store.dispatch('patientVitals', {patientId: idPatient, deviceType: 101});
     })
 
-    const bloodPressure = computed(() => {
-      return store.state.patients.bloodPressure
-    })
 
-    const bloodGlucose = computed(() => {
-      return store.state.patients.bloodGlucose
-    })
-
-    const bloodOxygen = computed(() => {
-      return store.state.patients.bloodOxygen
-    })
+    const bloodPressure = patients.value.bloodPressure
+    const bloodGlucose = patients.value.bloodGlucose
+    const bloodOxygen = patients.value.bloodOxygen
+    const bloodPressureGraph = patients.value.bloodPressureGraph
+    const bloodOxygenGraph = patients.value.bloodOxygenGraph
+    const bloodGlucoseGraph = patients.value.bloodGlucoseGraph
 
     const showAddBPModal = () => {
       visibleAddVitals.value = true;
@@ -163,7 +172,7 @@ export default {
       },
     ];
 
-    const bloodOxygetColumns = [
+    const bloodOxygenColumns = [
       {
         title: "Date Recorded",
         dataIndex: "takeTime",
@@ -189,22 +198,21 @@ export default {
         },
       },
     ];
+    
+    if(bloodPressureGraph != null) {
+      bloodPressureSeries.value = bloodPressureGraph.records
+      bloodPressureTimesArray.value = bloodPressureGraph.timesArray
+    }
 
-    const bloodPressureGraph = computed(() => {
-      return store.state.patients.bloodPressureGraph
-    })
-    console.log('bloodPressureGraph', bloodPressureGraph.value)
+    if(bloodGlucoseGraph != null) {
+      bloodGlucoseSeries.value = bloodGlucoseGraph.records
+      bloodGlucoseTimesArray.value = bloodGlucoseGraph.timesArray
+    }
 
-    const bloodPressureSeries = bloodPressureGraph.value.series
-    const bloodPressureTimesArray = bloodPressureGraph.value.timesArray
-
-    const bloodOxygenGraph = computed(() => {
-      return store.state.patients.bloodOxygenGraph
-    })
-
-    const bloodGlucoseGraph = computed(() => {
-      return store.state.patients.bloodGlucoseGraph
-    })
+    if(bloodOxygenGraph != null) {
+      bloodOxygenSeries.value = bloodOxygenGraph.records
+      bloodOxygenTimesArray.value = bloodOxygenGraph.timesArray
+    }
     
     const bloodPressureOptions = {
       chart: {
@@ -218,13 +226,39 @@ export default {
         curve: "smooth",
       },
       xaxis: {
-        type: "datetime",
         categories: bloodPressureTimesArray,
       },
-      tooltip: {
-        x: {
-          format: "HH:mm",
-        },
+    };
+    
+    const bloodOxygenOptions = {
+      chart: {
+        height: 210,
+        type: "area",
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: "smooth",
+      },
+      xaxis: {
+        categories: bloodOxygenTimesArray,
+      },
+    };
+    
+    const bloodGlucoseOptions = {
+      chart: {
+        height: 210,
+        type: "area",
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: "smooth",
+      },
+      xaxis: {
+        categories: bloodGlucoseTimesArray,
       },
     };
 
@@ -240,21 +274,22 @@ export default {
       activeKey1: ref("1"),
       activeKey2: ref("2"),
       activeKey3: ref("3"),
-      
-      bloodPressureOptions,
-      bloodPressureSeries,
-
-      bloodPressure,
-      bloodGlucose,
-      bloodOxygen,
 
       bloodPressureColumns,
       bloodGlucoseColumns,
-      bloodOxygetColumns,
-
-      bloodPressureGraph,
-      bloodOxygenGraph,
-      bloodGlucoseGraph,
+      bloodOxygenColumns,
+      bloodPressure,
+      bloodGlucose,
+      bloodOxygen,
+      
+      bloodPressureOptions,
+      bloodPressureSeries,
+      
+      bloodGlucoseOptions,
+      bloodGlucoseSeries,
+      
+      bloodOxygenOptions,
+      bloodOxygenSeries,
     }
   }
 }

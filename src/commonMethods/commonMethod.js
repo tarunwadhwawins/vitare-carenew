@@ -319,29 +319,33 @@ export function convertData(patientVitals) {
   return records;
 }
 
-export function areaChartResponse(response) {
+export function convertChartResponse(vitaldFieldsArray, recordsArray) {
   var timesArray = [];
-  response.forEach(element => {
-    if (!timesArray.includes(element.takeTime)) {
+  recordsArray.forEach(element => {
+    if (!timesArray.includes(timeFormatSimple(element.takeTime))) {
       timesArray.push(timeFormatSimple(element.takeTime))
     }
   });
-  
-  if(response.length > 0) {
-    var object = {};
-    var series = [];
-    object['data'] = []
-    console.log('response', response)
-    response.forEach(function(element) {
-      // const field = (element.vitalField).replace(/ /g,'_').toLowerCase()
-      object['name'] = element.vitalField;
-      object['data'].push(Number(element.value));
+  let records = []
+  vitaldFieldsArray.forEach(vitalField => {
+    let recordList = []
+    recordsArray.forEach(record => {
+      if(record.vitalField === vitalField) {
+        recordList.push(record);
+      }
     });
-    series.push(object)
-    
-    return {
-      timesArray: timesArray,
-      series: series
+    if(recordList.length > 0) {
+      let valuesObject = {
+        "name": vitalField,
+        "data": recordList.map(item => {
+          return item.value
+        })
+      }
+      records.push(valuesObject);
     }
+  });
+  return {
+    records,
+    timesArray,
   }
 }
