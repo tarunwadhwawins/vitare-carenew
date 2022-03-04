@@ -19,6 +19,9 @@
         position: absolute;
         right: 300px;
         top: 0;
+        @media (max-width: 1199px) {
+            right: 250px;
+        }
         .ant-btn {
             margin-left: 10px;
         }
@@ -236,6 +239,18 @@
     padding: 0.5rem 0.5rem;
     border-bottom-width: 1px;
 }
+
+.calenderLeftRightBtn {
+    margin: 0 0 20px;
+    .ant-btn {
+        background-color: $primary-color;
+        border-color: $primary-color;
+        margin: 0 7px 0 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
 .dayCalendar {
     .table {
         width: 100%;
@@ -279,7 +294,7 @@
                     .ant-dropdown-link {
                         display: inline-block;
                         border-radius: 0.25rem;
-                        margin: 0 5px 0 0;
+                        margin: 0 5px 5px 0;
                         &:last-child {
                             margin: 0;
                         }
@@ -317,7 +332,7 @@
 }
 .calendarDropdown {
     width: 350px;
-    white-space: break-spaces;
+    // white-space: break-spaces;
     .itemWrapper {
         display: flex;
         align-items: center;
@@ -472,7 +487,7 @@
             padding: 5px;
             background-color: #fff;
             border-radius: 50%;
-            
+
             .anticon {
                 height: 20px;
                 width: 20px;
@@ -583,7 +598,7 @@
                 }
             }
         }
-    } 
+    }
     .anticon-edit {
         position: absolute;
         right: 15px;
@@ -620,7 +635,7 @@
                 }
             }
         }
-    } 
+    }
     .anticon-edit {
         position: absolute;
         right: 15px;
@@ -639,11 +654,11 @@
         .thumb-desc {
             padding: 7px 15px;
             text-align: right;
-            .anticon-warning{
+            .anticon-warning {
                 svg {
                     fill: #e29e19;
                 }
-            } 
+            }
         }
     }
 }
@@ -855,7 +870,7 @@
             border-radius: 5px;
             padding: 5px;
             font-size: 13px;
-            @media (max-width:1365px) {
+            @media (max-width: 1365px) {
                 font-size: 10px;
             }
             &.ant-checkbox-wrapper-checked {
@@ -1205,13 +1220,60 @@
     }
 }
 
-
-
+.monthCalendarView {
+    .ant-dropdown-link.custom {
+        width: 100%;
+        .dropdown {
+            width: 100%;
+            p {
+                padding-right: 0;
+                width: 100%;
+                span {
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
+            }
+        }
+    }
+    .fc-daygrid-body {
+        width: 100% !important;
+        .fc-scrollgrid-sync-table {
+            width: 100% !important;
+        }
+    }
+    .fc .fc-scrollgrid-section table {
+        width: 100% !important;
+    }
+    .fc-toolbar-chunk {
+        .fc-button {
+            background-color: #111;
+            border-color: #111;
+            margin: 0 7px 0 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            padding: 2.4px 0;
+            font-size: 16px;
+            border-radius: 2px;
+            vertical-align: -1px;
+            &:not(:first-child) {
+                margin-left: 0;
+            }
+        }
+    }
+    .fc-toolbar-title {
+        font-size: 1.17em;
+        margin: 0;
+    }
+}
 
 .ant-dropdown-link.custom {
     display: inline-block;
     border-radius: 0.25rem;
-    margin: 0 5px 0 0;
+    margin: 0 5px 5px 0;
+
     &:last-child {
         margin: 0;
     }
@@ -1244,8 +1306,9 @@
 }
 
 .fc-daygrid-event {
-    background-color: transparent!important;
-    border: none!important;
+    background-color: transparent !important;
+    border: none !important;
+    // z-index: -1!important;
 }
 
 .monthCalendarDropDown {

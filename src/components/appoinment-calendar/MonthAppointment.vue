@@ -1145,10 +1145,11 @@
           </div>
         </a-col>
       </a-row> -->
-
+  <div class="monthCalendarView">
   <FullCalendar  :options="option"  ref="cal">
 
   </FullCalendar>
+  </div>
   <div  @click="popupShow()"></div>
 </template>
 

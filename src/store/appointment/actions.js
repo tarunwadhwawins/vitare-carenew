@@ -55,13 +55,24 @@ export const showMoreRecords =({commit},data) =>{
 
 
 export const latestAppointment = async ({ commit }, id) => {
-	await serviceMethod.common("get", API_ENDPOINTS['appointment']+'?latest=latest&id='+id, null, null).then((response) => {
+	await serviceMethod.common("get", API_ENDPOINTS['appointment']+'/'+id, null, null).then((response) => {
 		commit('latestAppointmentSuccess', response.data.data);
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
+		commit('failure', error.response.data);
+	})
+}
+
+
+
+export const appointmentConference = async ({ commit }) => {
+	await serviceMethod.common("get", API_ENDPOINTS['appointmentConference'], null, null).then((response) => {
+		commit('appointmentConference', response.data.data);
+	})
+	.catch((error) => {
 		commit('failure', error.response.data);
 	})
 }

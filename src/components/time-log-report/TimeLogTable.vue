@@ -1,7 +1,7 @@
 
 <template>
 <a-col :sm="24" :xs="24" v-if="arrayToObjact(auditTimes.auditTimePermissions,1)">
-    <a-table :columns="fields" :pagination="false" :data-source="data" :scroll="{ y: 450 }" @change="onChange">
+    <a-table  rowKey="id" :columns="fields" :pagination="false" :data-source="data" :scroll="{ y: 450 }" @change="onChange">
         <template #staff="text">
             <!-- <router-link to="coordinator-summary">{{
   text.text
@@ -106,10 +106,11 @@ export default {
           if (current_page <= meta.value.timeLogeMeta.total_pages) {
             loader.value = true;
             meta.value.timeLogeMeta = "";
-            store.dispatch("timeLogReportList", "?page=" + current_page);
-            setTimeout(() => {
+            store.state.timeLogReport.timeLogReportList =""
+            store.dispatch("timeLogReportList", "?page=" + current_page).then(()=>{
               loadMoredata();
-            }, 1000);
+            })
+
           }
         }
       });
@@ -117,7 +118,7 @@ export default {
 
     function loadMoredata() {
       const newData = meta.value.timeLogReportList;
-      console.log("newData", newData);
+     
       newData.forEach((element) => {
         data.push(element);
       });

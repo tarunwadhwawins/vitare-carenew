@@ -1,86 +1,138 @@
 <template>
-  <a-table
-    :columns="cptCodesColumns"
-    :data-source="cptCodesList"
-    :scroll="{ x: 900 }"
-    @change="onChange">
-    <template #actions>
-      <a-tooltip placement="bottom">
-        <template #title>
-          <span>Edit</span>
-        </template>
-        <a class="icons"><EditOutlined /></a>
-      </a-tooltip>
-      <a-tooltip placement="bottom">
-        <template #title>
-          <span>Delete</span>
-        </template>
-        <a class="icons"> <DeleteOutlined /></a>
-      </a-tooltip>
+<a-table rowKey="id" :columns="cptCodesColumns" :data-source="data" :scroll="{ y: 400 }" :pagination="false" @change="onChange">
+    <template #actions="{record}">
+        <a-tooltip placement="bottom" @click="editCpt(record.udid)">
+
+            <template #title>
+                <span>{{$t('global.edit')}}</span>
+            </template>
+            <a class="icons">
+                <EditOutlined /></a>
+        </a-tooltip>
+        <a-tooltip placement="bottom" @click="deleteCpt(record.udid)">
+            <template #title>
+                <span>{{$t('global.delete')}}</span>
+            </template>
+            <a class="icons">
+                <DeleteOutlined /></a>
+        </a-tooltip>
     </template>
-    <template #active="{record}">
-      <a-switch v-model:checked="record.status" />
+    <template #status="{record}">
+        <a-switch v-model:checked="record.status" @change="UpdateCptStatus(record.udid, $event)" />
     </template>
-  </a-table>
+</a-table>
+<InfiniteLoader v-if="loader" />
 </template>
 
 <script>
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-export default {
-  components: {
+import {
+    ref,
+    reactive,
+    onMounted
+} from "vue";
+import {
     DeleteOutlined,
-    EditOutlined,
-  },
-  props: {
-    cptCodesList: {
-      type: Array
-    }
-  },
-  setup() {
-    const cptCodesColumns = [
-      {
-        title: "Cpt Code",
-        dataIndex: "cpt",
-        sorter: {
-          compare: (a, b) => a.cpt - b.cpt,
-          multiple: 3,
-        },
-      },
-      {
-        title: "Description",
-        dataIndex: "description",
-        sorter: {
-          compare: (a, b) => a.description - b.description,
-          multiple: 3,
-        },
-      },
-      {
-        title: "Billing Amount",
-        dataIndex: "billing",
-        sorter: {
-          compare: (a, b) => a.billing - b.billing,
-          multiple: 2,
-        },
-      },
-      {
-        title: "Active/Inactive",
-        dataIndex: "active",
-        slots: {
-          customRender: "active",
-        },
-      },
-      {
-        title: "Actions",
-        dataIndex: "actions",
-        slots: {
-          customRender: "actions",
-        },
-      },
-    ];
+    EditOutlined
+} from "@ant-design/icons-vue";
+import {
+    messages
+} from "@/config/messages";
+import InfiniteLoader from "@/components/loader/InfiniteLoader";
+import {
+    useStore
+} from "vuex";
+import {
+    warningSwal
+} from "@/commonMethods/commonMethod";
+export default {
+    components: {
+        DeleteOutlined,
+        EditOutlined,
+        InfiniteLoader
+    },
+    props: {
+        cptCodesList: {
+            type: Array
+        }
+    },
+    setup(props, {
+        emit
+    }) {
+        const cptCodesColumns = reactive(props.cptCodesList.cptCodesColumns)
+        const data = reactive(props.cptCodesList.cptCodesList)
+        const store = useStore()
 
-    return {
-      cptCodesColumns,
+        function deleteCpt(id) {
+
+            warningSwal(messages.deleteWarning).then((response) => {
+                if (response == true) {
+                    store.dispatch("deleteCptCode", id).then(() => {
+                        store.state.cptCodes.cptCodesList = ""
+                        store.dispatch('cptCodesList')
+                    })
+                }
+            });
+        }
+        const UpdateCptStatus = (id, status) => {
+            const data = {
+                "status": status
+            };
+
+            store.dispatch('updateCptCode', {
+                id,
+                data
+            }).then(() => {})
+        }
+
+        function editCpt(id) {
+            store.dispatch("cptCodeDetails", id)
+            emit("is-visible", {
+                check: true,
+                id: id
+            });
+        }
+
+        //infinite scroll
+        const meta = store.getters.timeLogReports;
+        const loader = ref(false);
+        onMounted(() => {
+            var tableContent = document.querySelector(".ant-table-body");
+            tableContent.addEventListener("scroll", (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+                let currentScroll = event.target.scrollTop + 2;
+                if (currentScroll >= maxScroll) {
+                    let current_page = meta.cptMeta.current_page + 1;
+
+                    if (current_page <= meta.cptMeta.total_pages) {
+                        loader.value = true;
+                        meta.cptMeta = "";
+                        store.state.cptCodes.cptCodesList = ""
+                        store.dispatch("cptCodesList", "?page=" + current_page).then(() => {
+                            loadMoredata();
+                        })
+
+                    }
+                }
+            });
+        });
+
+        function loadMoredata() {
+            const newData = meta.cptCodesList;
+
+            newData.forEach((element) => {
+                data.push(element);
+            });
+            loader.value = false;
+        }
+
+        return {
+            cptCodesColumns,
+            data,
+            loader,
+            deleteCpt,
+            editCpt,
+            UpdateCptStatus,
+        }
     }
-  }
 }
 </script>

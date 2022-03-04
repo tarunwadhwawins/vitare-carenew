@@ -87,7 +87,7 @@
                 </div>
               </a-col>
               <a-col :span="24">
-                <a-table
+                <a-table  rowKey="id"
                   :pagination="false"
                   :columns="columns"
                   :data-source="data"
@@ -285,7 +285,7 @@
             </a-row>
             <a-row :gutter="24">
               <a-col :span="24">
-                <a-table
+                <a-table  rowKey="id"
                   :pagination="false"
                   :columns="columns1"
                   :data-source="data1"
@@ -372,7 +372,7 @@
             </a-row>
             <a-row :gutter="24">
               <a-col :span="24">
-                <a-table
+                <a-table  rowKey="id"
                   :pagination="false"
                   :columns="columns2"
                   :data-source="data2"
@@ -428,7 +428,7 @@
             </a-row>
             <a-row :gutter="24">
               <a-col :span="24">
-                <a-table
+                <a-table  rowKey="id"
                   :pagination="false"
                   :columns="rolecolumns"
                   :data-source="roledata"
@@ -509,7 +509,7 @@
             </a-row>
             <a-row :gutter="24">
               <a-col :span="24">
-                <a-table
+                <a-table  rowKey="id"
                   :pagination="false"
                   :columns="columns3"
                   :data-source="data3"
@@ -561,7 +561,7 @@
             </a-row>
             <a-row :gutter="24">
               <a-col :span="24">
-                <a-table
+                <a-table  rowKey="id"
                   :pagination="false"
                   :columns="columns4"
                   :data-source="data4"

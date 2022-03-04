@@ -299,3 +299,47 @@ export const deleteProvider = async ({commit},data) => {
     }
   })
 }
+
+
+export const addStaffDocument = async ({commit}, data) => {
+  await serviceMethod.common("post", `staff/${data.id}/document`, null, data.data).then((response) => {
+    commit('addStaffDocument', response.data.data);
+    successSwal(response.data.message)
+  }).catch((error) => {
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      // commit('errorMsg', error.response.data.message)
+      errorSwal(error.response.data.message)
+    }
+  })
+}
+
+
+export const deleteStaffDocument = async ({
+  commit
+}, data) => {
+  await serviceMethod.common("delete", `staff/${data.id}/document/${data.documentId}`, null, null).then((response) => {
+    commit('deleteStaffDocument', response.data.data);
+    successSwal(response.data.message)
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+  })
+}
+
+
+
+export const staffDocuments = async ({
+  commit
+}, id) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("get", `staff/${id}/document`, null, null).then((response) => {
+    commit('staffDocuments', response.data.data);
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    commit('loadingStatus', false)
+    errorSwal(error.response.data.message)
+  })
+}

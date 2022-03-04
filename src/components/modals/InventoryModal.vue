@@ -1,5 +1,5 @@
 <template>
-  <a-modal max-width="1140px" width="100%" :title="title">
+  <a-modal width="800px" :title="title">
     <a-form :model="inventoryForm" layout="vertical" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :sm="12" :xs="24">

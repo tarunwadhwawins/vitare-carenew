@@ -4,13 +4,11 @@
       <img v-if="patientDetails.profilePhoto" :src="patientDetails.profilePhoto" alt="image"/>
       <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
       <div class="info">
-        <p>{{ patientDetails.patientFullName }}</p>
-        <p>DOB : {{ patientDetails.dob }}</p>
-        <p><a href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a>
-        </p>
-        <p><a href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a>
-        </p>
-        <p>{{ patientDetails.address }}</p>
+        <p v-if="patientDetails.patientFullName">{{ patientDetails.patientFullName }}</p>
+        <p v-if="patientDetails.dob">DOB : {{ patientDetails.dob }}</p>
+        <p v-if="patientDetails.email"><a href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
+        <p v-if="patientDetails.phoneNumber"><a href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
+        <p v-if="patientDetails.address">{{ patientDetails.address }}</p>
       </div>
       <EditOutlined class="editIcon" @click="editPatient({udid: patientDetails.id, id: patientDetails.id})" />
     </div>
@@ -107,7 +105,7 @@
   <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" :patientId="patientDetails.id" :patientName="patientDetails.patientFullName" @closeModal="handleOk" />
   <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
   <AddVitalsModal v-if="addVitalsVisible == true" v-model:visible="addVitalsVisible" @closeModal="handleOk" :patientId="patientDetails.id" />
-  <BloodPressureDetail v-if="bloodPressureVisible == true" v-model:visible="bloodPressureVisible" @closeModal="handleOk" />
+  <PatientVitalsDetailsModal v-if="patientVitalsVisible == true" v-model:visible="patientVitalsVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
   <AddNotesModal v-if="addNoteVisible == true" v-model:visible="addNoteVisible" @closeModal="handleOk" />
   <NotesDetailModal v-if="notesDetailVisible == true" v-model:visible="notesDetailVisible" @closeModal="handleOk" />
   <AddDocumentModal v-if="addDocumentVisible == true" v-model:visible="addDocumentVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
@@ -149,7 +147,7 @@ import AddTimeLogsModal from "@/components/modals/AddTimeLogs";
 import TimeLogsDetailModal from "@/components/modals/TimeLogsDetail";
 import AddDeviceModal from "@/components/modals/AddDevice";
 import DeviceDetailModal from "@/components/modals/DeviceDetail";
-import BloodPressureDetail from "@/components/modals/BloodPressureDetail";
+import PatientVitalsDetailsModal from "@/components/modals/PatientVitalsDetailsModal";
 import Flags from "@/components/common/flags/Flags";
 
 export default {
@@ -172,7 +170,7 @@ export default {
     TimeLogsDetailModal,
     AddDeviceModal,
     DeviceDetailModal,
-    BloodPressureDetail,
+    PatientVitalsDetailsModal,
     Flags,
   },
   setup() {
@@ -186,7 +184,7 @@ export default {
     const addAppointmentVisible = ref(false);
     const taskModalVisible = ref(false);
     const addVitalsVisible = ref(false);
-    const bloodPressureVisible = ref(false);
+    const patientVitalsVisible = ref(false);
     const addNoteVisible = ref(false);
     const notesDetailVisible = ref(false);
     const addDocumentVisible = ref(false);
@@ -242,7 +240,7 @@ export default {
       addAppointmentVisible.value = false;
       taskModalVisible.value = false;
       addVitalsVisible.value = false;
-      bloodPressureVisible.value = false;
+      patientVitalsVisible.value = false;
       addNoteVisible.value = false;
       notesDetailVisible.value = false;
       addDocumentVisible.value = false;
@@ -280,7 +278,7 @@ export default {
     }
 
     const showVitalssModal = () => {
-      bloodPressureVisible.value = true;
+      patientVitalsVisible.value = true;
     }
 
     const addNotesModal = () => {
@@ -341,7 +339,7 @@ export default {
       addAppointmentVisible,
       taskModalVisible,
       addVitalsVisible,
-      bloodPressureVisible,
+      patientVitalsVisible,
       addNoteVisible,
       notesDetailVisible,
       addDocumentVisible,

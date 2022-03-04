@@ -2,8 +2,8 @@
   <a-modal width="90%" title="Document Detail" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
-        <a-table
-          rowKey="id"
+        <a-table  rowKey="id"
+          
           :columns="documentsColumns"
           :data-source="patientDocuments"
           :scroll="{ x: 900 }"

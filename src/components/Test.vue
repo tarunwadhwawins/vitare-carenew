@@ -8,7 +8,7 @@
       <div ref="intersectionTrigger"></div>
     </ul> -->
   </div>
-  <a-table v-if="itemsRef" :columns="columns" :data-source="itemsRef" :scroll="{ x: 900 }" ></a-table>
+  <a-table  rowKey="id" v-if="itemsRef" :columns="columns" :data-source="itemsRef" :scroll="{ x: 900 }" ></a-table>
 </template>
 
 <script>

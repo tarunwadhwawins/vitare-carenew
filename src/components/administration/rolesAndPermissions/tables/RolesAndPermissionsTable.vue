@@ -1,5 +1,8 @@
 <template>
-<a-table rowKey="id" :columns="rolesColumns" :data-source="rolesList.rolesList">
+  <a-table  rowKey="id"
+
+    :columns="rolesColumns"
+    :data-source="rolesList">
     <template #actions="{record}">
         <a-tooltip placement="bottom">
             <template #title>

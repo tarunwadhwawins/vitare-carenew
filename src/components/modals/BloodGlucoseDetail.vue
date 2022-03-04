@@ -13,7 +13,7 @@
               ></apexchart>
             </a-tab-pane>
             <a-tab-pane key="12" tab="Table" force-render>
-              <a-table
+              <a-table  rowKey="id"
                 :columns="columns6"
                 :data-source="data6"
                 :pagination="false"

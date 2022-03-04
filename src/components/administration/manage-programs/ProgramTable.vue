@@ -1,6 +1,12 @@
 <template>
-<a-col :span="24">
-    <a-table :columns="columns" :data-source="data" :scroll="{ x: 900 ,y : 430 }" @change="onChange" :pagination=false>
+    <a-col :span="24">
+        <a-table  rowKey="id"
+          :columns="columns"
+          :data-source="data"
+          :scroll="{ x: 900 ,y : 430 }"
+          @change="onChange"
+          :pagination=false
+        >
         <template #actions="text">
             <a-tooltip placement="bottom">
                 <template #title>
@@ -101,10 +107,11 @@ export default {
                     if (current_page <= meta.value.programMeta.total_pages) {
                         loader.value = true
                         store.state.program.programMeta = ""
-                        store.dispatch("programList", "?page=" + current_page)
-                        setTimeout(() => {
-                            loadMoredata()
-                        }, 1000)
+                        store.state.programs.programList = ""
+                        store.dispatch("programList", "?page=" + current_page).then(()=>{
+                          loadMoredata()
+                        })
+                        
 
                     }
                 }

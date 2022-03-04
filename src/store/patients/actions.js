@@ -645,7 +645,8 @@ export const patientDetails = async ({commit}, id) => {
     commit('patientDetailsSuccess', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorSwal(error.response.data.message)
+    // errorSwal(error.response.data.message)
+    console.log('Error', error)
     commit('loadingStatus', false)
   })
 }
@@ -674,10 +675,10 @@ export const latestDocument = async ({ commit }, id) => {
 		commit('latestDocumentSuccess', response.data.data);
 	})
 	.catch((error) => {
-		if (error.response.status == 401) {
+		/* if (error.response.status == 401) {
 			//AuthService.logout();
-		}
-		commit('failure', error.response.data);
+		} */
+		commit('failure', error);
 	})
 }
 
@@ -686,10 +687,10 @@ export const latestDevice = async ({ commit }, id) => {
 		commit('latestDeviceSuccess', response.data.data);
 	})
 	.catch((error) => {
-		if (error.response.status == 401) {
+		/* if (error.response.status == 401) {
 			//AuthService.logout();
-		}
-		commit('failure', error.response.data);
+		} */
+		commit('failure', error);
 	})
 }
 
@@ -700,12 +701,22 @@ export const patientSearchWithBitrix = async ({ commit }, data) => {
 		commit('patientSearchWithBitrix', response.data.result);
 	})
 	.catch((error) => {
-		if (error.response.status == 401) {
-			//AuthService.logout();
-		}
+    errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
 }
+
+
+export const getBitrixFieldsName = async ({ commit }) => {
+	await serviceMethod.common("get", `bitrix/fields`, null, null).then((response) => {
+		commit('getBitrixFieldsName', response.data.data);
+	})
+	.catch((error) => {
+    errorSwal(error.response.data.message)
+		commit('failure', error.response.data);
+	})
+}
+
 
 
 export const fetchFromBitrix = async ({ commit }, id) => {
@@ -713,9 +724,19 @@ export const fetchFromBitrix = async ({ commit }, id) => {
 		commit('fetchFromBitrix', response.data.result);
 	})
 	.catch((error) => {
-		if (error.response.status == 401) {
-			//AuthService.logout();
-		}
+    errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
+	})
+}
+
+export const patientVitals = async ({ commit }, {patientId, deviceType}) => {
+  commit('loadingStatus', true)
+	await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+patientId+'/vital?deviceType='+deviceType, null, null).then((response) => {
+    commit('patientVitals', response.data.data)
+    commit('loadingStatus', false)
+	})
+	.catch((error) => {
+		commit('failure', error);
+    commit('loadingStatus', false)
 	})
 }

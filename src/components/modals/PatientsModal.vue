@@ -429,7 +429,7 @@
                             <a-input-search v-model:value="search" placeholder="Search..." style="width: 100%" size="large" @search="onSearch" />
                         </a-col>
                         <a-col :md="24" :sm="24" :xs="24">
-                            <div class="form-group">
+                            <div class="form-group conditionsCheckboxs">
                                 <a-form-item name="condition" :rules="[{ required: true, message: $t('patient.conditions.healthConditions')+' '+$t('global.validation') }]">
                                     <a-checkbox-group v-model:value="conditions.condition">
                                         <a-checkbox v-for="condition in globalCode.healthCondition.globalCode" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
@@ -842,11 +842,11 @@ export default defineComponent( {
     });
 
     watchEffect(() => {
-        if(patients.value.fetchFromBitrix){
-            
+        // Bitrix data assign 
+        if(patients.value.fetchFromBitrix){ 
             Object.assign(demographics, patients.value.fetchFromBitrix);
-            console.log('object',Object.assign(demographics, patients.value.fetchFromBitrix));
-        }
+        }//end 
+
         if(idPatient) {
             Object.assign(demographics, patientDetail);
             if(isEdit && patients.value.patientConditions != null) {

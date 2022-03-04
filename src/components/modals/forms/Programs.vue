@@ -6,7 +6,7 @@
                 <a-form-item :label="$t('patient.programs.program')" name="program" :rules="[{ required: true, message: $t('patient.programs.program')+' '+$t('global.validation') }]">
                     <a-select ref="select" v-model:value="program.program" style="width: 100%" size="large" @change="handleChange">
                         <a-select-option value="" disabled>{{'Select Program'}}</a-select-option>
-                        <a-select-option v-for="program in patients.programList" :key="program.id" :value="program.id">{{program.description}}</a-select-option>
+                        <a-select-option v-for="program in patients.programList.data" :key="program.id" :value="program.id">{{program.description}}</a-select-option>
                     </a-select>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.program?errorMsg.program[0]:''" />
                 </a-form-item>
@@ -45,7 +45,7 @@
     </a-row>
     <a-row :gutter="24" class="mb-24">
         <a-col :span="24">
-            <a-table :columns="columns" :data-source="programsData" :pagination="false" :scroll="{ x: 900 }">
+            <a-table  rowKey="id" :columns="columns" :data-source="programsData" :pagination="false" :scroll="{ x: 900 }">
                 <template #action="text">
                     <a-tooltip placement="bottom">
                         <a class="icons" @click="deleteProgram(text.record.id)">
@@ -111,6 +111,7 @@ export default defineComponent({
           id: patientId,
         }).then(() => {
           store.dispatch("program", patientId);
+          reset()
         });
       }
       else {
@@ -123,9 +124,10 @@ export default defineComponent({
           },
           id: patients.value.addDemographic.id,
         });
-        reset()
+        
         setTimeout(() => {
           store.dispatch("program", patients.value.addDemographic.id);
+          reset()
         }, 2000);
       }
     };

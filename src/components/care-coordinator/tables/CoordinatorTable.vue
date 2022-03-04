@@ -1,6 +1,6 @@
 <template>
  
-    <a-table :data-source="data" :scroll="{ y: 300 ,x: 1020}" :pagination=false :columns="fields" >
+    <a-table  rowKey="id" :data-source="data" :scroll="{ y: 300 ,x: 1020}" :pagination=false :columns="fields" >
     <template #name="{text,record}" >
         <!-- <router-link :to="linkTo">{{ text.text }}</router-link> -->
         <router-link @click="staffSummery(record.uuid)" :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}">{{ text }}</router-link>
@@ -60,10 +60,11 @@ export default {
                     if (current_page <= meta.value.staffMeta.total_pages) {
                         loader.value = true
                         meta.value.staffMeta = ""
-                        store.dispatch("staffs", "?page=" + current_page)
-                        setTimeout(() => {
-                            loadMoredata()
-                        }, 1000)
+                        store.state.careCoordinator.staffs = ""
+                        store.dispatch("staffs", "?page=" + current_page).then(()=>{
+                            loadMoredata() 
+                        })
+                       
 
                     }
                 }
