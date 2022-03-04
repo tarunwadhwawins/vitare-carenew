@@ -75,8 +75,8 @@ export const API_ENDPOINTS = {
     generalParameter:'generalParameterGroup',
     deleteParameter:'generalParameter',
 
-    
-
+    //Providers
+    provider:'provider',
 };
 
 // export const getApiUrl = key => {

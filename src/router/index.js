@@ -177,8 +177,8 @@ const routes = [
   },
 
   {
-    path: '/provider-summary',
-    name: 'Provider Summary',
+    path: '/provider-summary/:id',
+    name: 'providerSummary',
     component: () => import( '../components/administration/providers/ProviderSummary'),
     meta: { authAdmin: true }
   },

@@ -1,103 +1,132 @@
 <template>
-  <a-table rowKey="id" :columns="columns" :data-source="data">
-    <template #actions>
-      <a-tooltip placement="bottom">
-        <template #title>
-          <span>Edit</span>
-        </template>
-        <span class="icons"><EditOutlined /></span>
-      </a-tooltip>
-      <a-tooltip placement="bottom">
-        <template #title>
-          <span>Delete</span>
-        </template>
-        <span class="icons"><DeleteOutlined /></span>
-      </a-tooltip>
+<a-table rowKey="id" :columns="providerListColumns" :data-source="providersListAll">
+    <template #name="{text,record}">
+               <router-link :to="{ name: 'providerSummary', params: { id:record.id  }}">{{text}}</router-link>
     </template>
-    <template #active="{record}">
-      <a-switch v-model:checked="record.status" />
+    <template #status="{record}">
+        <a-switch v-model:checked="record.status" @change="updateStatus(record.id, $event)" />
     </template>
-    <template #first="{record}">
-      <router-link to="provider-summary">{{ record.name }}</router-link>
+    <template #action="text">
+        <a-tooltip placement="bottom">
+            <a class="icons">
+                <EditOutlined @click="editSingleProvider(text.record.id)" /></a>
+        </a-tooltip>
+        <a-tooltip placement="bottom">
+            <a class="icons" @click="deleteSingleProvider(text.record.id)">
+                <DeleteOutlined />
+            </a>
+        </a-tooltip>
+
     </template>
-  </a-table>
+</a-table>
 </template>
 
 <script>
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-export default {
-  components: {
+import {
     DeleteOutlined,
-    EditOutlined,
-  },
-  setup() {
-    const columns = [
-      {
-        title: "Provider Name",
-        dataIndex: "name",
-        key: "name",
-        sorter: {
-          compare: (a, b) => a.name - b.name,
-          multiple: 3,
+    EditOutlined
+} from "@ant-design/icons-vue";
+import {
+    watchEffect,
+    computed,
+    reactive
+} from "vue";
+import {
+    messages
+} from "@/config/messages";
+import {
+    useStore
+} from "vuex";
+import {
+    warningSwal
+} from "../../../../commonMethods/commonMethod"
+export default {
+    components: {
+        EditOutlined,
+        DeleteOutlined
+    },
+    props: {
+        id: {
+            type: Number
         },
-        slots: {
-          customRender: "first",
-        },
-      },
-      {
-        title: "Provider Address",
-        dataIndex: "description",
-        key: "description",
-        sorter: {
-          compare: (a, b) => a.description - b.description,
-          multiple: 3,
-        },
-      },
-      {
-        title: "Active/Inactive",
-        dataIndex: "active",
-        key: "active",
-        slots: {
-          customRender: "active",
-        },
-      },
-      {
-        title: "Actions",
-        dataIndex: "actions",
-        key: "actions",
-        slots: {
-          customRender: "actions",
-        },
-      },
-    ];
-    const data = [
-      {
-        key: "1",
-        name: "Provider 1",
-        description: "Lorem Ipsum",
-        active: "",
-        action: "",
-      },
-      {
-        key: "2",
-        name: "Provider 2",
-        description: "Lorem Ipsum",
-        active: "",
-        action: "",
-      },
-      {
-        key: "3",
-        name: "Provider 3",
-        description: "Lorem Ipsum",
-        active: "",
-        action: "",
-      },
-    ];
-    return {
-      columns,
-      data,
-      text: 'provider-summary'
+    },
+
+    setup(props, {
+        emit
+    }) {
+        const store = useStore()
+        const providerId = reactive(props.id);
+        watchEffect(() => {
+            store.dispatch('providersListAll')
+        })
+        const providersListAll = computed(() => {
+            return store.state.provider.providersListAll
+        })
+        const providersData = computed(() => {
+            return store.state.provider;
+        });
+
+        function deleteSingleProvider(id) {
+            if (id != null) {
+                warningSwal(messages.deleteWarning).then((response) => {
+                    if (response == true) {
+                        store.dispatch('deleteSingleProvider', {
+                            id: id,
+                        }).then(() => {
+                            store.dispatch("providersListAll", providerId);
+                        }, 2000);
+                    }
+                })
+            } else {
+                warningSwal(messages.deleteWarning).then((response) => {
+                    if (response == true) {
+                        store.dispatch('deleteSingleProvider', {
+                            id: providersData.value.provider.id,
+                        })
+                        setTimeout(() => {
+                            store.dispatch("deleteSingleProvider", providersData.value.provider.id);
+                        }, 2000);
+                    }
+                })
+            }
+        }
+
+        const updateStatus = (id, status) => {
+            const data = {
+                "isActive": status
+            };
+            store.dispatch('updateSingleProvider', {
+                id,
+                data
+            }).then(() => {
+                store.dispatch('providersListAll')
+            })
+        }
+
+        const editSingleProvider = (id) => {
+            store.dispatch('editSingleProvider', id);
+            emit('isEdit', {
+                check: true,
+                providerId: id
+            });
+        };
+        const providerListColumns = computed(() => {
+            return store.state.provider.providerListColumns;
+        });
+
+        return {
+            editSingleProvider,
+            providerListColumns,
+            warningSwal,
+            providersListAll,
+            deleteSingleProvider,
+            providersData,
+            emit,
+            updateStatus,
+            providerId,
+            props,
+            text: 'provider-summary'
+        }
     }
-  }
 }
 </script>

@@ -84,6 +84,9 @@ export const globalCodes = (state, data) => {
         if (element.name === 'Patient Time Logs Category') {
             state.timeLogCategories = element;
         }
+        if (element.name === 'Modules') {
+            state.modules = element;
+        }
         
     });
 

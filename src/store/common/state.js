@@ -28,6 +28,7 @@ export default {
     staffList:null,
     noteTypes:null,
     noteCategories:null,
+    modules:null,
    
 
 
