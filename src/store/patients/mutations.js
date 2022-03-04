@@ -561,13 +561,16 @@ export const deleteDocument = (state, data) => {
   state.deleteDocument = data
 }
   export const latestDocumentSuccess = (state, data) => {
-    if(data.length > 0) {
+    if(data && data.length > 0) {
       state.latestDocument = data
+    }
+    else {
+      state.latestDocument = null
     }
  }
 
   export const latestDeviceSuccess = (state, data) => {
-    if(data.length > 0) {
+    if(data && data.length > 0) {
       state.latestDevice = data
     }
     else {
@@ -807,36 +810,46 @@ export const patientVitals = (state, vitals) => {
   var timeArray = [];
   var vitalFieldsArray = [];
   var vitalsArray = [];
-  vitals.map(vital => {
-    vitalsArray.push({
-      id: vital.id,
-      takeTime: vital.takeTime,
-      vitalField: vital.vitalField,
-      deviceType: vital.deviceType,
-      value: vital.value,
+  if(vitals && (vitals.length > 0 || vitals != null)) {
+    vitals.map(vital => {
+      vitalsArray.push({
+        id: vital.id,
+        takeTime: vital.takeTime,
+        vitalField: vital.vitalField,
+        deviceType: vital.deviceType,
+        value: vital.value,
+      })
+      if(!timeArray.includes(vital.takeTime)) {
+        timeArray.push(vital.takeTime);
+      }
+      if(!vitalFieldsArray.includes(vital.vitalField)) {
+        vitalFieldsArray.push(vital.vitalField);
+      }
     })
-    if(!timeArray.includes(vital.takeTime)) {
-      timeArray.push(vital.takeTime);
-    }
-    if(!vitalFieldsArray.includes(vital.vitalField)) {
-      vitalFieldsArray.push(vital.vitalField);
-    }
-  })
-  const patientVitals = convertResponse(timeArray, vitalsArray)
-  const finalVitals = convertData(patientVitals)
-  vitalsArray.forEach(vital => {
-    switch (vital.deviceType) {
-      case 'Blood Pressure':
-        state.bloodPressure = finalVitals;
-        break;
-      case 'Oxymeter':
-        state.bloodOxygen = finalVitals;
-        break;
-      case 'Glucose':
-        state.bloodGlucose = finalVitals;
-        break;
-      default:
-        break;
-    }
-  });
+    const patientVitals = convertResponse(timeArray, vitalsArray)
+    const finalVitals = convertData(patientVitals)
+    vitalsArray.forEach(vital => {
+      switch (vital.deviceType) {
+        case 'Blood Pressure':
+          state.bloodPressure = finalVitals;
+          break;
+        case 'Oxymeter':
+          state.bloodOxygen = finalVitals;
+          break;
+        case 'Glucose':
+          state.bloodGlucose = finalVitals;
+          break;
+        default:
+          break;
+      }
+    });
+  }
+  else {
+    state.bloodPressure = null;
+    state.bloodPressureGraph = null;
+    state.bloodOxygen = null;
+    state.bloodOxygenGraph = null;
+    state.bloodGlucose = null;
+    state.bloodGlucoseGraph = null;
+  }
 }

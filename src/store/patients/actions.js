@@ -672,7 +672,12 @@ export const patientDocuments = async ({commit}, id) => {
 
 export const latestDocument = async ({ commit }, id) => {
 	await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/document?latest=latest', null, null).then((response) => {
-		commit('latestDocumentSuccess', response.data.data);
+    if(response.data.data.length > 0) {
+      commit('latestDocumentSuccess', response.data.data);
+    }
+    else {
+      commit('latestDocumentSuccess', null)
+    }
 	})
 	.catch((error) => {
 		/* if (error.response.status == 401) {
@@ -684,7 +689,12 @@ export const latestDocument = async ({ commit }, id) => {
 
 export const latestDevice = async ({ commit }, id) => {
 	await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/inventory?latest=latest', null, null).then((response) => {
-		commit('latestDeviceSuccess', response.data.data);
+    if(response.data.data.length > 0) {
+      commit('latestDeviceSuccess', response.data.data);
+    }
+    else {
+      commit('latestDeviceSuccess', null)
+    }
 	})
 	.catch((error) => {
 		/* if (error.response.status == 401) {
@@ -732,7 +742,12 @@ export const fetchFromBitrix = async ({ commit }, id) => {
 export const patientVitals = async ({ commit }, {patientId, deviceType}) => {
   commit('loadingStatus', true)
 	await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+patientId+'/vital?deviceType='+deviceType, null, null).then((response) => {
-    commit('patientVitals', response.data.data)
+    if(response.data.data.length > 0) {
+      commit('patientVitals', response.data.data)
+    }
+    else {
+      commit('patientVitals', null)
+    }
     commit('loadingStatus', false)
 	})
 	.catch((error) => {

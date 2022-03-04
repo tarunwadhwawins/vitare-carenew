@@ -48,7 +48,12 @@ export const deleteTimeLog = async ({ commit }, {id, timeLogId}) => {
 
 export const latestTimeLog = async ({ commit }, id) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['patient']+"/"+id+"/timeLog?latest=latest", null, null).then((response) => {
-		commit('latestTimeLogSuccess', response.data.data);
+    if(response.data.data.length > 0) {
+      commit('latestTimeLogSuccess', response.data.data);
+    }
+    else {
+      commit('latestTimeLogSuccess', null)
+    }
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {
