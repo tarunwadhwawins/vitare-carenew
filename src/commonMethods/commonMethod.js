@@ -2,7 +2,6 @@ import Swal from "sweetalert2"
 import moment from 'moment';
 
 
-
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }

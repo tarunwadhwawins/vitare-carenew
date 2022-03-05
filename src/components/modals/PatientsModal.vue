@@ -698,7 +698,7 @@
 </template>
 
 <script>
-import { ref, computed, reactive, watchEffect, defineComponent, defineAsyncComponent } from "vue";
+import { ref, computed, reactive, watchEffect, defineComponent, defineAsyncComponent,onUnmounted } from "vue";
 // import Demographics from "@/components/modals/forms/Demographics";
 // import Conditions from "@/components/modals/forms/Conditions";
 import Programs from "@/components/modals/forms/Programs";
@@ -1190,6 +1190,10 @@ export default defineComponent( {
     function stepperClick(value){
         console.log('stepper',value)
     }
+
+    onUnmounted(()=>{
+      store.commit('errorMsg',null)
+    })
 
     return {
     closeSearchPatient,
