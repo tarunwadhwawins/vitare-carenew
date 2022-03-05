@@ -635,7 +635,14 @@ export const uploadFile = async ({
   await serviceMethod.common("post", `file`, null, data).then((response) => {
     commit('uploadFile', response.data.data.path);
   }).catch((error) => {
-    errorSwal(error.response.data.message)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      // commit('errorMsg', error.response.data.message)
+      errorSwal(error.response.data.message)
+    }
   })
 }
 

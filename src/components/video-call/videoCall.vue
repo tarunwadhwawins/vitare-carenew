@@ -26,11 +26,19 @@
                         </a-col>
                         <a-col :xl="8" :lg="10">
                             <div class="callRightWrapper">
-                                <div class="header">
-                                    <img src="../../assets/images/user-2.jpg" />
+                              <div class="header" v-if="acceptVideoCallDetails">
+                                    <img :src="acceptVideoCallDetails?acceptVideoCallDetails.patient.profilePhoto:''" />
                                     <div class="name">
-                                        <h4>Jane Doe</h4>
-                                        <p>View Profile</p>
+                                        <h4>{{acceptVideoCallDetails.name}}</h4>
+                                        <router-link v-if="acceptVideoCallDetails" :to="{ name: 'PatientSummary', params: { udid:acceptVideoCallDetails?acceptVideoCallDetails.patient.id:'' }}">View Profile</router-link>
+                                    </div>
+                                    <span class="callTime">7:20</span>
+                                </div>
+                                <div class="header" v-else>
+                                    <img :src="getVideoDetails?getVideoDetails.patientDetailed.profilePhoto:''" />
+                                    <div class="name">
+                                        <h4>{{getVideoDetails?getVideoDetails.patient:''}}</h4>
+                                        <router-link v-if="getVideoDetails" :to="{ name: 'PatientSummary', params: { udid:getVideoDetails?getVideoDetails.patientDetailed.id:'' }}">View Profile</router-link>
                                     </div>
                                     <span class="callTime">7:20</span>
                                 </div>
@@ -109,7 +117,7 @@
 <script>
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import Loader from "@/components/loader/Loader";
@@ -131,6 +139,9 @@ export default {
     const router = useRouter();
     // const session = inject('sipSession')
     // const session = localStorage.getItem('sipSession');
+    const upcomingCallDetails = reactive({
+      user:''
+    })
     const simpleUserHangup = ref();
     const session = computed(() => {
       return store.state.authentication.simpleUser;
@@ -148,7 +159,11 @@ export default {
         session.value.options.media.remote = {
           video: videoCall.value ? videoCall.value : <video></video>,
         };
+        // console.log('userDetails=>',session.value.session.incomingInviteRequest.message.from.uri.raw.user);//getting upcoming call user details
+        upcomingCallDetails.user=session.value.session.incomingInviteRequest.message.from.uri.raw.user;
+        store.dispatch("acceptVideoCallDetails",upcomingCallDetails.user.substring(2))
         session.value.answer();
+        
         setTimeout(() => {
           store.commit("loadingStatus", false);
         }, 5000);
@@ -220,9 +235,9 @@ export default {
             .then(() => {
               // console.log("hello");
               simpleUser.register().then(() => {
-                simpleUser.call(
-                  `sip:${conferenceId.value}@dev.icc-heaalth.com`
-                );
+                // simpleUser.call(
+                //   `sip:${conferenceId.value}@dev.icc-heaalth.com`
+                // );
                 simpleUserHangup.value = simpleUser;
               });
             })
@@ -252,7 +267,18 @@ export default {
       return store.state.communications.conferenceId;
     });
 
+    const getVideoDetails = computed(() => {
+      return store.state.videoCall.getVideoDetails;
+    });
+  
+    const acceptVideoCallDetails = computed(() => {
+      return store.state.videoCall.acceptVideoCallDetails;
+    });
+
     return {
+      acceptVideoCallDetails,
+      upcomingCallDetails,
+      getVideoDetails,
       simpleUserHangup,
       conferenceId,
       hangUp,
