@@ -1,41 +1,43 @@
 <template>
   <a-row :gutter="24">
     
-    <VitalsGrid
-      v-if="bloodPressure"
-      title="Blood Pressure"
-      :activeKey="activeKey1"
-      className="dangerValue"
-      :tableColumns="bloodPressureColumns"
-      :tableData="bloodPressure"
-      :chartOptions="bloodPressureOptions"
-      :chartSeries="bloodPressureSeries"
-      @showModal="showAddBPModal"
-    />
+    <template v-for="device in patientDevices" :key="device.id">
+      <VitalsGrid
+        v-if="device.deviceType == 'Blood Pressure'"
+        title="Blood Pressure"
+        :activeKey="activeKey1"
+        className="dangerValue"
+        :tableColumns="bloodPressureColumns"
+        :tableData="bloodPressure"
+        :chartOptions="bloodPressureOptions"
+        :chartSeries="bloodPressureSeries"
+        @showModal="showAddBPModal"
+      />
 
-    <VitalsGrid
-      v-if="bloodGlucose"
-      title="Blood Glucose"
-      :activeKey="activeKey2"
-      className="dangerValue"
-      :tableColumns="bloodGlucoseColumns"
-      :tableData="bloodGlucose"
-      :chartOptions="bloodGlucoseOptions"
-      :chartSeries="bloodGlucoseSeries"
-      @showModal="showBloodGlucoseModal"
-    />
+      <VitalsGrid
+        v-if="device.deviceType == 'Glucose'"
+        title="Blood Glucose"
+        :activeKey="activeKey2"
+        className="dangerValue"
+        :tableColumns="bloodGlucoseColumns"
+        :tableData="bloodGlucose"
+        :chartOptions="bloodGlucoseOptions"
+        :chartSeries="bloodGlucoseSeries"
+        @showModal="showBloodGlucoseModal"
+      />
 
-    <VitalsGrid
-      v-if="bloodOxygen"
-      title="Blood Oxygen Saturation"
-      :activeKey="activeKey3"
-      className="dangerValue"
-      :tableColumns="bloodOxygenColumns"
-      :tableData="bloodOxygen"
-      :chartOptions="bloodOxygenOptions"
-      :chartSeries="bloodOxygenSeries"
-      @showModal="showBloodOxygenModal"
-    />
+      <VitalsGrid
+        v-if="device.deviceType == 'Oxymeter'"
+        title="Blood Oxygen Saturation"
+        :activeKey="activeKey3"
+        className="dangerValue"
+        :tableColumns="bloodOxygenColumns"
+        :tableData="bloodOxygen"
+        :chartOptions="bloodOxygenOptions"
+        :chartSeries="bloodOxygenSeries"
+        @showModal="showBloodOxygenModal"
+      />
+    </template>
 
   </a-row>
   <AddVitals v-model:visible="visibleAddVitals" @ok="handleOk" />
@@ -77,12 +79,19 @@ export default {
       return store.state.patients
     })
 
+    const bloodPressureColumns = patients.value.bloodPressureColumns
+    const bloodOxygenColumns = patients.value.bloodOxygenColumns
+    const bloodGlucoseColumns = patients.value.bloodGlucoseColumns
     const bloodPressure = patients.value.bloodPressure
     const bloodGlucose = patients.value.bloodGlucose
     const bloodOxygen = patients.value.bloodOxygen
     const bloodPressureGraph = patients.value.bloodPressureGraph
     const bloodOxygenGraph = patients.value.bloodOxygenGraph
     const bloodGlucoseGraph = patients.value.bloodGlucoseGraph
+    const patientDevices = patients.value.devices
+    console.log('bloodPressureColumns', bloodPressureColumns)
+    console.log('bloodOxygenColumns', bloodOxygenColumns)
+    console.log('bloodGlucoseColumns', bloodGlucoseColumns)
 
     const showAddBPModal = () => {
       visibleAddVitals.value = true;
@@ -96,95 +105,6 @@ export default {
     const showBloodOxygenModal = () => {
       visibleBloodOxygen.value = true;
     };
-
-    const bloodPressureColumns = [
-      {
-        title: "Date Recorded",
-        dataIndex: "takeTime",
-        key: "takeTime",
-        slots: {
-          customRender: "takeTime",
-        },
-      },
-      {
-        title: "Systolic",
-        dataIndex: "blood_pressure_systolic",
-        key: "blood_pressure_systolic",
-        slots: {
-          customRender: "blood_pressure_systolic",
-        },
-      },
-      {
-        title: "Diastolic",
-        dataIndex: "blood_pressure_diastolic",
-        key: "blood_pressure_diastolic",
-        slots: {
-          customRender: "blood_pressure_diastolic",
-        },
-      },
-      {
-        title: "BPM",
-        dataIndex: "blood_pressure_bpm",
-        key: "blood_pressure_bpm",
-        slots: {
-          customRender: "blood_pressure_bpm",
-        },
-      },
-    ];
-
-    const bloodGlucoseColumns = [
-      {
-        title: "Date Recorded",
-        dataIndex: "takeTime",
-        key: "takeTime",
-        slots: {
-          customRender: "takeTime",
-        },
-      },
-      {
-        title: "Random Blood Sugar",
-        dataIndex: "glucose_random_blood_sugar",
-        key: "glucose_random_blood_sugar",
-        slots: {
-          customRender: "glucose_random_blood_sugar",
-        },
-      },
-      {
-        title: "Fasting Blood Sugar",
-        dataIndex: "glucose_fasting_blood_sugar",
-        key: "glucose_fasting_blood_sugar",
-        slots: {
-          customRender: "glucose_fasting_blood_sugar",
-        },
-      },
-    ];
-
-    const bloodOxygenColumns = [
-      {
-        title: "Date Recorded",
-        dataIndex: "takeTime",
-        key: "takeTime",
-        slots: {
-          customRender: "takeTime",
-        },
-      },
-      {
-        title: "SPO2",
-        dataIndex: "oxymeter_spo2",
-        key: "oxymeter_spo2",
-        slots: {
-          customRender: "oxymeter_spo2",
-        },
-      },
-      {
-        title: "BPM",
-        dataIndex: "oxymeter_bpm",
-        key: "oxymeter_bpm",
-        slots: {
-          customRender: "oxymeter_bpm",
-        },
-      },
-    ];
     
     if(bloodPressureGraph != null) {
       bloodPressureSeries.value = bloodPressureGraph.records
@@ -277,6 +197,8 @@ export default {
       
       bloodOxygenOptions,
       bloodOxygenSeries,
+
+      patientDevices,
     }
   }
 }

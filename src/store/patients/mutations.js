@@ -7,6 +7,7 @@ import {
   convertResponse,
   convertData,
   convertChartResponse,
+  // createDynamicColumns,
 } from '../../commonMethods/commonMethod';
 
 export const addDemographic = (state, data) => {
@@ -831,7 +832,7 @@ export const patientVitals = (state, vitals) => {
     const convertedResponse = convertResponse(timeArray, vitalsArray)
     const patientVitals = convertData(convertedResponse)
     const patientGraphData = convertChartResponse(vitalFieldsArray, vitalsArray)
-
+    
     vitalsArray.forEach(vital => {
       switch (vital.deviceType) {
         case 'Blood Pressure':
@@ -850,6 +851,112 @@ export const patientVitals = (state, vitals) => {
           break;
       }
     });
+
+    // const dynamicColumns = createDynamicColumns(vitalsArray)
+    // if(dynamicColumns.tableName === 'Blood Pressure') {
+    //   state.bloodPressureColumns = dynamicColumns;
+    // }
+    // else {
+      state.bloodPressureColumns = [
+        {
+          title: "Date Recorded",
+          dataIndex: "takeTime",
+          key: "takeTime",
+          slots: {
+            customRender: "takeTime",
+          },
+        },
+        {
+          title: "Systolic",
+          dataIndex: "blood_pressure_systolic",
+          key: "blood_pressure_systolic",
+          slots: {
+            customRender: "blood_pressure_systolic",
+          },
+        },
+        {
+          title: "Diastolic",
+          dataIndex: "blood_pressure_diastolic",
+          key: "blood_pressure_diastolic",
+          slots: {
+            customRender: "blood_pressure_diastolic",
+          },
+        },
+        {
+          title: "BPM",
+          dataIndex: "blood_pressure_bpm",
+          key: "blood_pressure_bpm",
+          slots: {
+            customRender: "blood_pressure_bpm",
+          },
+        },
+      ];
+    // }
+    // if(dynamicColumns.tableName === 'Oxymeter') {
+    //   state.bloodOxygenColumns = dynamicColumns;
+    // }
+    // else {
+      state.bloodOxygenColumns = [
+        {
+          title: "Date Recorded",
+          dataIndex: "takeTime",
+          key: "takeTime",
+          slots: {
+            customRender: "takeTime",
+          },
+        },
+        {
+          title: "SPO2",
+          dataIndex: "oxymeter_spo2",
+          key: "oxymeter_spo2",
+          slots: {
+            customRender: "oxymeter_spo2",
+          },
+        },
+        {
+          title: "BPM",
+          dataIndex: "oxymeter_bpm",
+          key: "oxymeter_bpm",
+          slots: {
+            customRender: "oxymeter_bpm",
+          },
+        },
+      ];
+    // }
+    // if(dynamicColumns.tableName === 'Glucose') {
+    //   state.bloodGlucoseColumns = dynamicColumns;
+    // }
+    // else {
+      state.bloodGlucoseColumns = [
+        {
+          title: "Date Recorded",
+          dataIndex: "takeTime",
+          key: "takeTime",
+          slots: {
+            customRender: "takeTime",
+          },
+        },
+        {
+          title: "Random Blood Sugar",
+          dataIndex: "glucose_random_blood_sugar",
+          key: "glucose_random_blood_sugar",
+          slots: {
+            customRender: "glucose_random_blood_sugar",
+          },
+        },
+        {
+          title: "Fasting Blood Sugar",
+          dataIndex: "glucose_fasting_blood_sugar",
+          key: "glucose_fasting_blood_sugar",
+          slots: {
+            customRender: "glucose_fasting_blood_sugar",
+          },
+        },
+      ];
+    // }
+    console.log('state.bloodPressureColumns', state.bloodPressureColumns)
+    console.log('state.bloodOxygenColumns', state.bloodOxygenColumns)
+    console.log('state.bloodGlucoseColumns', state.bloodGlucoseColumns)
   }
   else {
     state.bloodPressure = null;
@@ -858,5 +965,8 @@ export const patientVitals = (state, vitals) => {
     state.bloodOxygenGraph = null;
     state.bloodGlucose = null;
     state.bloodGlucoseGraph = null;
+    // state.bloodPressureColumns = null;
+    // state.bloodOxygenColumns = null;
+    // state.bloodGlucoseColumns = null;
   }
 }

@@ -349,3 +349,40 @@ export function convertChartResponse(vitaldFieldsArray, recordsArray) {
     timesArray,
   }
 }
+
+export function createDynamicColumns(patientVitals) {
+  let itemObject = {
+    tableName: '',
+    columns: [{
+      title: 'Date Recorded',
+      dataIndex: 'takeTime',
+      key: 'takeTime',
+      slots: {
+        customRender: 'takeTime'
+      },
+    }
+  ]
+  }
+  if(patientVitals.length > 0) {
+    patientVitals.map(item => {
+      var field = (item.deviceType+'_'+item.vitalField).replace(/ /g,'_').toLowerCase()
+      var exists = (itemObject.columns).some(function(dataIndex) {
+        return dataIndex.dataIndex === field;
+      });
+      if(!exists) {
+        // console.log('patientVitals exists', exists)
+        // itemObject.tableName = item.deviceType;
+        // itemObject.columns.push({
+        //   title: item.vitalField,
+        //   dataIndex: field,
+        //   key: field,
+        //   slots: {
+        //     customRender: field
+        //   },
+        // })
+      }
+    })
+  }
+  // console.log('patientVitals itemObject', itemObject)
+  return itemObject;
+}

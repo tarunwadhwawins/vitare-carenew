@@ -58,4 +58,8 @@ export default {
     bloodOxygenGraph:null,
     bloodGlucoseGraph:null,
 
+    bloodPressureColumns:null,
+    bloodOxygenColumns:null,
+    bloodGlucoseColumns:null,
+
 }
