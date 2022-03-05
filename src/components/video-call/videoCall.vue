@@ -159,7 +159,7 @@ export default {
         session.value.options.media.remote = {
           video: videoCall.value ? videoCall.value : <video></video>,
         };
-        // console.log('userDetails=>',session.value.session.incomingInviteRequest.message.from.uri.raw.user);//getting upcoming call user details
+        //getting upcoming call user details
         upcomingCallDetails.user=session.value.session.incomingInviteRequest.message.from.uri.raw.user;
         store.dispatch("acceptVideoCallDetails",upcomingCallDetails.user.substring(2))
         session.value.answer();

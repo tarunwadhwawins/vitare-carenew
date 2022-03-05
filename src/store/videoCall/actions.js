@@ -23,9 +23,8 @@ export const getVideoDetails = async ({commit},id) => {
 
 
 export const acceptVideoCallDetails = async ({commit},id) => {
-  console.log(id);
   commit('loadingStatus', true)
-  await serviceMethod.common("get", `user/273`, null, null).then((response) => {
+  await serviceMethod.common("get", `user/${id}`, null, null).then((response) => {
     commit('acceptVideoCallDetails', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
