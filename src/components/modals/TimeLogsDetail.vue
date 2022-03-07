@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" title="Time Logs Detail" centered>
+  <a-modal width="95%" title="Time Logs Detail" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <a-table  rowKey="id"  :columns="timeLogColumns" :data-source="timeLogsList" :scroll="{ x: 900 }" :pagination="false" >
@@ -77,6 +77,24 @@ export default defineComponent({
         key: "timeAmount",
         sorter: {
           compare: (a, b) => a.timeAmount - b.timeAmount,
+          multiple: 2,
+        },
+      },
+      {
+        title: "CPT Code",
+        dataIndex: "cptCode",
+        key: "cptCode",
+        sorter: {
+          compare: (a, b) => a.cptCode - b.cptCode,
+          multiple: 2,
+        },
+      },
+      {
+        title: "Note",
+        dataIndex: "note",
+        key: "note",
+        sorter: {
+          compare: (a, b) => a.note - b.note,
           multiple: 2,
         },
       },

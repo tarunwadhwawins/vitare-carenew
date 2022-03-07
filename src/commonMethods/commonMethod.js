@@ -78,6 +78,10 @@ export function dateFormat(date) {
   return moment.unix(date).format('MMM DD, yyyy, hh:mm A');
 }
 
+export function dateTimeFormat(date) {
+  return moment.unix(date).format('MMM DD hh:mm A');
+}
+
 export function meridiemFormat(time) {
   time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
   if (time.length > 1) {

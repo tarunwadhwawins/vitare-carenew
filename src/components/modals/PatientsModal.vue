@@ -1,5 +1,5 @@
 <template>
-<a-modal max-width="1140px" width="100%" title="Add New Patients" centered :footer="null"  :maskClosable="false" @cancel="closeModal()">
+<a-modal max-width="1140px" width="100%" :title="title" centered :footer="null"  :maskClosable="false" @cancel="closeModal()">
 <!-- <a-modal max-width="1140px" width="100%" title="Add New Patients" centered :footer="null" :maskClosable="false"> -->
     <a-row :gutter="24">
         <div class="common-btn mb-24">
@@ -66,7 +66,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber}]">
-                                    <a-input v-model:value="demographics.phoneNumber" placeholder="Please enter 10 digit number" size="large" />
+                                    <a-input-number v-model:value="demographics.phoneNumber" placeholder="Please enter 10 digit number" size="large"  style="width: 100%" maxlength="10"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -768,6 +768,8 @@ export default defineComponent( {
     const patientDetail = patients.value.patientDetails;
     const patientReferralSource = patients.value.patientReferralSource;
     const patientPrimaryPhysician = patients.value.patientPrimaryPhysician;
+    const title = props.isEditPatient == true ? 'Edit Patient' : 'Add New Patient'
+    const disabled = props.isEditPatient == true ? true : false
     
     const current= computed({
       get: () =>
@@ -1273,6 +1275,8 @@ export default defineComponent( {
       demographicsFailed,
       idPatient,
       patientDetail,
+      title,
+      disabled,
     };
   },
 });

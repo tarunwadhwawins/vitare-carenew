@@ -50,11 +50,12 @@
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
-          Vital Summary <PlusOutlined @click="addVitalsModel" />
+          Vital Summary
+          <!-- <PlusOutlined @click="addVitalsModel" /> -->
         </div>
-        <div class="thumb-desc">
+        <div v-if="latestVital != null" class="thumb-desc">
           <a href="javascript:void(0)">
-            <span @click="showVitalssModal">BP 120 / 78 Dec 15 6 PM</span>
+            <span @click="showVitalssModal">{{ latestVital.deviceType }} {{ latestVital.value }} {{ latestVital.takeTime }}</span>
           </a>
         </div>
       </div>
@@ -200,6 +201,7 @@ export default {
         store.dispatch('patientDetails', route.params.udid)
         store.dispatch('latestAppointment', route.params.udid)
         store.dispatch('latestTask', route.params.udid)
+        store.dispatch('latestVital', route.params.udid)
         store.dispatch('latestNotes', route.params.udid)
         store.dispatch('latestDocument', route.params.udid)
         store.dispatch('careTeamList', route.params.udid)
@@ -209,6 +211,10 @@ export default {
     })
     const patientDetails = computed(() => {
       return store.state.patients.patientDetails
+    })
+    
+    const latestVital = computed(() => {
+      return store.state.patients.latestVital
     })
     
     const latestNotes = computed(() => {
@@ -370,6 +376,7 @@ export default {
 
       latestAppointment,
       latestTask,
+      latestVital,
       latestNotes,
       latestDocument,
       latestCareTeam,

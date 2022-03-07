@@ -200,7 +200,7 @@ export const searchTasks = async ({ commit }, params) => {
 }
 
 export const latestTask = async ({ commit }, id) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['patient']+'/'+id+'/task?latest=latest', null, null).then((response) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['patient']+'/'+id+'/task', null, null).then((response) => {
     if(response.data.data.length > 0) {
       commit('latestTaskSuccess', response.data.data);
     }

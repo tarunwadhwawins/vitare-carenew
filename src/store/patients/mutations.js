@@ -2,6 +2,7 @@
 import {
   meridiemFormatFromTimestamp,
   dateOnlyFormat,
+  dateTimeFormat,
   dobFormat2,
   // timeFormatSimple
   convertResponse,
@@ -581,6 +582,16 @@ export const deleteDocument = (state, data) => {
     }
  }
 
+  export const latestVital = (state, data) => {
+    if(data && data.length > 0) {
+      data[0].takeTime = dateTimeFormat(data[0].takeTime)
+      state.latestVital = data[0]
+    }
+    else {
+      state.latestVital = null
+    }
+ }
+
   export const errorMsg = (state, data) => {
     state.errorMsg = data
  }
@@ -954,9 +965,9 @@ export const patientVitals = (state, vitals) => {
         },
       ];
     // }
-    console.log('state.bloodPressureColumns', state.bloodPressureColumns)
-    console.log('state.bloodOxygenColumns', state.bloodOxygenColumns)
-    console.log('state.bloodGlucoseColumns', state.bloodGlucoseColumns)
+    // console.log('state.bloodPressureColumns', state.bloodPressureColumns)
+    // console.log('state.bloodOxygenColumns', state.bloodOxygenColumns)
+    // console.log('state.bloodGlucoseColumns', state.bloodGlucoseColumns)
   }
   else {
     state.bloodPressure = null;
