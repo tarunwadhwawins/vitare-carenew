@@ -1,16 +1,15 @@
 <template>
-  <a-table  rowKey="id"
- 
+  <a-table
+    rowKey="id"
     :columns="communicationColumns"
     :data-source="data"
-    :scroll="{ x: 900,y:300 }"
+    :scroll="{ x: 900, y: 300 }"
     :pagination="false"
-    >
-    
+  >
     <template #resend>
       <a-tooltip placement="bottom">
         <template #title>
-          <span>{{$t('communications.message')}}</span>
+          <span>{{ $t("communications.message") }}</span>
         </template>
         <a class="icons"><EyeOutlined /></a>
       </a-tooltip>
@@ -21,30 +20,46 @@
       </router-link>
     </template>
     <template #staff="{ record }">
-      <router-link v-for="staff in record.staff.data" :key="staff.id" to="coordinator-summary">
+      <router-link
+        v-for="staff in record.staff.data"
+        :key="staff.id"
+        to="coordinator-summary"
+      >
         {{ staff.staff }}
       </router-link>
     </template>
 
     <template #priority="{ record }">
       <a-tooltip placement="right">
-        <template #title>{{ $t('common.urgent') }}</template>
-        <span class="circleBox" style="background-color: #ff6061" v-if="record.priority=='Urgent'" ></span>
+        <template #title>{{ $t("common.urgent") }}</template>
+        <span
+          class="circleBox"
+          style="background-color: #ff6061"
+          v-if="record.priority == 'Urgent'"
+        ></span>
       </a-tooltip>
       <a-tooltip placement="right">
-        <template #title>{{ $t('common.medium') }}</template>
-        <span class="circleBox" style="background-color: #ffa800" v-if="record.priority=='Medium'" ></span>
+        <template #title>{{ $t("common.medium") }}</template>
+        <span
+          class="circleBox"
+          style="background-color: #ffa800"
+          v-if="record.priority == 'Medium'"
+        ></span>
       </a-tooltip>
       <a-tooltip placement="right">
-        <template #title>{{ $t('common.normal') }}</template>
-        <span class="circleBox" style="background-color: #008000" v-if="record.priority=='Normal'" ></span>
+        <template #title>{{ $t("common.normal") }}</template>
+        <span
+          class="circleBox"
+          style="background-color: #008000"
+          v-if="record.priority == 'Normal'"
+        ></span>
       </a-tooltip>
     </template>
 
     <template #type="{ record }">
       <a-tooltip placement="right">
         <template #title>
-          <span>{{ $t('communications.communicationsModal.sms') }}</span>
+          <span>{{ $t("communications.communicationsModal.sms") }}</span>
         </template>
         <a class="icons" v-if="record.type == 'SMS'">
           <CommentOutlined />
@@ -52,26 +67,26 @@
       </a-tooltip>
       <a-tooltip placement="right">
         <template #title>
-          <span>{{ $t('communications.communicationsModal.call') }}</span>
+          <span>{{ $t("communications.communicationsModal.call") }}</span>
         </template>
         <a class="icons" v-if="record.type == 'Call'">
-          <PhoneOutlined/>
+          <PhoneOutlined />
         </a>
       </a-tooltip>
       <a-tooltip placement="right">
         <template #title>
-          <span>{{ $t('communications.communicationsModal.email') }}</span>
+          <span>{{ $t("communications.communicationsModal.email") }}</span>
         </template>
         <a class="icons" v-if="record.type == 'Email'">
-          <MailOutlined/>
+          <MailOutlined />
         </a>
       </a-tooltip>
       <a-tooltip placement="right">
         <template #title>
-          <span>{{ $t('communications.communicationsModal.reminder') }}</span>
+          <span>{{ $t("communications.communicationsModal.reminder") }}</span>
         </template>
         <a class="icons" v-if="record.type == 'Reminder'">
-          <AlertOutlined/>
+          <AlertOutlined />
         </a>
       </a-tooltip>
     </template>
@@ -79,7 +94,7 @@
     <template #action>
       <a-tooltip placement="bottom">
         <template #title>
-          <span>{{ $t('common.view') }}</span>
+          <span>{{ $t("common.view") }}</span>
         </template>
         <a class="icons">
           <EyeOutlined />
@@ -87,21 +102,24 @@
       </a-tooltip>
       <a-tooltip placement="bottom">
         <template #title>
-          <span>{{ $t('common.reply') }}</span>
+          <span>{{ $t("common.reply") }}</span>
         </template>
-        <a class="icons">
+        <a class="icons" @click="showModal">
           <MessageOutlined />
         </a>
       </a-tooltip>
     </template>
   </a-table>
   <InfiniteLoader v-if="loader" />
+  <Chat v-model:visible="visible" @ok="handleOk" @is-visible="handleOk" />
 </template>
 
 <script>
-  import { ref, reactive,  onMounted } from "vue"
+import { ref, reactive, onMounted } from "vue";
 import { useStore } from "vuex";
 import InfiniteLoader from "@/components/loader/InfiniteLoader";
+import Chat from "@/components/modals/Chat";
+
 import {
   EyeOutlined,
   MessageOutlined,
@@ -119,10 +137,11 @@ export default {
     MailOutlined,
     AlertOutlined,
     InfiniteLoader,
+    Chat,
   },
   props: {
     communicationsList: {
-      type: Array
+      type: Array,
     },
   },
   setup(props) {
@@ -189,54 +208,62 @@ export default {
       },
     ];
     const store = useStore();
-            
-            const data = reactive(props.communicationsList)
-         
-            const meta = store.getters.communicationRecord
-            const loader = ref(false)
-            onMounted(() => {
-              
-                var tableContent = document.querySelector('.ant-table-body')
-              
-                tableContent.addEventListener('scroll', (event) => {
-                  
-                    let maxScroll = event.target.scrollHeight - event.target.clientHeight
-                    let currentScroll = event.target.scrollTop + 2
-                    console.log(currentScroll)
-                    if (currentScroll >= maxScroll) {
-    
-                      let current_page = meta.value.communicationMeta.current_page + 1
-                      
-                        if (current_page <= meta.value.communicationMeta.total_pages) {
-                            loader.value = true
-                            meta.value.communicationMeta = ""
-                            store.state.communications.communicationsList= ""
-                            store.dispatch("communicationsList", "?page=" + current_page).then(()=>{
-                            //console.log('response',response)
-                            loadMoredata()
-                        })
-                            
-    
-                        }
-                    }
-                })
-           
-              
-            })
-    
-            function loadMoredata() {
-                const newData = meta.value.communicationsList
-                
-                newData.forEach(element => {
-                    data.push(element)
-                });
-                loader.value = false
-            }
+
+    const data = reactive(props.communicationsList);
+
+    const meta = store.getters.communicationRecord;
+    const loader = ref(false);
+    onMounted(() => {
+      var tableContent = document.querySelector(".ant-table-body");
+
+      tableContent.addEventListener("scroll", (event) => {
+        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+        let currentScroll = event.target.scrollTop + 2;
+        console.log(currentScroll);
+        if (currentScroll >= maxScroll) {
+          let current_page = meta.value.communicationMeta.current_page + 1;
+
+          if (current_page <= meta.value.communicationMeta.total_pages) {
+            loader.value = true;
+            meta.value.communicationMeta = "";
+            store.state.communications.communicationsList = "";
+            store
+              .dispatch("communicationsList", "?page=" + current_page)
+              .then(() => {
+                //console.log('response',response)
+                loadMoredata();
+              });
+          }
+        }
+      });
+    });
+
+    function loadMoredata() {
+      const newData = meta.value.communicationsList;
+
+      newData.forEach((element) => {
+        data.push(element);
+      });
+      loader.value = false;
+    }
+
+    const visible = ref(false);
+    const showModal = () => {
+      visible.value = true;
+    };
+
+    const handleOk = () => {
+      visible.value = false;
+    };
+
     return {
       communicationColumns,
       data,
       loader,
-    }
-  }
-}
+      visible,
+      showModal,
+      handleOk,
+    };
+  },
+};
 </script>

@@ -23,12 +23,19 @@ export default defineComponent({
   components: {
     Flags,
   },
-  setup() {
+  props:{
+    Id:String
+  },
+  setup(props) {
     const store = useStore();
     const route = useRoute();
 
     watchEffect(() => {
+      if(props.Id){
+      store.dispatch('notesList', props.Id);
+      }else{
       store.dispatch('notesList', route.params.udid);
+      }
     })
 
     const notesList = computed(() => {

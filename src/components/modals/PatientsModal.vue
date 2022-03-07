@@ -698,7 +698,7 @@
 </template>
 
 <script>
-import { ref, computed, reactive, watchEffect, defineComponent, defineAsyncComponent } from "vue";
+import { ref, computed, reactive, watchEffect, defineComponent, defineAsyncComponent,onUnmounted } from "vue";
 // import Demographics from "@/components/modals/forms/Demographics";
 // import Conditions from "@/components/modals/forms/Conditions";
 import Programs from "@/components/modals/forms/Programs";
@@ -888,11 +888,11 @@ export default defineComponent( {
                     store.dispatch("updateDemographic", {
                         data: demographics,
                         id: idPatient,
-                    });
-                    
-                    if(route.name == 'PatientSummary') {
-                        store.dispatch('patientDetails', route.params.udid)
-                    }
+                    }).then(() => {
+                        if(route.name == 'PatientSummary') {
+                            store.dispatch('patientDetails', route.params.udid)
+                        }
+                    })
                 }
                 else if(demographics.isPrimary == true) {
                     (demographics.emergencyFullName = demographics.fullName),
@@ -906,11 +906,11 @@ export default defineComponent( {
                     store.dispatch("updateDemographic", {
                         data: demographics,
                         id: idPatient,
-                    });
-                    
-                    if(route.name == 'PatientSummary') {
-                        store.dispatch('patientDetails', route.params.udid)
-                    }
+                    }).then(() => {
+                        if(route.name == 'PatientSummary') {
+                            store.dispatch('patientDetails', route.params.udid)
+                        }
+                    })
                 }
             }
             else if(patients.value.addDemographic != null && patients.value.addDemographic.id) {
@@ -920,11 +920,11 @@ export default defineComponent( {
                     store.dispatch("updateDemographic", {
                         data: demographics,
                         id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
-                    });
-                    
-                    if(route.name == 'PatientSummary') {
-                        store.dispatch('patientDetails', route.params.udid)
-                    }
+                    }).then(() => {
+                        if(route.name == 'PatientSummary') {
+                            store.dispatch('patientDetails', route.params.udid)
+                        }
+                    })
                 }
                 else if(demographics.isPrimary == true) {
                     (demographics.emergencyFullName = demographics.fullName),
@@ -938,22 +938,22 @@ export default defineComponent( {
                     store.dispatch("updateDemographic", {
                         data: demographics,
                         id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
-                    });
-                    
-                    if(route.name == 'PatientSummary') {
-                        store.dispatch('patientDetails', route.params.udid)
-                    }
+                    }).then(() => {
+                        if(route.name == 'PatientSummary') {
+                            store.dispatch('patientDetails', route.params.udid)
+                        }
+                    })
                 }
             }
         }
         else {
             if(patients.value.addDemographic == null) {
                 if(demographics.isPrimary == false) {
-                    store.dispatch("addDemographic", demographics);
-                    
-                    if(route.name == 'PatientSummary') {
-                        store.dispatch('patientDetails', route.params.udid)
-                    }
+                    store.dispatch("addDemographic", demographics).then(() => {
+                        if(route.name == 'PatientSummary') {
+                            store.dispatch('patientDetails', route.params.udid)
+                        }
+                    })
                 }
                 else if(demographics.isPrimary == true) {
                     (demographics.emergencyFullName = demographics.fullName),
@@ -962,11 +962,11 @@ export default defineComponent( {
                     (demographics.emergencyContactType = demographics.familyContactType),
                     (demographics.emergencyContactTime = demographics.familyContactTime),
                     (demographics.emergencyGender = demographics.familyGender),
-                    store.dispatch("addDemographic", demographics);
-                    
-                    if(route.name == 'PatientSummary') {
-                        store.dispatch('patientDetails', route.params.udid)
-                    }
+                    store.dispatch("addDemographic", demographics).then(() => {
+                        if(route.name == 'PatientSummary') {
+                            store.dispatch('patientDetails', route.params.udid)
+                        }
+                    })
                 }
             }
             else if(patients.value.addDemographic != null && patients.value.addDemographic.id) {
@@ -976,11 +976,11 @@ export default defineComponent( {
                     store.dispatch("updateDemographic", {
                         data: demographics,
                         id: patients.value.addDemographic.id,
-                    });
-                    
-                    if(route.name == 'PatientSummary') {
-                        store.dispatch('patientDetails', route.params.udid)
-                    }
+                    }).then(() => {
+                        if(route.name == 'PatientSummary') {
+                            store.dispatch('patientDetails', route.params.udid)
+                        }
+                    })
                 }
                 else if(demographics.isPrimary == true) {
                     (demographics.emergencyFullName = demographics.fullName),
@@ -994,11 +994,11 @@ export default defineComponent( {
                     store.dispatch("updateDemographic", {
                         data: demographics,
                         id: patients.value.addDemographic.id,
-                    });
-                    
-                    if(route.name == 'PatientSummary') {
-                        store.dispatch('patientDetails', route.params.udid)
-                    }
+                    }).then(() => {
+                        if(route.name == 'PatientSummary') {
+                            store.dispatch('patientDetails', route.params.udid)
+                        }
+                    })
                 }
             }
         }
@@ -1190,6 +1190,10 @@ export default defineComponent( {
     function stepperClick(value){
         console.log('stepper',value)
     }
+
+    onUnmounted(()=>{
+      store.commit('errorMsg',null)
+    })
 
     return {
     closeSearchPatient,

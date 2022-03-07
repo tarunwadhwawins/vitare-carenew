@@ -26,57 +26,68 @@
                         </a-col>
                         <a-col :xl="8" :lg="10">
                             <div class="callRightWrapper">
-                                <div class="header">
-                                    <img src="../../assets/images/user-2.jpg" />
+                              <div class="header" v-if="acceptVideoCallDetails">
+                                    <!-- <img :src="acceptVideoCallDetails?acceptVideoCallDetails.patient.profilePhoto:defaultImage" /> -->
+                                    <img src="@/assets/images/userAvatar.png" />
                                     <div class="name">
-                                        <h4>Jane Doe</h4>
-                                        <p>View Profile</p>
+                                        <h4>{{acceptVideoCallDetails.name}}</h4>
+                                        <router-link v-if="acceptVideoCallDetails" :to="{ name: 'PatientSummary', params: { udid:acceptVideoCallDetails?acceptVideoCallDetails.patient.id:'' }}">View Profile</router-link>
                                     </div>
-                                    <span class="callTime">7:20</span>
+                                    <!-- <span class="callTime">7:20</span> -->
                                 </div>
+                                <div class="header" v-else-if="getVideoDetails">
+                                    <!-- <img :src="getVideoDetails?getVideoDetails.patientDetailed.profilePhoto:'@/assets/images/userAvatar.png'" /> -->
+                                    <img src="@/assets/images/userAvatar.png" />
+                                    <div class="name">
+                                        <h4>{{getVideoDetails?getVideoDetails.patient:''}}</h4>
+                                        <router-link v-if="getVideoDetails" :to="{ name: 'PatientSummary', params: { udid:getVideoDetails?getVideoDetails.patientDetailed.id:'' }}">View Profile</router-link>
+                                    </div>
+                                    <!-- <span class="callTime">7:20</span> -->
+                                </div>
+                                
                                 <div class="body">
                                     <a-row>
-                                        <a-col :span="6">
+                                        <!-- <a-col :span="6">
                                             <div class="moreAction">
                                                 <div class="moreActionImg three">
                                                     <img src="../../assets/images/user.svg" />
                                                 </div>
                                                 <p>Profile</p>
                                             </div>
-                                        </a-col>
+                                        </a-col> -->
                                         <a-col :span="6">
-                                            <div class="moreAction">
+                                            <div class="moreAction" @click="showNotesModal">
                                                 <div class="moreActionImg four">
                                                     <img src="../../assets/images/edit.svg" />
                                                 </div>
                                                 <p>Notes</p>
                                             </div>
                                         </a-col>
-                                        <a-col :span="6">
+                                        <!-- <a-col :span="6">
                                             <div class="moreAction">
                                                 <div class="moreActionImg five">
                                                     <img src="../../assets/images/chat-2.svg" />
                                                 </div>
                                                 <p>Chat</p>
                                             </div>
-                                        </a-col>
+                                        </a-col> -->
                                         <a-col :span="6">
-                                            <div class="moreAction">
+                                            <div class="moreAction"  @click="showDocumentsModal">
                                                 <div class="moreActionImg green">
                                                     <img src="../../assets/images/report.svg" />
                                                 </div>
                                                 <p>Document</p>
                                             </div>
                                         </a-col>
-                                        <a-col :span="6">
+                                        <!-- <a-col :span="6">
                                             <div class="moreAction">
                                                 <div class="moreActionImg yellowBgColor">
                                                     <img src="../../assets/images/schedule.svg" />
                                                 </div>
                                                 <p>Appointment</p>
                                             </div>
-                                        </a-col>
-                                        <a-col :span="6">
+                                        </a-col> -->
+                                        <a-col :span="6" @click="showVitalssModal">
                                             <div class="moreAction">
                                                 <div class="moreActionImg redBgColor">
                                                     <img src="../../assets/images/wave.svg" />
@@ -84,14 +95,14 @@
                                                 <p>Vital</p>
                                             </div>
                                         </a-col>
-                                        <a-col :span="6">
+                                        <!-- <a-col :span="6">
                                             <div class="moreAction">
                                                 <div class="moreActionImg purpleBgColor">
                                                     <img src="../../assets/images/watch.svg" />
                                                 </div>
                                                 <p>Reminder</p>
                                             </div>
-                                        </a-col>
+                                        </a-col> -->
                                     </a-row>
                                 </div>
                                 <div class="footer">
@@ -101,6 +112,9 @@
                         </a-col>
                     </a-row>
                 </div>
+                <NotesDetailModal v-if="notesDetailVisible==true"  v-model:visible="notesDetailVisible" :Id="getVideoDetails?getVideoDetails.patientDetailed.id:acceptVideoCallDetails.patient.id" @closeModal="handleOk" />
+                <DocumentDetailModal v-if="documentDetailVisible==true"   v-model:visible="documentDetailVisible" :patientDetails="getVideoDetails?getVideoDetails.patientDetailed:acceptVideoCallDetails.patient"  @closeModal="handleOk"/>
+                <PatientVitalsDetailsModal v-if="patientVitalsVisible == true" v-model:visible="patientVitalsVisible" :patientId="getVideoDetails?getVideoDetails.patientDetailed.id:acceptVideoCallDetails.patient.id" @closeModal="handleOk" />
             </a-layout-content>
         </a-layout>
     </a-layout>
@@ -109,28 +123,41 @@
 <script>
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, reactive, watchEffect } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import Loader from "@/components/loader/Loader";
 import { Web } from "@/assets/js/sip-0.20.0";
 import { notification } from "ant-design-vue";
 import { successSwal } from "@/commonMethods/commonMethod";
+import NotesDetailModal from "@/components/modals/NotesDetail";
+import DocumentDetailModal from "@/components/modals/DocumentDetail";
+import PatientVitalsDetailsModal from "@/components/modals/PatientVitalsDetailsModal";
 
 export default {
   components: {
     Header,
     Sidebar,
     Loader,
+    NotesDetailModal,
+    DocumentDetailModal,
+    PatientVitalsDetailsModal
   },
 
   setup() {
     // the DOM element(video) will be assigned to the ref after initial render
     const store = useStore();
     const videoCall = ref();
+    const notesDetailVisible =ref(false)
+    const documentDetailVisible=ref(false)
+    const patientVitalsVisible = ref(false)
     const router = useRouter();
+    const defaultImage = "@/assets/images/userAvatar.png"
     // const session = inject('sipSession')
     // const session = localStorage.getItem('sipSession');
+    const upcomingCallDetails = reactive({
+      user:''
+    })
     const simpleUserHangup = ref();
     const session = computed(() => {
       return store.state.authentication.simpleUser;
@@ -148,7 +175,11 @@ export default {
         session.value.options.media.remote = {
           video: videoCall.value ? videoCall.value : <video></video>,
         };
+        //getting upcoming call user details
+        upcomingCallDetails.user=session.value.session.incomingInviteRequest.message.from.uri.raw.user;
+        store.dispatch("acceptVideoCallDetails",upcomingCallDetails.user.substring(2))
         session.value.answer();
+        
         setTimeout(() => {
           store.commit("loadingStatus", false);
         }, 5000);
@@ -252,7 +283,51 @@ export default {
       return store.state.communications.conferenceId;
     });
 
+    const getVideoDetails = computed(() => {
+      return store.state.videoCall.getVideoDetails;
+    });
+  
+    const acceptVideoCallDetails = computed(() => {
+      return store.state.videoCall.acceptVideoCallDetails;
+    });
+
+    const showNotesModal = () => {
+      notesDetailVisible.value = true;
+    }
+    const showDocumentsModal = () => {
+      documentDetailVisible.value = true;
+    }
+
+    const showVitalssModal = () => {
+      patientVitalsVisible.value = true;
+    }
+
+    watchEffect(()=>{
+      if(getVideoDetails.value){
+        store.dispatch('patientVitals', {patientId: getVideoDetails.value.patientDetailed.id, deviceType: 99})
+        store.dispatch('patientVitals', {patientId: getVideoDetails.value.patientDetailed.id, deviceType: 100})
+        store.dispatch('patientVitals', {patientId: getVideoDetails.value.patientDetailed.id, deviceType: 101})
+        store.dispatch('devices', getVideoDetails.value.patientDetailed.id)
+      }else if(acceptVideoCallDetails.value){
+        store.dispatch('patientVitals', {patientId: acceptVideoCallDetails.value.patient.id, deviceType: 99})
+        store.dispatch('patientVitals', {patientId: acceptVideoCallDetails.value.patient.id, deviceType: 100})
+        store.dispatch('patientVitals', {patientId: acceptVideoCallDetails.value.patient.id, deviceType: 101})
+        store.dispatch('devices', acceptVideoCallDetails.value.patient.id)
+      }
+     
+    })
+
     return {
+      defaultImage,
+      showVitalssModal,
+      patientVitalsVisible,
+      showDocumentsModal,
+      documentDetailVisible,
+      showNotesModal,
+      notesDetailVisible,
+      acceptVideoCallDetails,
+      upcomingCallDetails,
+      getVideoDetails,
       simpleUserHangup,
       conferenceId,
       hangUp,

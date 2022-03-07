@@ -145,7 +145,7 @@
 </template>
 
 <script>
-import {reactive, computed } from "vue";
+import {reactive, computed,onUnmounted } from "vue";
 // import PersonalInformation from "@/components/modals/forms/PersonalInformation"
 import Contacts from "@/components/modals/forms/Contacts";
 import Availability from "@/components/modals/forms/Availability";
@@ -281,7 +281,9 @@ export default {
       });
       }
     }
-    
+     onUnmounted(()=>{
+      store.commit('errorMsg',null)
+    })
     const paramId = addStaff.value?addStaff.value.id:''
     return {
       paramId,

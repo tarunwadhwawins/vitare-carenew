@@ -1,50 +1,27 @@
 <template>
   <a-col :sm="16" :xs="24">
-    <div class="description">
-      <h4>Description</h4>
-      <p>Full system access</p>
+    <div class="description" v-for="module in  permittions.editRolesAndPermissions" :key="module.id">
+      <h4>{{module.name}}</h4>
+       <div v-for="screens in module.screen" :key="screens.id">
+        <div v-for="screen in screens" :key="screen.id"><p>{{ screen.name }}</p>
+         <div v-for="action in screen.action" :key="action.id"><div v-for="actions in action" :key="actions.id">{{actions.name}}</div></div>
+        </div>
+      </div> 
       <a-divider />
     </div>
-    <div class="description">
-      <h4>Permission</h4>
-      <p>General</p>
-      <p>Overview, Invertory, Billing, Order</p>
-      <a-divider />
-    </div>
-    <div class="description">
-      <h4>Apps Access</h4>
-      <p>Desktop App</p>
-      <p>Mobile App</p>
-      <p>Third Party App</p>
-      <a-divider />
-    </div>
-    <div class="description">
-      <h4>User Settings</h4>
-      <p>Call Handing & Forwarding</p>
-      <p>Messages</p>
-      <p>Notification</p>
-      <p>Outbound Caller ID</p>
-      <p>User Info</p>
-      <p>Phones & Numbers</p>
-      <a-divider />
-    </div>
-    <div class="description">
-      <h4>Features</h4>
-      <p>Audit Trail</p>
-      <p>Business SMS</p>
-      <p>Configure Delegates</p>
-      <p>Configure Intercom</p>
-      <p>Configure Presence</p>
-      <p>Internal SMS</p>
-      <a-divider />
-    </div>
+  
   </a-col>
 </template>
 
 <script>
+ import { useStore} from "vuex"
 export default {
   setup() {
-    return { }
+    const store = useStore()
+    const permittions = store.getters.rolesAndPermissionsRecord.value
+    return { 
+      permittions
+    }
   }
 }
 </script>

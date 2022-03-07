@@ -61,9 +61,12 @@ export const API_ENDPOINTS = {
     // Roles & Permissions
     role: 'role',
     rolesList: 'roleList',
+    addPermissions:'rolePermission',
     rolePermissions: 'permissionList',
     roleDetails: 'roleDetails',
-
+    rolePermissionEdit:'rolePermissionEdit', 
+    dashboardWidget:'widget',
+    widgetAccess:'widgetAccess',
     // Notes
     notes: 'patient/notes',
 
@@ -81,7 +84,10 @@ export const API_ENDPOINTS = {
 
     // CPT Codes
     cptCodes: 'cptCode',
-    service: 'service'
+    service: 'service',
+
+    // Vital Fields
+    field: 'field',
     
 
 };

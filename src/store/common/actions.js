@@ -42,3 +42,19 @@ export const staffList = async ({
       commit('failure', error.response.data);
     })
 }
+
+export const vitalFieldsList = async ({ commit }) => {
+  await ServiceMethodService.common("get", API_ENDPOINTS['field'], null, null).then((response) => {
+    commit('vitalFieldsList', response.data.data);
+  }).catch((error) => {
+    commit('failure', error);
+  })
+}
+
+export const vitalFieldsByDeviceId = async ({ commit}, deviceId) => {
+  await ServiceMethodService.common("get", API_ENDPOINTS['field'], deviceId, null).then((response) => {
+    commit('vitalFieldsByDeviceId', response.data.data);
+  }).catch((error) => {
+    commit('failure', error);
+  })
+}
