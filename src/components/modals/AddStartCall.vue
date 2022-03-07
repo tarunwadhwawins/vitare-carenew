@@ -28,6 +28,7 @@ import { useStore } from "vuex";
 import {
   dateOnlyFormat,
   meridiemFormatFromTimestamp,
+  deCodeString,enCodeString
 } from "../../commonMethods/commonMethod";
 import { useRouter } from "vue-router";
 export default {
@@ -42,15 +43,10 @@ export default {
     });
 
     function videoCall() {
-      console.log("object", startCall.conferenceId);
       store.commit("conferenceId", startCall.conferenceId);
       store.dispatch("getVideoDetails",startCall.conferenceId)
-      
       if (conferenceId.value) {
-        router.push({
-          path: "video-call",
-          params: startCall.conferenceId,
-        });
+        router.push({ name: 'videoCall', params: { id: enCodeString(startCall.conferenceId) } })
       }
     }
 
@@ -58,6 +54,8 @@ export default {
       return store.state.communications.conferenceId;
     });
     return {
+      enCodeString,
+      deCodeString,
       conferenceId,
       videoCall,
       dateOnlyFormat,

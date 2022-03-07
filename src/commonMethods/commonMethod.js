@@ -2,6 +2,15 @@ import Swal from "sweetalert2"
 import moment from 'moment';
 
 
+export function deCodeString(value) {		
+  let decode= window.btoa(value); // encode a string
+  return decode.replace("=",'')
+}   
+
+export function enCodeString(value) {		
+ return window.atob(value); // decode a string
+  } 
+
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
