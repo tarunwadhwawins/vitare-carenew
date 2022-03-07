@@ -53,11 +53,11 @@
     </a-row>
     </a-form>
     <Loader v-if="programId" />
-  </a-modal>
+</a-modal>
 </template>
+
 <script>
 import { ref,  reactive, watchEffect, computed } from "vue";
-
 import { useStore } from "vuex";
 import Loader from "./../loader/Loader"
 import {warningSwal} from "./../../commonMethods/commonMethod"
@@ -65,95 +65,99 @@ import { messages } from "./../../config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import ModalButtons from "@/components/common/button/ModalButtons";
 export default {
-  components: {
-    ModalButtons,
-    Loader,
-    ErrorMessage
-  },
-  props: {
-    idProgram: {
-      type: Number
-    }
-  },
-  setup(props,{emit}) {
-    const store = useStore();
-    const formRef = ref();
-    const programId = reactive(props.idProgram);
-    const program = reactive({
-      name: "",
-      description: "",
-      typeId:"",
-      isActive: "",
-    });
+    components: {
+        ModalButtons,
+        Loader,
+        ErrorMessage
+    },
+    props: {
+        idProgram: {
+            type: Number
+        }
+    },
+    setup(props, {
+        emit
+    }) {
+        const store = useStore();
+        const formRef = ref();
+        const programId = reactive(props.idProgram);
+        const program = reactive({
+            name: "",
+            description: "",
+            typeId: "",
+            isActive: "",
+        });
 
-    // const patients = computed(() => {
-    //   return store.state.patients;
-    // });
-    const programEdit = store.getters.programsRecord
-    watchEffect(() => {
-     
-      store.commit('loadingStatus', true)
-      if(programId != null) {
-        if (programEdit.value.editProgram) {
-          console.log("test",programEdit.value.editProgram[0])
+        // const patients = computed(() => {
+        //   return store.state.patients;
+        // });
+        const programEdit = store.getters.programsRecord
+        watchEffect(() => {
+
+            store.commit('loadingStatus', true)
+            if (programId != null) {
+                if (programEdit.value.editProgram) {
+                    console.log("test", programEdit.value.editProgram[0])
                     Object.assign(program, programEdit.value.editProgram[0]);
                     setTimeout(() => {
                         store.commit('loadingStatus', false)
                     }, 2000)
 
                 }
-      }
-    })
-    function UpdateProgramStatus(event){
-      program.isActive=event
-    }
-    const programs = () => {
-     
-      if(programId != null) {
-        store.dispatch("updateProgram", {
-          data: {
-            name: program.name,
-            description: program.description,
-            typeId:program.typeId,
-            isActive: program.isActive ? 1 : 0,
-          },
-          id: programId,
+            }
         })
-      }
-      else {
-       
-        store.dispatch("addProgram", {
-          data: {
-            name: program.name,  
-            description:program.description,
-            typeId:program.typeId,
-            isActive: program.isActive ? 1 : 0,
-          }
-        });   
-      }
-      store.state.programs.programList=''
-        setTimeout(() => {
-          reset()
-          store.dispatch("programList");
-        }, 1000);
-    };
- 
-    const form = reactive({
-      ...program,
-    });
-    function reset(){
-      formRef.value.resetFields();
-      Object.assign(program,form)
-      emit("is-visible", false);
-    }
-    const globalCode = computed(() => {
+
+        function UpdateProgramStatus(event) {
+            program.isActive = event
+        }
+        const programs = () => {
+
+            if (programId != null) {
+                store.dispatch("updateProgram", {
+                    data: {
+                        name: program.name,
+                        description: program.description,
+                        typeId: program.typeId,
+                        isActive: program.isActive ? 1 : 0,
+                    },
+                    id: programId,
+                })
+            } else {
+
+                store.dispatch("addProgram", {
+                    data: {
+                        name: program.name,
+                        description: program.description,
+                        typeId: program.typeId,
+                        isActive: program.isActive ? 1 : 0,
+                    }
+                });
+            }
+            store.state.programs.programList = ''
+            setTimeout(() => {
+                reset()
+                store.dispatch("programList");
+            }, 1000);
+        };
+
+        const form = reactive({
+            ...program,
+        });
+
+        function reset() {
+            formRef.value.resetFields();
+            Object.assign(program, form)
+            emit("is-visible", false);
+        }
+        const globalCode = computed(() => {
             return store.state.common;
         });
-    function closeModal() {
+
+        function closeModal() {
             if (program.name != "" || program.description != "") {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
-                      reset()
+                        reset()
                     } else {
 
                         emit("is-visible", true);
@@ -161,17 +165,17 @@ export default {
                 });
             }
         }
-    return {
-      form,
-      program,
-      programs,
-      closeModal,
-      formRef,
-      programId,
-      globalCode,
-      programEdit,
-      UpdateProgramStatus,
-    };
-  },
+        return {
+            form,
+            program,
+            programs,
+            closeModal,
+            formRef,
+            programId,
+            globalCode,
+            programEdit,
+            UpdateProgramStatus,
+        };
+    },
 };
 </script>

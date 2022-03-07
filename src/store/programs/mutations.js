@@ -1,6 +1,6 @@
 export const programList = async (state, data) => {
-  state.programList = ''
-  state.programColumns =[
+ 
+  state.programColumns = [
     {
       title: "Program Name",
       dataIndex: "name",
@@ -32,21 +32,21 @@ export const programList = async (state, data) => {
       },
     },
   ]
-  state.programList = data.data ? data.data.map((item,index)=>{
-    item.status = item.status== 1 ? true : false
+  state.programList = data.data ? data.data.map((item, index) => {
+    item.status = item.status == 1 ? true : false
     item.key = index
-    return  item
+    return item
   }) : ''
   state.programMeta = data.meta ? data.meta.pagination : ''
 }
 export const programMsg = async (state, data) => {
- state.programMsg = data
+  state.programMsg = data
 }
 export const editProgram = async (state, data) => {
- state.editProgram=data.map((item)=>{
-  item.isActive = item.status== 1 ? true : false
-  return  item
-})
+  state.editProgram = data.map((item) => {
+    item.isActive = item.status == 1 ? true : false
+    return item
+  })
 }
 
 
