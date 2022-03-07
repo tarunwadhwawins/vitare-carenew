@@ -17,7 +17,7 @@
 
                 <Calendar @is-click="selectDate($event)" />
 
-                <Physicians v-if="appointmentSearch.getStaff" @staff-select="staffSelect($event)" />
+                <Physicians v-if="appointmentSearch.getStaff" @staff-select="staffSelect($event)" :physiciansId="physiciansId" />
 
             </a-col>
             <a-col :xl="toggle == false ? 24 : 18" :sm="toggle == false ? 24 : 14" :xs="24">
@@ -167,6 +167,7 @@ export default {
         })
 
         function searchApi() {
+          console.log("physiciansId.value",appointmentSearch.getStaff)
             store.state.appointment.calendarDate = ''
             store.dispatch("calendarDateSelect", datePick)
             store.dispatch("searchAppointment", {
@@ -202,8 +203,8 @@ export default {
         };
 
         const staffSelect = (e) => {
-
             physiciansId.value = e;
+           
         }
 
         return {
