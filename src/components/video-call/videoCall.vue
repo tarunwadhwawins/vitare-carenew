@@ -243,9 +243,9 @@ export default {
             .then(() => {
               // console.log("hello");
               simpleUser.register().then(() => {
-                // simpleUser.call(
-                //   `sip:${conferenceId.value}@dev.icc-heaalth.com`
-                // );
+                simpleUser.call(
+                  `sip:${conferenceId.value}@dev.icc-heaalth.com`
+                );
                 simpleUserHangup.value = simpleUser;
               });
             })
