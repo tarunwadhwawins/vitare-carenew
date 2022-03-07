@@ -78,3 +78,9 @@ export const appointmentConference = (state, data) => {
   state.appointmentConference = data
 }
 
+
+export const getStaffs = async (state, data) => {
+  console.log("data",data)
+  state.getStaff = data;
+}
+

@@ -22,7 +22,7 @@ export const searchAppointment = async ({
   commit
 },from) => {
   commit('loadingStatus', true)
-  await serviceMethod.common("get", API_ENDPOINTS['seacrhAppointment']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null, null).then((response) => {
+  await serviceMethod.common("get", API_ENDPOINTS['seacrhAppointment']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate))+"&staffId="+from.physiciansId, null, null).then((response) => {
     
     if(from.tabId=='today'){
       commit('todayAppointmentSuccess', response.data.data) 
@@ -31,16 +31,10 @@ export const searchAppointment = async ({
     commit('loadingStatus', false)
     }
   }).catch((error) => {
-    if(error.response.status === 422){
-      commit('loadingStatus', true)
-      commit('errorMsg', error.response.data)
-    }else if(error.response.status === 500){
+    
       commit('loadingStatus', false)
       errorSwal(error.response.data.message)
-    }else if(error.response.status === 401){
-      commit('loadingStatus', false)
-      errorSwal(error.response.data.message)
-    }
+    
   })
 }
 export const weekName =({commit},date) =>{
@@ -81,5 +75,20 @@ export const appointmentConference = async ({ commit }) => {
 		commit('failure', error.response.data);
 	})
 }
+
+///staff
+export const getStaffs = async ({commit}) => {
+ 
+  await serviceMethod.common("get", `staff`, null, null).then((response) => {
+    commit('getStaffs', response.data.data);
+   
+  }).catch((error) => { 
+    
+      errorSwal(error.response.data.message)
+      
+    
+  })
+}
+
 
 
