@@ -1,69 +1,96 @@
 <template>
-  <div class="text-right mb-24">
-    <a-button class="primaryBtn" @click="AddCarePlan">Add Goal</a-button>
-  </div>
-  <a-table  rowKey="id" :columns="carePlanColumns" :data-source="carePlanData" :pagination="false" @change="onChange" >
-    <template #actions>
-      <a-tooltip placement="bottom">
+  <a-table  rowKey="id" :columns="carePlanColumns" :data-source="carePlansList" :pagination="false" @change="onChange" >
+    <template #frequency="{record}">
+      <span>{{ record.frequency }} / {{ record.frequencyType }}</span>
+    </template>
+    <template #actions="{record}">
+      <!-- <a-tooltip placement="bottom">
         <template #title>
           <span>Edit</span>
         </template>
         <a class="icons"><EditOutlined /></a>
-      </a-tooltip>
+      </a-tooltip> -->
       <a-tooltip placement="bottom">
         <template #title>
           <span>Delete</span>
         </template>
-        <a class="icons"> <DeleteOutlined /></a>
+        <a class="icons"> <DeleteOutlined @click="deleteCarePlan(record.id)" /></a>
       </a-tooltip>
     </template>
   </a-table>
-  <CarePlan v-model:visible="CarePlan" @ok="handleOk" />
 </template>
 
 <script>
 import {
   DeleteOutlined,
-  EditOutlined,
+  // EditOutlined,
 } from "@ant-design/icons-vue";
-import { ref } from 'vue-demi';
-import CarePlan from "@/components/modals/CarePlan";
+import { useStore } from 'vuex';
+import { computed } from 'vue-demi';
+import { warningSwal } from "@/commonMethods/commonMethod";
+import { messages } from '@/config/messages';
+import { useRoute } from 'vue-router';
 export default {
   components: {
-    CarePlan,
     DeleteOutlined,
-    EditOutlined,
+    // EditOutlined,
   },
   setup() {
-    const CarePlan = ref(false);
-    const AddCarePlan = () => {
-      CarePlan.value = true;
-    };
+    const store = useStore()
+    const route = useRoute()
+
+    const carePlansList = computed(() => {
+      return store.state.carePlan.carePlansList
+    })
+
+    const deleteCarePlan = (carePlanId) => {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          store.dispatch('deleteCarePlan', {
+            patientId: route.params.udid,
+            carePlanId: carePlanId
+          }).then(() => {
+            store.dispatch('carePlansList', route.params.udid)
+          })
+        }
+      })
+    }
 
     const carePlanColumns = [
       {
-        title: "Goal",
-        dataIndex: "goal",
+        title: "Device",
+        dataIndex: "deviceType",
+      },
+      {
+        title: "Vital type",
+        dataIndex: "vitalField",
       },
       {
         title: "Start date",
-        dataIndex: "startdate",
+        dataIndex: "startDate",
       },
       {
         title: "End date",
-        dataIndex: "enddate",
+        dataIndex: "endDate",
       },
       {
         title: "Frequency",
         dataIndex: "frequency",
+        slots: {
+          customRender: "frequency",
+        }
       },
       {
-        title: "Duration",
-        dataIndex: "duration",
+        title: "High Value",
+        dataIndex: "highValue",
       },
       {
-        title: "Notes",
-        dataIndex: "notes",
+        title: "Low Value",
+        dataIndex: "lowValue",
+      },
+      {
+        title: "Note",
+        dataIndex: "note",
       },
       {
         title: "Actions",
@@ -73,45 +100,11 @@ export default {
         },
       },
     ];
-    const carePlanData = [
-      {
-        key: "1",
-        goal: "Blood Pressure",
-        startdate: "Jan 15, 2022",
-        enddate: "Jan 30, 2022",
-        frequency: "5 Daily",
-        duration: "Any Time",
-        notes: "notes",
-        action: "",
-      },
-      {
-        key: "2",
-        goal: "SPO2",
-        startdate: "Jan 20, 2022",
-        enddate: "Jan 30, 2022",
-        frequency: "1 Month",
-        duration: "Any Time",
-        notes: "notes",
-        action: "",
-      },
-      {
-        key: "3",
-        goal: "Walk",
-        startdate: "Feb 01, 2022",
-        enddate: "Feb 10, 2022",
-        frequency: "5 Week",
-        duration: "Time Range 5:00 AM - 6:00 AM",
-        notes: "notes",
-        action: "",
-      },
-      
-    ];
 
     return {
-      AddCarePlan,
-      CarePlan,
       carePlanColumns,
-      carePlanData
+      carePlansList,
+      deleteCarePlan,
     }
   }
 }

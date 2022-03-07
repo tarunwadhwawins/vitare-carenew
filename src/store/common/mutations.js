@@ -87,6 +87,9 @@ export const globalCodes = (state, data) => {
         if (element.name === 'Program types') {
             state.programCategories = element;
         }
+        if (element.name === 'Frequency Type') {
+            state.frequencyTypes = element.globalCode;
+        }
         
     });
 
@@ -113,6 +116,14 @@ export const staffListSuccess = (state, data) => {
 
 export const loadingStatus = (state, data) => {
     state.loadingStatus = data
+}
+
+export const vitalFieldsList = (state, fields) => {
+    state.vitalFieldsList = fields
+}
+
+export const vitalFieldsByDeviceId = (state, fields) => {
+    state.vitalFieldsByDeviceId = fields
 }
 
 

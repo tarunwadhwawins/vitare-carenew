@@ -84,7 +84,10 @@ export const API_ENDPOINTS = {
 
     // CPT Codes
     cptCodes: 'cptCode',
-    service: 'service'
+    service: 'service',
+
+    // Vital Fields
+    field: 'field',
     
 
 };
