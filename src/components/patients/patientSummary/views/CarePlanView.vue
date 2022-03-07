@@ -38,7 +38,9 @@ export default {
     const visibleCarePlanmodal = ref(false);
 
     watchEffect(() => {
-      store.dispatch('carePlansList', route.params.udid)
+      if(route.name == 'PatientSummary') {
+        store.dispatch('carePlansList', route.params.udid)
+      }
     })
 
     const handleOk = () => {

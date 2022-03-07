@@ -4,8 +4,7 @@ import { API_ENDPOINTS } from "../../config/apiConfig"
 export const addCarePlan = async ({ commit }, data) => {
 	console.log('{patientId, data}', data)
 	commit('loadingStatus', true)
-	await serviceMethod.common("post", API_ENDPOINTS['patient']+'/'+data.patientId+'/goal', null, data.data).then((response) => {
-		commit('addCarePlan', response.data.data);
+	await serviceMethod.common("post", API_ENDPOINTS['patient']+'/'+data.patientId+'/goal', null, data.data).then(() => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
