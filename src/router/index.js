@@ -162,6 +162,81 @@ const routes = [
     name: 'CPT Codes',
     component: () => import( '../components/administration/cpt-codes/Cptcodes')
   },
+  {
+    path: '/questionnaire',
+    name: 'Questionnaire',
+    component: () => import( '../components/administration/questionnaire/Questionnaire')
+  },
+  {
+    path: '/questionnaire-bank',
+    name: 'QuestionnaireBank',
+    component: () => import( '../components/administration/questionnaire-bank/QuestionnaireBank')
+  },
+  {
+    path: '/questionnaire-detail',
+    name: 'QuestionnaireDetail',
+    component: () => import( '../components/administration/questionnaire-detail/QuestionnaireDetail')
+  },
+  {
+    path: '/questionnaire-template',
+    name: 'QuestionnaireTemplate',
+    component: () => import( '../components/administration/questionnaire-template/QuestionnaireTemplate')
+  },
+  {
+    path: '/questionnaire-create-template',
+    name: 'QuestionnaireCreateTemplate',
+    component: () => import( '../components/administration/questionnaire-create-template/QuestionnaireCreateTemplate')
+  },
+  {
+    path: '/question-template-detail',
+    name: 'QuestionTemplateDetail',
+    component: () => import( '../components/administration/question-template-detail/QuestionTemplateDetail')
+  },
+  {
+    path: '/resources',
+    name: 'Resources',
+    component: () => import( '../components/administration/resources/Resources')
+  },
+  {
+    path: '/form-builder',
+    name: 'FormBuilder',
+    component: () => import( '../components/administration/form-builder/FormBuilder')
+  },
+  {
+    path: '/form-builder-detail',
+    name: 'FormBuilderDetail',
+    component: () => import( '../components/administration/form-builder-detail/FormBuilderDetail')
+  },
+  {
+    path: '/groups',
+    name: 'Groups',
+    component: () => import( '../components/administration/groups/Groups')
+  },
+  {
+    path: '/create-group',
+    name: 'CreateGroups',
+    component: () => import( '../components/administration/create-group/CreateGroups')
+  },
+  {
+    path: '/form-list',
+    name: 'FormList',
+    component: () => import( '../components/administration/form-list/FormList')
+  },
+  {
+    path: '/create-form',
+    name: 'CreateForm',
+    component: () => import( '../components/administration/create-form/CreateForm')
+  },
+  {
+    path: '/question-template-details',
+    name: 'QuestionTemplateDetails',
+    component: () => import( '../components/question-template-details/QuestionTemplateDetails')
+  },
+  {
+    path: '/questionnaire-templates',
+    name: 'QuestionnaireTemplates',
+    component: () => import( '../components/questionnaire-templates/QuestionnaireTemplates')
+  },
 
 
 ]

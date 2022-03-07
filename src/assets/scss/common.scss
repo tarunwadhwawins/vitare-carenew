@@ -51,18 +51,14 @@ h6 {
 	border-radius: 6px;
 }
 .secondaryBtn {
-	background-color: $secondary-color;
-	color: #fff;
+	background-color: transparent;
+	color: $primary-color;
 	font-size: 14px;
-	border-radius: 15px;
 	border: 1px solid $secondary-color;
 	padding: 6px 25px;
+	height: auto;
 	font-family: $font-family-bold;
 	border-radius: 6px;
-	&:hover {
-		color: $secondary-color;
-		background-color: #fff;
-	}
 }
 .blackBtn {
 	background: #000;
@@ -79,6 +75,14 @@ h6 {
 	height: auto;
 	padding: 6px 12px;
 }
+
+.buttonWtIcon {
+	display: inline-flex;
+	align-items: center;
+	.anticon {
+		line-height: normal;
+	}
+}
 .text-right {
 	text-align: right;
 }
@@ -91,6 +95,13 @@ h6 {
 .mt-25 {
     margin-top: 25px!important;
 }
+.ml-10 {
+	margin-left: 10px;
+}
+.mb-10 {
+	margin-bottom: 10px;
+}
+
 img.reportFlag {
     max-width: 30px;
 }
@@ -103,6 +114,9 @@ img.reportFlag {
 }
 .d-flex {
 	display: flex !important;
+}
+.b-inline {
+	display: inline-block !important;
 }
 .flex-shrink-0 {
 	flex-shrink: 0 !important;
@@ -243,6 +257,18 @@ img.reportFlag {
 			font-size: 18px;
 		}
 	}
+	.anticon-plus {
+		svg {
+			fill: #0d6efd;
+			font-size: 18px;
+		}
+	}
+	.anticon-copy {
+		svg {
+			fill: #0d6efd;
+			font-size: 18px;
+		}
+	}
 	.anticon-edit {
 		svg {
 			fill: #198754;
@@ -262,6 +288,12 @@ img.reportFlag {
 		}
 	}
 	.anticon-warning {
+		svg {
+			fill: #e29e19;
+			font-size: 18px;
+		}
+	}
+	.anticon-tool {
 		svg {
 			fill: #e29e19;
 			font-size: 18px;

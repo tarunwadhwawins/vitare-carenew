@@ -17,8 +17,8 @@
         >
           <Demographics />
         </div>
-        <div class="steps-content" v-if="steps[current].title == 'Conditions'">
-          <Conditions />
+        <div class="steps-content" v-if="steps[current].title == 'Intake/Screening'">
+          <Questionnaire />
         </div>
         <div class="steps-content" v-if="steps[current].title == 'Programs'">
           <Programs />
@@ -41,6 +41,7 @@
         <div class="steps-content" v-if="steps[current].title == 'Documents'">
           <Documents />
         </div>
+        
         <div class="steps-action">
           <a-button v-if="current > 0" style="margin-right: 8px" @click="prev"
             >Previous</a-button
@@ -66,7 +67,7 @@
 <script>
 import { defineComponent, ref, computed, reactive } from "vue";
 import Demographics from "@/components/modals/forms/Demographics";
-import Conditions from "@/components/modals/forms/Conditions";
+import Questionnaire from "@/components/modals/forms/Questionnaire";
 import Programs from "@/components/modals/forms/Programs";
 import Devices from "@/components/modals/forms/Devices";
 import Parameters from "@/components/modals/forms/Parameters";
@@ -76,7 +77,7 @@ import Documents from "@/components/modals/forms/Documents";
 export default {
   components: {
     Demographics,
-    Conditions,
+    Questionnaire,
     Programs,
     Devices,
     Parameters,
@@ -103,7 +104,7 @@ export default {
           content: "First-content",
         },
         {
-          title: "Conditions",
+          title: "Intake/Screening",
           content: "Second-content",
         },
         {

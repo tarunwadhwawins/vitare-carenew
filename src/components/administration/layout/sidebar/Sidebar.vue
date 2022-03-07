@@ -11,7 +11,9 @@
         > -->
         <router-link to="/cpt-codes"
           ><a-menu-item
-            ><CreditCardOutlined /><span class="menuItem">CPT Codes</span></a-menu-item
+            ><CreditCardOutlined /><span class="menuItem"
+              >CPT Codes</span
+            ></a-menu-item
           ></router-link
         >
         <!-- <router-link to="/care-coordinator"
@@ -26,7 +28,9 @@
         >
         <router-link to="/manage-providers"
           ><a-menu-item
-            ><MailOutlined /><span class="menuItem">Providers</span></a-menu-item
+            ><MailOutlined /><span class="menuItem"
+              >Providers</span
+            ></a-menu-item
           ></router-link
         >
         <router-link to="/roles-permission"
@@ -38,7 +42,9 @@
         >
         <router-link to="/reports"
           ><a-menu-item
-            ><FileDoneOutlined /><span class="menuItem">Reports </span></a-menu-item
+            ><FileDoneOutlined /><span class="menuItem"
+              >Reports
+            </span></a-menu-item
           ></router-link
         >
         <router-link to="/templates"
@@ -50,9 +56,70 @@
         >
         <router-link to="/global-codes"
           ><a-menu-item
-            ><GlobalOutlined /><span class="menuItem">Global Codes</span></a-menu-item
+            ><GlobalOutlined /><span class="menuItem"
+              >Global Codes</span
+            ></a-menu-item
           ></router-link
         >
+        <!-- <router-link to="/form-list"
+          ><a-menu-item
+            ><FileDoneOutlined /><span class="menuItem"
+              >Form Builder</span
+            ></a-menu-item
+          ></router-link
+        > -->
+        <router-link to="/form-list"
+          ><a-menu-item
+            ><FileDoneOutlined /><span class="menuItem"
+              >Forms</span
+            ></a-menu-item
+          ></router-link
+        >
+        <router-link to="/groups"
+          ><a-menu-item
+            ><TeamOutlined /><span class="menuItem"
+              >Groups</span
+            ></a-menu-item
+          ></router-link
+        >
+
+        <div class="subMenu">
+          <div class="questionnaireMenu" @click="toggle = !toggle">
+            <FileTextOutlined /><span class="menuItem">Questionnaire</span>
+            <DownOutlined />
+          </div>
+          <div class="dropDown" v-show="!toggle">
+            <router-link to="/questionnaire-template"
+              ><a-menu-item
+                ><ReconciliationOutlined /><span class="menuItem"
+                  >Template</span
+                ></a-menu-item
+              ></router-link
+            >
+            <router-link to="/questionnaire-bank"
+              ><a-menu-item
+                ><FileTextOutlined /><span class="menuItem"
+                  >Question Bank</span
+                ></a-menu-item
+              ></router-link
+            >
+            <router-link to="/questionnaire"
+              ><a-menu-item
+                ><PlusOutlined /><span class="menuItem"
+                  >Add Question</span
+                ></a-menu-item
+              ></router-link
+            >
+            <router-link to="/resources"
+              ><a-menu-item
+                ><PlusOutlined /><span class="menuItem"
+                  >Resources</span
+                ></a-menu-item
+              ></router-link
+            >
+          </div>
+        </div>
+
         <router-link to="/dashboard"
           ><a-menu-item
             ><HomeOutlined /><span class="menuItem">Home</span></a-menu-item
@@ -74,6 +141,10 @@ import {
   SafetyOutlined,
   ReconciliationOutlined,
   GlobalOutlined,
+  FileTextOutlined,
+  DownOutlined,
+  PlusOutlined,
+  TeamOutlined
 } from "@ant-design/icons-vue";
 export default defineComponent({
   components: {
@@ -85,6 +156,10 @@ export default defineComponent({
     SafetyOutlined,
     ReconciliationOutlined,
     GlobalOutlined,
+    FileTextOutlined,
+    DownOutlined,
+    PlusOutlined,
+    TeamOutlined
   },
 
   setup() {
@@ -94,7 +169,8 @@ export default defineComponent({
     onUnmounted(() => {
       document.body.classList.remove("show");
     });
-    return { ...toRefs(state) };
+    const toggle = ref(true);
+    return { ...toRefs(state), toggle };
   },
 });
 </script>

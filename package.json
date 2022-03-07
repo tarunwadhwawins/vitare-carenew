@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
+    "@bpmn-io/form-js": "^0.7.0",
+    "@bpmn-io/form-js-viewer": "^0.7.0",
     "ant-design-vue": "^2.2.8",
     "apexcharts": "^3.30.0",
     "axios": "^0.24.0",
@@ -21,6 +23,7 @@
     "vue-request": "^1.2.3",
     "vue-router": "^4.0.0-0",
     "vue3-apexcharts": "^1.4.1",
+    "vuedraggable": "^4.1.0",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {

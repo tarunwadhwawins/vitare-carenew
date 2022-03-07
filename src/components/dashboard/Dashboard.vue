@@ -17,24 +17,24 @@
                   <a-button
                     @click="showButton1"
                     :class="button == 1 ? 'active' : ''"
-                    >Day</a-button
+                    >1 Day</a-button
                   >
                   <a-button
                     @click="showButton2"
                     :class="button == 2 ? 'active' : ''"
-                    >Week</a-button
+                    >1 Week</a-button
                   >
                   <a-button
                     @click="showButton3"
                     :class="button == 3 ? 'active' : ''"
-                    >Month</a-button
+                    >1 Month</a-button
                   >
                   <a-button
                     @click="showButton4"
                     :class="button == 4 ? 'active' : ''"
                     >Year</a-button
                   >
-                </div>                
+                </div>
               </h2>
             </a-col>
             <a-col :span="24">
@@ -80,7 +80,7 @@
                     <div class="topBox redBgColor">
                       <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                       <h5>10</h5>
-                      <p>Non-Compliance</p>
+                      <p>Non Compliant</p>
                     </div>
                   </router-link>
                 </a-col>
@@ -108,7 +108,11 @@
           <a-row :gutter="24">
             <a-col :sm="12" :xs="24">
               <a-card title="Today's Appointment" class="common-card">
-                <a-table
+                <div class="apptNumber">
+                  <h3>Total Apppointments</h3>
+                  <h2>15</h2>
+                </div>
+                <!-- <a-table
                   :columns="columns4"
                   :data-source="data4"
                   :pagination="false"
@@ -123,27 +127,102 @@
                       text.text
                     }}</router-link>
                   </template>
-                </a-table>
+                </a-table> -->
               </a-card>
             </a-col>
             <a-col :sm="12" :xs="24">
               <a-card title="Call Queue" class="common-card">
-                <apexchart type="bar" height="250" :options="calloption" :series="callseries" @click="clickHandler"></apexchart>
+                <div class="filter">
+                  <a-button
+                    @click="showButton5"
+                    :class="button1 == 5 ? 'active' : ''"
+                    >1 Day</a-button
+                  >
+                  <a-button
+                    @click="showButton6"
+                    :class="button1 == 6 ? 'active' : ''"
+                    >1 Week</a-button
+                  >
+                  <a-button
+                    @click="showButton7"
+                    :class="button1 == 7 ? 'active' : ''"
+                    >1 Month</a-button
+                  >
+                  <a-button
+                    @click="showButton8"
+                    :class="button1 == 8 ? 'active' : ''"
+                    >Year</a-button
+                  >
+                </div>
+                <apexchart
+                  type="bar"
+                  height="250"
+                  :options="calloption"
+                  :series="callseries"
+                  @click="clickHandler"
+                ></apexchart>
               </a-card>
             </a-col>
             <a-col :sm="12" :xs="24">
-              <a-card title="Patients Stats" class="common-card">
+              <a-card
+                title="Clinical RPM Stats / CCM Stats"
+                class="common-card"
+              >
+                <div class="filter">
+                  <a-button
+                    @click="showButton9"
+                    :class="button2 == 9 ? 'active' : ''"
+                    >1 Day</a-button
+                  >
+                  <a-button
+                    @click="showButton10"
+                    :class="button2 == 10 ? 'active' : ''"
+                    >1 Week</a-button
+                  >
+                  <a-button
+                    @click="showButton11"
+                    :class="button2 == 11 ? 'active' : ''"
+                    >1 Month</a-button
+                  >
+                  <a-button
+                    @click="showButton12"
+                    :class="button2 == 12 ? 'active' : ''"
+                    >Year</a-button
+                  >
+                </div>
                 <apexchart
                   type="bar"
                   height="412"
                   :options="option1"
                   :series="series1"
-                   @click="clickHandler2"
+                  @click="clickHandler2"
                 ></apexchart>
               </a-card>
             </a-col>
             <a-col :sm="12" :xs="24">
               <a-card title="Care Coordinator Stats " class="common-card">
+                <div class="filter">
+                  <a-button
+                    @click="showButton13"
+                    :class="button3 == 13 ? 'active' : ''"
+                    >1 Day</a-button
+                  >
+                  <a-button
+                    @click="showButton14"
+                    :class="button3 == 14 ? 'active' : ''"
+                    >1 Week</a-button
+                  >
+                  <a-button
+                    @click="showButton15"
+                    :class="button3 == 15 ? 'active' : ''"
+                    >1 Month</a-button
+                  >
+                  <a-button
+                    @click="showButton16"
+                    :class="button3 == 16 ? 'active' : ''"
+                    >Year</a-button
+                  >
+                </div>
                 <a-tabs v-model:activeKey="activeKey1">
                   <a-tab-pane key="1" tab="Specialization ">
                     <apexchart
@@ -168,6 +247,28 @@
             </a-col>
             <a-col :sm="12" :xs="24">
               <a-card title="CPT Code Billing Summary" class="common-card">
+                <div class="filter">
+                  <a-button
+                    @click="showButton17"
+                    :class="button4 == 17 ? 'active' : ''"
+                    >1 Day</a-button
+                  >
+                  <a-button
+                    @click="showButton18"
+                    :class="button4 == 18 ? 'active' : ''"
+                    >1 Week</a-button
+                  >
+                  <a-button
+                    @click="showButton19"
+                    :class="button4 == 19 ? 'active' : ''"
+                    >1 Month</a-button
+                  >
+                  <a-button
+                    @click="showButton20"
+                    :class="button4 == 20 ? 'active' : ''"
+                    >Year</a-button
+                  >
+                </div>
                 <apexchart
                   type="bar"
                   height="350"
@@ -179,6 +280,28 @@
             </a-col>
             <a-col :sm="12" :xs="24">
               <a-card title="Financial Stats" class="common-card">
+                <div class="filter">
+                  <a-button
+                    @click="showButton21"
+                    :class="button5 == 21 ? 'active' : ''"
+                    >1 Day</a-button
+                  >
+                  <a-button
+                    @click="showButton22"
+                    :class="button5 == 22 ? 'active' : ''"
+                    >1 Week</a-button
+                  >
+                  <a-button
+                    @click="showButton23"
+                    :class="button5 == 23 ? 'active' : ''"
+                    >1 Month</a-button
+                  >
+                  <a-button
+                    @click="showButton24"
+                    :class="button5 == 24 ? 'active' : ''"
+                    >Year</a-button
+                  >
+                </div>
                 <!-- <div class="list-group">
                   <div class="list-group-item">
                     <div class="name">Billed</div>
@@ -190,7 +313,7 @@
                   height="362"
                   :options="billed"
                   :series="due"
-                   @click="clickHandler6"
+                  @click="clickHandler6"
                 ></apexchart>
               </a-card>
             </a-col>
@@ -198,23 +321,67 @@
           <a-row :gutter="24">
             <a-col :sm="12" :xs="24">
               <a-card title="Total Patients Chart" class="common-card">
+                <div class="filter">
+                  <a-button
+                    @click="showButton25"
+                    :class="button6 == 25 ? 'active' : ''"
+                    >1 Day</a-button
+                  >
+                  <a-button
+                    @click="showButton26"
+                    :class="button6 == 26 ? 'active' : ''"
+                    >1 Week</a-button
+                  >
+                  <a-button
+                    @click="showButton27"
+                    :class="button6 == 27 ? 'active' : ''"
+                    >1 Month</a-button
+                  >
+                  <a-button
+                    @click="showButton28"
+                    :class="button6 == 28 ? 'active' : ''"
+                    >Year</a-button
+                  >
+                </div>
                 <apexchart
                   type="area"
                   height="350"
                   :options="chartOptions"
                   :series="series"
-                   @click="clickHandler2"
+                  @click="clickHandler2"
                 ></apexchart>
               </a-card>
             </a-col>
             <a-col :sm="12" :xs="24">
               <a-card title="Appointment Summary" class="common-card">
+                <div class="filter">
+                  <a-button
+                    @click="showButton29"
+                    :class="button7 == 29 ? 'active' : ''"
+                    >1 Day</a-button
+                  >
+                  <a-button
+                    @click="showButton30"
+                    :class="button7 == 30 ? 'active' : ''"
+                    >1 Week</a-button
+                  >
+                  <a-button
+                    @click="showButton31"
+                    :class="button7 == 31 ? 'active' : ''"
+                    >1 Month</a-button
+                  >
+                  <a-button
+                    @click="showButton32"
+                    :class="button7 == 32 ? 'active' : ''"
+                    >Year</a-button
+                  >
+                </div>
                 <apexchart
                   type="area"
                   height="350"
                   :options="chartOptions"
                   :series="series"
-                   @click="clickHandler5"
+                  @click="clickHandler5"
                 ></apexchart>
               </a-card>
             </a-col>
@@ -654,14 +821,10 @@ export default {
         },
         plotOptions: {
           bar: {
-            borderRadius: 10,
-            columnWidth: "20%",
-            barHeight: "100%",
-            distributed: true,
             horizontal: false,
-            dataLabels: {
-              position: "bottom",
-            },
+            columnWidth: "55%",
+            endingShape: "rounded",
+            borderRadius: 10,
           },
         },
         dataLabels: {
@@ -669,20 +832,21 @@ export default {
         },
         colors: ["#267dff", "#00897b", "#E30D2A"],
         stroke: {
-          width: 1,
-          colors: ["#fff"],
+          show: true,
+          width: 2,
+          colors: ["transparent"],
         },
 
         grid: {
           row: {
-            colors: ["#fff", "#f2f2f2"],
+            colors: ["#fff", "#f2f2f2", "#e3e3e3"],
           },
         },
         xaxis: {
           labels: {
             rotate: -45,
           },
-          categories: ["Normal", "High", "Critical"],
+          categories: ["2020", "2021", "2022"],
         },
         yaxis: {
           title: {
@@ -692,8 +856,16 @@ export default {
       },
       series1: [
         {
-          name: "Patients",
-          data: [45, 12, 34],
+          name: "Normal",
+          data: [44, 55, 57],
+        },
+        {
+          name: "High",
+          data: [76, 85, 101],
+        },
+        {
+          name: "Critical",
+          data: [35, 41, 36],
         },
       ],
       calloption: {
@@ -743,12 +915,12 @@ export default {
             colors: ["#fff", "#f2f2f2"],
           },
         },
-        
+
         xaxis: {
           labels: {
             rotate: -45,
           },
-          categories: ["Going On", "Completed", "In Queue"],
+          categories: ["Call scheduled", "Call made", "Avg Duration"],
         },
         yaxis: {
           title: {
@@ -764,30 +936,28 @@ export default {
       ],
     };
   },
-  setup(props,{emit}) {
+  setup(props, { emit }) {
     const router = useRouter();
-    function clickHandler(event, chartContext, config){
-        // emit('listView',false)
-        provide('listView',false)
-        router.push({path:'communications'})
+    function clickHandler(event, chartContext, config) {
+      // emit('listView',false)
+      provide("listView", false);
+      router.push({ path: "communications" });
     }
-    function clickHandler2(event, chartContext, config){
-        router.push({path:'manage-patients'})
+    function clickHandler2(event, chartContext, config) {
+      router.push({ path: "manage-patients" });
     }
-    function clickHandler3(event, chartContext, config){
-        router.push({path:'manage-care-coordinator'})
+    function clickHandler3(event, chartContext, config) {
+      router.push({ path: "manage-care-coordinator" });
     }
-    function clickHandler4(event, chartContext, config){
-        router.push({path:'cpt-codes'})
+    function clickHandler4(event, chartContext, config) {
+      router.push({ path: "cpt-codes" });
     }
-    function clickHandler5(event, chartContext, config){
-        router.push({path:'appointment-calendar'})
+    function clickHandler5(event, chartContext, config) {
+      router.push({ path: "appointment-calendar" });
     }
-    function clickHandler6(event, chartContext, config){
-        router.push({path:'time-tracking-report'})
+    function clickHandler6(event, chartContext, config) {
+      router.push({ path: "time-tracking-report" });
     }
-    
-    
 
     function logout() {
       localStorage.removeItem("auth");
@@ -798,6 +968,13 @@ export default {
     }
 
     const button = ref(1);
+    const button1 = ref(5);
+    const button2 = ref(9);
+    const button3 = ref(13);
+    const button4 = ref(17);
+    const button5 = ref(21);
+    const button6 = ref(25);
+    const button7 = ref(29);
 
     function showButton1() {
       button.value = 1;
@@ -810,6 +987,90 @@ export default {
     }
     function showButton4() {
       button.value = 4;
+    }
+    function showButton5() {
+      button1.value = 5;
+    }
+    function showButton6() {
+      button1.value = 6;
+    }
+    function showButton7() {
+      button1.value = 7;
+    }
+    function showButton8() {
+      button1.value = 8;
+    }
+    function showButton9() {
+      button2.value = 9;
+    }
+    function showButton10() {
+      button2.value = 10;
+    }
+    function showButton11() {
+      button2.value = 11;
+    }
+    function showButton12() {
+      button2.value = 12;
+    }
+    function showButton13() {
+      button3.value = 13;
+    }
+    function showButton14() {
+      button3.value = 14;
+    }
+    function showButton15() {
+      button3.value = 15;
+    }
+    function showButton16() {
+      button3.value = 16;
+    }
+    function showButton17() {
+      button4.value = 17;
+    }
+    function showButton18() {
+      button4.value = 18;
+    }
+    function showButton19() {
+      button4.value = 19;
+    }
+    function showButton20() {
+      button4.value = 20;
+    }
+    function showButton21() {
+      button5.value = 21;
+    }
+    function showButton22() {
+      button5.value = 22;
+    }
+    function showButton23() {
+      button5.value = 23;
+    }
+    function showButton24() {
+      button5.value = 4;
+    }
+    function showButton25() {
+      button6.value = 25;
+    }
+    function showButton26() {
+      button6.value = 26;
+    }
+    function showButton27() {
+      button6.value = 27;
+    }
+    function showButton28() {
+      button6.value = 28;
+    }
+    function showButton29() {
+      button7.value = 29;
+    }
+    function showButton30() {
+      button7.value = 30;
+    }
+    function showButton31() {
+      button7.value = 31;
+    }
+    function showButton32() {
+      button7.value = 32;
     }
     return {
       logout,
@@ -825,11 +1086,46 @@ export default {
       clickHandler4,
       clickHandler5,
       clickHandler6,
-       button,
+      button,
+      button1,
+      button2,
+      button3,
+      button4,
+      button5,
+      button6,
+      button7,
       showButton1,
       showButton2,
       showButton3,
       showButton4,
+      showButton5,
+      showButton6,
+      showButton7,
+      showButton8,
+      showButton9,
+      showButton10,
+      showButton11,
+      showButton12,
+      showButton13,
+      showButton14,
+      showButton15,
+      showButton16,
+      showButton17,
+      showButton18,
+      showButton19,
+      showButton20,
+      showButton21,
+      showButton22,
+      showButton23,
+      showButton24,
+      showButton25,
+      showButton26,
+      showButton27,
+      showButton28,
+      showButton29,
+      showButton30,
+      showButton31,
+      showButton32,
     };
   },
 };

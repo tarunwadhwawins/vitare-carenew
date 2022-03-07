@@ -158,7 +158,7 @@ const columns = [
       customRender: "flags",
     },
   },
-  
+
   {
     title: "ID",
     dataIndex: "patientid",
@@ -201,6 +201,11 @@ const columns = [
         title: "BP",
         dataIndex: "bp",
         key: "bp",
+      },
+      {
+        title: "Heartrate",
+        dataIndex: "hr",
+        key: "hr",
       },
       {
         title: "Sp02",
@@ -303,6 +308,7 @@ const data = [
     readingvalues: "",
     sp02: "	95%",
     bp: "115/81",
+    hr: "110",
     weight: "189.2",
     glucose: "80",
     active: "",
@@ -318,6 +324,7 @@ const data = [
     readingvalues: "",
     sp02: "-",
     bp: "105/81",
+    hr: "110",
     weight: "-",
     glucose: "70",
     active: "",
@@ -332,8 +339,9 @@ const data = [
     message: "4 months ago",
     readingvalues: "",
     sp02: "-",
-    bp: "-",
+    bp: "115/81",
     weight: "-",
+    hr: "110",
     glucose: "75",
     active: "",
   },
@@ -349,6 +357,7 @@ const data = [
     sp02: "92%",
     bp: "-",
     weight: "181.2",
+    hr: "110",
     glucose: "-",
     active: "",
   },

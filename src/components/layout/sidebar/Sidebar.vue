@@ -27,9 +27,7 @@
         >
         <router-link to="/manage-patients"
           ><a-menu-item
-            ><UserOutlined /><span class="menuItem"
-              >Patients</span
-            ></a-menu-item
+            ><UserOutlined /><span class="menuItem">Patients</span></a-menu-item
           ></router-link
         >
         <router-link to="/appointment-calendar"
@@ -74,6 +72,13 @@
             ></a-menu-item
           ></router-link
         >
+        <router-link to="/questionnaire-templates"
+          ><a-menu-item
+            ><ReconciliationOutlined /><span class="menuItem"
+              >Questionnaire</span
+            ></a-menu-item
+          ></router-link
+        >
         <router-link to="/cpt-codes"
           ><a-menu-item
             ><CalendarOutlined /><span class="menuItem"
@@ -94,7 +99,8 @@ import {
   UserOutlined,
   CalendarOutlined,
   FileTextOutlined,
-  UnlockOutlined
+  UnlockOutlined,
+  ReconciliationOutlined
 } from "@ant-design/icons-vue";
 export default defineComponent({
   components: {
@@ -103,7 +109,8 @@ export default defineComponent({
     UserOutlined,
     CalendarOutlined,
     FileTextOutlined,
-    UnlockOutlined
+    UnlockOutlined,
+    ReconciliationOutlined
   },
 
   setup() {
