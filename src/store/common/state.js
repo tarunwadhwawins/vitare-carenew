@@ -29,6 +29,9 @@ export default {
     noteTypes:null,
     noteCategories:null,
     programCategories:null,
+    vitalFieldsList:null,
+    vitalFieldsByDeviceId:null,
+    frequencyTypes:null,
 
 
 

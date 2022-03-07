@@ -45,6 +45,7 @@ export default {
       console.log("object", startCall.conferenceId);
       store.commit("conferenceId", startCall.conferenceId);
       store.dispatch("getVideoDetails",startCall.conferenceId)
+      
       if (conferenceId.value) {
         router.push({
           path: "video-call",
