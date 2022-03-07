@@ -21,6 +21,7 @@ import { programs } from "./programs/index"
 import { cptCodes } from "./cptCodes/index"
 import { carePlan } from "./carePlan/index"
 
+import { videoCall } from "./videoCall/index"
 import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
@@ -46,6 +47,7 @@ export default createStore({
     programs,
     cptCodes,
     carePlan,
+    videoCall
   },
   plugins: [ createPersistedState({
     reducer(state) {

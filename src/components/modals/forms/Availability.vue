@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref, computed } from "vue";
+import { defineComponent, reactive, ref, computed,onUnmounted } from "vue";
 // import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "@/components/loader/Loader";
@@ -99,6 +99,9 @@ export default defineComponent({
     function reset(){
       Object.assign(availability,form)
     }
+    onUnmounted(()=>{
+      store.commit('errorMsg',null)
+    })
     return {
       reset,
       Id,
