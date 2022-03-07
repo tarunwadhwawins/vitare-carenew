@@ -40,6 +40,7 @@ export default {
     deleteDocument:null,
     latestDocument:null,
     latestDevice:null,
+    latestVital:null,
     patientConditions:null,
     patientReferralSource:null,
     patientPrimaryPhysician:null,
