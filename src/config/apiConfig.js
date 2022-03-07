@@ -64,7 +64,9 @@ export const API_ENDPOINTS = {
     addPermissions:'rolePermission',
     rolePermissions: 'permissionList',
     roleDetails: 'roleDetails',
-
+    rolePermissionEdit:'rolePermissionEdit', 
+    dashboardWidget:'widget',
+    widgetAccess:'widgetAccess',
     // Notes
     notes: 'patient/notes',
 

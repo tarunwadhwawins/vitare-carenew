@@ -2,7 +2,7 @@
   <a-table  rowKey="id"
 
     :columns="rolesColumns"
-    :data-source="rolesList">
+    :data-source="rolesList.rolesList">
     <template #actions="{record}">
         <a-tooltip placement="bottom">
             <template #title>
@@ -56,6 +56,9 @@ export default {
 
         const editRole = (id) => {
             store.dispatch('roleDetails', id)
+            store.dispatch('editPermissions',id)
+            store.dispatch('editdWidget', id)
+            emit("is-edit",{check:true,id:id})
         }
 
         const deleteRole = (id) => {
@@ -76,7 +79,7 @@ emit("is-copy",{check:true,id:id})
         const UpdateRoleStatus = (id, status) => {
             //console.log("id",id)
             const data = {
-                "isActive": status
+                "status": status
             };
             store.dispatch('UpdateRole', {
                 id,
@@ -104,9 +107,9 @@ emit("is-copy",{check:true,id:id})
             },
             {
                 title: "Description",
-                dataIndex: "roleDescription",
+                dataIndex: "description",
                 sorter: {
-                    compare: (a, b) => a.roleDescription - b.roleDescription,
+                    compare: (a, b) => a.description - b.description,
                     multiple: 3,
                 },
             },

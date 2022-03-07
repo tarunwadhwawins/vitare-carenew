@@ -27,7 +27,7 @@
                             </div>
                         </a-col>
                         <a-col :span="24">
-                            <RolesAndPermissionsTable @is-copy="showModal($event)"/>
+                            <RolesAndPermissionsTable @is-copy="showModal($event)" @is-edit="edit($event)" />
                         </a-col>
                     </a-row>
                 </div>
@@ -36,7 +36,7 @@
     </a-layout>
 
     <!-- Modal -->
-    <RolesAndPermissionsModal v-if="visible" v-model:visible="visible" @ok="handleOk" @on-submit="handleOk" :roleId="roleId" />
+    <RolesAndPermissionsModal v-if="visible" v-model:visible="visible" @ok="handleOk" @on-submit="handleOk" :roleId="roleId" :editRole="editRole" />
 
 </div>
 </template>
@@ -48,7 +48,9 @@ import RolesAndPermissionsTable from "@/components/administration/rolesAndPermis
 import SearchField from "@/components/common/input/SearchField";
 import RolesAndPermissionsModal from "@/components/modals/RolesAndPermissionsModal";
 import Button from "@/components/common/button/Button";
-import { ref } from "vue";
+import {
+    ref
+} from "vue";
 export default {
     components: {
         Header,
@@ -61,15 +63,25 @@ export default {
 
     setup() {
         const visible = ref(false);
-        const roleId = ref(null)
+        const roleId = ref(null);
+        const editRole = ref(null)
         const showModal = (e) => {
             visible.value = e;
-            if(e.id){
+            if (e.id) {
                 roleId.value = e.id
-    visible.value = e.check;
+                visible.value = e.check;
+                editRole.value = null
+            } else {
+                editRole.value = null
+                roleId.value = null
             }
-           
+
         };
+        const edit = (e) => {
+            roleId.value = null
+            visible.value = e.check;
+            editRole.value = e.id
+        }
 
         const handleOk = () => {
             visible.value = false;
@@ -83,6 +95,8 @@ export default {
             showModal,
             handleOk,
             searchData,
+            edit,
+            editRole,
             exportButtonName: "Export to Excel",
             buttonName: "Add Role",
             pageTitle: "Roles & Permissions"

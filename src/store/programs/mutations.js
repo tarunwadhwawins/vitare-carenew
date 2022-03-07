@@ -1,5 +1,5 @@
 export const programList = async (state, data) => {
-  state.programList = ''
+ 
   state.programColumns = [
     {
       title: "Program Name",
