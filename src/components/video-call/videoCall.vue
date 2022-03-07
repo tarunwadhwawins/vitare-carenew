@@ -53,7 +53,7 @@
                                             </div>
                                         </a-col>
                                         <a-col :span="6">
-                                            <div class="moreAction">
+                                            <div class="moreAction" @click="showNotesModal">
                                                 <div class="moreActionImg four">
                                                     <img src="../../assets/images/edit.svg" />
                                                 </div>
@@ -69,7 +69,7 @@
                                             </div>
                                         </a-col>
                                         <a-col :span="6">
-                                            <div class="moreAction">
+                                            <div class="moreAction"  @click="showDocumentsModal">
                                                 <div class="moreActionImg green">
                                                     <img src="../../assets/images/report.svg" />
                                                 </div>
@@ -109,6 +109,8 @@
                         </a-col>
                     </a-row>
                 </div>
+                <NotesDetailModal v-if="notesDetailVisible==true"  v-model:visible="notesDetailVisible" :Id="getVideoDetails.patientDetailed?getVideoDetails.patientDetailed.id:getVideoDetails.patientDetailed.id" @closeModal="handleOk" />
+                <DocumentDetailModal v-if="documentDetailVisible==true"   v-model:visible="documentDetailVisible" :patientDetails="getVideoDetails.patientDetailed?getVideoDetails.patientDetailed:getVideoDetails.patientDetailed"  @closeModal="handleOk"/>
             </a-layout-content>
         </a-layout>
     </a-layout>
@@ -124,18 +126,24 @@ import Loader from "@/components/loader/Loader";
 import { Web } from "@/assets/js/sip-0.20.0";
 import { notification } from "ant-design-vue";
 import { successSwal } from "@/commonMethods/commonMethod";
+import NotesDetailModal from "@/components/modals/NotesDetail";
+import DocumentDetailModal from "@/components/modals/DocumentDetail";
 
 export default {
   components: {
     Header,
     Sidebar,
     Loader,
+    NotesDetailModal,
+    DocumentDetailModal
   },
 
   setup() {
     // the DOM element(video) will be assigned to the ref after initial render
     const store = useStore();
     const videoCall = ref();
+    const notesDetailVisible =ref(false)
+    const documentDetailVisible=ref(false)
     const router = useRouter();
     // const session = inject('sipSession')
     // const session = localStorage.getItem('sipSession');
@@ -275,7 +283,18 @@ export default {
       return store.state.videoCall.acceptVideoCallDetails;
     });
 
+    const showNotesModal = () => {
+      notesDetailVisible.value = true;
+    }
+    const showDocumentsModal = () => {
+      documentDetailVisible.value = true;
+    }
+
     return {
+      showDocumentsModal,
+      documentDetailVisible,
+      showNotesModal,
+      notesDetailVisible,
       acceptVideoCallDetails,
       upcomingCallDetails,
       getVideoDetails,
