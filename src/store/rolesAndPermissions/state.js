@@ -5,4 +5,7 @@ export default {
   roleDetails: null,
   deleteRole: null,
   UpdateRole: null,
+  editRolesAndPermissions:null, 
+  dashboardWidget:null,
+  editWidget:null,
 }

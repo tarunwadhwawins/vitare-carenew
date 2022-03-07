@@ -1,5 +1,5 @@
 export const rolesListSuccess = async (state, roles) => {
-  state.rolesList = roles.map(role => {
+  state.rolesList = roles.data.map(role => {
     role.status = role.status == 1 ? true : false;
     return role
   })
@@ -16,6 +16,9 @@ export const addRoleSuccess = async (state, role) => {
 export const roleDetailsSuccess = async (state, role) => {
   state.roleDetails = role
 }
+export const editRoleSuccess = async (state, role) => {
+  state.editRolesAndPermissions = role
+}
 
 export const deleteRoleSuccess = async (state, role) => {
   state.deleteRole = role
@@ -23,5 +26,11 @@ export const deleteRoleSuccess = async (state, role) => {
 
 export const UpdateRoleSuccess = async (state, role) => {
   state.UpdateRole = role
+}
+export const dashboardWidget = async (state, widget) => {
+  state.dashboardWidget = widget
+}
+export const editdWidget = async (state, widget) => {
+  state.editWidget = widget
 }
 
