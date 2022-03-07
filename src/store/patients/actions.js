@@ -711,6 +711,23 @@ export const latestDevice = async ({ commit }, id) => {
 	})
 }
 
+export const latestVital = async ({ commit }, id) => {
+	await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/vital/latest', null, null).then((response) => {
+    if(response.data.data.length > 0) {
+      commit('latestVital', response.data.data);
+    }
+    else {
+      commit('latestVital', null)
+    }
+	})
+	.catch((error) => {
+		/* if (error.response.status == 401) {
+			//AuthService.logout();
+		} */
+		commit('failure', error);
+	})
+}
+
 
 
 export const patientSearchWithBitrix = async ({ commit }, data) => {
