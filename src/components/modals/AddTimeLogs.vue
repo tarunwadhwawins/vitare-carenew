@@ -2,7 +2,7 @@
   <a-modal width="1000px" title="Add Time Logs " centered>
     <a-form layout="vertical" ref="formRef" :model="addTimeLogForm" @finish="submitForm">
       <a-row :gutter="24">
-        
+
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.category')" name="category" :rules="[{ required: true, message: $t('timeLogs.category')+' '+$t('global.validation')  }]">
@@ -57,7 +57,7 @@
             <a-form-item :label="$t('timeLogs.cptCode')" name="cptCode" :rules="[{ required: true, message: $t('timeLogs.cptCode')+' '+$t('global.validation')  }]">
               <a-select ref="select" v-model:value="addTimeLogForm.cptCode" style="width: 100%" size="large" >
                 <a-select-option value="" hidden>Select CPT Code</a-select-option>
-                <a-select-option v-for="code in cptCodesList" :key="code.udid" :value="code.udid">{{ code.service }}</a-select-option>
+                <a-select-option v-for="code in cptCodesList" :key="code.udid" :value="code.udid">{{ code.name }}</a-select-option>
               </a-select>
             </a-form-item>
           </div>
