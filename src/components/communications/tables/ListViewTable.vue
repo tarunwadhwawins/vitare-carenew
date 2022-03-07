@@ -91,7 +91,7 @@
       </a-tooltip>
     </template>
 
-    <template #action>
+    <template #action="{record}">
       <a-tooltip placement="bottom">
         <template #title>
           <span>{{ $t("common.view") }}</span>
@@ -104,7 +104,7 @@
         <template #title>
           <span>{{ $t("common.reply") }}</span>
         </template>
-        <a class="icons" @click="showModal">
+        <a class="icons" @click="showModal(record.id)">
           <MessageOutlined />
         </a>
       </a-tooltip>
@@ -248,7 +248,8 @@ export default {
     }
 
     const visible = ref(false);
-    const showModal = () => {
+    const showModal = (e) => {
+      console.log("check",e)
       visible.value = true;
     };
 
