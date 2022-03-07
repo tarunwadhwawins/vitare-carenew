@@ -186,7 +186,8 @@ export default {
 
     onMounted(() => {
       store.commit("loadingStatus", true);
-      console.log(videoCall.value); // this is your $el
+      console.log(videoCall.value); // this is your <video></video> element
+      //accept videoCall code
       if (session.value) {
         session.value.options.media.remote = {
           video: videoCall.value ? videoCall.value : <video></video>,
@@ -199,7 +200,9 @@ export default {
         setTimeout(() => {
           store.commit("loadingStatus", false);
         }, 5000);
-      } else {
+      } //end accept video call 
+      //Start conference video call code
+      else {
         setTimeout(() => {
             store.commit("loadingStatus", false);
           }, 5000);
@@ -282,7 +285,7 @@ export default {
         } else {
           router.push("/dashboard");
         }
-      }
+      }//end conference video call
     });
     // Answer call
     function hangUp() {
@@ -315,11 +318,11 @@ export default {
     const showDocumentsModal = () => {
       documentDetailVisible.value = true;
     }
-
     const showVitalssModal = () => {
       patientVitalsVisible.value = true;
     }
 
+    // used for patient vital
     watchEffect(()=>{
       if(getVideoDetails.value){
         store.dispatch('patientVitals', {patientId: getVideoDetails.value.patientDetailed.id, deviceType: 99})
@@ -332,8 +335,7 @@ export default {
         store.dispatch('patientVitals', {patientId: acceptVideoCallDetails.value.patient.id, deviceType: 101})
         store.dispatch('devices', acceptVideoCallDetails.value.patient.id)
       }
-     
-    })
+    })//end 
 
     return {
       copyURL,
