@@ -1,15 +1,14 @@
 <template>
   <a-modal width="90%" :title="$t('patientSummary.bloodPressureDetails.bloodPressureDetail')" centered>
-    <PatientVitalsGrid :patientId="patientDetails.id" />
+    <PatientVitalsGrid />
     <Loader />
   </a-modal>
 </template>
 
 <script>
-import { computed, defineComponent } from "vue";
+import { defineComponent } from "vue";
 import PatientVitalsGrid from "@/components/patients/patientSummary/views/PatientVitalsGrid";
 import Loader from "@/components/loader/Loader";
-import { useStore } from "vuex";
 
 export default defineComponent({
   components: {
@@ -17,12 +16,9 @@ export default defineComponent({
     Loader,
   },
   setup() {
-    const store = useStore()
-    const patientDetails = computed(() => {
-      return store.state.patients.patientDetails;
-    })
+    
     return {
-      patientDetails
+      
     };
   },
 });

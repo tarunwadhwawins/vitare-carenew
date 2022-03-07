@@ -19,7 +19,7 @@ import { timeLogReport } from "./timeLogReport/index"
 import { careTeam } from "./careTeam/index"
 import { programs } from "./programs/index"
 import { cptCodes } from "./cptCodes/index"
-
+import { videoCall } from "./videoCall/index"
 import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
@@ -44,6 +44,7 @@ export default createStore({
     careTeam,
     programs,
     cptCodes,
+    videoCall
   },
   plugins: [ createPersistedState({
     reducer(state) {

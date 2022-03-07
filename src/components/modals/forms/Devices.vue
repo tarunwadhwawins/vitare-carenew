@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, computed, ref, watchEffect } from "vue";
+import { defineComponent, reactive, computed, ref, watchEffect,onUnmounted } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "../../loader/Loader";
@@ -222,6 +222,10 @@ export default defineComponent({
         device.serialNumber =temp.serialNumber,
         device.macAddress = temp.macAddress
     }
+
+    onUnmounted(()=>{
+      store.commit('errorMsg',null)
+    })
 
     return {
       arrayToObjact,
