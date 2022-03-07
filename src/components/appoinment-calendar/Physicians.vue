@@ -72,6 +72,7 @@ import AddPhysician from "@/components/modals/AddPhysician";
 import {
     useStore
 } from "vuex"
+import { arrayToObjact } from "@/commonMethods/commonMethod"
 export default {
     components: {
         CloseOutlined,
@@ -104,12 +105,15 @@ export default {
         })
 
         const addStaff = (event) => {
-
+               let objact= arrayToObjact(staffList.value,event.data.id) 
+               if(!objact){
+                    
             staffList.value.push(event.data)
-            physicianModal.value = false;
+            
             store.getters.appointmentRecords.value.getStaff = staffList.value
             staffAdd()
-
+               }
+               physicianModal.value = false;
         }
 
         function staffAdd() {
