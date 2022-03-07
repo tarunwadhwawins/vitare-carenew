@@ -95,15 +95,17 @@
                                                 <p>Vital</p>
                                             </div>
                                         </a-col>
-                                        <!-- <a-col :span="6">
-                                            <div class="moreAction">
+                                        <a-col :span="6" v-if="currentUrl">
+                                            <div class="moreAction"  @click="copyURL(currentUrl)">
                                                 <div class="moreActionImg purpleBgColor">
-                                                    <img src="../../assets/images/watch.svg" />
+                                                    <!-- <img src="../../assets/images/edit.svg" /> -->
+                                                    <CopyFilled  />
                                                 </div>
-                                                <p>Reminder</p>
+                                                <p>Copy Url</p>
                                             </div>
-                                        </a-col> -->
+                                        </a-col>
                                     </a-row>
+                                    
                                 </div>
                                 <div class="footer">
                                     <a-button class="endCall" :size="size" block @click="hangUp()">End Call</a-button>
@@ -124,18 +126,21 @@
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
 import { ref, onMounted, computed, reactive, watchEffect } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute,useRouter } from "vue-router";
 import { useStore } from "vuex";
 import Loader from "@/components/loader/Loader";
 import { Web } from "@/assets/js/sip-0.20.0";
 import { notification } from "ant-design-vue";
-import { successSwal } from "@/commonMethods/commonMethod";
+import { successSwal,deCodeString } from "@/commonMethods/commonMethod";
 import NotesDetailModal from "@/components/modals/NotesDetail";
 import DocumentDetailModal from "@/components/modals/DocumentDetail";
 import PatientVitalsDetailsModal from "@/components/modals/PatientVitalsDetailsModal";
+import {CopyFilled } from "@ant-design/icons-vue";
+import { message } from 'ant-design-vue';
 
 export default {
   components: {
+    CopyFilled ,
     Header,
     Sidebar,
     Loader,
@@ -151,13 +156,24 @@ export default {
     const notesDetailVisible =ref(false)
     const documentDetailVisible=ref(false)
     const patientVitalsVisible = ref(false)
-    const router = useRouter();
-    const defaultImage = "@/assets/images/userAvatar.png"
-    // const session = inject('sipSession')
-    // const session = localStorage.getItem('sipSession');
+    const route = useRoute()
+    const router = useRouter()
+    //copy url
+    const currentUrl = ref()
+    async function copyURL(url) {
+    try {
+      await navigator.clipboard.writeText(url);
+       message.success('Copied')
+    } catch($e) {
+      message.error('Cannot copy')
+    }
+  }
+  //end url
+
     const upcomingCallDetails = reactive({
       user:''
     })
+    
     const simpleUserHangup = ref();
     const session = computed(() => {
       return store.state.authentication.simpleUser;
@@ -188,6 +204,8 @@ export default {
             store.commit("loadingStatus", false);
           }, 5000);
         if (conferenceId.value) {
+          currentUrl.value= window.location.href
+          console.log('checkDecodingUrl',deCodeString(route.params.id))
           let callNotification = 0;
           const key = `open${Date.now()}`;
           console.log(
@@ -318,7 +336,9 @@ export default {
     })
 
     return {
-      defaultImage,
+      copyURL,
+      currentUrl,
+      deCodeString,
       showVitalssModal,
       patientVitalsVisible,
       showDocumentsModal,
