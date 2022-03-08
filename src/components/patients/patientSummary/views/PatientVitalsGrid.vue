@@ -1,5 +1,9 @@
 <template>
   <a-row :gutter="24">
+
+    <a-col v-if="patientDevices.length <= 0" :sm="24">
+      <a-alert message="No devices are assigned to this Patient. Please assign device(s) to see Vitals." type="error" />
+    </a-col>
     
     <template v-for="device in patientDevices" :key="device.id">
       <VitalsGrid
@@ -23,7 +27,7 @@
         :tableData="bloodGlucose"
         :chartOptions="bloodGlucoseOptions"
         :chartSeries="bloodGlucoseSeries"
-        @showModal="showBloodGlucoseModal"
+        @showModal="showAddBloodGlucoseModal"
       />
 
       <VitalsGrid
@@ -35,49 +39,44 @@
         :tableData="bloodOxygen"
         :chartOptions="bloodOxygenOptions"
         :chartSeries="bloodOxygenSeries"
-        @showModal="showBloodOxygenModal"
+        @showModal="showAddBloodOxygenModal"
       />
     </template>
 
   </a-row>
-  <AddVitals v-model:visible="visibleAddVitals" @ok="handleOk" />
-  <AddPulse v-model:visible="visibleAddPulse" @ok="handleOk" />
-  <BloodGlucose v-model:visible="visibleBloodGlucose" @ok="handleOk" />
-  <BloodOxygen v-model:visible="visibleBloodOxygen" @ok="handleOk" />
+  <AddVitalsModal v-if="visibleAddVitalsModal" v-model:visible="visibleAddVitalsModal" :title="title" :deviceId="deviceId" @closeModal="handleOk" @ok="handleOk" />
 </template>
 
 <script>
 import { computed, ref } from 'vue-demi';
-import AddVitals from "@/components/modals/AddVitals";
-import AddPulse from "@/components/modals/AddPulse";
-import BloodGlucose from "@/components/modals/BloodGlucose";
-import BloodOxygen from "@/components/modals/BloodOxygen";
+import AddVitalsModal from "@/components/modals/AddVitalsModal";
 import VitalsGrid from "@/components/patients/patientSummary/common/VitalsGrid";
 import { useStore } from 'vuex';
 export default {
   components: {
-    AddVitals,
-    AddPulse,
-    BloodGlucose,
-    BloodOxygen,
+    AddVitalsModal,
     VitalsGrid,
   },
   setup() {
     const store = useStore();
-    const visibleAddVitals = ref(false);
-    const visibleAddPulse = ref(false);
-    const visibleBloodGlucose = ref(false);
-    const visibleBloodOxygen = ref(false);
+    const visibleAddVitalsModal = ref(false);
     const bloodPressureSeries = ref(null)
     const bloodPressureTimesArray = ref(null)
     const bloodGlucoseSeries = ref(null)
     const bloodGlucoseTimesArray = ref(null)
     const bloodOxygenSeries = ref(null)
     const bloodOxygenTimesArray = ref(null)
+    const title = ref(null)
+    const vitalType = ref(null)
+    const deviceId = ref(null)
 
     const patients = computed(() => {
       return store.state.patients
     })
+
+    const handleOk = () => {
+      visibleAddVitalsModal.value = false;
+    }
 
     const bloodPressureColumns = patients.value.bloodPressureColumns
     const bloodOxygenColumns = patients.value.bloodOxygenColumns
@@ -89,21 +88,21 @@ export default {
     const bloodOxygenGraph = patients.value.bloodOxygenGraph
     const bloodGlucoseGraph = patients.value.bloodGlucoseGraph
     const patientDevices = patients.value.devices
-    console.log('bloodPressureColumns', bloodPressureColumns)
-    console.log('bloodOxygenColumns', bloodOxygenColumns)
-    console.log('bloodGlucoseColumns', bloodGlucoseColumns)
 
     const showAddBPModal = () => {
-      visibleAddVitals.value = true;
+      deviceId.value = 99;
+      visibleAddVitalsModal.value = true;
+      title.value = 'Blood Pressure';
     };
-    const showAddPulseModal = () => {
-      visibleAddPulse.value = true;
+    const showAddBloodOxygenModal = () => {
+      deviceId.value = 100;
+      visibleAddVitalsModal.value = true;
+      title.value = 'Blood Oxygen Saturation';
     };
-    const showBloodGlucoseModal = () => {
-      visibleBloodGlucose.value = true;
-    };
-    const showBloodOxygenModal = () => {
-      visibleBloodOxygen.value = true;
+    const showAddBloodGlucoseModal = () => {
+      deviceId.value = 101;
+      visibleAddVitalsModal.value = true;
+      title.value = 'Blood Glucose';
     };
     
     if(bloodPressureGraph != null) {
@@ -171,13 +170,14 @@ export default {
 
     return {
       showAddBPModal,
-      showAddPulseModal,
-      showBloodGlucoseModal,
-      showBloodOxygenModal,
-      visibleAddVitals,
-      visibleAddPulse,
-      visibleBloodGlucose,
-      visibleBloodOxygen,
+      showAddBloodGlucoseModal,
+      showAddBloodOxygenModal,
+      title,
+      vitalType,
+      visibleAddVitalsModal,
+      deviceId,
+      handleOk,
+      
       activeKey1: ref("1"),
       activeKey2: ref("2"),
       activeKey3: ref("3"),
@@ -203,3 +203,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .warningMessage {
+    text-align: center;
+    background: #f6c9af;
+    padding: 15px;
+    font-size: 16px !important;
+  }
+</style>

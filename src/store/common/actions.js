@@ -44,17 +44,23 @@ export const staffList = async ({
 }
 
 export const vitalFieldsList = async ({ commit }) => {
+  commit('loadingStatus', true)
   await ServiceMethodService.common("get", API_ENDPOINTS['field'], null, null).then((response) => {
     commit('vitalFieldsList', response.data.data);
+    commit('loadingStatus', false)
   }).catch((error) => {
     commit('failure', error);
+    commit('loadingStatus', false)
   })
 }
 
 export const vitalFieldsByDeviceId = async ({ commit}, deviceId) => {
+  commit('loadingStatus', true)
   await ServiceMethodService.common("get", API_ENDPOINTS['field'], deviceId, null).then((response) => {
     commit('vitalFieldsByDeviceId', response.data.data);
+    commit('loadingStatus', false)
   }).catch((error) => {
     commit('failure', error);
+    commit('loadingStatus', false)
   })
 }
