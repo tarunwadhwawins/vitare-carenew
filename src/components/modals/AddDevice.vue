@@ -103,11 +103,12 @@ export default defineComponent({
         },
         id: route.params.udid,
       }
-      console.log('DATA', inventoryFormData)
+      
       store.dispatch("addDevice", inventoryFormData).then(() => {
         if(route.name == 'PatientSummary') {
           store.dispatch('latestDevice', route.params.udid)
           store.dispatch('patientTimeline', route.params.udid);
+          store.dispatch('devices', route.params.udid)
         }
         emit('closeModal');
       });
