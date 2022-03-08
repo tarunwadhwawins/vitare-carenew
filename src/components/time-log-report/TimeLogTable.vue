@@ -28,13 +28,13 @@
                 <a class="icons">
                     <EditOutlined /></a>
             </a-tooltip>
-            <a-tooltip placement="bottom" @click="deleteTimeLog(record.id)">
+            <!-- <a-tooltip placement="bottom" @click="deleteTimeLog(record.id)">
                 <template #title>
                     <span>{{$t('global.delete')}}</span>
                 </template>
                 <a class="icons">
                     <DeleteOutlined /></a>
-            </a-tooltip>
+            </a-tooltip> -->
         </template>
         <template #active="key">
             <a-switch v-model:checked="checked[key.record.key]" />
@@ -46,7 +46,10 @@
     
 <script>
 import { ref, reactive, onMounted, computed } from "vue";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import { 
+  // DeleteOutlined,
+   EditOutlined 
+} from "@ant-design/icons-vue";
 import AuditTimeLog from "../modals/AuditTimeLogs";
 import { messages } from "@/config/messages";
 import InfiniteLoader from "@/components/loader/InfiniteLoader";
@@ -55,7 +58,7 @@ import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
 
 export default {
   components: {
-    DeleteOutlined,
+    // DeleteOutlined,
     EditOutlined,
     InfiniteLoader,
     AuditTimeLog,
