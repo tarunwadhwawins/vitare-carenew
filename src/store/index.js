@@ -20,6 +20,7 @@ import { careTeam } from "./careTeam/index"
 import { programs } from "./programs/index"
 import { cptCodes } from "./cptCodes/index"
 import { carePlan } from "./carePlan/index"
+import {screenPermissions} from "./screenPermissions/index"
 
 import { videoCall } from "./videoCall/index"
 import createPersistedState from "vuex-persistedstate";
@@ -47,7 +48,8 @@ export default createStore({
     programs,
     cptCodes,
     carePlan,
-    videoCall
+    videoCall,
+    screenPermissions
   },
   plugins: [ createPersistedState({
     reducer(state) {

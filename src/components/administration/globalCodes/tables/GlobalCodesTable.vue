@@ -3,20 +3,20 @@
     :columns="globalCodesColumns"
     :data-source="globalCodesList">
     <template #actions="{record}">
-      <a-tooltip placement="bottom">
+      <a-tooltip placement="bottom" v-if="arrayToObjact(globalCodesPermissions,7)">
         <template #title>
           <span>Edit</span>
         </template>
         <span class="icons"><EditOutlined @click="editGlobalCode(record.id)" /></span>
       </a-tooltip>
-      <a-tooltip placement="bottom">
+      <a-tooltip placement="bottom" v-if="arrayToObjact(globalCodesPermissions,8)">
         <template #title>
           <span>Delete</span>
         </template>
         <span class="icons"><DeleteOutlined @click="deleteGlobalCode(record.id)" /></span>
       </a-tooltip>
     </template>
-    <template #status="{record}">
+    <template #status="{record}" v-if="arrayToObjact(globalCodesPermissions,266)">
       <a-switch v-model:checked="record.status" @change="updateStatus(record.id, $event)" />
     </template>
   </a-table>
@@ -27,8 +27,8 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { watchEffect, computed } from "vue";
 import { useStore } from "vuex";
 // import swal from 'sweetalert2';
-import {warningSwal} from "../../../../commonMethods/commonMethod"
-import { messages } from '../../../../config/messages';
+import {warningSwal,arrayToObjact} from "@/commonMethods/commonMethod"
+import { messages } from '@/config/messages';
 export default {
   components: {
     DeleteOutlined,
@@ -121,8 +121,14 @@ export default {
         },
       },
     ];
+
+    const globalCodesPermissions = computed(()=>{
+      return store.state.screenPermissions.globalCodesPermissions
+    })
     
     return {
+      globalCodesPermissions,
+      arrayToObjact,
       editGlobalCode,
       deleteGlobalCode,
       globalCodesColumns,

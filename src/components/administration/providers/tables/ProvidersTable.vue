@@ -24,13 +24,17 @@
 </template>
 
 <script>
+import { computed } from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import { arrayToObjact } from "@/commonMethods/commonMethod";
+import { useStore } from "vuex";
 export default {
   components: {
     DeleteOutlined,
     EditOutlined,
   },
   setup() {
+    const store =useStore()
     const columns = [
       {
         title: "Provider Name",
@@ -93,7 +97,12 @@ export default {
         action: "",
       },
     ];
+    const providersPermissions = computed(()=>{
+      return store.state.screenPermissions.providersPermissions
+    })
     return {
+      providersPermissions,
+      arrayToObjact,
       columns,
       data,
       text: 'provider-summary'

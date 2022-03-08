@@ -65,8 +65,8 @@ import { defineComponent, reactive, computed, watchEffect } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "../../loader/Loader"
-import {warningSwal,timeStamp} from "../../../commonMethods/commonMethod"
-import { messages } from "../../../config/messages";
+import {warningSwal,timeStamp} from "@/commonMethods/commonMethod"
+import { messages } from "@/config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 export default defineComponent({
   components: {
@@ -174,6 +174,7 @@ export default defineComponent({
     // const programFailed = () => {
     //         errorSwal(messages.fieldsRequired)
     //     };
+    
     return {
       // programFailed,
       timeStamp,

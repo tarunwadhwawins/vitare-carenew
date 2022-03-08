@@ -2,16 +2,16 @@
   <a-table  rowKey="id"
 
     :columns="rolesColumns"
-    :data-source="rolesList.rolesList">
-    <template #actions="{record}">
-        <a-tooltip placement="bottom">
+    :data-source="rolesList.rolesList" >
+    <template #actions="{record}" v-if="arrayToObjact(roleAndPermissions,2)">
+        <a-tooltip placement="bottom" >
             <template #title>
                 <span>Edit</span>
             </template>
             <a class="icons" @click="editRole(record.udid)">
                 <EditOutlined /></a>
         </a-tooltip>
-        <a-tooltip placement="bottom">
+        <a-tooltip placement="bottom" v-if="arrayToObjact(roleAndPermissions,3)">
             <template #title>
                 <span>Delete</span>
             </template>
@@ -26,7 +26,7 @@
                 <CopyOutlined /></a>
         </a-tooltip>
     </template>
-    <template #status="{record}">
+    <template #status="{record}" v-if="arrayToObjact(roleAndPermissions,4)">
         <a-switch v-model:checked="record.status" @change="UpdateRoleStatus(record.udid, $event)" />
     </template>
 </a-table>
@@ -35,8 +35,8 @@
 <script>
 import { DeleteOutlined, EditOutlined, CopyOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
-import {  watchEffect } from 'vue-demi';
-import {warningSwal} from "../../../../commonMethods/commonMethod";
+import {  watchEffect,computed } from 'vue';
+import {warningSwal,arrayToObjact} from "@/commonMethods/commonMethod";
 import { messages } from '../../../../config/messages';
 export default {
     components: {
@@ -129,7 +129,12 @@ emit("is-copy",{check:true,id:id})
             },
         ];
 
+        const roleAndPermissions = computed(()=>{
+            return store.state.screenPermissions.roleAndPermissions
+        })
         return {
+            arrayToObjact,
+            roleAndPermissions,
             rolesColumns,
             rolesList,
             editRole,
