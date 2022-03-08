@@ -16,7 +16,6 @@ export default {
     network:null,
     specialization:null,
     taskCategory:null,
-    // errorMsg:null,
     successMsg:null, 
     insuranceName:null,
     insuranceType:null,
@@ -32,6 +31,8 @@ export default {
     vitalFieldsList:null,
     vitalFieldsByDeviceId:null,
     frequencyTypes:null,
+    modules:null,
+   
 
 
 

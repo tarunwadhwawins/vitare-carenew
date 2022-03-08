@@ -39,11 +39,8 @@ export const timeLogReportList = async (state, data) => {
         },
       },
       {
-        title: "Flag ",
-        dataIndex: "flag",
-        slots: {
-          customRender: "flag",
-        },
+        title: "CPT Codes ",
+        dataIndex: "cptCode",
       },
       {
         title: "Notes ", 
@@ -59,7 +56,6 @@ export const timeLogReportList = async (state, data) => {
       },
     ];
 }
-
 
 export const editAuditTimeLog = async (state, data) => {
   state.editAuditTimeLog = data

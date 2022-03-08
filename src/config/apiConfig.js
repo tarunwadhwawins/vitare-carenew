@@ -90,6 +90,8 @@ export const API_ENDPOINTS = {
     field: 'field',
     
 
+    //Providers
+    provider:'provider',
 };
 
 // export const getApiUrl = key => {
