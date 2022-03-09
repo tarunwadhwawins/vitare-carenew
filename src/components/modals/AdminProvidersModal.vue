@@ -53,15 +53,18 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('providers.zipcode')" name="zipcode" :rules="[{ required: true, message: $t('providers.zipcode')+' '+$t('global.validation')  }]">
+                                <a-form-item :label="$t('providers.zipcode')" name="zipcode" :rules="[{ required: true, message:$t('global.validValidation')+' '+ $t('global.zipcode').toLowerCase(),pattern: regex.zipCode }]">
                                     <a-input v-model:value="providerForm.zipcode" size="large" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.zipCode?errorMsg.zipCode[0]:''" />
+
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('providers.phoneNumber')" name="phoneNumber" :rules="[{ required: true, message: $t('providers.phoneNumber')+' '+$t('global.validation')  }]">
-                                    <a-input v-model:value="providerForm.phoneNumber" size="large" />
+                                <a-form-item :label="$t('providers.phoneNumber')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber}]">
+                                    <a-input v-model:value="providerForm.phoneNumber"  placeholder="Please enter 10 digit number" size="large" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -135,22 +138,23 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('providers.zipcode')" name="zipcode" :rules="[{ required: true, message: $t('providers.zipcode')+' '+$t('global.validation')  }]">
+                                <a-form-item :label="$t('providers.zipcode')" name="zipcode" :rules="[{ required: true, message:$t('global.validValidation')+' '+ $t('global.zipcode').toLowerCase(),pattern: regex.zipCode }]">
                                     <a-input v-model:value="providerLocationForm.zipcode" size="large" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.zipCode?errorMsg.zipCode[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('providers.phoneNumber')" name="phoneNumber" :rules="[{ required: true, message: $t('providers.phoneNumber')+' '+$t('global.validation')  }]">
+                                <a-form-item :label="$t('providers.phoneNumber')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber}]">
                                     <a-input v-model:value="providerLocationForm.phoneNumber" size="large" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('providers.emailAddress')" name="email" :rules="[{ required: true, message: $t('providers.emailAddress')+' '+$t('global.validation')  }]">
-                                    <a-input v-model:value="providerLocationForm.email" size="large" />
+                                <a-form-item :label="$t('providers.emailAddress')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
+                                    <a-input v-model:value="providerLocationForm.email" placeholder="test@test.com" size="large" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -194,12 +198,28 @@
 </template>
 
 <script>
-import {ref,computed,reactive,watchEffect} from "vue"
-import {useStore} from "vuex"
+import {
+    ref,
+    computed,
+    reactive,
+    watchEffect
+} from "vue"
+import {
+    useStore
+} from "vuex"
 import Loader from "./../loader/Loader"
-import {warningSwal,successSwal} from "./../../commonMethods/commonMethod"
-import {messages} from "./../../config/messages";
-import {DeleteOutlined} from "@ant-design/icons-vue";
+import {
+    warningSwal,
+    successSwal
+} from "./../../commonMethods/commonMethod"
+import {
+    messages
+} from "./../../config/messages";
+import {
+    DeleteOutlined
+} from "@ant-design/icons-vue";
+import { regex } from "@/RegularExpressions/regex";
+
 export default {
 
     components: {
@@ -415,7 +435,7 @@ export default {
         });
 
         return {
-
+            regex,
             current,
             visible,
             providerForm,
