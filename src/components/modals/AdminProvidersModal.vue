@@ -227,7 +227,7 @@ export default {
         Loader
     },
     props: {
-        isEdit: {
+        isAdd: {
             type: Boolean
         },
         providerId: {
@@ -240,7 +240,7 @@ export default {
         const current = ref(0);
         const visible = ref(true);
         const store = useStore();
-        const title = props.isEdit ? "Edit Providers" : "Add Providers";
+        const title = props.isAdd ? "Edit Providers" : "Add Providers";
         const providerId = reactive(props.providerId);
 
         const providerForm = reactive({
@@ -300,6 +300,8 @@ export default {
             }
             store.commit('loadingStatus', false)
             current.value++;
+            store.state.provider.providersListAll=''
+            store.dispatch("providersListAll")
 
         }
 
@@ -337,9 +339,11 @@ export default {
                 },
                 id: proId,
             });
+            
             setTimeout(() => {
+                //store.dispatch("providersListAll")
                 store.dispatch("providerLocationList", proId);
-                store.dispatch("providersListAll");
+                
             }, 2000);
 
         };
@@ -372,7 +376,7 @@ export default {
         function saveModal() {
             successSwal(messages.formSuccess);
             Object.assign(providerLocationForm, form);
-            store.dispatch("provider");
+            //store.dispatch("provider");
             store.commit("resetCounter");
             emit('closeModal', false);
         }
@@ -383,7 +387,7 @@ export default {
                     if (response == true) {
                         emit("saveModal", false);
                         Object.assign(providerForm, form);
-                        store.dispatch("provider");
+                       // store.dispatch("provider");
                         store.commit("resetCounter");
                         store.state.provider.provider = null
                     } else {

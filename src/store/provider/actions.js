@@ -38,9 +38,9 @@ export const providerLocation = async ({
 
 export const providersListAll = async ({
   commit
-}, data) => {
+}) => {
   commit('loadingStatus', true)
-  await serviceMethod.common("get", `provider`, null, data).then((response) => {
+  await serviceMethod.common("get", `provider`, null, null).then((response) => {
     commit('providersListAll', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {

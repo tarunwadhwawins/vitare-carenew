@@ -12,16 +12,19 @@
                         <a-col :span="24">
                             <h2 class="pageTittle">
                                 {{ pageTitle }}
-                                <div class="commonBtn" v-if="arrayToObjact(globalCodesPermissions,22)">
+                                <!-- v-if="arrayToObjact(globalCodesPermissions,22)" -->
+                                 <div class="commonBtn" >
                                     <Button :name="buttonName" @click="showModal(true)" />
-                                </div>
+                                </div> 
                             </h2>
                         </a-col>
-                        <a-col :span="12" v-if="arrayToObjact(globalCodesPermissions,21)">
+                        <!-- v-if="arrayToObjact(globalCodesPermissions,21)" -->
+                         <a-col :span="12" >
                             <SearchField @change="searchData" />
                         </a-col>
                         <a-col :span="12">
-                            <div class="text-right mb-24" v-if="arrayToObjact(globalCodesPermissions,26)">
+                            <!-- v-if="arrayToObjact(globalCodesPermissions,26)" -->
+                            <div class="text-right mb-24" >
                                 <Button :name="exportButtonName" />
                             </div>
                         </a-col>
@@ -52,7 +55,7 @@ import ProvidersTable from "@/components/administration/providers/tables/Provide
 import {useStore} from "vuex";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
-import {ref,computed} from "vue";
+import {ref,computed , watchEffect} from "vue";
 import { arrayToObjact } from "@/commonMethods/commonMethod";
 export default {
     components: {
@@ -82,7 +85,9 @@ export default {
         const searchData = () => {
 
         };
-
+watchEffect(()=>{
+    store.dispatch("providersListAll")
+})
         const handleOk = () => {
             visible.value = false;
         };

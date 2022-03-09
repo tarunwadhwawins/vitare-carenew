@@ -1,17 +1,20 @@
 <template>
-<a-table rowKey="id" :columns="providerListColumns" :data-source="providersListAll">
+<a-table v-if="providersListAll" rowKey="id" :columns="providerListColumns" :data-source="providersListAll" >
     <template #name="{text,record}">
                <router-link :to="{ name: 'providerSummary', params: { id:record.id  }}">{{text}}</router-link>
     </template>
-    <template #status="{record}" v-if="arrayToObjact(globalCodesPermissions,25)">
+    <!-- v-if="arrayToObjact(globalCodesPermissions,25)" -->
+    <template #status="{record}" >
         <a-switch v-model:checked="record.status" @change="updateStatus(record.id, $event)" />
     </template>
     <template #action="text">
-        <a-tooltip placement="bottom" v-if="arrayToObjact(globalCodesPermissions,23)">
+      <!-- v-if="arrayToObjact(globalCodesPermissions,23)" -->
+        <a-tooltip placement="bottom" >
             <a class="icons">
                 <EditOutlined @click="editSingleProvider(text.record.id)" /></a>
         </a-tooltip>
-        <a-tooltip placement="bottom" v-if="arrayToObjact(globalCodesPermissions,24)">
+        <!-- v-if="arrayToObjact(globalCodesPermissions,24)" -->
+        <a-tooltip placement="bottom" >
             <a class="icons" @click="deleteSingleProvider(text.record.id)">
                 <DeleteOutlined />
             </a>
@@ -23,7 +26,7 @@
 
 <script>
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-import { watchEffect, computed, reactive } from "vue";
+import {  computed, reactive } from "vue";
 import { messages } from "@/config/messages";
 import { useStore } from "vuex";
 import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
@@ -41,9 +44,7 @@ export default {
   setup(props, { emit }) {
     const store = useStore();
     const providerId = reactive(props.id);
-    watchEffect(() => {
-      store.dispatch("providersListAll");
-    });
+    
     const providersListAll = computed(() => {
       return store.state.provider.providersListAll;
     });
@@ -60,7 +61,7 @@ export default {
                 id: id,
               })
               .then(() => {
-                store.dispatch("providersListAll", providerId);
+                store.dispatch("providersListAll");
               }, 2000);
           }
         });
@@ -91,7 +92,7 @@ export default {
           data,
         })
         .then(() => {
-          store.dispatch("providersListAll");
+         store.dispatch("providersListAll");
         });
     };
 
