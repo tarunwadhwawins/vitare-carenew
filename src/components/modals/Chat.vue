@@ -1,83 +1,153 @@
 <template>
-  <a-modal width="800px" title="Reply" centered>
+<a-modal width="800px" title="Reply" centered @cancel="closeModal()">
     <a-row :gutter="24">
-      <a-col :span="24">
-        <div class="chatBox">
-          <a-list item-layout="horizontal">
-            <a-list-item>
-              <a-list-item-meta>
-                <template #avatar>
-                  <a-avatar>
-                    <img
-                      src="../../assets/images/video-call-thumb-3.png"
-                      alt=""
-                  /></a-avatar>
-                </template>
-                <template #title>
-                  <a href="#">Jane Doe</a>
-                </template>
-                <template #description>
-                  <span>Active</span>
-                </template>
-              </a-list-item-meta>
-            </a-list-item>
-          </a-list>
-          <div class="chatBoxInner">
-            <div class="chatWrapper left">
-              <div class="message">
-                Lorem ipsum dolor sit ametpa
-              </div>
-              <div class="time">Mar 1, 2022</div>
+        <a-col :span="24">
+            <div class="chatBox">
+                <a-list item-layout="horizontal">
+                    <a-list-item>
+                        <a-list-item-meta>
+                            <template #avatar>
+                                <a-avatar>
+                                    <img src="../../assets/images/video-call-thumb-3.png" alt="" /></a-avatar>
+                            </template>
+                            <template #title>
+                                <a href="#">{{communication.receiver}}</a>
+                            </template>
+                            <template #description>
+                                <span>Active</span>
+                            </template>
+                        </a-list-item-meta>
+                    </a-list-item>
+                </a-list>
+
+                <div class="chatBoxInner" v-for="msg,index in list.conversationList" :key="index">
+                    <div class="chatWrapper left" v-if="communication.receiverId==msg.senderId">
+
+                        <div class="message">
+                            {{msg.message}}
+                        </div>
+                        <div class="time">{{ dateFormat(msg.createdAt)}}</div>
+                    </div>
+                    <div class="chatWrapper right" v-if="communication.senderId==msg.senderId">
+                        <div class="message">
+                            {{msg.message}}
+                        </div>
+                        <div class="time">{{ dateFormat(msg.createdAt)}}</div>
+                    </div>
+
+                </div>
+                <a-form ref="formRef" :model="formValue" layout="vertical" @finishFailed="taskFormFailed">
+                    <div class="sendMessage" v-if="auth.user.id===communication.senderId">
+                        <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message">
+                            <template #addonAfter>
+                                <!-- <a-button v-show="name=='communication' && !Id" class="modal-button" type="primary" html-type="submit">{{$t('global.send')}}</a-button> -->
+                                <SendOutlined @click="sendMsg" />
+                            </template>
+                        </a-input>
+                    </div>
+                    <div class="sendMessage" v-else>
+                        <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message" disabled>
+                            <template #addonAfter disabled>
+                                <!-- <a-button v-show="name=='communication' && !Id" class="modal-button" type="primary" html-type="submit">{{$t('global.send')}}</a-button> -->
+                                <SendOutlined @click="sendMsg" />
+                            </template>
+                        </a-input>
+                    </div>
+                </a-form>
             </div>
-            <div class="chatWrapper right">
-              <div class="message">
-                Lorem ipsum dolor
-              </div>
-              <div class="time">Mar 1, 2022</div>
-            </div>
-            <div class="chatWrapper left">
-              <div class="message">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-                sunt sequi sit animi molestias magnam culpa
-              </div>
-              <div class="time">Mar 1, 2022</div>
-            </div>
-            <div class="chatWrapper right">
-              <div class="message">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-                sunt sequi sit animi molestias magnam culpa
-              </div>
-              <div class="time">Mar 1, 2022</div>
-            </div>
-            <div class="chatWrapper left">
-              <div class="message">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-                sunt sequi sit animi molestias magnam culpa
-              </div>
-              <div class="time">Mar 1, 2022</div>
-            </div>
-          </div>
-          <div class="sendMessage">
-            <a-input v-model:value="value5" size="large" placeholder="Type Message">
-              <template #addonAfter>
-                <SendOutlined />
-              </template>
-            </a-input>
-          </div>
-        </div>
-      </a-col>
+        </a-col>
     </a-row>
-  </a-modal>
+    <loader />
+</a-modal>
 </template>
+
 <script>
-import { SendOutlined } from "@ant-design/icons-vue";
+import {
+    SendOutlined
+} from "@ant-design/icons-vue";
+import {
+    watchEffect,
+    reactive
+} from "vue"
+import {
+    useStore
+} from "vuex"
+import {
+    dateFormat
+} from "@/commonMethods/commonMethod"
+import Loader from "@/components/loader/Loader";
+import moment from "moment"
 
 export default {
-  components: {
-    SendOutlined,
-  },
-  setup() {
-    return {};
-  },
+    components: {
+        SendOutlined,
+        Loader
+    },
+    props: {
+        communication: {
+            type: String
+        }
+    },
+    setup(props) {
+        const store = useStore()
+        const formValue = reactive({
+            msgSend: ''
+        })
+        //const scroll = ref('chatBoxInner')
+        const auth = JSON.parse(localStorage.getItem("auth"))
+        let interval = setInterval(() => {
+            store.dispatch("conversation", props.communication.id)
+        }, 30000);
+        watchEffect(() => {
+            store.state.communications.conversationList = ""
+            store.dispatch("conversation", props.communication.id)
+            //  const container = scroll.value;
+            //   container.scrollTop = container.scrollHeight;
+
+        })
+
+        const list = store.getters.communicationRecord.value
+
+        function sendMsg() {
+
+            if (formValue.msgSend) {
+                list.conversationList.push({
+                    id: 2,
+                    conversationId: props.communication.id,
+                    senderId: props.communication.senderId,
+                    message: formValue.msgSend,
+                    type: "text",
+                    isRead: 0,
+                    createdAt: moment
+                })
+                store.dispatch("conversationSend", {
+                    conversationId: props.communication.id,
+                    message: formValue.msgSend,
+                    type: "text",
+                })
+
+                formValue.msgSend = ''
+                // store.state.communications.conversationList=""
+
+                store.dispatch("conversation", props.communication.id)
+            }
+        }
+
+        function closeModal() {
+            //store.state.communications.conversationList = ""
+            clearInterval(interval);
+        }
+
+        return {
+            list,
+            sendMsg,
+            formValue,
+            dateFormat,
+            closeModal,
+            auth,
+            //scroll,
+
+        };
+    },
 };
 </script>

@@ -58,36 +58,179 @@
           </div>
         </a-col>
         
-        <a-col :sm="8" :xs="24">
-          <div class="form-group">
-            <a-form-item label="Vital Type" name="vitalField" :rules="[{ required: true, message: 'Vital Type '+$t('global.validation')  }]">
-              <a-select
-                ref="select"
-                v-model:value="addCarePlanForm.vitalField"
-                style="width: 100%"
-                size="large">
-                <a-select-option value="" hidden>Choose Vital Type</a-select-option>
-                <a-select-option v-for="field in common.vitalFieldsByDeviceId" :key="field.id" :value="field.id">{{ field.field }}</a-select-option>
-              </a-select>
-            </a-form-item>
-          </div>
-        </a-col>
-      
-        <a-col :sm="8" :xs="24">
-          <div class="form-group">
-            <a-form-item label="High Value" name="highValue" :rules="[{ required: true, message: 'High Value '+$t('global.validation')  }]">
-              <a-input v-model:value="addCarePlanForm.highValue" style="width: 100%" size="large" />
-            </a-form-item>
-          </div>
-        </a-col>
+        <a-row v-if="bloodPressureFields" :gutter="24">
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="Vital Type" name="systolic">
+                <a-input value="Systolic" style="width: 100%" size="large" disabled />
+              </a-form-item>
+            </div>
+          </a-col>
         
-        <a-col :sm="8" :xs="24">
-          <div class="form-group">
-            <a-form-item label="Low Value" name="lowValue" :rules="[{ required: true, message: 'Low Value '+$t('global.validation')  }]">
-              <a-input v-model:value="addCarePlanForm.lowValue" style="width: 100%" size="large" />
-            </a-form-item>
-          </div>
-        </a-col>
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="High Value" name="systolicHighValue" :rules="[{ required: true, message: 'High Value '+$t('global.validation')  }]">
+                <a-input v-model:value="addCarePlanForm.systolicHighValue " style="width: 100%" size="large" />
+              </a-form-item>
+            </div>
+          </a-col>
+          
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="Low Value" name="systolicLowValue" :rules="[{ required: true, message: 'Low Value '+$t('global.validation')  }]">
+                <a-input v-model:value="addCarePlanForm.systolicLowValue" style="width: 100%" size="large" />
+              </a-form-item>
+            </div>
+          </a-col>
+          
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="Vital Type" name="diastolic">
+                <a-input value="Diastolic" style="width: 100%" size="large" disabled />
+              </a-form-item>
+            </div>
+          </a-col>
+        
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="High Value" name="diastolicHighValue" :rules="[{ required: true, message: 'High Value '+$t('global.validation')  }]">
+                <a-input v-model:value="addCarePlanForm.diastolicHighValue" style="width: 100%" size="large" />
+              </a-form-item>
+            </div>
+          </a-col>
+          
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="Low Value" name="diastolicLowValue" :rules="[{ required: true, message: 'Low Value '+$t('global.validation')  }]">
+                <a-input v-model:value="addCarePlanForm.diastolicLowValue" style="width: 100%" size="large" />
+              </a-form-item>
+            </div>
+          </a-col>
+          
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="Vital Type" name="bpm">
+                <a-input value="BPM" style="width: 100%" size="large" disabled />
+              </a-form-item>
+            </div>
+          </a-col>
+        
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="High Value" name="bpmHighValue" :rules="[{ required: true, message: 'High Value '+$t('global.validation')  }]">
+                <a-input v-model:value="addCarePlanForm.bpmHighValue" style="width: 100%" size="large" />
+              </a-form-item>
+            </div>
+          </a-col>
+          
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="Low Value" name="bpmLowValue" :rules="[{ required: true, message: 'Low Value '+$t('global.validation')  }]">
+                <a-input v-model:value="addCarePlanForm.bpmLowValue" style="width: 100%" size="large" />
+              </a-form-item>
+            </div>
+          </a-col>
+        </a-row>
+        
+        <a-row v-if="bloodOxygenFields" :gutter="24">
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="Vital Type" name="spo2">
+                <a-input value="SPO2" style="width: 100%" size="large" disabled />
+              </a-form-item>
+            </div>
+          </a-col>
+        
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="High Value" name="spo2HighValue" :rules="[{ required: true, message: 'High Value '+$t('global.validation')  }]">
+                <a-input v-model:value="addCarePlanForm.spo2HighValue" style="width: 100%" size="large" />
+              </a-form-item>
+            </div>
+          </a-col>
+          
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="Low Value" name="spo2LowValue" :rules="[{ required: true, message: 'Low Value '+$t('global.validation')  }]">
+                <a-input v-model:value="addCarePlanForm.spo2LowValue" style="width: 100%" size="large" />
+              </a-form-item>
+            </div>
+          </a-col>
+          
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="Vital Type" name="oxygenBpm">
+                <a-input value="BPM" style="width: 100%" size="large" disabled />
+              </a-form-item>
+            </div>
+          </a-col>
+        
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="High Value" name="oxygenBpmHighValue" :rules="[{ required: true, message: 'High Value '+$t('global.validation')  }]">
+                <a-input v-model:value="addCarePlanForm.oxygenBpmHighValue" style="width: 100%" size="large" />
+              </a-form-item>
+            </div>
+          </a-col>
+          
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="Low Value" name="oxygenBpmLowValue" :rules="[{ required: true, message: 'Low Value '+$t('global.validation')  }]">
+                <a-input v-model:value="addCarePlanForm.oxygenBpmLowValue" style="width: 100%" size="large" />
+              </a-form-item>
+            </div>
+          </a-col>
+        </a-row>
+        
+        <a-row v-if="glucoseFields" :gutter="24">
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="Vital Type" name="fastingBloodSugar">
+                <a-input value="Fasting Blood Sugar" style="width: 100%" size="large" disabled />
+              </a-form-item>
+            </div>
+          </a-col>
+        
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="High Value" name="fastingBloodSugarHighValue" :rules="[{ required: true, message: 'High Value '+$t('global.validation')  }]">
+                <a-input v-model:value="addCarePlanForm.fastingBloodSugarHighValue" style="width: 100%" size="large" />
+              </a-form-item>
+            </div>
+          </a-col>
+          
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="Low Value" name="fastingBloodSugarLowValue" :rules="[{ required: true, message: 'Low Value '+$t('global.validation')  }]">
+                <a-input v-model:value="addCarePlanForm.fastingBloodSugarLowValue" style="width: 100%" size="large" />
+              </a-form-item>
+            </div>
+          </a-col>
+          
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="Vital Type" name="randomBloodSugar">
+                <a-input value="Random Blood Sugar" style="width: 100%" size="large" disabled />
+              </a-form-item>
+            </div>
+          </a-col>
+        
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="High Value" name="randomBloodSugarHighValue" :rules="[{ required: true, message: 'High Value '+$t('global.validation')  }]">
+                <a-input v-model:value="addCarePlanForm.randomBloodSugarHighValue" style="width: 100%" size="large" />
+              </a-form-item>
+            </div>
+          </a-col>
+          
+          <a-col :sm="8" :xs="24">
+            <div class="form-group">
+              <a-form-item label="Low Value" name="randomBloodSugarLowValue" :rules="[{ required: true, message: 'Low Value '+$t('global.validation')  }]">
+                <a-input v-model:value="addCarePlanForm.randomBloodSugarLowValue" style="width: 100%" size="large" />
+              </a-form-item>
+            </div>
+          </a-col>
+        </a-row>
 
         <a-col :sm="24" :xs="24">
           <div class="form-group">
@@ -123,9 +266,13 @@ export default defineComponent({
     const store = useStore()
     const route = useRoute()
     const formRef = ref()
+    const bloodPressureFields = ref(false)
+    const glucoseFields = ref(false)
+    const bloodOxygenFields = ref(false)
     const deviceTypes = computed(() => {
       return store.state.common.deviceType;
     })
+
     const frequencyTypes = computed(() => {
       return store.state.common.frequencyTypes
     })
@@ -135,26 +282,177 @@ export default defineComponent({
       endDate: '',
       frequency: '',
       frequencyType: '',
-      vitalField: '',
-      highValue: '',
-      lowValue: '',
+      systolic: '',
+      systolicHighValue: '',
+      systolicLowValue: '',
+      diastolic: '',
+      diastolicHighValue: '',
+      diastolicLowValue: '',
+      bpm: '',
+      bpmHighValue: '',
+      bpmLowValue: '',
+      spo2: '',
+      spo2HighValue: '',
+      spo2LowValue: '',
+      oxygenBpm: '',
+      oxygenBpmHighValue: '',
+      oxygenBpmLowValue: '',
+      fastingBloodSugar: '',
+      fastingBloodSugarHighValue: '',
+      fastingBloodSugarLowValue: '',
+      randomBloodSugar: '',
+      randomBloodSugarHighValue: '',
+      randomBloodSugarLowValue: '',
       note: '',
     })
     const form = reactive({ ...addCarePlanForm })
     const submitForm = () => {
-      addCarePlanForm.startDate = timeStamp(addCarePlanForm.startDate)
-      addCarePlanForm.endDate = timeStamp(addCarePlanForm.endDate)
-      console.log('Patient ID', route.params.udid)
-      console.log('addCarePlanForm', addCarePlanForm)
-      store.dispatch('addCarePlan', {
-        patientId: route.params.udid,
-        data: addCarePlanForm
-      }).then(() => {
-        store.dispatch('carePlansList', route.params.udid)
-        formRef.value.resetFields();
-        Object.assign(addCarePlanForm, form)
-        emit('closeModal')
-      })
+      if(addCarePlanForm.deviceType == 99) {
+        const systolicData = {
+          deviceType: 99,
+          startDate: timeStamp(addCarePlanForm.startDate),
+          endDate: timeStamp(addCarePlanForm.endDate),
+          frequency: addCarePlanForm.frequency,
+          frequencyType: addCarePlanForm.frequencyType,
+          vitalField: 1,
+          highValue: addCarePlanForm.systolicHighValue,
+          lowValue: addCarePlanForm.systolicLowValue,
+          note: addCarePlanForm.note,
+        }
+        const diastolicData = {
+          deviceType: 99,
+          startDate: timeStamp(addCarePlanForm.startDate),
+          endDate: timeStamp(addCarePlanForm.endDate),
+          frequency: addCarePlanForm.frequency,
+          frequencyType: addCarePlanForm.frequencyType,
+          vitalField: 2,
+          highValue: addCarePlanForm.diastolicHighValue,
+          lowValue: addCarePlanForm.diastolicLowValue,
+          note: addCarePlanForm.note,
+        }
+        const bpmData = {
+          deviceType: 99,
+          startDate: timeStamp(addCarePlanForm.startDate),
+          endDate: timeStamp(addCarePlanForm.endDate),
+          frequency: addCarePlanForm.frequency,
+          frequencyType: addCarePlanForm.frequencyType,
+          vitalField: 3,
+          highValue: addCarePlanForm.bpmHighValue,
+          lowValue: addCarePlanForm.bpmLowValue,
+          note: addCarePlanForm.note,
+        }
+        store.dispatch('addCarePlan', {
+          patientId: route.params.udid,
+          data: systolicData
+        }).then(() => {
+          store.dispatch('carePlansList', route.params.udid)
+          formRef.value.resetFields();
+          Object.assign(addCarePlanForm, form)
+          emit('closeModal')
+        })
+        store.dispatch('addCarePlan', {
+          patientId: route.params.udid,
+          data: diastolicData
+        }).then(() => {
+          store.dispatch('carePlansList', route.params.udid)
+          formRef.value.resetFields();
+          Object.assign(addCarePlanForm, form)
+          emit('closeModal')
+        })
+        store.dispatch('addCarePlan', {
+          patientId: route.params.udid,
+          data: bpmData
+        }).then(() => {
+          store.dispatch('carePlansList', route.params.udid)
+          formRef.value.resetFields();
+          Object.assign(addCarePlanForm, form)
+          emit('closeModal')
+        })
+      }
+      if(addCarePlanForm.deviceType == 100) {
+        const spo2Data = {
+          deviceType: 100,
+          startDate: timeStamp(addCarePlanForm.startDate),
+          endDate: timeStamp(addCarePlanForm.endDate),
+          frequency: addCarePlanForm.frequency,
+          frequencyType: addCarePlanForm.frequencyType,
+          vitalField: 4,
+          highValue: addCarePlanForm.spo2HighValue,
+          lowValue: addCarePlanForm.spo2LowValue,
+          note: addCarePlanForm.note,
+        }
+        const bpmData = {
+          deviceType: 100,
+          startDate: timeStamp(addCarePlanForm.startDate),
+          endDate: timeStamp(addCarePlanForm.endDate),
+          frequency: addCarePlanForm.frequency,
+          frequencyType: addCarePlanForm.frequencyType,
+          vitalField: 3,
+          highValue: addCarePlanForm.oxygenBpmHighValue,
+          lowValue: addCarePlanForm.oxygenBpmLowValue,
+          note: addCarePlanForm.note,
+        }
+        store.dispatch('addCarePlan', {
+          patientId: route.params.udid,
+          data: spo2Data
+        }).then(() => {
+          store.dispatch('carePlansList', route.params.udid)
+          formRef.value.resetFields();
+          Object.assign(addCarePlanForm, form)
+          emit('closeModal')
+        })
+        store.dispatch('addCarePlan', {
+          patientId: route.params.udid,
+          data: bpmData
+        }).then(() => {
+          store.dispatch('carePlansList', route.params.udid)
+          formRef.value.resetFields();
+          Object.assign(addCarePlanForm, form)
+          emit('closeModal')
+        })
+      }
+      if(addCarePlanForm.deviceType == 101) {
+        const fbsData = {
+          deviceType: 101,
+          startDate: timeStamp(addCarePlanForm.startDate),
+          endDate: timeStamp(addCarePlanForm.endDate),
+          frequency: addCarePlanForm.frequency,
+          frequencyType: addCarePlanForm.frequencyType,
+          vitalField: 5,
+          highValue: addCarePlanForm.fastingBloodSugarHighValue,
+          lowValue: addCarePlanForm.fastingBloodSugarLowValue,
+          note: addCarePlanForm.note,
+        }
+        const rbsData = {
+          deviceType: 101,
+          startDate: timeStamp(addCarePlanForm.startDate),
+          endDate: timeStamp(addCarePlanForm.endDate),
+          frequency: addCarePlanForm.frequency,
+          frequencyType: addCarePlanForm.frequencyType,
+          vitalField: 6,
+          highValue: addCarePlanForm.randomBloodSugarHighValue,
+          lowValue: addCarePlanForm.randomBloodSugarLowValue,
+          note: addCarePlanForm.note,
+        }
+        store.dispatch('addCarePlan', {
+          patientId: route.params.udid,
+          data: fbsData
+        }).then(() => {
+          store.dispatch('carePlansList', route.params.udid)
+          formRef.value.resetFields();
+          Object.assign(addCarePlanForm, form)
+          emit('closeModal')
+        })
+        store.dispatch('addCarePlan', {
+          patientId: route.params.udid,
+          data: rbsData
+        }).then(() => {
+          store.dispatch('carePlansList', route.params.udid)
+          formRef.value.resetFields();
+          Object.assign(addCarePlanForm, form)
+          emit('closeModal')
+        })
+      }
     }
     
     const handleCancel = () => {
@@ -171,9 +469,25 @@ export default defineComponent({
       store.dispatch('vitalFieldsByDeviceId', value)
       // vitalFieldsList.value = vitalFields.value
       // console.log('vitalFields.value', vitalFieldsList.value)
+      if(value == 99) {
+        bloodPressureFields.value = true;
+        glucoseFields.value = false;
+        bloodOxygenFields.value = false;
+      }
+      if(value == 100) {
+        bloodOxygenFields.value = true;
+        bloodPressureFields.value = false;
+        glucoseFields.value = false;
+      }
+      if(value == 101) {
+        glucoseFields.value = true;
+        bloodPressureFields.value = false;
+        bloodOxygenFields.value = false;
+      }
     }
 
     return {
+      formRef,
       frequencyTypes,
       deviceTypes,
       addCarePlanForm,
@@ -203,6 +517,9 @@ export default defineComponent({
       value14: ref({
         value: "1",
       }),
+      bloodPressureFields,
+      glucoseFields,
+      bloodOxygenFields,
     };
   },
 });

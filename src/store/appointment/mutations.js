@@ -19,9 +19,10 @@ export const successMsg = (state, data) => {
 export const searchAppointmentSuccess = async (state, data) => {
 
   if (data.key == 3) {
+    
     state.searchAppointmentRecords = responseConvert(state.weekName, data.data, 'dddd')
   } else if(data.key == 4){
-    console.log("clickInfo", data.data )
+    
     state.searchAppointmentRecords = data.data.map((item) => {
       item.title = item.appointmentType
       item.timeGet=item.duration

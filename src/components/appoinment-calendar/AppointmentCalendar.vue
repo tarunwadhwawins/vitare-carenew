@@ -21,7 +21,7 @@
 
             </a-col>
             <a-col :xl="toggle == false ? 24 : 18" :sm="toggle == false ? 24 : 14" :xs="24">
-                <a-tabs v-model:activeKey="activeKey" @change=" (activeKey)">
+                <a-tabs v-model:activeKey="activeKey" @change="tabClick(activeKey)">
 
                     <a-tab-pane key="1" tab="Day">
 
@@ -32,7 +32,7 @@
                     </a-tab-pane>
                     <a-tab-pane key="3" tab="Week">
 
-                        <WeekAppointment @is-dateClick="selectDate($event)" tabName="week"></WeekAppointment>
+                        <WeekAppointment @is-dateClick="selectDate($event)"  tabName="week"></WeekAppointment>
                     </a-tab-pane>
                     <a-tab-pane key="4" tab="Month">
 
@@ -117,6 +117,7 @@ export default {
                 toDate.value = moment().add(1, 'days')
             } else if (value == 3) {
                 datePick = moment(moment().add(1, 'days')).startOf('week')
+                //console.log("week")
                 store.dispatch("weekName", {
                     from: moment(moment().add(1, 'days')).startOf('week'),
                     to: moment(moment()).endOf('week')
@@ -167,14 +168,14 @@ export default {
         })
 
         function searchApi() {
-          console.log("physiciansId.value",appointmentSearch.getStaff)
+         /// console.log("physiciansId.value",appointmentSearch.getStaff)
             store.state.appointment.calendarDate = ''
             store.dispatch("calendarDateSelect", datePick)
             store.dispatch("searchAppointment", {
                 fromDate: fromDate.value,
                 toDate: toDate.value,
                 tabId: activeKey.value,
-                physiciansId: physiciansId.value.join(", ")
+                physiciansId: physiciansId.value.length==0 ?'' : physiciansId.value.join(", ")
             })
         }
         const patientsList = computed(() => {

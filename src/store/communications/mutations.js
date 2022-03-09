@@ -161,3 +161,9 @@ export const searchCommunicationsSuccess = async (state, result) => {
 export const conferenceId = async (state, data) => {
   state.conferenceId = data;
 }
+export const conversation = async (state, data) => {
+  state.conversationList = data;
+}
+export const conversationSend = async (state, data) => {
+  state.conversationSend = data;
+}

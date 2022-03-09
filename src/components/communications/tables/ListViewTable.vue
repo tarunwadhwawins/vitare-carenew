@@ -104,14 +104,15 @@
         <template #title>
           <span>{{ $t("common.reply") }}</span>
         </template>
-        <a class="icons" @click="showModal(record.id)">
+        <a class="icons" @click="showModal(record)">
           <MessageOutlined />
         </a>
       </a-tooltip>
     </template>
   </a-table>
   <InfiniteLoader v-if="loader" />
-  <Chat v-model:visible="visible" @ok="handleOk" @is-visible="handleOk" />
+  
+  <Chat v-model:visible="visible" v-if="communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId"/>
 </template>
 
 <script>
@@ -208,7 +209,7 @@ export default {
       },
     ];
     const store = useStore();
-
+   const communicationId= ref(null)
     const data = reactive(props.communicationsList);
 
     const meta = store.getters.communicationRecord;
@@ -249,7 +250,8 @@ export default {
 
     const visible = ref(false);
     const showModal = (e) => {
-      console.log("check",e)
+     
+      communicationId.value = e
       visible.value = true;
     };
 
@@ -264,6 +266,7 @@ export default {
       visible,
       showModal,
       handleOk,
+      communicationId,
     };
   },
 };
