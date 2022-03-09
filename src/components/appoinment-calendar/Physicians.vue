@@ -80,8 +80,8 @@ export default {
         AddPhysician
     },
     props: {
-        staff: {
-            type: Object
+        physiciansId: {
+            type: Array
         },
     },
     setup(props, {
@@ -98,8 +98,11 @@ export default {
             physicianModal.value = false;
         };
         const staffList = ref([])
-        store.getters.appointmentRecords.value.getStaff.map((item, index) => {
+       props.physiciansId ?  store.getters.appointmentRecords.value.getStaff.map((item) => {       
+                staffList.value.push(item)
+        }) : store.getters.appointmentRecords.value.getStaff.map((item, index) => {
             if (index <= 2) {
+            
                 staffList.value.push(item)
             }
         })
@@ -118,10 +121,8 @@ export default {
 
         function staffAdd() {
             let staffId = []
-            staffList.value.map((item, index) => {
-                if (index <= 2) {
+            staffList.value.map((item) => {  
                     staffId.push(item.id)
-                }
             })
             emit('staff-select', staffId)
         }
