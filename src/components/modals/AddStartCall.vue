@@ -1,5 +1,5 @@
 <template>
-<a-modal width="1000px" title="Start Call" centered :footer="null">
+<a-modal width="1000px" title="Start Call" centered :footer="null" :maskClosable="false">
     <a-form :model="startCall" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="videoCall" @finishFailed="videoCallFailed">
         <a-row :gutter="24">
             <a-col :sm="18" :xs="24">
