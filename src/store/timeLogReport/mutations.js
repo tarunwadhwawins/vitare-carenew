@@ -57,6 +57,9 @@ export const timeLogReportList = async (state, data) => {
     ];
 }
 
+export const reportExport = (state, data) => {
+  state.reportExport = data
+}
 export const editAuditTimeLog = async (state, data) => {
   state.editAuditTimeLog = data
     data.staff = data.staffId,

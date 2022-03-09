@@ -34,7 +34,7 @@
                             </a-col>
                             <a-col :sm="4" :xs="24">
                                 <div class="text-right mt-28">
-                                    <a-button class="btn primaryBtn">{{$t('global.download')}}</a-button>
+                                    <a-button class="btn primaryBtn" @click="reportExport()">{{$t('global.download')}}</a-button>
                                 </div>
                             </a-col>
                         </a-row>
@@ -55,7 +55,7 @@ import Header from "../layout/header/Header";
 import {
     ref,
     watchEffect,
-    reactive
+    reactive,
 } from "vue";
 import {
     startimeAdd,
@@ -88,15 +88,23 @@ export default {
         })
 
         function updateAuditTime() {
-            console.log("harkeemat", timeStamp(startimeAdd(moment(auditTimeLog.startDate))));
             store.getters.timeLogReports.value.timeLogReportList = ""
             store.dispatch("timeLogReportList", "?fromDate=" + timeStamp(startimeAdd(moment(auditTimeLog.startDate))) + "&toDate=" + timeStamp(endTimeAdd(moment(auditTimeLog.endDate))))
         }
 
+        function reportExport() {
+            store.dispatch("reportExport", {
+                reportType: "patient_time_log_report"
+            }).then(() => {
+                const API_URL = process.env.VUE_APP_API_URL
+                window.open(API_URL + 'timelog/report/export/' + store.state.timeLogReport.reportExport.data.udid + '?fromDate=' + timeStamp(startimeAdd(moment(auditTimeLog.startDate))) + '&toDate=' + timeStamp(endTimeAdd(moment(auditTimeLog.endDate))), '_blank')
+            })
+        }
         return {
             linkTo,
             updateAuditTime,
             checked,
+            reportExport,
             auditTimeLog,
             value1: ref(),
             size: ref("large"),
