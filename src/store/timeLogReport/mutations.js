@@ -1,10 +1,10 @@
-import { timerFromTimestamp, timeFormatSimple } from '../../commonMethods/commonMethod';
+import { secondsToTime } from '../../commonMethods/commonMethod';
 
 
 export const timeLogReportList = async (state, data) => {
   state.timeLogeMeta = data.meta.pagination
   state.timeLogReportList = data.data.map(item => {
-    item.timeAmount = timerFromTimestamp(item.timeAmount)
+    item.timeAmount = secondsToTime(item.timeAmount)
     return item
   }),
     state.timeLogReportColumns = [
@@ -64,7 +64,7 @@ export const editAuditTimeLog = async (state, data) => {
   state.editAuditTimeLog = data
     data.staff = data.staffId,
     data.patient = data.patientId
-    data.timeAmount = timeFormatSimple(data.timeAmount)
+    data.timeAmount = secondsToTime(data.timeAmount)
     return data
 }
 
