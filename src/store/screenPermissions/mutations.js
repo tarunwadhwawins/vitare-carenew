@@ -902,3 +902,126 @@ export const patientsPermissions = (state, auth) => {
 
 }
 
+export const communicationPermissions = (state, auth) => {
+  if (auth == 1) {
+    state.communicationPermissions = [{
+      id: 107,
+      name: "Start Call"
+    },
+    {
+      id: 108,
+      name: "End Call"
+    },
+    {
+      id: 109,
+      name: "Send Message"
+    },
+    {
+      id: 110,
+      name: "Export Communications"
+    },
+    {
+      id: 111,
+      name: "Add Notes"
+    }]
+  } else if (auth == 2) {
+    state.communicationPermissions = [{
+      id: 107,
+      name: "Start Call"
+    },
+    {
+      id: 108,
+      name: "End Call"
+    },
+    {
+      id: 109,
+      name: "Send Message"
+    },
+   
+    ]
+  } else if (auth == 3) {
+    state.communicationPermissions = [{
+      id: 107,
+      name: "Start Call"
+    },
+    {
+      id: 108,
+      name: "End Call"
+    },
+    {
+      id: 109,
+      name: "Send Message"
+    }]
+  } else {
+    state.communicationPermissions = []
+  }
+
+}
+
+export const appointmentCalendarPermissions = (state, auth) => {
+  if (auth == 1) {
+    state.appointmentCalendarPermissions = [{
+      id: 112,
+      name: "Add Appointment"
+    }]
+  } else if (auth == 2) {
+    state.appointmentCalendarPermissions = [{
+      id: 112,
+      name: "Add Appointment"
+    }
+    ]
+  }else {
+    state.appointmentCalendarPermissions = []
+  }
+
+}
+
+
+export const tasksDashboardPermissions = (state, auth) => {
+  if (auth == 1) {
+    state.tasksDashboardPermissions = [{
+      id: 113,
+      name: "Add Task"
+    },
+    {
+      id: 114,
+      name: "Filter Tasks"
+    },
+    {
+      id: 115,
+      name: "Edit Task"
+    },
+    {
+      id: 116,
+      name: "Delete Task"
+    },
+    {
+      id: 117,
+      name: "Active/Inactive Task"
+    },
+    {
+      id: 118,
+      name: "Export Tasks"
+    }]
+  } else if (auth == 2) {
+    state.tasksDashboardPermissions = [{
+      id: 113,
+      name: "Add Task"
+    },
+    {
+      id: 114,
+      name: "Filter Tasks"
+    },
+    {
+      id: 117,
+      name: "Active/Inactive Task"
+    },
+    {
+      id: 118,
+      name: "Export Tasks"
+    }]
+  }  else {
+    state.communicationPermissions = []
+  }
+
+}
