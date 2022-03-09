@@ -52,25 +52,12 @@
     </a-layout>
     <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isTimeLog="isTimeLog" :timerValue="formattedElapsedTime" @closeModal="handleOk" @cancel="start" />
     <!-- <TimeTracker v-model:visible="stoptimervisible" @ok="handleOk" /> -->
-    <BloodOxygenDetail v-model:visible="bloodoxygenvisible" @ok="handleOk" />
-    <BloodGlucoseDetail v-model:visible="bloodglucosevisible" @ok="handleOk" />
-    <AddPulse v-model:visible="visible4" @ok="handleOk" />
-    <BloodGlucose v-model:visible="visible5" @ok="handleOk" />
-    <BloodOxygen v-model:visible="visible6" @ok="handleOk" />
-    <FamilyCoordinators v-model:visible="visible9" @ok="handleOk" />
   </div>
 </template>
 
 <script>
 import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/layout/sidebar/Sidebar";
-import FamilyCoordinators from "@/components/modals/FamilyCoordinators";
-import BloodOxygen from "@/components/modals/BloodOxygen";
-import BloodGlucose from "@/components/modals/BloodGlucose";
-import AddPulse from "@/components/modals/AddPulse";
-// import TimeTracker from "@/components/modals/TimeTracker";
-import BloodGlucoseDetail from "@/components/modals/BloodGlucoseDetail";
-import BloodOxygenDetail from "@/components/modals/BloodOxygenDetail";
 import DefaultView from "@/components/patients/patientSummary/views/DefaultView";
 import TimelineView from "@/components/patients/patientSummary/views/TimelineView";
 import CarePlanView from "@/components/patients/patientSummary/views/CarePlanView";
@@ -88,13 +75,7 @@ export default {
   components: {
     Header,
     Sidebar,
-    FamilyCoordinators,
-    BloodOxygen,
-    BloodGlucose,
-    AddPulse,
     // TimeTracker,
-    BloodGlucoseDetail,
-    BloodOxygenDetail,
     DefaultView,
     TimelineView,
     CarePlanView,

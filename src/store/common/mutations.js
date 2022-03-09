@@ -90,6 +90,9 @@ export const globalCodes = (state, data) => {
         if (element.name === 'Frequency Type') {
             state.frequencyTypes = element.globalCode;
         }
+        if (element.name === 'Modules') {
+            state.modules = element;
+        }
         
     });
 
@@ -108,11 +111,6 @@ export const staffListSuccess = (state, data) => {
     });
     state.staffList = staffList;
 }
-
-//  export const errorMsg = (state, data) => {
-//     state.errorMsg = data
-//  }
-
 
 export const loadingStatus = (state, data) => {
     state.loadingStatus = data
