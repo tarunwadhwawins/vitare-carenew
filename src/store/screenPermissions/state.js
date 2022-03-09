@@ -3,5 +3,7 @@ export default {
   globalCodesPermissions: null,
   cptCodePermissions:null,
   programsPermissions:null,
-  providersPermissions:null
+  providersPermissions:null,
+  patientsPermissions:null,
+  staffPermissions:null
 }

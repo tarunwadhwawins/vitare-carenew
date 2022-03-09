@@ -1,6 +1,6 @@
 <template>
 <a-table  rowKey="id" :pagination="false" :columns="staffs.staffContactColms" :data-source="staffs.staffContactList" :scroll="{ x: 900 }">
-    <template #action="text">
+    <template #action="text" v-if="arrayToObjact(staffPermissions,49)">
         <a-tooltip placement="bottom" @click="deleteContact(text.record.id)">
             <template #title>
                 <span>{{$t('global.delete')}}</span>
@@ -21,7 +21,7 @@ import {
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { warningSwal } from "@/commonMethods/commonMethod";
+import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 export default {
   components: {
@@ -54,7 +54,12 @@ export default {
     const staffs = computed(() => {
       return store.state.careCoordinator;
     });
+    const staffPermissions = computed(()=>{
+        return store.state.screenPermissions.staffPermissions
+    })
     return {
+      staffPermissions,
+      arrayToObjact,
       staffs,
       deleteContact,
     };

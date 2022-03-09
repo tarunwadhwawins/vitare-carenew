@@ -231,44 +231,6 @@ export const providers = (state, data) => {
   state.providers = data
 }
 
-
-export const staffPermissions = (state, auth) => {
-  if (auth == 1) {
-    state.staffPermissions = [{
-        id: 1,
-        name: "Add New Coordinator"
-    },
-    {
-        id: 2,
-        name: "Counter Card"
-    },
-    {
-        id: 3,
-        name: "Export to Excel"
-    },
-    {
-        id: 4,
-        name: "List Table"
-    }]
-}else if(auth == 2){
-    state.staffPermissions = [
- {
-     id: 2,
-     name: "Counter Card"
- },
- 
- {
-     id: 4,
-     name: "List Table"
- }]
-}else{
-  state.staffPermissions =[]
-}
-}
-
-
-
-
 export const addStaffDocument = (state, data) => {
   state.addStaffDocument = data
 }
