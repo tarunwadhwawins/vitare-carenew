@@ -27,7 +27,7 @@
             <a-col :md="12" :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.timeAmount')" name="timeAmount" :rules="[{ required: true, message: $t('timeLogs.timeAmount')+' '+$t('global.validation')  }]">
-                        <a-time-picker v-model:value="auditTimeLog.timeAmount" format="HH:mm" value-format="HH:mm" :size="size" style="width: 100%" />
+                        <a-time-picker v-model:value="auditTimeLog.timeAmount" format="HH:mm:ss" value-format="HH:mm:ss" :size="size" style="width: 100%" />
                         <!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.modelNumber?errorMsg.modelNumber[0]:''" /> -->
                     </a-form-item>
                 </div>
