@@ -10,7 +10,7 @@
       <CarePlanTable/>
     </a-col>
   </a-row>
-  <AddCarePlanModal v-model:visible="visibleCarePlanmodal" @closeModal="handleOk" @ok="handleOk" />
+  <AddCarePlanModal v-if="visibleCarePlanmodal" v-model:visible="visibleCarePlanmodal" @closeModal="handleOk" @ok="handleOk" />
 </template>
 
 <script>

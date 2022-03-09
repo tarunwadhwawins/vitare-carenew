@@ -21,6 +21,7 @@ import documents from './english-modules/documents'
 import notes from './english-modules/notes'
 import timeLogs from './english-modules/timeLogs'
 import programs from './english-modules/programs'
+import vitals from './english-modules/vitals'
 
 const english = {
     global,
@@ -45,7 +46,8 @@ const english = {
     documents,
     notes,
     timeLogs,
-    programs
+    programs,
+    vitals,
 }
 
 export default english

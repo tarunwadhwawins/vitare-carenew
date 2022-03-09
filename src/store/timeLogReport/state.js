@@ -3,6 +3,6 @@ export default {
   timeLogReportColumns:null,
   editAuditTimeLog:null,
   timeLogeMeta:null,
-  auditTimePermissions:null
+  auditTimePermissions:null,
  
 }
