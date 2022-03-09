@@ -29,8 +29,9 @@ export const searchAppointment = async ({
       commit('todayAppointmentSuccess', response.data.data) 
     }else{
     commit('searchAppointmentSuccess', {data:response.data.data,key:from.tabId});
-    commit('loadingStatus', false)
+    
     }
+    commit('loadingStatus', false)
   }).catch((error) => {
     
       commit('loadingStatus', false)
@@ -79,7 +80,7 @@ export const appointmentConference = async ({ commit }) => {
 
 ///staff
 export const getStaffs = async ({commit}) => {
- 
+ console.log("staff")
   await serviceMethod.common("get", `staff`, null, null).then((response) => {
     commit('getStaffs', response.data.data);
    

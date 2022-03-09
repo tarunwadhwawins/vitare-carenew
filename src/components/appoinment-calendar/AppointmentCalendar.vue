@@ -12,7 +12,7 @@
                     <a-button class="btn primaryBtn" @click="showModal(true)">
                         {{$t('appointmentCalendar.newAppointment')}}</a-button>
                 </div>
-
+               
                 <Calendar @is-click="selectDate($event)" />
 
                 <Physicians v-if="appointmentSearch.getStaff" @staff-select="staffSelect($event)" :physiciansId="physiciansId" />
@@ -138,19 +138,20 @@ export default {
             store.dispatch("searchAppointment", {
                 fromDate: fromDate.value,
                 toDate: toDate.value,
-                tabId: 4
+                tabId: 4,
+                physiciansId: physiciansId.value.length==0 ?'' : physiciansId.value.join(",")
             })
 
         }
         const appointmentSearch = store.getters.appointmentRecords.value
 
         watchEffect(() => {
-            appointmentSearch.getStaff ? "" : store.dispatch("getStaffs").then(() => {
-                store.getters.appointmentRecords.value.getStaff.map((item, index) => {
-                    if (index <= 2) {
-                        physiciansId.value.push(item.id)
-                    }
-                })
+           appointmentSearch.getStaff ? "" : store.dispatch("getStaffs").then(() => {
+                // store.getters.appointmentRecords.value.getStaff.map((item, index) => {
+                //     if (index <= 2) {
+                //         physiciansId.value.push(item.id)
+                //     }
+                // })
             })
 
             store.dispatch("patientsList")
@@ -160,14 +161,15 @@ export default {
         })
 
         function searchApi() {
-         /// console.log("physiciansId.value",appointmentSearch.getStaff)
+        
+         store.state.appointment.searchAppointmentRecords = ''
             store.state.appointment.calendarDate = ''
             store.dispatch("calendarDateSelect", datePick)
             store.dispatch("searchAppointment", {
                 fromDate: fromDate.value,
                 toDate: toDate.value,
                 tabId: activeKey.value,
-                physiciansId: physiciansId.value.length==0 ?'' : physiciansId.value.join(", ")
+                physiciansId: physiciansId.value.length==0 ?'' : physiciansId.value.join(",")
             })
         }
         const patientsList = computed(() => {
@@ -196,6 +198,7 @@ export default {
         };
 
         const staffSelect = (e) => {
+            console.log("e",e)
             physiciansId.value = e;
            
         }
@@ -227,6 +230,7 @@ export default {
             datePick,
             monthDate,
             staffSelect,
+            physiciansId,
         };
     },
 };

@@ -89,20 +89,18 @@
                     </div>
                 </a-form>
             </div>
-             <div class="steps-content" v-if="steps[current].title == 'Dashboard Widgets'">
+            <div class="steps-content" v-if="steps[current].title == 'Dashboard Widgets'">
                 <h4><strong>Select Widgets</strong></h4>
 
                 <a-form ref="formRef2" :model="dashboardPermission" @finish="dashboardForm" v-if="rolesAndPermissions.dashboardWidget">
                     <a-row>
-                        <a-col :span="24" >
-                            
-                                <div class="screens" v-for="widget in rolesAndPermissions.dashboardWidget" :key="widget.id">
-                                    <a-checkbox v-model:checked="dashboardPermission.widget[widget.id]" ><strong>{{ widget.widgetName }}</strong></a-checkbox>
-                                    
-                                    
-                                   
-                                </div>
-                         
+                        <a-col :span="24">
+
+                            <div class="screens" v-for="widget in rolesAndPermissions.dashboardWidget" :key="widget.id">
+                                <a-checkbox v-model:checked="dashboardPermission.widget[widget.id]"><strong>{{ widget.widgetName }}</strong></a-checkbox>
+
+                            </div>
+
                             <a-divider class="transparent" />
                         </a-col>
                     </a-row>
@@ -176,9 +174,9 @@ export default {
             action: [],
             screen: []
         })
-      const dashboardPermission = reactive({
-          widget:[]
-      })
+        const dashboardPermission = reactive({
+            widget: []
+        })
         const rolesList = rolesAndPermissions.rolesList
 
         const onRoleChange = (event) => {
@@ -227,7 +225,7 @@ export default {
             } else {
                 store.dispatch('addRole', addRoleForm)
             }
-            store.state.rolesAndPermissions.rolesList=""
+            store.state.rolesAndPermissions.rolesList = ""
             store.dispatch('rolesList')
             current.value++;
         }
@@ -259,15 +257,15 @@ export default {
                     check: check
                 })
             }
-current.value++;
-           
+            current.value++;
+
         }
         //dasboard widgets
- const dashboardForm = () =>{
-     let widget = []
-     let check = ''
-    
- dashboardPermission.widget.forEach(function (Element, i) {
+        const dashboardForm = () => {
+            let widget = []
+            let check = ''
+
+            dashboardPermission.widget.forEach(function (Element, i) {
                 if (Element) {
                     widget.push(i);
                     check = Element
@@ -290,28 +288,29 @@ current.value++;
                     id: udid,
                     check: check
                 })
- }
-  reset();
+            }
+            reset();
             rolesAndPermissions.addRole = ''
             emit('on-submit')
-             emit("is-visible", false);
- }
+            emit("is-visible", false);
+        }
+
         function copyPermission() {
             rolesAndPermissions.editRolesAndPermissions.forEach((Element) => {
                 Element.screen.forEach((screenElement) => {
                     screenElement.forEach((getData) => {
-                        getData.action.forEach((action) => {
+                        getData.action ? getData.action.forEach((action) => {
                             action.forEach((getAction) => {
                                 addPermissionsForm.action[getAction.id] = true
                             })
-                        })
+                        }) : ""
                     })
                 })
 
             })
-          rolesAndPermissions.editWidget?  rolesAndPermissions.editWidget.forEach((Element) =>{
-               dashboardPermission.widget[Element.id]= true
-           }) : '' 
+            rolesAndPermissions.editWidget ? rolesAndPermissions.editWidget.forEach((Element) => {
+                dashboardPermission.widget[Element.id] = true
+            }) : ''
 
         }
 
@@ -349,7 +348,7 @@ current.value++;
 
         function reset() {
             //formRef.value.resetFields();
-            formRef2.value.resetFields()
+            //formRef2.value.resetFields()
             Object.assign(addRoleForm, form)
             Object.assign(addPermissionsForm, formSecond)
             Object.assign(dashboardPermission, formThird)
@@ -384,8 +383,8 @@ current.value++;
             formRef2,
             checkAll,
             checkStatus,
-        dashboardForm,
-        dashboardPermission,
+            dashboardForm,
+            dashboardPermission,
             steps: [{
                     title: "Select Role",
                     content: "First-content",

@@ -98,21 +98,27 @@ export default {
             physicianModal.value = false;
         };
         const staffList = ref([])
-       props.physiciansId ?  store.getters.appointmentRecords.value.getStaff.map((item) => {       
-                staffList.value.push(item)
-        }) : store.getters.appointmentRecords.value.getStaff.map((item, index) => {
-            if (index <= 2) {
-            
-                staffList.value.push(item)
-            }
+       
+            console.log(store.getters.appointmentRecords.value.getStaff)
+            props.physiciansId.length==0 ? "" : store.getters.appointmentRecords.value.getStaff.map((item) => {
+           
+                 staffList.value.push(item)
+    
         })
+
+ 
+        //store.getters.appointmentRecords.value.getStaff.map((item, index) => {
+        //     if (index <= 2) {
+            
+        //         staffList.value.push(item)
+        //     }
+       // })
 
         const addStaff = (event) => {
                let objact= arrayToObjact(staffList.value,event.data.id) 
                if(!objact){
-                    
+                    console.log("objact",event.data)
             staffList.value.push(event.data)
-            
             store.getters.appointmentRecords.value.getStaff = staffList.value
             staffAdd()
                }
