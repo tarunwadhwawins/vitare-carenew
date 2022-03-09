@@ -31,8 +31,7 @@
 </a-row>
 <a-row >
     <a-col :span="12">
-        <a-select v-model:value="value2" :size="size" mode="tags" style="width: 100%" placeholder="Search . . ." :options="searchoptions" @change="handleChange">
-        </a-select>
+        <SearchField @change="searchData" />
     </a-col>
     <a-col :span="12" v-if="arrayToObjact(patients.patientsPermissions,3)">
         <div class="text-right mb-24">
@@ -60,6 +59,7 @@ import ShowModalButton from "@/components/common/show-modal-button/ShowModalButt
 import { arrayToObjact } from "@/commonMethods/commonMethod";
 // import { messages } from "../../config/messages";
 import DataTable from "./data-table/DataTable"
+import SearchField from "@/components/common/input/SearchField";
 export default {
   name: "Patients",
   components: {
@@ -68,7 +68,8 @@ export default {
     // WarningOutlined,
     CounterCard,
     ShowModalButton,
-    DataTable
+    DataTable,
+    SearchField,
   },
 
   setup() {
@@ -83,16 +84,16 @@ export default {
     };
     const handleChange = () => {};
 
+    const searchData = (value) => {
+        console.log('searchPatients', value)
+    };
+
     watchEffect(() => {
       store.getters.patientsRecord.patientList=""
       store.dispatch("programList");
       store.dispatch("patients");
     });
 
-   
-
- 
-     
 
     return {
       arrayToObjact,
@@ -104,7 +105,7 @@ export default {
       size: ref(),
       value2: ref(),
       patients:store.getters.patientsRecord,
-     
+      searchData,     
     };
   },
 };

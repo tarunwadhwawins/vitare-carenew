@@ -791,3 +791,16 @@ export const addVital = async ({ commit }, data) => {
     commit('loadingStatus', false)
 	})
 }
+
+export const searchPatients = async ({ commit }, param) => {
+  console.log('param', param)
+  commit('loadingStatus', true)
+	await serviceMethod.common("post", API_ENDPOINTS['patient']+'?search='+param, null, null).then(() => {
+    commit('searchPatients', false)
+    commit('loadingStatus', false)
+	})
+	.catch((error) => {
+		commit('failure', error);
+    commit('loadingStatus', false)
+	})
+}

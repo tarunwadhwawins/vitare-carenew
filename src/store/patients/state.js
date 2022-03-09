@@ -63,4 +63,5 @@ export default {
     bloodOxygenColumns:null,
     bloodGlucoseColumns:null,
 
+    searchPatients:null,
 }

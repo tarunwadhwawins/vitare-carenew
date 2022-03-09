@@ -981,3 +981,7 @@ export const patientVitals = (state, vitals) => {
     // state.bloodGlucoseColumns = null;
   }
 }
+
+export const searchPatients = (state, results) => {
+  state.searchPatients = results
+}
