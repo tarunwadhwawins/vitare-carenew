@@ -17,7 +17,7 @@ export const successMsg = (state, data) => {
   state.successMsg = data
 }
 export const searchAppointmentSuccess = async (state, data) => {
-
+  state.searchAppointmentRecords= ''
   if (data.key == 3) {
     
     state.searchAppointmentRecords = responseConvert(state.weekName, data.data, 'dddd')
@@ -81,7 +81,7 @@ export const appointmentConference = (state, data) => {
 
 
 export const getStaffs = async (state, data) => {
-  console.log("data",data)
+ 
   state.getStaff = data;
 }
 

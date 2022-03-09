@@ -25,9 +25,20 @@ export const login = async ({ commit }, user) => {
 	await ServiceMethodService.common("get", "staff/access", null, null).then((response) => {
 		commit('accessPermission', response.data.data.length)
 		localStorage.setItem('accessPermission', response.data.data.length)
-		console.log("access",response.data.data)
+		console.log("access",response.data)
 		localStorage.setItem('access', true)
 		localStorage.setItem('roleAuth', response.data.data[0]?response.data.data[0].roleId:'');
+		permission({commit})
+		
+	})
+	.catch((error) => {
+		errorSwal(error.response.data.message)
+	})
+}
+const permission = async () =>{
+	await ServiceMethodService.common("get", "staff/access/action", null, null).then((response) => {
+		localStorage.setItem('permission', JSON.stringify(response.data))
+		console.log("access",response.data)
 		router.push({
             path: "/dashboard",
           });
@@ -44,6 +55,7 @@ export const logoutUser = async ({ commit }) => {
 	localStorage.removeItem('roleAuth');
 	localStorage.removeItem('access');
 	localStorage.removeItem('accessPermission');
+	localStorage.removeItem('permission');
 	commit('logoutSuccess', 'Success');
 	router.push("/")
 	

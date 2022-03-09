@@ -12,9 +12,10 @@
           </div>
         </h2>
       </a-col>
+      
       <a-col :span="24">
 
-        <a-row :gutter="24" v-if="arrayToObjact(permission,1) && grid">
+        <a-row :gutter="24" v-if="permission.widgetId.find(o => o===1) && grid">
 
           <Card v-for="item in totalPatients" :key="item.count" :count="item.total" :text='item.text'
             link="manage-patients" :xl="grid.xlGrid" :color="item.color" :sm="grid.smGrid" :textColor="item.textColor">
@@ -24,25 +25,25 @@
       </a-col>
     </a-row>
     <a-row :gutter="24">
-      <Appointement v-if="arrayToObjact(permission,2) && todayAppointment" :appointment="todayAppointment" :columns="columns4"
+      <Appointement v-if="permission.widgetId.find(o => o===2) && todayAppointment" :appointment="todayAppointment" :columns="columns4"
         :title="$t('dashboard.todayAppointment')">
       </Appointement>
 
-      <a-col :sm="12" :xs="24" v-if="arrayToObjact(permission,3) && callStatus">
+      <a-col :sm="12" :xs="24" v-if="permission.widgetId.find(o => o===3) && callStatus">
         <ApexChart :title="$t('global.callQueue')" type="bar" :height="250" :options="callStatus.calloption"
           :series="callStatus.callseries" linkTo="communications" />
       </a-col>
 
 
 
-      <a-col :sm="12" :xs="24" v-if="arrayToObjact(permission,4) &&  patientsCondition">
+      <a-col :sm="12" :xs="24" v-if="permission.widgetId.find(o => o===4) &&  patientsCondition">
 
         <ApexChart title="Patients Stats" type="bar" :height="412" :options="patientsCondition.option1"
           :series="patientsCondition.series1" linkTo="manage-patients">
         </ApexChart>
 
       </a-col>
-      <a-col :sm="12" :xs="24" v-if="arrayToObjact(permission,5) &&  specialization">
+      <a-col :sm="12" :xs="24" v-if="permission.widgetId.find(o => o===5) &&  specialization">
         <a-card :title="$t('dashboard.careCoordinatorStats') " class="common-card">
           <a-tabs default-active-key="activeKey1">
             <a-tab-pane key="1" tab="Specialization" v-if="specialization">
@@ -59,13 +60,13 @@
       </a-col>
 
 
-      <a-col :sm="12" :xs="24" v-if="arrayToObjact(permission,6) &&  specialization">
+      <a-col :sm="12" :xs="24" v-if="permission.widgetId.find(o => o===6) &&  specialization">
 
         <ApexChart :title="$t('dashboard.cPTCodeBillingSummary')" type="bar" :height="350" :options="cptCodeValue.code"
           :series="cptCodeValue.value" linkTo="cpt-codes"></ApexChart>
 
       </a-col>
-      <a-col :sm="12" :xs="24" v-if="arrayToObjact(permission,7) && specialization">
+      <a-col :sm="12" :xs="24" v-if="permission.widgetId.find(o => o===7) && specialization">
 
         <!-- <div class="list-group">
                   <div class="list-group-item">
@@ -77,14 +78,14 @@
           :series="financialValue.due" linkTo="time-tracking-report"></ApexChart>
       </a-col>
 
-      <a-col :sm="12" :xs="24" v-if="arrayToObjact(permission,8) && totalPatientsChartValue">
+      <a-col :sm="12" :xs="24" v-if="permission.widgetId.find(o => o===8) && totalPatientsChartValue">
 
         <ApexChart :title="$t('dashboard.newPatientsChart')" type="area" :height="350"
           :options="totalPatientsChartValue.chartOptions" :series="totalPatientsChartValue.series"
           linkTo="manage-patients"></ApexChart>
 
       </a-col>
-      <a-col :sm="12" :xs="24" v-if="arrayToObjact(permission,9) && appointmentChartValue">
+      <a-col :sm="12" :xs="24" v-if="permission.widgetId.find(o => o===9) && appointmentChartValue">
         <ApexChart :title="$t('dashboard.appointmentSummary')" type="area" :height="350"
           :options="appointmentChartValue.chartOptions" :series="appointmentChartValue.series"
           linkTo="appointment-calendar"></ApexChart>
@@ -228,11 +229,10 @@
       const timeLineButton = computed(() => {
         return store.state.dashBoard.timeLineButton
       })
-      const permission = computed(() => {
-        return store.state.dashBoard.permissions
-      })
-
+      const permission = JSON.parse(localStorage.getItem("permission"))
+     
       function apiCall(data) {
+       
         store.dispatch("permissions")
         store.dispatch("counterCard", data.value)
         store.dispatch("searchAppointment", { fromDate: fromDate.value, toDate: toDate.value, tabId: "today" })
@@ -327,6 +327,7 @@
         showButton,
         timeline,
         permission,
+       
         arrayToObjact,
       };
     },

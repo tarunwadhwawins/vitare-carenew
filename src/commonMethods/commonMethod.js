@@ -167,6 +167,7 @@ export function timeStampToTime(time,format){
   return moment.unix(time).format(format)
 }
 export function arrayToObjact(data,id){
+  //console.log("data",data)
 return data.find(o => o.id===id)
 }
 export function startimeAdd(value){
