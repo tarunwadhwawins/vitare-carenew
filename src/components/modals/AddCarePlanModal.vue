@@ -487,6 +487,7 @@ export default defineComponent({
     }
 
     return {
+      formRef,
       frequencyTypes,
       deviceTypes,
       addCarePlanForm,
