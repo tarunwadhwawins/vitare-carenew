@@ -9,6 +9,8 @@ export const permissions = async ({commit}) => {
 	commit('cptCodePermissions', localStorage.getItem('roleAuth'))
 	commit('programsPermissions', localStorage.getItem('roleAuth'))
 	commit('providersPermissions', localStorage.getItem('roleAuth'))
-	
-	
+	commit('communicationPermissions', localStorage.getItem('roleAuth'))
+	commit('appointmentCalendarPermissions', localStorage.getItem('roleAuth'))
+	commit('tasksDashboardPermissions', localStorage.getItem('roleAuth'))
+
 }

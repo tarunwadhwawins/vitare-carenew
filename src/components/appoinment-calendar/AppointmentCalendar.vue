@@ -1,16 +1,14 @@
 <template>
 <div>
     <!---->
-
     <a-layout-content v-if="appointmentSearch.searchAppointmentRecords">
-
         <Title :title="$t('appointmentCalendar.appointmentCalendar')" @calenderToggle="calenderView($event)" :isActive="toggle" :button="{
             fullCalendarView: $t('appointmentCalendar.fullCalendarView'),
             hideCalendarView:$t('appointmentCalendar.hideCalendarView')
           }" />
         <a-row :gutter="24">
             <a-col :xl="6" :sm="10" :xs="24" v-show="toggle">
-                <div class="apptBtn">
+                <div class="apptBtn" v-if="arrayToObjact(appointmentCalendarPermissions,112)">
                     <a-button class="btn primaryBtn" @click="showModal(true)">
                         {{$t('appointmentCalendar.newAppointment')}}</a-button>
                 </div>
@@ -53,23 +51,17 @@
 
 <script>
 import AddAppointment from "@/components/modals/AddAppointment";
-
 import Title from "./Title"
 import Calendar from "./Calendar"
 import Physicians from "./Physicians"
 import DayAppointment from "./DayAppointment"
 import MonthAppointment from "./MonthAppointment"
 import WeekAppointment from "./WeekAppointment"
-import {
-    ref,
-    watchEffect,
-    computed
-} from "vue";
-import {
-    useStore
-} from "vuex"
+import {ref,watchEffect,computed} from "vue";
+import {useStore} from "vuex"
 import moment from "moment"
 import Loader from "../loader/Loader"
+import {arrayToObjact} from "@/commonMethods/commonMethod"
 //import Loader from "../loader/Loader"
 export default {
     components: {
@@ -207,7 +199,13 @@ export default {
            
         }
 
+        const appointmentCalendarPermissions = computed(()=>{
+            return store.state.screenPermissions.appointmentCalendarPermissions
+        })
+
         return {
+            appointmentCalendarPermissions,
+            arrayToObjact,
             month,
             appointmentSearch,
             maskebale,

@@ -5,5 +5,8 @@ export default {
   programsPermissions:null,
   providersPermissions:null,
   patientsPermissions:null,
-  staffPermissions:null
+  staffPermissions:null,
+  communicationPermissions:null,
+  appointmentCalendarPermissions:null,
+  tasksDashboardPermissions:null
 }

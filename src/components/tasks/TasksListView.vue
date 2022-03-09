@@ -3,7 +3,7 @@
     <a-col :span="12">
       <SearchField @change="handleChange"/>
     </a-col>
-    <a-col :span="12">
+    <a-col :span="12" v-if="arrayToObjact(tasksDashboardPermissions,118)">
       <div class="text-right mb-24">
         <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
       </div>
@@ -18,13 +18,12 @@
 
 <script>
 
-import { ref, watchEffect } from "vue";
+import { ref, watchEffect,computed } from "vue";
 import { useStore } from "vuex"
 // import swal from 'sweetalert2';
 import SearchField from "@/components/common/input/SearchField";
-
-
- import TaskTable from "./TaskTable"
+import TaskTable from "./TaskTable"
+import { arrayToObjact } from "@/commonMethods/commonMethod";
 
 export default {
   components: {
@@ -57,8 +56,12 @@ export default {
       // console.log('createAppointment', id)
     };
     const tasksList = store.getters.taskRecords.value
-
+    const tasksDashboardPermissions = computed(()=>{
+      return store.state.screenPermissions.tasksDashboardPermissions
+    })
    return {
+     tasksDashboardPermissions,
+      arrayToObjact,
       size: ref([]),
       handleChange,
       // tasksColumns,
