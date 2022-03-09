@@ -1,5 +1,5 @@
 <template>
-  <a-col :sm="24" v-if="arrayToObjact(tasks.taskPermissions,6)">
+  <a-col :sm="24" >
     <a-table  rowKey="id" 
     :columns="fields"
     :data-source="data"
@@ -18,14 +18,14 @@
        {{i==0?' ':','}} {{ category }}
       </span>
     </template>
-    <template #action="{ record }" v-if="arrayToObjact(tasks.taskPermissions,7)">
+    <template #action="{ record }" v-if="arrayToObjact(tasksDashboardPermissions,115)">
       <a-tooltip placement="bottom">
         <template #title>
           <span>{{ $t('global.edit') }}</span>
         </template>
         <a class="icons"><EditOutlined @click="editTask(record.id)" /></a>
       </a-tooltip>
-      <a-tooltip placement="bottom">
+      <a-tooltip placement="bottom" v-if="arrayToObjact(tasksDashboardPermissions,116)">
         <template #title>
           <span>{{$t('global.delete')}}</span>
         </template>
@@ -120,7 +120,11 @@ export default {
      const tasks = computed(()=>{
       return store.state.tasks
     })
+    const tasksDashboardPermissions = computed(()=>{
+      return store.state.screenPermissions.tasksDashboardPermissions
+    })
     return {
+      tasksDashboardPermissions,
       tasks,
       arrayToObjact,
       editTask,

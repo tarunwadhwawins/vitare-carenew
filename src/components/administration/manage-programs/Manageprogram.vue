@@ -13,16 +13,16 @@
                         <a-col :span="24">
                             <h2 class="pageTittle">
                                 Programs
-                                <div class="commonBtn">
+                                <div class="commonBtn" v-if="arrayToObjact(programsPermissions,15)">
                                     <a-button class="btn primaryBtn" @click="showModal(true)">Add New Program</a-button>
                                 </div>
                             </h2>
                         </a-col>
-                        <a-col :span="12">
+                        <a-col :span="12" v-if="arrayToObjact(programsPermissions,20)">
                             <a-select v-model:value="value2" :size="size" mode="tags" style="width: 100%" placeholder="Search . . ." :options="searchoptions" @change="handleChange2">
                             </a-select>
                         </a-col>
-                        <a-col :span="12">
+                        <a-col :span="12" v-if="arrayToObjact(programsPermissions,19)">
                             <div class="text-right mb-24">
                                 <a-button class="primaryBtn">Export to Excel</a-button>
                             </div>
@@ -44,32 +44,11 @@
 import Header from "@/components/administration/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import AdminPrograms from "@/components/modals/AdminPrograms";
-import { ref,watchEffect } from "vue";
+import { ref,watchEffect,computed } from "vue";
 import ProgramTable from "./ProgramTable"
 import { useStore } from "vuex";
-// const data = [
-//   {
-//     key: "1",
-//     name: "RPM - Remote Patient Monitor",
-//     description: "Lorem Ipsum",
-//     active: "",
-//     action: "",
-//   },
-//   {
-//     key: "2",
-//     name: "BHI - Behaviour Health Integration",
-//     description: "Lorem Ipsum",
-//     active: "",
-//     action: "",
-//   },
-//   {
-//     key: "3",
-//     name: "CCM - Chronic Care Management",
-//     description: "Lorem Ipsum",
-//     active: "",
-//     action: "",
-//   },
-// ];
+import { arrayToObjact } from "@/commonMethods/commonMethod";
+
 export default {
     components: {
         Header,
@@ -117,7 +96,12 @@ export default {
             visible.value = e.check;
             //console.log("check",programId.value)
         }
+        const programsPermissions = computed(()=>{
+            return store.state.screenPermissions.programsPermissions
+        })
         return {
+            arrayToObjact,
+            programsPermissions,
             programId,
             showEdit,
             handleChange2,

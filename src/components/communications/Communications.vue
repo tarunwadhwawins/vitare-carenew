@@ -1,70 +1,59 @@
 <template>
-  <div>
+<div>
     <a-layout>
-      <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
-        <Header />
-      </a-layout-header>
-      <a-layout>
-        <a-layout-sider
-          :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"
-          ><Sidebar
-        /></a-layout-sider>
-        <a-layout-content>
-          <a-row>
-            <a-col :span="24">
-              <h2 class="pageTittle">
-                {{ $t('communications.communications') }}
-                <div class="addtaskButton">
-                  <StartCall @click="showStartCallModal"></StartCall>
-                  <SendMessage></SendMessage>
-                  <ToolTip :boxTitle="$t('communications.communicationsModal.email')"  boxName="email" @open="openNotification($event)"></ToolTip>
-                  <ToolTip :boxTitle="$t('communications.communicationsModal.sms')"  boxName="sms" @open="openNotification($event)"></ToolTip>
-                  <ToolTip :boxTitle="$t('communications.communicationsModal.reminder')"  boxName="reminder" @open="openNotification($event)"></ToolTip>
-                  <ToolTip :boxTitle="$t('communications.communicationsModal.call')"  boxName="call" @open="openNotification($event)"></ToolTip>
-                </div>
-                
-      
-        <div class="filter" >
-                  <button class="btn" :class="toggle ? 'active' : ''" @click="toggle = !toggle">
-                    <span class="btn-content">{{ $t('communications.dashboardView') }}</span>
-                  </button>
-                  <button
-                    class="btn"
-                    :class="toggle ? '' : 'active'"
-                    @click="toggle = !toggle"
-                  >
-                    <span class="btn-content">{{ $t('global.listView') }}</span>
-                  </button>
-                </div>
-
-              </h2>
-            </a-col>
-            
-            <a-col :span="24">
-              <!-- Dashboard View -->
-              <div class="dashboard-view" v-show="toggle">
-                <DashboardView/>
-              </div>
-              <!-- List View -->
-              <div class="list-view" v-show="!toggle">
-                <ListView/>
-              </div>
-            </a-col>
-
-            <a-col :span="24"> </a-col>
-          </a-row>
-        </a-layout-content>
-      </a-layout>
+        <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
+            <Header />
+        </a-layout-header>
+        <a-layout>
+            <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
+                <Sidebar />
+            </a-layout-sider>
+            <a-layout-content>
+                <a-row>
+                    <a-col :span="24">
+                        <h2 class="pageTittle">
+                            {{ $t('communications.communications') }}
+                            <div class="addtaskButton">
+                                <StartCall @click="showStartCallModal" v-if="arrayToObjact(communicationPermissions,107)"></StartCall>
+                                <SendMessage v-if="arrayToObjact(communicationPermissions,109)"></SendMessage>
+                                <ToolTip :boxTitle="$t('communications.communicationsModal.email')" boxName="email" @open="openNotification($event)"></ToolTip>
+                                <ToolTip :boxTitle="$t('communications.communicationsModal.sms')" boxName="sms" @open="openNotification($event)"></ToolTip>
+                                <ToolTip :boxTitle="$t('communications.communicationsModal.reminder')" boxName="reminder" @open="openNotification($event)"></ToolTip>
+                                <ToolTip :boxTitle="$t('communications.communicationsModal.call')" boxName="call" @open="openNotification($event)"></ToolTip>
+                            </div>
+                            <div class="filter">
+                                <button class="btn" :class="toggle ? 'active' : ''" @click="toggle = !toggle">
+                                    <span class="btn-content">{{ $t('communications.dashboardView') }}</span>
+                                </button>
+                                <button class="btn" :class="toggle ? '' : 'active'" @click="toggle = !toggle">
+                                    <span class="btn-content">{{ $t('global.listView') }}</span>
+                                </button>
+                            </div>
+                        </h2>
+                    </a-col>
+                    <a-col :span="24">
+                        <!-- Dashboard View -->
+                        <div class="dashboard-view" v-show="toggle">
+                            <DashboardView />
+                        </div>
+                        <!-- List View -->
+                        <div class="list-view" v-show="!toggle">
+                            <ListView />
+                        </div>
+                    </a-col>
+                    <a-col :span="24"> </a-col>
+                </a-row>
+            </a-layout-content>
+        </a-layout>
 
     </a-layout>
-  <AddStartCall v-model:visible="AddStartCall" @ok="startOk" />
-  </div>
+    <AddStartCall v-model:visible="AddStartCall" @ok="startOk" />
+</div>
 </template>
-
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { ref, h } from "vue";
+import { ref, h,computed } from "vue";
 import DashboardView from "@/components/communications/DashboardView";
 import ListView from "@/components/communications/ListView";
 import StartCall from "@/components/communications/top/StartCall";
@@ -72,7 +61,8 @@ import SendMessage from "@/components/communications/top/SendMessage";
 import ToolTip from "@/components/communications/toolTip/ToolTip";
 import { notification, Button } from "ant-design-vue";
 import AddStartCall from "@/components/modals/AddStartCall";
-//import { useStore } from "vuex";
+import { useStore } from "vuex";
+import {arrayToObjact} from "@/commonMethods/commonMethod"
 const close = () => {
   // console.log(
   //   "Notification was closed. Either the close button was clicked or duration time elapsed."
@@ -95,9 +85,8 @@ export default {
     const toggle = ref(true);
     const AddStartCall = ref()
     const handleChange = () => {
-      // console.log(`selected ${value}`);
     };
-    //const store = useStore()
+    const store = useStore()
     const openNotification = (data) => {
       var key = `open${Date.now()}`;
       var message = "";
@@ -186,7 +175,13 @@ export default {
       AddStartCall.value =false
     }
 
+    const communicationPermissions = computed(()=>{
+      return store.state.screenPermissions.communicationPermissions
+    })
+
     return {
+      communicationPermissions,
+      arrayToObjact,
       closeStartCallModal,
       showStartCallModal,
       AddStartCall,
@@ -201,4 +196,3 @@ export default {
   },
 };
 </script>
-

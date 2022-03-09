@@ -20,7 +20,6 @@ export default{
     providerListColms:null,
     roles:null,
     providers:null,
-    staffPermissions:[],
     staffMeta:null,
     addStaffDocument:null,
     staffDocuments:null

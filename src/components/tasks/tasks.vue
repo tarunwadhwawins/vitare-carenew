@@ -1,30 +1,27 @@
 <template>
   <div>
     <a-layout>
-
       <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
         <Header />
       </a-layout-header>
-
       <a-layout>
         <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0, }">
           <Sidebar />
         </a-layout-sider>
-
         <a-layout-content>
           <div class="tasks">
             <a-row>
               <a-col :span="24">
                 <h2 class="pageTittle">
                   {{$t('tasks.tasks')}}
-                  <div class="addtaskButton"  v-if="arrayToObjact(tasks.taskPermissions,1)">
+                  <div class="addtaskButton"  v-if="arrayToObjact(tasksDashboardPermissions,113)">
                     <Button :name="buttonName" @click="showModal" />
                   </div>
                   <div class="filter">
-                    <button class="btn" :class="toggle ? 'active' : ''" @click="toggleButton()"  v-if="arrayToObjact(tasks.taskPermissions,2)">
+                    <button class="btn" :class="toggle ? 'active' : ''" @click="toggleButton()"  >
                       <span class="btn-content">{{$t('tasks.dashboardView')}}</span>
                     </button>
-                    <button class="btn" :class="toggle ? '' : 'active'" @click="toggleButton()" v-if="arrayToObjact(tasks.taskPermissions,3)">
+                    <button class="btn" :class="toggle ? '' : 'active'" @click="toggleButton()">
                       <span class="btn-content">{{$t('global.listView')}}</span>
                     </button>
                   </div>
@@ -101,7 +98,11 @@ export default {
     const tasks = computed(()=>{
       return store.state.tasks
     })
+    const tasksDashboardPermissions = computed(()=>{
+      return store.state.screenPermissions.tasksDashboardPermissions
+    })
     return {
+      tasksDashboardPermissions,
       tasks,
       arrayToObjact,
       toggleButton,

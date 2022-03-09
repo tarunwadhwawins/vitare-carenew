@@ -597,42 +597,7 @@ export const deleteDocument = (state, data) => {
  }
 
 
- export const patientsPermissions = (state, auth) => {
-  if (auth == 1) {
-
-    state.patientsPermissions = [{
-        id: 1,
-        name: "Add New Patients"
-    },
-
-    {
-        id: 2,
-        name: "Counter Card"
-    },
-    {
-        id: 3,
-        name: "Export to Excel"
-    },
-    {
-        id: 4,
-        name: "List Table"
-    }]
-}else if(auth == 2){
-    state.patientsPermissions = [
- {
-     id: 2,
-     name: "Counter Card"
- },
  
- {
-     id: 4,
-     name: "List Table"
- }]
-}else{
-  state.patientsPermissions =[]
-}
-
-}
 
 
 

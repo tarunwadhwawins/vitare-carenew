@@ -13,7 +13,7 @@
                         <a-col :span="24">
                             <h2 class="pageTittle">
                                 {{ pageTitle }}
-                                <div class="commonBtn">
+                                <div class="commonBtn" v-if="arrayToObjact(roleAndPermissions,1)">
                                     <Button :name="buttonName" @click="showModal(true)" />
                                 </div>
                             </h2>
@@ -22,7 +22,7 @@
                             <SearchField @change="searchData" />
                         </a-col>
                         <a-col :span="12">
-                            <div class="text-right mb-24">
+                            <div class="text-right mb-24" v-if="arrayToObjact(roleAndPermissions,5)">
                                 <Button :name="exportButtonName" />
                             </div>
                         </a-col>
@@ -48,9 +48,9 @@ import RolesAndPermissionsTable from "@/components/administration/rolesAndPermis
 import SearchField from "@/components/common/input/SearchField";
 import RolesAndPermissionsModal from "@/components/modals/RolesAndPermissionsModal";
 import Button from "@/components/common/button/Button";
-import {
-    ref
-} from "vue";
+import {computed,ref} from "vue";
+import {useStore } from "vuex"
+import { arrayToObjact } from "@/commonMethods/commonMethod";
 export default {
     components: {
         Header,
@@ -62,9 +62,10 @@ export default {
     },
 
     setup() {
-        const visible = ref(false);
-        const roleId = ref(null);
+        const visible = ref(false)
+        const roleId = ref(null)
         const editRole = ref(null)
+        const store = useStore()
         const showModal = (e) => {
             visible.value = e;
             if (e.id) {
@@ -89,7 +90,13 @@ export default {
 
         const searchData = () => {};
 
+        const roleAndPermissions = computed(()=>{
+            return store.state.screenPermissions.roleAndPermissions
+        })
+
         return {
+            arrayToObjact,
+            roleAndPermissions,
             roleId,
             visible,
             showModal,

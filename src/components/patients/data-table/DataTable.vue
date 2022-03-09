@@ -1,7 +1,10 @@
 <template>
 <a-table  rowKey="id" :columns="fields" :data-source="data" :scroll="{ y: 300 ,x: 1200}" :pagination=false>
-    <template #firstName="{text, record}">
+    <template #firstName="{text, record}" v-if="arrayToObjact(patientsPermissions,65)">
         <router-link :to="{ name: 'PatientSummary', params: { udid:record.id  }}">{{ text }}</router-link>
+    </template>
+     <template #firstName="{text}" v-else>
+        <span>{{ text }}</span>
     </template>
     <template #flags="text">
         <span class="box" :style="{'background-color':text.text}"></span>
@@ -24,9 +27,10 @@
 
 <script>
 import { WarningOutlined } from "@ant-design/icons-vue";
-import { ref, reactive,  onMounted } from "vue"
+import { ref, reactive,  onMounted,computed } from "vue"
 import { useStore } from "vuex";
 import InfiniteLoader from "@/components/loader/InfiniteLoader";
+import { arrayToObjact } from "@/commonMethods/commonMethod";
 export default {
     name: "DataTable",
     components: {
@@ -78,8 +82,12 @@ export default {
             });
             loader.value = false
         }
-
+        const patientsPermissions=computed(()=>{
+            return store.state.screenPermissions.patientsPermissions
+        })
         return {
+            patientsPermissions,
+            arrayToObjact,
             fields,
             data,
             loader

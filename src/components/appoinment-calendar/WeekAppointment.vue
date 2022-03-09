@@ -1,6 +1,6 @@
 <template>
   <a-row>
-    <a-col :span="12">
+    <!-- <a-col :span="12">
       <div class="calenderLeftRightBtn">
         <a-button type="primary">
           <template #icon>
@@ -16,11 +16,12 @@
     </a-col>
     <a-col :span="12">
       <h3>March 02, 2022</h3>
-    </a-col>
+    </a-col> -->
     <a-col :span="24">
       <div class="dayCalendar">
         <Loader />
         <table class="table table-bordered" v-if="appointmentSearch">
+         
           <tbody v-for="(week, k) in appointmentSearch" :key="k">
             <tr>
               <th>{{ week.time }}</th>
@@ -51,14 +52,14 @@ import { useStore } from "vuex";
 import AppointmentCardList from "./AppointmentCardList";
 import Loader from "../loader/Loader";
 import { dateFormat } from "../../commonMethods/commonMethod";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons-vue";
+//import { LeftOutlined, RightOutlined } from "@ant-design/icons-vue";
 
 export default {
   components: {
     AppointmentCardList,
     Loader,
-    LeftOutlined,
-    RightOutlined,
+   // LeftOutlined,
+    //RightOutlined,
   },
   props: {},
   setup(props, { emit }) {

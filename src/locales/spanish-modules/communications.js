@@ -2,6 +2,7 @@ const communications = {
   communications: 'Comunicaciones',
   startCall: 'Iniciar llamada',
   sendMessage: 'Enviar mensaje',
+  conversation:'Crear conversación',
   SMS: 'SMS',
   reminder: 'Recordatorio',
   call: 'Llamar',

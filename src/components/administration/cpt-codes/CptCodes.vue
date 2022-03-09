@@ -11,16 +11,16 @@
                     <a-col :span="24">
                         <h2 class="pageTittle">
                             CPT Codes
-                            <div class="commonBtn">
+                            <div class="commonBtn" v-if="arrayToObjact(cptCodePermissions,9)">
                                 <Button :name="buttonName" @click="showModal(true)" />
                             </div>
                         </h2>
                     </a-col>
-                    <a-col :span="12">
+                    <a-col :span="12" v-if="arrayToObjact(cptCodePermissions,14)">
                         <SearchField @change="searchData" />
                     </a-col>
                     <a-col :span="12">
-                        <div class="text-right mb-24">
+                        <div class="text-right mb-24" v-if="arrayToObjact(cptCodePermissions,13)">
                             <a-button class="primaryBtn">Export to Excel</a-button>
                         </div>
                     </a-col>
@@ -45,12 +45,10 @@ import Header from "@/components/administration/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import CptCodesModal from "@/components/modals/CptCodesModal";
 import CptCodesTable from "@/components/administration/cpt-codes/tables/CptCodesTable";
-import {
-    ref,
-    watchEffect
-} from "vue";
+import {computed, ref,watchEffect} from "vue";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
+import { arrayToObjact } from "@/commonMethods/commonMethod";
 import {
     useStore
 } from "vuex"
@@ -95,58 +93,14 @@ export default {
 
         })
         const cptCodesList = store.getters.cptRecords.value
-        // const cptCodesList = [
-        //   {
-        //     key: 1,
-        //     cpt: "90791",
-        //     description: "Evaluation",
-        //     billing: "$150",
-        //     active: "",
-        //     action: "",
-        //   },
-        //   {
-        //     key: 2,
-        //     cpt: "90832",
-        //     description: "LCSW Ongoing Services",
-        //     billing: "$200",
-        //     active: "",
-        //     action: "",
-        //   },
-        //   {
-        //     key: 3,
-        //     cpt: "96130",
-        //     description: "Deep Dive",
-        //     billing: "$120",
-        //     active: "",
-        //     action: "",
-        //   },
-        //   {
-        //     key: 4,
-        //     cpt: "96138",
-        //     description: "M3 Screening - MSW",
-        //     billing: "$160",
-        //     active: "",
-        //     action: "",
-        //   },
-        //   {
-        //     key: 5,
-        //     cpt: "99358",
-        //     description: "Patient Discharge",
-        //     billing: "$300",
-        //     active: "",
-        //     action: "",
-        //   },
-        //   {
-        //     key: 6,
-        //     cpt: "99453",
-        //     description: "(ES Team) Setup and patient education for use of RPM equipment",
-        //     billing: "$150",
-        //     active: "",
-        //     action: "",
-        //   },
-        // ];
 
+        const cptCodePermissions = computed(()=>{
+            return store.state.screenPermissions.cptCodePermissions
+        })
+        
         return {
+            cptCodePermissions,
+            arrayToObjact,
             cptCodesList,
             searchData,
             visible,

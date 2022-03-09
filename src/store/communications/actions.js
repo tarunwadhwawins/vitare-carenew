@@ -114,3 +114,26 @@ export const searchCommunications = async ({ commit }, params) => {
 		commit('failure', error.response.data);
 	})
 }
+
+export const conversation = async ({ commit }, id) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['conversation']+"?conversationId="+id, null, null).then((response) => {
+		commit('conversation', response.data.data);
+	})
+	.catch((error) => {
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}
+export const conversationSend = async ({ commit },data) => {
+	await ServiceMethodService.common("post", API_ENDPOINTS['conversationSend'], null, data).then((response) => {
+		commit('conversationSend', response.data.data);
+	})
+	.catch((error) => {
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}

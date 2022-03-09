@@ -1,11 +1,11 @@
 
 <template>
-<a-row v-if="arrayToObjact(patients.patientsPermissions,1)">
+<a-row v-if="arrayToObjact(patientsPermissions,62)">
     <a-col :span="24" >
         <ShowModalButton @isVisible="showModal($event)" :headingText="$t('patient.patients')" :buttonText="$t('patient.addNewPatients')" />
     </a-col>
 </a-row>
-<a-row v-if="arrayToObjact(patients.patientsPermissions,2)">
+<a-row>
     <a-col :span="24">
         <a-row :gutter="24">
             <a-col :xl="4" :sm="8" :xs="24">
@@ -33,12 +33,12 @@
     <a-col :span="12">
         <SearchField @change="searchData" />
     </a-col>
-    <a-col :span="12" v-if="arrayToObjact(patients.patientsPermissions,3)">
+    <a-col :span="12" v-if="arrayToObjact(patientsPermissions,66)">
         <div class="text-right mb-24">
             <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
         </div>
     </a-col>
-    <a-col :span="24" v-if="arrayToObjact(patients.patientsPermissions,4)">
+    <a-col :span="24" >
 
         <DataTable v-if="patients.column" :columns="patients.column" :patientRecords="patients.patientList"  />
      
@@ -50,7 +50,7 @@
 <!--end-->
 </template>
 <script>
-import {  ref, watchEffect } from "vue";
+import {  ref, watchEffect,computed } from "vue";
 import { useStore } from "vuex";
 import PatientsModal from "@/components/modals/PatientsModal";
 import CounterCard from "./counter-card/CounterCard";
@@ -94,8 +94,11 @@ export default {
       store.dispatch("patients");
     });
 
-
+    const patientsPermissions=computed(()=>{
+     return store.state.screenPermissions.patientsPermissions
+    })
     return {
+      patientsPermissions,
       arrayToObjact,
       PatientsModal,
       showModal,

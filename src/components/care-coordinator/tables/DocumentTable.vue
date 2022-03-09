@@ -9,7 +9,7 @@
         </router-link>
     </template>
     <template #action="text">
-        <a-tooltip placement="bottom">
+        <a-tooltip placement="bottom" v-if="arrayToObjact(staffPermissions,61)">
             <template #title>
                 <span>{{$t('global.delete')}}</span>
             </template>
@@ -25,7 +25,7 @@ import { computed } from "vue";
 import { DeleteOutlined, FileOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { warningSwal } from "@/commonMethods/commonMethod";
+import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 export default {
   components: {
@@ -62,7 +62,12 @@ export default {
     const documentColumns = computed(() => {
       return store.state.careCoordinator.documentColumns;
     });
+    const staffPermissions = computed(()=>{
+        return store.state.screenPermissions.staffPermissions
+    })
     return {
+      arrayToObjact,
+      staffPermissions,
       documentColumns,
       documentsData,
       deleteDocument,

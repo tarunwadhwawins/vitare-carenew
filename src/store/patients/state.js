@@ -33,7 +33,6 @@ export default {
     uploadFile:null,
     status:false,
     errorMsg:null,
-    patientsPermissions:[],
     patientDetails:null,
     patientTimeline:null,
     patientDocuments:null,

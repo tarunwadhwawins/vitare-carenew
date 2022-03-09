@@ -1,16 +1,14 @@
 <template>
 <div>
     <!---->
-
     <a-layout-content v-if="appointmentSearch.searchAppointmentRecords">
-
         <Title :title="$t('appointmentCalendar.appointmentCalendar')" @calenderToggle="calenderView($event)" :isActive="toggle" :button="{
             fullCalendarView: $t('appointmentCalendar.fullCalendarView'),
             hideCalendarView:$t('appointmentCalendar.hideCalendarView')
           }" />
         <a-row :gutter="24">
             <a-col :xl="6" :sm="10" :xs="24" v-show="toggle">
-                <div class="apptBtn">
+                <div class="apptBtn" v-if="arrayToObjact(appointmentCalendarPermissions,112)">
                     <a-button class="btn primaryBtn" @click="showModal(true)">
                         {{$t('appointmentCalendar.newAppointment')}}</a-button>
                 </div>
@@ -21,7 +19,7 @@
 
             </a-col>
             <a-col :xl="toggle == false ? 24 : 18" :sm="toggle == false ? 24 : 14" :xs="24">
-                <a-tabs v-model:activeKey="activeKey" @change=" (activeKey)">
+                <a-tabs v-model:activeKey="activeKey" @change="tabClick(activeKey)">
 
                     <a-tab-pane key="1" tab="Day">
 
@@ -32,7 +30,7 @@
                     </a-tab-pane>
                     <a-tab-pane key="3" tab="Week">
 
-                        <WeekAppointment @is-dateClick="selectDate($event)" tabName="week"></WeekAppointment>
+                        <WeekAppointment @is-dateClick="selectDate($event)"  tabName="week"></WeekAppointment>
                     </a-tab-pane>
                     <a-tab-pane key="4" tab="Month">
 
@@ -53,23 +51,17 @@
 
 <script>
 import AddAppointment from "@/components/modals/AddAppointment";
-
 import Title from "./Title"
 import Calendar from "./Calendar"
 import Physicians from "./Physicians"
 import DayAppointment from "./DayAppointment"
 import MonthAppointment from "./MonthAppointment"
 import WeekAppointment from "./WeekAppointment"
-import {
-    ref,
-    watchEffect,
-    computed
-} from "vue";
-import {
-    useStore
-} from "vuex"
+import {ref,watchEffect,computed} from "vue";
+import {useStore} from "vuex"
 import moment from "moment"
 import Loader from "../loader/Loader"
+import {arrayToObjact} from "@/commonMethods/commonMethod"
 //import Loader from "../loader/Loader"
 export default {
     components: {
@@ -117,6 +109,7 @@ export default {
                 toDate.value = moment().add(1, 'days')
             } else if (value == 3) {
                 datePick = moment(moment().add(1, 'days')).startOf('week')
+                //console.log("week")
                 store.dispatch("weekName", {
                     from: moment(moment().add(1, 'days')).startOf('week'),
                     to: moment(moment()).endOf('week')
@@ -167,14 +160,14 @@ export default {
         })
 
         function searchApi() {
-          console.log("physiciansId.value",appointmentSearch.getStaff)
+         /// console.log("physiciansId.value",appointmentSearch.getStaff)
             store.state.appointment.calendarDate = ''
             store.dispatch("calendarDateSelect", datePick)
             store.dispatch("searchAppointment", {
                 fromDate: fromDate.value,
                 toDate: toDate.value,
                 tabId: activeKey.value,
-                physiciansId: physiciansId.value.join(", ")
+                physiciansId: physiciansId.value.length==0 ?'' : physiciansId.value.join(", ")
             })
         }
         const patientsList = computed(() => {
@@ -207,7 +200,13 @@ export default {
            
         }
 
+        const appointmentCalendarPermissions = computed(()=>{
+            return store.state.screenPermissions.appointmentCalendarPermissions
+        })
+
         return {
+            appointmentCalendarPermissions,
+            arrayToObjact,
             month,
             appointmentSearch,
             maskebale,

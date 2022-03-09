@@ -8,7 +8,7 @@
           :pagination=false
         >
         <template #actions="text">
-            <a-tooltip placement="bottom">
+            <a-tooltip placement="bottom" v-if="arrayToObjact(programsPermissions,16)">
                 <template #title>
                     <span>{{$t('global.edit')}}</span>
                 </template>
@@ -16,7 +16,7 @@
                     <EditOutlined />
                 </a>
             </a-tooltip>
-            <a-tooltip placement="bottom">
+            <a-tooltip placement="bottom" v-if="arrayToObjact(programsPermissions,17)">
                 <template #title>
                     <span>{{$t('global.delete')}}</span>
                 </template>
@@ -25,7 +25,7 @@
                 </a>
             </a-tooltip>
         </template>
-        <template #status="{record}">
+        <template #status="{record}" v-if="arrayToObjact(programsPermissions,18)">
             <a-switch v-model:checked="record.status" @change="UpdateProgramStatus(record.udid, $event)" />
         </template>
     </a-table>
@@ -34,9 +34,9 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted} from "vue";
+import { ref, reactive, onMounted,computed} from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-import { warningSwal } from "@/commonMethods/commonMethod";
+import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import { useStore } from "vuex";
 import InfiniteLoader from "@/components/loader/InfiniteLoader";
@@ -125,7 +125,12 @@ export default {
             });
             loader.value = false
         }
+        const programsPermissions = computed(()=>{
+            return store.state.screenPermissions.programsPermissions
+        })
         return {
+            programsPermissions,
+            arrayToObjact,
             loader,
             checked,
             columns,

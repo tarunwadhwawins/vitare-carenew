@@ -17,17 +17,7 @@ export const globalCodes = async ({
     commit('failure', error.response.data);
   })
 }
-export const permissions = async ({
-  commit
-}) => {
 
-  commit('dashboardPermissions', localStorage.getItem('roleAuth'));
-  commit('patientsPermissions', localStorage.getItem('roleAuth'));
-  commit('staffPermissions', localStorage.getItem('roleAuth'));
-  commit('taskPermissions', localStorage.getItem('roleAuth'));
-  commit('auditTimePermissions', localStorage.getItem('roleAuth'));
-
-}
 
 export const staffList = async ({
   commit

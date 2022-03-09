@@ -1,10 +1,10 @@
 <template>
 <a-row>
-    <a-col :span="24" v-if="arrayToObjact(staffs.staffPermissions,1)">
+    <a-col :span="24" v-if="arrayToObjact(staffPermissions,37)">
         <ShowModalButton @isVisible="showModal($event)" :headingText="$t('careCoordinator.coordinatorsModal.careCoordinator')" :buttonText="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" />
     </a-col>
 </a-row>
-<a-row class="mb-24" :gutter="24" v-if="arrayToObjact(staffs.staffPermissions,2)">
+<a-row class="mb-24" :gutter="24" >
     <a-col :sm="12" :xs="24">
         <h2>{{$t('global.specialization')}}</h2>
         <a-row :gutter="24">
@@ -28,12 +28,12 @@
         <a-select v-model:value="value2" :size="size" mode="tags" style="width: 100%" placeholder="Search . . ." :options="searchoptions" @change="handleChange">
         </a-select>
     </a-col>
-    <a-col :span="12" v-if="arrayToObjact(staffs.staffPermissions,3)">
+    <a-col :span="12" v-if="arrayToObjact(staffPermissions,41)">
         <div class="text-right mb-24">
             <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
         </div>
     </a-col>
-    <a-col :span="24" v-if="arrayToObjact(staffs.staffPermissions,4)">
+    <a-col :span="24" >
       
         <CoordinatorTable v-if="staffs.staffs"  :staffRecords="staffs" ></CoordinatorTable>
         <Loader />
@@ -45,7 +45,7 @@
 <script>
 import {
     watchEffect,
-   
+   computed,
     ref
 } from "vue"
 import LongCard from "@/components/common/cards/LongCard"
@@ -93,7 +93,13 @@ export default {
             visible.value = value;
         };
 
+        
+        const staffPermissions = computed(()=>{
+            return store.state.screenPermissions.staffPermissions
+        })
+
         return {
+            staffPermissions,
             arrayToObjact,
             showModal,
             visible,

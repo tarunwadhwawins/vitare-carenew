@@ -19,7 +19,7 @@
                                 <img src="@/assets/images/profile-4.jpg" alt="image" />
                                 <div class="info">
                                     <p>
-                                   
+
                                         {{getProviderSummary?getProviderSummary.name:''}}
                                     </p>
                                     <p>
@@ -34,7 +34,7 @@
                             <div class="pat-profile">
                                 <div class="pat-profile-inner">
                                     <div class="thumb-head">Tags</div>
-                                    <div class="thumb-desc" v-if="globalCode.documentTags">  <span v-for="tag in globalCode.documentTags.globalCode" :key="tag.id">{{ tag.name+ ", "}}</span>
+                                    <div class="thumb-desc" v-if="globalCode.documentTags"> <span v-for="tag in globalCode.documentTags.globalCode" :key="tag.id">{{ tag.name+ ", "}}</span>
                                     </div>
                                 </div>
                                 <div class="pat-profile-inner">
@@ -48,12 +48,12 @@
                             </div>
                         </div>
                     </a-col>
-                    <a-col :sm="16" :xs="24">
+                    <a-col :sm="16" :xs="24" v-if="arrayToObjact(globalCodesPermissions,31)">
                         <div class="summary-tabs">
                             <h2 class="mb-24">Locations</h2>
                             <a-table :pagination="false" :columns="columns3" :data-source="providerLocationlistData" :scroll="{ x: 600 }">
                                 <template #action="text">
-                                    <a-tooltip placement="bottom">
+                                    <a-tooltip placement="bottom" v-if="arrayToObjact(globalCodesPermissions,34)">
                                         <a class="icons" @click="deleteProviderLocation(text.record.id)">
                                             <DeleteOutlined />
                                         </a>
@@ -88,7 +88,7 @@
                 </div>
             </a-col>
             <!-- <a-col :sm="16" :xs="24"> -->
-              <!-- <div class="summary-tabs">
+            <!-- <div class="summary-tabs">
                 <h2 class="mb-24">Locations</h2>
                 <a-table  rowKey="id"
                   :pagination="false"
@@ -133,143 +133,136 @@
 <script>
 import Header from "@/components/administration/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
-import {
-    ref,
-    computed,
-    watchEffect,
-    onMounted
-} from "vue";
-import {
-    useStore
-} from "vuex"
-import {
-    useRoute
-} from "vue-router";
-import {
-    DeleteOutlined
-} from "@ant-design/icons-vue";
-import {
-    warningSwal
-} from "../../../commonMethods/commonMethod"
-import {
-    messages
-} from "../../../config/messages";
+import { ref, computed, watchEffect, onMounted } from "vue";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+import { DeleteOutlined } from "@ant-design/icons-vue";
+import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
+import { messages } from "@/config/messages";
 
-const columns3 = [{
-        title: "Location Name",
-        dataIndex: "locationName",
+const columns3 = [
+  {
+    title: "Location Name",
+    dataIndex: "locationName",
+  },
+  {
+    title: "Phone Number",
+    dataIndex: "phoneNumber",
+  },
+  {
+    title: "City",
+    dataIndex: "city",
+  },
+  {
+    title: "Address",
+    dataIndex: "address",
+  },
+  {
+    title: "Actions",
+    dataIndex: "actions",
+    slots: {
+      customRender: "action",
     },
-    {
-        title: "Phone Number",
-        dataIndex: "phoneNumber",
-    },
-    {
-        title: "City",
-        dataIndex: "city",
-    },
-    {
-        title: "Address",
-        dataIndex: "address",
-    },
-    {
-        title: "Actions",
-        dataIndex: "actions",
-        slots: {
-            customRender: "action",
-        },
-    },
+  },
 ];
 
 export default {
-    components: {
-        Header,
-        Sidebar,
-        DeleteOutlined,
-    },
+  components: {
+    Header,
+    Sidebar,
+    DeleteOutlined,
+  },
 
-    setup() {
-        function logout() {
-            localStorage.removeItem("auth");
-            localStorage.clear();
-        }
-        const store = useStore()
-        const router = useRoute()
-        const visible = ref(false);
-        const showModal = () => {
-            visible.value = true;
-        };
-        const handleOk = () => {
-            visible.value = false;
-        };
+  setup() {
+    function logout() {
+      localStorage.removeItem("auth");
+      localStorage.clear();
+    }
+    const store = useStore();
+    const router = useRoute();
+    const visible = ref(false);
+    const showModal = () => {
+      visible.value = true;
+    };
+    const handleOk = () => {
+      visible.value = false;
+    };
 
-        onMounted(() => {
-            store.dispatch('editSingleProvider', router.params.id)
+    onMounted(() => {
+      store.dispatch("editSingleProvider", router.params.id);
+    });
+
+    watchEffect(() => {
+      store.dispatch("providerLocationList", router.params.id);
+      store.dispatch("providerLocationList", router.params.id);
+    });
+    const getProviderSummary = computed(() => {
+      return store.state.provider.editSingleProvider;
+    });
+    const providerLocationlistData = computed(() => {
+      return store.state.provider.providerLocationList;
+    });
+
+    const globalCode = computed(() => {
+      return store.state.common;
+    });
+
+    const providerTags = computed(() => {
+      return store.state.common.documentTags;
+    });
+    const providerModules = computed(() => {
+      return store.state.common.modules;
+    });
+
+    function deleteProviderLocation(id) {
+      if (router.params.id != null) {
+        warningSwal(messages.deleteWarning).then((response) => {
+          if (response == true) {
+            store
+              .dispatch("deleteProviderLocation", {
+                id: router.params.id,
+                locationId: id,
+              })
+              .then(() => {
+                store.dispatch("providerLocationList", router.params.id);
+              }, 2000);
+          }
+        });
+      } else {
+        warningSwal(messages.deleteWarning).then((response) => {
+          if (response == true) {
+            store.dispatch("deleteProviderLocation", {
+              id: router.params.id,
+              locationId: id,
+            });
+            setTimeout(() => {
+              store.dispatch("providerLocationList", router.params.id);
+            }, 2000);
+          }
+        });
+      }
+    }
+    const providersPermissions = computed(()=>{
+          return store.state.screenPermissions.providersPermissions
         })
-
-        watchEffect(() => {
-            store.dispatch('providerLocationList', router.params.id)
-            store.dispatch('providerLocationList', router.params.id)
-        })
-        const getProviderSummary = computed(() => {
-            return store.state.provider.editSingleProvider
-        })
-        const providerLocationlistData = computed(() => {
-            return store.state.provider.providerLocationList;
-        });
-
-        const globalCode = computed(() => {
-            return store.state.common;
-        });
-
-        const providerTags = computed(() => {
-            return store.state.common.documentTags;
-        });
-        const providerModules = computed(() => {
-            return store.state.common.modules;
-        });
-
-        function deleteProviderLocation(id) {
-            if (router.params.id != null) {
-                warningSwal(messages.deleteWarning).then((response) => {
-                    if (response == true) {
-                        store.dispatch('deleteProviderLocation', {
-                            id: router.params.id,
-                            locationId: id
-                        }).then(() => {
-                            store.dispatch("providerLocationList", router.params.id);
-                        }, 2000);
-                    }
-                })
-            } else {
-                warningSwal(messages.deleteWarning).then((response) => {
-                    if (response == true) {
-                        store.dispatch('deleteProviderLocation', {
-                            id: router.params.id,
-                            locationId: id
-                        })
-                        setTimeout(() => {
-                            store.dispatch("providerLocationList", router.params.id);
-                        }, 2000);
-                    }
-                })
-            }
-        }
-        return {
-            logout,
-            globalCode,
-            getProviderSummary,
-            providerLocationlistData,
-            columns3,
-            providerModules,
-            providerTags,
-            activeKey: ref("1"),
-            activeKey1: ref("1"),
-            watchEffect,
-            visible,
-            deleteProviderLocation,
-            showModal,
-            handleOk,
-        };
-    },
+    return {
+     providersPermissions,
+      arrayToObjact,
+      logout,
+      globalCode,
+      getProviderSummary,
+      providerLocationlistData,
+      columns3,
+      providerModules,
+      providerTags,
+      activeKey: ref("1"),
+      activeKey1: ref("1"),
+      watchEffect,
+      visible,
+      deleteProviderLocation,
+      showModal,
+      handleOk,
+    };
+  },
 };
 </script>
