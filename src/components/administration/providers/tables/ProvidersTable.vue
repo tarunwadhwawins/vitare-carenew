@@ -3,15 +3,15 @@
     <template #name="{text,record}">
                <router-link :to="{ name: 'providerSummary', params: { id:record.id  }}">{{text}}</router-link>
     </template>
-    <template #status="{record}">
+    <template #status="{record}" v-if="arrayToObjact(globalCodesPermissions,25)">
         <a-switch v-model:checked="record.status" @change="updateStatus(record.id, $event)" />
     </template>
     <template #action="text">
-        <a-tooltip placement="bottom">
+        <a-tooltip placement="bottom" v-if="arrayToObjact(globalCodesPermissions,23)">
             <a class="icons">
                 <EditOutlined @click="editSingleProvider(text.record.id)" /></a>
         </a-tooltip>
-        <a-tooltip placement="bottom">
+        <a-tooltip placement="bottom" v-if="arrayToObjact(globalCodesPermissions,24)">
             <a class="icons" @click="deleteSingleProvider(text.record.id)">
                 <DeleteOutlined />
             </a>
@@ -22,111 +22,109 @@
 </template>
 
 <script>
-import {
-    DeleteOutlined,
-    EditOutlined
-} from "@ant-design/icons-vue";
-import {
-    watchEffect,
-    computed,
-    reactive
-} from "vue";
-import {
-    messages
-} from "@/config/messages";
-import {
-    useStore
-} from "vuex";
-import {
-    warningSwal
-} from "../../../../commonMethods/commonMethod"
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import { watchEffect, computed, reactive } from "vue";
+import { messages } from "@/config/messages";
+import { useStore } from "vuex";
+import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
 export default {
-    components: {
-        EditOutlined,
-        DeleteOutlined
+  components: {
+    EditOutlined,
+    DeleteOutlined,
+  },
+  props: {
+    id: {
+      type: Number,
     },
-    props: {
-        id: {
-            type: Number
-        },
-    },
+  },
 
-    setup(props, {
-        emit
-    }) {
-        const store = useStore()
-        const providerId = reactive(props.id);
-        watchEffect(() => {
-            store.dispatch('providersListAll')
-        })
-        const providersListAll = computed(() => {
-            return store.state.provider.providersListAll
-        })
-        const providersData = computed(() => {
-            return store.state.provider;
+  setup(props, { emit }) {
+    const store = useStore();
+    const providerId = reactive(props.id);
+    watchEffect(() => {
+      store.dispatch("providersListAll");
+    });
+    const providersListAll = computed(() => {
+      return store.state.provider.providersListAll;
+    });
+    const providersData = computed(() => {
+      return store.state.provider;
+    });
+
+    function deleteSingleProvider(id) {
+      if (id != null) {
+        warningSwal(messages.deleteWarning).then((response) => {
+          if (response == true) {
+            store
+              .dispatch("deleteSingleProvider", {
+                id: id,
+              })
+              .then(() => {
+                store.dispatch("providersListAll", providerId);
+              }, 2000);
+          }
         });
-
-        function deleteSingleProvider(id) {
-            if (id != null) {
-                warningSwal(messages.deleteWarning).then((response) => {
-                    if (response == true) {
-                        store.dispatch('deleteSingleProvider', {
-                            id: id,
-                        }).then(() => {
-                            store.dispatch("providersListAll", providerId);
-                        }, 2000);
-                    }
-                })
-            } else {
-                warningSwal(messages.deleteWarning).then((response) => {
-                    if (response == true) {
-                        store.dispatch('deleteSingleProvider', {
-                            id: providersData.value.provider.id,
-                        })
-                        setTimeout(() => {
-                            store.dispatch("deleteSingleProvider", providersData.value.provider.id);
-                        }, 2000);
-                    }
-                })
-            }
-        }
-
-        const updateStatus = (id, status) => {
-            const data = {
-                "isActive": status
-            };
-            store.dispatch('updateSingleProvider', {
-                id,
-                data
-            }).then(() => {
-                store.dispatch('providersListAll')
-            })
-        }
-
-        const editSingleProvider = (id) => {
-            store.dispatch('editSingleProvider', id);
-            emit('isEdit', {
-                check: true,
-                providerId: id
+      } else {
+        warningSwal(messages.deleteWarning).then((response) => {
+          if (response == true) {
+            store.dispatch("deleteSingleProvider", {
+              id: providersData.value.provider.id,
             });
-        };
-        const providerListColumns = computed(() => {
-            return store.state.provider.providerListColumns;
+            setTimeout(() => {
+              store.dispatch(
+                "deleteSingleProvider",
+                providersData.value.provider.id
+              );
+            }, 2000);
+          }
         });
-
-        return {
-            editSingleProvider,
-            providerListColumns,
-            warningSwal,
-            providersListAll,
-            deleteSingleProvider,
-            providersData,
-            emit,
-            updateStatus,
-            providerId,
-            props,
-            text: 'provider-summary'
-        }
+      }
     }
-}
+
+    const updateStatus = (id, status) => {
+      const data = {
+        isActive: status,
+      };
+      store
+        .dispatch("updateSingleProvider", {
+          id,
+          data,
+        })
+        .then(() => {
+          store.dispatch("providersListAll");
+        });
+    };
+
+    const editSingleProvider = (id) => {
+      store.dispatch("editSingleProvider", id);
+      emit("isEdit", {
+        check: true,
+        providerId: id,
+      });
+    };
+    const providerListColumns = computed(() => {
+      return store.state.provider.providerListColumns;
+    });
+
+    const providersPermissions = computed(()=>{
+      return store.state.screenPermissions.providersPermissions
+    })
+
+    return {
+      providersPermissions,
+      arrayToObjact,
+      editSingleProvider,
+      providerListColumns,
+      warningSwal,
+      providersListAll,
+      deleteSingleProvider,
+      providersData,
+      emit,
+      updateStatus,
+      providerId,
+      props,
+      text: "provider-summary",
+    };
+  },
+};
 </script>

@@ -13,15 +13,15 @@
               <a-col :span="24">
                 <h2 class="pageTittle">
                   Global Codes
-                  <div class="commonBtn">
+                  <div class="commonBtn" v-if="arrayToObjact(globalCodesPermissions,6)">
                     <Button :name="buttonName" @click="showModal" />
                   </div>
                 </h2>
               </a-col>
-              <a-col :span="12">
+              <a-col :span="12" >
                 <SearchField @change="searchData"/>
               </a-col>
-              <a-col :span="12">
+              <a-col :span="12" v-if="arrayToObjact(globalCodesPermissions,265)">
                 <div class="text-right mb-24">
                   <a-button class="primaryBtn">Export to Excel</a-button>
                 </div>
@@ -47,8 +47,9 @@ import AdminGlobalCodes from "@/components/modals/AdminGlobalCodes";
 import GlobalCodesTable from "@/components/administration/globalCodes/tables/GlobalCodesTable";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
+import { arrayToObjact } from "@/commonMethods/commonMethod";
 
 export default {
   components: {
@@ -82,8 +83,14 @@ export default {
         visible.value = true;
       })
     }
+
+    const globalCodesPermissions = computed(()=>{
+      return store.state.screenPermissions.globalCodesPermissions
+    })
     
     return {
+      arrayToObjact,
+      globalCodesPermissions,
       isAdd,
       buttonName: "Add Global Code",
       editGlobalCode,
