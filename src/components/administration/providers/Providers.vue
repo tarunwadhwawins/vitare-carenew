@@ -12,19 +12,19 @@
                         <a-col :span="24">
                             <h2 class="pageTittle">
                                 {{ pageTitle }}
-                                <!-- v-if="arrayToObjact(globalCodesPermissions,22)" -->
-                                 <div class="commonBtn" >
+                                <!--  -->
+                                 <div class="commonBtn" v-if="arrayToObjact(providersPermissions,22)">
                                     <Button :name="buttonName" @click="showModal(true)" />
                                 </div> 
                             </h2>
                         </a-col>
-                        <!-- v-if="arrayToObjact(globalCodesPermissions,21)" -->
-                         <a-col :span="12" >
+                        <!--  -->
+                         <a-col :span="12" v-if="arrayToObjact(providersPermissions,21)">
                             <SearchField @change="searchData" />
                         </a-col>
                         <a-col :span="12">
-                            <!-- v-if="arrayToObjact(globalCodesPermissions,26)" -->
-                            <div class="text-right mb-24" >
+                            <!--  -->
+                            <div class="text-right mb-24" v-if="arrayToObjact(providersPermissions,26)">
                                 <Button :name="exportButtonName" />
                             </div>
                         </a-col>
@@ -55,7 +55,7 @@ import ProvidersTable from "@/components/administration/providers/tables/Provide
 import {useStore} from "vuex";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
-import {ref,computed , watchEffect} from "vue";
+import {ref , watchEffect} from "vue";
 import { arrayToObjact } from "@/commonMethods/commonMethod";
 export default {
     components: {
@@ -87,6 +87,7 @@ export default {
         };
 watchEffect(()=>{
     store.dispatch("providersListAll")
+  
 })
         const handleOk = () => {
             visible.value = false;
@@ -98,9 +99,8 @@ watchEffect(()=>{
             })
         }
         const checked = ref([false]);
-        const providersPermissions = computed(()=>{
-          return store.state.screenPermissions.providersPermissions
-        })
+       
+        const providersPermissions = store.getters.permissionRecords.value.providersPermissions
         return {
           providersPermissions,
             arrayToObjact,
@@ -113,6 +113,7 @@ watchEffect(()=>{
             handleOk,
             isAdd,
             checked,
+            
             pageTitle: "Providers",
             buttonName: "Add New Provider",
             exportButtonName: "Export to Excel",

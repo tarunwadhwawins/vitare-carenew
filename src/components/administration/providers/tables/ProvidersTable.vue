@@ -4,17 +4,17 @@
                <router-link :to="{ name: 'providerSummary', params: { id:record.id  }}">{{text}}</router-link>
     </template>
     <!-- v-if="arrayToObjact(globalCodesPermissions,25)" -->
-    <template #status="{record}" >
+    <template #status="{record}" v-if="arrayToObjact(providersPermissions,25)">
         <a-switch v-model:checked="record.status" @change="updateStatus(record.id, $event)" />
     </template>
     <template #action="text">
-      <!-- v-if="arrayToObjact(globalCodesPermissions,23)" -->
-        <a-tooltip placement="bottom" >
+      <!--  -->
+        <a-tooltip placement="bottom" v-if="arrayToObjact(providersPermissions,23)">
             <a class="icons">
                 <EditOutlined @click="editSingleProvider(text.record.id)" /></a>
         </a-tooltip>
-        <!-- v-if="arrayToObjact(globalCodesPermissions,24)" -->
-        <a-tooltip placement="bottom" >
+        <!--  -->
+        <a-tooltip placement="bottom" v-if="arrayToObjact(providersPermissions,24)">
             <a class="icons" @click="deleteSingleProvider(text.record.id)">
                 <DeleteOutlined />
             </a>
@@ -107,9 +107,7 @@ export default {
       return store.state.provider.providerListColumns;
     });
 
-    const providersPermissions = computed(()=>{
-      return store.state.screenPermissions.providersPermissions
-    })
+    const providersPermissions =store.getters.permissionRecords.value.providersPermissions
 
     return {
       providersPermissions,

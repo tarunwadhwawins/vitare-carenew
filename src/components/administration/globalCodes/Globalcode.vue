@@ -13,6 +13,7 @@
               <a-col :span="24">
                 <h2 class="pageTittle">
                   Global Codes
+                  
                   <div class="commonBtn" v-if="arrayToObjact(globalCodesPermissions,6)">
                     <Button :name="buttonName" @click="showModal" />
                   </div>

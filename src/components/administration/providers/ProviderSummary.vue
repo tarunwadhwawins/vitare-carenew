@@ -48,12 +48,12 @@
                             </div>
                         </div>
                     </a-col>
-                    <a-col :sm="16" :xs="24" v-if="arrayToObjact(globalCodesPermissions,31)">
+                    <a-col :sm="16" :xs="24" v-if="arrayToObjact(providersPermissions,31)">
                         <div class="summary-tabs">
                             <h2 class="mb-24">Locations</h2>
                             <a-table :pagination="false" :columns="columns3" :data-source="providerLocationlistData" :scroll="{ x: 600 }">
                                 <template #action="text">
-                                    <a-tooltip placement="bottom" v-if="arrayToObjact(globalCodesPermissions,34)">
+                                    <a-tooltip placement="bottom" v-if="arrayToObjact(providersPermissions,34)">
                                         <a class="icons" @click="deleteProviderLocation(text.record.id)">
                                             <DeleteOutlined />
                                         </a>
