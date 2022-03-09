@@ -40,6 +40,10 @@ export const API_ENDPOINTS = {
     callStatus:"call/status",
     CallPlanned:"call/staff",
 
+    //conversation
+    conversation:'get-conversation',
+    conversationSend:'send-message',
+
     // Tasks
     addTask:"task",
     tasksList:"task",

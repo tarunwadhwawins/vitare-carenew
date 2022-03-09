@@ -10,5 +10,7 @@ export default {
   communicationsCount: null,
   searchCommunications: null,
   communicationMeta:null,
-  conferenceId:null
+  conferenceId:null,
+  conversationList:null,
+  conversationSend:null,
 }

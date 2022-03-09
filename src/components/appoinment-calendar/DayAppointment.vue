@@ -1,6 +1,6 @@
 <template>
   <a-row :gutter="16">
-    <a-col :span="12">
+    <!-- <a-col :span="12">
       <div class="calenderLeftRightBtn">
         <a-button type="primary">
           <template #icon>
@@ -13,10 +13,10 @@
           </template>
         </a-button>
       </div>
-    </a-col>
-    <a-col :span="12">
+    </a-col> -->
+    <!-- <a-col :span="12">
       <h3>March 02, 2022</h3>
-    </a-col>
+    </a-col> -->
     <a-col :span="24">
       <div class="dayCalendar">
         <Loader />
@@ -50,14 +50,14 @@ import { timeStampToTime } from "../../commonMethods/commonMethod";
 import Loader from "../loader/Loader";
 import { computed } from "vue";
 import { useStore } from "vuex";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons-vue";
+//import { LeftOutlined, RightOutlined } from "@ant-design/icons-vue";
 
 export default {
   components: {
     AppointmentCardList,
     Loader,
-    LeftOutlined,
-    RightOutlined,
+   // LeftOutlined,
+   // RightOutlined,
   },
   props: {},
   setup() {

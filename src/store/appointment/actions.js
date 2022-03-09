@@ -21,6 +21,7 @@ export const addAppointment = async ({
 export const searchAppointment = async ({
   commit
 },from) => {
+ 
   commit('loadingStatus', true)
   await serviceMethod.common("get", API_ENDPOINTS['seacrhAppointment']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate))+"&staffId="+from.physiciansId, null, null).then((response) => {
     

@@ -1,6 +1,6 @@
 <template>
   <a-button class="btn primaryBtn" @click="showModal">
-    {{ $t('communications.sendMessage') }}
+    {{ $t('communications.conversation') }}
   </a-button>
 
   <!-- Modal -->
