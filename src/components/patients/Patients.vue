@@ -30,10 +30,10 @@
     </a-col>
 </a-row>
 <a-row >
-    <a-col :span="12">
+    <a-col :span="20">
         <SearchField @change="searchData" />
     </a-col>
-    <a-col :span="12" v-if="arrayToObjact(patientsPermissions,66)">
+    <a-col :span="4" v-if="arrayToObjact(patientsPermissions,66)">
         <div class="text-right mb-24">
             <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
         </div>
@@ -76,6 +76,8 @@ export default {
     const store = useStore();
     const searchoptions = ref([]);
     const PatientsModal = ref(false);
+    const entityType = ref(null);
+
     const showModal = (value) => {
       PatientsModal.value = value;
     };
@@ -83,10 +85,6 @@ export default {
       PatientsModal.value = status;
     };
     const handleChange = () => {};
-
-    const searchData = (value) => {
-        console.log('searchPatients', value)
-    };
 
     watchEffect(() => {
       store.getters.patientsRecord.patientList=""
@@ -97,6 +95,24 @@ export default {
     const patientsPermissions=computed(()=>{
      return store.state.screenPermissions.patientsPermissions
     })
+    
+    const searchData = (event) => {
+      if( event.target.selectionEnd >= 3 ) {
+        // console.log('Search Params', event.target.value)
+        // localStorage.setItem('searchParams', event.target.value)
+        store.dispatch('searchPatients', event.target.value)
+      }
+      // if( event.target.selectionEnd > 3 ) {
+      //   const params = localStorage.getItem('searchParams');
+      //   const entityType = 'patient';
+      //   const endPoint = '/?search='+params;
+      //   store.dispatch('abortApiRequest', {entityType, endPoint})
+      //   console.log('Search Params', event.target.value)
+      // }
+    };
+
+    const patients = store.getters.patientsRecord.value
+
     return {
       patientsPermissions,
       arrayToObjact,
@@ -107,8 +123,9 @@ export default {
       searchoptions,
       size: ref(),
       value2: ref(),
-      patients:store.getters.patientsRecord,
-      searchData,     
+      patients,
+      entityType,
+      searchData,
     };
   },
 };

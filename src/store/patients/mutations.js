@@ -948,5 +948,6 @@ export const patientVitals = (state, vitals) => {
 }
 
 export const searchPatients = (state, results) => {
-  state.searchPatients = results
+  state.patientList =''
+  state.patientList = results
 }

@@ -1,7 +1,14 @@
 <template>
-  <a-select mode="tags" style="width: 100%" placeholder="Search..." dropdownClassName="hidden-dropdown" />
+  <a-input placeholder="Search..." v-model="keywords" />
 </template>
 
-<style>
-  .hidden-dropdown { display: none; }
-</style>
+<script>
+export default {
+  store() {
+    
+    return {
+
+    }
+  }
+}
+</script>
