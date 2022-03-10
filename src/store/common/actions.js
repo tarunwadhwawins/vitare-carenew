@@ -58,9 +58,9 @@ export const vitalFieldsByDeviceId = async ({ commit}, deviceId) => {
   })
 }
 
-export const abortApiRequest = ({commit}, entityType) => {
-  console.log('request', entityType)
-  axios.get(API_ENDPOINTS[entityType]+'?search=', { cancelToken: request.token }).then(() => {
+export const abortApiRequest = ({commit}, requestUrl) => {
+  console.log('request', requestUrl)
+  axios.get(requestUrl, { cancelToken: request.token }).then(() => {
     commit('clearOldRequest', true);
   })
   .catch((error) => {

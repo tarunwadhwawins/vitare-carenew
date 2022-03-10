@@ -22,6 +22,7 @@
         <WarningOutlined />
     </template>
 </a-table>
+<Loader />
 <InfiniteLoader v-if="loader" />
 </template>
 
@@ -30,11 +31,13 @@ import { WarningOutlined } from "@ant-design/icons-vue";
 import { ref, reactive,  onMounted,computed } from "vue"
 import { useStore } from "vuex";
 import InfiniteLoader from "@/components/loader/InfiniteLoader";
+import Loader from "@/components/loader/Loader";
 import { arrayToObjact } from "@/commonMethods/commonMethod";
 export default {
     name: "DataTable",
     components: {
         WarningOutlined,
+        Loader,
         InfiniteLoader
     },
     props: {

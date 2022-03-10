@@ -13,7 +13,7 @@ export default {
     devices:null,
     inventoryList:[],
     devicesColumns:null,
-    patientList:[],
+    patientList:null,
     column:null,
     columns:null,
     parameterFields:null,

@@ -34,173 +34,114 @@ export const addDemographic = (state, data) => {
             element.dob = Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10)>0?Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10):1
             return element
      })
-    state.column= [{
+    state.column = [
+      {
         title: "Flags",
         dataIndex: "flags",
         slots: {
-            customRender: "flags",
+          customRender: "flags",
         },
-    },
-    {
+      },
+      {
         title: "Last Name",
         dataIndex: "lastName",
         slots: {
-            customRender: "lastName",
+          customRender: "lastName",
         },
         sorter: {
-            compare: (a, b) => a.reading - b.reading,
-            multiple: 1,
-        },
-    },
-    {
-      title: "First Name",
-      dataIndex: "firstName",
-      slots: {
-          customRender: "firstName",
-      },
-      sorter: {
           compare: (a, b) => a.reading - b.reading,
           multiple: 1,
+        },
       },
-  },
-    
-    {
+      {
+        title: "First Name",
+        dataIndex: "firstName",
+        slots: {
+          customRender: "firstName",
+        },
+        sorter: {
+          compare: (a, b) => a.reading - b.reading,
+          multiple: 1,
+        },
+      },
+      {
         title: "Date of Readings ",
         dataIndex: "lastReadingDate",
         sorter: {
-            compare: (a, b) => a.reading - b.reading,
-            multiple: 1,
+          compare: (a, b) => a.reading - b.reading,
+          multiple: 1,
         },
-    },
-   
-    {
+      },
+      {
         title: "Readings ",
         dataIndex: "patientVitals",
         sorter: {
-            compare: (a, b) => a.readingvalues - b.readingvalues,
-            multiple: 1,
+          compare: (a, b) => a.readingvalues - b.readingvalues,
+          multiple: 1,
         },
         slots: {
-            customRender: "patientVitals",
+          customRender: "patientVitals",
         },
-        children: [{
-                title:<p>BP <p>(mmHg)</p></p>,
-                dataIndex: "bp",
-                key: "bp",
-            },
-            {
-                title: "Spo2(%)",
-                dataIndex: "spo2",
-                key: "spo2",
-            },
-            {
-                title: <p>Glucose <p>(mg/dL)</p></p> ,
-                dataIndex: "glucose",
-                key: "glucose",
-            },
-            {
-                title:<p>Weight <p>(LBS)</p></p>,
-                dataIndex: "weight",
-                key: "weight",
-            },
+        children: [
+          {
+            title:<p>BP <p>(mmHg)</p></p>,
+            dataIndex: "bp",
+            key: "bp",
+          },
+          {
+            title: "Spo2(%)",
+            dataIndex: "spo2",
+            key: "spo2",
+          },
+          {
+            title: <p>Glucose <p>(mg/dL)</p></p> ,
+            dataIndex: "glucose",
+            key: "glucose",
+          },
+          {
+            title:<p>Weight <p>(LBS)</p></p>,
+            dataIndex: "weight",
+            key: "weight",
+          },
         ],
-    },
-    // {
-    //     title: "Non Compliant",
-    //     dataIndex: "compliance",
-    //     sorter: {
-    //         compare: (a, b) => a.reading - b.reading,
-    //         multiple: 1,
-    //     },
-    //     filters: [{
-    //             text: "Flag",
-    //             value: "flag",
-    //         },
-    //         {
-    //             text: "Name",
-    //             value: "name",
-    //         },
-    //         {
-    //             text: "Last Reading Date",
-    //             value: "readdate",
-    //         },
-    //         {
-    //             text: "Last Reading Value",
-    //             value: "readvalue",
-    //         },
-    //         {
-    //             text: "Non Compliance ",
-    //             value: "noncompliance",
-    //         },
-    //         {
-    //             text: "Last Message Seen",
-    //             value: "messagseen",
-    //         },
-    //     ],
-    //     onFilter: (value, record) => record.name.indexOf(value) === 0,
-    // },
-    {
+      },
+      {
         title: "Non Compliant",
         dataIndex: "nonCompliance",
         sorter: {
-            compare: (a, b) => a.compliance - b.compliance,
-            multiple: 1,
+          compare: (a, b) => a.compliance - b.compliance,
+          multiple: 1,
         },
         slots: {
-            customRender: "compliance",
+          customRender: "compliance",
         },
-    },
-    {
+      },
+      {
         title: "Last Message Sent",
         dataIndex: "lastMessageSent",
         sorter: {
-            compare: (a, b) => a.message - b.message,
-            multiple: 1,
+          compare: (a, b) => a.message - b.message,
+          multiple: 1,
         },
-        // filters: [{
-        //         text: "Flag",
-        //         value: "flag",
-        //     },
-        //     {
-        //         text: "Name",
-        //         value: "name",
-        //     },
-        //     {
-        //         text: "Last Reading Date",
-        //         value: "readdate",
-        //     },
-        //     {
-        //         text: "Last Reading Value",
-        //         value: "readvalue",
-        //     },
-        //     {
-        //         text: "Non Compliance ",
-        //         value: "noncompliance",
-        //     },
-        //     {
-        //         text: "Last Message Seen",
-        //         value: "messagseen",
-        //     },
-        // ],
         onFilter: (value, record) => record.name.indexOf(value) === 0,
-    },
-    {
-    title: "Age ",
-    dataIndex: "dob",
-    sorter: {
-        compare: (a, b) => a.reading - b.reading,
-        multiple: 1,
-    },
-  },
-    {
-      title: "Sex ",
-      dataIndex: "gender",
-      sorter: {
+      },
+      {
+        title: "Age ",
+        dataIndex: "dob",
+        sorter: {
           compare: (a, b) => a.reading - b.reading,
           multiple: 1,
+        },
       },
-}
-];
+      {
+        title: "Sex ",
+        dataIndex: "gender",
+        sorter: {
+          compare: (a, b) => a.reading - b.reading,
+          multiple: 1,
+        },
+      }
+    ]
  }
  
  export const addCondition = (state, data) => {
@@ -948,6 +889,18 @@ export const patientVitals = (state, vitals) => {
 }
 
 export const searchPatients = (state, results) => {
-  state.patientList =''
-  state.patientList = results
+  state.patientList = results.map(element => {
+    element.flags=element.patientFlags.data[0]?element.patientFlags.data[0].flags.data.color:'',
+    element.lastName=element.lastName?element.lastName :'',
+    element.firstName=element.name?element.name :'',
+    element.lastReadingDate=element.lastReadingDate?element.lastReadingDate:'',
+    element.weight=element.weight?element.weight:'',
+    element.bp = element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='Systolic'){return JSON.parse(vitalData.value)}if(vitalData.vitalField=='Diastolic'){return '/'+JSON.parse(vitalData.value)}}),
+    element.spo2 = element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='SPO2'){return JSON.parse(vitalData.value)}}),
+    element.glucose = element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='Random Blood Sugar'){return JSON.parse(vitalData.value)}}),
+    element.dob = Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10)>0?Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10):1
+    return element
+  })
+  state.column = null
+  state.patientMeta = null
 }
