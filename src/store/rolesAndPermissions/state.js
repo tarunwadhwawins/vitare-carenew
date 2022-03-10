@@ -8,4 +8,5 @@ export default {
   editRolesAndPermissions:null, 
   dashboardWidget:null,
   editWidget:null,
+  rolesMeta:null,
 }

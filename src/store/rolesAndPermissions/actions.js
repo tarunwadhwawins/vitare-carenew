@@ -2,9 +2,11 @@
  import { API_ENDPOINTS } from "../../config/apiConfig"
  import { successSwal, errorSwal } from '../../commonMethods/commonMethod'
 export const rolesList = async ({ commit }) => {
+	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", API_ENDPOINTS['rolesList'], null, null).then((response) => {
 		//console.log("data",response.data.data)
 		commit('rolesListSuccess', response.data);
+		commit('loadingStatus', false)
 	})
 	.catch((error) => {
 		errorSwal(error.response.data.message)

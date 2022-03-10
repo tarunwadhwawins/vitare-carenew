@@ -29,6 +29,7 @@
             <a-switch v-model:checked="record.status" @change="UpdateProgramStatus(record.udid, $event)" />
         </template>
     </a-table>
+    <Loader/>
 </a-col>
 <InfiniteLoader v-if="loader" />
 </template>
@@ -40,9 +41,10 @@ import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import { useStore } from "vuex";
 import InfiniteLoader from "@/components/loader/InfiniteLoader";
+import Loader from "@/components/loader/Loader"
 export default {
     components: {
-
+        Loader,
         DeleteOutlined,
         EditOutlined,
         InfiniteLoader
@@ -110,9 +112,7 @@ export default {
                         store.state.programs.programList = ""
                         store.dispatch("programList", "?page=" + current_page).then(()=>{
                           loadMoredata()
-                        })
-                        
-
+                        })    
                     }
                 }
             })

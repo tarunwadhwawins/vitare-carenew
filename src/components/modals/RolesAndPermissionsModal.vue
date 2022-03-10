@@ -71,7 +71,10 @@
                 <a-form ref="formRef" :model="addPermissionsForm" @finish="addPermissions" v-if="rolesAndPermissions.rolePermissions.modules">
                     <a-row>
                         <a-col :span="24" v-for="module in rolesAndPermissions.rolePermissions.modules" :key="module.id">
-                            <a-card :title="module.name">
+                            <div v-if="module.name=='mobile'">
+                            </div>
+                            
+                            <a-card v-else :title="module.name">
                                 <div class="screens" v-for="screen in module.screens" :key="screen.moduleId">
                                     <a-checkbox v-model:checked="addPermissionsForm.screen[screen.moduleId]" @change="checkAll(screen.actions,screen.moduleId)"><strong>{{ screen.name }}</strong></a-checkbox>
                                     <a-divider class="transparent" />
@@ -80,6 +83,7 @@
                                 </div>
                             </a-card>
                             <a-divider class="transparent" />
+                        
                         </a-col>
                     </a-row>
                     <div class="steps-action">

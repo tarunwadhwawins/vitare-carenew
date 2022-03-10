@@ -11,40 +11,15 @@
 
             <div class="phyInner">
 
-                <a-avatar :size="80" src="http://ditstekdemo.com/ditstek-care/img/profile-4.jpg" />
+                <a-avatar v-if="staff.profile_photo" :size="80" src="staff.profile_photo" />
+                <a-avatar v-else :size="80" src="http://ditstekdemo.com/ditstek-care/img/profile-4.jpg" />
                 <span class="checkIcon" @click="removeStaff(staff.id)">
                     <CloseOutlined />
                 </span>
                 <p>{{staff.fullName}}</p>
             </div>
         </a-col>
-        <!-- <a-col :span="12">
-                <div class="phyInner">
-                    <a-avatar :size="80" src="http://ditstekdemo.com/ditstek-care/img/profile-4.jpg" />
-                    <span class="checkIcon">
-                        <CloseOutlined />
-                    </span>
-                    <p>Robert Henry</p>
-                </div>
-            </a-col>
-            <a-col :span="12">
-                <div class="phyInner">
-                    <a-avatar :size="80" src="http://ditstekdemo.com/ditstek-care/img/profile-1.jpg" />
-                    <span class="checkIcon">
-                        <CloseOutlined />
-                    </span>
-                    <p>Smith Joseph</p>
-                </div>
-            </a-col>
-            <a-col :span="12">
-                <div class="phyInner">
-                    <a-avatar :size="80" src="http://ditstekdemo.com/ditstek-care/img/profile-4.jpg" />
-                    <span class="checkIcon">
-                        <CloseOutlined />
-                    </span>
-                    <p>Jane Doe</p>
-                </div>
-            </a-col> -->
+       
         <a-col :span="12">
             <div class="phyInner" @click="showModal2">
                 <a-avatar :size="80" title="Add Physician">

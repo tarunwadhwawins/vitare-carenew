@@ -21,9 +21,9 @@
             <a-col :sm="24" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('appointmentCalendar.physician')" name="staffId">
-                        <a-select ref="select" v-if="staffList" v-model:value="physicianForm.staffId" style="width: 100%" size="large">
+                        <a-select ref="select" v-if="staffList.staffList" v-model:value="physicianForm.staffId" style="width: 100%" size="large">
                             <a-select-option value="" hidden>{{'Select Staff'}}</a-select-option>
-                            <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}
+                            <a-select-option v-for="staff in staffList.staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}
                             </a-select-option>
                         </a-select>
                     </a-form-item>
@@ -89,7 +89,7 @@ export default {
         const filterOption = (input, option) => {
             return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
         };
-        const staffList = store.getters.commonRecords.value.staffList
+        const staffList = store.getters.commonRecords.value
 
         const physicianForm = reactive({
             staffId: ''

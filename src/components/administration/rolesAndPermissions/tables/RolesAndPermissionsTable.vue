@@ -1,10 +1,14 @@
 <template>
-  <a-table  rowKey="id"
-
-    :columns="rolesColumns"
-    :data-source="rolesList.rolesList" >
+<a-table rowKey="id" :columns="rolesColumns" :data-source="data.rolesList" :scroll="{ x: 900 ,y : 430 }"  :pagination=false>
     <template #actions="{record}" v-if="arrayToObjact(roleAndPermissions,2)">
-        <a-tooltip placement="bottom" >
+        <a-tooltip placement="bottom" v-if="record.id ===1" disabled>
+            <template #title disabled>
+                <span>Edit</span>
+            </template>
+            <a class="icons" disabled>
+                <EditOutlined /></a>
+        </a-tooltip>
+        <a-tooltip placement="bottom" v-else>
             <template #title>
                 <span>Edit</span>
             </template>
@@ -12,12 +16,18 @@
                 <EditOutlined /></a>
         </a-tooltip>
         <a-tooltip placement="bottom" v-if="arrayToObjact(roleAndPermissions,3)">
-            <template #title>
+            <template #title v-if="record.id ===1" disabled>
                 <span>Delete</span>
             </template>
-            <a class="icons" @click="deleteRole(record.udid)">
+            <template #title v-else>
+                <span>Delete</span>
+            </template>
+            <a class="icons" v-if="record.id ===1" disabled>
+                <DeleteOutlined /></a>
+            <a class="icons" v-else @click="deleteRole(record.udid)">
                 <DeleteOutlined /></a>
         </a-tooltip>
+
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Copy</span>
@@ -30,35 +40,60 @@
         <a-switch v-model:checked="record.status" @change="UpdateRoleStatus(record.udid, $event)" />
     </template>
 </a-table>
+<Loader />
 </template>
 
 <script>
-import { DeleteOutlined, EditOutlined, CopyOutlined } from "@ant-design/icons-vue";
-import { useStore } from "vuex";
-import {  watchEffect,computed } from 'vue';
-import {warningSwal,arrayToObjact} from "@/commonMethods/commonMethod";
-import { messages } from '../../../../config/messages';
+import {
+    DeleteOutlined,
+    EditOutlined,
+    CopyOutlined
+} from "@ant-design/icons-vue";
+import {
+    useStore
+} from "vuex";
+import {
+    watchEffect,
+    computed,
+    onMounted,
+    ref
+} from 'vue';
+import {
+    warningSwal,
+    arrayToObjact
+} from "@/commonMethods/commonMethod";
+import {
+    messages
+} from '../../../../config/messages';
+import Loader from "@/components/loader/Loader"
 export default {
     components: {
         DeleteOutlined,
         EditOutlined,
         CopyOutlined,
+        Loader,
     },
-    props:{},
-    setup(props,{emit}) {
+    props: {},
+    setup(props, {
+        emit
+    }) {
         const store = useStore()
 
         watchEffect(() => {
             store.dispatch('rolesList')
         })
 
-        const rolesList = store.getters.rolesAndPermissionsRecord.value
+        const data = store.getters.rolesAndPermissionsRecord.value
 
         const editRole = (id) => {
+
             store.dispatch('roleDetails', id)
-            store.dispatch('editPermissions',id)
+            store.dispatch('editPermissions', id)
             store.dispatch('editdWidget', id)
-            emit("is-edit",{check:true,id:id})
+            emit("is-edit", {
+                check: true,
+                id: id
+            })
         }
 
         const deleteRole = (id) => {
@@ -73,7 +108,10 @@ export default {
 
         const copyRole = (id) => {
             store.dispatch('roleDetails', id)
-emit("is-copy",{check:true,id:id})
+            emit("is-copy", {
+                check: true,
+                id: id
+            })
         }
 
         const UpdateRoleStatus = (id, status) => {
@@ -128,15 +166,47 @@ emit("is-copy",{check:true,id:id})
                 },
             },
         ];
+  //ifinitescroller
+        const meta = store.getters.rolesAndPermissionsRecord
+        const loader = ref(false)
+        onMounted(() => {
+            var tableContent = document.querySelector('.ant-table-body')
+            tableContent.addEventListener('scroll', (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight
+                let currentScroll = event.target.scrollTop + 2
+                //console.log("data",currentScroll)
+                if (currentScroll >= maxScroll) {
 
-        const roleAndPermissions = computed(()=>{
+                    let current_page = meta.value.rolesMeta.current_page + 1
+
+                    if (current_page <= meta.value.rolesMeta.total_pages) {
+                        loader.value = true
+                        store.state.rolesAndPermissions.rolesMeta = ""
+                        store.state.rolesAndPermissions.rolesList = ""
+                        store.dispatch("rolesList", "?page=" + current_page).then(()=>{
+                          loadMoredata()
+                        })    
+                    }
+                }
+            })
+        })
+
+        function loadMoredata() {
+            const newData = meta.value.rolesList
+            newData.forEach(element => {
+                data.rolesList.push(element)
+            });
+            loader.value = false
+        }
+        const roleAndPermissions = computed(() => {
             return store.state.screenPermissions.roleAndPermissions
         })
         return {
+            loader,
             arrayToObjact,
             roleAndPermissions,
             rolesColumns,
-            rolesList,
+            data,
             editRole,
             deleteRole,
             copyRole,

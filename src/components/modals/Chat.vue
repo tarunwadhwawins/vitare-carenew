@@ -21,14 +21,14 @@
                 </a-list>
 
                 <div class="chatBoxInner" v-for="msg,index in list.conversationList" :key="index">
-                    <div class="chatWrapper left" v-if="communication.receiverId==msg.senderId">
+                    <div class="chatWrapper left" v-if="communication.senderId==msg.senderId">
 
                         <div class="message">
                             {{msg.message}}
                         </div>
                         <div class="time">{{ dateFormat(msg.createdAt)}}</div>
                     </div>
-                    <div class="chatWrapper right" v-if="communication.senderId==msg.senderId">
+                    <div class="chatWrapper right" v-if="communication.receiverId==msg.senderId">
                         <div class="message">
                             {{msg.message}}
                         </div>
@@ -36,8 +36,9 @@
                     </div>
 
                 </div>
+               
                 <a-form ref="formRef" :model="formValue" layout="vertical" @finishFailed="taskFormFailed">
-                    <div class="sendMessage" v-if="auth.user.id===communication.senderId">
+                    <div class="sendMessage" v-if="auth.user.id==communication.receiverId">
                         <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message">
                             <template #addonAfter>
                                 <!-- <a-button v-show="name=='communication' && !Id" class="modal-button" type="primary" html-type="submit">{{$t('global.send')}}</a-button> -->
@@ -114,7 +115,7 @@ export default {
                 list.conversationList.push({
                     id: 2,
                     conversationId: props.communication.id,
-                    senderId: props.communication.senderId,
+                    senderId: props.communication.receiverId,
                     message: formValue.msgSend,
                     type: "text",
                     isRead: 0,

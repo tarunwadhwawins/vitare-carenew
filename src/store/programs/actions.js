@@ -6,11 +6,11 @@ export const programList = async ({
   commit
 }, page) => {
   let link = page ? API_ENDPOINTS['programsList'] + page : API_ENDPOINTS['programsList']
-
+  commit('loadingStatus', true)
   await serviceMethod.common("get", link, null, null).then((response) => {
 
     commit('programList', response.data);
-
+    commit('loadingStatus', false)
   }).catch((error) => {
     if (error.response.status === 422) {
       errorSwal(error.response.data)

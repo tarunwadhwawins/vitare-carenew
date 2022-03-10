@@ -27,7 +27,9 @@
                                 <a-button class="primaryBtn">Export to Excel</a-button>
                             </div>
                         </a-col>
-                        <ProgramTable v-if="programsList.programList" :programData="programsList" @is-edit="showEdit($event)"></ProgramTable>
+                        
+                        <ProgramTable v-if="programsList.programList" :programData="programsList" @is-edit="showEdit($event)">  </ProgramTable>
+                        <ProgramTable v-else :programData="programsList" @is-edit="showEdit($event)">  </ProgramTable>
                     </a-row>
                 </div>
             </a-layout-content>
@@ -53,7 +55,7 @@ export default {
     components: {
         Header,
         Sidebar,
-
+       
         AdminPrograms,
         ProgramTable,
     },

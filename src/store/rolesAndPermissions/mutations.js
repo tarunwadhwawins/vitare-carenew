@@ -3,6 +3,7 @@ export const rolesListSuccess = async (state, roles) => {
     role.status = role.status == 1 ? true : false;
     return role
   })
+  state.rolesMeta= roles.meta ? roles.meta.pagination : ''
 }
 
 export const rolePermissionsSuccess = async (state, roles) => {

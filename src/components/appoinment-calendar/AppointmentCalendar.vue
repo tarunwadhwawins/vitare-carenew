@@ -15,7 +15,7 @@
                
                 <Calendar @is-click="selectDate($event)" />
 
-                <Physicians v-if="appointmentSearch.getStaff" @staff-select="staffSelect($event)" :physiciansId="physiciansId" />
+                <Physicians  @staff-select="staffSelect($event)" :physiciansId="physiciansId" />
 
             </a-col>
             <a-col :xl="toggle == false ? 24 : 18" :sm="toggle == false ? 24 : 14" :xs="24">
@@ -60,7 +60,7 @@ import WeekAppointment from "./WeekAppointment"
 import {ref,watchEffect,computed} from "vue";
 import {useStore} from "vuex"
 import moment from "moment"
-import Loader from "../loader/Loader"
+import Loader from "@/components/loader/Loader"
 import {arrayToObjact} from "@/commonMethods/commonMethod"
 //import Loader from "../loader/Loader"
 export default {
@@ -146,13 +146,8 @@ export default {
         const appointmentSearch = store.getters.appointmentRecords.value
 
         watchEffect(() => {
-           appointmentSearch.getStaff ? "" : store.dispatch("getStaffs").then(() => {
-                // store.getters.appointmentRecords.value.getStaff.map((item, index) => {
-                //     if (index <= 2) {
-                //         physiciansId.value.push(item.id)
-                //     }
-                // })
-            })
+           //appointmentSearch.getStaff ? "" : store.dispatch("getStaffs")
+            
 
             store.dispatch("patientsList")
             store.dispatch("staffList")
