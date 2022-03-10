@@ -3,7 +3,7 @@ const inventory = {
   modelNumber: 'Model Number',
   serialNumber: 'Serial Number',
   macAddress: 'Mac Address',
-  activeStatus: 'Active Status',
+  activeStatus: 'Active/Inactive',
 }
 
 
