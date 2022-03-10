@@ -74,7 +74,7 @@ export default defineComponent({
           id: props.Id,
       });
       setTimeout(() => {
-          store.getters.timeLogReports.value.timeLogReportList=""
+        store.getters.timeLogReports.value.timeLogReportList=""
         store.dispatch("timeLogReportList");
          emit('saveAuditTimeLog')
       }, 2000);
