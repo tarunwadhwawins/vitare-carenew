@@ -52,7 +52,7 @@ export const editAuditTimeLog = async ({ commit }, id) => {
 
 export const updateAuditTimeLog = async ({ commit }, data) => {
 	await ServiceMethodService.common("put", `timeLog/${data.id}`, null, data.data).then((response) => {
-		commit('updateTimeLog', response.data.data);
+		// commit('updateTimeLog', response.data.data);
 		successSwal(response.data.message)
 	}).catch((error) => {
 		if (error.response.status === 422) {

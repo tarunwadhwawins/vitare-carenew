@@ -18,7 +18,7 @@
                     <a-form-item :label="$t('timeLogReport.patient')" name="patient" :rules="[{ required: true, message: $t('timeLogReport.patient')+' '+$t('global.validation') }]">
                         <a-select ref="select" v-model:value="auditTimeLog.patient" style="width: 100%" size="large">
                             <a-select-option value="" disabled>Select Patient</a-select-option>
-                            <a-select-option v-for="patient in patients" :key="patient.id">{{ patient.firstName}}</a-select-option>
+                            <a-select-option v-for="patient in patients" :key="patient.id">{{ patient.fullName}}</a-select-option>
                         </a-select>
                         <!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" /> -->
                     </a-form-item>
@@ -53,12 +53,13 @@
 import { defineComponent, reactive, computed, watchEffect } from "vue";
 import { useStore } from "vuex";
 import ModalButtons from "@/components/common/button/ModalButtons";
+import { getSeconds} from '@/commonMethods/commonMethod'
 export default defineComponent({
   components: {
     ModalButtons,
   },
   props:{
-      Id:Number
+      Id:String
   },
   setup(props,{emit}) {
     const store = useStore();
@@ -69,6 +70,7 @@ export default defineComponent({
       note: "",
     });
     const updateAuditTime = () => {
+    auditTimeLog.timeAmount = getSeconds(auditTimeLog.timeAmount)
       store.dispatch("updateAuditTimeLog", {
           data: auditTimeLog,
           id: props.Id,
@@ -100,6 +102,7 @@ export default defineComponent({
     })
 
     return {
+     getSeconds,
      updateAuditTime,
       timeLogReports,
       staffList,

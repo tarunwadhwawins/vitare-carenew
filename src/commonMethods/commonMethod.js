@@ -2,18 +2,20 @@ import Swal from "sweetalert2"
 import moment from 'moment';
 
 
-export function deCodeString(value) {		
-  let decode= window.btoa(value); // encode a string
-  return decode.replace("=",'')
-}   
+export function deCodeString(value) {
+  let decode = window.btoa(value); // encode a string
+  return decode.replace("=", '')
+}
 
-export function enCodeString(value) {		
- return window.atob(value); // decode a string
-  } 
+export function enCodeString(value) {
+  return window.atob(value); // decode a string
+}
 
 function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  return str.charAt(0).toUpperCase() + str.slice(1); //Capitalize a string
 }
+
+// swal for success message
 export function successSwal(message) {
   const Toast = Swal.mixin({
     toast: true,
@@ -28,6 +30,7 @@ export function successSwal(message) {
   })
 }
 
+// swal for error message
 export function errorSwal(message) {
   Swal.fire({
     icon: 'error',
@@ -36,8 +39,9 @@ export function errorSwal(message) {
   })
 }
 
-export async function warningSwal(message){
-   const result =  await Swal.fire({
+// swal for warning message
+export async function warningSwal(message) {
+  const result = await Swal.fire({
     title: "Are you sure?",
     text: message,
     icon: "warning",
@@ -47,13 +51,13 @@ export async function warningSwal(message){
     confirmButtonText: "Yes",
   });
   if (result.isConfirmed) {
-   return true
-  }else{
+    return true
+  } else {
     return false
   }
 }
 
-
+// Date for getting this format yyyy-MM-DD pass timeStamp
 export function dateOnlyFormatSImple(timeStamp) {
   var day = moment.unix(new Date(timeStamp));
   return day.format('yyyy-MM-DD');
@@ -83,12 +87,12 @@ export function dateTimeFormat(date) {
 }
 
 export function meridiemFormat(time) {
-  time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+  time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
   if (time.length > 1) {
-    time = time.slice (1);
+    time = time.slice(1);
     time[4] = +time[0] < 12 ? ' AM' : ' PM';
     time[0] = +time[0] % 12 || 12;
-    var newTime = (time[0]+time[1]+time[2]+time[4]).toString();
+    var newTime = (time[0] + time[1] + time[2] + time[4]).toString();
   }
   return newTime;
 }
@@ -109,25 +113,25 @@ export function timeOnly(date) {
   var day = moment.unix(new Date(date));
   return String(day.format('HH'));
 }
-export function yaxis(title){
-  return  {
+export function yaxis(title) {
+  return {
     "labels": {
       "formatter": function (val) {
-          return val.toFixed(0)
+        return val.toFixed(0)
       }
-  },
+    },
     title: {
       text: title,
     },
   }
 }
 
-export function dataLabels(value){
+export function dataLabels(value) {
   return {
     enabled: value,
   }
 }
-export function plotOptions(borderRadius,columnWidth,barHeight,distributed,horizontal,position){
+export function plotOptions(borderRadius, columnWidth, barHeight, distributed, horizontal, position) {
   return {
     bar: {
       borderRadius: borderRadius,
@@ -141,54 +145,54 @@ export function plotOptions(borderRadius,columnWidth,barHeight,distributed,horiz
     },
   }
 }
-export function annotations(xname,seriesIndex,borderColor,offsetY,color,background){
+export function annotations(xname, seriesIndex, borderColor, offsetY, color, background) {
   return {
-    points: [
-      {
-        x: xname,
-        seriesIndex: seriesIndex,
-        label: {
-          borderColor: borderColor,
-          offsetY: offsetY,
-          style: {
-            color: color,
-            background: background,
-          },
+    points: [{
+      x: xname,
+      seriesIndex: seriesIndex,
+      label: {
+        borderColor: borderColor,
+        offsetY: offsetY,
+        style: {
+          color: color,
+          background: background,
         },
       },
-    ],
+    }, ],
   }
 }
-export function timeStamp(date){
-  
+
+// Used for timeStamp for dateTime
+export function timeStamp(date) {
   return moment(date).format("X")
 }
-export function timeStampToTime(time,format){
+
+export function timeStampToTime(time, format) {
   return moment.unix(time).format(format)
 }
-export function arrayToObjact(data,id){
-  //console.log("data",data)
-return data.find(o => o.id===id)
+
+// Used for pass array and get object of array
+export function arrayToObjact(data, id) {
+  return data.find(o => o.id === id)
 }
-export function startimeAdd(value){
-  let timeStart =  '00:00:00'
- 
+export function startimeAdd(value) {
+  let timeStart = '00:00:00'
   return (moment(value.format('MM/DD/YYYY') + ' ' + timeStart)).format()
 }
-export function endTimeAdd(value){
-  let endTime = '23:59:59' 
+
+export function endTimeAdd(value) {
+  let endTime = '23:59:59'
   return (moment(value.format('MM/DD/YYYY') + ' ' + endTime)).format()
 }
-export function responseConvert(time,data,format){
-  let record =[]
+
+export function responseConvert(time, data, format) {
+  let record = []
   time.forEach(element => {
     let recordList = []
     data.forEach(value => {
-     
       if ((moment(dateFormat(value.date))).format(format) === element) {
         recordList.push(value);
       }
-
     });
     if (recordList.length > 0) {
       let value_obj_get = {
@@ -200,14 +204,13 @@ export function responseConvert(time,data,format){
       let value_obj = {
         "time": element,
         "data": [],
-
       };
       record.push(value_obj);
     }
   });
   return record
 }
-export function chartTimeCount(timeLine,count){
+export function chartTimeCount(timeLine, count) {
   let newPatient = [];
   if (timeLine == 122) {
     const time = ['08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM', '06:00 PM', '07:00 PM', '08:00 PM']
@@ -221,7 +224,6 @@ export function chartTimeCount(timeLine,count){
         };
         newPatient.push(value_obj);
       } else {
-       // console.log("obj.duration",obj.duration)
         let value_obj_get = {
           "duration": moment(dateFormat(obj.duration)).format('hh:00 A'),
           "total": obj.total,
@@ -230,11 +232,9 @@ export function chartTimeCount(timeLine,count){
       }
     })
   } else if (timeLine == 123) {
-    
     let today = moment();
     today.subtract(7, 'days')
     for (let i = 0; i < 7; i++) {
-
       var day = today.add(1, 'days');
       let obj = count.find(o => o.duration === day.format('dddd'));
       if (typeof obj === 'undefined') {
@@ -248,9 +248,7 @@ export function chartTimeCount(timeLine,count){
         newPatient.push(obj);
       }
     }
-    
   } else if (timeLine == 124) {
-
     let today = moment();
     today.subtract(30, 'days')
     for (let i = 0; i < 30; i++) {
@@ -266,7 +264,7 @@ export function chartTimeCount(timeLine,count){
         newPatient.push(obj);
       }
     }
-  
+
   } else {
     let month = []
     for (let k = 1; k < 13; k++) {
@@ -295,15 +293,15 @@ export function convertResponse(timeArray, recordsArray) {
   timeArray.forEach(time => {
     let recordList = []
     recordsArray.forEach(record => {
-      if(record.takeTime === time) {
+      if (record.takeTime === time) {
         recordList.push(record);
       }
     });
-    if(recordList.length > 0) {
+    if (recordList.length > 0) {
       let valuesObject = {
         "takeTime": time,
         "data": recordList.map(item => {
-          var field = (item.vitalField).replace(/ /g,'_').toLowerCase()
+          var field = (item.vitalField).replace(/ /g, '_').toLowerCase()
           item[field] = item.value
           return item
         })
@@ -319,13 +317,13 @@ export function convertData(patientVitals) {
   patientVitals.forEach(element => {
     let itemObject = {}
     element.data.forEach(item => {
-      var field = (item.deviceType+'_'+item.vitalField).replace(/ /g,'_').toLowerCase()
+      var field = (item.deviceType + '_' + item.vitalField).replace(/ /g, '_').toLowerCase()
       element.data = [];
-        itemObject['id'] = item.id
-        itemObject['takeTime'] = dateFormat(item.takeTime)
-        itemObject['vitalField'] = item.vitalField
-        itemObject['deviceType'] = item.deviceType
-        itemObject[field] = item.value
+      itemObject['id'] = item.id
+      itemObject['takeTime'] = dateFormat(item.takeTime)
+      itemObject['vitalField'] = item.vitalField
+      itemObject['deviceType'] = item.deviceType
+      itemObject[field] = item.value
     })
     records.push(itemObject);
   });
@@ -343,11 +341,11 @@ export function convertChartResponse(vitaldFieldsArray, recordsArray) {
   vitaldFieldsArray.forEach(vitalField => {
     let recordList = []
     recordsArray.forEach(record => {
-      if(record.vitalField === vitalField) {
+      if (record.vitalField === vitalField) {
         recordList.push(record);
       }
     });
-    if(recordList.length > 0) {
+    if (recordList.length > 0) {
       let valuesObject = {
         "name": vitalField,
         "data": recordList.map(item => {
@@ -373,16 +371,15 @@ export function createDynamicColumns(patientVitals) {
       slots: {
         customRender: 'takeTime'
       },
-    }
-  ]
+    }]
   }
-  if(patientVitals.length > 0) {
+  if (patientVitals.length > 0) {
     patientVitals.map(item => {
-      var field = (item.deviceType+'_'+item.vitalField).replace(/ /g,'_').toLowerCase()
-      var exists = (itemObject.columns).some(function(dataIndex) {
+      var field = (item.deviceType + '_' + item.vitalField).replace(/ /g, '_').toLowerCase()
+      var exists = (itemObject.columns).some(function (dataIndex) {
         return dataIndex.dataIndex === field;
       });
-      if(!exists) {
+      if (!exists) {
         // console.log('patientVitals exists', exists)
         // itemObject.tableName = item.deviceType;
         // itemObject.columns.push({
@@ -408,19 +405,19 @@ export function getSeconds(hms) {
 }
 
 export function secondsToTime(secs) {
-    var hours = Math.floor(secs / (60 * 60));
-    var divisor_for_minutes = secs % (60 * 60);
-    var minutes = Math.floor(divisor_for_minutes / 60);
-    var divisor_for_seconds = divisor_for_minutes % 60;
-    var seconds = Math.ceil(divisor_for_seconds);
-    if(hours<10) {
-      hours = "0"+hours;
-    }
-    if(minutes<10) {
-      minutes = "0"+minutes;
-    }
-    if(seconds<10) {
-      seconds = "0"+seconds;
-    }
-    return hours+":"+minutes+":"+seconds;
+  var hours = Math.floor(secs / (60 * 60));
+  var divisor_for_minutes = secs % (60 * 60);
+  var minutes = Math.floor(divisor_for_minutes / 60);
+  var divisor_for_seconds = divisor_for_minutes % 60;
+  var seconds = Math.ceil(divisor_for_seconds);
+  if (hours < 10) {
+    hours = "0" + hours;
+  }
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
+  if (seconds < 10) {
+    seconds = "0" + seconds;
+  }
+  return hours + ":" + minutes + ":" + seconds;
 }

@@ -1,27 +1,20 @@
 
 <template>
-<a-col :sm="24" :xs="24" v-if="arrayToObjact(auditTimes.auditTimePermissions,1)">
+<a-col :sm="24" :xs="24" >
     <a-table  rowKey="id" :columns="fields" :pagination="false" :data-source="data" :scroll="{ y: 450 }" @change="onChange">
-        <template #staff="text">
-            <!-- <router-link to="coordinator-summary">{{
-  text.text
-}}</router-link> -->
-            <span>{{text.text}}</span>
+        <template #staff="{record}">
+            <span>{{record.staff}}</span>
         </template>
-        <template #patient="text">
-            <!-- <router-link :to="linkTo">{{
-  text.text
-}}</router-link> -->
-            <span>{{text.text}}</span>
+        <template #patient="{record}">
+            <span>{{record.patient}}</span>
         </template>
         <template #flag="{ text }">
             <span>
                 <img class="reportFlag" src="../../assets/images/flag-orange.svg" alt="image" /></span>
             <span v-if="text.match(/two/g)"><img class="reportFlag" src="../../assets/images/flag-red.svg" alt="image" /></span>
         </template>
-        <template #actions="{record}" v-if="arrayToObjact(auditTimes.auditTimePermissions,2)">
+        <template #actions="{record}" >
             <a-tooltip placement="bottom" @click="editTimeLog(record.id)">
-                <AuditTimeLog v-model:visible="visible" @saveAuditTimeLog="handleOk($event)" :Id="record.id" />
                 <template #title>
                     <span>{{$t('global.edit')}}</span>
                 </template>
@@ -41,6 +34,7 @@
         </template>
     </a-table>
     <InfiniteLoader v-if="loader" />
+    <AuditTimeLog v-model:visible="visible" @saveAuditTimeLog="handleOk($event)" :Id="Id" />
 </a-col>
 </template>
     
@@ -74,6 +68,7 @@ export default {
   setup(props) {
     const store = useStore();
     const visible = ref(false);
+    const Id =ref()
     const handleOk = () => {
       visible.value = false;
     };
@@ -81,6 +76,7 @@ export default {
     function editTimeLog(id) {
       store.dispatch("editAuditTimeLog", id);
       visible.value = true;
+      Id.value = id
     }
 
     function deleteTimeLog(id) {
@@ -93,6 +89,7 @@ export default {
         }
       });
     }
+    console.log("props.timeLogRecords",props.timeLogRecords)
     const fields = reactive(props.columns);
     const data = reactive(props.timeLogRecords);
     //infinite scroll
@@ -100,7 +97,8 @@ export default {
     const loader = ref(false);
     onMounted(() => {
       var tableContent = document.querySelector(".ant-table-body");
-      tableContent.addEventListener("scroll", (event) => {
+
+      tableContent ? tableContent.addEventListener("scroll", (event) => {
         let maxScroll = event.target.scrollHeight - event.target.clientHeight;
         let currentScroll = event.target.scrollTop + 2;
         if (currentScroll >= maxScroll) {
@@ -116,8 +114,9 @@ export default {
 
           }
         }
-      });
-    });
+      }) : ''
+    
+    })
 
     function loadMoredata() {
       const newData = meta.value.timeLogReportList;
@@ -133,7 +132,8 @@ export default {
         return store.state.timeLogReport
     })
     return {
-        arrayToObjact,
+      Id,
+      arrayToObjact,
       auditTimes,
       editTimeLog,
       handleOk,

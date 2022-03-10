@@ -62,8 +62,8 @@ export const reportExport = (state, data) => {
 }
 export const editAuditTimeLog = async (state, data) => {
   state.editAuditTimeLog = data
-    data.staff = data.staffId,
-    data.patient = data.patientId
+    // data.staff = data.staffId,
+    // data.patient = data.patientId
     data.timeAmount = secondsToTime(data.timeAmount)
     return data
 }
