@@ -1,6 +1,5 @@
 import ServiceMethodService from '../../services/serviceMethod';
 import axios from 'axios';
-const request = axios.CancelToken.source();
 
 import {
   API_ENDPOINTS
@@ -58,10 +57,12 @@ export const vitalFieldsByDeviceId = async ({ commit}, deviceId) => {
   })
 }
 
-export const abortApiRequest = ({commit}, requestUrl) => {
-  console.log('request', requestUrl)
-  axios.get(requestUrl, { cancelToken: request.token }).then(() => {
-    commit('clearOldRequest', true);
+export const abortApiRequest = async ({commit}, requestUrl) => {
+  const cancelToken = axios.CancelToken.source()
+  await axios.get(
+    requestUrl, { cancelToken: cancelToken.token } //Pass the cancel token to the current request
+  ).then((response) => {
+    console.log("Results : ", response.data)
   })
   .catch((error) => {
     commit('failure', error);

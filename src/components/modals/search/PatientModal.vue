@@ -73,4 +73,7 @@ export default {
 .arrowIcon{
     font-size:18px
 }
+.ant-input-number-handler-wrap {
+    display: none;
+}
 </style>

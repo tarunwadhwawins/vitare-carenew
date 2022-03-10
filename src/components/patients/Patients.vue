@@ -63,6 +63,7 @@ import { arrayToObjact } from "@/commonMethods/commonMethod";
 // import { messages } from "../../config/messages";
 import DataTable from "./data-table/DataTable"
 import SearchField from "@/components/common/input/SearchField";
+import { API_ENDPOINTS } from "@/config/apiConfig"
 export default {
   name: "Patients",
   components: {
@@ -99,11 +100,20 @@ export default {
     })
     
     const searchData = (event) => {
+      const API_URL = process.env.VUE_APP_API_URL
+      const requestUrl = API_ENDPOINTS['patient']+'?search='+event.target.value;
       if( event.target.selectionEnd >= 3 ) {
-        store.state.patients.patientList = ""
-        // const requestUrl = localStorage.getItem('requestUrl');
-        // store.dispatch('abortApiRequest', requestUrl)
-        store.dispatch('searchPatients', event.target.value)
+        if( event.target.selectionEnd == 3 ) {
+          localStorage.setItem('requestUrl', API_URL+requestUrl);
+          store.state.patients.patientList = ""
+          store.dispatch('searchPatients', event.target.value)
+        }
+        else if( event.target.selectionEnd > 3 ) {
+          store.state.patients.patientList = ""
+          store.dispatch('abortApiRequest', requestUrl).then(() => {
+            store.dispatch('searchPatients', event.target.value)
+          })
+        }
       }
       else if( event.target.selectionEnd == 0 ) {
         store.state.patients.patientList = ""
