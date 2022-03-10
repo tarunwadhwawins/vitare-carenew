@@ -5,22 +5,31 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('inventory.deviceType')" name="deviceType" :rules="[{ required: true, message: $t('inventory.deviceType')+' '+$t('global.validation')  }]">
-              <AutoComplete
+              <!-- <AutoComplete
                 :options="deviceTypes"
                 @on-select="onSelectOption"
                 v-if="deviceTypes"
-                v-model:value="inventoryForm.deviceType" />
+                v-model:value="inventoryForm.deviceType" /> -->
+                <a-select ref="select" v-model:value="inventoryForm.deviceType" style="width: 100%" size="large" @change="onSelectOption">
+                  <a-select-option value="" hidden>{{'Select Duration Time'}}</a-select-option>
+                  <a-select-option v-for="deviceType in inventoryTypes.globalCode" :key="deviceType.id" :value="deviceType.id">
+                    {{ deviceType.name }}</a-select-option>
+                </a-select>
             </a-form-item>
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('inventory.modelNumber')" name="deviceModelId" :rules="[{ required: true, message: $t('inventory.modelNumber')+' '+$t('global.validation')  }]">
-              <AutoComplete
+              <!-- <AutoComplete
                 :options="deviceModals"
                 @on-select="onSelectModal"
                 v-if="deviceModals"
-                v-model:value="inventoryForm.deviceModelId" />
+                v-model:value="inventoryForm.deviceModelId" /> -->
+                <a-select ref="select" v-model:value="inventoryForm.deviceModelId" style="width: 100%" size="large">
+                  <a-select-option value="" hidden>{{'Select Duration Time'}}</a-select-option>
+                  <a-select-option v-for="deviceModal in deviceModalsList" :key="deviceModal.id">{{ deviceModal.modelNumber }}</a-select-option>
+                </a-select>
             </a-form-item>
           </div>
         </a-col>
@@ -49,6 +58,7 @@
           <ModalButtons/>
         </a-col>
       </a-row>
+      <Loader />
     </a-form>
   </a-modal>
 </template>
@@ -56,11 +66,13 @@
 import { ref, reactive, computed, watchEffect, onMounted } from "vue";
 import { useStore } from "vuex"
 import ModalButtons from "@/components/common/button/ModalButtons";
-import AutoComplete from "@/components/common/input/AutoComplete";
+import Loader from "@/components/loader/Loader"
+// import AutoComplete from "@/components/common/input/AutoComplete";
 export default {
   components: {
     ModalButtons,
-    AutoComplete,
+    // AutoComplete,
+    Loader,
   },
   props: {
     isAdd: {
@@ -110,66 +122,64 @@ export default {
       }
     })
     
-    const deviceTypes = ref([])
+    /* const deviceTypes = ref([])
     inventoryTypes.value.globalCode.forEach(element => {
       deviceTypes.value.push({
         value: element.name,
         id: element.id,
       })
-    });
+    }); */
 
-    const onSelectOption = (selected) => {
-      deviceModalsList.value = null;
-      deviceTypes.value.forEach(type => {
-        if(type.value == selected) {
-          store.dispatch('deviceModalsList', type.id)
-        }
-      });
+    const onSelectOption = (value) => {
+      inventoryForm.deviceModelId = ""
+      store.dispatch('deviceModalsList', value)
+      // deviceModalsList.value = null;
+      // deviceTypes.value.forEach(type => {
+      //   if(type.value == selected) {
+      //     store.dispatch('deviceModalsList', type.id)
+      //   }
+      // });
     };
+
+    const deviceModalsList = computed(() => {
+      return store.state.inventory.deviceModalsList
+    });
     
-    const deviceModals = ref([])
-    var deviceModalsList = ref(null)
+    // const deviceModals = ref([])
     watchEffect(() => {
-      deviceModalsList = computed(() => {
-        return store.state.inventory.deviceModalsList
-      });
-      deviceModals.value = [];
-      if(deviceModalsList.value != null) {
-        deviceModalsList.value.forEach(element => {
-          deviceModals.value.push({
-            value: element.modelNumber,
-            id: element.id,
-          })
-        });
-      }
+      // deviceModalsList = computed(() => {
+      //   return store.state.inventory.deviceModalsList
+      // });
+      // deviceModals.value = [];
+      // if(deviceModalsList.value != null) {
+      //   deviceModalsList.value.forEach(element => {
+      //     deviceModals.value.push({
+      //       value: element.modelNumber,
+      //       id: element.id,
+      //     })
+      //   });
+      // }
     })
 
-    const modelId = ref(null);
+    /* const modelId = ref(null);
     const onSelectModal = (selected) => {
       deviceModals.value.forEach(modal => {
         if(modal.value == selected) {
           modelId.value = modal.id;
         }
       });
-    };
+    }; */
 
     const submitForm = () => {
       if(isEdit) {
-        const data = {
-          "deviceModelId": modelId.value != null ? modelId.value : inventoryDetail.modelId,
-          "serialNumber": inventoryForm.serialNumber,
-          "macAddress": inventoryForm.macAddress,
-          "isActive": inventoryForm.isActive,
-        }
-        console.log('data', data)
+        // console.log('data', data)
         const id = inventoryDetail.id;
-        store.dispatch('updateInventory', {id, data}).then(() => {
+        store.dispatch('updateInventory', {id: id, data: inventoryForm}).then(() => {
           store.dispatch('inventoriesList')
           emit('is-visible', false);
         })
       }
       else {
-        inventoryForm.deviceModelId = modelId.value;
         store.dispatch('addInventory', inventoryForm).then(() => {
           store.dispatch('inventoriesList')
           emit('is-visible', false);
@@ -178,17 +188,19 @@ export default {
     }
     
     return {
-      onSelectModal,
-      deviceModals,
+      // onSelectModal,
+      // deviceModals,
       disabled,
       title,
       inventoryForm,
       submitForm,
       handleCancel,
-      deviceTypes,
+      // deviceTypes,
       size: ref("large"),
       checked,
       onSelectOption,
+      inventoryTypes,
+      deviceModalsList,
     };
   },
 };

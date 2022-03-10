@@ -1,10 +1,12 @@
 import ServiceMethodService from '../../services/serviceMethod';
 import { API_ENDPOINTS } from "../../config/apiConfig"
+import { successSwal } from '../../commonMethods/commonMethod'
 
 export const addInventory = async ({ commit }, data) => {
 	commit('loadingStatus', true)
 	await ServiceMethodService.common("post", API_ENDPOINTS['inventory'], null, data).then((response) => {
 		commit('addInventorySuccess', response.data.data);
+    successSwal(response.data.message)
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
@@ -51,6 +53,7 @@ export const updateInventory = async ({ commit }, {id, data}) => {
 	await ServiceMethodService.common("put", API_ENDPOINTS['inventory'], id, data).then((response) => {
 		commit('updateInventorySuccess', response.data.data);
 		commit('loadingStatus', false)
+    successSwal(response.data.message)
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {
@@ -66,6 +69,7 @@ export const deleteInventory = async ({ commit }, id) => {
 	await ServiceMethodService.common("delete", API_ENDPOINTS['inventory'], id, null).then((response) => {
 		commit('deleteInventorySuccess', response.data.data);
 		commit('loadingStatus', false)
+    successSwal(response.data.message)
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {

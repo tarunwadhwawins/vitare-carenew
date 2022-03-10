@@ -13,7 +13,7 @@
                 v-model:value="appointmentForm.patientId" /> -->
   
               <a-select ref="select" v-if="allPatients" v-model:value="appointmentForm.patientId" style="width: 100%"
-                size="large">
+                size="large" :disabled="disabled">
                 <a-select-option value="" hidden>{{'Select Patient'}}</a-select-option>
                 <a-select-option v-for="patient in allPatients" :key="patient.id" :value="patient.id">{{
                   patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option> 
@@ -143,6 +143,7 @@ import { useRoute } from 'vue-router'
       const patientUdid = route.params.udid;
       const idPatient = reactive(props.patientId);
       const patientName = reactive(props.patientName);
+      const disabled = ref(false);
 
       
       console.log('patientName', patientName)
@@ -165,6 +166,7 @@ import { useRoute } from 'vue-router'
           Object.assign(appointmentForm, {
             patientId: idPatient
           })
+          disabled.value = true
         }
         store.state.patients.patientsList ? "" : store.dispatch("patientsList")
         store.state.common.staffList ? "" : store.dispatch("staffList")
@@ -274,6 +276,7 @@ import { useRoute } from 'vue-router'
         list,
         //onSelectOption,
         //patients,
+        disabled,
       };
     },
   };

@@ -88,7 +88,10 @@ import {
 } from "vue";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { useStore } from "vuex";
-import { timeStamp, getSeconds } from '@/commonMethods/commonMethod';
+import {
+  timeStamp,
+  // getSeconds
+} from '@/commonMethods/commonMethod';
 import { useRoute } from "vue-router";
 import moment from "moment";
 
@@ -177,15 +180,23 @@ export default defineComponent({
         // store.dispatch('updateTimeLog', {timeLogId, addTimeLogForm});
       }
       else {
-        addTimeLogForm.date = timeStamp(addTimeLogForm.date);
-        addTimeLogForm.timeAmount = getSeconds(addTimeLogForm.timeAmount);
+        // addTimeLogForm.date = timeStamp(addTimeLogForm.date);
+        // addTimeLogForm.timeAmount = timeStamp(addTimeLogForm.timeAmount);
+        const data = {
+          category: addTimeLogForm.category,
+          loggedBy: addTimeLogForm.loggedBy,
+          performedBy: addTimeLogForm.performedBy,
+          date: timeStamp(addTimeLogForm.date),
+          timeAmount: timeStamp(addTimeLogForm.timeAmount),
+          cptCode: addTimeLogForm.cptCode,
+          note: addTimeLogForm.note,
+        }
         const patientId = route.params.udid;
-        console.log('addTimeLogForm', addTimeLogForm);
-        store.dispatch('addTimeLog', {id: patientId, data: addTimeLogForm}).then(() => {
+        store.dispatch('addTimeLog', {id: patientId, data: data}).then(() => {
           store.dispatch('latestTimeLog', route.params.udid)
+          emit('closeModal');
           formRef.value.resetFields();
           Object.assign(addTimeLogForm, form)
-          emit('closeModal');
         });
       }
     }
