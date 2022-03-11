@@ -167,7 +167,7 @@ export default defineComponent({
     })
 
     const cptCodesList = computed(() => {
-      return store.state.cptCodes.cptCodesList
+      return store.state.common.activeCptCodes
     })
 
     const handleClear = () => {
