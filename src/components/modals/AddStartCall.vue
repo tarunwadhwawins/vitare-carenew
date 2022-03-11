@@ -43,17 +43,23 @@ export default {
     });
 
     function videoCall() {
+      // console.log('object',enCodeString(startCall.conferenceId));
       store.commit("conferenceId", startCall.conferenceId);
       store.dispatch("getVideoDetails",startCall.conferenceId)
       if (conferenceId.value) {
-        router.push({ name: 'videoCall', params: { id: enCodeString(startCall.conferenceId) } })
+        router.push({ name: 'videoCall', params: { id: startCall.conferenceId } })
       }
+    }
+
+    function videoCallFailed(value){
+      console.log(value);
     }
 
     const conferenceId = computed(() => {
       return store.state.communications.conferenceId;
     });
     return {
+      videoCallFailed,
       enCodeString,
       deCodeString,
       conferenceId,

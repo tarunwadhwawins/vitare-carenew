@@ -124,6 +124,18 @@ export const vitalFieldsByDeviceId = (state, fields) => {
     state.vitalFieldsByDeviceId = fields
 }
 
+export const allPatientsList = (state, fields) => {
+    state.allPatientsList = fields
+}
+
+export const allStaffList = (state, fields) => {
+    state.allStaffList = fields
+}
+
+export const activeCptCodes = (state, fields) => {
+    state.activeCptCodes = fields
+}
+
 
 
 

@@ -154,8 +154,8 @@
       
       watchEffect(() => {
         store.dispatch("globalCodes")
-        store.dispatch("patientsList")
-        store.dispatch("staffList")
+        store.dispatch("allPatientsList")
+        store.dispatch("allStaffList")
       })
       
       const taskPriority = computed(() => {
@@ -169,10 +169,10 @@
       })
 
       const patientsList = computed(() => {
-        return store.state.communications.patientsList
+        return store.state.common.allPatientsList
       })
       const staffList = computed(() => {
-        return store.state.common.staffList
+        return store.state.common.allStaffList
       })
 
       const messageForm = reactive({

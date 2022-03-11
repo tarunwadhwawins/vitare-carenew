@@ -54,3 +54,36 @@ export const vitalFieldsByDeviceId = async ({ commit}, deviceId) => {
     commit('loadingStatus', false)
   })
 }
+
+export const allPatientsList = async ({ commit}, deviceId) => {
+  commit('loadingStatus', true)
+  await ServiceMethodService.common("get", API_ENDPOINTS['patient']+'?all=all', deviceId, null).then((response) => {
+    commit('allPatientsList', response.data.data);
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    commit('failure', error);
+    commit('loadingStatus', false)
+  })
+}
+
+export const allStaffList = async ({ commit}, deviceId) => {
+  commit('loadingStatus', true)
+  await ServiceMethodService.common("get", API_ENDPOINTS['staffList']+'?all=all', deviceId, null).then((response) => {
+    commit('allStaffList', response.data.data);
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    commit('failure', error);
+    commit('loadingStatus', false)
+  })
+}
+
+export const activeCptCodes = async ({ commit}, deviceId) => {
+  commit('loadingStatus', true)
+  await ServiceMethodService.common("get", API_ENDPOINTS['cptCodes'], deviceId, null).then((response) => {
+    commit('activeCptCodes', response.data.data);
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    commit('failure', error);
+    commit('loadingStatus', false)
+  })
+}

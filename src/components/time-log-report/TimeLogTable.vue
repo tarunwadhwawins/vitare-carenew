@@ -1,7 +1,7 @@
 
 <template>
 <a-col :sm="24" :xs="24" >
-    <a-table  rowKey="id" :columns="fields" :pagination="false" :data-source="data" :scroll="{ y: 450 }" @change="onChange">
+    <a-table  rowKey="id" :columns="timeLogReports.timeLogReportColumns" :pagination="false" :data-source="timeLogReports.timeLogReportList" :scroll="{ y: 450 }" @change="onChange">
         <template #staff="{record}">
             <span>{{record.staff}}</span>
         </template>
@@ -33,13 +33,14 @@
             <a-switch v-model:checked="checked[key.record.key]" />
         </template>
     </a-table>
+    <Loader/>
     <InfiniteLoader v-if="loader" />
     <AuditTimeLog v-model:visible="visible" @saveAuditTimeLog="handleOk($event)" :Id="Id" />
 </a-col>
 </template>
     
 <script>
-import { ref, reactive, onMounted, computed } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { 
   // DeleteOutlined,
    EditOutlined 
@@ -49,6 +50,7 @@ import { messages } from "@/config/messages";
 import InfiniteLoader from "@/components/loader/InfiniteLoader";
 import { useStore } from "vuex";
 import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
+import Loader from "../loader/Loader" 
 
 export default {
   components: {
@@ -56,16 +58,10 @@ export default {
     EditOutlined,
     InfiniteLoader,
     AuditTimeLog,
+    Loader,
   },
-  props: {
-    columns: {
-      type: Array,
-    },
-    timeLogRecords: {
-      type: Array,
-    },
-  },
-  setup(props) {
+  
+  setup() {
     const store = useStore();
     const visible = ref(false);
     const Id =ref()
@@ -89,9 +85,9 @@ export default {
         }
       });
     }
-    console.log("props.timeLogRecords",props.timeLogRecords)
-    const fields = reactive(props.columns);
-    const data = reactive(props.timeLogRecords);
+    // console.log("props.timeLogRecords",props.timeLogRecords)
+    // const fields = reactive(props.columns);
+    // const data = reactive(props.timeLogRecords);
     //infinite scroll
     const meta = store.getters.timeLogReports;
     const loader = ref(false);
@@ -122,7 +118,7 @@ export default {
       const newData = meta.value.timeLogReportList;
      
       newData.forEach((element) => {
-        data.push(element);
+        timeLogReports.value.timeLogReportList.push(element);
       });
       loader.value = false;
     }
@@ -131,17 +127,21 @@ export default {
     const auditTimes =computed(()=>{
         return store.state.timeLogReport
     })
+    const timeLogReports = computed(()=>{
+      return store.getters.timeLogReports.value
+    })
     return {
       Id,
       arrayToObjact,
       auditTimes,
       editTimeLog,
       handleOk,
-      fields,
+      // fields,
       deleteTimeLog,
-      data,
+      // data,
       loader,
       visible,
+      timeLogReports//: store.getters.timeLogReports.value,
     };
   },
 };

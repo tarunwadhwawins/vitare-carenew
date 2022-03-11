@@ -24,7 +24,7 @@
             </a-form-item>
           </div>
         </a-col>
-
+        
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.performedBy')" name="performedBy" :rules="[{ required: true, message: $t('timeLogs.performedBy')+' '+$t('global.validation')  }]">
@@ -39,7 +39,7 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.date')" name="date" :rules="[{ required: true, message: $t('timeLogs.date')+' '+$t('global.validation')  }]">
-              <a-date-picker :disabled="isDisabled" v-model:value="addTimeLogForm.date" :size="size" style="width: 100%" />
+              <a-date-picker :disabled="isDisabled" v-model:value="addTimeLogForm.date" :size="size" style="width: 100%" format="MM/DD/YYYY" />
             </a-form-item>
           </div>
         </a-col>
@@ -91,7 +91,6 @@ import { useStore } from "vuex";
 import {
   timeStamp,
   // getSeconds,
-  getSeconds
 } from '@/commonMethods/commonMethod';
 import { useRoute } from "vue-router";
 import moment from "moment";
@@ -132,7 +131,7 @@ export default defineComponent({
     const timerVal = ref(moment(props.timerValue, "HH:mm:ss"));
 
     const staffList = computed(() => {
-      return store.state.common.staffList
+      return store.state.common.allStaffList
     })
 
     const timeLogCategories = computed(() => {
@@ -168,7 +167,7 @@ export default defineComponent({
     })
 
     const cptCodesList = computed(() => {
-      return store.state.cptCodes.cptCodesList
+      return store.state.common.activeCptCodes
     })
 
     const handleClear = () => {
@@ -188,7 +187,7 @@ export default defineComponent({
           loggedBy: addTimeLogForm.loggedBy,
           performedBy: addTimeLogForm.performedBy,
           date: timeStamp(addTimeLogForm.date),
-          timeAmount: getSeconds(addTimeLogForm.timeAmount),
+          timeAmount: timeStamp(addTimeLogForm.timeAmount),
           cptCode: addTimeLogForm.cptCode,
           note: addTimeLogForm.note,
         }
@@ -203,7 +202,7 @@ export default defineComponent({
     }
 
     return {
-      getSeconds,
+      // getSeconds,
       size: ref("large"),
       handleClear,
       formRef,

@@ -3,10 +3,11 @@ import { successSwal, errorSwal } from '../../commonMethods/commonMethod'
 
 
 export const timeLogReportList = async ({ commit }, page) => {
+	commit('loadingStatus', true)
 	let link = page ? "timeLog" + page : "timeLog"
 	await ServiceMethodService.common("get", link, null, null).then((response) => {
 		commit('timeLogReportList', response.data);
-
+		commit('loadingStatus', false)
 	}).catch((error) => {
 		if (error.response.status === 422) {
 			commit('errorMsg', error.response.data)

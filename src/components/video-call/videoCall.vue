@@ -208,7 +208,7 @@ export default {
           }, 5000);
         if (conferenceId.value) {
           currentUrl.value= window.location.href
-          console.log('checkDecodingUrl',deCodeString(route.params.id))
+          console.log('checkDecodingUrl',route.params.id)
           let callNotification = 0;
           const key = `open${Date.now()}`;
           console.log(

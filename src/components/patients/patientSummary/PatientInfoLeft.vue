@@ -105,7 +105,6 @@
   <PatientsModal v-if="patientsModalVisible == true && patientDetails" v-model:visible="patientsModalVisible" :patientId="patientDetails.id" :isEditPatient="isEditPatient" @closeModal="handleOk" @saveModal="handleOk($event)" />
   <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" :patientId="patientDetails.id" :patientName="patientDetails.patientFullName" @closeModal="handleOk" />
   <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
-  <AddVitalsModal v-if="addVitalsVisible == true" v-model:visible="addVitalsVisible" @closeModal="handleOk" :patientId="patientDetails.id" />
   <PatientVitalsDetailsModal v-if="patientVitalsVisible == true" v-model:visible="patientVitalsVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
   <AddNotesModal v-if="addNoteVisible == true" v-model:visible="addNoteVisible" @closeModal="handleOk" />
   <NotesDetailModal v-if="notesDetailVisible == true" v-model:visible="notesDetailVisible" @closeModal="handleOk" />
@@ -138,7 +137,6 @@ import { useRoute } from "vue-router";
 import PatientsModal from "@/components/modals/PatientsModal";
 import AddAppointmentModal from "@/components/modals/AddAppointment";
 import AddTasksModal from "@/components/modals/TasksModal";
-import AddVitalsModal from "@/components/modals/AddVitals";
 import AddNotesModal from "@/components/modals/AddNote";
 import NotesDetailModal from "@/components/modals/NotesDetail";
 import AddDocumentModal from "@/components/modals/AddDocument";
@@ -161,7 +159,6 @@ export default {
     PatientsModal,
     AddAppointmentModal,
     AddTasksModal,
-    AddVitalsModal,
     AddNotesModal,
     NotesDetailModal,
     AddDocumentModal,

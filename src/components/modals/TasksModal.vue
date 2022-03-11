@@ -123,14 +123,14 @@
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.startDate')" name="startDate" :rules="[{ required: true, message: $t('tasks.tasksModal.startDate')+' '+$t('global.validation')  }]">
-              <a-date-picker :disabled="taskId?true:false" v-model:value="taskForm.startDate" format="MMM DD, YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+              <a-date-picker :disabled="taskId?true:false" v-model:value="taskForm.startDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
             </a-form-item>
           </div>
         </a-col>
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.dueDate')" name="dueDate" :rules="[{ required: true, message: $t('tasks.tasksModal.dueDate')+' '+$t('global.validation')  }]">
-              <a-date-picker :disabled="taskId?true:false" v-model:value="taskForm.dueDate" format="MMM DD, YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+              <a-date-picker :disabled="taskId?true:false" v-model:value="taskForm.dueDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
             </a-form-item>
           </div>
         </a-col>
@@ -267,7 +267,7 @@ export default defineComponent({
    
 
     const patients = computed(() => {
-      return store.state.communications.patientsList
+      return store.state.common.allPatientsList
     })
 
    function  buttonToggle(){

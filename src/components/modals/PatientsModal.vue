@@ -50,7 +50,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.dateOfBirth')" name="dob" :rules="[{ required: true, message: $t('global.dateOfBirth')+' '+$t('global.validation') }]">
-                                    <a-date-picker v-model:value="demographics.dob" format="MMM DD, YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                                    <a-date-picker v-model:value="demographics.dob" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.dob?errorMsg.dob[0]:''" />
                                 </a-form-item>
                             </div>
@@ -106,14 +106,14 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.weight')" name="weight" :rules="[{ required: false, message: $t('patient.demographics.weight')+' '+$t('global.validation'), pattern: regex.digitWithdecimal }]">
-                                    <a-input v-model:value="demographics.weight" placeholder="Please enter weight in lbs" size="large" />
+                                    <a-input-number style="width: 100%" v-model:value="demographics.weight" placeholder="Please enter weight in lbs" size="large" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.height')" name="height" :rules="[{ required: false, message: $t('patient.demographics.height')+' '+$t('global.validation'), pattern: regex.digitWithdecimal }]">
-                                    <a-input v-model:value="demographics.height" placeholder="Please enter height in cm " size="large" />
+                                    <a-input-number style="width: 100%" v-model:value="demographics.height" placeholder="Please enter height in cm " size="large" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -140,7 +140,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.MRN')" name="medicalRecordNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('patient.demographics.MRN'),pattern: regex.alphaNumeric}]">
-                                    <a-input v-model:value="demographics.medicalRecordNumber" placeholder="Please enter 12 alphanumeric " size="large" />
+                                    <a-input v-model:value="demographics.medicalRecordNumber" placeholder="Please enter 12 alphanumeric " size="large" maxlength="12" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.medicalRecordNumber?errorMsg.medicalRecordNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -178,7 +178,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.zipcode')" name="zipCode" :rules="[{ required: false, message:$t('global.validValidation')+' '+ $t('global.zipcode').toLowerCase(),pattern: regex.zipCode }]">
-                                    <a-input v-model:value="demographics.zipCode" placeholder="Please enter 5 digit number" size="large" />
+                                    <a-input-number style="width:100%" v-model:value="demographics.zipCode" placeholder="Please enter 5 digit number" size="large" maxlength="5" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.zipCode?errorMsg.zipCode[0]:''" />
                                 </a-form-item>
                             </div>
@@ -228,7 +228,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
-                                    <a-input v-model:value="demographics.familyPhoneNumber" placeholder="Please enter 10 digit number" size="large" />
+                                    <a-input-number v-model:value="demographics.familyPhoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyPhoneNumber?errorMsg.familyPhoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -310,7 +310,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
-                                    <a-input v-model:value="demographics.familyPhoneNumber" placeholder="Please enter 10 digit number" size="large" disabled />
+                                    <a-input-number v-model:value="demographics.familyPhoneNumber" placeholder="Please enter 10 digit number" size="large" disabled maxlength="10" style="width: 100%" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyPhoneNumber?errorMsg.familyPhoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -367,7 +367,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="emergencyPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
-                                    <a-input v-model:value="demographics.emergencyPhoneNumber" placeholder="Please enter 10 digit number" size="large" />
+                                    <a-input-number v-model:value="demographics.emergencyPhoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
                                 </a-form-item>
                                 <ErrorMessage v-if="errorMsg" :name="errorMsg.emergencyPhoneNumber?errorMsg.emergencyPhoneNumber[0]:''" />
                             </div>
@@ -479,7 +479,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
-                                    <a-input v-model:value="conditions.phoneNumber" placeholder="Please enter 10 digit number" size="large" />
+                                    <a-input-number v-model:value="conditions.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -539,7 +539,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
-                                    <a-input v-model:value="conditions.phoneNumber" placeholder="Please enter 10 digit number" size="large" disabled />
+                                    <a-input-number v-model:value="conditions.phoneNumber" placeholder="Please enter 10 digit number" size="large" disabled maxlength="10" style="width: 100%" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -585,7 +585,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="physicianPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
-                                    <a-input v-model:value="conditions.physicianPhoneNumber" placeholder="Please enter 10 digit number" size="large" />
+                                    <a-input-number v-model:value="conditions.physicianPhoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -667,7 +667,7 @@
                         <a-col :sm="8" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.insurance.expirationDate')" name="expirationDate" :rules="i==0?[{ required: true, message: $t('patient.insurance.expirationDate')+' '+$t('global.validation') }]:''">
-                                    <a-date-picker v-model:value="insuranceData.expirationDate[i]" format="MMM DD, YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                                    <a-date-picker v-model:value="insuranceData.expirationDate[i]" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.expirationDate?errorMsg.expirationDate[0]:''" />
                                 </a-form-item>
                             </div>
@@ -1327,6 +1327,9 @@ export default defineComponent( {
 
 .validation {
   color: red;
+}
+.ant-input-number-handler-wrap {
+  display: none;
 }
 </style>
 

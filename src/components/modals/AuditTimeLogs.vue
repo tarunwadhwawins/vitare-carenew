@@ -2,14 +2,13 @@
 <a-modal width="1000px" title="Edit Audit Time Log" :footer="null" :maskClosable="false" @cancel="closeModal()" centered>
     <a-form :model="auditTimeLog" name="auditTimeLog" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="updateAuditTime" @finishFailed="auditTimeLogFailed">
         <a-row :gutter="24">
-            <a-col :md="12" :sm="12" :xs="24">
+            <!-- <a-col :md="12" :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogReport.staff')" name="staff" :rules="[{ required: true, message: $t('timeLogReport.staff')+' '+$t('global.validation') }]">
                         <a-select ref="select" v-model:value="auditTimeLog.staff" style="width: 100%" size="large">
                             <a-select-option value="" disabled>Select Staff</a-select-option>
                             <a-select-option v-for="staff in staffList" :key="staff.id">{{ staff.fullName }}</a-select-option>
                         </a-select>
-                        <!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" /> -->
                     </a-form-item>
                 </div>
             </a-col>
@@ -20,10 +19,9 @@
                             <a-select-option value="" disabled>Select Patient</a-select-option>
                             <a-select-option v-for="patient in patients" :key="patient.id">{{ patient.fullName}}</a-select-option>
                         </a-select>
-                        <!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" /> -->
                     </a-form-item>
                 </div>
-            </a-col> 
+            </a-col>  -->
             <a-col :md="12" :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.timeAmount')" name="timeAmount" :rules="[{ required: true, message: $t('timeLogs.timeAmount')+' '+$t('global.validation')  }]">
@@ -68,11 +66,16 @@ export default defineComponent({
       patient: "",
       timeAmount: "",
       note: "",
+      noteId:""
     });
     const updateAuditTime = () => {
-    auditTimeLog.timeAmount = getSeconds(auditTimeLog.timeAmount)
+    // auditTimeLog.timeAmount = getSeconds(auditTimeLog.timeAmount)
       store.dispatch("updateAuditTimeLog", {
-          data: auditTimeLog,
+          data: {
+              timeAmount:getSeconds(auditTimeLog.timeAmount),
+              note:auditTimeLog.note,
+              noteId:auditTimeLog.noteId
+              },
           id: props.Id,
       });
       setTimeout(() => {
@@ -87,7 +90,7 @@ export default defineComponent({
       return store.state.common.staffList;
     });
     const patients = computed(() => {
-      return store.state.communications.patientsList;
+      return store.state.common.allPatientsList;
     });
 
     const timeLogReports = computed(() => {

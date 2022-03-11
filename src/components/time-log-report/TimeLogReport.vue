@@ -18,13 +18,13 @@
                             <a-col :sm="8" :xs="24">
                                 <div class="form-group">
                                     <label>{{$t('global.startDate')}}</label>
-                                    <a-date-picker format="MMM DD, YYYY" value-format="YYYY-MM-DD" v-model:value="auditTimeLog.startDate" :size="size" style="width: 100%" />
+                                    <a-date-picker format="MM/DD/YYYY" value-format="YYYY-MM-DD" v-model:value="auditTimeLog.startDate" :size="size" style="width: 100%" />
                                 </div>
                             </a-col>
                             <a-col :sm="8" :xs="24">
                                 <div class="form-group">
                                     <label>{{$t('global.endDate')}}</label>
-                                    <a-date-picker format="MMM DD, YYYY" value-format="YYYY-MM-DD" v-model:value="auditTimeLog.endDate" :size="size" style="width: 100%" />
+                                    <a-date-picker format="MM/DD/YYYY" value-format="YYYY-MM-DD" v-model:value="auditTimeLog.endDate" :size="size" style="width: 100%" />
                                 </div>
                             </a-col>
                             <a-col :sm="4" :xs="24">
@@ -40,7 +40,7 @@
                         </a-row>
                     </a-form>
                     <a-row>
-                        <TimeLogTable v-if="timeLogReports.timeLogReportList" :columns="timeLogReports.timeLogReportColumns" :timeLogRecords="timeLogReports.timeLogReportList"></TimeLogTable>
+                        <TimeLogTable  ></TimeLogTable>
                     </a-row>
                 </div>
             </a-layout-content>
