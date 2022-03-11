@@ -18,7 +18,7 @@
     </a-row>
 </a-form>
 
-<a-row :gutter="24" v-show="!paramId">
+<a-row :gutter="24" v-if="!paramId">
     <a-col :span="24">
         <!-- <a-table  rowKey="id" :pagination="false" :columns="staffs.roleListColms" :data-source="staffs.roleList" :scroll="{ x: 900 }">
             <template #action="text">

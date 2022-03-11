@@ -9,8 +9,8 @@
     <template #createdDate="text">
         <span>{{ dateFormat(text.text) }}</span>
     </template>
-    <template #action="text">
-        <router-link :to="linkTo">{{ text.text }}</router-link>
+    <template #action="">
+        <!-- <router-link >{{ text.text }}</router-link> -->
     </template>
     <!-- <template #compliance>
         <a class="icons">
