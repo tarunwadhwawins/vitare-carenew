@@ -98,7 +98,7 @@ export default {
         const auth = JSON.parse(localStorage.getItem("auth"))
         let interval = setInterval(() => {
             store.dispatch("conversation", props.communication.id)
-        }, 30000);
+        }, 3000);
         watchEffect(() => {
             store.state.communications.conversationList = ""
             store.dispatch("conversation", props.communication.id)

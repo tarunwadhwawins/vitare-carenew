@@ -1,5 +1,5 @@
 <template>
-<a-modal title="Add New Physician">
+<a-modal title="Add New Physician" :maskClosable="maskebale" @cancel="closeModal()">
     <a-form ref="formRef" :model="physicianForm" layout="vertical" @finish="sendMessage" @finishFailed="onFinishFailed">
         <a-row :gutter="24">
             <!-- <a-col :sm="24" :xs="24">
@@ -20,7 +20,7 @@
       </a-col> -->
             <a-col :sm="24" :xs="24">
                 <div class="form-group">
-                    <a-form-item :label="$t('appointmentCalendar.physician')" name="staffId">
+                    <a-form-item :label="$t('appointmentCalendar.physician')" name="staffId" :rules="[{ required: true, message: $t('appointmentCalendar.physician')+' '+$t('global.validation')  }]"> 
                         <a-select ref="select" v-if="staffList.staffList" v-model:value="physicianForm.staffId" style="width: 100%" size="large">
                             <a-select-option value="" hidden>{{'Select Staff'}}</a-select-option>
                             <a-select-option v-for="staff in staffList.staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}
@@ -110,6 +110,10 @@ export default {
             });
 
         }
+        function closeModal() {     
+            Object.assign(physicianForm, form)   
+                        emit("is-visible", false);
+        }
         return {
             value: ref(undefined),
             filterOption,
@@ -120,6 +124,7 @@ export default {
             staffList,
             physicianForm,
             sendMessage,
+            closeModal,
         };
     },
 };
