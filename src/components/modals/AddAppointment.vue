@@ -41,7 +41,7 @@
           <div class="form-group">
             <a-form-item :label="$t('appointmentCalendar.addAppointment.startDate')" name="startDate"
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.startDate')+' '+$t('global.validation') }]">
-              <a-date-picker  v-model:value="appointmentForm.startDate" format="MMM DD, YYYY" value-format="YYYY-MM-DD"
+              <a-date-picker  v-model:value="appointmentForm.startDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD"
                 :size="size" style="width: 100%" />
               <ErrorMessage v-if="errorMsg" :name="errorMsg.startDate?errorMsg.startDate[0]:''" />
             </a-form-item>

@@ -6,7 +6,7 @@
         <a-col :sm="8" :xs="24">
           <div class="form-group">
             <a-form-item label="Date & Time" name="takeTime" :rules="[{ required: true, message: $t('vitals.dateTime')+$t('global.validation')  }]">
-              <a-date-picker v-model:value="addVitalForm.takeTime" size="large" style="width: 100%" />
+              <a-date-picker v-model:value="addVitalForm.takeTime" size="large" style="width: 100%" format="MM/DD/YYYY" />
             </a-form-item>
           </div>
         </a-col>

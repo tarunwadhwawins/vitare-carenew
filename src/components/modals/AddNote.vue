@@ -5,7 +5,7 @@
         <a-col :sm="8" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('notes.date')" name="date" :rules="[{ required: true, message: $t('notes.date')+' '+$t('global.validation')  }]">
-              <a-date-picker v-model:value="addNoteForm.date" :size="size" style="width: 100%" />
+              <a-date-picker v-model:value="addNoteForm.date" :size="size" style="width: 100%" format="MM/DD/YYYY" />
             </a-form-item>
           </div>
         </a-col>
