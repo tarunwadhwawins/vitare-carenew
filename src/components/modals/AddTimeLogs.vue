@@ -91,7 +91,6 @@ import { useStore } from "vuex";
 import {
   timeStamp,
   // getSeconds,
-  getSeconds
 } from '@/commonMethods/commonMethod';
 import { useRoute } from "vue-router";
 import moment from "moment";
@@ -188,7 +187,7 @@ export default defineComponent({
           loggedBy: addTimeLogForm.loggedBy,
           performedBy: addTimeLogForm.performedBy,
           date: timeStamp(addTimeLogForm.date),
-          timeAmount: getSeconds(addTimeLogForm.timeAmount),
+          timeAmount: timeStamp(addTimeLogForm.timeAmount),
           cptCode: addTimeLogForm.cptCode,
           note: addTimeLogForm.note,
         }
@@ -203,7 +202,7 @@ export default defineComponent({
     }
 
     return {
-      getSeconds,
+      // getSeconds,
       size: ref("large"),
       handleClear,
       formRef,

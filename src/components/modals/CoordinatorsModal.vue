@@ -204,7 +204,7 @@ export default {
           store.dispatch("addStaff", personalInfoData);
         }
         if (addStaff.value!=null) {
-          // store.dispatch("staffs");
+          // store.dispatch("allStaffList");
           store.dispatch("updateStaff", {
            id:addStaff.value.id,
            data:personalInfoData
@@ -252,7 +252,7 @@ export default {
       emit("saveModal", false);
       successSwal(messages.formSuccess);
       Object.assign(personalInfoData, form);
-      store.dispatch("staffs");
+      store.dispatch("allStaffList");
       store.dispatch('specializationStaff')
       store.dispatch('networkStaff')
       store.commit("resetCounter");
@@ -269,7 +269,7 @@ export default {
         if (response == true) {
           emit("saveModal", false)
           Object.assign(personalInfoData, form);
-          store.dispatch("staffs")
+          store.dispatch("allStaffList")
           store.dispatch('specializationStaff')
           store.dispatch('networkStaff')
           store.commit("resetCounter")
