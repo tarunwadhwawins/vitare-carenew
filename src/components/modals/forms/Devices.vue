@@ -1,5 +1,5 @@
 <template>
-<a-form :model="device" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDevice" @finishFailed="deviceFailed">
+<a-form ref="formRef" :model="device" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDevice" @finishFailed="deviceFailed">
     <a-row :gutter="24">
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
@@ -130,6 +130,8 @@ export default defineComponent({
       // deviceTime: "",
       // serverTime: "",
     });
+    const form = reactive({ ...device })
+    const formRef = ref();
 
     watchEffect(() => {
       if(patientId != null) {
@@ -143,6 +145,8 @@ export default defineComponent({
           data: device,
           id: patientId,
         }).then(() => {
+          formRef.value.resetFields();
+          Object.assign(device, form)
           store.dispatch("devices", patientId);
         });
       }
@@ -151,6 +155,8 @@ export default defineComponent({
           data: device,
           id: patients.value.addDemographic.id,
         });
+        formRef.value.resetFields();
+        Object.assign(device, form)
         setTimeout(() => {
           store.dispatch("devices", patients.value.addDemographic.id);
         }, 2000);
@@ -242,7 +248,8 @@ export default defineComponent({
       globalCode,
       deviceData,
       deviceColumns,
-      errorMsg:patients.value.errorMsg
+      errorMsg:patients.value.errorMsg,
+      formRef,
     };
   },
 });
