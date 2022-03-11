@@ -31,7 +31,7 @@
       />
 
       <VitalsGrid
-        v-if="device.deviceType == 'Oxymeter'"
+        v-if="device.deviceType == 'Oximeter'"
         title="Blood Oxygen Saturation"
         :activeKey="activeKey3"
         className="dangerValue"
