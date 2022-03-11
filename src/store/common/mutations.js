@@ -132,6 +132,10 @@ export const allStaffList = (state, fields) => {
     state.allStaffList = fields
 }
 
+export const activeCptCodes = (state, fields) => {
+    state.activeCptCodes = fields
+}
+
 
 
 

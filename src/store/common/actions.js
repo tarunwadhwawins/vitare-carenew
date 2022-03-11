@@ -76,3 +76,14 @@ export const allStaffList = async ({ commit}, deviceId) => {
     commit('loadingStatus', false)
   })
 }
+
+export const activeCptCodes = async ({ commit}, deviceId) => {
+  commit('loadingStatus', true)
+  await ServiceMethodService.common("get", API_ENDPOINTS['cptCodes'], deviceId, null).then((response) => {
+    commit('activeCptCodes', response.data.data);
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    commit('failure', error);
+    commit('loadingStatus', false)
+  })
+}

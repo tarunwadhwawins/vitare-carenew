@@ -34,7 +34,7 @@ export default {
     modules:null,
     allPatientsList:null,
     allStaffList:null,
-   
+    activeCptCodes:null,
 
 
 
