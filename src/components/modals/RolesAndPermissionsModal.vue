@@ -197,18 +197,19 @@ export default {
             store.dispatch('rolePermissions')
             store.dispatch('dashboardWidget')
             if (props.editRole) {
-
+                
                 Object.assign(addRoleForm, rolesAndPermissions.roleDetails ? rolesAndPermissions.roleDetails : '')
                 if (rolesAndPermissions.editRolesAndPermissions) {
                     copyPermission()
-
+                    
                 }
 
             } else if (props.roleId) {
+               
                 store.dispatch('editdWidget', props.roleId)
                 store.dispatch('editPermissions', props.roleId).then(() => {
                     copyPermission()
-
+                    
                 })
 
             }
@@ -224,7 +225,8 @@ export default {
                     data: {
                         ...addRoleForm
                     },
-                    id: getRoleId
+                    id: getRoleId,
+                    show:false
                 })
             } else {
                 store.dispatch('addRole', addRoleForm)
@@ -343,7 +345,9 @@ export default {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
                         reset()
+                        emit("is-visible", false);
                     } else {
+                        console.log("fsdfs")
                         emit("is-visible", true);
                     }
                 });
@@ -358,7 +362,7 @@ export default {
             Object.assign(dashboardPermission, formThird)
             // props.editRole = null
             //props.roleId = null
-            emit("is-visible", false);
+            
         }
         const next = () => {
             current.value++;

@@ -36,7 +36,7 @@
     </a-layout>
 
     <!-- Modal -->
-    <RolesAndPermissionsModal v-if="visible" v-model:visible="visible" @ok="handleOk" @on-submit="handleOk" :roleId="roleId" :editRole="editRole" />
+    <RolesAndPermissionsModal v-if="visible" v-model:visible="visible" @ok="handleOk" @on-submit="handleOk" :roleId="roleId" :editRole="editRole" @is-visible="editShow($event)" />
 
 </div>
 </template>
@@ -78,6 +78,9 @@ export default {
             }
 
         };
+        const editShow = (e) => {
+            visible.value = e;
+        };
         const edit = (e) => {
             roleId.value = null
             visible.value = e.check;
@@ -95,6 +98,7 @@ export default {
         })
 
         return {
+            editShow,
             arrayToObjact,
             roleAndPermissions,
             roleId,

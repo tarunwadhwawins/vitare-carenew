@@ -19,18 +19,33 @@
  <script>
     function popupShow(event) {
     
-    var drowdown = document.getElementsByClassName("ant-dropdown")
+    
+    var card = document.getElementById(event);
+    //var offset = card.getBoundingClientRect();
+    // let width = card.offsetWidth;
+    //     let height = card.clientWidth;
+    //     console.log({ width, height });
+
+    //     const domRect = card.getBoundingClientRect();
+    //     console.log(domRect);
+    // console.log("td",domRectoffsetWidth)
+    if (card.style.display === "block") {
+      card.closest('td').classList.remove('popup_open')
+      card.closest('.fc-daygrid-event-harness').classList.remove('popup_element')
+      card.style.display = "none";
+    } else {
+      var drowdown = document.getElementsByClassName("ant-dropdown")
     for(var i = 0; i < drowdown.length; i++){
 
         if (drowdown[i].style.display === "block") {
+          drowdown[i].closest('td').classList.remove('popup_open')
+          drowdown[i].closest('.fc-daygrid-event-harness').classList.remove('popup_element')
           drowdown[i].style.display = "none";
     }
     }
-    var card = document.getElementById(event);
-    if (card.style.display === "block") {
-      card.style.display = "none";
-    } else {
-      card.style.display = "block";
+      card.style.display = "block"
+      card.closest('td').classList.add('popup_open')
+      card.closest('.fc-daygrid-event-harness').classList.add('popup_element')
     }
     
   }

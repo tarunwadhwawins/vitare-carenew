@@ -3,7 +3,7 @@
  import { successSwal, errorSwal } from '../../commonMethods/commonMethod'
 export const rolesList = async ({ commit }) => {
 	commit('loadingStatus', true)
-	await ServiceMethodService.common("get", API_ENDPOINTS['rolesList'], null, null).then((response) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['rolesList']+'?active=1', null, null).then((response) => {
 		//console.log("data",response.data.data)
 		commit('rolesListSuccess', response.data);
 		commit('loadingStatus', false)
@@ -45,8 +45,10 @@ export const addPermissions = async ({ commit }, data) => {
 	})
 }
 export const editPermissions = async ({ commit }, id) => {
+	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", API_ENDPOINTS['rolePermissionEdit'], id, null).then((response) => {
 		commit('editRoleSuccess', response.data.data);
+		commit('loadingStatus', false)
 		
 	})
 	.catch((error) => {
@@ -58,8 +60,12 @@ export const editPermissions = async ({ commit }, id) => {
 export const UpdateRole = async ({ commit }, data) => {
 	
 	await ServiceMethodService.common("put", API_ENDPOINTS['role'], data.id, data.data).then((response) => {
-		//successSwal(response.data.message)
+		if(data.show){
+			successSwal(response.data.message)
+		}
+		
 		commit('UpdateRoleSuccess', response.data.data);
+
 	})
 	.catch((error) => {
 		errorSwal(error.response.data.message)

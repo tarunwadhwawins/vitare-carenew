@@ -39,7 +39,10 @@ export const cptCodesList = async (state, cptCodes) => {
       },
     },
   ];
-  state.cptCodesList = cptCodes.data;
+  state.cptCodesList = cptCodes.data.map((item)=>{
+    item.billingAmout = '$ ' + item.billingAmout 
+    return item
+  });
   state.cptMeta=cptCodes.meta ? cptCodes.meta.pagination : ''
 }
 

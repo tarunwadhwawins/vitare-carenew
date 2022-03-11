@@ -40,10 +40,10 @@ export const updateStaff = async ({
 
 export const staffs = async ({commit}, page) => {
   let link = page ? 'staff'+page : 'staff'
-  //commit('loadingStatus', true)
+commit('loadingStatus', true)
   await serviceMethod.common("get", link, null, null).then((response) => {
     commit('staffs', response.data);
-   // commit('loadingStatus', false)
+   commit('loadingStatus', false)
   }).catch((error) => { 
     commit('errorMsg', error);
     if(error.response.status === 500){

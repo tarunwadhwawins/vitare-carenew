@@ -1,12 +1,6 @@
 <template>
-    <a-col :span="24">
-        <a-table  rowKey="id"
-          :columns="columns"
-          :data-source="data"
-          :scroll="{ x: 900 ,y : 430 }"
-          @change="onChange"
-          :pagination=false
-        >
+<a-col :span="24">
+    <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.programList" :scroll="{ x: 900 ,y : 430 }" @change="onChange" :pagination=false>
         <template #actions="text">
             <a-tooltip placement="bottom" v-if="arrayToObjact(programsPermissions,16)">
                 <template #title>
@@ -29,17 +23,32 @@
             <a-switch v-model:checked="record.status" @change="UpdateProgramStatus(record.udid, $event)" />
         </template>
     </a-table>
-    <Loader/>
+    <Loader />
 </a-col>
 <InfiniteLoader v-if="loader" />
 </template>
 
 <script>
-import { ref, reactive, onMounted,computed} from "vue";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
-import { messages } from "@/config/messages";
-import { useStore } from "vuex";
+import {
+    ref,
+    onMounted,
+    computed,
+    watchEffect
+} from "vue";
+import {
+    DeleteOutlined,
+    EditOutlined
+} from "@ant-design/icons-vue";
+import {
+    warningSwal,
+    arrayToObjact
+} from "@/commonMethods/commonMethod";
+import {
+    messages
+} from "@/config/messages";
+import {
+    useStore
+} from "vuex";
 import InfiniteLoader from "@/components/loader/InfiniteLoader";
 import Loader from "@/components/loader/Loader"
 export default {
@@ -50,19 +59,18 @@ export default {
         InfiniteLoader
     },
     props: {
-        programData: {
-            type: Array
-        }
+
     },
 
     setup(props, {
         emit
     }) {
         const store = useStore();
-        const data = reactive(props.programData.programList)
-        const columns = reactive(props.programData.programColumns)
-        const checked = ref([false]);
 
+        const checked = ref([false]);
+        watchEffect(() => {
+            store.dispatch('programList')
+        })
         function editProgram(getRecord) {
             store.dispatch('editProgram', getRecord.udid)
             emit('is-edit', {
@@ -75,11 +83,7 @@ export default {
             warningSwal(messages.deleteWarning).then((response) => {
                 if (response == true) {
                     store.dispatch('deleteProgram', id.udid)
-                    store.state.programs.programList = ''
-                    setTimeout(() => {
-
-                        store.dispatch("programList");
-                    }, 2000);
+                    store.dispatch("programList");
                 }
             });
         }
@@ -94,7 +98,7 @@ export default {
             }).then(() => {})
         }
         //ifinitescroller
-        const meta = store.getters.programsRecord
+        const meta = store.getters.programsRecord.value
         const loader = ref(false)
         onMounted(() => {
             var tableContent = document.querySelector('.ant-table-body')
@@ -104,37 +108,37 @@ export default {
                 //console.log("data",currentScroll)
                 if (currentScroll >= maxScroll) {
 
-                    let current_page = meta.value.programMeta.current_page + 1
+                    let current_page = meta.programMeta.current_page + 1
 
-                    if (current_page <= meta.value.programMeta.total_pages) {
+                    if (current_page <= meta.programMeta.total_pages) {
                         loader.value = true
                         store.state.program.programMeta = ""
-                        store.state.programs.programList = ""
-                        store.dispatch("programList", "?page=" + current_page).then(()=>{
-                          loadMoredata()
-                        })    
+                        //store.state.programs.programList = ""
+                        store.dispatch("programList", "?page=" + current_page).then(() => {
+                            loadMoredata()
+                        })
                     }
                 }
             })
         })
 
         function loadMoredata() {
-            const newData = meta.value.programList
+            const newData = meta.programList
             newData.forEach(element => {
-                data.push(element)
+                meta.programList.push(element)
             });
             loader.value = false
         }
-        const programsPermissions = computed(()=>{
+        const programsPermissions = computed(() => {
             return store.state.screenPermissions.programsPermissions
         })
         return {
+            meta,
             programsPermissions,
             arrayToObjact,
             loader,
             checked,
-            columns,
-            data,
+
             deleteProgram,
             editProgram,
             UpdateProgramStatus

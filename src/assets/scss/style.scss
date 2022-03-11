@@ -1412,3 +1412,10 @@
         }
     }
 }
+.popup_open {
+    position: relative;
+    z-index: 99!important;
+    .popup_element {
+        z-index: 99!important;
+    }
+}

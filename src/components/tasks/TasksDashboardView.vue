@@ -1,6 +1,7 @@
 <template>
   <a-row class="mb-24" :gutter="24" v-if="arrayToObjact(tasks.taskPermissions,4)">
     <a-col :xl="6" :sm="8" :xs="12" v-for="status in tasks.taskStatus" :key="status.id" >
+      
       <FilterCard :filterCount="CompletedTasksFilterCount" :count="status.total?status.total:0" :color="status.color" class="blockLists five" :heading="status.text" />
     </a-col>
   </a-row>

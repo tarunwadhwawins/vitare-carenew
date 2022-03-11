@@ -4,7 +4,7 @@
         <a-row :gutter="24">
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
-                   
+
                     <a-form-item :label="$t('global.service')" name="serviceId" :rules="[{ required: true, message: $t('global.service') +' '+$t('global.service')+' '+$t('global.validation')  }]">
                         <a-select ref="select" v-if="cptCodesGetters.service" v-model:value="cptCodeForm.serviceId" style="width: 100%" size="large">
                             <a-select-option value="" hidden>{{'Select Service Type'}}</a-select-option>
@@ -65,9 +65,9 @@
                 </div>
             </a-col>
             <a-col :span="24">
-            
+
                 <div class="steps-action">
-                    <ModalButtons @is_click="reset" :disabled="formButton" :Id="cptCodeId"/>
+                    <ModalButtons @is_click="reset" :disabled="formButton" :Id="cptCodeId" />
                 </div>
             </a-col>
         </a-row>
@@ -82,7 +82,6 @@ import {
     reactive,
     watchEffect,
 
-    
 } from "vue";
 import {
     useStore
@@ -113,7 +112,7 @@ export default {
         const store = useStore()
         const checked = ref([false]);
         const formRef = ref(false)
-const cptCodeId = reactive(props.cptId);
+        const cptCodeId = reactive(props.cptId);
         const cptCodeForm = reactive({
             serviceId: '',
             name: '',
@@ -121,7 +120,7 @@ const cptCodeId = reactive(props.cptId);
             billingAmout: '',
             description: '',
             durationId: '',
-            status: false,
+            status: true,
 
         })
         const onFinishFailed = () => {
@@ -135,12 +134,12 @@ const cptCodeId = reactive(props.cptId);
         const formButton = ref(false)
         const durationList = store.getters.commonRecords.value
         watchEffect(() => {
-            
+
             if (cptCodeId) {
-              store.commit('loadingStatus', true)
-                if(cptCodesGetters.value.cptCodeDetails){
+                store.commit('loadingStatus', true)
+                if (cptCodesGetters.value.cptCodeDetails) {
                     Object.assign(cptCodeForm, cptCodesGetters.value.cptCodeDetails)
-                    
+
                 }
                 store.commit('loadingStatus', false)
 
@@ -150,16 +149,19 @@ const cptCodeId = reactive(props.cptId);
             formButton.value = true
             store.state.cptCodes.cptCodesList = ""
             if (props.cptId != null) {
-              store.dispatch("updateCptCode", {data:cptCodeForm,id:props.cptId})
-            }else{
-            store.dispatch("addCptCode", cptCodeForm)
-               
+                store.dispatch("updateCptCode", {
+                    data: cptCodeForm,
+                    id: props.cptId
+                })
+            } else {
+                store.dispatch("addCptCode", cptCodeForm)
+
             }
-             
-                reset()
-                
-                store.dispatch('cptCodesList')
-                emit("is-visible", false);
+
+            reset()
+
+            store.dispatch('cptCodesList')
+            emit("is-visible", false);
 
         }
         const form = reactive({

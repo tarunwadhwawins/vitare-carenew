@@ -27,9 +27,8 @@
                                 <a-button class="primaryBtn">Export to Excel</a-button>
                             </div>
                         </a-col>
-                        
-                        <ProgramTable v-if="programsList.programList" :programData="programsList" @is-edit="showEdit($event)">  </ProgramTable>
-                        <ProgramTable v-else :programData="programsList" @is-edit="showEdit($event)">  </ProgramTable>
+
+                        <ProgramTable @is-edit="showEdit($event)"> </ProgramTable>
                     </a-row>
                 </div>
             </a-layout-content>
@@ -46,16 +45,24 @@
 import Header from "@/components/administration/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import AdminPrograms from "@/components/modals/AdminPrograms";
-import { ref,watchEffect,computed } from "vue";
+import {
+    ref,
+  
+    computed
+} from "vue";
 import ProgramTable from "./ProgramTable"
-import { useStore } from "vuex";
-import { arrayToObjact } from "@/commonMethods/commonMethod";
+import {
+    useStore
+} from "vuex";
+import {
+    arrayToObjact
+} from "@/commonMethods/commonMethod";
 
 export default {
     components: {
         Header,
         Sidebar,
-       
+
         AdminPrograms,
         ProgramTable,
     },
@@ -66,6 +73,7 @@ export default {
         const visible = ref(false);
         const showModal = (e) => {
             visible.value = e;
+            programId.value = null
         };
         const programId = ref(null)
         const handleOk = (e) => {
@@ -75,9 +83,7 @@ export default {
         const handleChange2 = (value) => {
             console.log(`selected ${value}`);
         };
-        watchEffect(() => {
-            store.dispatch('programList')
-        })
+        
         const searchoptions = ref([{
                 value: "RPM - Remote Patient Monitor",
                 label: "RPM - Remote Patient Monitor",
@@ -92,13 +98,13 @@ export default {
             },
 
         ]);
-        const programsList = store.getters.programsRecord.value
+
         const showEdit = (e) => {
             programId.value = e.id
             visible.value = e.check;
             //console.log("check",programId.value)
         }
-        const programsPermissions = computed(()=>{
+        const programsPermissions = computed(() => {
             return store.state.screenPermissions.programsPermissions
         })
         return {
@@ -112,7 +118,7 @@ export default {
             visible,
             showModal,
             handleOk,
-            programsList
+
         };
     },
 };

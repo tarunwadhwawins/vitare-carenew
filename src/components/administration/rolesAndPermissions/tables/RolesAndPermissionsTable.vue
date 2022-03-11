@@ -121,7 +121,8 @@ export default {
             };
             store.dispatch('UpdateRole', {
                 id,
-                data
+                data,
+                show:true
             }).then(() => {
                 //store.dispatch('rolesList')
             })

@@ -1,6 +1,6 @@
 <template>
  
-    <a-table  rowKey="id" :data-source="data" :scroll="{ y: 300 ,x: 1020}" :pagination=false :columns="fields" >
+    <a-table  rowKey="id" :data-source="meta.staffs" :scroll="{ y: 150 ,x: 1020}" :pagination=false :columns="meta.columns" >
     <template #name="{text,record}" >
         <!-- <router-link :to="linkTo">{{ text.text }}</router-link> -->
         <router-link @click="staffSummery(record.uuid)" :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}">{{ text }}</router-link>
@@ -21,33 +21,31 @@
         <WarningOutlined /> 
     </template>
 </a-table>
-<InfiniteLoader v-if="loader" />
+
 </template>
 <script>
 import { WarningOutlined } from "@ant-design/icons-vue"
 import {dateFormat} from "../../../commonMethods/commonMethod"
-import { ref, reactive,  onMounted } from "vue"
+import {   onMounted } from "vue"
 import { useStore } from "vuex";
-import InfiniteLoader from "@/components/loader/InfiniteLoader";
+//import InfiniteLoader from "@/components/loader/InfiniteLoader";
 export default {
   name: "DataTable",
   components: {
     WarningOutlined,
-    InfiniteLoader
+    //  InfiniteLoader
   },
   props: {
         
-        staffRecords: {
-            type: Array,
-        },
+        
     },
-  setup(props) {
-    console.log(props.staffRecords)
+  setup() {
+    //console.log(props.staffRecords)
     const store = useStore();
-        const fields = reactive(props.staffRecords.columns)
-        const data = reactive(props.staffRecords.staffs)
-        const meta = store.getters.staffRecord
-        const loader = ref(false)
+        //const fields = reactive(props.staffRecords.columns)
+       
+        const meta = store.getters.staffRecord.value
+        let data= []
         onMounted(() => {
             var tableContent = document.querySelector('.ant-table-body')
             tableContent.addEventListener('scroll', (event) => {
@@ -55,11 +53,12 @@ export default {
                 let currentScroll = event.target.scrollTop + 2
                 if (currentScroll >= maxScroll) {
 
-                    let current_page = meta.value.staffMeta.current_page + 1
+                    let current_page = meta.staffMeta.current_page + 1
 
-                    if (current_page <= meta.value.staffMeta.total_pages) {
-                        loader.value = true
-                        meta.value.staffMeta = ""
+                    if (current_page <= meta.staffMeta.total_pages) {
+                       
+                        meta.staffMeta = ""
+                     data =meta.staffs
                         store.state.careCoordinator.staffs = ""
                         store.dispatch("staffs", "?page=" + current_page).then(()=>{
                             loadMoredata() 
@@ -72,20 +71,20 @@ export default {
         })
 
         function loadMoredata() {
-            const newData = meta.value.staffs
-            
+            const newData = meta.staffs
+      console.log("data",data)
             newData.forEach(element => {
                 data.push(element)
             });
-            loader.value = false
+            meta.staffs=data
         }
 
     function staffSummery(uuid){
       console.log('value',uuid);
     }
     return {
-      fields,
-      data,
+      
+      meta,
       staffSummery,
       dateFormat
     }

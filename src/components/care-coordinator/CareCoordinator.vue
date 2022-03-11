@@ -35,7 +35,7 @@
     </a-col>
     <a-col :span="24" >
       
-        <CoordinatorTable v-if="staffs.staffs"  :staffRecords="staffs" ></CoordinatorTable>
+        <CoordinatorTable ></CoordinatorTable>
         <Loader />
     </a-col>
     <CareCoordinatorModalForms v-model:visible="visible" @saveModal="handleOk($event)"></CareCoordinatorModalForms>

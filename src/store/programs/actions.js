@@ -5,7 +5,7 @@ import { errorSwal, successSwal } from '../../commonMethods/commonMethod'
 export const programList = async ({
   commit
 }, page) => {
-  let link = page ? API_ENDPOINTS['programsList'] + page : API_ENDPOINTS['programsList']
+  let link = page ? API_ENDPOINTS['programsList']+"?active=1" + page : API_ENDPOINTS['programsList']+"?active=1"
   commit('loadingStatus', true)
   await serviceMethod.common("get", link, null, null).then((response) => {
 

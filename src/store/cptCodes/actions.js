@@ -2,7 +2,7 @@ import ServiceMethodService from '../../services/serviceMethod';
 import { API_ENDPOINTS } from "../../config/apiConfig"
 import { successSwal, errorSwal} from '../../commonMethods/commonMethod'
 export const cptCodesList = async ({ commit },page) => {
-	let link = page? API_ENDPOINTS['cptCodes']+page: API_ENDPOINTS['cptCodes']
+	let link = page? API_ENDPOINTS['cptCodes']+"?active=1"+page: API_ENDPOINTS['cptCodes']+"?active=1"
 	await ServiceMethodService.common("get", link, null, null).then((response) => {
 		commit('cptCodesList', response.data);
 	})
@@ -26,7 +26,8 @@ export const addCptCode = async ({ commit }, data) => {
 
 export const deleteCptCode = async ({ commit }, id) => {
 	await ServiceMethodService.common("delete", API_ENDPOINTS['cptCodes'], id, null).then((response) => {
-		commit('deleteCptCode', response.data.data);
+		
+		successSwal(response.data.message)
 	})
 	.catch((error) => {
 	
@@ -47,7 +48,10 @@ export const cptCodeDetails = async ({ commit }, id) => {
 export const updateCptCode = async ({ commit }, data) => {
 
 	await ServiceMethodService.common("put", API_ENDPOINTS['cptCodes'], data.id, data.data).then((response) => {
+		
+		successSwal(response.data.message)
 		commit('updateCptCode', response.data.data);
+
 	})
 	.catch((error) => {
 	

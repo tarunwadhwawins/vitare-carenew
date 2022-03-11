@@ -1,7 +1,7 @@
 
 import ServiceMethodService from '../../services/serviceMethod'
 import { API_ENDPOINTS } from "../../config/apiConfig"
-import { errorSwal } from '../../commonMethods/commonMethod'
+import { errorSwal, successSwal } from '../../commonMethods/commonMethod'
 import router from "@/router"
 
 export const login = async ({ commit }, user) => {
@@ -35,13 +35,18 @@ export const login = async ({ commit }, user) => {
 		errorSwal(error.response.data.message)
 	})
 }
-const permission = async () =>{
+const permission = async ({commit}) =>{
 	await ServiceMethodService.common("get", "staff/access/action", null, null).then((response) => {
-		localStorage.setItem('permission', JSON.stringify(response.data))
-		console.log("access",response.data)
-		router.push({
-            path: "/dashboard",
-          });
+		
+		if(response.data.actionId.length==0){
+			successSwal("You don't have permission")
+			logoutUser({commit})
+		}else{
+			localStorage.setItem('permission', JSON.stringify(response.data))
+			router.push({
+				path: "/dashboard"	  });
+		}
+		
 	})
 	.catch((error) => {
 		errorSwal(error.response.data.message)

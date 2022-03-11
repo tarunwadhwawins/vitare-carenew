@@ -2,7 +2,7 @@ export default{
     counter:0,
     addStaff:null,
     updateStaff:null,
-    staffs:null,
+    staffs:[],
     columns:null,
     errorMsg:null,
     specializationStaff:null,

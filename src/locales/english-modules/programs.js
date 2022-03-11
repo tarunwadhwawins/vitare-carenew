@@ -1,6 +1,6 @@
 const programs = {
     createProgram: 'Create Programs',
-    description:'Description'
+    description:'Program Description'
     
   }
   
