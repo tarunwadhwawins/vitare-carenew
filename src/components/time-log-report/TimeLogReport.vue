@@ -40,7 +40,7 @@
                         </a-row>
                     </a-form>
                     <a-row>
-                        <TimeLogTable v-if="timeLogReports.timeLogReportList" :columns="timeLogReports.timeLogReportColumns" :timeLogRecords="timeLogReports.timeLogReportList"></TimeLogTable>
+                        <TimeLogTable  ></TimeLogTable>
                     </a-row>
                 </div>
             </a-layout-content>
