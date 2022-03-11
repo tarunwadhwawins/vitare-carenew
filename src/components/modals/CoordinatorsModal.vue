@@ -145,7 +145,7 @@
 </template>
 
 <script>
-import {reactive, computed,onUnmounted } from "vue";
+import {reactive, computed,onUnmounted, watchEffect } from "vue";
 // import PersonalInformation from "@/components/modals/forms/PersonalInformation"
 import Contacts from "@/components/modals/forms/Contacts";
 import Availability from "@/components/modals/forms/Availability";
@@ -183,7 +183,6 @@ export default {
       },
     })
 
-  
     
     const personalInfoData = reactive({
       firstName: "",
@@ -259,12 +258,7 @@ export default {
     }
 
     function closeModal() {
-
-      let comments = document.forms.contact;
-      var formData = new FormData(comments);
-      var contactName = formData.get('firstName');
-
-      if(personalInfoData.firstName!='' || personalInfoData.lastName!='' || contactName!=''){
+      if(personalInfoData.firstName!='' || personalInfoData.lastName!='' || personalInfoData.email!=''){
       warningSwal(messages.modalWarning).then((response) => {
         if (response == true) {
           emit("saveModal", false)
@@ -283,6 +277,14 @@ export default {
     }
      onUnmounted(()=>{
       store.commit('errorMsg',null)
+    })
+    watchEffect(()=>{
+      if(addStaff.value){
+      store.dispatch("roleList", addStaff.value.id);
+      store.dispatch("availabilityList", addStaff.value.id);
+      store.dispatch("staffContactList", addStaff.value.id);
+      store.dispatch("staffDocuments", addStaff.value.id);
+      }
     })
     const paramId = addStaff.value?addStaff.value.id:''
     return {
