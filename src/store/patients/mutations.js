@@ -815,7 +815,7 @@ export const patientVitals = (state, vitals) => {
           state.bloodPressure = patientVitals;
           state.bloodPressureGraph = patientGraphData;
           break;
-        case 'Oxymeter':
+        case 'Oximeter':
           state.bloodOxygen = patientVitals;
           state.bloodOxygenGraph = patientGraphData;
           break;
@@ -868,7 +868,7 @@ export const patientVitals = (state, vitals) => {
         },
       ];
     // }
-    // if(dynamicColumns.tableName === 'Oxymeter') {
+    // if(dynamicColumns.tableName === 'Oximeter') {
     //   state.bloodOxygenColumns = dynamicColumns;
     // }
     // else {

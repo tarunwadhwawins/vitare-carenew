@@ -2,7 +2,7 @@ import ServiceMethodService from '../../services/serviceMethod';
 import { API_ENDPOINTS } from "../../config/apiConfig"
 
 export const globalCodesList = async ({ commit }) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['globalCodesList'], null, null).then((response) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['globalCodesList']+'?active=1', null, null).then((response) => {
 		commit('globalCodesListSuccess', response.data.data);
 	})
 	.catch((error) => {

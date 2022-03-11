@@ -24,7 +24,7 @@
             </a-form-item>
           </div>
         </a-col>
-
+        
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.performedBy')" name="performedBy" :rules="[{ required: true, message: $t('timeLogs.performedBy')+' '+$t('global.validation')  }]">
@@ -131,7 +131,7 @@ export default defineComponent({
     const timerVal = ref(moment(props.timerValue, "HH:mm:ss"));
 
     const staffList = computed(() => {
-      return store.state.common.staffList
+      return store.state.common.allStaffList
     })
 
     const timeLogCategories = computed(() => {
