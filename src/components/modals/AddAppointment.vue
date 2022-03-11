@@ -174,7 +174,7 @@ import {
           })
           disabled.value = true
         }
-        store.state.patients.patientsList ? "" : store.dispatch("patientsList")
+        store.state.common.allPatientsList ? "" : store.dispatch("patientsList")
         store.state.common.staffList ? "" : store.dispatch("staffList")
       })
       const onFinishFailed = () => {
@@ -189,7 +189,7 @@ import {
       })
      
         const allPatients =  computed(() => {
-          return store.state.communications.patientsList
+          return store.state.common.allPatientsList
         })
 
       

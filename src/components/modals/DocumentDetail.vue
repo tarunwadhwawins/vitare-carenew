@@ -17,6 +17,11 @@
             <!-- <a class="icons"><EditOutlined /></a> -->
             <a class="icons"><DeleteOutlined @click="deleteDocument(record.id)" /></a>
           </template>
+          <template #document="{record}">
+            <router-link :to="record.document">
+              <FileOutlined />
+            </router-link>
+          </template>
         </a-table>
       </a-col>
     </a-row>
@@ -25,6 +30,7 @@
 <script>
 import { computed, defineComponent, watchEffect, reactive } from "vue";
 import {
+  FileOutlined,
   DeleteOutlined,
   // EditOutlined
 } from "@ant-design/icons-vue";
@@ -35,6 +41,7 @@ import { useRoute } from "vue-router";
 
 export default defineComponent({
   components: {
+    FileOutlined,
     DeleteOutlined,
     // EditOutlined,
   },
@@ -63,6 +70,9 @@ export default defineComponent({
         dataIndex: "document",
         key: "document",
         className: "patient-document",
+        slots: {
+          customRender: "document"
+        },
       },
       {
         title: "Type",

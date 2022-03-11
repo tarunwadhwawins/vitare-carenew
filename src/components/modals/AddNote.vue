@@ -92,9 +92,15 @@ export default defineComponent({
     }
 
     const submitForm = () => {
-      addNoteForm.date = timeStamp(addNoteForm.date);
+      const data = {
+        date: timeStamp(addNoteForm.date),
+        category: addNoteForm.category,
+        type: addNoteForm.type,
+        note: addNoteForm.note,
+        entityType: addNoteForm.entityType,
+      }
       const patientId = route.params.udid;
-      store.dispatch('addNote', {id: patientId, data: addNoteForm}).then(() => {
+      store.dispatch('addNote', {id: patientId, data: data}).then(() => {
         store.dispatch('latestNotes', patientId)
         emit('closeModal');
       });

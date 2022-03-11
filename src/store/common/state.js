@@ -32,6 +32,8 @@ export default {
     vitalFieldsByDeviceId:null,
     frequencyTypes:null,
     modules:null,
+    allPatientsList:null,
+    allStaffList:null,
    
 
 

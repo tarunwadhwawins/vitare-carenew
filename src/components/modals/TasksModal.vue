@@ -267,7 +267,7 @@ export default defineComponent({
    
 
     const patients = computed(() => {
-      return store.state.communications.patientsList
+      return store.state.common.allPatientsList
     })
 
    function  buttonToggle(){

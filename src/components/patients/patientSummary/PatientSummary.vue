@@ -164,6 +164,8 @@ export default {
         store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 101});
         store.dispatch('devices', route.params.udid)
         store.dispatch('cptCodesList')
+        store.dispatch('allPatientsList')
+        store.dispatch('allStaffList')
       }
       timer.value = setInterval(() => {
         elapsedTime.value += 1000;

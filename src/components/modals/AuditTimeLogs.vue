@@ -87,7 +87,7 @@ export default defineComponent({
       return store.state.common.staffList;
     });
     const patients = computed(() => {
-      return store.state.communications.patientsList;
+      return store.state.common.allPatientsList;
     });
 
     const timeLogReports = computed(() => {

@@ -169,7 +169,7 @@
       })
 
       const patientsList = computed(() => {
-        return store.state.communications.patientsList
+        return store.state.common.allPatientsList
       })
       const staffList = computed(() => {
         return store.state.common.staffList
