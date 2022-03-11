@@ -22,7 +22,7 @@
         <a-col :sm="8" :xs="24">
           <div class="form-group">
             <a-form-item label="Start Date" name="startDate" :rules="[{ required: true, message: 'Start Date '+$t('global.validation')  }]">
-              <a-date-picker v-model:value="addCarePlanForm.startDate" size="large" style="width: 100%"/>
+              <a-date-picker v-model:value="addCarePlanForm.startDate" size="large" style="width: 100%" format="MM/DD/YYYY"/>
             </a-form-item>
           </div>
         </a-col>
@@ -30,7 +30,7 @@
         <a-col :sm="8" :xs="24">
           <div class="form-group">
             <a-form-item label="End Date" name="endDate" :rules="[{ required: true, message: 'End Date '+$t('global.validation')  }]">
-              <a-date-picker v-model:value="addCarePlanForm.endDate" size="large" style="width: 100%"/>
+              <a-date-picker v-model:value="addCarePlanForm.endDate" size="large" style="width: 100%" format="MM/DD/YYYY"/>
             </a-form-item>
           </div>
         </a-col>

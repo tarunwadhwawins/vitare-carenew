@@ -718,13 +718,13 @@
         <a-col :span="12">
           <div class="form-group">
             <label>Start Date</label>
-            <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
+            <a-date-picker v-model:value="value1" :size="size" style="width: 100%" format="MM/DD/YYYY" />
           </div>
         </a-col>
         <a-col :span="12">
           <div class="form-group">
             <label>Due Date</label>
-            <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
+            <a-date-picker v-model:value="value1" :size="size" style="width: 100%" format="MM/DD/YYYY" />
           </div>
         </a-col>
       </a-row>

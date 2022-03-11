@@ -24,7 +24,7 @@
           <a-date-picker
             v-model:value="value1"
             :size="size"
-            style="width: 100%"
+            style="width: 100%" format="MM/DD/YYYY"
           />
         </div>
       </a-col>
@@ -34,7 +34,7 @@
           <a-date-picker
             v-model:value="value1"
             :size="size"
-            style="width: 100%"
+            style="width: 100%" format="MM/DD/YYYY"
           />
         </div>
       </a-col>

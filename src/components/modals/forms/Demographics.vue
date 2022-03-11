@@ -21,7 +21,7 @@
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
         <label>{{$t('global.dateOfBirth')}}<span class="red-color">*</span></label>
-        <a-date-picker v-model:value="value1" :size="size" style="width: 100%" />
+        <a-date-picker v-model:value="value1" :size="size" style="width: 100%" format="MM/DD/YYYY" />
       </div>
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
