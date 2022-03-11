@@ -92,6 +92,10 @@ export default defineComponent({
       serialNumber: "",
       macAddress: "",
     });
+
+    const form = reactive({ ...inventoryForm })
+    const formRef = ref();
+
     const submitForm = () => {
       const inventoryFormData = {
         data: {
@@ -106,6 +110,8 @@ export default defineComponent({
       
       store.dispatch("addDevice", inventoryFormData).then(() => {
         if(route.name == 'PatientSummary') {
+          formRef.value.resetFields();
+          Object.assign(inventoryForm, form)
           store.dispatch('latestDevice', route.params.udid)
           store.dispatch('patientTimeline', route.params.udid);
           store.dispatch('devices', route.params.udid)
@@ -169,9 +175,6 @@ export default defineComponent({
         inventoryForm.macAddress = element.macAddress
       });
     }
-
-    const form = reactive({ ...inventoryForm })
-    const formRef = ref();
     const handleCancel = () => {
       formRef.value.resetFields();
       Object.assign(inventoryForm, form)
