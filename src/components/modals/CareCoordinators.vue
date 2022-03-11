@@ -92,7 +92,7 @@ import { messages } from '@/config/messages';
       })
 
       const staffList = computed(() => {
-        return store.state.common.staffList
+        return store.state.common.allStaffList
       })
 
       const careTeamList = computed(() => {
