@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" :title="$t('appointmentCalendar.addAppointment.addAppointment')" centered :maskClosable="maskebale">
+  <a-modal width="1000px" :title="$t('appointmentCalendar.addAppointment.addAppointment')" centered :maskClosable="maskebale" @cancel="closeModal()">
     <a-form  ref="formRef" :model="appointmentForm" layout="vertical" @finish="sendMessage" @finishFailed="onFinishFailed">
       <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
@@ -112,6 +112,12 @@
   import ModalButtons from "@/components/common/button/ModalButtons";
 //import AutoComplete from "@/components/common/input/AutoComplete";
 import { useRoute } from 'vue-router'
+import {
+    warningSwal
+} from "@/commonMethods/commonMethod";
+import {
+    messages
+} from "../../config/messages";
 
   export default {
     components: {
@@ -257,6 +263,20 @@ import { useRoute } from 'vue-router'
         Object.assign(appointmentForm, form)
         //emit('is-visible', false);
       };
+       function closeModal() {
+            if (appointmentForm.patientId != "" || appointmentForm.staffId != "" || appointmentForm.patientId != "" || appointmentForm.startDate != "" || appointmentForm.startTime != "" || appointmentForm.durationId != "" || appointmentForm.typeOfVisit != "" || appointmentForm.note != "") {
+                warningSwal(messages.modalWarning).then((response) => {
+                    if (response == true) {
+                     handleCancel();
+                        emit("is-visible", false);
+
+                    } else {
+
+                        emit("is-visible", true);
+                    }
+                });
+            }
+        }
       return {
         allPatients,
         form,
@@ -274,6 +294,7 @@ import { useRoute } from 'vue-router'
         //disabledDate,
         formRef,
         list,
+        closeModal,
         //onSelectOption,
         //patients,
         disabled,

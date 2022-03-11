@@ -92,15 +92,15 @@
     </template>
 
     <template #action="{record}">
-      <a-tooltip placement="bottom">
+      <!-- <a-tooltip placement="bottom">
         <template #title>
           <span>{{ $t("common.view") }}</span>
         </template>
         <a class="icons">
           <EyeOutlined />
         </a>
-      </a-tooltip>
-      <a-tooltip placement="bottom">
+      </a-tooltip> -->
+      <a-tooltip placement="bottom" v-if="record.type == 'SMS'">
         <template #title>
           <span>{{ $t("common.reply") }}</span>
         </template>

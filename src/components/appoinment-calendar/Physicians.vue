@@ -21,7 +21,7 @@
         </a-col>
        
         <a-col :span="12">
-            <div class="phyInner" @click="showModal2">
+            <div class="phyInner" @click="showModal2(true)">
                 <a-avatar :size="80" title="Add Physician">
                     <template #icon>
                         <PlusOutlined />
@@ -32,7 +32,7 @@
     </a-row>
 
 </div>
-<AddPhysician v-model:visible="physicianModal" @ok="handleOk2" @add-staff="addStaff($event)" />
+<AddPhysician v-model:visible="physicianModal" @ok="handleOk2" @add-staff="addStaff($event)" @is-visible="showModal2($event)" />
 </template>
 
 <script>
@@ -64,9 +64,9 @@ export default {
     }) {
         const store = useStore()
         const physicianModal = ref(false);
-        const showModal2 = () => {
+        const showModal2 = (e) => {
 
-            physicianModal.value = true;
+            physicianModal.value = e;
             //console.log(physicianModal.value)
         };
         const handleOk2 = () => {
