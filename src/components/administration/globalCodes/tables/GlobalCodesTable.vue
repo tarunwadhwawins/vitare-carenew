@@ -16,7 +16,8 @@
         <span class="icons"><DeleteOutlined @click="deleteGlobalCode(record.id)" /></span>
       </a-tooltip>
     </template>
-    <template #status="{record}" v-if="arrayToObjact(globalCodesPermissions,266)">
+    <!-- v-if="arrayToObjact(globalCodesPermissions,266)"> -->
+    <template #status="{record}" >
       <a-switch v-model:checked="record.status" @change="updateStatus(record.id, $event)" />
     </template>
   </a-table>
