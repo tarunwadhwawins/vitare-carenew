@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import Header from "@/components/administration/layout/header/Header";
+import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import AdminGlobalCodes from "@/components/modals/AdminGlobalCodes";
 import GlobalCodesTable from "@/components/administration/globalCodes/tables/GlobalCodesTable";

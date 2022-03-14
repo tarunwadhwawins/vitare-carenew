@@ -1,5 +1,6 @@
 <template>
 <a-col :span="24">
+    
     <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.programList" :scroll="{ x: 900 ,y : 430 }" @change="onChange" :pagination=false>
         <template #actions="text">
             <a-tooltip placement="bottom" v-if="arrayToObjact(programsPermissions,16)">
@@ -83,13 +84,14 @@ export default {
             warningSwal(messages.deleteWarning).then((response) => {
                 if (response == true) {
                     store.dispatch('deleteProgram', id.udid)
+                    store.state.programs.programList = ""
                     store.dispatch("programList");
                 }
             });
         }
         const UpdateProgramStatus = (id, status) => {
             const data = {
-                "isActive": status
+                "status": status
             };
 
             store.dispatch('updateProgram', {
@@ -100,6 +102,8 @@ export default {
         //ifinitescroller
         const meta = store.getters.programsRecord.value
         const loader = ref(false)
+        let scroller = ''
+        let data = ''
         onMounted(() => {
             var tableContent = document.querySelector('.ant-table-body')
             tableContent.addEventListener('scroll', (event) => {
@@ -111,9 +115,11 @@ export default {
                     let current_page = meta.programMeta.current_page + 1
 
                     if (current_page <= meta.programMeta.total_pages) {
+                        scroller = maxScroll
+                        data = meta.programList
                         loader.value = true
                         store.state.program.programMeta = ""
-                        //store.state.programs.programList = ""
+                        store.state.programs.programList = ""
                         store.dispatch("programList", "?page=" + current_page).then(() => {
                             loadMoredata()
                         })
@@ -125,8 +131,14 @@ export default {
         function loadMoredata() {
             const newData = meta.programList
             newData.forEach(element => {
-                meta.programList.push(element)
+                data.push(element)
             });
+            meta.programList = data
+            var tableContent = document.querySelector('.ant-table-body')
+
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller)
+            }, 5000)
             loader.value = false
         }
         const programsPermissions = computed(() => {

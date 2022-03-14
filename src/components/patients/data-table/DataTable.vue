@@ -98,7 +98,7 @@ export default {
             patientsPermissions,
             arrayToObjact,
             meta,
-            data,
+            
         }
     },
 };

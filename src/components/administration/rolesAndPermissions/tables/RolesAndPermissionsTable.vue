@@ -1,5 +1,5 @@
 <template>
-<a-table rowKey="id" :columns="rolesColumns" :data-source="data.rolesList" :scroll="{ x: 900 ,y : 430 }"  :pagination=false>
+<a-table rowKey="id" :columns="rolesColumns" :data-source="meta.rolesList" :scroll="{ x: 900 ,y : 430 }" :pagination=false>
     <template #actions="{record}" v-if="arrayToObjact(roleAndPermissions,2)">
         <a-tooltip placement="bottom" v-if="record.id ===1" disabled>
             <template #title disabled>
@@ -83,8 +83,6 @@ export default {
             store.dispatch('rolesList')
         })
 
-        const data = store.getters.rolesAndPermissionsRecord.value
-
         const editRole = (id) => {
 
             store.dispatch('roleDetails', id)
@@ -122,7 +120,7 @@ export default {
             store.dispatch('UpdateRole', {
                 id,
                 data,
-                show:true
+                show: true
             }).then(() => {
                 //store.dispatch('rolesList')
             })
@@ -167,8 +165,10 @@ export default {
                 },
             },
         ];
-  //ifinitescroller
-        const meta = store.getters.rolesAndPermissionsRecord
+        //ifinitescroller
+        let scroller
+        const meta = store.getters.rolesAndPermissionsRecord.value
+        let data = ''
         const loader = ref(false)
         onMounted(() => {
             var tableContent = document.querySelector('.ant-table-body')
@@ -178,25 +178,33 @@ export default {
                 //console.log("data",currentScroll)
                 if (currentScroll >= maxScroll) {
 
-                    let current_page = meta.value.rolesMeta.current_page + 1
+                    let current_page = meta.rolesMeta.current_page + 1
 
-                    if (current_page <= meta.value.rolesMeta.total_pages) {
+                    if (current_page <= meta.rolesMeta.total_pages) {
+                        scroller = maxScroll
+                        data = meta.rolesList
                         loader.value = true
                         store.state.rolesAndPermissions.rolesMeta = ""
                         store.state.rolesAndPermissions.rolesList = ""
-                        store.dispatch("rolesList", "?page=" + current_page).then(()=>{
-                          loadMoredata()
-                        })    
+                        store.dispatch("rolesList", "?page=" + current_page).then(() => {
+                            loadMoredata()
+                        })
                     }
                 }
             })
         })
 
         function loadMoredata() {
-            const newData = meta.value.rolesList
+            const newData = meta.rolesList
             newData.forEach(element => {
-                data.rolesList.push(element)
+                data.push(element)
             });
+            meta.rolesList = data
+            var tableContent = document.querySelector('.ant-table-body')
+
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller)
+            }, 50)
             loader.value = false
         }
         const roleAndPermissions = computed(() => {
@@ -212,6 +220,7 @@ export default {
             deleteRole,
             copyRole,
             UpdateRoleStatus,
+            meta,
         }
     }
 }

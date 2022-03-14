@@ -13,7 +13,7 @@
                 v-model:value="appointmentForm.patientId" /> -->
   
               <a-select ref="select" v-if="allPatients" v-model:value="appointmentForm.patientId" style="width: 100%"
-                size="large" :disabled="disabled">
+                size="large" :disabled="disabled"  :filter-option="filterOption">
                 <a-select-option value="" hidden>{{'Select Patient'}}</a-select-option>
                 <a-select-option v-for="patient in allPatients" :key="patient.id" :value="patient.id">{{
                   patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option> 
@@ -150,7 +150,9 @@ import {
       const idPatient = reactive(props.patientId);
       const patientName = reactive(props.patientName);
       const disabled = ref(false);
-
+      const filterOption = (input, option) => {
+                  return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+                };
       
       console.log('patientName', patientName)
     //   const disabledDate = current => {
@@ -298,6 +300,7 @@ import {
         //onSelectOption,
         //patients,
         disabled,
+        filterOption
       };
     },
   };

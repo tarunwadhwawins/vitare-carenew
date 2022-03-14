@@ -28,6 +28,7 @@ export const addCommunication = async ({ commit }, data) => {
 
 export const communicationTypes = async ({ commit }) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['communicationTypes'], null, null).then((response) => {
+		//console.log("check",response.data.data)
 		commit('communicationTypesSuccess', response.data.data);
 	})
 	.catch((error) => {
