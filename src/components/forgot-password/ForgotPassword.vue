@@ -11,7 +11,7 @@
                   <div class="logo">
                     <img src="../../assets/images/logo.png" alt="image" />
                   </div>
-                  <h2>Welcome to Ditstek Care</h2>
+                  <h2>Welcome to Virtare Healthcare</h2>
                   <p>
                     Lorem Ipsum is simply dummy text of the printing and typesetting
                     industry. Lorem Ipsum has been the industry's standard dummy text ever
