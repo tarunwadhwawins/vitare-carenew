@@ -12,7 +12,7 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation') }]">
-                                    <a-input v-model:value="personalInfoData.firstName" size="large" class="firstName"/>
+                                    <a-input v-model:value="personalInfoData.firstName" size="large" class="firstName" @change="checkChangeInput()"/>
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.firstName" :name="errorMsg.firstName?errorMsg.firstName[0]:''" />
                                 </a-form-item>
                             </div>
@@ -20,7 +20,7 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.lastName')" name="lastName" :rules="[{ required: true, message: $t('global.lastName')+' '+$t('global.validation') }]">
-                                    <a-input v-model:value="personalInfoData.lastName" />
+                                    <a-input v-model:value="personalInfoData.lastName" @change="checkChangeInput()"/>
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.lastName" :name="errorMsg.lastName?errorMsg.lastName[0]:''" />
                                 </a-form-item>
                             </div>
@@ -28,7 +28,7 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item name="designationId" :label="$t('global.designation')" :rules="[{ required: true, message: $t('global.designation')+' '+$t('global.validation') }]">
-                                    <a-select ref="select" v-model:value="personalInfoData.designationId" style="width: 100%" size="large" @change="handleChange">
+                                    <a-select ref="select" v-model:value="personalInfoData.designationId" style="width: 100%" size="large" @change="checkChangeInput()">
                                         <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
                                         <a-select-option v-for="designation in careCordinator.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
                                     </a-select>
@@ -40,7 +40,7 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item name="genderId" :label="$t('global.gender')" :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
-                                    <a-select ref="select" v-model:value="personalInfoData.genderId" style="width: 100%" size="large" @change="handleChange">
+                                    <a-select ref="select" v-model:value="personalInfoData.genderId" style="width: 100%" size="large" @change="checkChangeInput()">
                                         <a-select-option value="" disabled>{{'Select Gender'}}</a-select-option>
                                         <a-select-option v-for="gender in careCordinator.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
                                     </a-select>
@@ -51,7 +51,7 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(),type: 'email' }]">
-                                    <a-input v-model:value="personalInfoData.email" placeholder="test@test.com" @input="emailChange()"/>
+                                    <a-input v-model:value="personalInfoData.email" placeholder="test@test.com" @input="emailChange()" @change="checkChangeInput()"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" />
                                 </a-form-item>
                             </div>
@@ -59,7 +59,7 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
-                                    <a-input v-model:value="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" />
+                                    <a-input v-model:value="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" @change="checkChangeInput()"/>
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.phoneNumber" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -67,7 +67,7 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.specialization')" name="specializationId" :rules="[{ required: true, message: $t('global.specialization')+' '+$t('global.validation') }]">
-                                    <a-select ref="select" v-model:value="personalInfoData.specializationId" style="width: 100%" size="large" @change="handleChange">
+                                    <a-select ref="select" v-model:value="personalInfoData.specializationId" style="width: 100%" size="large" @change="checkChangeInput()">
                                         <a-select-option value="" disabled>{{'Select Specialization'}}</a-select-option>
                                         <a-select-option v-for="network in careCordinator.specialization.globalCode" :key="network.id" :value="network.id">{{network.name}}</a-select-option>
                                     </a-select>
@@ -78,7 +78,7 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.network')" name="networkId" :rules="[{ required: true, message: $t('global.network')+' '+$t('global.validation') }]">
-                                    <a-select ref="select" v-model:value="personalInfoData.networkId" style="width: 100%" size="large" @change="handleChange">
+                                    <a-select ref="select" v-model:value="personalInfoData.networkId" style="width: 100%" size="large" @change="checkChangeInput()">
                                         <a-select-option value="" disabled>{{'Select Network'}}</a-select-option>
                                         <a-select-option v-for="network in careCordinator.network.globalCode" :key="network.id" :value="network.id">{{network.name}}</a-select-option>
                                     </a-select>
@@ -155,7 +155,7 @@ import StaffDocuments from "@/components/modals/forms/StaffDocuments";
 import { useStore } from "vuex";
 import ErrorMessage from "@/components/common/messages/ErrorMessage";
 import { regex } from "@/RegularExpressions/regex";
-import { successSwal,warningSwal, } from "@/commonMethods/commonMethod";
+import { successSwal,warningSwal} from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 export default {
   components: {
@@ -257,8 +257,15 @@ export default {
       store.commit("resetCounter");
     }
 
+    function checkChangeInput(){
+      store.commit('checkChangeInput',true)
+    }
+
+    const checkFieldsData = computed(()=>{
+      return store.state.common.checkChangeInput;
+    })
     function closeModal() {
-      if(personalInfoData.firstName!='' || personalInfoData.lastName!='' || personalInfoData.email!=''){
+      if(checkFieldsData.value){
       warningSwal(messages.modalWarning).then((response) => {
         if (response == true) {
           emit("saveModal", false)
@@ -267,6 +274,7 @@ export default {
           store.dispatch('specializationStaff')
           store.dispatch('networkStaff')
           store.commit("resetCounter")
+          store.commit('checkChangeInput',false)
           store.state.careCoordinator.addStaff =null
          
         } else {
@@ -288,6 +296,8 @@ export default {
     })
     const paramId = addStaff.value?addStaff.value.id:''
     return {
+      checkFieldsData,
+      checkChangeInput,
       paramId,
       closeModal,
       form,

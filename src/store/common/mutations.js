@@ -136,7 +136,9 @@ export const activeCptCodes = (state, fields) => {
     state.activeCptCodes = fields
 }
 
-
-
+//checking fields input for modal popup messages
+export const checkChangeInput = (state, data) => {
+    state.checkChangeInput = data
+  }
 
 
