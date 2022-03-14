@@ -67,7 +67,7 @@
                     </a-tooltip>
                 </template>
             </a-table> -->
-            <DocumentTable :Id="Id"/>
+            <DocumentTable :Id="Id" />
             <Loader />
         </a-col>
     </a-row>
