@@ -62,7 +62,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Vital Type" name="systolic">
-                <a-input value="Systolic" style="width: 100%" size="large" disabled />
+                <a-input v-model:value="addCarePlanForm.systolic" style="width: 100%" size="large" disabled />
               </a-form-item>
             </div>
           </a-col>
@@ -70,7 +70,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="High Value" name="systolicHighValue" :rules="[{ required: true, message: 'High Value '+$t('global.validation')  }]">
-                <a-input v-model:value="addCarePlanForm.systolicHighValue " style="width: 100%" size="large" />
+                <a-input v-model:value="addCarePlanForm.systolicHighValue" style="width: 100%" size="large" />
               </a-form-item>
             </div>
           </a-col>
@@ -86,7 +86,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Vital Type" name="diastolic">
-                <a-input value="Diastolic" style="width: 100%" size="large" disabled />
+                <a-input v-model:value="addCarePlanForm.diastolic" style="width: 100%" size="large" disabled />
               </a-form-item>
             </div>
           </a-col>
@@ -110,7 +110,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Vital Type" name="bpm">
-                <a-input value="BPM" style="width: 100%" size="large" disabled />
+                <a-input v-model:value="addCarePlanForm.bpm" style="width: 100%" size="large" disabled />
               </a-form-item>
             </div>
           </a-col>
@@ -136,7 +136,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Vital Type" name="spo2">
-                <a-input value="SPO2" style="width: 100%" size="large" disabled />
+                <a-input v-model:value="addCarePlanForm.spo2" style="width: 100%" size="large" disabled />
               </a-form-item>
             </div>
           </a-col>
@@ -160,7 +160,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Vital Type" name="oxygenBpm">
-                <a-input value="BPM" style="width: 100%" size="large" disabled />
+                <a-input v-model:value="addCarePlanForm.oxygenBpm" style="width: 100%" size="large" disabled />
               </a-form-item>
             </div>
           </a-col>
@@ -186,7 +186,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Vital Type" name="fastingBloodSugar">
-                <a-input value="Fasting Blood Sugar" style="width: 100%" size="large" disabled />
+                <a-input v-model:value="addCarePlanForm.fastingBloodSugar" style="width: 100%" size="large" disabled />
               </a-form-item>
             </div>
           </a-col>
@@ -210,7 +210,7 @@
           <a-col :sm="8" :xs="24">
             <div class="form-group">
               <a-form-item label="Vital Type" name="randomBloodSugar">
-                <a-input value="Random Blood Sugar" style="width: 100%" size="large" disabled />
+                <a-input v-model:value="addCarePlanForm.randomBloodSugar" style="width: 100%" size="large" disabled />
               </a-form-item>
             </div>
           </a-col>
@@ -282,25 +282,25 @@ export default defineComponent({
       endDate: '',
       frequency: '',
       frequencyType: '',
-      systolic: '',
+      systolic: 'Systolic',
       systolicHighValue: '',
       systolicLowValue: '',
-      diastolic: '',
+      diastolic: 'Diastolic',
       diastolicHighValue: '',
       diastolicLowValue: '',
-      bpm: '',
+      bpm: 'BPM',
       bpmHighValue: '',
       bpmLowValue: '',
-      spo2: '',
+      spo2: 'SPO2',
       spo2HighValue: '',
       spo2LowValue: '',
-      oxygenBpm: '',
+      oxygenBpm: 'BPM',
       oxygenBpmHighValue: '',
       oxygenBpmLowValue: '',
-      fastingBloodSugar: '',
+      fastingBloodSugar: 'Fasting Blood Sugar',
       fastingBloodSugarHighValue: '',
       fastingBloodSugarLowValue: '',
-      randomBloodSugar: '',
+      randomBloodSugar: 'Random Blood Sugar',
       randomBloodSugarHighValue: '',
       randomBloodSugarLowValue: '',
       note: '',
@@ -457,6 +457,7 @@ export default defineComponent({
     
     const handleCancel = () => {
       formRef.value.resetFields();
+      console.log('form', form)
       Object.assign(addCarePlanForm, form)
     };
 
