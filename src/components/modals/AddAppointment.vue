@@ -174,8 +174,8 @@ import {
           })
           disabled.value = true
         }
-        store.state.common.allPatientsList ? "" : store.dispatch("patientsList")
-        store.state.common.staffList ? "" : store.dispatch("staffList")
+        store.state.common.allPatientsList ? "" : store.dispatch("allPatientsList")
+        store.state.common.allStaffList ? "" : store.dispatch("allStaffList")
       })
       const onFinishFailed = () => {
         // 
@@ -194,7 +194,7 @@ import {
 
       
       const staffList = props.staff ? reactive(props.staff) : computed(() => {
-        return store.state.common.staffList
+        return store.state.common.allStaffList
       })
       
       // const patients = ref([])

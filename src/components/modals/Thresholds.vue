@@ -26,7 +26,7 @@
                 </div>
             </a-col>
         </a-row>
-        {{vitalData}}
+        
         <div v-if="vitalData">
             <a-row :gutter="24" v-for="(vital, i) in vitalData" :key="i">
                 <a-col :md="12" :sm="12" :xs="24">
@@ -222,10 +222,11 @@ console.log('fsfs')
         };
         watchEffect(() => {
             
-            store.commit('loadingStatus', true)
+            
             if (props.threshodId!= null) {
                 
                 if (vitalEdit.value.vitalEdit) {
+                    store.commit('loadingStatus', true)
                     store.dispatch("getVital", vitalEdit.value.vitalEdit.deviceTypeId);
                     
                        

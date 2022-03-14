@@ -103,6 +103,7 @@ export const successMsg = (state, data) => {
 }
 
 export const staffListSuccess = (state, data) => {
+    
     const staffList = []
     data.map(item => {
         if(item.id != '') {
@@ -125,6 +126,7 @@ export const vitalFieldsByDeviceId = (state, fields) => {
 }
 
 export const allPatientsList = (state, fields) => {
+  
     state.allPatientsList = fields
 }
 

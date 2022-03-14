@@ -1,7 +1,7 @@
 <template>
 <a-col :sm="24" :xs="24">
 
-    <a-table  rowKey="id" :columns="columns" :data-source="data" :scroll="{ y: 420 }" :pagination=false>
+    <a-table  rowKey="id" :columns="columns" :data-source="meta.vitalList" :scroll="{ y: 420 }" :pagination=false>
         <template #actions="text">
             <a-tooltip placement="bottom">
                 <template #title>
@@ -24,29 +24,27 @@
             <a-switch v-model:checked="checked[key.record.key]" />
         </template>
     </a-table>
-    <InfiniteLoader v-if="loader" />
+  
 
 </a-col>
 </template>
 
 <script>
- import { ref, reactive,  onMounted } from "vue"
+ import {  onMounted } from "vue"
   import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
   import { warningSwal } from "@/commonMethods/commonMethod";
   import { messages } from "@/config/messages";
-  import InfiniteLoader from "@/components/loader/InfiniteLoader";
+ 
   import { useStore } from "vuex";
 export default {
 
     components: {
         DeleteOutlined,
         EditOutlined,
-        InfiniteLoader
+        
     },
     props: {
-        thresholdsData: {
-            type: Array,
-        },
+       
 
     },
     setup(props, {
@@ -88,41 +86,43 @@ export default {
         }
         const columns = [{
                 title: "General Parameters Group",
-                dataIndex: "data",
+                dataIndex: "meta.vitalList",
                 sorter: {
                     compare: (a, b) => a.template - b.template,
                     multiple: 3,
                 },
                 customRender: ({
-                    text,
+                    
                     index
                 }) => {
+                    //console.log(meta.vitalList[index])
                     const obj = {
-                        children: data[index].generalParameterGroup,
+                        children: meta.vitalList[index].generalParameterGroup,
                         props: {},
                     };
 
-                    obj.props.rowSpan = text;
+                    obj.props.rowSpan = meta.vitalList[index].data;
                     return obj;
                 },
             },
             {
                 title: "Device Type",
-                dataIndex: "data",
+                dataIndex: "meta.vitalList",
                 sorter: {
                     compare: (a, b) => a.template - b.template,
                     multiple: 3,
                 },
                 customRender: ({
-                    text,
+                    
                     index
                 }) => {
+                    //console.log(text)
                     const obj = {
-                        children: data[index].deviceType,
+                        children: meta.vitalList[index].deviceType,
                         props: {},
                     };
 
-                    obj.props.rowSpan = text;
+                    obj.props.rowSpan = meta.vitalList[index].data;
                     return obj;
                 },
             },
@@ -162,20 +162,22 @@ export default {
                 },
             },
         ];
-        const data = reactive(props.thresholdsData)
-        const meta = store.getters.vitalDataGetters
-        const loader = ref(false)
+        
+        const meta = store.getters.vitalDataGetters.value
+        let data = ''
+        let scroller = ''
         onMounted(() => {
             var tableContent = document.querySelector('.ant-table-body')
             tableContent.addEventListener('scroll', (event) => {
                 let maxScroll = event.target.scrollHeight - event.target.clientHeight
                 let currentScroll = event.target.scrollTop + 2
                 if (currentScroll >= maxScroll) {
-
-                    let current_page = meta.value.generalParameterMeta.current_page + 1
-
-                    if (current_page <= meta.value.generalParameterMeta.total_pages) {
-                        loader.value = true
+                    
+                    let current_page = meta.generalParameterMeta.current_page + 1
+                    
+                    if (current_page <= meta.generalParameterMeta.total_pages) {
+                        scroller = maxScroll
+                        data = meta.vitalList
                         store.state.thresholds.generalParameterMeta = ""
                         store.state.thresholds.vitalList= ""
                         store.dispatch("generalParameterList", "?page=" + current_page).then(()=>{
@@ -188,18 +190,24 @@ export default {
         })
 
         function loadMoredata() {
-            const newData = meta.value.vitalList
+            const newData = meta.vitalList
             newData.forEach(element => {
                 data.push(element)
             });
-            loader.value = false
+            meta.vitalList = data
+            var tableContent = document.querySelector('.ant-table-body')
+
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller)
+            }, 500)
+            
         }
         return {
             deleteParameter,
             editParameter,
-            data,
+            meta,
             columns,
-            loader,
+           
 
         }
     }
