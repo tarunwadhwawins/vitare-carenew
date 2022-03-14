@@ -47,7 +47,7 @@ export default {
       store.commit("conferenceId", startCall.conferenceId);
       store.dispatch("getVideoDetails",startCall.conferenceId)
       if (conferenceId.value) {
-        router.push({ name: 'videoCall', params: { id: startCall.conferenceId } })
+        router.push({ name: 'videoCall', params: { id: enCodeString(startCall.conferenceId) } })
       }
     }
 

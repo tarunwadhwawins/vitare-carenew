@@ -11,7 +11,7 @@ export function videoCall() {
     const key = `open${Date.now()}`;
     console.log('loginDetails=>', state.loggedInUser.user.sipId);
     state.options = Web.SimpleUserOptions = {
-        aor: `sip:${state.loggedInUser.user.sipId}@dev.icc-heaalth.com`,
+        aor: `sip:${state.loggedInUser.user.sipId}@tele.icc-heaalth.com`,
         media: {
             constraints: {
                 audio: true,
