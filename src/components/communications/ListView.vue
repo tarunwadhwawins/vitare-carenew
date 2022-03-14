@@ -10,7 +10,7 @@
     </a-col>
     <a-col :span="24">
 
-      <ListViewTable v-if="communicationsList.communicationsList" :communicationsList="communicationsList.communicationsList" />
+      <ListViewTable  />
     </a-col>
   </a-row>
 </template>
@@ -46,7 +46,7 @@ export default {
     return {
       communicationPermissions,
       arrayToObjact,
-      communicationsList:store.getters.communicationRecord.value,
+      
       searchData,
       linkTo,
       onChange: () => {

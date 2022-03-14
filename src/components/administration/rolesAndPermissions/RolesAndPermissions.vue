@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import Header from "@/components/administration/layout/header/Header";
+import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import RolesAndPermissionsTable from "@/components/administration/rolesAndPermissions/tables/RolesAndPermissionsTable";
 import SearchField from "@/components/common/input/SearchField";

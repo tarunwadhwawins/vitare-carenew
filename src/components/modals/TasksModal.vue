@@ -100,7 +100,7 @@
                 placeholder="Please Select Staff"
                 style="width: 100%"
                 v-model:value="taskForm.assignedTo"
-                :options="common.staffList.map((item) => ({label: item.fullName, value: item.id }))"
+                :options="common.allStaffList.map((item) => ({label: item.fullName, value: item.id }))"
               />
             </a-form-item>
           </div>
@@ -254,7 +254,7 @@ export default defineComponent({
     };
     
     watchEffect(() => {
-      store.dispatch("staffList")
+      store.dispatch("allStaffList")
       if(props.taskId!=null){
         Object.assign(taskForm, tasks.value.editTask)
       }

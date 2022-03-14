@@ -25,7 +25,7 @@
                         </div>
                     </a-col>
                     <a-col :span="24">
-                        <CptCodesTable v-if="cptCodesList.cptCodesList" :cptCodesList="cptCodesList" @is-visible="editModal($event)" />
+                        <CptCodesTable  @is-visible="editModal($event)" />
                     </a-col>
                 </a-row>
             </div>
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import Header from "@/components/administration/layout/header/Header";
+import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import CptCodesModal from "@/components/modals/CptCodesModal";
 import CptCodesTable from "@/components/administration/cpt-codes/tables/CptCodesTable";
@@ -92,8 +92,7 @@ export default {
             store.dispatch('cptCodesList')
 
         })
-        const cptCodesList = store.getters.cptRecords.value
-
+        
         const cptCodePermissions = computed(()=>{
             return store.state.screenPermissions.cptCodePermissions
         })
@@ -101,7 +100,7 @@ export default {
         return {
             cptCodePermissions,
             arrayToObjact,
-            cptCodesList,
+            
             searchData,
             visible,
             showModal,

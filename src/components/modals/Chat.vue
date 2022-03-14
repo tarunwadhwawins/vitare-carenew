@@ -32,12 +32,13 @@
                         <div class="message">
                             {{msg.message}}
                         </div>
-                        <div class="time">{{ dateFormat(msg.createdAt)}}</div>
+                       
+                        <div class="time" >{{ dateFormat(msg.createdAt)}}</div>
                     </div>
 
                 </div>
                
-                <a-form ref="formRef" :model="formValue" layout="vertical" @finishFailed="taskFormFailed">
+                <a-form ref="formRef" :model="formValue" layout="vertical" @finish="sendMsg" @finishFailed="taskFormFailed">
                     <div class="sendMessage" v-if="auth.user.id==communication.receiverId">
                         <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message">
                             <template #addonAfter>
@@ -74,7 +75,8 @@ import {
     useStore
 } from "vuex"
 import {
-    dateFormat
+    dateFormat,
+    timeStamp
 } from "@/commonMethods/commonMethod"
 import Loader from "@/components/loader/Loader";
 import moment from "moment"
@@ -98,7 +100,7 @@ export default {
         const auth = JSON.parse(localStorage.getItem("auth"))
         let interval = setInterval(() => {
             store.dispatch("conversation", props.communication.id)
-        }, 3000);
+        }, 5000);
         watchEffect(() => {
             store.state.communications.conversationList = ""
             store.dispatch("conversation", props.communication.id)
@@ -110,7 +112,6 @@ export default {
         const list = store.getters.communicationRecord.value
 
         function sendMsg() {
-
             if (formValue.msgSend) {
                 list.conversationList.push({
                     id: 2,
@@ -119,7 +120,7 @@ export default {
                     message: formValue.msgSend,
                     type: "text",
                     isRead: 0,
-                    createdAt: moment
+                    createdAt: timeStamp(moment())
                 })
                 store.dispatch("conversationSend", {
                     conversationId: props.communication.id,
