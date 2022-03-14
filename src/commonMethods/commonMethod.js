@@ -69,7 +69,7 @@ export function timeFormatSimple(timeStamp) {
 }
 
 export function dateOnlyFormat(timeStamp) {
-  var day = moment.unix(new Date(timeStamp));
+  var day = moment.unix(timeStamp);
   return day.format('MMM DD, yyyy');
 }
 

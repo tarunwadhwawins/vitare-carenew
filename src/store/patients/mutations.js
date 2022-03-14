@@ -10,6 +10,7 @@ import {
   convertChartResponse,
   // createDynamicColumns,
 } from '../../commonMethods/commonMethod';
+const VUE_APP_ROOT_API = process.env.VUE_APP_ROOT_API
 
 export const addDemographic = (state, data) => {
     state.addDemographic = data
@@ -357,6 +358,10 @@ sorter: {
     state.parameterFields = data.map((item)=>{if(item!=null) return item})
  }
 
+ export const changeStatus = (state, data) => {
+    state.changeStatus = data
+ }
+
 
  
  
@@ -456,7 +461,10 @@ export const patientInsurance = (state, insurances) => {
  }
 
  export const documents = (state, data) => {
-    state.documents = data
+    state.documents = data.map(item => {
+      item.document = VUE_APP_ROOT_API+item.document
+      return item
+    })
     state.documentColumns=[
         {
           title: "Name",
@@ -536,6 +544,7 @@ export const patientTimelineSuccess = (state, timeline) => {
 
 export const patientDocumentsSuccess = (state, documents) => {
   state.patientDocuments = documents.map(data => {
+    data.document = VUE_APP_ROOT_API+data.document
     data.createdAt = meridiemFormatFromTimestamp(data.createdAt);
     return data;
   })

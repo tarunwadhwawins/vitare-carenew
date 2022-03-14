@@ -3,10 +3,10 @@
     <template #tags="text">
         <span v-for="tag in text.text.data" :key="tag.id">{{ tag.tag+ " "}}</span>
     </template>
-    <template #document="text">
-        <router-link :to="text.text">
-            <FileOutlined />
-        </router-link>
+    <template #document="{record}">
+      <a :href="record.document" target="_blank">
+        <FileOutlined />
+      </a>
     </template>
     <template #action="text">
         <a-tooltip placement="bottom">
