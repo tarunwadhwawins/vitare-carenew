@@ -135,7 +135,7 @@ export default {
         if(careCoordinators.value.closeModal){
           emit("saveModal", false)
       }
-      },1000)
+      },2000)
       
     };
 
