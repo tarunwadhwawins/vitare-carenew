@@ -5,11 +5,11 @@ import { errorSwal, successSwal } from '../../commonMethods/commonMethod'
 export const getVital = async ({
   commit
 }, data) => {
-  
+ 
     await  serviceMethod.common("get", API_ENDPOINTS['getVital'] + "/" + data, null, null).then((response) => {
 
         commit('getVitals', response.data.data);
-
+        
       }).catch((error) => {
         if (error.response.status === 422) {
           errorSwal(error.response.data)
@@ -18,6 +18,7 @@ export const getVital = async ({
         } else if (error.response.status === 401) {
           errorSwal(error.response.data.message)
         }
+        
     });
 
 
@@ -65,10 +66,11 @@ export const addGeneralParameterGroup = async ({
 export const generalParameterList = async ({
   commit
 },page) => {
+  commit('loadingStatus', true)
   let link=page? API_ENDPOINTS['generalParameter']+page:API_ENDPOINTS['generalParameter']
   await serviceMethod.common("get", link, null, null).then((response) => {
     commit('vitalSuccessList', response.data)
-  
+    commit('loadingStatus', false)
   }).catch((error) => {
     if (error.response.status === 422) {
       errorSwal(error.response.data)
@@ -77,6 +79,7 @@ export const generalParameterList = async ({
     } else if (error.response.status === 401) {
       errorSwal(error.response.data.message)
     }
+    commit('loadingStatus', false)
   })
 
 

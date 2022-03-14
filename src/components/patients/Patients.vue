@@ -41,8 +41,8 @@
     </a-col>
     <a-col :span="24" >
 
-        <DataTable v-if="patients.column" :columns="patients.column" :patientRecords="patients.patientList"  />
-     
+        <DataTable />
+     <Loader />
     </a-col>
 </a-row>
 
@@ -56,7 +56,7 @@ import { useStore } from "vuex";
 import PatientsModal from "@/components/modals/PatientsModal";
 import CounterCard from "./counter-card/CounterCard";
 import ShowModalButton from "@/components/common/show-modal-button/ShowModalButton";
-
+import Loader from "@/components/loader/Loader"
 import { arrayToObjact } from "@/commonMethods/commonMethod";
 // import { messages } from "../../config/messages";
 import DataTable from "./data-table/DataTable"
@@ -68,7 +68,8 @@ export default {
     // WarningOutlined,
     CounterCard,
     ShowModalButton,
-    DataTable
+    DataTable,
+    Loader
   },
 
   setup() {
@@ -85,7 +86,7 @@ export default {
 
     watchEffect(() => {
       store.getters.patientsRecord.patientList=""
-      store.dispatch("programList");
+        store.dispatch("programList");
       store.dispatch("patients");
     });
 
@@ -102,7 +103,7 @@ export default {
       searchoptions,
       size: ref(),
       value2: ref(),
-      patients:store.getters.patientsRecord,
+      //patients:store.getters.patientsRecord,
      
     };
   },
