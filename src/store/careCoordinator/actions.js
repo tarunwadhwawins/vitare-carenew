@@ -26,6 +26,8 @@ export const updateStaff = async ({
 }, data) => {
   await serviceMethod.common("put", `staff/${data.id}`, null, data.data).then((response) => {
     commit('updateStaff', response.data.data);
+    successSwal(response.data.message)
+    commit('closeModal',true)
     commit('counterPlus')
   }).catch((error) => {
     if(error.response.status === 422){
@@ -216,7 +218,7 @@ export const addStaffRole = async ({
 
 export const roleList = async ({commit},id) => {
   commit('loadingStatus', true)
-  await serviceMethod.common("get", `staff/${id}/access`, null, null).then((response) => {
+  await serviceMethod.common("get", `staff/${id}/role`, null, null).then((response) => {
     commit('roleList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => { 

@@ -4,7 +4,7 @@
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.startTime')" name="startTime" :rules="[{ required: true, message: $t('global.startTime')+' '+$t('global.validation') }]">
-                    <a-time-picker  use12-hours format="hh:mm A" v-model:value="availability.startTime"  value-format="HH:mm" />
+                    <a-time-picker  use12-hours format="hh:mm A" v-model:value="availability.startTime"  value-format="HH:mm"  @change="checkChangeInput()"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.startTime?errorMsg.startTime[0]:''" />
                 </a-form-item>
             </div>
@@ -12,7 +12,7 @@
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.endTime')" name="endTime" :rules="[{ required: true, message: $t('global.endTime')+' '+$t('global.validation') }]">
-                    <a-time-picker v-model:value="availability.endTime" use12-hours format="hh:mm A" value-format="HH:mm" />
+                    <a-time-picker v-model:value="availability.endTime" use12-hours format="hh:mm A" value-format="HH:mm" @change="checkChangeInput()"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.endTime?errorMsg.endTime[0]:''" />
                 </a-form-item>
             </div>
@@ -102,7 +102,11 @@ export default defineComponent({
     onUnmounted(()=>{
       store.commit('errorMsg',null)
     })
+    function checkChangeInput(){
+      store.commit('checkChangeInput',true)
+    }
     return {
+      checkChangeInput,
       reset,
       Id,
       staffs,

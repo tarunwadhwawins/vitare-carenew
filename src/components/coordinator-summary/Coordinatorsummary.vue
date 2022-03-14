@@ -16,6 +16,7 @@
                 <a-row :gutter="24">
                     <a-col :sm="7" :xs="24">
                         <div class="patientInfo">
+                            <EditOutlined class="editIcon" style="float:right" @click="editStaff()"/>
                             <div class="patientImg">
                                 <img src="../../assets/images/profile-4.jpg" alt="image" />
                                 <div class="info">
@@ -137,6 +138,7 @@
     </a-modal>
     <!---->
 </div>
+<PersonalInformation v-model:visible="visibleEditStaff" @saveModal="editStaffCloseModal($event)"/>
 </template>
 
 <script>
@@ -145,7 +147,7 @@ import Sidebar from "../layout/sidebar/Sidebar";
 import { ref, computed, onMounted } from "vue";
 import {
   // DeleteOutlined,
-  // EditOutlined,
+  EditOutlined,
   PlusOutlined,
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
@@ -164,12 +166,13 @@ import DocumentTable from ".././care-coordinator/tables/DocumentTable";
 import StaffDocumentForm from ".././modals/forms/StaffDocuments";
 import Loader from "../loader/Loader"
 import {arrayToObjact} from "@/commonMethods/commonMethod"
+import PersonalInformation from ".././modals/forms/StaffPersonalInfo"
 export default {
   components: {
     Header,
     Sidebar,
     // DeleteOutlined,
-    // EditOutlined,
+    EditOutlined,
     PlusOutlined,
     AppointmentTable,
     PatientTable,
@@ -182,6 +185,7 @@ export default {
     RoleTable,
     RoleForm,
     Loader,
+    PersonalInformation
   },
   setup() {
     const store = useStore();
@@ -211,6 +215,15 @@ export default {
     const visible2 = ref(false);
     const visible3 = ref(false);
 
+    const visibleEditStaff =ref(false)
+    const editStaff = () => {
+      visibleEditStaff.value = true;
+    };
+
+    const editStaffCloseModal = (value) => {
+      visibleEditStaff.value = value;
+    };
+
     const showModal = () => {
       visible.value = true;
     };
@@ -232,7 +245,10 @@ export default {
             return store.state.screenPermissions.staffPermissions
         })
     return {
-        staffPermissions,
+      editStaffCloseModal,
+      editStaff,
+      visibleEditStaff,
+      staffPermissions,
       arrayToObjact,
       paramId: router.params.udid,
       staffs,

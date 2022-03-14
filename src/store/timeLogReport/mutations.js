@@ -3,58 +3,59 @@ import { secondsToTime } from '../../commonMethods/commonMethod';
 
 export const timeLogReportList = async (state, data) => {
   state.timeLogeMeta = data.meta.pagination
+  state.timeLogReportColumns = [
+    {
+      title: "Staff",
+      dataIndex: "performedBy",
+      sorter: {
+        compare: (a, b) => a.template - b.template,
+        multiple: 3,
+      },
+      slots: {
+        customRender: "staff",
+      },
+    },
+    {
+      title: "Patient",
+      dataIndex: "patient",
+      sorter: {
+        compare: (a, b) => a.template - b.template,
+        multiple: 3,
+      },
+      slots: {
+        customRender: "patient",
+      },
+    },
+    {
+      title: "Time (MM:SS)",
+      dataIndex: "timeAmount",
+      sorter: {
+        compare: (a, b) => a.template - b.template,
+        multiple: 3,
+      },
+    },
+    {
+      title: "CPT Codes ",
+      dataIndex: "cptCode",
+    },
+    {
+      title: "Notes ", 
+      dataIndex: "note",
+    },
+
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      slots: {
+        customRender: "actions",
+      },
+    },
+  ];
   state.timeLogReportList = data.data.map(item => {
     item.timeAmount = secondsToTime(item.timeAmount)
     return item
-  }),
-    state.timeLogReportColumns = [
-      {
-        title: "Staff",
-        dataIndex: "performedBy",
-        sorter: {
-          compare: (a, b) => a.template - b.template,
-          multiple: 3,
-        },
-        slots: {
-          customRender: "staff",
-        },
-      },
-      {
-        title: "Patient",
-        dataIndex: "patient",
-        sorter: {
-          compare: (a, b) => a.template - b.template,
-          multiple: 3,
-        },
-        slots: {
-          customRender: "patient",
-        },
-      },
-      {
-        title: "Time (MM:SS)",
-        dataIndex: "timeAmount",
-        sorter: {
-          compare: (a, b) => a.template - b.template,
-          multiple: 3,
-        },
-      },
-      {
-        title: "CPT Codes ",
-        dataIndex: "cptCode",
-      },
-      {
-        title: "Notes ", 
-        dataIndex: "note",
-      },
-
-      {
-        title: "Actions",
-        dataIndex: "actions",
-        slots: {
-          customRender: "actions",
-        },
-      },
-    ];
+  })
+    
 }
 
 export const reportExport = (state, data) => {

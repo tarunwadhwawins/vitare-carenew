@@ -1,6 +1,9 @@
 
 <template>
 <a-table  rowKey="id" :pagination="false" :columns="staffs.roleListColms" :data-source="staffs.roleList" :scroll="{ x: 900 }">
+  <template #role="{record}">
+        <span>{{ record.role.name }}</span>
+    </template>
     <template #action="text" v-if="arrayToObjact(staffPermissions,57)">
         <a-tooltip placement="bottom" @click="deleteRole(text.record.id)">
             <template #title>

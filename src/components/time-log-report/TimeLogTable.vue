@@ -1,7 +1,7 @@
 
 <template>
 <a-col :sm="24" :xs="24" >
-    <a-table  rowKey="id" :columns="timeLogReports.timeLogReportColumns" :pagination="false" :data-source="timeLogReports.timeLogReportList" :scroll="{ y: 450 }" @change="onChange">
+    <a-table  rowKey="id" :columns="meta.timeLogReportColumns" :pagination="false" :data-source="meta.timeLogReportList" :scroll="{ y: 450 }" @change="onChange">
         <template #staff="{record}">
             <span>{{record.staff}}</span>
         </template>
@@ -89,8 +89,10 @@ export default {
     // const fields = reactive(props.columns);
     // const data = reactive(props.timeLogRecords);
     //infinite scroll
-    const meta = store.getters.timeLogReports;
+    const meta = store.getters.timeLogReports.value;
     const loader = ref(false);
+    let data = ''
+    let scroller = ''
     onMounted(() => {
       var tableContent = document.querySelector(".ant-table-body");
 
@@ -98,11 +100,14 @@ export default {
         let maxScroll = event.target.scrollHeight - event.target.clientHeight;
         let currentScroll = event.target.scrollTop + 2;
         if (currentScroll >= maxScroll) {
-          let current_page = meta.value.timeLogeMeta.current_page + 1;
+          let current_page = meta.timeLogeMeta.current_page + 1;
 
-          if (current_page <= meta.value.timeLogeMeta.total_pages) {
+          if (current_page <= meta.timeLogeMeta.total_pages) {
+            scroller = maxScroll
+                     data =meta.timeLogReportList
+            
             loader.value = true;
-            meta.value.timeLogeMeta = "";
+            meta.timeLogeMeta = "";
             store.state.timeLogReport.timeLogReportList =""
             store.dispatch("timeLogReportList", "?page=" + current_page).then(()=>{
               loadMoredata();
@@ -118,8 +123,14 @@ export default {
       const newData = meta.value.timeLogReportList;
      
       newData.forEach((element) => {
-        timeLogReports.value.timeLogReportList.push(element);
+        data.push(element);
       });
+      meta.timeLogReportList=data
+            var tableContent = document.querySelector('.ant-table-body')
+
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller)
+            }, 50)
       loader.value = false;
     }
 
@@ -127,9 +138,7 @@ export default {
     const auditTimes =computed(()=>{
         return store.state.timeLogReport
     })
-    const timeLogReports = computed(()=>{
-      return store.getters.timeLogReports.value
-    })
+   
     return {
       Id,
       arrayToObjact,
@@ -141,7 +150,8 @@ export default {
       // data,
       loader,
       visible,
-      timeLogReports//: store.getters.timeLogReports.value,
+      meta,
+     
     };
   },
 };

@@ -35,7 +35,7 @@ export default {
     allPatientsList:null,
     allStaffList:null,
     activeCptCodes:null,
-
+    checkChangeInput:false
 
 
 }

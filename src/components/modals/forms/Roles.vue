@@ -4,7 +4,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <label>{{$t('careCoordinator.roles.role')}}</label>
-                <a-select v-if="staffs.roles!=null" v-model:value="roles.roles"  size="large" placeholder="Select Role" style="width: 100%" :options="staffs.roles.map((item) => ({ label: item.name?item.name:'', value: item.id }))" @change="handleChange" />
+                <a-select v-if="staffs.roles!=null" v-model:value="roles.roles"  size="large" placeholder="Select Role" style="width: 100%" :options="staffs.roles.map((item) => ({ label: item.name?item.name:'', value: item.id }))" @change="checkChangeInput()" />
             </div>
         </a-col>
     </a-row>
@@ -18,7 +18,7 @@
     </a-row>
 </a-form>
 
-<a-row :gutter="24" v-show="!paramId">
+<a-row :gutter="24" v-if="!paramId">
     <a-col :span="24">
         <!-- <a-table  rowKey="id" :pagination="false" :columns="staffs.roleListColms" :data-source="staffs.roleList" :scroll="{ x: 900 }">
             <template #action="text">
@@ -90,9 +90,13 @@ export default defineComponent({
     watchEffect(() => {
       store.dispatch("roles");
     });
-
+    
+    function checkChangeInput(){
+      store.commit('checkChangeInput',true)
+    }
     const Id = staffs.value.addStaff?staffs.value.addStaff.id:''
     return {
+      checkChangeInput,
       Id,
       staffs,
       // deleteRole,

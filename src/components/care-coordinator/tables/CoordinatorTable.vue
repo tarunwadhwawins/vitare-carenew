@@ -1,7 +1,6 @@
 <template>
- 
-    <a-table  rowKey="id" :data-source="meta.staffs" :scroll="{ y: 150 ,x: 1020}" :pagination=false :columns="meta.columns" >
-    <template #name="{text,record}" >
+<a-table rowKey="id" :data-source="meta.staffs" :scroll="{ y: 350 ,x: 1020}" :pagination=false :columns="meta.columns">
+    <template #name="{text,record}">
         <!-- <router-link :to="linkTo">{{ text.text }}</router-link> -->
         <router-link @click="staffSummery(record.uuid)" :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}">{{ text }}</router-link>
     </template>
@@ -9,8 +8,8 @@
     <template #createdDate="text">
         <span>{{ dateFormat(text.text) }}</span>
     </template>
-    <template #action="text">
-        <router-link :to="linkTo">{{ text.text }}</router-link>
+    <template #action="">
+        <!-- <router-link >{{ text.text }}</router-link> -->
     </template>
     <!-- <template #compliance>
         <a class="icons">
@@ -18,34 +17,42 @@
     </template> -->
 
     <template #lastReadingDate>
-        <WarningOutlined /> 
+        <WarningOutlined />
     </template>
 </a-table>
-
 </template>
+
 <script>
-import { WarningOutlined } from "@ant-design/icons-vue"
-import {dateFormat} from "../../../commonMethods/commonMethod"
-import {   onMounted } from "vue"
-import { useStore } from "vuex";
+import {
+    WarningOutlined
+} from "@ant-design/icons-vue"
+import {
+    dateFormat
+} from "../../../commonMethods/commonMethod"
+import {
+    onMounted
+} from "vue"
+import {
+    useStore
+} from "vuex";
 //import InfiniteLoader from "@/components/loader/InfiniteLoader";
 export default {
-  name: "DataTable",
-  components: {
-    WarningOutlined,
-    //  InfiniteLoader
-  },
-  props: {
-        
-        
+    name: "DataTable",
+    components: {
+        WarningOutlined,
+        //  InfiniteLoader
     },
-  setup() {
-    //console.log(props.staffRecords)
-    const store = useStore();
+    props: {
+
+    },
+    setup() {
+        //console.log(props.staffRecords)
+        const store = useStore();
         //const fields = reactive(props.staffRecords.columns)
-       
+
         const meta = store.getters.staffRecord.value
-        let data= []
+        let data = ''
+        let scroller = ''
         onMounted(() => {
             var tableContent = document.querySelector('.ant-table-body')
             tableContent.addEventListener('scroll', (event) => {
@@ -56,14 +63,13 @@ export default {
                     let current_page = meta.staffMeta.current_page + 1
 
                     if (current_page <= meta.staffMeta.total_pages) {
-                       
+                        scroller = maxScroll
                         meta.staffMeta = ""
-                     data =meta.staffs
+                        data = meta.staffs
                         store.state.careCoordinator.staffs = ""
-                        store.dispatch("staffs", "?page=" + current_page).then(()=>{
-                            loadMoredata() 
+                        store.dispatch("staffs", "?page=" + current_page).then(() => {
+                            loadMoredata()
                         })
-                       
 
                     }
                 }
@@ -72,22 +78,28 @@ export default {
 
         function loadMoredata() {
             const newData = meta.staffs
-      console.log("data",data)
+
             newData.forEach(element => {
                 data.push(element)
             });
-            meta.staffs=data
+            meta.staffs = data
+            var tableContent = document.querySelector('.ant-table-body')
+
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller)
+            }, 50)
+
         }
 
-    function staffSummery(uuid){
-      console.log('value',uuid);
-    }
-    return {
-      
-      meta,
-      staffSummery,
-      dateFormat
-    }
-  },
+        function staffSummery(uuid) {
+            console.log('value', uuid);
+        }
+        return {
+
+            meta,
+            staffSummery,
+            dateFormat
+        }
+    },
 };
 </script>

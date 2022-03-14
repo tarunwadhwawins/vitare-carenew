@@ -11,7 +11,7 @@ export const loginSuccess = async (state, login) => {
   let callNotification = 0
 // console.log('loginDetails=>',state.loggedInUser.user.sipId);
 state.options= Web.SimpleUserOptions = {
-    aor:`sip:${state.loggedInUser.user.sipId}@dev.icc-heaalth.com`,
+    aor:`sip:${state.loggedInUser.user.sipId}@tele.icc-heaalth.com`,
     media: {
       constraints: {
         // This demo is making "video only" calls

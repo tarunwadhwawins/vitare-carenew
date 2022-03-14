@@ -97,7 +97,7 @@ export const communicationTypesSuccess = (state, response) => {
       }
     })
   }
-  
+  console.log("df",timesArray)
   state.communicationTypes = {
     calloption: {
       chart: {

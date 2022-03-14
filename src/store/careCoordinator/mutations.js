@@ -1,4 +1,5 @@
  import{meridiemFormatFromTimestamp} from "../../commonMethods/commonMethod"
+
  export const counterPlus = (state) => {
   state.counter++
 }
@@ -97,13 +98,13 @@ export const staffs= async (state, data) => {
             multiple: 1,
           },
         },
-        // {
-        //   title: "Action",
-        //   dataIndex: "action",
-        //   slots: {
-        //     customRender: "action",
-        //   },
-        // },
+        {
+          title: "Action",
+          dataIndex: "action",
+          slots: {
+            customRender: "action",
+          },
+        },
       ];
       state.staffs = data.data;
       state.staffMeta= data.meta.pagination
@@ -184,6 +185,9 @@ export const roleList = (state, data) => {
     {
       title: "Role",
       dataIndex: "role",
+      slots: {
+        customRender: "role",
+      },
     },
     {
       title: "Actions",
@@ -268,4 +272,10 @@ export const staffDocuments = (state, data) => {
         },
       },
     ];
+}
+
+
+
+export const closeModal = (state, data) => {
+  state.closeModal = data
 }
