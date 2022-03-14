@@ -28,7 +28,7 @@
                 v-model:value="inventoryForm.deviceModelId" /> -->
                 <a-select ref="select" v-model:value="inventoryForm.deviceModelId" style="width: 100%" size="large">
                   <a-select-option value="" hidden>{{'Select Duration Time'}}</a-select-option>
-                  <a-select-option v-for="deviceModal in deviceModalsList" :key="deviceModal.id">{{ deviceModal.modelNumber }}</a-select-option>
+                  <a-select-option v-for="deviceModal in deviceModalsList" :key="deviceModal.id" :value="deviceModal.id">{{ deviceModal.modelNumber }}</a-select-option>
                 </a-select>
             </a-form-item>
           </div>
@@ -93,20 +93,8 @@ export default {
     const inventory = computed(() => {
       return store.state.inventory;
     })
-    console.log('inventory', inventory)
     const inventoryDetail = inventory.value.inventoryDetails;
-    
-    var switchOn;
-    if(isEdit) {
-      switchOn = inventoryDetail && inventoryDetail.isActive ? true : false;
-    }
-    else {
-      switchOn = true;
-    }
-    
-    const inventoryTypes = computed(() => {
-      return store.state.common.deviceType;
-    })
+    console.log('inventoryDetail', inventoryDetail)
     
     const inventoryForm = reactive({
       deviceType: '',
@@ -115,6 +103,19 @@ export default {
       macAddress: '',
       isActive: switchOn,
     });
+    
+    var switchOn;
+    if(isEdit) {
+      switchOn = inventoryDetail && inventoryDetail.isActive ? true : false;
+      inventoryForm.deviceModelId = inventoryDetail && inventoryDetail.deviceModelId ? inventoryDetail.deviceModelId : '';
+    }
+    else {
+      switchOn = true;
+    }
+    
+    const inventoryTypes = computed(() => {
+      return store.state.common.deviceType;
+    })
 
     onMounted(() => {
       if(isEdit) {

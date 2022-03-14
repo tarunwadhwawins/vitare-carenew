@@ -9,8 +9,6 @@ export const inventoriesListSuccess = async (state, inventories) => {
 }
 
 export const inventoryDetailsSuccess = async (state, inventory) => {
-  inventory.modelId = inventory.deviceModelId;
-  inventory.deviceModelId = inventory.modelNumber;
   inventory.isActive = inventory.status;
   state.inventoryDetails = inventory;
 }

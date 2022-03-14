@@ -1,5 +1,5 @@
 <template>
-<a-form :model="program" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="programs" @finishFailed="programFailed">
+<a-form :model="program" name="basic" autocomplete="off" layout="vertical" @finish="programs" @finishFailed="programFailed">
     <a-row :gutter="24">
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
@@ -15,7 +15,7 @@
         <a-col :md="8" :sm="6" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('patient.programs.onboardinScheduledDate')" name="onboardingScheduleDate" :rules="[{ required: true, message: $t('patient.programs.onboardinScheduledDate')+' '+$t('global.validation') }]">
-                    <a-date-picker v-model:value="program.onboardingScheduleDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                    <a-date-picker v-model:value="program.onboardingScheduleDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.onboardingScheduleDate?errorMsg.onboardingScheduleDate[0]:''" />
                 </a-form-item>
             </div>
@@ -23,7 +23,7 @@
         <a-col :md="8" :sm="6" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('patient.programs.dischargeDate')" name="dischargeDate" :rules="[{ required: true, message: $t('patient.programs.dischargeDate')+' '+$t('global.validation') }]">
-                    <a-date-picker v-model:value="program.dischargeDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                    <a-date-picker v-model:value="program.dischargeDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.dischargeDate?errorMsg.dischargeDate[0]:''" />
                 </a-form-item>
             </div>
@@ -65,7 +65,10 @@ import { defineComponent, reactive, computed, watchEffect } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "../../loader/Loader"
-import {warningSwal,timeStamp} from "@/commonMethods/commonMethod"
+import {
+  warningSwal,
+  timeStamp
+} from "@/commonMethods/commonMethod"
 import { messages } from "@/config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 export default defineComponent({
