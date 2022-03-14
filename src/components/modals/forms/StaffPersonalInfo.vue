@@ -3,7 +3,7 @@
 <a-form :model="personalInfoData" class="basic" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="personalInfo" @finishFailed="onFinishFailed">
     <!-- <PersonalInformation /> -->
     <a-row :gutter="24">
-        <a-col :sm="12" :xs="24">
+        <!-- <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation') }]">
                     <a-input v-model:value="personalInfoData.firstName" size="large" class="firstName" />
@@ -41,7 +41,7 @@
                     <ErrorMessage v-if="errorMsg && !personalInfoData.genderId" :name="errorMsg.genderId?errorMsg.genderId[0]:''" />
                 </a-form-item>
             </div>
-        </a-col>
+        </a-col> -->
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(),type: 'email' }]">
@@ -58,7 +58,7 @@
                 </a-form-item>
             </div>
         </a-col>
-        <a-col :sm="12" :xs="24">
+        <!-- <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.specialization')" name="specializationId" :rules="[{ required: true, message: $t('global.specialization')+' '+$t('global.validation') }]">
                     <a-select ref="select" v-model:value="personalInfoData.specializationId" style="width: 100%" size="large" @change="handleChange">
@@ -79,11 +79,11 @@
                     <ErrorMessage v-if="errorMsg && !personalInfoData.networkId" :name="errorMsg.networkId?errorMsg.networkId[0]:''" />
                 </a-form-item>
             </div>
-        </a-col>
+        </a-col> -->
     </a-row>
 
     <div class="steps-action">
-        <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.update')}}</a-button>
+        <a-button  type="primary" html-type="submit">{{$t('global.update')}}</a-button>
     </div>
 </a-form>
 </a-modal>
@@ -92,30 +92,19 @@
 
 <script>
 import {reactive, computed,onUnmounted, watchEffect } from "vue";
-// import PersonalInformation from "@/components/modals/forms/PersonalInformation"
-// import Contacts from "@/components/modals/forms/Contacts";
-// import Availability from "@/components/modals/forms/Availability";
-// import Roles from "@/components/modals/forms/Roles";
-// import StaffDocuments from "@/components/modals/forms/StaffDocuments";
-// import Providers from "@/components/modals/forms/Providers";
 import { useStore } from "vuex";
 import ErrorMessage from "@/components/common/messages/ErrorMessage";
 import { regex } from "@/RegularExpressions/regex";
 import { successSwal,warningSwal, } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
+import { useRoute } from "vue-router";
 export default {
   components: {
-    // PersonalInformation,
-    // Contacts,
-    // Availability,
-    // Roles,
-    // StaffDocuments,
-    // Providers,
     ErrorMessage,
   },
   setup(props, { emit }) {
-    const store = useStore();
-
+    const store = useStore()
+    const route = useRoute()
     const personalInfoData = reactive({
       firstName: "",
       lastName: "",
@@ -130,26 +119,22 @@ export default {
     });
 
     const personalInfo = () => {
-      // setTimeout(() => {
-        if(addStaff.value==null){
-          store.dispatch("addStaff", personalInfoData);
-        }
-        if (addStaff.value!=null) {
-          // store.dispatch("allStaffList");
-          store.dispatch("updateStaff", {
-           id:addStaff.value.id,
-           data:personalInfoData
-           });
-        }
-      // }, 2000);
-      return addStaff.value!=null?true:false
+      store.dispatch("updateStaff", {
+      id:route.params.udid,
+      data:personalInfoData
+      });
     };
 
-    
+    const getstaffSummary = computed(() => {
+      return store.state.careCoordinatorSummary.staffSummary;
+    });
 
-    const onFinishFailed = () => {
-      // errorSwal(messages.fieldsRequired);
-      // console.log("test", value);
+    watchEffect(()=>{
+      Object.assign(personalInfoData,getstaffSummary.value)
+    })
+
+    const onFinishFailed = (value) => {
+      console.log(value);
     };
 
     const handleChange = () => {};
@@ -179,9 +164,6 @@ export default {
       successSwal(messages.formSuccess);
       Object.assign(personalInfoData, form);
       store.dispatch("allStaffList");
-      store.dispatch('specializationStaff')
-      store.dispatch('networkStaff')
-      store.commit("resetCounter");
     }
 
     function closeModal() {
@@ -190,9 +172,6 @@ export default {
         if (response == true) {
           emit("saveModal", false)
           Object.assign(personalInfoData, form);
-          store.dispatch("allStaffList")
-          store.dispatch('specializationStaff')
-          store.dispatch('networkStaff')
           store.commit("resetCounter")
           store.state.careCoordinator.addStaff =null
          
@@ -205,18 +184,9 @@ export default {
      onUnmounted(()=>{
       store.commit('errorMsg',null)
     })
-    watchEffect(()=>{
-      if(addStaff.value){
-      store.dispatch("roleList", addStaff.value.id);
-      store.dispatch("availabilityList", addStaff.value.id);
-      store.dispatch("staffContactList", addStaff.value.id);
-      store.dispatch("staffDocuments", addStaff.value.id);
-      }
-    })
+    
 
-     const getstaffSummary = computed(() => {
-      return store.state.careCoordinatorSummary.staffSummary;
-    });
+     
     return {
       getstaffSummary,
       closeModal,
