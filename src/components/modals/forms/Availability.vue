@@ -67,7 +67,7 @@ export default defineComponent({
   props:{
     paramId:String
   },
-  setup(props) {
+  setup(props,{emit}) {
     const store = useStore();
     const availability = reactive({
       startTime: "",
@@ -79,15 +79,17 @@ export default defineComponent({
     });
 
     function addAvailability() {
-      console.log("rere", )
       store.dispatch("addAvailability", {
         id: props.paramId?props.paramId:staffs.value.addStaff.id,
         data:  {startTime: timeStamp(moment().format('MM/DD/YYYY')+ ' ' + availability.startTime+':00'),
       endTime:timeStamp(moment().format('MM/DD/YYYY') + ' ' + availability.endTime+':00')}
       });
       setTimeout(() => {
-        reset()
         store.dispatch("availabilityList", props.paramId?props.paramId:staffs.value.addStaff.id);
+        reset()
+        if(staffs.value.closeModal){
+          emit("saveModal", false)
+      }
       }, 2000);
     }
 

@@ -3,8 +3,9 @@
     <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
             <div class="form-group">
-                <label>{{$t('careCoordinator.roles.role')}}</label>
+              <a-form-item :label="$t('careCoordinator.roles.role')" name="roles" :rules="[{ required: true, message: $t('careCoordinator.roles.role')+' '+$t('global.validation') }]">
                 <a-select v-if="staffs.roles!=null" v-model:value="roles.roles"  size="large" placeholder="Select Role" style="width: 100%" :options="staffs.roles.map((item) => ({ label: item.name?item.name:'', value: item.id }))" @change="checkChangeInput()" />
+              </a-form-item>
             </div>
         </a-col>
     </a-row>
@@ -54,7 +55,7 @@ export default defineComponent({
   props:{
     paramId:String
   },
-  setup(props) {
+  setup(props,{emit}) {
     const store = useStore();
     const roles = reactive({
       roles: [],
@@ -67,6 +68,10 @@ export default defineComponent({
       });
       setTimeout(() => {
         store.dispatch("roleList", props.paramId?props.paramId:staffs.value.addStaff.id);
+        reset()
+        if(staffs.value.closeModal){
+          emit("saveModal", false)
+      }
       }, 2000);
     }
 
@@ -90,12 +95,20 @@ export default defineComponent({
     watchEffect(() => {
       store.dispatch("roles");
     });
+
+    const form = reactive({
+      ...roles,
+    });
+    function reset(){
+      Object.assign(roles,form)
+    }
     
     function checkChangeInput(){
       store.commit('checkChangeInput',true)
     }
     const Id = staffs.value.addStaff?staffs.value.addStaff.id:''
     return {
+      reset,
       checkChangeInput,
       Id,
       staffs,

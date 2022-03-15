@@ -89,7 +89,7 @@ export default defineComponent({
   props:{
     paramId:String
   },
-  setup(props) {
+  setup(props,{emit}) {
     const store = useStore();
     const contact = reactive({
       firstName: "",
@@ -103,11 +103,12 @@ export default defineComponent({
         id: props.paramId?props.paramId:staffs.value.addStaff.id,
         data: contact,
       });
-   
-        
       setTimeout(() => {
         reset()
         store.dispatch("staffContactList", props.paramId?props.paramId:staffs.value.addStaff.id);
+        if(staffs.value.closeModal){
+          emit("saveModal", false)
+      }
       }, 2000);
     }
     const staffs = computed(() => {

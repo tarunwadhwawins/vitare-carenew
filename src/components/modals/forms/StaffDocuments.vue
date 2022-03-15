@@ -101,7 +101,7 @@ export default defineComponent({
     entity:String,
     paramId:String
   },
-  setup(props) {
+  setup(props,{emit}) {
     const store = useStore();
     const route = useRoute();
     const patientId = reactive(props.idPatient);
@@ -149,6 +149,10 @@ export default defineComponent({
         });
         setTimeout(() => {
           store.dispatch("staffDocuments",  props.paramId?props.paramId:addStaffs.value.addStaff.id);
+          reset()
+          if(addStaffs.value.closeModal){
+            emit("saveModal", false)
+          }
         }, 2000);
       }
     
