@@ -20,7 +20,7 @@
                 <a-select-option value="" disabled>{{'Select Inventory'}}</a-select-option>
                 <a-select-option v-for="device in patients.inventoryList" :key="device.id" :value="device.id">{{device.modelNumber +' ('+device.macAddress+')'}}</a-select-option>
               </a-select>
-                <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" />
+                <ErrorMessage v-if="errorMsg" :name="errorMsg.inventory?errorMsg.inventory[0]:''" />
             </a-form-item>
           </div>
         </a-col>
