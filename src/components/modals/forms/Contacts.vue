@@ -4,7 +4,7 @@
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation')  }]">
-                    <a-input v-model:value="contact.firstName" size="large" name="firstName" />
+                    <a-input v-model:value="contact.firstName" size="large" name="firstName" @change="checkChangeInput()"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.firstName?errorMsg.firstName[0]:''" />
                 </a-form-item>
             </div>
@@ -12,7 +12,7 @@
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.lastName')" name="lastName" :rules="[{ required: false, message: $t('global.lastName')+' '+$t('global.validation') }]">
-                    <a-input v-model:value="contact.lastName" size="large" />
+                    <a-input v-model:value="contact.lastName" size="large" @change="checkChangeInput()"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.lastName?errorMsg.lastName[0]:''" />
                 </a-form-item>
             </div>
@@ -20,7 +20,7 @@
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                    <a-input v-model:value="contact.email" placeholder="test@test.com" size="large" />
+                    <a-input v-model:value="contact.email" placeholder="test@test.com" size="large" @change="checkChangeInput()"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" />
                 </a-form-item>
             </div>
@@ -29,7 +29,7 @@
             <div class="form-group">
                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber}]">
                     <a-input v-model:value="contact.phoneNumber" placeholder="Please enter 10 digit number" size="large" />
-                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" @change="checkChangeInput()"/>
                 </a-form-item>
             </div>
         </a-col>
@@ -122,7 +122,11 @@ export default defineComponent({
     function reset(){
       Object.assign(contact,form)
     }
+    function checkChangeInput(){
+      store.commit('checkChangeInput',true)
+    }
     return {
+      checkChangeInput,
       reset,
       Id,
       // deleteContact,

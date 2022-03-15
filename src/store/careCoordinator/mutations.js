@@ -1,4 +1,5 @@
  import{meridiemFormatFromTimestamp} from "../../commonMethods/commonMethod"
+
  export const counterPlus = (state) => {
   state.counter++
 }
@@ -271,4 +272,10 @@ export const staffDocuments = (state, data) => {
         },
       },
     ];
+}
+
+
+
+export const closeModal = (state, data) => {
+  state.closeModal = data
 }

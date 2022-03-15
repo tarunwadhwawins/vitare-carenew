@@ -149,8 +149,8 @@ export default {
            //appointmentSearch.getStaff ? "" : store.dispatch("getStaffs")
             
 
-            store.dispatch("patientsList")
-            store.dispatch("staffList")
+            store.dispatch("allPatientsList")
+            store.dispatch("allStaffList")
 
             searchApi()
         })
@@ -171,7 +171,7 @@ export default {
             return store.state.common.allPatientsList
         })
         const staffList = computed(() => {
-            return store.state.common.staffList
+            return store.state.common.allStaffList
         })
 
         function calenderView(event) {

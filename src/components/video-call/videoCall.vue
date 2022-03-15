@@ -216,7 +216,7 @@ export default {
             authentication.value.loggedInUser.user.sipId
           );
           authentication.value.options = Web.SimpleUserOptions = {
-            aor: `sip:${authentication.value.loggedInUser.user.sipId}@dev.icc-heaalth.com`,
+            aor: `sip:${authentication.value.loggedInUser.user.sipId}@tele.icc-heaalth.com`,
             media: {
               constraints: {
                 audio: true,
@@ -273,7 +273,7 @@ export default {
               // console.log("hello");
               simpleUser.register().then(() => {
                 simpleUser.call(
-                  `sip:${conferenceId.value}@dev.icc-heaalth.com`
+                  `sip:${conferenceId.value}@tele.icc-heaalth.com`
                 );
                 simpleUserHangup.value = simpleUser;
               });

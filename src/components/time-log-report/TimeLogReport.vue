@@ -34,7 +34,7 @@
                             </a-col>
                             <a-col :sm="4" :xs="24">
                                 <div class="text-right mt-28">
-                                    <a-button class="btn primaryBtn" @click="reportExport()">{{$t('global.download')}}</a-button>
+                                    <a-button class="btn primaryBtn" @click="reportExport()">{{$t('global.exportToExcel')}}</a-button>
                                 </div>
                             </a-col>
                         </a-row>
@@ -82,6 +82,8 @@ export default {
             startDate: '',
             endDate: '',
         })
+        const startDate =ref(null)
+        const endDate = ref(null)
         watchEffect(() => {
             store.getters.timeLogReports.value.timeLogReportList = ""
             store.dispatch("timeLogReportList")
@@ -89,6 +91,8 @@ export default {
 
         function updateAuditTime() {
             store.getters.timeLogReports.value.timeLogReportList = ""
+            startDate.value =timeStamp(startimeAdd(moment(auditTimeLog.startDate)))
+            endDate.value = timeStamp(endTimeAdd(moment(auditTimeLog.endDate)))
             store.dispatch("timeLogReportList", "?fromDate=" + timeStamp(startimeAdd(moment(auditTimeLog.startDate))) + "&toDate=" + timeStamp(endTimeAdd(moment(auditTimeLog.endDate))))
         }
 
@@ -96,8 +100,16 @@ export default {
             store.dispatch("reportExport", {
                 reportType: "patient_time_log_report"
             }).then(() => {
+               
                 const API_URL = process.env.VUE_APP_API_URL
-                window.open(API_URL + 'timelog/report/export/' + store.state.timeLogReport.reportExport.data.udid + '?fromDate=' + timeStamp(startimeAdd(moment(auditTimeLog.startDate))) + '&toDate=' + timeStamp(endTimeAdd(moment(auditTimeLog.endDate))), '_blank')
+               
+              if(startDate.value && endDate.value){
+                
+                window.open(API_URL + 'timelog/report/export/' + store.state.timeLogReport.reportExport.data.udid + '?fromDate=' + timeStamp(startimeAdd(moment(startDate.value))) + '&toDate=' +  timeStamp(endTimeAdd(moment(endDate.value))), '_blank') 
+            }else{
+                window.open(API_URL + 'timelog/report/export/' + store.state.timeLogReport.reportExport.data.udid + '?fromDate=&toDate=', '_blank')
+              }
+               
             })
         }
         return {

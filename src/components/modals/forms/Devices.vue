@@ -1,5 +1,5 @@
 <template>
-<a-form ref="formRef" :model="device" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDevice" @finishFailed="deviceFailed">
+  <a-form ref="formRef" :model="device" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDevice" @finishFailed="deviceFailed">
     <a-row :gutter="24">
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
@@ -76,26 +76,26 @@
         </a-col> -->
     </a-row>
     <a-row :gutter="24" class="mb-24">
-        <a-col :span="24">
-            <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
-        </a-col>
+      <a-col :span="24">
+        <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
+      </a-col>
     </a-row>
-    <a-row :gutter="24" class="mb-24">
-        <a-col :span="24">
-            <a-table  rowKey="id" :columns="deviceColumns" :data-source="deviceData" :pagination="false" :scroll="{ x: 900 }">
-                <template #active="text">
-                    <a-switch @click="changeStatus(text.record.id,text.record.status)"   v-model:checked="text.record.status"   />
-                </template>
-                <template #action="text">
-                    <a class="icons" @click="deleteDevice(text.record.id)">
-                        <DeleteOutlined />
-                    </a>
-                </template>
-            </a-table>
-            <Loader />
-        </a-col>
-    </a-row>
-</a-form>
+  </a-form>
+  <a-row :gutter="24" class="mb-24">
+    <a-col :span="24">
+      <a-table  rowKey="id" :columns="deviceColumns" :data-source="deviceData" :pagination="false" :scroll="{ x: 900 }">
+        <template #active="{record}">
+          <a-switch v-model:checked="record.status" @change="changeStatus(record.id, $event)" />
+        </template>
+        <template #action="text">
+          <a class="icons" @click="deleteDevice(text.record.id)">
+            <DeleteOutlined />
+          </a>
+        </template>
+      </a-table>
+      <Loader />
+    </a-col>
+  </a-row>
 </template>
 
 <script>
@@ -200,14 +200,11 @@ export default defineComponent({
       });
     }
 
-    function changeStatus(id, status) {
-      console.log(status);
+    const changeStatus = (id, status) => {
       store.dispatch("changeStatus", {
-        id: patients.value.addDemographic.id,
-        statusId: id,
-        status: {
-          status: status, //== true ? 1 : 0
-        },
+        id: patientId,
+        inventoryId: id,
+        status: status
       });
     }
 

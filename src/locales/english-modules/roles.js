@@ -1,6 +1,6 @@
 const roles = {
   name: "Name",
-  description: "Role Descriptiom",
+  description: "Role Description",
 }
 
 export default roles

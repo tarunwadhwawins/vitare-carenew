@@ -158,7 +158,7 @@
 </template>
 
 <script>
-import Header from "@/components/administration/layout/header/Header";
+import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import { ref } from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";

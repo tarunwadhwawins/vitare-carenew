@@ -10,7 +10,7 @@
     </a-col>
     
    
-     <TaskTable v-if="tasksList.tasksList" :taskRecords="tasksList" @is-Edit="editTask($event)"></TaskTable>
+     <TaskTable @is-Edit="editTask($event)"></TaskTable>
       
     
   </a-row>
@@ -55,7 +55,7 @@ export default {
     const createAppointment = () => {
       // console.log('createAppointment', id)
     };
-    const tasksList = store.getters.taskRecords.value
+   
     const tasksDashboardPermissions = computed(()=>{
       return store.state.screenPermissions.tasksDashboardPermissions
     })
@@ -65,7 +65,7 @@ export default {
       size: ref([]),
       handleChange,
       // tasksColumns,
-      tasksList,
+      
       editTask,
       updateTask,
       createAppointment,

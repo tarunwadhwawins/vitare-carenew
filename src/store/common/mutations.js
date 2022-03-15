@@ -103,6 +103,7 @@ export const successMsg = (state, data) => {
 }
 
 export const staffListSuccess = (state, data) => {
+    
     const staffList = []
     data.map(item => {
         if(item.id != '') {
@@ -125,6 +126,7 @@ export const vitalFieldsByDeviceId = (state, fields) => {
 }
 
 export const allPatientsList = (state, fields) => {
+  
     state.allPatientsList = fields
 }
 
@@ -136,7 +138,9 @@ export const activeCptCodes = (state, fields) => {
     state.activeCptCodes = fields
 }
 
-
-
+//checking fields input for modal popup messages
+export const checkChangeInput = (state, data) => {
+    state.checkChangeInput = data
+  }
 
 

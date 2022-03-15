@@ -22,5 +22,7 @@ export default{
     providers:null,
     staffMeta:null,
     addStaffDocument:null,
-    staffDocuments:null
+    staffDocuments:null,
+    closeModal:false
+    
 }

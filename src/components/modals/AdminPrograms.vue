@@ -33,7 +33,7 @@
           <a-textarea v-model:value="value2" placeholder="Message" allow-clear />
         </div> -->
                 <div class="form-group">
-                    <a-form-item :label="$t('programs.description')" name="description" :rules="[{ required: true, message: $t('program.description')+' '+$t('global.validation') }]">
+                    <a-form-item :label="$t('programs.description')" name="description" :rules="[{ required: true, message: $t('programs.description')+' '+$t('global.validation') }]">
                         <a-input v-model:value="program.description" size="large" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.program?errorMsg.program[0]:''" />
                     </a-form-item>

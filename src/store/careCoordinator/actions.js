@@ -26,6 +26,8 @@ export const updateStaff = async ({
 }, data) => {
   await serviceMethod.common("put", `staff/${data.id}`, null, data.data).then((response) => {
     commit('updateStaff', response.data.data);
+    successSwal(response.data.message)
+    commit('closeModal',true)
     commit('counterPlus')
   }).catch((error) => {
     if(error.response.status === 422){

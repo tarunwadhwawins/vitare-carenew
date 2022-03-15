@@ -36,11 +36,11 @@
             </span></a-menu-item
           ></router-link
         >
-        <router-link to="/reports"
+        <!-- <router-link to="/reports"
           ><a-menu-item
             ><FileDoneOutlined /><span class="menuItem">Reports </span></a-menu-item
           ></router-link
-        >
+        > -->
         <router-link to="/templates"
           ><a-menu-item
             ><ReconciliationOutlined /><span class="menuItem"

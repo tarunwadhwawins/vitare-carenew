@@ -385,13 +385,13 @@ export default {
             if (providerForm.name != '' || providerForm.address != '') {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
-                        emit("saveModal", false);
+                        emit("closeModal", false);
                         Object.assign(providerForm, form);
                        // store.dispatch("provider");
                         store.commit("resetCounter");
                         store.state.provider.provider = null
                     } else {
-                        emit("saveModal", true);
+                        emit("closeModal", true);
                     }
                 })
             }
@@ -425,9 +425,10 @@ export default {
         }
 
         watchEffect(() => {
-            store.commit('loadingStatus', true)
+           
             if (providerId != null) {
                 if (editSingleProvider.value) {
+                    store.commit('loadingStatus', true)
                     Object.assign(providerForm, editSingleProvider.value);
                     store.dispatch("providerLocationList", providerId);
                     setTimeout(() => {

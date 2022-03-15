@@ -4,7 +4,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
-                    <a-input v-model:value="documents.name" size="large" />
+                    <a-input v-model:value="documents.name" size="large" @change="checkChangeInput()"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
                 </a-form-item>
             </div>
@@ -20,7 +20,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.type')" name="type" :rules="[{ required: false, message: $t('global.type')+' '+$t('global.validation') }]">
-                    <a-select ref="select" v-model:value="documents.type" style="width: 100%" size="large" @change="handleChange">
+                    <a-select ref="select" v-model:value="documents.type" style="width: 100%" size="large" @change="checkChangeInput()">
                         <a-select-option value="" disabled>{{'Select Type'}}</a-select-option>
                         <a-select-option v-for="documentType in globalCode.documentTypes.globalCode" :key="documentType.id" :value="documentType.id">{{documentType.name}}</a-select-option>
                     </a-select>
@@ -31,7 +31,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.tags')" name="tags" :rules="[{ required: false, message: $t('global.tags')+' '+$t('global.validation') }]">
-                    <a-select v-model:value="documents.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" @change="handleChange" />
+                    <a-select v-model:value="documents.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" @change="checkChangeInput()" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.tags?errorMsg.tags[0]:''" />
                 </a-form-item>
             </div>
@@ -110,6 +110,7 @@ export default defineComponent({
       let doc_file = event.target.files[0];
       let formData = new FormData();
       formData.append("file", doc_file);
+      store.commit('checkChangeInput',true)
       store.dispatch("uploadFile", formData);
     };
 
@@ -188,7 +189,11 @@ export default defineComponent({
     function reset(){
       Object.assign(documents,form)
     }
+    function checkChangeInput(){
+      store.commit('checkChangeInput',true)
+    }
     return {
+      checkChangeInput,
       Id:addStaffs.value.addStaff?addStaffs.value.addStaff.id:'',
       reset,
       onFinishFailed,

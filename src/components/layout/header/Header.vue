@@ -95,7 +95,7 @@
                     <a-menu-item key="0">
                       <a href="javascript:void(0)" @click="addAppt">{{$t('header.addAppointment')}}</a>
                     </a-menu-item>
-                    <a-menu-item key="1">
+                    <a-menu-item key="1" v-if="arrayToObjact(patientsPermissions,62)">
                       <a href="javascript:void(0)" @click="addPatient">{{$t('header.addPatient')}}</a>
                     </a-menu-item>
                     <!-- <a-menu-item key="3">
@@ -199,6 +199,7 @@
   import AddStartCall from "@/components/modals/AddStartCall";
   import SendMessage from "@/components/modals/SendMessage";
   import { useStore } from "vuex";
+  import { arrayToObjact } from "@/commonMethods/commonMethod";
   import {
     NotificationOutlined,
     DownOutlined,
@@ -306,7 +307,9 @@
       const accessPermission = computed(()=>{
         return store.state.authentication.accessPermission
       })
-
+      const patientsPermissions=computed(()=>{
+     return store.state.screenPermissions.patientsPermissions
+    })
       return {
         accessPermission,
         handleTaskOk,
@@ -326,6 +329,7 @@
 
         tasksModal,
         addTask,
+        arrayToObjact,
         // taskOk,
 
         PatientsModal,
@@ -340,7 +344,8 @@
         startOk,
 
         handleOk,
-        showModal
+        showModal,
+        patientsPermissions
 
       };
     },

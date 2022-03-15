@@ -19,23 +19,23 @@ export const globalCodes = async ({
 }
 
 
-export const staffList = async ({
-  commit
-}) => {
-  await ServiceMethodService.common("get", API_ENDPOINTS['staffList'], null, null).then((response) => {
-    commit('staffListSuccess', response.data.data);
-  })
-    .catch((error) => {
-      if (error.response.status == 401) {
-        //AuthService.logout();
-      }
-      commit('failure', error.response.data);
-    })
-}
+// export const staffList = async ({
+//   commit
+// }) => {
+//   await ServiceMethodService.common("get", API_ENDPOINTS['staffList'], null, null).then((response) => {
+//     commit('staffListSuccess', response.data.data);
+//   })
+//     .catch((error) => {
+//       if (error.response.status == 401) {
+//         //AuthService.logout();
+//       }
+//       commit('failure', error.response.data);
+//     })
+// }
 
-export const vitalFieldsList = async ({ commit }) => {
+export const vitalFieldsList = async ({ commit },deviceId) => {
   commit('loadingStatus', true)
-  await ServiceMethodService.common("get", API_ENDPOINTS['field'], null, null).then((response) => {
+  await ServiceMethodService.common("get", API_ENDPOINTS['field'], deviceId, null).then((response) => {
     commit('vitalFieldsList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
@@ -44,7 +44,7 @@ export const vitalFieldsList = async ({ commit }) => {
   })
 }
 
-export const vitalFieldsByDeviceId = async ({ commit}, deviceId) => {
+export const vitalFieldsByDeviceId = async ({ commit},deviceId) => {
   commit('loadingStatus', true)
   await ServiceMethodService.common("get", API_ENDPOINTS['field'], deviceId, null).then((response) => {
     commit('vitalFieldsByDeviceId', response.data.data);
@@ -55,31 +55,31 @@ export const vitalFieldsByDeviceId = async ({ commit}, deviceId) => {
   })
 }
 
-export const allPatientsList = async ({ commit}, deviceId) => {
-  commit('loadingStatus', true)
-  await ServiceMethodService.common("get", API_ENDPOINTS['patient']+'?all=all', deviceId, null).then((response) => {
+export const allPatientsList = async ({ commit}) => {
+  //commit('loadingStatus', true)
+  await ServiceMethodService.common("get", API_ENDPOINTS['patient']+'?all=all', null, null).then((response) => {
     commit('allPatientsList', response.data.data);
-    commit('loadingStatus', false)
+    //commit('loadingStatus', false)
   }).catch((error) => {
     commit('failure', error);
     commit('loadingStatus', false)
   })
 }
 
-export const allStaffList = async ({ commit}, deviceId) => {
-  commit('loadingStatus', true)
-  await ServiceMethodService.common("get", API_ENDPOINTS['staffList']+'?all=all', deviceId, null).then((response) => {
+export const allStaffList = async ({ commit}) => {
+  //commit('loadingStatus', true)
+  await ServiceMethodService.common("get", API_ENDPOINTS['staffList']+'?all=all', null, null).then((response) => {
     commit('allStaffList', response.data.data);
-    commit('loadingStatus', false)
+    //commit('loadingStatus', false)
   }).catch((error) => {
     commit('failure', error);
     commit('loadingStatus', false)
   })
 }
 
-export const activeCptCodes = async ({ commit}, deviceId) => {
+export const activeCptCodes = async ({ commit}) => {
   commit('loadingStatus', true)
-  await ServiceMethodService.common("get", API_ENDPOINTS['cptCodes'], deviceId, null).then((response) => {
+  await ServiceMethodService.common("get", API_ENDPOINTS['cptCodes'], null, null).then((response) => {
     commit('activeCptCodes', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {

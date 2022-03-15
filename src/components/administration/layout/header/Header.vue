@@ -60,7 +60,7 @@
                     <a-menu-item key="0">
                       <a href="javascript:void(0)" @click="addAppt">Add Appointment</a>
                     </a-menu-item>
-                    <a-menu-item key="1">
+                    <a-menu-item key="1" v-if="arrayToObjact(patientsPermissions,62)">
                       <a href="javascript:void(0)" @click="addPatient">Add Patient</a>
                     </a-menu-item>
                     <!-- <a-menu-item key="3">
@@ -70,6 +70,9 @@
                     > -->
                     <a-menu-item key="4">
                       <a href="javascript:void(0)" @click="addTask">Add Task</a>
+                    </a-menu-item>
+                    <a-menu-item key="5">
+                      <a href="javascript:void(0)" @click="showStartCallModal">{{$t('header.startCall')}}</a>
                     </a-menu-item>
                   </a-menu>
                 </template>
@@ -144,6 +147,8 @@
     <TasksModal v-if="TasksModal" v-model:visible="TasksModal" @ok="taskOk" />
     <PatientsModal v-model:visible="PatientsModal" @ok="patientOk" />
     <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" />
+    <AddStartCall v-model:visible="AddStartCall" @ok="closeStartCallModal" />
+    
     <!---->
   </div>
 </template>
@@ -154,6 +159,8 @@
   import TasksModal from "@/components/modals/TasksModal";
   import PatientsModal from "@/components/modals/PatientsModal";
   import CoordinatorsModal from "@/components/modals/CoordinatorsModal";
+  import AddStartCall from "@/components/modals/AddStartCall";
+  import { arrayToObjact } from "@/commonMethods/commonMethod";
   import {
     NotificationOutlined,
     DownOutlined,
@@ -174,6 +181,7 @@
       TasksModal,
       PatientsModal,
       CoordinatorsModal,
+      AddStartCall
     },
     setup() {
       const store = useStore()
@@ -224,12 +232,21 @@
         console.log(e);
         CoordinatorsModal.value = false;
       };
-
+      const closeStartCallModal = () => {
+        AddStartCall.value = false;
+      };
       // const loggedInUser = computed(() => {
       //   return store.state.authentication.loggedInUser
       // })
-
+      const AddStartCall = ref(false);
+      const showStartCallModal = () => {
+        AddStartCall.value = true;
+      };
+      const patientsPermissions=computed(()=>{
+     return store.state.screenPermissions.patientsPermissions
+    })
       return {
+        patientsPermissions,
         userName,
         // loggedInUser,
         barMenu,
@@ -251,6 +268,10 @@
         CoordinatorsModal,
         addCare,
         handleOk,
+        closeStartCallModal,
+        AddStartCall,
+        showStartCallModal,
+        arrayToObjact
       };
     },
   });

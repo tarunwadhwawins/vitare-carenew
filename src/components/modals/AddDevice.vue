@@ -160,7 +160,7 @@ export default defineComponent({
     }
 
     function handleInventory(id) {
-      store.dispatch("inventoryList", { isAvailable: 1, deviceType: id });
+      store.dispatch("inventoryList", { isAvailable: 1, deviceType: id, active: 1 });
       inventoryForm.inventory = null;
       inventoryForm.modelNumber = null,
       inventoryForm.serialNumber =null,

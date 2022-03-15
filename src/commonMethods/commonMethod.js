@@ -3,12 +3,13 @@ import moment from 'moment';
 
 
 export function deCodeString(value) {
-  let decode = window.btoa(value); // encode a string
+  let decode = window.atob(value); // encode a string
   return decode.replace("=", '')
 }
 
 export function enCodeString(value) {
-  return window.atob(value); // decode a string
+  let encode = window.btoa(value); // encode a string
+  return encode.replace("=", '');
 }
 
 function capitalize(str) {
@@ -69,7 +70,7 @@ export function timeFormatSimple(timeStamp) {
 }
 
 export function dateOnlyFormat(timeStamp) {
-  var day = moment.unix(new Date(timeStamp));
+  var day = moment.unix(timeStamp);
   return day.format('MMM DD, yyyy');
 }
 

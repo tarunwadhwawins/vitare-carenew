@@ -9,7 +9,7 @@
                             <div class="logo">
                                 <img src="@/assets/images/logo.png" alt="image" />
                             </div>
-                            <h2>{{$t('login.welcome')}}</h2>
+                            <h3>{{$t('login.welcome')}}</h3>
                             <p>{{$t('login.message')}}</p>
                             <img class="rightImg" src="@/assets/images/circle.png" alt="image" />
                         </div>
@@ -37,3 +37,24 @@ export default {
     },
 };
 </script>
+
+<style lang="scss" scoped>
+@import "@/assets/scss/variable.scss";
+.leftWrapper {
+    h3 {
+        font-size: 18px;
+        text-align: justify !important;
+        position: relative;
+        margin: 0 0 30px;
+        &::before {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            height: 2px;
+            background-color: $primary-color;
+            width: 50px;
+        }
+    }
+}
+</style>

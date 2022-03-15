@@ -18,9 +18,9 @@
             <a class="icons"><DeleteOutlined @click="deleteDocument(record.id)" /></a>
           </template>
           <template #document="{record}">
-            <router-link :to="record.document">
+            <a :href="record.document" target="_blank">
               <FileOutlined />
-            </router-link>
+            </a>
           </template>
         </a-table>
       </a-col>
@@ -50,7 +50,7 @@ export default defineComponent({
       type: Array
     }
   },
-  setup(props) {
+  setup(props, {emit}) {
     const store = useStore();
     const route = useRoute();
     const patientId = reactive(props.patientDetails.id);
@@ -119,6 +119,9 @@ export default defineComponent({
           console.log('data', data);
           store.dispatch('deleteDocument', data).then(() => {
             store.dispatch('patientDocuments', patientId)
+            if(patientDocuments.value.length <= 1) {
+              emit('closeModal')
+            }
             store.dispatch('latestDocument', route.params.udid)
           })
         }

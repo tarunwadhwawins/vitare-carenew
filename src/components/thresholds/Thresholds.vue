@@ -30,8 +30,8 @@
        
           
        
-        <ThresholdsTable v-if="vitalList.vitalList" :thresholdsData="vitalList.vitalList" @is-edit="showEdit($event)"></ThresholdsTable>
-        <div v-else><Loader /></div>
+        <ThresholdsTable  @is-edit="showEdit($event)"></ThresholdsTable>
+        <Loader />
         
       </a-row>
     </div>
@@ -62,7 +62,7 @@
         store.getters.vitalDataGetters.vitalList=""
         store.dispatch("generalParameterList");
       });
-      const vitalList = store.getters.vitalDataGetters.value
+      
       function nullId (){
         threshodsId.value=''
       }
@@ -113,7 +113,7 @@
 
       return {
         
-        vitalList,
+       
         checked,
         Thresholds,
         showModal,

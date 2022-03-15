@@ -33,6 +33,7 @@
                         <a-col :span="24">
                             <div class="list-view" v-show="!toggle">
                                 <ProvidersTable @isEdit="showModal($event)" />
+                                <Loader />
                             </div>
                         </a-col>
                     </a-row>
@@ -42,13 +43,13 @@
     </a-layout>
 
     <!-- Modal -->
-    <AdminProvidersModal v-if="visible" v-model:visible="visible" @ok="handleOk" @closeModal="showModal($event)" :isAdd="isAdd" :providerId="providerID" />
+    <AdminProvidersModal v-if="visible" v-model:visible="visible" @ok="handleOk" @closeModal="closeModal($event)" :isAdd="isAdd" :providerId="providerID" />
 
 </div>
 </template>
 
 <script>
-import Header from "@/components/administration/layout/header/Header";
+import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import AdminProvidersModal from "@/components/modals/AdminProvidersModal";
 import ProvidersTable from "@/components/administration/providers/tables/ProvidersTable";
@@ -57,6 +58,7 @@ import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
 import {ref , watchEffect} from "vue";
 import { arrayToObjact } from "@/commonMethods/commonMethod";
+import Loader from "@/components/loader/Loader"
 export default {
     components: {
         Header,
@@ -65,6 +67,7 @@ export default {
         ProvidersTable,
         SearchField,
         Button,
+        Loader,
     },
 
     setup() {
@@ -75,12 +78,18 @@ export default {
         const showModal = (e) => {
             if (e.providerId) {
                 providerID.value = e.providerId
+                isAdd.value = true;
             }else{
                 providerID.value = null
+                isAdd.value = false;
+                
             }
-            isAdd.value = true;
             visible.value = e;
-
+            
+        }
+        const closeModal = (e) => {
+            visible.value = e;
+            
         };
         const searchData = () => {
 
@@ -113,7 +122,7 @@ watchEffect(()=>{
             handleOk,
             isAdd,
             checked,
-            
+            closeModal,
             pageTitle: "Providers",
             buttonName: "Add New Provider",
             exportButtonName: "Export to Excel",

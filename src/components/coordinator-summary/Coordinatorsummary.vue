@@ -138,7 +138,7 @@
     </a-modal>
     <!---->
 </div>
-<PersonalInformation v-model:visible="visibleEditStaff" @saveModal="handleOk($event)"/>
+<PersonalInformation v-model:visible="visibleEditStaff" @saveModal="editStaffCloseModal($event)"/>
 </template>
 
 <script>
@@ -220,6 +220,10 @@ export default {
       visibleEditStaff.value = true;
     };
 
+    const editStaffCloseModal = (value) => {
+      visibleEditStaff.value = value;
+    };
+
     const showModal = () => {
       visible.value = true;
     };
@@ -241,6 +245,7 @@ export default {
             return store.state.screenPermissions.staffPermissions
         })
     return {
+      editStaffCloseModal,
       editStaff,
       visibleEditStaff,
       staffPermissions,

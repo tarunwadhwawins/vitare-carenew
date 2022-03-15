@@ -766,8 +766,6 @@ export default defineComponent( {
       return store.state.patients;
     });
     const patientDetail = patients.value.patientDetails;
-    const patientReferralSource = patients.value.patientReferralSource;
-    const patientPrimaryPhysician = patients.value.patientPrimaryPhysician;
     const title = props.isEditPatient == true ? 'Edit Patient' : 'Add New Patient'
     const disabled = props.isEditPatient == true ? true : false
     
@@ -858,25 +856,31 @@ export default defineComponent( {
             if(patients.value.patientInsurance != null) {
                 Object.assign(insuranceData, patients.value.patientInsurance)
             }
-            if(patientReferralSource != null) {
+            if(patients.value.patientReferralSource != null) {
                 Object.assign(conditions, {
-                    name: patientReferralSource.name,
-                    designation: patientReferralSource.designation,
-                    email: patientReferralSource.email,
-                    phoneNumber: patientReferralSource.phoneNumber,
-                    fax: patientReferralSource.fax,
+                    name: patients.value.patientReferralSource.name,
+                    designation: patients.value.patientReferralSource.designation,
+                    email: patients.value.patientReferralSource.email,
+                    phoneNumber: patients.value.patientReferralSource.phoneNumber,
+                    fax: patients.value.patientReferralSource.fax,
                 });
             }
-            if(patientPrimaryPhysician != null) {
+            if(patients.value.patientPrimaryPhysician != null) {
                 Object.assign(conditions, {
-                    physicianName: patientPrimaryPhysician.name,
-                    physicianDesignation: patientPrimaryPhysician.designation,
-                    physicianEmail: patientPrimaryPhysician.email,
-                    physicianPhoneNumber: patientPrimaryPhysician.phoneNumber,
-                    physicianFax: patientPrimaryPhysician.fax,
+                    physicianName: patients.value.patientPrimaryPhysician.name,
+                    physicianDesignation: patients.value.patientPrimaryPhysician.designation,
+                    physicianEmail: patients.value.patientPrimaryPhysician.email,
+                    physicianPhoneNumber: patients.value.patientPrimaryPhysician.phoneNumber,
+                    physicianFax: patients.value.patientPrimaryPhysician.fax,
                 });
             }
         }
+        /* else {
+            const medicalRecordNumber = Math.random().toString(20).slice(2, 14).toUpperCase()
+            Object.assign(demographics, {
+                medicalRecordNumber: medicalRecordNumber
+            });
+        } */
     })
 
     const parameters = reactive([]);
@@ -1009,7 +1013,7 @@ export default defineComponent( {
     const condition = () => {
         const patientConditions = patients.value.patientConditions;
         if(idPatient != null) {
-            if ( patientConditions == null || patientReferralSource == null || patientPrimaryPhysician == null ) {
+            if ( patientConditions == null || patients.value.patientReferralSource == null || patients.value.patientPrimaryPhysician == null ) {
                 if(conditions.checked == false) {
                     store.dispatch("addCondition", {
                         data: conditions,
@@ -1023,7 +1027,7 @@ export default defineComponent( {
                     });
                 }
             }
-            else if ((patientConditions != null || patientReferralSource != null || patientPrimaryPhysician != null) && patientPrimaryPhysician.id || patientReferralSource.id ) {
+            else if ((patientConditions != null || patients.value.patientReferralSource != null || patients.value.patientPrimaryPhysician != null) && patients.value.patientPrimaryPhysician.id || patients.value.patientReferralSource.id ) {
                 if (conditions.checked == false) {
                     (conditions.name = conditions.physicianName),
                     (conditions.designation = conditions.physicianDesignation),
@@ -1033,19 +1037,23 @@ export default defineComponent( {
                     store.dispatch("updateCondition", {
                         data: conditions,
                         id: idPatient,
-                        physicianId: patientPrimaryPhysician.id,
-                        referalID: patientReferralSource.id,
-                    });
+                        physicianId: patients.value.patientPrimaryPhysician.id,
+                        referalID: patients.value.patientReferralSource.id,
+                    }).then(() => {
+                        store.dispatch('patientConditions', route.params.udid)
+                    })
                 }
                 if (conditions.checked == true) {
                     store.dispatch("updateCondition", {
                         data: conditions,
                         id: idPatient,
-                        physicianId: patientPrimaryPhysician.id,
-                        referalID: patientReferralSource.id,
-                    });
+                        physicianId: patients.value.patientPrimaryPhysician.id,
+                        referalID: patients.value.patientReferralSource.id,
+                    }).then(() => {
+                        store.dispatch('patientConditions', route.params.udid)
+                    })
                 }
-            }
+            }            
         }
         else {
             if (patients.value.addCondition == null || patients.value.addPatientReferals == null || patients.value.addPatientPhysician == null) {
@@ -1197,7 +1205,23 @@ export default defineComponent( {
       store.commit('errorMsg',null)
     })
 
+    /* function formatPhoneNumber(event) {
+        const phoneNumberString = event.target.value
+        console.log('phoneNumberString', phoneNumberString)
+        var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+        var match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
+        if (match) {
+            var intlCode = (match[1] ? '+1 ' : '');
+            const format = [intlCode, '(', match[2], ') ', match[3], '-', match[4]].join('');
+            Object.assign(demographics, {
+                phoneNumber: format
+            })
+        }
+        return null;
+    } */
+
     return {
+    // formatPhoneNumber,
     closeSearchPatient,
      showSearchPatient,
       patientSearch,
