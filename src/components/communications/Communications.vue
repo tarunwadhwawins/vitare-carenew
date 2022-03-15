@@ -54,14 +54,14 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { ref, h,computed } from "vue";
+import { ref, h,computed, defineComponent,defineAsyncComponent} from "vue";
 import DashboardView from "@/components/communications/DashboardView";
 import ListView from "@/components/communications/ListView";
 import StartCall from "@/components/communications/top/StartCall";
 import SendMessage from "@/components/communications/top/SendMessage";
 import ToolTip from "@/components/communications/toolTip/ToolTip";
 import { notification, Button } from "ant-design-vue";
-import AddStartCall from "@/components/modals/AddStartCall";
+// import AddStartCall from "@/components/modals/AddStartCall";
 import { useStore } from "vuex";
 import {arrayToObjact} from "@/commonMethods/commonMethod"
 import Loader from "@/components/loader/Loader";
@@ -71,7 +71,7 @@ const close = () => {
   // );
 };
 
-export default {
+export default defineComponent({
   components: {
     Header,
     Sidebar,
@@ -80,13 +80,12 @@ export default {
     StartCall,
     SendMessage,
     ToolTip,
-    AddStartCall,
-    Loader
+
   },
   
   setup() {
     const toggle = ref(true);
-    const AddStartCall = ref()
+    const AddStartCall = ref(false)
     const handleChange = () => {
     };
     const store = useStore()
@@ -197,5 +196,5 @@ export default {
 
     };
   },
-};
+});
 </script>
