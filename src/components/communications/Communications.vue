@@ -80,6 +80,8 @@ export default defineComponent({
     StartCall,
     SendMessage,
     ToolTip,
+    Loader,
+    AddStartCall:defineAsyncComponent(()=>import("@/components/modals/AddStartCall"))
 
   },
   
