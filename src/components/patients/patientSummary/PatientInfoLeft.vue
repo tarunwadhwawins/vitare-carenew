@@ -4,7 +4,7 @@
       <img v-if="patientDetails.profilePhoto" :src="patientDetails.profilePhoto" alt="image"/>
       <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
       <div class="info">
-        <p v-if="patientDetails.patientFullName">{{ patientDetails.patientFullName }}</p>
+        <p v-if="patientDetails.patientFullName">Name: {{ patientDetails.patientFullName }}</p>
         <p v-if="patientDetails.dob">DOB : {{ patientDetails.dob }}</p>
         <p v-if="patientDetails.email"><a href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
         <p v-if="patientDetails.phoneNumber"><a href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>

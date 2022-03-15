@@ -90,6 +90,8 @@ export const addContacts = async ({
   await serviceMethod.common("post", `staff/${data.id}/contact`, null, data.data).then((response) => {
     commit('addContacts', response.data.data);
     successSwal(response.data.message)
+    commit('closeModal',true)
+    commit('checkChangeInput',false)
   }).catch((error) => {
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
@@ -139,6 +141,8 @@ export const addAvailability = async ({
   await serviceMethod.common("post", `staff/${data.id}/availability`, null, data.data).then((response) => {
     commit('addAvailability', response.data.data);
     successSwal(response.data.message)
+    commit('closeModal',true)
+    commit('checkChangeInput',false)
   }).catch((error) => {
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
@@ -157,6 +161,8 @@ export const availabilityList = async ({commit},id) => {
   await serviceMethod.common("get", `staff/${id}/availability`, null, null).then((response) => {
     commit('availabilityList', response.data.data);
     commit('loadingStatus', false)
+    commit('closeModal',true)
+    commit('checkChangeInput',false)
   }).catch((error) => { 
     commit('errorMsg', error);
     if(error.response.status === 500){
@@ -204,7 +210,8 @@ export const addStaffRole = async ({
   await serviceMethod.common("post", `staff/${data.id}/role`, null, data.data).then((response) => {
     commit('addStaffRole', response.data.data);
     successSwal(response.data.message)
-
+    commit('closeModal',true)
+    commit('checkChangeInput',false)
   }).catch((error) => {
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
@@ -307,6 +314,8 @@ export const addStaffDocument = async ({commit}, data) => {
   await serviceMethod.common("post", `staff/${data.id}/document`, null, data.data).then((response) => {
     commit('addStaffDocument', response.data.data);
     successSwal(response.data.message)
+    commit('closeModal',true)
+    commit('checkChangeInput',false)
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)

@@ -101,6 +101,9 @@ export const updateSingleProvider = async ({ commit }, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("put",`provider`,data.id,data.data).then((response)=>{
     commit('updateSingleProvider', response.data.data);
+    if(data.data.showPopup){
+      successSwal(response.data.message)
+    }
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
