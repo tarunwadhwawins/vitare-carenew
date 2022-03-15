@@ -133,6 +133,7 @@ export default {
       });
       setTimeout(()=>{
         if(careCoordinators.value.closeModal){
+          store.dispatch("staffSummary", route.params.udid);
           emit("saveModal", false)
       }
       },2000)

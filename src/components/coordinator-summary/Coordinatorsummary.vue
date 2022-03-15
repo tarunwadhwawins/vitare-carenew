@@ -18,12 +18,16 @@
                         <div class="patientInfo">
                             <EditOutlined class="editIcon" style="float:right;padding:10px" @click="editStaff()"/>
                             <div class="patientImg">
-                                <img src="../../assets/images/profile-4.jpg" alt="image" />
+                                <img v-if="getstaffSummary.profilePhoto" :src="getstaffSummary.profilePhoto" alt="image"/>
+                                <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
+                                <!-- <img src="../../assets/images/profile-4.jpg" alt="image" /> -->
                                 <div class="info">
                                     <p>Name: {{getstaffSummary?getstaffSummary.fullName:''}}</p>
                                     <p>Designation : {{getstaffSummary?getstaffSummary.designation:''}}</p>
-                                    <p>Phone : {{getstaffSummary?getstaffSummary.phoneNumber:''}}</p>
-                                    <p>Email : {{getstaffSummary?getstaffSummary.email:''}}</p>
+                                    <!-- <p>Phone : {{getstaffSummary?getstaffSummary.phoneNumber:''}}</p>
+                                    <p>Email : {{getstaffSummary?getstaffSummary.email:''}}</p> -->
+                                    <p v-if="getstaffSummary.email"><a href="mailto:{{getstaffSummary.email}}"><MailOutlined /> {{ getstaffSummary.email }}</a></p>
+                                    <p v-if="getstaffSummary.phoneNumber"><a href="tel:{{getstaffSummary.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ getstaffSummary.phoneNumber }}</a></p>
                                 </div>
                             </div>
                             <div class="pat-profile">
@@ -163,6 +167,8 @@ import {
   // DeleteOutlined,
   EditOutlined,
   PlusOutlined,
+  MailOutlined,
+  PhoneOutlined
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
@@ -201,7 +207,9 @@ export default {
     RoleTable,
     RoleForm,
     Loader,
-    PersonalInformation
+    PersonalInformation,
+    MailOutlined,
+    PhoneOutlined
   },
   setup(props,{emit}) {
     const store = useStore();
