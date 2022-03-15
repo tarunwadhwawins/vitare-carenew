@@ -73,10 +73,11 @@
                 v-model:value="taskForm.assignedTo"
                 style="width: 100%"
                  placeholder="Please Select Patient"
-                size="large">
-                <a-select-option value="" disabled>{{'Select Patient'}}</a-select-option>
+                 :options="patients.map((item) => ({label: item.name+' '+item.middleName+' '+item.lastName, value: item.id }))"
+                size="large" />
+                <!-- <a-select-option value="" disabled>{{'Select Patient'}}</a-select-option>
                 <a-select-option v-for="patient in patients" :key="patient.id" :value="patient.id">{{ patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option>
-              </a-select>
+              </a-select> -->
             
             </a-form-item>
           </div>
@@ -191,6 +192,7 @@ export default defineComponent({
     })
     
     const submitForm = () => {
+      //console.log("check",taskForm)
     //  console.log('=>', Object.assign(taskForm, tasks.value.editTask))
     if(props.taskId!=null) {
       store.dispatch("updateTask", {
@@ -256,6 +258,7 @@ export default defineComponent({
     watchEffect(() => {
       store.dispatch("allStaffList")
       if(props.taskId!=null){
+        console.log("check",tasks.value.editTask)
         Object.assign(taskForm, tasks.value.editTask)
       }
     })
