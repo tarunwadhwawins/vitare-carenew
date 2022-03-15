@@ -11,6 +11,7 @@
         </a-col> -->
         <a-col :sm="12" :xs="24">
           <div class="form-group">
+        
             <a-form-item :label="$t('communications.communicationsModal.from')" name="from" :rules="[{ required: true, message: $t('communications.communicationsModal.from')+' '+$t('global.validation')  }]">
               <a-select
                 ref="select"
@@ -151,7 +152,7 @@
       const handleCancel = () => {
         emit('is-visible', false);
       };
-      
+      const auth = JSON.parse(localStorage.getItem("auth"))
       watchEffect(() => {
         store.dispatch("globalCodes")
         store.dispatch("allPatientsList")
@@ -176,7 +177,7 @@
       })
 
       const messageForm = reactive({
-        from: '',
+        from: auth.user.staffUdid,
         entityType: '',
         referenceId: '',
         subject: '',
@@ -216,6 +217,7 @@
         messageType,
         messageForm,
         formRef,
+        auth
       };
     },
   };

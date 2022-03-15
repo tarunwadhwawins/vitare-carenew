@@ -85,6 +85,7 @@ export default {
     const updateStatus = (id, status) => {
       const data = {
         isActive: status,
+        showPopup:true
       };
       store
         .dispatch("updateSingleProvider", {
@@ -92,7 +93,7 @@ export default {
           data,
         })
         .then(() => {
-         store.dispatch("providersListAll");
+         //store.dispatch("providersListAll");
         });
     };
 
