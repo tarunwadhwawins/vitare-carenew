@@ -875,6 +875,12 @@ export default defineComponent( {
                 });
             }
         }
+        /* else {
+            const medicalRecordNumber = Math.random().toString(20).slice(2, 14).toUpperCase()
+            Object.assign(demographics, {
+                medicalRecordNumber: medicalRecordNumber
+            });
+        } */
     })
 
     const parameters = reactive([]);
@@ -1199,7 +1205,23 @@ export default defineComponent( {
       store.commit('errorMsg',null)
     })
 
+    /* function formatPhoneNumber(event) {
+        const phoneNumberString = event.target.value
+        console.log('phoneNumberString', phoneNumberString)
+        var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+        var match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
+        if (match) {
+            var intlCode = (match[1] ? '+1 ' : '');
+            const format = [intlCode, '(', match[2], ') ', match[3], '-', match[4]].join('');
+            Object.assign(demographics, {
+                phoneNumber: format
+            })
+        }
+        return null;
+    } */
+
     return {
+    // formatPhoneNumber,
     closeSearchPatient,
      showSearchPatient,
       patientSearch,
