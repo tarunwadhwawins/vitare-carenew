@@ -1,6 +1,6 @@
 
 <template>
-<a-form :model="clinicals" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="clinicalHistory" @finishFailed="clinicalDataFailed">
+<a-form ref="formRef" :model="clinicals" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="clinicalHistory" @finishFailed="clinicalDataFailed">
     <div class="form-group">
         <a-form-item :label="$t('patient.clinicalData.medicalHistory')" name="history" :rules="[{ required: true, message: $t('patient.clinicalData.medicalHistory')+' '+$t('global.validation') }]">
             <a-input v-model:value="clinicals.history" size="large" />
@@ -97,7 +97,7 @@
 </a-row>
 </template>
 <script>
-import { defineComponent, reactive, computed, watchEffect } from "vue";
+import { defineComponent, reactive, computed, watchEffect, ref } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "../../loader/Loader.vue";
@@ -118,6 +118,7 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const patientId = reactive(props.idPatient);
+    const formRef = ref()
     const clinicals = reactive({
       history: "",
     });
@@ -135,6 +136,8 @@ export default defineComponent({
       startDate: "",
       endDate: "",
     });
+    const clinicalsForm = reactive({ ...clinicals })
+    const medicationForm = reactive({ ...clinicalMedication })
 
     const globalCode = computed(() => {
       return store.state.common;
@@ -147,13 +150,18 @@ export default defineComponent({
           id: patientId,
         }).then(() => {
           store.dispatch("clinicalHistoryList", patientId);
+          formRef.value.resetFields();
+          Object.assign(clinicals, clinicalsForm)
         });
       }
       else {
         store.dispatch("addClinicalHistory", {
           data: clinicals,
           id: patients.value.addDemographic.id,
-        });
+        }).then(() => {
+          formRef.value.resetFields();
+          Object.assign(clinicals, clinicalsForm)
+        })
 
         setTimeout(() => {
           store.dispatch("clinicalHistoryList", patients.value.addDemographic.id);
@@ -173,19 +181,22 @@ export default defineComponent({
           id: patientId,
         }).then(() => {
           store.dispatch("clinicalMedicatList", patientId);
+          formRef.value.resetFields()
+          Object.assign(clinicalMedication, medicationForm)
         });
       }
       else {
         store.dispatch("addClinicalMedicat", {
           data: {medicine: clinicalMedication.medicine,
-        frequency: clinicalMedication.frequency,
-        startDate: timeStamp(clinicalMedication.startDate ),
-        endDate: timeStamp(clinicalMedication.endDate )},
+          frequency: clinicalMedication.frequency,
+          startDate: timeStamp(clinicalMedication.startDate ),
+          endDate: timeStamp(clinicalMedication.endDate )},
           id: patients.value.addDemographic.id,
-        });
-        setTimeout(() => {
+        }).then(() => {
           store.dispatch("clinicalMedicatList", patients.value.addDemographic.id);
-        }, 2000);
+          formRef.value.resetFields()
+          Object.assign(clinicalMedication, medicationForm)
+        });
       }
     };
 
@@ -280,6 +291,7 @@ export default defineComponent({
       clinicalsData,
       clinicalMedicatData,
       clinicalMedicatColumns,
+      formRef,
       errorMsg:patients.value.errorMsg
     };
   },
