@@ -321,6 +321,9 @@ export const addDevice = async ({
     } else if (error.response.status === 401) {
       // commit('errorMsg', error.response.data.message)
       errorSwal(error.response.data.message)
+    } else if (error.response.status === 409) {
+      // commit('errorMsg', error.response.data.message)
+      errorSwal(error.response.data.message)
     }
   })
 }
