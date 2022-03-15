@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" title="Communications" centered>
+  <a-modal width="1000px" title="Communications" centered @cancel="handleCancel">
     <a-form ref="formRef" :model="messageForm" layout="vertical" @finish="sendMessage">
       <a-row :gutter="24">
         <!-- <a-col :sm="12" :xs="24">
@@ -149,9 +149,6 @@
       const store = useStore()
       const toggleTo = ref(true);
 
-      const handleCancel = () => {
-        emit('is-visible', false);
-      };
       const auth = JSON.parse(localStorage.getItem("auth"))
       watchEffect(() => {
         store.dispatch("globalCodes")
@@ -200,6 +197,12 @@
         formRef.value.resetFields();
         Object.assign(messageForm, form)
       }
+
+      const handleCancel = () => {
+        emit('is-visible', false);
+        formRef.value.resetFields();
+        Object.assign(messageForm, form)
+      };
 
       const patientChange = (value) => {
         store.dispatch('patientDetails', value);

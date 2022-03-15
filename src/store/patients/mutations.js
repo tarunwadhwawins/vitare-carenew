@@ -304,6 +304,26 @@ sorter: {
  }
 
  export const inventoryList = (state, data) => {
+  // const devices = state.devices;
+  // console.log('deviceData 2', devices)
+  // var list = [];
+  // data.map(item => {
+  //   list = []
+  //   devices.map(device => {
+  //     // if(item.modelNumber == device.modelNumber) {
+  //       if(item.macAddress != device.macAddress) {
+  //         console.log('deviceData 3', item)
+  //         list.push(item)
+  //       }
+  //     // }
+  //     // else {
+  //     //   console.log('deviceData 4', item)
+  //     //   list.push(item)
+  //     // }
+  //   })
+  // })
+  // console.log('deviceData 5', list)
+  // state.inventoryList = list
   state.inventoryList = data
 }
  
