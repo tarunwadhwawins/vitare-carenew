@@ -43,6 +43,7 @@
                     </a-col>
                     <a-col :span="24"> </a-col>
                 </a-row>
+                <Loader />
             </a-layout-content>
         </a-layout>
 
@@ -63,6 +64,7 @@ import { notification, Button } from "ant-design-vue";
 import AddStartCall from "@/components/modals/AddStartCall";
 import { useStore } from "vuex";
 import {arrayToObjact} from "@/commonMethods/commonMethod"
+import Loader from "@/components/loader/Loader";
 const close = () => {
   // console.log(
   //   "Notification was closed. Either the close button was clicked or duration time elapsed."
@@ -78,7 +80,8 @@ export default {
     StartCall,
     SendMessage,
     ToolTip,
-    AddStartCall
+    AddStartCall,
+    Loader
   },
   
   setup() {

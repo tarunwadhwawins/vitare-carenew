@@ -74,7 +74,7 @@
                     <div class="value">4567 $</div>
                   </div>
                 </div> -->
-        <ApexChart :title="$t('dashboard.financialStats')" type="pie" :height="400" :options="financialValue.billed"
+        <ApexChart :title="$t('dashboard.financialStats')" type="pie" :height="363" :options="financialValue.billed"
           :series="financialValue.due" linkTo="time-tracking-report"></ApexChart>
       </a-col>
 
@@ -91,6 +91,7 @@
           linkTo="appointment-calendar"></ApexChart>
       </a-col>
     </a-row>
+    <Loader />
   </a-layout-content>
 
   <!---->
@@ -105,6 +106,7 @@
   import ApexChart from "@/components/common/charts/ApexChart"
   import { arrayToObjact } from "../../commonMethods/commonMethod"
   import { useStore } from 'vuex'
+  import Loader from "@/components/loader/Loader";
   import moment from "moment"
   const columns4 = [
     {
@@ -216,7 +218,8 @@
     components: {
       Card,
       Appointement,
-      ApexChart
+      ApexChart,
+      Loader
     },
 
     setup() {
