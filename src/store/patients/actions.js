@@ -98,7 +98,6 @@ export const addCondition = async ({commit}, request) => {
         }
       })
       commit('loadingStatus', false)
-      commit('counterPlus')
     })
   }
   else {
@@ -349,11 +348,14 @@ export const changeStatus = async ({
 export const deleteDevice = async ({
   commit
 }, data) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("delete", `patient/${data.id}/inventory/${data.deviceId}`, null, data.data).then((response) => {
     commit('deleteDevice', response.data.data);
     successSwal(response.data.message)
+    commit('loadingStatus', false)
   }).catch((error) => {
     errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
   })
 }
 
