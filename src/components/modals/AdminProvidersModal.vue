@@ -82,6 +82,12 @@
                                 </a-form-item>
                             </div>
                         </a-col>
+                        <a-col :sm="12" :xs="24">
+                            <div class="form-group">
+                                <label>Active/Inactive</label>
+                                <a-switch v-model:checked="providers.isActive" @change="UpdateStatus($event)" />
+                            </div>
+                        </a-col>
                         <a-col :span="24">
                             <div class="steps-action">
                                 <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
@@ -169,7 +175,7 @@
                             <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
                         </a-col>
                         <a-col :span="24">
-                            <a-table v-if="providerLocationlistData" :columns="columns" :data-source="providerLocationlistData" :pagination="false" :scroll="{ x: 900 }">
+                            <a-table class="tableCommonSpace" v-if="providerLocationlistData" :columns="columns" :data-source="providerLocationlistData" :pagination="false" :scroll="{ x: 900 }">
                                 <template #action="text">
                                     <a-tooltip placement="bottom">
                                         <a class="icons" @click="deleteProviderLocation(text.record.id)">

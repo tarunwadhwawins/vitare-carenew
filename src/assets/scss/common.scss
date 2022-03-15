@@ -371,3 +371,11 @@ button.swal2-default-outline {
 	padding: 10px 0;
 	width: 100px !important;
 }
+/* table css */
+.tableCommonSpace {
+    margin: 20px 0;
+}
+
+.ant-table-body{
+	overflow-y: auto !important;
+}
