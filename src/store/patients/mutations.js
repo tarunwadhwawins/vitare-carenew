@@ -395,10 +395,15 @@ sorter: {
         {
           title: "History",
           dataIndex: "history",
+          className: "medicalHistory",
+          slots: {
+            customRender: "history",
+          },
         },
         {
           title: "Actions",
           dataIndex: "actions",
+          className: "medicalHistoryAction",
           slots: {
             customRender: "action",
           },
