@@ -182,6 +182,7 @@ export default defineComponent({
             data: patientData,
             id: patientId,
           }).then(() => {
+            emit('onChange', false)
             formRef.value.resetFields();
             Object.assign(documents, form)
             store.dispatch("documents", patientUdid);
@@ -192,6 +193,7 @@ export default defineComponent({
             data: patientData,
             id: patients.value.addDemographic.id,
           }).then(() => {
+            emit('onChange', false)
             formRef.value.resetFields();
             Object.assign(documents, form)
             store.dispatch("documents", patients.value.addDemographic.id);

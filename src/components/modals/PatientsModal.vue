@@ -752,8 +752,13 @@ export default defineComponent( {
     // });
     const patientSearch =ref(false)
 
-    const changedValue = () => {
-        isValueChanged.value = true;
+    const changedValue = (value) => {
+        if(value == false) {
+            isValueChanged.value = false;
+        }
+        else {
+            isValueChanged.value = true;
+        }
     }
     const showSearchPatient = ()=>{
         patientSearch.value =true
@@ -902,6 +907,7 @@ export default defineComponent( {
                     }).then(() => {
                         if(route.name == 'PatientSummary') {
                             store.dispatch('patientDetails', route.params.udid)
+                            isValueChanged.value = false;
                         }
                     })
                 }
@@ -920,6 +926,7 @@ export default defineComponent( {
                     }).then(() => {
                         if(route.name == 'PatientSummary') {
                             store.dispatch('patientDetails', route.params.udid)
+                            isValueChanged.value = false;
                         }
                     })
                 }
@@ -934,6 +941,7 @@ export default defineComponent( {
                     }).then(() => {
                         if(route.name == 'PatientSummary') {
                             store.dispatch('patientDetails', route.params.udid)
+                            isValueChanged.value = false;
                         }
                     })
                 }
@@ -952,6 +960,7 @@ export default defineComponent( {
                     }).then(() => {
                         if(route.name == 'PatientSummary') {
                             store.dispatch('patientDetails', route.params.udid)
+                            isValueChanged.value = false;
                         }
                     })
                 }
@@ -963,6 +972,7 @@ export default defineComponent( {
                     store.dispatch("addDemographic", demographics).then(() => {
                         if(route.name == 'PatientSummary') {
                             store.dispatch('patientDetails', route.params.udid)
+                            isValueChanged.value = false;
                         }
                     })
                 }
@@ -976,6 +986,7 @@ export default defineComponent( {
                     store.dispatch("addDemographic", demographics).then(() => {
                         if(route.name == 'PatientSummary') {
                             store.dispatch('patientDetails', route.params.udid)
+                            isValueChanged.value = false;
                         }
                     })
                 }
@@ -990,6 +1001,7 @@ export default defineComponent( {
                     }).then(() => {
                         if(route.name == 'PatientSummary') {
                             store.dispatch('patientDetails', route.params.udid)
+                            isValueChanged.value = false;
                         }
                     })
                 }
@@ -1008,6 +1020,7 @@ export default defineComponent( {
                     }).then(() => {
                         if(route.name == 'PatientSummary') {
                             store.dispatch('patientDetails', route.params.udid)
+                            isValueChanged.value = false;
                         }
                     })
                 }
@@ -1027,13 +1040,17 @@ export default defineComponent( {
                     store.dispatch("addCondition", {
                         data: conditions,
                         id: idPatient,
-                    });
+                    }).then(() => {
+                        isValueChanged.value = false;
+                    })
                 }
                 if (conditions.checked == true) {
                     store.dispatch("addCondition", {
                         data: conditions,
                         id: idPatient,
-                    });
+                    }).then(() => {
+                        isValueChanged.value = false;
+                    })
                 }
             }
             else if ((patientConditions != null || patients.value.patientReferralSource != null || patients.value.patientPrimaryPhysician != null) && patients.value.patientPrimaryPhysician.id || patients.value.patientReferralSource.id ) {
@@ -1050,6 +1067,7 @@ export default defineComponent( {
                         referalID: patients.value.patientReferralSource.id,
                     }).then(() => {
                         store.dispatch('patientConditions', route.params.udid)
+                        isValueChanged.value = false;
                     })
                 }
                 if (conditions.checked == true) {
@@ -1060,6 +1078,7 @@ export default defineComponent( {
                         referalID: patients.value.patientReferralSource.id,
                     }).then(() => {
                         store.dispatch('patientConditions', route.params.udid)
+                        isValueChanged.value = false;
                     })
                 }
             }            
@@ -1075,13 +1094,17 @@ export default defineComponent( {
                     store.dispatch("addCondition", {
                         data: conditions,
                         id: patients.value.addDemographic.id,
-                    });
+                    }).then(() => {
+                        isValueChanged.value = false;
+                    })
                 }
                 if (conditions.checked == true) {
                     store.dispatch("addCondition", {
                         data: conditions,
                         id: patients.value.addDemographic.id,
-                    });
+                    }).then(() => {
+                        isValueChanged.value = false;
+                    })
                 }
             }
             if (patients.value.addPatientReferals.id && patients.value.addPatientPhysician.id) {
@@ -1096,7 +1119,9 @@ export default defineComponent( {
                         id: patients.value.addDemographic.id,
                         physicianId: patients.value.addPatientPhysician.id,
                         referalID: patients.value.addPatientReferals.id,
-                    });
+                    }).then(() => {
+                        isValueChanged.value = false;
+                    })
                 }
                 if (conditions.checked == true) {
                     store.dispatch("updateCondition", {
@@ -1104,17 +1129,21 @@ export default defineComponent( {
                         id: patients.value.addDemographic.id,
                         physicianId: patients.value.addPatientPhysician.id,
                         referalID: patients.value.addPatientReferals.id,
-                    });
+                    }).then(() => {
+                        isValueChanged.value = false;
+                    })
                 }
             }
         }
     };
 
     const parameter = () => {
-      store.dispatch("parameter", {
-        vital: parameters,
-        id: patients.value.addDemographic.id,
-      });
+        store.dispatch("parameter", {
+            vital: parameters,
+            id: patients.value.addDemographic.id,
+        }).then(() => {
+            isValueChanged.value = false;
+        })
     };
 
     const insuranceForm = () => {
@@ -1124,7 +1153,9 @@ export default defineComponent( {
                 insurance: [insuranceData],
                 },
                 id: idPatient,
-            });
+            }).then(() => {
+                isValueChanged.value = false;
+            })
         }
         else {
             store.dispatch("addInsurance", {
@@ -1132,7 +1163,9 @@ export default defineComponent( {
                 insurance: [insuranceData],
                 },
                 id: patients.value.addDemographic.id,
-            });
+            }).then(() => {
+                isValueChanged.value = false;
+            })
         }
     };
 

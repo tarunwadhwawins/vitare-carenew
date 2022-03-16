@@ -152,6 +152,7 @@ export default defineComponent({
           data: clinicals,
           id: patientId,
         }).then(() => {
+          emit('onChange', false)
           store.dispatch("clinicalHistoryList", patientId);
           formRef.value.resetFields();
           Object.assign(clinicals, clinicalsForm)
@@ -162,13 +163,13 @@ export default defineComponent({
           data: clinicals,
           id: patients.value.addDemographic.id,
         }).then(() => {
+          emit('onChange', false)
           formRef.value.resetFields();
           Object.assign(clinicals, clinicalsForm)
-        })
-
-        setTimeout(() => {
+        }).then(() => {
+          emit('onChange', false)
           store.dispatch("clinicalHistoryList", patients.value.addDemographic.id);
-        }, 2000);
+        });
       }
     };
 
@@ -183,6 +184,7 @@ export default defineComponent({
           },
           id: patientId,
         }).then(() => {
+          emit('onChange', false)
           store.dispatch("clinicalMedicatList", patientId);
           formRef.value.resetFields()
           Object.assign(clinicalMedication, medicationForm)
@@ -196,6 +198,7 @@ export default defineComponent({
           endDate: timeStamp(clinicalMedication.endDate )},
           id: patients.value.addDemographic.id,
         }).then(() => {
+          emit('onChange', false)
           store.dispatch("clinicalMedicatList", patients.value.addDemographic.id);
           formRef.value.resetFields()
           Object.assign(clinicalMedication, medicationForm)
