@@ -40,7 +40,7 @@ export const providersListAll = async ({
   commit
 }) => {
   commit('loadingStatus', true)
-  await serviceMethod.common("get", `provider`, null, null).then((response) => {
+  await serviceMethod.common("get", `provider?active=1`, null, null).then((response) => {
     commit('providersListAll', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
@@ -91,14 +91,16 @@ export const deleteProviderLocation = async ({ commit }, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("delete", `provider/${data.id}/location/${data.locationId}`, null, null).then((response) => {
     successSwal(response.data.message)
+    commit('loadingStatus', false)
   }).catch((error) => {
     errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
   })
 
 }
 
 export const updateSingleProvider = async ({ commit }, data) => {
-  commit('loadingStatus', true)
+  
   await serviceMethod.common("put",`provider`,data.id,data.data).then((response)=>{
     commit('updateSingleProvider', response.data.data);
     if(data.data.showPopup){

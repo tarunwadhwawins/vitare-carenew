@@ -1,5 +1,5 @@
 <template>
-<a-form :model="documents" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDocument" @finishFailed="onFinishFailed">
+  <a-form ref="formRef" :model="documents" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDocument" @finishFailed="onFinishFailed">
     <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
             <div class="form-group">
@@ -12,7 +12,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: false, message: $t('global.document')+' '+$t('global.validation') }]">
-                    <a-input name="document_file" size="large" type="file" @change="onFileUpload" />
+                    <a-input v-model:value="documents.document" size="large" type="file" @change="onFileUpload" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
                 </a-form-item>
             </div>
@@ -71,11 +71,12 @@
             <Loader />
         </a-col>
     </a-row>
-</a-form>
+  </a-form>
+  <Loader />
 </template>
 
 <script>
-import { defineComponent, computed, reactive, watchEffect } from "vue";
+import { defineComponent, computed, reactive, watchEffect, ref } from "vue";
 // import { DeleteOutlined, FileOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "@/components/loader/Loader";
@@ -84,6 +85,7 @@ import Loader from "@/components/loader/Loader";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import { useRoute } from "vue-router";
 import DocumentTable from "../../patients/data-table/DocumentTable.vue";
+import { errorSwal } from "../../../commonMethods/commonMethod";
 
 export default defineComponent({
   components: {
@@ -105,12 +107,7 @@ export default defineComponent({
     const route = useRoute();
     const patientId = reactive(props.idPatient);
     const patientUdid = route.params.udid;
-    const onFileUpload = (event) => {
-      let doc_file = event.target.files[0];
-      let formData = new FormData();
-      formData.append("file", doc_file);
-      store.dispatch("uploadFile", formData);
-    };
+    const formRef = ref()
 
     watchEffect(() => {
       if(patientId != null) {
@@ -124,11 +121,41 @@ export default defineComponent({
 
     const documents = reactive({
       name: "",
-      document: filePath.value ? filePath.value : "",
+      document: "",
       type: "",
       tags: [],
       entity: "patient",
     });
+    const form = reactive({ ...documents })
+
+    const onFileUpload = (event) => {
+      let docFile = event.target.files[0];
+      if((docFile.size/1024) > 5120) {
+        Object.assign(documents, {
+          document: ""
+        })
+        errorSwal('File size should be less than or equal to 5 MB');
+        return false
+      }
+      if(
+        docFile.type != 'image/jpg' &&
+        docFile.type != 'image/jpeg' &&
+        docFile.type != 'image/tiff' &&
+        docFile.type != 'image/tif' &&
+        docFile.type != 'image/bmp' &&
+        docFile.type != 'image/png'
+        && docFile.type != 'application/pdf'
+      ) {
+        Object.assign(documents, {
+          document: ""
+        })
+        errorSwal('Allowed file types are JPG, JPEG, TIFF, TIF, BMP, PNG and PDF only');
+        return false
+      }
+      let formData = new FormData();
+      formData.append("file", docFile);
+      store.dispatch("uploadFile", formData);
+    };
 
     const patients = computed(() => {
       return store.state.patients;
@@ -152,6 +179,8 @@ export default defineComponent({
             data: patientData,
             id: patientId,
           }).then(() => {
+            formRef.value.resetFields();
+            Object.assign(documents, form)
             store.dispatch("documents", patientUdid);
           });
         }
@@ -159,10 +188,11 @@ export default defineComponent({
           store.dispatch("addDocument", {
             data: patientData,
             id: patients.value.addDemographic.id,
-          });
-          setTimeout(() => {
+          }).then(() => {
+            formRef.value.resetFields();
+            Object.assign(documents, form)
             store.dispatch("documents", patients.value.addDemographic.id);
-          }, 2000);
+          });
         }
       }
       
@@ -209,13 +239,11 @@ export default defineComponent({
       }
     }
 
-    const form = reactive({
-      ...documents,
-    });
     function reset(){
       Object.assign(documents,form)
     }
     return {
+      formRef,
       reset,
       Id,
       onFinishFailed,

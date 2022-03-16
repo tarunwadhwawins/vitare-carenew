@@ -36,8 +36,9 @@
                 <CopyOutlined /></a>
         </a-tooltip>
     </template>
-    <template #status="{record}" v-if="arrayToObjact(roleAndPermissions,4)">
-        <a-switch v-model:checked="record.status" @change="UpdateRoleStatus(record.udid, $event)" />
+    <template #status="{record}" v-if="arrayToObjact(roleAndPermissions,4)" >
+        <a-switch v-if="record.id ===1" v-model:checked="record.status"  disabled/>
+        <a-switch v-else v-model:checked="record.status"  @change="UpdateRoleStatus(record.udid, $event)"/>
     </template>
 </a-table>
 <Loader />
