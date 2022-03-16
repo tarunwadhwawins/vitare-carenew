@@ -44,7 +44,7 @@ export const acceptVideoCallDetails = async ({commit},id) => {
 
 export const callNotification = async ({commit},data) => {
   commit('loadingStatus', true)
-  await serviceMethod.common('patch', `call/notification/${data.id}?status=${data.status}`, null, true).then((response) => {
+  await serviceMethod.common('patch', `communicationCallRecord/${data.id}?status=${data.status}`, null, true).then((response) => {
     commit('callNotification', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {

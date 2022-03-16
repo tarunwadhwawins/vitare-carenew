@@ -34,7 +34,7 @@ export function videoCall() {
                             onClick: () => {
                                 callNotification=0
                                 state.simpleUser = simpleUser,
-                                router.push('/video-call/sjx56ko0'), notification.close(key)
+                                router.push('/video-call'), notification.close(key)
                             }
                         },
                             "Accept"

@@ -98,7 +98,7 @@ const routes = [
     meta: { authAdmin: true }
   },
   {
-    path: '/video-call/:id',
+    path: '/video-call/:id?',
     name: 'videoCall',
     component: () => import( '../components/video-call/videoCall'),
     meta: { authAdmin: true }
