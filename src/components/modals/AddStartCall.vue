@@ -10,7 +10,7 @@
                             <a-select-option v-for="data in dropdownData.appointmentConference" :key="data.id" :value="data.conferenceId">{{data.patient}} {{`(${data.appointmentType})`}} {{`(${dateOnlyFormat(data.date)+' '+meridiemFormatFromTimestamp(data.time)})`}}</a-select-option>
                         </a-select>
                     </a-form-item>
-                </div>
+                </div> 
             </a-col>
             <a-col :sm="4" :xs="24">
                 <div class="text-right mt-28">
