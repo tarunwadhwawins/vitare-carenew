@@ -639,8 +639,10 @@ export const documents = async ({
 export const uploadFile = async ({
   commit
 }, data) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("post", `file`, null, data).then((response) => {
     commit('uploadFile', response.data.data.path);
+    commit('loadingStatus', false)
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
@@ -650,6 +652,7 @@ export const uploadFile = async ({
       // commit('errorMsg', error.response.data.message)
       errorSwal(error.response.data.message)
     }
+    commit('loadingStatus', false)
   })
 }
 
