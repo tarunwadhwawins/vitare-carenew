@@ -213,7 +213,7 @@ img.reportFlag {
 	}
 	.ant-modal-body {
 		overflow: auto;
-		max-height: calc(100vh - 240px);
+		max-height: 80vh
 	}
 }
 
@@ -385,4 +385,14 @@ button.swal2-default-outline {
 }
 .bold{
 	font-weight: bold;
+	background-color: #f6f7f6;
+}
+.chatModal .ant-modal-footer {
+    display: block;
+}
+.chatModal .ant-modal-footer .ant-input-group-addon {
+    background-color: #1890ff;
+}
+.chatModal .ant-modal-footer .ant-input-group-addon .anticon{
+	color: #ffffff;
 }
