@@ -48,6 +48,7 @@ export const API_ENDPOINTS = {
     addTask:"task",
     tasksList:"task",
     taskStatus:"task/status",
+    allTaskStatus:"task/status/summery",
     taskPriority:"task/priority",
     searchTasks:"task/search",
     taskTeamMember:'task/staff',

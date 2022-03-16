@@ -91,7 +91,7 @@
         </a-tooltip>
     </template>
 </a-table>
-<InfiniteLoader v-if="loader" />
+
 
 <Chat v-model:visible="visible" v-if="communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
 </template>
@@ -105,7 +105,7 @@ import {
 import {
     useStore
 } from "vuex";
-import InfiniteLoader from "@/components/loader/InfiniteLoader";
+
 import Chat from "@/components/modals/Chat";
 
 import {
@@ -124,7 +124,7 @@ export default {
         PhoneOutlined,
         MailOutlined,
         AlertOutlined,
-        InfiniteLoader,
+ 
         Chat,
     },
     props: {
@@ -196,7 +196,7 @@ export default {
         const communicationId = ref(null)
         const auth = JSON.parse(localStorage.getItem("auth"))
         const meta = store.getters.communicationRecord.value;
-        const loader = ref(false);
+    
         let scroller = ''
         let data = ''
         onMounted(() => {
@@ -210,7 +210,7 @@ export default {
                     let current_page = meta.communicationMeta.current_page + 1;
 
                     if (current_page <= meta.communicationMeta.total_pages) {
-                        loader.value = true;
+                    
                         scroller = maxScroll
                         data = meta.communicationsList
                         meta.communicationMeta = "";
@@ -237,7 +237,7 @@ export default {
             setTimeout(() => {
                 tableContent.scrollTo(0, scroller)
             }, 5000)
-            loader.value = false;
+         
         }
 
         const visible = ref(false);
@@ -254,7 +254,7 @@ export default {
         return {
             communicationColumns,
             meta,
-            loader,
+    
             visible,
             showModal,
             handleOk,

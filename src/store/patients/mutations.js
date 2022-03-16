@@ -395,10 +395,15 @@ sorter: {
         {
           title: "History",
           dataIndex: "history",
+          className: "medicalHistory",
+          slots: {
+            customRender: "history",
+          },
         },
         {
           title: "Actions",
           dataIndex: "actions",
+          className: "medicalHistoryAction",
           slots: {
             customRender: "action",
           },
@@ -532,6 +537,15 @@ export const patientDetailsSuccess = (state, patient) => {
     patient.isPrimary = patient.patientFamilyMember.data.fullName == patient.emergencyContact.data.fullName ? true : false;
     patient.emergencyGender = patient.emergencyContact.data.genderId;
   }
+  else {
+    patient.emergencyFullName = null;
+    patient.emergencyEmail = null;
+    patient.emergencyPhoneNumber = null;
+    patient.emergencyContactType = null;
+    patient.emergencyContactTime = null;
+    patient.isPrimary = null;
+    patient.emergencyGender = null;
+  }
   
   if(patient.patientFamilyMember.data) {
     patient.fullName = patient.patientFamilyMember.data.fullName ? patient.patientFamilyMember.data.fullName : null;
@@ -541,6 +555,15 @@ export const patientDetailsSuccess = (state, patient) => {
     patient.familyContactTime = patient.patientFamilyMember.data.contactTimeId.length > 0 ? JSON.parse(patient.patientFamilyMember.data.contactTimeId) : null;
     patient.familyGender = patient.patientFamilyMember.data.genderId;
     patient.relation = patient.patientFamilyMember.data.relationId;
+  }
+  else {
+    patient.fullName = null;
+    patient.familyEmail = null;
+    patient.familyPhoneNumber = null;
+    patient.familyContactType = null;
+    patient.familyContactTime = null;
+    patient.familyGender = null;
+    patient.relation = null;
   }
   
   patient.email = patient.user.data.email ? patient.user.data.email : null;

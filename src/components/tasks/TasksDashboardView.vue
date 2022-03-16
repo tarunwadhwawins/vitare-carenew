@@ -20,19 +20,19 @@
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
       <a-card title="Task Completion over" class="common-card">
-        <ApexChart type="area" v-if="tasks.completionOptions" :height="250" :options="tasks.completionOptions" :series="tasks.completionSeries" />
+        <ApexChart type="area" v-if="tasks.completionOptions" :height="275" :options="tasks.completionOptions" :series="tasks.completionSeries" />
       </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
       <a-card title="All Tasks" class="common-card">
         <AllTasksFilter/>
-        <ApexChart type="pie" v-if="tasks.completedAllTask" :height="350" :options="tasks.completedAllTask" :series="tasks.incompleteAllTask" />
+        <ApexChart type="pie" v-if="tasks.completedAllTask" :height="275" :options="tasks.completedAllTask" :series="tasks.incompleteAllTask" />
       </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
       <a-card title="Category View" class="common-card">
         <CategoryViewFilter/>
-        <ApexChart type="pie" v-if="tasks.taskCategory.premium"  :height="3050" :options="tasks.taskCategory.premium" :series="tasks.taskCategory.business" />
+        <ApexChart type="pie" v-if="tasks.taskCategory.premium"  :height="275" :options="tasks.taskCategory.premium" :series="tasks.taskCategory.business" />
       </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
@@ -74,6 +74,7 @@ export default {
     }
 
     watchEffect(()=>{
+      store.dispatch('allTaskStatus')
       store.dispatch('taskStatus')
       store.dispatch('taskPriority')
       store.dispatch('taskTeamMember')

@@ -114,6 +114,7 @@ export default {
         watchEffect(() => {
             store.state.communications.conversationList = ""
             store.dispatch("conversation", props.communication.id)
+            store.dispatch("communicationsList");
             //  const container = scroll.value;
             //   container.scrollTop = container.scrollHeight;
 
@@ -146,7 +147,7 @@ export default {
         }
 
         function closeModal() {
-            //store.state.communications.conversationList = ""
+            store.state.communications.conversationList = ""
             clearInterval(interval);
         }
         onMounted(() => {

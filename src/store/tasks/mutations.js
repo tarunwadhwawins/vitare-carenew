@@ -1,4 +1,5 @@
-import { dateOnlyFormatSImple, yaxis, dataLabels, plotOptions, dateOnlyFormat } from '../../commonMethods/commonMethod';
+import { dateOnlyFormatSImple, yaxis, dataLabels, plotOptions, dateOnlyFormat,dateFormat } from '../../commonMethods/commonMethod';
+import moment from "moment"
 export const tasksListSuccess = async (state, tasks) => {
   state.tasksList = tasks.data.map(element => {
     element.dueDate = dateOnlyFormat(element.dueDate)
@@ -101,9 +102,8 @@ export const tasksListSuccess = async (state, tasks) => {
   ];
 }
 
-
-
 export const taskStatusSuccess = async (state, status) => {
+  //console.log("status",status)
   state.taskStatus = status;
   state.incompleteAllTask = status.map(item => item.total)
   state.completedAllTask = {
@@ -150,7 +150,7 @@ export const taskStatusSuccess = async (state, status) => {
   // ];
   state.completionOptions = {
     chart: {
-      height: 412,
+      
       type: "area",
     },
     dataLabels: {
@@ -170,6 +170,56 @@ export const taskStatusSuccess = async (state, status) => {
       },
     },
   };
+
+}
+export const allTaskStatusSuccess = async (state, status) => {
+  console.log("status",status)
+  state.allTaskStatus = status;
+  let task=[]
+  const time = ['08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM', '06:00 PM', '07:00 PM', '08:00 PM']
+  
+  time.forEach((item, i) => {
+    status.forEach((element)=>{
+      if(element.text=='Total Tasks'){
+        if (moment(dateFormat(element.duration)).format('hh:00 A') != item) {
+          console.log("item",element)
+       
+          let value_obj = {
+            "key": i,
+            "duration": item,
+    
+            "total": 0,
+          };
+          task.push(value_obj);
+        } else {
+          console.log("time",element)
+          let value_obj_get = {
+            "duration": moment(dateFormat(element.duration)).format('hh:00 A'),
+            "time":moment(dateFormat(element.duration)).format('hh:00 A'),
+            "total": element.total,
+          };
+          task.push(value_obj_get);
+        }
+      }
+   
+  })
+})
+
+console.log("task",task)
+ 
+
+
+  // [
+  //   {
+  //     name: "Complete",
+  //     data: status.map(item=>item.total)
+  //   },
+  //   {
+  //     name: "Incomplete",
+  //     data: status.map(item=>item.total)
+  //   },
+  // ];
+  
 
 }
 

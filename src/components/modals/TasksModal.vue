@@ -1,6 +1,6 @@
 <template>
   <a-modal width="1000px" :title="taskId?'Edit Task':$t('tasks.tasksModal.addTask')" :footer="null" :maskClosable="false"  @cancel="closeModal()" centered>
-    <a-form :model="taskForm"  autocomplete="off" layout="vertical" @finish="submitForm" @finishFailed="taskFormFailed">
+    <a-form :model="taskForm"  ref="formRef" autocomplete="off" layout="vertical" @finish="submitForm" @finishFailed="taskFormFailed">
       <a-row :gutter="24">
         <a-col :span="24">
           <div class="form-group">
@@ -136,7 +136,7 @@
           </div>
         </a-col>
         <a-col :span="24">
-          <ModalButtons :Id="taskId"/>
+          <ModalButtons :Id="taskId" @is_click="handleCancel"/>
         </a-col>
       </a-row>
     </a-form>
@@ -253,6 +253,7 @@ export default defineComponent({
     const handleCancel = () => {
       formRef.value.resetFields();
       Object.assign(taskForm, form)
+      
     };
     
     watchEffect(() => {
