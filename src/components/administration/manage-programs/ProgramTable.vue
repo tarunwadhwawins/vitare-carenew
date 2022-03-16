@@ -1,7 +1,7 @@
 <template>
 <a-col :span="24">
     
-    <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.programList" :scroll="{ x: 900 ,y : 430 }" @change="onChange" :pagination=false>
+    <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.manageProgramList" :scroll="{ x: 900 ,y : 430 }" @change="onChange" :pagination=false>
         <template #actions="text">
             <a-tooltip placement="bottom" v-if="arrayToObjact(programsPermissions,16)">
                 <template #title>
@@ -70,10 +70,10 @@ export default {
 
         const checked = ref([false]);
         watchEffect(() => {
-            store.dispatch('programList')
+            store.dispatch('manageProgramList')
         })
         function editProgram(getRecord) {
-            store.dispatch('editProgram', getRecord.udid)
+            store.dispatch('editManageProgram', getRecord.udid)
             emit('is-edit', {
                 check: true,
                 id: getRecord.udid
@@ -83,9 +83,9 @@ export default {
         function deleteProgram(id) {
             warningSwal(messages.deleteWarning).then((response) => {
                 if (response == true) {
-                    store.dispatch('deleteProgram', id.udid)
+                    store.dispatch('deleteManageProgram', id.udid)
                     store.state.programs.programList = ""
-                    store.dispatch("programList");
+                    store.dispatch("manageProgramList");
                 }
             });
         }
@@ -94,7 +94,7 @@ export default {
                 "status": status
             };
 
-            store.dispatch('updateProgram', {
+            store.dispatch('updateManageProgram', {
                 id,
                 data
             }).then(() => {})
@@ -116,11 +116,11 @@ export default {
 
                     if (current_page <= meta.programMeta.total_pages) {
                         scroller = maxScroll
-                        data = meta.programList
+                        data = meta.manageProgramList
                         loader.value = true
                         store.state.program.programMeta = ""
-                        store.state.programs.programList = ""
-                        store.dispatch("programList", "?page=" + current_page).then(() => {
+                        store.state.programs.manageProgramList = ""
+                        store.dispatch("manageProgramList", "?page=" + current_page).then(() => {
                             loadMoredata()
                         })
                     }
@@ -129,11 +129,11 @@ export default {
         })
 
         function loadMoredata() {
-            const newData = meta.programList
+            const newData = meta.manageProgramList
             newData.forEach(element => {
                 data.push(element)
             });
-            meta.programList = data
+            meta.manageProgramList = data
             var tableContent = document.querySelector('.ant-table-body')
 
             setTimeout(() => {

@@ -1,5 +1,6 @@
 <template>
-<a-table rowKey="id" :columns="meta.cptCodesColumns" :data-source="meta.cptCodesList" :scroll="{ y: 400 }" :pagination="false" @change="onChange">
+    
+<a-table rowKey="id"  :columns="meta.cptCodesColumns" :data-source="meta.cptCodesList" :scroll="{ y: 400}"  :pagination="false" @change="onChange">
     <template #actions="{record}">
         <a-tooltip placement="bottom" @click="editCpt(record.udid)" v-if="arrayToObjact(cptCodePermissions,10)">
             <template #title>
@@ -91,6 +92,7 @@ export default {
             });
         }
 
+
         //infinite scroll
         let data = ''
         let scroller = ''
@@ -146,6 +148,8 @@ export default {
             editCpt,
             UpdateCptStatus,
             meta,
+        
+
         };
     },
 };

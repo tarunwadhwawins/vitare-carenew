@@ -1,4 +1,4 @@
-import { yaxis, dataLabels, plotOptions, annotations, dateFormat, timeOnly, meridiemFormat } from '../../commonMethods/commonMethod'
+import { yaxis, dataLabels, plotOptions, annotations, dateFormat, timeOnly, meridiemFormatFromTimestamp } from '../../commonMethods/commonMethod'
 export const callPlannedSuccess = (state, count) => {
   state.callPlanned = {
     calloption: {
@@ -140,13 +140,14 @@ export const patientDetailsSuccess = async (state, patient) => {
 
 export const futureAppointmentsSuccess = async (state, futureAppointments) => {
   state.futureAppointments = futureAppointments.map(appointment => {
-    appointment.startTime = meridiemFormat(appointment.startTime);
+    appointment.startTime = meridiemFormatFromTimestamp(appointment.startTime);
     return appointment
   });
 }
 export const newRequestsSuccess = async (state, newRequests) => {
   state.newRequests = newRequests.map(appointment => {
-    appointment.startTime = meridiemFormat(appointment.startTime);
+    //console.log(meridiemFormatFromTimestamp(appointment.startTime))
+    appointment.startTime = meridiemFormatFromTimestamp(appointment.startTime);
     return appointment
   });
 }

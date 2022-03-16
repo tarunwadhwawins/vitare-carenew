@@ -1,5 +1,5 @@
 <template>
-<a-table rowKey="id" :columns="meta.column" :data-source="meta.patientList" :scroll="{ y: 300 ,x: 1200 }" :pagination=false>
+<a-table rowKey="id" :columns="meta.column" :data-source="meta.patientList" :scroll="{ y: 300 ,x: 1200 }"  :pagination=false>
     <template #firstName="{text, record}" v-if="arrayToObjact(patientsPermissions,65)">
         <router-link :to="{ name: 'PatientSummary', params: { udid:record.id  }}">{{ text }}</router-link>
     </template>

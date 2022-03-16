@@ -82,6 +82,12 @@
                                 </a-form-item>
                             </div>
                         </a-col>
+                        <a-col :sm="12" :xs="24">
+                            <div class="form-group">
+                                <label>Active/Inactive</label>
+                                <a-switch v-model:checked="providerForm.isActive" @change="UpdateStatus($event)" />
+                            </div>
+                        </a-col>
                         <a-col :span="24">
                             <div class="steps-action">
                                 <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
@@ -169,7 +175,7 @@
                             <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
                         </a-col>
                         <a-col :span="24">
-                            <a-table v-if="providerLocationlistData" :columns="columns" :data-source="providerLocationlistData" :pagination="false" :scroll="{ x: 900 }">
+                            <a-table class="tableCommonSpace" v-if="providerLocationlistData" :columns="columns" :data-source="providerLocationlistData" :pagination="false" :scroll="{ x: 900 }">
                                 <template #action="text">
                                     <a-tooltip placement="bottom">
                                         <a class="icons" @click="deleteProviderLocation(text.record.id)">
@@ -253,6 +259,7 @@ export default {
             phoneNumber: '',
             tagId: ref([]),
             moduleId: ref([]),
+            isActive:true
         })
 
         const providerLocationForm = reactive({
@@ -267,6 +274,9 @@ export default {
             website: '',
         })
 
+        function UpdateStatus(event) {
+            providerForm.isActive = event
+        }
         const submitProviderForm = () => {
             if (!providerId) {
                 store.dispatch('provider', {
@@ -279,7 +289,7 @@ export default {
                     phoneNumber: providerForm.phoneNumber,
                     tagId: providerForm.tagId,
                     moduleId: providerForm.moduleId,
-                    isActive: 1
+                    isActive: providerForm.isActive
                 });
             } else {
                 store.dispatch('updateSingleProvider', {
@@ -293,7 +303,7 @@ export default {
                         phoneNumber: providerForm.phoneNumber,
                         tagId: providerForm.tagId,
                         moduleId: providerForm.moduleId,
-                        isActive: 1
+                        isActive: providerForm.isActive
                     },
                     id: providerId
                 });
@@ -440,6 +450,7 @@ export default {
         });
 
         return {
+            UpdateStatus,
             regex,
             current,
             visible,

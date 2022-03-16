@@ -21,6 +21,9 @@
     
     
     var card = document.getElementById(event);
+    console.log(card.closest('tr').lastChild)
+    console.log(card.closest('tr').lastChild.previousSibling)
+    console.log(card.closest('td'))
     //var offset = card.getBoundingClientRect();
     // let width = card.offsetWidth;
     //     let height = card.clientWidth;
@@ -31,6 +34,7 @@
     // console.log("td",domRectoffsetWidth)
     if (card.style.display === "block") {
       card.closest('td').classList.remove('popup_open')
+      card.closest('td').classList.remove('calendarLastCol')
       card.closest('.fc-daygrid-event-harness').classList.remove('popup_element')
       card.style.display = "none";
     } else {
@@ -39,12 +43,16 @@
 
         if (drowdown[i].style.display === "block") {
           drowdown[i].closest('td').classList.remove('popup_open')
+          drowdown[i].closest('td').classList.remove('calendarLastCol')
           drowdown[i].closest('.fc-daygrid-event-harness').classList.remove('popup_element')
           drowdown[i].style.display = "none";
     }
     }
       card.style.display = "block"
       card.closest('td').classList.add('popup_open')
+      if(card.closest('tr').lastChild.previousSibling ==card.closest('td') || card.closest('tr').lastChild==card.closest('td')){
+        card.closest('td').classList.add('calendarLastCol')
+      }
       card.closest('.fc-daygrid-event-harness').classList.add('popup_element')
     }
     
