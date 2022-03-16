@@ -7,12 +7,16 @@
                     <a-list-item>
                         <a-list-item-meta>
                             <template #avatar>
-                                <a-avatar>
-                                    <img src="../../assets/images/video-call-thumb-3.png" alt="" /></a-avatar>
+                                
+                                <a-avatar >
+                                    <img v-if="patientPic" src="patientPic" alt="" />
+                                    
+                                        <img v-else src="@/assets/images/userAvatar.png" alt="" /></a-avatar>
+                                       
                             </template>
                             <template #title>
                                 
-                                <a href="#">{{auth.user.id == communication.receiverId ? communication.sender : communication.receiver }}</a>
+                                <a href="#">{{communication.patientName}}</a>
                             </template>
                             <template #description>
                                 <span>Active</span>
