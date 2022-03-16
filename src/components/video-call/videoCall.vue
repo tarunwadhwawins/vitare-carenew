@@ -231,6 +231,7 @@ export default {
                 if (callNotification == 1) {
                   notification.close(key);
                 } else {
+                  //call end api
                   successSwal("Call Ended! Thank You");
                   router.push("/dashboard");
                 }
@@ -272,6 +273,7 @@ export default {
             .then(() => {
               // console.log("hello");
               simpleUser.register().then(() => {
+                //call start api/
                 simpleUser.call(
                   `sip:${conferenceId.value}@tele.icc-heaalth.com`
                 );
@@ -291,6 +293,7 @@ export default {
     function hangUp() {
       if (conferenceId.value) {
         simpleUserHangup.value.hangup().then(() => {
+          //call end api
           router.push("/dashboard");
         });
       } else {

@@ -40,7 +40,7 @@ export const providersListAll = async ({
   commit
 }) => {
   commit('loadingStatus', true)
-  await serviceMethod.common("get", `provider`, null, null).then((response) => {
+  await serviceMethod.common("get", `provider?active=1`, null, null).then((response) => {
     commit('providersListAll', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
