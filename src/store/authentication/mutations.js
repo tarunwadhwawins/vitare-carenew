@@ -96,10 +96,18 @@ state.options= Web.SimpleUserOptions = {
 
 }
 
-export const logoutSuccess = async (state, logout) => {
-  state.logout = logout;
-  state.token = '';
-  state.errorMsg = '';
+
+export const logoutSuccess = async (state) => {
+  const simpleUser = new Web.SimpleUser(state.server, state.options);
+  state.logout = null;
+  state.token = null;
+  state.errorMsg = null;
+  state.accessPermission=null
+  simpleUser.disconnect()
+	state.options = null
+	state.loggedInUser = null
+	state.simpleUser=null
+	state.acceptVideoCallDetails=null
 }
 
 export const refreshTokenSuccess = async (state, token) => {
