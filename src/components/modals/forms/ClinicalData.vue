@@ -3,7 +3,7 @@
 <a-form ref="formRef" :model="clinicals" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="clinicalHistory" @finishFailed="clinicalDataFailed">
     <div class="form-group">
         <a-form-item :label="$t('patient.clinicalData.medicalHistory')" name="history" :rules="[{ required: true, message: $t('patient.clinicalData.medicalHistory')+' '+$t('global.validation') }]">
-            <a-input v-model:value="clinicals.history" size="large" />
+            <a-input @change="changedValue" v-model:value="clinicals.history" size="large" />
             <ErrorMessage v-if="errorMsg" :name="errorMsg.history?errorMsg.history[0]:''" />
         </a-form-item>
     </div>
@@ -41,7 +41,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('patient.clinicalData.medicine')" name="medicine" :rules="[{ required: true, message: $t('patient.clinicalData.medicine')+' '+$t('global.validation') }]">
-                    <a-input v-model:value="clinicalMedication.medicine" size="large" />
+                    <a-input @change="changedValue" v-model:value="clinicalMedication.medicine" size="large" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.medicine?errorMsg.medicine[0]:''" />
                 </a-form-item>
             </div>
@@ -50,7 +50,7 @@
 
             <div class="form-group">
                 <a-form-item :label="$t('patient.clinicalData.frequency')" name="frequency" :rules="[{ required: true, message: $t('patient.clinicalData.frequency')+' '+$t('global.validation') }]">
-                    <a-input v-model:value="clinicalMedication.frequency" size="large" />
+                    <a-input @change="changedValue" v-model:value="clinicalMedication.frequency" size="large" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.frequency?errorMsg.frequency[0]:''" />
                 </a-form-item>
             </div>
@@ -58,7 +58,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.startDate')" name="startDate" :rules="[{ required: true, message: $t('global.startDate')+' '+$t('global.validation') }]">
-                    <a-date-picker v-model:value="clinicalMedication.startDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                    <a-date-picker @change="changedValue" v-model:value="clinicalMedication.startDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.startDate?errorMsg.startDate[0]:''" />
                 </a-form-item>
             </div>
@@ -66,7 +66,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.endDate')" name="endDate" :rules="[{ required: true, message: $t('global.endDate')+' '+$t('global.validation') }]">
-                    <a-date-picker v-model:value="clinicalMedication.endDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                    <a-date-picker @change="changedValue" v-model:value="clinicalMedication.endDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.endDate?errorMsg.endDate[0]:''" />
                 </a-form-item>
             </div>
@@ -115,13 +115,16 @@ export default defineComponent({
       type: Number
     }
   },
-  setup(props) {
+  setup(props, {emit}) {
     const store = useStore();
     const patientId = reactive(props.idPatient);
     const formRef = ref()
     const clinicals = reactive({
       history: "",
     });
+    const changedValue = () => {
+      emit('onChange')
+    }
 
     watchEffect(() => {
       if(patientId != null) {
@@ -149,6 +152,7 @@ export default defineComponent({
           data: clinicals,
           id: patientId,
         }).then(() => {
+          emit('onChange', false)
           store.dispatch("clinicalHistoryList", patientId);
           formRef.value.resetFields();
           Object.assign(clinicals, clinicalsForm)
@@ -159,13 +163,13 @@ export default defineComponent({
           data: clinicals,
           id: patients.value.addDemographic.id,
         }).then(() => {
+          emit('onChange', false)
           formRef.value.resetFields();
           Object.assign(clinicals, clinicalsForm)
-        })
-
-        setTimeout(() => {
+        }).then(() => {
+          emit('onChange', false)
           store.dispatch("clinicalHistoryList", patients.value.addDemographic.id);
-        }, 2000);
+        });
       }
     };
 
@@ -180,6 +184,7 @@ export default defineComponent({
           },
           id: patientId,
         }).then(() => {
+          emit('onChange', false)
           store.dispatch("clinicalMedicatList", patientId);
           formRef.value.resetFields()
           Object.assign(clinicalMedication, medicationForm)
@@ -193,6 +198,7 @@ export default defineComponent({
           endDate: timeStamp(clinicalMedication.endDate )},
           id: patients.value.addDemographic.id,
         }).then(() => {
+          emit('onChange', false)
           store.dispatch("clinicalMedicatList", patients.value.addDemographic.id);
           formRef.value.resetFields()
           Object.assign(clinicalMedication, medicationForm)
@@ -279,6 +285,7 @@ export default defineComponent({
     //     errorSwal(messages.fieldsRequired)
     // };
     return {
+      changedValue,
       // clinicalDataFailed,
       deleteClinicalData,
       clinicalHistory,

@@ -242,7 +242,7 @@
         
         <a-col :span="24">
           <div class="steps-action">
-            <ModalButtons @is_click="handleCancel"/>   
+            <ModalButtons @is_click="handleCancel" :isReset="true"/>   
           </div>
         </a-col>
         

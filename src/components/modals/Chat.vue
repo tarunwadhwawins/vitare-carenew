@@ -1,5 +1,5 @@
 <template>
-<a-modal width="800px" title="Reply" centered @cancel="closeModal()">
+<a-modal width="800px" title="Reply" centered @cancel="closeModal()" class="chatModal">
     <a-row :gutter="24">
         <a-col :span="24">
             <div class="chatBox" ref="scroll" id="chatBox">
@@ -7,12 +7,16 @@
                     <a-list-item>
                         <a-list-item-meta>
                             <template #avatar>
-                                <a-avatar>
-                                    <img src="../../assets/images/video-call-thumb-3.png" alt="" /></a-avatar>
+                                
+                                <a-avatar >
+                                    <img v-if="patientPic" src="patientPic" alt="" />
+                                    
+                                        <img v-else src="@/assets/images/userAvatar.png" alt="" /></a-avatar>
+                                       
                             </template>
                             <template #title>
                                 
-                                <a href="#">{{auth.user.id == communication.receiverId ? communication.sender : communication.receiver }}</a>
+                                <a href="#">{{communication.patientName}}</a>
                             </template>
                             <template #description>
                                 <span>Active</span>
@@ -38,29 +42,31 @@
                     </div>
 
                 </div>
-               
-                <a-form ref="formRef" :model="formValue" layout="vertical" @finish="sendMsg" @finishFailed="taskFormFailed">
-                    <div class="sendMessage" v-if="auth.user.id==communication.receiverId || auth.user.id==communication.senderId">
-                        <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message">
-                            <template #addonAfter>
-                                <!-- <a-button v-show="name=='communication' && !Id" class="modal-button" type="primary" html-type="submit">{{$t('global.send')}}</a-button> -->
-                                <SendOutlined @click="sendMsg" />
-                            </template>
-                        </a-input>
-                    </div>
-                    <div class="sendMessage" v-else>
-                        <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message" disabled>
-                            <template #addonAfter disabled>
-                                <!-- <a-button v-show="name=='communication' && !Id" class="modal-button" type="primary" html-type="submit">{{$t('global.send')}}</a-button> -->
-                                <SendOutlined @click="sendMsg" />
-                            </template>
-                        </a-input>
-                    </div>
-                </a-form>
+                
             </div>
         </a-col>
     </a-row>
     <loader />
+    <template #footer>
+        <a-form ref="formRef" :model="formValue" layout="vertical" @finish="sendMsg" @finishFailed="taskFormFailed">
+            <div class="sendMessage" v-if="auth.user.id==communication.receiverId || auth.user.id==communication.senderId">
+                <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message">
+                    <template #addonAfter>
+                        <!-- <a-button v-show="name=='communication' && !Id" class="modal-button" type="primary" html-type="submit">{{$t('global.send')}}</a-button> -->
+                        <SendOutlined @click="sendMsg" />
+                    </template>
+                </a-input>
+            </div>
+            <div class="sendMessage" v-else>
+                <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message" disabled>
+                    <template #addonAfter disabled>
+                        <!-- <a-button v-show="name=='communication' && !Id" class="modal-button" type="primary" html-type="submit">{{$t('global.send')}}</a-button> -->
+                        <SendOutlined @click="sendMsg" />
+                    </template>
+                </a-input>
+            </div>
+        </a-form>
+        </template>
 </a-modal>
 </template>
 
@@ -151,9 +157,9 @@ export default {
         //     arrayElements[i][1].style.height = desiredHeightValue;
         // }
         setTimeout(()=>{
-            //console.log("event",tableContent[0].clientHeight)
-            tableContent[0].scrollTo(0, tableContent[0].clientHeight)
-        },100)
+            console.log("event",tableContent[0].clientHeight)
+            tableContent[0].scrollTop(0,300)
+        },1000)
                 console.log("event",tableContent)
                 // tableContent.addEventListener('scroll', (event) => {
                 // let maxScroll = event.target.scrollHeight - event.target.clientHeight

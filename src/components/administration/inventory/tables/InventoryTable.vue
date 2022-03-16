@@ -8,7 +8,7 @@
         <template #title>
           <span>Edit</span>
         </template>
-        <span class="icons"><EditOutlined @click="editInventory(record.id)" /></span>
+        <span class="icons"><EditOutlined @click="editInventory(record.id, record.deviceTypeId)" /></span>
       </a-tooltip>
       <a-tooltip placement="bottom">
         <template #title>
@@ -50,9 +50,10 @@ export default {
       return store.state.inventory.inventoriesList
     })
 
-    const editInventory = (id) => {
+    const editInventory = (id, deviceTypeId) => {
+      store.state.inventory.deviceModalsList = null
       // store.dispatch('inventoryDetails', id)
-      emit('edit-inventory', id)
+      emit('edit-inventory', {id, deviceTypeId})
     }
 
     const updateStatus = (id, status) => {

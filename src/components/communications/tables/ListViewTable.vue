@@ -1,5 +1,7 @@
 <template>
-<a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900, y: 300 }" :pagination="false">
+
+<a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900, y: 300 }" :pagination="false" :rowClassName="(record) => auth.user.id!=record.messageSender && record.isRead==0 ? 'bold':''">
+
     <template #resend>
         <a-tooltip placement="bottom">
             <template #title>
@@ -97,7 +99,7 @@
 <script>
 import {
     ref,
-    
+
     onMounted
 } from "vue";
 import {
@@ -126,7 +128,7 @@ export default {
         Chat,
     },
     props: {
-        
+
     },
     setup() {
         const communicationColumns = [{
@@ -192,7 +194,7 @@ export default {
         ];
         const store = useStore();
         const communicationId = ref(null)
-
+        const auth = JSON.parse(localStorage.getItem("auth"))
         const meta = store.getters.communicationRecord.value;
         const loader = ref(false);
         let scroller = ''
@@ -257,6 +259,7 @@ export default {
             showModal,
             handleOk,
             communicationId,
+            auth,
         };
     },
 };

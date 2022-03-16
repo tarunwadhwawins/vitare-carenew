@@ -12,7 +12,7 @@
             <div class="phyInner">
 
                 <a-avatar v-if="staff.profile_photo" :size="80" src="staff.profile_photo" />
-                <a-avatar v-else :size="80" src="http://ditstekdemo.com/ditstek-care/img/profile-4.jpg" />
+                <a-avatar v-else :size="80" src="@/assets/images/userAvatar.png" />
                 <span class="checkIcon" @click="removeStaff(staff.id)">
                     <CloseOutlined />
                 </span>

@@ -27,7 +27,7 @@
                 </div>
               </a-col>
               <a-col :span="24">
-                <InventoryTable @edit-inventory="editInventory($event)"/>
+                <InventoryTable @edit-inventory="editInventory"/>
               </a-col>
             </a-row>
           </div>
@@ -76,10 +76,12 @@ export default {
       store.dispatch('searchGlobalCodes', value)
     };
 
-    const editInventory = (id) => {
+    const editInventory = ({id, deviceTypeId}) => {
       isAdd.value = false;
       store.dispatch('inventoryDetails', id).then(() => {
-        visible.value = true;
+        store.dispatch('deviceModalsList', deviceTypeId).then(() => {
+          visible.value = true;
+        })
       })
     }
     

@@ -30,6 +30,7 @@ const routes = [
     meta: { authAdmin: true }
   },
 
+
   {
     path: '/manage-care-coordinator',
     name: 'ManageCareCoordinators', 
