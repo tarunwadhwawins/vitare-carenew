@@ -43,7 +43,7 @@
                 <div class="form-group">
                     <label>Active/Inactive</label>
 
-                    <a-switch v-model:checked="program.isActive" @change="UpdateProgramStatus($event)" />
+                    <a-switch v-model:checked="program.status" @change="UpdateProgramStatus($event)" />
                 </div>
             </a-col>
             <a-col :span="24">
@@ -97,7 +97,7 @@ export default {
             name: "",
             description: "",
             typeId: "",
-            isActive: true,
+            status: true,
         });
 
         // const patients = computed(() => {
@@ -131,7 +131,7 @@ export default {
                         name: program.name,
                         description: program.description,
                         typeId: program.typeId,
-                        isActive: program.isActive ? 1 : 0,
+                        status: program.status ? 1 : 0,
                     },
                     id: programId,
                 })
@@ -142,7 +142,7 @@ export default {
                         name: program.name,
                         description: program.description,
                         typeId: program.typeId,
-                        isActive: program.isActive ? 1 : 0,
+                        status: program.status ? 1 : 0,
                     }
                 });
             }

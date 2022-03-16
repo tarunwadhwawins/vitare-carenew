@@ -32,11 +32,11 @@ export const programList = async (state, data) => {
       },
     },
   ]
-  state.programList = data.data ? data.data.map((item, index) => {
+  state.programList = data.data.map((item, index) => {
     item.status = item.status == 1 ? true : false
     item.key = index
     return item
-  }) : data.data
+  })
   state.programMeta = data.meta ? data.meta.pagination : ''
 }
 export const programMsg = async (state, data) => {
@@ -44,7 +44,7 @@ export const programMsg = async (state, data) => {
 }
 export const editProgram = async (state, data) => {
   state.editProgram = data.map((item) => {
-    item.isActive = item.status == 1 ? true : false
+    item.status = item.status == 1 ? true : false
     return item
   })
 }
