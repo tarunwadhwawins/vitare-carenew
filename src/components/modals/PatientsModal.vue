@@ -18,7 +18,7 @@
                     <a-row :gutter="24">
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation')  }]">
+                                <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation')}]">
                                     <a-input @change="changedValue" v-model:value="demographics.firstName" size="large" />
                                     <ErrorMessage class="error" v-if="errorMsg" :name="errorMsg.firstName?errorMsg.firstName[0]:''" />
                                 </a-form-item>
@@ -50,7 +50,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.dateOfBirth')" name="dob" :rules="[{ required: true, message: $t('global.dateOfBirth')+' '+$t('global.validation') }]">
-                                    <a-date-picker @change="changedValue" v-model:value="demographics.dob" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                                    <a-date-picker @change="changedValue" v-model:value="demographics.dob" format="DD, MMM YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.dob?errorMsg.dob[0]:''" />
                                 </a-form-item>
                             </div>
@@ -1176,10 +1176,8 @@ export default defineComponent( {
       store.commit("counterMinus");
     };
 
-    const demographicsFailed = () => {
-    //   scrollToTop();
-     
-      // errorSwal(messages.fieldsRequired)
+    const demographicsFailed = (e) => {
+     console.log('demographicsFailed',e)
     };
 
     const conditionsFailed = () => {

@@ -8,8 +8,8 @@ export function deCodeString(value) {
 }
 
 export function enCodeString(value) {
-  let encode = window.btoa(value); // encode a string
-  return encode.replace("=", '');
+  return  window.btoa(value); // encode a string
+
 }
 
 function capitalize(str) {
