@@ -2,14 +2,14 @@ import serviceMethod from '../../services/serviceMethod'
 import { API_ENDPOINTS } from "../../config/apiConfig"
 import { errorSwal, successSwal } from '../../commonMethods/commonMethod'
 
-export const programList = async ({
+export const manageProgramList = async ({
   commit
 }, page) => {
   let link = page ? API_ENDPOINTS['programsList']+"?active=1" + page : API_ENDPOINTS['programsList']+"?active=1"
   commit('loadingStatus', true)
   await serviceMethod.common("get", link, null, null).then((response) => {
 
-    commit('programList', response.data);
+    commit('manageProgramList', response.data);
     commit('loadingStatus', false)
   }).catch((error) => {
     if (error.response.status === 422) {
@@ -24,7 +24,7 @@ export const programList = async ({
 
 }
 
-export const addProgram = async ({
+export const addManageProgram = async ({
   commit
 }, data) => {
 
@@ -45,7 +45,7 @@ export const addProgram = async ({
 
 
 }
-export const editProgram = async ({
+export const editManageProgram = async ({
   commit
 }, id) => {
 
@@ -66,7 +66,7 @@ export const editProgram = async ({
 
 
 }
-export const updateProgram = async ({
+export const updateManageProgram = async ({
   commit
 }, data) => {
   await serviceMethod.common("put", API_ENDPOINTS['programsList'], data.id, data.data).then((response) => {
@@ -85,7 +85,7 @@ export const updateProgram = async ({
 
 
 }
-export const deleteProgram = async ({
+export const deleteManageProgram = async ({
   commit
 }, id) => {
   await serviceMethod.common("delete", API_ENDPOINTS['programsList'], id, null).then((response) => {

@@ -126,7 +126,7 @@ export default {
         const programs = () => {
 
             if (programId != null) {
-                store.dispatch("updateProgram", {
+                store.dispatch("updateManageProgram", {
                     data: {
                         name: program.name,
                         description: program.description,
@@ -137,19 +137,19 @@ export default {
                 })
             } else {
 
-                store.dispatch("addProgram", {
+                store.dispatch("addManageProgram", {
                     data: {
                         name: program.name,
                         description: program.description,
                         typeId: program.typeId,
-                        status: program.status ? 1 : 0,
+                        isActive: program.status ? 1 : 0,
                     }
                 });
             }
-            store.state.programs.programList = ''
+            //store.state.programs.programList = ''
             setTimeout(() => {
                 reset()
-                store.dispatch("programList");
+                store.dispatch("manageProgramList");
                 emit("is-visible", false);
             }, 1000);
         };
