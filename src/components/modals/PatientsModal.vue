@@ -1066,7 +1066,6 @@ export default defineComponent( {
                         physicianId: patients.value.patientPrimaryPhysician.id,
                         referalID: patients.value.patientReferralSource.id,
                     }).then(() => {
-                        store.dispatch('patientConditions', route.params.udid)
                         isValueChanged.value = false;
                     })
                 }
@@ -1077,7 +1076,6 @@ export default defineComponent( {
                         physicianId: patients.value.patientPrimaryPhysician.id,
                         referalID: patients.value.patientReferralSource.id,
                     }).then(() => {
-                        store.dispatch('patientConditions', route.params.udid)
                         isValueChanged.value = false;
                     })
                 }
