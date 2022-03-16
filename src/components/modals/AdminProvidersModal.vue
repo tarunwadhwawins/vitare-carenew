@@ -308,10 +308,13 @@ export default {
                     id: providerId
                 });
             }
-            store.commit('loadingStatus', false)
-            current.value++;
             store.state.provider.providersListAll=''
+            //console.log("check",store.state.provider.providersListAll)
             store.dispatch("providersListAll")
+          
+            current.value++;
+            
+            
 
         }
 
@@ -349,9 +352,10 @@ export default {
                 },
                 id: proId,
             });
-            
+            store.state.provider.providersListAll=''
+            store.dispatch("providersListAll")
             setTimeout(() => {
-                //store.dispatch("providersListAll")
+                
                 store.dispatch("providerLocationList", proId);
                 
             }, 2000);

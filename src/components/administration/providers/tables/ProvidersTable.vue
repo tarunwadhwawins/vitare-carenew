@@ -1,5 +1,5 @@
 <template>
-<a-table v-if="providersListAll" rowKey="id" :columns="providerListColumns" :data-source="providersListAll" >
+<a-table  rowKey="id" :columns="providerListColumns" :data-source="providersListAll.providersListAll" >
     <template #name="{text,record}">
                <router-link :to="{ name: 'providerSummary', params: { id:record.id  }}">{{text}}</router-link>
     </template>
@@ -45,9 +45,7 @@ export default {
     const store = useStore();
     const providerId = reactive(props.id);
     
-    const providersListAll = computed(() => {
-      return store.state.provider.providersListAll;
-    });
+    const providersListAll = store.getters.providersRecords.value
     const providersData = computed(() => {
       return store.state.provider;
     });
