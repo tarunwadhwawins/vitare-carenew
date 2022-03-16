@@ -4,7 +4,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
-                    <a-input v-model:value="documents.name" size="large" />
+                    <a-input @change="changedValue" v-model:value="documents.name" size="large" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
                 </a-form-item>
             </div>
@@ -20,7 +20,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.type')" name="type" :rules="[{ required: false, message: $t('global.type')+' '+$t('global.validation') }]">
-                    <a-select ref="select" v-model:value="documents.type" style="width: 100%" size="large" @change="handleChange">
+                    <a-select ref="select" v-model:value="documents.type" style="width: 100%" size="large" @change="changedValue">
                         <a-select-option value="" disabled>{{'Select Type'}}</a-select-option>
                         <a-select-option v-for="documentType in globalCode.documentTypes.globalCode" :key="documentType.id" :value="documentType.id">{{documentType.name}}</a-select-option>
                     </a-select>
@@ -31,7 +31,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.tags')" name="tags" :rules="[{ required: false, message: $t('global.tags')+' '+$t('global.validation') }]">
-                    <a-select v-model:value="documents.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" @change="handleChange" />
+                    <a-select v-model:value="documents.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" @change="changedValue" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.tags?errorMsg.tags[0]:''" />
                 </a-form-item>
             </div>
@@ -102,12 +102,15 @@ export default defineComponent({
     entity:String,
     paramId:String
   },
-  setup(props) {
+  setup(props, {emit}) {
     const store = useStore();
     const route = useRoute();
     const patientId = reactive(props.idPatient);
     const patientUdid = route.params.udid;
     const formRef = ref()
+    const changedValue = () => {
+      emit('onChange')
+    }
 
     watchEffect(() => {
       if(patientId != null) {
@@ -243,6 +246,7 @@ export default defineComponent({
       Object.assign(documents,form)
     }
     return {
+      changedValue,
       formRef,
       reset,
       Id,
