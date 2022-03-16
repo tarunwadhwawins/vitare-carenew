@@ -150,7 +150,7 @@ export const taskStatusSuccess = async (state, status) => {
   // ];
   state.completionOptions = {
     chart: {
-      height: 412,
+      
       type: "area",
     },
     dataLabels: {

@@ -1,10 +1,10 @@
 <template>
-  <a-button class="btn primaryBtn" @click="showModal">
+  <a-button class="btn primaryBtn" @click="showModal(true)">
     {{ $t('communications.conversation') }}
   </a-button>
 
   <!-- Modal -->
-  <CommunicationsModal v-model:visible="visible" @ok="handleOk" @is-visible="handleOk" />
+  <CommunicationsModal v-model:visible="visible" @ok="handleOk" @is-visible="showModal($event)" />
 </template>
 
 <script>
@@ -16,18 +16,16 @@ export default {
   },
   setup() {
     const visible = ref(false);
-    const showModal = () => {
-      visible.value = true;
+    const showModal = (e) => {
+      visible.value = e;
     };
 
-    const handleOk = () => {
-      visible.value = false;
-    };
+   
 
     return {
       visible,
       showModal,
-      handleOk
+      
     }
   }
 }
