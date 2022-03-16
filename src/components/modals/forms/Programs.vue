@@ -117,6 +117,7 @@ export default defineComponent({
           id: patientId,
         }).then(() => {
           store.dispatch("program", patientId);
+          emit('onChange', false)
           reset()
         });
       }
@@ -129,12 +130,11 @@ export default defineComponent({
             status: program.status,
           },
           id: patients.value.addDemographic.id,
-        });
-        
-        setTimeout(() => {
+        }).then(() => {
           store.dispatch("program", patients.value.addDemographic.id);
+          emit('onChange', false)
           reset()
-        }, 2000);
+        });
       }
     };
     const columns = computed(() => {
