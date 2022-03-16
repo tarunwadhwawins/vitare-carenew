@@ -74,6 +74,7 @@ export default {
     }
 
     watchEffect(()=>{
+      store.dispatch('allTaskStatus')
       store.dispatch('taskStatus')
       store.dispatch('taskPriority')
       store.dispatch('taskTeamMember')
