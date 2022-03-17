@@ -36,7 +36,9 @@ export default defineComponent({
     });
 
     function addCriticalNote() {
-      store.dispatch("addCriticalNote", {udid:route.params.udid,criticalNote:notes});
+      store.dispatch("addCriticalNote", {udid:route.params.udid,criticalNote:notes}).then(() => {
+        store.dispatch('patientCriticalNotes', route.params.udid);
+      })
       setTimeout(() => {
         if(patient.value){
         reset();

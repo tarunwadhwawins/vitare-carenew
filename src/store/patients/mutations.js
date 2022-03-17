@@ -528,7 +528,7 @@ export const patientInsurance = (state, insurances) => {
  }
 
 export const patientDetailsSuccess = (state, patient) => {
-  if(patient.emergencyContact.data) {
+  if(patient.emergencyContact.lebgth > 0 && patient.emergencyContact.data) {
     patient.emergencyFullName = patient.emergencyContact.data.fullName ? patient.emergencyContact.data.fullName : null;
     patient.emergencyEmail = patient.emergencyContact.data.email ? patient.emergencyContact.data.email : null;
     patient.emergencyPhoneNumber = patient.emergencyContact.data.phoneNumber ? patient.emergencyContact.data.phoneNumber : null;
@@ -547,7 +547,7 @@ export const patientDetailsSuccess = (state, patient) => {
     patient.emergencyGender = null;
   }
   
-  if(patient.patientFamilyMember.data) {
+  if(patient.patientFamilyMember.lebgth > 0 && patient.patientFamilyMember.data) {
     patient.fullName = patient.patientFamilyMember.data.fullName ? patient.patientFamilyMember.data.fullName : null;
     patient.familyEmail = patient.patientFamilyMember.data.email ? patient.patientFamilyMember.data.email : null;
     patient.familyPhoneNumber = patient.patientFamilyMember.data.phoneNumber ? patient.patientFamilyMember.data.phoneNumber : null;
@@ -1005,4 +1005,8 @@ export const patientVitals = (state, vitals) => {
 export const addCriticalNote = (state, data) => {
   state.addCriticalNote = data
   state.closeModal= true
+}
+
+export const patientCriticalNotes = (state, data) => {
+  state.patientCriticalNotes = data
 }

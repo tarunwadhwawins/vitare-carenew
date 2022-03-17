@@ -828,3 +828,19 @@ export const addCriticalNote = async ({commit}, data) => {
     }
   })
 }
+
+export const patientCriticalNotes = async ({commit}, patientUdid) => {
+  await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+patientUdid+'/'+API_ENDPOINTS['criticalNote']+"?isRead=0", null).then((response) => {
+    commit('patientCriticalNotes', response.data.data);
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
+  })
+}
+
+export const readCriticalNote = async ({commit}, data) => {
+  await serviceMethod.common("put", API_ENDPOINTS['patient']+'/'+data.patientUdid+'/'+API_ENDPOINTS['criticalNote']+'/'+data.criticalNoteUdid, null, { isRead: 1 }).catch((error) => {
+    errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
+  })
+}
