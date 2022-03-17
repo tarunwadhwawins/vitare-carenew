@@ -23,6 +23,11 @@
         </div>
       </div>
       <div class="pat-profile-inner">
+        <div class="thumb-head" @click="showCriticalModal">Critical Note
+          <PlusOutlined />
+        </div>
+      </div>
+      <div class="pat-profile-inner">
         <div class="thumb-head">Non Compliance</div>
         <div class="thumb-desc">
           <WarningOutlined />
@@ -103,6 +108,7 @@
   </div>
   
   <PatientFlagsModal v-if="flagsModalVisible" v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
+  <AddCriticalNote v-model:visible="criticalModalVisible" @closeModal="handleOk" @saveModal="handleCriticalNote($event)"/>
   <PatientsModal v-if="patientsModalVisible == true && patientDetails" v-model:visible="patientsModalVisible" :patientId="patientDetails.id" :isEditPatient="isEditPatient" @closeModal="handleOk" @saveModal="handleOk($event)" />
   <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" :patientId="patientDetails.id" :patientName="patientDetails.patientFullName" @closeModal="handleOk" />
   <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
@@ -136,6 +142,7 @@ import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 
 import PatientFlagsModal from "@/components/modals/PatientFlagsModal";
+import AddCriticalNote from "@/components/modals/CriticalNote"
 import PatientsModal from "@/components/modals/PatientsModal";
 import AddAppointmentModal from "@/components/modals/AddAppointment";
 import AddTasksModal from "@/components/modals/TasksModal";
@@ -173,6 +180,7 @@ export default {
     DeviceDetailModal,
     PatientVitalsDetailsModal,
     Flags,
+    AddCriticalNote
   },
   setup() {
     const store = useStore();
@@ -182,6 +190,7 @@ export default {
     const isEditTimeLog = ref(false);
     
     const flagsModalVisible = ref(false);
+    const criticalModalVisible =ref(false)
     const patientsModalVisible = ref(false);
     const addAppointmentVisible = ref(false);
     const taskModalVisible = ref(false);
@@ -262,6 +271,13 @@ export default {
       addDeviceVisible.value = false;
       deviceDetailVisible.value = false;
     };
+
+    const showCriticalModal = ()=>{
+      criticalModalVisible.value=true
+    }
+    const handleCriticalNote = (value) =>{
+      criticalModalVisible.value=value
+    }
     
     const showModalCustom = () => {
       custom.value = true;
@@ -342,6 +358,7 @@ export default {
 
 
     return {
+      handleCriticalNote,
       handleOk,
       editTimeLog,
       showAddAppointmentModal,
@@ -351,6 +368,8 @@ export default {
       value10: ref([]),
 
       flagsModalVisible,
+      showCriticalModal,
+      criticalModalVisible,
       patientsModalVisible,
       addAppointmentVisible,
       taskModalVisible,

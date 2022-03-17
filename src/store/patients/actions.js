@@ -805,3 +805,26 @@ export const addVital = async ({ commit }, data) => {
     commit('loadingStatus', false)
 	})
 }
+
+
+
+export const addCriticalNote = async ({commit}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("post", `${API_ENDPOINTS['patient']}/${data.udid}/criticalNote`, null, data.criticalNote).then((response) => {
+    commit('addCriticalNote', response.data.data);
+    commit('closeModal',true)
+    // successSwal(response.data.message)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 401) {
+      // commit('errorMsg', error.response.data.message)
+      commit('loadingStatus', false)
+    }
+  })
+}
