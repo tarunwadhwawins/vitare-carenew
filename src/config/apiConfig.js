@@ -97,6 +97,9 @@ export const API_ENDPOINTS = {
 
     //Providers
     provider:'provider',
+
+    // Flags
+    flag:'flag',
 };
 
 // export const getApiUrl = key => {
