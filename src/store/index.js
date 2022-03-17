@@ -23,6 +23,7 @@ import { carePlan } from "./carePlan/index"
 import {screenPermissions} from "./screenPermissions/index"
 import {provider} from "./provider/index"
 import { videoCall } from "./videoCall/index"
+import { flags } from "./flags/index"
 import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
@@ -50,6 +51,7 @@ export default createStore({
     carePlan,
     videoCall,
     provider,
+    flags,
     screenPermissions
   },
   plugins: [ createPersistedState({
