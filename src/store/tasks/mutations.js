@@ -278,6 +278,10 @@ export const taskPriority = async (state, priorities) => {
 
 
 export const taskTeamMember = async (state, TeamMember) => {
+  let teamTopMember=[]
+  TeamMember.map((item,index) => { if(index<=4){teamTopMember.push(item) }})
+  
+  console.log("teamTopMember",teamTopMember)
   state.taskTeamMember = {
     optionTeamMember: {
       annotations: {
@@ -316,14 +320,14 @@ export const taskTeamMember = async (state, TeamMember) => {
         labels: {
           rotate: -45,
         },
-        categories: TeamMember.map((item) => { return item.text }),
+        categories: teamTopMember.map((item) => {return item.text }),
       },
       yaxis: yaxis("Task Count")
     },
     seriesTeamMember: [
       {
         name: "Task Count",
-        data: TeamMember.map((item) => { return item.total }),
+        data: teamTopMember.map((item) => { return item.total }),
       },
     ],
 
