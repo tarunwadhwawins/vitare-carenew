@@ -999,3 +999,10 @@ export const patientVitals = (state, vitals) => {
     // state.bloodGlucoseColumns = null;
   }
 }
+
+
+
+export const addCriticalNote = (state, data) => {
+  state.addCriticalNote = data
+  state.closeModal= true
+}

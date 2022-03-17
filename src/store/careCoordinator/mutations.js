@@ -1,7 +1,12 @@
  import{meridiemFormatFromTimestamp} from "../../commonMethods/commonMethod"
 
- export const counterPlus = (state) => {
-  state.counter++
+ export const counterPlus = (state,data) => {
+   if(data){
+     state.counter = data
+   }else{
+    state.counter++
+   }
+  
 }
 
 export const counterMinus = (state) => {

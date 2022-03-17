@@ -2,7 +2,7 @@
 <a-modal max-width="1140px" width="100%" :title="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <a-col :span="24">
-            <a-steps :current="current" >
+            <a-steps v-model:current="current" >
                 <a-step v-for="item in steps" :key="item.title" :title="item.title?item.title:''" />
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Personal Information'">
@@ -175,11 +175,7 @@ export default {
       get: () =>
         store.state.careCoordinator.counter,
       set: (value) => {
-        if(personalInfo()==false ){
-          personalInfo()
-        }else if(personalInfo()==true){
         store.state.careCoordinator.counter = value;
-        }
       },
     })
 

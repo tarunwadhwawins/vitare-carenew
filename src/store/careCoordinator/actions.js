@@ -5,6 +5,10 @@ import { successSwal, errorSwal } from '../../commonMethods/commonMethod'
 export const addStaff = async ({
   commit
 }, data) => {
+  if(data.firstName=='' && data.lastName==''&& data.designationId== ""){
+    commit('counterPlus',0)
+    errorSwal('Please Add first form data')
+  }
   await serviceMethod.common("post", "staff", null, data).then((response) => {
     commit('addStaff', response.data.data);
     commit('counterPlus')

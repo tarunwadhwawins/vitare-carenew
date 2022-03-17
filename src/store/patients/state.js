@@ -62,5 +62,7 @@ export default {
     bloodOxygenColumns:null,
     bloodGlucoseColumns:null,
     changeStatus:null,
+    addCriticalNote:null,
+    closeModal:null
 
 }
