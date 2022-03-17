@@ -10,15 +10,15 @@
 
     <!-- Charts -->
     <a-col :sm="12" :xs="24" v-if="callPlanned">
-      <ApexChart :title="$t('communications.callPlanned')" type="bar" :height="350" :options="callPlanned.calloption" :series="callPlanned.callseries" linkTo="coordinator-summary" />
+      <ApexChart :title="$t('communications.callPlanned')" type="bar" :height="283" :options="callPlanned.calloption" :series="callPlanned.callseries" linkTo="coordinator-summary" />
     </a-col>
 
     <a-col :sm="12" :xs="24" v-if="callStatus">
-      <ApexChart :title="$t('global.callQueue')" type="bar" :height="350" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="communications" />
+      <ApexChart :title="$t('global.callQueue')" type="bar" :height="283" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="communications" />
     </a-col>
     
     <a-col :sm="12" :xs="24">
-      <a-card :title="$t('communications.populateWaitingRoom')" class="common-card">
+      <a-card :title="$t('communications.populateWaitingRoom')" class="common-card grapCardWrap" >
         <a-tabs v-model:activeKey="activeKey">
           <PopulateWaitingRoomTab v-if="newRequestsData" :key="key1" tab="New Requests" :column="newRequestsColumns" :data="newRequestsData" :linkTo="linkTo" :pagination="false" />
           <PopulateWaitingRoomTab v-if="futureAppointmentsData" :key="key2" tab="Future Appointments" :column="futureAppointmentsColumns" :data="futureAppointmentsData" :linkTo="linkTo" :pagination="false" />
@@ -27,7 +27,7 @@
     </a-col>
 
     <a-col :sm="12" :xs="24" v-if="communicationTypes">
-      <ApexChart :title="$t('communications.communicationType')" type="area" :height="245" :options="communicationTypes.calloption" :series="communicationTypes.callseries" />
+      <ApexChart :title="$t('communications.communicationType')" type="area" :height="283" :options="communicationTypes.calloption" :series="communicationTypes.callseries" />
     </a-col>
     
     <template #action>

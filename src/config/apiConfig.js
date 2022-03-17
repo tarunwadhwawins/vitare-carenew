@@ -1,6 +1,4 @@
-
-
-// API end points 
+// API end points
 export const API_ENDPOINTS = {
     // Authentication
     login: "login",
@@ -52,7 +50,8 @@ export const API_ENDPOINTS = {
     taskPriority:"task/priority",
     searchTasks:"task/search",
     taskTeamMember:'task/staff',
-    taskCategory:'task/category',
+    taskCategory: 'task/category',
+	completeTaskRate: 'task/completion/rates',
 
     
     // Global Codes

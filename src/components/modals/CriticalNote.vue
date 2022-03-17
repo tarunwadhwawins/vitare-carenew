@@ -42,6 +42,7 @@ export default defineComponent({
       setTimeout(() => {
         if(patient.value){
         reset();
+        store.dispatch('criticalNotesList', route.params.udid);
         emit("saveModal", false);
       }
       }, 2000);

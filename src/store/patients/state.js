@@ -65,5 +65,6 @@ export default {
     addCriticalNote:null,
     closeModal:null,
     patientCriticalNotes:null,
+    criticalNotesList:null
 
 }

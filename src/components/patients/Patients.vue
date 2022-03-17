@@ -60,6 +60,7 @@ import Loader from "@/components/loader/Loader"
 import { arrayToObjact } from "@/commonMethods/commonMethod";
 // import { messages } from "../../config/messages";
 import DataTable from "./data-table/DataTable"
+// import Card from "@/components/common/cards/Card"
 export default {
   name: "Patients",
   components: {
@@ -69,7 +70,8 @@ export default {
     CounterCard,
     ShowModalButton,
     DataTable,
-    Loader
+    Loader,
+    // Card
   },
 
   setup() {
@@ -93,7 +95,12 @@ export default {
     const patientsPermissions=computed(()=>{
      return store.state.screenPermissions.patientsPermissions
     })
+
+    const totalPatients = computed(() => {
+        return store.state.counterCards.totalPatientcount
+      })
     return {
+      totalPatients,
       patientsPermissions,
       arrayToObjact,
       PatientsModal,
