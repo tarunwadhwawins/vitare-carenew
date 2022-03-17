@@ -1006,3 +1006,8 @@ export const addCriticalNote = (state, data) => {
   state.addCriticalNote = data
   state.closeModal= true
 }
+
+
+export const criticalNotesList = (state, data) => {
+  state.criticalNotesList = data
+}

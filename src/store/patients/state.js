@@ -63,6 +63,7 @@ export default {
     bloodGlucoseColumns:null,
     changeStatus:null,
     addCriticalNote:null,
-    closeModal:null
+    closeModal:null,
+    criticalNotesList:null
 
 }

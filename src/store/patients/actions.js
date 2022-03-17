@@ -813,7 +813,7 @@ export const addCriticalNote = async ({commit}, data) => {
   await serviceMethod.common("post", `${API_ENDPOINTS['patient']}/${data.udid}/criticalNote`, null, data.criticalNote).then((response) => {
     commit('addCriticalNote', response.data.data);
     commit('closeModal',true)
-    // successSwal(response.data.message)
+    successSwal(response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
     if (error.response.status === 422) {
@@ -826,5 +826,34 @@ export const addCriticalNote = async ({commit}, data) => {
       // commit('errorMsg', error.response.data.message)
       commit('loadingStatus', false)
     }
+  })
+}
+
+export const criticalNotesList = async ({commit}, id) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("get", `${API_ENDPOINTS['patient']}/${id}/criticalNote`, null, null).then((response) => {
+    commit('criticalNotesList', response.data.data);
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 401) {
+      // commit('errorMsg', error.response.data.message)
+      commit('loadingStatus', false)
+    }
+  })
+}
+
+
+export const criticalNotesDelete = async ({commit}, data) => {
+  await serviceMethod.common("delete", `${API_ENDPOINTS['patient']}/${data.id}/criticalNote/${data.documentId}`, null, null).then((response) => {
+    commit('criticalNotesDelete', response.data.data);
+    successSwal(response.data.message)
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
   })
 }

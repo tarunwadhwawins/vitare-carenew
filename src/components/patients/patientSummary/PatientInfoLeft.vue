@@ -26,6 +26,9 @@
         <div class="thumb-head" @click="showCriticalModal">Critical Note
           <PlusOutlined />
         </div>
+        <div v-if="criticalNotesList" class="thumb-desc">
+          <a href="javascript:void(0)" @click="showCriticalNotesDetails" >{{ criticalNotesList[0]?criticalNotesList[0].criticalNote.substring(0,20)+'...':'' }}</a>
+        </div>
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">Non Compliance</div>
@@ -108,7 +111,8 @@
   </div>
   
   <PatientFlagsModal v-if="flagsModalVisible" v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
-  <AddCriticalNote v-model:visible="criticalModalVisible" @closeModal="handleOk" @saveModal="handleCriticalNote($event)"/>
+  <AddCriticalNote v-if="criticalModalVisible" v-model:visible="criticalModalVisible" @closeModal="handleOk" @saveModal="handleCriticalNote($event)"/>
+  <CriticalNotesDetailModal v-if="criticalNotesDetailVisible" v-model:visible="criticalNotesDetailVisible" @closeModal="handleOk"/>
   <PatientsModal v-if="patientsModalVisible == true && patientDetails" v-model:visible="patientsModalVisible" :patientId="patientDetails.id" :isEditPatient="isEditPatient" @closeModal="handleOk" @saveModal="handleOk($event)" />
   <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" :patientId="patientDetails.id" :patientName="patientDetails.patientFullName" @closeModal="handleOk" />
   <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
@@ -143,6 +147,7 @@ import { useRoute } from "vue-router";
 
 import PatientFlagsModal from "@/components/modals/PatientFlagsModal";
 import AddCriticalNote from "@/components/modals/CriticalNote"
+import CriticalNotesDetailModal from "@/components/modals/CriticalNotesDetail";
 import PatientsModal from "@/components/modals/PatientsModal";
 import AddAppointmentModal from "@/components/modals/AddAppointment";
 import AddTasksModal from "@/components/modals/TasksModal";
@@ -180,7 +185,8 @@ export default {
     DeviceDetailModal,
     PatientVitalsDetailsModal,
     Flags,
-    AddCriticalNote
+    AddCriticalNote,
+    CriticalNotesDetailModal
   },
   setup() {
     const store = useStore();
@@ -188,7 +194,7 @@ export default {
     const custom = ref(false);
     const isEditPatient = ref(false);
     const isEditTimeLog = ref(false);
-    
+    const criticalNotesDetailVisible =ref(false)
     const flagsModalVisible = ref(false);
     const criticalModalVisible =ref(false)
     const patientsModalVisible = ref(false);
@@ -217,8 +223,14 @@ export default {
         store.dispatch('careTeamList', route.params.udid)
         store.dispatch('latestTimeLog', route.params.udid)
         store.dispatch('latestDevice', route.params.udid)
+        store.dispatch('criticalNotesList', route.params.udid)
       }
     })
+
+    const criticalNotesList = computed(() => {
+      return store.state.patients.criticalNotesList
+    })
+
     const patientDetails = computed(() => {
       return store.state.patients.patientDetails
     })
@@ -274,6 +286,10 @@ export default {
 
     const showCriticalModal = ()=>{
       criticalModalVisible.value=true
+    }
+
+    const showCriticalNotesDetails = ()=>{
+      criticalNotesDetailVisible.value=true
     }
     const handleCriticalNote = (value) =>{
       criticalModalVisible.value=value
@@ -358,6 +374,8 @@ export default {
 
 
     return {
+      criticalNotesList,
+      showCriticalNotesDetails,
       handleCriticalNote,
       handleOk,
       editTimeLog,
@@ -366,7 +384,7 @@ export default {
       showModalCustom,
       custom,
       value10: ref([]),
-
+      criticalNotesDetailVisible,
       flagsModalVisible,
       showCriticalModal,
       criticalModalVisible,
