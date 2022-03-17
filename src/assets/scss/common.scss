@@ -213,7 +213,7 @@ img.reportFlag {
 	}
 	.ant-modal-body {
 		overflow: auto;
-		max-height: 80vh
+		max-height: 80vh;
 	}
 }
 
@@ -324,19 +324,24 @@ img.reportFlag {
 
 /*----*/
 
-body {
-	&.show {
-		.ant-layout {
-			.ant-layout-has-sider {
-				transition: all 0.5s !important;
-				.ant-layout-sider {
-					left: 0px !important;
-					z-index: 99;
-				}
-			}
-		}
-	}
-}
+
+
+// body {
+// 	&.show {
+// 		.ant-layout {
+// 			.ant-layout-has-sider {
+// 				transition: all 0.5s !important;
+// 				.ant-layout-sider {
+// 					z-index: 99;
+// 					left: 0 !important;
+// 					@media (min-width: 1200px) {
+// 						left: 0px !important;
+// 					}
+// 				}
+// 			}
+// 		}
+// 	}
+// }
 
 /*----*/
 .common-btn {
@@ -373,30 +378,29 @@ button.swal2-default-outline {
 }
 /* table css */
 .tableCommonSpace {
-    margin: 20px 0;
+	margin: 20px 0;
 }
 
-.ant-table-body{
+.ant-table-body {
 	overflow-y: auto !important;
 }
 .calendarLastCol .monthCalendarDropDown {
-    left: auto;
-    right: 0;
+	left: auto;
+	right: 0;
 }
-.bold{
+.bold {
 	font-weight: bold;
 	background-color: #f6f7f6;
 }
 .chatModal .ant-modal-footer {
-    display: block;
+	display: block;
 }
 .chatModal .ant-modal-footer .ant-input-group-addon {
-    background-color: #1890ff;
+	background-color: #1890ff;
 }
-.chatModal .ant-modal-footer .ant-input-group-addon .anticon{
+.chatModal .ant-modal-footer .ant-input-group-addon .anticon {
 	color: #ffffff;
 }
 .common-card.grapCardWrap {
-    min-height: 376px;  
-	
+	min-height: 376px;
 }
