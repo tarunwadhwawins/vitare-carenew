@@ -6,6 +6,7 @@ const common = {
   view: 'View',
   edit: 'Edit',
   delete: 'Delete',
+  flag: 'Flag',
 }
 
 

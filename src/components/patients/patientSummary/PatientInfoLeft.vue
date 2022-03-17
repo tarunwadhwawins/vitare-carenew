@@ -15,11 +15,11 @@
 
     <div class="pat-profile">
       <div class="pat-profile-inner">
-        <div class="thumb-head">Flag</div>
-        <div class="thumb-desc" v-for="flag in patientDetails.patientFlags" :key="flag.id">
-          <Flags :class="flag.color" />
-          <span class="box redBgColor"></span>
-          <span class="box yellowBgColor"></span>
+        <div class="thumb-head">
+          Flags <PlusOutlined @click="showAddFlagModal"/><br />
+        </div>
+        <div class="thumb-desc" v-if="latestFlag">
+          <Flags :flag="latestFlag.color" />
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -102,6 +102,7 @@
     </div>
   </div>
   
+  <PatientFlagsModal v-if="flagsModalVisible" v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
   <PatientsModal v-if="patientsModalVisible == true && patientDetails" v-model:visible="patientsModalVisible" :patientId="patientDetails.id" :isEditPatient="isEditPatient" @closeModal="handleOk" @saveModal="handleOk($event)" />
   <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" :patientId="patientDetails.id" :patientName="patientDetails.patientFullName" @closeModal="handleOk" />
   <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
@@ -134,6 +135,7 @@ import {
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 
+import PatientFlagsModal from "@/components/modals/PatientFlagsModal";
 import PatientsModal from "@/components/modals/PatientsModal";
 import AddAppointmentModal from "@/components/modals/AddAppointment";
 import AddTasksModal from "@/components/modals/TasksModal";
@@ -156,6 +158,7 @@ export default {
     PlusOutlined,
     EditOutlined,
     PhoneOutlined,
+    PatientFlagsModal,
     PatientsModal,
     AddAppointmentModal,
     AddTasksModal,
@@ -178,6 +181,7 @@ export default {
     const isEditPatient = ref(false);
     const isEditTimeLog = ref(false);
     
+    const flagsModalVisible = ref(false);
     const patientsModalVisible = ref(false);
     const addAppointmentVisible = ref(false);
     const taskModalVisible = ref(false);
@@ -210,6 +214,10 @@ export default {
       return store.state.patients.patientDetails
     })
     
+    const latestFlag = computed(() => {
+      return store.state.flags.latestFlag
+    })
+    
     const latestVital = computed(() => {
       return store.state.patients.latestVital
     })
@@ -237,7 +245,7 @@ export default {
     })
     
     const handleOk = (value) => {
-      taskModalVisible.value = false;
+      flagsModalVisible.value = false;
       notesDetailVisible.value = false;
       patientsModalVisible.value = value ? value : false;
       addAppointmentVisible.value = false;
@@ -278,6 +286,10 @@ export default {
 
     const addVitalsModel = () => {
       addVitalsVisible.value = true;
+    }
+
+    const showAddFlagModal = () => {
+      flagsModalVisible.value = true;
     }
 
     const showVitalssModal = () => {
@@ -338,6 +350,7 @@ export default {
       custom,
       value10: ref([]),
 
+      flagsModalVisible,
       patientsModalVisible,
       addAppointmentVisible,
       taskModalVisible,
@@ -353,6 +366,7 @@ export default {
       addDeviceVisible,
       deviceDetailVisible,
 
+      showAddFlagModal,
       addTaskModal,
       addVitalsModel,
       showVitalssModal,
@@ -371,6 +385,7 @@ export default {
       isEditTimeLog,
       isEditPatient,
 
+      latestFlag,
       latestAppointment,
       latestTask,
       latestVital,
