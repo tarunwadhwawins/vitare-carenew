@@ -7,37 +7,37 @@
   </a-row>
   <a-row :gutter="24" v-if="arrayToObjact(tasks.taskPermissions,5)">
     <a-col :xl="8" :sm="12" :xs="24">
-      <a-card title="Task Priority" class="common-card">
+      <a-card title="Task Priority" class="common-card grapCardWrap">
         <IncompleteTasksFilter/>
         <ApexChart type="bar" :height="250" v-if="tasks.taskPriority" :options="tasks.taskPriority.optionPriority" :series="tasks.taskPriority.seriesPriority" />
       </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
-      <a-card title="Team Member" class="common-card">
+      <a-card title="Team Member" class="common-card grapCardWrap">
         <TeamMemberFilter/>
         <ApexChart type="bar" :height="250" v-if="tasks.taskTeamMember" :options="tasks.taskTeamMember.optionTeamMember" :series="tasks.taskTeamMember.seriesTeamMember" />
       </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
-      <a-card title="Task Completion over" class="common-card">
+      <a-card title="Task Completion over" class="common-card grapCardWrap">
         <ApexChart type="area" v-if="tasks.completionOptions" :height="275" :options="tasks.completionOptions" :series="tasks.completionSeries" />
       </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
-      <a-card title="All Tasks" class="common-card">
+      <a-card title="All Tasks" class="common-card grapCardWrap">
         <AllTasksFilter/>
         <ApexChart type="pie" v-if="tasks.completedAllTask" :height="275" :options="tasks.completedAllTask" :series="tasks.incompleteAllTask" />
       </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
-      <a-card title="Category View" class="common-card">
+      <a-card title="Category View" class="common-card grapCardWrap">
         <CategoryViewFilter/>
         <ApexChart type="pie" v-if="tasks.taskCategory.premium"  :height="275" :options="tasks.taskCategory.premium" :series="tasks.taskCategory.business" />
       </a-card>
     </a-col>
     <a-col :xl="8" :sm="12" :xs="24">
-      <a-card title="Completion Rate" class="common-card">
-        <h4>85%</h4>
+      <a-card title="Completion Rate" class="common-card grapCardWrap">
+        <h4>{{tasks.completeTaskRate}}%</h4>
         <p>Sum of Completion Rate</p>
       </a-card>
     </a-col>
@@ -79,6 +79,7 @@ export default {
       store.dispatch('taskPriority')
       store.dispatch('taskTeamMember')
       store.dispatch('taskCategory')
+      store.dispatch('completeTaskRate')
     })
 
 

@@ -1,102 +1,99 @@
-
-
-// API end points 
+// API end points
 export const API_ENDPOINTS = {
-    // Authentication
-    login: "login",
-    logout: "logout",
-    refreshToken: "refreshToken",
+	// Authentication
+	login: 'login',
+	logout: 'logout',
+	refreshToken: 'refreshToken',
 
-    // Patients
-    patient:"patient",
-    patientsList:"patient",
-    patientDetails:"patient",
-    counterCard:"patient/count",
-    financial:"patient/count",
-    cptCode:"patient/count",
-    totalPatientsChart:"patient/chart",
-    timeLine:"patient/new",
-    
-    // Appointments
-    appointment:"appointment",
-    todayAppointment:"appointment/today",
-    appointmentChart:"appointment/summary",
-    futureAppointments:"appointment/future",
-    newRequests:"appointment/new",
-    addAppointment:"appointment",
-    seacrhAppointment:"appointment/search",
-    appointmentConference:'appointment/conference',
+	// Patients
+	patient: 'patient',
+	patientsList: 'patient',
+	patientDetails: 'patient',
+	counterCard: 'patient/count',
+	financial: 'patient/count',
+	cptCode: 'patient/count',
+	totalPatientsChart: 'patient/chart',
+	timeLine: 'patient/new',
 
-    // Staff
-    staffList:"staff",
-    specialization:"staff/specialization",
-    network:"staff/network",
+	// Appointments
+	appointment: 'appointment',
+	todayAppointment: 'appointment/today',
+	appointmentChart: 'appointment/summary',
+	futureAppointments: 'appointment/future',
+	newRequests: 'appointment/new',
+	addAppointment: 'appointment',
+	seacrhAppointment: 'appointment/search',
+	appointmentConference: 'appointment/conference',
 
-    // Communications
-    communicationsList:"communication",
-    communicationTypes:"communication/type",
-    addCommunication:"communication",
-    communicationsCount:"communication/count",
-    callStatus:"call/status",
-    CallPlanned:"call/staff",
+	// Staff
+	staffList: 'staff',
+	specialization: 'staff/specialization',
+	network: 'staff/network',
 
-    //conversation
-    conversation:'get-conversation',
-    conversationSend:'send-message',
+	// Communications
+	communicationsList: 'communication',
+	communicationTypes: 'communication/type',
+	addCommunication: 'communication',
+	communicationsCount: 'communication/count',
+	callStatus: 'call/status',
+	CallPlanned: 'call/staff',
 
-    // Tasks
-    addTask:"task",
-    tasksList:"task",
-    taskStatus:"task/status",
-    allTaskStatus:"task/status/summery",
-    taskPriority:"task/priority",
-    searchTasks:"task/search",
-    taskTeamMember:'task/staff',
-    taskCategory:'task/category',
+	//conversation
+	conversation: 'get-conversation',
+	conversationSend: 'send-message',
 
-    
-    // Global Codes
-    globalCodesList: 'globalCodeCategory',
-    globalCode: 'globalCode',
-    
-    // inventory
-    inventory: 'inventory',
-    model: 'model',
+	// Tasks
+	addTask: 'task',
+	tasksList: 'task',
+	taskStatus: 'task/status',
+	allTaskStatus: 'task/status/summery',
+	taskPriority: 'task/priority',
+	searchTasks: 'task/search',
+	taskTeamMember: 'task/staff',
+	taskCategory: 'task/category',
+	completeTaskRate: 'task/completion/rates',
 
-    // Roles & Permissions
-    role: 'role',
-    rolesList: 'roleList',
-    addPermissions:'rolePermission',
-    rolePermissions: 'permissionList',
-    roleDetails: 'roleDetails',
-    rolePermissionEdit:'rolePermissionEdit', 
-    dashboardWidget:'widget',
-    widgetAccess:'widgetAccess',
-    // Notes
-    notes: 'patient/notes',
+	// Global Codes
+	globalCodesList: 'globalCodeCategory',
+	globalCode: 'globalCode',
 
-    // timeLogs
-    timeLog: 'patient/timeLog',
-    deleteTimeLog: 'deleteTimeLog',
+	// inventory
+	inventory: 'inventory',
+	model: 'model',
 
-    //Thresholds
-    getVital:'field',
-    generalParameter:'generalParameterGroup',
-    deleteParameter:'generalParameter',
+	// Roles & Permissions
+	role: 'role',
+	rolesList: 'roleList',
+	addPermissions: 'rolePermission',
+	rolePermissions: 'permissionList',
+	roleDetails: 'roleDetails',
+	rolePermissionEdit: 'rolePermissionEdit',
+	dashboardWidget: 'widget',
+	widgetAccess: 'widgetAccess',
+	// Notes
+	notes: 'patient/notes',
 
-    //Programs
-    programsList:"program",
+	// timeLogs
+	timeLog: 'patient/timeLog',
+	deleteTimeLog: 'deleteTimeLog',
 
-    // CPT Codes
-    cptCodes: 'cptCode',
-    service: 'service',
+	//Thresholds
+	getVital: 'field',
+	generalParameter: 'generalParameterGroup',
+	deleteParameter: 'generalParameter',
 
-    // Vital Fields
-    field: 'field',
-    
+	//Programs
+	programsList: 'program',
 
-    //Providers
-    provider:'provider',
+	// CPT Codes
+	cptCodes: 'cptCode',
+	service: 'service',
+
+	// Vital Fields
+	field: 'field',
+
+	//Providers
+	provider: 'provider'
 };
 
 // export const getApiUrl = key => {

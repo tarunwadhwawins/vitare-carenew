@@ -1,7 +1,7 @@
 <template>
 <div>
     <!---->
-    <a-layout-content v-if="appointmentSearch.searchAppointmentRecords">
+    <a-layout-content >
         <Title :title="$t('appointmentCalendar.appointmentCalendar')" @calenderToggle="calenderView($event)" :isActive="toggle" :button="{
             fullCalendarView: $t('appointmentCalendar.fullCalendarView'),
             hideCalendarView:$t('appointmentCalendar.hideCalendarView')
@@ -19,29 +19,32 @@
 
             </a-col>
             <a-col :xl="toggle == false ? 24 : 18" :sm="toggle == false ? 24 : 14" :xs="24">
+                <Loader v-if="!showLoaderMain" />
                 <a-tabs v-model:activeKey="activeKey" @change="tabClick(activeKey)">
 
                     <a-tab-pane key="1" tab="Day">
-
+                        
                         <DayAppointment />
                     </a-tab-pane>
                     <a-tab-pane key="2" tab="Tomorrow">
+                       
                         <DayAppointment />
                     </a-tab-pane>
                     <a-tab-pane key="3" tab="Week">
-
+                       
                         <WeekAppointment @is-dateClick="selectDate($event)"  tabName="week"></WeekAppointment>
                     </a-tab-pane>
                     <a-tab-pane key="4" tab="Month">
-
+                        
                         <MonthAppointment v-if="appointmentSearch.searchAppointmentRecords" :appointment="appointmentSearch.searchAppointmentRecords" @is-dateClick="selectDate($event)" @is-month="monthDate($event)" :seclectDate="month"></MonthAppointment>
 
                     </a-tab-pane>
                 </a-tabs>
             </a-col>
         </a-row>
+        <Loader v-if="showLoaderMain" />
     </a-layout-content>
-    <Loader v-else />
+    
     <!--modal-->
     <AddAppointment v-if="staffList && patientsList" :maskClosable="maskebale" v-model:visible="appointmentModal" @ok="handleOk" @is-visible="showModal($event)" :staff="staffList" :patient="patientsList" />
 
@@ -85,9 +88,10 @@ export default {
         const toDate = ref(moment())
         let datePick = moment()
         const physiciansId = ref([])
-
+const showLoaderMain = ref(true)
         ///This fuction is working for date select in calendar and view appointment according select date
         function selectDate(event) {
+            showLoaderMain.value = false
             activeKey.value = ref('1')
             store.state.appointment.searchAppointmentRecords = ""
             fromDate.value = moment(event)
@@ -97,6 +101,7 @@ export default {
         }
 
         function tabClick(value) {
+            showLoaderMain.value = false
             store.state.appointment.searchAppointmentRecords = ""
             if (value == 1) {
                 activeKey.value = ref('1')
@@ -129,6 +134,7 @@ export default {
         }
 
         function monthDate(event) {
+            showLoaderMain.value = false
             activeKey.value = ref('4')
             month.value = moment(event)
             store.state.appointment.searchAppointmentRecords = ''
@@ -193,7 +199,7 @@ export default {
         };
 
         const staffSelect = (e) => {
-            console.log("e",e)
+            showLoaderMain.value = false
             physiciansId.value = e;
            
         }
@@ -226,6 +232,7 @@ export default {
             monthDate,
             staffSelect,
             physiciansId,
+            showLoaderMain,
         };
     },
 };
