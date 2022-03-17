@@ -143,6 +143,26 @@ export const allTaskStatus = async ({ commit }) => {
 			}
 		})
 }
+export const completeTaskRate = async ({ commit }) => {
+	commit('loadingStatus', true)
+	await ServiceMethodService.common("get", API_ENDPOINTS['completeTaskRate'], null, null).then((response) => {
+		console.log('completeTaskRate', response.data.data);
+		commit('completeTaskRate', response.data.data);
+		commit('loadingStatus', false)
+	}).catch((error) => {
+			if (error.response.status === 422) {
+				commit('errorMsg', error.response.data)
+				
+			} else if (error.response.status === 500) {
+				errorSwal(error.response.data.message)
+				
+			} else if (error.response.status === 401) {
+				// commit('errorMsg', error.response.data.message)
+				
+			}
+			commit('loadingStatus', false)
+		})
+}
 export const taskPriority = async ({ commit }) => {
 	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", API_ENDPOINTS['taskPriority'], null, null).then((response) => {

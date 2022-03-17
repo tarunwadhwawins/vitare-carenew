@@ -1,15 +1,30 @@
+.ant-layout-sider {
+    @media (max-width: 1199px) {
+        left: -200px !important;
+    }
+}
+.ant-layout-has-sider {
+    @media (max-width: 1199px) {
+        padding-left: 0 !important;
+    }
+}
+
 body.test {
     &.show {
         .ant-layout {
             .ant-layout-has-sider {
                 .ant-layout-sider {
-                    left: -200px !important;
-                    transition: all 0.5s!important;
+                    left: 0 !important;
+                    transition: all 0.5s !important;
+                    @media (min-width: 1200px) {
+                        left: -200px !important;
+                        transition: all 0.5s !important;
+                    }
                 }
             }
         }
         .ant-layout-has-sider {
-            padding-left: 0!important;
+            padding-left: 0 !important;
         }
     }
 }
@@ -19,7 +34,7 @@ body.test {
         .ant-layout-sider {
             background: #fff;
             z-index: 99;
-            transition: all 0.5s!important;
+            transition: all 0.5s !important;
             // @media screen and (max-width: 991px) {
             //     left: -200px !important;
             // }

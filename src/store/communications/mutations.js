@@ -42,9 +42,11 @@ export const communicationTypesSuccess = (state, response) => {
     data.time = timeOnly(data.time);
     return data
   }) */
+  console.log("dfsd",response)
   const record = response.sort(function(a, b) {
     return a.time - b.time
   })
+  console.log("record",record)
   record.forEach(element => {
     if (!timesArray.includes(element.time)) {
       timesArray.push(element.time)
@@ -89,6 +91,7 @@ export const communicationTypesSuccess = (state, response) => {
     }
     const communicationType = array_list_final
     callSeries = communicationType.map((item) => {
+      console.log("dfsd",item)
       return {
         name: item.text, data: item.data.map((data) => {
           timeList.push(timeOnly(data.time))
@@ -101,7 +104,7 @@ export const communicationTypesSuccess = (state, response) => {
   state.communicationTypes = {
     calloption: {
       chart: {
-        height: 350,
+       
         type: "area",
       },
       dataLabels: dataLabels(false),
@@ -111,7 +114,7 @@ export const communicationTypesSuccess = (state, response) => {
       xaxis: {
         categories: timesArray,
       },
-      yaxis: yaxis(''),
+      yaxis: yaxis('Number of Count'),
     },
     callseries: callSeries,
   }
