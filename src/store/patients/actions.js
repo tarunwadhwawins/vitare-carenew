@@ -70,6 +70,7 @@ export const addCondition = async ({commit}, request) => {
   commit('loadingStatus', true)
   if(data.designation || data.email || data.fax || data.name || data.phoneNumber || data.physicianDesignation || data.physicianEmail || data.physicianFax || data.physicianName || data.physicianPhoneNumber) {
     await serviceMethod.common("post", `patient/${patientId}/condition`, null, data).then((response) => {
+      commit('patientConditions', response.data.data);
       commit('addCondition', response.data);
       commit('loadingStatus', false)
     }).then(()=> {
@@ -102,6 +103,7 @@ export const addCondition = async ({commit}, request) => {
   }
   else {
     await serviceMethod.common("post", `patient/${patientId}/condition`, null, data).then((response) => {
+      commit('patientConditions', response.data.data);
       commit('addCondition', response.data.data);
       commit('loadingStatus', false)
       commit('counterPlus')
@@ -115,6 +117,7 @@ export const updateCondition = async ({commit}, request) => {
   commit('loadingStatus', true)
   if(data.designation || data.email || data.fax || data.name || data.phoneNumber || data.physicianDesignation || data.physicianEmail || data.physicianFax || data.physicianName || data.physicianPhoneNumber) {
     await serviceMethod.common("post", `patient/${patientId}/condition`, null, data).then((response) => {
+      commit('patientConditions', response.data.data);
       commit('updateCondition', response.data.data);
       commit('loadingStatus', false)
     }).then(()=> {
@@ -146,6 +149,7 @@ export const updateCondition = async ({commit}, request) => {
   }
   else {
     await serviceMethod.common("post", `patient/${patientId}/condition`, null, data).then((response) => {
+      commit('patientConditions', response.data.data);
       commit('addCondition', response.data.data);
       commit('loadingStatus', false)
       commit('counterPlus')

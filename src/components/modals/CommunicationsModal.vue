@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" title="Communications" centered @cancel="handleCancel">
+  <a-modal width="1000px" title="Communications" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
     <a-form ref="formRef" :model="messageForm" layout="vertical" @finish="sendMessage">
       <a-row :gutter="24">
         <!-- <a-col :sm="12" :xs="24">
@@ -141,6 +141,12 @@
   import { ref, reactive, watchEffect, computed } from "vue";
   import { useStore } from "vuex"
   import ModalButtons from "@/components/common/button/ModalButtons";
+  import {
+    warningSwal
+} from "@/commonMethods/commonMethod";
+import {
+    messages
+} from "../../config/messages";
   export default {
     components: {
       ModalButtons
@@ -199,11 +205,24 @@
       }
 
       const handleCancel = () => {
-        emit('is-visible', false);
         formRef.value.resetFields();
         Object.assign(messageForm, form)
       };
+      function closeModal() {
+           
+            if (messageForm.entityType != "" || messageForm.referenceId != "" || messageForm.subject != "" || messageForm.messageCategoryId != "" || messageForm.priorityId != "" || messageForm.message != "" || messageForm.messageTypeId != "") {
+                warningSwal(messages.modalWarning).then((response) => {
+                    if (response == true) {
+                        ///console.log("check2")
+                     handleCancel();
+                        emit("is-visible", false);
 
+                    } else {
+                        emit("is-visible", true);
+                    }
+                });
+            }
+        }
       const patientChange = (value) => {
         store.dispatch('patientDetails', value);
       };
@@ -220,7 +239,8 @@
         messageType,
         messageForm,
         formRef,
-        auth
+        auth,
+        closeModal
       };
     },
   };

@@ -20,10 +20,11 @@
       </a-col> -->
             <a-col :sm="24" :xs="24">
                 <div class="form-group">
+                
                     <a-form-item :label="$t('appointmentCalendar.physician')" name="staffId" :rules="[{ required: true, message: $t('appointmentCalendar.physician')+' '+$t('global.validation')  }]"> 
-                        <a-select ref="select" v-if="staffList.staffList" v-model:value="physicianForm.staffId" style="width: 100%" size="large">
+                        <a-select ref="select" v-if="staffList.allStaffList" v-model:value="physicianForm.staffId" style="width: 100%" size="large">
                             <a-select-option value="" hidden>{{'Select Staff'}}</a-select-option>
-                            <a-select-option v-for="staff in staffList.staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}
+                            <a-select-option v-for="staff in staffList.allStaffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}
                             </a-select-option>
                         </a-select>
                     </a-form-item>
