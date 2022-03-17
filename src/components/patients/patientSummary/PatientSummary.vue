@@ -166,6 +166,8 @@ export default {
         store.dispatch('activeCptCodes')
         store.dispatch('allPatientsList')
         store.dispatch('allStaffList')
+        store.dispatch('flagsList')
+        store.dispatch('patientFlagsList', route.params.udid);
       }
       timer.value = setInterval(() => {
         elapsedTime.value += 1000;
