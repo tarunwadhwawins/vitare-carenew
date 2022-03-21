@@ -401,6 +401,10 @@ button.swal2-default-outline {
 .chatModal .ant-modal-footer .ant-input-group-addon .anticon {
 	color: #ffffff;
 }
+
+.critical-notes ul li:not(:first-child) {
+	display: none;
+}
 .common-card.grapCardWrap {
 	min-height: 376px;
 }

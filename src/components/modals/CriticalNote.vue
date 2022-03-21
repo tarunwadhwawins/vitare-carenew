@@ -1,23 +1,23 @@
 <template>
-<a-modal max-width="1140px" width="50%" :title="title" centered :footer="null"  :maskClosable="false" @cancel="closeModal()">
-<a-form :model="notes" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addCriticalNote" @finishFailed="notesFailed">
-    <a-row :gutter="24">
+  <a-modal width="1000px" :title="title" centered :footer="null"  :maskClosable="false" @cancel="closeModal()">
+    <a-form :model="notes" name="basic" autocomplete="off" layout="vertical" @finish="addCriticalNote" @finishFailed="notesFailed">
+      <a-row :gutter="24">
         <a-col :sm="24" :xs="24">
-            <div class="form-group">
-              <a-form-item label="Note" name="criticalNote" :rules="[{ required: true, message: 'Note'+' '+$t('global.validation') }]">
-              <a-textarea v-model:value="notes.criticalNote"  :rows="4" @change="checkChangeInput()"/>
-              </a-form-item>
-            </div>
+          <div class="form-group">
+            <a-form-item label="Note" name="criticalNote" :rules="[{ required: true, message: 'Note'+' '+$t('global.validation') }]">
+              <a-textarea style="width: 100%" v-model:value="notes.criticalNote" rows="4" @change="checkChangeInput()"/>
+            </a-form-item>
+          </div>
         </a-col>
-    </a-row>
-    <a-row :gutter="24" class="mb-24">
+      </a-row>
+      <a-row :gutter="24" class="mb-24">
         <a-col :span="24" >
-        <a-button  style="margin-right: 8px" @click="reset()">{{$t('global.clear')}}</a-button>
-        <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
+          <a-button  style="margin-right: 8px" @click="reset()">{{$t('global.clear')}}</a-button>
+          <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
         </a-col>
-    </a-row>
-</a-form>
-</a-modal>
+      </a-row>
+    </a-form>
+  </a-modal>
 </template>
 
 <script>
@@ -36,7 +36,9 @@ export default defineComponent({
     });
 
     function addCriticalNote() {
-      store.dispatch("addCriticalNote", {udid:route.params.udid,criticalNote:notes});
+      store.dispatch("addCriticalNote", {udid:route.params.udid,criticalNote:notes}).then(() => {
+        store.dispatch('patientCriticalNotes', route.params.udid);
+      })
       setTimeout(() => {
         if(patient.value){
         reset();
