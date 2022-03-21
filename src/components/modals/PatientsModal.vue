@@ -286,12 +286,12 @@
                     </a-row>
                     <a-row>
                         <a-col :md="24" :sm="24" :xs="24" class="mb-24">
-                            <a-checkbox @change="changedValue" v-model:checked="demographics.isPrimary">
+                            <a-checkbox @change="changedValue" v-model:checked="demographics.sameAsPrimary">
                                 {{$t('patient.demographics.sameAsPrimaryFamilyMemberInfo')}}
                             </a-checkbox>
                         </a-col>
                     </a-row>
-                    <a-row :gutter="24" v-if="demographics.isPrimary">
+                    <a-row :gutter="24" v-if="demographics.sameAsPrimary">
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.fullName')" name="fullName" :rules="[{ required: false, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
@@ -824,7 +824,8 @@ export default defineComponent( {
       emergencyContactType: ref([]),
       emergencyContactTime: "",
       emergencyGender: "",
-      isPrimary: false,
+      sameAsPrimary: false,
+      isPrimary: true,
       familyMemberId: '',
       emergencyId: '',
     });
@@ -898,7 +899,7 @@ export default defineComponent( {
     const demographic = () => {
         if(idPatient != null) {
             if(patients.value.addDemographic == null) {
-                if(demographics.isPrimary == false) {
+                if(demographics.sameAsPrimary == false) {
                     (demographics.emergencyId = patients.value.patientDetails.emergencyContact.data ? patients.value.patientDetails.emergencyContact.data.id : ''),
                     (demographics.familyMemberId = patients.value.patientDetails.patientFamilyMember.data ? patients.value.patientDetails.patientFamilyMember.data.id : ''),
                     store.dispatch("updateDemographic", {
@@ -911,7 +912,7 @@ export default defineComponent( {
                         }
                     })
                 }
-                else if(demographics.isPrimary == true) {
+                else if(demographics.sameAsPrimary == true) {
                     (demographics.emergencyFullName = demographics.fullName),
                     (demographics.emergencyEmail = demographics.familyEmail),
                     (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
@@ -932,7 +933,7 @@ export default defineComponent( {
                 }
             }
             else if(patients.value.addDemographic != null && patients.value.addDemographic.id) {
-                if(demographics.isPrimary == false) {
+                if(demographics.sameAsPrimary == false) {
                     (demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
                     (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
                     store.dispatch("updateDemographic", {
@@ -945,7 +946,7 @@ export default defineComponent( {
                         }
                     })
                 }
-                else if(demographics.isPrimary == true) {
+                else if(demographics.sameAsPrimary == true) {
                     (demographics.emergencyFullName = demographics.fullName),
                     (demographics.emergencyEmail = demographics.familyEmail),
                     (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
@@ -968,7 +969,7 @@ export default defineComponent( {
         }
         else {
             if(patients.value.addDemographic == null) {
-                if(demographics.isPrimary == false) {
+                if(demographics.sameAsPrimary == false) {
                     store.dispatch("addDemographic", demographics).then(() => {
                         if(route.name == 'PatientSummary') {
                             store.dispatch('patientDetails', route.params.udid)
@@ -976,7 +977,7 @@ export default defineComponent( {
                         }
                     })
                 }
-                else if(demographics.isPrimary == true) {
+                else if(demographics.sameAsPrimary == true) {
                     (demographics.emergencyFullName = demographics.fullName),
                     (demographics.emergencyEmail = demographics.familyEmail),
                     (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
@@ -992,7 +993,7 @@ export default defineComponent( {
                 }
             }
             else if(patients.value.addDemographic != null && patients.value.addDemographic.id) {
-                if(demographics.isPrimary == false) {
+                if(demographics.sameAsPrimary == false) {
                     (demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
                     (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
                     store.dispatch("updateDemographic", {
@@ -1005,7 +1006,7 @@ export default defineComponent( {
                         }
                     })
                 }
-                else if(demographics.isPrimary == true) {
+                else if(demographics.sameAsPrimary == true) {
                     (demographics.emergencyFullName = demographics.fullName),
                     (demographics.emergencyEmail = demographics.familyEmail),
                     (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),

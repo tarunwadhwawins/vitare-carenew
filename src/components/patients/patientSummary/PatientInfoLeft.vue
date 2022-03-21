@@ -23,6 +23,14 @@
         </div>
       </div>
       <div class="pat-profile-inner">
+        <div class="thumb-head">
+          Family Members <PlusOutlined @click="showAddFamilyMemberModal"/><br />
+        </div>
+        <div v-if="familyMembersList" class="thumb-desc">
+          <a href="javascript:void(0)" @click="showFamilyMembersModal" >{{familyMembersList[0].fullName}}</a>
+        </div>
+      </div>
+      <div class="pat-profile-inner">
         <div class="thumb-head" @click="showCriticalModal">Critical Note
           <PlusOutlined />
         </div>
@@ -110,6 +118,8 @@
     </div>
   </div>
   
+  <AddFamilyMemberModal v-if="addFamilyMembersModalVisible" v-model:visible="addFamilyMembersModalVisible"  :patientId="patientDetails.id" @closeModal="handleOk" :isFamilyMemberEdit="isFamilyMemberEdit" />
+  <FamilyMembersDetailsModal v-if="familyMembersModalVisible" v-model:visible="familyMembersModalVisible" :familyMembersList="familyMembersList" :patientId="patientDetails.id" @isFamilyMemberEdit="editFamilyMember" />
   <PatientFlagsModal v-if="flagsModalVisible" v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
   <AddCriticalNote v-model:visible="criticalModalVisible" @closeModal="handleOk" @saveModal="handleCriticalNote($event)"/>
   <CriticalNotesDetailModal v-if="criticalNotesDetailVisible" v-model:visible="criticalNotesDetailVisible" @closeModal="handleOk"/>
@@ -145,6 +155,8 @@ import {
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 
+import AddFamilyMemberModal from "@/components/modals/AddFamilyMemberModal";
+import FamilyMembersDetailsModal from "@/components/modals/FamilyMembersDetailsModal";
 import PatientFlagsModal from "@/components/modals/PatientFlagsModal";
 import AddCriticalNote from "@/components/modals/CriticalNote"
 import CriticalNotesDetailModal from "@/components/modals/CriticalNotesDetail";
@@ -186,7 +198,9 @@ export default {
     PatientVitalsDetailsModal,
     Flags,
     AddCriticalNote,
-    CriticalNotesDetailModal
+    CriticalNotesDetailModal,
+    AddFamilyMemberModal,
+    FamilyMembersDetailsModal,
   },
   setup() {
     const store = useStore();
@@ -194,8 +208,11 @@ export default {
     const custom = ref(false);
     const isEditPatient = ref(false);
     const isEditTimeLog = ref(false);
+    const isFamilyMemberEdit = ref(false);
     const criticalNotesDetailVisible =ref(false)
     const flagsModalVisible = ref(false);
+    const addFamilyMembersModalVisible =ref(false)
+    const familyMembersModalVisible =ref(false)
     const criticalModalVisible =ref(false)
     const patientsModalVisible = ref(false);
     const addAppointmentVisible = ref(false);
@@ -231,6 +248,15 @@ export default {
       return store.state.patients.criticalNotesList
     })
 
+    const familyMembersList = computed(() => {
+      return store.state.patients.familyMembersList
+    })
+
+    // const contactTypes = []
+    // familyMembersList.value.contactType.forEach(contactType => {
+      console.log('contactType', familyMembersList.value)
+    // });
+
     const patientDetails = computed(() => {
       return store.state.patients.patientDetails
     })
@@ -264,8 +290,12 @@ export default {
     const latestDevice = computed(() => {
       return store.state.patients.latestDevice
     })
+    const getFamilyMemberDetails = computed(() => {
+      return store.state.patients.getFamilyMemberDetails
+    })
     
     const handleOk = (value) => {
+      addFamilyMembersModalVisible.value = false;
       flagsModalVisible.value = false;
       notesDetailVisible.value = false;
       patientsModalVisible.value = value ? value : false;
@@ -283,6 +313,20 @@ export default {
       addDeviceVisible.value = false;
       deviceDetailVisible.value = false;
     };
+
+    const showAddFamilyMemberModal = () => {
+      addFamilyMembersModalVisible.value = true
+      isFamilyMemberEdit.value = false
+    }
+
+    const editFamilyMember = () => {
+      addFamilyMembersModalVisible.value=true
+      isFamilyMemberEdit.value=true
+    }
+
+    const showFamilyMembersModal = ()=>{
+      familyMembersModalVisible.value=true
+    }
 
     const showCriticalModal = ()=>{
       criticalModalVisible.value=true
@@ -384,8 +428,14 @@ export default {
       showModalCustom,
       custom,
       value10: ref([]),
+
       criticalNotesDetailVisible,
       flagsModalVisible,
+      editFamilyMember,
+      showAddFamilyMemberModal,
+      showFamilyMembersModal,
+      addFamilyMembersModalVisible,
+      familyMembersModalVisible,
       showCriticalModal,
       criticalModalVisible,
       patientsModalVisible,
@@ -417,8 +467,11 @@ export default {
       addDeviceModal,
       showDeviceModal,
 
+      getFamilyMemberDetails,
+      familyMembersList,
       patientDetails,
       timeLogDetails,
+      isFamilyMemberEdit,
       isEditTimeLog,
       isEditPatient,
 

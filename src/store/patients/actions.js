@@ -871,3 +871,58 @@ export const criticalNotesDelete = async ({commit}, data) => {
     errorSwal(error.response.data.message)
   })
 }
+
+export const familyMembersList = async ({commit}, patientUdid) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("get", API_ENDPOINTS['patient']+`/${patientUdid}/family`, null, null).then((response) => {
+    commit('familyMembersList', response.data.data);
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
+  })
+}
+
+export const addFamilyMember = async ({commit}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("post", API_ENDPOINTS['patient']+`/${data.patientUdid}/familyAdd`, null, data.data).then((response) => {
+    successSwal(response.data.message)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
+  })
+}
+
+export const updateFamilyMember = async ({commit}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("put", API_ENDPOINTS['patient']+`/${data.patientUdid}/familyUpdate/${data.familyUdid}`, null, data.data).then((response) => {
+    successSwal(response.data.message)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
+  })
+}
+
+export const deleteFamilyMember = async ({commit}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("delete", API_ENDPOINTS['patient']+`/${data.patientUdid}/family/${data.familyUdid}`, null, data.data).then((response) => {
+    successSwal(response.data.message)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
+  })
+}
+
+export const familyMemberDetails = async ({commit}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("get", API_ENDPOINTS['patient']+`/${data.patientUdid}/family/${data.familyUdid}`, null, data.data).then((response) => {
+    commit('familyMemberDetails', response.data.data)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
+  })
+}

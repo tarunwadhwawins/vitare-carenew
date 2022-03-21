@@ -528,7 +528,7 @@ export const uploadFile = (state, data) => {
 }
 
 export const patientDetailsSuccess = (state, patient) => {
-  if(patient.emergencyContact.lebgth > 0 && patient.emergencyContact.data) {
+  if(patient.emergencyContact.length > 0 && patient.emergencyContact.data) {
     patient.emergencyFullName = patient.emergencyContact.data.fullName ? patient.emergencyContact.data.fullName : null;
     patient.emergencyEmail = patient.emergencyContact.data.email ? patient.emergencyContact.data.email : null;
     patient.emergencyPhoneNumber = patient.emergencyContact.data.phoneNumber ? patient.emergencyContact.data.phoneNumber : null;
@@ -547,7 +547,7 @@ export const patientDetailsSuccess = (state, patient) => {
     patient.emergencyGender = null;
   }
   
-  if(patient.patientFamilyMember.lebgth > 0 && patient.patientFamilyMember.data) {
+  if(patient.patientFamilyMember.length > 0 && patient.patientFamilyMember.data) {
     patient.fullName = patient.patientFamilyMember.data.fullName ? patient.patientFamilyMember.data.fullName : null;
     patient.familyEmail = patient.patientFamilyMember.data.email ? patient.patientFamilyMember.data.email : null;
     patient.familyPhoneNumber = patient.patientFamilyMember.data.phoneNumber ? patient.patientFamilyMember.data.phoneNumber : null;
@@ -721,7 +721,8 @@ export const fetchFromBitrix = (state, data) => {
     emergencyContactType: [],
     emergencyContactTime: "",
     emergencyGender: "",
-    isPrimary: false,
+    sameAsPrimary: false,
+    isPrimary: true,
     familyMemberId: '',
     emergencyId: '',
   }
@@ -825,6 +826,9 @@ export const fetchFromBitrix = (state, data) => {
     }
     if (item.patientId == "emergencyGender") {
       state.fetchFromBitrix.emergencyGender = data[item.bitrixId]
+    }
+    if (item.patientId == "sameAsPrimary") {
+      state.fetchFromBitrix.sameAsPrimary = data[item.bitrixId]
     }
     if (item.patientId == "isPrimary") {
       state.fetchFromBitrix.isPrimary = data[item.bitrixId]
@@ -1013,4 +1017,25 @@ export const patientCriticalNotes = (state, data) => {
 
 export const criticalNotesList = (state, data) => {
   state.criticalNotesList = data
+}
+
+export const familyMembersList = (state, familyMembers) => {
+  state.familyMembersList = familyMembers.map(member => {
+    member.isPrimary = member.isPrimary ? 'Yes' : 'No'
+    member.contactType = member.contactType ? JSON.parse(member.contactType) : []
+    return member
+  })
+}
+
+export const familyMemberDetails = (state, familyMember) => {
+  if(familyMember) {
+    familyMember.familyEmail = familyMember.email
+    familyMember.familyPhoneNumber = familyMember.phoneNumber
+    familyMember.familyContactType = familyMember.contactType ? JSON.parse(familyMember.contactType) : []
+    familyMember.familyContactTime = Number(familyMember.contactTimeId)
+    familyMember.familyGender = familyMember.genderId
+    familyMember.relation = familyMember.relationId
+    familyMember.isPrimary = familyMember.isPrimary ? true : false
+  }
+  state.familyMemberDetails = familyMember
 }
