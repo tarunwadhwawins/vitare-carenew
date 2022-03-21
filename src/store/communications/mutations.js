@@ -39,12 +39,12 @@ export const callPlannedSuccess = (state, count) => {
 
 export const communicationTypesSuccess = (state, response) => {
 
-  console.log("response",response)
+  
  
   const time = ['08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM', '06:00 PM', '07:00 PM', '08:00 PM']
 
   var callSeries = [];
-
+  
   if(response.length > 0) {
     var array_list = [];
     var array_list_final = [];
@@ -60,7 +60,7 @@ export const communicationTypesSuccess = (state, response) => {
       };
       array_list[value.text].push(value_obj);
     });
-  
+    
     for (const key in array_list) {
       
       var array_value = [];
@@ -111,7 +111,7 @@ export const communicationTypesSuccess = (state, response) => {
       }
     })
   }
- 
+  //console.log("response",callSeries)
   state.communicationTypes = {
     calloption: {
       chart: {
