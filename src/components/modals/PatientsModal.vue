@@ -13,12 +13,12 @@
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Demographics'">
                 <!-- <Demographics /> -->
-                <a-form :model="demographics" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="demographic" @finishFailed="demographicsFailed">
+                <a-form :model="demographics" name="basic"  ref="formRef" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="demographic" @finishFailed="demographicsFailed">
                     <Loader />
                     <a-row :gutter="24">
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation')}]">
+                                <a-form-item :label="$t('global.firstName')"  name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation')}]">
                                     <a-input @change="changedValue" v-model:value="demographics.firstName" size="large" />
                                     <ErrorMessage class="error" v-if="errorMsg" :name="errorMsg.firstName?errorMsg.firstName[0]:''" />
                                 </a-form-item>
@@ -404,6 +404,7 @@
                             </div>
                         </a-col>
                     </a-row>
+                     <PatientSearch v-model:visible="patientSearch" @closeSearchPatient="closeSearchPatient($event)" @clearValidtion="clearValidtion"/>
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                         <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
@@ -693,7 +694,7 @@
             </div>
         </a-col>
     </a-row>
-    <PatientSearch v-model:visible="patientSearch" @closeSearchPatient="closeSearchPatient($event)"/>
+   
 </a-modal>
 
 </template>
@@ -750,6 +751,7 @@ export default defineComponent( {
     // const current = computed(() => {
     //   return store.state.patients.counter;
     // });
+    const formRef =ref()
     const patientSearch =ref(false)
 
     const changedValue = (value) => {
@@ -1270,8 +1272,15 @@ export default defineComponent( {
         return null;
     } */
 
+    function clearValidtion()  {
+      formRef.value.resetFields()
+       Object.assign(demographics, patients.value.fetchFromBitrix);
+    }
+
     return {
     // formatPhoneNumber,
+    formRef,
+    clearValidtion,
     changedValue,
     closeSearchPatient,
      showSearchPatient,
