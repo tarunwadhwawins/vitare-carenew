@@ -170,7 +170,7 @@ export default defineComponent({
     });
 
     const addDocument = () => {
-      if(documents.document==''){
+      if(filePath.value==null){
         docValidationError.value=true
       }else{
         store.dispatch("addStaffDocument", {
