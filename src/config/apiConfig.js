@@ -99,6 +99,9 @@ export const API_ENDPOINTS = {
 
     // Flags
     flag:'flag',
+
+    // Critical Notes
+    criticalNote:'criticalNote',
 };
 
 // export const getApiUrl = key => {
