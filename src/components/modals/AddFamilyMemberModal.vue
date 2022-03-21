@@ -5,7 +5,7 @@
 
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
-						<a-form-item :label="$t('patient.demographics.fullName')" name="fullName" :rules="[{ required: false, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
+						<a-form-item :label="$t('patient.demographics.fullName')" name="fullName" :rules="[{ required: true, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
 							<a-input v-model:value="familyMemberForm.fullName" size="large" />
 							<!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.fullName?errorMsg.fullName[0]:''" /> -->
 						</a-form-item>
@@ -14,7 +14,7 @@
 
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
-						<a-form-item :label="$t('patient.demographics.emailAddress')" name="familyEmail" :rules="[{ required: false, message: $t('patient.demographics.emailAddress')+' '+$t('global.validation') }]">
+						<a-form-item :label="$t('patient.demographics.emailAddress')" name="familyEmail" :rules="[{ required: true, message: $t('patient.demographics.emailAddress')+' '+$t('global.validation') }]">
 							<a-input v-model:value="familyMemberForm.familyEmail" placeholder="test@test.com" size="large" />
 							<!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.familyEmail?errorMsg.familyEmail[0]:''" /> -->
 						</a-form-item>
@@ -53,7 +53,7 @@
 
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
-						<a-form-item :label="$t('global.gender')" name="familyGender" :rules="[{ required: false, message: $t('global.gender')+' '+$t('global.validation') }]">
+						<a-form-item :label="$t('global.gender')" name="familyGender" :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
 							<a-select ref="select" v-model:value="familyMemberForm.familyGender" style="width: 100%" size="large">
 								<a-select-option value="" hidden>{{'Select Gender'}}</a-select-option>
 								<a-select-option v-for="gender in globalCode.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
@@ -65,7 +65,7 @@
 
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
-						<a-form-item :label="$t('global.relation')" name="relation" :rules="[{ required: false, message: $t('global.relation')+' '+$t('global.validation') }]">
+						<a-form-item :label="$t('global.relation')" name="relation" :rules="[{ required: true, message: $t('global.relation')+' '+$t('global.validation') }]">
 							<a-select ref="select" v-model:value="familyMemberForm.relation" style="width: 100%" size="large">
 								<a-select-option value="" hidden>{{'Select Relation'}}</a-select-option>
 								<a-select-option v-for="relation in globalCode.relation.globalCode" :key="relation.id" :value="relation.id">{{relation.name}}</a-select-option>
