@@ -7,7 +7,7 @@
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.fullName')" name="fullName" :rules="[{ required: true, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
 							<a-input v-model:value="familyMemberForm.fullName" size="large" />
-							<!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.fullName?errorMsg.fullName[0]:''" /> -->
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.fullName?errorMsg.fullName[0]:''" />
 						</a-form-item>
 					</div>
 				</a-col>
@@ -16,7 +16,7 @@
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.emailAddress')" name="familyEmail" :rules="[{ required: true, message: $t('patient.demographics.emailAddress')+' '+$t('global.validation') }]">
 							<a-input v-model:value="familyMemberForm.familyEmail" placeholder="test@test.com" size="large" />
-							<!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.familyEmail?errorMsg.familyEmail[0]:''" /> -->
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyEmail?errorMsg.familyEmail[0]:''" />
 						</a-form-item>
 					</div>
 				</a-col>
@@ -25,7 +25,7 @@
 					<div class="form-group">
 						<a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: false, message: $t('global.phoneNo')+' '+$t('global.validation') }]">
 							<a-input-number v-model:value="familyMemberForm.familyPhoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
-							<!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.familyPhoneNumber?errorMsg.familyPhoneNumber[0]:''" /> -->
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyPhoneNumber?errorMsg.familyPhoneNumber[0]:''" />
 						</a-form-item>
 					</div>
 				</a-col>
@@ -34,7 +34,7 @@
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="familyContactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
 							<a-select v-model:value="familyMemberForm.familyContactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" />
-								<!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactType?errorMsg.familyContactType[0]:''" /> -->
+								<ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactType?errorMsg.familyContactType[0]:''" />
 						</a-form-item>
 					</div>
 				</a-col>
@@ -46,7 +46,7 @@
 								<a-select-option value="" disabled>{{'Select Preferred Time'}}</a-select-option>
 								<a-select-option v-for="ptOfDayContact in globalCode.ptOfDayContact.globalCode" :key="ptOfDayContact.id" :value="ptOfDayContact.id">{{ptOfDayContact.name}}</a-select-option>
 							</a-select>
-							<!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactTime?errorMsg.familyContactTime[0]:''" /> -->
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactTime?errorMsg.familyContactTime[0]:''" />
 						</a-form-item>
 					</div>
 				</a-col>
@@ -58,7 +58,7 @@
 								<a-select-option value="" hidden>{{'Select Gender'}}</a-select-option>
 								<a-select-option v-for="gender in globalCode.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
 							</a-select>
-							<!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.familyGender?errorMsg.familyGender[0]:''" /> -->
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyGender?errorMsg.familyGender[0]:''" />
 						</a-form-item>
 					</div>
 				</a-col>
@@ -70,7 +70,7 @@
 								<a-select-option value="" hidden>{{'Select Relation'}}</a-select-option>
 								<a-select-option v-for="relation in globalCode.relation.globalCode" :key="relation.id" :value="relation.id">{{relation.name}}</a-select-option>
 							</a-select>
-							<!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.relation?errorMsg.relation[0]:''" /> -->
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.relation?errorMsg.relation[0]:''" />
 						</a-form-item>
 					</div>
 				</a-col>
