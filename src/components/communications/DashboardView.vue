@@ -101,7 +101,7 @@
         store.dispatch("callPlanned")
         store.dispatch("callStatus", 122)
         store.dispatch("communicationTypes")
-        store.dispatch("futureAppointments")
+        //store.dispatch("futureAppointments")
         store.dispatch("newRequests")
         store.dispatch("communicationsCount", dateTimeNow)
       })
