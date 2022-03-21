@@ -307,6 +307,9 @@ img.reportFlag {
 				.ant-table-tbody {
 					tr {
 						td {
+							white-space: nowrap;
+							overflow: hidden;
+							text-overflow: ellipsis;
 							padding: 8px 10px;
 							font-size: 13px;
 						}
@@ -323,8 +326,6 @@ img.reportFlag {
 }
 
 /*----*/
-
-
 
 // body {
 // 	&.show {
