@@ -1,5 +1,5 @@
 <template>
-  <a-form ref="formRef" :model="device" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDevice" @finishFailed="deviceFailed">
+  <a-form ref="formRef" scrollToFirstError=true :model="device" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDevice" @finishFailed="deviceFailed">
     <a-row :gutter="24">
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">

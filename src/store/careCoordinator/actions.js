@@ -95,6 +95,7 @@ export const addContacts = async ({
   }).catch((error) => {
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
+      commit('closeModal',false)
     }else if(error.response.status === 500){
       errorSwal(error.response.data.message)
     }else if(error.response.status === 401){
