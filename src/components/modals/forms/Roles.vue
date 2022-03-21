@@ -1,5 +1,5 @@
 <template>
-<a-form :model="roles" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addRole" @finishFailed="roleDataFailed">
+<a-form :model="roles" name="basic" scrollToFirstError=true :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addRole" @finishFailed="roleDataFailed">
     <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
             <div class="form-group">
@@ -67,9 +67,9 @@ export default defineComponent({
         data: {roles:Object.values(roles)},
       });
       setTimeout(() => {
+        if(staffs.value.closeModal==true){
         store.dispatch("roleList", props.paramId?props.paramId:staffs.value.addStaff.id);
-        reset()
-        if(staffs.value.closeModal){
+          reset()
           emit("saveModal", false)
       }
       }, 2000);
@@ -106,8 +106,12 @@ export default defineComponent({
     function checkChangeInput(){
       store.commit('checkChangeInput',true)
     }
+    const errorMsg = computed(() => {
+      return store.state.careCoordinator.errorMsg;
+    });
     const Id = staffs.value.addStaff?staffs.value.addStaff.id:''
     return {
+      errorMsg,
       reset,
       checkChangeInput,
       Id,

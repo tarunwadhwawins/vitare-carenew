@@ -18,6 +18,8 @@
                 v-if="staffList"
                 v-model:value="messageForm.from"
                 style="width: 100%"
+                :disabled="arrayToObjact(staffPermissions,37) ? false : true"
+                
                 size="large">
                 <a-select-option value="" disabled>{{'Select Staff'}}</a-select-option>
                 <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}</a-select-option>
@@ -25,7 +27,7 @@
             </a-form-item>
           </div>
         </a-col>
-        <a-col :sm="12" :xs="24">
+        <a-col :sm="12" :xs="24" @click="referenceId">
           <div class="form-group">
             <a-form-item :label="$t('communications.communicationsModal.to')" name="to">
               <div class="btn toggleButton" :class="toggleTo ? 'active' : ''" @click="toggleTo = !toggleTo">
@@ -48,7 +50,7 @@
                 style="width: 100%"
                 size="large">
                 <a-select-option value="" disabled>{{'Select Patient'}}</a-select-option>
-                <a-select-option v-for="patient in patientsList" :key="patient.id" :value="patient.id">{{ patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option>
+                <a-select-option v-for="patient in patientsList" :key="patient.id" :value="patient.id" :disabled="messageForm.from==patient.id ? true : false">{{ patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option>
               </a-select>
             </a-form-item>
           </div>
@@ -63,7 +65,7 @@
                 style="width: 100%"
                 size="large">
                 <a-select-option value="" disabled>{{'Select Staff'}}</a-select-option>
-                <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}</a-select-option>
+                <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id" :disabled="messageForm.from==staff.id ? true : false">{{ staff.fullName }}</a-select-option>
               </a-select>
             </a-form-item>
           </div>
@@ -141,12 +143,13 @@
   import { ref, reactive, watchEffect, computed } from "vue";
   import { useStore } from "vuex"
   import ModalButtons from "@/components/common/button/ModalButtons";
-  import {
+  import {arrayToObjact,
     warningSwal
 } from "@/commonMethods/commonMethod";
 import {
     messages
 } from "../../config/messages";
+
   export default {
     components: {
       ModalButtons
@@ -226,7 +229,12 @@ import {
       const patientChange = (value) => {
         store.dispatch('patientDetails', value);
       };
-      
+      function referenceId(){
+        messageForm.referenceId=''
+      }
+       const staffPermissions = computed(()=>{
+            return store.state.screenPermissions.staffPermissions
+        })
       return {
         toggleTo,
         patientChange,
@@ -240,7 +248,10 @@ import {
         messageForm,
         formRef,
         auth,
-        closeModal
+        closeModal,
+        referenceId,
+        staffPermissions,
+        arrayToObjact
       };
     },
   };

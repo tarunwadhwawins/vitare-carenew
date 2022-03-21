@@ -144,6 +144,7 @@ export const patients = (state, data) => {
       compare: (a, b) => a.message - b.message,
       multiple: 1,
     },
+    ellipsis: true,
     // filters: [{
     //         text: "Flag",
     //         value: "flag",

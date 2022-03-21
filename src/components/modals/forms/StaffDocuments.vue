@@ -1,9 +1,9 @@
 <template>
-<a-form :model="documents" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDocument" @finishFailed="onFinishFailed">
+<a-form :model="documents" scrollToFirstError=true name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDocument" @finishFailed="onFinishFailed">
     <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
+                <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: true, message: $t('global.name')+' '+$t('global.validation') }]">
                     <a-input v-model:value="documents.name" size="large" @change="checkChangeInput()"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
                 </a-form-item>
@@ -11,15 +11,16 @@
         </a-col>
         <a-col :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: false, message: $t('global.document')+' '+$t('global.validation') }]">
-                    <a-input name="document_file" size="large" type="file" @change="onFileUpload" />
+                <label><span style="color:red">* </span>{{$t('global.document')}}
+                    <a-input  name="document_file" size="large" type="file" @change="onFileUpload" />
+                    <ErrorMessage v-if="docValidationError" name="Document is required." />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
-                </a-form-item>
+                </label>
             </div>
         </a-col>
         <a-col :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('global.type')" name="type" :rules="[{ required: false, message: $t('global.type')+' '+$t('global.validation') }]">
+                <a-form-item :label="$t('global.type')" name="type" :rules="[{ required: true, message: $t('global.type')+' '+$t('global.validation') }]">
                     <a-select ref="select" v-model:value="documents.type" style="width: 100%" size="large" @change="checkChangeInput()">
                         <a-select-option value="" disabled>{{'Select Type'}}</a-select-option>
                         <a-select-option v-for="documentType in globalCode.documentTypes.globalCode" :key="documentType.id" :value="documentType.id">{{documentType.name}}</a-select-option>
@@ -30,7 +31,7 @@
         </a-col>
         <a-col :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('global.tags')" name="tags" :rules="[{ required: false, message: $t('global.tags')+' '+$t('global.validation') }]">
+                <a-form-item :label="$t('global.tags')" name="tags" :rules="[{ required: true, message: $t('global.tags')+' '+$t('global.validation') }]">
                     <a-select v-model:value="documents.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" @change="checkChangeInput()" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.tags?errorMsg.tags[0]:''" />
                 </a-form-item>
@@ -75,11 +76,11 @@
 </template>
 
 <script>
-import { defineComponent, computed, reactive, watchEffect } from "vue";
+import { defineComponent, computed, reactive, watchEffect,ref } from "vue";
 // import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "@/components/loader/Loader";
-import { warningSwal } from "@/commonMethods/commonMethod";
+import { warningSwal,errorSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import { useRoute } from "vue-router";
@@ -106,10 +107,42 @@ export default defineComponent({
     const route = useRoute();
     const patientId = reactive(props.idPatient);
     const patientUdid = route.params.udid;
+    const docValidationError = ref(false)
+    // const onFileUpload = (event) => {
+    //   let docFile = event.target.files[0];
+    //   let formData = new FormData();
+    //   formData.append("file", docFile);
+    //   store.commit('checkChangeInput',true)
+    //   store.dispatch("uploadFile", formData);
+    // };
+
     const onFileUpload = (event) => {
-      let doc_file = event.target.files[0];
+      let docFile = event.target.files[0];
+      if((docFile.size/1024) > 5120) {
+        Object.assign(documents, {
+          document: ""
+        })
+        errorSwal('File size should be less than or equal to 5 MB');
+        return false
+      }
+      if(
+        docFile.type != 'image/jpg' &&
+        docFile.type != 'image/jpeg' &&
+        docFile.type != 'image/tiff' &&
+        docFile.type != 'image/tif' &&
+        docFile.type != 'image/bmp' &&
+        docFile.type != 'image/png'
+        && docFile.type != 'application/pdf'
+      ) {
+        Object.assign(documents, {
+          document: ""
+        })
+        errorSwal('Allowed file types are JPG, JPEG, TIFF, TIF, BMP, PNG and PDF only');
+        return false
+      }
       let formData = new FormData();
-      formData.append("file", doc_file);
+       formData.append("file", docFile);
+       docValidationError.value=false
       store.commit('checkChangeInput',true)
       store.dispatch("uploadFile", formData);
     };
@@ -129,7 +162,7 @@ export default defineComponent({
       document: filePath.value ? filePath.value : "",
       type: "",
       tags: [],
-      entity: "patient",
+      entity: "staff",
     });
 
     const addStaffs = computed(() => {
@@ -137,6 +170,9 @@ export default defineComponent({
     });
 
     const addDocument = () => {
+      if(filePath.value==null){
+        docValidationError.value=true
+      }else{
         store.dispatch("addStaffDocument", {
           data: {
             name: documents.name,
@@ -148,12 +184,13 @@ export default defineComponent({
           id: props.paramId?props.paramId:addStaffs.value.addStaff.id,
         });
         setTimeout(() => {
+          if(addStaffs.value.closeModal==true){
           store.dispatch("staffDocuments",  props.paramId?props.paramId:addStaffs.value.addStaff.id);
-          reset()
-          if(addStaffs.value.closeModal){
+            reset()
             emit("saveModal", false)
           }
         }, 2000);
+      }
       }
     
     
@@ -196,7 +233,9 @@ export default defineComponent({
     function checkChangeInput(){
       store.commit('checkChangeInput',true)
     }
+    
     return {
+      docValidationError,
       checkChangeInput,
       Id:addStaffs.value.addStaff?addStaffs.value.addStaff.id:'',
       reset,
