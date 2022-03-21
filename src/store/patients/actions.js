@@ -142,7 +142,6 @@ export const updateCondition = async ({commit}, request) => {
           // commit('errorMsg', error.response.data.message)
           errorSwal(error.response.data.message)
           commit('loadingStatus', false)
-          commit('counterPlus')
         }
       })
     })
@@ -255,7 +254,7 @@ export const programList = async ({
   commit
 }, data) => {
   //commit('loadingStatus', true)
-  await serviceMethod.common("get", `program`, null, data).then((response) => {
+  await serviceMethod.common("get", `program?all=all`, null, data).then((response) => {
     commit('programList', response.data.data);
    // commit('loadingStatus', false)
   }).catch((error) => {

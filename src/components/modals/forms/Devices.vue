@@ -15,7 +15,7 @@
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item  :label="$t('patient.devices.inventory')" name="inventory" :rules="[{ required: true, message: $t('patient.devices.inventory')+' '+$t('global.validation') }]">
-                    <a-select :disabled="patients.inventoryList.length==0" ref="select" v-model:value="device.inventory" style="width: 100%" size="large" @change="handleChange(device.inventory)">
+                    <a-select :disabled="patients.inventoryList.length==0 || device.deviceType==''" ref="select" v-model:value="device.inventory" style="width: 100%" size="large" @change="handleChange(device.inventory)">
                         <a-select-option value="" disabled>{{'Select Inventory'}}</a-select-option>
                         <a-select-option v-for="device in patients.inventoryList" :key="device.id" :value="device.id">{{device.modelNumber +' ('+device.macAddress+')'}}</a-select-option>
                     </a-select>

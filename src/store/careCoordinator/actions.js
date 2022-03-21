@@ -32,8 +32,10 @@ export const updateStaff = async ({
   }).catch((error) => {
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
+      commit('closeModal',false)
     }else if(error.response.status === 500){
       errorSwal(error.response.data.message)
+      commit('closeModal',false)
     }else if(error.response.status === 401){
       commit('errorMsg', error.response.data.message)
     }
@@ -98,6 +100,7 @@ export const addContacts = async ({
       commit('closeModal',false)
     }else if(error.response.status === 500){
       errorSwal(error.response.data.message)
+      commit('closeModal',false)
     }else if(error.response.status === 401){
       commit('errorMsg', error.response.data.message)
     }
@@ -147,8 +150,10 @@ export const addAvailability = async ({
   }).catch((error) => {
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
+      commit('closeModal',false)
     }else if(error.response.status === 500){
       errorSwal(error.response.data.message)
+      commit('closeModal',false)
     }else if(error.response.status === 401){
       commit('errorMsg', error.response.data.message)
     }
@@ -216,8 +221,10 @@ export const addStaffRole = async ({
   }).catch((error) => {
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
+      commit('closeModal',false)
     }else if(error.response.status === 500){
       errorSwal(error.response.data.message)
+      commit('closeModal',false)
     }else if(error.response.status === 401){
       commit('errorMsg', error.response.data.message)
     }
@@ -320,8 +327,10 @@ export const addStaffDocument = async ({commit}, data) => {
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
+      commit('closeModal',false)
     } else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
+      commit('closeModal',false)
     } else if (error.response.status === 401) {
       // commit('errorMsg', error.response.data.message)
       errorSwal(error.response.data.message)

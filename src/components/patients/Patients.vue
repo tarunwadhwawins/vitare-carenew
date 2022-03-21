@@ -88,7 +88,7 @@ export default {
 
     watchEffect(() => {
       store.getters.patientsRecord.patientList=""
-        store.dispatch("programList");
+      store.dispatch("programList");
       store.dispatch("patients");
     });
 
