@@ -6,7 +6,7 @@
                 <a-step v-for="item in steps" :key="item.title" :title="item.title?item.title:''" />
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Personal Information'">
-                <a-form :model="personalInfoData" class="basic" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="personalInfo" @finishFailed="onFinishFailed">
+                <a-form :model="personalInfoData" ref="info" class="basic" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="personalInfo" @finishFailed="onFinishFailed">
                     <!-- <PersonalInformation /> -->
                     <a-row :gutter="24">
                         <a-col :sm="12" :xs="24">
@@ -145,7 +145,7 @@
 </template>
 
 <script>
-import {reactive, computed,onUnmounted, watchEffect } from "vue";
+import {reactive, computed,onUnmounted, watchEffect,ref } from "vue";
 // import PersonalInformation from "@/components/modals/forms/PersonalInformation"
 import Contacts from "@/components/modals/forms/Contacts";
 import Availability from "@/components/modals/forms/Availability";
@@ -155,7 +155,7 @@ import StaffDocuments from "@/components/modals/forms/StaffDocuments";
 import { useStore } from "vuex";
 import ErrorMessage from "@/components/common/messages/ErrorMessage";
 import { regex } from "@/RegularExpressions/regex";
-import { successSwal,warningSwal} from "@/commonMethods/commonMethod";
+import { successSwal,warningSwal,errorSwal} from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 export default {
   components: {
@@ -170,12 +170,22 @@ export default {
   setup(props, { emit }) {
     const store = useStore();
 
-
+    const info =ref();
     const current= computed({
       get: () =>
         store.state.careCoordinator.counter,
       set: (value) => {
-        store.state.careCoordinator.counter = value;
+        if(addStaff.value){
+          store.state.careCoordinator.counter = value;
+        }else{
+          if(Object.values(personalInfoData).filter(item=>item!='').length>=8){
+            personalInfo();
+          }else{
+            errorSwal('All fields are required!')
+            store.state.careCoordinator.counter = 0;
+          }
+        }
+
       },
     })
 
@@ -244,13 +254,24 @@ export default {
     });
 
     function saveModal() {
-      emit("saveModal", false);
-      successSwal(messages.formSuccess);
-      Object.assign(personalInfoData, form);
-      store.dispatch("allStaffList");
-      store.dispatch('specializationStaff')
-      store.dispatch('networkStaff')
-      store.commit("resetCounter");
+      if(addStaff.value){ 
+        emit("saveModal", false);
+        successSwal(messages.formSuccess);
+        Object.assign(personalInfoData, form);
+        store.dispatch("allStaffList");
+        store.dispatch('specializationStaff')
+        store.dispatch('networkStaff')
+        store.commit("resetCounter");
+      }else{
+        warningSwal('No data have to save!').then((response) => {
+        if (response == true) {
+          emit("saveModal", false)
+          store.commit("resetCounter")
+        } else {
+          emit("saveModal", true);
+        }
+        })
+      }
     }
 
     function checkChangeInput(){
@@ -292,6 +313,7 @@ export default {
     })
     const paramId = addStaff.value?addStaff.value.id:''
     return {
+      info,
       checkFieldsData,
       checkChangeInput,
       paramId,
