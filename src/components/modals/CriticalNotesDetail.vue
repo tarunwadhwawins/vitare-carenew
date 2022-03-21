@@ -78,8 +78,11 @@ export default defineComponent({
             id: route.params.udid,
             documentId: id,
           });
+          store.state.patients.patientCriticalNotes=''
           setTimeout(() => {
-             store.dispatch('criticalNotesList', route.params.udid);
+            store.dispatch('criticalNotesList', route.params.udid);
+			store.dispatch('patientCriticalNotes', route.params.udid)
+             
           }, 2000);
         }
       });

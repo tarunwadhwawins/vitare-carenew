@@ -795,7 +795,7 @@ export const patientVitals = async ({ commit }, {patientId, deviceType}) => {
 }
 
 export const addVital = async ({ commit }, data) => {
-  console.log('data', data)
+  //console.log('data', data)
   commit('loadingStatus', true)
 	await serviceMethod.common("post", API_ENDPOINTS['patient']+'/'+data.patientId+'/vital', null, data.data).then(() => {
     commit('loadingStatus', false)
@@ -846,6 +846,7 @@ export const readCriticalNote = async ({commit}, data) => {
 export const criticalNotesList = async ({commit}, id) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", `${API_ENDPOINTS['patient']}/${id}/criticalNote`, null, null).then((response) => {
+    //console.log("check",response.data.data)
     commit('criticalNotesList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
