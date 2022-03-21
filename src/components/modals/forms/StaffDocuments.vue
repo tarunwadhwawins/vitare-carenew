@@ -11,10 +11,11 @@
         </a-col>
         <a-col :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: true, message: $t('global.document')+' '+$t('global.validation') }]">
-                    <a-input v-model:value="documents.document" name="document_file" size="large" type="file" @change="onFileUpload" />
+                <label><span style="color:red">* </span>{{$t('global.document')}}
+                    <a-input  name="document_file" size="large" type="file" @change="onFileUpload" />
+                    <ErrorMessage v-if="docValidationError" name="Document is required." />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
-                </a-form-item>
+                </label>
             </div>
         </a-col>
         <a-col :sm="12" :xs="24">
@@ -75,11 +76,11 @@
 </template>
 
 <script>
-import { defineComponent, computed, reactive, watchEffect } from "vue";
+import { defineComponent, computed, reactive, watchEffect,ref } from "vue";
 // import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "@/components/loader/Loader";
-import { warningSwal } from "@/commonMethods/commonMethod";
+import { warningSwal,errorSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import { useRoute } from "vue-router";
@@ -106,10 +107,42 @@ export default defineComponent({
     const route = useRoute();
     const patientId = reactive(props.idPatient);
     const patientUdid = route.params.udid;
+    const docValidationError = ref(false)
+    // const onFileUpload = (event) => {
+    //   let docFile = event.target.files[0];
+    //   let formData = new FormData();
+    //   formData.append("file", docFile);
+    //   store.commit('checkChangeInput',true)
+    //   store.dispatch("uploadFile", formData);
+    // };
+
     const onFileUpload = (event) => {
-      let doc_file = event.target.files[0];
+      let docFile = event.target.files[0];
+      if((docFile.size/1024) > 5120) {
+        Object.assign(documents, {
+          document: ""
+        })
+        errorSwal('File size should be less than or equal to 5 MB');
+        return false
+      }
+      if(
+        docFile.type != 'image/jpg' &&
+        docFile.type != 'image/jpeg' &&
+        docFile.type != 'image/tiff' &&
+        docFile.type != 'image/tif' &&
+        docFile.type != 'image/bmp' &&
+        docFile.type != 'image/png'
+        && docFile.type != 'application/pdf'
+      ) {
+        Object.assign(documents, {
+          document: ""
+        })
+        errorSwal('Allowed file types are JPG, JPEG, TIFF, TIF, BMP, PNG and PDF only');
+        return false
+      }
       let formData = new FormData();
-      formData.append("file", doc_file);
+       formData.append("file", docFile);
+       docValidationError.value=false
       store.commit('checkChangeInput',true)
       store.dispatch("uploadFile", formData);
     };
@@ -129,7 +162,7 @@ export default defineComponent({
       document: filePath.value ? filePath.value : "",
       type: "",
       tags: [],
-      entity: "patient",
+      entity: "staff",
     });
 
     const addStaffs = computed(() => {
@@ -137,6 +170,9 @@ export default defineComponent({
     });
 
     const addDocument = () => {
+      if(documents.document==''){
+        docValidationError.value=true
+      }else{
         store.dispatch("addStaffDocument", {
           data: {
             name: documents.name,
@@ -154,6 +190,7 @@ export default defineComponent({
             emit("saveModal", false)
           }
         }, 2000);
+      }
       }
     
     
@@ -197,6 +234,7 @@ export default defineComponent({
       store.commit('checkChangeInput',true)
     }
     return {
+      docValidationError,
       checkChangeInput,
       Id:addStaffs.value.addStaff?addStaffs.value.addStaff.id:'',
       reset,
