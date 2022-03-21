@@ -36,6 +36,7 @@ export default defineComponent({
     });
 
     function addCriticalNote() {
+      store.state.patients.patientCriticalNotes= ''
       store.dispatch("addCriticalNote", {udid:route.params.udid,criticalNote:notes}).then(() => {
         store.dispatch('patientCriticalNotes', route.params.udid);
       })
@@ -46,6 +47,7 @@ export default defineComponent({
         emit("saveModal", false);
       }
       }, 2000);
+      
     }
 
     const patient = computed(() => {
