@@ -184,9 +184,9 @@ export default defineComponent({
           id: props.paramId?props.paramId:addStaffs.value.addStaff.id,
         });
         setTimeout(() => {
+          if(addStaffs.value.closeModal==true){
           store.dispatch("staffDocuments",  props.paramId?props.paramId:addStaffs.value.addStaff.id);
-          reset()
-          if(addStaffs.value.closeModal){
+            reset()
             emit("saveModal", false)
           }
         }, 2000);
@@ -233,6 +233,7 @@ export default defineComponent({
     function checkChangeInput(){
       store.commit('checkChangeInput',true)
     }
+    
     return {
       docValidationError,
       checkChangeInput,

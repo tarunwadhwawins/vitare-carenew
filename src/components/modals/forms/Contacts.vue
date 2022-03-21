@@ -104,9 +104,8 @@ export default defineComponent({
         data: contact,
       });
       setTimeout(() => {
-        
-        store.dispatch("staffContactList", props.paramId?props.paramId:staffs.value.addStaff.id);
         if(staffs.value.closeModal==true){
+          store.dispatch("staffContactList", props.paramId?props.paramId:staffs.value.addStaff.id);
           reset()
           emit("saveModal", false)
       }

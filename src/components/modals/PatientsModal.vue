@@ -129,22 +129,23 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="contactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" ref="select" v-model:value="demographics.contactTime" style="width: 100%" size="large">
+                                    <!-- <a-select @change="changedValue" ref="select" mode="multiple" v-model:value="demographics.contactTime" style="width: 100%" size="large">
                                         <a-select-option value="" hidden>{{'Select Preferred Time'}}</a-select-option>
                                         <a-select-option v-for="ptOfDayContact in globalCode.ptOfDayContact.globalCode" :key="ptOfDayContact.id" :value="patientDetail != null ? patientDetail.contactTime : ptOfDayContact.id">{{ptOfDayContact.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                    <a-select @change="changedValue" v-model:value="demographics.contactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.contactTime?errorMsg.contactTime[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
+                        <!-- <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.MRN')" name="medicalRecordNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('patient.demographics.MRN'),pattern: regex.alphaNumeric}]">
                                     <a-input @change="changedValue" v-model:value="demographics.medicalRecordNumber" placeholder="Please enter 12 alphanumeric " size="large" maxlength="12" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.medicalRecordNumber?errorMsg.medicalRecordNumber[0]:''" />
                                 </a-form-item>
                             </div>
-                        </a-col>
+                        </a-col> -->
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.country')" name="country" :rules="[{ required: false, message: $t('global.country')+' '+$t('global.validation') }]">
@@ -191,7 +192,7 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :span="24">
+                        <a-col :md="12" :sm="12" :span="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.address')" name="address" :rules="[{ required: false, message: $t('global.address')+' '+$t('global.validation') }]">
                                     <a-textarea @change="changedValue" v-model:value="demographics.address" allow-clear />
@@ -222,7 +223,7 @@
                                 <a-form-item :label="$t('patient.demographics.emailAddress')" name="familyEmail" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('patient.demographics.emailAddress').toLowerCase(), type: 'email' }]">
                                     <a-input @change="changedValue" v-model:value="demographics.familyEmail" placeholder="test@test.com" size="large" @input="emailChange()"/>
                                     <!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" /> -->
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.familyEmail?errorMsg.familyEmail[0]:''" />
+                                    <ErrorMessage v-if="errorMsg && !demographics.familyEmail" :name="errorMsg.familyEmail?errorMsg.familyEmail[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -245,10 +246,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="familyContactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" ref="select" v-model:value="demographics.familyContactTime" style="width: 100%" size="large">
+                                    <!-- <a-select @change="changedValue" mode="multiple" v-model:value="demographics.familyContactTime" style="width: 100%" size="large">
                                         <a-select-option value="" disabled>{{'Select Preferred Time'}}</a-select-option>
                                         <a-select-option v-for="ptOfDayContact in globalCode.ptOfDayContact.globalCode" :key="ptOfDayContact.id" :value="ptOfDayContact.id">{{ptOfDayContact.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                    <a-select @change="changedValue" v-model:value="demographics.familyContactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))"  />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactTime?errorMsg.familyContactTime[0]:''" />
                                 </a-form-item>
                             </div>
@@ -327,10 +329,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="familyContactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" ref="select" v-model:value="demographics.familyContactTime" style="width: 100%" size="large" disabled>
+                                    <!-- <a-select @change="changedValue" ref="select" v-model:value="demographics.familyContactTime" style="width: 100%" size="large" disabled>
                                         <a-select-option value="" disabled>{{'Select Preferred Time'}}</a-select-option>
                                         <a-select-option v-for="ptOfDayContact in globalCode.ptOfDayContact.globalCode" :key="ptOfDayContact.id" :value="ptOfDayContact.id">{{ptOfDayContact.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                    <a-select @change="changedValue" v-model:value="demographics.familyContactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))" disabled />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactTime?errorMsg.familyContactTime[0]:''" />
                                 </a-form-item>
                             </div>
@@ -362,7 +365,7 @@
                                 <a-form-item :label="$t('patient.demographics.emailAddress')" name="emergencyEmail" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('patient.demographics.emailAddress').toLowerCase(), type: 'email' }]">
                                     <a-input @change="changedValue" v-model:value="demographics.emergencyEmail" placeholder="test@test.com" size="large" @input="emailChange()" />
                                 </a-form-item>
-                                <ErrorMessage v-if="errorMsg" :name="errorMsg.emergencyEmail?errorMsg.emergencyEmail[0]:''" />
+                                <ErrorMessage v-if="errorMsg && !demographics.emergencyEmail" :name="errorMsg.emergencyEmail?errorMsg.emergencyEmail[0]:''" />
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
@@ -384,10 +387,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="emergencyContactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" ref="select" v-model:value="demographics.emergencyContactTime" style="width: 100%" size="large">
+                                    <!-- <a-select @change="changedValue" mode="multiple" v-model:value="demographics.emergencyContactTime" style="width: 100%" size="large">
                                         <a-select-option value="" disabled>{{'Select Preferred Time'}}</a-select-option>
                                         <a-select-option v-for="ptOfDayContact in globalCode.ptOfDayContact.globalCode" :key="ptOfDayContact.id" :value="ptOfDayContact.id">{{ptOfDayContact.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                    <a-select @change="changedValue" v-model:value="demographics.emergencyContactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))"  />
                                 </a-form-item>
                                 <ErrorMessage v-if="errorMsg" :name="errorMsg.emergencyContactTime?errorMsg.emergencyContactTime[0]:''" />
                             </div>
@@ -798,14 +802,14 @@ export default defineComponent( {
       dob: "",
       gender: "",
       language: "",
-      otherLanguage: ref([]),
+      otherLanguage: [],
       nickName: "",
       weight: "",
       height: "",
       email: "",
       phoneNumber: "",
-      contactType: ref([]),
-      contactTime: "",
+      contactType: [],
+      contactTime: [],
       medicalRecordNumber: "",
       country: 19,
       state: "",
@@ -816,15 +820,15 @@ export default defineComponent( {
       fullName: "",
       familyEmail: "",
       familyPhoneNumber: "",
-      familyContactType: ref([]),
-      familyContactTime: "",
+      familyContactType: [],
+      familyContactTime: [],
       familyGender: "",
       relation: "",
       emergencyFullName: "",
       emergencyEmail: "",
       emergencyPhoneNumber: "",
-      emergencyContactType: ref([]),
-      emergencyContactTime: "",
+      emergencyContactType: [],
+      emergencyContactTime: [],
       emergencyGender: "",
       isPrimary: false,
       familyMemberId: '',

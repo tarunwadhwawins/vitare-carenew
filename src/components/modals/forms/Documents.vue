@@ -11,10 +11,15 @@
         </a-col>
         <a-col :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: false, message: $t('global.document')+' '+$t('global.validation') }]">
+                <!-- <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: false, message: $t('global.document')+' '+$t('global.validation') }]">
                     <a-input name="document_file" size="large" type="file" @change="onFileUpload" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
-                </a-form-item>
+                </a-form-item> -->
+                <label><span style="color:red">* </span>{{$t('global.document')}}
+                    <a-input  name="document_file" size="large" type="file" @change="onFileUpload" />
+                    <ErrorMessage v-if="docValidationError" name="Document is required." />
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
+                </label>
             </div>
         </a-col>
         <a-col :sm="12" :xs="24">
@@ -107,6 +112,7 @@ export default defineComponent({
     const route = useRoute();
     const patientId = reactive(props.idPatient);
     const patientUdid = route.params.udid;
+    const docValidationError = ref(false)
     const formRef = ref()
     const changedValue = () => {
       emit('onChange')
@@ -157,6 +163,7 @@ export default defineComponent({
       }
       let formData = new FormData();
       formData.append("file", docFile);
+      docValidationError.value=false
       store.dispatch("uploadFile", formData);
     };
 
@@ -169,26 +176,36 @@ export default defineComponent({
     });
 
     const addDocument = () => {
-      if(props.entity=="patient") {
+      // if(props.entity=="patient") {
+      //   const patientData = {
+      //     name: documents.name,
+      //     document: filePath.value ? filePath.value : "",
+      //     type: documents.type,
+      //     tags: documents.tags,
+      //     entity: "patient",
+      //   }
+      //   if(patientId != null) {
+      //     store.dispatch("addDocument", {
+      //       data: patientData,
+      //       id: patientId,
+      //     }).then(() => {
+      //       emit('onChange', false)
+      //       formRef.value.resetFields();
+      //       Object.assign(documents, form)
+      //       store.dispatch("documents", patientUdid);
+      //     });
+      //   }
+      //   else {
+        if(filePath.value==null){
+          docValidationError.value=true
+        }else{
         const patientData = {
           name: documents.name,
-          document: filePath.value ? filePath.value : "",
+          document: filePath.value,
           type: documents.type,
           tags: documents.tags,
           entity: "patient",
         }
-        if(patientId != null) {
-          store.dispatch("addDocument", {
-            data: patientData,
-            id: patientId,
-          }).then(() => {
-            emit('onChange', false)
-            formRef.value.resetFields();
-            Object.assign(documents, form)
-            store.dispatch("documents", patientUdid);
-          });
-        }
-        else {
           store.dispatch("addDocument", {
             data: patientData,
             id: patients.value.addDemographic.id,
@@ -198,8 +215,9 @@ export default defineComponent({
             Object.assign(documents, form)
             store.dispatch("documents", patients.value.addDemographic.id);
           });
-        }
       }
+        // }
+      // }
       
     }
     
@@ -248,6 +266,7 @@ export default defineComponent({
       Object.assign(documents,form)
     }
     return {
+      docValidationError,
       changedValue,
       formRef,
       reset,

@@ -90,9 +90,9 @@ export default defineComponent({
           data:  {startTime: startTime,endTime:endTime}
         });
         setTimeout(() => {
-          store.dispatch("availabilityList", props.paramId?props.paramId:staffs.value.addStaff.id);
-          reset()
-          if(staffs.value.closeModal){
+          if(staffs.value.closeModal==true){
+            store.dispatch("availabilityList", props.paramId?props.paramId:staffs.value.addStaff.id);
+            reset()
             emit("saveModal", false)
         }
         }, 2000);
@@ -113,6 +113,10 @@ export default defineComponent({
     function checkChangeInput(){
       store.commit('checkChangeInput',true)
     }
+
+    const errorMsg = computed(() => {
+      return store.state.careCoordinator.errorMsg;
+    });
     return {
       checkChangeInput,
       reset,
@@ -121,6 +125,7 @@ export default defineComponent({
       addAvailability,
       availability,
       size: ref("large"),
+      errorMsg
     };
   },
 });

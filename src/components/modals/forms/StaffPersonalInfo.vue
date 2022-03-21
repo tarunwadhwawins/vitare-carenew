@@ -132,7 +132,7 @@ export default {
       data:personalInfoData
       });
       setTimeout(()=>{
-        if(careCoordinators.value.closeModal){
+        if(careCoordinators.value.closeModal==true){
           store.dispatch("staffSummary", route.params.udid);
           emit("saveModal", false)
       }
@@ -197,9 +197,7 @@ export default {
      onUnmounted(()=>{
       store.commit('errorMsg',null)
     })
-    
-
-     
+         
     return {
       checkFieldsData,
       checkChangeInput,
