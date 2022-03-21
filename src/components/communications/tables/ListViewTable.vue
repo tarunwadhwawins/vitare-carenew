@@ -1,7 +1,18 @@
 <template>
-
+<div class="highLight">Patients is highlighted</div>
 <a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900, y: 300 }" :pagination="false" :rowClassName="(record) => auth.user.id!=record.messageSender && record.isRead==0 ? 'bold':''">
-
+     <template #from="{ record }" class="custom">
+         <span v-if="record.is_sender_patient" class="customTd">{{record.from}}</span>
+        <span v-else>
+            {{record.from}}
+          </span>
+        </template>
+    <template #to="{ record }" class="custom">
+         <span v-if="record.is_receiver_patient" class="customTd">{{record.to}}</span>
+        <span v-else>
+            {{record.to}}
+          </span>
+        </template>
     <template #resend>
         <a-tooltip placement="bottom">
             <template #title>
@@ -11,7 +22,7 @@
                 <EyeOutlined /></a>
         </a-tooltip>
     </template>
-    <template #patient="text">
+    <template #patient="">
         <router-link :to="linkTo">
             {{ text.text }}
         </router-link>
@@ -135,18 +146,17 @@ export default {
                 title: "From",
                 dataIndex: "from",
                 key: "from",
-                sorter: {
-                    compare: (a, b) => a.from - b.from,
-                    multiple: 2,
+               slots: {
+                    customRender: "from",
                 },
             },
             {
                 title: "To",
                 dataIndex: "to",
                 key: "to",
-                sorter: {
-                    compare: (a, b) => a.to - b.to,
-                    multiple: 2,
+                
+               slots: {
+                    customRender: "to",
                 },
             },
             {
@@ -264,3 +274,15 @@ export default {
     },
 };
 </script>
+<style>
+.customTd{
+    display: block;
+    background-color: rgb(255 250 96);
+    width: 100%;
+    height: 100%;
+    padding: 7px;
+}
+.highLight{
+    color:red
+}
+</style>
