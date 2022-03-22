@@ -31,7 +31,7 @@
           <a href="javascript:void(0)" @click="showFamilyMembersModal" >{{familyMembersList[0].fullName}}</a>
         </div>
       </div>
-      <div class="pat-profile-inner">
+      <!-- <div class="pat-profile-inner">
         <div class="thumb-head">
           Physicians <PlusOutlined @click="showAddPhysicianModal"/><br />
         </div>
@@ -39,6 +39,14 @@
           <a href="javascript:void(0)" @click="showPhysiciansModal" >{{ physiciansList[0].name }}</a>
         </div>
       </div>
+      <div class="pat-profile-inner">
+        <div class="thumb-head">
+          Emergency Contacts <PlusOutlined @click="showAddEmergencyContactModal"/><br />
+        </div>
+        <div v-if="emergencyContactsList && emergencyContactsList.length > 0" class="thumb-desc">
+          <a href="javascript:void(0)" @click="showEmergencyContactDetailsModal" >{{ emergencyContactsList[0].fullName }}</a>
+        </div>
+      </div> -->
       <div class="pat-profile-inner">
         <div class="thumb-head" @click="showCriticalModal">Critical Note
           <PlusOutlined />
@@ -133,6 +141,9 @@
   <AddPhysicianModal v-if="addPhysicianModalVisible" v-model:visible="addPhysicianModalVisible" @closeModal="handleOk" :isPhysicianEdit="isPhysicianEdit" />
   <PhysiciansDetailsModal v-model:visible="physiciansModalVisible" :physiciansList="physiciansList" @isPhysicianEdit="editPhysician" />
 
+  <AddEmergencyContacts v-if="addEmergencyContactModalVisible" v-model:visible="addEmergencyContactModalVisible" @closeModal="handleOk" :isEmergencyContactEdit="isEmergencyContactEdit" />
+  <EmergencyContactsDetailsModal v-model:visible="emergencyContactsModalVisible" :emergencyContactsList="emergencyContactsList" @isEmergencyContactEdit="editEmergencyContact" />
+
   <PatientFlagsModal v-if="flagsModalVisible" v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
   <AddCriticalNote v-model:visible="criticalModalVisible" @closeModal="handleOk" @saveModal="handleCriticalNote($event)"/>
   <CriticalNotesDetailModal v-if="criticalNotesDetailVisible" v-model:visible="criticalNotesDetailVisible" @closeModal="handleOk"/>
@@ -172,6 +183,8 @@ import AddFamilyMemberModal from "@/components/modals/AddFamilyMemberModal";
 import FamilyMembersDetailsModal from "@/components/modals/FamilyMembersDetailsModal";
 import AddPhysicianModal from "@/components/modals/AddPhysicianModal";
 import PhysiciansDetailsModal from "@/components/modals/PhysiciansDetailsModal";
+import AddEmergencyContacts from "@/components/modals/AddEmergencyContacts";
+import EmergencyContactsDetailsModal from "@/components/modals/EmergencyContactsDetailsModal";
 import PatientFlagsModal from "@/components/modals/PatientFlagsModal";
 import AddCriticalNote from "@/components/modals/CriticalNote"
 import CriticalNotesDetailModal from "@/components/modals/CriticalNotesDetail";
@@ -218,6 +231,8 @@ export default {
     FamilyMembersDetailsModal,
     AddPhysicianModal,
     PhysiciansDetailsModal,
+    AddEmergencyContacts,
+    EmergencyContactsDetailsModal,
   },
   setup() {
     const store = useStore();
@@ -248,6 +263,9 @@ export default {
     const deviceDetailVisible = ref(false);
     const addPhysicianModalVisible = ref(false);
     const physiciansModalVisible = ref(false);
+    const addEmergencyContactModalVisible = ref(false);
+    const isEmergencyContactEdit = ref(false);
+    const emergencyContactsModalVisible = ref(false);
 
     watchEffect(() => {
       if(route.name == 'PatientSummary') {
@@ -276,10 +294,9 @@ export default {
       return store.state.patients.physiciansList
     })
 
-    // const contactTypes = []
-    // familyMembersList.value.contactType.forEach(contactType => {
-      console.log('contactType', familyMembersList.value)
-    // });
+    const emergencyContactsList = computed(() => {
+      return store.state.patients.emergencyContactsList
+    })
 
     const patientDetails = computed(() => {
       return store.state.patients.patientDetails
@@ -319,6 +336,7 @@ export default {
     })
     
     const handleOk = (value) => {
+      addEmergencyContactModalVisible.value = false;
       addPhysicianModalVisible.value = false;
       addFamilyMembersModalVisible.value = false;
       flagsModalVisible.value = false;
@@ -339,6 +357,15 @@ export default {
       deviceDetailVisible.value = false;
     };
 
+    const showAddEmergencyContactModal = () => {
+      addEmergencyContactModalVisible.value = true
+      isEmergencyContactEdit.value = false
+    }
+
+    const showEmergencyContactDetailsModal = () => {
+      emergencyContactsModalVisible.value = true
+    }
+
     const showAddFamilyMemberModal = () => {
       addFamilyMembersModalVisible.value = true
       isFamilyMemberEdit.value = false
@@ -351,6 +378,11 @@ export default {
     const editFamilyMember = () => {
       addFamilyMembersModalVisible.value=true
       isFamilyMemberEdit.value=true
+    }
+
+    const editEmergencyContact = () => {
+      addEmergencyContactModalVisible.value = true
+      isEmergencyContactEdit.value = true
     }
 
     const showAddPhysicianModal = () => {
@@ -531,6 +563,14 @@ export default {
       physiciansModalVisible,
       showAddPhysicianModal,
       showPhysiciansModal,
+
+      emergencyContactsList,
+      editEmergencyContact,
+      showAddEmergencyContactModal,
+      showEmergencyContactDetailsModal,
+      addEmergencyContactModalVisible,
+      isEmergencyContactEdit,
+      emergencyContactsModalVisible,
     }
   }
 }
