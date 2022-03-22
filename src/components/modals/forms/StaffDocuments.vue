@@ -1,5 +1,5 @@
 <template>
-<a-form :model="documents" scrollToFirstError=true name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDocument" @finishFailed="onFinishFailed">
+<a-form :model="documents" ref="formRest" scrollToFirstError=true name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDocument" @finishFailed="onFinishFailed">
     <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
             <div class="form-group">
@@ -100,11 +100,13 @@ export default defineComponent({
       type: Number
     },
     entity:String,
-    paramId:String
+    paramId:String,
+    clearData:Boolean
   },
   setup(props,{emit}) {
     const store = useStore();
     const route = useRoute();
+    const formRest =ref();
     const patientId = reactive(props.idPatient);
     const patientUdid = route.params.udid;
     const docValidationError = ref(false)
@@ -228,13 +230,20 @@ export default defineComponent({
       ...documents,
     });
     function reset(){
+      formRest.value.resetFields();
       Object.assign(documents,form)
     }
+    watchEffect(()=>{
+    if(props.clearData==true){
+      Object.assign(documents,form)
+    }
+    })
     function checkChangeInput(){
       store.commit('checkChangeInput',true)
     }
     
     return {
+      formRest,
       docValidationError,
       checkChangeInput,
       Id:addStaffs.value.addStaff?addStaffs.value.addStaff.id:'',

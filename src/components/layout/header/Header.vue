@@ -123,18 +123,22 @@
                 <template #overlay>
                   <a-menu class="headerDropdown">
                     <li class="title">{{$t('header.notification')}}</li>
-                    <li class="listing">
-                      <a class="d-flex align-items-center" href="#">
-                        <div class="flex-shrink-0 imgProfile">
-                          <img src="../../../assets/images/user-2.jpg" alt="image" width="50" />
-                        </div>
-                        <div class="flex-grow-1 ms-3 summary">
-                          <p>Just a reminder that you have appoinment</p>
-                          <span class="date">40 minutes ago</span>
-                        </div>
-                      </a>
+                    <li class="listing" v-for="(notification,index) in notifications" :key="index">
+                      <div v-for="(notify,index) in notification.value" :key="index">
+                        <a class="d-flex align-items-center" href="#">
+                          <!-- <div class="flex-shrink-0 imgProfile">
+                            <img src="@/assets/images/userAvatar.png" alt="image" width="50" />
+                          </div> -->
+                          <div class="flex-grow-1 ms-3 summary">
+                            <h3>{{notify.title}}</h3>
+                            <p>{{notify.body}}</p><br/>
+                            <strong class="" v-if="notification.date">{{dobFormat(notification.date)}}</strong>&nbsp;
+                            <strong class="" v-if="notify.time">{{meridiemFormatFromTimestamp(notify.time)}}</strong>
+                          </div>
+                        </a>
+                      </div>
                     </li>
-                    <li class="listing">
+                    <!-- <li class="listing">
                       <a class="d-flex align-items-center" href="#">
                         <div class="flex-shrink-0 imgProfile">
                           <img src="../../../assets/images/user-1.jpg" alt="image" width="50" />
@@ -144,10 +148,10 @@
                           <span class="date">20 minutes ago</span>
                         </div>
                       </a>
-                    </li>
-                    <li class="allNotication">
+                    </li> -->
+                    <!-- <li class="allNotication">
                       <a href="#">{{$t('header.checkAllNotifications')}}</a>
-                    </li>
+                    </li> -->
                   </a-menu>
                 </template>
               </a-dropdown>
@@ -191,7 +195,7 @@
 </template>
 
 <script>
-  import { defineComponent, ref, computed } from "vue";
+  import { defineComponent, ref, computed, watchEffect } from "vue";
   import AddAppointment from "@/components/modals/AddAppointment";
   import TasksModal from "@/components/modals/TasksModal";
   import PatientsModal from "@/components/modals/PatientsModal";
@@ -199,7 +203,7 @@
   import AddStartCall from "@/components/modals/AddStartCall";
   import SendMessage from "@/components/modals/SendMessage";
   import { useStore } from "vuex";
-  import { arrayToObjact } from "@/commonMethods/commonMethod";
+  import { arrayToObjact,meridiemFormatFromTimestamp,dobFormat } from "@/commonMethods/commonMethod";
   import {
     NotificationOutlined,
     DownOutlined,
@@ -246,6 +250,10 @@
       //   toggle.value=!toggle.value
       //   emit('collapsMenu',toggle.value)
       // }
+
+      watchEffect(()=>{
+        store.dispatch('getNotifications')
+      })
 
       const appointmentModal = ref(false);
       const addAppt = () => {
@@ -313,7 +321,14 @@
     const communicationPermissions = computed(()=>{
       return store.state.screenPermissions.communicationPermissions
     })
+
+      const notifications = computed(()=>{
+        return store.state.common.getNotifications
+      })
       return {
+        dobFormat,
+        meridiemFormatFromTimestamp,
+        notifications,
         communicationPermissions,
         accessPermission,
         handleTaskOk,

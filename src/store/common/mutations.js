@@ -143,4 +143,7 @@ export const checkChangeInput = (state, data) => {
     state.checkChangeInput = data
   }
 
-
+  export const getNotifications = (state, data) => {
+    state.getNotifications = data
+  }
+  
