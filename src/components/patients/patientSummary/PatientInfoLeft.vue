@@ -20,7 +20,7 @@
           Flags <PlusOutlined @click="showAddFlagModal"/><br />
         </div>
         <div class="thumb-desc" v-if="latestFlag">
-          <Flags :flag="latestFlag.color" />
+          <Flags :data="latestFlag.flags.data" :flag="latestFlag.color" />
         </div>
       </div>
       <div class="pat-profile-inner">
