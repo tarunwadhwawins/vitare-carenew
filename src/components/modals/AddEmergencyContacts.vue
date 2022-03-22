@@ -1,0 +1,204 @@
+<template>
+	<a-modal width="60%" title="Add Emergency Contact" centered>
+		<a-form ref="formRef" :model="emergencyContactForm" layout="vertical" @finish="submitForm">
+			<a-row :gutter="24">
+
+				<a-col :md="12" :sm="12" :xs="24">
+					<div class="form-group">
+						<a-form-item :label="$t('patient.demographics.fullName')" name="fullName" :rules="[{ required: true, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
+							<a-input v-model:value="emergencyContactForm.fullName" size="large" />
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.fullName?errorMsg.fullName[0]:''" />
+						</a-form-item>
+					</div>
+				</a-col>
+
+				<a-col :md="12" :sm="12" :xs="24">
+					<div class="form-group">
+						<a-form-item :label="$t('patient.demographics.emailAddress')" name="emergencyEmail" :rules="[{ required: true, message: $t('patient.demographics.emailAddress')+' '+$t('global.validation') }]">
+							<a-input v-model:value="emergencyContactForm.emergencyEmail" placeholder="test@test.com" size="large" />
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.emergencyEmail?errorMsg.emergencyEmail[0]:''" />
+						</a-form-item>
+					</div>
+				</a-col>
+
+				<a-col :md="12" :sm="12" :xs="24">
+					<div class="form-group">
+						<a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.phoneNo')+' '+$t('global.validation') }]">
+							<a-input-number v-model:value="emergencyContactForm.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
+						</a-form-item>
+					</div>
+				</a-col>
+
+				<a-col :md="12" :sm="12" :xs="24">
+					<div class="form-group">
+						<a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="contactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
+							<a-select v-model:value="emergencyContactForm.contactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" />
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.contactType?errorMsg.contactType[0]:''" />
+						</a-form-item>
+					</div>
+				</a-col>
+
+				<a-col :md="12" :sm="12" :xs="24">
+					<div class="form-group">
+						<a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="contactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
+							<a-select v-model:value="emergencyContactForm.contactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))" />
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.contactTime?errorMsg.contactTime[0]:''" />
+						</a-form-item>
+					</div>
+				</a-col>
+
+				<a-col :md="12" :sm="12" :xs="24">
+					<div class="form-group">
+						<a-form-item :label="$t('global.gender')" name="gender" :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
+							<a-select ref="select" v-model:value="emergencyContactForm.gender" style="width: 100%" size="large">
+								<a-select-option value="" hidden>{{'Select Gender'}}</a-select-option>
+								<a-select-option v-for="gender in globalCode.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
+							</a-select>
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.gender?errorMsg.gender[0]:''" />
+						</a-form-item>
+					</div>
+				</a-col>
+
+				<a-col v-if="isEdit" :md="12" :sm="12" :xs="24">
+					<div class="form-group">
+						<a-form-item :label="$t('global.isPrimary')" name="isPrimary">
+              <a-switch v-model:checked="emergencyContactForm.isPrimary" size="large" />
+            </a-form-item>
+					</div>
+				</a-col>
+
+				<a-col :sm="24" :span="24">
+					<ModalButtons :Id="id" @is_click="handleClear"/>
+				</a-col>
+			</a-row>
+		</a-form>
+		<Loader />
+	</a-modal>
+</template>
+
+<script>
+import ModalButtons from "@/components/common/button/ModalButtons";
+import { computed, reactive, ref, onMounted, onUnmounted } from 'vue-demi';
+import { useStore } from 'vuex';
+import Loader from "@/components/loader/Loader.vue";
+import { useRoute } from 'vue-router';
+import ErrorMessage from "../common/messages/ErrorMessage"
+export default {
+  components: {
+    ModalButtons,
+    Loader,
+		ErrorMessage,
+  },
+  props: {
+    patientId: {
+			type: Number
+		},
+    isEmergencyContactEdit: {
+			type: Boolean
+		},
+  },
+	setup(props, { emit }) {
+		const store = useStore()
+		const route = useRoute()
+		const formRef = ref()
+		const patientUdid = route.params.udid
+		const isEdit = reactive(props.isEmergencyContactEdit)
+
+    const globalCode = computed(() => {
+      return store.state.common;
+    });
+
+    const patients = computed(() => {
+      return store.state.patients;
+    });
+		
+		const emergencyContactForm = reactive({
+			fullName: '',
+			emergencyEmail: '',
+			phoneNumber: '',
+			contactType: [],
+			contactTime: [],
+			gender: '',
+			isPrimary: patients.value.emergencyContactDetails && patients.value.emergencyContactDetails.isPrimary ? patients.value.emergencyContactDetails.isPrimary : false,
+		})
+		console.log('emergencyContactDetails', patients.value)
+		
+		const id = ref(null)
+		if(isEdit) {
+			id.value = patients.value.emergencyContactDetails;
+		}
+
+    onMounted(() => {
+      if(isEdit) {
+        Object.assign(emergencyContactForm, patients.value.emergencyContactDetails);
+      }
+    })
+
+		onUnmounted(() => {
+			store.commit('errorMsg', null)
+		})
+
+    const form = reactive({ ...emergencyContactForm });
+
+		const submitForm = () => {
+      if(isEdit) {
+				store.dispatch('updateEmergencyContact', {
+					patientUdid: patientUdid,
+					contactUdid: patients.value.emergencyContactDetails.id,
+					data: emergencyContactForm
+				}).then(() => {
+					if(route.name == 'PatientSummary') {
+						store.dispatch('emergencyContactsList', patientUdid);
+					}
+					if(closeModal == false) {
+						emit('closeModal')
+						formRef.value.resetFields();
+						Object.assign(emergencyContactForm, form)
+					}
+				})
+			}
+			else {
+				store.dispatch('addEmergencyContact', {
+					patientUdid: patientUdid,
+					data: emergencyContactForm
+				}).then(() => {
+					if(route.name == 'PatientSummary') {
+						store.dispatch('emergencyContactsList', patientUdid);
+					}
+					if(closeModal == false) {
+						emit('closeModal')
+						formRef.value.resetFields();
+						Object.assign(emergencyContactForm, form)
+					}
+				})
+			}
+		}
+
+    const handleClear = () => {
+      formRef.value.resetFields();
+      Object.assign(emergencyContactForm, form)
+    }
+
+		const errorMsg = computed(() => {
+			return store.state.patients.errorMsg
+		})
+
+		const closeModal = computed(() => {
+			return store.state.patients.closeModal
+		})
+
+		return {
+      isEdit,
+      formRef,
+			globalCode,
+			emergencyContactForm,
+			submitForm,
+			handleClear,
+			errorMsg,
+			closeModal,
+			id,
+		}
+	}
+}
+</script>

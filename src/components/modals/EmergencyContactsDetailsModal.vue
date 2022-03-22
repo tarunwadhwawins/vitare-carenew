@@ -1,10 +1,10 @@
 <template>
-	<a-modal width="90%" title="Family Members" centered>
+	<a-modal width="90%" title="Emergency Contacts" centered>
 		<a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <a-table rowKey="id"
-          :columns="familyMembersColumns"
-          :data-source="familyMembersList"
+          :columns="emergencyContactsColumns"
+          :data-source="emergencyContactsList"
           :scroll="{ x: 2100 }"
           :pagination="false">
 
@@ -36,8 +36,8 @@
 					</template> -->
 				
           <template #action="{record}">
-            <a class="icons"><EditOutlined @click="editFamilyMember(record.id)" /></a>
-            <a class="icons"><DeleteOutlined @click="deleteFamilyMember(record.id)" /></a>
+            <a class="icons"><EditOutlined @click="editEmergencyContact(record.id)" /></a>
+            <a class="icons"><DeleteOutlined @click="deleteEmergencyContact(record.id)" /></a>
           </template>
         </a-table>
         <Loader />
@@ -47,13 +47,16 @@
 </template>
 
 <script>
-import { reactive } from 'vue-demi'
+import {
+  // computed,
+  // reactive
+} from 'vue-demi'
 import { useStore } from 'vuex'
 import {
   DeleteOutlined,
   EditOutlined
 } from "@ant-design/icons-vue";
-import {warningSwal} from "@/commonMethods/commonMethod"
+import { warningSwal } from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
 import Loader from "@/components/loader/Loader.vue";
 import { useRoute } from 'vue-router';
@@ -64,18 +67,16 @@ export default {
     Loader,
   },
 	props: {
-    patientId: {
-			type: Number
-		},
-		familyMembersList: {
+		emergencyContactsList: {
 			type: Array
 		}
 	},
 	setup(props, {emit}) {
 		const store = useStore()
 		const route = useRoute()
-		const patientUdid = reactive(props.patientId)
-		const familyMembersColumns = [
+		const patientUdid = route.params.udid
+
+		const emergencyContactsColumns = [
 			{
 				title: "Name",
 				dataIndex: "fullName",
@@ -113,11 +114,6 @@ export default {
 				key: "gender",
 			},
 			{
-				title: "Relation",
-				dataIndex: "relation",
-				key: "relation",
-			},
-			{
 				title: "Is Primary",
 				dataIndex: "isPrimary",
 				key: "isPrimary",
@@ -135,34 +131,42 @@ export default {
       },
 		]
 
-		const editFamilyMember = (value) => {
-      store.dispatch('familyMemberDetails', {
+    // const globalCode = computed(() => {
+    //   return store.state.common;
+    // });
+
+		const editEmergencyContact = (value) => {
+      store.dispatch('emergencyContactDetails', {
 				patientUdid: patientUdid,
-				familyUdid: value,
+				contactUdid: value,
 			}).then(() => {
-        emit('isFamilyMemberEdit')
+        emit('isEmergencyContactEdit')
       })
 		}
 
-		const deleteFamilyMember = (value) => {
+		const deleteEmergencyContact = (value) => {
 			warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
-          store.dispatch('deleteFamilyMember', {
+          store.dispatch('deleteEmergencyContact', {
             patientUdid: patientUdid,
-            familyUdid: value,
+            contactUdid: value,
           }).then(() => {
             if(route.name == 'PatientSummary') {
-							store.dispatch('familyMembersList', patientUdid);
+							store.dispatch('emergencyContactsList', patientUdid);
             }
           });
         }
       })
 		}
 
+		// const contactTypes = globalCode.value.pmOfcontact.globalCode
+
+		// console.log('contactTypes', contactTypes)
+
 		return {
-			familyMembersColumns,
-			editFamilyMember,
-			deleteFamilyMember,
+			emergencyContactsColumns,
+			editEmergencyContact,
+			deleteEmergencyContact,
 		}
 	}
 }

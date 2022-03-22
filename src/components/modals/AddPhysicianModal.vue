@@ -30,7 +30,7 @@
 							<div class="form-group">
 								<a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.email')+' '+$t('global.validation') }]">
 									<a-input @change="changedValue" v-model:value="addPhysicianForm.email" placeholder="test@test.com" size="large"/>
-									<ErrorMessage v-if="errorMsg && errorMsg.email!=null" :name="errorMsg.email?errorMsg.email[0]:''" />
+									<ErrorMessage v-if="errorMsg" :name="errorMsg.email ? errorMsg.email[0] : ''" />
 								</a-form-item>
 							</div>
 						</a-col>
@@ -68,13 +68,15 @@
 <script>
 import ModalButtons from "@/components/common/button/ModalButtons";
 import Loader from "@/components/loader/Loader.vue";
-import { computed, reactive, ref, onMounted } from 'vue-demi'
+import { computed, reactive, ref, onMounted, onUnmounted } from 'vue-demi'
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
+  import ErrorMessage from "../common/messages/ErrorMessage"
 export default {
   components: {
     ModalButtons,
     Loader,
+		ErrorMessage,
   },
   props: {
     isPhysicianEdit: {
@@ -104,12 +106,21 @@ export default {
     const patients = computed(() => {
       return store.state.patients;
     });
+		
+		const id = ref(null)
+		if(isEdit) {
+			id.value = patients.value.physicianDetails;
+		}
 
     onMounted(() => {
       if(isEdit) {
         Object.assign(addPhysicianForm, patients.value.physicianDetails);
       }
     })
+		
+		onUnmounted(() => {
+			store.commit('errorMsg', null)
+		})
 
 		const submitForm = () => {
       if(isEdit) {
@@ -121,9 +132,11 @@ export default {
 					if(route.name == 'PatientSummary') {
 						store.dispatch('physiciansList', patientUdid);
 					}
-					emit('closeModal')
-					formRef.value.resetFields();
-					Object.assign(addPhysicianForm, form)
+					if(closeModal == false) {
+						emit('closeModal')
+						formRef.value.resetFields();
+						Object.assign(addPhysicianForm, form)
+					}
 				})
 			}
 			else {
@@ -135,9 +148,11 @@ export default {
 					if(route.name == 'PatientSummary') {
 						store.dispatch('physiciansList', patientUdid);
 					}
-					emit('closeModal')
-					formRef.value.resetFields();
-					Object.assign(addPhysicianForm, form)
+					if(closeModal == false) {
+						emit('closeModal')
+						formRef.value.resetFields();
+						Object.assign(addPhysicianForm, form)
+					}
 				})
 			}
 		}
@@ -147,12 +162,23 @@ export default {
       Object.assign(addPhysicianForm, form)
     }
 
+		const errorMsg = computed(() => {
+			return store.state.patients.errorMsg
+		})
+
+		const closeModal = computed(() => {
+			return store.state.patients.closeModal
+		})
+
 		return {
 			formRef,
 			globalCode,
 			addPhysicianForm,
 			submitForm,
 			handleClear,
+			errorMsg,
+			closeModal,
+			id,
 		}
 	}
 }
