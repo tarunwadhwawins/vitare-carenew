@@ -123,7 +123,7 @@
   <FamilyMembersDetailsModal v-if="familyMembersModalVisible" v-model:visible="familyMembersModalVisible" :familyMembersList="familyMembersList" :patientId="patientDetails.id" @isFamilyMemberEdit="editFamilyMember" />
   <PatientFlagsModal v-if="flagsModalVisible" v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
   <AddCriticalNote v-model:visible="criticalModalVisible" @closeModal="handleOk" @saveModal="handleCriticalNote($event)"/>
-  <CriticalNotesDetailModal v-if="criticalNotesDetailVisible" v-model:visible="criticalNotesDetailVisible" @closeModal="handleOk"/>
+  <CriticalNotesDetailModal v-model:visible="criticalNotesDetailVisible" @closeModal="handleOk"/>
   <PatientsModal v-if="patientsModalVisible == true && patientDetails" v-model:visible="patientsModalVisible" :patientId="patientDetails.id" :isEditPatient="isEditPatient" @closeModal="handleOk" @saveModal="handleOk($event)" />
   <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" :patientId="patientDetails.id" :patientName="patientDetails.patientFullName" @closeModal="handleOk" />
   <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
@@ -151,7 +151,9 @@ import {
   ref,
   // reactive,
   watchEffect,
-  computed
+  computed,
+  defineComponent,
+  defineAsyncComponent
 } from 'vue-demi';
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
@@ -159,8 +161,8 @@ import { useRoute } from "vue-router";
 import AddFamilyMemberModal from "@/components/modals/AddFamilyMemberModal";
 import FamilyMembersDetailsModal from "@/components/modals/FamilyMembersDetailsModal";
 import PatientFlagsModal from "@/components/modals/PatientFlagsModal";
-import AddCriticalNote from "@/components/modals/CriticalNote"
-import CriticalNotesDetailModal from "@/components/modals/CriticalNotesDetail";
+// import AddCriticalNote from "@/components/modals/CriticalNote"
+// import CriticalNotesDetailModal from "@/components/modals/CriticalNotesDetail";
 import PatientsModal from "@/components/modals/PatientsModal";
 import AddAppointmentModal from "@/components/modals/AddAppointment";
 import AddTasksModal from "@/components/modals/TasksModal";
@@ -176,7 +178,7 @@ import DeviceDetailModal from "@/components/modals/DeviceDetail";
 import PatientVitalsDetailsModal from "@/components/modals/PatientVitalsDetailsModal";
 import Flags from "@/components/common/flags/Flags";
 
-export default {
+export default defineComponent({
   components: {
     WarningOutlined,
     MailOutlined,
@@ -198,8 +200,8 @@ export default {
     DeviceDetailModal,
     PatientVitalsDetailsModal,
     Flags,
-    AddCriticalNote,
-    CriticalNotesDetailModal,
+    AddCriticalNote :defineAsyncComponent(()=>import("@/components/modals/CriticalNote")),
+    CriticalNotesDetailModal:defineAsyncComponent(()=>import("@/components/modals/CriticalNotesDetail")),
     AddFamilyMemberModal,
     FamilyMembersDetailsModal,
   },
@@ -487,5 +489,5 @@ export default {
       latestDevice,
     }
   }
-}
+})
 </script>

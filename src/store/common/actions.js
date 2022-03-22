@@ -87,3 +87,15 @@ export const activeCptCodes = async ({ commit}) => {
     commit('loadingStatus', false)
   })
 }
+
+
+
+
+export const getNotifications = async ({ commit}) => {
+  await ServiceMethodService.common("get", API_ENDPOINTS['notification'], null, null).then((response) => {
+    commit('getNotifications', response.data.data);
+    commit('loadingStatus', false)
+  }).catch(() => {
+    commit('loadingStatus', false)
+  })
+}

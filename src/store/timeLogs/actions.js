@@ -1,10 +1,12 @@
 import ServiceMethodService from '@/services/serviceMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
+import { successSwal } from '../../commonMethods/commonMethod'
 
 export const addTimeLog = async ({ commit }, {id, data}) => {
   commit('loadingStatus', true)
 	await ServiceMethodService.common("post", API_ENDPOINTS['patient']+"/"+id+"/timeLog", null, data).then((response) => {
 		commit('addTimeLogSuccess', response.data.data);
+		successSwal(response.data.message)
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {

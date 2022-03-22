@@ -140,19 +140,19 @@
     </a-layout>
     <!--modals-->
     <a-modal width="50%" v-model:visible="visibleStaffDoc" title="Add Documents" :maskClosable="false" centered  @cancel="closeModal('visibleStaffDoc')">
-        <StaffDocumentForm ref="StaffDocumentForm" entity="staff" :paramId="paramId" @saveModal="staffDocCloseModal($event)"/>
+        <StaffDocumentForm :clearData="clearData" ref="StaffDocumentForm" entity="staff" :paramId="paramId" @saveModal="staffDocCloseModal($event)"/>
     </a-modal>
     <!---->
     <a-modal width="50%" v-model:visible="visibleRole" title="Add Roles" :maskClosable="false" centered  @cancel="closeModal('visibleRole')">
-        <RoleForm :paramId="paramId" @saveModal="roleCloseModal($event)"/>
+        <RoleForm  :clearData="clearData" :paramId="paramId" @saveModal="roleCloseModal($event)"/>
     </a-modal>
     <!------>
     <a-modal width="50%" v-model:visible="visibleAvailability" title="Add Availability" @ok="AvailabilityCloseModal()" :maskClosable="false" centered  @cancel="closeModal('visibleAvailability')">
-        <AvailabilityForm :paramId="paramId"  @saveModal="AvailabilityCloseModal($event)"/>
+        <AvailabilityForm  :clearData="clearData" :paramId="paramId"  @saveModal="AvailabilityCloseModal($event)" />
     </a-modal>
     <!---->
     <a-modal width="60%" v-model:visible="visibleContact" title="Add Contacts" :maskClosable="false" centered  @cancel="closeModal('visibleContact')">
-        <ContactForm :paramId="paramId" @saveModal="contactCloseModal($event)"/>
+        <ContactForm :clearData="clearData" :paramId="paramId" @saveModal="contactCloseModal($event)"/>
     </a-modal>
     <!---->
 </div>
@@ -214,6 +214,7 @@ export default {
   setup(props,{emit}) {
     const store = useStore();
     const router = useRoute();
+    const clearData = ref(false)
     console.log("id=>", router.params.udid);
 
     onMounted(() => {
@@ -268,15 +269,19 @@ export default {
 
     const showDocModal = () => {
       visibleStaffDoc.value = true;
+      clearData.value=false
     };
     const showModalRole = () => {
       visibleRole.value = true;
+      clearData.value=false
     };
     const showModalvailability = () => {
       visibleAvailability.value = true;
+      clearData.value=false
     };
     const showModalContact = () => {
       visibleContact.value = true;
+      clearData.value=false
     };
 
     const handleOk = (e) => {
@@ -297,6 +302,7 @@ export default {
       warningSwal(messages.modalWarning).then((response) => {
         if (response == true) {
           emit("saveModal", false)
+          clearData.value=true
         //   emit("reset")
         //   Object.assign();
           store.dispatch("allStaffList")
@@ -307,6 +313,7 @@ export default {
           emit("saveModal", true);
           if(value=='visibleAvailability'){
               visibleAvailability.value=true
+              clearData.value=false
           }else if(value=='visibleContact'){
               visibleContact.value = true
           }else if(value=='visibleStaffDoc'){
@@ -319,6 +326,7 @@ export default {
       }
     }
     return {
+      clearData,
       roleCloseModal,
       contactCloseModal,
       AvailabilityCloseModal,
