@@ -38,8 +38,8 @@
 
   </a-layout-content>
 
-  <Thresholds v-if="threshodsId" v-model:visible="Thresholds" @is-visible="showModal($event)" :threshodId="threshodsId? threshodsId:''" />
-  <Thresholds v-else v-model:visible="Thresholds" @is-visible="showModal($event)" />
+  <Thresholds v-if="threshodsId" v-model:visible="Thresholds" @is-visible="isEdit($event)" :threshodId="threshodsId" />
+  <Thresholds v-else v-model:visible="Thresholds" @is-visible="isEdit($event)" />
 </template>
 <script>
   import { ref, watchEffect } from "vue";
@@ -74,6 +74,9 @@
       const Thresholds = ref(false);
       const showModal = (e) => {
         threshodsId.value=null
+        Thresholds.value = e;
+      };
+      const isEdit = (e) => {
         Thresholds.value = e;
       };
       const showEdit = (e) =>{
@@ -123,7 +126,8 @@
         size: ref([]),
         threshodsId,
         showEdit,
-        nullId
+        nullId,
+        isEdit
       };
     },
   };
