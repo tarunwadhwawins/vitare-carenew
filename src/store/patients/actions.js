@@ -926,3 +926,59 @@ export const familyMemberDetails = async ({commit}, data) => {
     commit('loadingStatus', false)
   })
 }
+
+export const addPhysician = async ({commit}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("post", API_ENDPOINTS['patient']+`/${data.patientUdid}/physician`, null, data.data).then((response) => {
+    commit('loadingStatus', false)
+    successSwal(response.data.message)
+  }).catch((error) => {
+    commit('loadingStatus', false)
+    errorSwal(error.response.data.message)
+  })
+}
+
+export const updatePhysician = async ({commit}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("put", API_ENDPOINTS['patient']+`/${data.patientUdid}/physician/${data.familyUdid}`, null, data.data).then((response) => {
+    commit('loadingStatus', false)
+    successSwal(response.data.message)
+  }).catch((error) => {
+    commit('loadingStatus', false)
+    errorSwal(error.response.data.message)
+  })
+}
+
+export const physiciansList = async ({commit}, patientUdid) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("get", API_ENDPOINTS['patient']+`/${patientUdid}/physician`, null, null).then((response) => {
+    commit('physiciansList', response.data.data)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
+  })
+}
+
+export const deletePhysician = async ({commit}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("delete", API_ENDPOINTS['patient']+`/${data.patientUdid}/physician/${data.physicianUdid}`, null, null).then((response) => {
+    successSwal(response.data.message)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
+  })
+}
+
+export const physicianDetails = async ({commit}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("get", API_ENDPOINTS['patient']+`/${data.patientUdid}/physician/${data.physicianUdid}`, null, null).then((response) => {
+    console.log('physicianDetails', response.data.data)
+    commit('physicianDetails', response.data.data)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
+  })
+}

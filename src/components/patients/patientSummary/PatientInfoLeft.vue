@@ -31,14 +31,14 @@
           <a href="javascript:void(0)" @click="showFamilyMembersModal" >{{familyMembersList[0].fullName}}</a>
         </div>
       </div>
-      <!-- <div class="pat-profile-inner">
+      <div class="pat-profile-inner">
         <div class="thumb-head">
-          Physician <PlusOutlined @click="showAddPhysicianModal"/><br />
+          Physicians <PlusOutlined @click="showAddPhysicianModal"/><br />
         </div>
-        <div class="thumb-desc">
-          <a href="javascript:void(0)" @click="showPhysiciansModal" >Test</a>
+        <div v-if="physiciansList && physiciansList.length > 0" class="thumb-desc">
+          <a href="javascript:void(0)" @click="showPhysiciansModal" >{{ physiciansList[0].name }}</a>
         </div>
-      </div> -->
+      </div>
       <div class="pat-profile-inner">
         <div class="thumb-head" @click="showCriticalModal">Critical Note
           <PlusOutlined />
@@ -130,8 +130,8 @@
   <AddFamilyMemberModal v-if="addFamilyMembersModalVisible" v-model:visible="addFamilyMembersModalVisible"  :patientId="patientDetails.id" @closeModal="handleOk" :isFamilyMemberEdit="isFamilyMemberEdit" />
   <FamilyMembersDetailsModal v-if="familyMembersModalVisible" v-model:visible="familyMembersModalVisible" :familyMembersList="familyMembersList" :patientId="patientDetails.id" @isFamilyMemberEdit="editFamilyMember" />
 
-  <AddPhysicianModal v-model:visible="addPhysicianModalVisible" />
-  <PhysiciansDetailsModal v-model:visible="physiciansModalVisible" />
+  <AddPhysicianModal v-if="addPhysicianModalVisible" v-model:visible="addPhysicianModalVisible" @closeModal="handleOk" :isPhysicianEdit="isPhysicianEdit" />
+  <PhysiciansDetailsModal v-model:visible="physiciansModalVisible" :physiciansList="physiciansList" @isPhysicianEdit="editPhysician" />
 
   <PatientFlagsModal v-if="flagsModalVisible" v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
   <AddCriticalNote v-model:visible="criticalModalVisible" @closeModal="handleOk" @saveModal="handleCriticalNote($event)"/>
@@ -226,6 +226,7 @@ export default {
     const isEditPatient = ref(false);
     const isEditTimeLog = ref(false);
     const isFamilyMemberEdit = ref(false);
+    const isPhysicianEdit = ref(false);
     const criticalNotesDetailVisible =ref(false)
     const flagsModalVisible = ref(false);
     const addFamilyMembersModalVisible =ref(false)
@@ -271,6 +272,10 @@ export default {
       return store.state.patients.familyMembersList
     })
 
+    const physiciansList = computed(() => {
+      return store.state.patients.physiciansList
+    })
+
     // const contactTypes = []
     // familyMembersList.value.contactType.forEach(contactType => {
       console.log('contactType', familyMembersList.value)
@@ -314,6 +319,7 @@ export default {
     })
     
     const handleOk = (value) => {
+      addPhysicianModalVisible.value = false;
       addFamilyMembersModalVisible.value = false;
       flagsModalVisible.value = false;
       notesDetailVisible.value = false;
@@ -338,12 +344,8 @@ export default {
       isFamilyMemberEdit.value = false
     }
 
-    const showAddPhysicianModal = () => {
-      addPhysicianModalVisible.value = true
-    }
-
-    const showPhysiciansModal = () => {
-      physiciansModalVisible.value = true
+    const showFamilyMembersModal = ()=>{
+      familyMembersModalVisible.value=true
     }
 
     const editFamilyMember = () => {
@@ -351,8 +353,18 @@ export default {
       isFamilyMemberEdit.value=true
     }
 
-    const showFamilyMembersModal = ()=>{
-      familyMembersModalVisible.value=true
+    const showAddPhysicianModal = () => {
+      addPhysicianModalVisible.value = true
+      isPhysicianEdit.value = false
+    }
+
+    const showPhysiciansModal = () => {
+      physiciansModalVisible.value = true
+    }
+
+    const editPhysician = () => {
+      addPhysicianModalVisible.value = true
+      isPhysicianEdit.value = true
     }
 
     const showCriticalModal = ()=>{
@@ -458,6 +470,7 @@ export default {
 
       criticalNotesDetailVisible,
       flagsModalVisible,
+      editPhysician,
       editFamilyMember,
       showAddFamilyMemberModal,
       showFamilyMembersModal,
@@ -496,8 +509,10 @@ export default {
 
       getFamilyMemberDetails,
       familyMembersList,
+      physiciansList,
       patientDetails,
       timeLogDetails,
+      isPhysicianEdit,
       isFamilyMemberEdit,
       isEditTimeLog,
       isEditPatient,

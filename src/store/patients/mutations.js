@@ -1040,3 +1040,11 @@ export const familyMemberDetails = (state, familyMember) => {
   }
   state.familyMemberDetails = familyMember
 }
+
+export const physiciansList = (state, physicians) => {
+  state.physiciansList = physicians
+}
+
+export const physicianDetails = (state, physician) => {
+  state.physicianDetails = physician
+}

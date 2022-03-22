@@ -1,5 +1,5 @@
 <template>
-	<a-modal width="1200px" title="Add Physician" centered>
+	<a-modal width="60%" title="Add Physician" centered>
 		<a-row :gutter="24">
       <a-col :sm="24" :xs="24">
 				<a-form layout="vertical" ref="formRef" :model="addPhysicianForm" @finish="submitForm">
@@ -68,16 +68,25 @@
 <script>
 import ModalButtons from "@/components/common/button/ModalButtons";
 import Loader from "@/components/loader/Loader.vue";
-import { computed, reactive, ref } from 'vue-demi'
+import { computed, reactive, ref, onMounted } from 'vue-demi'
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 export default {
   components: {
     ModalButtons,
     Loader,
   },
-	setup() {
+  props: {
+    isPhysicianEdit: {
+			type: Boolean
+		},
+  },
+	setup(props, { emit }) {
 		const store = useStore()
+		const route = useRoute()
 		const formRef = ref()
+		const patientUdid = route.params.udid
+		const isEdit = reactive(props.isPhysicianEdit)
 
     const globalCode = computed(() => {
       return store.state.common;
@@ -90,16 +99,60 @@ export default {
 			phoneNumber: '',
 			fax: '',
 		})
+    const form = reactive({ ...addPhysicianForm });
+
+    const patients = computed(() => {
+      return store.state.patients;
+    });
+
+    onMounted(() => {
+      if(isEdit) {
+        Object.assign(addPhysicianForm, patients.value.physicianDetails);
+      }
+    })
 
 		const submitForm = () => {
-			console.log('addPhysicianForm', addPhysicianForm)
+      if(isEdit) {
+				store.dispatch('updatePhysician', {
+					patientUdid: patientUdid,
+					familyUdid: patients.value.physicianDetails.id,
+					data: addPhysicianForm
+				}).then(() => {
+					if(route.name == 'PatientSummary') {
+						store.dispatch('physiciansList', patientUdid);
+					}
+					emit('closeModal')
+					formRef.value.resetFields();
+					Object.assign(addPhysicianForm, form)
+				})
+			}
+			else {
+				console.log('addPhysicianForm', addPhysicianForm)
+				store.dispatch('addPhysician', {
+					patientUdid: patientUdid,
+					data: addPhysicianForm,
+				}).then(() => {
+					if(route.name == 'PatientSummary') {
+						store.dispatch('physiciansList', patientUdid);
+					}
+					emit('closeModal')
+					formRef.value.resetFields();
+					Object.assign(addPhysicianForm, form)
+				})
+			}
 		}
+
+    const handleClear = () => {
+      formRef.value.resetFields();
+      Object.assign(addPhysicianForm, form)
+    }
 
 		return {
 			formRef,
 			globalCode,
 			addPhysicianForm,
 			submitForm,
+			handleClear,
 		}
 	}
 }
