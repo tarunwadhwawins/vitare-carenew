@@ -1,5 +1,5 @@
 <template>
-	<a-modal width="1500px" title="Add Family Member" centered>
+	<a-modal width="60%" title="Add Family Member" centered>
 		<a-form ref="formRef" :model="familyMemberForm" layout="vertical" @finish="submitForm">
 			<a-row :gutter="24">
 
