@@ -44,7 +44,9 @@ export default defineComponent({
     const route = useRoute();
 
     watchEffect(() => {
-      store.dispatch('criticalNotesList', route.params.udid);
+      if(route.name == 'PatientSummary') {
+        store.dispatch('criticalNotesList', route.params.udid);
+      }
     })
 
     const criticalNotesList = computed(() => {
