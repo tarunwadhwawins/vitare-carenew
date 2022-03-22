@@ -1,5 +1,5 @@
 <template>
-<a-form :model="contact" scrollToFirstError=true name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addContacts" @finishFailed="contactDataFailed">
+<a-form :model="contact" ref="formRest" scrollToFirstError=true name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addContacts" @finishFailed="contactDataFailed">
     <a-row :gutter="24">
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref, computed } from "vue";
+import { defineComponent, reactive, ref, computed,watchEffect } from "vue";
 import { useStore } from "vuex";
 import { regex } from "@/RegularExpressions/regex";
 // import { warningSwal } from "@/commonMethods/commonMethod";
@@ -87,10 +87,12 @@ export default defineComponent({
     ContactTable
   },
   props:{
-    paramId:String
+    paramId:String,
+    clearData:Boolean
   },
   setup(props,{emit}) {
     const store = useStore();
+    const formRest =ref()
     const contact = reactive({
       firstName: "",
       lastName: "",
@@ -121,8 +123,14 @@ export default defineComponent({
       ...contact,
     });
     function reset(){
+      formRest.value.resetFields();
       Object.assign(contact,form)
     }
+    watchEffect(()=>{
+    if(props.clearData==true){
+      Object.assign(contact,form)
+    }
+    })
     function checkChangeInput(){
       store.commit('checkChangeInput',true)
     }
@@ -134,6 +142,7 @@ export default defineComponent({
         errorMsg.value.email?errorMsg.value.email[0]=null:''
     }
     return {
+      formRest,
       checkChangeInput,
       reset,
       Id,

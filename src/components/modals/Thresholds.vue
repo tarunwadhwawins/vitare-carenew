@@ -3,7 +3,7 @@
 
     <Loader v-if="threshodId" />
 
-    <a-form ref="formRef" :model="thresholdForm" layout="vertical" @finish="submitForm"  @finishFailed="taskFormFailed">
+    <a-form ref="formRef" :model="thresholdForm" layout="vertical" @finish="submitForm" @finishFailed="taskFormFailed">
         <a-row :gutter="24">
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
@@ -26,7 +26,7 @@
                 </div>
             </a-col>
         </a-row>
-        
+
         <div v-if="vitalData">
             <a-row :gutter="24" v-for="(vital, i) in vitalData" :key="i">
                 <a-col :md="12" :sm="12" :xs="24">
@@ -139,28 +139,27 @@ export default {
         });
 
         function closeModal() {
-            console.log("check",thresholdForm)
+            console.log("check", thresholdForm)
             if (thresholdForm.generalParametersGroup != "" || thresholdForm.deviceTypeId != "") {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
                         ///console.log("check2")
-                     handleCancel();
+                        handleCancel();
                         emit("is-visible", false);
 
                     } else {
                         emit("is-visible", true);
-                        if (props.threshodId) {
-console.log('fsfs')
-                            
-                            Object.assign(thresholdForm, form);
-                            Object.assign(thresholdForm, vitalEdit.value.vitalEdit)
-                            setTimeout(() => {
-                                store.commit('loadingStatus', false)
-                    }, 2000)
-                            
-            }
-           
-            console.log("check",thresholdForm)
+                        //             if (props.threshodId) {
+
+                        //                 Object.assign(thresholdForm, form);
+                        //                 Object.assign(thresholdForm, vitalEdit.value.vitalEdit)
+                        //                 setTimeout(() => {
+                        //                     store.commit('loadingStatus', false)
+                        //         }, 2000)
+
+                        // }
+
+                        console.log("check", thresholdForm)
                     }
                 });
             }
@@ -203,9 +202,9 @@ console.log('fsfs')
                     parameter: parameter,
                 });
             }
-           
+
             setTimeout(() => {
-                store.getters.vitalDataGetters.value.vitalList=''
+                store.getters.vitalDataGetters.value.vitalList = ''
                 store.dispatch("generalParameterList");
                 emit("is-visible", false);
                 handleCancel();
@@ -213,26 +212,21 @@ console.log('fsfs')
         };
 
         const handleCancel = () => {
-                formRef.value.resetFields();
-                Object.assign(thresholdForm, form);
-           store.commit('vitalNull')
-        
-           
+            formRef.value.resetFields();
+            Object.assign(thresholdForm, form);
+            store.commit('vitalNull')
 
         };
         watchEffect(() => {
-            
-            
-            if (props.threshodId!= null) {
-                
+
+            if (props.threshodId != null) {
+
                 if (vitalEdit.value.vitalEdit) {
                     store.commit('loadingStatus', true)
                     store.dispatch("getVital", vitalEdit.value.vitalEdit.deviceTypeId);
-                    
-                       
-                        Object.assign(thresholdForm, vitalEdit.value.vitalEdit)
-                   
-                    
+
+                    Object.assign(thresholdForm, vitalEdit.value.vitalEdit)
+
                     setTimeout(() => {
                         store.commit('loadingStatus', false)
                     }, 2000)

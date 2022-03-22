@@ -61,7 +61,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <label>Active/Inactive</label>
-                    <a-switch v-model:checked="cptCodeForm.status" @change="UpdateProgramStatus($event)" />
+                    <a-switch v-model:checked="cptCodeForm.status" @change="UpdateStatus($event)" />
                 </div>
             </a-col>
             <a-col :span="24">
@@ -128,7 +128,7 @@ export default {
         };
         const cptCodesGetters = store.getters.cptRecords
 
-        function UpdateProgramStatus(event) {
+        function UpdateStatus(event) {
             cptCodeForm.status = event
         }
         const formButton = ref(false)
@@ -194,7 +194,7 @@ export default {
             cptCodeForm,
             cptCodesGetters,
             onFinishFailed,
-            UpdateProgramStatus,
+            UpdateStatus,
             durationList,
             submitForm,
             formRef,

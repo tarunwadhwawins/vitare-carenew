@@ -27,7 +27,7 @@ export const deleteGlobalCodeSuccess = async (state, globalCode) => {
 }
 
 export const globalCodeDetailsSuccess = async (state, globalCode) => {
-  state.globalCodeDetails = globalCode;
+  state.globalCodeDetails = globalCode
 }
 
 export const updateGlobalCodeSuccess = async (state, globalCode) => {

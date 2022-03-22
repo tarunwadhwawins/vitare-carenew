@@ -4,6 +4,7 @@ import { successSwal, errorSwal } from '@/commonMethods/commonMethod';
 
 export const globalCodesList = async ({ commit }) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['globalCodesList']+"?active=1", null, null).then((response) => {
+		//console.log(response.data.data)
 		commit('globalCodesListSuccess', response.data.data);
 	})
 	.catch((error) => {
@@ -68,8 +69,6 @@ export const globalCodeDetails = async ({ commit }, id) => {
 }
 
 export const updateGlobalCode = async ({ commit }, {id, data}) => {
-	console.log('Edit Record Id', id)
-	console.log('Edit Record data', data)
 	await ServiceMethodService.common("patch", API_ENDPOINTS['globalCode'], id, data).then((response) => {
 		commit('updateGlobalCodeSuccess', response.data.data);
 		successSwal(response.data.message)

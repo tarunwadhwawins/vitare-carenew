@@ -53,7 +53,8 @@ export default defineComponent({
     RoleTable,
   },
   props:{
-    paramId:String
+    paramId:String,
+    clearData:Boolean
   },
   setup(props,{emit}) {
     const store = useStore();
@@ -102,6 +103,12 @@ export default defineComponent({
     function reset(){
       Object.assign(roles,form)
     }
+
+    watchEffect(()=>{
+    if(props.clearData==true){
+      Object.assign(roles,form)
+    }
+    })
     
     function checkChangeInput(){
       store.commit('checkChangeInput',true)
