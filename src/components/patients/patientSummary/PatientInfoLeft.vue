@@ -31,7 +31,7 @@
           <a href="javascript:void(0)" @click="showFamilyMembersModal" >{{familyMembersList[0].fullName}}</a>
         </div>
       </div>
-      <div class="pat-profile-inner">
+      <!-- <div class="pat-profile-inner">
         <div class="thumb-head">
           Physicians <PlusOutlined @click="showAddPhysicianModal"/><br />
         </div>
@@ -46,7 +46,7 @@
         <div v-if="emergencyContactsList && emergencyContactsList.length > 0" class="thumb-desc">
           <a href="javascript:void(0)" @click="showEmergencyContactDetailsModal" >{{ emergencyContactsList[0].fullName }}</a>
         </div>
-      </div>
+      </div> -->
       <div class="pat-profile-inner">
         <div class="thumb-head" @click="showCriticalModal">Critical Note
           <PlusOutlined />
