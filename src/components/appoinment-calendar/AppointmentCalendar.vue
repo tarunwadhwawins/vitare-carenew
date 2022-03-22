@@ -20,7 +20,7 @@
             </a-col>
             <a-col :xl="toggle == false ? 24 : 18" :sm="toggle == false ? 24 : 14" :xs="24">
                 <Loader v-if="!showLoaderMain" />
-                <a-tabs v-model:activeKey="activeKey" @change="tabClick(activeKey)">
+                <a-tabs v-model:activeKey="activeKey" @change="tabClick(activeKey,moment())">
 
                     <a-tab-pane key="1" tab="Day">
                         
@@ -32,7 +32,7 @@
                     </a-tab-pane>
                     <a-tab-pane key="3" tab="Week">
                        
-                        <WeekAppointment @is-dateClick="selectDate($event)"  tabName="week"></WeekAppointment>
+                        <WeekAppointment @is-dateClick="selectDate($event)"  @week-select="weekChange($event)" tabName="week"></WeekAppointment>
                     </a-tab-pane>
                     <a-tab-pane key="4" tab="Month">
                         
@@ -99,36 +99,43 @@ const showLoaderMain = ref(true)
             datePick = moment(event)
             searchApi()
         }
-
-        function tabClick(value) {
+function weekChange(event){
+ datePick = moment(event).startOf('week')
+                fromDate.value = moment(datePick).startOf('week')
+                toDate.value = moment(datePick).endOf('week')
+}
+        function tabClick(value,tabDate) {
             showLoaderMain.value = false
             store.state.appointment.searchAppointmentRecords = ""
             if (value == 1) {
                 activeKey.value = ref('1')
-                datePick = moment()
-                fromDate.value = moment()
-                toDate.value = moment()
+                datePick = tabDate
+                fromDate.value = tabDate
+                toDate.value = tabDate
             } else if (value == 2) {
+                
                 datePick = moment().add(1, 'days')
+                console.log(datePick)
                 fromDate.value = moment().add(1, 'days')
                 toDate.value = moment().add(1, 'days')
             } else if (value == 3) {
-                datePick = moment(moment().add(1, 'days')).startOf('week')
-                //console.log("week")
+
+                datePick = moment(tabDate.add(1, 'days')).startOf('week')
+                
                 store.dispatch("weekName", {
-                    from: moment(moment().add(1, 'days')).startOf('week'),
-                    to: moment(moment()).endOf('week')
+                    from: moment(tabDate.add(2, 'days')).startOf('week'),
+                    to: moment(tabDate).endOf('week')
                 })
-                fromDate.value = moment(moment().add(1, 'days')).startOf('week')
-                toDate.value = moment(moment()).endOf('week')
+                fromDate.value = moment(tabDate.add(1, 'days')).startOf('week')
+                toDate.value = moment(tabDate).endOf('week')
             } else if (value == 4) {
-                datePick = moment()
-                fromDate.value = moment().startOf('month')
-                toDate.value = moment().endOf('month')
+                datePick = tabDate
+                fromDate.value = tabDate.startOf('month')
+                toDate.value = tabDate.endOf('month')
             } else {
-                datePick = moment()
-                fromDate.value = moment()
-                toDate.value = moment().add(1, 'days')
+                datePick = tabDate
+                fromDate.value = tabDate
+                toDate.value = tabDate.add(1, 'days')
             }
             searchApi()
         }
@@ -165,6 +172,7 @@ const showLoaderMain = ref(true)
         
          store.state.appointment.searchAppointmentRecords = ''
             store.state.appointment.calendarDate = ''
+            console.log("select",datePick)
             store.dispatch("calendarDateSelect", datePick)
             store.dispatch("searchAppointment", {
                 fromDate: fromDate.value,
@@ -233,6 +241,8 @@ const showLoaderMain = ref(true)
             staffSelect,
             physiciansId,
             showLoaderMain,
+            moment,
+            weekChange
         };
     },
 };
