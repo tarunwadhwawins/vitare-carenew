@@ -164,9 +164,11 @@ export default {
 					if(route.name == 'PatientSummary') {
 						store.dispatch('familyMembersList', patientUdid);
 					}
-					emit('closeModal')
-					formRef.value.resetFields();
-					Object.assign(familyMemberForm, form)
+					if(closeModal == false) {
+						emit('closeModal')
+						formRef.value.resetFields();
+						Object.assign(familyMemberForm, form)
+					}
 				})
 			}
 			else {
@@ -177,9 +179,11 @@ export default {
 					if(route.name == 'PatientSummary') {
 						store.dispatch('familyMembersList', patientUdid);
 					}
-					emit('closeModal')
-					formRef.value.resetFields();
-					Object.assign(familyMemberForm, form)
+					if(closeModal == false) {
+						emit('closeModal')
+						formRef.value.resetFields();
+						Object.assign(familyMemberForm, form)
+					}
 				})
 			}
 		}
@@ -193,6 +197,10 @@ export default {
 			return store.state.patients.errorMsg
 		})
 
+		const closeModal = computed(() => {
+			return store.state.patients.closeModal
+		})
+
 		return {
       isEdit,
       formRef,
@@ -201,6 +209,7 @@ export default {
 			submitForm,
 			handleClear,
 			errorMsg,
+			closeModal,
 			id,
 		}
 	}

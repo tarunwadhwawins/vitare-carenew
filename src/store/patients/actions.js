@@ -899,6 +899,7 @@ export const addFamilyMember = async ({commit}, data) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
+      commit('closeModal', false)
     }
     else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
@@ -917,6 +918,7 @@ export const updateFamilyMember = async ({commit}, data) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
+      commit('closeModal', false)
     }
     else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
@@ -966,6 +968,7 @@ export const addPhysician = async ({commit}, data) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
+      commit('closeModal', false)
     }
     else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
@@ -984,6 +987,7 @@ export const updatePhysician = async ({commit}, data) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
+      commit('closeModal', false)
     }
     else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
@@ -1077,6 +1081,7 @@ export const addEmergencyContact = async ({commit}, data) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
+      commit('closeModal', false)
     }
     else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
@@ -1095,6 +1100,7 @@ export const updateEmergencyContact = async ({commit}, data) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
+      commit('closeModal', false)
     }
     else if (error.response.status === 500) {
       errorSwal(error.response.data.message)

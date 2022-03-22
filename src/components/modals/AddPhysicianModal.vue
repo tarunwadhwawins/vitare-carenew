@@ -132,9 +132,11 @@ export default {
 					if(route.name == 'PatientSummary') {
 						store.dispatch('physiciansList', patientUdid);
 					}
-					emit('closeModal')
-					formRef.value.resetFields();
-					Object.assign(addPhysicianForm, form)
+					if(closeModal == false) {
+						emit('closeModal')
+						formRef.value.resetFields();
+						Object.assign(addPhysicianForm, form)
+					}
 				})
 			}
 			else {
@@ -146,9 +148,11 @@ export default {
 					if(route.name == 'PatientSummary') {
 						store.dispatch('physiciansList', patientUdid);
 					}
-					emit('closeModal')
-					formRef.value.resetFields();
-					Object.assign(addPhysicianForm, form)
+					if(closeModal == false) {
+						emit('closeModal')
+						formRef.value.resetFields();
+						Object.assign(addPhysicianForm, form)
+					}
 				})
 			}
 		}
@@ -162,6 +166,10 @@ export default {
 			return store.state.patients.errorMsg
 		})
 
+		const closeModal = computed(() => {
+			return store.state.patients.closeModal
+		})
+
 		return {
 			formRef,
 			globalCode,
@@ -169,6 +177,7 @@ export default {
 			submitForm,
 			handleClear,
 			errorMsg,
+			closeModal,
 			id,
 		}
 	}
