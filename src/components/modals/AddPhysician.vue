@@ -1,6 +1,6 @@
 <template>
 <a-modal title="Add New Physician" :maskClosable="maskebale" @cancel="closeModal()">
-    <a-form ref="formRef" :model="physicianForm" layout="vertical" @finish="sendMessage" @finishFailed="onFinishFailed">
+    <a-form ref="formRef" :model="physicianForm" layout="vertical" @finish="addPhysician" @finishFailed="onFinishFailed">
         <a-row :gutter="24">
             <!-- <a-col :sm="24" :xs="24">
         <div class="form-group">
@@ -50,6 +50,7 @@ import {
 import {
     useStore
 } from "vuex"
+import { arrayToObjact } from "@/commonMethods/commonMethod"
 export default {
     props: {
 
@@ -95,20 +96,24 @@ export default {
         const physicianForm = reactive({
             staffId: ''
         })
-        const sendMessage = () => {
+        const addPhysician = () => {
             store.dispatch('staffSummary', physicianForm.staffId).then(() => {
-                addStaff()
+                addStaff(physicianForm.staffId)
             })
         }
         const form = reactive({
             ...physicianForm
         })
 
-        function addStaff() {
+        function addStaff(event) {
             Object.assign(physicianForm, form)
-            emit('add-staff', {
-                data: store.state.careCoordinatorSummary.staffSummary
-            });
+            //console.log(store.getters.appointmentRecords.value.getStaff)
+            let objact= arrayToObjact(store.getters.appointmentRecords.value.getStaff,event) 
+               if(!objact){
+                store.dispatch('getStaffs', store.state.careCoordinatorSummary.staffSummary)
+               }
+            
+               emit("is-visible", false);
 
         }
         function closeModal() {     
@@ -124,7 +129,7 @@ export default {
             options,
             staffList,
             physicianForm,
-            sendMessage,
+            addPhysician,
             closeModal,
         };
     },

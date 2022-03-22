@@ -79,17 +79,25 @@ export const appointmentConference = async ({ commit }) => {
 }
 
 ///staff
-export const getStaffs = async ({commit}) => {
- console.log("staff")
-  await serviceMethod.common("get", `staff`, null, null).then((response) => {
-    commit('getStaffs', response.data.data);
-   
-  }).catch((error) => { 
-    
-      errorSwal(error.response.data.message)
-      
-    
-  })
+export const getStaffs = async ({commit},data) => {
+  let staff= []
+  
+staff = JSON.parse(localStorage.getItem("staff")) || []
+//console.log("staff1",JSON.parse(localStorage.getItem("staff")))
+if(data){
+  
+    staff.push({
+      "id":data.id,
+      "firstName":data.firstName,
+      "profile_photo":data.profile_photo,
+      "fullName":data.fullName
+    })
+
+  
+}
+
+localStorage.setItem('staff', JSON.stringify(staff));
+ commit('getStaffs', staff);
 }
 
 

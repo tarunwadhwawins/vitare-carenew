@@ -1,7 +1,7 @@
 <template>
 <div>
     <!---->
-    <a-layout-content >
+    <a-layout-content>
         <Title :title="$t('appointmentCalendar.appointmentCalendar')" @calenderToggle="calenderView($event)" :isActive="toggle" :button="{
             fullCalendarView: $t('appointmentCalendar.fullCalendarView'),
             hideCalendarView:$t('appointmentCalendar.hideCalendarView')
@@ -12,10 +12,10 @@
                     <a-button class="btn primaryBtn" @click="showModal(true)">
                         {{$t('appointmentCalendar.newAppointment')}}</a-button>
                 </div>
-               
+
                 <Calendar @is-click="selectDate($event)" />
 
-                <Physicians  @staff-select="staffSelect($event)" :physiciansId="physiciansId" />
+                <Physicians @staff-select="staffSelect($event)" :physiciansId="physiciansId" />
 
             </a-col>
             <a-col :xl="toggle == false ? 24 : 18" :sm="toggle == false ? 24 : 14" :xs="24">
@@ -23,19 +23,19 @@
                 <a-tabs v-model:activeKey="activeKey" @change="tabClick(activeKey,moment())">
 
                     <a-tab-pane key="1" tab="Day">
-                        
+
                         <DayAppointment />
                     </a-tab-pane>
                     <a-tab-pane key="2" tab="Tomorrow">
-                       
+
                         <DayAppointment />
                     </a-tab-pane>
                     <a-tab-pane key="3" tab="Week">
-                       
-                        <WeekAppointment @is-dateClick="selectDate($event)"  @week-select="weekChange($event)" tabName="week"></WeekAppointment>
+
+                        <WeekAppointment @is-dateClick="selectDate($event)" @week-select="weekChange($event)" tabName="week"></WeekAppointment>
                     </a-tab-pane>
                     <a-tab-pane key="4" tab="Month">
-                        
+
                         <MonthAppointment v-if="appointmentSearch.searchAppointmentRecords" :appointment="appointmentSearch.searchAppointmentRecords" @is-dateClick="selectDate($event)" @is-month="monthDate($event)" :seclectDate="month"></MonthAppointment>
 
                     </a-tab-pane>
@@ -44,7 +44,7 @@
         </a-row>
         <Loader v-if="showLoaderMain" />
     </a-layout-content>
-    
+
     <!--modal-->
     <AddAppointment v-if="staffList && patientsList" :maskClosable="maskebale" v-model:visible="appointmentModal" @ok="handleOk" @is-visible="showModal($event)" :staff="staffList" :patient="patientsList" />
 
@@ -60,11 +60,19 @@ import Physicians from "./Physicians"
 import DayAppointment from "./DayAppointment"
 import MonthAppointment from "./MonthAppointment"
 import WeekAppointment from "./WeekAppointment"
-import {ref,watchEffect,computed} from "vue";
-import {useStore} from "vuex"
+import {
+    ref,
+    watchEffect,
+    computed
+} from "vue";
+import {
+    useStore
+} from "vuex"
 import moment from "moment"
 import Loader from "@/components/loader/Loader"
-import {arrayToObjact} from "@/commonMethods/commonMethod"
+import {
+    arrayToObjact
+} from "@/commonMethods/commonMethod"
 //import Loader from "../loader/Loader"
 export default {
     components: {
@@ -88,7 +96,7 @@ export default {
         const toDate = ref(moment())
         let datePick = moment()
         const physiciansId = ref([])
-const showLoaderMain = ref(true)
+        const showLoaderMain = ref(true)
         ///This fuction is working for date select in calendar and view appointment according select date
         function selectDate(event) {
             showLoaderMain.value = false
@@ -99,12 +107,14 @@ const showLoaderMain = ref(true)
             datePick = moment(event)
             searchApi()
         }
-function weekChange(event){
- datePick = moment(event).startOf('week')
-                fromDate.value = moment(datePick).startOf('week')
-                toDate.value = moment(datePick).endOf('week')
-}
-        function tabClick(value,tabDate) {
+
+        function weekChange(event) {
+            datePick = moment(event).startOf('week')
+            fromDate.value = moment(datePick).startOf('week')
+            toDate.value = moment(datePick).endOf('week')
+        }
+
+        function tabClick(value, tabDate) {
             showLoaderMain.value = false
             store.state.appointment.searchAppointmentRecords = ""
             if (value == 1) {
@@ -113,15 +123,15 @@ function weekChange(event){
                 fromDate.value = tabDate
                 toDate.value = tabDate
             } else if (value == 2) {
-                
+
                 datePick = moment().add(1, 'days')
-                console.log(datePick)
+                //console.log(datePick)
                 fromDate.value = moment().add(1, 'days')
                 toDate.value = moment().add(1, 'days')
             } else if (value == 3) {
 
                 datePick = moment(tabDate.add(1, 'days')).startOf('week')
-                
+
                 store.dispatch("weekName", {
                     from: moment(tabDate.add(2, 'days')).startOf('week'),
                     to: moment(tabDate).endOf('week')
@@ -152,15 +162,16 @@ function weekChange(event){
                 fromDate: fromDate.value,
                 toDate: toDate.value,
                 tabId: 4,
-                physiciansId: physiciansId.value.length==0 ?'' : physiciansId.value.join(",")
+                physiciansId: physiciansId.value.length == 0 ? '' : physiciansId.value.join(",")
             })
 
         }
         const appointmentSearch = store.getters.appointmentRecords.value
 
         watchEffect(() => {
-           //appointmentSearch.getStaff ? "" : store.dispatch("getStaffs")
-            
+           store.dispatch("getStaffs").then(()=>{
+//onsole.log("check")
+           })
 
             store.dispatch("allPatientsList")
             store.dispatch("allStaffList")
@@ -169,16 +180,20 @@ function weekChange(event){
         })
 
         function searchApi() {
-        
-         store.state.appointment.searchAppointmentRecords = ''
+let staffId = []
+             store.getters.appointmentRecords.value.getStaff ? store.getters.appointmentRecords.value.getStaff.map((item) => {  
+                    staffId.push(item.id)
+            }) : ''
+            physiciansId.value = staffId;
+            store.state.appointment.searchAppointmentRecords = ''
             store.state.appointment.calendarDate = ''
-            console.log("select",datePick)
+            //console.log("select", datePick)
             store.dispatch("calendarDateSelect", datePick)
             store.dispatch("searchAppointment", {
                 fromDate: fromDate.value,
                 toDate: toDate.value,
                 tabId: activeKey.value,
-                physiciansId: physiciansId.value.length==0 ?'' : physiciansId.value.join(",")
+                physiciansId: physiciansId.value.length == 0 ? '' : physiciansId.value.join(",")
             })
         }
         const patientsList = computed(() => {
@@ -206,13 +221,17 @@ function weekChange(event){
             appointmentModal.value = false;
         };
 
-        const staffSelect = (e) => {
+       function staffSelect (){
+            // let staffId = []
+            //  store.getters.appointmentRecords.value.getStaff.map((item) => {  
+            //         staffId.push(item.id)
+            // })
             showLoaderMain.value = false
-            physiciansId.value = e;
-           
+            //physiciansId.value = staffId;
+
         }
 
-        const appointmentCalendarPermissions = computed(()=>{
+        const appointmentCalendarPermissions = computed(() => {
             return store.state.screenPermissions.appointmentCalendarPermissions
         })
 
