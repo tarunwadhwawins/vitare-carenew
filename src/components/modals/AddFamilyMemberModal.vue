@@ -164,7 +164,7 @@ export default {
 					if(route.name == 'PatientSummary') {
 						store.dispatch('familyMembersList', patientUdid);
 					}
-					if(closeModal == false) {
+					if(closeModal.value == true) {
 						emit('closeModal')
 						formRef.value.resetFields();
 						Object.assign(familyMemberForm, form)
@@ -179,7 +179,7 @@ export default {
 					if(route.name == 'PatientSummary') {
 						store.dispatch('familyMembersList', patientUdid);
 					}
-					if(closeModal == false) {
+					if(closeModal.value == true) {
 						emit('closeModal')
 						formRef.value.resetFields();
 						Object.assign(familyMemberForm, form)
