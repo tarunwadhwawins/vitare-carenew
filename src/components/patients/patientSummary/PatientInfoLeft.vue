@@ -27,10 +27,18 @@
         <div class="thumb-head">
           Family Members <PlusOutlined @click="showAddFamilyMemberModal"/><br />
         </div>
-        <div v-if="familyMembersList" class="thumb-desc">
+        <div v-if="familyMembersList && familyMembersList.length > 0" class="thumb-desc">
           <a href="javascript:void(0)" @click="showFamilyMembersModal" >{{familyMembersList[0].fullName}}</a>
         </div>
       </div>
+      <!-- <div class="pat-profile-inner">
+        <div class="thumb-head">
+          Physician <PlusOutlined @click="showAddPhysicianModal"/><br />
+        </div>
+        <div class="thumb-desc">
+          <a href="javascript:void(0)" @click="showPhysiciansModal" >Test</a>
+        </div>
+      </div> -->
       <div class="pat-profile-inner">
         <div class="thumb-head" @click="showCriticalModal">Critical Note
           <PlusOutlined />
@@ -121,6 +129,10 @@
   
   <AddFamilyMemberModal v-if="addFamilyMembersModalVisible" v-model:visible="addFamilyMembersModalVisible"  :patientId="patientDetails.id" @closeModal="handleOk" :isFamilyMemberEdit="isFamilyMemberEdit" />
   <FamilyMembersDetailsModal v-if="familyMembersModalVisible" v-model:visible="familyMembersModalVisible" :familyMembersList="familyMembersList" :patientId="patientDetails.id" @isFamilyMemberEdit="editFamilyMember" />
+
+  <AddPhysicianModal v-model:visible="addPhysicianModalVisible" />
+  <PhysiciansDetailsModal v-model:visible="physiciansModalVisible" />
+
   <PatientFlagsModal v-if="flagsModalVisible" v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
   <AddCriticalNote v-model:visible="criticalModalVisible" @closeModal="handleOk" @saveModal="handleCriticalNote($event)"/>
   <CriticalNotesDetailModal v-if="criticalNotesDetailVisible" v-model:visible="criticalNotesDetailVisible" @closeModal="handleOk"/>
@@ -158,6 +170,8 @@ import { useRoute } from "vue-router";
 
 import AddFamilyMemberModal from "@/components/modals/AddFamilyMemberModal";
 import FamilyMembersDetailsModal from "@/components/modals/FamilyMembersDetailsModal";
+import AddPhysicianModal from "@/components/modals/AddPhysicianModal";
+import PhysiciansDetailsModal from "@/components/modals/PhysiciansDetailsModal";
 import PatientFlagsModal from "@/components/modals/PatientFlagsModal";
 import AddCriticalNote from "@/components/modals/CriticalNote"
 import CriticalNotesDetailModal from "@/components/modals/CriticalNotesDetail";
@@ -202,6 +216,8 @@ export default {
     CriticalNotesDetailModal,
     AddFamilyMemberModal,
     FamilyMembersDetailsModal,
+    AddPhysicianModal,
+    PhysiciansDetailsModal,
   },
   setup() {
     const store = useStore();
@@ -229,6 +245,8 @@ export default {
     const timeLogsDetailVisible = ref(false);
     const addDeviceVisible = ref(false);
     const deviceDetailVisible = ref(false);
+    const addPhysicianModalVisible = ref(false);
+    const physiciansModalVisible = ref(false);
 
     watchEffect(() => {
       if(route.name == 'PatientSummary') {
@@ -318,6 +336,14 @@ export default {
     const showAddFamilyMemberModal = () => {
       addFamilyMembersModalVisible.value = true
       isFamilyMemberEdit.value = false
+    }
+
+    const showAddPhysicianModal = () => {
+      addPhysicianModalVisible.value = true
+    }
+
+    const showPhysiciansModal = () => {
+      physiciansModalVisible.value = true
     }
 
     const editFamilyMember = () => {
@@ -485,6 +511,11 @@ export default {
       latestCareTeam,
       latestTimeLog,
       latestDevice,
+
+      addPhysicianModalVisible,
+      physiciansModalVisible,
+      showAddPhysicianModal,
+      showPhysiciansModal,
     }
   }
 }
