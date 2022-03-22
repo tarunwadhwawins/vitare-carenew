@@ -650,6 +650,10 @@ export const errorMsg = (state, data) => {
   state.errorMsg = data
 }
 
+export const closeModal = (state, data) => {
+  state.closeModal = data
+}
+
 
 
 
