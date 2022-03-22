@@ -67,7 +67,7 @@
             <a-col :span="24">
 
                 <div class="steps-action">
-                    <ModalButtons @is_click="reset" :disabled="formButton" :Id="cptCodeId" />
+                    <ModalButtons @is_click="reset" isReset="true" :disabled="formButton" :Id="cptCodeId" />
                 </div>
             </a-col>
         </a-row>
