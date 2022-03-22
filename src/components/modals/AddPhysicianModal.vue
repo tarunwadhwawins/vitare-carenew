@@ -132,7 +132,7 @@ export default {
 					if(route.name == 'PatientSummary') {
 						store.dispatch('physiciansList', patientUdid);
 					}
-					if(closeModal == false) {
+					if(closeModal.value == true) {
 						emit('closeModal')
 						formRef.value.resetFields();
 						Object.assign(addPhysicianForm, form)
@@ -148,7 +148,7 @@ export default {
 					if(route.name == 'PatientSummary') {
 						store.dispatch('physiciansList', patientUdid);
 					}
-					if(closeModal == false) {
+					if(closeModal.value == true) {
 						emit('closeModal')
 						formRef.value.resetFields();
 						Object.assign(addPhysicianForm, form)

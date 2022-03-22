@@ -151,7 +151,7 @@ export default {
 					if(route.name == 'PatientSummary') {
 						store.dispatch('emergencyContactsList', patientUdid);
 					}
-					if(closeModal == false) {
+					if(closeModal.value == true) {
 						emit('closeModal')
 						formRef.value.resetFields();
 						Object.assign(emergencyContactForm, form)
@@ -166,7 +166,7 @@ export default {
 					if(route.name == 'PatientSummary') {
 						store.dispatch('emergencyContactsList', patientUdid);
 					}
-					if(closeModal == false) {
+					if(closeModal.value == true) {
 						emit('closeModal')
 						formRef.value.resetFields();
 						Object.assign(emergencyContactForm, form)

@@ -867,6 +867,7 @@ export const criticalNotesDelete = async ({commit}, data) => {
   await serviceMethod.common("delete", `${API_ENDPOINTS['patient']}/${data.id}/criticalNote/${data.documentId}`, null, null).then((response) => {
     commit('criticalNotesDelete', response.data.data);
     successSwal(response.data.message)
+    commit('closeModal', true)
   }).catch((error) => {
     errorSwal(error.response.data.message)
   })
@@ -895,16 +896,15 @@ export const addFamilyMember = async ({commit}, data) => {
   await serviceMethod.common("post", API_ENDPOINTS['patient']+`/${data.patientUdid}/familyAdd`, null, data.data).then((response) => {
     successSwal(response.data.message)
     commit('loadingStatus', false)
+    commit('closeModal', true)
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
-      commit('loadingStatus', false)
-      commit('closeModal', false)
     }
     else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
-      commit('loadingStatus', false)
     }
+    commit('closeModal', false)
     commit('loadingStatus', false)
   })
 }
@@ -914,17 +914,16 @@ export const updateFamilyMember = async ({commit}, data) => {
   await serviceMethod.common("put", API_ENDPOINTS['patient']+`/${data.patientUdid}/familyUpdate/${data.familyUdid}`, null, data.data).then((response) => {
     successSwal(response.data.message)
     commit('loadingStatus', false)
+    commit('closeModal', true)
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
-      commit('loadingStatus', false)
-      commit('closeModal', false)
     }
     else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
-      commit('loadingStatus', false)
     }
     commit('loadingStatus', false)
+    commit('closeModal', false)
   })
 }
 
@@ -933,6 +932,7 @@ export const deleteFamilyMember = async ({commit}, data) => {
   await serviceMethod.common("delete", API_ENDPOINTS['patient']+`/${data.patientUdid}/family/${data.familyUdid}`, null, data.data).then((response) => {
     successSwal(response.data.message)
     commit('loadingStatus', false)
+    commit('closeModal', true)
   }).catch((error) => {
     if (error.response.status === 500) {
       errorSwal(error.response.data.message)
@@ -964,17 +964,16 @@ export const addPhysician = async ({commit}, data) => {
   await serviceMethod.common("post", API_ENDPOINTS['patient']+`/${data.patientUdid}/physician`, null, data.data).then((response) => {
     commit('loadingStatus', false)
     successSwal(response.data.message)
+    commit('closeModal', true)
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
-      commit('loadingStatus', false)
-      commit('closeModal', false)
     }
     else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
-      commit('loadingStatus', false)
     }
     commit('loadingStatus', false)
+    commit('closeModal', false)
   })
 }
 
@@ -983,17 +982,16 @@ export const updatePhysician = async ({commit}, data) => {
   await serviceMethod.common("put", API_ENDPOINTS['patient']+`/${data.patientUdid}/physician/${data.familyUdid}`, null, data.data).then((response) => {
     commit('loadingStatus', false)
     successSwal(response.data.message)
+    commit('closeModal', true)
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
-      commit('loadingStatus', false)
-      commit('closeModal', false)
     }
     else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
-      commit('loadingStatus', false)
     }
     commit('loadingStatus', false)
+    commit('closeModal', false)
   })
 }
 
@@ -1016,6 +1014,7 @@ export const deletePhysician = async ({commit}, data) => {
   await serviceMethod.common("delete", API_ENDPOINTS['patient']+`/${data.patientUdid}/physician/${data.physicianUdid}`, null, null).then((response) => {
     successSwal(response.data.message)
     commit('loadingStatus', false)
+    commit('closeModal', true)
   }).catch((error) => {
     if (error.response.status === 500) {
       errorSwal(error.response.data.message)
@@ -1077,17 +1076,16 @@ export const addEmergencyContact = async ({commit}, data) => {
   await serviceMethod.common("post", API_ENDPOINTS['patient']+`/${data.patientUdid}/emergency`, null, data.data).then((response) => {
     successSwal(response.data.message)
     commit('loadingStatus', false)
+    commit('closeModal', true)
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
-      commit('loadingStatus', false)
-      commit('closeModal', false)
     }
     else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
-      commit('loadingStatus', false)
     }
     commit('loadingStatus', false)
+    commit('closeModal', false)
   })
 }
 
@@ -1096,17 +1094,16 @@ export const updateEmergencyContact = async ({commit}, data) => {
   await serviceMethod.common("put", API_ENDPOINTS['patient']+`/${data.patientUdid}/emergency/${data.contactUdid}`, null, data.data).then((response) => {
     successSwal(response.data.message)
     commit('loadingStatus', false)
+    commit('closeModal', true)
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
-      commit('loadingStatus', false)
-      commit('closeModal', false)
     }
     else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
-      commit('loadingStatus', false)
     }
     commit('loadingStatus', false)
+    commit('closeModal', false)
   })
 }
 
@@ -1115,6 +1112,7 @@ export const deleteEmergencyContact = async ({commit}, data) => {
   await serviceMethod.common("delete", API_ENDPOINTS['patient']+`/${data.patientUdid}/emergency/${data.contactUdid}`, null, null).then((response) => {
     successSwal(response.data.message)
     commit('loadingStatus', false)
+    commit('closeModal', true)
   }).catch((error) => {
     if (error.response.status === 500) {
       errorSwal(error.response.data.message)
