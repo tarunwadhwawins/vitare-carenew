@@ -34,7 +34,7 @@
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="familyContactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
 							<a-select v-model:value="familyMemberForm.familyContactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" />
-								<ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactType?errorMsg.familyContactType[0]:''" />
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactType?errorMsg.familyContactType[0]:''" />
 						</a-form-item>
 					</div>
 				</a-col>
@@ -42,10 +42,7 @@
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="familyContactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
-							<a-select ref="select" v-model:value="familyMemberForm.familyContactTime" style="width: 100%" size="large">
-								<a-select-option value="" disabled>{{'Select Preferred Time'}}</a-select-option>
-								<a-select-option v-for="ptOfDayContact in globalCode.ptOfDayContact.globalCode" :key="ptOfDayContact.id" :value="ptOfDayContact.id">{{ptOfDayContact.name}}</a-select-option>
-							</a-select>
+							<a-select v-model:value="familyMemberForm.familyContactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactTime?errorMsg.familyContactTime[0]:''" />
 						</a-form-item>
 					</div>
@@ -94,14 +91,16 @@
 
 <script>
 import ModalButtons from "@/components/common/button/ModalButtons";
-import { computed, reactive, ref, onMounted } from 'vue-demi';
+import { computed, reactive, ref, onMounted, onUnmounted } from 'vue-demi';
 import { useStore } from 'vuex';
 import Loader from "@/components/loader/Loader.vue";
 import { useRoute } from 'vue-router';
+import ErrorMessage from "../common/messages/ErrorMessage"
 export default {
   components: {
     ModalButtons,
     Loader,
+		ErrorMessage,
   },
   props: {
     patientId: {
@@ -131,19 +130,27 @@ export default {
 			familyEmail: '',
 			familyPhoneNumber: '',
 			familyContactType: [],
-			familyContactTime: '',
+			familyContactTime: [],
 			familyGender: '',
 			relation: '',
 			isPrimary: patients.value.familyMemberDetails && patients.value.familyMemberDetails.isPrimary ? patients.value.familyMemberDetails.isPrimary : false,
 		})
 		console.log('familyMemberDetails', patients.value)
-		const id = patients.value.familyMemberDetails;
+		
+		const id = ref(null)
+		if(isEdit) {
+			id.value = patients.value.familyMemberDetails;
+		}
 
     onMounted(() => {
       if(isEdit) {
         Object.assign(familyMemberForm, patients.value.familyMemberDetails);
       }
     })
+
+		onUnmounted(() => {
+			store.commit('errorMsg', null)
+		})
 
     const form = reactive({ ...familyMemberForm });
 
@@ -182,6 +189,10 @@ export default {
       Object.assign(familyMemberForm, form)
     }
 
+		const errorMsg = computed(() => {
+			return store.state.patients.errorMsg
+		})
+
 		return {
       isEdit,
       formRef,
@@ -189,6 +200,7 @@ export default {
 			familyMemberForm,
 			submitForm,
 			handleClear,
+			errorMsg,
 			id,
 		}
 	}

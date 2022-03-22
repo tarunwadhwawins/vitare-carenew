@@ -1024,6 +1024,7 @@ export const familyMembersList = (state, familyMembers) => {
   state.familyMembersList = familyMembers.map(member => {
     member.isPrimary = member.isPrimary ? 'Yes' : 'No'
     member.contactType = member.contactType ? JSON.parse(member.contactType) : []
+    member.contactTime = member.contactTimeId ? JSON.parse(member.contactTimeId) : []
     return member
   })
 }
@@ -1033,7 +1034,7 @@ export const familyMemberDetails = (state, familyMember) => {
     familyMember.familyEmail = familyMember.email
     familyMember.familyPhoneNumber = familyMember.phoneNumber
     familyMember.familyContactType = familyMember.contactType ? JSON.parse(familyMember.contactType) : []
-    familyMember.familyContactTime = Number(familyMember.contactTimeId)
+    familyMember.familyContactTime = familyMember.contactTimeId ? JSON.parse(familyMember.contactTimeId) : []
     familyMember.familyGender = familyMember.genderId
     familyMember.relation = familyMember.relationId
     familyMember.isPrimary = familyMember.isPrimary ? true : false
@@ -1046,5 +1047,25 @@ export const physiciansList = (state, physicians) => {
 }
 
 export const physicianDetails = (state, physician) => {
+  physician.designation = physician.designationId
   state.physicianDetails = physician
+}
+
+export const emergencyContactsList = (state, emergencyContacts) => {
+  state.emergencyContactsList = emergencyContacts.map(contact => {
+    contact.isPrimary = contact.isPrimary ? 'Yes' : 'No'
+    contact.email = contact.emergencyEmail
+    contact.contactType = contact.contactType ? JSON.parse(contact.contactType) : []
+    contact.contactTime = contact.contactTimeId ? JSON.parse(contact.contactTimeId) : []
+    return contact
+  })
+}
+
+export const emergencyContactDetails = (state, emergencyContact) => {
+  emergencyContact.isPrimary = emergencyContact.isPrimary ? 'Yes' : 'No'
+  emergencyContact.gender = emergencyContact.genderId
+  emergencyContact.email = emergencyContact.emergencyEmail
+  emergencyContact.contactType = emergencyContact.contactType ? JSON.parse(emergencyContact.contactType) : []
+  emergencyContact.contactTime = emergencyContact.contactTimeId ? JSON.parse(emergencyContact.contactTimeId) : []
+  state.emergencyContactDetails = emergencyContact
 }
