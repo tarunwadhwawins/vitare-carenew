@@ -1,4 +1,5 @@
 <template>
+  
   <a-table  rowKey="id"
     :columns="globalCodesColumns"
     :data-source="globalCodesList">

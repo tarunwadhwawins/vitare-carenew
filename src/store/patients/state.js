@@ -68,5 +68,7 @@ export default {
     criticalNotesList:null,
     familyMembersList:null,
     familyMemberDetails:null,
+    physiciansList:null,
+    physicianDetails:null,
 
 }

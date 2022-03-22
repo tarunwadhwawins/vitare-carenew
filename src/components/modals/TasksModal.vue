@@ -267,7 +267,7 @@ export default defineComponent({
     watchEffect(() => {
       store.dispatch("allStaffList")
       if(props.taskId!=null){
-        console.log("check",tasks.value.editTask)
+       // console.log("check",tasks.value.editTask)
         Object.assign(taskForm, tasks.value.editTask)
       }
     })

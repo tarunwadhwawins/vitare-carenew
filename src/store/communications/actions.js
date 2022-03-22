@@ -1,9 +1,10 @@
 import ServiceMethodService from '../../services/serviceMethod';
 // import AuthService from '../../services/auth';
 import { API_ENDPOINTS } from "../../config/apiConfig"
-import { successSwal, errorSwal} from '../../commonMethods/commonMethod'
+import { successSwal, errorSwal,startimeAdd, endTimeAdd, timeStamp} from '../../commonMethods/commonMethod'
 export const callPlanned = async ({ commit }) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['CallPlanned'], null, null).then((response) => {
+		
 		commit('callPlannedSuccess', response.data.data);
 	})
 	.catch((error) => {
@@ -28,8 +29,8 @@ export const addCommunication = async ({ commit }, data) => {
 	})
 }
 
-export const communicationTypes = async ({ commit }) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['communicationTypes'], null, null).then((response) => {
+export const communicationTypes = async ({ commit },from) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['communicationTypes']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null, null).then((response) => {
 		//console.log("check",response.data.data)
 		commit('communicationTypesSuccess', response.data.data);
 	})
@@ -94,8 +95,8 @@ export const newRequests = async ({ commit }) => {
 	})
 }
 
-export const communicationsCount = async ({ commit }, date) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['communicationsCount']+'?date='+date, null).then((response) => {
+export const communicationsCount = async ({ commit }, from) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['communicationsCount']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null).then((response) => {
 		commit('communicationsCountSuccess', response.data.data);
 	})
 	.catch((error) => {
@@ -139,4 +140,15 @@ export const conversationSend = async ({ commit },data) => {
 		}
 		commit('failure', error.response.data);
 	})
+}
+export const status = async ({ commit },from) => {
+    await ServiceMethodService.common("get", API_ENDPOINTS['callStatus'] +"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null, null).then((response) => {
+        commit('callStatusSuccess', response.data.data)
+
+    }).catch((error) => {
+        if (error.response.status == 401) {
+            //AuthService.logout();
+        }
+        commit('failure', error.response.data);
+    })
 }

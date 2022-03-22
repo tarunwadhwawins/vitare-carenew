@@ -7,12 +7,13 @@
             </div>
         </a-col>
 
-        <a-col :span="12" v-for="staff,index in staffList" :key="index">
+        <a-col :span="12" v-for="staff,index in staffList.getStaff" :key="index">
 
             <div class="phyInner">
-
-                <a-avatar v-if="staff.profile_photo" :size="80" src="staff.profile_photo" />
-                <a-avatar v-else :size="80" src="@/assets/images/userAvatar.png" />
+                
+                <img v-if="staff.profile_photo" :size="50" src="staff.profile_photo" />
+                <img v-else :size="50" src="@/assets/images/userAvatar.png" />
+            
                 <span class="checkIcon" @click="removeStaff(staff.id)">
                     <CloseOutlined />
                 </span>
@@ -47,7 +48,7 @@ import AddPhysician from "@/components/modals/AddPhysician";
 import {
     useStore
 } from "vuex"
-import { arrayToObjact } from "@/commonMethods/commonMethod"
+
 export default {
     components: {
         CloseOutlined,
@@ -67,54 +68,30 @@ export default {
         const showModal2 = (e) => {
 
             physicianModal.value = e;
+            staffAdd()
             //console.log(physicianModal.value)
         };
         const handleOk2 = () => {
             physicianModal.value = false;
         };
-        const staffList = ref([])
+        const staffList = store.getters.appointmentRecords.value
        
-            console.log(store.getters.appointmentRecords.value.getStaff)
-            props.physiciansId.length==0 ? "" : store.getters.appointmentRecords.value.getStaff.map((item) => {
-           
-                 staffList.value.push(item)
-    
-        })
-
- 
-        //store.getters.appointmentRecords.value.getStaff.map((item, index) => {
-        //     if (index <= 2) {
-            
-        //         staffList.value.push(item)
-        //     }
-       // })
-
-        const addStaff = (event) => {
-               let objact= arrayToObjact(staffList.value,event.data.id) 
-               if(!objact){
-                    console.log("objact",event.data)
-            staffList.value.push(event.data)
-            store.getters.appointmentRecords.value.getStaff = staffList.value
-            staffAdd()
-               }
-               physicianModal.value = false;
-        }
+       
 
         function staffAdd() {
-            let staffId = []
-            staffList.value.map((item) => {  
-                    staffId.push(item.id)
-            })
-            emit('staff-select', staffId)
+            
+            emit('staff-select')
         }
 
         function removeStaff(event) {
-
-            staffList.value = staffList.value.filter(function (el) {
+            let addStaff = ''
+           let  staff = JSON.parse(localStorage.getItem("staff")) || []
+           addStaff= staff.filter(function (el) {
                 return el.id != event;
             })
-            store.getters.appointmentRecords.value.getStaff = staffList.value
-            staffAdd()
+            localStorage.setItem('staff', JSON.stringify(addStaff));
+            store.dispatch("getStaffs")
+            emit('staff-select')
         }
         return {
 
@@ -123,7 +100,7 @@ export default {
             showModal2,
             handleOk2,
             physicianModal,
-            addStaff
+            
         }
     }
 }
