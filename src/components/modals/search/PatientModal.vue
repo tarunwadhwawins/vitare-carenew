@@ -55,6 +55,7 @@ export default {
         setTimeout(()=>{
         if(store.state.patients.fetchFromBitrixStatus!=null){
         emit('closeSearchPatient',false)
+        emit('clearValidtion')
         }
         },2000)
         

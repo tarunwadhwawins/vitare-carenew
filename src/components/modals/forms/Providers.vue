@@ -1,5 +1,5 @@
 <template>
-<a-form :model="provider" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addProvider" @finishFailed="roleDataFailed">
+<a-form :model="provider" scrollToFirstError=true name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addProvider" @finishFailed="roleDataFailed">
     <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
             <div class="form-group">

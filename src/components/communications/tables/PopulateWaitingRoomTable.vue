@@ -9,14 +9,18 @@
         {{ text.text }}
       </router-link>
     </template>
-    <template #action>
-      <a-button class="btn blueBtn">{{$t('communications.start')}}</a-button>
+    <template #action="{record}">
+      <router-link :to="{ name: 'videoCall', params: { id: enCodeString(record.conferenceId) } }" class="btn blueBtn">{{$t('communications.start')}}</router-link>
     </template>
   </a-table>
 </template>
 
 <script>
+import {
+  enCodeString
+} from "@/commonMethods/commonMethod";
 export default {
+
 props:["colomnsRecord","dataRecord","linkTo","rowKey","pagination"],
   setup() {
     
@@ -24,6 +28,7 @@ props:["colomnsRecord","dataRecord","linkTo","rowKey","pagination"],
     return {
      // column,
      // data
+     enCodeString
     }
   }
 }

@@ -35,7 +35,7 @@
         </a-layout>
     </a-layout>
     <!--modals-->
-    <AdminPrograms v-if="programId" v-model:visible="visible" @ok="handleOk" @is-visible="showModal($event)" :idProgram="programId" />
+    <AdminPrograms v-if="programId" v-model:visible="visible" @ok="handleOk" @is-visible="showEdit($event)" :idProgram="programId" />
     <AdminPrograms v-else v-model:visible="visible" @ok="handleOk" @is-visible="showModal($event)" />
     <!---->
 </div>
@@ -100,8 +100,14 @@ export default {
         ]);
 
         const showEdit = (e) => {
-            programId.value = e.id
-            visible.value = e.check;
+            if(e.check){
+                programId.value = e.id
+                visible.value = e.check;
+            }else{
+                visible.value = e
+            }
+            
+            
             //console.log("check",programId.value)
         }
         const programsPermissions = computed(() => {

@@ -1,4 +1,5 @@
 import { dateOnlyFormatSImple, yaxis, dataLabels, plotOptions, dateOnlyFormat } from '../../commonMethods/commonMethod';
+import moment from "moment"
 export const tasksListSuccess = async (state, tasks) => {
   state.tasksList = tasks.data.map(element => {
     element.dueDate = dateOnlyFormat(element.dueDate)
@@ -101,9 +102,8 @@ export const tasksListSuccess = async (state, tasks) => {
   ];
 }
 
-
-
 export const taskStatusSuccess = async (state, status) => {
+  //console.log("status",status)
   state.taskStatus = status;
   state.incompleteAllTask = status.map(item => item.total)
   state.completedAllTask = {
@@ -131,11 +131,11 @@ export const taskStatusSuccess = async (state, status) => {
 
   // for completion
 
-  state.completionSeries = status.map(item => {
-    item.name = item.text,
-      item.data = status.map(item => item.total)
-    return item
-  })
+  // state.completionSeries = status.map(item => {
+  //   item.name = item.text,
+  //     item.data = status.map(item => item.total)
+  //   return item
+  // })
 
 
   // [
@@ -148,28 +148,92 @@ export const taskStatusSuccess = async (state, status) => {
   //     data: status.map(item=>item.total)
   //   },
   // ];
+
+
+}
+export const completeTaskRate = async (state, count) => {
+  
+  state.completeTaskRate = count.taskCompletionRates;
+ 
+}
+
+export const allTaskStatusSuccess = async (state, status) => {
+  
+  state.allTaskStatus = status;
+  let task=[]
+  const completed = status.filter(object => Object.values(object).includes('Completed'));
+  let today = moment();
+    today.subtract(7, 'days')
+    for (let i = 0; i < 7; i++) {
+      var day = today.add(1, 'days');
+      // status.forEach((item)=>{
+      //   let obj = item.includes(day.format('dddd'))
+        
+      // })
+      const results = completed.filter(object => Object.values(object).includes(day.format('dddd')));
+      let obj = ''
+if(results.length>0){
+  results.forEach((items)=>{
+      task.push({
+        count:items.total,
+        time:items.time
+      })
+  })
+  
+}else{
+  obj= {count:0,
+  time:day.format('dddd')
+  }
+  task.push(obj)
+    }
+    
+  }
+  // state.completionSeries = [{
+  //   name :'Completed',
+  //     data : task.map(item => item.total)
+  // }]
+  state.completionSeries = [{
+    name: "Complete",
+    data: task.map((item) => { return item.count}),
+  },
+ ]
   state.completionOptions = {
     chart: {
-      height: 412,
-      type: "area",
+      
+      
     },
     dataLabels: {
       enabled: false,
     },
-    colors: ["#0fb5c2", "#ff6061"],
+    colors: ["#0fb5c2"],
     stroke: {
       curve: "smooth",
     },
-    // xaxis: {
-    //   type: "datetime",
-    //   categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z"],
-    // },
+    xaxis: {
+      
+      categories: task.map((item) => {return item.time}),
+    },
+    yaxis: yaxis("Task Count"),
     tooltip: {
       x: {
         format: "dd/MM/yy HH:mm",
       },
     },
   };
+
+  //console.log("task",task.map(item => item.count))
+
+  // [
+  //   {
+  //     name: "Complete",
+  //     data: status.map(item=>item.total)
+  //   },
+  //   {
+  //     name: "Incomplete",
+  //     data: status.map(item=>item.total)
+  //   },
+  // ];
+  
 
 }
 
@@ -228,6 +292,10 @@ export const taskPriority = async (state, priorities) => {
 
 
 export const taskTeamMember = async (state, TeamMember) => {
+  let teamTopMember=[]
+  TeamMember.map((item,index) => { if(index<=4){teamTopMember.push(item) }})
+  
+  //console.log("teamTopMember",teamTopMember)
   state.taskTeamMember = {
     optionTeamMember: {
       annotations: {
@@ -266,14 +334,14 @@ export const taskTeamMember = async (state, TeamMember) => {
         labels: {
           rotate: -45,
         },
-        categories: TeamMember.map((item) => { return item.text }),
+        categories: teamTopMember.map((item) => {return item.text }),
       },
       yaxis: yaxis("Task Count")
     },
     seriesTeamMember: [
       {
         name: "Task Count",
-        data: TeamMember.map((item) => { return item.total }),
+        data: teamTopMember.map((item) => { return item.total }),
       },
     ],
 

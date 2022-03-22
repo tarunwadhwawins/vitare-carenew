@@ -124,7 +124,45 @@ export const taskStatus = async ({ commit }) => {
 			}
 		})
 }
-
+export const allTaskStatus = async ({ commit }) => {
+	commit('loadingStatus', true)
+	await ServiceMethodService.common("get", API_ENDPOINTS['allTaskStatus'], null, null).then((response) => {
+		console.log('taskStatusSuccess', response.data);
+		commit('allTaskStatusSuccess', response.data);
+		commit('loadingStatus', false)
+	}).catch((error) => {
+			if (error.response.status === 422) {
+				commit('errorMsg', error.response.data)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 500) {
+				errorSwal(error.response.data.message)
+				commit('loadingStatus', false)
+			} else if (error.response.status === 401) {
+				// commit('errorMsg', error.response.data.message)
+				commit('loadingStatus', false)
+			}
+		})
+}
+export const completeTaskRate = async ({ commit }) => {
+	commit('loadingStatus', true)
+	await ServiceMethodService.common("get", API_ENDPOINTS['completeTaskRate'], null, null).then((response) => {
+		console.log('completeTaskRate', response.data.data);
+		commit('completeTaskRate', response.data.data);
+		commit('loadingStatus', false)
+	}).catch((error) => {
+			if (error.response.status === 422) {
+				commit('errorMsg', error.response.data)
+				
+			} else if (error.response.status === 500) {
+				errorSwal(error.response.data.message)
+				
+			} else if (error.response.status === 401) {
+				// commit('errorMsg', error.response.data.message)
+				
+			}
+			commit('loadingStatus', false)
+		})
+}
 export const taskPriority = async ({ commit }) => {
 	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", API_ENDPOINTS['taskPriority'], null, null).then((response) => {

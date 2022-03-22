@@ -148,6 +148,15 @@
             }
         }
     }
+    &.completionRate {
+        .ant-card-body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 325px;
+            text-align: center;
+        }
+    }
 }
 
 /*----*/
@@ -1365,8 +1374,8 @@
         padding: 15px;
         max-height: 360px;
         overflow: auto;
-        -ms-overflow-style: none; 
-        scrollbar-width: none; 
+        -ms-overflow-style: none;
+        scrollbar-width: none;
         &::-webkit-scrollbar {
             display: none;
         }
@@ -1414,8 +1423,16 @@
 }
 .popup_open {
     position: relative;
-    z-index: 99!important;
+    z-index: 99 !important;
     .popup_element {
-        z-index: 99!important;
+        z-index: 99 !important;
+    }
+}
+
+.patientTable {
+    .ant-table-thead {
+        th {
+            vertical-align: bottom !important;
+        }
     }
 }

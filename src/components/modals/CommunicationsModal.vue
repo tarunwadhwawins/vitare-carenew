@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" title="Communications" centered>
+  <a-modal width="1000px" title="Communications" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
     <a-form ref="formRef" :model="messageForm" layout="vertical" @finish="sendMessage">
       <a-row :gutter="24">
         <!-- <a-col :sm="12" :xs="24">
@@ -11,12 +11,15 @@
         </a-col> -->
         <a-col :sm="12" :xs="24">
           <div class="form-group">
+        
             <a-form-item :label="$t('communications.communicationsModal.from')" name="from" :rules="[{ required: true, message: $t('communications.communicationsModal.from')+' '+$t('global.validation')  }]">
               <a-select
                 ref="select"
                 v-if="staffList"
                 v-model:value="messageForm.from"
                 style="width: 100%"
+                :disabled="arrayToObjact(staffPermissions,37) ? false : true"
+                
                 size="large">
                 <a-select-option value="" disabled>{{'Select Staff'}}</a-select-option>
                 <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}</a-select-option>
@@ -24,7 +27,7 @@
             </a-form-item>
           </div>
         </a-col>
-        <a-col :sm="12" :xs="24">
+        <a-col :sm="12" :xs="24" @click="referenceId">
           <div class="form-group">
             <a-form-item :label="$t('communications.communicationsModal.to')" name="to">
               <div class="btn toggleButton" :class="toggleTo ? 'active' : ''" @click="toggleTo = !toggleTo">
@@ -47,7 +50,7 @@
                 style="width: 100%"
                 size="large">
                 <a-select-option value="" disabled>{{'Select Patient'}}</a-select-option>
-                <a-select-option v-for="patient in patientsList" :key="patient.id" :value="patient.id">{{ patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option>
+                <a-select-option v-for="patient in patientsList" :key="patient.id" :value="patient.id" :disabled="messageForm.from==patient.id ? true : false">{{ patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option>
               </a-select>
             </a-form-item>
           </div>
@@ -62,7 +65,7 @@
                 style="width: 100%"
                 size="large">
                 <a-select-option value="" disabled>{{'Select Staff'}}</a-select-option>
-                <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}</a-select-option>
+                <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id" :disabled="messageForm.from==staff.id ? true : false">{{ staff.fullName }}</a-select-option>
               </a-select>
             </a-form-item>
           </div>
@@ -140,6 +143,13 @@
   import { ref, reactive, watchEffect, computed } from "vue";
   import { useStore } from "vuex"
   import ModalButtons from "@/components/common/button/ModalButtons";
+  import {arrayToObjact,
+    warningSwal
+} from "@/commonMethods/commonMethod";
+import {
+    messages
+} from "../../config/messages";
+
   export default {
     components: {
       ModalButtons
@@ -148,10 +158,7 @@
       const store = useStore()
       const toggleTo = ref(true);
 
-      const handleCancel = () => {
-        emit('is-visible', false);
-      };
-      
+      const auth = JSON.parse(localStorage.getItem("auth"))
       watchEffect(() => {
         store.dispatch("globalCodes")
         store.dispatch("allPatientsList")
@@ -176,7 +183,7 @@
       })
 
       const messageForm = reactive({
-        from: '',
+        from: auth.user.staffUdid,
         entityType: '',
         referenceId: '',
         subject: '',
@@ -200,10 +207,34 @@
         Object.assign(messageForm, form)
       }
 
+      const handleCancel = () => {
+        formRef.value.resetFields();
+        Object.assign(messageForm, form)
+      };
+      function closeModal() {
+           
+            if (messageForm.entityType != "" || messageForm.referenceId != "" || messageForm.subject != "" || messageForm.messageCategoryId != "" || messageForm.priorityId != "" || messageForm.message != "" || messageForm.messageTypeId != "") {
+                warningSwal(messages.modalWarning).then((response) => {
+                    if (response == true) {
+                        ///console.log("check2")
+                     handleCancel();
+                        emit("is-visible", false);
+
+                    } else {
+                        emit("is-visible", true);
+                    }
+                });
+            }
+        }
       const patientChange = (value) => {
         store.dispatch('patientDetails', value);
       };
-      
+      function referenceId(){
+        messageForm.referenceId=''
+      }
+       const staffPermissions = computed(()=>{
+            return store.state.screenPermissions.staffPermissions
+        })
       return {
         toggleTo,
         patientChange,
@@ -216,6 +247,11 @@
         messageType,
         messageForm,
         formRef,
+        auth,
+        closeModal,
+        referenceId,
+        staffPermissions,
+        arrayToObjact
       };
     },
   };

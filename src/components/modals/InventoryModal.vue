@@ -11,7 +11,7 @@
                 v-if="deviceTypes"
                 v-model:value="inventoryForm.deviceType" /> -->
                 <a-select ref="select" v-model:value="inventoryForm.deviceType" style="width: 100%" size="large" @change="onSelectOption">
-                  <a-select-option value="" hidden>{{'Select Duration Time'}}</a-select-option>
+                  <a-select-option value="" hidden>{{'Select Device Type'}}</a-select-option>
                   <a-select-option v-for="deviceType in inventoryTypes.globalCode" :key="deviceType.id" :value="deviceType.id">
                     {{ deviceType.name }}</a-select-option>
                 </a-select>
@@ -26,8 +26,8 @@
                 @on-select="onSelectModal"
                 v-if="deviceModals"
                 v-model:value="inventoryForm.deviceModelId" /> -->
-                <a-select ref="select" v-model:value="inventoryForm.deviceModelId" style="width: 100%" size="large">
-                  <a-select-option value="" hidden>{{'Select Duration Time'}}</a-select-option>
+                <a-select ref="select" v-model:value="inventoryForm.deviceModelId" style="width: 100%" size="large" :disabled="disabledModelNumber">
+                  <a-select-option value="" hidden>{{'Select Model Number'}}</a-select-option>
                   <a-select-option v-for="deviceModal in deviceModalsList" :key="deviceModal.id" :value="deviceModal.id">{{ deviceModal.modelNumber }}</a-select-option>
                 </a-select>
             </a-form-item>
@@ -85,6 +85,7 @@ export default {
     const title = props.isAdd ? "Add Inventory" : "Edit Inventory";
     const isEdit = props.isAdd ? false : true;
     const disabled = props.isAdd ? false : true;
+    const disabledModelNumber = ref(true);
     
     const handleCancel = () => {
       emit('is-visible', false);
@@ -96,22 +97,21 @@ export default {
     const inventoryDetail = inventory.value.inventoryDetails;
     console.log('inventoryDetail', inventoryDetail)
     
-    const inventoryForm = reactive({
-      deviceType: '',
-      deviceModelId: '',
-      serialNumber: '',
-      macAddress: '',
-      isActive: switchOn,
-    });
-    
     var switchOn;
     if(isEdit) {
       switchOn = inventoryDetail && inventoryDetail.isActive ? true : false;
-      inventoryForm.deviceModelId = inventoryDetail && inventoryDetail.deviceModelId ? inventoryDetail.deviceModelId : '';
     }
     else {
       switchOn = true;
     }
+    
+    const inventoryForm = reactive({
+      deviceType: '',
+      deviceModelId: inventoryDetail && inventoryDetail.modelNumber ? inventoryDetail.modelNumber : '',
+      serialNumber: '',
+      macAddress: '',
+      isActive: switchOn,
+    });
     
     const inventoryTypes = computed(() => {
       return store.state.common.deviceType;
@@ -119,6 +119,7 @@ export default {
 
     onMounted(() => {
       if(isEdit) {
+        disabledModelNumber.value = false
         Object.assign(inventoryForm, inventory.value.inventoryDetails);
       }
     })
@@ -131,9 +132,14 @@ export default {
       })
     }); */
 
+    const deviceModalsList = computed(() => {
+      return store.state.inventory.deviceModalsList
+    });
+
     const onSelectOption = (value) => {
-      inventoryForm.deviceModelId = ""
+      store.state.inventory.deviceModalsList = ""
       store.dispatch('deviceModalsList', value)
+      disabledModelNumber.value = false
       // deviceModalsList.value = null;
       // deviceTypes.value.forEach(type => {
       //   if(type.value == selected) {
@@ -141,10 +147,6 @@ export default {
       //   }
       // });
     };
-
-    const deviceModalsList = computed(() => {
-      return store.state.inventory.deviceModalsList
-    });
     
     // const deviceModals = ref([])
     watchEffect(() => {
@@ -175,6 +177,7 @@ export default {
       if(isEdit) {
         // console.log('data', data)
         const id = inventoryDetail.id;
+        inventoryForm.deviceModelId = inventoryDetail.deviceModelId
         store.dispatch('updateInventory', {id: id, data: inventoryForm}).then(() => {
           store.dispatch('inventoriesList')
           emit('is-visible', false);
@@ -191,6 +194,7 @@ export default {
     return {
       // onSelectModal,
       // deviceModals,
+      disabledModelNumber,
       disabled,
       title,
       inventoryForm,

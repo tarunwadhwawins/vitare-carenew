@@ -1,4 +1,4 @@
-export const programList = async (state, data) => {
+export const manageProgramList = async (state, data) => {
  
   state.programColumns = [
     {
@@ -32,7 +32,7 @@ export const programList = async (state, data) => {
       },
     },
   ]
-  state.programList = data.data.map((item, index) => {
+  state.manageProgramList = data.data.map((item, index) => {
     item.status = item.status == 1 ? true : false
     item.key = index
     return item
@@ -44,7 +44,7 @@ export const programMsg = async (state, data) => {
 }
 export const editProgram = async (state, data) => {
   state.editProgram = data.map((item) => {
-    item.isActive = item.status == 1 ? true : false
+    item.status = item.status == 1 ? true : false
     return item
   })
 }

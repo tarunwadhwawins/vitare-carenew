@@ -1,6 +1,4 @@
-
-
-// API end points 
+// API end points
 export const API_ENDPOINTS = {
     // Authentication
     login: "login",
@@ -48,10 +46,12 @@ export const API_ENDPOINTS = {
     addTask:"task",
     tasksList:"task",
     taskStatus:"task/status",
+    allTaskStatus:"task/status/summery",
     taskPriority:"task/priority",
     searchTasks:"task/search",
     taskTeamMember:'task/staff',
-    taskCategory:'task/category',
+    taskCategory: 'task/category',
+	completeTaskRate: 'task/completion/rates',
 
     
     // Global Codes
@@ -96,6 +96,12 @@ export const API_ENDPOINTS = {
 
     //Providers
     provider:'provider',
+
+    // Flags
+    flag:'flag',
+
+    // Critical Notes
+    criticalNote:'criticalNote',
 };
 
 // export const getApiUrl = key => {

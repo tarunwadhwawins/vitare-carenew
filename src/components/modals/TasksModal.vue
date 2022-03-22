@@ -1,25 +1,25 @@
 <template>
   <a-modal width="1000px" :title="taskId?'Edit Task':$t('tasks.tasksModal.addTask')" :footer="null" :maskClosable="false"  @cancel="closeModal()" centered>
-    <a-form :model="taskForm"  autocomplete="off" layout="vertical" @finish="submitForm" @finishFailed="taskFormFailed">
+    <a-form :model="taskForm"  ref="formRef" autocomplete="off" layout="vertical" @finish="submitForm" @finishFailed="taskFormFailed">
       <a-row :gutter="24">
         <a-col :span="24">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.title')" name="title" :rules="[{ required: true, message: $t('tasks.tasksModal.title')+' '+$t('global.validation')  }]">
-              <a-input v-model:value="taskForm.title" size="large" />
+              <a-input v-model:value="taskForm.title" size="large" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col :span="24">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.longDescription')" name="description" :rules="[{ required: true, message: $t('tasks.tasksModal.longDescription')+' '+$t('global.validation')  }]">
-              <a-textarea v-model:value="taskForm.description" placeholder="Description" :auto-size="{ minRows: 3 }" />
+              <a-textarea v-model:value="taskForm.description" placeholder="Description" :auto-size="{ minRows: 3 }" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.status')" name="taskStatus" :rules="[{ required: true, message: $t('tasks.tasksModal.status')+' '+$t('global.validation')  }]">
-              <a-select v-model:value="taskForm.taskStatus" ref="select" style="width: 100%" size="large"  >
+              <a-select v-model:value="taskForm.taskStatus" ref="select" style="width: 100%" size="large"  @change="checkChangeInput()">
                 <a-select-option value="" disabled>{{'Select Status'}}</a-select-option>
                 <a-select-option v-for="status in common.taskStatus.globalCode" :key="status.id" :value="status.id">{{ status.name }}</a-select-option>
               </a-select>
@@ -29,7 +29,7 @@
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.priority')" name="priority" :rules="[{ required: true, message: $t('tasks.tasksModal.priority')+' '+$t('global.validation')  }]">
-              <a-select v-model:value="taskForm.priority" ref="select" style="width: 100%" size="large" >
+              <a-select v-model:value="taskForm.priority" ref="select" style="width: 100%" size="large" @change="checkChangeInput()">
                 <a-select-option value="" disabled>{{'Select Priority'}}</a-select-option>
                 <a-select-option v-for="priority in common.taskPriority.globalCode" :key="priority.id" :value="priority.id">{{ priority.name }}</a-select-option>
               </a-select>
@@ -72,11 +72,13 @@
                 :disabled="taskId?true:false"
                 v-model:value="taskForm.assignedTo"
                 style="width: 100%"
+                @change="checkChangeInput()"
                  placeholder="Please Select Patient"
-                size="large">
-                <a-select-option value="" disabled>{{'Select Patient'}}</a-select-option>
+                 :options="patients.map((item) => ({label: item.name+' '+item.middleName+' '+item.lastName, value: item.id }))"
+                size="large" />
+                <!-- <a-select-option value="" disabled>{{'Select Patient'}}</a-select-option>
                 <a-select-option v-for="patient in patients" :key="patient.id" :value="patient.id">{{ patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option>
-              </a-select>
+              </a-select> -->
             
             </a-form-item>
           </div>
@@ -99,6 +101,7 @@
                 size="large"
                 placeholder="Please Select Staff"
                 style="width: 100%"
+                @change="checkChangeInput()"
                 v-model:value="taskForm.assignedTo"
                 :options="common.allStaffList.map((item) => ({label: item.fullName, value: item.id }))"
               />
@@ -114,6 +117,7 @@
                 size="large"
                 placeholder="Please Select Category"
                 style="width: 100%"
+                @change="checkChangeInput()"
                 v-model:value="taskForm.taskCategory"
                 :options="common.taskCategory.globalCode.map((item) => ({label: item.name, value: item.id }))"
               />
@@ -123,19 +127,19 @@
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.startDate')" name="startDate" :rules="[{ required: true, message: $t('tasks.tasksModal.startDate')+' '+$t('global.validation')  }]">
-              <a-date-picker :disabled="taskId?true:false" v-model:value="taskForm.startDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+              <a-date-picker :disabled="taskId?true:false" v-model:value="taskForm.startDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.dueDate')" name="dueDate" :rules="[{ required: true, message: $t('tasks.tasksModal.dueDate')+' '+$t('global.validation')  }]">
-              <a-date-picker :disabled="taskId?true:false" v-model:value="taskForm.dueDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+              <a-date-picker :disabled="taskId?true:false" v-model:value="taskForm.dueDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col :span="24">
-          <ModalButtons :Id="taskId"/>
+          <ModalButtons :Id="taskId" @is_click="handleCancel"/>
         </a-col>
       </a-row>
     </a-form>
@@ -191,6 +195,7 @@ export default defineComponent({
     })
     
     const submitForm = () => {
+      //console.log("check",taskForm)
     //  console.log('=>', Object.assign(taskForm, tasks.value.editTask))
     if(props.taskId!=null) {
       store.dispatch("updateTask", {
@@ -229,10 +234,15 @@ export default defineComponent({
       
       store.state.tasks.tasksList=null
       setTimeout(() => {
-        if(tasks.value.addTask!=null || tasks.value.updateTask!=null){
-         
+        if(tasks.value.addTask!=null || tasks.value.updateTask!=null){ 
           if(route.params.udid == null) {
             store.dispatch("tasksList")
+            store.dispatch("allTaskStatus");
+            store.dispatch("taskStatus");
+            store.dispatch("taskPriority");
+            store.dispatch("taskTeamMember");
+            store.dispatch("taskCategory");
+            store.dispatch("completeTaskRate");
           }
         if(route.name != 'PatientSummary') {
           store.dispatch('taskStatus')
@@ -251,11 +261,13 @@ export default defineComponent({
     const handleCancel = () => {
       formRef.value.resetFields();
       Object.assign(taskForm, form)
+      
     };
     
     watchEffect(() => {
       store.dispatch("allStaffList")
       if(props.taskId!=null){
+        console.log("check",tasks.value.editTask)
         Object.assign(taskForm, tasks.value.editTask)
       }
     })
@@ -263,8 +275,6 @@ export default defineComponent({
      const common = computed(() => {
       return store.state.common
     })
-
-   
 
     const patients = computed(() => {
       return store.state.common.allPatientsList
@@ -280,23 +290,36 @@ export default defineComponent({
      }
    }
 
+   function checkChangeInput(){
+      store.commit('checkChangeInput',true)
+    }
+
+  const checkFieldsData = computed(()=>{
+      return store.state.common.checkChangeInput;
+    })
 
    function closeModal() {
-      if((taskForm.title!='' || taskForm.description!='') && tasks.value.addTask==null){
+      if(checkFieldsData.value){
       warningSwal(messages.modalWarning).then((response) => {
         if (response == true) {
+          formRef.value.resetFields();
           emit("saveTaskModal", false);
           Object.assign(taskForm, form)
+          store.commit('checkChangeInput',false)
         } else {
           emit("saveTaskModal", true);
         }
       })
+      }else{
+        formRef.value.resetFields();
       }
     }
 
 
 
     return {
+      checkChangeInput,
+      checkFieldsData,
       tasks,
       common,
       closeModal,

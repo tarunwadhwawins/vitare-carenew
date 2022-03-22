@@ -16,12 +16,18 @@
                 <a-row :gutter="24">
                     <a-col :sm="7" :xs="24">
                         <div class="patientInfo">
-                            <EditOutlined class="editIcon" style="float:right" @click="editStaff()"/>
+                            <EditOutlined class="editIcon" style="float:right;padding:10px" @click="editStaff()"/>
                             <div class="patientImg">
-                                <img src="../../assets/images/profile-4.jpg" alt="image" />
+                                <!-- <img v-if="getstaffSummary.profilePhoto" :src="getstaffSummary.profilePhoto" alt="image"/> -->
+                                <img  src="@/assets/images/userAvatar.png" alt="image"/>
+                                <!-- <img src="../../assets/images/profile-4.jpg" alt="image" /> -->
                                 <div class="info">
                                     <p>Name: {{getstaffSummary?getstaffSummary.fullName:''}}</p>
                                     <p>Designation : {{getstaffSummary?getstaffSummary.designation:''}}</p>
+                                    <!-- <p>Phone : {{getstaffSummary?getstaffSummary.phoneNumber:''}}</p>
+                                    <p>Email : {{getstaffSummary?getstaffSummary.email:''}}</p> -->
+                                    <p ><a href="mailto:{{getstaffSummary?getstaffSummary.email:''}}"><MailOutlined /> {{ getstaffSummary?getstaffSummary.email:'' }}</a></p>
+                                    <p ><a href="tel:{{getstaffSummary?getstaffSummary.phoneNumber:''}}"><PhoneOutlined :rotate="90" /> {{ getstaffSummary?getstaffSummary.phoneNumber:'' }}</a></p>
                                 </div>
                             </div>
                             <div class="pat-profile">
@@ -32,6 +38,18 @@
                                 <div class="pat-profile-inner">
                                     <div class="thumb-head">Specialization</div>
                                     <div class="thumb-desc">{{getstaffSummary?getstaffSummary.specialization:''}}</div>
+                                </div>
+                                <div class="pat-profile-inner">
+                                    <div class="thumb-head">Expertise</div>
+                                    <div class="thumb-desc">{{getstaffSummary?getstaffSummary.expertise:''}}</div>
+                                </div>
+                                <div class="pat-profile-inner">
+                                    <div class="thumb-head">Network</div>
+                                    <div class="thumb-desc">{{getstaffSummary?getstaffSummary.network:''}}</div>
+                                </div>
+                                 <div class="pat-profile-inner">
+                                    <div class="thumb-head">Status</div>
+                                    <div class="thumb-desc">{{getstaffSummary?getstaffSummary.status:''}}</div>
                                 </div>
                             </div>
                         </div>
@@ -53,7 +71,7 @@
                                     <a-row :gutter="24">
                                         <a-col :sm="24" :xs="24">
                                             <div class="common-btn mb-24" v-if="arrayToObjact(staffPermissions,51)">
-                                                <a-button class="btn blackBtn" @click="showModal2">
+                                                <a-button class="btn blackBtn" @click="showModalvailability">
                                                     <PlusOutlined />
                                                 </a-button>
                                             </div>
@@ -69,7 +87,7 @@
                                     <a-row :gutter="24">
                                         <a-col :span="24">
                                             <div class="common-btn mb-24" v-if="arrayToObjact(staffPermissions,47)">
-                                                <a-button class="btn blackBtn" @click="showModal3" >
+                                                <a-button class="btn blackBtn" @click="showModalContact" >
                                                     <PlusOutlined />
                                                 </a-button>
                                             </div>
@@ -85,7 +103,7 @@
                                     <a-row :gutter="24">
                                         <a-col :sm="24" :xs="24">
                                             <div class="common-btn mb-24" v-if="arrayToObjact(staffPermissions,55)">
-                                                <a-button class="btn blackBtn" @click="showModal1">
+                                                <a-button class="btn blackBtn" @click="showModalRole">
                                                     <PlusOutlined />
                                                 </a-button>
                                             </div>
@@ -100,7 +118,7 @@
                                 <a-tab-pane key="6" tab="Documents">
                                     <a-col :sm="24" :xs="24">
                                         <div class="common-btn mb-24">
-                                            <a-button class="btn blackBtn" @click="showModal" v-if="arrayToObjact(staffPermissions,59)">
+                                            <a-button class="btn blackBtn" @click="showDocModal" v-if="arrayToObjact(staffPermissions,59)">
                                                 <PlusOutlined />
                                             </a-button>
                                         </div>
@@ -121,20 +139,20 @@
         </a-layout>
     </a-layout>
     <!--modals-->
-    <a-modal width="50%" v-model:visible="visible" title="Add Documents" :maskClosable="false" centered @ok="handleOk">
-        <StaffDocumentForm entity="staff" :paramId="paramId" />
+    <a-modal width="50%" v-model:visible="visibleStaffDoc" title="Add Documents" :maskClosable="false" centered  @cancel="closeModal('visibleStaffDoc')">
+        <StaffDocumentForm ref="StaffDocumentForm" entity="staff" :paramId="paramId" @saveModal="staffDocCloseModal($event)"/>
     </a-modal>
     <!---->
-    <a-modal width="50%" v-model:visible="visible1" title="Add Roles" :maskClosable="false" centered @ok="handleOk">
-        <RoleForm :paramId="paramId" />
+    <a-modal width="50%" v-model:visible="visibleRole" title="Add Roles" :maskClosable="false" centered  @cancel="closeModal('visibleRole')">
+        <RoleForm :paramId="paramId" @saveModal="roleCloseModal($event)"/>
     </a-modal>
     <!------>
-    <a-modal width="50%" v-model:visible="visible2" title="Add Availability" :maskClosable="false" centered @ok="handleOk">
-        <AvailabilityForm :paramId="paramId" />
+    <a-modal width="50%" v-model:visible="visibleAvailability" title="Add Availability" @ok="AvailabilityCloseModal()" :maskClosable="false" centered  @cancel="closeModal('visibleAvailability')">
+        <AvailabilityForm :paramId="paramId"  @saveModal="AvailabilityCloseModal($event)"/>
     </a-modal>
     <!---->
-    <a-modal width="60%" v-model:visible="visible3" title="Add Contacts" :maskClosable="false" centered @ok="handleOk">
-        <ContactForm :paramId="paramId" />
+    <a-modal width="60%" v-model:visible="visibleContact" title="Add Contacts" :maskClosable="false" centered  @cancel="closeModal('visibleContact')">
+        <ContactForm :paramId="paramId" @saveModal="contactCloseModal($event)"/>
     </a-modal>
     <!---->
 </div>
@@ -149,6 +167,8 @@ import {
   // DeleteOutlined,
   EditOutlined,
   PlusOutlined,
+  MailOutlined,
+  PhoneOutlined
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
@@ -167,6 +187,8 @@ import StaffDocumentForm from ".././modals/forms/StaffDocuments";
 import Loader from "../loader/Loader"
 import {arrayToObjact} from "@/commonMethods/commonMethod"
 import PersonalInformation from ".././modals/forms/StaffPersonalInfo"
+import {warningSwal} from "@/commonMethods/commonMethod";
+import { messages } from "@/config/messages";
 export default {
   components: {
     Header,
@@ -185,9 +207,11 @@ export default {
     RoleTable,
     RoleForm,
     Loader,
-    PersonalInformation
+    PersonalInformation,
+    MailOutlined,
+    PhoneOutlined
   },
-  setup() {
+  setup(props,{emit}) {
     const store = useStore();
     const router = useRoute();
     console.log("id=>", router.params.udid);
@@ -210,10 +234,10 @@ export default {
       return store.state.careCoordinatorSummary.staffSummary;
     });
 
-    const visible = ref(false);
-    const visible1 = ref(false);
-    const visible2 = ref(false);
-    const visible3 = ref(false);
+    const visibleStaffDoc = ref(false);
+    const visibleRole = ref(false);
+    const visibleAvailability = ref(false);
+    const visibleContact = ref(false);
 
     const visibleEditStaff =ref(false)
     const editStaff = () => {
@@ -224,27 +248,82 @@ export default {
       visibleEditStaff.value = value;
     };
 
-    const showModal = () => {
-      visible.value = true;
+    const staffDocCloseModal = (value) => {
+      visibleStaffDoc.value = value;
     };
-    const showModal1 = () => {
-      visible1.value = true;
+
+    
+    const roleCloseModal = (value) => {
+      visibleRole.value = value;
     };
-    const showModal2 = () => {
-      visible2.value = true;
+    
+    const AvailabilityCloseModal = (value) => {
+      visibleAvailability.value = value;
     };
-    const showModal3 = () => {
-      visible3.value = true;
+
+    
+    const contactCloseModal = (value) => {
+      visibleContact.value = value;
+    };
+
+    const showDocModal = () => {
+      visibleStaffDoc.value = true;
+    };
+    const showModalRole = () => {
+      visibleRole.value = true;
+    };
+    const showModalvailability = () => {
+      visibleAvailability.value = true;
+    };
+    const showModalContact = () => {
+      visibleContact.value = true;
     };
 
     const handleOk = (e) => {
       console.log(e);
-      visible.value = false;
+      visibleStaffDoc.value = false;
     };
     const staffPermissions = computed(()=>{
-            return store.state.screenPermissions.staffPermissions
-        })
+     return store.state.screenPermissions.staffPermissions
+    })
+
+    const checkFieldsData = computed(()=>{
+      return store.state.common.checkChangeInput;
+    })
+
+
+    function closeModal(value) {
+      if(checkFieldsData.value){
+      warningSwal(messages.modalWarning).then((response) => {
+        if (response == true) {
+          emit("saveModal", false)
+        //   emit("reset")
+        //   Object.assign();
+          store.dispatch("allStaffList")
+          store.commit('checkChangeInput',false)
+          store.state.careCoordinator.addStaff =null
+         
+        } else {
+          emit("saveModal", true);
+          if(value=='visibleAvailability'){
+              visibleAvailability.value=true
+          }else if(value=='visibleContact'){
+              visibleContact.value = true
+          }else if(value=='visibleStaffDoc'){
+              visibleStaffDoc.value =true
+          }else{
+              visibleRole.value=true
+          }
+        }
+      });
+      }
+    }
     return {
+      roleCloseModal,
+      contactCloseModal,
+      AvailabilityCloseModal,
+      staffDocCloseModal,
+      closeModal,
       editStaffCloseModal,
       editStaff,
       visibleEditStaff,
@@ -255,14 +334,14 @@ export default {
       getstaffSummary,
       activeKey: ref("1"),
       activeKey1: ref("1"),
-      visible,
-      visible1,
-      visible2,
-      visible3,
-      showModal,
-      showModal1,
-      showModal2,
-      showModal3,
+      visibleStaffDoc,
+      visibleRole,
+      visibleAvailability,
+      visibleContact,
+      showDocModal,
+      showModalRole,
+      showModalvailability,
+      showModalContact,
       handleOk,
     };
   },

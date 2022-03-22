@@ -156,6 +156,7 @@ export default {
     const notesDetailVisible =ref(false)
     const documentDetailVisible=ref(false)
     const patientVitalsVisible = ref(false)
+    const decodedUrl =ref()
     const route = useRoute()
     const router = useRouter()
     //copy url
@@ -206,9 +207,10 @@ export default {
         setTimeout(() => {
             store.commit("loadingStatus", false);
           }, 5000);
-        if (conferenceId.value) {
+        if (route.params.id) {
           currentUrl.value= window.location.href
-          console.log('checkDecodingUrl',route.params.id)
+           decodedUrl.value =deCodeString(route.params.id)
+          console.log('checkDecodingUrl',decodedUrl.value)
           let callNotification = 0;
           const key = `open${Date.now()}`;
           console.log(
@@ -231,6 +233,8 @@ export default {
                 if (callNotification == 1) {
                   notification.close(key);
                 } else {
+                  //call end api
+                  store.dispatch("callNotification",{id:conferenceId.value,status:'end'})
                   successSwal("Call Ended! Thank You");
                   router.push("/dashboard");
                 }
@@ -272,8 +276,10 @@ export default {
             .then(() => {
               // console.log("hello");
               simpleUser.register().then(() => {
+                //call start api/
+                store.dispatch("callNotification",{id:decodedUrl.value,status:'start'})
                 simpleUser.call(
-                  `sip:${conferenceId.value}@tele.icc-heaalth.com`
+                  `sip:${decodedUrl.value}@tele.icc-heaalth.com`
                 );
                 simpleUserHangup.value = simpleUser;
               });
@@ -289,8 +295,10 @@ export default {
     });
     // Answer call
     function hangUp() {
-      if (conferenceId.value) {
+      if (decodedUrl.value) {
         simpleUserHangup.value.hangup().then(() => {
+          //call end api
+          store.dispatch("callNotification",{id:decodedUrl.value,status:'end'})
           router.push("/dashboard");
         });
       } else {
@@ -338,6 +346,7 @@ export default {
     })//end 
 
     return {
+      decodedUrl,
       copyURL,
       currentUrl,
       deCodeString,

@@ -1,5 +1,5 @@
 <template>
-<a-form :model="contact" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addContacts" @finishFailed="contactDataFailed">
+<a-form :model="contact" scrollToFirstError=true name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addContacts" @finishFailed="contactDataFailed">
     <a-row :gutter="24">
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
@@ -20,7 +20,7 @@
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                    <a-input v-model:value="contact.email" placeholder="test@test.com" size="large" @change="checkChangeInput()"/>
+                    <a-input v-model:value="contact.email" placeholder="test@test.com" size="large" @input="emailChange()" @change="checkChangeInput()"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" />
                 </a-form-item>
             </div>
@@ -89,7 +89,7 @@ export default defineComponent({
   props:{
     paramId:String
   },
-  setup(props) {
+  setup(props,{emit}) {
     const store = useStore();
     const contact = reactive({
       firstName: "",
@@ -103,11 +103,12 @@ export default defineComponent({
         id: props.paramId?props.paramId:staffs.value.addStaff.id,
         data: contact,
       });
-   
-        
       setTimeout(() => {
-        reset()
-        store.dispatch("staffContactList", props.paramId?props.paramId:staffs.value.addStaff.id);
+        if(staffs.value.closeModal==true){
+          store.dispatch("staffContactList", props.paramId?props.paramId:staffs.value.addStaff.id);
+          reset()
+          emit("saveModal", false)
+      }
       }, 2000);
     }
     const staffs = computed(() => {
@@ -125,6 +126,13 @@ export default defineComponent({
     function checkChangeInput(){
       store.commit('checkChangeInput',true)
     }
+    const errorMsg = computed(() => {
+      return store.state.careCoordinator.errorMsg;
+    });
+
+    function emailChange(){
+        errorMsg.value.email?errorMsg.value.email[0]=null:''
+    }
     return {
       checkChangeInput,
       reset,
@@ -135,6 +143,8 @@ export default defineComponent({
       size: ref("large"),
       staffs,
       regex,
+      errorMsg,
+      emailChange
     };
   },
 });

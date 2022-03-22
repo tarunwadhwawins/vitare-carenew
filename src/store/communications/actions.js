@@ -1,7 +1,7 @@
 import ServiceMethodService from '../../services/serviceMethod';
 // import AuthService from '../../services/auth';
 import { API_ENDPOINTS } from "../../config/apiConfig"
-
+import { successSwal, errorSwal} from '../../commonMethods/commonMethod'
 export const callPlanned = async ({ commit }) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['CallPlanned'], null, null).then((response) => {
 		commit('callPlannedSuccess', response.data.data);
@@ -17,12 +17,14 @@ export const callPlanned = async ({ commit }) => {
 export const addCommunication = async ({ commit }, data) => {
 	await ServiceMethodService.common("post", API_ENDPOINTS['addCommunication'], null, data).then((response) => {
 		commit('addCommunicationSuccess', response.data.data);
+		successSwal(response.data.message)
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
+		errorSwal(error.response.data.message)
 	})
 }
 

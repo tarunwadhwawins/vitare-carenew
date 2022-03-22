@@ -1,12 +1,12 @@
 <template>
-<a-form :model="program" name="basic" autocomplete="off" layout="vertical" @finish="programs" @finishFailed="programFailed">
+<a-form :model="program" scrollToFirstError=true name="basic" autocomplete="off" layout="vertical" @finish="programs" @finishFailed="programFailed">
     <a-row :gutter="24">
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('patient.programs.program')" name="program" :rules="[{ required: true, message: $t('patient.programs.program')+' '+$t('global.validation') }]">
-                    <a-select ref="select" v-model:value="program.program" style="width: 100%" size="large" @change="handleChange">
+                    <a-select ref="select" v-model:value="program.program" style="width: 100%" size="large"  @change="changedValue">
                         <a-select-option value="" disabled>{{'Select Program'}}</a-select-option>
-                        <a-select-option v-for="program in patients.programList.data" :key="program.id" :value="program.id">{{program.description}}</a-select-option>
+                        <a-select-option v-for="program in patients.programList" :key="program.id" :value="program.id">{{program.description}}</a-select-option>
                     </a-select>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.program?errorMsg.program[0]:''" />
                 </a-form-item>
@@ -15,7 +15,7 @@
         <a-col :md="8" :sm="6" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('patient.programs.onboardinScheduledDate')" name="onboardingScheduleDate" :rules="[{ required: true, message: $t('patient.programs.onboardinScheduledDate')+' '+$t('global.validation') }]">
-                    <a-date-picker v-model:value="program.onboardingScheduleDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
+                    <a-date-picker @change="changedValue" v-model:value="program.onboardingScheduleDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.onboardingScheduleDate?errorMsg.onboardingScheduleDate[0]:''" />
                 </a-form-item>
             </div>
@@ -23,7 +23,7 @@
         <a-col :md="8" :sm="6" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('patient.programs.dischargeDate')" name="dischargeDate" :rules="[{ required: true, message: $t('patient.programs.dischargeDate')+' '+$t('global.validation') }]">
-                    <a-date-picker v-model:value="program.dischargeDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
+                    <a-date-picker @change="changedValue" v-model:value="program.dischargeDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.dischargeDate?errorMsg.dischargeDate[0]:''" />
                 </a-form-item>
             </div>
@@ -82,7 +82,7 @@ export default defineComponent({
       type: Number
     }
   },
-  setup(props) {
+  setup(props, {emit}) {
     const store = useStore();
     const patientId = reactive(props.idPatient);
     const program = reactive({
@@ -91,6 +91,9 @@ export default defineComponent({
       dischargeDate: "",
       status: 1,
     });
+    const changedValue = () => {
+      emit('onChange')
+    }
 
     const patients = computed(() => {
       return store.state.patients;
@@ -114,6 +117,7 @@ export default defineComponent({
           id: patientId,
         }).then(() => {
           store.dispatch("program", patientId);
+          emit('onChange', false)
           reset()
         });
       }
@@ -126,12 +130,11 @@ export default defineComponent({
             status: program.status,
           },
           id: patients.value.addDemographic.id,
-        });
-        
-        setTimeout(() => {
+        }).then(() => {
           store.dispatch("program", patients.value.addDemographic.id);
+          emit('onChange', false)
           reset()
-        }, 2000);
+        });
       }
     };
     const columns = computed(() => {
@@ -179,6 +182,7 @@ export default defineComponent({
     //     };
     
     return {
+      changedValue,
       // programFailed,
       timeStamp,
       deleteProgram,

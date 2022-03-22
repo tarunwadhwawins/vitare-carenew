@@ -4,9 +4,10 @@
         <span v-for="tag in text.text.data" :key="tag.id">{{ tag.tag+ " "}}</span>
     </template>
     <template #document="text">
-        <router-link :to="text.text">
+        <!-- <router-link  :to="text.text"> -->
+          <a :href="text.text" target="_blank" >
             <FileOutlined />
-        </router-link>
+          </a>
     </template>
     <template #action="text">
         <a-tooltip placement="bottom" v-if="arrayToObjact(staffPermissions,61)">

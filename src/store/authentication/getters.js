@@ -9,7 +9,6 @@ import { successSwal } from '@/commonMethods/commonMethod';
 export function videoCall() {
     let callNotification =0
     const key = `open${Date.now()}`;
-    console.log('loginDetails=>', state.loggedInUser.user.sipId);
     state.options = Web.SimpleUserOptions = {
         aor: `sip:${state.loggedInUser.user.sipId}@tele.icc-heaalth.com`,
         media: {
@@ -35,7 +34,7 @@ export function videoCall() {
                             onClick: () => {
                                 callNotification=0
                                 state.simpleUser = simpleUser,
-                                router.push('/video-call/sjx56ko0'), notification.close(key)
+                                router.push('/video-call'), notification.close(key)
                             }
                         },
                             "Accept"

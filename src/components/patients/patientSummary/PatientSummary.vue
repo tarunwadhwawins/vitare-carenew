@@ -30,7 +30,7 @@
               </div>
             </a-col>
             <a-col :sm="24">
-              <a-alert class="mb-24" message="Patient has dimentia. Talk to wife - Marry when calling. Prefers evening calling." type="error" closable @close="onClose2"/>
+              <CriticalNotes v-if="patientCriticalNotes && patientCriticalNotes.length > 0" />
             </a-col>
             <a-col :sm="24" :xs="24">
               <div v-if="button == 1">
@@ -62,6 +62,7 @@ import DefaultView from "@/components/patients/patientSummary/views/DefaultView"
 import TimelineView from "@/components/patients/patientSummary/views/TimelineView";
 import CarePlanView from "@/components/patients/patientSummary/views/CarePlanView";
 import PatientVitalsView from "@/components/patients/patientSummary/views/PatientVitalsView";
+import CriticalNotes from "@/components/patients/patientSummary/common/CriticalNotes";
 import Loader from "@/components/loader/Loader";
 import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 
@@ -82,6 +83,7 @@ export default {
     PatientVitalsView,
     Loader,
     AddTimeLogModal,
+    CriticalNotes,
   },
   setup() {
     const store = useStore();
@@ -125,6 +127,9 @@ export default {
     const handleChange = (value) => {
       console.log(`selected ${value}`);
     };
+    const patientCriticalNotes = computed(() => {
+      return store.state.patients.patientCriticalNotes
+    })
 
 
     const button = ref(1);
@@ -141,10 +146,6 @@ export default {
     function showButton4() {
       button.value = 4;
     }
-
-    const onClose2 = (e) => {
-      console.log(e, "I was closed.");
-    };
 
     // Countdown Timer
     const elapsedTime = ref(0)
@@ -166,6 +167,10 @@ export default {
         store.dispatch('activeCptCodes')
         store.dispatch('allPatientsList')
         store.dispatch('allStaffList')
+        store.dispatch('flagsList')
+        store.dispatch('patientFlagsList', route.params.udid);
+        store.dispatch('patientCriticalNotes', route.params.udid);
+        store.dispatch('familyMembersList', route.params.udid);
       }
       timer.value = setInterval(() => {
         elapsedTime.value += 1000;
@@ -220,6 +225,7 @@ export default {
       bloodoxygenvisible,
       bloodglucosevisible,
       stoptimervisible,
+      patientCriticalNotes,
 
       handleOk,
       onChange: (pagination, filters, sorter, extra) => {
@@ -242,7 +248,6 @@ export default {
       showButton3,
       showButton4,
       value10: ref([]),
-      onClose2,
       startOn,
     };
   },

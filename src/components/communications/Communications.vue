@@ -16,10 +16,10 @@
                             <div class="addtaskButton">
                                 <StartCall @click="showStartCallModal" v-if="arrayToObjact(communicationPermissions,107)"></StartCall>
                                 <SendMessage v-if="arrayToObjact(communicationPermissions,109)"></SendMessage>
-                                <ToolTip :boxTitle="$t('communications.communicationsModal.email')" boxName="email" @open="openNotification($event)"></ToolTip>
+                                <!-- <ToolTip :boxTitle="$t('communications.communicationsModal.email')" boxName="email" @open="openNotification($event)"></ToolTip>
                                 <ToolTip :boxTitle="$t('communications.communicationsModal.sms')" boxName="sms" @open="openNotification($event)"></ToolTip>
                                 <ToolTip :boxTitle="$t('communications.communicationsModal.reminder')" boxName="reminder" @open="openNotification($event)"></ToolTip>
-                                <ToolTip :boxTitle="$t('communications.communicationsModal.call')" boxName="call" @open="openNotification($event)"></ToolTip>
+                                <ToolTip :boxTitle="$t('communications.communicationsModal.call')" boxName="call" @open="openNotification($event)"></ToolTip> -->
                             </div>
                             <div class="filter">
                                 <button class="btn" :class="toggle ? 'active' : ''" @click="toggle = !toggle">
@@ -43,6 +43,7 @@
                     </a-col>
                     <a-col :span="24"> </a-col>
                 </a-row>
+                <Loader />
             </a-layout-content>
         </a-layout>
 
@@ -53,23 +54,24 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { ref, h,computed } from "vue";
+import { ref, h,computed, defineComponent,defineAsyncComponent} from "vue";
 import DashboardView from "@/components/communications/DashboardView";
 import ListView from "@/components/communications/ListView";
 import StartCall from "@/components/communications/top/StartCall";
 import SendMessage from "@/components/communications/top/SendMessage";
-import ToolTip from "@/components/communications/toolTip/ToolTip";
+// import ToolTip from "@/components/communications/toolTip/ToolTip";
 import { notification, Button } from "ant-design-vue";
-import AddStartCall from "@/components/modals/AddStartCall";
+// import AddStartCall from "@/components/modals/AddStartCall";
 import { useStore } from "vuex";
 import {arrayToObjact} from "@/commonMethods/commonMethod"
+import Loader from "@/components/loader/Loader";
 const close = () => {
   // console.log(
   //   "Notification was closed. Either the close button was clicked or duration time elapsed."
   // );
 };
 
-export default {
+export default defineComponent({
   components: {
     Header,
     Sidebar,
@@ -77,13 +79,15 @@ export default {
     ListView,
     StartCall,
     SendMessage,
-    ToolTip,
-    AddStartCall
+    //ToolTip,
+    Loader,
+    AddStartCall:defineAsyncComponent(()=>import("@/components/modals/AddStartCall"))
+
   },
   
   setup() {
     const toggle = ref(true);
-    const AddStartCall = ref()
+    const AddStartCall = ref(false)
     const handleChange = () => {
     };
     const store = useStore()
@@ -194,5 +198,5 @@ export default {
 
     };
   },
-};
+});
 </script>

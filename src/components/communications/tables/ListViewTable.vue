@@ -1,5 +1,18 @@
 <template>
-<a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900, y: 300 }" :pagination="false">
+<div class="highLight">Patients is highlighted</div>
+<a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900, y: 300 }" :pagination="false" :rowClassName="(record) => auth.user.id!=record.messageSender && record.isRead==0 ? 'bold':''">
+     <template #from="{ record }" class="custom">
+         <span v-if="record.is_sender_patient" class="customTd">{{record.from}}</span>
+        <span v-else>
+            {{record.from}}
+          </span>
+        </template>
+    <template #to="{ record }" class="custom">
+         <span v-if="record.is_receiver_patient" class="customTd">{{record.to}}</span>
+        <span v-else>
+            {{record.to}}
+          </span>
+        </template>
     <template #resend>
         <a-tooltip placement="bottom">
             <template #title>
@@ -9,7 +22,7 @@
                 <EyeOutlined /></a>
         </a-tooltip>
     </template>
-    <template #patient="text">
+    <template #patient="">
         <router-link :to="linkTo">
             {{ text.text }}
         </router-link>
@@ -89,7 +102,7 @@
         </a-tooltip>
     </template>
 </a-table>
-<InfiniteLoader v-if="loader" />
+
 
 <Chat v-model:visible="visible" v-if="communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
 </template>
@@ -97,13 +110,13 @@
 <script>
 import {
     ref,
-    
+
     onMounted
 } from "vue";
 import {
     useStore
 } from "vuex";
-import InfiniteLoader from "@/components/loader/InfiniteLoader";
+
 import Chat from "@/components/modals/Chat";
 
 import {
@@ -122,29 +135,28 @@ export default {
         PhoneOutlined,
         MailOutlined,
         AlertOutlined,
-        InfiniteLoader,
+ 
         Chat,
     },
     props: {
-        
+
     },
     setup() {
         const communicationColumns = [{
                 title: "From",
                 dataIndex: "from",
                 key: "from",
-                sorter: {
-                    compare: (a, b) => a.from - b.from,
-                    multiple: 2,
+               slots: {
+                    customRender: "from",
                 },
             },
             {
                 title: "To",
                 dataIndex: "to",
                 key: "to",
-                sorter: {
-                    compare: (a, b) => a.to - b.to,
-                    multiple: 2,
+                
+               slots: {
+                    customRender: "to",
                 },
             },
             {
@@ -192,9 +204,9 @@ export default {
         ];
         const store = useStore();
         const communicationId = ref(null)
-
+        const auth = JSON.parse(localStorage.getItem("auth"))
         const meta = store.getters.communicationRecord.value;
-        const loader = ref(false);
+    
         let scroller = ''
         let data = ''
         onMounted(() => {
@@ -208,7 +220,7 @@ export default {
                     let current_page = meta.communicationMeta.current_page + 1;
 
                     if (current_page <= meta.communicationMeta.total_pages) {
-                        loader.value = true;
+                    
                         scroller = maxScroll
                         data = meta.communicationsList
                         meta.communicationMeta = "";
@@ -235,7 +247,7 @@ export default {
             setTimeout(() => {
                 tableContent.scrollTo(0, scroller)
             }, 5000)
-            loader.value = false;
+         
         }
 
         const visible = ref(false);
@@ -252,12 +264,25 @@ export default {
         return {
             communicationColumns,
             meta,
-            loader,
+    
             visible,
             showModal,
             handleOk,
             communicationId,
+            auth,
         };
     },
 };
 </script>
+<style>
+.customTd{
+    display: block;
+    background-color: rgb(255 250 96);
+    width: 100%;
+    height: 100%;
+    padding: 7px;
+}
+.highLight{
+    color:red
+}
+</style>

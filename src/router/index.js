@@ -30,6 +30,7 @@ const routes = [
     meta: { authAdmin: true }
   },
 
+
   {
     path: '/manage-care-coordinator',
     name: 'ManageCareCoordinators', 
@@ -73,7 +74,7 @@ const routes = [
   },
   
   {
-    path: '/coordinator-summary/:udid',
+    path: '/coordinator-summary/:udid?',
     name: 'CoordinatorSummary',
     component: () => import( '../components/coordinator-summary/Coordinatorsummary'),
     meta: { authAdmin: true }
@@ -97,7 +98,7 @@ const routes = [
     meta: { authAdmin: true }
   },
   {
-    path: '/video-call/:id',
+    path: '/video-call/:id?',
     name: 'videoCall',
     component: () => import( '../components/video-call/videoCall'),
     meta: { authAdmin: true }

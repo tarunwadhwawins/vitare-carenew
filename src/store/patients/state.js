@@ -62,5 +62,11 @@ export default {
     bloodOxygenColumns:null,
     bloodGlucoseColumns:null,
     changeStatus:null,
+    addCriticalNote:null,
+    closeModal:null,
+    patientCriticalNotes:null,
+    criticalNotesList:null,
+    familyMembersList:null,
+    familyMemberDetails:null,
 
 }

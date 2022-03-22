@@ -24,12 +24,14 @@
             <a class="icons"><DeleteOutlined @click="deleteDevice(record.id)" /></a>
           </template>
         </a-table>
+        <Loader />
       </a-col>
     </a-row>
   </a-modal>
 </template>
 <script>
 import { computed, defineComponent, reactive, watchEffect } from "vue";
+import Loader from "@/components/loader/Loader.vue";
 import {
   DeleteOutlined,
   // EditOutlined
@@ -42,6 +44,7 @@ export default defineComponent({
   components: {
     DeleteOutlined,
     // EditOutlined,
+    Loader,
   },
   props: {
     patientDetails: {

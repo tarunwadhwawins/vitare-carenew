@@ -106,7 +106,7 @@
                     <a-menu-item key="4">
                       <a href="javascript:void(0)" @click="addTask">{{$t('header.addTask')}}</a>
                     </a-menu-item>
-                    <a-menu-item key="4">
+                    <a-menu-item key="4" v-if="arrayToObjact(communicationPermissions,107)">
                       <a href="javascript:void(0)" @click="showStartCallModal">{{$t('header.startCall')}}</a>
                     </a-menu-item>
                   </a-menu>
@@ -310,7 +310,11 @@
       const patientsPermissions=computed(()=>{
      return store.state.screenPermissions.patientsPermissions
     })
+    const communicationPermissions = computed(()=>{
+      return store.state.screenPermissions.communicationPermissions
+    })
       return {
+        communicationPermissions,
         accessPermission,
         handleTaskOk,
         // collapsMenu,

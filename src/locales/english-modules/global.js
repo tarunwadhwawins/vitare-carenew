@@ -64,7 +64,8 @@ const global = {
   save:'Save',
   clear:'Clear',
   send:'Send',
-  service:'Service'
+  service:'Service',
+  isPrimary:'Is Primary',
 
 }
 

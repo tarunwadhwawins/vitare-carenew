@@ -1,5 +1,6 @@
 <template>
-<a-table rowKey="id" :columns="meta.cptCodesColumns" :data-source="meta.cptCodesList" :scroll="{ y: 400 }" :pagination="false" @change="onChange">
+    
+<a-table rowKey="id"  :columns="meta.cptCodesColumns" :data-source="meta.cptCodesList" :scroll="{ y: 400}"  :pagination="false" @change="onChange">
     <template #actions="{record}">
         <a-tooltip placement="bottom" @click="editCpt(record.udid)" v-if="arrayToObjact(cptCodePermissions,10)">
             <template #title>
@@ -91,6 +92,7 @@ export default {
             });
         }
 
+
         //infinite scroll
         let data = ''
         let scroller = ''
@@ -100,6 +102,7 @@ export default {
             var tableContent = document.querySelector(".ant-table-body");
             tableContent.addEventListener("scroll", (event) => {
                 let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+                console.log("hight",event.target.clientHeight)
                 let currentScroll = event.target.scrollTop + 2;
                 if (currentScroll >= maxScroll) {
                     let current_page = meta.cptMeta.current_page + 1;
@@ -145,7 +148,12 @@ export default {
             editCpt,
             UpdateCptStatus,
             meta,
+        
+
         };
     },
 };
 </script>
+<style>
+
+</style>

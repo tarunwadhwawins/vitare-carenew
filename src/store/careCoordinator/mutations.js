@@ -1,7 +1,12 @@
  import{meridiemFormatFromTimestamp} from "../../commonMethods/commonMethod"
-
- export const counterPlus = (state) => {
-  state.counter++
+ const VUE_APP_ROOT_API = process.env.VUE_APP_ROOT_API
+ export const counterPlus = (state,data) => {
+   if(data){
+     state.counter = data
+   }else{
+    state.counter++
+   }
+  
 }
 
 export const counterMinus = (state) => {
@@ -98,13 +103,13 @@ export const staffs= async (state, data) => {
             multiple: 1,
           },
         },
-        {
-          title: "Action",
-          dataIndex: "action",
-          slots: {
-            customRender: "action",
-          },
-        },
+        // {
+        //   title: "Action",
+        //   dataIndex: "action",
+        //   slots: {
+        //     customRender: "action",
+        //   },
+        // },
       ];
       state.staffs = data.data;
       state.staffMeta= data.meta.pagination
@@ -240,7 +245,10 @@ export const addStaffDocument = (state, data) => {
 }
 
 export const staffDocuments = (state, data) => {
-  state.staffDocuments = data
+  state.staffDocuments = data.map(item => {
+    item.document = VUE_APP_ROOT_API + item.document
+    return item
+  })
   state.documentColumns=[
       {
         title: "Name",
