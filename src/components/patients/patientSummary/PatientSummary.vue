@@ -67,7 +67,7 @@ import Loader from "@/components/loader/Loader";
 import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 
 import dayjs from "dayjs";
-import { ref, computed, watchEffect} from "vue";
+import { ref, computed, watchEffect,onBeforeMount} from "vue";
 import { useStore } from 'vuex';
 import { useRoute  } from 'vue-router';
 const value = ref(dayjs("12:08", "HH:mm"));
@@ -201,7 +201,13 @@ export default {
       visible.value = false;
       stoptimervisible.value = false;
     };
+    onBeforeMount(() =>{
+      window.addEventListener('beforeunload', (event) => {
+        //console.log(event)
+  event.returnValue = 'ffghg';
+});
     
+  })
     return {
       showStopTimerModal,
       formattedElapsedTime,
@@ -266,7 +272,8 @@ export default {
    }
     
     
-  }
+  },
+  
 };
 </script>
 
