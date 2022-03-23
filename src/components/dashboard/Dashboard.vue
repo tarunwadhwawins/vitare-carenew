@@ -81,11 +81,11 @@
 </template>
 
 <script>
-import { ref,watchEffect, computed } from 'vue'
+  import { ref,watchEffect, computed } from 'vue'
   import Card from "@/components/common/cards/Card"
   import Appointement from "./Appointment"
   import ApexChart from "@/components/common/charts/ApexChart"
-  import { arrayToObjact } from "../../commonMethods/commonMethod"
+  import { startimeAdd, endTimeAdd, timeStamp ,arrayToObjact} from '@/commonMethods/commonMethod'
   import { useStore } from 'vuex'
   import Loader from "@/components/loader/Loader";
   import moment from "moment"
@@ -210,7 +210,7 @@ export default {
         const timeline = computed(() => {
             return store.state.common.timeline
         })
-        
+
         const timeLineButton = computed(() => {
             return store.state.dashBoard.timeLineButton
         })
@@ -218,26 +218,39 @@ export default {
         function apiCall(data) {
             let from = moment()
             let to = moment()
-            if (data == 122) {
+            if (data.globalCodeId == 122) {
+
                 from = moment()
-                to = moment()
-            } else if (data == 123) {
-                from = moment().format('YYYY-MM-DD');
-                to = moment().subtract(6, 'd').format('YYYY-MM-DD');
-            } else if (data == 124) {
+                to = moment().subtract(data.number, data.intervalType);
+            } else if (data.globalCodeId == 123) {
                 from = moment();
-                to = moment().subtract(29, 'days');
+
+                to = moment().subtract(data.number, data.intervalType);
+            } else if (data.globalCodeId == 124) {
+                from = moment();
+                to = moment().subtract(data.number, data.intervalType);
             } else {
                 from = moment();
-                var futureMonth = moment().subtract(1, 'year');
-                var futureMonthEnd = moment(futureMonth).endOf('month');
-                to = moment(futureMonthEnd).add(1, 'day');
+               // var futureMonth = moment().subtract(1, 'year');
+               // var futureMonthEnd = moment(futureMonth).endOf('month');
+                to = moment().subtract(data.number, data.intervalType);
             }
-            let dateFormate = {
-                fromDate: from,
-                toDate: to
+
+           // console.log('check', from,to)
+            let dateFormate = ''
+            if (data.globalCodeId == 122) {
+                dateFormate = {
+                    fromDate: timeStamp(startimeAdd(from)),
+                    toDate: timeStamp(endTimeAdd(to))
+                }
+            } else {
+                dateFormate = {
+                    fromDate: timeStamp(startimeAdd(to)),
+                    toDate: timeStamp(endTimeAdd(from))
+                }
             }
-            console.log('check', dateFormate)
+
+            //console.log("check",dateFormate)
             store.dispatch("permissions")
             store.dispatch("counterCard", dateFormate)
             store.dispatch("searchAppointment", {
@@ -257,10 +270,9 @@ export default {
         const permission = store.getters.permissionRecords.value
 
         watchEffect(() => {
-          store.dispatch("timeLine",122).then(()=>{
-apiCall(timeLineButton.value.globalCodeId)
-          })
-            
+            store.dispatch("timeLine", 122).then(() => {
+                apiCall(timeLineButton.value)
+            })
 
         })
         const totalPatients = computed(() => {
@@ -312,11 +324,10 @@ apiCall(timeLineButton.value.globalCodeId)
         }
 
         function showButton(id) {
-          store.dispatch("timeLine",id).then(()=>{
-apiCall(timeLineButton.value.globalCodeId)
-          })
-           
-            
+            store.dispatch("timeLine", id).then(() => {
+                apiCall(timeLineButton.value)
+            })
+
         }
 
         return {

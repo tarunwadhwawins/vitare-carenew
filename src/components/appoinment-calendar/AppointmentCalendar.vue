@@ -136,8 +136,10 @@ export default {
                     from: moment(tabDate.add(2, 'days')).startOf('week'),
                     to: moment(tabDate).endOf('week')
                 })
-                fromDate.value = moment(tabDate.add(1, 'days')).startOf('week')
+                fromDate.value = moment(tabDate).startOf('week')
+                
                 toDate.value = moment(tabDate).endOf('week')
+               
             } else if (value == 4) {
                 datePick = tabDate
                 fromDate.value = tabDate.startOf('month')

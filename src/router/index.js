@@ -70,6 +70,7 @@ const routes = [
     path: '/patients-summary/:udid',
     name: 'PatientSummary',
     component: () => import( '../components/patients/patientSummary/PatientSummary'),
+    //beforeLeave: ()=>{ console.log("before_leave") },
     meta: { authAdmin: true }
   },
   

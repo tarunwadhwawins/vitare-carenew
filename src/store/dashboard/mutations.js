@@ -198,13 +198,13 @@ export const totalPatientsChartSuccess = (state, count) => {
 
   let format = ''
   let type = ''
-  if (state.timeLineButton == 122) {
+  if (state.timeLineButton.globalCodeId == 122) {
     type = "time"
     format = "hh"
-  } else if (state.timeLineButton == 123) {
+  } else if (state.timeLineButton.globalCodeId == 123) {
     type = "day"
     format = "dddd"
-  } else if (state.timeLineButton == 124) {
+  } else if (state.timeLineButton.globalCodeId == 124) {
     type = "day"
     format = "dd"  
   } else {

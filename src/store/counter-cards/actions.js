@@ -1,8 +1,8 @@
 import ServiceMethodService from '../../services/serviceMethod';
 import { API_ENDPOINTS } from "../../config/apiConfig"
-import { startimeAdd, endTimeAdd, timeStamp } from '@/commonMethods/commonMethod'
+
 export const counterCard = async ({ commit },from) => {
-    await ServiceMethodService.common("get", API_ENDPOINTS['counterCard'] +"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null, null).then((response) => {
+    await ServiceMethodService.common("get", API_ENDPOINTS['counterCard'] +"?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {
         commit('counterCardSuccess', response.data.data);
     })
         .catch((error) => {
