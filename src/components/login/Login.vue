@@ -32,6 +32,8 @@ export default {
     const loginForm = reactive({
       email: "",
       password: "",
+      deviceType:'web',
+      deviceToken:localStorage.getItem('fireBaseToken')
     })
 
     const loginUser = () => {
@@ -41,6 +43,8 @@ export default {
     const loggedInUser = computed(() => {
       return store.state.authentication.loggedInUser
     })
+
+
 
     const errorMsg = computed(() => {
       return store.state.authentication

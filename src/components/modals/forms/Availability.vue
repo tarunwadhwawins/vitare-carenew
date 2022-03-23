@@ -1,9 +1,9 @@
 <template>
-<a-form :model="availability" scrollToFirstError=true name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addAvailability" @finishFailed="availabilityDataFailed">
+<a-form :model="availability" ref="formRest" scrollToFirstError=true name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addAvailability" @finishFailed="availabilityDataFailed">
     <a-row :gutter="24">
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('global.startTime')" name="startTime" :rules="[{ required: false, message: $t('global.startTime')+' '+$t('global.validation') }]">
+                <a-form-item :label="$t('global.startTime')" name="startTime" :rules="[{ required: true, message: $t('global.startTime')+' '+$t('global.validation') }]">
                     <a-time-picker  use12-hours format="hh:mm A" v-model:value="availability.startTime"  value-format="HH:mm"  @change="checkChangeInput()"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.startTime?errorMsg.startTime[0]:''" />
                 </a-form-item>
@@ -20,7 +20,7 @@
     </a-row>
     <a-row :gutter="24" class="mb-24">
       <a-col :span="24" v-if="paramId">
-        <a-button  html-type="reset" style="margin-right: 8px" @click="reset()">{{$t('global.clear')}}</a-button>
+        <a-button  html-type="reset" style="margin-right: 8px" @reset="reset()"  @click="reset()">{{$t('global.clear')}}</a-button>
         <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
         </a-col>
         <a-col :span="24" v-else>
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref, computed,onUnmounted } from "vue";
+import { defineComponent, reactive, ref, computed,onUnmounted, watchEffect } from "vue";
 // import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "@/components/loader/Loader";
@@ -66,10 +66,12 @@ export default defineComponent({
     AvailabilityTable
   },
   props:{
-    paramId:String
+    paramId:String,
+    clearData:Boolean,
   },
   setup(props,{emit}) {
     const store = useStore();
+    const formRest =ref();
     const availability = reactive({
       startTime: "",
       endTime: "",
@@ -78,6 +80,8 @@ export default defineComponent({
     const staffs = computed(() => {
       return store.state.careCoordinator;
     });
+
+    
 
     function addAvailability() {
       let startTime =  timeStamp(moment().format('MM/DD/YYYY')+ ' ' + availability.startTime+':00');
@@ -105,8 +109,15 @@ export default defineComponent({
       ...availability,
     });
     function reset(){
+      formRest.value.resetFields();
       Object.assign(availability,form)
     }
+
+  watchEffect(()=>{
+    if(props.clearData==true){
+      Object.assign(availability,form)
+    }
+  })
     onUnmounted(()=>{
       store.commit('errorMsg',null)
     })
@@ -118,6 +129,7 @@ export default defineComponent({
       return store.state.careCoordinator.errorMsg;
     });
     return {
+      formRest,
       checkChangeInput,
       reset,
       Id,

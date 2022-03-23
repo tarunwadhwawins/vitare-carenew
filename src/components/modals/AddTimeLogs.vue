@@ -90,7 +90,7 @@ import ModalButtons from "@/components/common/button/ModalButtons";
 import { useStore } from "vuex";
 import {
   timeStamp,
-  // getSeconds,
+   getSeconds,
 } from '@/commonMethods/commonMethod';
 import { useRoute } from "vue-router";
 import moment from "moment";
@@ -143,7 +143,7 @@ export default defineComponent({
       loggedBy: "",
       performedBy: "",
       date: "",
-      timeAmount: ref(),
+      timeAmount: '',
       cptCode: "",
       note: "",
     })
@@ -182,12 +182,13 @@ export default defineComponent({
       else {
         // addTimeLogForm.date = timeStamp(addTimeLogForm.date);
         // addTimeLogForm.timeAmount = timeStamp(addTimeLogForm.timeAmount);
+        console.log('object',(addTimeLogForm.timeAmount).format('HH:mm:ss'));
         const data = {
           category: addTimeLogForm.category,
           loggedBy: addTimeLogForm.loggedBy,
           performedBy: addTimeLogForm.performedBy,
           date: timeStamp(addTimeLogForm.date),
-          timeAmount: timeStamp(addTimeLogForm.timeAmount),
+          timeAmount: getSeconds((addTimeLogForm.timeAmount).format('HH:mm:ss')),
           cptCode: addTimeLogForm.cptCode,
           note: addTimeLogForm.note,
         }

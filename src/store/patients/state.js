@@ -70,5 +70,7 @@ export default {
     familyMemberDetails:null,
     physiciansList:null,
     physicianDetails:null,
+    emergencyContactsList:null,
+    emergencyContactDetails:null,
 
 }

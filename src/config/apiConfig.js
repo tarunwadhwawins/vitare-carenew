@@ -102,6 +102,9 @@ export const API_ENDPOINTS = {
 
     // Critical Notes
     criticalNote:'criticalNote',
+
+    //notification
+    notification:'notification'
 };
 
 // export const getApiUrl = key => {

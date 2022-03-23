@@ -172,6 +172,7 @@ export default {
         store.dispatch('patientCriticalNotes', route.params.udid);
         store.dispatch('familyMembersList', route.params.udid);
         store.dispatch('physiciansList', route.params.udid);
+        store.dispatch('emergencyContactsList', route.params.udid);
       }
       timer.value = setInterval(() => {
         elapsedTime.value += 1000;

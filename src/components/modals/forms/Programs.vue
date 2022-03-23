@@ -6,7 +6,7 @@
                 <a-form-item :label="$t('patient.programs.program')" name="program" :rules="[{ required: true, message: $t('patient.programs.program')+' '+$t('global.validation') }]">
                     <a-select ref="select" v-model:value="program.program" style="width: 100%" size="large"  @change="changedValue">
                         <a-select-option value="" disabled>{{'Select Program'}}</a-select-option>
-                        <a-select-option v-for="program in patients.programList" :key="program.id" :value="program.id">{{program.description}}</a-select-option>
+                        <a-select-option v-for="program in patients.programList" :key="program.id" :value="program.id">{{program.name}}</a-select-option>
                     </a-select>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.program?errorMsg.program[0]:''" />
                 </a-form-item>
