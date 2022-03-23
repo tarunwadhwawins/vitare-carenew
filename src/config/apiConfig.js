@@ -5,6 +5,9 @@ export const API_ENDPOINTS = {
     logout: "logout",
     refreshToken: "refreshToken",
 
+    //dashboard
+    interval:"globalstartEnd/date",
+
     // Patients
     patient:"patient",
     patientsList:"patient",

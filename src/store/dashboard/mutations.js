@@ -1,8 +1,8 @@
 
 import { yaxis, dataLabels, plotOptions, annotations, dateFormat,chartTimeCount } from '../../commonMethods/commonMethod'
-export const timelineSuccess = (state, count) => {
+export const timelineSuccess = (state, data) => {
 
-  state.timeLineButton = count;
+  state.timeLineButton = data;
 }
 export const todayAppointmentSuccess = (state, count) => {
   let i = 1;
