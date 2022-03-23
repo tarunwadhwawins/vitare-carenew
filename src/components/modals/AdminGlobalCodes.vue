@@ -98,6 +98,7 @@ export default {
         });
 
         watchEffect(() => {
+            formButton.value=false
             if (props.isAdd != null) {
                 // console.log("sdffds")
                 codeDetails.value = store.state.globalCodes.globalCodeDetails
@@ -123,6 +124,7 @@ export default {
         const handleClear = () => {
             //formRef.value.resetFields();
             Object.assign(globalCodeForm, form)
+            formButton.value = false
         }
 
         const submitForm = () => {

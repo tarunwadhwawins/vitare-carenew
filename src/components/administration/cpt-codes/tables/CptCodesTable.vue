@@ -21,7 +21,7 @@
         <a-switch v-model:checked="record.status" @change="UpdateCptStatus(record.udid, $event)" />
     </template>
 </a-table>
-<InfiniteLoader v-if="loader" />
+<Loader/>
 </template>
 
 <script>
@@ -38,7 +38,7 @@ import {
 import {
     messages
 } from "@/config/messages";
-import InfiniteLoader from "@/components/loader/InfiniteLoader";
+import Loader from "@/components/loader/Loader";
 import {
     useStore
 } from "vuex";
@@ -50,7 +50,7 @@ export default {
     components: {
         DeleteOutlined,
         EditOutlined,
-        InfiniteLoader,
+        Loader,
     },
     props: {
 
@@ -60,7 +60,6 @@ export default {
     }) {
 
         const store = useStore();
-
         function deleteCpt(id) {
             warningSwal(messages.deleteWarning).then((response) => {
                 if (response == true) {
