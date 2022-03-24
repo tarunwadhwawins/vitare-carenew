@@ -15,7 +15,7 @@
         width: 160px;
       }
       .logoInner {
-        width: 70px;
+        width: 140px;
         @media screen and (max-width: 991px) {
           padding-left: 30px;
         }
@@ -29,7 +29,7 @@
         top: 0;
         // display: none;
         cursor: pointer;
-        left: 155px;
+        right: 0;
         @media screen and (max-width: 767px) {
           right: 7px;
         }

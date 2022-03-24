@@ -72,7 +72,7 @@
         </a-col>
 
         <a-col :sm="24" :span="24">
-          <ModalButtons @is_click="handleClear"/>
+          <ModalButtons :Id="true" @is_click="handleClear"/>
         </a-col>
       </a-row>
     </a-form>

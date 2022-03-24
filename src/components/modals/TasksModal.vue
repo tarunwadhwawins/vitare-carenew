@@ -52,71 +52,14 @@
         <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="toggleTo" >
           <div class="form-group" >
             <a-form-item :label="$t('tasks.tasksModal.patient')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.patient')+' '+$t('global.validation')  }]">
-              <!-- <a-select
-                ref="select"
-                mode="multiple"
-                :disabled="taskId?true:false"
-                v-model:value="taskForm.assignedTo"
-                style="width: 100%"
-                @change="checkChangeInput()"
-                 placeholder="Please Select Patient"
-                 :options="patients.map((item) => ({label: item.name+' '+item.middleName+' '+item.lastName, value: item.id }))"
-                size="large" /> -->
-                <!-- <a-select
-                ref="select"
-                v-model:value="taskForm.assignedTo"
-                style="width: 100%"
-                :show-search="true"
-                placeholder="input search text"
-                :show-arrow="true"
-                :filter-option="false"
-                :not-found-content="loadingStatus ? undefined : null"
-                :options="patientData"
-                @search="handlePatientSearch"
-                @change="handlePatientChange"
-                size="large">
-                <template  v-if="loadingStatus" #notFoundContent>
-                  <a-spin size="small" />
-                </template>
-              </a-select> -->
-              <PatientDropDown :disabled="taskId?true:false" v-model:value="taskForm.assignedTo" @handlePatientChange="handlePatientChange($event)"/>
-
+              <PatientDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.assignedTo" @handlePatientChange="handlePatientChange($event)"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="!toggleTo" >
           <div class="form-group" > 
             <a-form-item :label="$t('tasks.tasksModal.staff')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.staff')+' '+$t('global.validation')  }]">
-            <!-- <a-select
-                :disabled="taskId?true:false"
-                mode="tags"
-                size="large"
-                placeholder="Please Select Staff"
-                style="width: 100%"
-                @change="checkChangeInput()"
-                v-model:value="taskForm.assignedTo"
-                :options="common.allStaffList.map((item) => ({label: item.fullName, value: item.id }))"
-              /> -->
-              <!-- <a-select
-                ref="select"
-                :disabled="taskId?true:false"
-                v-model:value="taskForm.assignedTo"
-                style="width: 100%"
-                :show-search="true"
-                placeholder="input search text"
-                :show-arrow="true"
-                :filter-option="false"
-                :not-found-content="loadingStatus ? undefined : null"
-                :options="staffData"
-                @search="handleStaffSearch"
-                @change="handleStaffChange"
-                size="large">
-                <template  v-if="loadingStatus" #notFoundContent>
-                  <a-spin size="small" />
-                </template>
-              </a-select> -->
-              <StaffDropDown :disabled="taskId?true:false" v-model:value="taskForm.assignedTo" @handleStaffChange="handleStaffChange($event)"/>
-
+              <StaffDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.assignedTo" @handleStaffChange="handleStaffChange($event)"/>
             </a-form-item>
           </div>
         </a-col>
@@ -332,7 +275,9 @@ export default defineComponent({
       }
     }
 
-   
+   const taskFormFailed =(val)=>{
+     console.log('taskFormFailed',val);
+   }
 
     const handleStaffChange = (val) => {
       taskForm.assignedTo = val;
@@ -345,6 +290,7 @@ export default defineComponent({
 
 
     return {
+      taskFormFailed,
       loadingStatus:store.getters.loadingStatus,
       handlePatientChange,
       handleStaffChange,

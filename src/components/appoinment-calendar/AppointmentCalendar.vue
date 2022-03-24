@@ -36,7 +36,7 @@
                     </a-tab-pane>
                     <a-tab-pane key="4" tab="Month">
 
-                        <MonthAppointment v-if="appointmentSearch.searchAppointmentRecords" :appointment="appointmentSearch.searchAppointmentRecords" @is-dateClick="selectDate($event)" @is-month="monthDate($event)" :seclectDate="month"></MonthAppointment>
+                        <MonthAppointment v-if="appointmentSearch" :appointment="appointmentSearch" @is-dateClick="selectDate($event)" @is-month="monthDate($event)" :seclectDate="month"></MonthAppointment>
 
                     </a-tab-pane>
                 </a-tabs>
@@ -130,20 +130,21 @@ export default {
                 toDate.value = moment().add(1, 'days')
             } else if (value == 3) {
 
-                datePick = moment(tabDate.add(1, 'days')).startOf('week')
+                datePick = moment(tabDate).startOf('week')
 
                 store.dispatch("weekName", {
-                    from: moment(tabDate.add(2, 'days')).startOf('week'),
+                    from: moment(tabDate).startOf('week'),
                     to: moment(tabDate).endOf('week')
                 })
                 fromDate.value = moment(tabDate).startOf('week')
-                
+
                 toDate.value = moment(tabDate).endOf('week')
-               
+
             } else if (value == 4) {
-                datePick = tabDate
-                fromDate.value = tabDate.startOf('month')
-                toDate.value = tabDate.endOf('month')
+                datePick = moment(tabDate).startOf('month')
+                fromDate.value = moment(tabDate).startOf('month')
+                toDate.value = moment(tabDate).endOf('month')
+                //console.log("check",fromDate.value,toDate.value)
             } else {
                 datePick = tabDate
                 fromDate.value = tabDate
@@ -168,12 +169,12 @@ export default {
             })
 
         }
-        const appointmentSearch = store.getters.appointmentRecords.value
+        //const appointmentSearch = store.getters.searchAppointmentRecords.value
 
         watchEffect(() => {
-           store.dispatch("getStaffs").then(()=>{
-//onsole.log("check")
-           })
+            store.dispatch("getStaffs").then(() => {
+                //onsole.log("check")
+            })
 
             store.dispatch("allPatientsList")
             store.dispatch("allStaffList")
@@ -182,9 +183,9 @@ export default {
         })
 
         function searchApi() {
-let staffId = []
-             store.getters.appointmentRecords.value.getStaff ? store.getters.appointmentRecords.value.getStaff.map((item) => {  
-                    staffId.push(item.id)
+            let staffId = []
+            store.getters.appointmentRecords.value.getStaff ? store.getters.appointmentRecords.value.getStaff.map((item) => {
+                staffId.push(item.id)
             }) : ''
             physiciansId.value = staffId;
             store.state.appointment.searchAppointmentRecords = ''
@@ -223,7 +224,7 @@ let staffId = []
             appointmentModal.value = false;
         };
 
-       function staffSelect (){
+        function staffSelect() {
             // let staffId = []
             //  store.getters.appointmentRecords.value.getStaff.map((item) => {  
             //         staffId.push(item.id)
@@ -241,7 +242,7 @@ let staffId = []
             appointmentCalendarPermissions,
             arrayToObjact,
             month,
-            appointmentSearch,
+            appointmentSearch: store.getters.searchAppointmentRecords,
             maskebale,
             activeKey,
             selectDate,
