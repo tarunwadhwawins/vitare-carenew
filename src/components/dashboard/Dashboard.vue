@@ -270,10 +270,14 @@ export default {
         const permission = store.getters.permissionRecords.value
 
         watchEffect(() => {
-            store.dispatch("timeLine", 122).then(() => {
-                apiCall(timeLineButton.value)
-            })
-
+          
+          if(!timeLineButton.value){
+            store.dispatch("timeLine", 122)
+                
+          }else{
+            apiCall(timeLineButton.value)
+          }
+         
         })
         const totalPatients = computed(() => {
             return store.state.counterCards.totalPatientcount
