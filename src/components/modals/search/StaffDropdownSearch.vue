@@ -28,7 +28,8 @@ export default defineComponent({
  
   },
   props:{
-      value:String
+      value:String,
+      checkSameAsStaff:Boolean,
   },
   
   setup(props,context) {
@@ -50,7 +51,12 @@ export default defineComponent({
     };
 
     const handleStaffChange = (val) => {
+      if(props.checkSameAsStaff){
+        context.emit('handlePatientChange',val)
+      }else{
+
         context.emit('handleStaffChange',val)
+      }
     };
 
 

@@ -36,20 +36,6 @@
             </a-form-item>
           </div>
         </a-col>
-        <!-- <a-col :span="12">
-          <div class="form-group">
-            <a-form-item :label="$t('tasks.tasksModal.assignedTo')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.assignedTo')+' '+$t('global.validation')  }]">
-              <a-select
-                mode="tags"
-                size="large"
-                placeholder="Please Select Staff"
-                style="width: 100%"
-                v-model:value="taskForm.assignedTo"
-                :options="staffList"
-              />
-            </a-form-item>
-          </div>
-        </a-col> -->
        <a-col v-if="!isPatientTask" :sm="12" :xs="24"  v-show="taskId==null">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.to')" name="to" >
@@ -63,8 +49,8 @@
             </a-form-item>
           </div>
         </a-col>
-        <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="toggleTo">
-          <div class="form-group">
+        <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="toggleTo" >
+          <div class="form-group" >
             <a-form-item :label="$t('tasks.tasksModal.patient')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.patient')+' '+$t('global.validation')  }]">
               <!-- <a-select
                 ref="select"
@@ -93,13 +79,13 @@
                   <a-spin size="small" />
                 </template>
               </a-select> -->
-              <PatientDropDown v-model:value="taskForm.assignedTo" @handlePatientChange="handlePatientChange($event)"/>
+              <PatientDropDown :disabled="taskId?true:false" v-model:value="taskForm.assignedTo" @handlePatientChange="handlePatientChange($event)"/>
 
             </a-form-item>
           </div>
         </a-col>
-        <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="!toggleTo">
-          <div class="form-group">
+        <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="!toggleTo" >
+          <div class="form-group" > 
             <a-form-item :label="$t('tasks.tasksModal.staff')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.staff')+' '+$t('global.validation')  }]">
             <!-- <a-select
                 :disabled="taskId?true:false"
@@ -129,13 +115,13 @@
                   <a-spin size="small" />
                 </template>
               </a-select> -->
-              <StaffDropDown v-model:value="taskForm.assignedTo" @handleStaffChange="handleStaffChange($event)"/>
+              <StaffDropDown :disabled="taskId?true:false" v-model:value="taskForm.assignedTo" @handleStaffChange="handleStaffChange($event)"/>
 
             </a-form-item>
           </div>
         </a-col>
-        <a-col :span="12">
-          <div class="form-group">
+        <a-col :span="12" >
+          <div class="form-group" >
             <a-form-item :label="$t('tasks.tasksModal.category')" name="taskCategory" :rules="[{ required: true, message: $t('tasks.tasksModal.category')+' '+$t('global.validation')  }]">
               <a-select
               :disabled="taskId?true:false"
@@ -150,15 +136,15 @@
             </a-form-item>
           </div>
         </a-col>
-        <a-col :span="12">
-          <div class="form-group">
+        <a-col :span="12" >
+          <div class="form-group" >
             <a-form-item :label="$t('tasks.tasksModal.startDate')" name="startDate" :rules="[{ required: true, message: $t('tasks.tasksModal.startDate')+' '+$t('global.validation')  }]">
               <a-date-picker :disabled="taskId?true:false" v-model:value="taskForm.startDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
-        <a-col :span="12">
-          <div class="form-group">
+        <a-col :span="12" >
+          <div class="form-group" >
             <a-form-item :label="$t('tasks.tasksModal.dueDate')" name="dueDate" :rules="[{ required: true, message: $t('tasks.tasksModal.dueDate')+' '+$t('global.validation')  }]">
               <a-date-picker :disabled="taskId?true:false" v-model:value="taskForm.dueDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()"/>
             </a-form-item>
@@ -299,6 +285,7 @@ export default defineComponent({
       store.dispatch("allStaffList")
       if(props.taskId!=null){
         Object.assign(taskForm, tasks.value.editTask)
+        toggleTo.value = taskForm.entityType=="staff" ? false : true
       }
     })
   

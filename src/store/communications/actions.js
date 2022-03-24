@@ -2,10 +2,9 @@ import ServiceMethodService from '../../services/serviceMethod';
 // import AuthService from '../../services/auth';
 import { API_ENDPOINTS } from "../../config/apiConfig"
 import { successSwal, errorSwal,startimeAdd, endTimeAdd, timeStamp} from '../../commonMethods/commonMethod'
-
-
-export const callPlanned = async ({ commit }) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['CallPlanned'], null, null).then((response) => {
+export const callPlanned = async ({ commit },from) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['CallPlanned']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null, null).then((response) => {
+		
 		commit('callPlannedSuccess', response.data.data);
 	})
 	.catch((error) => {

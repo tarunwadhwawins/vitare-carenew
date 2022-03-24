@@ -1,8 +1,8 @@
 
 import { yaxis, dataLabels, plotOptions, annotations, dateFormat,chartTimeCount } from '../../commonMethods/commonMethod'
-export const timelineSuccess = (state, count) => {
+export const timelineSuccess = (state, data) => {
 
-  state.timeLineButton = count;
+  state.timeLineButton = data;
 }
 export const todayAppointmentSuccess = (state, count) => {
   let i = 1;
@@ -198,13 +198,13 @@ export const totalPatientsChartSuccess = (state, count) => {
 
   let format = ''
   let type = ''
-  if (state.timeLineButton == 122) {
+  if (state.timeLineButton.globalCodeId == 122) {
     type = "time"
     format = "hh"
-  } else if (state.timeLineButton == 123) {
+  } else if (state.timeLineButton.globalCodeId == 123) {
     type = "day"
     format = "dddd"
-  } else if (state.timeLineButton == 124) {
+  } else if (state.timeLineButton.globalCodeId == 124) {
     type = "day"
     format = "dd"  
   } else {
