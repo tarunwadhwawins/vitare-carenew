@@ -52,14 +52,14 @@
         <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="toggleTo" >
           <div class="form-group" >
             <a-form-item :label="$t('tasks.tasksModal.patient')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.patient')+' '+$t('global.validation')  }]">
-              <PatientDropDown :disabled="taskId?true:false" v-model:value="taskForm.assignedTo" @handlePatientChange="handlePatientChange($event)"/>
+              <PatientDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.assignedTo" @handlePatientChange="handlePatientChange($event)"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="!toggleTo" >
           <div class="form-group" > 
             <a-form-item :label="$t('tasks.tasksModal.staff')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.staff')+' '+$t('global.validation')  }]">
-              <StaffDropDown :disabled="taskId?true:false" v-model:value="taskForm.assignedTo" @handleStaffChange="handleStaffChange($event)"/>
+              <StaffDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.assignedTo" @handleStaffChange="handleStaffChange($event)"/>
             </a-form-item>
           </div>
         </a-col>
@@ -275,7 +275,9 @@ export default defineComponent({
       }
     }
 
-   
+   const taskFormFailed =(val)=>{
+     console.log('taskFormFailed',val);
+   }
 
     const handleStaffChange = (val) => {
       taskForm.assignedTo = val;
@@ -288,6 +290,7 @@ export default defineComponent({
 
 
     return {
+      taskFormFailed,
       loadingStatus:store.getters.loadingStatus,
       handlePatientChange,
       handleStaffChange,

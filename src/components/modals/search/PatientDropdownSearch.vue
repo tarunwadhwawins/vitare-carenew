@@ -1,6 +1,7 @@
 <template>
   <a-select
   ref="select"
+  :mode="mode"
   :value="value"
    @input="updateValue"
   style="width: 100%"
@@ -28,7 +29,8 @@ export default defineComponent({
  
   },
   props:{
-      value:String
+      value:String,
+      mode:String
   },
   
   setup(props,context) {

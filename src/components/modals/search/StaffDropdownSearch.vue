@@ -1,6 +1,7 @@
 <template>
   <a-select
   ref="select"
+  :mode="mode"
   :value="value"
    @input="updateValue"
   style="width: 100%"
@@ -32,6 +33,7 @@ export default defineComponent({
   props:{
       value:String,
       checkSameAsStaff:Boolean,
+      mode:String
   },
   
   setup(props,context) {

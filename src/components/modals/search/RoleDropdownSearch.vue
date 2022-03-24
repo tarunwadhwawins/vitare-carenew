@@ -1,6 +1,7 @@
 <template>
 <a-select
   ref="select"
+  :mode="mode"
   :value="value"
   style="width: 100%"
   :show-search="true"
@@ -27,7 +28,8 @@ export default defineComponent({
  
   },
   props:{
-      value:String
+      value:String,
+      mode:String
   },
   
   setup(props,context) {

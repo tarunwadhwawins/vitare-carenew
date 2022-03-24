@@ -105,7 +105,13 @@ export default {
       Object.assign(physicianForm, form);
       emit("is-visible", false);
     }
+
+    const handleStaffChange = (val) => {
+      physicianForm.staffId = val;
+    };
+
     return {
+      handleStaffChange,
       value: ref(undefined),
       filterOption,
       handleBlur,
