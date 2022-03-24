@@ -765,6 +765,56 @@ export default defineComponent( {
     const formRef =ref()
     const patientSearch =ref(false)
 
+		const steps = [
+			{
+				title: "Demographics",
+				key: "demographics",
+				content: "First-content",
+			},
+			{
+				title: "Conditions",
+				key: "conditions",
+				content: "Second-content",
+			},
+			{
+				title: "Programs",
+				key: "programs",
+				content: "Second-content",
+			},
+			{
+				title: "Devices",
+				key: "devices",
+				content: "Second-content",
+			},
+			// {
+			//   title: "Parameters",
+			//   content: "Second-content",
+			// },
+			{
+				title: "Clinical Data",
+				key: "clinicalData",
+				content: "Second-content",
+			},
+			{
+				title: "Insurance",
+				key: "insurance",
+				content: "Second-content",
+			},
+			{
+				title: "Documents",
+				key: "documents",
+				content: "Last-content",
+			},
+		]
+    
+    const current= computed({
+      get: () =>
+        store.state.patients.counter,
+      set: (value) => {
+        store.state.patients.counter = value;
+      },
+    })
+
     const changedValue = (value) => {
         if(value == false) {
             isValueChanged.value = false;
@@ -791,14 +841,6 @@ export default defineComponent( {
     const patientDetail = patients.value.patientDetails;
     const title = props.isEditPatient == true ? 'Edit Patient' : 'Add New Patient'
     const disabled = props.isEditPatient == true ? true : false
-    
-    const current= computed({
-      get: () =>
-        store.state.patients.counter,
-      set: (value) => {
-        store.state.patients.counter = value;
-      },
-    })
     // computed(() => {
     //   return store.state.patients.counter;
     // });
@@ -873,17 +915,18 @@ export default defineComponent( {
 
         if(idPatient) {
 					Object.assign(demographics, patientDetail);
-					if(isEdit && patients.value.patientConditions != null) {
-						Object.assign(conditions.condition, patients.value.patientConditions)
-					}
-					if(isEdit && patients.value.patientInsurance != null) {
+					if(patients.value.patientInsurance != null) {
 						Object.assign(insuranceData, patients.value.patientInsurance)
 					}
-					if(isEdit && patients.value.patientReferralSource != null) {
+					if(patients.value.patientReferralSource != null) {
 						Object.assign(conditions, patients.value.patientReferralSource)
 					}
-					if(isEdit && patients.value.patientPrimaryPhysician != null) {
+					if(patients.value.patientPrimaryPhysician != null) {
 						Object.assign(conditions, patients.value.patientPrimaryPhysician)
+					}
+					if(isEdit && patients.value.patientConditions != null) {
+						Object.assign(conditions.condition, patients.value.patientConditions)
+						isEdit = false
 					}
         }
         /* else {
@@ -897,136 +940,137 @@ export default defineComponent( {
     const parameters = reactive([]);
 
     const demographic = () => {
-        if(idPatient != null) {
-            if(patients.value.addDemographic == null) {
-                if(demographics.sameAsPrimary == false) {
-                    (demographics.emergencyId = patients.value.patientDetails.emergencyContact.data ? patients.value.patientDetails.emergencyContact.data.id : ''),
-                    (demographics.familyMemberId = patients.value.patientDetails.patientFamilyMember.data ? patients.value.patientDetails.patientFamilyMember.data.id : ''),
-                    store.dispatch("updateDemographic", {
-                        data: demographics,
-                        id: idPatient,
-                    }).then(() => {
-                        if(route.name == 'PatientSummary') {
-                            store.dispatch('patientDetails', route.params.udid)
-                            isValueChanged.value = false;
-                        }
-                    })
-                }
-                else if(demographics.sameAsPrimary == true) {
-                    (demographics.emergencyFullName = demographics.fullName),
-                    (demographics.emergencyEmail = demographics.familyEmail),
-                    (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
-                    (demographics.emergencyContactType = demographics.familyContactType),
-                    (demographics.emergencyContactTime = demographics.familyContactTime),
-                    (demographics.emergencyGender = demographics.familyGender),
-                    (demographics.emergencyId = patients.value.patientDetails.emergencyContact.data ? patients.value.patientDetails.emergencyContact.data.id : ''),
-                    (demographics.familyMemberId = patients.value.patientDetails.patientFamilyMember.data ? patients.value.patientDetails.patientFamilyMember.data.id : ''),
-                    store.dispatch("updateDemographic", {
-                        data: demographics,
-                        id: idPatient,
-                    }).then(() => {
-                        if(route.name == 'PatientSummary') {
-                            store.dispatch('patientDetails', route.params.udid)
-                            isValueChanged.value = false;
-                        }
-                    })
-                }
-            }
-            else if(patients.value.addDemographic != null && patients.value.addDemographic.id) {
-                if(demographics.sameAsPrimary == false) {
-                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
-                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
-                    store.dispatch("updateDemographic", {
-                        data: demographics,
-                        id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
-                    }).then(() => {
-                        if(route.name == 'PatientSummary') {
-                            store.dispatch('patientDetails', route.params.udid)
-                            isValueChanged.value = false;
-                        }
-                    })
-                }
-                else if(demographics.sameAsPrimary == true) {
-                    (demographics.emergencyFullName = demographics.fullName),
-                    (demographics.emergencyEmail = demographics.familyEmail),
-                    (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
-                    (demographics.emergencyContactType = demographics.familyContactType),
-                    (demographics.emergencyContactTime = demographics.familyContactTime),
-                    (demographics.emergencyGender = demographics.familyGender),
-                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
-                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
-                    store.dispatch("updateDemographic", {
-                        data: demographics,
-                        id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
-                    }).then(() => {
-                        if(route.name == 'PatientSummary') {
-                            store.dispatch('patientDetails', route.params.udid)
-                            isValueChanged.value = false;
-                        }
-                    })
-                }
-            }
-        }
-        else {
-            if(patients.value.addDemographic == null) {
-                if(demographics.sameAsPrimary == false) {
-                    store.dispatch("addDemographic", demographics).then(() => {
-                        if(route.name == 'PatientSummary') {
-                            store.dispatch('patientDetails', route.params.udid)
-                            isValueChanged.value = false;
-                        }
-                    })
-                }
-                else if(demographics.sameAsPrimary == true) {
-                    (demographics.emergencyFullName = demographics.fullName),
-                    (demographics.emergencyEmail = demographics.familyEmail),
-                    (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
-                    (demographics.emergencyContactType = demographics.familyContactType),
-                    (demographics.emergencyContactTime = demographics.familyContactTime),
-                    (demographics.emergencyGender = demographics.familyGender),
-                    store.dispatch("addDemographic", demographics).then(() => {
-                        if(route.name == 'PatientSummary') {
-                            store.dispatch('patientDetails', route.params.udid)
-                            isValueChanged.value = false;
-                        }
-                    })
-                }
-            }
-            else if(patients.value.addDemographic != null && patients.value.addDemographic.id) {
-                if(demographics.sameAsPrimary == false) {
-                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
-                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
-                    store.dispatch("updateDemographic", {
-                        data: demographics,
-                        id: patients.value.addDemographic.id,
-                    }).then(() => {
-                        if(route.name == 'PatientSummary') {
-                            store.dispatch('patientDetails', route.params.udid)
-                            isValueChanged.value = false;
-                        }
-                    })
-                }
-                else if(demographics.sameAsPrimary == true) {
-                    (demographics.emergencyFullName = demographics.fullName),
-                    (demographics.emergencyEmail = demographics.familyEmail),
-                    (demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
-                    (demographics.emergencyContactType = demographics.familyContactType),
-                    (demographics.emergencyContactTime = demographics.familyContactTime),
-                    (demographics.emergencyGender = demographics.familyGender),
-                    (demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
-                    (demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
-                    store.dispatch("updateDemographic", {
-                        data: demographics,
-                        id: patients.value.addDemographic.id,
-                    }).then(() => {
-                        if(route.name == 'PatientSummary') {
-                            store.dispatch('patientDetails', route.params.udid)
-                            isValueChanged.value = false;
-                        }
-                    })
-                }
-            }
-        }
+			isEdit = false
+			if(idPatient != null) {
+					if(patients.value.addDemographic == null) {
+							if(demographics.sameAsPrimary == false) {
+									(demographics.emergencyId = patients.value.patientDetails.emergencyContact.data ? patients.value.patientDetails.emergencyContact.data.id : ''),
+									(demographics.familyMemberId = patients.value.patientDetails.patientFamilyMember.data ? patients.value.patientDetails.patientFamilyMember.data.id : ''),
+									store.dispatch("updateDemographic", {
+											data: demographics,
+											id: idPatient,
+									}).then(() => {
+											if(route.name == 'PatientSummary') {
+													store.dispatch('patientDetails', route.params.udid)
+													isValueChanged.value = false;
+											}
+									})
+							}
+							else if(demographics.sameAsPrimary == true) {
+									(demographics.emergencyFullName = demographics.fullName),
+									(demographics.emergencyEmail = demographics.familyEmail),
+									(demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
+									(demographics.emergencyContactType = demographics.familyContactType),
+									(demographics.emergencyContactTime = demographics.familyContactTime),
+									(demographics.emergencyGender = demographics.familyGender),
+									(demographics.emergencyId = patients.value.patientDetails.emergencyContact.data ? patients.value.patientDetails.emergencyContact.data.id : ''),
+									(demographics.familyMemberId = patients.value.patientDetails.patientFamilyMember.data ? patients.value.patientDetails.patientFamilyMember.data.id : ''),
+									store.dispatch("updateDemographic", {
+											data: demographics,
+											id: idPatient,
+									}).then(() => {
+											if(route.name == 'PatientSummary') {
+													store.dispatch('patientDetails', route.params.udid)
+													isValueChanged.value = false;
+											}
+									})
+							}
+					}
+					else if(patients.value.addDemographic != null && patients.value.addDemographic.id) {
+							if(demographics.sameAsPrimary == false) {
+									(demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
+									(demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
+									store.dispatch("updateDemographic", {
+											data: demographics,
+											id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
+									}).then(() => {
+											if(route.name == 'PatientSummary') {
+													store.dispatch('patientDetails', route.params.udid)
+													isValueChanged.value = false;
+											}
+									})
+							}
+							else if(demographics.sameAsPrimary == true) {
+									(demographics.emergencyFullName = demographics.fullName),
+									(demographics.emergencyEmail = demographics.familyEmail),
+									(demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
+									(demographics.emergencyContactType = demographics.familyContactType),
+									(demographics.emergencyContactTime = demographics.familyContactTime),
+									(demographics.emergencyGender = demographics.familyGender),
+									(demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
+									(demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
+									store.dispatch("updateDemographic", {
+											data: demographics,
+											id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
+									}).then(() => {
+											if(route.name == 'PatientSummary') {
+													store.dispatch('patientDetails', route.params.udid)
+													isValueChanged.value = false;
+											}
+									})
+							}
+					}
+			}
+			else {
+					if(patients.value.addDemographic == null) {
+							if(demographics.sameAsPrimary == false) {
+									store.dispatch("addDemographic", demographics).then(() => {
+											if(route.name == 'PatientSummary') {
+													store.dispatch('patientDetails', route.params.udid)
+													isValueChanged.value = false;
+											}
+									})
+							}
+							else if(demographics.sameAsPrimary == true) {
+									(demographics.emergencyFullName = demographics.fullName),
+									(demographics.emergencyEmail = demographics.familyEmail),
+									(demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
+									(demographics.emergencyContactType = demographics.familyContactType),
+									(demographics.emergencyContactTime = demographics.familyContactTime),
+									(demographics.emergencyGender = demographics.familyGender),
+									store.dispatch("addDemographic", demographics).then(() => {
+											if(route.name == 'PatientSummary') {
+													store.dispatch('patientDetails', route.params.udid)
+													isValueChanged.value = false;
+											}
+									})
+							}
+					}
+					else if(patients.value.addDemographic != null && patients.value.addDemographic.id) {
+							if(demographics.sameAsPrimary == false) {
+									(demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
+									(demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
+									store.dispatch("updateDemographic", {
+											data: demographics,
+											id: patients.value.addDemographic.id,
+									}).then(() => {
+											if(route.name == 'PatientSummary') {
+													store.dispatch('patientDetails', route.params.udid)
+													isValueChanged.value = false;
+											}
+									})
+							}
+							else if(demographics.sameAsPrimary == true) {
+									(demographics.emergencyFullName = demographics.fullName),
+									(demographics.emergencyEmail = demographics.familyEmail),
+									(demographics.emergencyPhoneNumber = demographics.familyPhoneNumber),
+									(demographics.emergencyContactType = demographics.familyContactType),
+									(demographics.emergencyContactTime = demographics.familyContactTime),
+									(demographics.emergencyGender = demographics.familyGender),
+									(demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
+									(demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
+									store.dispatch("updateDemographic", {
+											data: demographics,
+											id: patients.value.addDemographic.id,
+									}).then(() => {
+											if(route.name == 'PatientSummary') {
+													store.dispatch('patientDetails', route.params.udid)
+													isValueChanged.value = false;
+											}
+									})
+							}
+					}
+			}
     };
 
     const conditionsPatient = computed(() => {
@@ -1208,9 +1252,13 @@ export default defineComponent( {
       store.dispatch("patients");
       store.commit("resetCounter");
       emit("closeModal");
+			current.value = 0
     }
 
     function closeModal() {
+			// console.log('steps[current]', current.value)
+			// alert(current.value)
+			current.value = 0
         if(isValueChanged.value) {
             warningSwal(messages.modalWarning).then((response) => {
                 if (response == true) {
@@ -1303,47 +1351,7 @@ export default defineComponent( {
       globalCode,
       demographic,
       condition,
-      steps: [
-        {
-          title: "Demographics",
-          key: "demographics",
-          content: "First-content",
-        },
-        {
-          title: "Conditions",
-          key: "conditions",
-          content: "Second-content",
-        },
-        {
-          title: "Programs",
-          key: "programs",
-          content: "Second-content",
-        },
-        {
-          title: "Devices",
-          key: "devices",
-          content: "Second-content",
-        },
-        // {
-        //   title: "Parameters",
-        //   content: "Second-content",
-        // },
-        {
-          title: "Clinical Data",
-          key: "clinicalData",
-          content: "Second-content",
-        },
-        {
-          title: "Insurance",
-          key: "insurance",
-          content: "Second-content",
-        },
-        {
-          title: "Documents",
-          key: "documents",
-          content: "Last-content",
-        },
-      ],
+      steps,
       next,
       prev,
       size: ref("large"),

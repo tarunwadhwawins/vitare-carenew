@@ -14,7 +14,7 @@
 
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
-						<a-form-item :label="$t('patient.demographics.emailAddress')" name="familyEmail" :rules="[{ required: true, message: $t('patient.demographics.emailAddress')+' '+$t('global.validation') }]">
+						<a-form-item :label="$t('patient.demographics.emailAddress')" name="familyEmail" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
 							<a-input v-model:value="familyMemberForm.familyEmail" placeholder="test@test.com" size="large" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyEmail?errorMsg.familyEmail[0]:''" />
 						</a-form-item>
