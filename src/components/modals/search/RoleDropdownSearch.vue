@@ -1,27 +1,24 @@
 <template>
-  <a-select
+<a-select
   ref="select"
   :value="value"
-   @input="updateValue"
   style="width: 100%"
   :show-search="true"
   placeholder="input search text"
   :show-arrow="true"
   :filter-option="false"
   :not-found-content="loadingStatus ? undefined : null"
-  :options="staffData"
-  @search="handleStaffSearch"
-  @change="handleStaffChange"
+  :options="roleData"
+  @search="handleRoleSearch"
+  @change="handleRoleChange"
   size="large">
   <template  v-if="loadingStatus" #notFoundContent>
     <a-spin size="small" />
   </template>
-</a-select>    
-
+</a-select>
 </template>
 
 <script>
-
 import { defineComponent, ref,onMounted } from "vue";
 import { useStore } from "vuex"
 import Services from "@/services/serviceMethod"
@@ -30,44 +27,38 @@ export default defineComponent({
  
   },
   props:{
-      value:String,
-      checkSameAsStaff:Boolean,
+      value:String
   },
   
   setup(props,context) {
     const store = useStore()
-    const staffData = ref([]);
+    const roleData = ref([]);
     
     const updateValue = (event) => {
         context.emit('update:modelValue', event.target.value);
     }
      onMounted(()=>{
-        Services.singleDropdownSearch('', (d) => (staffData.value = d), 'staff')
+       Services.singleDropdownSearch('val', (d) => (roleData.value = d), 'roleList')
     })
 
 
-    const handleStaffSearch = (val) => {
+    const handleRoleSearch = (val) => {
       store.commit('loadingStatus', true)
-      staffData.value=[];
-      Services.singleDropdownSearch(val, (d) => (staffData.value = d), 'staff')
+      roleData.value=[];
+     Services.singleDropdownSearch(val, (d) => (roleData.value = d), 'roleList')
     };
 
-    const handleStaffChange = (val) => {
-      if(props.checkSameAsStaff){
-        context.emit('handlePatientChange',val)
-      }else{
-
-        context.emit('handleStaffChange',val)
-      }
+    const handleRoleChange = (val) => {
+        context.emit('handleRoleChange',val)
     };
 
 
 
     return {
       loadingStatus:store.getters.loadingStatus,
-      handleStaffChange,
-      handleStaffSearch,
-      staffData,
+      handleRoleChange,
+      handleRoleSearch,
+      roleData,
       updateValue
     };
   },
