@@ -30,7 +30,7 @@ const global = {
   previous: 'Previous',
   next: 'Next',
   done: 'Done',
-  callQueue: 'Call Queue',
+  callQueue: 'Call State',
   add:'Add',
   edit:'Edit',
   delete:'Delete',
