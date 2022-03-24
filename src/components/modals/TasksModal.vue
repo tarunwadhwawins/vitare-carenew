@@ -66,7 +66,7 @@
         <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="toggleTo">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.patient')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.patient')+' '+$t('global.validation')  }]">
-              <a-select
+              <!-- <a-select
                 ref="select"
                 mode="multiple"
                 :disabled="taskId?true:false"
@@ -75,27 +75,33 @@
                 @change="checkChangeInput()"
                  placeholder="Please Select Patient"
                  :options="patients.map((item) => ({label: item.name+' '+item.middleName+' '+item.lastName, value: item.id }))"
-                size="large" />
-                <!-- <a-select-option value="" disabled>{{'Select Patient'}}</a-select-option>
-                <a-select-option v-for="patient in patients" :key="patient.id" :value="patient.id">{{ patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option>
+                size="large" /> -->
+                <!-- <a-select
+                ref="select"
+                v-model:value="taskForm.assignedTo"
+                style="width: 100%"
+                :show-search="true"
+                placeholder="input search text"
+                :show-arrow="true"
+                :filter-option="false"
+                :not-found-content="loadingStatus ? undefined : null"
+                :options="patientData"
+                @search="handlePatientSearch"
+                @change="handlePatientChange"
+                size="large">
+                <template  v-if="loadingStatus" #notFoundContent>
+                  <a-spin size="small" />
+                </template>
               </a-select> -->
-            
+              <PatientDropDown v-model:value="taskForm.assignedTo" @handlePatientChange="handlePatientChange($event)"/>
+
             </a-form-item>
           </div>
         </a-col>
         <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="!toggleTo">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.staff')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.staff')+' '+$t('global.validation')  }]">
-              <!-- <a-select
-                ref="select"
-                v-if="staffList"
-                v-model:value="taskForm.assignedTo"
-                style="width: 100%"
-                size="large">
-                <a-select-option value="" disabled>{{'Select Staff'}}</a-select-option>
-                <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}</a-select-option>
-              </a-select> -->
-            <a-select
+            <!-- <a-select
                 :disabled="taskId?true:false"
                 mode="tags"
                 size="large"
@@ -104,7 +110,27 @@
                 @change="checkChangeInput()"
                 v-model:value="taskForm.assignedTo"
                 :options="common.allStaffList.map((item) => ({label: item.fullName, value: item.id }))"
-              />
+              /> -->
+              <!-- <a-select
+                ref="select"
+                :disabled="taskId?true:false"
+                v-model:value="taskForm.assignedTo"
+                style="width: 100%"
+                :show-search="true"
+                placeholder="input search text"
+                :show-arrow="true"
+                :filter-option="false"
+                :not-found-content="loadingStatus ? undefined : null"
+                :options="staffData"
+                @search="handleStaffSearch"
+                @change="handleStaffChange"
+                size="large">
+                <template  v-if="loadingStatus" #notFoundContent>
+                  <a-spin size="small" />
+                </template>
+              </a-select> -->
+              <StaffDropDown v-model:value="taskForm.assignedTo" @handleStaffChange="handleStaffChange($event)"/>
+
             </a-form-item>
           </div>
         </a-col>
@@ -156,10 +182,15 @@ import { messages } from "../../config/messages";
 import Loader from "@/components/loader/Loader";
 import { useRoute } from "vue-router";
 import moment from "moment"
+import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue"
+import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
+
 export default defineComponent({
   components: {
     ModalButtons,
-    Loader
+    Loader,
+    PatientDropDown,
+    StaffDropDown
   },
   props:{
     taskId:Number,
@@ -174,6 +205,8 @@ export default defineComponent({
     const formRef =ref()
     const visible = ref(true)
     const value = ref('')
+    const staffData = ref([]);
+    const patientData = ref([]);
     const idPatient = reactive(props.patientId);
     const isPatientTask = idPatient != null ? true : false;
 
@@ -195,8 +228,6 @@ export default defineComponent({
     })
     
     const submitForm = () => {
-      //console.log("check",taskForm)
-    //  console.log('=>', Object.assign(taskForm, tasks.value.editTask))
     if(props.taskId!=null) {
       store.dispatch("updateTask", {
         data: {
@@ -267,7 +298,6 @@ export default defineComponent({
     watchEffect(() => {
       store.dispatch("allStaffList")
       if(props.taskId!=null){
-       // console.log("check",tasks.value.editTask)
         Object.assign(taskForm, tasks.value.editTask)
       }
     })
@@ -315,9 +345,24 @@ export default defineComponent({
       }
     }
 
+   
+
+    const handleStaffChange = (val) => {
+      taskForm.assignedTo = val;
+    };
+
+    const handlePatientChange = (val) => {
+      taskForm.assignedTo = val;
+    };
+
 
 
     return {
+      loadingStatus:store.getters.loadingStatus,
+      handlePatientChange,
+      handleStaffChange,
+      staffData,
+      patientData,
       checkChangeInput,
       checkFieldsData,
       tasks,

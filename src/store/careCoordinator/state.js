@@ -1,5 +1,5 @@
 export default{
-    counter:0,
+    counter:1,
     addStaff:null,
     updateStaff:null,
     staffs:[],

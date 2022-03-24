@@ -4,7 +4,24 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
               <a-form-item :label="$t('careCoordinator.roles.role')" name="roles" :rules="[{ required: true, message: $t('careCoordinator.roles.role')+' '+$t('global.validation') }]">
-                <a-select v-if="staffs.roles!=null" v-model:value="roles.roles"  size="large" placeholder="Select Role" style="width: 100%" :options="staffs.roles.map((item) => ({ label: item.name?item.name:'', value: item.id }))" @change="checkChangeInput()" />
+                <!-- <a-select v-if="staffs.roles!=null" v-model:value="roles.roles"  size="large" placeholder="Select Role" style="width: 100%" :options="staffs.roles.map((item) => ({ label: item.name?item.name:'', value: item.id }))" @change="checkChangeInput()" /> -->
+              <a-select
+                ref="select"
+                v-model:value="roles.roles"
+                style="width: 100%"
+                :show-search="true"
+                placeholder="input search text"
+                :show-arrow="true"
+                :filter-option="false"
+                :not-found-content="loadingStatus ? undefined : null"
+                :options="roleData"
+                @search="handleRoleSearch"
+                @change="handleRoleChange"
+                size="large">
+                <template  v-if="loadingStatus" #notFoundContent>
+                  <a-spin size="small" />
+                </template>
+              </a-select>
               </a-form-item>
             </div>
         </a-col>
@@ -39,16 +56,13 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref, computed, watchEffect } from "vue";
-// import { DeleteOutlined } from "@ant-design/icons-vue";
+import { defineComponent, reactive, ref, computed, watchEffect,onMounted } from "vue";
 import { useStore } from "vuex";
-// import { warningSwal } from "@/commonMethods/commonMethod";
-// import { messages } from "@/config/messages";
 import Loader from "@/components/loader/Loader";
 import RoleTable from "../../care-coordinator/tables/RoleTable";
+import Services from "@/services/serviceMethod"
 export default defineComponent({
   components: {
-    // DeleteOutlined,
     Loader,
     RoleTable,
   },
@@ -58,6 +72,7 @@ export default defineComponent({
   },
   setup(props,{emit}) {
     const store = useStore();
+    const roleData = ref();
     const roles = reactive({
       roles: [],
     });
@@ -76,25 +91,22 @@ export default defineComponent({
       }, 2000);
     }
 
-    // function deleteRole(id) {
-    //   warningSwal(messages.deleteWarning).then((response) => {
-    //     if (response == true) {
-    //       store.dispatch("deleteStaffRole", {
-    //         id: staffs.value.addStaff.id,
-    //         roleID: id,
-    //       });
-    //       setTimeout(() => {
-    //         store.dispatch("roleList",staffs.value.addStaff.id);
-    //       }, 2000);
-    //     }
-    //   });
-    // }
+       onMounted(()=>{
+       Services.singleDropdownSearch('', (d) => (roleData.value = d), 'roleList');
+      })
+
+    const handleRoleSearch = (val) => {
+      store.commit('loadingStatus', true)
+      roleData.value=[];
+      Services.singleDropdownSearch(val, (d) => (roleData.value = d), 'roleList')
+    };
+
+    const handleRoleChange = (val) => {
+      roles.roles = val;
+    };
+
     const staffs = computed(() => {
       return store.state.careCoordinator;
-    });
-
-    watchEffect(() => {
-      store.dispatch("roles");
     });
 
     const form = reactive({
@@ -105,6 +117,7 @@ export default defineComponent({
     }
 
     watchEffect(()=>{
+    store.dispatch("roles");
     if(props.clearData==true){
       Object.assign(roles,form)
     }
@@ -118,6 +131,10 @@ export default defineComponent({
     });
     const Id = staffs.value.addStaff?staffs.value.addStaff.id:''
     return {
+      loadingStatus:store.getters.loadingStatus,
+      roleData,
+      handleRoleChange,
+      handleRoleSearch,
       errorMsg,
       reset,
       checkChangeInput,

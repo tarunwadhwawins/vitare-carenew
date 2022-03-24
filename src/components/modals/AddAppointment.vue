@@ -12,13 +12,30 @@
                 @on-select="onSelectOption"
                 v-model:value="appointmentForm.patientId" /> -->
   
-              <a-select ref="select" v-if="allPatients" v-model:value="appointmentForm.patientId" style="width: 100%"
+              <!-- <a-select ref="select" v-if="allPatients" v-model:value="appointmentForm.patientId" style="width: 100%"
                 size="large" :disabled="disabled"  :filter-option="filterOption">
                 <a-select-option value="" hidden>{{'Select Patient'}}</a-select-option>
                 <a-select-option v-for="patient in allPatients" :key="patient.id" :value="patient.id">{{
                   patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option> 
-              </a-select>
-             
+              </a-select> -->
+              <!-- <a-select
+                ref="select"
+                v-model:value="appointmentForm.patientId"
+                style="width: 100%"
+                :show-search="true"
+                placeholder="input search text"
+                :show-arrow="true"
+                :filter-option="false"
+                :not-found-content="loadingStatus ? undefined : null"
+                :options="patientData"
+                @search="handlePatientSearch"
+                @change="handlePatientChange"
+                size="large">
+                <template  v-if="loadingStatus" #notFoundContent>
+                  <a-spin size="small" />
+                </template>
+              </a-select> -->
+             <PatientDropDown v-model:value="appointmentForm.patientId" @handlePatientChange="handlePatientChange($event)"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.patientId?errorMsg.patientId[0]:''" />
             </a-form-item>
           </div>
@@ -27,12 +44,31 @@
           <div class="form-group">
             <a-form-item :label="$t('appointmentCalendar.addAppointment.staff')" name="staffId"
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.staff')+' '+$t('global.validation')  }]">
-              <a-select ref="select" v-if="staffList" v-model:value="appointmentForm.staffId" style="width: 100%"
+              <!-- <a-select ref="select" v-if="staffList" v-model:value="appointmentForm.staffId" style="width: 100%"
                 size="large">
                 <a-select-option value="" hidden>{{'Select Staff'}}</a-select-option>
                 <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}
                 </a-select-option>
-              </a-select>
+              </a-select> -->
+              <!-- <a-select
+                ref="select"
+                v-model:value="appointmentForm.staffId"
+                style="width: 100%"
+                :show-search="true"
+                placeholder="input search text"
+                :show-arrow="true"
+                :filter-option="false"
+                :not-found-content="loadingStatus ? undefined : null"
+                :options="staffData"
+                @search="handleStaffSearch"
+                @change="handleStaffChange"
+                size="large">
+                <template  v-if="loadingStatus" #notFoundContent>
+                  <a-spin size="small" />
+                </template>
+              </a-select> -->
+              
+              <StaffDropDown v-model:value="appointmentForm.staffId" @handleStaffChange="handleStaffChange($event)"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.staffId?errorMsg.staffId[0]:''" />
             </a-form-item>
           </div>
@@ -104,13 +140,15 @@
   </a-modal>
 </template>
 <script>
-  import { ref, watchEffect, computed, reactive } from "vue"
+  import { ref, watchEffect, computed, reactive,onMounted } from "vue"
   import { useStore } from "vuex"
   import ErrorMessage from "../common/messages/ErrorMessage"
   import { timeStamp } from "../../commonMethods/commonMethod"
   import moment from 'moment';
   import ModalButtons from "@/components/common/button/ModalButtons";
 //import AutoComplete from "@/components/common/input/AutoComplete";
+import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue"
+import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
 import { useRoute } from 'vue-router'
 import {
     warningSwal
@@ -118,12 +156,15 @@ import {
 import {
     messages
 } from "../../config/messages";
+// import Services from "@/services/serviceMethod"
 
   export default {
     components: {
       ErrorMessage,
       ModalButtons,
       //AutoComplete,
+      PatientDropDown,
+      StaffDropDown
     },
     props:{
       staff:{
@@ -146,6 +187,8 @@ import {
       const formRef = ref();
       const route = useRoute();
       const store = useStore()
+      const staffData = ref([]);
+      const patientData = ref([]);
       const patientUdid = route.params.udid;
       const idPatient = reactive(props.patientId);
       const patientName = reactive(props.patientName);
@@ -179,6 +222,36 @@ import {
         store.state.common.allPatientsList ? "" : store.dispatch("allPatientsList")
         store.state.common.allStaffList ? "" : store.dispatch("allStaffList")
       })
+
+      onMounted(()=>{
+      //  Services.singleDropdownSearch('', (d) => (staffData.value = d), 'staff');
+      //  setTimeout(()=>{
+      //    Services.singleDropdownSearch('', (d) => (patientData.value = d), 'patient')
+      // },300)
+     
+    })
+
+    // const handleStaffSearch = (val) => {
+    //   store.commit('loadingStatus', true)
+    //   staffData.value=[];
+    //   Services.singleDropdownSearch(val, (d) => (staffData.value = d), 'staff')
+    // };
+
+    const handleStaffChange = (val) => {
+      appointmentForm.staffId = val;
+    };
+
+    // const handlePatientSearch = (val) => {
+    //   store.commit('loadingStatus', true)
+    //   patientData.value=[];
+    //   Services.singleDropdownSearch(val, (d) => (patientData.value = d), 'patient')
+    // };
+
+    const handlePatientChange = (val) => {
+      appointmentForm.patientId = val;
+    };
+
+
       const onFinishFailed = () => {
         // 
       };
@@ -199,32 +272,8 @@ import {
         return store.state.common.allStaffList
       })
       
-      // const patients = ref([])
-      // console.log("obj",staffList.value);
-      // if(allPatients.value != null) {
-        
-      //   allPatients.value.forEach(element => {
-      //     patients.value.push({
-      //       value: element.fullName,
-      //       id: element.id,
-      //     })
-      //   });
-      // }
       
-      // const selectedOptionId = ref(null);
-      // const onSelectOption = (selected) => {
-      //   patients.value.forEach(patient => {
-      //     if(patient.value == selected) {
-      //       selectedOptionId.value = patient.id
-      //     }
-      //   });
-      // };
-
       const sendMessage = () => {
-        // Object.assign(appointmentForm, {
-        //   patientId: idPatient
-        // })
-        
         const date = appointmentForm.startDate
         const  timeFormat = (moment(appointmentForm.startTime)).format('HH:mm');
         store.dispatch('addAppointment', {
@@ -280,6 +329,13 @@ import {
             }
         }
       return {
+        handlePatientChange,
+        // handlePatientSearch,
+        handleStaffChange,
+        // handleStaffSearch,
+        loadingStatus:store.getters.loadingStatus,
+        staffData,
+        patientData,
         allPatients,
         form,
         errorMsg,
