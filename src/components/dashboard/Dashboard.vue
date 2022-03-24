@@ -90,7 +90,6 @@
 <script>
   import { ref,watchEffect } from 'vue'
   import Card from "@/components/common/cards/Card"
-  //import Appointement from "./Appointment"
   import ApexChart from "@/components/common/charts/ApexChart"
   import { startimeAdd, endTimeAdd, timeStamp ,arrayToObjact} from '@/commonMethods/commonMethod'
   import { useStore } from 'vuex'
@@ -100,7 +99,6 @@
 export default {
     components: {
         Card,
-        //Appointement,
         ApexChart,
         Loader
     },
@@ -128,12 +126,8 @@ export default {
                 to = moment().subtract(data.number, data.intervalType);
             } else {
                 from = moment();
-               // var futureMonth = moment().subtract(1, 'year');
-               // var futureMonthEnd = moment(futureMonth).endOf('month');
                 to = moment().subtract(data.number, data.intervalType);
             }
-
-           // console.log('check', from,to)
             let dateFormate = ''
             if (data.globalCodeId == 122) {
                 dateFormate = {
@@ -146,8 +140,6 @@ export default {
                     toDate: timeStamp(endTimeAdd(from))
                 }
             }
-
-            //console.log("check",dateFormate)
             store.dispatch("permissions")
             store.dispatch("counterCard", dateFormate)
             store.dispatch("searchAppointment", {
@@ -176,48 +168,6 @@ export default {
           }
          
         })
-        // const totalPatients = computed(() => {
-        //     return store.state.counterCards.totalPatientcount
-        // })
-        // const grid = computed(() => {
-        //     return store.state.counterCards.grid
-        // })
-        // const patientsCondition = computed(() => {
-        //     return store.state.counterCards.patientsCondition
-        // })
-        // const todayAppointment = computed(() => {
-        //     return store.state.dashBoard.todayAppointmentState
-
-        // })
-        // const callStatus = computed(() => {
-        //     return store.state.dashBoard.callStatus
-        // })
-        // const specialization = computed(() => {
-
-        //     return store.state.dashBoard.specialization
-        // })
-
-        // const network = computed(() => {
-
-        //     return store.state.dashBoard.network
-        // })
-
-        // const cptCodeValue = computed(() => {
-
-        //     return store.state.dashBoard.cptCodeValue
-        // })
-        // const financialValue = computed(() => {
-
-        //     return store.state.dashBoard.financialValue
-        // })
-        // const totalPatientsChartValue = computed(() => {
-
-        //     return store.state.dashBoard.totalPatientsChartValue
-        // })
-        // const appointmentChartValue = computed(() => {
-
-        //     return store.state.dashBoard.appointmentChartValue
-        // })
 
         function logout() {
             localStorage.removeItem("auth");

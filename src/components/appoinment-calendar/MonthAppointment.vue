@@ -1,11 +1,10 @@
 <template>
-
 <div class="monthCalendarView">
-    <FullCalendar v-if="appointment.searchAppointmentRecords" :options="option" ref="cal">
+
+    <FullCalendar :options="option" ref="cal">
 
     </FullCalendar>
 </div>
-
 </template>
 
 <script>
@@ -36,7 +35,10 @@ export default {
         seclectDate: {
             type: String
         },
-      
+        appointment: {
+            type: Array
+        }
+
     },
     setup(props, {
         emit
@@ -45,7 +47,7 @@ export default {
         const cal = ref(null);
         const store = useStore()
         const seclectDate = reactive(props.seclectDate)
-const appointment = store.getters.appointmentRecords.value
+        //const appointments = ref(reactive(props.appointment))
         function handleDateClick(e) {
             emit("is-dateClick", e)
 
@@ -68,7 +70,7 @@ const appointment = store.getters.appointmentRecords.value
                 return '+' + e.num + ' More items';
             },
             showNonCurrentDates: true,
-            events: store.getters.appointmentRecords.value.searchAppointmentRecords,
+            events: reactive(props.appointment),
             eventContent: renderEventContent,
             customButtons: {
                 prev: { // this overrides the prev button
@@ -137,7 +139,7 @@ const appointment = store.getters.appointmentRecords.value
             linkToCoordinator,
             cal,
             getDate,
-appointment,
+            //appointments,
             renderEventContent,
             handleDateClick,
             nextOrPrev,
