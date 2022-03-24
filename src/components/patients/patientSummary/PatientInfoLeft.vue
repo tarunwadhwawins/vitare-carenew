@@ -577,3 +577,10 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+span.anticon.anticon-plus {
+  position: relative;
+  top: -2px;
+}
+</style>
