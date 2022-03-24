@@ -22,5 +22,8 @@ export const deleteInventorySuccess = async (state, inventories) => {
 }
 
 export const deviceModalsListSuccess = async (state, inventories) => {
-  state.deviceModalsList = inventories;
+  state.deviceModalsList = inventories.map(item=>{
+    item.name = item.modelNumber
+    return item;
+  });
 }

@@ -16,10 +16,11 @@
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item  :label="$t('patient.devices.inventory')" name="inventory" :rules="[{ required: true, message: $t('patient.devices.inventory')+' '+$t('global.validation') }]">
-                    <a-select :disabled="patients.inventoryList.length==0 || device.deviceType==''" ref="select" v-model:value="device.inventory" style="width: 100%" size="large" @change="handleChange(device.inventory)">
+                    <!-- <a-select :disabled="patients.inventoryList.length==0 || device.deviceType==''" ref="select" v-model:value="device.inventory" style="width: 100%" size="large" @change="handleChange(device.inventory)">
                         <a-select-option value="" disabled>{{'Select Inventory'}}</a-select-option>
                         <a-select-option v-for="device in patients.inventoryList" :key="device.id" :value="device.id">{{device.modelNumber +' ('+device.macAddress+')'}}</a-select-option>
-                    </a-select>
+                    </a-select> -->
+                    <InventoryGlobalCodeDropDown :disabled="patients.inventoryList.length==0 || device.deviceType==''" v-model:value="device.inventory" :globalCode="patients.inventoryList" @change="handleChange(device.inventory)"/>
                     <!-- <a-select v-show="patients.inventoryList.length!=0" v-model:value="device.inventory" show-search  placeholder="Select a Inventory" style="width: 200px" :options="patients.inventoryList.map((item) => ({ label: item.modelNumber, value: item.id }))"  :filter-option="filterOption" @focus="handleFocus" @blur="handleBlur" @change="()"></a-select> -->
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" />
                 </a-form-item>
@@ -108,12 +109,14 @@ import { warningSwal, arrayToObjact} from "../../../commonMethods/commonMethod";
 import { messages } from "../../../config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+import InventoryGlobalCodeDropDown from "@/components/modals/search/InventoryGlobalCodeSearch.vue"
 export default defineComponent({
   components: {
     DeleteOutlined,
     Loader,
     ErrorMessage,
-    GlobalCodeDropDown
+    GlobalCodeDropDown,
+    InventoryGlobalCodeDropDown
   },
   props: {
     idPatient: {
