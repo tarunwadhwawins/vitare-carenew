@@ -665,6 +665,10 @@
         border-bottom: 1px solid #eee;
         .thumb-head {
             padding: 7px 15px;
+            .anticon {
+                position: relative;
+                top: -3px;
+            }
         }
         .thumb-desc {
             padding: 7px 15px;
