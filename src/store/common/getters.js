@@ -11,3 +11,8 @@ export const loadingStatus = (state)=>{
         return state.loadingStatus
     })
   }
+  export const timeline = (state)=>{
+    return computed(()=>{
+        return state.timeline
+    })
+  }

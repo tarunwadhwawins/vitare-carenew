@@ -5,8 +5,8 @@
             <h2 class="pageTittle">
                 {{$t('global.dashboard')}}
 
-                <div class="filter" v-if="timeline">
-                    <a-button v-for="item in timeline['globalCode']" :key="item.id" @click="showButton(item.id)" :class="timeLineButton.globalCodeId== item.id ? 'active' : ''"> {{item.name}}</a-button>
+                <div class="filter" v-if="timeline && Buttons">
+                    <a-button v-for="item in timeline['globalCode']" :key="item.id" @click="showButton(item.id)" :class="Buttons.globalCodeId== item.id ? 'active' : ''"> {{item.name}}</a-button>
                 </div>
             </h2>
         </a-col>
@@ -22,9 +22,16 @@
         </a-col>
     </a-row>
     <a-row :gutter="24">
-        <Appointement v-if="arrayToObjact(permission.dashboardPermissions,2) && todayAppointment" :appointment="todayAppointment" :columns="columns4" :title="$t('dashboard.todayAppointment')">
-        </Appointement>
-
+        <!-- <Appointement  :appointment="todayAppointment" :columns="columns4" :title="$t('dashboard.todayAppointment')">
+        </Appointement> -->
+        <a-col :sm="12" :xs="24" v-if="arrayToObjact(permission.dashboardPermissions,2) && todayAppointment">
+          <a-card :title="$t('dashboard.todayAppointment')" class="common-card">
+            <div class="apptNumber">
+              <h3>Total Appointments</h3>
+              <h2>{{todayAppointment.length}}</h2>
+            </div>
+          </a-card>
+      </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(permission.dashboardPermissions,3) && callStatus">
             <ApexChart :title="$t('global.callQueue')" type="bar" :height="250" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="communications" />
         </a-col>
@@ -49,12 +56,12 @@
             </a-card>
         </a-col>
 
-        <a-col :sm="12" :xs="24" v-if="arrayToObjact(permission.dashboardPermissions,6) &&  specialization">
+        <a-col :sm="12" :xs="24" v-if="arrayToObjact(permission.dashboardPermissions,6) &&  cptCodeValue">
 
             <ApexChart :title="$t('dashboard.cPTCodeBillingSummary')" type="bar" :height="350" :options="cptCodeValue.code" :series="cptCodeValue.value" linkTo="cpt-codes"></ApexChart>
 
         </a-col>
-        <a-col :sm="12" :xs="24" v-if="arrayToObjact(permission.dashboardPermissions,7) && specialization">
+        <a-col :sm="12" :xs="24" v-if="arrayToObjact(permission.dashboardPermissions,7) && cptCodeValue">
 
             <!-- <div class="list-group">
                   <div class="list-group-item">
@@ -81,124 +88,17 @@
 </template>
 
 <script>
-  import { ref,watchEffect, computed } from 'vue'
+  import { ref,watchEffect } from 'vue'
   import Card from "@/components/common/cards/Card"
-  import Appointement from "./Appointment"
   import ApexChart from "@/components/common/charts/ApexChart"
   import { startimeAdd, endTimeAdd, timeStamp ,arrayToObjact} from '@/commonMethods/commonMethod'
   import { useStore } from 'vuex'
   import Loader from "@/components/loader/Loader";
   import moment from "moment"
-  const columns4 = [
-    {
-      title: "Patient Name",
-      dataIndex: "patient",
-      slots: {
-        customRender: "patientName",
-
-      },
-      width: '30%',
-      onCell: () => {
-         return {
-            style: {
-               whiteSpace: 'nowrap',
-               maxWidth: 10,
-            }
-         }
-      },
-      render: (text) => (
-         <Tooltip title={text}>
-            <div style={{textOverflow: 'ellipsis', overflow: 'hidden'}}>{text}</div>
-         </Tooltip>
-      )
-  },
-    {
-      title: "Date Time",
-
-      dataIndex: 'date',
-    },
-    {
-      title: "Appointment With",
-      dataIndex: "staff",
-      slots: {
-        customRender: "staff",
-      },
-    },
-  ];
-
-  const columns5 = [
-    {
-      title: "Patient Name",
-      dataIndex: "patient",
-      slots: {
-        customRender: "patientName",
-      },
-    },
-    {
-      title: "Appointment Type",
-      dataIndex: "appt",
-    },
-    {
-      title: "Time",
-      dataIndex: "time",
-    },
-    {
-      title: "Action ",
-      dataIndex: "action",
-      slots: {
-        customRender: "action",
-      },
-    },
-  ];
-  const data5 = [
-    {
-      key: "1",
-      patient: "Steve Smith",
-      appt: "Wellness",
-      time: "01:30 PM",
-    },
-    {
-      key: "2",
-      patient: "Jane Doe",
-      appt: "Clinical",
-      time: "11:30 AM",
-    },
-  ];
-  const columns6 = [
-    {
-      title: "Patient Name",
-      dataIndex: "patient",
-      slots: {
-        customRender: "patientName",
-      },
-    },
-    {
-      title: "Appointment Type",
-      dataIndex: "appt",
-    },
-    {
-      title: "Time",
-      dataIndex: "time",
-    },
-  ];
-  const data6 = [
-    {
-      key: "1",
-      patient: "Robert",
-      appt: "Wellness",
-      time: "02:30 PM",
-    },
-    {
-      key: "2",
-      patient: "	Steve",
-      appt: "Clinical",
-      time: "10:30 AM",
-    },
-  ];
+  
 export default {
     components: {
         Card,
-        Appointement,
         ApexChart,
         Loader
     },
@@ -207,13 +107,8 @@ export default {
         const store = useStore()
         const fromDate = ref(moment())
         const toDate = ref(moment())
-        const timeline = computed(() => {
-            return store.state.common.timeline
-        })
-
-        const timeLineButton = computed(() => {
-            return store.state.dashBoard.timeLineButton
-        })
+        
+        const timeLineButton = store.getters.dashboardTimeLineButton
 
         function apiCall(data) {
             let from = moment()
@@ -231,12 +126,8 @@ export default {
                 to = moment().subtract(data.number, data.intervalType);
             } else {
                 from = moment();
-               // var futureMonth = moment().subtract(1, 'year');
-               // var futureMonthEnd = moment(futureMonth).endOf('month');
                 to = moment().subtract(data.number, data.intervalType);
             }
-
-           // console.log('check', from,to)
             let dateFormate = ''
             if (data.globalCodeId == 122) {
                 dateFormate = {
@@ -249,8 +140,6 @@ export default {
                     toDate: timeStamp(endTimeAdd(from))
                 }
             }
-
-            //console.log("check",dateFormate)
             store.dispatch("permissions")
             store.dispatch("counterCard", dateFormate)
             store.dispatch("searchAppointment", {
@@ -279,48 +168,6 @@ export default {
           }
          
         })
-        const totalPatients = computed(() => {
-            return store.state.counterCards.totalPatientcount
-        })
-        const grid = computed(() => {
-            return store.state.counterCards.grid
-        })
-        const patientsCondition = computed(() => {
-            return store.state.counterCards.patientsCondition
-        })
-        const todayAppointment = computed(() => {
-            return store.state.dashBoard.todayAppointmentState
-
-        })
-        const callStatus = computed(() => {
-            return store.state.dashBoard.callStatus
-        })
-        const specialization = computed(() => {
-
-            return store.state.dashBoard.specialization
-        })
-
-        const network = computed(() => {
-
-            return store.state.dashBoard.network
-        })
-
-        const cptCodeValue = computed(() => {
-
-            return store.state.dashBoard.cptCodeValue
-        })
-        const financialValue = computed(() => {
-
-            return store.state.dashBoard.financialValue
-        })
-        const totalPatientsChartValue = computed(() => {
-
-            return store.state.dashBoard.totalPatientsChartValue
-        })
-        const appointmentChartValue = computed(() => {
-
-            return store.state.dashBoard.appointmentChartValue
-        })
 
         function logout() {
             localStorage.removeItem("auth");
@@ -335,26 +182,21 @@ export default {
         }
 
         return {
-            grid,
-            totalPatients,
-            callStatus,
-            patientsCondition,
-            specialization,
-            network,
-            cptCodeValue,
-            financialValue,
-            totalPatientsChartValue,
-            appointmentChartValue,
+            grid:store.getters.grid,
+            totalPatients:store.getters.totalPatientcount,
+            callStatus:store.getters.callStatus,
+            patientsCondition:store.getters.patientsCondition,
+            specialization:store.getters.specialization,
+            network:store.getters.network,
+            cptCodeValue:store.getters.cptCodeValue,
+            financialValue:store.getters.financialValue,
+            totalPatientsChartValue:store.getters.totalPatientsChartValue,
+            appointmentChartValue:store.getters.appointmentChartValue,
             logout,
-            todayAppointment,
-            columns4,
-            data5,
-            columns5,
-            data6,
-            columns6,
-            timeLineButton,
+            todayAppointment:store.getters.todayAppointmentState,
+            Buttons:store.getters.dashboardTimeLineButton,
             showButton,
-            timeline,
+            timeline:store.getters.timeline,
             permission,
 
             arrayToObjact,
