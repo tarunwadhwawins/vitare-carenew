@@ -1,6 +1,7 @@
 <template>
   <a-select
   ref="select"
+  :mode="mode"
   :value="value"
    @input="updateValue"
   style="width: 100%"
@@ -16,10 +17,12 @@
   <template  v-if="loadingStatus" #notFoundContent>
     <a-spin size="small" />
   </template>
-</a-select>     
+</a-select>    
+
 </template>
 
 <script>
+
 import { defineComponent, ref,onMounted } from "vue";
 import { useStore } from "vuex"
 import Services from "@/services/serviceMethod"
@@ -30,6 +33,7 @@ export default defineComponent({
   props:{
       value:String,
       checkSameAsStaff:Boolean,
+      mode:String
   },
   
   setup(props,context) {
