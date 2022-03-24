@@ -3,95 +3,95 @@ export const globalCodes = (state, data) => {
     state.globalCodeCategories = data;
     data.forEach(element => {
         if (element.name === 'Gender') {
-            state.gender = element;
+            state.gender = element.globalCode;
         }
         if (element.name === 'Task Priority') {
-            state.taskPriority = element;
+            state.taskPriority = element.globalCode;
         }
         if (element.name === 'MessageCategory') {
-            state.messageCategories = element;
+            state.messageCategories = element.globalCode;
         }
         if (element.name === 'Message Type') {
-            state.messageType = element;
+            state.messageType = element.globalCode;
         }
         if (element.name === 'Language') {
-            state.language = element;
+            state.language = element.globalCode;
         }
         if (element.name === 'Country') {
-            state.country = element;
+            state.country = element.globalCode;
         }
         if (element.name === 'States') {
-            state.state = element;
+            state.state = element.globalCode
         }
         if (element.name === 'Contact Type') {
-            state.pmOfcontact = element;
+            state.pmOfcontact = element.globalCode;
         }
         if (element.name === 'Contact Time') {
-            state.ptOfDayContact = element;
+            state.ptOfDayContact = element.globalCode;
         }
         if (element.name === 'Relationship') {
-            state.relation = element;
+            state.relation = element.globalCode;
         }
         if (element.name === 'Patient Diseases') {
-            state.healthCondition = element;
+            state.healthCondition = element.globalCode;
         }
         if (element.name === 'Designations') {
-            state.designations = element;
+            state.designations = element.globalCode;
         }
         if (element.name === 'Device Type') {
-            state.deviceType = element;
+            state.deviceType = element.globalCode;
         }
         if (element.name === 'Timeline') {
-            state.timeline = element;
+            state.timeline = element.globalCode;
         }
         if (element.name === 'Network') {
-            state.network = element;
+            state.network = element.globalCode;
         }
         if (element.name === 'Specialization') {
-            state.specialization = element;
+            state.specialization = element.globalCode;
         }
         if (element.name === 'Task Category') {
-            state.taskCategory = element;
+            state.taskCategory = element.globalCode;
         }
         if (element.name === 'Task Status') {
-            state.taskStatus = element;
+            state.taskStatus = element.globalCode;
         }
 
         if (element.name === 'Insurance Name') {
-            state.insuranceName = element;
+            state.insuranceName = element.globalCode;
         }
         if (element.name === 'Insurance Type') {
-            state.insuranceType = element;
+            state.insuranceType = element.globalCode;
         }
         if (element.name === 'Document Tags') {
-            state.documentTags = element;
+            state.documentTags = element.globalCode;
         }
         if (element.name === 'Document Types') {
-            state.documentTypes = element;
+            state.documentTypes = element.globalCode;
         }
         if (element.name === 'Duration') {
-            state.duration = element;
+            state.duration = element.globalCode;
         }
         if (element.name === 'Appointment Type') {
-            state.typeOfVisit = element;
+            state.typeOfVisit = element.globalCode;
         }
         if (element.name === 'Note Types') {
-            state.noteTypes = element;
+            state.noteTypes = element.globalCode;
         }
         if (element.name === 'Note Category') {
-            state.noteCategories = element;
+            state.noteCategories = element.globalCode;
         }
         if (element.name === 'Patient Time Logs Category') {
-            state.timeLogCategories = element;
+            state.timeLogCategories = element.globalCode;
         }
         if (element.name === 'Program types') {
-            state.programCategories = element;
+            state.programCategories = element.globalCode;
         }
         if (element.name === 'Frequency Type') {
             state.frequencyTypes = element.globalCode;
         }
         if (element.name === 'Modules') {
-            state.modules = element;
+            state.modules = element.globalCode;
         }
         
     });

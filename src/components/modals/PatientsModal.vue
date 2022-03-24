@@ -74,10 +74,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.gender')" name="gender" :rules="[{ required: false, message: $t('global.gender')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" ref="select" v-model:value="demographics.gender" style="width: 100%" size="large">
+                                    <!-- <a-select @change="changedValue" ref="select" v-model:value="demographics.gender" style="width: 100%" size="large">
                                         <a-select-option value="" disabled>{{'Select Gender'}}</a-select-option>
                                         <a-select-option v-for="gender in globalCode.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.gender" :globalCode="globalCode.gender"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.gender?errorMsg.gender[0]:''" />
                                 </a-form-item>
                             </div>
@@ -85,10 +86,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.language')" name="language" :rules="[{ required: false, message: $t('patient.demographics.language')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" ref="select" v-model:value="demographics.language" style="width: 100%" size="large">
+                                    <!-- <a-select @change="changedValue" ref="select" v-model:value="demographics.language" style="width: 100%" size="large">
                                         <a-select-option value="" disabled>{{'Select Language'}}</a-select-option>
                                         <a-select-option v-for="language in globalCode.language.globalCode" :key="language.id" :value="language.id">{{language.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.language" :globalCode="globalCode.language"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.language?errorMsg.language[0]:''" />
                                 </a-form-item>
                             </div>
@@ -96,7 +98,8 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.otherLanguage')" name="otherLanguage" :rules="[{ required: false, message: $t('patient.demographics.otherLanguage')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" v-model:value="demographics.otherLanguage" mode="multiple" size="large" placeholder="Please Select Language" style="width: 100%" :options="globalCode.language.globalCode.map((item) => ({ label: item.name, value: item.id }))" />
+                                    <!-- <a-select @change="changedValue" v-model:value="demographics.otherLanguage" mode="multiple" size="large" placeholder="Please Select Language" style="width: 100%" :options="globalCode.language.globalCode.map((item) => ({ label: item.name, value: item.id }))" /> -->
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.otherLanguage" mode="multiple" :globalCode="globalCode.language"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.otherLanguage?errorMsg.otherLanguage[0]:''" />
                                 </a-form-item>
 
@@ -121,7 +124,8 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="contactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" v-model:value="demographics.contactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({ label: item.name,value: item.id }))" />
+                                    <!-- <a-select @change="changedValue" v-model:value="demographics.contactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({ label: item.name,value: item.id }))" /> -->
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.contactType" mode="multiple" :globalCode="globalCode.pmOfcontact"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.contactType?errorMsg.contactType[0]:''" />
                                 </a-form-item>
                             </div>
@@ -133,7 +137,8 @@
                                         <a-select-option value="" hidden>{{'Select Preferred Time'}}</a-select-option>
                                         <a-select-option v-for="ptOfDayContact in globalCode.ptOfDayContact.globalCode" :key="ptOfDayContact.id" :value="patientDetail != null ? patientDetail.contactTime : ptOfDayContact.id">{{ptOfDayContact.name}}</a-select-option>
                                     </a-select> -->
-                                    <a-select @change="changedValue" v-model:value="demographics.contactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))" />
+                                    <!-- <a-select @change="changedValue" v-model:value="demographics.contactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))" /> -->
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.contactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.contactTime?errorMsg.contactTime[0]:''" />
                                 </a-form-item>
                             </div>
@@ -149,10 +154,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.country')" name="country" :rules="[{ required: false, message: $t('global.country')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" ref="select" v-model:value="demographics.country" style="width: 100%" size="large">
+                                    <!-- <a-select @change="changedValue" ref="select" v-model:value="demographics.country" style="width: 100%" size="large">
                                         <a-select-option value="" disabled>{{'Select Country'}}</a-select-option>
                                         <a-select-option v-for="country in globalCode.country.globalCode" :key="country.id" :value="country.id">{{country.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.country" :globalCode="globalCode.country"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.country?errorMsg.country[0]:''" />
                                 </a-form-item>
                             </div>
@@ -160,10 +166,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.state')" name="state" :rules="[{ required: false, message: $t('global.state')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" ref="select" v-model:value="demographics.state" style="width: 100%" size="large">
+                                    <!-- <a-select @change="changedValue" ref="select" v-model:value="demographics.state" style="width: 100%" size="large">
                                         <a-select-option value="" disabled>{{'Select State'}}</a-select-option>
                                         <a-select-option v-for="state in globalCode.state.globalCode" :key="state.id" :value="state.id">{{state.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.state" :globalCode="globalCode.state"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.state?errorMsg.state[0]:''" />
                                 </a-form-item>
                             </div>
@@ -238,7 +245,8 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="familyContactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" v-model:value="demographics.familyContactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" />
+                                    <!-- <a-select @change="changedValue" v-model:value="demographics.familyContactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" /> -->
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.familyContactType" mode="multiple" :globalCode="globalCode.pmOfcontact"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactType?errorMsg.familyContactType[0]:''" />
                                 </a-form-item>
                             </div>
@@ -250,7 +258,8 @@
                                         <a-select-option value="" disabled>{{'Select Preferred Time'}}</a-select-option>
                                         <a-select-option v-for="ptOfDayContact in globalCode.ptOfDayContact.globalCode" :key="ptOfDayContact.id" :value="ptOfDayContact.id">{{ptOfDayContact.name}}</a-select-option>
                                     </a-select> -->
-                                    <a-select @change="changedValue" v-model:value="demographics.familyContactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))"  />
+                                    <!-- <a-select @change="changedValue" v-model:value="demographics.familyContactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))"  /> -->
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.familyContactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactTime?errorMsg.familyContactTime[0]:''" />
                                 </a-form-item>
                             </div>
@@ -259,10 +268,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.gender')" name="familyGender" :rules="[{ required: false, message: $t('global.gender')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" ref="select" v-model:value="demographics.familyGender" style="width: 100%" size="large">
+                                    <!-- <a-select @change="changedValue" ref="select" v-model:value="demographics.familyGender" style="width: 100%" size="large">
                                         <a-select-option value="" hidden>{{'Select Gender'}}</a-select-option>
                                         <a-select-option v-for="gender in globalCode.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.familyGender" :globalCode="globalCode.gender"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyGender?errorMsg.familyGender[0]:''" />
                                 </a-form-item>
                             </div>
@@ -270,10 +280,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.relation')" name="relation" :rules="[{ required: false, message: $t('global.relation')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" ref="select" v-model:value="demographics.relation" style="width: 100%" size="large">
+                                    <!-- <a-select @change="changedValue" ref="select" v-model:value="demographics.relation" style="width: 100%" size="large">
                                         <a-select-option value="" hidden>{{'Select Relation'}}</a-select-option>
                                         <a-select-option v-for="relation in globalCode.relation.globalCode" :key="relation.id" :value="relation.id">{{relation.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.relation" :globalCode="globalCode.relation"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.relation?errorMsg.relation[0]:''" />
                                 </a-form-item>
                             </div>
@@ -321,7 +332,8 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="familyContactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" v-model:value="demographics.familyContactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" disabled />
+                                    <!-- <a-select @change="changedValue" v-model:value="demographics.familyContactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" disabled /> -->
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.familyContactType" mode="multiple" :globalCode="globalCode.pmOfcontact"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactType?errorMsg.familyContactType[0]:''" />
                                 </a-form-item>
                             </div>
@@ -333,7 +345,8 @@
                                         <a-select-option value="" disabled>{{'Select Preferred Time'}}</a-select-option>
                                         <a-select-option v-for="ptOfDayContact in globalCode.ptOfDayContact.globalCode" :key="ptOfDayContact.id" :value="ptOfDayContact.id">{{ptOfDayContact.name}}</a-select-option>
                                     </a-select> -->
-                                    <a-select @change="changedValue" v-model:value="demographics.familyContactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))" disabled />
+                                    <!-- <a-select @change="changedValue" v-model:value="demographics.familyContactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))" disabled /> -->
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.familyContactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactTime?errorMsg.familyContactTime[0]:''" />
                                 </a-form-item>
                             </div>
@@ -342,10 +355,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.gender')" name="familyGender" :rules="[{ required: false, message: $t('global.gender')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" ref="select" v-model:value="demographics.familyGender" style="width: 100%" size="large" disabled>
+                                    <!-- <a-select @change="changedValue" ref="select" v-model:value="demographics.familyGender" style="width: 100%" size="large" disabled>
                                         <a-select-option value="" disabled>{{'Select Gender'}}</a-select-option>
                                         <a-select-option v-for="gender in globalCode.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.familyGender"  :globalCode="globalCode.gender"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyGender?errorMsg.familyGender[0]:''" />
                                 </a-form-item>
                             </div>
@@ -379,7 +393,8 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="emergencyContactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" v-model:value="demographics.emergencyContactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({ label: item.name,value: item.id }))" />
+                                    <!-- <a-select @change="changedValue" v-model:value="demographics.emergencyContactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({ label: item.name,value: item.id }))" /> -->
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.emergencyContactType" mode="multiple" :globalCode="globalCode.pmOfcontact"/>
                                 </a-form-item>
                                 <ErrorMessage v-if="errorMsg" :name="errorMsg.emergencyContactType?errorMsg.emergencyContactType[0]:''" />
                             </div>
@@ -391,7 +406,8 @@
                                         <a-select-option value="" disabled>{{'Select Preferred Time'}}</a-select-option>
                                         <a-select-option v-for="ptOfDayContact in globalCode.ptOfDayContact.globalCode" :key="ptOfDayContact.id" :value="ptOfDayContact.id">{{ptOfDayContact.name}}</a-select-option>
                                     </a-select> -->
-                                    <a-select @change="changedValue" v-model:value="demographics.emergencyContactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))"  />
+                                    <!-- <a-select @change="changedValue" v-model:value="demographics.emergencyContactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))"  /> -->
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.emergencyContactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact"/>
                                 </a-form-item>
                                 <ErrorMessage v-if="errorMsg" :name="errorMsg.emergencyContactTime?errorMsg.emergencyContactTime[0]:''" />
                             </div>
@@ -399,10 +415,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.gender')" name="emergencyGender" :rules="[{ required: false, message: $t('global.gender')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" ref="select" v-model:value="demographics.emergencyGender" style="width: 100%" size="large">
+                                    <!-- <a-select @change="changedValue" ref="select" v-model:value="demographics.emergencyGender" style="width: 100%" size="large">
                                         <a-select-option value="" disabled>{{'Select Gender'}}</a-select-option>
                                         <a-select-option v-for="gender in globalCode.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.emergencyGender"  :globalCode="globalCode.gender"/>
                                 </a-form-item>
                                 <ErrorMessage v-if="errorMsg" :name="errorMsg.emergencyGender?errorMsg.emergencyGender[0]:''" />
                             </div>
@@ -438,7 +455,7 @@
                             <div class="form-group conditionsCheckboxs">
                                 <a-form-item name="condition" :rules="[{ required: true, message: $t('patient.conditions.healthConditions')+' '+$t('global.validation') }]">
                                     <a-checkbox-group @change="changedValue" v-model:value="conditions.condition">
-                                        <a-checkbox v-for="condition in globalCode.healthCondition.globalCode" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
+                                        <a-checkbox v-for="condition in globalCode.healthCondition" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
                                     </a-checkbox-group>
                                 </a-form-item>
                             </div>
@@ -464,10 +481,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.designation')" name="designation" :rules="[{ required: false, message: $t('global.designation')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" ref="select" v-model:value="conditions.designation" style="width: 100%" size="large">
+                                    <!-- <a-select @change="changedValue" ref="select" v-model:value="conditions.designation" style="width: 100%" size="large">
                                         <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
                                         <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="conditions.designation"  :globalCode="globalCode.designations"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.designation?errorMsg.designation[0]:''" />
                                 </a-form-item>
 
@@ -524,10 +542,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.designation')" name="designation" :rules="[{ required: false, message: $t('global.designation')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" ref="select" v-model:value="conditions.designation" style="width: 100%" size="large" disabled>
+                                    <!-- <a-select @change="changedValue" ref="select" v-model:value="conditions.designation" style="width: 100%" size="large" disabled>
                                         <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
                                         <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="conditions.designation" :globalCode="globalCode.designations"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.designation?errorMsg.designation[0]:''" />
                                 </a-form-item>
 
@@ -571,10 +590,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.designation')" name="physicianDesignation" :rules="[{ required: false, message: $t('global.designation')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" ref="select" v-model:value="conditions.physicianDesignation" style="width: 100%" size="large">
+                                    <!-- <a-select @change="changedValue" ref="select" v-model:value="conditions.physicianDesignation" style="width: 100%" size="large">
                                         <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
                                         <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="conditions.physicianDesignation" mode="multiple" :globalCode="globalCode.designations"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.designation?errorMsg.designation[0]:''" />
                                 </a-form-item>
                             </div>
@@ -662,10 +682,11 @@
                         <a-col :sm="8" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.insurance.insuranceName')" name="insuranceName" :rules="i==0?[{ required: true, message: $t('patient.insurance.insuranceName')+' '+$t('global.validation') }]:''">
-                                    <a-select @change="changedValue" ref="select" v-model:value="insuranceData.insuranceName[i]" style="width: 100%" size="large">
+                                    <!-- <a-select @change="changedValue" ref="select" v-model:value="insuranceData.insuranceName[i]" style="width: 100%" size="large">
                                         <a-select-option value="" disabled>{{'Select Insurance Name'}}</a-select-option>
                                         <a-select-option v-for="insuranceName in globalCode.insuranceName.globalCode" :key="insuranceName.id" :value="insuranceName.id">{{insuranceName.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="insuranceData.insuranceName[i]"  :globalCode="globalCode.insuranceName"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.insuranceName?errorMsg.insuranceName[0]:''" />
                                 </a-form-item>
                             </div>
@@ -724,8 +745,10 @@ import {successSwal,warningSwal } from "@/commonMethods/commonMethod";
 // import {PlusOutlined} from "@ant-design/icons-vue";
 import { messages } from "../../config/messages";
 import { useRoute } from 'vue-router';
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 export default defineComponent( {
   components: {
+      GlobalCodeDropDown,
     //   PlusOutlined,
     // Demographics,
     // Conditions,
