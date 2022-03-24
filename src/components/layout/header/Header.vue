@@ -154,7 +154,7 @@
               <a-dropdown :trigger="['click']" overlayClassName="notifications">
                 <a class="ant-dropdown-link" @click.prevent>
                   <div class="icon">
-                    <a-badge :count="9" :number-style="{ backgroundColor: '#267dff' }"> <NotificationOutlined /></a-badge>
+                    <a-badge count="" :number-style="{ backgroundColor: '#267dff' }"> <NotificationOutlined /></a-badge>
                   </div>
                 </a>
                 <template #overlay>
