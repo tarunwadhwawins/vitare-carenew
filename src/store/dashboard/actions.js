@@ -69,32 +69,22 @@ export const network = async ({ commit }, from) => {
     })
 }
 
-export const cptCode = async ({ commit }) => {
-    commit('cptCodeSuccess');
-    // await ServiceMethodService.common("get", API_ENDPOINTS['CptCode'], null, null).then((response) => {
+export const cptCode = async ({ commit },from) => {
+    
+    await ServiceMethodService.common("get", API_ENDPOINTS['cptCodeGraph']+"?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {
+        commit('financialSuccess',response.data.data);
+        commit('cptCodeSuccess',response.data.data);
+        
+            //commit('cptCodeSuccess', response.data.data);
 
-    //         commit('cptCodeSuccess', response.data.data);
-
-    // }).catch((error) => {
-    //     if (error.response.status == 401) {
-    //         //AuthService.logout();
-    //     }
-    //     commit('failure', error.response.data);
-    // })
+    }).catch((error) => {
+        if (error.response.status == 401) {
+            //AuthService.logout();
+        }
+        commit('failure', error.response.data);
+    })
 }
-export const financial = async ({ commit }) => {
-    commit('financialSuccess');
-    // await ServiceMethodService.common("get", API_ENDPOINTS['Financial'], null, null).then((response) => {
 
-    //         commit('financialSuccess', response.data.data);
-
-    // }).catch((error) => {
-    //     if (error.response.status == 401) {
-    //         //AuthService.logout();
-    //     }
-    //     commit('failure', error.response.data);
-    // })
-}
 export const totalPatientsChart = async ({ commit }, from) => {
 
     await ServiceMethodService.common("get", API_ENDPOINTS['totalPatientsChart'] +"?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {

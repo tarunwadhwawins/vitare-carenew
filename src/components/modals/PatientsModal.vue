@@ -468,14 +468,127 @@
                             </div>
                         </a-col>
                     </a-row>
+                    
+										<a-row :gutter="24">
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.name')" name="referralName" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
+                                    <a-input @change="changedValue" v-model:value="conditions.referralName" size="large" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
+                                </a-form-item>
+
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.designation')" name="referralDesignation" :rules="[{ required: false, message: $t('global.designation')+' '+$t('global.validation') }]">
+                                    <a-select @change="changedValue" ref="select" v-model:value="conditions.referralDesignation" style="width: 100%" size="large">
+                                        <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
+                                        <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
+                                    </a-select>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.designation?errorMsg.designation[0]:''" />
+                                </a-form-item>
+
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.email')" name="referralEmail" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
+                                    <a-input @change="changedValue" v-model:value="conditions.referralEmail" placeholder="test@test.com" size="large" @input="emailChange()" />
+                
+                                    <ErrorMessage v-if="errorMsg && errorMsg.referralEmail!=null" :name="errorMsg.referralEmail?errorMsg.referralEmail[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.phoneNo')" name="referralPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
+                                    <a-input-number @change="changedValue" v-model:value="conditions.referralPhoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('patient.conditions.fax')" name="referralFax" :rules="[{ required: false, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
+                                    <a-input @change="changedValue" v-model:value="conditions.referralFax" size="large" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.fax?errorMsg.fax[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                    </a-row>
                     <a-row :gutter="24">
+                        <a-col :span="24">
+                            <div class="formHeading">
+                                <h2>{{$t('patient.conditions.primaryPhysician')}}</h2>
+                            </div>
+                        </a-col>
+                    </a-row>
+                    <a-row>
+                        <a-col :md="24" :sm="24" :xs="24" class="mb-24">
+                            <a-checkbox @change="changedValue" v-model:checked="conditions.sameAsAbove"> {{$t('patient.conditions.sameAsabove')}} </a-checkbox>
+                        </a-col>
+                    </a-row>
+
+										<!-- Same As Above -->
+
+                    <a-row :gutter="24" v-if="conditions.sameAsAbove">
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.name')" name="referralName" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
+                                    <a-input @change="changedValue" v-model:value="conditions.referralName" size="large" disabled />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
+                                </a-form-item>
+
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.designation')" name="referralDesignation" :rules="[{ required: false, message: $t('global.designation')+' '+$t('global.validation') }]">
+                                    <a-select @change="changedValue" ref="select" v-model:value="conditions.referralDesignation" style="width: 100%" size="large" disabled>
+                                        <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
+                                        <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
+                                    </a-select>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.referralDesignation?errorMsg.referralDesignation[0]:''" />
+                                </a-form-item>
+
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.email')" name="referralEmail" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
+                                    <a-input @change="changedValue" v-model:value="conditions.referralEmail" placeholder="test@test.com" size="large" disabled>
+                                    </a-input>
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.phoneNo')" name="referralPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
+                                    <a-input-number @change="changedValue" v-model:value="conditions.referralPhoneNumber" placeholder="Please enter 10 digit number" size="large" disabled maxlength="10" style="width: 100%" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.referralPhoneNumber?errorMsg.referralPhoneNumber[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('patient.conditions.fax')" name="referralFax" :rules="[{ required: false, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
+                                    <a-input @change="changedValue" v-model:value="conditions.referralFax" size="large" disabled />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.referralFax?errorMsg.referralFax[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                    </a-row>
+
+										<!-- Not Same As Above -->
+
+                    <a-row :gutter="24" v-else>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
                                     <a-input @change="changedValue" v-model:value="conditions.name" size="large" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
                                 </a-form-item>
-
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
@@ -488,16 +601,15 @@
                                         <GlobalCodeDropDown @change="changedValue" v-model:value="conditions.designation"  :globalCode="globalCode.designations"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.designation?errorMsg.designation[0]:''" />
                                 </a-form-item>
-
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
                                     <a-input @change="changedValue" v-model:value="conditions.email" placeholder="test@test.com" size="large" @input="emailChange()" />
-                
-                                    <ErrorMessage v-if="errorMsg && conditions.email!=null" :name="errorMsg.email?errorMsg.email[0]:''" />
+                                    <ErrorMessage v-if="errorMsg && errorMsg.email!=null" :name="errorMsg.email?errorMsg.email[0]:''" />
                                 </a-form-item>
+
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
@@ -517,114 +629,7 @@
                             </div>
                         </a-col>
                     </a-row>
-                    <a-row :gutter="24">
-                        <a-col :span="24">
-                            <div class="formHeading">
-                                <h2>{{$t('patient.conditions.primaryPhysician')}}</h2>
-                            </div>
-                        </a-col>
-                    </a-row>
-                    <a-row>
-                        <a-col :md="24" :sm="24" :xs="24" class="mb-24">
-                            <a-checkbox @change="changedValue" v-model:checked="conditions.checked"> {{$t('patient.conditions.sameAsabove')}} </a-checkbox>
-                        </a-col>
-                    </a-row>
-                    <a-row :gutter="24" v-if="conditions.checked">
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue" v-model:value="conditions.name" size="large" disabled />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
-                                </a-form-item>
 
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.designation')" name="designation" :rules="[{ required: false, message: $t('global.designation')+' '+$t('global.validation') }]">
-                                    <!-- <a-select @change="changedValue" ref="select" v-model:value="conditions.designation" style="width: 100%" size="large" disabled>
-                                        <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
-                                        <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
-                                    </a-select> -->
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="conditions.designation" :globalCode="globalCode.designations"/>
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.designation?errorMsg.designation[0]:''" />
-                                </a-form-item>
-
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                                    <a-input @change="changedValue" v-model:value="conditions.email" placeholder="test@test.com" size="large" disabled>
-                                    </a-input>
-                                    <ErrorMessage v-if="errorMsg && conditions.email!=null" :name="errorMsg.email?errorMsg.email[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
-                                    <a-input-number @change="changedValue" v-model:value="conditions.phoneNumber" placeholder="Please enter 10 digit number" size="large" disabled maxlength="10" style="width: 100%" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('patient.conditions.fax')" name="fax" :rules="[{ required: false, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue" v-model:value="conditions.fax" size="large" disabled />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.fax?errorMsg.fax[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                    </a-row>
-                    <a-row :gutter="24" v-else>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.name')" name="physicianName" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue" v-model:value="conditions.physicianName" size="large" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.designation')" name="physicianDesignation" :rules="[{ required: false, message: $t('global.designation')+' '+$t('global.validation') }]">
-                                    <!-- <a-select @change="changedValue" ref="select" v-model:value="conditions.physicianDesignation" style="width: 100%" size="large">
-                                        <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
-                                        <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
-                                    </a-select> -->
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="conditions.physicianDesignation" mode="multiple" :globalCode="globalCode.designations"/>
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.designation?errorMsg.designation[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.email')" name="physicianEmail" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                                    <a-input @change="changedValue" v-model:value="conditions.physicianEmail" placeholder="test@test.com" size="large" @input="emailChange()" />
-                                    <ErrorMessage v-if="errorMsg && conditions.physicianEmail!=null" :name="errorMsg.email?errorMsg.email[0]:''" />
-                                </a-form-item>
-
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="physicianPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
-                                    <a-input-number @change="changedValue" v-model:value="conditions.physicianPhoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('patient.conditions.fax')" name="physicianFax" :rules="[{ required: false, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue" v-model:value="conditions.physicianFax" size="large" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.fax?errorMsg.fax[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                    </a-row>
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                         <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
@@ -861,17 +866,17 @@ export default defineComponent( {
 
     const conditions = reactive({
       condition: [],
+      referralName: "",
+      referralDesignation: "",
+      referralEmail: "",
+      referralPhoneNumber: "",
+      referralFax: "",
+      sameAsAbove: false,
       name: "",
       designation: "",
       email: "",
       phoneNumber: "",
       fax: "",
-      checked: false,
-      physicianName: "",
-      physicianDesignation: "",
-      physicianEmail: "",
-      physicianPhoneNumber: "",
-      physicianFax: "",
     });
 
     const insuranceData = reactive({
@@ -884,36 +889,23 @@ export default defineComponent( {
     watchEffect(() => {
         // Bitrix data assign 
         if(patients.value.fetchFromBitrix){ 
-            Object.assign(demographics, patients.value.fetchFromBitrix);
-        }//end 
+					Object.assign(demographics, patients.value.fetchFromBitrix);
+        } //end
 
         if(idPatient) {
-            Object.assign(demographics, patientDetail);
-            if(isEdit && patients.value.patientConditions != null) {
-                Object.assign(conditions.condition, patients.value.patientConditions)
-                isEdit = false;
-            }
-            if(patients.value.patientInsurance != null) {
-                Object.assign(insuranceData, patients.value.patientInsurance)
-            }
-            if(patients.value.patientReferralSource != null) {
-                Object.assign(conditions, {
-                    name: patients.value.patientReferralSource.name,
-                    designation: patients.value.patientReferralSource.designation,
-                    email: patients.value.patientReferralSource.email,
-                    phoneNumber: patients.value.patientReferralSource.phoneNumber,
-                    fax: patients.value.patientReferralSource.fax,
-                });
-            }
-            if(patients.value.patientPrimaryPhysician != null) {
-                Object.assign(conditions, {
-                    physicianName: patients.value.patientPrimaryPhysician.name,
-                    physicianDesignation: patients.value.patientPrimaryPhysician.designation,
-                    physicianEmail: patients.value.patientPrimaryPhysician.email,
-                    physicianPhoneNumber: patients.value.patientPrimaryPhysician.phoneNumber,
-                    physicianFax: patients.value.patientPrimaryPhysician.fax,
-                });
-            }
+					Object.assign(demographics, patientDetail);
+					if(isEdit && patients.value.patientConditions != null) {
+						Object.assign(conditions.condition, patients.value.patientConditions)
+					}
+					if(isEdit && patients.value.patientInsurance != null) {
+						Object.assign(insuranceData, patients.value.patientInsurance)
+					}
+					if(isEdit && patients.value.patientReferralSource != null) {
+						Object.assign(conditions, patients.value.patientReferralSource)
+					}
+					if(isEdit && patients.value.patientPrimaryPhysician != null) {
+						Object.assign(conditions, patients.value.patientPrimaryPhysician)
+					}
         }
         /* else {
             const medicalRecordNumber = Math.random().toString(20).slice(2, 14).toUpperCase()
@@ -1062,108 +1054,104 @@ export default defineComponent( {
         return store.state.patients.patientConditions
     })
 
-    const condition = () => {
-        const patientConditions = conditionsPatient.value;
-        if(idPatient != null) {
-            if ( patientConditions == null || patients.value.patientReferralSource == null || patients.value.patientPrimaryPhysician == null ) {
-                if(conditions.checked == false) {
-                    store.dispatch("addCondition", {
-                        data: conditions,
-                        id: idPatient,
-                    }).then(() => {
-                        isValueChanged.value = false;
-                    })
-                }
-                if (conditions.checked == true) {
-                    store.dispatch("addCondition", {
-                        data: conditions,
-                        id: idPatient,
-                    }).then(() => {
-                        isValueChanged.value = false;
-                    })
-                }
-            }
-            else if ((patientConditions != null || patients.value.patientReferralSource != null || patients.value.patientPrimaryPhysician != null) && patients.value.patientPrimaryPhysician.id || patients.value.patientReferralSource.id ) {
-                if (conditions.checked == false) {
-                    (conditions.name = conditions.physicianName),
-                    (conditions.designation = conditions.physicianDesignation),
-                    (conditions.email = conditions.physicianEmail),
-                    (conditions.phoneNumber = conditions.physicianPhoneNumber),
-                    (conditions.fax = conditions.physicianFax);
-                    store.dispatch("updateCondition", {
-                        data: conditions,
-                        id: idPatient,
-                        physicianId: patients.value.patientPrimaryPhysician.id,
-                        referalID: patients.value.patientReferralSource.id,
-                    }).then(() => {
-                        isValueChanged.value = false;
-                    })
-                }
-                if (conditions.checked == true) {
-                    store.dispatch("updateCondition", {
-                        data: conditions,
-                        id: idPatient,
-                        physicianId: patients.value.patientPrimaryPhysician.id,
-                        referalID: patients.value.patientReferralSource.id,
-                    }).then(() => {
-                        isValueChanged.value = false;
-                    })
-                }
-            }            
-        }
-        else {
-            if (patients.value.addCondition == null || patients.value.addPatientReferals == null || patients.value.addPatientPhysician == null) {
-                if (conditions.checked == false) {
-                    (conditions.name = conditions.physicianName),
-                    (conditions.designation = conditions.physicianDesignation),
-                    (conditions.email = conditions.physicianEmail),
-                    (conditions.phoneNumber = conditions.physicianPhoneNumber),
-                    (conditions.fax = conditions.physicianFax);
-                    store.dispatch("addCondition", {
-                        data: conditions,
-                        id: patients.value.addDemographic.id,
-                    }).then(() => {
-                        isValueChanged.value = false;
-                    })
-                }
-                if (conditions.checked == true) {
-                    store.dispatch("addCondition", {
-                        data: conditions,
-                        id: patients.value.addDemographic.id,
-                    }).then(() => {
-                        isValueChanged.value = false;
-                    })
-                }
-            }
-            if (patients.value.addPatientReferals.id && patients.value.addPatientPhysician.id) {
-                if (conditions.checked == false) {
-                    (conditions.name = conditions.physicianName),
-                    (conditions.designation = conditions.physicianDesignation),
-                    (conditions.email = conditions.physicianEmail),
-                    (conditions.phoneNumber = conditions.physicianPhoneNumber),
-                    (conditions.fax = conditions.physicianFax);
-                    store.dispatch("updateCondition", {
-                        data: conditions,
-                        id: patients.value.addDemographic.id,
-                        physicianId: patients.value.addPatientPhysician.id,
-                        referalID: patients.value.addPatientReferals.id,
-                    }).then(() => {
-                        isValueChanged.value = false;
-                    })
-                }
-                if (conditions.checked == true) {
-                    store.dispatch("updateCondition", {
-                        data: conditions,
-                        id: patients.value.addDemographic.id,
-                        physicianId: patients.value.addPatientPhysician.id,
-                        referalID: patients.value.addPatientReferals.id,
-                    }).then(() => {
-                        isValueChanged.value = false;
-                    })
-                }
-            }
-        }
-    };
+		const condition = () => {
+			isEdit = false
+			console.log('patients.value conditions', conditions)
+			const patientConditions = conditionsPatient.value;
+			if (idPatient != null) {
+				conditions.sameAsAbove = conditions.sameAsAbove ? 1 : 0;
+				if (patientConditions != null) {
+					if (patients.value.patientReferralSource != null && patients.value.patientPrimaryPhysician != null) {
+						if(conditions.sameAsAbove) {
+							(conditions.name = conditions.referralName),
+							(conditions.designation = conditions.referralDesignation),
+							(conditions.email = conditions.referralEmail),
+							(conditions.phoneNumber = conditions.referralPhoneNumber),
+							(conditions.fax = conditions.referralFax);
+						}
+						store.dispatch("updateCondition", {
+							data: conditions,
+							id: idPatient,
+							physicianId: patients.value.patientPrimaryPhysician.id,
+							referalID: patients.value.patientReferralSource.id,
+						}).then(() => {
+							isValueChanged.value = false;
+						})
+					}
+					else if (patients.value.patientReferralSource != null && patients.value.patientPrimaryPhysician == null) {
+						if(conditions.sameAsAbove) {
+							(conditions.name = conditions.referralName),
+							(conditions.designation = conditions.referralDesignation),
+							(conditions.email = conditions.referralEmail),
+							(conditions.phoneNumber = conditions.referralPhoneNumber),
+							(conditions.fax = conditions.referralFax);
+						}
+						store.dispatch("updateCondition", {
+							data: conditions,
+							id: idPatient,
+							referalID: patients.value.patientReferralSource.id ? patients.value.patientReferralSource.id : null,
+							physicianId: null,
+						}).then(() => {
+							isValueChanged.value = false;
+						})
+					}
+					else if (patients.value.patientReferralSource == null && patients.value.patientPrimaryPhysician != null) {
+						if(conditions.sameAsAbove) {
+							(conditions.name = conditions.referralName),
+							(conditions.designation = conditions.referralDesignation),
+							(conditions.email = conditions.referralEmail),
+							(conditions.phoneNumber = conditions.referralPhoneNumber),
+							(conditions.fax = conditions.referralFax);
+						}
+						store.dispatch("updateCondition", {
+							data: conditions,
+							id: idPatient,
+							referalID: null,
+							physicianId: patients.value.patientPrimaryPhysician.id ? patients.value.patientPrimaryPhysician.id : null,
+						}).then(() => {
+							isValueChanged.value = false;
+						})
+					}
+					else if (patients.value.patientReferralSource == null && patients.value.patientPrimaryPhysician == null) {
+						if(conditions.sameAsAbove) {
+							(conditions.name = conditions.referralName),
+							(conditions.designation = conditions.referralDesignation),
+							(conditions.email = conditions.referralEmail),
+							(conditions.phoneNumber = conditions.referralPhoneNumber),
+							(conditions.fax = conditions.referralFax);
+						}
+						store.dispatch("updateCondition", {
+							data: conditions,
+							id: idPatient,
+							physicianId: null,
+							referalID: null,
+						}).then(() => {
+							isValueChanged.value = false;
+						})
+					}
+				}
+			}
+			else {
+				if (patients.value.addCondition == null || patients.value.addPatientReferals == null || patients.value.addPatientPhysician == null) {
+					store.dispatch("addCondition", {
+						data: conditions,
+						id: patients.value.addDemographic.id,
+					}).then(() => {
+						isValueChanged.value = false;
+					})
+				}
+				if (patients.value.addPatientReferals.id && patients.value.addPatientPhysician.id) {
+					store.dispatch("updateCondition", {
+						data: conditions,
+						id: patients.value.addDemographic.id,
+						physicianId: patients.value.addPatientPhysician.id,
+						referalID: patients.value.addPatientReferals.id,
+					}).then(() => {
+						isValueChanged.value = false;
+					})
+				}
+			}
+		};
 
     const parameter = () => {
         store.dispatch("parameter", {
@@ -1443,5 +1431,4 @@ export default defineComponent( {
   display: none;
 }
 </style>
-
 

@@ -51,7 +51,7 @@ export const callStatusSuccess = (state, count) => {
     callseries: [
       {
         name: "Call Queue",
-        data: count.map((item) => { return item.count }),
+        data: count.map((item) => { return item.total }),
       },
     ],
   };
@@ -132,7 +132,8 @@ export const networkSuccess = (state, count) => {
   };
 }
 
-export const cptCodeSuccess = (state) => {
+export const cptCodeSuccess = (state,data) => {
+
   state.cptCodeValue = {
     code: {
       annotations: annotations("In", 0, "#775DD0", 0, "#fff", "#775DD0"),
@@ -157,20 +158,21 @@ export const cptCodeSuccess = (state) => {
         labels: {
           rotate: -45,
         },
-        categories: ["99453", "99454", "99457", "99458 "],
+        categories: data.map((item)=>{return item.text}),
       },
-      yaxis: yaxis("Minutes")
+      yaxis: yaxis("Amount")
     },
     value: [
       {
-        name: "Minutes",
-        data: [120, 80, 90, 30],
+        name: "Amount",
+        data: data.map((item)=>{return item.total}),
       },
 
     ],
   };
 }
-export const financialSuccess = (state) => {
+export const financialSuccess = (state,data) => {
+console.log(data)
   state.financialValue = {
     due: [4567, 1000],
     billed: {
