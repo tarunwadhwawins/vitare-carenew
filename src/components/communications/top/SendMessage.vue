@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import CommunicationsModal from "@/components/modals/CommunicationsModal";
-import { ref } from "vue";
-export default {
+// import CommunicationsModal from "@/components/modals/CommunicationsModal";
+import { defineComponent, ref,defineAsyncComponent } from "vue";
+export default defineComponent({
   components: {
-    CommunicationsModal,
+    CommunicationsModal:defineAsyncComponent(()=>import("@/components/modals/CommunicationsModal")),
   },
   setup() {
     const visible = ref(false);
@@ -20,6 +20,7 @@ export default {
       visible.value = e;
     };
 
+    
    
 
     return {
@@ -28,5 +29,5 @@ export default {
       
     }
   }
-}
+})
 </script>

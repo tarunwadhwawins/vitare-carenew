@@ -146,20 +146,21 @@ export default {
             }
         })
         const submitForm = () => {
-            formButton.value = true
-            store.state.cptCodes.cptCodesList = ""
+            
+            
             if (props.cptId != null) {
                 store.dispatch("updateCptCode", {
                     data: cptCodeForm,
                     id: props.cptId
                 })
             } else {
+                formButton.value =  
                 store.dispatch("addCptCode", cptCodeForm)
 
             }
 
             reset()
-
+            store.state.cptCodes.cptCodesList = ""
             store.dispatch('cptCodesList')
             emit("is-visible", false);
 
@@ -171,7 +172,7 @@ export default {
         function reset() {
             formRef.value.resetFields();
             Object.assign(cptCodeForm, form)
-
+            formButton.value = false
         }
 
         function closeModal() {
