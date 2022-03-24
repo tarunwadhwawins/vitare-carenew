@@ -10,4 +10,5 @@ export default {
     appointmentChartValue:null,
     timeLineButton:null,
     permissions:null,
+    financialValue:null,
 }

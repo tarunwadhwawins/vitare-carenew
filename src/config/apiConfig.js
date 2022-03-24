@@ -7,6 +7,7 @@ export const API_ENDPOINTS = {
 
     //dashboard
     interval:"globalstartEnd/date",
+    cptCodeGraph:"cptCode/billingSummary",
 
     // Patients
     patient:"patient",
