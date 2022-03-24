@@ -21,10 +21,11 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.type')" name="type" :rules="[{ required: true, message: $t('global.type')+' '+$t('global.validation') }]">
-                    <a-select ref="select" v-model:value="documents.type" style="width: 100%" size="large" @change="checkChangeInput()">
+                    <!-- <a-select ref="select" v-model:value="documents.type" style="width: 100%" size="large" @change="checkChangeInput()">
                         <a-select-option value="" disabled>{{'Select Type'}}</a-select-option>
                         <a-select-option v-for="documentType in globalCode.documentTypes.globalCode" :key="documentType.id" :value="documentType.id">{{documentType.name}}</a-select-option>
-                    </a-select>
+                    </a-select> -->
+                     <GlobalCodeDropDown  v-model:value="documents.type" :globalCode="globalCode.documentTypes" @change="checkChangeInput()"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.type?errorMsg.type[0]:''" />
                 </a-form-item>
             </div>
@@ -32,7 +33,8 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.tags')" name="tags" :rules="[{ required: true, message: $t('global.tags')+' '+$t('global.validation') }]">
-                    <a-select v-model:value="documents.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" @change="checkChangeInput()" />
+                    <!-- <a-select v-model:value="documents.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" @change="checkChangeInput()" /> -->
+                       <GlobalCodeDropDown  v-model:value="documents.tags" mode="multiple" :globalCode="globalCode.documentTags" @change="checkChangeInput()"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.tags?errorMsg.tags[0]:''" />
                 </a-form-item>
             </div>
@@ -85,6 +87,7 @@ import { messages } from "@/config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import { useRoute } from "vue-router";
 import DocumentTable from "../../care-coordinator/tables/DocumentTable.vue";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 
 
 export default defineComponent({
@@ -92,7 +95,8 @@ export default defineComponent({
     // DeleteOutlined,
     Loader,
     ErrorMessage,
-    DocumentTable
+    DocumentTable,
+    GlobalCodeDropDown,
   
   },
   props: {

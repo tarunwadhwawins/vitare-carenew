@@ -4,10 +4,11 @@
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('patient.devices.deviceType')" name="deviceType" :rules="[{ required: true, message: $t('patient.devices.deviceType')+' '+$t('global.validation') }]">
-                    <a-select ref="select" v-model:value="device.deviceType" style="width: 100%" size="large" @change="handleInventory">
+                    <!-- <a-select ref="select" v-model:value="device.deviceType" style="width: 100%" size="large" @change="handleInventory">
                         <a-select-option value="" disabled>{{'Select Device Type'}}</a-select-option>
                         <a-select-option v-for="device in globalCode.deviceType.globalCode" :key="device.id" :value="device.id">{{device.name}}</a-select-option>
-                    </a-select>
+                    </a-select> -->
+                    <GlobalCodeDropDown @change="handleInventory" v-model:value="device.deviceType" :globalCode="globalCode.deviceType"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" />
                 </a-form-item>
             </div>
@@ -106,11 +107,13 @@ import Loader from "../../loader/Loader";
 import { warningSwal, arrayToObjact} from "../../../commonMethods/commonMethod";
 import { messages } from "../../../config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 export default defineComponent({
   components: {
     DeleteOutlined,
     Loader,
     ErrorMessage,
+    GlobalCodeDropDown
   },
   props: {
     idPatient: {
