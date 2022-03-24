@@ -4,7 +4,7 @@
       <div class="logo">
         <div class="logoInner">
           <router-link to="/dashboard">
-            <img src="../../../assets/images/logo.png" alt="image" />
+            <img src="../../../assets/images/logo.svg" alt="image" />
           </router-link>
         </div>
         <div class="icon" @click="barMenu">
