@@ -14,7 +14,7 @@
       <div class="header-control">
         <div class="header-inner">
           <div class="location d-flex align-items-center">
-            <a-dropdown v-if="accessPermission != 0">
+            <!-- <a-dropdown v-if="accessPermission != 0">
               <a class="ant-dropdown-link" @click.prevent>
                 {{ $t("header.organisationLocation") }}
                 <DownOutlined />
@@ -59,7 +59,7 @@
                   </a-sub-menu>
                 </a-menu>
               </template>
-            </a-dropdown>
+            </a-dropdown> -->
 
             <!-- <a-dropdown :trigger="['click']">
               <a class="ant-dropdown-link" @click.prevent>
@@ -91,7 +91,7 @@
               <MoreOutlined />
             </div>
           </div>
-          <div
+          <!-- <div
             class="search"
             :class="toggle ? 'show' : ''"
             v-if="accessPermission != 0"
@@ -101,7 +101,7 @@
               size="large"
               placeholder="Enter search"
             />
-          </div>
+          </div> -->
           <div class="profile" :class="ellipse ? 'show' : ''">
             <div class="quick-actions d-flex align-items-center">
               <a-dropdown :trigger="['click']" v-if="accessPermission != 0">
@@ -212,7 +212,7 @@
                   <div class="name">{{ userName }}</div>
                   <div class="image">
                     <img
-                      src="../../../assets/images/profile-1.jpg"
+                      src="../../../assets/images/userAvatar.png"
                       alt="image"
                     />
                   </div>
