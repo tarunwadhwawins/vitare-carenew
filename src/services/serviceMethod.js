@@ -57,9 +57,7 @@ class ServiceMethodService {
             clearTimeout(timeout);
             timeout = null;
         }
-
         currentValue = value;
-
         function fake() {
             const str = qs.stringify({
                 code: "utf-8",
@@ -68,13 +66,13 @@ class ServiceMethodService {
             axios.get(API_URL + `${endpoint}` + '?' + `${str}`, { headers: authHeader() })
                 .then((response) => response)
                 .then((d) => {
-                      console.log("data", d.data.data);
+                    //   console.log("data", d.data.data);
                     if (d.data.data.length > 0) {
                         store.commit('loadingStatus', false)
                     }
                     if (currentValue === value) {
                         const result = d.data.data;
-                        console.log("rewwa", result);
+                        // console.log("rewwa", result);
                         const data = [];
                         result.forEach((item) => {
                             data.push({
@@ -82,7 +80,7 @@ class ServiceMethodService {
                                 label: item.fullName?item.fullName:item.name,
                             });
                         });
-                        console.log('object', data);
+                        // console.log('object', data);
                         callback(data);
 
                     }
@@ -95,7 +93,6 @@ class ServiceMethodService {
                         errorSwal(error.response.data.message)
                         store.commit('loadingStatus', false)
                     } else if (error.response.status === 401) {
-                        // commit('errorMsg', error.response.data.message)
                         errorSwal(error.response.data.message)
                         store.commit('loadingStatus', false)
                     }
