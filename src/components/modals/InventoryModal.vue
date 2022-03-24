@@ -17,11 +17,13 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('inventory.modelNumber')" name="deviceModelId" :rules="[{ required: true, message: $t('inventory.modelNumber')+' '+$t('global.validation')  }]">
-                <a-select ref="select" v-model:value="inventoryForm.deviceModelId" style="width: 100%" size="large" :disabled="disabledModelNumber">
+                <!-- <a-select ref="select" v-model:value="inventoryForm.deviceModelId" style="width: 100%" size="large" :disabled="disabledModelNumber">
                   <a-select-option value="" hidden>{{'Select Model Number'}}</a-select-option>
                   <a-select-option v-for="deviceModal in deviceModalsList" :key="deviceModal.id" :value="deviceModal.id">{{ deviceModal.modelNumber }}</a-select-option>
-                </a-select>
+                </a-select> -->
+                <GlobalCodeDropDown  :disabled="disabledModelNumber" v-model:value="inventoryForm.deviceModelId" :globalCode="deviceModalsList" />
             </a-form-item>
+            
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
@@ -130,7 +132,8 @@ export default {
     });
 
     const onSelectOption = (value) => {
-      store.state.inventory.deviceModalsList = ""
+      // store.state.inventory.deviceModalsList = ""
+      inventoryForm.deviceModelId =null
       store.dispatch('deviceModalsList', value)
       disabledModelNumber.value = false
       // deviceModalsList.value = null;
