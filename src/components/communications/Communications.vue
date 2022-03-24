@@ -58,7 +58,7 @@ import { ref, h,computed, defineComponent,defineAsyncComponent} from "vue";
 import DashboardView from "@/components/communications/DashboardView";
 import ListView from "@/components/communications/ListView";
 import StartCall from "@/components/communications/top/StartCall";
-import SendMessage from "@/components/communications/top/SendMessage";
+// import SendMessage from "@/components/communications/top/SendMessage";
 // import ToolTip from "@/components/communications/toolTip/ToolTip";
 import { notification, Button } from "ant-design-vue";
 // import AddStartCall from "@/components/modals/AddStartCall";
@@ -78,7 +78,7 @@ export default defineComponent({
     DashboardView,
     ListView,
     StartCall,
-    SendMessage,
+    SendMessage:defineAsyncComponent(()=>import("@/components/communications/top/SendMessage")),
     //ToolTip,
     Loader,
     AddStartCall:defineAsyncComponent(()=>import("@/components/modals/AddStartCall"))

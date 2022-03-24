@@ -5,3 +5,9 @@ export const commonRecords = (state) => {
     return state
   })
 }
+
+export const loadingStatus = (state)=>{
+    return computed(()=>{
+        return state.loadingStatus
+    })
+  }
