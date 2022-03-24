@@ -5,27 +5,18 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('inventory.deviceType')" name="deviceType" :rules="[{ required: true, message: $t('inventory.deviceType')+' '+$t('global.validation')  }]">
-              <!-- <AutoComplete
-                :options="deviceTypes"
-                @on-select="onSelectOption"
-                v-if="deviceTypes"
-                v-model:value="inventoryForm.deviceType" /> -->
-                <a-select ref="select" v-model:value="inventoryForm.deviceType" style="width: 100%" size="large" @change="onSelectOption">
+                <!-- <a-select ref="select" v-model:value="inventoryForm.deviceType" style="width: 100%" size="large" @change="onSelectOption">
                   <a-select-option value="" hidden>{{'Select Device Type'}}</a-select-option>
                   <a-select-option v-for="deviceType in inventoryTypes.globalCode" :key="deviceType.id" :value="deviceType.id">
                     {{ deviceType.name }}</a-select-option>
-                </a-select>
+                </a-select> -->
+                <GlobalCodeDropDown v-model:value="inventoryForm.deviceType" :globalCode="inventoryTypes" @change="onSelectOption"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('inventory.modelNumber')" name="deviceModelId" :rules="[{ required: true, message: $t('inventory.modelNumber')+' '+$t('global.validation')  }]">
-              <!-- <AutoComplete
-                :options="deviceModals"
-                @on-select="onSelectModal"
-                v-if="deviceModals"
-                v-model:value="inventoryForm.deviceModelId" /> -->
                 <a-select ref="select" v-model:value="inventoryForm.deviceModelId" style="width: 100%" size="large" :disabled="disabledModelNumber">
                   <a-select-option value="" hidden>{{'Select Model Number'}}</a-select-option>
                   <a-select-option v-for="deviceModal in deviceModalsList" :key="deviceModal.id" :value="deviceModal.id">{{ deviceModal.modelNumber }}</a-select-option>
@@ -68,11 +59,13 @@ import { useStore } from "vuex"
 import ModalButtons from "@/components/common/button/ModalButtons";
 import Loader from "@/components/loader/Loader"
 // import AutoComplete from "@/components/common/input/AutoComplete";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 export default {
   components: {
     ModalButtons,
     // AutoComplete,
     Loader,
+    GlobalCodeDropDown
   },
   props: {
     isAdd: {

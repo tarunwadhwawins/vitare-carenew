@@ -25,10 +25,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.country')" name="countryId" :rules="[{ required: true, message: $t('global.country')+' '+$t('global.validation') }]">
-                                    <a-select ref="select" v-model:value="providerForm.countryId" style="width: 100%" size="large" @change="checkChangeInput()">
+                                    <!-- <a-select ref="select" v-model:value="providerForm.countryId" style="width: 100%" size="large" @change="checkChangeInput()">
                                         <a-select-option value="" disabled>{{'Select Country'}}</a-select-option>
                                         <a-select-option v-for="country in globalCode.country.globalCode" :key="country.id" :value="country.id">{{country.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                    <GlobalCodeDropDown v-model:value="providerForm.countryId" :globalCode="globalCode.country" @change="checkChangeInput()"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.country?errorMsg.country[0]:''" />
                                 </a-form-item>
                             </div>
@@ -36,10 +37,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.state')" name="stateId" :rules="[{ required: true, message: $t('global.state')+' '+$t('global.validation') }]">
-                                    <a-select ref="select" v-model:value="providerForm.stateId" style="width: 100%" size="large" @change="checkChangeInput()">
+                                    <!-- <a-select ref="select" v-model:value="providerForm.stateId" style="width: 100%" size="large" @change="checkChangeInput()">
                                         <a-select-option value="" disabled>{{'Select State'}}</a-select-option>
                                         <a-select-option v-for="state in globalCode.state.globalCode" :key="state.id" :value="state.id">{{state.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                    <GlobalCodeDropDown v-model:value="providerForm.stateId" :globalCode="globalCode.state" @change="checkChangeInput()"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.state?errorMsg.state[0]:''" />
                                 </a-form-item>
                             </div>
@@ -71,14 +73,16 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('providers.tags')" name="tagId" :rules="[{ required: true, message: $t('providers.tags')+' '+$t('global.validation') }]">
-                                    <a-select v-model:value="providerForm.tagId" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="providerTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" @change="checkChangeInput()"/>
+                                    <!-- <a-select v-model:value="providerForm.tagId" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="providerTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" @change="checkChangeInput()"/> -->
+                                      <GlobalCodeDropDown v-model:value="providerForm.tagId" mode="multiple" :globalCode="providerTags" @change="checkChangeInput()"/>
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('providers.modules')" name="moduleId" :rules="[{ required: true, message: $t('providers.modules')+' '+$t('global.validation') }]">
-                                    <a-select v-model:value="providerForm.moduleId" mode="multiple" size="large" placeholder="Select modules" style="width: 100%" :options="providerModules.globalCode.map((item) => ({ label: item.name, value: item.id }))" @change="checkChangeInput()"/>
+                                    <!-- <a-select v-model:value="providerForm.moduleId" mode="multiple" size="large" placeholder="Select modules" style="width: 100%" :options="providerModules.globalCode.map((item) => ({ label: item.name, value: item.id }))" @change="checkChangeInput()"/> -->
+                                    <GlobalCodeDropDown v-model:value="providerForm.moduleId" mode="multiple" :globalCode="providerModules" @change="checkChangeInput()"/>
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -211,11 +215,13 @@ import { warningSwal, successSwal } from "./../../commonMethods/commonMethod";
 import { messages } from "./../../config/messages";
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import { regex } from "@/RegularExpressions/regex";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 
 export default {
   components: {
     DeleteOutlined,
     Loader,
+    GlobalCodeDropDown,
   },
   props: {
     isAdd: {
