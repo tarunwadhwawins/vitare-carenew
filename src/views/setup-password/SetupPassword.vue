@@ -68,7 +68,7 @@ export default defineComponent({
     .loginInner {
       .rightWrapper {
         .logo {
-          max-width: 200px;
+          max-width: 100px;
           margin: 0 0 20px;
         }
       }
