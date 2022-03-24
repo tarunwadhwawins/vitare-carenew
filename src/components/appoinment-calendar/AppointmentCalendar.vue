@@ -130,10 +130,10 @@ export default {
                 toDate.value = moment().add(1, 'days')
             } else if (value == 3) {
 
-                datePick = moment(tabDate.add(1, 'days')).startOf('week')
+                datePick = moment(tabDate).startOf('week')
 
                 store.dispatch("weekName", {
-                    from: moment(tabDate.add(2, 'days')).startOf('week'),
+                    from: moment(tabDate).startOf('week'),
                     to: moment(tabDate).endOf('week')
                 })
                 fromDate.value = moment(tabDate).startOf('week')

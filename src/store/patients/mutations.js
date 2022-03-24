@@ -603,13 +603,14 @@ export const patientConditions = (state, conditions) => {
 
 export const patientReferralSource = (state, referralSource) => {
   if (referralSource) {
-    referralSource.designation = referralSource.designationId;
+    referralSource.referralDesignation = referralSource.referralDesignationId;
   }
   state.patientReferralSource = referralSource;
 }
 
 export const patientPrimaryPhysician = (state, primaryPhysician) => {
   if (primaryPhysician) {
+    primaryPhysician.sameAsAbove = primaryPhysician.sameAsReferal;
     primaryPhysician.designation = primaryPhysician.designationId;
   }
   state.patientPrimaryPhysician = primaryPhysician;

@@ -31,7 +31,7 @@
                   <a-spin size="small" />
                 </template>
               </a-select> -->
-              <StaffDropDown v-model:value="messageForm.from" @handleStaffChange="handleStaffChange($event)"/>
+              <StaffDropDown :disabled="arrayToObjact(staffPermissions,37) ? false : true" v-model:value="messageForm.from" @handleStaffChange="handleStaffChange($event)"/>
             </a-form-item>
           </div>
         </a-col>
@@ -77,7 +77,7 @@
                   <a-spin size="small" />
                 </template>
               </a-select> -->
-              <PatientDropDown v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event)"/>
+              <PatientDropDown v-if="patientsList"  v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event)"/>
             </a-form-item>
           </div>
         </a-col>
@@ -93,7 +93,7 @@
                 <a-select-option value="" disabled>{{'Select Staff'}}</a-select-option>
                 <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id" :disabled="messageForm.from==staff.id ? true : false">{{ staff.fullName }}</a-select-option>
               </a-select> -->
-              <a-select
+              <!-- <a-select
                 ref="select"
                 v-model:value="messageForm.referenceId"
                 style="width: 100%"
@@ -109,8 +109,8 @@
                 <template  v-if="loadingStatus" #notFoundContent>
                   <a-spin size="small" />
                 </template>
-              </a-select>
-              <!-- <StaffDropDown v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event)"/> -->
+              </a-select> -->
+              <StaffDropDown v-if="staffList" :checkSameAsStaff="true" v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event)"/>
             </a-form-item>
           </div>
         </a-col>
