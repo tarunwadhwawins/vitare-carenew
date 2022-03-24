@@ -149,10 +149,5 @@ export default {
   th.codeStatus, th.usedCount {
     width: 150px;
   }
-  td {
-    /* text-transform: capitalize; */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+ 
 </style>
