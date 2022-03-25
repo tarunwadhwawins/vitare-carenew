@@ -2,7 +2,9 @@
   <a-table  rowKey="id"
     
     :columns="inventoryColumns"
-    :data-source="inventoriesList">
+    :data-source="inventoriesList"
+    :scroll="{ y: tableYScroller}"  
+    :pagination="false">
     <template #actions="{record}">
       <a-tooltip placement="bottom">
         <template #title>
@@ -29,9 +31,9 @@ import {
   DeleteOutlined,
   EditOutlined
 } from "@ant-design/icons-vue";
-import { watchEffect, computed } from "vue";
+import { watchEffect, onMounted } from "vue";
 import { useStore } from "vuex";
-import { warningSwal } from "@/commonMethods/commonMethod";
+import { warningSwal,tableYScroller } from "@/commonMethods/commonMethod";
 import { messages } from '@/config/messages';
 import Loader from "@/components/loader/Loader";
 export default {
@@ -46,10 +48,49 @@ export default {
       store.dispatch('inventoriesList')
     })
 
-    const inventoriesList = computed(() => {
-      return store.state.inventory.inventoriesList
-    })
+    
+    const inventoriesList = store.getters.inventoriesList
+    const meta = store.getters.inventoryMeta
+        let data = ''
+        let scroller = ''
+        onMounted(() => {
+            var tableContent = document.querySelector('.ant-table-body')
+            tableContent.addEventListener('scroll', (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight
+                let currentScroll = event.target.scrollTop + 2
+                if (currentScroll >= maxScroll) {
 
+                    let current_page = meta.current_page + 1
+
+                    if (current_page <= meta.total_pages) {
+                        scroller = maxScroll
+                        meta.value = ""
+                        data = inventoriesList.value
+                        store.state.inventory.inventoriesList = ""
+                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
+                        store.dispatch("inventoriesList", "&search="+url+"&page=" + current_page).then(() => {
+                            loadMoredata()
+                        })
+
+                    }
+                }
+            })
+        })
+
+        function loadMoredata() {
+            const newData = inventoriesList.value
+
+            newData.forEach(element => {
+                data.push(element)
+            });
+            inventoriesList.value = data
+            var tableContent = document.querySelector('.ant-table-body')
+
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller)
+            }, 50)
+
+        }
     const editInventory = (id, deviceTypeId) => {
       store.state.inventory.deviceModalsList = null
       // store.dispatch('inventoryDetails', id)
@@ -141,6 +182,7 @@ export default {
       updateStatus,
       inventoryColumns,
       inventoriesList,
+      tableYScroller
     }
   }
 }
