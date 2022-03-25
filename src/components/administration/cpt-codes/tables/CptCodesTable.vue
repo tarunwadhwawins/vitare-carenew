@@ -1,6 +1,6 @@
 <template>
     
-<a-table rowKey="id"  :columns="meta.cptCodesColumns" :data-source="meta.cptCodesList" :scroll="{ y: 400}"  :pagination="false" @change="onChange">
+<a-table rowKey="id"  :columns="meta.cptCodesColumns" :data-source="meta.cptCodesList" :scroll="{ y: tableYScroller}"  :pagination="false" @change="onChange">
     <template #actions="{record}">
         <a-tooltip placement="bottom" @click="editCpt(record.udid)" v-if="arrayToObjact(cptCodePermissions,10)">
             <template #title>
@@ -44,7 +44,8 @@ import {
 } from "vuex";
 import {
     warningSwal,
-    arrayToObjact
+    arrayToObjact,
+    tableYScroller
 } from "@/commonMethods/commonMethod";
 export default {
     components: {
@@ -112,7 +113,8 @@ export default {
                         loader.value = true;
                         meta.cptMeta = "";
                         store.state.cptCodes.cptCodesList = "";
-                        store.dispatch("cptCodesList", "?search="+store.getters.searchTable+"&page=" + current_page).then(() => {
+                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
+                        store.dispatch("cptCodesList", "&search="+url+"&page=" + current_page).then(() => {
                             loadMoredata();
                         });
                     }
@@ -147,6 +149,7 @@ export default {
             editCpt,
             UpdateCptStatus,
             meta,
+            tableYScroller
         
 
         };

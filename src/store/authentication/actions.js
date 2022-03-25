@@ -6,7 +6,7 @@ import router from "@/router"
 
 export const login = async ({ commit }, user) => {
 	await ServiceMethodService.login(user).then((response) => {
-		localStorage.setItem('user', response.data.user.name);
+		localStorage.setItem('user', response.data.user);
 		localStorage.setItem('token', response.data.token);
 		localStorage.setItem('auth', JSON.stringify(response.data));
 		commit('loginSuccess', response.data.user);

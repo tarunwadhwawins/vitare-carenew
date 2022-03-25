@@ -4,7 +4,7 @@
       rowKey="id"
       :columns="meta.column"
       :data-source="meta.patientList"
-      :scroll="{ y: 290, x: 2000 }"
+      :scroll="{ y: tableYScrollerCounterPage, x: 2000 }"
       :pagination="false"
     >
       <template
@@ -43,7 +43,7 @@ import { WarningOutlined } from "@ant-design/icons-vue";
 import { onMounted, computed } from "vue";
 import { useStore } from "vuex";
 
-import { arrayToObjact } from "@/commonMethods/commonMethod";
+import { arrayToObjact ,tableYScrollerCounterPage} from "@/commonMethods/commonMethod";
 export default {
   name: "DataTable",
   components: {
@@ -65,10 +65,11 @@ export default {
           if (current_page <= meta.patientMeta.total_pages) {
             scroller = maxScroll;
             meta.patientMeta = "";
+            
             data = meta.patientList;
             store.state.patients.patientList = "";
-            console.log("current_page", current_page);
-            store.dispatch("patients", "?search="+store.getters.searchTable+"&page=" + current_page).then(() => {
+            let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
+            store.dispatch("patients", "?search="+url+"&page=" + current_page).then(() => {
               //console.log('response',response)
               loadMoredata();
             });
@@ -96,6 +97,7 @@ export default {
       patientsPermissions,
       arrayToObjact,
       meta,
+      tableYScrollerCounterPage
     };
   },
 };

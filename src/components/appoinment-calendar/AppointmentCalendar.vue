@@ -15,7 +15,7 @@
 
                 <Calendar @is-click="selectDate($event)" />
 
-                <Physicians @staff-select="staffSelect($event)" :physiciansId="physiciansId" />
+                <Physicians @staff-select="staffSelect($event)" :physiciansId="physiciansId" v-if="arrayToObjact(staffPermissions,37)"/>
 
             </a-col>
             <a-col :xl="toggle == false ? 24 : 18" :sm="toggle == false ? 24 : 14" :xs="24">
@@ -237,7 +237,9 @@ export default {
         const appointmentCalendarPermissions = computed(() => {
             return store.state.screenPermissions.appointmentCalendarPermissions
         })
-
+        const staffPermissions = computed(()=>{
+            return store.state.screenPermissions.staffPermissions
+        })
         return {
             appointmentCalendarPermissions,
             arrayToObjact,
@@ -264,7 +266,8 @@ export default {
             physiciansId,
             showLoaderMain,
             moment,
-            weekChange
+            weekChange,
+            staffPermissions
         };
     },
 };

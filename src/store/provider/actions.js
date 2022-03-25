@@ -38,10 +38,11 @@ export const providerLocation = async ({
 
 export const providersListAll = async ({
   commit
-}) => {
+},page) => {
   commit('loadingStatus', true)
-  await serviceMethod.common("get", `provider?active=1`, null, null).then((response) => {
-    commit('provider', response.data.data);
+  let link = page? "patiprovider?active=1"+page : "provider?active=1"
+  await serviceMethod.common("get", link, null, null).then((response) => {
+    commit('provider', response.data);
     commit('loadingStatus', false)
   }).catch((error) => {
     commit('loadingStatus', false)

@@ -1,7 +1,7 @@
 <template>
 <a-col :sm="24" :xs="24">
 
-    <a-table  rowKey="id" :columns="columns" :data-source="meta.vitalList" :scroll="{ y: 420 }" :pagination=false>
+    <a-table  rowKey="id" :columns="columns" :data-source="meta.vitalList" :scroll="{ y: tableYScroller }" :pagination=false>
         <template #actions="text">
             <a-tooltip placement="bottom">
                 <template #title>
@@ -32,7 +32,7 @@
 <script>
  import {  onMounted } from "vue"
   import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-  import { warningSwal } from "@/commonMethods/commonMethod";
+  import { warningSwal ,tableYScroller} from "@/commonMethods/commonMethod";
   import { messages } from "@/config/messages";
  
   import { useStore } from "vuex";
@@ -180,7 +180,8 @@ export default {
                         data = meta.vitalList
                         store.state.thresholds.generalParameterMeta = ""
                         store.state.thresholds.vitalList= ""
-                        store.dispatch("generalParameterList", "?search="+store.getters.searchTable+"&page=" + current_page).then(()=>{
+                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
+                        store.dispatch("generalParameterList", "?search="+url+"&page=" + current_page).then(()=>{
                             loadMoredata()
                         })
                         
@@ -207,6 +208,7 @@ export default {
             editParameter,
             meta,
             columns,
+            tableYScroller
            
 
         }
