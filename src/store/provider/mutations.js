@@ -1,14 +1,14 @@
 export const errorMsg = (state, data) => {
   state.errorMsg = data
 }
-export const provider = (state, data) => {
+export const providerData = (state, data) => {
   state.provider = data
 }
 export const providerLocation = (state, data) => {
   state.providerLocation = data
 }
 
-export const providersListAll = (state, data) => {
+export const provider = (state, data) => {
 
   state.providersListAll = data.map(element => {
     element.status = element.status == 1 ? true : false

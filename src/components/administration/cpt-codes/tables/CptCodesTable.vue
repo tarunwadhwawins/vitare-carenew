@@ -112,7 +112,7 @@ export default {
                         loader.value = true;
                         meta.cptMeta = "";
                         store.state.cptCodes.cptCodesList = "";
-                        store.dispatch("cptCodesList", "?page=" + current_page).then(() => {
+                        store.dispatch("cptCodesList", "?search="+store.getters.searchTable+"&page=" + current_page).then(() => {
                             loadMoredata();
                         });
                     }

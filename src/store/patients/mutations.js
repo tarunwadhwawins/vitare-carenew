@@ -20,7 +20,7 @@ export const status = (state, data) => {
 }
 
 
-export const patients = (state, data) => {
+export const patient = (state, data) => {
   state.column = [{
     title: "Flags",
     dataIndex: "flags",
@@ -257,7 +257,7 @@ export const addPatientProgram = (state, data) => {
 }
 
 
-export const program = (state, data) => {
+export const programPatients = (state, data) => {
   state.program = data.map(element => {
     element.onboardingScheduleDate = dateOnlyFormat(element.onboardingScheduleDate),
       element.dischargeDate = dateOnlyFormat(element.dischargeDate)

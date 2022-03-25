@@ -31,8 +31,7 @@
 </a-row>
 <a-row >
     <a-col :span="12">
-        <a-select v-model:value="value2" :size="size" mode="tags" style="width: 100%" placeholder="Search . . ." :options="searchoptions" @change="handleChange">
-        </a-select>
+      <SearchField  endPoint="patient"/>
     </a-col>
     <a-col :span="12" v-if="arrayToObjact(patientsPermissions,66)">
         <div class="text-right mb-24">
@@ -51,7 +50,7 @@
 <!--end-->
 </template>
 <script>
-import {  ref, watchEffect,computed } from "vue";
+import {  ref, watchEffect,computed ,onUnmounted} from "vue";
 import { useStore } from "vuex";
 import PatientsModal from "@/components/modals/PatientsModal";
 import CounterCard from "./counter-card/CounterCard";
@@ -60,6 +59,7 @@ import Loader from "@/components/loader/Loader"
 import { arrayToObjact } from "@/commonMethods/commonMethod";
 // import { messages } from "../../config/messages";
 import DataTable from "./data-table/DataTable"
+import SearchField from "@/components/common/input/SearchField";
 // import Card from "@/components/common/cards/Card"
 export default {
   name: "Patients",
@@ -71,6 +71,7 @@ export default {
     ShowModalButton,
     DataTable,
     Loader,
+    SearchField
     // Card
   },
 
@@ -99,6 +100,9 @@ export default {
     const totalPatients = computed(() => {
         return store.state.counterCards.totalPatientcount
       })
+      onUnmounted(()=>{
+            store.dispatch("searchTable",'')
+        })
     return {
       totalPatients,
       patientsPermissions,

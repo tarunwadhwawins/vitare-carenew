@@ -47,7 +47,7 @@ export const communicationsList = async ({ commit }, page) => {
 	let link = page ?API_ENDPOINTS['communicationsList']+page : API_ENDPOINTS['communicationsList']
 	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", link, null, null).then((response) => {
-		commit('communicationsSuccess', response.data);
+		commit('communication', response.data);
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {

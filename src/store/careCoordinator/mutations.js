@@ -38,7 +38,7 @@ export const networkStaff = (state, data) => {
   state.networkStaff = data
 }
 
-export const staffs= async (state, data) => {
+export const staff= async (state, data) => {
     
     state.columns = [
         {

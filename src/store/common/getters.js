@@ -16,3 +16,8 @@ export const loadingStatus = (state)=>{
         return state.timeline
     })
   }
+  export const searchTable = (state)=>{
+    return computed(()=>{
+        return state.searchTable
+    })
+  }
