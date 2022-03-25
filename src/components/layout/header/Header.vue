@@ -211,7 +211,7 @@
             <div class="profile-menu">
               <a-dropdown :trigger="['click']">
                 <a class="ant-dropdown-link" @click.prevent>
-                  <div class="name">{{ userName }}</div>
+                  <div class="name">{{ userName.user.name }}</div>
                   <div class="image">
                     <img
                       src="../../../assets/images/userAvatar.png"
@@ -221,16 +221,16 @@
                 </a>
                 <template #overlay>
                   <a-menu class="headerDropdown">
-                    <a-menu-item key="0">
-                      <a href="javascript:void(0)">{{
-                        $t("header.myProfile")
-                      }}</a>
-                    </a-menu-item>
-                    <a-menu-item key="1">
-                      <a href="javascript:void(0)">{{
-                        $t("header.settings")
-                      }}</a>
-                    </a-menu-item>
+                  <router-link  :to="{ name: 'CoordinatorSummary', params: { udid:userName.user.staffUdid  }}">
+                    
+                      <a-menu-item key="0">
+                        <a href="javascript:void(0)">{{
+                          $t("header.myProfile")
+                        }}</a>
+                      </a-menu-item>
+                  </router-link>
+                  
+                   
                     <a-menu-item key="3">
                       <router-link to="reset-password"
                         >Reset Password</router-link
@@ -269,7 +269,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watchEffect } from "vue";
+import { defineComponent, ref, computed, watchEffect,onMounted } from "vue";
 import AddAppointment from "@/components/modals/AddAppointment";
 import TasksModal from "@/components/modals/TasksModal";
 import PatientsModal from "@/components/modals/PatientsModal";
@@ -313,10 +313,7 @@ export default defineComponent({
     const toggle = ref(false);
     const ellipse = ref(false);
     const tasksModal = ref(false);
-    const userName = computed(() => {
-      return localStorage.getItem("user");
-    });
-
+    const userName = JSON.parse(localStorage.getItem("auth"))
     const logoutUser = () => {
       store.state.authentication.errorMsg = "";
       store.dispatch("logoutUser");
@@ -334,8 +331,12 @@ export default defineComponent({
 
     watchEffect(() => {
       store.dispatch("getNotifications");
-    });
 
+    });
+onMounted(()=>{
+
+ 
+})
     const appointmentModal = ref(false);
     const addAppt = () => {
       appointmentModal.value = true;

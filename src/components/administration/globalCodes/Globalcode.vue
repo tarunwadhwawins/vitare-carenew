@@ -20,7 +20,7 @@
                 </h2>
               </a-col>
               <a-col :span="12" >
-                <SearchField @change="searchData"/>
+                <SearchField endPoint="globalCodeCategory"/>
               </a-col>
               <a-col :span="12" v-if="arrayToObjact(globalCodesPermissions,265)">
                 <div class="text-right mb-24">
@@ -28,6 +28,7 @@
                 </div>
               </a-col>
               <a-col :span="24">
+                <Loader/>
                 <GlobalCodesTable @edit-global-code="editGlobalCode($event)"/>
               </a-col>
             </a-row>
@@ -49,10 +50,10 @@ import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import GlobalCodesTable from "@/components/administration/globalCodes/tables/GlobalCodesTable";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
-import { defineComponent,defineAsyncComponent, computed, ref } from "vue";
+import { defineComponent,defineAsyncComponent, computed, ref,onUnmounted } from "vue";
 import { useStore } from "vuex";
 import { arrayToObjact } from "@/commonMethods/commonMethod";
-
+import Loader from "@/components/loader/Loader"
 export default defineComponent({
   components: {
     Header,
@@ -61,6 +62,7 @@ export default defineComponent({
     GlobalCodesTable,
     SearchField,
     Button,
+    Loader
   },
   setup() {
     const store = useStore()
@@ -89,7 +91,9 @@ export default defineComponent({
     const globalCodesPermissions = computed(()=>{
       return store.state.screenPermissions.globalCodesPermissions
     })
-    
+    onUnmounted(()=>{
+            store.dispatch("searchTable",'')
+        })
     return {
       arrayToObjact,
       globalCodesPermissions,

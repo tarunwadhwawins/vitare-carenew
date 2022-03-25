@@ -1,6 +1,6 @@
 <template>
 <div class="highLight">Patients is highlighted</div>
-<a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900, y: 300 }" :pagination="false" :rowClassName="(record) => auth.user.id!=record.messageSender && record.isRead==0 ? 'bold':''">
+<a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900, y: tableYScroller }" :pagination="false" :rowClassName="(record) => auth.user.id!=record.messageSender && record.isRead==0 ? 'bold':''">
      <template #from="{ record }" class="custom">
          <span v-if="record.is_sender_patient" class="customTd">{{record.from}}</span>
         <span v-else>
@@ -118,7 +118,9 @@ import {
 } from "vuex";
 
 import Chat from "@/components/modals/Chat";
-
+import {
+    tableYScroller
+} from "@/commonMethods/commonMethod";
 import {
     EyeOutlined,
     MessageOutlined,
@@ -225,7 +227,8 @@ export default {
                         data = meta.communicationsList
                         meta.communicationMeta = "";
                         store.state.communications.communicationsList = "";
-                        store.dispatch("communicationsList", "?search="+store.getters.searchTable+"&page=" + current_page)
+                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
+                        store.dispatch("communicationsList", "?search="+url+"&page=" + current_page)
                             .then(() => {
                                 //console.log('response',response)
                                 loadMoredata();
@@ -270,6 +273,7 @@ export default {
             handleOk,
             communicationId,
             auth,
+            tableYScroller
         };
     },
 };

@@ -69,7 +69,9 @@ const global = {
   currentPassword:'Current Password',
   newPassword:'New Password',
   confirmPassword:'Confirm Password',
+  confirmNewPassword:'Confirm New Password',
   resetPassword:'Reset Password',
+  submit:'Submit',
 
 }
 

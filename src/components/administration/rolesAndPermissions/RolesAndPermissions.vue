@@ -19,7 +19,7 @@
                             </h2>
                         </a-col>
                         <a-col :span="12">
-                            <SearchField @change="searchData" />
+                            <SearchField endPoint="roleList"/>
                         </a-col>
                         <a-col :span="12">
                             <div class="text-right mb-24" v-if="arrayToObjact(roleAndPermissions,5)">
@@ -48,7 +48,7 @@ import RolesAndPermissionsTable from "@/components/administration/rolesAndPermis
 import SearchField from "@/components/common/input/SearchField";
 import RolesAndPermissionsModal from "@/components/modals/RolesAndPermissionsModal";
 import Button from "@/components/common/button/Button";
-import {computed,ref} from "vue";
+import {computed,ref,onUnmounted} from "vue";
 import {useStore } from "vuex"
 import { arrayToObjact } from "@/commonMethods/commonMethod";
 export default {
@@ -96,7 +96,9 @@ export default {
         const roleAndPermissions = computed(()=>{
             return store.state.screenPermissions.roleAndPermissions
         })
-
+        onUnmounted(()=>{
+            store.dispatch("searchTable",'')
+        })
         return {
             editShow,
             arrayToObjact,
