@@ -33,7 +33,8 @@
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="contactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
-							<a-select v-model:value="emergencyContactForm.contactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" />
+							<!-- <a-select v-model:value="emergencyContactForm.contactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" /> -->
+								<GlobalCodeDropDown  v-model:value="emergencyContactForm.contactType" mode="multiple" :globalCode="globalCode.pmOfcontact"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.contactType?errorMsg.contactType[0]:''" />
 						</a-form-item>
 					</div>
@@ -42,7 +43,8 @@
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="contactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
-							<a-select v-model:value="emergencyContactForm.contactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))" />
+							<!-- <a-select v-model:value="emergencyContactForm.contactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))" /> -->
+								<GlobalCodeDropDown  v-model:value="emergencyContactForm.contactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.contactTime?errorMsg.contactTime[0]:''" />
 						</a-form-item>
 					</div>
@@ -51,10 +53,11 @@
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('global.gender')" name="gender" :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
-							<a-select ref="select" v-model:value="emergencyContactForm.gender" style="width: 100%" size="large">
+							<!-- <a-select ref="select" v-model:value="emergencyContactForm.gender" style="width: 100%" size="large">
 								<a-select-option value="" hidden>{{'Select Gender'}}</a-select-option>
 								<a-select-option v-for="gender in globalCode.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
-							</a-select>
+							</a-select> -->
+							<GlobalCodeDropDown  v-model:value="emergencyContactForm.gender"  :globalCode="globalCode.gender"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.gender?errorMsg.gender[0]:''" />
 						</a-form-item>
 					</div>
@@ -84,11 +87,13 @@ import { useStore } from 'vuex';
 import Loader from "@/components/loader/Loader.vue";
 import { useRoute } from 'vue-router';
 import ErrorMessage from "../common/messages/ErrorMessage"
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 export default {
   components: {
     ModalButtons,
     Loader,
-		ErrorMessage,
+	ErrorMessage,
+	GlobalCodeDropDown,
   },
   props: {
     patientId: {

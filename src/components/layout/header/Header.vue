@@ -91,16 +91,13 @@
               <MoreOutlined />
             </div>
           </div>
-          <div
-            class="search"
-            :class="toggle ? 'show' : ''"
-            v-if="accessPermission != 0"
-          >
-            <a-input
+          <div class="search" v-if="accessPermission != 0">
+            <!-- <a-input
               v-model:value="value"
               size="large"
               placeholder="Enter search"
-            />
+            /> -->
+            <HeaderSearch v-model:value="value" @handleChange="handleChange($event)"/>
           </div>
           <div class="profile" :class="ellipse ? 'show' : ''">
             <div class="quick-actions d-flex align-items-center">
@@ -154,7 +151,12 @@
               <a-dropdown :trigger="['click']" overlayClassName="notifications">
                 <a class="ant-dropdown-link" @click.prevent>
                   <div class="icon">
-                    <a-badge count="" :number-style="{ backgroundColor: '#267dff' }"> <NotificationOutlined /></a-badge>
+                    <a-badge
+                      count=""
+                      :number-style="{ backgroundColor: '#267dff' }"
+                    >
+                      <NotificationOutlined />
+                    </a-badge>
                   </div>
                 </a>
                 <template #overlay>
@@ -275,11 +277,13 @@ import CoordinatorsModal from "@/components/modals/CoordinatorsModal";
 import AddStartCall from "@/components/modals/AddStartCall";
 import SendMessage from "@/components/modals/SendMessage";
 import { useStore } from "vuex";
+import HeaderSearch from "./HeaderSearch"
 import {
   arrayToObjact,
   meridiemFormatFromTimestamp,
   dobFormat,
 } from "@/commonMethods/commonMethod";
+import {useRouter } from "vue-router"
 import {
   NotificationOutlined,
   DownOutlined,
@@ -300,10 +304,12 @@ export default defineComponent({
     CoordinatorsModal,
     AddStartCall,
     SendMessage,
+    HeaderSearch
   },
   props: {},
   setup(props, { emit }) {
     const store = useStore();
+    const router = useRouter()
     const toggle = ref(false);
     const ellipse = ref(false);
     const tasksModal = ref(false);
@@ -316,6 +322,7 @@ export default defineComponent({
       store.dispatch("logoutUser");
     };
     const value = ref();
+
     function barMenu() {
       document.body.classList.toggle("show");
     }
@@ -333,6 +340,7 @@ export default defineComponent({
     const addAppt = () => {
       appointmentModal.value = true;
     };
+
     function showModal(event) {
       appointmentModal.value = event;
       emit("is-visible", event);
@@ -397,7 +405,12 @@ export default defineComponent({
     const notifications = computed(() => {
       return store.state.common.getNotifications;
     });
+    const handleChange = (value)=>{
+        router.push({ name: 'PatientSummary', params: { udid: value } })
+    }
     return {
+
+      handleChange,
       dobFormat,
       meridiemFormatFromTimestamp,
       notifications,

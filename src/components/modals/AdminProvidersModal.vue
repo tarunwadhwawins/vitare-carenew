@@ -131,10 +131,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.state')" name="state" :rules="[{ required: true, message: $t('global.state')+' '+$t('global.validation') }]">
-                                    <a-select ref="select" v-model:value="providerLocationForm.state" style="width: 100%" size="large" @change="checkChangeInput()">
+                                    <!-- <a-select ref="select" v-model:value="providerLocationForm.state" style="width: 100%" size="large" @change="checkChangeInput()">
                                         <a-select-option value="" disabled>{{'Select State'}}</a-select-option>
                                         <a-select-option v-for="state in globalCode.state.globalCode" :key="state.id" :value="state.id">{{state.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+                                    <GlobalCodeDropDown v-model:value="providerLocationForm.state"  :globalCode="globalCode.state" @change="checkChangeInput()"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.state?errorMsg.state[0]:''" />
                                 </a-form-item>
                             </div>

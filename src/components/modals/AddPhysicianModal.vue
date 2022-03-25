@@ -17,10 +17,11 @@
 						<a-col :sm="12" :xs="24">
 							<div class="form-group">
 								<a-form-item :label="$t('global.designation')" name="designation" :rules="[{ required: true, message: $t('global.designation')+' '+$t('global.validation') }]">
-									<a-select @change="changedValue" ref="select" v-model:value="addPhysicianForm.designation" style="width: 100%" size="large">
+									<!-- <a-select @change="changedValue" ref="select" v-model:value="addPhysicianForm.designation" style="width: 100%" size="large">
 										<a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
 										<a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
-									</a-select>
+									</a-select> -->
+									<GlobalCodeDropDown @change="changedValue"  v-model:value="addPhysicianForm.designation" :globalCode="globalCode.designations"/>
 									<ErrorMessage v-if="errorMsg" :name="errorMsg.designation?errorMsg.designation[0]:''" />
 								</a-form-item>
 							</div>
@@ -71,12 +72,14 @@ import Loader from "@/components/loader/Loader.vue";
 import { computed, reactive, ref, onMounted, onUnmounted } from 'vue-demi'
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
-  import ErrorMessage from "../common/messages/ErrorMessage"
+import ErrorMessage from "../common/messages/ErrorMessage"
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 export default {
   components: {
     ModalButtons,
     Loader,
-		ErrorMessage,
+	ErrorMessage,
+	GlobalCodeDropDown
   },
   props: {
     isPhysicianEdit: {

@@ -76,11 +76,52 @@ class ServiceMethodService {
                         const data = [];
                         result.forEach((item) => {
                             data.push({
-                                value: item.id?item.id:item.udid,
+                                value: item.udid?item.udid:item.id,
                                 label: item.fullName?item.fullName:item.name,
                             });
                         });
                         // console.log('object', data);
+                        callback(data);
+
+                    }
+
+                }).catch((error) => {
+                    if (error.response.status === 422) {
+                        store.commit('errorMsg', error.response.data)
+                        store.commit('loadingStatus', false)
+                    } else if (error.response.status === 500) {
+                        errorSwal(error.response.data.message)
+                        store.commit('loadingStatus', false)
+                    } else if (error.response.status === 401) {
+                        errorSwal(error.response.data.message)
+                        store.commit('loadingStatus', false)
+                    }
+                });
+        }
+        timeout = setTimeout(fake, 300);
+    }
+
+
+    headerSearch(value, callback, endpoint) {
+        if (timeout && value!='') {
+            clearTimeout(timeout);
+            timeout = null;
+        }
+        currentValue = value;
+        function fake() {
+            const str = qs.stringify({
+                code: "utf-8",
+                search: value,
+            });
+            axios.get(API_URL + `${endpoint}` + '?' + `${str}`, { headers: authHeader() })
+                .then((response) => response)
+                .then((d) => {
+                    if (d.data.data.length > 0) {
+                        store.commit('loadingStatus', false)
+                    }
+                    if (currentValue === value) {
+                        const result = d.data.data;
+                        const data = result;
                         callback(data);
 
                     }

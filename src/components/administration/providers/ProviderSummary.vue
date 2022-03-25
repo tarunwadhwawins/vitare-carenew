@@ -34,12 +34,12 @@
                             <div class="pat-profile">
                                 <div class="pat-profile-inner">
                                     <div class="thumb-head">Tags</div>
-                                    <div class="thumb-desc" v-if="globalCode.documentTags"> <span v-for="tag in globalCode.documentTags.globalCode" :key="tag.id">{{ tag.name+ ", "}}</span>
+                                    <div class="thumb-desc" v-if="globalCode.documentTags"> <span v-for="tag in globalCode.documentTags" :key="tag.id">{{ tag.name+ ", "}}</span>
                                     </div>
                                 </div>
                                 <div class="pat-profile-inner">
                                     <div class="thumb-head">Modules</div>
-                                    <div class="thumb-desc" v-if="globalCode.modules"><span v-for="modules in globalCode.modules.globalCode" :key="modules.id">{{ modules.name+ ", "}}</span></div>
+                                    <div class="thumb-desc" v-if="globalCode.modules"><span v-for="modules in globalCode.modules" :key="modules.id">{{ modules.name+ ", "}}</span></div>
                                 </div>
                                 <div class="pat-profile-inner">
                                     <div class="thumb-head">City</div>
