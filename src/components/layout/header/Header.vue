@@ -91,7 +91,7 @@
               <MoreOutlined />
             </div>
           </div>
-          <!-- <div
+          <div
             class="search"
             :class="toggle ? 'show' : ''"
             v-if="accessPermission != 0"
@@ -101,7 +101,7 @@
               size="large"
               placeholder="Enter search"
             />
-          </div> -->
+          </div>
           <div class="profile" :class="ellipse ? 'show' : ''">
             <div class="quick-actions d-flex align-items-center">
               <a-dropdown :trigger="['click']" v-if="accessPermission != 0">
