@@ -482,10 +482,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.designation')" name="referralDesignation" :rules="[{ required: false, message: $t('global.designation')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" ref="select" v-model:value="conditions.referralDesignation" style="width: 100%" size="large">
+                                    <!-- <a-select @change="changedValue" ref="select" v-model:value="conditions.referralDesignation" style="width: 100%" size="large">
                                         <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
                                         <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+																		<GlobalCodeDropDown @change="changedValue" v-model:value="conditions.referralDesignation"  :globalCode="globalCode.designations"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.designation?errorMsg.designation[0]:''" />
                                 </a-form-item>
 
@@ -545,10 +546,11 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.designation')" name="referralDesignation" :rules="[{ required: false, message: $t('global.designation')+' '+$t('global.validation') }]">
-                                    <a-select @change="changedValue" ref="select" v-model:value="conditions.referralDesignation" style="width: 100%" size="large" disabled>
+                                    <!-- <a-select @change="changedValue" ref="select" v-model:value="conditions.referralDesignation" style="width: 100%" size="large" disabled>
                                         <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
                                         <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
-                                    </a-select>
+                                    </a-select> -->
+																		<GlobalCodeDropDown @change="changedValue" v-model:value="conditions.referralDesignation"  :globalCode="globalCode.designations"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.referralDesignation?errorMsg.referralDesignation[0]:''" />
                                 </a-form-item>
 
@@ -843,6 +845,7 @@ export default defineComponent( {
         else {
             isValueChanged.value = true;
         }
+				isEdit = false
     }
     const showSearchPatient = ()=>{
         patientSearch.value =true
@@ -936,18 +939,17 @@ export default defineComponent( {
 
         if(idPatient) {
 					Object.assign(demographics, patientDetail);
-					if(patients.value.patientInsurance != null) {
+					if(isEdit && patients.value.patientInsurance != null) {
 						Object.assign(insuranceData, patients.value.patientInsurance)
 					}
-					if(patients.value.patientReferralSource != null) {
+					if(isEdit && patients.value.patientReferralSource != null) {
 						Object.assign(conditions, patients.value.patientReferralSource)
 					}
-					if(patients.value.patientPrimaryPhysician != null) {
+					if(isEdit && patients.value.patientPrimaryPhysician != null) {
 						Object.assign(conditions, patients.value.patientPrimaryPhysician)
 					}
 					if(isEdit && patients.value.patientConditions != null) {
 						Object.assign(conditions.condition, patients.value.patientConditions)
-						isEdit = false
 					}
         }
         /* else {
@@ -1094,105 +1096,177 @@ export default defineComponent( {
 			}
     };
 
-    const conditionsPatient = computed(() => {
-        return store.state.patients.patientConditions
-    })
-
 		const condition = () => {
 			isEdit = false
-			console.log('patients.value conditions', conditions)
-			const patientConditions = conditionsPatient.value;
-			if (idPatient != null) {
+			// const errors = []
+			if(idPatient != null) {
 				conditions.sameAsAbove = conditions.sameAsAbove ? 1 : 0;
-				if (patientConditions != null) {
-					if (patients.value.patientReferralSource != null && patients.value.patientPrimaryPhysician != null) {
-						if(conditions.sameAsAbove) {
-							(conditions.name = conditions.referralName),
-							(conditions.designation = conditions.referralDesignation),
-							(conditions.email = conditions.referralEmail),
-							(conditions.phoneNumber = conditions.referralPhoneNumber),
-							(conditions.fax = conditions.referralFax);
-						}
-						store.dispatch("updateCondition", {
-							data: conditions,
-							id: idPatient,
-							physicianId: patients.value.patientPrimaryPhysician.id,
-							referalID: patients.value.patientReferralSource.id,
-						}).then(() => {
-							isValueChanged.value = false;
-						})
+				store.dispatch("addCondition", {
+					data: conditions,
+					id: idPatient,
+				}).then(() => {
+					isValueChanged.value = false;
+					store.commit('errorMsg',null)
+				})
+				
+				if(patients.value.patientReferralSource && patients.value.patientReferralSource != null) {
+					if(conditions.sameAsAbove == 1) {
+						(conditions.name = conditions.referralName),
+						(conditions.designation = conditions.referralDesignation),
+						(conditions.email = conditions.referralEmail),
+						(conditions.phoneNumber = conditions.referralPhoneNumber),
+						(conditions.fax = conditions.referralFax);
 					}
-					else if (patients.value.patientReferralSource != null && patients.value.patientPrimaryPhysician == null) {
-						if(conditions.sameAsAbove) {
-							(conditions.name = conditions.referralName),
-							(conditions.designation = conditions.referralDesignation),
-							(conditions.email = conditions.referralEmail),
-							(conditions.phoneNumber = conditions.referralPhoneNumber),
-							(conditions.fax = conditions.referralFax);
-						}
-						store.dispatch("updateCondition", {
-							data: conditions,
-							id: idPatient,
-							referalID: patients.value.patientReferralSource.id ? patients.value.patientReferralSource.id : null,
-							physicianId: null,
-						}).then(() => {
-							isValueChanged.value = false;
-						})
-					}
-					else if (patients.value.patientReferralSource == null && patients.value.patientPrimaryPhysician != null) {
-						if(conditions.sameAsAbove) {
-							(conditions.name = conditions.referralName),
-							(conditions.designation = conditions.referralDesignation),
-							(conditions.email = conditions.referralEmail),
-							(conditions.phoneNumber = conditions.referralPhoneNumber),
-							(conditions.fax = conditions.referralFax);
-						}
-						store.dispatch("updateCondition", {
-							data: conditions,
-							id: idPatient,
-							referalID: null,
-							physicianId: patients.value.patientPrimaryPhysician.id ? patients.value.patientPrimaryPhysician.id : null,
-						}).then(() => {
-							isValueChanged.value = false;
-						})
-					}
-					else if (patients.value.patientReferralSource == null && patients.value.patientPrimaryPhysician == null) {
-						if(conditions.sameAsAbove) {
-							(conditions.name = conditions.referralName),
-							(conditions.designation = conditions.referralDesignation),
-							(conditions.email = conditions.referralEmail),
-							(conditions.phoneNumber = conditions.referralPhoneNumber),
-							(conditions.fax = conditions.referralFax);
-						}
-						store.dispatch("updateCondition", {
-							data: conditions,
-							id: idPatient,
-							physicianId: null,
-							referalID: null,
-						}).then(() => {
-							isValueChanged.value = false;
-						})
-					}
+					store.dispatch("updatePatientReferals", {
+						data: conditions,
+						id: idPatient,
+						referalID: patients.value.patientReferralSource.id ? patients.value.patientReferralSource.id : null,
+					}).then(() => {
+						isValueChanged.value = false;
+						store.commit('errorMsg',null)
+					})
 				}
+				else if((!patients.value.patientReferralSource || patients.value.patientReferralSource == null) && (conditions.referralName || conditions.referralDesignation || conditions.referralEmail || conditions.referralPhoneNumber || conditions.referralFax)) {
+					if(conditions.sameAsAbove == 1) {
+						(conditions.name = conditions.referralName),
+						(conditions.designation = conditions.referralDesignation),
+						(conditions.email = conditions.referralEmail),
+						(conditions.phoneNumber = conditions.referralPhoneNumber),
+						(conditions.fax = conditions.referralFax);
+					}
+					alert(conditions.sameAsAbove)
+					store.dispatch("addPatientReferals", {
+						data: conditions,
+						id: idPatient,
+					}).then(() => {
+						isValueChanged.value = false;
+						store.commit('errorMsg',null)
+					})
+				}
+
+				if(patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null) {
+					if(conditions.sameAsAbove == 1) {
+						(conditions.name = conditions.referralName),
+						(conditions.designation = conditions.referralDesignation),
+						(conditions.email = conditions.referralEmail),
+						(conditions.phoneNumber = conditions.referralPhoneNumber),
+						(conditions.fax = conditions.referralFax);
+					}
+					store.dispatch("updatePatientPhysician", {
+						data: conditions,
+						id: idPatient,
+						physicianId: patients.value.patientPrimaryPhysician.id ? patients.value.patientPrimaryPhysician.id : null,
+					}).then(() => {
+						isValueChanged.value = false;
+						store.commit('errorMsg',null)
+					})
+				}
+				else if((!patients.value.patientPrimaryPhysician || patients.value.patientPrimaryPhysician == null) && (conditions.name || conditions.designation || conditions.email || conditions.phoneNumber || conditions.fax)) {
+					if(conditions.sameAsAbove == 1) {
+						(conditions.name = conditions.referralName),
+						(conditions.designation = conditions.referralDesignation),
+						(conditions.email = conditions.referralEmail),
+						(conditions.phoneNumber = conditions.referralPhoneNumber),
+						(conditions.fax = conditions.referralFax);
+					}
+					store.dispatch("addPatientPhysician", {
+						data: conditions,
+						id: idPatient,
+					}).then(() => {
+						isValueChanged.value = false;
+						store.commit('errorMsg',null)
+					})
+				}
+				// store.commit("counterPlus");
 			}
-			else {
-				if (patients.value.addCondition == null || patients.value.addPatientReferals == null || patients.value.addPatientPhysician == null) {
+			else {	// Add Patient
+				if((!patients.value.addCondition || patients.value.addCondition == null) && (!patients.value.addPatientReferals || patients.value.addPatientReferals == null) && (!patients.value.addPatientPhysician || patients.value.addPatientPhysician == null)) {
+					store.dispatch("addCondition", {
+						data: conditions,
+						id: patients.value.addDemographic != null ? patients.value.addDemographic.id : null,
+					}).then(() => {
+						isValueChanged.value = false;
+					})
+
+					if(conditions.referralName || conditions.referralDesignation || conditions.referralEmail || conditions.referralPhoneNumber || conditions.referralFax) {
+						store.dispatch("addPatientReferals", {
+							data: conditions,
+							id: patients.value.addDemographic != null ? patients.value.addDemographic.id : null,
+						}).then(() => {
+							isValueChanged.value = false;
+						})
+					}
+
+					if(conditions.name || conditions.designation || conditions.email || conditions.phoneNumber || conditions.fax) {
+						store.dispatch("addPatientPhysician", {
+							data: conditions,
+							id: patients.value.addDemographic != null ? patients.value.addDemographic.id : null,
+						}).then(() => {
+							isValueChanged.value = false;
+						})
+					}
+					// console.log('patients.value', errorMsg.value)
+					// errors.push('patients.value', errorMsg.value)
+				}
+				else {
 					store.dispatch("addCondition", {
 						data: conditions,
 						id: patients.value.addDemographic.id,
 					}).then(() => {
 						isValueChanged.value = false;
 					})
+					
+					if((!patients.value.addPatientReferals || patients.value.addPatientReferals == null) && conditions.referralName || conditions.referralDesignation || conditions.referralEmail || conditions.referralPhoneNumber || conditions.referralFax) {
+						store.dispatch("addPatientReferals", {
+							data: conditions,
+							id: patients.value.addDemographic != null ? patients.value.addDemographic.id : null,
+						}).then(() => {
+							isValueChanged.value = false;
+						})
+					}
+					else if(patients.value.addPatientReferals && patients.value.addPatientReferals.id) {
+						store.dispatch("updatePatientReferals", {
+							data: conditions,
+							id: patients.value.addDemographic != null ? patients.value.addDemographic.id : null,
+							referalID: patients.value.addPatientReferals.id ? patients.value.addPatientReferals.id : null,
+						}).then(() => {
+							isValueChanged.value = false;
+						})
+					}
+
+					if((!patients.value.addPatientPhysician && patients.value.addPatientPhysician == null) && (conditions.name || conditions.designation || conditions.email || conditions.phoneNumber || conditions.fax)) {
+						store.dispatch("addPatientPhysician", {
+							data: conditions,
+							id: patients.value.addDemographic != null ? patients.value.addDemographic.id : null,
+						}).then(() => {
+							isValueChanged.value = false;
+						})
+					}
+					else if((patients.value.addPatientPhysician && patients.value.addPatientPhysician.id) && (conditions.name || conditions.designation || conditions.email || conditions.phoneNumber || conditions.fax)) {
+						store.dispatch("updatePatientPhysician", {
+							data: conditions,
+							id: patients.value.addDemographic != null ? patients.value.addDemographic.id : null,
+							physicianId: patients.value.addPatientPhysician.id ? patients.value.addPatientPhysician.id : null,
+						}).then(() => {
+							isValueChanged.value = false;
+						})
+					}
+					// console.log('patients.value', errorMsg.value)
+					// errors.push('patients.value', errorMsg.value)
 				}
-				if (patients.value.addPatientReferals.id && patients.value.addPatientPhysician.id) {
-					store.dispatch("updateCondition", {
-						data: conditions,
-						id: patients.value.addDemographic.id,
-						physicianId: patients.value.addPatientPhysician.id,
-						referalID: patients.value.addPatientReferals.id,
-					}).then(() => {
-						isValueChanged.value = false;
-					})
+				// console.log('patients.value.addCondition', patients.value.addCondition)
+				// console.log('patients.value.addPatientReferals', patients.value.addPatientReferals)
+				// console.log('patients.value.addPatientPhysician', patients.value.addPatientPhysician)
+				// console.log(errorMsg.value)
+				// errors.push(errorMsg.value)
+				// console.log('patients.value errors', errors)
+				// if(errors.length == 0) {
+					// store.commit('errorMsg',null)
+					// store.commit('counterPlus')
+				// }
+				if(errorMsg.value == null) {
+					console.log('patients.value Null', errorMsg)
+					store.commit('counterPlus')
 				}
 			}
 		};
@@ -1253,6 +1327,11 @@ export default defineComponent( {
     const errorMsg = computed(() => {
       return store.state.patients.errorMsg;
     });
+
+    const err = computed(() => {
+      return store.state.patients.errorMessage;
+    });
+		const errorMessage = err.value
 
     function parameterFields(id) {
       store.dispatch("parameterFields", id);
@@ -1367,6 +1446,7 @@ export default defineComponent( {
       fields,
       parameterFields,
       errorMsg,
+      errorMessage,
       patients,
       current,
       globalCode,

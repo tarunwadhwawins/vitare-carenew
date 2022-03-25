@@ -206,35 +206,9 @@ export const patients = (state, data) => {
 
 }
 
-export const addCondition = (state, data) => {
-  state.addCondition = data
-}
 export const updateDemographic = (state, data) => {
   state.updateDemographic = data
 }
-
-export const updateCondition = (state, data) => {
-  state.updateCondition = data
-}
-
-export const addPatientReferals = (state, data) => {
-  state.addPatientReferals = data
-}
-
-export const updatePatientReferals = (state, data) => {
-  state.updatePatientReferals = data
-}
-
-
-export const addPatientPhysician = (state, data) => {
-  state.addPatientPhysician = data
-}
-
-export const updatePatientPhysician = (state, data) => {
-  state.updatePatientPhysician = data
-}
-
-
 
 export const programList = (state, data) => {
   state.programList = data
