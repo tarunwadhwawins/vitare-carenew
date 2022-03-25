@@ -114,7 +114,6 @@ const routes = [
     path: '/forgot-password',
     name: 'ForgotPassword',
     component: () => import('../components/forgot-password/ForgotPassword'),
-    meta: { authAdmin: true }
   },
 
   {
@@ -127,7 +126,6 @@ const routes = [
     path: '/setup-password',
     name: 'SetupPassword',
     component: () => import('@/views/setup-password/SetupPassword'),
-    meta: { authAdmin: true }
   },
 
 

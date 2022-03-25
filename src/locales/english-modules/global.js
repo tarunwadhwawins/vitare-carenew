@@ -66,6 +66,10 @@ const global = {
   send:'Send',
   service:'Service',
   isPrimary:'Is Primary',
+  currentPassword:'Current Password',
+  newPassword:'New Password',
+  confirmPassword:'Confirm Password',
+  resetPassword:'Reset Password',
 
 }
 

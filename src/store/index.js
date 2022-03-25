@@ -24,6 +24,7 @@ import {screenPermissions} from "./screenPermissions/index"
 import {provider} from "./provider/index"
 import { videoCall } from "./videoCall/index"
 import { flags } from "./flags/index"
+import { password } from "./password/index"
 import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
@@ -52,6 +53,7 @@ export default createStore({
     videoCall,
     provider,
     flags,
+    password,
     screenPermissions
   },
   plugins: [ createPersistedState({

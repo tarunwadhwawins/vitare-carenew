@@ -15,7 +15,10 @@
     </div>
     <div class="buttons">
       <a-button class="btn primaryBtn" html-type="submit">{{$t("login.login")}}</a-button>
-      <a class=""> {{ $t("login.forgotPassword") }}  </a>
+      <!-- <router-link :to="{ name: 'ForgotPassword', params: { udid: '' }}"> -->
+      <router-link to="/forgot-password">
+        {{ $t("login.forgotPassword") }}
+      </router-link>
     </div>
   </a-form>
 </template>

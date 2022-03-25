@@ -108,7 +108,11 @@ export const API_ENDPOINTS = {
     criticalNote:'criticalNote',
 
     //notification
-    notification:'notification'
+    notification:'notification',
+    
+    // Change Password
+    changePassword:'changePassword',
+    forgotPassword:'forgot/password',
 };
 
 // export const getApiUrl = key => {
