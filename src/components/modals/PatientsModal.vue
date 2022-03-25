@@ -1264,10 +1264,10 @@ export default defineComponent( {
 					// store.commit('errorMsg',null)
 					// store.commit('counterPlus')
 				// }
-				if(errorMsg.value == null) {
-					console.log('patients.value Null', errorMsg)
+				// if(errorMsg.value == null) {
+					// console.log('patients.value Null', errorMsg)
 					store.commit('counterPlus')
-				}
+				// }
 			}
 		};
 

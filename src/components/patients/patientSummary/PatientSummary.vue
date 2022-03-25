@@ -72,7 +72,7 @@ import { useStore } from 'vuex';
 import { useRoute  } from 'vue-router';
 import {
   timeStamp,
-  //  getSeconds,
+  getSeconds,
 } from '@/commonMethods/commonMethod';
 const value = ref(dayjs("12:08", "HH:mm"));
 
@@ -184,48 +184,51 @@ export default {
         store.dispatch('physiciansList', patientUdid);
         store.dispatch('emergencyContactsList', patientUdid);
 
-        setInterval(function() {
-          const timeLogId =  localStorage.getItem('timeLogId')
-          if(timeLogId && timeLogId != null) {
-            console.log('elapsedTime.value', formattedElapsedTime.value)
-            const data = {
-              category: '',
-              loggedBy: 'gfdgfhggfhhfgh',
-              performedBy: 'gfdgfhggfhhfgh',
-              date: timeStamp(new Date()),
-              timeAmount: formattedElapsedTime.value,
-              cptCode: '',
-              note: 'Time Log',
-              isAutomatic: true,
+        // if((getSeconds(newformattedElapsedTime)%30) == 0) {
+          setInterval(function() {
+            const newFormattedElapsedTime = getSeconds(formattedElapsedTime.value)
+            const timeLogId =  localStorage.getItem('timeLogId')
+            if((timeLogId && timeLogId != null) && startOn.value == false) {
+              const data = {
+                category: '',
+                loggedBy: 'gfdgfhggfhhfgh',
+                performedBy: 'gfdgfhggfhhfgh',
+                date: timeStamp(new Date()),
+                timeAmount: newFormattedElapsedTime,
+                cptCode: '',
+                note: 'Time Log',
+                isAutomatic: true,
+              }
+              console.log('elapsedTime.value', data)
+              store.dispatch('updatePatientTimeLog', {
+                timeLogId: timeLogId,
+                patientUdid: patientUdid,
+                data: data
+              }).then(() => {
+                store.dispatch('latestTimeLog', patientUdid)
+              });
             }
-            store.dispatch('updatePatientTimeLog', {
-              timeLogId: timeLogId,
-              patientUdid: patientUdid,
-              data: data
-            }).then(() => {
-              store.dispatch('latestTimeLog', patientUdid)
-            });
-          }
-          else {
-            const data = {
-              category: '',
-              loggedBy: 'gfdgfhggfhhfgh',
-              performedBy: 'gfdgfhggfhhfgh',
-              date: timeStamp(new Date()),
-              timeAmount: formattedElapsedTime.value,
-              cptCode: '',
-              note: 'Time Log',
-              isAutomatic: true,
+            else if(startOn.value == false) {
+              const data = {
+                category: '',
+                loggedBy: 'gfdgfhggfhhfgh',
+                performedBy: 'gfdgfhggfhhfgh',
+                date: timeStamp(new Date()),
+                timeAmount: newFormattedElapsedTime,
+                cptCode: '',
+                note: 'Time Log',
+                isAutomatic: true,
+              }
+              console.log('elapsedTime.value', data)
+              store.dispatch('addTimeLog', {
+                id: patientUdid,
+                data: data
+              }).then(() => {
+                store.dispatch('latestTimeLog', patientUdid)
+              });
             }
-            store.dispatch('addTimeLog', {
-              id: patientUdid,
-              data: data
-            }).then(() => {
-              store.dispatch('latestTimeLog', patientUdid)
-            });
-          }
-        }, 30000000);
-
+          }, 30000);
+        // }
       }
     })
 

@@ -91,8 +91,8 @@ import {
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { useStore } from "vuex";
 import {
-  timeStamp,
-  //  getSeconds,
+  // timeStamp,
+  getSeconds,
 } from '@/commonMethods/commonMethod';
 import { useRoute } from "vue-router";
 import moment from "moment";
@@ -191,8 +191,8 @@ export default defineComponent({
           category: addTimeLogForm.category,
           loggedBy: addTimeLogForm.loggedBy,
           performedBy: addTimeLogForm.performedBy,
-          date: timeStamp(addTimeLogForm.date),
-          timeAmount: timeStamp(addTimeLogForm.timeAmount),
+          date: getSeconds(addTimeLogForm.date),
+          timeAmount: getSeconds(addTimeLogForm.timeAmount),
           cptCode: addTimeLogForm.cptCode,
           note: addTimeLogForm.note,
         }
