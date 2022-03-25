@@ -20,7 +20,7 @@
                         </a-col>
                         <!--  -->
                          <a-col :span="12" v-if="arrayToObjact(providersPermissions,21)">
-                            <SearchField @change="searchData" />
+                            <SearchField endPoint="provider"/>
                         </a-col>
                         <a-col :span="12">
                             <!--  -->
@@ -56,9 +56,10 @@ import ProvidersTable from "@/components/administration/providers/tables/Provide
 import {useStore} from "vuex";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
-import {ref , watchEffect} from "vue";
+import {ref , watchEffect,onUnmounted} from "vue";
 import { arrayToObjact } from "@/commonMethods/commonMethod";
 import Loader from "@/components/loader/Loader"
+
 export default {
     components: {
         Header,
@@ -110,6 +111,9 @@ watchEffect(()=>{
         const checked = ref([false]);
        
         const providersPermissions = store.getters.permissionRecords.value.providersPermissions
+        onUnmounted(()=>{
+            store.dispatch("searchTable",'')
+        })
         return {
           providersPermissions,
             arrayToObjact,

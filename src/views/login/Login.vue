@@ -7,7 +7,7 @@
                     <div class="leftWrapper">
                         <div>
                             <div class="logo">
-                                <img src="@/assets/images/logo.png" alt="image" />
+                                <img src="@/assets/images/logo.svg" alt="image" />
                             </div>
                             <h3>{{$t('login.welcome')}}</h3>
                             <p>{{$t('login.message')}}</p>

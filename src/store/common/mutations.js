@@ -146,4 +146,7 @@ export const checkChangeInput = (state, data) => {
   export const getNotifications = (state, data) => {
     state.getNotifications = data
   }
+  export const searchTable = (state, data) => {
+    state.searchTable = data
+  }
   

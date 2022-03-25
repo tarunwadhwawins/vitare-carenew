@@ -46,7 +46,7 @@ export default {
 
     },
     setup() {
-        //console.log(props.staffRecords)
+       
         const store = useStore();
         //const fields = reactive(props.staffRecords.columns)
 
@@ -67,7 +67,7 @@ export default {
                         meta.staffMeta = ""
                         data = meta.staffs
                         store.state.careCoordinator.staffs = ""
-                        store.dispatch("staffs", "?page=" + current_page).then(() => {
+                        store.dispatch("staffs", "?search="+store.getters.searchTable+"&page=" + current_page).then(() => {
                             loadMoredata()
                         })
 

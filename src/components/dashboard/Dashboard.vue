@@ -6,7 +6,7 @@
                 {{$t('global.dashboard')}}
 
                 <div class="filter" v-if="timeline && Buttons">
-                    <a-button v-for="item in timeline['globalCode']" :key="item.id" @click="showButton(item.id)" :class="Buttons.globalCodeId== item.id ? 'active' : ''"> {{item.name}}</a-button>
+                    <a-button v-for="item in timeline" :key="item.id" @click="showButton(item.id)" :class="Buttons.globalCodeId== item.id ? 'active' : ''"> {{item.name}}</a-button>
                 </div>
             </h2>
         </a-col>

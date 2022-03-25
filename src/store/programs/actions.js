@@ -9,7 +9,7 @@ export const manageProgramList = async ({
   commit('loadingStatus', true)
   await serviceMethod.common("get", link, null, null).then((response) => {
 
-    commit('manageProgramList', response.data);
+    commit('program', response.data);
     commit('loadingStatus', false)
   }).catch((error) => {
     if (error.response.status === 422) {

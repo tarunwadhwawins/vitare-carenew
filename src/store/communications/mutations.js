@@ -24,14 +24,14 @@ export const callPlannedSuccess = (state, count) => {
         labels: {
           rotate: -45,
         },
-        categories: count.map((item) => { return item.staff }),
+        categories: count.map((item) => { return item.text }),
       },
       yaxis: yaxis("Number of Calls"),
     },
     callseries: [
       {
         name: "Calls Planned",
-        data:  count.map((item) => {return item.count }),
+        data:  count.map((item) => {return item.total }),
       },
     ]
   }
@@ -131,7 +131,7 @@ export const communicationTypesSuccess = (state, response) => {
   }
 }
 
-export const communicationsSuccess = async (state, communications) => {
+export const communication = async (state, communications) => {
   /* let data = [];
   data = state.communicationsList;
   state.communicationsList = data ? data.push(...communications) : communications; */

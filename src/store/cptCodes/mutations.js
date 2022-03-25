@@ -1,4 +1,4 @@
-export const cptCodesList = async (state, cptCodes) => {
+export const cptCode = async (state, cptCodes) => {
  state.cptCodesColumns = [
     {
       title: "Cpt Code",

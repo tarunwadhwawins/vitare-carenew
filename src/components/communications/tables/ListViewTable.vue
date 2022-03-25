@@ -225,7 +225,7 @@ export default {
                         data = meta.communicationsList
                         meta.communicationMeta = "";
                         store.state.communications.communicationsList = "";
-                        store.dispatch("communicationsList", "?page=" + current_page)
+                        store.dispatch("communicationsList", "?search="+store.getters.searchTable+"&page=" + current_page)
                             .then(() => {
                                 //console.log('response',response)
                                 loadMoredata();
