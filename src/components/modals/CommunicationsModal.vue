@@ -117,7 +117,7 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('communications.communicationsModal.messageCategory')" name="messageCategoryId" :rules="[{ required: true, message: $t('communications.communicationsModal.messageCategory')+' '+$t('global.validation')  }]">
-              <a-select
+              <!-- <a-select
                 v-if="messageCategories"
                 ref="select"
                 v-model:value="messageForm.messageCategoryId"
@@ -126,14 +126,15 @@
                 <a-select-option value="" disabled>{{'Select Message Category'}}</a-select-option>
                 <a-select-option v-for="messageCategory in messageCategories.globalCode" :key="messageCategory.id" :value="messageCategory.id">{{ messageCategory.name }}
                 </a-select-option>
-              </a-select>
+              </a-select> -->
+              <GlobalCodeDropDown v-model:value="messageForm.messageCategoryId"  :globalCode="messageCategories" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('communications.communicationsModal.priority')" name="priorityId" :rules="[{ required: true, message: $t('communications.communicationsModal.priority')+' '+$t('global.validation')  }]">
-              <a-select
+              <!-- <a-select
                 v-if="taskPriority"
                 ref="select"
                 v-model:value="messageForm.priorityId"
@@ -141,14 +142,15 @@
                 size="large">
                 <a-select-option value="" disabled>{{'Select Priority'}}</a-select-option>
                 <a-select-option v-for="priority in taskPriority.globalCode" :key="priority.id" :value="priority.id">{{ priority.name }}</a-select-option>
-              </a-select>
+              </a-select> -->
+              <GlobalCodeDropDown v-model:value="messageForm.taskPriority"  :globalCode="taskPriority" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('communications.communicationsModal.messageType')" name="messageTypeId" :rules="[{ required: true, message: $t('communications.communicationsModal.messageType')+' '+$t('global.validation')  }]">
-              <a-select
+              <!-- <a-select
                 ref="select"
                 v-model:value="messageForm.messageTypeId"
                 style="width: 100%"
@@ -157,7 +159,8 @@
                   <template v-for="type in messageType.globalCode">
                     <a-select-option v-if="type.name == 'SMS' || type.name == 'Email'" :key="type.id" :value="type.id">{{ type.name }}</a-select-option>
                   </template>
-              </a-select>
+              </a-select> -->
+              <GlobalCodeDropDown v-if="type.name == 'SMS' || type.name == 'Email'" :key="type.id" :value="type.id" v-model:value="messageForm.messageTypeId"  :globalCode="messageType" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
@@ -192,10 +195,11 @@ import { messages } from "../../config/messages";
 // import Services from "@/services/serviceMethod"
 // import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue"
 // import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
-
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 export default defineComponent({
   components: {
     ModalButtons,
+    GlobalCodeDropDown,
     PatientDropDown:defineAsyncComponent(()=>import("@/components/modals/search/PatientDropdownSearch.vue")),
     StaffDropDown:defineAsyncComponent(()=>import("@/components/modals/search/StaffDropdownSearch.vue"))
   },

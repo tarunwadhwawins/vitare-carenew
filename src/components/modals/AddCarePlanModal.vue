@@ -13,7 +13,7 @@
                 size="large"
                  @select="selectDevice">
                 <a-select-option value="" hidden>Choose Device Type</a-select-option>
-                <a-select-option v-for="deviceType in deviceTypes.globalCode" :key="deviceType.id" :value="deviceType.id">{{ deviceType.name }}</a-select-option>
+                <a-select-option v-for="deviceType in deviceTypes" :key="deviceType.id" :value="deviceType.id">{{ deviceType.name }}</a-select-option>
               </a-select>
             </a-form-item>
           </div>
