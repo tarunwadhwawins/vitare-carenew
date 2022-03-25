@@ -36,7 +36,8 @@ export default {
     allStaffList:null,
     activeCptCodes:null,
     checkChangeInput:false,
-    getNotifications:null
+    getNotifications:null,
+    searchTable:null
 
 
 }

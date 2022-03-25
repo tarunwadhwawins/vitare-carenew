@@ -99,7 +99,7 @@ export default {
                         loader.value = true;
                         meta.taskMeta = "";
                         store.state.tasks.tasksList = ''
-                        store.dispatch("tasksList", "?page=" + current_page).then(() => {
+                        store.dispatch("tasksList", "?search="+store.getters.searchTable+"&page=" + current_page).then(() => {
 
                             loadMoredata();
                         });

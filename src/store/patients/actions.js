@@ -54,7 +54,7 @@ export const patients = async ({
   let link = page? "patient"+page : "patient"
   commit('loadingStatus', true)
   await serviceMethod.common("get", link, null, null).then((response) => {
-    commit('patients', response.data);
+    commit('patient', response.data);
     commit('loadingStatus', false)
   }).catch((error) => {
     errorSwal(error.response.data.message)
@@ -377,7 +377,7 @@ export const program = async ({
 }, id) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", `patient/${id}/program`, null, null).then((response) => {
-    commit('program', response.data.data);
+    commit('programPatients', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
     errorSwal(error.response.data.message)

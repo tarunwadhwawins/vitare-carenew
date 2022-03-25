@@ -17,7 +17,7 @@
                         </h2>
                     </a-col>
                     <a-col :span="12" v-if="arrayToObjact(cptCodePermissions,14)">
-                        <SearchField @change="searchData" />
+                        <SearchField endPoint="cptCode"/>
                     </a-col>
                     <a-col :span="12">
                         <div class="text-right mb-24" v-if="arrayToObjact(cptCodePermissions,13)">
@@ -45,7 +45,7 @@ import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import CptCodesModal from "@/components/modals/CptCodesModal";
 import CptCodesTable from "@/components/administration/cpt-codes/tables/CptCodesTable";
-import {computed, ref,watchEffect} from "vue";
+import {computed, ref,watchEffect,onUnmounted} from "vue";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
 import { arrayToObjact } from "@/commonMethods/commonMethod";
@@ -96,7 +96,9 @@ export default {
         const cptCodePermissions = computed(()=>{
             return store.state.screenPermissions.cptCodePermissions
         })
-        
+        onUnmounted(()=>{
+            store.dispatch("searchTable",'')
+        })
         return {
             cptCodePermissions,
             arrayToObjact,

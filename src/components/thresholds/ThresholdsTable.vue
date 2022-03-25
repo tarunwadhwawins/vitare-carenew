@@ -180,7 +180,7 @@ export default {
                         data = meta.vitalList
                         store.state.thresholds.generalParameterMeta = ""
                         store.state.thresholds.vitalList= ""
-                        store.dispatch("generalParameterList", "?page=" + current_page).then(()=>{
+                        store.dispatch("generalParameterList", "?search="+store.getters.searchTable+"&page=" + current_page).then(()=>{
                             loadMoredata()
                         })
                         

@@ -16,9 +16,7 @@
       </a-row>
       <a-row>
         <a-col :span="12">
-          <a-select v-model:value="value" :size="size" mode="tags" style="width: 100%" placeholder="Search . . ."
-            :options="options" @change="handleChange">
-          </a-select>
+          <SearchField  endPoint="generalParameterGroup"/>
         </a-col>
         <a-col :span="12">
           <div class="text-right mb-24">
@@ -27,7 +25,7 @@
               }}</a-button>
           </div>
         </a-col>
-       
+        
           
        
         <ThresholdsTable  @is-edit="showEdit($event)"></ThresholdsTable>
@@ -42,17 +40,18 @@
   <Thresholds v-else v-model:visible="Thresholds" @is-visible="isEdit($event)" />
 </template>
 <script>
-  import { ref, watchEffect } from "vue";
+  import { ref, watchEffect,onUnmounted } from "vue";
   import Thresholds from "@/components/modals/Thresholds";
   import ThresholdsTable from "./ThresholdsTable";
   import { useStore } from "vuex";
   import Loader from "@/components/loader/Loader";
-
+  import SearchField from "@/components/common/input/SearchField";
   export default {
     components: {
       ThresholdsTable,
       Thresholds,
-      Loader
+      Loader,
+      SearchField
     },
 
     setup() {
@@ -113,7 +112,9 @@
           label: "Group Three",
         },
       ]);
-
+      onUnmounted(()=>{
+            store.dispatch("searchTable",'')
+        })
       return {
         
        

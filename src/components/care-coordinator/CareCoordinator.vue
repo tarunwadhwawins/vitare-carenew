@@ -25,8 +25,8 @@
 
 <a-row>
     <a-col :span="12">
-        <a-select v-model:value="value2" :size="size" mode="tags" style="width: 100%" placeholder="Search . . ." :options="searchoptions" @change="handleChange">
-        </a-select>
+        <SearchField  endPoint="staff"/>
+        
     </a-col>
     <a-col :span="12" v-if="arrayToObjact(staffPermissions,41)">
         <div class="text-right mb-24">
@@ -35,7 +35,7 @@
     </a-col>
     <a-col :span="24" >
       
-        <CoordinatorTable ></CoordinatorTable>
+        <CoordinatorTable  ></CoordinatorTable>
         <Loader />
     </a-col>
     <CareCoordinatorModalForms v-model:visible="visible" @saveModal="handleOk($event)"></CareCoordinatorModalForms>
@@ -46,7 +46,7 @@
 import {
     watchEffect,
    computed,
-    ref
+    ref,onUnmounted
 } from "vue"
 import LongCard from "@/components/common/cards/LongCard"
 import CoordinatorTable from "./tables/CoordinatorTable"
@@ -55,6 +55,7 @@ import Loader from "@/components/loader/Loader"
 import {useStore} from "vuex"
 import ShowModalButton from "@/components/common/show-modal-button/ShowModalButton"
 import {arrayToObjact} from "@/commonMethods/commonMethod"
+import SearchField from "@/components/common/input/SearchField";
 export default {
     data() {
         return {};
@@ -64,7 +65,8 @@ export default {
         CoordinatorTable,
         Loader,
         CareCoordinatorModalForms,
-        ShowModalButton
+        ShowModalButton,
+        SearchField
     },
     setup() {
         const store = useStore()
@@ -72,19 +74,10 @@ export default {
         const visible = ref(false)
         watchEffect(() => {
             store.getters.staffRecord.staffs=""
-            store.dispatch('staffs')
+            store.dispatch("staffs")
             store.dispatch('specializationStaff')
             store.dispatch('networkStaff')
         })
-
-        // const columns = computed(() => {
-        //     return store.state.careCoordinator.columns
-        // })
-         const handleChange = () => {};
-
-        // const staffs = computed(() => {
-        //     return store.state.careCoordinator
-        // })
         const handleOk = (value) => {
             visible.value = value;
         }
@@ -97,7 +90,9 @@ export default {
         const staffPermissions = computed(()=>{
             return store.state.screenPermissions.staffPermissions
         })
-
+        onUnmounted(()=>{
+            store.dispatch("searchTable",'')
+        })
         return {
             staffPermissions,
             arrayToObjact,
@@ -105,14 +100,10 @@ export default {
             visible,
             handleOk,
             searchoptions,
-            handleChange,
+            
             staffs:store.getters.staffRecord.value,
             value2: ref(),
-            size: ref()
-            // specializationTotal,
-            // specializationText,
-            // networkTotal,
-            // networkText,
+            size: ref(),
         };
     },
 };

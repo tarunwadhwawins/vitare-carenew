@@ -1,7 +1,7 @@
 <template>
   <a-row :gutter="24">
     <a-col :span="12">
-      <SearchField @change="handleChange"/>
+      <SearchField endPoint="task"/>
     </a-col>
     <a-col :span="12" v-if="arrayToObjact(tasksDashboardPermissions,118)">
       <div class="text-right mb-24">
@@ -18,7 +18,7 @@
 
 <script>
 
-import { ref, watchEffect,computed } from "vue";
+import { ref, watchEffect,computed ,onUnmounted} from "vue";
 import { useStore } from "vuex"
 // import swal from 'sweetalert2';
 import SearchField from "@/components/common/input/SearchField";
@@ -59,6 +59,9 @@ export default {
     const tasksDashboardPermissions = computed(()=>{
       return store.state.screenPermissions.tasksDashboardPermissions
     })
+    onUnmounted(()=>{
+            store.dispatch("searchTable",'')
+        })
    return {
      tasksDashboardPermissions,
       arrayToObjact,
