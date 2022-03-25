@@ -6,7 +6,7 @@
           <div class="form-group">
             <a-form-item :label="$t('appointmentCalendar.addAppointment.patient')" name="patientId"
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.patient')+' '+$t('global.validation')  }]">
-              <PatientDropDown v-model:value="appointmentForm.patientId" @handlePatientChange="handlePatientChange($event)"/>
+              <PatientDropDown v-model:value="appointmentForm.patientId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.patientId?errorMsg.patientId[0]:''" />
             </a-form-item>
           </div>
@@ -15,7 +15,7 @@
           <div class="form-group">
             <a-form-item :label="$t('appointmentCalendar.addAppointment.staff')" name="staffId"
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.staff')+' '+$t('global.validation')  }]">
-              <StaffDropDown v-model:value="appointmentForm.staffId" @handleStaffChange="handleStaffChange($event)"/>
+              <StaffDropDown v-model:value="appointmentForm.staffId" @handleStaffChange="handleStaffChange($event)" @change="checkChangeInput()"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.staffId?errorMsg.staffId[0]:''" />
             </a-form-item>
           </div>
@@ -25,7 +25,7 @@
             <a-form-item :label="$t('appointmentCalendar.addAppointment.startDate')" name="startDate"
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.startDate')+' '+$t('global.validation') }]">
               <a-date-picker  v-model:value="appointmentForm.startDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD"
-                :size="size" style="width: 100%" />
+                :size="size" style="width: 100%" @change="checkChangeInput()"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.startDate?errorMsg.startDate[0]:''" />
             </a-form-item>
           </div>
@@ -35,7 +35,7 @@
             <a-form-item :label="$t('global.startTime')" name="startTime"
               :rules="[{ required: true, message: $t('global.startTime')+' '+$t('global.validation') }]">
               <a-time-picker use12-hours format="hh:mm A" v-model:value="appointmentForm.startTime" :size="size"
-                style="width: 100%" />
+                style="width: 100%" @change="checkChangeInput()"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.startTime?errorMsg.startTime[0]:''" />
             </a-form-item>
           </div>
@@ -44,12 +44,13 @@
           <div class="form-group">
             <a-form-item :label="$t('global.duration') +' '+$t('global.time')" name="durationId"
               :rules="[{ required: true, message: $t('global.duration') +' '+$t('global.time')+' '+$t('global.validation')  }]">
-              <a-select ref="select" v-if="durationList" v-model:value="appointmentForm.durationId" style="width: 100%"
+              <!-- <a-select ref="select" v-if="durationList" v-model:value="appointmentForm.durationId" style="width: 100%"
                 size="large">
                 <a-select-option value="" hidden>{{'Select Duration Time'}}</a-select-option>
                 <a-select-option v-for="duration in durationList['globalCode']" :key="duration.id" :value="duration.id">
                   {{ duration.name }}</a-select-option>
-              </a-select>
+              </a-select> -->
+               <GlobalCodeDropDown v-if="durationList" v-model:value="appointmentForm.durationId" :globalCode="durationList" @change="checkChangeInput()"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.durationId?errorMsg.durationId[0]:''" />
             </a-form-item>
           </div>
@@ -58,12 +59,13 @@
           <div class="form-group">
             <a-form-item :label="$t('appointmentCalendar.addAppointment.typeOfVisit')" name="typeOfVisit"
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.typeOfVisit')+' '+$t('global.validation')  }]">
-              <a-select ref="select" v-if="typeOfVisitList" v-model:value="appointmentForm.typeOfVisit"
+              <!-- <a-select ref="select" v-if="typeOfVisitList" v-model:value="appointmentForm.typeOfVisit"
                 style="width: 100%" size="large">
                 <a-select-option value="" disabled>{{'Select Type Of Visit'}}</a-select-option>
                 <a-select-option v-for="visit in typeOfVisitList['globalCode']" :key="visit.id" :value="visit.id">{{
                   visit.name }}</a-select-option>
-              </a-select>
+              </a-select> -->
+               <GlobalCodeDropDown v-if="typeOfVisitList" v-model:value="appointmentForm.typeOfVisit" :globalCode="typeOfVisitList" @change="checkChangeInput()"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.typeOfVisit?errorMsg.typeOfVisit[0]:''" />
             </a-form-item>
           </div>
@@ -72,7 +74,7 @@
           <div class="form-group">
             <a-form-item :label="$t('appointmentCalendar.addAppointment.note')" name="note"
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.note')+' '+$t('global.validation') }]">
-              <a-textarea v-model:value="appointmentForm.note" allow-clear />
+              <a-textarea v-model:value="appointmentForm.note" allow-clear @change="checkChangeInput()"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.note?errorMsg.note[0]:''" />
             </a-form-item>
           </div>
@@ -102,13 +104,15 @@ import {
 import {
     messages
 } from "../../config/messages";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 
   export default {
     components: {
       ErrorMessage,
       ModalButtons,
       PatientDropDown,
-      StaffDropDown
+      StaffDropDown,
+      GlobalCodeDropDown
     },
     props:{
       staff:{
@@ -235,12 +239,21 @@ import {
         Object.assign(appointmentForm, form)
         //emit('is-visible', false);
       };
-       function closeModal() {
-            if (appointmentForm.patientId != "" || appointmentForm.staffId != "" || appointmentForm.patientId != "" || appointmentForm.startDate != "" || appointmentForm.startTime != "" || appointmentForm.durationId != "" || appointmentForm.typeOfVisit != "" || appointmentForm.note != "") {
+
+      function checkChangeInput(){
+        store.commit('checkChangeInput',true)
+        }
+       const checkFieldsData = computed(()=>{
+      return store.state.common.checkChangeInput;
+    })
+
+   function closeModal() {
+      if(checkFieldsData.value){
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
                      handleCancel();
                         emit("is-visible", false);
+                        store.commit('checkChangeInput',false)
 
                     } else {
 
@@ -249,7 +262,11 @@ import {
                 });
             }
         }
+
+        
       return {
+        checkFieldsData,
+        checkChangeInput,
         handlePatientChange,
         handleStaffChange,
         loadingStatus:store.getters.loadingStatus,
