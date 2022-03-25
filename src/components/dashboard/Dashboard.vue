@@ -151,7 +151,7 @@ export default {
             store.dispatch("specialization", dateFormate)
             store.dispatch("network", dateFormate)
             store.dispatch("cptCode", dateFormate)
-            store.dispatch("financial", dateFormate)
+            //store.dispatch("financial", dateFormate)
             store.dispatch("totalPatientsChart", dateFormate)
             store.dispatch("appointmentChart", dateFormate)
 

@@ -10,11 +10,8 @@ export const login = async ({ commit }, user) => {
 		localStorage.setItem('token', response.data.token);
 		localStorage.setItem('auth', JSON.stringify(response.data));
 		commit('loginSuccess', response.data.user);
-	}).then(()=> {
-		ServiceMethodService.common("get", API_ENDPOINTS['interval'] + "?timelineId=" + 122, null, null).then((response) => {
-			commit('timelineSuccess', response.data.data);	
 		roleAccess({ commit })
-		})
+
 	})
 		.catch((error) => {
 			if (error.response.status == 401) {
