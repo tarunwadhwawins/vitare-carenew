@@ -113,6 +113,8 @@ export const API_ENDPOINTS = {
     // Change Password
     changePassword:'changePassword',
     forgotPassword:'forgot/password',
+    validateCode:'forgotPassword/verify',
+    setupPassword:'generate/newPassword',
 };
 
 // export const getApiUrl = key => {
