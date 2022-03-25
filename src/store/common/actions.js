@@ -2,7 +2,7 @@ import ServiceMethodService from '../../services/serviceMethod';
 import {
   API_ENDPOINTS
 } from "../../config/apiConfig"
-
+import {  errorSwal } from '@/commonMethods/commonMethod'
 export const globalCodes = async ({
   commit
 }) => {
@@ -99,3 +99,20 @@ export const getNotifications = async ({ commit}) => {
     commit('loadingStatus', false)
   })
 }
+export const searchTable = async ({ commit},search) => {
+  commit("searchTable",search)
+}
+export const searchTableData = async ({commit}, search) => {
+  
+  commit('loadingStatus', true)
+    await ServiceMethodService.common("get", search.endPoint+'?search='+search.data , null, null).then((response) => {
+      commit(search.endPoint, response.data);
+     commit('loadingStatus', false)
+    }).catch((error) => { 
+      commit('errorMsg', error);
+      if(error.response.status === 500){
+        errorSwal(error.response.data.message)
+      }
+      commit('loadingStatus', false)
+    })
+  }

@@ -1,7 +1,47 @@
 <template>
-  <a-select mode="tags" style="width: 100%" placeholder="Search..." dropdownClassName="hidden-dropdown" />
+<a-input-search v-model:value="value" placeholder="Search..." style="width: 100%" @search="onSearch" @input="handleChange" size="large" />
 </template>
 
-<style>
-  .hidden-dropdown { display: none; }
-</style>
+<script>
+import {
+    defineComponent,
+    ref,
+    reactive
+} from 'vue';
+import { useStore } from "vuex"
+export default defineComponent({
+    props: {
+        endPoint: {
+            type: String
+        }
+    },
+    setup(props) {
+      const store = useStore()
+        let timeout = ''
+        let endPoints= reactive(props.endPoint)
+        const search = ref(null)
+        const handleChange = value => {
+            if (timeout && value.target.value != '') {
+                clearTimeout(timeout);
+                timeout = null;
+            }
+            search.value = value.target.value;
+
+            function fake() {
+                store.dispatch("searchTableData", {
+                  data:search.value,
+                  endPoint:endPoints
+                })
+                store.dispatch("searchTable",search.value)
+            }
+            timeout = setTimeout(fake, 600);
+        };
+
+        return {
+            value: ref(undefined),
+            handleChange,
+        };
+    },
+
+});
+</script>

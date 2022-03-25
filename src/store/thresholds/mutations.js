@@ -12,7 +12,7 @@ export const vitalSuccessMsg = async (state, data) => {
 export const vitalNull = async (state) => {
   state.vitalData = ''
 }
-export const vitalSuccessList = async (state, vitalRecord) => {
+export const generalParameterGroup = async (state, vitalRecord) => {
   state.generalParameterMeta = vitalRecord.meta.pagination
   state.vitalList = ''
   let record = []

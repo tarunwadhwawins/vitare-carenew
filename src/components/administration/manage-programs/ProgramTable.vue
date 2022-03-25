@@ -26,7 +26,7 @@
     </a-table>
     <Loader />
 </a-col>
-<InfiniteLoader v-if="loader" />
+
 </template>
 
 <script>
@@ -50,14 +50,14 @@ import {
 import {
     useStore
 } from "vuex";
-import InfiniteLoader from "@/components/loader/InfiniteLoader";
+
 import Loader from "@/components/loader/Loader"
 export default {
     components: {
         Loader,
         DeleteOutlined,
         EditOutlined,
-        InfiniteLoader
+
     },
     props: {
 
@@ -120,7 +120,7 @@ export default {
                         loader.value = true
                         store.state.program.programMeta = ""
                         store.state.programs.manageProgramList = ""
-                        store.dispatch("manageProgramList", "?page=" + current_page).then(() => {
+                        store.dispatch("manageProgramList", "?search="+store.getters.searchTable+"&page=" + current_page).then(() => {
                             loadMoredata()
                         })
                     }

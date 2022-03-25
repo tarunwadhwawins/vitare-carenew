@@ -69,7 +69,7 @@ export const generalParameterList = async ({
   commit('loadingStatus', true)
   let link=page? API_ENDPOINTS['generalParameter']+page:API_ENDPOINTS['generalParameter']
   await serviceMethod.common("get", link, null, null).then((response) => {
-    commit('vitalSuccessList', response.data)
+    commit('generalParameterGroup', response.data)
     commit('loadingStatus', false)
   }).catch((error) => {
     if (error.response.status === 422) {

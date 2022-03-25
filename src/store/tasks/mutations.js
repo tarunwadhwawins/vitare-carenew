@@ -1,6 +1,6 @@
 import { dateOnlyFormatSImple, yaxis, dataLabels, plotOptions, dateOnlyFormat } from '../../commonMethods/commonMethod';
 import moment from "moment"
-export const tasksListSuccess = async (state, tasks) => {
+export const task = async (state, tasks) => {
   state.tasksList = tasks.data.map(element => {
     element.dueDate = dateOnlyFormat(element.dueDate)
     element.category = element.category.map(item => item.taskCategory)

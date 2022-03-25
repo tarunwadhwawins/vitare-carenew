@@ -1,7 +1,7 @@
 <template>
   <a-row>
     <a-col :span="12">
-      <SearchField @change="searchData"/>
+      <SearchField  endPoint="communication"/>
     </a-col>
     <a-col :span="12" v-if="arrayToObjact(communicationPermissions,110)">
       <div class="text-right mb-24">
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { watchEffect,computed } from 'vue';
+import { watchEffect,computed ,onUnmounted} from 'vue';
 import { useStore } from "vuex"
 import SearchField from "@/components/common/input/SearchField";
 import ListViewTable from "@/components/communications/tables/ListViewTable";
@@ -42,7 +42,9 @@ export default {
     const communicationPermissions = computed(()=>{
       return store.state.screenPermissions.communicationPermissions
     })
-
+    onUnmounted(()=>{
+            store.dispatch("searchTable",'')
+        })
     return {
       communicationPermissions,
       arrayToObjact,

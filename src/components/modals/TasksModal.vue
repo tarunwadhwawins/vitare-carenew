@@ -19,20 +19,22 @@
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.status')" name="taskStatus" :rules="[{ required: true, message: $t('tasks.tasksModal.status')+' '+$t('global.validation')  }]">
-              <a-select v-model:value="taskForm.taskStatus" ref="select" style="width: 100%" size="large"  @change="checkChangeInput()">
+              <!-- <a-select v-model:value="taskForm.taskStatus" ref="select" style="width: 100%" size="large"  @change="checkChangeInput()">
                 <a-select-option value="" disabled>{{'Select Status'}}</a-select-option>
                 <a-select-option v-for="status in common.taskStatus.globalCode" :key="status.id" :value="status.id">{{ status.name }}</a-select-option>
-              </a-select>
+              </a-select> -->
+              <GlobalCodeDropDown v-model:value="taskForm.taskStatus" :globalCode="common.taskStatus" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.priority')" name="priority" :rules="[{ required: true, message: $t('tasks.tasksModal.priority')+' '+$t('global.validation')  }]">
-              <a-select v-model:value="taskForm.priority" ref="select" style="width: 100%" size="large" @change="checkChangeInput()">
+              <!-- <a-select v-model:value="taskForm.priority" ref="select" style="width: 100%" size="large" @change="checkChangeInput()">
                 <a-select-option value="" disabled>{{'Select Priority'}}</a-select-option>
                 <a-select-option v-for="priority in common.taskPriority.globalCode" :key="priority.id" :value="priority.id">{{ priority.name }}</a-select-option>
-              </a-select>
+              </a-select> -->
+              <GlobalCodeDropDown v-model:value="taskForm.priority" :globalCode="common.taskPriority" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
@@ -66,7 +68,7 @@
         <a-col :span="12" >
           <div class="form-group" >
             <a-form-item :label="$t('tasks.tasksModal.category')" name="taskCategory" :rules="[{ required: true, message: $t('tasks.tasksModal.category')+' '+$t('global.validation')  }]">
-              <a-select
+              <!-- <a-select
               :disabled="taskId?true:false"
                 mode="multiple"
                 size="large"
@@ -75,7 +77,8 @@
                 @change="checkChangeInput()"
                 v-model:value="taskForm.taskCategory"
                 :options="common.taskCategory.globalCode.map((item) => ({label: item.name, value: item.id }))"
-              />
+              /> -->
+               <GlobalCodeDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.taskCategory" :globalCode="common.taskCategory" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
@@ -113,13 +116,15 @@ import { useRoute } from "vue-router";
 import moment from "moment"
 import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue"
 import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 
 export default defineComponent({
   components: {
     ModalButtons,
     Loader,
     PatientDropDown,
-    StaffDropDown
+    StaffDropDown,
+    GlobalCodeDropDown
   },
   props:{
     taskId:Number,
