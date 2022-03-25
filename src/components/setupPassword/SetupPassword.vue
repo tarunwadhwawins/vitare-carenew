@@ -42,11 +42,11 @@
       </div>
     </div>
   </div>
-  <div v-else class="loginWrapper setupPassword">
+  <!-- <div v-else class="loginWrapper setupPassword">
     <div class="logIn">
       <h2>Invalid Code</h2>
     </div>
-  </div>
+  </div> -->
   <Loader />
 </template>
 

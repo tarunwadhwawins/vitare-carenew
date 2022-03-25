@@ -51,6 +51,7 @@ export const validateCode = async ({ commit }, data) => {
 	.catch((error) => {
 		if(error.response.status == 404) {
       commit('validateCode', false)
+      errorSwal('Invalid Code')
 		}
 		else if(error.response.status == 500) {
       commit('validateCode', false)
