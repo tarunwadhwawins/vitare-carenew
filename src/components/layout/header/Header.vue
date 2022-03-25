@@ -269,7 +269,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watchEffect } from "vue";
+import { defineComponent, ref, computed, watchEffect,onMounted } from "vue";
 import AddAppointment from "@/components/modals/AddAppointment";
 import TasksModal from "@/components/modals/TasksModal";
 import PatientsModal from "@/components/modals/PatientsModal";
@@ -331,8 +331,12 @@ export default defineComponent({
 
     watchEffect(() => {
       store.dispatch("getNotifications");
-    });
 
+    });
+onMounted(()=>{
+
+ 
+})
     const appointmentModal = ref(false);
     const addAppt = () => {
       appointmentModal.value = true;

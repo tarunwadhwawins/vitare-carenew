@@ -6,7 +6,7 @@ import {  errorSwal } from '@/commonMethods/commonMethod'
 export const globalCodes = async ({
   commit
 }) => {
-  await ServiceMethodService.common("get", "globalCodeCategory", null, null).then((response) => {
+  await ServiceMethodService.common("get", "globalCodeCategory?all=all", null, null).then((response) => {
 
     commit('globalCodes', response.data.data);
 
