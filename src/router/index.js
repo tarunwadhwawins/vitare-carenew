@@ -127,6 +127,11 @@ const routes = [
     name: 'SetupPassword',
     component: () => import('@/components/setupPassword/SetupPassword'),
   },
+  {
+    path: '/thank-you',
+    name: 'ThankYou',
+    component: () => import('@/components/thankYou/ThankYou'),
+  },
 
 
   {

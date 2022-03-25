@@ -51,8 +51,17 @@
 </template>
 
 <script>
-import { computed, defineComponent, reactive, ref, watchEffect } from "vue";
-import { useRoute } from "vue-router";
+import {
+  computed,
+  defineComponent,
+  reactive,
+  ref,
+  watchEffect
+} from "vue";
+import {
+  useRoute,
+  // useRouter
+} from "vue-router";
 import { useStore } from "vuex";
 import ErrorMessage from "@/components/common/messages/ErrorMessage"
 import Loader from "../loader/Loader"
@@ -64,6 +73,7 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const route = useRoute()
+    // const router = useRouter()
     const code = route.query.code
     const formRef = ref()
 
@@ -89,6 +99,7 @@ export default defineComponent({
           newPassword: setupPasswordForm.newPassword,
           confirmNewPassword: setupPasswordForm.confirmNewPassword,
         }).then(() => {
+          // router.push("thank-you")
           formRef.value.resetFields();
           Object.assign(setupPasswordForm, form)
         })
