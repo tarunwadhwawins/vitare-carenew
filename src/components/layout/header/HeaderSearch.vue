@@ -10,7 +10,7 @@
   :show-arrow="false"
   :filter-option="false"
   :not-found-content="loadingStatus ? undefined : null"
-  :options="data.map((item) => ({label: item.firstName+' '+item.lastName+' '+item.phoneNumber+' '+item.email,value:item.udid?item.udid:item.id }))"
+  :options="data.map((item) => ({label: item.firstName+' '+item.lastName+' '+item.phoneNumber+' '+item.email,value:item.udid?item.udid+'-'+item.type:item.id+'=>'+item.type }))"
   @search="handleSearch"
   @change="handleChange"
   size="large">

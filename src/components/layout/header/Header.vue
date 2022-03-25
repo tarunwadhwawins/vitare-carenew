@@ -406,7 +406,13 @@ export default defineComponent({
       return store.state.common.getNotifications;
     });
     const handleChange = (value)=>{
-        router.push({ name: 'PatientSummary', params: { udid: value } })
+        // console.log('object',value.split('=>'));
+        let checkData = value.split('=>')
+        if(checkData[1]==="Patient"){
+            router.push({ name: 'PatientSummary', params: { udid: checkData[0] } })
+        }else{
+            router.push({ name: 'CoordinatorSummary', params: { udid: checkData[0] } })
+        }
     }
     return {
 
