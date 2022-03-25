@@ -31,6 +31,10 @@ export const updateTimeLogSuccess = async (state, updateTimeLog) => {
   state.updateTimeLog = updateTimeLog;
 }
 
+export const updatePatientTimeLog = async (state, updateTimeLog) => {
+  state.updatePatientTimeLog = updateTimeLog;
+}
+
 export const latestTimeLogSuccess = async (state, latestTimeLog) => {
   if(latestTimeLog && latestTimeLog.length > 0) {
     latestTimeLog[0].date = dateOnlyFormat(latestTimeLog[0].date);
