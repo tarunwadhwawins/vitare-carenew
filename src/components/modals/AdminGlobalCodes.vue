@@ -7,8 +7,9 @@
             <a-col :sm="8" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('globalCodes.category')" name="globalCodeCategory" :rules="[{ required: true, message: $t('globalCodes.category')+' '+$t('global.validation')  }]">
-                        <a-select v-if="globalCodeCategories" ref="select" v-model:value="globalCodeForm.globalCodeCategory" style="width: 100%" size="large" placeholder="Select Device Type" :options="globalCodeCategories.map((item) => ({label: item.name, value: item.id }))" @change="checkChangeInput()"></a-select>
+                        <!-- <a-select v-if="globalCodeCategories" ref="select" v-model:value="globalCodeForm.globalCodeCategory" style="width: 100%" size="large" placeholder="Select Device Type" :options="globalCodeCategories.map((item) => ({label: item.name, value: item.id }))" @change="checkChangeInput()"></a-select> -->
                         <!-- <AutoComplete :options="globalCodeCategories.map((item) => ({label: item.name, value: item.id }))"  v-if="globalCodeCategories" v-model:value="globalCodeForm.globalCodeCategory" @change="checkChangeInput()" /> -->
+                            <GlobalCodeDropDown  v-if="globalCodeCategories" @change="checkChangeInput()"  v-model:value="globalCodeForm.globalCodeCategory" :globalCode="globalCode.globalCodeCategories"/>
                     </a-form-item>
                 </div>
             </a-col>
@@ -59,10 +60,12 @@ import {
 import {
     messages
 } from "../../config/messages";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 export default {
     components: {
         ModalButtons,
-        // AutoComplete
+        // AutoComplete,
+        GlobalCodeDropDown
     },
     props: {
         isAdd: {

@@ -670,7 +670,7 @@
                 <!-- <Insurance /> -->
                 <a-form :model="insuranceData" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="insuranceForm" @finishFailed="insuranceDataFailed">
                     <Loader />
-                    <a-row :gutter="24" v-for=" insuranceName,i in globalCode.insuranceType.globalCode" :key="insuranceName.id">
+                    <a-row :gutter="24" v-for=" insuranceName,i in globalCode.insuranceType" :key="insuranceName.id">
                         <a-col :span="24">
                             <div class="formHeading">
                                 <h2>{{insuranceName.name}}</h2>
