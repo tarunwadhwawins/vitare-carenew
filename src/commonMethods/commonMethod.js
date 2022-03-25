@@ -461,3 +461,5 @@ export function secondsToTime(secs) {
 	}
 	return hours + ':' + minutes + ':' + seconds;
 }
+export const tableYScroller = 700
+export const tableYScrollerCounterPage = 500

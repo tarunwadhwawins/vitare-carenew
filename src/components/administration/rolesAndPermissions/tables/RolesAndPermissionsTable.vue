@@ -1,5 +1,5 @@
 <template>
-<a-table rowKey="id" :columns="rolesColumns" :data-source="meta.rolesList" :scroll="{ x: 900 ,y : 430 }" :pagination=false>
+<a-table rowKey="id" :columns="rolesColumns" :data-source="meta.rolesList" :scroll="{ x: 900 ,y : tableYScroller }" :pagination=false>
     <template #actions="{record}" v-if="arrayToObjact(roleAndPermissions,2)">
         <a-tooltip placement="bottom" v-if="record.id ===1" disabled>
             <template #title disabled>
@@ -61,7 +61,7 @@ import {
 } from 'vue';
 import {
     warningSwal,
-    arrayToObjact
+    arrayToObjact,tableYScroller
 } from "@/commonMethods/commonMethod";
 import {
     messages
@@ -187,7 +187,8 @@ export default {
                         loader.value = true
                         store.state.rolesAndPermissions.rolesMeta = ""
                         store.state.rolesAndPermissions.rolesList = ""
-                        store.dispatch("rolesList", "?page=" + current_page).then(() => {
+                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
+                        store.dispatch("rolesList", "?search="+url+"&page=" + current_page).then(() => {
                             loadMoredata()
                         })
                     }
@@ -222,6 +223,7 @@ export default {
             copyRole,
             UpdateRoleStatus,
             meta,
+            tableYScroller
         }
     }
 }

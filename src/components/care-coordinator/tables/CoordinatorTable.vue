@@ -1,5 +1,5 @@
 <template>
-<a-table rowKey="id" :data-source="meta.staffs" :scroll="{ y: 350 ,x: 1020}" :pagination=false :columns="meta.columns">
+<a-table rowKey="id" :data-source="meta.staffs" :scroll="{ y: tableYScrollerCounterPage ,x: 1020}" :pagination=false :columns="meta.columns">
     <template #name="{text,record}">
         <!-- <router-link :to="linkTo">{{ text.text }}</router-link> -->
         <router-link @click="staffSummery(record.uuid)" :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}">{{ text }}</router-link>
@@ -27,7 +27,7 @@ import {
     WarningOutlined
 } from "@ant-design/icons-vue"
 import {
-    dateFormat
+    dateFormat,tableYScrollerCounterPage
 } from "../../../commonMethods/commonMethod"
 import {
     onMounted
@@ -67,7 +67,8 @@ export default {
                         meta.staffMeta = ""
                         data = meta.staffs
                         store.state.careCoordinator.staffs = ""
-                        store.dispatch("staffs", "?search="+store.getters.searchTable+"&page=" + current_page).then(() => {
+                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
+                        store.dispatch("staffs", "?search="+url+"&page=" + current_page).then(() => {
                             loadMoredata()
                         })
 
@@ -98,7 +99,8 @@ export default {
 
             meta,
             staffSummery,
-            dateFormat
+            dateFormat,
+            tableYScrollerCounterPage
         }
     },
 };
