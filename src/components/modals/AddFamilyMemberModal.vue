@@ -34,7 +34,7 @@
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="familyContactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
 							<!-- <a-select v-model:value="familyMemberForm.familyContactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" /> -->
-								<GlobalCodeDropDown  v-model:value="emergencyContactForm.familyContactType" mode="multiple" :globalCode="globalCode.pmOfcontact"/>
+								<GlobalCodeDropDown  v-model:value="familyMemberForm.familyContactType" mode="multiple" :globalCode="globalCode.pmOfcontact"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactType?errorMsg.familyContactType[0]:''" />
 						</a-form-item>
 					</div>
@@ -44,7 +44,7 @@
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="familyContactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
 							<!-- <a-select v-model:value="familyMemberForm.familyContactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))" /> -->
-								<GlobalCodeDropDown  v-model:value="emergencyContactForm.familyContactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact"/>
+								<GlobalCodeDropDown  v-model:value="familyMemberForm.familyContactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactTime?errorMsg.familyContactTime[0]:''" />
 						</a-form-item>
 					</div>

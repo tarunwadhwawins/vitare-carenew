@@ -17,7 +17,7 @@
                 <a-select-option value="" hidden>Select Category</a-select-option>
                 <a-select-option v-for="category in noteCategories.globalCode" :key="category.id">{{ category.name }}</a-select-option>
               </a-select> -->
-              <GlobalCodeDropDown @change="handleChange"  v-model:value="addNoteForm.category" :globalCode="globalCode.noteCategories"/>
+              <GlobalCodeDropDown @change="handleChange"  v-model:value="addNoteForm.category" :globalCode="noteCategories"/>
             </a-form-item>
           </div>
         </a-col>
@@ -29,7 +29,7 @@
                 <a-select-option value="" hidden>Select Type</a-select-option>
                 <a-select-option v-for="type in noteTypes.globalCode" :key="type.id">{{ type.name }}</a-select-option>
               </a-select> -->
-              <GlobalCodeDropDown @change="handleChange"  v-model:value="addNoteForm.type" :globalCode="globalCode.noteTypes"/>
+              <GlobalCodeDropDown @change="handleChange"  v-model:value="addNoteForm.type" :globalCode="noteTypes"/>
             </a-form-item>
           </div>
         </a-col>

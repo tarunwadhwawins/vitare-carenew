@@ -19,7 +19,7 @@
                 </h2>
               </a-col>
               <a-col :span="12">
-                <SearchField @change="searchData"/>
+                <SearchField endPoint="inventory" />
               </a-col>
               <a-col :span="12">
                 <div class="text-right mb-24">
@@ -47,7 +47,7 @@ import InventoryModal from "@/components/modals/InventoryModal";
 import InventoryTable from "@/components/administration/inventory/tables/InventoryTable";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
-import { ref } from "vue";
+import { ref,onUnmounted } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -84,7 +84,9 @@ export default {
         })
       })
     }
-    
+    onUnmounted(()=>{
+            store.dispatch("searchTable",'')
+        })
     return {
       isAdd,
       buttonName: "Add Inventory",

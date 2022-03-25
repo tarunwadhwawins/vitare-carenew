@@ -1,7 +1,7 @@
 <template>
 <a-col :span="24">
     
-    <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.manageProgramList" :scroll="{ x: 900 ,y : 430 }" @change="onChange" :pagination=false>
+    <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.manageProgramList" :scroll="{ x: 900 ,y : tableYScroller }" @change="onChange" :pagination=false>
         <template #actions="text">
             <a-tooltip placement="bottom" v-if="arrayToObjact(programsPermissions,16)">
                 <template #title>
@@ -42,7 +42,7 @@ import {
 } from "@ant-design/icons-vue";
 import {
     warningSwal,
-    arrayToObjact
+    arrayToObjact,tableYScroller
 } from "@/commonMethods/commonMethod";
 import {
     messages
@@ -120,7 +120,8 @@ export default {
                         loader.value = true
                         store.state.program.programMeta = ""
                         store.state.programs.manageProgramList = ""
-                        store.dispatch("manageProgramList", "?search="+store.getters.searchTable+"&page=" + current_page).then(() => {
+                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
+                        store.dispatch("manageProgramList", "&search="+url+"&page=" + current_page).then(() => {
                             loadMoredata()
                         })
                     }
@@ -153,7 +154,8 @@ export default {
 
             deleteProgram,
             editProgram,
-            UpdateProgramStatus
+            UpdateProgramStatus,
+            tableYScroller
         };
     },
 };

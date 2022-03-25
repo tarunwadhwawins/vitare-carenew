@@ -1,7 +1,7 @@
 
 <template>
 <a-col :sm="24" :xs="24" >
-    <a-table  rowKey="id" :columns="meta.timeLogReportColumns" :pagination="false" :data-source="meta.timeLogReportList" :scroll="{ y: 450 }" @change="onChange">
+    <a-table  rowKey="id" :columns="meta.timeLogReportColumns" :pagination="false" :data-source="meta.timeLogReportList" :scroll="{ y: tableYScroller }" @change="onChange">
         <template #staff="{record}">
             <span>{{record.staff}}</span>
         </template>
@@ -49,7 +49,7 @@ import AuditTimeLog from "../modals/AuditTimeLogs";
 import { messages } from "@/config/messages";
 import InfiniteLoader from "@/components/loader/InfiniteLoader";
 import { useStore } from "vuex";
-import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
+import { warningSwal,arrayToObjact,tableYScroller } from "@/commonMethods/commonMethod";
 import Loader from "../loader/Loader" 
 
 export default {
@@ -151,6 +151,7 @@ export default {
       loader,
       visible,
       meta,
+      tableYScroller
      
     };
   },

@@ -4,8 +4,9 @@ export const addInventorySuccess = async (state, inventory) => {
   state.addInventory = inventory;
 }
 
-export const inventoriesListSuccess = async (state, inventories) => {
-  state.inventoriesList = inventories;
+export const inventory = async (state, inventories) => {
+  state.inventoriesList = inventories.data;
+  state.inventoryMeta = inventories.meta.pagination
 }
 
 export const inventoryDetailsSuccess = async (state, inventory) => {
