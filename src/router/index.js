@@ -125,7 +125,12 @@ const routes = [
   {
     path: '/setup-password',
     name: 'SetupPassword',
-    component: () => import('@/views/setup-password/SetupPassword'),
+    component: () => import('@/components/setupPassword/SetupPassword'),
+  },
+  {
+    path: '/thank-you',
+    name: 'ThankYou',
+    component: () => import('@/components/thankYou/ThankYou'),
   },
 
 
