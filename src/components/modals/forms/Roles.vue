@@ -4,24 +4,6 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
               <a-form-item :label="$t('careCoordinator.roles.role')" name="roles" :rules="[{ required: true, message: $t('careCoordinator.roles.role')+' '+$t('global.validation') }]">
-                <!-- <a-select v-if="staffs.roles!=null" v-model:value="roles.roles"  size="large" placeholder="Select Role" style="width: 100%" :options="staffs.roles.map((item) => ({ label: item.name?item.name:'', value: item.id }))" @change="checkChangeInput()" /> -->
-              <!-- <a-select
-                ref="select"
-                v-model:value="roles.roles"
-                style="width: 100%"
-                :show-search="true"
-                placeholder="input search text"
-                :show-arrow="true"
-                :filter-option="false"
-                :not-found-content="loadingStatus ? undefined : null"
-                :options="roleData"
-                @search="handleRoleSearch"
-                @change="handleRoleChange"
-                size="large">
-                <template  v-if="loadingStatus" #notFoundContent>
-                  <a-spin size="small" />
-                </template>
-              </a-select> -->
               <RoleDropDown v-model:value="roles.roles" @handleRoleChange="handleRoleChange($event)"/>
               </a-form-item>
             </div>
