@@ -28,26 +28,41 @@
                 <a class="icons">
                     <DeleteOutlined /></a>
             </a-tooltip> -->
+            <a-tooltip placement="bottom" @click="viewTimeLog(record.id)">
+              <template #title>
+                <span>{{ $t("common.view") }}</span>
+              </template>
+              <a class="icons">
+                <EyeOutlined />
+              </a>
+            </a-tooltip>
         </template>
         <template #active="key">
             <a-switch v-model:checked="checked[key.record.key]" />
         </template>
     </a-table>
     <Loader/>
-    <InfiniteLoader v-if="loader" />
+    
     <AuditTimeLog v-model:visible="visible" @saveAuditTimeLog="handleOk($event)" :Id="Id" />
 </a-col>
+<a-modal width="1100px" centered v-model:visible="viewReport" title="Audit Time Log Change Report" @ok="handleOk">
+  <a-table  rowKey="id" :columns="columns" :data-source="modalData">
+
+  </a-table>
+  <TableLoader/>
+</a-modal>
 </template>
     
 <script>
 import { ref, onMounted, computed } from "vue";
 import { 
   // DeleteOutlined,
-   EditOutlined 
+   EditOutlined,
+   EyeOutlined 
 } from "@ant-design/icons-vue";
 import AuditTimeLog from "../modals/AuditTimeLogs";
 import { messages } from "@/config/messages";
-import InfiniteLoader from "@/components/loader/InfiniteLoader";
+import TableLoader from "@/components/loader/TableLoader";
 import { useStore } from "vuex";
 import { warningSwal,arrayToObjact,tableYScroller } from "@/commonMethods/commonMethod";
 import Loader from "../loader/Loader" 
@@ -55,8 +70,9 @@ import Loader from "../loader/Loader"
 export default {
   components: {
     // DeleteOutlined,
+    EyeOutlined,
     EditOutlined,
-    InfiniteLoader,
+    TableLoader,
     AuditTimeLog,
     Loader,
   },
@@ -64,6 +80,7 @@ export default {
   setup() {
     const store = useStore();
     const visible = ref(false);
+     const viewReport = ref(false);
     const Id =ref()
     const handleOk = () => {
       visible.value = false;
@@ -74,7 +91,12 @@ export default {
       visible.value = true;
       Id.value = id
     }
-
+    function viewTimeLog(id) {
+      store.dispatch("timeLogView", id);
+      viewReport.value=true
+    }
+    const modalData = store.getters.timeLogView
+ const columns = store.getters.viuewTimeReportModal
     function deleteTimeLog(id) {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
@@ -151,7 +173,11 @@ export default {
       loader,
       visible,
       meta,
-      tableYScroller
+      tableYScroller,
+      viewTimeLog,
+      modalData,
+            columns,
+            viewReport
      
     };
   },

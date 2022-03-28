@@ -20,7 +20,17 @@ export const timeLogReportList = async ({ commit }, page) => {
 		}
 	})
 }
-
+export const timeLogView = async ({ commit }, data) => {
+	commit('loadingTableStatus', true)
+	await ServiceMethodService.common("get", 'changeAuditLog', data, null).then((response) => {
+		commit('timeLogView', response.data.data);
+		commit('loadingTableStatus', false)
+		
+	}).catch((error) => {
+		commit('loadingTableStatus', false)
+		commit('errorMsg', error.response.data)
+	})
+}
 export const reportExport = async ({ commit }, data) => {
 	await ServiceMethodService.common("post", `export/report/request`, null, data).then((response) => {
 		commit('reportExport', response.data);

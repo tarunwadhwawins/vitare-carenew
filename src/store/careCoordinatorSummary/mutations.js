@@ -14,7 +14,7 @@ export const staffSummaryAppointment= async (state, data) => {
           title: "Patient Name",
           dataIndex: "patient",
           slots: {
-            customRender: "patientName",
+            customRender: "patient",
           },
         },
         {
@@ -64,7 +64,7 @@ export const staffSummaryPatient= async (state, data) => {
           title: "Name",
           dataIndex: "firstName",
           slots: {
-            customRender: "name",
+            customRender: "firstName",
           },
         },
         {

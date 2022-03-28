@@ -162,7 +162,7 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, watchEffect } from "vue";
 import {
   // DeleteOutlined,
   EditOutlined,
@@ -217,7 +217,7 @@ export default {
     const clearData = ref(false)
     console.log("id=>", router.params.udid);
 
-    onMounted(() => {
+    watchEffect(() => {
       store.dispatch("staffSummary", router.params.udid);
       store.dispatch("availabilityList", router.params.udid);
       store.dispatch("staffContactList", router.params.udid);

@@ -220,24 +220,23 @@
                 </a>
                 <template #overlay>
                   <a-menu class="headerDropdown">
-                  <router-link  :to="{ name: 'CoordinatorSummary', params: { udid:userName.user.staffUdid  }}">
                     
-                      <a-menu-item key="0">
-                        <a href="javascript:void(0)">{{
-                          $t("header.myProfile")
-                        }}</a>
-                      </a-menu-item>
-                  </router-link>
-                  
-                   
-                    <a-menu-item key="3">
-                      <router-link to="reset-password"
-                        >Reset Password</router-link
-                      >
+                    <a-menu-item key="0">
+                      <router-link :to="{ name: 'CoordinatorSummary', params: { udid: userName.user.staffUdid  }}">
+                        {{ $t("header.myProfile") }}
+                      </router-link>
                     </a-menu-item>
+                    
+                    <a-menu-item key="3">
+                      <router-link :to="{ name: 'ResetPassword' }" >
+                        Reset Password
+                      </router-link>
+                    </a-menu-item>
+
                     <a-menu-item key="3" @click="logoutUser">
                       <a href="javascript:void(0)">Logout</a>
                     </a-menu-item>
+
                   </a-menu>
                 </template>
               </a-dropdown>
