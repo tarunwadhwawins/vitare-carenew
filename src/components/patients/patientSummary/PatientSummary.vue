@@ -15,15 +15,15 @@
             <a-col :xl="11" :lg="14">
               <div class="pageTittle">
                 <div class="filter">
-                  <a-button @click="showButton1" :class="button == 1 ? 'active' : ''" >Default</a-button>
-                  <a-button @click="showButton2" :class="button == 2 ? 'active' : ''" >Timeline</a-button>
-                  <a-button @click="showButton3" :class="button == 3 ? 'active' : ''" >Care Plan</a-button>
-                  <a-button @click="showButton4" :class="button == 4 ? 'active' : ''" >Patient Vitals</a-button>
+                    <a-button @click="showButton1() ; actionTrack(paramsId,323,'patient')" :class="button == 1 ? 'active' : ''" >Default</a-button>
+                    <a-button @click="showButton2() ; actionTrack(paramsId,285,'patient')" :class="button == 2 ? 'active' : ''" >Timeline</a-button>
+                    <a-button @click="showButton3() ; actionTrack(paramsId,286,'patient')" :class="button == 3 ? 'active' : ''" >Care Plan</a-button>
+                    <a-button @click="showButton4() ; actionTrack(paramsId,287,'patient')" :class="button == 4 ? 'active' : ''" >Patient Vitals</a-button>
                 </div>
               </div>
             </a-col>
             <a-col :xl="8" :lg="24">
-              <div class="timer">
+              <div class="timer" @click="actionTrack(paramsId,288)">
                 <h3>{{$t('patientSummary.currentSession')}} : {{formattedElapsedTime}}</h3>
                 <a-button v-if="startOn" class="primaryBtn" @click="start">{{$t('patientSummary.startTimer')}}</a-button>
                 <a-button v-if="!startOn" class="primaryBtn" id="timer" @click="showStopTimerModal">{{$t('patientSummary.stopTimer')}}</a-button>
@@ -73,6 +73,7 @@ import { useRoute  } from 'vue-router';
 import {
   timeStamp,
   getSeconds,
+  actionTrack
 } from '@/commonMethods/commonMethod';
 const value = ref(dayjs("12:08", "HH:mm"));
 
@@ -303,17 +304,17 @@ export default {
     })
 
     return {
+      paramsId:route.params.udid,
+      actionTrack,
       showStopTimerModal,
       formattedElapsedTime,
       isTimeLog,
       start,
-
       handleOkcustom,
       custom,
       next,
       prev,
       handleChange,
-
       visible,
       visible1,
       visible2,

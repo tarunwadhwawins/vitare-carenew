@@ -1,6 +1,6 @@
 
 <template>
-<a-row v-if="arrayToObjact(patientsPermissions,62)">
+<a-row v-if="arrayToObjact(patientsPermissions,62)" >
     <a-col :span="24" >
         <ShowModalButton @isVisible="showModal($event)" :headingText="$t('patient.patients')" :buttonText="$t('patient.addNewPatients')" />
     </a-col>

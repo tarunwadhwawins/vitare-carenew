@@ -13,7 +13,7 @@
             <template #title>
                 <span>{{$t('global.delete')}}</span>
             </template>
-            <a class="icons" @click="deleteDocument(text.record.id)">
+            <a class="icons" @click="deleteDocument(text.record.id);actionTrack(paramsId,318,'patient')">
                 <DeleteOutlined /></a>
         </a-tooltip>
     </template>
@@ -25,7 +25,7 @@ import { computed } from "vue";
 import { DeleteOutlined, FileOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { warningSwal } from "@/commonMethods/commonMethod";
+import { warningSwal,actionTrack } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 export default {
   components: {
@@ -38,7 +38,6 @@ export default {
   setup(props) {
     const store = useStore();
     const router = useRoute();
-
     function deleteDocument(id) {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
@@ -63,6 +62,8 @@ export default {
       return store.state.patients.documentColumns;
     });
     return {
+      actionTrack,
+      paramsId:router.params.udid,
       documentColumns,
       documentsData,
       deleteDocument,
