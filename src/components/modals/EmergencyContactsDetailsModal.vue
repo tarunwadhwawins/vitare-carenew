@@ -120,14 +120,14 @@ export default {
         dataIndex: "gender",
         key: "gender",
       },
-      {
-        title: "Is Primary",
-        dataIndex: "isPrimary",
-        key: "isPrimary",
-        /* slots: {
-					customRender: "isPrimary"
-				}, */
-      },
+      // {
+      //   title: "Is Primary",
+      //   dataIndex: "isPrimary",
+      //   key: "isPrimary",
+      //   /* slots: {
+			// 		customRender: "isPrimary"
+			// 	}, */
+      // },
       {
         title: "Action",
         dataIndex: "action",
