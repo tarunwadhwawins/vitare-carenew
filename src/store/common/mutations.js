@@ -116,6 +116,9 @@ export const staffListSuccess = (state, data) => {
 export const loadingStatus = (state, data) => {
     state.loadingStatus = data
 }
+export const loadingTableStatus = (state, data) => {
+    state.loadingTableStatus = data
+}
 
 
 export const dropdownLoadingStatus = (state, data) => {
