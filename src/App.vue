@@ -46,6 +46,7 @@
         store.dispatch("timeLine", 122)
         store.dispatch("permissions")
         store.dispatch("appointmentConference")
+        store.dispatch('notificationList')
         
         //       moment.locale(val);
       });

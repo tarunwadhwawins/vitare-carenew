@@ -117,6 +117,11 @@ export const loadingStatus = (state, data) => {
     state.loadingStatus = data
 }
 
+
+export const dropdownLoadingStatus = (state, data) => {
+    state.dropdownLoadingStatus = data
+}
+
 export const vitalFieldsList = (state, fields) => {
     state.vitalFieldsList = fields
 }
@@ -146,6 +151,12 @@ export const checkChangeInput = (state, data) => {
   export const getNotifications = (state, data) => {
     state.getNotifications = data
   }
+
+  export const notificationList = (state, data) => {
+    state.notificationList = data;
+  }
+
+  
   export const searchTable = (state, data) => {
     state.searchTable = data
   }
