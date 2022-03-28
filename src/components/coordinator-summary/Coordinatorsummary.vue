@@ -162,7 +162,7 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { ref, computed,onMounted } from "vue";
+import { ref, computed, watchEffect } from "vue";
 import {
   // DeleteOutlined,
   EditOutlined,
@@ -215,18 +215,20 @@ export default {
     const store = useStore();
     const router = useRoute();
     const clearData = ref(false)
-    console.log("id=>", router.params.udid);
+    //console.log("id=>", router.params.udid);
 
-    
-  onMounted(()=>{
-    store.dispatch("staffSummary", router.params.udid);
+    watchEffect(() => {
+        if(router.params.udid){
+      store.dispatch("staffSummary", router.params.udid);
       store.dispatch("availabilityList", router.params.udid);
       store.dispatch("staffContactList", router.params.udid);
       store.dispatch("roleList", router.params.udid);
       store.dispatch("staffDocuments", router.params.udid);
       store.dispatch("staffSummaryAppointment", router.params.udid);
       store.dispatch("staffSummaryPatient", router.params.udid);
-  })
+        }
+    });
+
     const staffs = computed(() => {
       return store.state.careCoordinator;
     });
