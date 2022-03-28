@@ -81,7 +81,12 @@ export default defineComponent({
       },
     ];
 
+    function showModal(){
+      // console.log(object);
+    }
+
     return {
+      showModal,
       paramsId:route.params.udid,
       actionTrack,
       notesList,
