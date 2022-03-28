@@ -43,23 +43,6 @@ export default {
     //     SelectLanguage,
     //   },
     setup() {
-<<<<<<< HEAD
-        const store = useStore()
-         //const auth = localStorage.getItem("auth");
-        const locale = ref(enUS.locale)
-
-        watchEffect(() => {
-            
-                store.dispatch("globalCodes")
-                store.dispatch("timeLine", 122)
-                store.dispatch("permissions")
-                store.dispatch("appointmentConference")
-           
-            //       moment.locale(val);
-        });
-        onMounted(() => {
-
-=======
       const store = useStore()
       //     const auth = localStorage.getItem("auth");
       const locale = ref(enUS.locale)
@@ -75,7 +58,6 @@ export default {
       });
           onMounted(() => {
           
->>>>>>> ee61c83019c526c5e1a515f485b3f5eeeeeee969
             document.body.classList.add("test");
         });
         return {
