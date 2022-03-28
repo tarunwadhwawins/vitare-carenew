@@ -47,6 +47,7 @@
         </a-layout>
     </a-layout>
 </div>
+
 </template>
 
 <script>
@@ -68,6 +69,7 @@ import {
 } from "vuex";
 import TimeLogTable from "./TimeLogTable"
 import moment from "moment"
+
 export default {
     components: {
         Header,
@@ -88,7 +90,7 @@ export default {
             store.getters.timeLogReports.value.timeLogReportList = ""
             store.dispatch("timeLogReportList")
         })
-
+ 
         function updateAuditTime() {
             store.getters.timeLogReports.value.timeLogReportList = ""
             startDate.value =auditTimeLog.startDate ? timeStamp(startimeAdd(moment(auditTimeLog.startDate))): ''
@@ -113,6 +115,7 @@ export default {
             })
         }
         return {
+           
             linkTo,
             updateAuditTime,
             checked,
