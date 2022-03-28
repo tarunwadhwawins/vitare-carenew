@@ -16,6 +16,7 @@
   size="large">
   <template  v-if="loadingStatus" #notFoundContent>
     <a-spin size="small" />
+    <p>Data not found!</p>
   </template>
 </a-select>    
 
@@ -49,7 +50,7 @@ export default defineComponent({
 
 
     const handleStaffSearch = (val) => {
-      store.commit('loadingStatus', true)
+      store.commit('dropdownLoadingStatus', true)
       staffData.value=[];
       Services.singleDropdownSearch(val, (d) => (staffData.value = d), 'staff')
     };
@@ -66,7 +67,7 @@ export default defineComponent({
 
 
     return {
-      loadingStatus:store.getters.loadingStatus,
+      loadingStatus:store.getters.dropdownLoadingStatus,
       handleStaffChange,
       handleStaffSearch,
       staffData,

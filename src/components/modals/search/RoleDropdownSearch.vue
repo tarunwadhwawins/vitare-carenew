@@ -15,6 +15,7 @@
   size="large">
   <template  v-if="loadingStatus" #notFoundContent>
     <a-spin size="small" />
+    <p>Data not found!</p>
   </template>
 </a-select>
 </template>
@@ -45,7 +46,7 @@ export default defineComponent({
 
 
     const handleRoleSearch = (val) => {
-      store.commit('loadingStatus', true)
+      store.commit('dropdownLoadingStatus', true)
       roleData.value=[];
      Services.singleDropdownSearch(val, (d) => (roleData.value = d), 'roleList')
     };
@@ -57,7 +58,7 @@ export default defineComponent({
 
 
     return {
-      loadingStatus:store.getters.loadingStatus,
+      loadingStatus:store.getters.dropdownLoadingStatus,
       handleRoleChange,
       handleRoleSearch,
       roleData,

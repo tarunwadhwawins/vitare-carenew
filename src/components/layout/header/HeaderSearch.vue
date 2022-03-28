@@ -16,6 +16,7 @@
   size="large">
   <template  v-if="loadingStatus" #notFoundContent>
     <a-spin size="small" />
+    <p>Data not found!</p>
   </template>
   </a-select>   
 </template>
@@ -43,7 +44,7 @@ export default defineComponent({
 
 
     const handleSearch = (val) => {
-      store.commit('loadingStatus', true)
+      store.commit('dropdownLoadingStatus', true)
       Services.headerSearch(val, (d) => (data.value = d), 'search')
     };
 
@@ -54,7 +55,7 @@ export default defineComponent({
 
 
     return {
-      loadingStatus:store.getters.loadingStatus,
+      loadingStatus:store.getters.dropdownLoadingStatus,
       handleChange,
       handleSearch,
       data,

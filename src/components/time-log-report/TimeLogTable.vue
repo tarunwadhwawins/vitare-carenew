@@ -120,7 +120,7 @@ export default {
     })
 
     function loadMoredata() {
-      const newData = meta.value.timeLogReportList;
+      const newData = meta.timeLogReportList;
      
       newData.forEach((element) => {
         data.push(element);

@@ -123,3 +123,5 @@ export const loginFailure = (state, error) => {
 export const accessPermission = (state, data) => {
   state.accessPermission = data;
 }
+
+

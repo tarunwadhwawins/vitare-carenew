@@ -91,14 +91,42 @@ export const activeCptCodes = async ({ commit}) => {
 
 
 
-export const getNotifications = async ({ commit}) => {
-  await ServiceMethodService.common("get", API_ENDPOINTS['notification'], null, null).then((response) => {
+// export const getNotifications = async ({ commit}) => {
+//   await ServiceMethodService.common("get", API_ENDPOINTS['notification'], null, null).then((response) => {
+//     commit('getNotifications', response.data.data);
+//     commit('loadingStatus', false)
+//   }).catch(() => {
+//     commit('loadingStatus', false)
+//   })
+// }
+
+export const notificationList = async ({commit}) => {
+  await ServiceMethodService.common("get", `notification/isReadList`, null, null).then((response) => {
     commit('getNotifications', response.data.data);
-    commit('loadingStatus', false)
-  }).catch(() => {
-    commit('loadingStatus', false)
+    commit('notificationList', response.data.data.length);
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
   })
 }
+
+
+export const isReadUpdateNotification = async ({
+  commit
+}, id) => {
+
+  await ServiceMethodService.common("put", `notification/isRead/${id}`, null, true).then((response) => {
+    commit('isReadUpdateNotification', response.data.data);
+  }).catch((error) => {
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      commit('errorMsg', error.response.data.message)
+    }
+  })
+}
+
 export const searchTable = async ({ commit},search) => {
   commit("searchTable",search)
 }

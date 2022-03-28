@@ -48,6 +48,12 @@ class ServiceMethodService {
     }
     //login method
     login(data) {
+        data={
+        email: data.email,
+        password: data.password,
+        deviceType:'web',
+        deviceToken:localStorage.getItem('fireBaseToken')
+        }
         return axios.post(API_URL + "login", data, { headers: authHeader() })
     }
 
@@ -68,7 +74,7 @@ class ServiceMethodService {
                 .then((d) => {
                     //   console.log("data", d.data.data);
                     if (d.data.data.length > 0) {
-                        store.commit('loadingStatus', false)
+                        store.commit('dropdownLoadingStatus', false)
                     }
                     if (currentValue === value) {
                         const result = d.data.data;
@@ -88,13 +94,13 @@ class ServiceMethodService {
                 }).catch((error) => {
                     if (error.response.status === 422) {
                         store.commit('errorMsg', error.response.data)
-                        store.commit('loadingStatus', false)
+                        store.commit('dropdownLoadingStatus', false)
                     } else if (error.response.status === 500) {
                         errorSwal(error.response.data.message)
-                        store.commit('loadingStatus', false)
+                        store.commit('dropdownLoadingStatus', false)
                     } else if (error.response.status === 401) {
                         errorSwal(error.response.data.message)
-                        store.commit('loadingStatus', false)
+                        store.commit('dropdownLoadingStatus', false)
                     }
                 });
         }
@@ -103,7 +109,7 @@ class ServiceMethodService {
 
 
     headerSearch(value, callback, endpoint) {
-        if (timeout && value!='') {
+        if (timeout) {
             clearTimeout(timeout);
             timeout = null;
         }
@@ -117,7 +123,7 @@ class ServiceMethodService {
                 .then((response) => response)
                 .then((d) => {
                     if (d.data.data.length > 0) {
-                        store.commit('loadingStatus', false)
+                        store.commit('dropdownLoadingStatus', false)
                     }
                     if (currentValue === value) {
                         const result = d.data.data;
@@ -129,13 +135,13 @@ class ServiceMethodService {
                 }).catch((error) => {
                     if (error.response.status === 422) {
                         store.commit('errorMsg', error.response.data)
-                        store.commit('loadingStatus', false)
+                        store.commit('dropdownLoadingStatus', false)
                     } else if (error.response.status === 500) {
                         errorSwal(error.response.data.message)
-                        store.commit('loadingStatus', false)
+                        store.commit('dropdownLoadingStatus', false)
                     } else if (error.response.status === 401) {
                         errorSwal(error.response.data.message)
-                        store.commit('loadingStatus', false)
+                        store.commit('dropdownLoadingStatus', false)
                     }
                 });
         }

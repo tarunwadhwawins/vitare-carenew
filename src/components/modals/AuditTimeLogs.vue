@@ -2,26 +2,23 @@
 <a-modal width="1000px" title="Edit Audit Time Log" :footer="null" :maskClosable="false" @cancel="closeModal()" centered>
     <a-form :model="auditTimeLog" name="auditTimeLog" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="updateAuditTime" @finishFailed="auditTimeLogFailed">
         <a-row :gutter="24">
-            <!-- <a-col :md="12" :sm="12" :xs="24">
-                <div class="form-group">
-                    <a-form-item :label="$t('timeLogReport.staff')" name="staff" :rules="[{ required: true, message: $t('timeLogReport.staff')+' '+$t('global.validation') }]">
-                        <a-select ref="select" v-model:value="auditTimeLog.staff" style="width: 100%" size="large">
-                            <a-select-option value="" disabled>Select Staff</a-select-option>
-                            <a-select-option v-for="staff in staffList" :key="staff.id">{{ staff.fullName }}</a-select-option>
-                        </a-select>
-                    </a-form-item>
+        
+            <a-col :sm="12" :xs="24">
+                <div class="form-group" >
+                  <a-form-item :label="$t('timeLogs.category')" name="categoryId" :rules="[{ required: true, message: $t('timeLogs.category')+' '+$t('global.validation')  }]">
+                     <GlobalCodeDropDown v-model:value="auditTimeLog.categoryId" :globalCode="timeLogCategories"/> 
+                  </a-form-item>
                 </div>
-            </a-col>
-            <a-col :md="12" :sm="12" :xs="24"> 
-                <div class="form-group">
-                    <a-form-item :label="$t('timeLogReport.patient')" name="patient" :rules="[{ required: true, message: $t('timeLogReport.patient')+' '+$t('global.validation') }]">
-                        <a-select ref="select" v-model:value="auditTimeLog.patient" style="width: 100%" size="large">
-                            <a-select-option value="" disabled>Select Patient</a-select-option>
-                            <a-select-option v-for="patient in patients" :key="patient.id">{{ patient.fullName}}</a-select-option>
-                        </a-select>
-                    </a-form-item>
+              </a-col>
+              <a-col :sm="12" :xs="24">
+               
+                <div class="form-group"  >
+                  <a-form-item :label="$t('timeLogs.cptCode')" name="cptCodeId" :rules="[{ required: true, message: $t('timeLogs.cptCode')+' '+$t('global.validation')  }]">
+                    
+                  <GlobalCodeDropDown v-model:value="auditTimeLog.cptCodeId" :globalCode="cptCodesList"/>
+                  </a-form-item>
                 </div>
-            </a-col>  -->
+              </a-col>
             <a-col :md="12" :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('timeLogs.timeAmount')" name="timeAmount" :rules="[{ required: true, message: $t('timeLogs.timeAmount')+' '+$t('global.validation')  }]">
@@ -52,9 +49,11 @@ import { defineComponent, reactive, computed, watchEffect } from "vue";
 import { useStore } from "vuex";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { getSeconds} from '@/commonMethods/commonMethod'
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 export default defineComponent({
   components: {
     ModalButtons,
+   GlobalCodeDropDown,
   },
   props:{
       Id:String
@@ -66,7 +65,9 @@ export default defineComponent({
       patient: "",
       timeAmount: "",
       note: "",
-      noteId:""
+      noteId:"",
+      cptCodeId:"",
+      categoryId:""
     });
     const updateAuditTime = () => {
     // auditTimeLog.timeAmount = getSeconds(auditTimeLog.timeAmount)
@@ -74,7 +75,9 @@ export default defineComponent({
           data: {
               timeAmount:getSeconds(auditTimeLog.timeAmount),
               note:auditTimeLog.note,
-              noteId:auditTimeLog.noteId
+              noteId:auditTimeLog.noteId,
+              cptCode: auditTimeLog.cptCodeId,
+              category: auditTimeLog.categoryId,
               },
           id: props.Id,
       });
@@ -86,6 +89,7 @@ export default defineComponent({
     };
 
     
+   
     const staffList = computed(() => {
       return store.state.common.staffList;
     });
@@ -98,9 +102,11 @@ export default defineComponent({
         })
 
     watchEffect(()=>{
+        store.dispatch('activeCptCodes')
         if(props.Id){
+
         Object.assign(auditTimeLog,timeLogReports.value)
-        // console.log('-->',Object.assign(auditTimeLog,timeLogReports.value))
+    console.log('-->',Object.assign(auditTimeLog,timeLogReports.value))
         }
     })
 
@@ -111,6 +117,8 @@ export default defineComponent({
       staffList,
       auditTimeLog,
       patients,
+      cptCodesList:store.getters.activeCptCodes,
+      timeLogCategories:store.getters.timeLogCategories
     };
   },
 });
