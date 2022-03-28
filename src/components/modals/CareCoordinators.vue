@@ -34,7 +34,7 @@
                 <span>Delete</span>
               </template>
               <a class="icons">
-                <DeleteOutlined @click="deleteStaff(record.id)" />
+                <DeleteOutlined @click="deleteStaff(record.id);actionTrack(paramsId,319,'patient')" />
               </a>
             </a-tooltip>
           </template>
@@ -58,7 +58,7 @@ import {
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import Loader from "@/components/loader/Loader";
-import {warningSwal} from "@/commonMethods/commonMethod";
+import {warningSwal,actionTrack} from "@/commonMethods/commonMethod";
 import { messages } from '@/config/messages';
   export default defineComponent({
     components: {
@@ -124,6 +124,8 @@ import { messages } from '@/config/messages';
       }
 
       return {
+        actionTrack,
+        paramsId:route.params.udid,
         careTeamColumns,
         careTeamList,
         deleteStaff,

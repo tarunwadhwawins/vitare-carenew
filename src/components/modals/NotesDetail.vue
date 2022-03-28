@@ -3,7 +3,7 @@
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <div class="text-right mb-24">
-          <a-button class="btn blueBtn" @click="showModal">Export to Excel/PDF</a-button>
+          <a-button class="btn blueBtn" @click="showModal();actionTrack(paramsId,316,'patient')">Export to Excel/PDF</a-button>
         </div>
         <a-table  rowKey="id"  :columns="notesColumns" :data-source="notesList" :pagination="false">
           <template #flags="{ record }">
@@ -19,6 +19,9 @@ import { computed, defineComponent, watchEffect } from "vue";
 import { useStore } from "vuex";
 import Flags from "@/components/common/flags/Flags";
 import { useRoute } from "vue-router";
+import {
+  actionTrack
+} from '@/commonMethods/commonMethod';
 export default defineComponent({
   components: {
     Flags,
@@ -79,6 +82,8 @@ export default defineComponent({
     ];
 
     return {
+      paramsId:route.params.udid,
+      actionTrack,
       notesList,
       notesColumns,
     };

@@ -16,7 +16,7 @@
             <template #title>
                 <span>{{$t('global.delete')}}</span>
             </template>
-            <a class="icons" @click="deleteDocument(record.id)">
+            <a class="icons" @click="deleteDocument(record.id);actionTrack(paramsId,313,'patient')">
                 <DeleteOutlined /></a>
         </a-tooltip>
         </template>
@@ -30,7 +30,7 @@
 import { computed, defineComponent,watchEffect } from "vue";
 import { useStore } from "vuex";
 import {DeleteOutlined} from "@ant-design/icons-vue";
-import { warningSwal } from "@/commonMethods/commonMethod";
+import { warningSwal,actionTrack } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import {useRoute} from "vue-router"
 import Loader from "@/components/loader/Loader"
@@ -91,6 +91,8 @@ export default defineComponent({
     }
 
     return {
+      actionTrack,
+      paramsId:route.params.udid,
       deleteDocument,
       criticalNotesList,
       notesColumns,

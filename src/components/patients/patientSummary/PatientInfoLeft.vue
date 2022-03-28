@@ -1,58 +1,58 @@
 <template>
   <div class="patientInfo" v-if="patientDetails">
-    <div class="patientImg" @click="showModalCustom">
+    <div class="patientImg" @click="showModalCustom()">
       <img v-if="patientDetails.profilePhoto" :src="patientDetails.profilePhoto" alt="image"/>
       <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
       <div class="info">
         <p v-if="patientDetails.patientFullName">Name: {{ patientDetails.patientFullName }}</p>
         <p v-if="patientDetails.dob">DOB : {{ patientDetails.dob }}</p>
         <p v-if="patientDetails.medicalRecordNumber">MRN : {{ patientDetails.medicalRecordNumber }}</p>
-        <p v-if="patientDetails.email"><a href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
-        <p v-if="patientDetails.phoneNumber"><a href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
+        <p v-if="patientDetails.email"><a @click="actionTrack(paramsId,321,'patient')" href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
+        <p v-if="patientDetails.phoneNumber"><a @click="actionTrack(paramsId,322,'patient')" href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
         <p v-if="patientDetails.address">{{ patientDetails.address }}</p>
       </div>
-      <EditOutlined class="editIcon" @click="editPatient({udid: patientDetails.id, id: patientDetails.id})" />
+      <EditOutlined class="editIcon" @click="editPatient({udid: patientDetails.id, id: patientDetails.id});;actionTrack(paramsId,301,'patient')" />
     </div>
 
     <div class="pat-profile">
       <div class="pat-profile-inner">
-        <div class="thumb-head">
-          Flags <PlusOutlined @click="showAddFlagModal"/><br />
+        <div class="thumb-head" >
+          Flags <PlusOutlined @click="showAddFlagModal(); actionTrack(paramsId,289,'patient')"/><br />
         </div>
         <div class="thumb-desc" v-if="latestFlag">
           <Flags :data="latestFlag.flags.data" :flag="latestFlag.color" />
         </div>
       </div>
-      <div class="pat-profile-inner">
+      <div class="pat-profile-inner" >
         <div class="thumb-head">
-          Family Members <PlusOutlined @click="showAddFamilyMemberModal"/><br />
+          Family Members <PlusOutlined @click="showAddFamilyMemberModal();actionTrack(paramsId,290,'patient')"/><br />
         </div>
         <div v-if="familyMembersList && familyMembersList.length > 0" class="thumb-desc">
-          <a href="javascript:void(0)" @click="showFamilyMembersModal" >{{familyMembersList[0].fullName}}</a>
+          <a href="javascript:void(0)" @click="showFamilyMembersModal();actionTrack(paramsId,302,'patient')" >{{familyMembersList[0].fullName}}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
-          Physicians <PlusOutlined @click="showAddPhysicianModal"/><br />
+          Physicians <PlusOutlined @click="showAddPhysicianModal();actionTrack(paramsId,291,'patient')"/><br />
         </div>
         <div v-if="physiciansList && physiciansList.length > 0" class="thumb-desc">
-          <a href="javascript:void(0)" @click="showPhysiciansModal" >{{ physiciansList[0].name }}</a>
+          <a href="javascript:void(0)" @click="showPhysiciansModal();actionTrack(paramsId,305,'patient')" >{{ physiciansList[0].name }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
-          Emergency Contacts <PlusOutlined @click="showAddEmergencyContactModal"/><br />
+          Emergency Contacts <PlusOutlined @click="showAddEmergencyContactModal();actionTrack(paramsId,292,'patient')"/><br />
         </div>
         <div v-if="emergencyContactsList && emergencyContactsList.length > 0" class="thumb-desc">
-          <a href="javascript:void(0)" @click="showEmergencyContactDetailsModal" >{{ emergencyContactsList[0].fullName }}</a>
+          <a href="javascript:void(0)" @click="showEmergencyContactDetailsModal();actionTrack(paramsId,308,'patient')" >{{ emergencyContactsList[0].fullName }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
-        <div class="thumb-head" @click="showCriticalModal">Critical Note
+        <div class="thumb-head" @click="showCriticalModal(); actionTrack(paramsId,293,'patient')">Critical Note
           <PlusOutlined />
         </div>
         <div v-if="criticalNotesList" class="thumb-desc">
-          <a href="javascript:void(0)" @click="showCriticalNotesDetails" >{{ criticalNotesList[0]?criticalNotesList[0].criticalNote.substring(0,20)+'...':'' }}</a>
+          <a href="javascript:void(0)" @click="showCriticalNotesDetails();actionTrack(paramsId,311,'patient')" >{{ criticalNotesList[0]?criticalNotesList[0].criticalNote.substring(0,20)+'...':'' }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -64,7 +64,7 @@
       <div class="pat-profile-inner">
         <div class="thumb-head">
           Appointments
-          <PlusOutlined @click="showAddAppointmentModal"/><br />
+          <PlusOutlined @click="showAddAppointmentModal();actionTrack(paramsId,294,'patient')"/><br />
         </div>
         <div v-if="latestAppointment != null" class="thumb-desc">
           <router-link :to="'/appointment-calendar/'+patientDetails.id">
@@ -75,10 +75,10 @@
 
       <div class="pat-profile-inner">
         <div class="thumb-head">
-          Task <PlusOutlined @click="addTaskModal" /><br />
+          Task <PlusOutlined @click="addTaskModal();actionTrack(paramsId,295,'patient')" /><br />
         </div>
         <div v-if="latestTask != null" class="thumb-desc">
-          <router-link to="/tasks">{{ latestTask[0].title }}</router-link>
+          <router-link to="/tasks" @click="actionTrack(paramsId,314,'patient')">{{ latestTask[0].title }}</router-link>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -94,42 +94,42 @@
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
-          Notes <PlusOutlined @click="addNotesModal" />
+          Notes <PlusOutlined @click="addNotesModal();actionTrack(paramsId,296,'patient')" />
         </div>
         <div v-if="latestNotes != null" class="thumb-desc">
-          <a href="javascript:void(0)" @click="showNotesModal" >{{ latestNotes[0].note }}</a>
+          <a href="javascript:void(0)" @click="showNotesModal();actionTrack(paramsId,324,'patient')" >{{ latestNotes[0].note }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
-          Documents <PlusOutlined @click="addDocumentsModal" />
+          Documents <PlusOutlined @click="addDocumentsModal();actionTrack(paramsId,297,'patient')" />
         </div>
         <div v-if="latestDocument != null" class="thumb-desc">
-          <a href="javascript:void(0)" @click="showDocumentsModal" >{{ latestDocument[0].name }}</a>
+          <a href="javascript:void(0)" @click="showDocumentsModal();actionTrack(paramsId,317,'patient')" >{{ latestDocument[0].name }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
-          Care Team <PlusOutlined @click="addCateTeamModal" />
+          Care Team <PlusOutlined @click="addCateTeamModal();actionTrack(paramsId,298,'patient')" />
         </div>
         <div v-if="latestCareTeam != null" class="thumb-desc">
-          <router-link :to="{ name: 'CoordinatorSummary', params: { udid: latestCareTeam.staffId  }}">{{ latestCareTeam.staff }}</router-link>
+          <router-link :to="{ name: 'CoordinatorSummary', params: { udid: latestCareTeam.staffId  }}" >{{ latestCareTeam.staff }}</router-link>
         </div>
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
-          TimeLogs <PlusOutlined @click="addTimelogModal" />
+          TimeLogs <PlusOutlined @click="addTimelogModal();actionTrack(paramsId,299,'patient')" />
         </div>
         <div v-if="latestTimeLog != null" class="thumb-desc">
-          <a href="javascript:void(0)" @click="showTimelogModal" >{{ latestTimeLog[0].category+' '+latestTimeLog[0].date }}</a>
+          <a href="javascript:void(0)" @click="showTimelogModal();actionTrack(paramsId,325,'patient')" >{{ latestTimeLog[0].category+' '+latestTimeLog[0].date }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
-          Devices <PlusOutlined @click="addDeviceModal" />
+          Devices <PlusOutlined @click="addDeviceModal();actionTrack(paramsId,300,'patient')" />
         </div>
         <div v-if="latestDevice != null" class="thumb-desc">
-          <a href="javascript:void(0)" @click="showDeviceModal" >{{ latestDevice[0].deviceType+'('+latestDevice[0].modelNumber+')' }}</a>
+          <a href="javascript:void(0)" @click="showDeviceModal();actionTrack(paramsId,326,'patient')" >{{ latestDevice[0].deviceType+'('+latestDevice[0].modelNumber+')' }}</a>
         </div>
       </div>
     </div>
@@ -204,6 +204,10 @@ import AddDeviceModal from "@/components/modals/AddDevice";
 import DeviceDetailModal from "@/components/modals/DeviceDetail";
 import PatientVitalsDetailsModal from "@/components/modals/PatientVitalsDetailsModal";
 import Flags from "@/components/common/flags/Flags";
+import {
+  actionTrack
+} from '@/commonMethods/commonMethod';
+
 
 export default defineComponent({
   components: {
@@ -491,6 +495,8 @@ export default defineComponent({
 
 
     return {
+      actionTrack,
+      paramsId:route.params.udid,
       criticalNotesList,
       showCriticalNotesDetails,
       handleCriticalNote,
