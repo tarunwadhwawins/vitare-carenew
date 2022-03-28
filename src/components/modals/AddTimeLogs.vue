@@ -92,7 +92,7 @@ import ModalButtons from "@/components/common/button/ModalButtons";
 import { useStore } from "vuex";
 import {
   timeStamp,
-  // getSecondsFromHms,
+  getSeconds,
 } from '@/commonMethods/commonMethod';
 import { useRoute } from "vue-router";
 import moment from "moment";
@@ -185,8 +185,8 @@ export default defineComponent({
       }
       else {
         const timeLogId =  localStorage.getItem('timeLogId')
+        const timeAmount = getSeconds(moment(addTimeLogForm.timeAmount).format('HH:mm:ss'))
         if((timeLogId && timeLogId != null)) {
-          const timeAmount = moment(timerVal.value).format('ss')
           const data = {
             category: addTimeLogForm.category,
             loggedBy: addTimeLogForm.loggedBy,
@@ -209,7 +209,6 @@ export default defineComponent({
           });
         }
         else {
-          const timeAmount = moment(timerVal.value).format('ss')
           const data = {
             category: addTimeLogForm.category,
             loggedBy: addTimeLogForm.loggedBy,
