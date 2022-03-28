@@ -3,10 +3,20 @@ import { API_ENDPOINTS } from "@/config/apiConfig"
 import { successSwal } from '../../commonMethods/commonMethod'
 
 export const addTimeLog = async ({ commit }, {id, data}) => {
-  commit('loadingStatus', true)
+	if(data.isAutomatic && data.isAutomatic == false) {
+		commit('loadingStatus', true)
+	}
 	await ServiceMethodService.common("post", API_ENDPOINTS['patient']+"/"+id+"/timeLog", null, data).then((response) => {
 		commit('addTimeLogSuccess', response.data.data);
-		successSwal(response.data.message)
+		if(data.isAutomatic && data.isAutomatic == true) {
+			localStorage.setItem('timeLogId', response.data.data.id)
+		}
+		else {
+			localStorage.removeItem('timeLogId')
+		}
+		if(data.isAutomatic && data.isAutomatic == false) {
+			successSwal(response.data.message)
+		}
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
@@ -78,9 +88,22 @@ export const timeLogDetails = async ({ commit }, udid) => {
 }
 
 export const updateTimeLog = async ({ commit }, {udid, data}) => {
-	console.log('updateTimeLog', data)
+	console.log('updateTimeLog', udid)
 	await ServiceMethodService.common("put", API_ENDPOINTS['timeLog'], udid, data).then((response) => {
 		commit('updateTimeLogSuccess', response.data.data);
+	})
+	.catch((error) => {
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}
+
+export const updatePatientTimeLog = async ({ commit }, {patientUdid, timeLogId, data}) => {
+	console.log('updateTimeLog', patientUdid)
+	await ServiceMethodService.common("put", API_ENDPOINTS['patient']+`/${patientUdid}/timeLog`, timeLogId, data).then((response) => {
+		commit('updatePatientTimeLog', response.data.data);
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {
