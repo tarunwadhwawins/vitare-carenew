@@ -231,9 +231,9 @@
                   
                    
                     <a-menu-item key="3">
-                      <router-link to="reset-password"
-                        >Reset Password</router-link
-                      >
+                      <router-link :to="{ name: 'ResetPassword' }" >
+                        Reset Password
+                      </router-link>
                     </a-menu-item>
                     <a-menu-item key="3" @click="logoutUser">
                       <a href="javascript:void(0)">Logout</a>
