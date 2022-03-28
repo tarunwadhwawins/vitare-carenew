@@ -61,7 +61,7 @@
           title: "Patient Name",
           dataIndex: "patient",
           slots: {
-            customRender: "patientName",
+            customRender: "patient",
           },
         },
         {
