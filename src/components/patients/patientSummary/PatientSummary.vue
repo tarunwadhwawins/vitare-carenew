@@ -185,49 +185,51 @@ export default {
         store.dispatch('emergencyContactsList', patientUdid);
 
         // if((getSeconds(newformattedElapsedTime)%30) == 0) {
-          setInterval(function() {
-            const newFormattedElapsedTime = getSeconds(formattedElapsedTime.value)
-            const timeLogId =  localStorage.getItem('timeLogId')
-            if((timeLogId && timeLogId != null) && startOn.value == false) {
-              const data = {
-                category: '',
-                loggedBy: 'gfdgfhggfhhfgh',
-                performedBy: 'gfdgfhggfhhfgh',
-                date: timeStamp(new Date()),
-                timeAmount: newFormattedElapsedTime,
-                cptCode: '',
-                note: 'Time Log',
-                isAutomatic: true,
+          if(startOn.value == false) {
+            setInterval(function() {
+              const newFormattedElapsedTime = getSeconds(formattedElapsedTime.value)
+              const timeLogId =  localStorage.getItem('timeLogId')
+              if((timeLogId && timeLogId != null)) {
+                const data = {
+                  category: '',
+                  loggedBy: 'gfdgfhggfhhfgh',
+                  performedBy: 'gfdgfhggfhhfgh',
+                  date: timeStamp(new Date()),
+                  timeAmount: newFormattedElapsedTime,
+                  cptCode: '',
+                  note: 'Time Log',
+                  isAutomatic: true,
+                }
+                console.log('elapsedTime.value', data)
+                store.dispatch('updatePatientTimeLog', {
+                  timeLogId: timeLogId,
+                  patientUdid: patientUdid,
+                  data: data
+                }).then(() => {
+                  store.dispatch('latestTimeLog', patientUdid)
+                });
               }
-              console.log('elapsedTime.value', data)
-              store.dispatch('updatePatientTimeLog', {
-                timeLogId: timeLogId,
-                patientUdid: patientUdid,
-                data: data
-              }).then(() => {
-                store.dispatch('latestTimeLog', patientUdid)
-              });
-            }
-            else if(startOn.value == false) {
-              const data = {
-                category: '',
-                loggedBy: 'gfdgfhggfhhfgh',
-                performedBy: 'gfdgfhggfhhfgh',
-                date: timeStamp(new Date()),
-                timeAmount: newFormattedElapsedTime,
-                cptCode: '',
-                note: 'Time Log',
-                isAutomatic: true,
+              else {
+                const data = {
+                  category: '',
+                  loggedBy: 'gfdgfhggfhhfgh',
+                  performedBy: 'gfdgfhggfhhfgh',
+                  date: timeStamp(new Date()),
+                  timeAmount: newFormattedElapsedTime,
+                  cptCode: '',
+                  note: 'Time Log',
+                  isAutomatic: true,
+                }
+                console.log('elapsedTime.value', data)
+                store.dispatch('addTimeLog', {
+                  id: patientUdid,
+                  data: data
+                }).then(() => {
+                  store.dispatch('latestTimeLog', patientUdid)
+                });
               }
-              console.log('elapsedTime.value', data)
-              store.dispatch('addTimeLog', {
-                id: patientUdid,
-                data: data
-              }).then(() => {
-                store.dispatch('latestTimeLog', patientUdid)
-              });
-            }
-          }, 30000);
+            }, 30000);
+          }
         // }
       }
     })

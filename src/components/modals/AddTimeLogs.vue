@@ -74,7 +74,7 @@
         </a-col>
 
         <a-col :sm="24" :span="24">
-          <ModalButtons :Id="true" @is_click="handleClear"/>
+          <ModalButtons @is_click="handleClear"/>
         </a-col>
       </a-row>
     </a-form>
@@ -91,7 +91,7 @@ import {
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { useStore } from "vuex";
 import {
-  // timeStamp,
+  timeStamp,
   getSeconds,
 } from '@/commonMethods/commonMethod';
 import { useRoute } from "vue-router";
@@ -191,7 +191,7 @@ export default defineComponent({
           category: addTimeLogForm.category,
           loggedBy: addTimeLogForm.loggedBy,
           performedBy: addTimeLogForm.performedBy,
-          date: getSeconds(addTimeLogForm.date),
+          date: timeStamp(addTimeLogForm.date),
           timeAmount: getSeconds(addTimeLogForm.timeAmount),
           cptCode: addTimeLogForm.cptCode,
           note: addTimeLogForm.note,
