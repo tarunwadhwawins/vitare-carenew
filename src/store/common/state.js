@@ -37,7 +37,8 @@ export default {
     activeCptCodes:null,
     checkChangeInput:false,
     getNotifications:null,
-    searchTable:null
+    searchTable:null,
+    loadingTableStatus:null
 
 
 }

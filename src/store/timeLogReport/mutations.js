@@ -57,7 +57,28 @@ export const timeLogReportList = async (state, data) => {
   })
     
 }
+export const timeLogView = async (state, data) => {
 
+  state.viuewTimeReportModal = [ 
+    {
+      title: "Change By",
+      dataIndex: "createdBy",
+    },  
+    {
+    title: "Time (MM:SS)",
+    dataIndex: "timeAmount",
+    
+  },
+  {
+    title: "Notes ", 
+    dataIndex: "note",
+  },]
+  state.timeLogView = data.map(item => {
+    item.timeAmount = secondsToTime(item.timeAmount)
+    return item
+  })
+    
+}
 export const reportExport = (state, data) => {
   state.reportExport = data
 }
