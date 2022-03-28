@@ -1,9 +1,10 @@
 import { Web } from '@/assets/js/sip-0.20.0'
-import { h } from 'vue'
+import { h,computed } from 'vue'
 import router from '@/router/index'
 import state from './state';
 import { notification, Button } from "ant-design-vue";
 import { successSwal } from '@/commonMethods/commonMethod';
+
 
 
 export function videoCall() {
@@ -98,3 +99,8 @@ export function videoCall() {
 }
 
 
+export const refreshToken = (state)=>{
+    return computed(()=>{
+        return state.loggedInUser.expiresIn-10
+    })
+  }

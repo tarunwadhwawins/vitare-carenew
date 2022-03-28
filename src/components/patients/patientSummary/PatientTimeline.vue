@@ -11,7 +11,8 @@
     </a-checkbox-group>
     <a-timeline class="defaultTimeline">
       <template v-for="timeline in patientTimeline" :key="timeline.id">
-        <a-timeline-item color="blue" v-if="timeline.type==1">
+        <!-- <a-timeline-item color="blue" v-if="timeline.type==1"> -->
+          <a-timeline-item color="blue" >
           <template #dot>
             <BellOutlined class="yellowIcon"/>
           </template>
@@ -35,7 +36,7 @@
             </div>
           </div>
         </a-timeline-item>
-        <a-timeline-item color="red" v-if="timeline.type==2">
+        <!-- <a-timeline-item color="red" v-if="timeline.type==2">
           <template #dot><HeatMapOutlined class="redIcon"/></template>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit culpa assumenda quidem magnam
         </a-timeline-item>
@@ -108,7 +109,7 @@
               <MailOutlined />
             </div>
           </div>
-        </a-timeline-item>
+        </a-timeline-item> -->
       </template>
     </a-timeline>
   </div>
@@ -116,11 +117,11 @@
 
 <script>
 import {
-  FolderOpenOutlined,
-  FilePdfOutlined,
+  // FolderOpenOutlined,
+  // FilePdfOutlined,
   BellOutlined,
-  HeatMapOutlined,
-  ClockCircleOutlined,
+  // HeatMapOutlined,
+  // ClockCircleOutlined,
   MailOutlined,
 } from "@ant-design/icons-vue";
 import { computed, ref, watchEffect } from 'vue-demi';
@@ -128,11 +129,11 @@ import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 export default {
   components: {
-    FolderOpenOutlined,
-    FilePdfOutlined,
+    // FolderOpZenOutlined,
+    // FilePdfOutlined,
     BellOutlined,
-    HeatMapOutlined,
-    ClockCircleOutlined,
+    // HeatMapOutlined,
+    // ClockCircleOutlined,
     MailOutlined,
   },
   props: {
