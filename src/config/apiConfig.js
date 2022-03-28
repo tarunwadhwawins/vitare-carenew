@@ -18,6 +18,7 @@ export const API_ENDPOINTS = {
     cptCode:"patient/count",
     totalPatientsChart:"patient/chart",
     timeLine:"patient/new",
+    timeLineType:"timeLineType",
     
     // Appointments
     appointment:"appointment",

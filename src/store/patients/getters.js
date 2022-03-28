@@ -5,3 +5,8 @@ export const patientsRecord = (state)=>{
         return state
     })
   }
+  export const timeLineType = (state)=>{
+    return computed(()=>{
+        return state.timeLineType
+    })
+  }

@@ -637,14 +637,14 @@ export const patientDetails = async ({commit}, id) => {
   })
 }
 
-export const patientTimeline = async ({commit}, id) => {
-  commit('loadingStatus', true)
-  await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/timeLine', null, null).then((response) => {
+export const patientTimeline = async ({commit}, data) => {
+  
+  await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+data.id+'/timeLine?type='+data.type, null, null).then((response) => {
     commit('patientTimelineSuccess', response.data.data);
-    commit('loadingStatus', false)
+    
   }).catch((error) => {
     errorSwal(error.response.data.message)
-    commit('loadingStatus', false)
+    
   })
 }
 
@@ -1085,5 +1085,15 @@ export const deleteEmergencyContact = async ({commit}, data) => {
       commit('loadingStatus', false)
     }
     commit('loadingStatus', false)
+  })
+}
+export const timeLineType = async ({commit}) => {
+  
+  await serviceMethod.common("get", API_ENDPOINTS['timeLineType'], null, null).then((response) => {
+    commit('timeLineType', response.data.data);
+   
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+    
   })
 }
