@@ -232,9 +232,11 @@
                         Reset Password
                       </router-link>
                     </a-menu-item>
+
                     <a-menu-item key="3" @click="logoutUser">
                       <a href="javascript:void(0)">Logout</a>
                     </a-menu-item>
+
                   </a-menu>
                 </template>
               </a-dropdown>
