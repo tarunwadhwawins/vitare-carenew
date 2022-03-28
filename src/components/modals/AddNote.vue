@@ -13,10 +13,11 @@
         <a-col :sm="8" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('notes.category')" name="category" :rules="[{ required: true, message: $t('notes.category')+' '+$t('global.validation')  }]">
-              <a-select ref="select" v-model:value="addNoteForm.category" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+              <!-- <a-select ref="select" v-model:value="addNoteForm.category" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                 <a-select-option value="" hidden>Select Category</a-select-option>
                 <a-select-option v-for="category in noteCategories.globalCode" :key="category.id">{{ category.name }}</a-select-option>
-              </a-select>
+              </a-select> -->
+              <GlobalCodeDropDown @change="handleChange"  v-model:value="addNoteForm.category" :globalCode="noteCategories"/>
             </a-form-item>
           </div>
         </a-col>
@@ -24,10 +25,11 @@
         <a-col :sm="8" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('notes.type')" name="type" :rules="[{ required: true, message: $t('notes.type')+' '+$t('global.validation')  }]">
-              <a-select ref="select" v-model:value="addNoteForm.type" style="width: 100%" size="large" @focus="focus" @change="handleChange">
+              <!-- <a-select ref="select" v-model:value="addNoteForm.type" style="width: 100%" size="large" @focus="focus" @change="handleChange">
                 <a-select-option value="" hidden>Select Type</a-select-option>
                 <a-select-option v-for="type in noteTypes.globalCode" :key="type.id">{{ type.name }}</a-select-option>
-              </a-select>
+              </a-select> -->
+              <GlobalCodeDropDown @change="handleChange"  v-model:value="addNoteForm.type" :globalCode="noteTypes"/>
             </a-form-item>
           </div>
         </a-col>
@@ -55,9 +57,11 @@ import ModalButtons from "@/components/common/button/ModalButtons";
 import { useStore } from "vuex";
 import { timeStamp } from '@/commonMethods/commonMethod';
 import { useRoute } from "vue-router";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 export default defineComponent({
   components: {
     ModalButtons,
+    GlobalCodeDropDown
   },
   setup(props, {emit}) {
     const store = useStore();

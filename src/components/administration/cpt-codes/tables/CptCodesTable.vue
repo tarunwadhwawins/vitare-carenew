@@ -1,6 +1,6 @@
 <template>
     
-<a-table rowKey="id"  :columns="meta.cptCodesColumns" :data-source="meta.cptCodesList" :scroll="{ y: 400}"  :pagination="false" @change="onChange">
+<a-table rowKey="id"  :columns="meta.cptCodesColumns" :data-source="meta.cptCodesList" :scroll="{ y: tableYScroller}"  :pagination="false" @change="onChange">
     <template #actions="{record}">
         <a-tooltip placement="bottom" @click="editCpt(record.udid)" v-if="arrayToObjact(cptCodePermissions,10)">
             <template #title>
@@ -21,7 +21,7 @@
         <a-switch v-model:checked="record.status" @change="UpdateCptStatus(record.udid, $event)" />
     </template>
 </a-table>
-<InfiniteLoader v-if="loader" />
+<Loader/>
 </template>
 
 <script>
@@ -38,19 +38,20 @@ import {
 import {
     messages
 } from "@/config/messages";
-import InfiniteLoader from "@/components/loader/InfiniteLoader";
+import Loader from "@/components/loader/Loader";
 import {
     useStore
 } from "vuex";
 import {
     warningSwal,
-    arrayToObjact
+    arrayToObjact,
+    tableYScroller
 } from "@/commonMethods/commonMethod";
 export default {
     components: {
         DeleteOutlined,
         EditOutlined,
-        InfiniteLoader,
+        Loader,
     },
     props: {
 
@@ -60,7 +61,6 @@ export default {
     }) {
 
         const store = useStore();
-
         function deleteCpt(id) {
             warningSwal(messages.deleteWarning).then((response) => {
                 if (response == true) {
@@ -113,7 +113,8 @@ export default {
                         loader.value = true;
                         meta.cptMeta = "";
                         store.state.cptCodes.cptCodesList = "";
-                        store.dispatch("cptCodesList", "?page=" + current_page).then(() => {
+                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
+                        store.dispatch("cptCodesList", "&search="+url+"&page=" + current_page).then(() => {
                             loadMoredata();
                         });
                     }
@@ -148,6 +149,7 @@ export default {
             editCpt,
             UpdateCptStatus,
             meta,
+            tableYScroller
         
 
         };

@@ -5,10 +5,11 @@
         <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('patient.devices.deviceType')" name="deviceType" :rules="[{ required: true, message: $t('patient.devices.deviceType')+' '+$t('global.validation') }]">
-              <a-select ref="select" v-model:value="inventoryForm.deviceType" style="width: 100%" size="large" @change="handleInventory">
+              <!-- <a-select ref="select" v-model:value="inventoryForm.deviceType" style="width: 100%" size="large" @change="handleInventory">
                 <a-select-option value="" disabled>{{'Select Device Type'}}</a-select-option>
                 <a-select-option v-for="device in globalCode.deviceType.globalCode" :key="device.id" :value="device.id">{{device.name}}</a-select-option>
-              </a-select>
+              </a-select> -->
+              <GlobalCodeDropDown @change="handleInventory" v-model:value="inventoryForm.deviceType" :globalCode="globalCode.deviceType"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" />
             </a-form-item>
           </div>
@@ -16,10 +17,11 @@
         <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item  :label="$t('patient.devices.inventory')" name="inventory" :rules="[{ required: true, message: $t('patient.devices.inventory')+' '+$t('global.validation') }]">
-              <a-select :disabled="patients.inventoryList.length==0" ref="select" v-model:value="inventoryForm.inventory" style="width: 100%" size="large" @change="handleChange(inventoryForm.inventory)">
+              <!-- <a-select :disabled="patients.inventoryList.length==0" ref="select" v-model:value="inventoryForm.inventory" style="width: 100%" size="large" @change="handleChange(inventoryForm.inventory)">
                 <a-select-option value="" disabled>{{'Select Inventory'}}</a-select-option>
                 <a-select-option v-for="device in patients.inventoryList" :key="device.id" :value="device.id">{{device.modelNumber +' ('+device.macAddress+')'}}</a-select-option>
-              </a-select>
+              </a-select> -->
+              <InventoryGlobalCodeDropDown :disabled="patients.inventoryList.length==0 || inventoryForm.deviceType==''" v-model:value="inventoryForm.inventory" :globalCode="patients.inventoryList" @change="handleChange(inventoryForm.inventory)"/>
                 <ErrorMessage v-if="errorMsg" :name="errorMsg.inventory?errorMsg.inventory[0]:''" />
             </a-form-item>
           </div>
@@ -70,10 +72,14 @@ import { messages } from "@/config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { useRoute } from "vue-router";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+import InventoryGlobalCodeDropDown from "@/components/modals/search/InventoryGlobalCodeSearch.vue"
 export default defineComponent({
   components: {
     ErrorMessage,
-    ModalButtons
+    ModalButtons,
+    GlobalCodeDropDown,
+    InventoryGlobalCodeDropDown
   },
   props: {
     patientDetails: {

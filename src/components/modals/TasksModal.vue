@@ -19,37 +19,25 @@
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.status')" name="taskStatus" :rules="[{ required: true, message: $t('tasks.tasksModal.status')+' '+$t('global.validation')  }]">
-              <a-select v-model:value="taskForm.taskStatus" ref="select" style="width: 100%" size="large"  @change="checkChangeInput()">
+              <!-- <a-select v-model:value="taskForm.taskStatus" ref="select" style="width: 100%" size="large"  @change="checkChangeInput()">
                 <a-select-option value="" disabled>{{'Select Status'}}</a-select-option>
                 <a-select-option v-for="status in common.taskStatus.globalCode" :key="status.id" :value="status.id">{{ status.name }}</a-select-option>
-              </a-select>
+              </a-select> -->
+              <GlobalCodeDropDown v-model:value="taskForm.taskStatus" :globalCode="common.taskStatus" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.priority')" name="priority" :rules="[{ required: true, message: $t('tasks.tasksModal.priority')+' '+$t('global.validation')  }]">
-              <a-select v-model:value="taskForm.priority" ref="select" style="width: 100%" size="large" @change="checkChangeInput()">
+              <!-- <a-select v-model:value="taskForm.priority" ref="select" style="width: 100%" size="large" @change="checkChangeInput()">
                 <a-select-option value="" disabled>{{'Select Priority'}}</a-select-option>
                 <a-select-option v-for="priority in common.taskPriority.globalCode" :key="priority.id" :value="priority.id">{{ priority.name }}</a-select-option>
-              </a-select>
+              </a-select> -->
+              <GlobalCodeDropDown v-model:value="taskForm.priority" :globalCode="common.taskPriority" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
-        <!-- <a-col :span="12">
-          <div class="form-group">
-            <a-form-item :label="$t('tasks.tasksModal.assignedTo')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.assignedTo')+' '+$t('global.validation')  }]">
-              <a-select
-                mode="tags"
-                size="large"
-                placeholder="Please Select Staff"
-                style="width: 100%"
-                v-model:value="taskForm.assignedTo"
-                :options="staffList"
-              />
-            </a-form-item>
-          </div>
-        </a-col> -->
        <a-col v-if="!isPatientTask" :sm="12" :xs="24"  v-show="taskId==null">
           <div class="form-group">
             <a-form-item :label="$t('tasks.tasksModal.to')" name="to" >
@@ -63,55 +51,24 @@
             </a-form-item>
           </div>
         </a-col>
-        <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="toggleTo">
-          <div class="form-group">
+        <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="toggleTo" >
+          <div class="form-group" >
             <a-form-item :label="$t('tasks.tasksModal.patient')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.patient')+' '+$t('global.validation')  }]">
-              <a-select
-                ref="select"
-                mode="multiple"
-                :disabled="taskId?true:false"
-                v-model:value="taskForm.assignedTo"
-                style="width: 100%"
-                @change="checkChangeInput()"
-                 placeholder="Please Select Patient"
-                 :options="patients.map((item) => ({label: item.name+' '+item.middleName+' '+item.lastName, value: item.id }))"
-                size="large" />
-                <!-- <a-select-option value="" disabled>{{'Select Patient'}}</a-select-option>
-                <a-select-option v-for="patient in patients" :key="patient.id" :value="patient.id">{{ patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option>
-              </a-select> -->
-            
+              <PatientDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.assignedTo" @handlePatientChange="handlePatientChange($event)"/>
             </a-form-item>
           </div>
         </a-col>
-        <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="!toggleTo">
-          <div class="form-group">
+        <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="!toggleTo" >
+          <div class="form-group" > 
             <a-form-item :label="$t('tasks.tasksModal.staff')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.staff')+' '+$t('global.validation')  }]">
-              <!-- <a-select
-                ref="select"
-                v-if="staffList"
-                v-model:value="taskForm.assignedTo"
-                style="width: 100%"
-                size="large">
-                <a-select-option value="" disabled>{{'Select Staff'}}</a-select-option>
-                <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}</a-select-option>
-              </a-select> -->
-            <a-select
-                :disabled="taskId?true:false"
-                mode="tags"
-                size="large"
-                placeholder="Please Select Staff"
-                style="width: 100%"
-                @change="checkChangeInput()"
-                v-model:value="taskForm.assignedTo"
-                :options="common.allStaffList.map((item) => ({label: item.fullName, value: item.id }))"
-              />
+              <StaffDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.assignedTo" @handleStaffChange="handleStaffChange($event)"/>
             </a-form-item>
           </div>
         </a-col>
-        <a-col :span="12">
-          <div class="form-group">
+        <a-col :span="12" >
+          <div class="form-group" >
             <a-form-item :label="$t('tasks.tasksModal.category')" name="taskCategory" :rules="[{ required: true, message: $t('tasks.tasksModal.category')+' '+$t('global.validation')  }]">
-              <a-select
+              <!-- <a-select
               :disabled="taskId?true:false"
                 mode="multiple"
                 size="large"
@@ -120,19 +77,20 @@
                 @change="checkChangeInput()"
                 v-model:value="taskForm.taskCategory"
                 :options="common.taskCategory.globalCode.map((item) => ({label: item.name, value: item.id }))"
-              />
+              /> -->
+               <GlobalCodeDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.taskCategory" :globalCode="common.taskCategory" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
-        <a-col :span="12">
-          <div class="form-group">
+        <a-col :span="12" >
+          <div class="form-group" >
             <a-form-item :label="$t('tasks.tasksModal.startDate')" name="startDate" :rules="[{ required: true, message: $t('tasks.tasksModal.startDate')+' '+$t('global.validation')  }]">
               <a-date-picker :disabled="taskId?true:false" v-model:value="taskForm.startDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
-        <a-col :span="12">
-          <div class="form-group">
+        <a-col :span="12" >
+          <div class="form-group" >
             <a-form-item :label="$t('tasks.tasksModal.dueDate')" name="dueDate" :rules="[{ required: true, message: $t('tasks.tasksModal.dueDate')+' '+$t('global.validation')  }]">
               <a-date-picker :disabled="taskId?true:false" v-model:value="taskForm.dueDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()"/>
             </a-form-item>
@@ -156,10 +114,17 @@ import { messages } from "../../config/messages";
 import Loader from "@/components/loader/Loader";
 import { useRoute } from "vue-router";
 import moment from "moment"
+import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue"
+import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+
 export default defineComponent({
   components: {
     ModalButtons,
-    Loader
+    Loader,
+    PatientDropDown,
+    StaffDropDown,
+    GlobalCodeDropDown
   },
   props:{
     taskId:Number,
@@ -174,6 +139,8 @@ export default defineComponent({
     const formRef =ref()
     const visible = ref(true)
     const value = ref('')
+    const staffData = ref([]);
+    const patientData = ref([]);
     const idPatient = reactive(props.patientId);
     const isPatientTask = idPatient != null ? true : false;
 
@@ -195,8 +162,6 @@ export default defineComponent({
     })
     
     const submitForm = () => {
-      //console.log("check",taskForm)
-    //  console.log('=>', Object.assign(taskForm, tasks.value.editTask))
     if(props.taskId!=null) {
       store.dispatch("updateTask", {
         data: {
@@ -267,8 +232,8 @@ export default defineComponent({
     watchEffect(() => {
       store.dispatch("allStaffList")
       if(props.taskId!=null){
-        console.log("check",tasks.value.editTask)
         Object.assign(taskForm, tasks.value.editTask)
+        toggleTo.value = taskForm.entityType=="staff" ? false : true
       }
     })
   
@@ -315,9 +280,27 @@ export default defineComponent({
       }
     }
 
+   const taskFormFailed =(val)=>{
+     console.log('taskFormFailed',val);
+   }
+
+    const handleStaffChange = (val) => {
+      taskForm.assignedTo = val;
+    };
+
+    const handlePatientChange = (val) => {
+      taskForm.assignedTo = val;
+    };
+
 
 
     return {
+      taskFormFailed,
+      loadingStatus:store.getters.loadingStatus,
+      handlePatientChange,
+      handleStaffChange,
+      staffData,
+      patientData,
       checkChangeInput,
       checkFieldsData,
       tasks,

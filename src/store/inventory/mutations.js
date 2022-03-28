@@ -4,8 +4,9 @@ export const addInventorySuccess = async (state, inventory) => {
   state.addInventory = inventory;
 }
 
-export const inventoriesListSuccess = async (state, inventories) => {
-  state.inventoriesList = inventories;
+export const inventory = async (state, inventories) => {
+  state.inventoriesList = inventories.data;
+  state.inventoryMeta = inventories.meta.pagination
 }
 
 export const inventoryDetailsSuccess = async (state, inventory) => {
@@ -22,5 +23,8 @@ export const deleteInventorySuccess = async (state, inventories) => {
 }
 
 export const deviceModalsListSuccess = async (state, inventories) => {
-  state.deviceModalsList = inventories;
+  state.deviceModalsList = inventories.map(item=>{
+    item.name = item.modelNumber
+    return item;
+  });
 }

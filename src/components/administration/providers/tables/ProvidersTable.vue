@@ -1,5 +1,5 @@
 <template>
-<a-table  rowKey="id" :columns="providerListColumns" :data-source="providersListAll.providersListAll" >
+<a-table  rowKey="id" :columns="providerListColumns" :data-source="providersListAll" :scroll="{ y: tableYScroller }" :pagination=false>
     <template #name="{text,record}">
                <router-link :to="{ name: 'providerSummary', params: { id:record.id  }}">{{text}}</router-link>
     </template>
@@ -26,10 +26,10 @@
 
 <script>
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-import {  computed, reactive } from "vue";
+import {  computed, reactive,onMounted } from "vue";
 import { messages } from "@/config/messages";
 import { useStore } from "vuex";
-import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
+import { warningSwal,arrayToObjact ,tableYScroller} from "@/commonMethods/commonMethod";
 export default {
   components: {
     EditOutlined,
@@ -45,7 +45,49 @@ export default {
     const store = useStore();
     const providerId = reactive(props.id);
     
-    const providersListAll = store.getters.providersRecords.value
+    const providersListAll = store.getters.providersListAll
+    const meta = store.getters.providerMeta
+        let data = ''
+        let scroller = ''
+        onMounted(() => {
+            var tableContent = document.querySelector('.ant-table-body')
+            tableContent.addEventListener('scroll', (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight
+                let currentScroll = event.target.scrollTop + 2
+                if (currentScroll >= maxScroll) {
+
+                    let current_page = meta.current_page + 1
+
+                    if (current_page <= meta.total_pages) {
+                        scroller = maxScroll
+                        meta.value = ""
+                        data = providersListAll.value
+                        store.state.provider.providersListAll = ""
+                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
+                        store.dispatch("providersListAll", "&search="+url+"&page=" + current_page).then(() => {
+                            loadMoredata()
+                        })
+
+                    }
+                }
+            })
+        })
+
+        function loadMoredata() {
+            const newData = providersListAll.value
+
+            newData.forEach(element => {
+                data.push(element)
+            });
+            providersListAll.value = data
+            var tableContent = document.querySelector('.ant-table-body')
+
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller)
+            }, 50)
+
+        }
+
     const providersData = computed(() => {
       return store.state.provider;
     });
@@ -121,6 +163,7 @@ export default {
       updateStatus,
       providerId,
       props,
+      tableYScroller,
       text: "provider-summary",
     };
   },

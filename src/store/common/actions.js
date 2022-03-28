@@ -2,11 +2,11 @@ import ServiceMethodService from '../../services/serviceMethod';
 import {
   API_ENDPOINTS
 } from "../../config/apiConfig"
-
+import {  errorSwal } from '@/commonMethods/commonMethod'
 export const globalCodes = async ({
   commit
 }) => {
-  await ServiceMethodService.common("get", "globalCodeCategory", null, null).then((response) => {
+  await ServiceMethodService.common("get", "globalCodeCategory?all=all", null, null).then((response) => {
 
     commit('globalCodes', response.data.data);
 
@@ -87,3 +87,60 @@ export const activeCptCodes = async ({ commit}) => {
     commit('loadingStatus', false)
   })
 }
+
+
+
+
+// export const getNotifications = async ({ commit}) => {
+//   await ServiceMethodService.common("get", API_ENDPOINTS['notification'], null, null).then((response) => {
+//     commit('getNotifications', response.data.data);
+//     commit('loadingStatus', false)
+//   }).catch(() => {
+//     commit('loadingStatus', false)
+//   })
+// }
+
+export const notificationList = async ({commit}) => {
+  await ServiceMethodService.common("get", `notification/isReadList`, null, null).then((response) => {
+    commit('getNotifications', response.data.data);
+    commit('notificationList', response.data.data.length);
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+  })
+}
+
+
+export const isReadUpdateNotification = async ({
+  commit
+}, id) => {
+
+  await ServiceMethodService.common("put", `notification/isRead/${id}`, null, true).then((response) => {
+    commit('isReadUpdateNotification', response.data.data);
+  }).catch((error) => {
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      commit('errorMsg', error.response.data.message)
+    }
+  })
+}
+
+export const searchTable = async ({ commit},search) => {
+  commit("searchTable",search)
+}
+export const searchTableData = async ({commit}, search) => {
+  
+  commit('loadingStatus', true)
+    await ServiceMethodService.common("get", search.endPoint+'?active=1&search='+search.data, null, null).then((response) => {
+      commit(search.endPoint, response.data);
+     commit('loadingStatus', false)
+    }).catch((error) => { 
+      commit('errorMsg', error);
+      if(error.response.status === 500){
+        errorSwal(error.response.data.message)
+      }
+      commit('loadingStatus', false)
+    })
+  }

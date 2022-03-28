@@ -6,19 +6,7 @@
           <div class="form-group">
             <a-form-item :label="$t('appointmentCalendar.addAppointment.patient')" name="patientId"
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.patient')+' '+$t('global.validation')  }]">
-              
-              <!-- <AutoComplete
-                :options="patients"
-                @on-select="onSelectOption"
-                v-model:value="appointmentForm.patientId" /> -->
-  
-              <a-select ref="select" v-if="allPatients" v-model:value="appointmentForm.patientId" style="width: 100%"
-                size="large" :disabled="disabled"  :filter-option="filterOption">
-                <a-select-option value="" hidden>{{'Select Patient'}}</a-select-option>
-                <a-select-option v-for="patient in allPatients" :key="patient.id" :value="patient.id">{{
-                  patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option> 
-              </a-select>
-             
+              <PatientDropDown v-model:value="appointmentForm.patientId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.patientId?errorMsg.patientId[0]:''" />
             </a-form-item>
           </div>
@@ -27,12 +15,7 @@
           <div class="form-group">
             <a-form-item :label="$t('appointmentCalendar.addAppointment.staff')" name="staffId"
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.staff')+' '+$t('global.validation')  }]">
-              <a-select ref="select" v-if="staffList" v-model:value="appointmentForm.staffId" style="width: 100%"
-                size="large">
-                <a-select-option value="" hidden>{{'Select Staff'}}</a-select-option>
-                <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{ staff.fullName }}
-                </a-select-option>
-              </a-select>
+              <StaffDropDown v-model:value="appointmentForm.staffId" @handleStaffChange="handleStaffChange($event)" @change="checkChangeInput()"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.staffId?errorMsg.staffId[0]:''" />
             </a-form-item>
           </div>
@@ -42,7 +25,7 @@
             <a-form-item :label="$t('appointmentCalendar.addAppointment.startDate')" name="startDate"
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.startDate')+' '+$t('global.validation') }]">
               <a-date-picker  v-model:value="appointmentForm.startDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD"
-                :size="size" style="width: 100%" />
+                :size="size" style="width: 100%" @change="checkChangeInput()"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.startDate?errorMsg.startDate[0]:''" />
             </a-form-item>
           </div>
@@ -52,7 +35,7 @@
             <a-form-item :label="$t('global.startTime')" name="startTime"
               :rules="[{ required: true, message: $t('global.startTime')+' '+$t('global.validation') }]">
               <a-time-picker use12-hours format="hh:mm A" v-model:value="appointmentForm.startTime" :size="size"
-                style="width: 100%" />
+                style="width: 100%" @change="checkChangeInput()"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.startTime?errorMsg.startTime[0]:''" />
             </a-form-item>
           </div>
@@ -61,12 +44,13 @@
           <div class="form-group">
             <a-form-item :label="$t('global.duration') +' '+$t('global.time')" name="durationId"
               :rules="[{ required: true, message: $t('global.duration') +' '+$t('global.time')+' '+$t('global.validation')  }]">
-              <a-select ref="select" v-if="durationList" v-model:value="appointmentForm.durationId" style="width: 100%"
+              <!-- <a-select ref="select" v-if="durationList" v-model:value="appointmentForm.durationId" style="width: 100%"
                 size="large">
                 <a-select-option value="" hidden>{{'Select Duration Time'}}</a-select-option>
                 <a-select-option v-for="duration in durationList['globalCode']" :key="duration.id" :value="duration.id">
                   {{ duration.name }}</a-select-option>
-              </a-select>
+              </a-select> -->
+               <GlobalCodeDropDown v-if="durationList" v-model:value="appointmentForm.durationId" :globalCode="durationList" @change="checkChangeInput()"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.durationId?errorMsg.durationId[0]:''" />
             </a-form-item>
           </div>
@@ -75,12 +59,13 @@
           <div class="form-group">
             <a-form-item :label="$t('appointmentCalendar.addAppointment.typeOfVisit')" name="typeOfVisit"
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.typeOfVisit')+' '+$t('global.validation')  }]">
-              <a-select ref="select" v-if="typeOfVisitList" v-model:value="appointmentForm.typeOfVisit"
+              <!-- <a-select ref="select" v-if="typeOfVisitList" v-model:value="appointmentForm.typeOfVisit"
                 style="width: 100%" size="large">
                 <a-select-option value="" disabled>{{'Select Type Of Visit'}}</a-select-option>
                 <a-select-option v-for="visit in typeOfVisitList['globalCode']" :key="visit.id" :value="visit.id">{{
                   visit.name }}</a-select-option>
-              </a-select>
+              </a-select> -->
+               <GlobalCodeDropDown v-if="typeOfVisitList" v-model:value="appointmentForm.typeOfVisit" :globalCode="typeOfVisitList" @change="checkChangeInput()"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.typeOfVisit?errorMsg.typeOfVisit[0]:''" />
             </a-form-item>
           </div>
@@ -89,7 +74,7 @@
           <div class="form-group">
             <a-form-item :label="$t('appointmentCalendar.addAppointment.note')" name="note"
               :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.note')+' '+$t('global.validation') }]">
-              <a-textarea v-model:value="appointmentForm.note" allow-clear />
+              <a-textarea v-model:value="appointmentForm.note" allow-clear @change="checkChangeInput()"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.note?errorMsg.note[0]:''" />
             </a-form-item>
           </div>
@@ -110,7 +95,8 @@
   import { timeStamp } from "../../commonMethods/commonMethod"
   import moment from 'moment';
   import ModalButtons from "@/components/common/button/ModalButtons";
-//import AutoComplete from "@/components/common/input/AutoComplete";
+import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue"
+import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
 import { useRoute } from 'vue-router'
 import {
     warningSwal
@@ -118,12 +104,15 @@ import {
 import {
     messages
 } from "../../config/messages";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 
   export default {
     components: {
       ErrorMessage,
       ModalButtons,
-      //AutoComplete,
+      PatientDropDown,
+      StaffDropDown,
+      GlobalCodeDropDown
     },
     props:{
       staff:{
@@ -146,6 +135,8 @@ import {
       const formRef = ref();
       const route = useRoute();
       const store = useStore()
+      const staffData = ref([]);
+      const patientData = ref([]);
       const patientUdid = route.params.udid;
       const idPatient = reactive(props.patientId);
       const patientName = reactive(props.patientName);
@@ -155,10 +146,7 @@ import {
                 };
       
       console.log('patientName', patientName)
-    //   const disabledDate = current => {
-    //   return current && current < dayjs().endOf('day');
-    // };
-      
+  
       const appointmentForm = reactive({
         patientId: '',
         staffId: '',
@@ -179,6 +167,18 @@ import {
         store.state.common.allPatientsList ? "" : store.dispatch("allPatientsList")
         store.state.common.allStaffList ? "" : store.dispatch("allStaffList")
       })
+
+  
+    const handleStaffChange = (val) => {
+      appointmentForm.staffId = val;
+    };
+
+
+    const handlePatientChange = (val) => {
+      appointmentForm.patientId = val;
+    };
+
+
       const onFinishFailed = () => {
         // 
       };
@@ -199,32 +199,8 @@ import {
         return store.state.common.allStaffList
       })
       
-      // const patients = ref([])
-      // console.log("obj",staffList.value);
-      // if(allPatients.value != null) {
-        
-      //   allPatients.value.forEach(element => {
-      //     patients.value.push({
-      //       value: element.fullName,
-      //       id: element.id,
-      //     })
-      //   });
-      // }
       
-      // const selectedOptionId = ref(null);
-      // const onSelectOption = (selected) => {
-      //   patients.value.forEach(patient => {
-      //     if(patient.value == selected) {
-      //       selectedOptionId.value = patient.id
-      //     }
-      //   });
-      // };
-
       const sendMessage = () => {
-        // Object.assign(appointmentForm, {
-        //   patientId: idPatient
-        // })
-        
         const date = appointmentForm.startDate
         const  timeFormat = (moment(appointmentForm.startTime)).format('HH:mm');
         store.dispatch('addAppointment', {
@@ -245,8 +221,6 @@ import {
         setTimeout(()=>{
             if(store.state.appointment.successMsg){
               store.dispatch("calendarDateSelect", moment(date))
-         // store.dispatch("searchAppointment", { fromDate: moment(date), toDate: moment(date), tabId: 1 })
-          //store.dispatch("searchAppointment", { fromDate: moment(), toDate: moment(), tabId: "today" })
               store.state.appointment.successMsg=null
               handleCancel()
               emit('is-visible', {check:false,date:moment(date)});
@@ -265,12 +239,21 @@ import {
         Object.assign(appointmentForm, form)
         //emit('is-visible', false);
       };
-       function closeModal() {
-            if (appointmentForm.patientId != "" || appointmentForm.staffId != "" || appointmentForm.patientId != "" || appointmentForm.startDate != "" || appointmentForm.startTime != "" || appointmentForm.durationId != "" || appointmentForm.typeOfVisit != "" || appointmentForm.note != "") {
+
+      function checkChangeInput(){
+        store.commit('checkChangeInput',true)
+        }
+       const checkFieldsData = computed(()=>{
+      return store.state.common.checkChangeInput;
+    })
+
+   function closeModal() {
+      if(checkFieldsData.value){
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
                      handleCancel();
                         emit("is-visible", false);
+                        store.commit('checkChangeInput',false)
 
                     } else {
 
@@ -279,11 +262,19 @@ import {
                 });
             }
         }
+
+        
       return {
+        checkFieldsData,
+        checkChangeInput,
+        handlePatientChange,
+        handleStaffChange,
+        loadingStatus:store.getters.loadingStatus,
+        staffData,
+        patientData,
         allPatients,
         form,
         errorMsg,
-        // patientsList,
         staffList,
         appointmentForm,
         sendMessage,
@@ -293,12 +284,9 @@ import {
         onFinishFailed,
         handleCancel,
         moment,
-        //disabledDate,
         formRef,
         list,
         closeModal,
-        //onSelectOption,
-        //patients,
         disabled,
         filterOption
       };

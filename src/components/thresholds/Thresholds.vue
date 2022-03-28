@@ -16,9 +16,7 @@
       </a-row>
       <a-row>
         <a-col :span="12">
-          <a-select v-model:value="value" :size="size" mode="tags" style="width: 100%" placeholder="Search . . ."
-            :options="options" @change="handleChange">
-          </a-select>
+          <SearchField  endPoint="generalParameterGroup"/>
         </a-col>
         <a-col :span="12">
           <div class="text-right mb-24">
@@ -27,7 +25,7 @@
               }}</a-button>
           </div>
         </a-col>
-       
+        
           
        
         <ThresholdsTable  @is-edit="showEdit($event)"></ThresholdsTable>
@@ -38,21 +36,22 @@
 
   </a-layout-content>
 
-  <Thresholds v-if="threshodsId" v-model:visible="Thresholds" @is-visible="showModal($event)" :threshodId="threshodsId? threshodsId:''" />
-  <Thresholds v-else v-model:visible="Thresholds" @is-visible="showModal($event)" />
+  <Thresholds v-if="threshodsId" v-model:visible="Thresholds" @is-visible="isEdit($event)" :threshodId="threshodsId" />
+  <Thresholds v-else v-model:visible="Thresholds" @is-visible="isEdit($event)" />
 </template>
 <script>
-  import { ref, watchEffect } from "vue";
+  import { ref, watchEffect,onUnmounted } from "vue";
   import Thresholds from "@/components/modals/Thresholds";
   import ThresholdsTable from "./ThresholdsTable";
   import { useStore } from "vuex";
   import Loader from "@/components/loader/Loader";
-
+  import SearchField from "@/components/common/input/SearchField";
   export default {
     components: {
       ThresholdsTable,
       Thresholds,
-      Loader
+      Loader,
+      SearchField
     },
 
     setup() {
@@ -74,6 +73,9 @@
       const Thresholds = ref(false);
       const showModal = (e) => {
         threshodsId.value=null
+        Thresholds.value = e;
+      };
+      const isEdit = (e) => {
         Thresholds.value = e;
       };
       const showEdit = (e) =>{
@@ -110,7 +112,9 @@
           label: "Group Three",
         },
       ]);
-
+      onUnmounted(()=>{
+            store.dispatch("searchTable",'')
+        })
       return {
         
        
@@ -123,7 +127,8 @@
         size: ref([]),
         threshodsId,
         showEdit,
-        nullId
+        nullId,
+        isEdit
       };
     },
   };

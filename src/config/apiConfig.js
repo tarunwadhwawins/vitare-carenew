@@ -5,6 +5,10 @@ export const API_ENDPOINTS = {
     logout: "logout",
     refreshToken: "refreshToken",
 
+    //dashboard
+    interval:"globalstartEnd/date",
+    cptCodeGraph:"cptCode/billingSummary",
+
     // Patients
     patient:"patient",
     patientsList:"patient",
@@ -102,6 +106,15 @@ export const API_ENDPOINTS = {
 
     // Critical Notes
     criticalNote:'criticalNote',
+
+    //notification
+    notification:'notification',
+    
+    // Change Password
+    changePassword:'changePassword',
+    forgotPassword:'forgot/password',
+    validateCode:'forgotPassword/verify',
+    setupPassword:'generate/newPassword',
 };
 
 // export const getApiUrl = key => {

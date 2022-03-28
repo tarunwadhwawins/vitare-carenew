@@ -7,7 +7,7 @@ const header = {
   addPatient: 'Add Patient',
   addTask: 'Add Task',
   startCall: 'Start Call',
-  notification: 'Notification',
+  notification: 'Notifications',
   checkAllNotifications: 'Check all notifications',
   myProfile: 'My Profile',
   settings: 'Settings',

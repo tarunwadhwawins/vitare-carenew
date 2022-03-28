@@ -91,9 +91,9 @@ export default {
 
         function updateAuditTime() {
             store.getters.timeLogReports.value.timeLogReportList = ""
-            startDate.value =timeStamp(startimeAdd(moment(auditTimeLog.startDate)))
-            endDate.value = timeStamp(endTimeAdd(moment(auditTimeLog.endDate)))
-            store.dispatch("timeLogReportList", "?fromDate=" + timeStamp(startimeAdd(moment(auditTimeLog.startDate))) + "&toDate=" + timeStamp(endTimeAdd(moment(auditTimeLog.endDate))))
+            startDate.value =auditTimeLog.startDate ? timeStamp(startimeAdd(moment(auditTimeLog.startDate))): ''
+            endDate.value = auditTimeLog.endDate ? timeStamp(endTimeAdd(moment(auditTimeLog.endDate))) : ''
+            store.dispatch("timeLogReportList", "?fromDate=" + startDate.value + "&toDate=" + endDate.value)
         }
 
         function reportExport() {
@@ -105,7 +105,7 @@ export default {
                
               if(startDate.value && endDate.value){
                 
-                window.open(API_URL + 'timelog/report/export/' + store.state.timeLogReport.reportExport.data.udid + '?fromDate=' + timeStamp(startimeAdd(moment(startDate.value))) + '&toDate=' +  timeStamp(endTimeAdd(moment(endDate.value))), '_blank') 
+            window.open(API_URL + 'timelog/report/export/' + store.state.timeLogReport.reportExport.data.udid + '?fromDate=' + startDate.value + '&toDate=' +  endDate.value, '_blank') 
             }else{
                 window.open(API_URL + 'timelog/report/export/' + store.state.timeLogReport.reportExport.data.udid + '?fromDate=&toDate=', '_blank')
               }

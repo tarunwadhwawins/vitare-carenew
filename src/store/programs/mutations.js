@@ -1,4 +1,4 @@
-export const manageProgramList = async (state, data) => {
+export const program = async (state, data) => {
  
   state.programColumns = [
     {

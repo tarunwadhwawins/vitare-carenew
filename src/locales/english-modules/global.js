@@ -30,7 +30,7 @@ const global = {
   previous: 'Previous',
   next: 'Next',
   done: 'Done',
-  callQueue: 'Call Queue',
+  callQueue: 'Call State',
   add:'Add',
   edit:'Edit',
   delete:'Delete',
@@ -66,6 +66,12 @@ const global = {
   send:'Send',
   service:'Service',
   isPrimary:'Is Primary',
+  currentPassword:'Current Password',
+  newPassword:'New Password',
+  confirmPassword:'Confirm Password',
+  confirmNewPassword:'Confirm New Password',
+  resetPassword:'Reset Password',
+  submit:'Submit',
 
 }
 

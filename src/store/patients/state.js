@@ -1,12 +1,6 @@
 export default {
     counter:0,
     addDemographic:null,
-    addCondition:null,
-    updateCondition:null,
-    addPatientReferals:null,
-    updatePatientReferals:null,
-    addPatientPhysician:null,
-    updatePatientPhysician:null,
     addPatientProgram:null,
     program:null,
     addDevice:null,
@@ -33,6 +27,7 @@ export default {
     uploadFile:null,
     status:false,
     errorMsg:null,
+    errorMessage:null,
     patientDetails:null,
     patientTimeline:null,
     patientDocuments:null,
@@ -68,5 +63,9 @@ export default {
     criticalNotesList:null,
     familyMembersList:null,
     familyMemberDetails:null,
+    physiciansList:null,
+    physicianDetails:null,
+    emergencyContactsList:null,
+    emergencyContactDetails:null,
 
 }

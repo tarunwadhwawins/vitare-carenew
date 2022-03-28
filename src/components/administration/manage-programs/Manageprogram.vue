@@ -19,8 +19,8 @@
                             </h2>
                         </a-col>
                         <a-col :span="12" v-if="arrayToObjact(programsPermissions,20)">
-                            <a-select v-model:value="value2" :size="size" mode="tags" style="width: 100%" placeholder="Search . . ." :options="searchoptions" @change="handleChange2">
-                            </a-select>
+                            <SearchField endPoint="program"/>
+                            
                         </a-col>
                         <a-col :span="12" v-if="arrayToObjact(programsPermissions,19)">
                             <div class="text-right mb-24">
@@ -47,7 +47,7 @@ import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import AdminPrograms from "@/components/modals/AdminPrograms";
 import {
     ref,
-  
+    onUnmounted,
     computed
 } from "vue";
 import ProgramTable from "./ProgramTable"
@@ -57,7 +57,7 @@ import {
 import {
     arrayToObjact
 } from "@/commonMethods/commonMethod";
-
+import SearchField from "@/components/common/input/SearchField";
 export default {
     components: {
         Header,
@@ -65,6 +65,7 @@ export default {
 
         AdminPrograms,
         ProgramTable,
+        SearchField
     },
 
     setup() {
@@ -83,7 +84,9 @@ export default {
         const handleChange2 = (value) => {
             console.log(`selected ${value}`);
         };
-        
+        onUnmounted(()=>{
+            store.dispatch("searchTable",'')
+        })
         const searchoptions = ref([{
                 value: "RPM - Remote Patient Monitor",
                 label: "RPM - Remote Patient Monitor",

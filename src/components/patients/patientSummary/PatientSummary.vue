@@ -26,7 +26,7 @@
               <div class="timer">
                 <h3>{{$t('patientSummary.currentSession')}} : {{formattedElapsedTime}}</h3>
                 <a-button v-if="startOn" class="primaryBtn" @click="start">{{$t('patientSummary.startTimer')}}</a-button>
-                <a-button v-if="!startOn" class="primaryBtn" @click="showStopTimerModal">{{$t('patientSummary.stopTimer')}}</a-button>
+                <a-button v-if="!startOn" class="primaryBtn" id="timer" @click="showStopTimerModal">{{$t('patientSummary.stopTimer')}}</a-button>
               </div>
             </a-col>
             <a-col :sm="24">
@@ -67,9 +67,13 @@ import Loader from "@/components/loader/Loader";
 import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 
 import dayjs from "dayjs";
-import { ref, computed, watchEffect } from "vue";
+import { ref, computed, watchEffect,onBeforeMount} from "vue";
 import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
+import { useRoute  } from 'vue-router';
+import {
+  timeStamp,
+  getSeconds,
+} from '@/commonMethods/commonMethod';
 const value = ref(dayjs("12:08", "HH:mm"));
 
 export default {
@@ -88,6 +92,8 @@ export default {
   setup() {
     const store = useStore();
     const route = useRoute();
+    const patientUdid = route.params.udid
+    
     const visible = ref(false);
     const visible1 = ref(false);
     const visible2 = ref(false);
@@ -159,22 +165,73 @@ export default {
     })
     
     watchEffect(() => {
+      timer.value = setInterval(() => {
+        elapsedTime.value += 1000;
+      }, 1000);
+
       if(route.name == 'PatientSummary') {
-        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 99});
-        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 100});
-        store.dispatch('patientVitals', {patientId: route.params.udid, deviceType: 101});
-        store.dispatch('devices', route.params.udid)
+        store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 99});
+        store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 100});
+        store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 101});
+        store.dispatch('devices', patientUdid)
         store.dispatch('activeCptCodes')
         store.dispatch('allPatientsList')
         store.dispatch('allStaffList')
         store.dispatch('flagsList')
-        store.dispatch('patientFlagsList', route.params.udid);
-        store.dispatch('patientCriticalNotes', route.params.udid);
-        store.dispatch('familyMembersList', route.params.udid);
+        store.dispatch('patientFlagsList', patientUdid);
+        store.dispatch('patientCriticalNotes', patientUdid);
+        store.dispatch('familyMembersList', patientUdid);
+        store.dispatch('physiciansList', patientUdid);
+        store.dispatch('emergencyContactsList', patientUdid);
+
+        // if((getSeconds(newformattedElapsedTime)%30) == 0) {
+          if(startOn.value == false) {
+            setInterval(function() {
+              const newFormattedElapsedTime = getSeconds(formattedElapsedTime.value)
+              const timeLogId =  localStorage.getItem('timeLogId')
+              if((timeLogId && timeLogId != null)) {
+                const data = {
+                  category: '',
+                  loggedBy: 'gfdgfhggfhhfgh',
+                  performedBy: 'gfdgfhggfhhfgh',
+                  date: timeStamp(new Date()),
+                  timeAmount: newFormattedElapsedTime,
+                  cptCode: '',
+                  note: 'Time Log',
+                  isAutomatic: true,
+                }
+                console.log('elapsedTime.value', data)
+                store.dispatch('updatePatientTimeLog', {
+                  timeLogId: timeLogId,
+                  patientUdid: patientUdid,
+                  data: data
+                }).then(() => {
+                  store.dispatch('latestTimeLog', patientUdid)
+                });
+              }
+              else {
+                const data = {
+                  category: '',
+                  loggedBy: 'gfdgfhggfhhfgh',
+                  performedBy: 'gfdgfhggfhhfgh',
+                  date: timeStamp(new Date()),
+                  timeAmount: newFormattedElapsedTime,
+                  cptCode: '',
+                  note: 'Time Log',
+                  isAutomatic: true,
+                }
+                console.log('elapsedTime.value', data)
+                store.dispatch('addTimeLog', {
+                  id: patientUdid,
+                  data: data
+                }).then(() => {
+                  store.dispatch('latestTimeLog', patientUdid)
+                });
+              }
+            }, 30000);
+          }
+        // }
       }
-      timer.value = setInterval(() => {
-        elapsedTime.value += 1000;
-      }, 1000);
     })
 
     const start = () => {
@@ -190,7 +247,7 @@ export default {
       stoptimervisible.value = true;
       isTimeLog.value = true;
     };
-
+  
     const handleOk = (e) => {
       elapsedTime.value = 0;
       startOn.value = true;
@@ -198,7 +255,13 @@ export default {
       visible.value = false;
       stoptimervisible.value = false;
     };
-
+    onBeforeMount(() =>{
+      window.addEventListener('beforeunload', (event) => {
+        //console.log(event)
+  event.returnValue = 'ffghg';
+});
+    
+  })
     return {
       showStopTimerModal,
       formattedElapsedTime,
@@ -250,7 +313,21 @@ export default {
       value10: ref([]),
       startOn,
     };
+
+    
   },
+  beforeRouteLeave (to, from, next) {
+   var button= document.getElementById("timer")
+   if(button){
+     button.click()
+     console.log(to, from)
+   }else{
+     next()
+   }
+    
+    
+  },
+  
 };
 </script>
 

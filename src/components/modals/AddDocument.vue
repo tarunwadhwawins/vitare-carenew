@@ -20,24 +20,26 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('documents.type')" name="type" :rules="[{ required: true, message: $t('documents.type')+' '+$t('global.validation') }]">
-              <a-select ref="select" v-model:value="addDocumentForm.type" style="width: 100%" size="large">
+              <!-- <a-select ref="select" v-model:value="addDocumentForm.type" style="width: 100%" size="large">
                 <a-select-option value="" hidden>{{'Select Type'}}</a-select-option>
                 <a-select-option v-for="documentType in documentTypes.globalCode" :key="documentType.id" :value="documentType.id">{{documentType.name}}</a-select-option>
-              </a-select>
+              </a-select> -->
+              <GlobalCodeDropDown  v-model:value="addDocumentForm.type" :globalCode="globalCode.documentTypes"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('documents.tags')" name="tags" :rules="[{ required: true, message: $t('documents.tags')+' '+$t('global.validation') }]">
-              <a-select v-model:value="addDocumentForm.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" />
+              <!-- <a-select v-model:value="addDocumentForm.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" /> -->
+              <GlobalCodeDropDown  v-model:value="addDocumentForm.tags" mode="multiple" :globalCode="globalCode.documentTags"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col :sm="24" :span="24">
           <ModalButtons @is_click="handleClear"/>
         </a-col>
-      </a-row>
+      </a-row> 
     </a-form>
   </a-modal>
 </template>
@@ -46,9 +48,11 @@ import { defineComponent, ref, computed, reactive } from "vue";
 import { useStore } from 'vuex';
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { useRoute } from "vue-router";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 export default defineComponent({
   components: {
     ModalButtons,
+    GlobalCodeDropDown,
   },
   props: {
     patientDetails: {

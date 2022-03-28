@@ -6,7 +6,7 @@ export const provider = async ({
   commit
 }, data) => {
   await serviceMethod.common("post", API_ENDPOINTS['provider'], null, data).then((response) => {
-    commit('provider', response.data.data);
+    commit('providerData', response.data.data);
   }).catch((error) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
@@ -38,10 +38,11 @@ export const providerLocation = async ({
 
 export const providersListAll = async ({
   commit
-}) => {
+},page) => {
   commit('loadingStatus', true)
-  await serviceMethod.common("get", `provider?active=1`, null, null).then((response) => {
-    commit('providersListAll', response.data.data);
+  let link = page? "patiprovider?active=1"+page : "provider?active=1"
+  await serviceMethod.common("get", link, null, null).then((response) => {
+    commit('provider', response.data);
     commit('loadingStatus', false)
   }).catch((error) => {
     commit('loadingStatus', false)

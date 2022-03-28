@@ -20,7 +20,7 @@
                 </h2>
               </a-col>
               <a-col :span="12" >
-                <SearchField @change="searchData"/>
+                <SearchField endPoint="globalCodeCategory"/>
               </a-col>
               <a-col :span="12" v-if="arrayToObjact(globalCodesPermissions,265)">
                 <div class="text-right mb-24">
@@ -28,6 +28,7 @@
                 </div>
               </a-col>
               <a-col :span="24">
+                <Loader/>
                 <GlobalCodesTable @edit-global-code="editGlobalCode($event)"/>
               </a-col>
             </a-row>
@@ -36,7 +37,8 @@
       </a-layout>
     </a-layout>
     <!--modals-->
-    <AdminGlobalCodes v-if="visible" v-model:visible="visible" @close-modal="handleClose" :isAdd="isAdd" />
+    <AdminGlobalCodes  v-model:visible="visible" @close-modal="handleClose($event)" :isAdd="isAdd" />
+    
     <!---->
   </div>
 </template>
@@ -44,42 +46,43 @@
 <script>
 import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
-import AdminGlobalCodes from "@/components/modals/AdminGlobalCodes";
+//import AdminGlobalCodes from "@/components/modals/AdminGlobalCodes";
 import GlobalCodesTable from "@/components/administration/globalCodes/tables/GlobalCodesTable";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
-import { computed, ref } from "vue";
+import { defineComponent,defineAsyncComponent, computed, ref,onUnmounted } from "vue";
 import { useStore } from "vuex";
 import { arrayToObjact } from "@/commonMethods/commonMethod";
-
-export default {
+import Loader from "@/components/loader/Loader"
+export default defineComponent({
   components: {
     Header,
     Sidebar,
-    AdminGlobalCodes,
+    AdminGlobalCodes:defineAsyncComponent(()=>import("@/components/modals/AdminGlobalCodes")),
     GlobalCodesTable,
     SearchField,
     Button,
+    Loader
   },
   setup() {
     const store = useStore()
     const checked = ref([false]);
     const visible = ref(false);
-    const isAdd = ref(false);
+    const isAdd = ref(null);
 
     const showModal = () => {
-      isAdd.value = true;
+      isAdd.value = null;
       visible.value = true;
     };
-    const handleClose = () => {
-      visible.value = false;
+    const handleClose = (e) => {
+      visible.value = e;
     };
     const searchData = () => {
       // store.dispatch('searchGlobalCodes', value)
     };
 
     const editGlobalCode = (id) => {
-      isAdd.value = false;
+      isAdd.value = id;
       store.dispatch('globalCodeDetails', id).then(() => {
         visible.value = true;
       })
@@ -88,7 +91,9 @@ export default {
     const globalCodesPermissions = computed(()=>{
       return store.state.screenPermissions.globalCodesPermissions
     })
-    
+    onUnmounted(()=>{
+            store.dispatch("searchTable",'')
+        })
     return {
       arrayToObjact,
       globalCodesPermissions,
@@ -103,5 +108,5 @@ export default {
       size: ref([]),
     };
   },
-};
+});
 </script>

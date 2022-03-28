@@ -1,6 +1,6 @@
 <template>
 <a-col :sm="24">
-    <a-table rowKey="id" :columns="meta.tasksListColumns" :data-source="meta.tasksList" :scroll="{ x: 900 ,y:450 }" :pagination="false" @change="onChange">
+    <a-table rowKey="id" :columns="meta.tasksListColumns" :data-source="meta.tasksList" :scroll="{ x: 900 ,y:tableYScroller }" :pagination="false" @change="onChange">
         <template #taskName="text">
             <router-link to="#" @click="showModal">{{ text.text }}</router-link>
         </template>
@@ -60,7 +60,7 @@ import {
     messages
 } from "@/config/messages";
 import {
-    warningSwal
+    warningSwal,tableYScroller
 } from "@/commonMethods/commonMethod";
 import InfiniteLoader from "@/components/loader/InfiniteLoader";
 import {
@@ -99,7 +99,8 @@ export default {
                         loader.value = true;
                         meta.taskMeta = "";
                         store.state.tasks.tasksList = ''
-                        store.dispatch("tasksList", "?page=" + current_page).then(() => {
+                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
+                        store.dispatch("tasksList", "?search="+url+"&page=" + current_page).then(() => {
 
                             loadMoredata();
                         });
@@ -155,6 +156,7 @@ export default {
             deleteTask,
             loader,
             meta,
+            tableYScroller,
         };
     },
 };

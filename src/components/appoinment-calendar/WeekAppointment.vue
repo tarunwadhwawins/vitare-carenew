@@ -52,14 +52,14 @@ import { useStore } from "vuex";
 import AppointmentCardList from "./AppointmentCardList";
 
 import { dateFormat } from "../../commonMethods/commonMethod";
-//import { LeftOutlined, RightOutlined } from "@ant-design/icons-vue";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons-vue";
 import moment from "moment"
 export default {
   components: {
     AppointmentCardList,
    
-   // LeftOutlined,
-    //RightOutlined,
+   LeftOutlined,
+    RightOutlined,
   },
   props: {},
   setup(props, { emit }) {

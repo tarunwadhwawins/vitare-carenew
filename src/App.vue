@@ -1,5 +1,5 @@
 <template>
-  <div>
+<div>
     <!-- <div class="SelectLanguage">
       <span for="Select Language">Select Language <SelectLanguage /></span>
     </div> -->
@@ -12,27 +12,33 @@
       </a-radio-group>
     </div> -->
     <a-config-provider :locale="locale === 'en' ? enUS : esES">
-      <div>
-        <router-view />
-      </div>
-      <!-- <div v-else>
+        <div>
+            <router-view />
+        </div>
+        <!-- <div v-else>
         <router-view />
       </div> -->
     </a-config-provider>
-  </div>
+</div>
 </template>
 
 <script>
-  import { watchEffect, ref,onMounted } from "vue";
-  import enUS from "ant-design-vue/es/locale/en_US";
-  import esES from "ant-design-vue/es/locale/es_ES";
-  // import moment from "moment";
-  // import 'moment/dist/locale/es';
-  // import { onMounted } from "vue";
-  // import SelectLanguage from "./views/localization/SelectLanguage.vue";
-  // moment.locale("en");
-  import { useStore } from "vuex"
-  export default {
+import {
+    watchEffect,
+    ref,
+    onMounted
+} from "vue";
+import enUS from "ant-design-vue/es/locale/en_US";
+import esES from "ant-design-vue/es/locale/es_ES";
+// import moment from "moment";
+// import 'moment/dist/locale/es';
+// import { onMounted } from "vue";
+// import SelectLanguage from "./views/localization/SelectLanguage.vue";
+// moment.locale("en");
+import {
+    useStore
+} from "vuex"
+export default {
     //   components: {
     //     SelectLanguage,
     //   },
@@ -46,45 +52,46 @@
         store.dispatch("timeLine", 122)
         store.dispatch("permissions")
         store.dispatch("appointmentConference")
+        store.dispatch('notificationList')
         
         //       moment.locale(val);
       });
           onMounted(() => {
           
             document.body.classList.add("test");
-          });
-      return {
-        //       auth,
-        enUS,
-        esES,
-        locale,
-        //       moment,
-        //     };
-      }
+        });
+        return {
+            //       auth,
+            enUS,
+            esES,
+            locale,
+            //       moment,
+            //     };
+        }
     }
-  }
+}
 </script>
 
 <style lang="scss">
-  #app {
+#app {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
-  }
+}
 
-  #nav {
+#nav {
     a {
-      font-weight: bold;
-      color: #2c3e50;
+        font-weight: bold;
+        color: #2c3e50;
 
-      &.router-link-exact-active {
-        color: #42b983;
-      }
+        &.router-link-exact-active {
+            color: #42b983;
+        }
     }
-  }
+}
 
-  .SelectLanguage {
+.SelectLanguage {
     padding-top: 10px;
     text-align: center;
-  }
+}
 </style>

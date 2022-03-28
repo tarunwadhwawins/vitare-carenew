@@ -52,9 +52,10 @@
     },
     setup() {
       const store = useStore()
-      const dateTimeNow = moment(new Date()).format('YYYY-MM-DD')
+      //const dateTimeNow = moment(new Date()).format('YYYY-MM-DD')
       const linkTo = "patients-summary"
-
+      const fromDate = ref(moment())
+        const toDate = ref(moment())
       const newRequestsColumns = [
         {
           title: "Patient Name",
@@ -98,12 +99,20 @@
       ];
       
       watchEffect(() => {
-        store.dispatch("callPlanned")
-        store.dispatch("callStatus", 122)
-        store.dispatch("communicationTypes")
+        store.dispatch("callPlanned",{
+                fromDate: fromDate.value,
+                toDate: toDate.value})
+        store.dispatch("status", {
+                fromDate: fromDate.value,
+                toDate: toDate.value})
+        store.dispatch("communicationTypes",{
+                fromDate: fromDate.value,
+                toDate: toDate.value})
         //store.dispatch("futureAppointments")
         store.dispatch("newRequests")
-        store.dispatch("communicationsCount", dateTimeNow)
+        store.dispatch("communicationsCount", {
+                fromDate: fromDate.value,
+                toDate: toDate.value})
       })
       
       const callPlanned = computed(() => {

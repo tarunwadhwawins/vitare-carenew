@@ -1,6 +1,6 @@
 import { dateOnlyFormatSImple, yaxis, dataLabels, plotOptions, dateOnlyFormat } from '../../commonMethods/commonMethod';
 import moment from "moment"
-export const tasksListSuccess = async (state, tasks) => {
+export const task = async (state, tasks) => {
   state.tasksList = tasks.data.map(element => {
     element.dueDate = dateOnlyFormat(element.dueDate)
     element.category = element.category.map(item => item.taskCategory)
@@ -387,6 +387,9 @@ export const addTask = async (state, result) => {
 
 export const editTask = async (state, result) => {
   state.editTask = result;
+  state.editTask.assignedTo.forEach((item)=>{
+    state.editTask.entityType= item.entityType
+  })
   state.editTask.assignedTo = state.editTask.assignedTo.map((item) => item.id)
   state.editTask.taskCategory = state.editTask.category.map((item) => item.id)
   state.editTask.dueDate = dateOnlyFormatSImple(state.editTask.dueDate)
@@ -394,8 +397,6 @@ export const editTask = async (state, result) => {
   state.editTask.priority = state.editTask.priorityId,
     state.editTask.taskStatus = state.editTask.taskStatusId
 
-
-  // state.editTask.assignedTo = JSON.parse(state.editTask.assignedTo)
   // state.editTask.taskCategory = JSON.parse(state.editTask.taskCategory)
   state.editTask
 }

@@ -1,7 +1,9 @@
 <template>
+  
   <a-table  rowKey="id"
     :columns="globalCodesColumns"
-    :data-source="globalCodesList">
+    :data-source="globalCodesList"
+    :scroll="{ y: tableYScroller ,x: 1020}" :pagination=false>
     <template #actions="{record}">
       <a-tooltip placement="bottom" v-if="arrayToObjact(globalCodesPermissions,7)">
         <template #title>
@@ -25,10 +27,10 @@
 
 <script>
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-import { watchEffect, computed } from "vue";
+import { watchEffect, computed ,onMounted} from "vue";
 import { useStore } from "vuex";
 // import swal from 'sweetalert2';
-import {warningSwal,arrayToObjact} from "@/commonMethods/commonMethod"
+import {warningSwal,arrayToObjact,tableYScroller} from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
 export default {
   components: {
@@ -40,10 +42,49 @@ export default {
     watchEffect(() => {
       store.dispatch('globalCodesList')
     })
-    const globalCodesList = computed(() => {
-      return store.state.globalCodes.globalCodesList
-    })
+    
+    const globalCodesList = store.getters.globalCodesList
+    const meta = store.getters.globalMeta
+        let data = ''
+        let scroller = ''
+        onMounted(() => {
+            var tableContent = document.querySelector('.ant-table-body')
+            tableContent.addEventListener('scroll', (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight
+                let currentScroll = event.target.scrollTop + 2
+                if (currentScroll >= maxScroll) {
 
+                    let current_page = meta.current_page + 1
+
+                    if (current_page <= meta.total_pages) {
+                        scroller = maxScroll
+                        meta.value = ""
+                        data = globalCodesList.value
+                        store.state.globalCodes.globalCodesList = ""
+                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
+                        store.dispatch("globalCodesList", "&search="+url+"&page=" + current_page).then(() => {
+                            loadMoredata()
+                        })
+
+                    }
+                }
+            })
+        })
+
+        function loadMoredata() {
+            const newData = globalCodesList.value
+
+            newData.forEach(element => {
+                data.push(element)
+            });
+            globalCodesList.value = data
+            var tableContent = document.querySelector('.ant-table-body')
+
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller)
+            }, 50)
+
+        }
     const editGlobalCode = (id) => {
       emit('edit-global-code', id)
     }
@@ -136,6 +177,7 @@ export default {
       globalCodesList,
       updateStatus,
       warningSwal,
+      tableYScroller
     }
   }
 }
@@ -148,10 +190,5 @@ export default {
   th.codeStatus, th.usedCount {
     width: 150px;
   }
-  td {
-    /* text-transform: capitalize; */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+ 
 </style>

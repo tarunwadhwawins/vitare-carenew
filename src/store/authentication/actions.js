@@ -6,11 +6,12 @@ import router from "@/router"
 
 export const login = async ({ commit }, user) => {
 	await ServiceMethodService.login(user).then((response) => {
-		localStorage.setItem('user', response.data.user.name);
+		localStorage.setItem('user', response.data.user);
 		localStorage.setItem('token', response.data.token);
 		localStorage.setItem('auth', JSON.stringify(response.data));
 		commit('loginSuccess', response.data.user);
 		roleAccess({ commit })
+
 	})
 		.catch((error) => {
 			if (error.response.status == 401) {
@@ -55,6 +56,7 @@ const permission = async ({ commit }) => {
 }
 export const logoutUser = async ({ commit }) => {
 	localStorage.removeItem('user');
+	localStorage.removeItem('staff');
 	localStorage.removeItem('token');
 	localStorage.removeItem('auth');
 	localStorage.removeItem('roleAuth');
@@ -62,6 +64,7 @@ export const logoutUser = async ({ commit }) => {
 	localStorage.removeItem('accessPermission');
 	localStorage.removeItem('permission');
 	commit('logoutSuccess', 'Success');
+	localStorage.removeItem('fireBaseToken')
 	// router.push("/")
 	router.go();
 
@@ -90,3 +93,5 @@ export const refreshToken = async ({ commit }) => {
 			commit('failure', error.response.data);
 		})
 }
+
+

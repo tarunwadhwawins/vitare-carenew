@@ -1,5 +1,5 @@
 <template>
-	<a-modal width="1800px" title="Family Members" centered>
+	<a-modal width="90%" title="Family Members" centered>
 		<a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <a-table rowKey="id"
@@ -7,6 +7,14 @@
           :data-source="familyMembersList"
           :scroll="{ x: 2100 }"
           :pagination="false">
+
+					<template #contactTime="{record}">
+						<template v-for="contactTime in record.contactTime" :key="contactTime.id">
+							<p v-if="contactTime == '16'">Morning</p>
+							<p v-if="contactTime == '17'">Afternoon</p>
+							<p v-if="contactTime == '18'">Evening</p>
+						</template>
+					</template>
 
 					<template #contactType="{record}">
 						<template v-for="contactType in record.contactType" :key="contactType.id">
@@ -39,7 +47,7 @@
 </template>
 
 <script>
-import { computed, reactive } from 'vue-demi'
+import { reactive } from 'vue-demi'
 import { useStore } from 'vuex'
 import {
   DeleteOutlined,
@@ -95,6 +103,9 @@ export default {
 				title: "Preferred time of day for contact",
 				dataIndex: "contactTime",
 				key: "contactTime",
+				slots: {
+					customRender: "contactTime"
+				},
 			},
 			{
 				title: "Gender",
@@ -124,10 +135,6 @@ export default {
       },
 		]
 
-    const globalCode = computed(() => {
-      return store.state.common;
-    });
-
 		const editFamilyMember = (value) => {
       store.dispatch('familyMemberDetails', {
 				patientUdid: patientUdid,
@@ -151,10 +158,6 @@ export default {
         }
       })
 		}
-
-		const contactTypes = globalCode.value.pmOfcontact.globalCode
-
-		console.log('contactTypes', contactTypes)
 
 		return {
 			familyMembersColumns,

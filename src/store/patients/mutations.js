@@ -20,7 +20,7 @@ export const status = (state, data) => {
 }
 
 
-export const patients = (state, data) => {
+export const patient = (state, data) => {
   state.column = [{
     title: "Flags",
     dataIndex: "flags",
@@ -206,35 +206,9 @@ export const patients = (state, data) => {
 
 }
 
-export const addCondition = (state, data) => {
-  state.addCondition = data
-}
 export const updateDemographic = (state, data) => {
   state.updateDemographic = data
 }
-
-export const updateCondition = (state, data) => {
-  state.updateCondition = data
-}
-
-export const addPatientReferals = (state, data) => {
-  state.addPatientReferals = data
-}
-
-export const updatePatientReferals = (state, data) => {
-  state.updatePatientReferals = data
-}
-
-
-export const addPatientPhysician = (state, data) => {
-  state.addPatientPhysician = data
-}
-
-export const updatePatientPhysician = (state, data) => {
-  state.updatePatientPhysician = data
-}
-
-
 
 export const programList = (state, data) => {
   state.programList = data
@@ -257,7 +231,7 @@ export const addPatientProgram = (state, data) => {
 }
 
 
-export const program = (state, data) => {
+export const programPatients = (state, data) => {
   state.program = data.map(element => {
     element.onboardingScheduleDate = dateOnlyFormat(element.onboardingScheduleDate),
       element.dischargeDate = dateOnlyFormat(element.dischargeDate)
@@ -529,31 +503,22 @@ export const uploadFile = (state, data) => {
 }
 
 export const patientDetailsSuccess = (state, patient) => {
-  if(patient.emergencyContact.length > 0 && patient.emergencyContact.data) {
-    patient.emergencyFullName = patient.emergencyContact.data.fullName ? patient.emergencyContact.data.fullName : null;
-    patient.emergencyEmail = patient.emergencyContact.data.email ? patient.emergencyContact.data.email : null;
-    patient.emergencyPhoneNumber = patient.emergencyContact.data.phoneNumber ? patient.emergencyContact.data.phoneNumber : null;
-    patient.emergencyContactType = patient.emergencyContact.data.contactType.length > 0 ? JSON.parse(patient.emergencyContact.data.contactType) : [];
-    patient.emergencyContactTime = patient.emergencyContact.data.contactTimeId.length > 0 ? JSON.parse(patient.emergencyContact.data.contactTimeId) : null;
-    patient.isPrimary = patient.patientFamilyMember.data.fullName == patient.emergencyContact.data.fullName ? true : false;
-    patient.emergencyGender = patient.emergencyContact.data.genderId;
-  }
-  else {
-    patient.emergencyFullName = null;
-    patient.emergencyEmail = null;
-    patient.emergencyPhoneNumber = null;
-    patient.emergencyContactType = null;
-    patient.emergencyContactTime = null;
-    patient.isPrimary = null;
-    patient.emergencyGender = null;
-  }
   
-  if(patient.patientFamilyMember.length > 0 && patient.patientFamilyMember.data) {
+  patient.email = patient.user.data.email ? patient.user.data.email : null;
+  patient.country = patient.countryId ? patient.countryId : null;
+  patient.state = patient.stateId ? patient.stateId : null;
+  patient.language = patient.languageId ? patient.languageId : null;
+  patient.gender = patient.genderId ? patient.genderId : null;
+  patient.contactTime = patient.contactTimeId.length > 0 ? JSON.parse(patient.contactTimeId) : [];
+  patient.contactType = patient.contactType.length > 0 ? JSON.parse(patient.contactType) : [];
+  patient.otherLanguage = patient.otherLanguage.length > 0 ? JSON.parse(patient.otherLanguage) : [];
+  
+  if(patient.patientFamilyMember && patient.patientFamilyMember.data) {
     patient.fullName = patient.patientFamilyMember.data.fullName ? patient.patientFamilyMember.data.fullName : null;
     patient.familyEmail = patient.patientFamilyMember.data.email ? patient.patientFamilyMember.data.email : null;
     patient.familyPhoneNumber = patient.patientFamilyMember.data.phoneNumber ? patient.patientFamilyMember.data.phoneNumber : null;
     patient.familyContactType = patient.patientFamilyMember.data.contactType.length > 0 ? JSON.parse(patient.patientFamilyMember.data.contactType) : [];
-    patient.familyContactTime = patient.patientFamilyMember.data.contactTimeId.length > 0 ? JSON.parse(patient.patientFamilyMember.data.contactTimeId) : null;
+    patient.familyContactTime = patient.patientFamilyMember.data.contactTimeId.length > 0 ? JSON.parse(patient.patientFamilyMember.data.contactTimeId) : [];
     patient.familyGender = patient.patientFamilyMember.data.genderId;
     patient.relation = patient.patientFamilyMember.data.relationId;
   }
@@ -561,21 +526,31 @@ export const patientDetailsSuccess = (state, patient) => {
     patient.fullName = null;
     patient.familyEmail = null;
     patient.familyPhoneNumber = null;
-    patient.familyContactType = null;
-    patient.familyContactTime = null;
+    patient.familyContactType = [];
+    patient.familyContactTime = [];
     patient.familyGender = null;
     patient.relation = null;
   }
-
-  patient.email = patient.user.data.email ? patient.user.data.email : null;
-  patient.country = patient.countryId ? patient.countryId : null;
-  patient.state = patient.stateId ? patient.stateId : null;
-  patient.language = patient.languageId ? patient.languageId : null;
-  patient.gender = patient.genderId ? patient.genderId : null;
-  patient.contactTime = patient.contactTimeId ? patient.contactTimeId : null;
-  patient.contactType = patient.contactType.length > 0 ? JSON.parse(patient.contactType) : null;
-  patient.otherLanguage = patient.otherLanguage.length > 0 ? JSON.parse(patient.otherLanguage) : null;
-
+  
+  if(patient.emergencyContact && patient.emergencyContact.data) {
+    patient.emergencyFullName = patient.emergencyContact.data.fullName ? patient.emergencyContact.data.fullName : null;
+    patient.emergencyEmail = patient.emergencyContact.data.email ? patient.emergencyContact.data.email : null;
+    patient.emergencyPhoneNumber = patient.emergencyContact.data.phoneNumber ? patient.emergencyContact.data.phoneNumber : null;
+    patient.emergencyContactType = patient.emergencyContact.data.contactType.length > 0 ? JSON.parse(patient.emergencyContact.data.contactType) : [];
+    patient.emergencyContactTime = patient.emergencyContact.data.contactTimeId.length > 0 ? JSON.parse(patient.emergencyContact.data.contactTimeId) : [];
+    patient.isPrimary = patient.patientFamilyMember.data.fullName == patient.emergencyContact.data.fullName ? true : false;
+    patient.emergencyGender = patient.emergencyContact.data.genderId;
+  }
+  else {
+    patient.emergencyFullName = null;
+    patient.emergencyEmail = null;
+    patient.emergencyPhoneNumber = null;
+    patient.emergencyContactType = [];
+    patient.emergencyContactTime = [];
+    patient.isPrimary = null;
+    patient.emergencyGender = null;
+  }
+  console.log('In Console patient', patient)
   state.patientDetails = patient
 }
 
@@ -603,13 +578,14 @@ export const patientConditions = (state, conditions) => {
 
 export const patientReferralSource = (state, referralSource) => {
   if (referralSource) {
-    referralSource.designation = referralSource.designationId;
+    referralSource.referralDesignation = referralSource.referralDesignationId;
   }
   state.patientReferralSource = referralSource;
 }
 
 export const patientPrimaryPhysician = (state, primaryPhysician) => {
   if (primaryPhysician) {
+    primaryPhysician.sameAsAbove = primaryPhysician.sameAsReferal;
     primaryPhysician.designation = primaryPhysician.designationId;
   }
   state.patientPrimaryPhysician = primaryPhysician;
@@ -648,6 +624,10 @@ export const latestVital = (state, data) => {
 
 export const errorMsg = (state, data) => {
   state.errorMsg = data
+}
+
+export const closeModal = (state, data) => {
+  state.closeModal = data
 }
 
 
@@ -1024,6 +1004,7 @@ export const familyMembersList = (state, familyMembers) => {
   state.familyMembersList = familyMembers.map(member => {
     member.isPrimary = member.isPrimary ? 'Yes' : 'No'
     member.contactType = member.contactType ? JSON.parse(member.contactType) : []
+    member.contactTime = member.contactTimeId ? JSON.parse(member.contactTimeId) : []
     return member
   })
 }
@@ -1033,10 +1014,38 @@ export const familyMemberDetails = (state, familyMember) => {
     familyMember.familyEmail = familyMember.email
     familyMember.familyPhoneNumber = familyMember.phoneNumber
     familyMember.familyContactType = familyMember.contactType ? JSON.parse(familyMember.contactType) : []
-    familyMember.familyContactTime = Number(familyMember.contactTimeId)
+    familyMember.familyContactTime = familyMember.contactTimeId ? JSON.parse(familyMember.contactTimeId) : []
     familyMember.familyGender = familyMember.genderId
     familyMember.relation = familyMember.relationId
     familyMember.isPrimary = familyMember.isPrimary ? true : false
   }
   state.familyMemberDetails = familyMember
+}
+
+export const physiciansList = (state, physicians) => {
+  state.physiciansList = physicians
+}
+
+export const physicianDetails = (state, physician) => {
+  physician.designation = physician.designationId
+  state.physicianDetails = physician
+}
+
+export const emergencyContactsList = (state, emergencyContacts) => {
+  state.emergencyContactsList = emergencyContacts.map(contact => {
+    contact.isPrimary = contact.isPrimary ? 'Yes' : 'No'
+    contact.email = contact.emergencyEmail
+    contact.contactType = contact.contactType ? JSON.parse(contact.contactType) : []
+    contact.contactTime = contact.contactTimeId ? JSON.parse(contact.contactTimeId) : []
+    return contact
+  })
+}
+
+export const emergencyContactDetails = (state, emergencyContact) => {
+  emergencyContact.isPrimary = emergencyContact.isPrimary ? 'Yes' : 'No'
+  emergencyContact.gender = emergencyContact.genderId
+  emergencyContact.email = emergencyContact.emergencyEmail
+  emergencyContact.contactType = emergencyContact.contactType ? JSON.parse(emergencyContact.contactType) : []
+  emergencyContact.contactTime = emergencyContact.contactTimeId ? JSON.parse(emergencyContact.contactTimeId) : []
+  state.emergencyContactDetails = emergencyContact
 }

@@ -4,11 +4,12 @@
       <a-row :gutter="24">
         <a-col :sm="18" :xs="24">
           <a-form-item name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation') }]">
-            <a-select ref="select" v-model:value="addFlagForm.flag" size="large">
+            <!-- <a-select ref="select" v-model:value="addFlagForm.flag" size="large">
               <a-select-option value="" hidden>Select Flag</a-select-option>
               <a-select-option v-for="flag in flagsList" :key="flag.id" :value="flag.id">{{flag.name}}
               </a-select-option>
-            </a-select>
+            </a-select> -->
+            <GlobalCodeDropDown v-model:value="addFlagForm.flag" :globalCode="flagsList"/>
           </a-form-item>
         </a-col>
         <a-col :sm="6" :xs="24">
@@ -25,9 +26,11 @@ import { computed, ref, reactive } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 // // import Loader from "@/components/loader/Loader";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 export default {
 	components: {
 		// Loader,
+    GlobalCodeDropDown
 	},
     setup(props, {emit}) {
       const store = useStore();

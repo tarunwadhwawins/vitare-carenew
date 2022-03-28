@@ -6,10 +6,11 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.category')" name="category" :rules="[{ required: true, message: $t('timeLogs.category')+' '+$t('global.validation')  }]">
-              <a-select ref="select" v-model:value="addTimeLogForm.category" style="width: 100%" size="large" >
+              <!-- <a-select ref="select" v-model:value="addTimeLogForm.category" style="width: 100%" size="large" >
                 <a-select-option value="" hidden>Select Category</a-select-option>
                 <a-select-option v-for="category in timeLogCategories.globalCode" :key="category.id">{{ category.name }}</a-select-option>
-              </a-select>
+              </a-select> -->
+              <GlobalCodeDropDown v-model:value="addTimeLogForm.category" :globalCode="timeLogCategories"/>
             </a-form-item>
           </div>
         </a-col>
@@ -55,10 +56,11 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.cptCode')" name="cptCode" :rules="[{ required: true, message: $t('timeLogs.cptCode')+' '+$t('global.validation')  }]">
-              <a-select ref="select" v-model:value="addTimeLogForm.cptCode" style="width: 100%" size="large" >
+              <!-- <a-select ref="select" v-model:value="addTimeLogForm.cptCode" style="width: 100%" size="large" >
                 <a-select-option value="" hidden>Select CPT Code</a-select-option>
                 <a-select-option v-for="code in cptCodesList" :key="code.udid" :value="code.udid">{{ code.name }}</a-select-option>
-              </a-select>
+              </a-select> -->
+              <GlobalCodeDropDown v-model:value="addTimeLogForm.cptCode" :globalCode="cptCodesList"/>
             </a-form-item>
           </div>
         </a-col>
@@ -90,14 +92,16 @@ import ModalButtons from "@/components/common/button/ModalButtons";
 import { useStore } from "vuex";
 import {
   timeStamp,
-  // getSeconds,
+  getSeconds,
 } from '@/commonMethods/commonMethod';
 import { useRoute } from "vue-router";
 import moment from "moment";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 
 export default defineComponent({
   components: {
     ModalButtons,
+    GlobalCodeDropDown,
   },
   props: {
     timeLogDetails: {
@@ -143,7 +147,7 @@ export default defineComponent({
       loggedBy: "",
       performedBy: "",
       date: "",
-      timeAmount: ref(),
+      timeAmount: '',
       cptCode: "",
       note: "",
     })
@@ -182,12 +186,13 @@ export default defineComponent({
       else {
         // addTimeLogForm.date = timeStamp(addTimeLogForm.date);
         // addTimeLogForm.timeAmount = timeStamp(addTimeLogForm.timeAmount);
+        // console.log('object',(addTimeLogForm.timeAmount).format('HH:mm:ss'));
         const data = {
           category: addTimeLogForm.category,
           loggedBy: addTimeLogForm.loggedBy,
           performedBy: addTimeLogForm.performedBy,
           date: timeStamp(addTimeLogForm.date),
-          timeAmount: timeStamp(addTimeLogForm.timeAmount),
+          timeAmount: getSeconds(addTimeLogForm.timeAmount),
           cptCode: addTimeLogForm.cptCode,
           note: addTimeLogForm.note,
         }

@@ -5,7 +5,7 @@ export const rolesList = async ({ commit }) => {
 	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", API_ENDPOINTS['rolesList']+'?active=1', null, null).then((response) => {
 		//console.log("data",response.data.data)
-		commit('rolesListSuccess', response.data);
+		commit('roleList', response.data);
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {

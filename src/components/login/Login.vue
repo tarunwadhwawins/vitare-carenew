@@ -15,7 +15,10 @@
     </div>
     <div class="buttons">
       <a-button class="btn primaryBtn" html-type="submit">{{$t("login.login")}}</a-button>
-      <a class=""> {{ $t("login.forgotPassword") }}  </a>
+      <!-- <router-link :to="{ name: 'ForgotPassword', params: { udid: '' }}"> -->
+      <router-link to="/forgot-password">
+        {{ $t("login.forgotPassword") }}
+      </router-link>
     </div>
   </a-form>
 </template>
@@ -41,6 +44,8 @@ export default {
     const loggedInUser = computed(() => {
       return store.state.authentication.loggedInUser
     })
+
+
 
     const errorMsg = computed(() => {
       return store.state.authentication

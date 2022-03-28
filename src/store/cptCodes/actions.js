@@ -2,12 +2,16 @@ import ServiceMethodService from '../../services/serviceMethod';
 import { API_ENDPOINTS } from "../../config/apiConfig"
 import { successSwal, errorSwal} from '../../commonMethods/commonMethod'
 export const cptCodesList = async ({ commit },page) => {
+	commit('loadingStatus', true)
 	let link = page? API_ENDPOINTS['cptCodes']+"?active=1"+page: API_ENDPOINTS['cptCodes']+"?active=1"
 	await ServiceMethodService.common("get", link, null, null).then((response) => {
-		commit('cptCodesList', response.data);
+		commit('cptCode', response.data);
+		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		commit('loadingStatus', false)
 		commit('failure', error.response.data);
+
 	})
 }
 

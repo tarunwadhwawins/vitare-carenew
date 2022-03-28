@@ -4,4 +4,5 @@ export default {
   deleteGlobalCode:null,
   globalCodeDetails:null,
   updateGlobalCode:null,
+  globalMeta:null,
 }

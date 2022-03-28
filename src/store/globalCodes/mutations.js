@@ -1,14 +1,15 @@
 import { dateFormat } from '../../commonMethods/commonMethod';
 
-export const globalCodesListSuccess = async (state, globalCodes) => {
+export const globalCodeCategory = async (state, globalCodes) => {
   const codesList = [];
-  globalCodes.map(codes => {
+  globalCodes.data.map(codes => {
     codes.globalCode.map(code => {
       code.status = code.status == 1 ? true : false
       codesList.push(code)
     })
   });
   state.globalCodesList = codesList;
+  state.globalMeta = globalCodes.meta.pagination
 }
 
 export const searchGlobalCodesSuccess = async (state, globalCodes) => {
@@ -27,7 +28,7 @@ export const deleteGlobalCodeSuccess = async (state, globalCode) => {
 }
 
 export const globalCodeDetailsSuccess = async (state, globalCode) => {
-  state.globalCodeDetails = globalCode;
+  state.globalCodeDetails = globalCode
 }
 
 export const updateGlobalCodeSuccess = async (state, globalCode) => {

@@ -46,7 +46,7 @@ export const staffs = async ({commit}, page) => {
   let link = page ? 'staff'+page : 'staff'
 commit('loadingStatus', true)
   await serviceMethod.common("get", link, null, null).then((response) => {
-    commit('staffs', response.data);
+    commit('staff', response.data);
    commit('loadingStatus', false)
   }).catch((error) => { 
     commit('errorMsg', error);

@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.png">
-    <title>Ditstek Care</title>
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title>Alert Ease</title>
     <!-- <link rel="stylesheet" type="text/css" href="./demo/demo-2.css?v1" /> -->
   </head>
   <body>
@@ -18,8 +18,6 @@
     <!-- built files will be auto injected -->
  <script>
     function popupShow(event) {
-    
-    
     var card = document.getElementById(event);
     console.log(card.closest('tr').lastChild)
     console.log(card.closest('tr').lastChild.previousSibling)
@@ -58,6 +56,38 @@
     
   }
  </script>
+ <!-- <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js";
+    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/9.6.8/firebase-messaging.js";
+ 
+    const firebaseConfig = {
+      apiKey: "AIzaSyARXttm2zCcHO6spiUj1v61HAZqWc9E9oU",
+      authDomain: "rpmdemoapp-16785.firebaseapp.com",
+      projectId: "rpmdemoapp-16785",
+      storageBucket: "rpmdemoapp-16785.appspot.com",
+      messagingSenderId: "849086876464",
+      appId: "1:849086876464:web:c83c77d045851fef4556f5",
+      measurementId: "G-XJW2B0HXTL"
+    };
+
+    const firebaseApp = initializeApp(firebaseConfig);
+
+    const messaging = getMessaging();
+    getToken(messaging, { vapidKey: 'BLuPXuT693CDqZoVL-uUKfn-VFDHGail1U9Dk6i8krkcyjvmkvLSrGn2un21gjiEAUnJ6bdCAMNSrIoHeSaqW60' }).then((currentToken) => {
+      console.log("tokenFirebase",currentToken);
+      if (currentToken) {
+        // Send the token to your server and update the UI if necessary
+        // ...
+      } else {
+        // Show permission request UI
+        console.log('No registration token available. Request permission to generate one.');
+        // ...
+      }
+    }).catch((err) => {
+      console.log('An error occurred while retrieving token. ', err);
+      // ...
+    });
+</script> -->
     <!-- <script
       src="./demo/dist/demo-2.js?v3"
       onerror="alert('To run this demo you must first build the library and demo source! See the README.')"
