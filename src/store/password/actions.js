@@ -43,7 +43,7 @@ export const forgotPassword = async ({ commit }, data) => {
 }
 
 export const validateCode = async ({ commit }, data) => {
-	console.log('data', data)
+  commit('loadingStatus', true)
 	await ServiceMethod.common("get", API_ENDPOINTS['validateCode']+`?code=${data}`, null, null).then(() => {
     commit('validateCode', true)
     commit('errorMsg', null)
@@ -62,6 +62,7 @@ export const validateCode = async ({ commit }, data) => {
 		}
 		commit('failure', error.response.data)
 	})
+	commit('loadingStatus', false)
 }
 
 export const setupPassword = async ({ commit }, data) => {

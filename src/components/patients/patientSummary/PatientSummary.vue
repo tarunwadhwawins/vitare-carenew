@@ -91,9 +91,12 @@ export default {
     CriticalNotes,
   },
   setup() {
+    localStorage.removeItem('timeLogId')
     const store = useStore();
     const route = useRoute();
     const patientUdid = route.params.udid
+    const authUser =  JSON.parse(localStorage.getItem('auth'))
+    const loggedInUserId =  authUser.user.staffUdid
     
     const visible = ref(false);
     const visible1 = ref(false);
@@ -157,6 +160,7 @@ export default {
     // Countdown Timer
     const elapsedTime = ref(0)
     const timer = ref(undefined)
+    const myInterval = ref(undefined)
     
     const formattedElapsedTime = computed(() => {
       const date = new Date(null);
@@ -164,10 +168,52 @@ export default {
       const utc = date.toUTCString();
       return utc.substr(utc.indexOf(":") - 2, 8);
     })
+    const timerValue = ref(30000)
     
     watchEffect(() => {
       timer.value = setInterval(() => {
         elapsedTime.value += 1000;
+        if((elapsedTime.value)%timerValue.value === 0) {
+          const newFormattedElapsedTime = getSeconds(formattedElapsedTime.value)
+          const timeLogId =  localStorage.getItem('timeLogId')
+          if((timeLogId && timeLogId != null)) {
+            const data = {
+              category: '',
+              loggedBy: loggedInUserId,
+              performedBy: loggedInUserId,
+              date: timeStamp(new Date()),
+              timeAmount: newFormattedElapsedTime,
+              cptCode: '',
+              note: 'Time Log',
+              isAutomatic: true,
+            }
+            store.dispatch('updatePatientTimeLog', {
+              timeLogId: timeLogId,
+              patientUdid: patientUdid,
+              data: data
+            }).then(() => {
+              store.dispatch('latestTimeLog', patientUdid)
+            });
+          }
+          else {
+            const data = {
+              category: '',
+              loggedBy: loggedInUserId,
+              performedBy: loggedInUserId,
+              date: timeStamp(new Date()),
+              timeAmount: newFormattedElapsedTime,
+              cptCode: '',
+              note: 'Time Log',
+              isAutomatic: true,
+            }
+            store.dispatch('addTimeLog', {
+              id: patientUdid,
+              data: data
+            }).then(() => {
+              store.dispatch('latestTimeLog', patientUdid)
+            });
+          }
+        }
       }, 1000);
 
       if(route.name == 'PatientSummary') {
@@ -184,60 +230,53 @@ export default {
         store.dispatch('familyMembersList', patientUdid);
         store.dispatch('physiciansList', patientUdid);
         store.dispatch('emergencyContactsList', patientUdid);
-
-        // if((getSeconds(newformattedElapsedTime)%30) == 0) {
-          if(startOn.value == false) {
-            setInterval(function() {
-              const newFormattedElapsedTime = getSeconds(formattedElapsedTime.value)
-              const timeLogId =  localStorage.getItem('timeLogId')
-              if((timeLogId && timeLogId != null)) {
-                const data = {
-                  category: '',
-                  loggedBy: 'gfdgfhggfhhfgh',
-                  performedBy: 'gfdgfhggfhhfgh',
-                  date: timeStamp(new Date()),
-                  timeAmount: newFormattedElapsedTime,
-                  cptCode: '',
-                  note: 'Time Log',
-                  isAutomatic: true,
-                }
-                console.log('elapsedTime.value', data)
-                store.dispatch('updatePatientTimeLog', {
-                  timeLogId: timeLogId,
-                  patientUdid: patientUdid,
-                  data: data
-                }).then(() => {
-                  store.dispatch('latestTimeLog', patientUdid)
-                });
-              }
-              else {
-                const data = {
-                  category: '',
-                  loggedBy: 'gfdgfhggfhhfgh',
-                  performedBy: 'gfdgfhggfhhfgh',
-                  date: timeStamp(new Date()),
-                  timeAmount: newFormattedElapsedTime,
-                  cptCode: '',
-                  note: 'Time Log',
-                  isAutomatic: true,
-                }
-                console.log('elapsedTime.value', data)
-                store.dispatch('addTimeLog', {
-                  id: patientUdid,
-                  data: data
-                }).then(() => {
-                  store.dispatch('latestTimeLog', patientUdid)
-                });
-              }
-            }, 30000);
-          }
-        // }
       }
     })
 
     const start = () => {
       timer.value = setInterval(() => {
         elapsedTime.value += 1000;
+        if((elapsedTime.value)%timerValue.value === 0) {
+          const newFormattedElapsedTime = getSeconds(formattedElapsedTime.value)
+          const timeLogId =  localStorage.getItem('timeLogId')
+          if((timeLogId && timeLogId != null)) {
+            const data = {
+              category: '',
+              loggedBy: loggedInUserId,
+              performedBy: loggedInUserId,
+              date: timeStamp(new Date()),
+              timeAmount: newFormattedElapsedTime,
+              cptCode: '',
+              note: 'Time Log',
+              isAutomatic: true,
+            }
+            store.dispatch('updatePatientTimeLog', {
+              timeLogId: timeLogId,
+              patientUdid: patientUdid,
+              data: data
+            }).then(() => {
+              store.dispatch('latestTimeLog', patientUdid)
+            });
+          }
+          else {
+            const data = {
+              category: '',
+              loggedBy: loggedInUserId,
+              performedBy: loggedInUserId,
+              date: timeStamp(new Date()),
+              timeAmount: newFormattedElapsedTime,
+              cptCode: '',
+              note: 'Time Log',
+              isAutomatic: true,
+            }
+            store.dispatch('addTimeLog', {
+              id: patientUdid,
+              data: data
+            }).then(() => {
+              store.dispatch('latestTimeLog', patientUdid)
+            });
+          }
+        }
       }, 1000);
       startOn.value = false;
     }
@@ -245,6 +284,7 @@ export default {
     const isTimeLog = ref(false);
     const showStopTimerModal = () => {
       clearInterval(timer.value);
+      clearInterval(myInterval.value);
       stoptimervisible.value = true;
       isTimeLog.value = true;
     };
@@ -256,13 +296,13 @@ export default {
       visible.value = false;
       stoptimervisible.value = false;
     };
+    
     onBeforeMount(() =>{
       window.addEventListener('beforeunload', (event) => {
-        //console.log(event)
-  event.returnValue = 'ffghg';
-});
-    
-  })
+        event.returnValue = 'ffghg';
+      });
+    })
+
     return {
       paramsId:route.params.udid,
       actionTrack,

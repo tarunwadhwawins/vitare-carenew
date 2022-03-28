@@ -3,30 +3,10 @@
     <div class="logIn">
       <div class="loginInner">
         <a-row>
-          <a-col :md="12">
-            <div class="leftWrapper">
-              <div>
-                <div class="logo">
-                  <img src="../../assets/images/logo.png" alt="image" />
-                </div>
-                <h2>Welcome to Virtare Healthcare</h2>
-                <p>
-                  Lorem Ipsum is simply dummy text of the printing and typesetting
-                  industry. Lorem Ipsum has been the industry's standard dummy text ever
-                  since the 1500s, when an unknown printer took a galley of type and
-                  scrambled it to make a type specimen book.
-                </p>
-                <img
-                  class="rightImg"
-                  src="../../assets/images/circle.png"
-                  alt="image"
-                />
-              </div>
-            </div>
-          </a-col>
+          <WelcomeScreen />
           <a-col :md="12">
             <div class="rightWrapper">
-              <img class="rightImg" src="../../assets/images/curve.png" alt="image" />
+              <img class="rightImg" src="@/assets/images/curve.png" alt="image" />
               <h2>Forgot Password</h2>
               <a-form ref="formRef" :model="forgotPasswordForm" layout="vertical" @finish="submitForm">
                 <a-col :sm="24" :xs="24">
@@ -55,7 +35,11 @@ import {
   ref
 } from "vue";
 import { useStore } from "vuex";
+import WelcomeScreen from "@/components/common/Welcome";
 export default defineComponent({
+  components: {
+    WelcomeScreen
+  },
   setup() {
     const store = useStore()
     const formRef = ref()
