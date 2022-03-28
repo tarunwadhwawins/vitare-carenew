@@ -210,7 +210,7 @@ export default {
         const meta = store.getters.communicationRecord.value;
     
         let scroller = ''
-        let data = ''
+        let data = []
         onMounted(() => {
             var tableContent = document.querySelector(".ant-table-body");
 

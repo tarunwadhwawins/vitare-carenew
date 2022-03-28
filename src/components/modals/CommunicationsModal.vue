@@ -2,35 +2,12 @@
   <a-modal width="1000px" title="Communications" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
     <a-form ref="formRef" :model="messageForm" layout="vertical" @finish="sendMessage" @finishFailed="sendMessageFailed">
       <a-row :gutter="24">
-        <!-- <a-col :sm="12" :xs="24">
-          <div class="form-group">
-            <a-form-item :label="$t('communications.communicationsModal.from')" name="from">
-              <a-input v-model:value="messageForm.from" size="large" readonly />
-            </a-form-item>
-          </div>
-        </a-col> -->
+       
         <a-col :sm="12" :xs="24">
           <div class="form-group">
         
             <a-form-item :label="$t('communications.communicationsModal.from')" name="from" :rules="[{ required: true, message: $t('communications.communicationsModal.from')+' '+$t('global.validation')  }]">
-              <!-- <a-select
-                ref="select"
-                v-model:value="messageForm.from"
-                style="width: 100%"
-                :disabled="arrayToObjact(staffPermissions,37) ? false : true"
-                :show-search="true"
-                placeholder="input search text"
-                :show-arrow="true"
-                :filter-option="false"
-                :not-found-content="loadingStatus ? undefined : null"
-                :options="staffData"
-                @search="handleStaffSearch"
-                @change="handleStaffChange"
-                size="large">  
-                <template  v-if="loadingStatus" #notFoundContent>
-                  <a-spin size="small" />
-                </template>
-              </a-select> -->
+             
               <StaffDropDown :disabled="arrayToObjact(staffPermissions,37) ? false : true" v-model:value="messageForm.from" @handleStaffChange="handleStaffChange($event)"/>
             </a-form-item>
           </div>
@@ -51,32 +28,7 @@
         <a-col :sm="12" :xs="24" v-show="toggleTo">
           <div class="form-group">
             <a-form-item :label="$t('communications.communicationsModal.patient')" name="referenceId" :rules="[{ required: true, message: $t('communications.communicationsModal.patient')+' '+$t('global.validation')  }]">
-              <!-- <a-select
-                ref="select"
-                v-if="patientsList"
-                v-model:value="messageForm.referenceId"
-                style="width: 100%"
-                size="large">
-                <a-select-option value="" disabled>{{'Select Patient'}}</a-select-option>
-                <a-select-option v-for="patient in patientsList" :key="patient.id" :value="patient.id" :disabled="messageForm.from==patient.id ? true : false">{{ patient.name+' '+patient.middleName+' '+patient.lastName }}</a-select-option>
-              </a-select> -->
-              <!-- <a-select
-                ref="select"
-                v-model:value="messageForm.referenceId"
-                style="width: 100%"
-                :show-search="true"
-                placeholder="input search text"
-                :show-arrow="true"
-                :filter-option="false"
-                :not-found-content="loadingStatus ? undefined : null"
-                :options="patientData"
-                @search="handlePatientSearch"
-                @change="handlePatientChange"
-                size="large">
-                <template  v-if="loadingStatus" #notFoundContent>
-                  <a-spin size="small" />
-                </template>
-              </a-select> -->
+              
               <PatientDropDown v-if="patientsList"  v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event)"/>
             </a-form-item>
           </div>
@@ -84,32 +36,7 @@
         <a-col :sm="12" :xs="24" v-show="!toggleTo">
           <div class="form-group">
             <a-form-item :label="$t('communications.communicationsModal.staff')" name="referenceId" :rules="[{ required: true, message: $t('communications.communicationsModal.staff')+' '+$t('global.validation')  }]">
-              <!-- <a-select
-                ref="select"
-                v-if="staffList"
-                v-model:value="messageForm.referenceId"
-                style="width: 100%"
-                size="large">
-                <a-select-option value="" disabled>{{'Select Staff'}}</a-select-option>
-                <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id" :disabled="messageForm.from==staff.id ? true : false">{{ staff.fullName }}</a-select-option>
-              </a-select> -->
-              <!-- <a-select
-                ref="select"
-                v-model:value="messageForm.referenceId"
-                style="width: 100%"
-                :show-search="true"
-                placeholder="input search text"
-                :show-arrow="true"
-                :filter-option="false"
-                :not-found-content="loadingStatus ? undefined : null"
-                :options="staffData"
-                @search="handleStaffSearch"
-                @change="handlePatientChange"
-                size="large">
-                <template  v-if="loadingStatus" #notFoundContent>
-                  <a-spin size="small" />
-                </template>
-              </a-select> -->
+              
               <StaffDropDown v-if="staffList" :checkSameAsStaff="true" v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event)"/>
             </a-form-item>
           </div>
@@ -117,16 +44,7 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('communications.communicationsModal.messageCategory')" name="messageCategoryId" :rules="[{ required: true, message: $t('communications.communicationsModal.messageCategory')+' '+$t('global.validation')  }]">
-              <!-- <a-select
-                v-if="messageCategories"
-                ref="select"
-                v-model:value="messageForm.messageCategoryId"
-                style="width: 100%"
-                size="large">
-                <a-select-option value="" disabled>{{'Select Message Category'}}</a-select-option>
-                <a-select-option v-for="messageCategory in messageCategories.globalCode" :key="messageCategory.id" :value="messageCategory.id">{{ messageCategory.name }}
-                </a-select-option>
-              </a-select> -->
+              
               <GlobalCodeDropDown v-model:value="messageForm.messageCategoryId"  :globalCode="messageCategories" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
@@ -134,33 +52,28 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('communications.communicationsModal.priority')" name="priorityId" :rules="[{ required: true, message: $t('communications.communicationsModal.priority')+' '+$t('global.validation')  }]">
-              <!-- <a-select
-                v-if="taskPriority"
-                ref="select"
-                v-model:value="messageForm.priorityId"
-                style="width: 100%"
-                size="large">
-                <a-select-option value="" disabled>{{'Select Priority'}}</a-select-option>
-                <a-select-option v-for="priority in taskPriority.globalCode" :key="priority.id" :value="priority.id">{{ priority.name }}</a-select-option>
-              </a-select> -->
-              <GlobalCodeDropDown v-model:value="messageForm.taskPriority"  :globalCode="taskPriority" @change="checkChangeInput()"/>
+              
+              <GlobalCodeDropDown v-model:value="messageForm.priorityId"  :globalCode="taskPriority" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('communications.communicationsModal.messageType')" name="messageTypeId" :rules="[{ required: true, message: $t('communications.communicationsModal.messageType')+' '+$t('global.validation')  }]">
-              <!-- <a-select
+              <a-select
                 ref="select"
                 v-model:value="messageForm.messageTypeId"
                 style="width: 100%"
                 size="large">
                   <a-select-option value="" disabled>{{'Select Message Type'}}</a-select-option>
-                  <template v-for="type in messageType.globalCode">
+                  <template v-for="type in messageType">
                     <a-select-option v-if="type.name == 'SMS' || type.name == 'Email'" :key="type.id" :value="type.id">{{ type.name }}</a-select-option>
                   </template>
-              </a-select> -->
-              <GlobalCodeDropDown v-if="type.name == 'SMS' || type.name == 'Email'" :key="type.id" :value="type.id" v-model:value="messageForm.messageTypeId"  :globalCode="messageType" @change="checkChangeInput()"/>
+              </a-select>
+              <!-- <template v-for="type in messageType.globalCode">
+                    <GlobalCodeDropDown   v-model:value="messageForm.messageTypeId"  :globalCode="messageType" @change="checkChangeInput()" :communication="true"/>
+                  </template> -->
+              
             </a-form-item>
           </div>
         </a-col>
@@ -192,9 +105,6 @@ import { useStore } from "vuex";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { arrayToObjact, warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
-// import Services from "@/services/serviceMethod"
-// import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue"
-// import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 export default defineComponent({
   components: {
