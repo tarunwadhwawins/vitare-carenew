@@ -16,6 +16,16 @@ export const loadingStatus = (state)=>{
         return state.timeline
     })
   }
+  export const timeLogCategories = (state)=>{
+    return computed(()=>{
+        return state.timeLogCategories
+    })
+  }
+  export const activeCptCodes = (state)=>{
+    return computed(()=>{
+        return state.activeCptCodes
+    })
+  }
   export const searchTable = (state)=>{
     return computed(()=>{
         return state.searchTable
