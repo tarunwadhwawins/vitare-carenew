@@ -101,14 +101,26 @@ export const updateTimeLog = async ({ commit }, {udid, data}) => {
 }
 
 export const updatePatientTimeLog = async ({ commit }, {patientUdid, timeLogId, data}) => {
-	console.log('updateTimeLog', patientUdid)
+	if(data.isAutomatic && data.isAutomatic == false) {
+		commit('loadingStatus', true)
+	}
 	await ServiceMethodService.common("put", API_ENDPOINTS['patient']+`/${patientUdid}/timeLog`, timeLogId, data).then((response) => {
 		commit('updatePatientTimeLog', response.data.data);
+		if(data.isAutomatic && data.isAutomatic == true) {
+			localStorage.setItem('timeLogId', response.data.data.id)
+		}
+		else {
+			localStorage.removeItem('timeLogId')
+		}
+		if(data.isAutomatic && data.isAutomatic == false) {
+			successSwal(response.data.message)
+		}
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
+		commit('loadingStatus', false)
 	})
 }
