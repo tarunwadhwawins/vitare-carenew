@@ -24,7 +24,7 @@
         <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
         </a-col>
         <a-col :span="24" v-else>
-            <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
+            <a-button class="btn primaryBtn" html-type="submit" :disabled="button ? false : true">{{$t('global.add')}}</a-button>
         </a-col>
     </a-row>
 </a-form>
@@ -76,7 +76,7 @@ export default defineComponent({
       startTime: "",
       endTime: "",
     });
-
+const button= ref(true)
     const staffs = computed(() => {
       return store.state.careCoordinator;
     });
@@ -84,6 +84,7 @@ export default defineComponent({
     
 
     function addAvailability() {
+      button.value =false
       let startTime =  timeStamp(moment().format('MM/DD/YYYY')+ ' ' + availability.startTime+':00');
       let endTime = timeStamp(moment().format('MM/DD/YYYY') + ' ' + availability.endTime+':00')
       if(startTime === endTime || startTime>endTime){
@@ -93,14 +94,21 @@ export default defineComponent({
           id: props.paramId?props.paramId:staffs.value.addStaff.id,
           data:  {startTime: startTime,endTime:endTime}
         });
-        setTimeout(() => {
+        
+      }
+      setTimeout(() => {
           if(staffs.value.closeModal==true){
+            button.value=true
             store.dispatch("availabilityList", props.paramId?props.paramId:staffs.value.addStaff.id);
             reset()
             emit("saveModal", false)
+        }else{
+          if(errorMsg.value){
+          button.value=true
         }
+        }
+        
         }, 2000);
-      }
     }
 
     const Id = staffs.value.addStaff?staffs.value.addStaff.id:''
@@ -122,6 +130,7 @@ export default defineComponent({
       store.commit('errorMsg',null)
     })
     function checkChangeInput(){
+      store.commit('errorMsg',null)
       store.commit('checkChangeInput',true)
     }
 
@@ -137,7 +146,8 @@ export default defineComponent({
       addAvailability,
       availability,
       size: ref("large"),
-      errorMsg
+      errorMsg,
+      button
     };
   },
 });
