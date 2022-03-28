@@ -3,15 +3,18 @@ import { API_ENDPOINTS } from "../../config/apiConfig"
 import { successSwal, errorSwal } from '@/commonMethods/commonMethod';
 
 export const globalCodesList = async ({ commit },page) => {
+	commit('loadingStatus', true)
 	let link = page? API_ENDPOINTS['globalCodesList']+"?active=1"+page : API_ENDPOINTS['globalCodesList']+"?active=1"
 	await ServiceMethodService.common("get", link, null, null).then((response) => {
 		//console.log(response.data.data)
 		commit('globalCodeCategory', response.data);
+		commit('loadingStatus', false)
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
+		commit('loadingStatus', false)
 		commit('failure', error.response.data);
 	})
 }

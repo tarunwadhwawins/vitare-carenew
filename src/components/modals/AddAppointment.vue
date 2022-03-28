@@ -214,7 +214,7 @@ import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
         }).then(() => {
           if(idPatient != null && route.name == 'PatientSummary') {
             store.dispatch('latestAppointment', patientUdid)
-            store.dispatch('patientTimeline', patientUdid);
+            store.dispatch('patientTimeline', {id:patientUdid,type:''});
           }
           emit('closeModal');
         });
