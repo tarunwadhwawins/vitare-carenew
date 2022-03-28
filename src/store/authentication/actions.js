@@ -64,6 +64,7 @@ export const logoutUser = async ({ commit }) => {
 	localStorage.removeItem('accessPermission');
 	localStorage.removeItem('permission');
 	commit('logoutSuccess', 'Success');
+	localStorage.removeItem('fireBaseToken')
 	// router.push("/")
 	router.go();
 
@@ -92,3 +93,5 @@ export const refreshToken = async ({ commit }) => {
 			commit('failure', error.response.data);
 		})
 }
+
+

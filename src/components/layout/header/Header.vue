@@ -152,7 +152,7 @@
                 <a class="ant-dropdown-link" @click.prevent>
                   <div class="icon">
                     <a-badge
-                      count=""
+                      :count="count?count:''"
                       :number-style="{ backgroundColor: '#267dff' }"
                     >
                       <NotificationOutlined />
@@ -160,35 +160,34 @@
                   </div>
                 </a>
                 <template #overlay>
-                  <a-menu class="headerDropdown">
+                  <a-menu class="headerDropdown" style="max-height: 400px;overflow: auto;">
                     <li class="title">{{ $t("header.notification") }}</li>
                     <li
                       class="listing"
                       v-for="(notification, index) in notifications"
                       :key="index"
+
+                      
                     >
-                      <div
-                        v-for="(notify, index) in notification.value"
-                        :key="index"
-                      >
+                      <router-link :to="notification.type=='Appointment'?'appointment-calendar':'/communications'" @click="isReadNotification(notification.id,notification.type)" >
                         <a class="d-flex align-items-center" href="#">
                           <!-- <div class="flex-shrink-0 imgProfile">
                             <img src="@/assets/images/userAvatar.png" alt="image" width="50" />
                           </div> -->
                           <div class="flex-grow-1 ms-3 summary">
-                            <h3>{{ notify.title }}</h3>
-                            <p>{{ notify.body }}</p>
+                            <h3>{{ notification.title }}</h3>
+                            <p>{{ notification.body }}</p>
                             <br />
                             <strong class="" v-if="notification.date">{{
-                              dobFormat(notification.date)
+                              dobFormat(date)==dobFormat(notification.date)?'':dobFormat(notification.date)
                             }}</strong
                             >&nbsp;
-                            <strong class="" v-if="notify.time">{{
-                              meridiemFormatFromTimestamp(notify.time)
+                            <strong class="" v-if="notification.time">{{
+                              meridiemFormatFromTimestamp(notification.time)
                             }}</strong>
                           </div>
                         </a>
-                      </div>
+                      </router-link>
                     </li>
                     <!-- <li class="listing">
                       <a class="d-flex align-items-center" href="#">
@@ -269,7 +268,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watchEffect,onMounted } from "vue";
+import { defineComponent, ref, computed, watchEffect, } from "vue";
 import AddAppointment from "@/components/modals/AddAppointment";
 import TasksModal from "@/components/modals/TasksModal";
 import PatientsModal from "@/components/modals/PatientsModal";
@@ -313,6 +312,7 @@ export default defineComponent({
     const toggle = ref(false);
     const ellipse = ref(false);
     const tasksModal = ref(false);
+    const date = Date.now()
     const userName = JSON.parse(localStorage.getItem("auth"))
     const logoutUser = () => {
       store.state.authentication.errorMsg = "";
@@ -330,13 +330,10 @@ export default defineComponent({
     // }
 
     watchEffect(() => {
-      store.dispatch("getNotifications");
+      store.dispatch("notificationList");
 
     });
-onMounted(()=>{
 
- 
-})
     const appointmentModal = ref(false);
     const addAppt = () => {
       appointmentModal.value = true;
@@ -406,17 +403,31 @@ onMounted(()=>{
     const notifications = computed(() => {
       return store.state.common.getNotifications;
     });
-    const handleChange = (value)=>{
-        // console.log('object',value.split('=>'));
-        let checkData = value.split('=>')
+    const handleChange = (val)=>{
+        // console.log('object',val.split('=>'));
+        let checkData = val.split('=>')
         if(checkData[1]==="Patient"){
+            value.value=val
             router.push({ name: 'PatientSummary', params: { udid: checkData[0] } })
         }else{
+            value.value=val
             router.push({ name: 'CoordinatorSummary', params: { udid: checkData[0] } })
         }
     }
-    return {
 
+    const  isReadNotification =(id,type)=>{
+        console.log(id,type);
+        if(type=='Appointment'){
+
+            store.dispatch("isReadUpdateNotification",id)
+        }else{
+            store.dispatch("isReadUpdateNotification",id) 
+        }
+    }
+    return {
+      isReadNotification,
+      count:store.getters.notificationCount,
+      date,
       handleChange,
       dobFormat,
       meridiemFormatFromTimestamp,

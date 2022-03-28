@@ -29,11 +29,12 @@ const firebaseApp = initializeApp(firebaseConfig);
 
 const messaging = getMessaging();
 getToken(messaging, { vapidKey: 'BLuPXuT693CDqZoVL-uUKfn-VFDHGail1U9Dk6i8krkcyjvmkvLSrGn2un21gjiEAUnJ6bdCAMNSrIoHeSaqW60' }).then((currentToken) => {
-    // console.log("tokenFirebase", currentToken);
+    console.log("tokenFirebase", currentToken);
+    localStorage.setItem('fireBaseToken',currentToken)
     if (currentToken) {
         // Send the token to your server and update the UI if necessary
         // ...
-        localStorage.setItem('fireBaseToken',currentToken)
+        
 
     } else {
         // Show permission request UI
@@ -46,7 +47,8 @@ getToken(messaging, { vapidKey: 'BLuPXuT693CDqZoVL-uUKfn-VFDHGail1U9Dk6i8krkcyjv
 });
 
 onMessage(messaging, (payload) => {
-//   console.log('Message received. ', payload);
+  console.log('Message received. ', payload);
+  store.dispatch('notificationList')
   const key = `open${Date.now()}`;
   notification.open({
     message: <div><h2>{`${payload.notification.title}`}</h2></div>,
@@ -59,8 +61,14 @@ onMessage(messaging, (payload) => {
         ),
         h(Button, {
             type: "primary",
-            onClick: () => { router.push('/communications'),
-               notification.close(key)
+            onClick: () => { if(payload.data.type=="Appointment"){
+                router.push('/appointment-calendar'),
+                notification.close(key)
+            }else{
+                router.push('/communications'),
+                notification.close(key)
+            }
+              
             }
         },
             "ok"
