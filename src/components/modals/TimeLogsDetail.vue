@@ -3,13 +3,13 @@
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <a-table  rowKey="id"  :columns="timeLogColumns" :data-source="timeLogsList" :scroll="{ x: 900 }" :pagination="false" >
-          <!-- <template #category="{record}">
+          <template #category="{record}">
             <span>{{record.category.name}}</span>
           </template>
           <template #action="{record}">
             <a class="icons"><EditOutlined @click="editTimeLog(record.id)" /></a>
             <a class="icons"><DeleteOutlined @click="deleteTimeLog(record.id)"/></a>
-          </template> -->
+          </template>
         </a-table>
         <Loader/>
       </a-col>
@@ -20,8 +20,8 @@
 <script>
 import { computed, defineComponent, watchEffect } from "vue";
 import {
-  // DeleteOutlined,
-  // EditOutlined
+  DeleteOutlined,
+  EditOutlined
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import {warningSwal} from "@/commonMethods/commonMethod"
@@ -32,8 +32,8 @@ import Loader from "../loader/Loader"
 export default defineComponent({
   components: {
     Loader,
-    // DeleteOutlined,
-    // EditOutlined,
+    DeleteOutlined,
+    EditOutlined,
   },
   setup() {
     const store = useStore();
@@ -98,13 +98,13 @@ export default defineComponent({
           multiple: 2,
         },
       },
-      /* {
+      {
         title: "Action",
         dataIndex: "action",
         slots: {
           customRender: "action",
         },
-      }, */
+      },
     ];
     
     watchEffect(() => {

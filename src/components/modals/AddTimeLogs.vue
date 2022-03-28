@@ -184,30 +184,52 @@ export default defineComponent({
         // store.dispatch('updateTimeLog', {timeLogId, addTimeLogForm});
       }
       else {
-        // addTimeLogForm.date = timeStamp(addTimeLogForm.date);
-        // addTimeLogForm.timeAmount = timeStamp(addTimeLogForm.timeAmount);
-        // console.log('object',(addTimeLogForm.timeAmount).format('HH:mm:ss'));
-        const data = {
-          category: addTimeLogForm.category,
-          loggedBy: addTimeLogForm.loggedBy,
-          performedBy: addTimeLogForm.performedBy,
-          date: timeStamp(addTimeLogForm.date),
-          timeAmount: getSeconds(addTimeLogForm.timeAmount),
-          cptCode: addTimeLogForm.cptCode,
-          note: addTimeLogForm.note,
+        const timeLogId =  localStorage.getItem('timeLogId')
+        const timeAmount = getSeconds(moment(addTimeLogForm.timeAmount).format('HH:mm:ss'))
+        if((timeLogId && timeLogId != null)) {
+          const data = {
+            category: addTimeLogForm.category,
+            loggedBy: addTimeLogForm.loggedBy,
+            performedBy: addTimeLogForm.performedBy,
+            date: timeStamp(addTimeLogForm.date),
+            timeAmount: timeAmount,
+            cptCode: addTimeLogForm.cptCode,
+            note: addTimeLogForm.note,
+            isAutomatic: false,
+          }
+          store.dispatch('updatePatientTimeLog', {
+            timeLogId: timeLogId,
+            patientUdid: route.params.udid,
+            data: data
+          }).then(() => {
+            store.dispatch('latestTimeLog', route.params.udid)
+            emit('closeModal');
+            formRef.value.resetFields();
+            Object.assign(addTimeLogForm, form)
+          });
         }
-        const patientId = route.params.udid;
-        store.dispatch('addTimeLog', {id: patientId, data: data}).then(() => {
-          store.dispatch('latestTimeLog', route.params.udid)
-          emit('closeModal');
-          formRef.value.resetFields();
-          Object.assign(addTimeLogForm, form)
-        });
+        else {
+          const data = {
+            category: addTimeLogForm.category,
+            loggedBy: addTimeLogForm.loggedBy,
+            performedBy: addTimeLogForm.performedBy,
+            date: timeStamp(addTimeLogForm.date),
+            timeAmount: timeAmount,
+            cptCode: addTimeLogForm.cptCode,
+            note: addTimeLogForm.note,
+          }
+          const patientId = route.params.udid;
+          store.dispatch('addTimeLog', {id: patientId, data: data}).then(() => {
+            store.dispatch('latestTimeLog', route.params.udid)
+            emit('closeModal');
+            formRef.value.resetFields();
+            Object.assign(addTimeLogForm, form)
+          });
+        }
       }
     }
 
     return {
-      // getSeconds,
       size: ref("large"),
       handleClear,
       formRef,
