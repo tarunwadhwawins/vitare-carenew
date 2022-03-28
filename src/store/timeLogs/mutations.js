@@ -1,6 +1,6 @@
 import {
   dateOnlyFormat,
-  timerFromTimestamp,
+  secondsToTime,
   // dateOnlyFormatSImple,
   // timeFormatSimple
 } from '../../commonMethods/commonMethod';
@@ -11,7 +11,7 @@ export const addTimeLogSuccess = async (state, timeLog) => {
 export const timeLogsListSuccess = async (state, timeLogs) => {
   state.timeLogsList = timeLogs.map(timelog => {
     timelog.date = dateOnlyFormat(timelog.date);
-    timelog.timeAmount = timerFromTimestamp(timelog.timeAmount);
+    timelog.timeAmount = secondsToTime(timelog.timeAmount);
     return timelog;
   })
 }
@@ -29,6 +29,10 @@ export const timeLogDetailsSuccess = async (state, timeLogDetails) => {
 
 export const updateTimeLogSuccess = async (state, updateTimeLog) => {
   state.updateTimeLog = updateTimeLog;
+}
+
+export const updatePatientTimeLog = async (state, updateTimeLog) => {
+  state.updatePatientTimeLog = updateTimeLog;
 }
 
 export const latestTimeLogSuccess = async (state, latestTimeLog) => {
