@@ -12,7 +12,7 @@ module.exports = {
   //     })
   //   ],
   // },
-  // chainWebpack:
+  // chainWebpack: 
   //   config => {
   //     config.optimization.delete('splitChunks')
   //   },
