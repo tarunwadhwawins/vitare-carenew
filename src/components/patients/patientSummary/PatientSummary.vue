@@ -94,6 +94,8 @@ export default {
     const store = useStore();
     const route = useRoute();
     const patientUdid = route.params.udid
+    const authUser =  JSON.parse(localStorage.getItem('auth'))
+    const loggedInUserId =  authUser.user.staffUdid
     
     const visible = ref(false);
     const visible1 = ref(false);
@@ -176,8 +178,8 @@ export default {
           if((timeLogId && timeLogId != null)) {
             const data = {
               category: '',
-              loggedBy: 'gfdgfhggfhhfgh',
-              performedBy: 'gfdgfhggfhhfgh',
+              loggedBy: loggedInUserId,
+              performedBy: loggedInUserId,
               date: timeStamp(new Date()),
               timeAmount: newFormattedElapsedTime,
               cptCode: '',
@@ -195,8 +197,8 @@ export default {
           else {
             const data = {
               category: '',
-              loggedBy: 'gfdgfhggfhhfgh',
-              performedBy: 'gfdgfhggfhhfgh',
+              loggedBy: loggedInUserId,
+              performedBy: loggedInUserId,
               date: timeStamp(new Date()),
               timeAmount: newFormattedElapsedTime,
               cptCode: '',
@@ -239,8 +241,8 @@ export default {
           if((timeLogId && timeLogId != null)) {
             const data = {
               category: '',
-              loggedBy: 'gfdgfhggfhhfgh',
-              performedBy: 'gfdgfhggfhhfgh',
+              loggedBy: loggedInUserId,
+              performedBy: loggedInUserId,
               date: timeStamp(new Date()),
               timeAmount: newFormattedElapsedTime,
               cptCode: '',
@@ -258,8 +260,8 @@ export default {
           else {
             const data = {
               category: '',
-              loggedBy: 'gfdgfhggfhhfgh',
-              performedBy: 'gfdgfhggfhhfgh',
+              loggedBy: loggedInUserId,
+              performedBy: loggedInUserId,
               date: timeStamp(new Date()),
               timeAmount: newFormattedElapsedTime,
               cptCode: '',
