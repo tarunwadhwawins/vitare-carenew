@@ -144,8 +144,7 @@ export default {
     ];
 
     const editFamilyMember = (value) => {
-      store
-        .dispatch("familyMemberDetails", {
+      store.dispatch("familyMemberDetails", {
           patientUdid: patientUdid,
           familyUdid: value,
         })
@@ -157,13 +156,13 @@ export default {
     const deleteFamilyMember = (value) => {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
-          store
-            .dispatch("deleteFamilyMember", {
+          store.dispatch("deleteFamilyMember", {
               patientUdid: patientUdid,
               familyUdid: value,
             })
             .then(() => {
               if (route.name == "PatientSummary") {
+                store.dispatch('patientDetails', patientUdid)
                 store.dispatch("familyMembersList", patientUdid);
               }
             });
