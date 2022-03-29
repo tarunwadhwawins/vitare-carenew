@@ -14,11 +14,11 @@
          
         </template>
     <template #to="{ record }" class="custom">
-         <span v-if="record.is_receiver_patient" class="customTd"><router-link :to="{ name: 'PatientSummary', params: { udid: record.fromId } }">
+         <span v-if="record.is_receiver_patient" class="customTd"><router-link :to="{ name: 'PatientSummary', params: { udid: record.toId } }">
             {{record.to}}
         </router-link></span>
         <span v-else>
-            <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.fromId } }">
+            <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.toId } }">
                 {{record.to}}
             </router-link></span>
         </template>
