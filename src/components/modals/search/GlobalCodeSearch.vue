@@ -24,16 +24,16 @@ export default defineComponent({
     mode:String
   },
   setup() {
-    const handleChange = value => {
-      console.log(`selected ${value}`);
+    const handleChange =  {
+      //console.log(`selected ${value}`);
     };
 
     const handleBlur = () => {
-      console.log('blur');
+      //console.log('blur');
     };
 
     const handleFocus = () => {
-      console.log('focus');
+     // console.log('focus');
     };
 
     const filterOption = (input, globalCode) => {

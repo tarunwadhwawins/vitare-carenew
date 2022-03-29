@@ -2,14 +2,16 @@
 import ServiceMethodService from '../../services/serviceMethod'
 import { API_ENDPOINTS } from "../../config/apiConfig"
 import { errorSwal, successSwal } from '../../commonMethods/commonMethod'
-import router from "@/router"
+import router from "@/router";
 
-export const login = async ({ commit }, user) => {
+let date = new Date();
+export const login = async ({ commit }, user) => {	
 	await ServiceMethodService.login(user).then((response) => {
 		localStorage.setItem('user', response.data.user);
 		localStorage.setItem('token', response.data.token);
 		localStorage.setItem('auth', JSON.stringify(response.data));
-		commit('loginSuccess', response.data.user);
+		localStorage.setItem('expiresIn', date.setSeconds(date.getSeconds() + ((response.data.expiresIn/100)-10)));
+		commit('loginSuccess', response.data);
 		roleAccess({ commit })
 
 	})
@@ -65,26 +67,18 @@ export const logoutUser = async ({ commit }) => {
 	localStorage.removeItem('permission');
 	commit('logoutSuccess', 'Success');
 	localStorage.removeItem('fireBaseToken')
+	localStorage.removeItem('expiresIn')
+
 	// router.push("/")
 	router.go();
-
-	// await ServiceMethodService.common("post", API_ENDPOINTS['logout'], null, null).then((response) => {
-	// 	console.log('response', response);
-	// 	console.log('logoutSuccess', response.data);
-	// 	commit('logoutSuccess', response.data.data);
-	// })
-	// .catch((error) => {
-	// 	if (error.response.status == 401) {
-	// 		//AuthService.logout();
-	// 	}
-	// 	commit('failure', error.response.data);
-	// })
 }
 
 export const refreshToken = async ({ commit }) => {
-	await ServiceMethodService.common("post", API_ENDPOINTS['refreshToken'], null, null).then((response) => {
-
-		commit('refreshTokenSuccess', response.data.data);
+	await ServiceMethodService.common("post", API_ENDPOINTS['refreshToken'], null, true).then((response) => {
+		commit('refreshTokenSuccess', response.data);
+		console.log('token', response.data.token);
+		localStorage.setItem('token', response.data.token);
+		commit('expiresIn', date.setSeconds(date.getSeconds() + ((response.data.expiresIn/100)-10)))
 	})
 		.catch((error) => {
 			if (error.response.status == 401) {

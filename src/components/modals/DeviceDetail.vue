@@ -21,7 +21,7 @@
           </template>
           <template #action="{record}">
             <!-- <a class="icons"><EditOutlined @click="editDevice(record.id)" /></a> -->
-            <a class="icons"><DeleteOutlined @click="deleteDevice(record.id)" /></a>
+            <a class="icons"><DeleteOutlined @click="deleteDevice(record.id);actionTrack(paramsId,320,'patient')" /></a>
           </template>
         </a-table>
         <Loader />
@@ -37,7 +37,7 @@ import {
   // EditOutlined
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
-import {warningSwal} from "@/commonMethods/commonMethod"
+import {warningSwal,actionTrack} from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
 import { useRoute } from "vue-router";
 export default defineComponent({
@@ -110,7 +110,7 @@ export default defineComponent({
             }
             if(route.name == 'PatientSummary') {
               store.dispatch('latestDevice', route.params.udid)
-              store.dispatch('patientTimeline', route.params.udid);
+              store.dispatch('patientTimeline', {id:route.params.udid,type:''});
             }
           });
         }
@@ -118,6 +118,8 @@ export default defineComponent({
     }
 
     return {
+      actionTrack,
+      paramsId:route.params.udid,
       devicesColumns,
       devicesList,
       // editDevice,

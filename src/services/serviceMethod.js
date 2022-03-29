@@ -72,10 +72,7 @@ class ServiceMethodService {
             axios.get(API_URL + `${endpoint}` + '?' + `${str}`, { headers: authHeader() })
                 .then((response) => response)
                 .then((d) => {
-                    //   console.log("data", d.data.data);
-                    if (d.data.data.length > 0) {
-                        store.commit('dropdownLoadingStatus', false)
-                    }
+                    store.commit('dropdownLoadingStatus', false)
                     if (currentValue === value) {
                         const result = d.data.data;
                         // console.log("rewwa", result);
@@ -122,9 +119,7 @@ class ServiceMethodService {
             axios.get(API_URL + `${endpoint}` + '?' + `${str}`, { headers: authHeader() })
                 .then((response) => response)
                 .then((d) => {
-                    if (d.data.data.length > 0) {
-                        store.commit('dropdownLoadingStatus', false)
-                    }
+                    store.commit('dropdownLoadingStatus', false)
                     if (currentValue === value) {
                         const result = d.data.data;
                         const data = result;

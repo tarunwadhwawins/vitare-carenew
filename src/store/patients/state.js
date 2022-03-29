@@ -67,5 +67,6 @@ export default {
     physicianDetails:null,
     emergencyContactsList:null,
     emergencyContactDetails:null,
+    timeLineType:null,
 
 }

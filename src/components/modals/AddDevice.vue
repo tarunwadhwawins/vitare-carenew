@@ -119,7 +119,7 @@ export default defineComponent({
           formRef.value.resetFields();
           Object.assign(inventoryForm, form)
           store.dispatch('latestDevice', route.params.udid)
-          store.dispatch('patientTimeline', route.params.udid);
+          store.dispatch('patientTimeline', {id:route.params.udid,type:''});
           store.dispatch('devices', route.params.udid)
         }
         emit('closeModal');

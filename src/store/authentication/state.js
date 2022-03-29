@@ -1,5 +1,6 @@
 export default {
   loggedInUser: JSON.parse(localStorage.getItem('auth')),
+  expiresIn:JSON.parse(localStorage.getItem('expiresIn')),
   loggedInUserDetails: null,
   logout: null,
   token:null,

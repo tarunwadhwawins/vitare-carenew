@@ -4,5 +4,7 @@ export default {
   editAuditTimeLog:null,
   timeLogeMeta:null,
   auditTimePermissions:null,
+  timeLogView:null,
+  viuewTimeReportModal:null,
  
 }

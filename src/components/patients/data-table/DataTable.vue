@@ -53,7 +53,7 @@ export default {
   setup() {
     const store = useStore();
     const meta = store.getters.patientsRecord.value;
-    let data = "";
+    let data = [];
     let scroller = "";
     onMounted(() => {
       var tableContent = document.querySelector(".ant-table-body");

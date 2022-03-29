@@ -4,9 +4,10 @@
     :columns="colomnsRecord"
     :data-source="dataRecord"
     :pagination="pagination">
-    <template #patientName="text">
-      <router-link :to="linkTo">
-        {{ text.text }}
+    <template #patient="{record}">
+      
+      <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientUdid } }">
+        {{ record.patient }}
       </router-link>
     </template>
     <template #action="{record}">

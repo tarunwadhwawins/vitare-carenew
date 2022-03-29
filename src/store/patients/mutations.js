@@ -3,6 +3,7 @@ import {
   meridiemFormatFromTimestamp,
   dateOnlyFormat,
   dateTimeFormat,
+  dobFormat,
   dobFormat2,
   // timeFormatSimple
   convertResponse,
@@ -502,8 +503,7 @@ export const uploadFile = (state, data) => {
   state.uploadFile = data
 }
 
-export const patientDetailsSuccess = (state, patient) => {
-  
+export const patientDetails = (state, patient) => {
   patient.email = patient.user.data.email ? patient.user.data.email : null;
   patient.country = patient.countryId ? patient.countryId : null;
   patient.state = patient.stateId ? patient.stateId : null;
@@ -512,6 +512,7 @@ export const patientDetailsSuccess = (state, patient) => {
   patient.contactTime = patient.contactTimeId.length > 0 ? JSON.parse(patient.contactTimeId) : [];
   patient.contactType = patient.contactType.length > 0 ? JSON.parse(patient.contactType) : [];
   patient.otherLanguage = patient.otherLanguage.length > 0 ? JSON.parse(patient.otherLanguage) : [];
+  patient.dob = patient.dob ? dobFormat(patient.dob) : null;
   
   if(patient.patientFamilyMember && patient.patientFamilyMember.data) {
     patient.fullName = patient.patientFamilyMember.data.fullName ? patient.patientFamilyMember.data.fullName : null;
@@ -521,6 +522,7 @@ export const patientDetailsSuccess = (state, patient) => {
     patient.familyContactTime = patient.patientFamilyMember.data.contactTimeId.length > 0 ? JSON.parse(patient.patientFamilyMember.data.contactTimeId) : [];
     patient.familyGender = patient.patientFamilyMember.data.genderId;
     patient.relation = patient.patientFamilyMember.data.relationId;
+    patient.isPrimary = patient.patientFamilyMember.data.isPrimary ? true : false;
   }
   else {
     patient.fullName = null;
@@ -538,7 +540,6 @@ export const patientDetailsSuccess = (state, patient) => {
     patient.emergencyPhoneNumber = patient.emergencyContact.data.phoneNumber ? patient.emergencyContact.data.phoneNumber : null;
     patient.emergencyContactType = patient.emergencyContact.data.contactType.length > 0 ? JSON.parse(patient.emergencyContact.data.contactType) : [];
     patient.emergencyContactTime = patient.emergencyContact.data.contactTimeId.length > 0 ? JSON.parse(patient.emergencyContact.data.contactTimeId) : [];
-    patient.isPrimary = patient.patientFamilyMember.data.fullName == patient.emergencyContact.data.fullName ? true : false;
     patient.emergencyGender = patient.emergencyContact.data.genderId;
   }
   else {
@@ -555,10 +556,7 @@ export const patientDetailsSuccess = (state, patient) => {
 }
 
 export const patientTimelineSuccess = (state, timeline) => {
-  state.patientTimeline = timeline.map(data => {
-    data.createdAt = meridiemFormatFromTimestamp(data.createdAt);
-    return data;
-  })
+  state.patientTimeline = timeline
 }
 
 export const patientDocumentsSuccess = (state, documents) => {
@@ -1048,4 +1046,8 @@ export const emergencyContactDetails = (state, emergencyContact) => {
   emergencyContact.contactType = emergencyContact.contactType ? JSON.parse(emergencyContact.contactType) : []
   emergencyContact.contactTime = emergencyContact.contactTimeId ? JSON.parse(emergencyContact.contactTimeId) : []
   state.emergencyContactDetails = emergencyContact
+}
+
+export const timeLineType = (state, data) => {
+  state.timeLineType = data
 }

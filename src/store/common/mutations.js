@@ -102,6 +102,10 @@ export const successMsg = (state, data) => {
     state.successMsg = data
 }
 
+export const actionTrack = (state, data) => {
+    state.actionTrack = data
+}
+
 export const staffListSuccess = (state, data) => {
     
     const staffList = []
@@ -115,6 +119,9 @@ export const staffListSuccess = (state, data) => {
 
 export const loadingStatus = (state, data) => {
     state.loadingStatus = data
+}
+export const loadingTableStatus = (state, data) => {
+    state.loadingTableStatus = data
 }
 
 

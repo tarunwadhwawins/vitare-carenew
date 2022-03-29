@@ -39,8 +39,9 @@ export default {
     getNotifications:null,
     searchTable:null,
     notificationList:null,
-    dropdownLoadingStatus:false
-
+    dropdownLoadingStatus:false,
+    loadingTableStatus:null,
+    actionTrack:null,
 
 
 }
