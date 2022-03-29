@@ -201,8 +201,7 @@
       const addAppt = () => {
         appointmentModal.value = true;
       };
-      const apptOk = (e) => {
-        console.log(e);
+      const apptOk = () => {
         appointmentModal.value = false;
       };
 
@@ -210,8 +209,7 @@
       const addTask = () => {
         TasksModal.value = true;
       };
-      const taskOk = (e) => {
-        console.log(e);
+      const taskOk = () => {
         TasksModal.value = false;
       };
 
@@ -219,8 +217,7 @@
       const addPatient = () => {
         PatientsModal.value = true;
       };
-      const patientOk = (e) => {
-        console.log(e);
+      const patientOk = () => {
         PatientsModal.value = false;
       };
 
@@ -228,8 +225,7 @@
       const addCare = () => {
         CoordinatorsModal.value = true;
       };
-      const handleOk = (e) => {
-        console.log(e);
+      const handleOk = () => {
         CoordinatorsModal.value = false;
       };
       const closeStartCallModal = () => {

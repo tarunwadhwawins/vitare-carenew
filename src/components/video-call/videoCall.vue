@@ -183,11 +183,10 @@ export default {
     const authentication = computed(() => {
       return store.state.authentication;
     });
-    console.log("sipSession", session.value);
-
+   
     onMounted(() => {
       store.commit("loadingStatus", true);
-      console.log(videoCall.value); // this is your <video></video> element
+     // this is your <video></video> element
       //accept videoCall code
       if (session.value) {
         session.value.options.media.remote = {
@@ -210,13 +209,8 @@ export default {
         if (route.params.id) {
           currentUrl.value= window.location.href
            decodedUrl.value =deCodeString(route.params.id)
-          console.log('checkDecodingUrl',decodedUrl.value)
           let callNotification = 0;
           const key = `open${Date.now()}`;
-          console.log(
-            "loginDetails=>",
-            authentication.value.loggedInUser.user.sipId
-          );
           authentication.value.options = Web.SimpleUserOptions = {
             aor: `sip:${authentication.value.loggedInUser.user.sipId}@tele.icc-heaalth.com`,
             media: {
@@ -274,7 +268,6 @@ export default {
           simpleUser
             .connect()
             .then(() => {
-              // console.log("hello");
               simpleUser.register().then(() => {
                 //call start api/
                 store.dispatch("callNotification",{id:decodedUrl.value,status:'start'})

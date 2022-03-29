@@ -1179,14 +1179,9 @@ export default defineComponent( {
 						id: idPatient,
 					}).then(() => {
 						isValueChanged.value = false;
-						// store.commit('errorMsg',null)
 					})
 				}
-				/* console.log('errorMsg referralEmail', errorMsg.value.referralEmail)
-				console.log('errorMsg referralName', errorMsg.value.referralName)
-				console.log('errorMsg email', errorMsg.value.email)
-				console.log('errorMsg name', errorMsg.value.name) */
-				// store.commit("counterPlus");
+
 			}
 			else {	// Add Patient
 				if((!patients.value.addCondition || patients.value.addCondition == null) && (!patients.value.addPatientReferals || patients.value.addPatientReferals == null) && (!patients.value.addPatientPhysician || patients.value.addPatientPhysician == null)) {
@@ -1407,21 +1402,6 @@ export default defineComponent( {
     onUnmounted(()=>{
       store.commit('errorMsg',null)
     })
-
-    /* function formatPhoneNumber(event) {
-        const phoneNumberString = event.target.value
-        console.log('phoneNumberString', phoneNumberString)
-        var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
-        var match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
-        if (match) {
-            var intlCode = (match[1] ? '+1 ' : '');
-            const format = [intlCode, '(', match[2], ') ', match[3], '-', match[4]].join('');
-            Object.assign(demographics, {
-                phoneNumber: format
-            })
-        }
-        return null;
-    } */
 
     function clearValidtion()  {
       formRef.value.resetFields()

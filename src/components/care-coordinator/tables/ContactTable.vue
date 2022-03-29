@@ -33,8 +33,6 @@ export default {
   setup(props) {
     const store = useStore();
     const router = useRoute();
-    console.log("==", router.params.udid);
-
     function deleteContact(id) {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {

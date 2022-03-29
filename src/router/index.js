@@ -276,7 +276,6 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     if (isLoggedIn()) {
-      console.log("login", isLoggedIn())
       next({
         name: "Dashboard",
         query: { redirect: to.fullPath },

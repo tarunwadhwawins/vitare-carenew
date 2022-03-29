@@ -20,9 +20,10 @@
                         <SearchField endPoint="cptCode"/>
                     </a-col>
                     <a-col :span="12">
-                        <div class="text-right mb-24" v-if="arrayToObjact(cptCodePermissions,13)">
+                        <!-- <div class="text-right mb-24" v-if="arrayToObjact(cptCodePermissions,13)">
                             <a-button class="primaryBtn">Export to Excel</a-button>
-                        </div>
+                        </div> -->
+                        <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('cptCode_report')"/>
                     </a-col>
                     <a-col :span="24">
                         <CptCodesTable  @is-visible="editModal($event)" />
@@ -48,7 +49,8 @@ import CptCodesTable from "@/components/administration/cpt-codes/tables/CptCodes
 import {computed, ref,watchEffect,onUnmounted} from "vue";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
-import { arrayToObjact } from "@/commonMethods/commonMethod";
+import { arrayToObjact,exportExcel } from "@/commonMethods/commonMethod";
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 import {
     useStore
 } from "vuex"
@@ -61,7 +63,7 @@ export default {
         CptCodesTable,
         SearchField,
         Button,
-
+        ExportToExcel,
     },
     setup() {
         const visible = ref(false);
@@ -100,9 +102,9 @@ export default {
             store.dispatch("searchTable",'')
         })
         return {
+            exportExcel,
             cptCodePermissions,
             arrayToObjact,
-            
             searchData,
             visible,
             showModal,

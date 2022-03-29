@@ -138,7 +138,6 @@ export const allTaskStatus = async ({ commit }) => {
 	commit('loadingStatus', true);
 	await ServiceMethodService.common('get', API_ENDPOINTS['allTaskStatus'], null, null)
 		.then((response) => {
-			console.log('taskStatusSuccess', response.data);
 			commit('allTaskStatusSuccess', response.data);
 			commit('loadingStatus', false);
 		})

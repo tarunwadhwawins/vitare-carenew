@@ -22,9 +22,10 @@
                 <SearchField endPoint="inventory" />
               </a-col>
               <a-col :span="12">
-                <div class="text-right mb-24">
+                <!-- <div class="text-right mb-24">
                   <a-button class="primaryBtn">Export to Excel</a-button>
-                </div>
+                </div> -->
+                 <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('inventory_report')"/>
               </a-col>
               <a-col :span="24">
                 <InventoryTable @edit-inventory="editInventory"/>
@@ -49,6 +50,8 @@ import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
 import { ref,onUnmounted } from "vue";
 import { useStore } from "vuex";
+import { exportExcel } from "@/commonMethods/commonMethod";
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 
 export default {
   components: {
@@ -58,6 +61,7 @@ export default {
     InventoryTable,
     SearchField,
     Button,
+    ExportToExcel,
   },
   setup() {
     const store = useStore()
@@ -88,6 +92,7 @@ export default {
             store.dispatch("searchTable",'')
         })
     return {
+      exportExcel,
       isAdd,
       buttonName: "Add Inventory",
       editInventory,

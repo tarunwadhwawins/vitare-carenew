@@ -155,7 +155,6 @@ export default defineComponent({
     }
 
     function changeStatus(id, status) {
-      console.log(status);
       store.dispatch("changeStatus", {
         id: patients.value.addDemographic.id,
         statusId: id,

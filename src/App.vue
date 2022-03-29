@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { watchEffect, ref, onMounted,computed } from "vue";
+import { watchEffect, ref, onMounted, computed } from "vue";
 import enUS from "ant-design-vue/es/locale/en_US";
 import esES from "ant-design-vue/es/locale/es_ES";
 // import moment from "moment";
@@ -40,47 +40,40 @@ export default {
   setup() {
     const store = useStore();
     const locale = ref(enUS.locale);
-
     let date = new Date();
-    console.log('date',(date.getTime()));
-
-    const refreshToken = computed(()=>{
+    const refreshToken = computed(() => {
       return store.state.authentication.expiresIn;
-    })
+    });
 
     watchEffect(() => {
-      store.dispatch("globalCodes");
-      store.dispatch("timeLine", 122);
-      store.dispatch("permissions");
-      store.dispatch("appointmentConference");
-      store.dispatch("notificationList");
-      if(refreshToken.value!=null){
-        if(refreshToken.value>date.getTime()){
-          let differenceDate = refreshToken.value-date.getTime();
-          console.log('differenceDate',(differenceDate));
-          console.log('refreshToken.value',refreshToken.value);
-          setTimeout(()=>{
-            store.dispatch("refreshToken")
-          },(differenceDate))
-        }else {
-          store.dispatch('logoutUser')
+      if (refreshToken.value != null) {
+        store.dispatch("globalCodes");
+        store.dispatch("timeLine", 122);
+        store.dispatch("permissions");
+        store.dispatch("appointmentConference");
+        store.dispatch("notificationList");
+        if (refreshToken.value > date.getTime()) {
+          let differenceDate = refreshToken.value - date.getTime();
+          setTimeout(() => {
+            store.dispatch("refreshToken");
+          }, differenceDate);
+        } else {
+          store.dispatch("logoutUser");
         }
       }
-    })
+    });
 
     onMounted(() => {
       document.body.classList.add("test");
-       
-    })
-    
-    
+    });
+
     return {
       enUS,
       esES,
       locale,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style lang="scss">

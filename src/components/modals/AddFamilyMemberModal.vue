@@ -141,7 +141,6 @@ export default {
 			relation: '',
 			isPrimary: patients.value.familyMemberDetails && patients.value.familyMemberDetails.isPrimary ? patients.value.familyMemberDetails.isPrimary : false,
 		})
-		console.log('familyMemberDetails', patients.value)
 		
 		const id = ref(null)
 		if(isEdit) {
