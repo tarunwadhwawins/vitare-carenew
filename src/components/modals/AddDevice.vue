@@ -10,7 +10,8 @@
                 <a-select-option v-for="device in globalCode.deviceType.globalCode" :key="device.id" :value="device.id">{{device.name}}</a-select-option>
               </a-select> -->
               <GlobalCodeDropDown @change="handleInventory" v-model:value="inventoryForm.deviceType" :globalCode="globalCode.deviceType"/>
-              <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" />
+              <ErrorMessage v-if="errorMsg && errorMsg.message" :name="errorMsg.message ? errorMsg.message : ''" />
+              <ErrorMessage v-if="errorMsg && errorMsg.deviceType" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" />
             </a-form-item>
           </div>
         </a-col>
@@ -171,6 +172,7 @@ export default defineComponent({
       inventoryForm.modelNumber = null,
       inventoryForm.serialNumber =null,
       inventoryForm.macAddress = null
+      store.commit('errorMsg', null)
     }
 
     function handleChange(id){
@@ -185,6 +187,9 @@ export default defineComponent({
       formRef.value.resetFields();
       Object.assign(inventoryForm, form)
     };
+    const errorMsg = computed(() => {
+      return store.state.patients.errorMsg
+    })
 
     return {
       formRef,
@@ -201,7 +206,7 @@ export default defineComponent({
       globalCode,
       deviceData,
       deviceColumns,
-      errorMsg:patients.value.errorMsg
+      errorMsg,
     };
   },
 });
