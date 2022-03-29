@@ -27,6 +27,8 @@ export default {
     uploadFile:null,
     status:false,
     errorMsg:null,
+    referralErrorMsg:null,
+    physicianErrorMsg:null,
     errorMessage:null,
     patientDetails:null,
     patientTimeline:null,

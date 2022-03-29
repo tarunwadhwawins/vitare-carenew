@@ -624,6 +624,14 @@ export const errorMsg = (state, data) => {
   state.errorMsg = data
 }
 
+export const referralErrorMsg = (state, data) => {
+  state.referralErrorMsg = data
+}
+
+export const physicianErrorMsg = (state, data) => {
+  state.physicianErrorMsg = data
+}
+
 export const closeModal = (state, data) => {
   state.closeModal = data
 }
