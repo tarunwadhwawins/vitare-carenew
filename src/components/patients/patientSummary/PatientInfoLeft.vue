@@ -155,7 +155,7 @@
   <AddNotesModal v-model:visible="addNoteVisible" @closeModal="handleOk" />
   <NotesDetailModal v-model:visible="notesDetailVisible" @closeModal="handleOk" />
   <AddDocumentModal v-model:visible="addDocumentVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
-  <DocumentDetailModal v-if="patientDetails" v-model:visible="documentDetailVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
+  <DocumentDetailModal v-if="documentDetailVisible == true && patientDetails" v-model:visible="documentDetailVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
   <AddCareTeamModal v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" />
   <AddTimeLogsModal v-if="timeLogDetails" v-model:visible="addTimeLogsVisible" :timeLogDetails="timeLogDetails" :isEditTimeLog="isEditTimeLog" @closeModal="handleOk" />
   <TimeLogsDetailModal v-model:visible="timeLogsDetailVisible" @editTimeLog="editTimeLog($event)" />
@@ -175,6 +175,7 @@ import PatientsModal from "@/components/modals/PatientsModal"
 import AddFamilyMemberModal from "@/components/modals/AddFamilyMemberModal"
 import AddPhysicianModal from "@/components/modals/AddPhysicianModal"
 import AddEmergencyContacts from "@/components/modals/AddEmergencyContacts"
+import DocumentDetailModal from "@/components/modals/DocumentDetail"
 import {
   ref,
   // reactive,
@@ -204,7 +205,7 @@ export default defineComponent({
     AddNotesModal: defineAsyncComponent(()=>import("@/components/modals/AddNote")),
     NotesDetailModal: defineAsyncComponent(()=>import("@/components/modals/NotesDetail")),
     AddDocumentModal: defineAsyncComponent(()=>import("@/components/modals/AddDocument")),
-    DocumentDetailModal: defineAsyncComponent(()=>import("@/components/modals/DocumentDetail")),
+    DocumentDetailModal,
     AddCareTeamModal: defineAsyncComponent(()=>import("@/components/modals/CareCoordinators")),
     AddTimeLogsModal: defineAsyncComponent(()=>import("@/components/modals/AddTimeLogs")),
     TimeLogsDetailModal: defineAsyncComponent(()=>import("@/components/modals/TimeLogsDetail")),

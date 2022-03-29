@@ -645,9 +645,7 @@ export const documents = async ({
 
 
 
-export const uploadFile = async ({
-  commit
-}, data) => {
+export const uploadFile = async ({ commit }, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("post", `file`, null, data).then((response) => {
     commit('uploadFile', response.data.data.path);
