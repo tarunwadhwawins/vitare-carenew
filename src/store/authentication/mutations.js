@@ -52,7 +52,6 @@ state.options= Web.SimpleUserOptions = {
         },
         onCallHangup: async () => {
           if(callNotification==1){
-              console.log('callHangValue',callNotification);
               notification.close(key)
           }else{
             successSwal('Call Ended! Thank You')

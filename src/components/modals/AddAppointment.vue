@@ -139,14 +139,10 @@ import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
       const patientData = ref([]);
       const patientUdid = route.params.udid;
       const idPatient = reactive(props.patientId);
-      const patientName = reactive(props.patientName);
       const disabled = ref(false);
       const filterOption = (input, option) => {
-                  return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-                };
-      
-      console.log('patientName', patientName)
-  
+        return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      };
       const appointmentForm = reactive({
         patientId: '',
         staffId: '',

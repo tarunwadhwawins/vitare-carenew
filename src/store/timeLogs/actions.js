@@ -88,7 +88,6 @@ export const timeLogDetails = async ({ commit }, udid) => {
 }
 
 export const updateTimeLog = async ({ commit }, {udid, data}) => {
-	console.log('updateTimeLog', udid)
 	await ServiceMethodService.common("put", API_ENDPOINTS['timeLog'], udid, data).then((response) => {
 		commit('updateTimeLogSuccess', response.data.data);
 	})

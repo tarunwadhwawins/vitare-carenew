@@ -104,7 +104,6 @@ export const deleteRole = async ({ commit }, id) => {
 //dashboardWidget
 export const dashboardWidget = async ({ commit }) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['dashboardWidget'], null, null).then((response) => {
-		console.log(response.data.data)
 		commit('dashboardWidget', response.data.data);
 		
 	})

@@ -457,7 +457,6 @@ export default defineComponent({
     
     const handleCancel = () => {
       formRef.value.resetFields();
-      console.log('form', form)
       Object.assign(addCarePlanForm, form)
     };
 
@@ -468,8 +467,6 @@ export default defineComponent({
     // const vitalFieldsList = ref(null)
     const selectDevice = (value) => {
       store.dispatch('vitalFieldsByDeviceId', value)
-      // vitalFieldsList.value = vitalFields.value
-      // console.log('vitalFields.value', vitalFieldsList.value)
       if(value == 99) {
         bloodPressureFields.value = true;
         glucoseFields.value = false;
@@ -496,13 +493,10 @@ export default defineComponent({
       handleCancel,
       selectDevice,
       common,
-      // vitalFieldsList,
-      
       size: ref("large"),
       value1: ref(),
       date1: ref(),
       date2: ref(),
-      // value10: ref('lucy'),
       value10: ref({
         value: "lucy",
       }),

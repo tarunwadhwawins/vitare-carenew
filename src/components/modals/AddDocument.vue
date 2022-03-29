@@ -41,18 +41,21 @@
         </a-col>
       </a-row> 
     </a-form>
+    <Loader />
   </a-modal>
 </template>
 <script>
 import { defineComponent, ref, computed, reactive } from "vue";
 import { useStore } from 'vuex';
 import ModalButtons from "@/components/common/button/ModalButtons";
+import Loader from "@/components/loader/Loader";
 import { useRoute } from "vue-router";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 export default defineComponent({
   components: {
     ModalButtons,
     GlobalCodeDropDown,
+    Loader,
   },
   props: {
     patientDetails: {

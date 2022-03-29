@@ -139,17 +139,6 @@ export default {
             emit("is-visible", false);
           } else {
             emit("is-visible", true);
-            //             if (props.threshodId) {
-
-            //                 Object.assign(thresholdForm, form);
-            //                 Object.assign(thresholdForm, vitalEdit.value.vitalEdit)
-            //                 setTimeout(() => {
-            //                     store.commit('loadingStatus', false)
-            //         }, 2000)
-
-            // }
-
-            console.log("check", thresholdForm);
           }
         });
       }

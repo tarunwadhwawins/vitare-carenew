@@ -33,9 +33,10 @@
                                 </div>
                             </a-col>
                             <a-col :sm="4" :xs="24">
-                                <div class="text-right mt-28">
+                                <!-- <div class="text-right mt-28">
                                     <a-button class="btn primaryBtn" @click="reportExport()">{{$t('global.exportToExcel')}}</a-button>
-                                </div>
+                                </div> -->
+                                <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('patientTimelog_report')"/>
                             </a-col>
                         </a-row>
                     </a-form>
@@ -53,6 +54,8 @@
 <script>
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
+import { exportExcel } from "@/commonMethods/commonMethod";
 import {
     ref,
     watchEffect,
@@ -75,6 +78,7 @@ export default {
         Header,
         Sidebar,
         TimeLogTable,
+        ExportToExcel
     },
     setup() {
         const store = useStore();
@@ -98,28 +102,25 @@ export default {
             store.dispatch("timeLogReportList", "?fromDate=" + startDate.value + "&toDate=" + endDate.value)
         }
 
-        function reportExport() {
-            store.dispatch("reportExport", {
-                reportType: "patient_time_log_report"
-            }).then(() => {
+        // function reportExport() {
+        //     store.dispatch("reportExport", {
+        //         reportType: "patient_time_log_report"
+        //     }).then(() => {            
+        //         const API_URL = process.env.VUE_APP_API_URL      
+        //       if(startDate.value && endDate.value){     
+        //     window.open(API_URL + 'timelog/report/export/' + store.state.timeLogReport.reportExport.data.udid + '?fromDate=' + startDate.value + '&toDate=' +  endDate.value, '_blank') 
+        //     }else{
+        //         window.open(API_URL + 'timelog/report/export/' + store.state.timeLogReport.reportExport.data.udid + '?fromDate=&toDate=', '_blank')
+        //       }
                
-                const API_URL = process.env.VUE_APP_API_URL
-               
-              if(startDate.value && endDate.value){
-                
-            window.open(API_URL + 'timelog/report/export/' + store.state.timeLogReport.reportExport.data.udid + '?fromDate=' + startDate.value + '&toDate=' +  endDate.value, '_blank') 
-            }else{
-                window.open(API_URL + 'timelog/report/export/' + store.state.timeLogReport.reportExport.data.udid + '?fromDate=&toDate=', '_blank')
-              }
-               
-            })
-        }
+        //     })
+        // }
         return {
-           
+            exportExcel,
             linkTo,
             updateAuditTime,
             checked,
-            reportExport,
+            // reportExport,
             auditTimeLog,
             value1: ref(),
             size: ref("large"),

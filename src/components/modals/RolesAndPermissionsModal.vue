@@ -347,7 +347,6 @@ export default {
                         reset()
                         emit("is-visible", false);
                     } else {
-                        console.log("fsdfs")
                         emit("is-visible", true);
                     }
                 });

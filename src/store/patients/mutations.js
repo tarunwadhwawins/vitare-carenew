@@ -11,7 +11,6 @@ import {
   convertChartResponse,
   // createDynamicColumns,
 } from '../../commonMethods/commonMethod';
-const VUE_APP_ROOT_API = process.env.VUE_APP_ROOT_API
 
 export const addDemographic = (state, data) => {
   state.addDemographic = data
@@ -462,10 +461,7 @@ export const addDocument = (state, data) => {
 }
 
 export const documents = (state, data) => {
-  state.documents = data.map(item => {
-    item.document = VUE_APP_ROOT_API + item.document
-    return item
-  })
+  state.documents = data
   state.documentColumns = [
     {
       title: "Name",
@@ -503,8 +499,7 @@ export const uploadFile = (state, data) => {
   state.uploadFile = data
 }
 
-export const patientDetailsSuccess = (state, patient) => {
-  
+export const patientDetails = (state, patient) => {
   patient.email = patient.user.data.email ? patient.user.data.email : null;
   patient.country = patient.countryId ? patient.countryId : null;
   patient.state = patient.stateId ? patient.stateId : null;
@@ -523,7 +518,7 @@ export const patientDetailsSuccess = (state, patient) => {
     patient.familyContactTime = patient.patientFamilyMember.data.contactTimeId.length > 0 ? JSON.parse(patient.patientFamilyMember.data.contactTimeId) : [];
     patient.familyGender = patient.patientFamilyMember.data.genderId;
     patient.relation = patient.patientFamilyMember.data.relationId;
-    patient.isPrimary = patient.patientFamilyMember.data.isPrimary == patient.emergencyContact.data.isPrimary ? true : false;
+    patient.isPrimary = patient.patientFamilyMember.data.isPrimary ? true : false;
   }
   else {
     patient.fullName = null;
@@ -552,7 +547,7 @@ export const patientDetailsSuccess = (state, patient) => {
     patient.isPrimary = null;
     patient.emergencyGender = null;
   }
-  console.log('In Console patient', patient)
+
   state.patientDetails = patient
 }
 
@@ -562,7 +557,6 @@ export const patientTimelineSuccess = (state, timeline) => {
 
 export const patientDocumentsSuccess = (state, documents) => {
   state.patientDocuments = documents.map(data => {
-    data.document = VUE_APP_ROOT_API + data.document
     data.createdAt = meridiemFormatFromTimestamp(data.createdAt);
     return data;
   })
@@ -623,6 +617,14 @@ export const latestVital = (state, data) => {
 
 export const errorMsg = (state, data) => {
   state.errorMsg = data
+}
+
+export const referralErrorMsg = (state, data) => {
+  state.referralErrorMsg = data
+}
+
+export const physicianErrorMsg = (state, data) => {
+  state.physicianErrorMsg = data
 }
 
 export const closeModal = (state, data) => {

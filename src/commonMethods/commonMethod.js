@@ -2,6 +2,10 @@ import Swal from 'sweetalert2';
 import moment from 'moment';
 import store from '@/store/index'
 
+export function exportExcel(data){
+	store.dispatch('exportReportRequest',{data:data})
+}
+
 export function actionTrack(id,actionId,endPoint){
 	store.dispatch('actionTrack',{id:id,actionId:actionId,endPoint:endPoint})
 }

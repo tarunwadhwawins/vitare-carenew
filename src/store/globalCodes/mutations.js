@@ -9,6 +9,7 @@ export const globalCodeCategory = async (state, globalCodes) => {
     })
   });
  
+
   state.globalCodesList = codesList;
   state.globalMeta = globalCodes.meta.pagination
 }

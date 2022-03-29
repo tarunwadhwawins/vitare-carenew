@@ -61,11 +61,9 @@ export default {
     };
 
     const handleBlur = () => {
-      console.log("blur");
     };
 
     const handleFocus = () => {
-      console.log("focus");
     };
 
     const filterOption = (input, option) => {
