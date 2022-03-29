@@ -1,12 +1,12 @@
 <template>
-	<a-modal width="60%" title="Add Emergency Contact" centered>
+	<a-modal width="60%" title="Add Emergency Contact" centered @cancel="closeModal()">
 		<a-form ref="formRef" :model="emergencyContactForm" layout="vertical" @finish="submitForm">
 			<a-row :gutter="24">
 
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.fullName')" name="fullName" :rules="[{ required: true, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
-							<a-input v-model:value="emergencyContactForm.fullName" size="large" />
+							<a-input @change="changedValue" v-model:value="emergencyContactForm.fullName" size="large" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.fullName?errorMsg.fullName[0]:''" />
 						</a-form-item>
 					</div>
@@ -15,7 +15,7 @@
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.emailAddress')" name="emergencyEmail" :rules="[{ required: true, message: $t('patient.demographics.emailAddress')+' '+$t('global.validation') }]">
-							<a-input v-model:value="emergencyContactForm.emergencyEmail" placeholder="test@test.com" size="large" />
+							<a-input @change="changedValue" v-model:value="emergencyContactForm.emergencyEmail" placeholder="test@test.com" size="large" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.emergencyEmail?errorMsg.emergencyEmail[0]:''" />
 						</a-form-item>
 					</div>
@@ -24,7 +24,7 @@
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.phoneNo')+' '+$t('global.validation') }]">
-							<a-input-number v-model:value="emergencyContactForm.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
+							<a-input-number @change="changedValue" v-model:value="emergencyContactForm.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
 						</a-form-item>
 					</div>
@@ -34,7 +34,7 @@
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="contactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
 							<!-- <a-select v-model:value="emergencyContactForm.contactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" /> -->
-								<GlobalCodeDropDown  v-model:value="emergencyContactForm.contactType" mode="multiple" :globalCode="globalCode.pmOfcontact"/>
+								<GlobalCodeDropDown @change="changedValue" v-model:value="emergencyContactForm.contactType" mode="multiple" :globalCode="globalCode.pmOfcontact"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.contactType?errorMsg.contactType[0]:''" />
 						</a-form-item>
 					</div>
@@ -44,7 +44,7 @@
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="contactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
 							<!-- <a-select v-model:value="emergencyContactForm.contactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))" /> -->
-								<GlobalCodeDropDown  v-model:value="emergencyContactForm.contactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact"/>
+								<GlobalCodeDropDown @change="changedValue" v-model:value="emergencyContactForm.contactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.contactTime?errorMsg.contactTime[0]:''" />
 						</a-form-item>
 					</div>
@@ -57,7 +57,7 @@
 								<a-select-option value="" hidden>{{'Select Gender'}}</a-select-option>
 								<a-select-option v-for="gender in globalCode.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
 							</a-select> -->
-							<GlobalCodeDropDown  v-model:value="emergencyContactForm.gender"  :globalCode="globalCode.gender"/>
+							<GlobalCodeDropDown @change="changedValue" v-model:value="emergencyContactForm.gender"  :globalCode="globalCode.gender"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.gender?errorMsg.gender[0]:''" />
 						</a-form-item>
 					</div>
@@ -88,6 +88,8 @@ import Loader from "@/components/loader/Loader.vue";
 import { useRoute } from 'vue-router';
 import ErrorMessage from "../common/messages/ErrorMessage"
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+import { warningSwal } from "@/commonMethods/commonMethod";
+import { messages } from "../../config/messages";
 export default {
   components: {
     ModalButtons,
@@ -109,6 +111,7 @@ export default {
 		const formRef = ref()
 		const patientUdid = route.params.udid
 		const isEdit = reactive(props.isEmergencyContactEdit)
+    const isValueChanged = ref(false);
 
     const globalCode = computed(() => {
       return store.state.common;
@@ -144,7 +147,40 @@ export default {
 			store.commit('errorMsg', null)
 		})
 
+		const modalClose = computed(() => {
+			return store.state.patients.closeModal
+		})
+
     const form = reactive({ ...emergencyContactForm });
+
+    const changedValue = (value) => {
+			if(value == false) {
+				isValueChanged.value = false;
+			}
+			else {
+				isValueChanged.value = true;
+			}
+    }
+
+    function closeModal() {
+			if(isValueChanged.value) {
+				warningSwal(messages.modalWarning).then((response) => {
+					if (response == true) {
+						emit("closeModal", {
+							modal: 'addEmergencyContact',
+							value: false
+						});
+						Object.assign(emergencyContactForm, form);
+					}
+					else {
+						emit("closeModal", {
+							modal: 'addEmergencyContact',
+							value: true
+						});
+					}
+				})
+			}
+    }
 
 		const submitForm = () => {
       if(isEdit) {
@@ -189,10 +225,6 @@ export default {
 			return store.state.patients.errorMsg
 		})
 
-		const closeModal = computed(() => {
-			return store.state.patients.closeModal
-		})
-
 		return {
       isEdit,
       formRef,
@@ -202,7 +234,10 @@ export default {
 			handleClear,
 			errorMsg,
 			closeModal,
+			modalClose,
 			id,
+      changedValue,
+			isValueChanged,
 		}
 	}
 }

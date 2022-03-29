@@ -1,5 +1,6 @@
 <template>
-<div class="highLight">Patients are highlighted</div>
+<a-alert class="mb-24" message="Patients are highlighted" type="error" />
+
 <a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900, y: tableYScroller }" :pagination="false" :rowClassName="(record) => auth.user.id!=record.messageSender && record.isRead==0 ? 'bold':''">
      <template #from="{ record }" class="custom">
          <span v-if="record.is_sender_patient" class="customTd">
