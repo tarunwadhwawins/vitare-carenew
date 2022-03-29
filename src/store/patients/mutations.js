@@ -461,10 +461,7 @@ export const addDocument = (state, data) => {
 }
 
 export const documents = (state, data) => {
-  state.documents = data.map(item => {
-    item.document = item.document
-    return item
-  })
+  state.documents = data
   state.documentColumns = [
     {
       title: "Name",
@@ -560,7 +557,6 @@ export const patientTimelineSuccess = (state, timeline) => {
 
 export const patientDocumentsSuccess = (state, documents) => {
   state.patientDocuments = documents.map(data => {
-    data.document = data.document
     data.createdAt = meridiemFormatFromTimestamp(data.createdAt);
     return data;
   })
