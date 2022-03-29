@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { watchEffect, ref, onMounted } from "vue";
+import { watchEffect, ref, onMounted,computed } from "vue";
 import enUS from "ant-design-vue/es/locale/en_US";
 import esES from "ant-design-vue/es/locale/es_ES";
 // import moment from "moment";
@@ -32,6 +32,7 @@ import esES from "ant-design-vue/es/locale/es_ES";
 // import SelectLanguage from "./views/localization/SelectLanguage.vue";
 // moment.locale("en");
 import { useStore } from "vuex";
+
 export default {
   //   components: {
   //     SelectLanguage,
@@ -40,18 +41,40 @@ export default {
     const store = useStore();
     const locale = ref(enUS.locale);
 
+    let date = new Date();
+    console.log('date',(date.getTime()));
+
+    const refreshToken = computed(()=>{
+      return store.state.authentication.expiresIn;
+    })
+
     watchEffect(() => {
       store.dispatch("globalCodes");
       store.dispatch("timeLine", 122);
       store.dispatch("permissions");
       store.dispatch("appointmentConference");
       store.dispatch("notificationList");
+      if(refreshToken.value!=null){
+        if(refreshToken.value>date.getTime()){
+          let differenceDate = refreshToken.value-date.getTime();
+          console.log('differenceDate',(differenceDate));
+          console.log('refreshToken.value',refreshToken.value);
+          setTimeout(()=>{
+            store.dispatch("refreshToken")
+          },(differenceDate))
+        }else {
+          store.dispatch('logoutUser')
+        }
+      }
     })
+
     onMounted(() => {
       document.body.classList.add("test");
+       
     })
+    
+    
     return {
-      refreshToken:store.getters.refreshToken,
       enUS,
       esES,
       locale,

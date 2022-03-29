@@ -147,7 +147,7 @@ export const searchTableData = async ({commit}, search) => {
 
   
   export const actionTrack = async ({commit}, data) => {
-    await serviceMethod.common("post", `${data.endPoint}/${data.id}/action`, null, data.actionId).then((response) => {
+    await serviceMethod.common("post", `${data.endPoint}/${data.id}/action`, null, {actionId:data.actionId}).then((response) => {
       commit('actionTrack', response.data.data);
       // successSwal(response.data.message)
     }).catch((error) => {

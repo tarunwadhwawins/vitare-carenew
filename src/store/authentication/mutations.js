@@ -3,10 +3,13 @@ import router from '@/router/index'
 import { successSwal } from "@/commonMethods/commonMethod";
 import { h } from 'vue'
 import { notification, Button } from "ant-design-vue";
+
 const key = `open${Date.now()}`;
-export const loginSuccess = async (state, login) => {
-  state.token = login;
-  state.loggedInUser=JSON.parse(localStorage.getItem('auth'))
+let date = new Date();
+export const loginSuccess = async (state, data) => {
+  state.token = data.user;
+  state.loggedInUser=JSON.parse(localStorage.getItem('auth')),
+  state.expiresIn= data?date.setSeconds(date.getSeconds() + ((data.expiresIn/100)-10)):localStorage.getItem('expiresIn')
   state.loginErrorMsg = null;
   let callNotification = 0
 // console.log('loginDetails=>',state.loggedInUser.user.sipId);
@@ -124,4 +127,8 @@ export const accessPermission = (state, data) => {
   state.accessPermission = data;
 }
 
+
+export const expiresIn = (state, data) => {
+  state.expiresIn = data;
+}
 
