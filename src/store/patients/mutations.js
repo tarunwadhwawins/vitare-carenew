@@ -11,7 +11,7 @@ import {
   convertChartResponse,
   // createDynamicColumns,
 } from '../../commonMethods/commonMethod';
-// const VUE_APP_ROOT_API = process.env.VUE_APP_ROOT_API
+const VUE_APP_ROOT_API = process.env.VUE_APP_ROOT_API
 
 export const addDemographic = (state, data) => {
   state.addDemographic = data
@@ -463,6 +463,7 @@ export const addDocument = (state, data) => {
 
 export const documents = (state, data) => {
   state.documents = data.map(item => {
+    item.document = VUE_APP_ROOT_API + item.document
     return item
   })
   state.documentColumns = [
@@ -522,6 +523,7 @@ export const patientDetailsSuccess = (state, patient) => {
     patient.familyContactTime = patient.patientFamilyMember.data.contactTimeId.length > 0 ? JSON.parse(patient.patientFamilyMember.data.contactTimeId) : [];
     patient.familyGender = patient.patientFamilyMember.data.genderId;
     patient.relation = patient.patientFamilyMember.data.relationId;
+    patient.isPrimary = patient.patientFamilyMember.data.isPrimary == patient.emergencyContact.data.isPrimary ? true : false;
   }
   else {
     patient.fullName = null;
@@ -539,7 +541,6 @@ export const patientDetailsSuccess = (state, patient) => {
     patient.emergencyPhoneNumber = patient.emergencyContact.data.phoneNumber ? patient.emergencyContact.data.phoneNumber : null;
     patient.emergencyContactType = patient.emergencyContact.data.contactType.length > 0 ? JSON.parse(patient.emergencyContact.data.contactType) : [];
     patient.emergencyContactTime = patient.emergencyContact.data.contactTimeId.length > 0 ? JSON.parse(patient.emergencyContact.data.contactTimeId) : [];
-    patient.isPrimary = patient.patientFamilyMember.data.fullName == patient.emergencyContact.data.fullName ? true : false;
     patient.emergencyGender = patient.emergencyContact.data.genderId;
   }
   else {
@@ -556,11 +557,15 @@ export const patientDetailsSuccess = (state, patient) => {
 }
 
 export const patientTimelineSuccess = (state, timeline) => {
-  state.patientTimeline = timeline
+  state.patientTimeline = timeline.map(data => {
+    data.createdAt = meridiemFormatFromTimestamp(data.createdAt);
+    return data;
+  })
 }
 
 export const patientDocumentsSuccess = (state, documents) => {
   state.patientDocuments = documents.map(data => {
+    data.document = VUE_APP_ROOT_API + data.document
     data.createdAt = meridiemFormatFromTimestamp(data.createdAt);
     return data;
   })
@@ -1045,8 +1050,4 @@ export const emergencyContactDetails = (state, emergencyContact) => {
   emergencyContact.contactType = emergencyContact.contactType ? JSON.parse(emergencyContact.contactType) : []
   emergencyContact.contactTime = emergencyContact.contactTimeId ? JSON.parse(emergencyContact.contactTimeId) : []
   state.emergencyContactDetails = emergencyContact
-}
-
-export const timeLineType = (state, data) => {
-  state.timeLineType = data
 }
