@@ -267,7 +267,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watchEffect, } from "vue";
+import { defineComponent, ref, computed, watchEffect, onUnmounted } from "vue";
 import AddAppointment from "@/components/modals/AddAppointment";
 import TasksModal from "@/components/modals/TasksModal";
 import PatientsModal from "@/components/modals/PatientsModal";
@@ -304,8 +304,10 @@ export default defineComponent({
     SendMessage,
     HeaderSearch
   },
-  props: {},
-  setup(props, { emit }) {
+ props:{
+
+ },
+  setup(props,{emit}) {
     const store = useStore();
     const router = useRouter()
     const toggle = ref(false);
@@ -332,15 +334,27 @@ export default defineComponent({
       store.dispatch("notificationList");
 
     });
-
+    onUnmounted(()=>{
+            store.dispatch("searchTable",'')
+            store.dispatch('orderTable','')
+        })
     const appointmentModal = ref(false);
     const addAppt = () => {
       appointmentModal.value = true;
     };
 
     function showModal(event) {
-      appointmentModal.value = event;
-      emit("is-visible", event);
+      
+      if(event.date){
+        
+        appointmentModal.value = event.check;
+        emit("is-heardeVisible",event)
+      }else{
+        appointmentModal.value = event
+      }
+     
+
+      
     }
     const apptOk = () => {
       appointmentModal.value = false;

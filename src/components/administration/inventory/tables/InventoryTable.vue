@@ -20,7 +20,7 @@
       </a-tooltip>
     </template>
     <template #isActive="{record}">
-      <a-switch v-model:checked="record.status" @change="updateStatus(record.id, $event)" />
+      <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
     </template>
     <template #isAvailable="{record}">
       <span>{{ record.isAvailable }}</span>

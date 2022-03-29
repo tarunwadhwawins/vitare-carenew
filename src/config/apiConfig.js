@@ -14,7 +14,7 @@ export const API_ENDPOINTS = {
     patientsList:"patient",
     patientDetails:"patient",
     counterCard:"patient/count",
-    financial:"patient/count",
+    financial:"financialStats",
     cptCode:"patient/count",
     totalPatientsChart:"patient/chart",
     timeLine:"patient/new",

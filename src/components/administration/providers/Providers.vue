@@ -113,6 +113,7 @@ watchEffect(()=>{
         const providersPermissions = store.getters.permissionRecords.value.providersPermissions
         onUnmounted(()=>{
             store.dispatch("searchTable",'')
+           
         })
         return {
           providersPermissions,

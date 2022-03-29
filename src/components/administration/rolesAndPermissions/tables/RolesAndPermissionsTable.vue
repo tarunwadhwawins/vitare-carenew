@@ -36,9 +36,9 @@
                 <CopyOutlined /></a>
         </a-tooltip>
     </template>
-    <template #status="{record}" v-if="arrayToObjact(roleAndPermissions,4)" >
+    <template #isActive="{record}" v-if="arrayToObjact(roleAndPermissions,4)" >
         <a-switch v-if="record.id ===1" v-model:checked="record.status"  disabled/>
-        <a-switch v-else v-model:checked="record.status"  @change="UpdateRoleStatus(record.udid, $event)"/>
+        <a-switch v-else v-model:checked="record.isActive"  @change="UpdateRoleStatus(record.udid, $event)"/>
     </template>
 </a-table>
 <Loader />
@@ -116,7 +116,7 @@ export default {
         const UpdateRoleStatus = (id, status) => {
             //console.log("id",id)
             const data = {
-                "status": status
+                "isActive": status
             };
             store.dispatch('UpdateRole', {
                 id,
@@ -153,9 +153,9 @@ export default {
             },
             {
                 title: "Active/Inactive",
-                dataIndex: "status",
+                dataIndex: "isActive",
                 slots: {
-                    customRender: "status",
+                    customRender: "isActive",
                 },
             },
             {

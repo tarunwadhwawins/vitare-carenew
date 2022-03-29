@@ -172,9 +172,9 @@ export const cptCodeSuccess = (state,data) => {
   };
 }
 export const financialSuccess = (state,data) => {
-console.log(data)
+
   state.financialValue = {
-    due: [4567, 1000],
+    due: [Math.round(data.Due),Math.round(data.Billed)],
     billed: {
       chart: {
         type: "pie",

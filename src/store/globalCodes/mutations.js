@@ -4,11 +4,11 @@ export const globalCodeCategory = async (state, globalCodes) => {
   const codesList = [];
   globalCodes.data.map(codes => {
     codes.globalCode.map(code => {
-      code.status = code.status == 1 ? true : false
+      code.isActive = code.isActive == 1 ? true : false
       codesList.push(code)
     })
   });
-  console.log("check",codesList)
+ 
   state.globalCodesList = codesList;
   state.globalMeta = globalCodes.meta.pagination
 }

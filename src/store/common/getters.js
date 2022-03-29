@@ -38,6 +38,11 @@ export const loadingStatus = (state)=>{
         return state.searchTable
     })
   }
+  export const orderTable = (state)=>{
+    return computed(()=>{
+        return state.orderTable
+    })
+  }
 
   export const notificationCount = (state)=>{
     return computed(()=>{
