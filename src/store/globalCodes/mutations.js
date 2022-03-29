@@ -8,7 +8,7 @@ export const globalCodeCategory = async (state, globalCodes) => {
       codesList.push(code)
     })
   });
-  console.log("check",codesList)
+
   state.globalCodesList = codesList;
   state.globalMeta = globalCodes.meta.pagination
 }

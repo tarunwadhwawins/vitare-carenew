@@ -3,7 +3,6 @@ import { API_ENDPOINTS } from "../../config/apiConfig"
 import { successSwal, errorSwal } from '@/commonMethods/commonMethod';
 
 export const addCarePlan = async ({ commit }, data) => {
-	console.log('{patientId, data}', data)
 	commit('loadingStatus', true)
 	await serviceMethod.common("post", API_ENDPOINTS['patient']+'/'+data.patientId+'/goal', null, data.data).then((response) => {
 		commit('loadingStatus', false)

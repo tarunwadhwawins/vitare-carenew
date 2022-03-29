@@ -138,8 +138,7 @@ export default defineComponent({
       store.dispatch("allStaffList");
     });
 
-    const sendMessageFailed = (value)=>{
-      console.log('sendMessageFailed',value);
+    const sendMessageFailed = ()=>{
     }
 
      onMounted(()=>{

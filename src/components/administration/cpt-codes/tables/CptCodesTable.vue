@@ -102,7 +102,6 @@ export default {
             var tableContent = document.querySelector(".ant-table-body");
             tableContent.addEventListener("scroll", (event) => {
                 let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-                console.log("hight",event.target.clientHeight)
                 let currentScroll = event.target.scrollTop + 2;
                 if (currentScroll >= maxScroll) {
                     let current_page = meta.cptMeta.current_page + 1;

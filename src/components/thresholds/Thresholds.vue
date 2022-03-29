@@ -19,11 +19,12 @@
           <SearchField  endPoint="generalParameterGroup"/>
         </a-col>
         <a-col :span="12">
-          <div class="text-right mb-24">
+          <!-- <div class="text-right mb-24">
             <a-button class="primaryBtn">{{
               $t("global.exportToExcel")
               }}</a-button>
-          </div>
+          </div> -->
+          <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('generalParameter_report')"/>
         </a-col>
         
           
@@ -46,12 +47,15 @@
   import { useStore } from "vuex";
   import Loader from "@/components/loader/Loader";
   import SearchField from "@/components/common/input/SearchField";
+  import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
+  import { exportExcel } from "@/commonMethods/commonMethod";
   export default {
     components: {
       ThresholdsTable,
       Thresholds,
       Loader,
-      SearchField
+      SearchField,
+      ExportToExcel
     },
 
     setup() {
@@ -116,8 +120,7 @@
             store.dispatch("searchTable",'')
         })
       return {
-        
-       
+        exportExcel,
         checked,
         Thresholds,
         showModal,

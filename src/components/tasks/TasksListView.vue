@@ -1,51 +1,42 @@
 <template>
   <a-row :gutter="24">
     <a-col :span="12">
-      <SearchField endPoint="task"/>
+      <SearchField endPoint="task" />
     </a-col>
-    <a-col :span="12" v-if="arrayToObjact(tasksDashboardPermissions,118)">
-      <div class="text-right mb-24">
-        <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
-      </div>
+    <a-col :span="12" v-if="arrayToObjact(tasksDashboardPermissions, 118)">
+      <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('task_report')"/>
     </a-col>
-    
-   
-     <TaskTable @is-Edit="editTask($event)"></TaskTable>
-      
-    
+    <TaskTable @is-Edit="editTask($event)"></TaskTable>
   </a-row>
 </template>
-
 <script>
-
-import { ref, watchEffect,computed ,onUnmounted} from "vue";
-import { useStore } from "vuex"
-// import swal from 'sweetalert2';
+import { ref, watchEffect, computed, onUnmounted } from "vue";
+import { useStore } from "vuex";
 import SearchField from "@/components/common/input/SearchField";
-import TaskTable from "./TaskTable"
-import { arrayToObjact } from "@/commonMethods/commonMethod";
+import TaskTable from "./TaskTable";
+import { arrayToObjact,exportExcel } from "@/commonMethods/commonMethod";
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 
 export default {
   components: {
     SearchField,
     TaskTable,
-    // Loader
+    // Loader,
+    ExportToExcel,
   },
-  setup(props, {emit}) {
-    const store = useStore()
+  setup(props, { emit }) {
+    const store = useStore();
     watchEffect(() => {
-      store.getters.taskRecords.tasksList=""
-      store.dispatch("tasksList")
-    })
+      store.getters.taskRecords.tasksList = "";
+      store.dispatch("tasksList");
+    });
 
     const handleChange = (value) => {
-      store.dispatch('searchTasks', value)
+      store.dispatch("searchTasks", value);
     };
 
-   
-
     const editTask = (id) => {
-      emit('isEdit', {check:true,id:id});
+      emit("isEdit", { check: true, id: id });
     };
 
     const updateTask = () => {
@@ -55,24 +46,25 @@ export default {
     const createAppointment = () => {
       // console.log('createAppointment', id)
     };
-   
-    const tasksDashboardPermissions = computed(()=>{
-      return store.state.screenPermissions.tasksDashboardPermissions
-    })
-    onUnmounted(()=>{
-            store.dispatch("searchTable",'')
-        })
-   return {
-     tasksDashboardPermissions,
+
+    const tasksDashboardPermissions = computed(() => {
+      return store.state.screenPermissions.tasksDashboardPermissions;
+    });
+    onUnmounted(() => {
+      store.dispatch("searchTable", "");
+    });
+    return {
+      search:store.getters.searchTable,
+      exportExcel,
+      tasksDashboardPermissions,
       arrayToObjact,
       size: ref([]),
       handleChange,
       // tasksColumns,
-      
       editTask,
       updateTask,
       createAppointment,
-    } 
-  }
-}
+    };
+  },
+};
 </script>

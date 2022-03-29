@@ -80,10 +80,8 @@ export default {
             coordinatorId: coordinatorId,
             roleId: roleId
           }
-          console.log(data)
           store.dispatch("deleteCoordinatorRole", data)
           .then((res) => {
-            console.log('Res', res)
             store.dispatch("getCoordinatorRoles", data.coordinatorId).then((res) => {
               rolesData.value = res.data.data;
             },

@@ -551,7 +551,7 @@ export const patientDetails = (state, patient) => {
     patient.isPrimary = null;
     patient.emergencyGender = null;
   }
-  console.log('In Console patient', patient)
+
   state.patientDetails = patient
 }
 

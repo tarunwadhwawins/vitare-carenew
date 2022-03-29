@@ -50,7 +50,7 @@ export default {
     const errorMsg = computed(() => {
       return store.state.authentication
     })
-    console.log(errorMsg.value)
+   
     return {
       errorMsg,
       loginForm,

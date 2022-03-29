@@ -315,7 +315,6 @@ export const program = async ({
 export const addDevice = async ({
   commit
 }, data) => {
-  console.log('DATA..', data)
   await serviceMethod.common("post", `patient/${data.id}/inventory`, null, data.data).then((response) => {
     commit('addDevice', response.data.data);
     // successSwal(response.data.message)
