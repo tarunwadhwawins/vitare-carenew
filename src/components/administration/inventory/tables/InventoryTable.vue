@@ -22,6 +22,9 @@
     <template #isActive="{record}">
       <a-switch v-model:checked="record.status" @change="updateStatus(record.id, $event)" />
     </template>
+    <template #isAvailable="{record}">
+      <span>{{ record.isAvailable }}</span>
+    </template>
   </a-table>
   <Loader/>
 </template>
@@ -150,6 +153,13 @@ export default {
         
         slots: {
           customRender: "isActive",
+        },
+      },
+      {
+        title: "Assigned/Unassigned",
+        dataIndex: "isAvailable",
+        slots: {
+          customRender: "isAvailable",
         },
       },
       {
