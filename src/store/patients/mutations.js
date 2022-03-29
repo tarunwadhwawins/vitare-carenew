@@ -503,8 +503,7 @@ export const uploadFile = (state, data) => {
   state.uploadFile = data
 }
 
-export const patientDetailsSuccess = (state, patient) => {
-  
+export const patientDetails = (state, patient) => {
   patient.email = patient.user.data.email ? patient.user.data.email : null;
   patient.country = patient.countryId ? patient.countryId : null;
   patient.state = patient.stateId ? patient.stateId : null;
@@ -523,7 +522,7 @@ export const patientDetailsSuccess = (state, patient) => {
     patient.familyContactTime = patient.patientFamilyMember.data.contactTimeId.length > 0 ? JSON.parse(patient.patientFamilyMember.data.contactTimeId) : [];
     patient.familyGender = patient.patientFamilyMember.data.genderId;
     patient.relation = patient.patientFamilyMember.data.relationId;
-    patient.isPrimary = patient.patientFamilyMember.data.isPrimary == patient.emergencyContact.data.isPrimary ? true : false;
+    patient.isPrimary = patient.patientFamilyMember.data.isPrimary ? true : false;
   }
   else {
     patient.fullName = null;
