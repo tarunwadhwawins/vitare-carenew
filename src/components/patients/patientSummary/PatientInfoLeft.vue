@@ -135,31 +135,31 @@
     </div>
   </div>
   
-  <AddFamilyMemberModal v-if="addFamilyMembersModalVisible" v-model:visible="addFamilyMembersModalVisible"  :patientId="patientDetails.id" @closeModal="handleOk" :isFamilyMemberEdit="isFamilyMemberEdit" />
-  <FamilyMembersDetailsModal v-if="familyMembersModalVisible" v-model:visible="familyMembersModalVisible" :familyMembersList="familyMembersList" :patientId="patientDetails.id" @isFamilyMemberEdit="editFamilyMember" />
+  <AddFamilyMemberModal v-if="patientDetails" v-model:visible="addFamilyMembersModalVisible"  :patientId="patientDetails.id" @closeModal="handleOk" :isFamilyMemberEdit="isFamilyMemberEdit" />
+  <FamilyMembersDetailsModal v-if="patientDetails" v-model:visible="familyMembersModalVisible" :familyMembersList="familyMembersList" :patientId="patientDetails.id" @isFamilyMemberEdit="editFamilyMember" />
 
-  <AddPhysicianModal v-if="addPhysicianModalVisible" v-model:visible="addPhysicianModalVisible" @closeModal="handleOk" :isPhysicianEdit="isPhysicianEdit" />
+  <AddPhysicianModal v-model:visible="addPhysicianModalVisible" @closeModal="handleOk" :isPhysicianEdit="isPhysicianEdit" />
   <PhysiciansDetailsModal v-model:visible="physiciansModalVisible" :physiciansList="physiciansList" @isPhysicianEdit="editPhysician" />
 
-  <AddEmergencyContacts v-if="addEmergencyContactModalVisible" v-model:visible="addEmergencyContactModalVisible" @closeModal="handleOk" :isEmergencyContactEdit="isEmergencyContactEdit" />
+  <AddEmergencyContacts v-model:visible="addEmergencyContactModalVisible" @closeModal="handleOk" :isEmergencyContactEdit="isEmergencyContactEdit" />
   <EmergencyContactsDetailsModal v-model:visible="emergencyContactsModalVisible" :emergencyContactsList="emergencyContactsList" @isEmergencyContactEdit="editEmergencyContact" />
 
-  <PatientFlagsModal v-if="flagsModalVisible" v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
+  <PatientFlagsModal v-if="patientDetails" v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
   <AddCriticalNote v-model:visible="criticalModalVisible" @closeModal="handleOk" @saveModal="handleCriticalNote($event)"/>
   <CriticalNotesDetailModal v-model:visible="criticalNotesDetailVisible" @closeModal="handleOk"/>
-  <PatientsModal v-if="patientsModalVisible == true && patientDetails" v-model:visible="patientsModalVisible" :patientId="patientDetails.id" :isEditPatient="isEditPatient" @closeModal="handleOk" @saveModal="handleOk($event)" />
-  <AddAppointmentModal v-if="addAppointmentVisible == true" v-model:visible="addAppointmentVisible" :patientId="patientDetails.id" :patientName="patientDetails.patientFullName" @closeModal="handleOk" />
-  <AddTasksModal v-if="taskModalVisible == true" v-model:visible="taskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
-  <PatientVitalsDetailsModal v-if="patientVitalsVisible == true" v-model:visible="patientVitalsVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
-  <AddNotesModal v-if="addNoteVisible == true" v-model:visible="addNoteVisible" @closeModal="handleOk" />
-  <NotesDetailModal v-if="notesDetailVisible == true" v-model:visible="notesDetailVisible" @closeModal="handleOk" />
-  <AddDocumentModal v-if="addDocumentVisible == true" v-model:visible="addDocumentVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
-  <DocumentDetailModal v-if="documentDetailVisible == true" v-model:visible="documentDetailVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
-  <AddCareTeamModal v-if="careCoordinatorsVisible == true" v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" />
-  <AddTimeLogsModal v-if="addTimeLogsVisible" v-model:visible="addTimeLogsVisible" :timeLogDetails="timeLogDetails" :isEditTimeLog="isEditTimeLog" @closeModal="handleOk" />
-  <TimeLogsDetailModal v-if="timeLogsDetailVisible == true" v-model:visible="timeLogsDetailVisible" @editTimeLog="editTimeLog($event)" />
-  <AddDeviceModal v-if="addDeviceVisible == true" v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
-  <DeviceDetailModal v-if="deviceDetailVisible == true" v-model:visible="deviceDetailVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
+  <PatientsModal v-if="patientDetails" v-model:visible="patientsModalVisible" :patientId="patientDetails.id" :isEditPatient="isEditPatient" @closeModal="handleOk" @saveModal="handleOk($event)" />
+  <AddAppointmentModal v-if="patientDetails" v-model:visible="addAppointmentVisible" :patientId="patientDetails.id" :patientName="patientDetails.patientFullName" @closeModal="handleOk" />
+  <AddTasksModal v-if="patientDetails" v-model:visible="taskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
+  <PatientVitalsDetailsModal v-if="patientDetails" v-model:visible="patientVitalsVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
+  <AddNotesModal v-model:visible="addNoteVisible" @closeModal="handleOk" />
+  <NotesDetailModal v-model:visible="notesDetailVisible" @closeModal="handleOk" />
+  <AddDocumentModal v-model:visible="addDocumentVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
+  <DocumentDetailModal v-if="patientDetails" v-model:visible="documentDetailVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
+  <AddCareTeamModal v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" />
+  <AddTimeLogsModal v-if="timeLogDetails" v-model:visible="addTimeLogsVisible" :timeLogDetails="timeLogDetails" :isEditTimeLog="isEditTimeLog" @closeModal="handleOk" />
+  <TimeLogsDetailModal v-model:visible="timeLogsDetailVisible" @editTimeLog="editTimeLog($event)" />
+  <AddDeviceModal v-if="patientDetails" v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
+  <DeviceDetailModal v-if="patientDetails" v-model:visible="deviceDetailVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
 </template>
 
 <script>
@@ -180,30 +180,6 @@ import {
 } from 'vue-demi';
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-
-import AddFamilyMemberModal from "@/components/modals/AddFamilyMemberModal";
-import FamilyMembersDetailsModal from "@/components/modals/FamilyMembersDetailsModal";
-import AddPhysicianModal from "@/components/modals/AddPhysicianModal";
-import PhysiciansDetailsModal from "@/components/modals/PhysiciansDetailsModal";
-import AddEmergencyContacts from "@/components/modals/AddEmergencyContacts";
-import EmergencyContactsDetailsModal from "@/components/modals/EmergencyContactsDetailsModal";
-import PatientFlagsModal from "@/components/modals/PatientFlagsModal";
-// import AddCriticalNote from "@/components/modals/CriticalNote"
-// import CriticalNotesDetailModal from "@/components/modals/CriticalNotesDetail";
-import PatientsModal from "@/components/modals/PatientsModal";
-import AddAppointmentModal from "@/components/modals/AddAppointment";
-import AddTasksModal from "@/components/modals/TasksModal";
-import AddNotesModal from "@/components/modals/AddNote";
-import NotesDetailModal from "@/components/modals/NotesDetail";
-import AddDocumentModal from "@/components/modals/AddDocument";
-import DocumentDetailModal from "@/components/modals/DocumentDetail";
-import AddCareTeamModal from "@/components/modals/CareCoordinators";
-import AddTimeLogsModal from "@/components/modals/AddTimeLogs";
-import TimeLogsDetailModal from "@/components/modals/TimeLogsDetail";
-import AddDeviceModal from "@/components/modals/AddDevice";
-import DeviceDetailModal from "@/components/modals/DeviceDetail";
-import PatientVitalsDetailsModal from "@/components/modals/PatientVitalsDetailsModal";
-import Flags from "@/components/common/flags/Flags";
 import {
   actionTrack
 } from '@/commonMethods/commonMethod';
@@ -216,29 +192,29 @@ export default defineComponent({
     PlusOutlined,
     EditOutlined,
     PhoneOutlined,
-    PatientFlagsModal,
-    PatientsModal,
-    AddAppointmentModal,
-    AddTasksModal,
-    AddNotesModal,
-    NotesDetailModal,
-    AddDocumentModal,
-    DocumentDetailModal,
-    AddCareTeamModal,
-    AddTimeLogsModal,
-    TimeLogsDetailModal,
-    AddDeviceModal,
-    DeviceDetailModal,
-    PatientVitalsDetailsModal,
-    Flags,
-    AddCriticalNote :defineAsyncComponent(()=>import("@/components/modals/CriticalNote")),
-    CriticalNotesDetailModal:defineAsyncComponent(()=>import("@/components/modals/CriticalNotesDetail")),
-    AddFamilyMemberModal,
-    FamilyMembersDetailsModal,
-    AddPhysicianModal,
-    PhysiciansDetailsModal,
-    AddEmergencyContacts,
-    EmergencyContactsDetailsModal,
+    PatientFlagsModal: defineAsyncComponent(()=>import("@/components/modals/PatientFlagsModal")),
+    PatientsModal: defineAsyncComponent(()=>import("@/components/modals/PatientsModal")),
+    AddAppointmentModal: defineAsyncComponent(()=>import("@/components/modals/AddAppointment")),
+    AddTasksModal: defineAsyncComponent(()=>import("@/components/modals/TasksModal")),
+    AddNotesModal: defineAsyncComponent(()=>import("@/components/modals/AddNote")),
+    NotesDetailModal: defineAsyncComponent(()=>import("@/components/modals/NotesDetail")),
+    AddDocumentModal: defineAsyncComponent(()=>import("@/components/modals/AddDocument")),
+    DocumentDetailModal: defineAsyncComponent(()=>import("@/components/modals/DocumentDetail")),
+    AddCareTeamModal: defineAsyncComponent(()=>import("@/components/modals/CareCoordinators")),
+    AddTimeLogsModal: defineAsyncComponent(()=>import("@/components/modals/AddTimeLogs")),
+    TimeLogsDetailModal: defineAsyncComponent(()=>import("@/components/modals/TimeLogsDetail")),
+    AddDeviceModal: defineAsyncComponent(()=>import("@/components/modals/AddDevice")),
+    DeviceDetailModal: defineAsyncComponent(()=>import("@/components/modals/DeviceDetail")),
+    PatientVitalsDetailsModal: defineAsyncComponent(()=>import("@/components/modals/PatientVitalsDetailsModal")),
+    Flags: defineAsyncComponent(()=>import("@/components/common/flags/Flags")),
+    AddCriticalNote: defineAsyncComponent(()=>import("@/components/modals/CriticalNote")),
+    CriticalNotesDetailModal: defineAsyncComponent(()=>import("@/components/modals/CriticalNotesDetail")),
+    AddFamilyMemberModal: defineAsyncComponent(()=>import("@/components/modals/AddFamilyMemberModal")),
+    FamilyMembersDetailsModal: defineAsyncComponent(()=>import("@/components/modals/FamilyMembersDetailsModal")),
+    AddPhysicianModal: defineAsyncComponent(()=>import("@/components/modals/AddPhysicianModal")),
+    PhysiciansDetailsModal: defineAsyncComponent(()=>import("@/components/modals/PhysiciansDetailsModal")),
+    AddEmergencyContacts: defineAsyncComponent(()=>import("@/components/modals/AddEmergencyContacts")),
+    EmergencyContactsDetailsModal: defineAsyncComponent(()=>import("@/components/modals/EmergencyContactsDetailsModal")),
   },
   setup() {
     const store = useStore();
