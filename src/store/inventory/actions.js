@@ -22,7 +22,7 @@ export const inventoriesList = async ({ commit }, page) => {
 	let link = page ? API_ENDPOINTS['inventory']+page : API_ENDPOINTS['inventory']
 	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", link, null, null).then((response) => {
-		commit('inventory', response.data);
+		commit('inventory', response.data.data);
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
