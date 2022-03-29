@@ -624,7 +624,7 @@ export const uploadFile = async ({
 export const patientDetails = async ({commit}, id) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", API_ENDPOINTS['patient'], id, null).then((response) => {
-    commit('patientDetailsSuccess', response.data.data);
+    commit('patientDetails', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
     // errorSwal(error.response.data.message)
