@@ -102,15 +102,12 @@ export default {
     };
 function chnageTab(){
   store.commit('loadingTableStatus', true)
-  //store.state.patients.patientTimeline=''
-  console.log("check",tabvalue.tab)
+  
   store.dispatch('patientTimeline', {id:route.params.udid,type:tabvalue.tab.length == 0 ? '' :tabvalue.tab.join(",")}).then(()=>{
     store.commit('loadingTableStatus', false)
   })
 }
-// const timeLineType = computed(()=>{
-//   return store.state.patients.timeLineType
-// })
+
     return {
       showModalCustom,
       custom,

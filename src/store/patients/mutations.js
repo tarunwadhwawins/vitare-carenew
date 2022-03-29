@@ -557,10 +557,7 @@ export const patientDetailsSuccess = (state, patient) => {
 }
 
 export const patientTimelineSuccess = (state, timeline) => {
-  state.patientTimeline = timeline.map(data => {
-    data.createdAt = meridiemFormatFromTimestamp(data.createdAt);
-    return data;
-  })
+  state.patientTimeline = timeline
 }
 
 export const patientDocumentsSuccess = (state, documents) => {
@@ -1050,4 +1047,8 @@ export const emergencyContactDetails = (state, emergencyContact) => {
   emergencyContact.contactType = emergencyContact.contactType ? JSON.parse(emergencyContact.contactType) : []
   emergencyContact.contactTime = emergencyContact.contactTimeId ? JSON.parse(emergencyContact.contactTimeId) : []
   state.emergencyContactDetails = emergencyContact
+}
+
+export const timeLineType = (state, data) => {
+  state.timeLineType = data
 }
