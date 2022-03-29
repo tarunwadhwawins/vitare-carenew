@@ -343,8 +343,8 @@ export const devices = async ({
 
 export const inventoryList = async ({ commit }, data) => {
   var url = data.active
-              ? `inventory?isAvailable=${data.isAvailable}&deviceType=${data.deviceType}&active=1`
-              : `inventory?isAvailable=${data.isAvailable}&deviceType=${data.deviceType}`
+              ? `inventory?deviceType=${data.deviceType}&active=1`
+              : `inventory?deviceType=${data.deviceType}`
   await serviceMethod.common("get", url, null, null).then((response) => {
     commit('inventoryList', response.data.data);
     if(response.data.data[0]=='' || response.data.data.length==0){
