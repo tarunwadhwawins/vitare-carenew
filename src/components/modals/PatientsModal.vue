@@ -474,7 +474,7 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.name')" name="referralName" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
                                     <a-input @change="changedValue" v-model:value="conditions.referralName" size="large" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.referralEmail?errorMsg.referralEmail[0]:''" />
                                 </a-form-item>
 
                             </div>
@@ -487,7 +487,7 @@
                                         <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
                                     </a-select> -->
 																		<GlobalCodeDropDown @change="changedValue" v-model:value="conditions.referralDesignation"  :globalCode="globalCode.designations"/>
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.designation?errorMsg.designation[0]:''" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.referralDesignation?errorMsg.referralDesignation[0]:''" />
                                 </a-form-item>
 
                             </div>
@@ -505,7 +505,7 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="referralPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
                                     <a-input-number @change="changedValue" v-model:value="conditions.referralPhoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.referralPhoneNumber?errorMsg.referralPhoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -513,7 +513,7 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.conditions.fax')" name="referralFax" :rules="[{ required: false, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
                                     <a-input @change="changedValue" v-model:value="conditions.referralFax" size="large" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.fax?errorMsg.fax[0]:''" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.referralFax?errorMsg.referralFax[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -538,7 +538,7 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.name')" name="referralName" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
                                     <a-input @change="changedValue" v-model:value="conditions.referralName" size="large" disabled />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.referralName?errorMsg.referralName[0]:''" />
                                 </a-form-item>
 
                             </div>
@@ -561,6 +561,7 @@
                                 <a-form-item :label="$t('global.email')" name="referralEmail" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
                                     <a-input @change="changedValue" v-model:value="conditions.referralEmail" placeholder="test@test.com" size="large" disabled>
                                     </a-input>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.referralEmail?errorMsg.referralEmail[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -589,7 +590,7 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
                                     <a-input @change="changedValue" v-model:value="conditions.name" size="large" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.referralName?errorMsg.referralName[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -601,7 +602,7 @@
                                         <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
                                     </a-select> -->
                                         <GlobalCodeDropDown @change="changedValue" v-model:value="conditions.designation"  :globalCode="globalCode.designations"/>
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.designation?errorMsg.designation[0]:''" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.referralDesignation?errorMsg.referralDesignation[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -609,7 +610,7 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
                                     <a-input @change="changedValue" v-model:value="conditions.email" placeholder="test@test.com" size="large" @input="emailChange()" />
-                                    <ErrorMessage v-if="errorMsg && errorMsg.email!=null" :name="errorMsg.email?errorMsg.email[0]:''" />
+                                    <ErrorMessage v-if="errorMsg && errorMsg.referralEmail!=null" :name="errorMsg.referralEmail?errorMsg.referralEmail[0]:''" />
                                 </a-form-item>
 
                             </div>
@@ -618,7 +619,7 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber }]">
                                     <a-input-number @change="changedValue" v-model:value="conditions.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.referralPhoneNumber?errorMsg.referralPhoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -626,7 +627,7 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.conditions.fax')" name="fax" :rules="[{ required: false, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
                                     <a-input @change="changedValue" v-model:value="conditions.fax" size="large" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.fax?errorMsg.fax[0]:''" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.referralFax?errorMsg.referralFax[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -787,6 +788,10 @@ export default defineComponent( {
     // });
     const formRef =ref()
     const patientSearch =ref(false)
+
+    const errorMsg = computed(() => {
+      return store.state.patients.errorMsg;
+    });
 
 		const steps = [
 			{
@@ -1106,7 +1111,7 @@ export default defineComponent( {
 					id: idPatient,
 				}).then(() => {
 					isValueChanged.value = false;
-					store.commit('errorMsg',null)
+					// store.commit('errorMsg',null)
 				})
 				
 				if(patients.value.patientReferralSource && patients.value.patientReferralSource != null) {
@@ -1123,7 +1128,7 @@ export default defineComponent( {
 						referalID: patients.value.patientReferralSource.id ? patients.value.patientReferralSource.id : null,
 					}).then(() => {
 						isValueChanged.value = false;
-						store.commit('errorMsg',null)
+						// store.commit('errorMsg',null)
 					})
 				}
 				else if((!patients.value.patientReferralSource || patients.value.patientReferralSource == null) && (conditions.referralName || conditions.referralDesignation || conditions.referralEmail || conditions.referralPhoneNumber || conditions.referralFax)) {
@@ -1134,13 +1139,13 @@ export default defineComponent( {
 						(conditions.phoneNumber = conditions.referralPhoneNumber),
 						(conditions.fax = conditions.referralFax);
 					}
-					alert(conditions.sameAsAbove)
+					// alert(conditions.sameAsAbove)
 					store.dispatch("addPatientReferals", {
 						data: conditions,
 						id: idPatient,
 					}).then(() => {
 						isValueChanged.value = false;
-						store.commit('errorMsg',null)
+						// store.commit('errorMsg',null)
 					})
 				}
 
@@ -1158,7 +1163,7 @@ export default defineComponent( {
 						physicianId: patients.value.patientPrimaryPhysician.id ? patients.value.patientPrimaryPhysician.id : null,
 					}).then(() => {
 						isValueChanged.value = false;
-						store.commit('errorMsg',null)
+						// store.commit('errorMsg',null)
 					})
 				}
 				else if((!patients.value.patientPrimaryPhysician || patients.value.patientPrimaryPhysician == null) && (conditions.name || conditions.designation || conditions.email || conditions.phoneNumber || conditions.fax)) {
@@ -1174,9 +1179,13 @@ export default defineComponent( {
 						id: idPatient,
 					}).then(() => {
 						isValueChanged.value = false;
-						store.commit('errorMsg',null)
+						// store.commit('errorMsg',null)
 					})
 				}
+				/* console.log('errorMsg referralEmail', errorMsg.value.referralEmail)
+				console.log('errorMsg referralName', errorMsg.value.referralName)
+				console.log('errorMsg email', errorMsg.value.email)
+				console.log('errorMsg name', errorMsg.value.name) */
 				// store.commit("counterPlus");
 			}
 			else {	// Add Patient
@@ -1205,8 +1214,8 @@ export default defineComponent( {
 							isValueChanged.value = false;
 						})
 					}
-					// console.log('patients.value', errorMsg.value)
 					// errors.push('patients.value', errorMsg.value)
+					store.commit('counterPlus')
 				}
 				else {
 					store.dispatch("addCondition", {
@@ -1253,6 +1262,7 @@ export default defineComponent( {
 					}
 					// console.log('patients.value', errorMsg.value)
 					// errors.push('patients.value', errorMsg.value)
+					store.commit('counterPlus')
 				}
 				// console.log('patients.value.addCondition', patients.value.addCondition)
 				// console.log('patients.value.addPatientReferals', patients.value.addPatientReferals)
@@ -1266,7 +1276,9 @@ export default defineComponent( {
 				// }
 				// if(errorMsg.value == null) {
 					// console.log('patients.value Null', errorMsg)
-					store.commit('counterPlus')
+				// }
+				// if(conditions.condition || conditions.referralName || conditions.referralDesignation || conditions.referralEmail || conditions.referralPhoneNumber || conditions.referralFax) {
+
 				// }
 			}
 		};
@@ -1323,10 +1335,6 @@ export default defineComponent( {
     //   scrollToTop();
       // errorSwal(messages.fieldsRequired)
     };
-
-    const errorMsg = computed(() => {
-      return store.state.patients.errorMsg;
-    });
 
     const err = computed(() => {
       return store.state.patients.errorMessage;

@@ -93,7 +93,6 @@ export const addCondition = async ({commit}, request) => {
 
 export const addPatientReferals = async ({ commit }, request) => {
   const data = request.data;
-  console.log('console.log addPatientReferals', data)
   const patientId = request.id;
   await serviceMethod.common("post", `patient/${patientId}/referals`, null, data).then((response) => {
     commit('addPatientReferals', response.data.data);
@@ -118,7 +117,6 @@ export const addPatientReferals = async ({ commit }, request) => {
 
 export const updatePatientReferals = async ({ commit }, request) => {
   const data = request.data;
-  console.log('console.log updatePatientReferals', data)
   const patientId = request.id;
   const referalID = request.referalID;
   await serviceMethod.common("put", `patient/${patientId}/referals/${referalID}`, null, data).then((response) => {
@@ -145,7 +143,6 @@ export const updatePatientReferals = async ({ commit }, request) => {
 
 export const addPatientPhysician = async ({ commit }, request) => {
   const data = request.data;
-  console.log('console.log addPatientPhysician', data)
   const patientId = request.id;
   commit('loadingStatus', true)
   await serviceMethod.common("post", `patient/${patientId}/physician`, null, data).then((response) => {
@@ -172,7 +169,6 @@ export const addPatientPhysician = async ({ commit }, request) => {
 
 export const updatePatientPhysician = async ({commit}, request) => {
   const data = request.data;
-  console.log('console.log updatePatientPhysician', data)
   const patientId = request.id;
   const physicianId = request.physicianId;
   commit('loadingStatus', true)
@@ -637,14 +633,14 @@ export const patientDetails = async ({commit}, id) => {
   })
 }
 
-export const patientTimeline = async ({commit}, id) => {
-  commit('loadingStatus', true)
-  await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/timeLine', null, null).then((response) => {
+export const patientTimeline = async ({commit}, data) => {
+  
+  await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+data.id+'/timeLine?type='+data.type, null, null).then((response) => {
     commit('patientTimelineSuccess', response.data.data);
-    commit('loadingStatus', false)
+    
   }).catch((error) => {
     errorSwal(error.response.data.message)
-    commit('loadingStatus', false)
+    
   })
 }
 
@@ -1085,5 +1081,15 @@ export const deleteEmergencyContact = async ({commit}, data) => {
       commit('loadingStatus', false)
     }
     commit('loadingStatus', false)
+  })
+}
+export const timeLineType = async ({commit}) => {
+  
+  await serviceMethod.common("get", API_ENDPOINTS['timeLineType'], null, null).then((response) => {
+    commit('timeLineType', response.data.data);
+   
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+    
   })
 }

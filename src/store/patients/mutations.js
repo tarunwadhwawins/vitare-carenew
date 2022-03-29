@@ -3,6 +3,7 @@ import {
   meridiemFormatFromTimestamp,
   dateOnlyFormat,
   dateTimeFormat,
+  dobFormat,
   dobFormat2,
   // timeFormatSimple
   convertResponse,
@@ -511,6 +512,7 @@ export const patientDetailsSuccess = (state, patient) => {
   patient.contactTime = patient.contactTimeId.length > 0 ? JSON.parse(patient.contactTimeId) : [];
   patient.contactType = patient.contactType.length > 0 ? JSON.parse(patient.contactType) : [];
   patient.otherLanguage = patient.otherLanguage.length > 0 ? JSON.parse(patient.otherLanguage) : [];
+  patient.dob = patient.dob ? dobFormat(patient.dob) : null;
   
   if(patient.patientFamilyMember && patient.patientFamilyMember.data) {
     patient.fullName = patient.patientFamilyMember.data.fullName ? patient.patientFamilyMember.data.fullName : null;
@@ -554,10 +556,7 @@ export const patientDetailsSuccess = (state, patient) => {
 }
 
 export const patientTimelineSuccess = (state, timeline) => {
-  state.patientTimeline = timeline.map(data => {
-    data.createdAt = meridiemFormatFromTimestamp(data.createdAt);
-    return data;
-  })
+  state.patientTimeline = timeline
 }
 
 export const patientDocumentsSuccess = (state, documents) => {
@@ -1046,4 +1045,8 @@ export const emergencyContactDetails = (state, emergencyContact) => {
   emergencyContact.contactType = emergencyContact.contactType ? JSON.parse(emergencyContact.contactType) : []
   emergencyContact.contactTime = emergencyContact.contactTimeId ? JSON.parse(emergencyContact.contactTimeId) : []
   state.emergencyContactDetails = emergencyContact
+}
+
+export const timeLineType = (state, data) => {
+  state.timeLineType = data
 }

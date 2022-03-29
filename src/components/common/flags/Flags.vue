@@ -1,6 +1,6 @@
 <template>
   <a-tooltip placement="right">
-    <template #title>{{ data.name }}</template>
+    <template v-if="data && data.name" #title>{{ data.name }}</template>
     <span class="box" v-bind:style="{ backgroundColor: flag }" />
   </a-tooltip>
 </template>

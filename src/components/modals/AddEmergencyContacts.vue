@@ -63,13 +63,13 @@
 					</div>
 				</a-col>
 
-				<a-col v-if="isEdit" :md="12" :sm="12" :xs="24">
+				<!-- <a-col v-if="isEdit" :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('global.isPrimary')" name="isPrimary">
               <a-switch v-model:checked="emergencyContactForm.isPrimary" size="large" />
             </a-form-item>
 					</div>
-				</a-col>
+				</a-col> -->
 
 				<a-col :sm="24" :span="24">
 					<ModalButtons :Id="id" @is_click="handleClear"/>
@@ -125,7 +125,7 @@ export default {
 			contactType: [],
 			contactTime: [],
 			gender: '',
-			isPrimary: patients.value.emergencyContactDetails && patients.value.emergencyContactDetails.isPrimary ? patients.value.emergencyContactDetails.isPrimary : false,
+			// isPrimary: patients.value.emergencyContactDetails && patients.value.emergencyContactDetails.isPrimary ? patients.value.emergencyContactDetails.isPrimary : false,
 		})
 		console.log('emergencyContactDetails', patients.value)
 		

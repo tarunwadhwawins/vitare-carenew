@@ -138,14 +138,17 @@ export default {
         store.dispatch("updateCptCode", {
           data: cptCodeForm,
           id: props.cptId,
-        });
+        }).then(()=>{
+          store.dispatch("cptCodesList");
+        })
       } else {
-        formButton.value = store.dispatch("addCptCode", cptCodeForm);
+        formButton.value = store.dispatch("addCptCode", cptCodeForm).then(()=>{
+          store.dispatch("cptCodesList");
+        })
       }
 
       reset();
-      store.state.cptCodes.cptCodesList = "";
-      store.dispatch("cptCodesList");
+      
       emit("is-visible", false);
     };
     const form = reactive({
