@@ -6,7 +6,7 @@
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.fullName')" name="fullName" :rules="[{ required: true, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
-							<a-input v-model:value="familyMemberForm.fullName" @blur="onBlur" size="large" />
+							<a-input v-model:value="familyMemberForm.fullName" @keyup="onBlur" size="large" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.fullName?errorMsg.fullName[0]:''" />
 						</a-form-item>
 					</div>
@@ -15,7 +15,7 @@
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.emailAddress')" name="familyEmail" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-							<a-input v-model:value="familyMemberForm.familyEmail" @blur="onBlur" placeholder="test@test.com" size="large" />
+							<a-input v-model:value="familyMemberForm.familyEmail" @keyup="onBlur" placeholder="test@test.com" size="large" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyEmail?errorMsg.familyEmail[0]:''" />
 						</a-form-item>
 					</div>
@@ -24,7 +24,7 @@
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: false, message: $t('global.phoneNo')+' '+$t('global.validation') }]">
-							<a-input-number v-model:value="familyMemberForm.familyPhoneNumber" @blur="onBlur" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
+							<a-input-number v-model:value="familyMemberForm.familyPhoneNumber" @keyup="onBlur" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyPhoneNumber?errorMsg.familyPhoneNumber[0]:''" />
 						</a-form-item>
 					</div>
@@ -34,7 +34,7 @@
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="familyContactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
 							<!-- <a-select v-model:value="familyMemberForm.familyContactType" mode="multiple" size="large" style="width: 100%" :options="globalCode.pmOfcontact.globalCode.map((item) => ({label: item.name, value: item.id }))" /> -->
-								<GlobalCodeDropDown  v-model:value="familyMemberForm.familyContactType" @blur="onBlur" mode="multiple" :globalCode="globalCode.pmOfcontact"/>
+								<GlobalCodeDropDown  v-model:value="familyMemberForm.familyContactType" @keyup="onBlur" mode="multiple" :globalCode="globalCode.pmOfcontact"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactType?errorMsg.familyContactType[0]:''" />
 						</a-form-item>
 					</div>
@@ -44,7 +44,7 @@
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="familyContactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
 							<!-- <a-select v-model:value="familyMemberForm.familyContactTime" mode="multiple" size="large" style="width: 100%" :options="globalCode.ptOfDayContact.globalCode.map((item) => ({label: item.name, value: item.id }))" /> -->
-								<GlobalCodeDropDown  v-model:value="familyMemberForm.familyContactTime" @blur="onBlur" mode="multiple" :globalCode="globalCode.ptOfDayContact"/>
+								<GlobalCodeDropDown  v-model:value="familyMemberForm.familyContactTime" @keyup="onBlur" mode="multiple" :globalCode="globalCode.ptOfDayContact"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactTime?errorMsg.familyContactTime[0]:''" />
 						</a-form-item>
 					</div>
@@ -57,7 +57,7 @@
 								<a-select-option value="" hidden>{{'Select Gender'}}</a-select-option>
 								<a-select-option v-for="gender in globalCode.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
 							</a-select> -->
-							<GlobalCodeDropDown  v-model:value="familyMemberForm.familyGender" @blur="onBlur"  :globalCode="globalCode.gender"/>
+							<GlobalCodeDropDown  v-model:value="familyMemberForm.familyGender" @keyup="onBlur"  :globalCode="globalCode.gender"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyGender?errorMsg.familyGender[0]:''" />
 						</a-form-item>
 					</div>
@@ -70,7 +70,7 @@
 								<a-select-option value="" hidden>{{'Select Relation'}}</a-select-option>
 								<a-select-option v-for="relation in globalCode.relation.globalCode" :key="relation.id" :value="relation.id">{{relation.name}}</a-select-option>
 							</a-select> -->
-							<GlobalCodeDropDown  v-model:value="familyMemberForm.relation" @blur="onBlur"  :globalCode="globalCode.relation"/>
+							<GlobalCodeDropDown  v-model:value="familyMemberForm.relation" @keyup="onBlur"  :globalCode="globalCode.relation"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.relation?errorMsg.relation[0]:''" />
 						</a-form-item>
 					</div>
