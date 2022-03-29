@@ -317,13 +317,13 @@ export default defineComponent({
       return store.state.patients.getFamilyMemberDetails
     })
     
-    const handleOk = (value) => {
-      addEmergencyContactModalVisible.value = false;
-      addPhysicianModalVisible.value = false;
-      addFamilyMembersModalVisible.value = false;
+    const handleOk = ({modal, value}) => {
+      addEmergencyContactModalVisible.value = modal == 'addEmergencyContact' && value ? value : false;
+      addPhysicianModalVisible.value = modal == 'addPhysician' && value ? value : false;
+      addFamilyMembersModalVisible.value = modal == 'addFamilyMember' && value ? value : false;
       flagsModalVisible.value = false;
       notesDetailVisible.value = false;
-      patientsModalVisible.value = value ? value : false;
+      patientsModalVisible.value = modal == 'editPatient' && value ? value : false;
       addAppointmentVisible.value = false;
       taskModalVisible.value = false;
       addVitalsVisible.value = false;

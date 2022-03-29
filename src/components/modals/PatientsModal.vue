@@ -1371,6 +1371,10 @@ export default defineComponent( {
             warningSwal(messages.modalWarning).then((response) => {
                 if (response == true) {
                     emit("saveModal", false);
+                    emit("closeModal", {
+                        modal: 'editPatient',
+                        value: false
+                    });
                     Object.assign(demographics, form);
                     store.dispatch("patients");
                     store.commit("resetCounter");
@@ -1378,6 +1382,10 @@ export default defineComponent( {
                 }
                 else {
                     emit("saveModal", true);
+                    emit("closeModal", {
+                        modal: 'editPatient',
+                        value: true
+                    });
                 }
             })
         }
