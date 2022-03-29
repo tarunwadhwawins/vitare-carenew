@@ -11,7 +11,6 @@ import {
   convertChartResponse,
   // createDynamicColumns,
 } from '../../commonMethods/commonMethod';
-const VUE_APP_API_URL = process.env.VUE_APP_API_URL
 
 export const addDemographic = (state, data) => {
   state.addDemographic = data
@@ -463,7 +462,7 @@ export const addDocument = (state, data) => {
 
 export const documents = (state, data) => {
   state.documents = data.map(item => {
-    item.document = VUE_APP_API_URL + item.document
+    item.document = item.document
     return item
   })
   state.documentColumns = [
@@ -561,7 +560,7 @@ export const patientTimelineSuccess = (state, timeline) => {
 
 export const patientDocumentsSuccess = (state, documents) => {
   state.patientDocuments = documents.map(data => {
-    data.document = VUE_APP_API_URL + data.document
+    data.document = data.document
     data.createdAt = meridiemFormatFromTimestamp(data.createdAt);
     return data;
   })
