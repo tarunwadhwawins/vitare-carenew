@@ -47,14 +47,6 @@
                                 
                                 <div class="body">
                                     <a-row>
-                                        <!-- <a-col :span="6">
-                                            <div class="moreAction">
-                                                <div class="moreActionImg three">
-                                                    <img src="../../assets/images/user.svg" />
-                                                </div>
-                                                <p>Profile</p>
-                                            </div>
-                                        </a-col> -->
                                         <a-col :span="6">
                                             <div class="moreAction" @click="showNotesModal">
                                                 <div class="moreActionImg four">
@@ -63,14 +55,6 @@
                                                 <p>Notes</p>
                                             </div>
                                         </a-col>
-                                        <!-- <a-col :span="6">
-                                            <div class="moreAction">
-                                                <div class="moreActionImg five">
-                                                    <img src="../../assets/images/chat-2.svg" />
-                                                </div>
-                                                <p>Chat</p>
-                                            </div>
-                                        </a-col> -->
                                         <a-col :span="6">
                                             <div class="moreAction"  @click="showDocumentsModal">
                                                 <div class="moreActionImg green">
@@ -79,14 +63,7 @@
                                                 <p>Document</p>
                                             </div>
                                         </a-col>
-                                        <!-- <a-col :span="6">
-                                            <div class="moreAction">
-                                                <div class="moreActionImg yellowBgColor">
-                                                    <img src="../../assets/images/schedule.svg" />
-                                                </div>
-                                                <p>Appointment</p>
-                                            </div>
-                                        </a-col> -->
+                                        
                                         <a-col :span="6" @click="showVitalssModal">
                                             <div class="moreAction">
                                                 <div class="moreActionImg redBgColor">
@@ -186,9 +163,9 @@ export default {
    
     onMounted(() => {
       store.commit("loadingStatus", true);
-     // this is your <video></video> element
       //accept videoCall code
       if (session.value) {
+         store.commit("loadingStatus", false);
         session.value.options.media.remote = {
           video: videoCall.value ? videoCall.value : <video></video>,
         };
@@ -196,19 +173,15 @@ export default {
         upcomingCallDetails.user=session.value.session.incomingInviteRequest.message.from.uri.raw.user;
         store.dispatch("acceptVideoCallDetails",upcomingCallDetails.user.substring(2))
         session.value.answer();
-        
-        setTimeout(() => {
-          store.commit("loadingStatus", false);
-        }, 5000);
       } //end accept video call 
+      
       //Start conference video call code
       else {
-        setTimeout(() => {
-            store.commit("loadingStatus", false);
-          }, 5000);
         if (route.params.id) {
+          store.commit("loadingStatus", false);
           currentUrl.value= window.location.href
-           decodedUrl.value =deCodeString(route.params.id)
+          decodedUrl.value = deCodeString(route.params.id)
+          console.log('video deCodeString',decodedUrl.value);
           let callNotification = 0;
           const key = `open${Date.now()}`;
           authentication.value.options = Web.SimpleUserOptions = {
@@ -227,6 +200,8 @@ export default {
                 if (callNotification == 1) {
                   notification.close(key);
                 } else {
+                  store.state.videoCall.getVideoDetails=null;
+                  store.state.videoCall.acceptVideoCallDetails=null;
                   //call end api
                   store.dispatch("callNotification",{id:conferenceId.value,status:'end'})
                   successSwal("Call Ended! Thank You");
@@ -235,7 +210,6 @@ export default {
               },
             },
             userAgentOptions: {
-              // logLevel: "debug",
               displayName: authentication.value.loggedInUser.user.sipId,
               authorizationPassword: "123456",
               authorizationUsername:
@@ -292,6 +266,8 @@ export default {
         simpleUserHangup.value.hangup().then(() => {
           //call end api
           store.dispatch("callNotification",{id:decodedUrl.value,status:'end'})
+          store.state.videoCall.getVideoDetails=null;
+          store.state.videoCall.acceptVideoCallDetails=null;
           router.push("/dashboard");
         });
       } else {
