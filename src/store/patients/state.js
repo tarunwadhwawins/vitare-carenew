@@ -71,4 +71,8 @@ export default {
     emergencyContactDetails:null,
     timeLineType:null,
 
+    addCondition:null,
+    addPatientReferals:null,
+    addPatientPhysician:null,
+
 }
