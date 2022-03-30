@@ -334,10 +334,10 @@ export default defineComponent({
 
     watchEffect(() => {
       store.dispatch("notificationList");
+      
     });
     onUnmounted(()=>{
-            store.dispatch("searchTable",'')
-            store.dispatch('orderTable','')
+            
         })
     const appointmentModal = ref(false);
     const addAppt = () => {
