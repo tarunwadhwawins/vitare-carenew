@@ -157,7 +157,7 @@ export default {
 					else {
 						emit("closeModal", {
 							modal: 'addFamilyMember',
-							value: true
+							value: false
 						});
 					}
 				})
@@ -199,7 +199,10 @@ export default {
 						store.dispatch('familyMembersList', patientUdid);
 					}
 					if(modalClose.value == true) {
-						emit('closeModal')
+						emit("closeModal", {
+							modal: 'addFamilyMember',
+							value: false
+						});
 						formRef.value.resetFields();
 						Object.assign(familyMemberForm, form)
 					}
@@ -215,7 +218,10 @@ export default {
 						store.dispatch('familyMembersList', patientUdid);
 					}
 					if(modalClose.value == true) {
-						emit('closeModal')
+						emit("closeModal", {
+							modal: 'addFamilyMember',
+							value: false
+						});
 						formRef.value.resetFields();
 						Object.assign(familyMemberForm, form)
 					}
