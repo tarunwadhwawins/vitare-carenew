@@ -417,6 +417,7 @@ export default defineComponent({
 
     const editPatient = ({udid, id}) => {
       isEditPatient.value = true;
+      console.log('udid', udid)
       store.dispatch('patientConditions', id)
       store.dispatch("programList");
       store.dispatch("patientInsurance", id);
