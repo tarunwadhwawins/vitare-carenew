@@ -677,6 +677,11 @@ export const getBitrixFieldsName = (state, data) => {
 }
 
 
+export const bitrixFormCheck = (state, data) => {
+  state.bitrixFormCheck = data
+}
+
+
 export const fetchFromBitrix = (state, data) => {
   // let email = arrayToObjact(data.EMAIL)
   // let phone = arrayToObjact(data.PHONE)

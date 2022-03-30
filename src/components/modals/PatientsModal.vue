@@ -944,11 +944,18 @@ export default defineComponent( {
       insuranceType: [],
     });
 
+     const form = reactive({
+      ...demographics,
+    });
+
     watchEffect(() => {
         // Bitrix data assign 
+
         if(patients.value.fetchFromBitrix){ 
-					Object.assign(demographics, patients.value.fetchFromBitrix);
-        } //end
+			Object.assign(demographics, patients.value.fetchFromBitrix);
+        }
+          
+        //end
 
         if(idPatient) {
 					Object.assign(demographics, patientDetail);
@@ -972,6 +979,7 @@ export default defineComponent( {
                 medicalRecordNumber: medicalRecordNumber
             });
         } */
+          Object.assign(demographics, form)
     })
 
     const parameters = reactive([]);
@@ -1349,9 +1357,7 @@ export default defineComponent( {
       return store.state.patients.parameterFields;
     });
 
-    const form = reactive({
-      ...demographics,
-    });
+   
 
     function saveModal() {
       emit("saveModal", false);
@@ -1363,12 +1369,17 @@ export default defineComponent( {
 			current.value = 0
     }
 
+    const bitrixFormCheck = computed(()=>{
+        return store.state.patients.bitrixFormCheck
+    })
+
     function closeModal() {
 			// console.log('steps[current]', current.value)
 			current.value = 0
-        if(isValueChanged.value) {
+        if(isValueChanged.value || bitrixFormCheck.value) {
             warningSwal(messages.modalWarning).then((response) => {
                 if (response == true) {
+                    store.commit('bitrixFormCheck',false)
                     emit("saveModal", false);
                     emit("closeModal", {
                         modal: 'editPatient',
@@ -1378,6 +1389,7 @@ export default defineComponent( {
                     store.dispatch("patients");
                     store.commit("resetCounter");
                     store.state.patients.addDemographic = null
+                    store.state.patients.fetchFromBitrix =null
                 }
                 else {
                     emit("saveModal", true);
@@ -1401,6 +1413,7 @@ export default defineComponent( {
                 }
             })
         } */
+       
     }
 
     function emailChange(){
