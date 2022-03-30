@@ -326,7 +326,6 @@ export default defineComponent({
     })
     
     const handleOk = ({modal, value}) => {
-      console.log('modal, value', {modal, value})
       if(value) {
         addEmergencyContactModalVisible.value = modal == 'addEmergencyContact' ? value : false;
         addPhysicianModalVisible.value = modal == 'addPhysician' ? value : false;
@@ -418,7 +417,6 @@ export default defineComponent({
 
     const editPatient = ({udid, id}) => {
       isEditPatient.value = true;
-      console.log('udid', udid)
       store.dispatch('patientConditions', id)
       store.dispatch("programList");
       store.dispatch("patientInsurance", id);
