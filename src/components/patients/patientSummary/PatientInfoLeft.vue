@@ -335,6 +335,7 @@ export default defineComponent({
         documentDetailVisible.value = modal == 'documentDetails' ? value : false;
         addTimeLogsVisible.value = modal == 'addTimeLog' ? value : false;
         flagsModalVisible.value = modal == 'addFlag' ? value : false;
+        criticalNotesDetailVisible.value = modal == 'criticalNotesDetails' ? value : false;
       }
       else {
         flagsModalVisible.value = false;
@@ -355,6 +356,7 @@ export default defineComponent({
         addDocumentVisible.value = false;
         documentDetailVisible.value = false;
         addTimeLogsVisible.value = false;
+        criticalNotesDetailVisible.value = false;
       }
     };
 
