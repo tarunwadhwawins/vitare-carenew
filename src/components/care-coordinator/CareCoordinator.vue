@@ -29,10 +29,9 @@
         
     </a-col>
     <a-col :span="12" v-if="arrayToObjact(staffPermissions,41)">
-        <!-- <div class="text-right mb-24">
-            <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
-        </div> -->
-        <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('careCoordinator_report')"/>
+        <div class="text-right mb-24">
+            <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+        </div>
     </a-col>
     <a-col :span="24" >
       

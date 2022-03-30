@@ -114,7 +114,7 @@ export const isReadUpdateNotification = async ({
 }
 
 export const searchTable = async ({ commit }, search) => {
-  commit("searchTable", search)
+  commit("searchTable", search ? search :'')
 }
 export const orderTable = async ({ commit},data) => {
   commit("orderTable",data)

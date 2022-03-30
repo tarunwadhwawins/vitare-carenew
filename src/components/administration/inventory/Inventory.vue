@@ -22,7 +22,9 @@
                 <SearchField endPoint="inventory" />
               </a-col>
               <a-col :span="12">
-                 <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('inventory_report')"/>
+                 <div class="text-right mb-24">
+                  <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+                </div>
               </a-col>
               <a-col :span="24">
                 <InventoryTable @edit-inventory="editInventory"/>

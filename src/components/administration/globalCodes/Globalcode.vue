@@ -23,7 +23,9 @@
                 <SearchField endPoint="globalCodeCategory"/>
               </a-col>
               <a-col :span="12" v-if="arrayToObjact(globalCodesPermissions,265)">
-                <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('globalCode_report')"/>
+                <div class="text-right mb-24">
+                  <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+                </div>
               </a-col>
               <a-col :span="24">
                 <Loader/>

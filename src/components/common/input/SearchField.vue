@@ -35,7 +35,7 @@ export default defineComponent({
                   field:ordring.data,
                   
                 })
-                store.dispatch("searchTable",search.value)
+                store.dispatch("searchTable",'&search='+search.value)
             }
             timeout = setTimeout(fake, 600);
         };
