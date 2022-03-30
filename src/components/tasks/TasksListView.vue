@@ -4,7 +4,9 @@
       <SearchField endPoint="task" />
     </a-col>
     <a-col :span="12" v-if="arrayToObjact(tasksDashboardPermissions, 118)">
-      <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('task_report')"/>
+      <div class="text-right mb-24">
+        <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+      </div>
     </a-col>
     <TaskTable @is-Edit="editTask($event)"></TaskTable>
   </a-row>

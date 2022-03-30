@@ -27,10 +27,9 @@
                 <SearchField endPoint="program" />
               </a-col>
               <a-col :span="12" v-if="arrayToObjact(programsPermissions, 19)">
-                <ExportToExcel
-                  custumClass="text-right mb-24"
-                  @click="exportExcel('program_report')"
-                />
+                <div class="text-right mb-24">
+                  <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+                </div>
               </a-col>
 
               <ProgramTable @is-edit="showEdit($event)"> </ProgramTable>
