@@ -109,7 +109,6 @@ export const searchTable = async ({ commit }, search) => {
   commit("searchTable", search)
 }
 export const orderTable = async ({ commit},data) => {
-  console.log("data",data)
   commit("orderTable",data)
 }
 
@@ -151,8 +150,9 @@ export const actionTrack = async ({ commit }, data) => {
 
 const API_URL = process.env.VUE_APP_API_URL
 export const exportReportRequest = async ({ commit }, data) => {
- let response = await serviceMethod.common("post", `export/report/request`, null, { reportType: data.data })
-  commit('exportReportRequest', response.data.data);
+ 
+ let response = await serviceMethod.common("post", `export/report/request`+ data.date, null, { reportType: data.data })
+  console.log(commit)
   let udid = response.data.data.udid;
   let reportType = response.data.data.reportType;
   let type = reportType.replace('_','/');
