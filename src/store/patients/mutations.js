@@ -500,6 +500,7 @@ export const uploadFile = (state, data) => {
 }
 
 export const patientDetails = (state, patient) => {
+  alert(dobFormat(patient.dob))
   patient.email = patient.user.data.email ? patient.user.data.email : null;
   patient.country = patient.countryId ? patient.countryId : null;
   patient.state = patient.stateId ? patient.stateId : null;
@@ -508,7 +509,7 @@ export const patientDetails = (state, patient) => {
   patient.contactTime = patient.contactTimeId.length > 0 ? JSON.parse(patient.contactTimeId) : [];
   patient.contactType = patient.contactType.length > 0 ? JSON.parse(patient.contactType) : [];
   patient.otherLanguage = patient.otherLanguage.length > 0 ? JSON.parse(patient.otherLanguage) : [];
-  patient.dob = patient.dob ? dobFormat(patient.dob) : null;
+  patient.patientDob = patient.dob ? dobFormat(patient.dob) : null;
   
   if(patient.patientFamilyMember && patient.patientFamilyMember.data) {
     patient.fullName = patient.patientFamilyMember.data.fullName ? patient.patientFamilyMember.data.fullName : null;

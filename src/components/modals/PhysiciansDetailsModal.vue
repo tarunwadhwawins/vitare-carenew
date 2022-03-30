@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="80%" title="Physicians" centered>
+  <a-modal width="80%" :title="$t('global.physicians')" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <a-table

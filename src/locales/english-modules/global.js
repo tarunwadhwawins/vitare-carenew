@@ -72,6 +72,12 @@ const global = {
   confirmNewPassword:'Confirm New Password',
   resetPassword:'Reset Password',
   submit:'Submit',
+  familyMembers:'Family Coordinators',
+  addFamilyMembers:'Add Family Coordinator',
+  physicians:'Care Coordinators',
+  addPhysician:'Add Care Coordinator',
+  careTeam:'Health Team',
+  addCareTeam:'Add Health Team',
 
 }
 
