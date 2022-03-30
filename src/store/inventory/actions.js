@@ -1,6 +1,6 @@
-import ServiceMethodService from '../../services/serviceMethod';
-import { API_ENDPOINTS } from "../../config/apiConfig"
-import { successSwal } from '../../commonMethods/commonMethod'
+import ServiceMethodService from '@/services/serviceMethod';
+import { API_ENDPOINTS } from "@/config/apiConfig"
+import { successSwal,errorLogWithDeviceInfo} from '@/commonMethods/commonMethod'
 
 export const addInventory = async ({ commit }, data) => {
 	commit('loadingStatus', true)
@@ -10,6 +10,7 @@ export const addInventory = async ({ commit }, data) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -26,6 +27,7 @@ export const inventoriesList = async ({ commit }, page) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -41,6 +43,7 @@ export const inventoryDetails = async ({ commit }, id) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -57,6 +60,7 @@ export const updateInventory = async ({ commit }, {id, data}) => {
     successSwal(response.data.message)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -73,6 +77,7 @@ export const deleteInventory = async ({ commit }, id) => {
     successSwal(response.data.message)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -88,6 +93,7 @@ export const deviceModalsList = async ({ commit }, id) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}

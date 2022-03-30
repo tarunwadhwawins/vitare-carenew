@@ -1,6 +1,6 @@
 import ServiceMethodService from '@/services/serviceMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
-import { successSwal } from '../../commonMethods/commonMethod'
+import { successSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
 
 export const addTimeLog = async ({ commit }, {id, data}) => {
 	if(data.isAutomatic && data.isAutomatic == false) {
@@ -20,6 +20,7 @@ export const addTimeLog = async ({ commit }, {id, data}) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -35,6 +36,7 @@ export const timeLogsList = async ({ commit }, id) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -50,6 +52,7 @@ export const deleteTimeLog = async ({ commit }, {id, timeLogId}) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -68,6 +71,7 @@ export const latestTimeLog = async ({ commit }, id) => {
     }
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -80,6 +84,7 @@ export const timeLogDetails = async ({ commit }, udid) => {
 		commit('timeLogDetailsSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -92,6 +97,7 @@ export const updateTimeLog = async ({ commit }, {udid, data}) => {
 		commit('updateTimeLogSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -116,6 +122,7 @@ export const updatePatientTimeLog = async ({ commit }, {patientUdid, timeLogId, 
 		}
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
