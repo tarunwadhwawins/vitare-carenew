@@ -244,9 +244,19 @@ export const patientConditions = async ({ commit }, id) => {
   await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/condition', null, null).then((condition) => {
     commit('patientConditions', condition.data.data);
     serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/referals', null, null).then((referal) => {
-      commit('patientReferralSource', referal.data.data[0]);
+      if(referal.data.data.length > 0) {
+        commit('patientReferralSource', referal.data.data[0]);
+      }
+      else {
+        commit('patientReferralSource', null);
+      }
       serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/physician', null, null).then((physician) => {
-        commit('patientPrimaryPhysician', physician.data.data[0]);
+        if(physician.data.data.length > 0) {
+          commit('patientPrimaryPhysician', physician.data.data[0]);
+        }
+        else {
+          commit('patientPrimaryPhysician', null);
+        }
         commit('loadingStatus', false)
       });
     });
@@ -392,7 +402,6 @@ export const inventoryList = async ({ commit }, data) => {
     commit('inventoryList', response.data.data);
   }).catch((error) => {
     if (error.response.status === 404) {
-      console.log('errorMsg', error.response.data)
       commit('errorMsg', error.response.data)
     }
     else {
@@ -671,8 +680,8 @@ export const patientDetails = async ({commit}, id) => {
     commit('patientDetails', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    // errorSwal(error.response.data.message)
     console.log('Error', error)
+    // errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
 }
@@ -800,7 +809,6 @@ export const patientVitals = async ({ commit }, {patientId, deviceType}) => {
 }
 
 export const addVital = async ({ commit }, data) => {
-  //console.log('data', data)
   commit('loadingStatus', true)
 	await serviceMethod.common("post", API_ENDPOINTS['patient']+'/'+data.patientId+'/vital', null, data.data).then(() => {
     commit('loadingStatus', false)
@@ -851,7 +859,6 @@ export const readCriticalNote = async ({commit}, data) => {
 export const criticalNotesList = async ({commit}, id) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", `${API_ENDPOINTS['patient']}/${id}/criticalNote`, null, null).then((response) => {
-    //console.log("check",response.data.data)
     commit('criticalNotesList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
@@ -1033,7 +1040,6 @@ export const deletePhysician = async ({commit}, data) => {
 export const physicianDetails = async ({commit}, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", API_ENDPOINTS['patient']+`/${data.patientUdid}/physician/${data.physicianUdid}`, null, null).then((response) => {
-    console.log('physicianDetails', response.data.data)
     commit('physicianDetails', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {

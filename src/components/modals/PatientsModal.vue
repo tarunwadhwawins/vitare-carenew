@@ -958,7 +958,6 @@ export default defineComponent( {
 					if(isEdit && patients.value.patientReferralSource != null) {
 						Object.assign(conditions, patients.value.patientReferralSource)
 					}
-					console.log('primaryPhysician 222', patients.value.patientPrimaryPhysician)
 					if(isEdit && patients.value.patientPrimaryPhysician != null) {
 						Object.assign(conditions, patients.value.patientPrimaryPhysician)
 					}
@@ -1154,12 +1153,9 @@ export default defineComponent( {
 			isEdit = false
 			// const errors = []
 			if(idPatient != null) {
-				console.log('patients.value.addCondition', patients.value.addCondition)
-				console.log('patients.value.addPatientReferals', patients.value.addPatientReferals)
-				console.log('patients.value.addPatientPhysician', patients.value.addPatientPhysician)
 				if(patients.value.addCondition == null && patients.value.addPatientReferals == null && patients.value.addPatientPhysician == null) {
 					if((patients.value.patientReferralSource && patients.value.patientReferralSource != null)
-					|| patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null) {
+					&& (patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null)) {
 						if(conditions.sameAsAbove == 1) {
 							(conditions.name = conditions.referralName),
 							(conditions.designation = conditions.referralDesignation),
@@ -1178,7 +1174,45 @@ export default defineComponent( {
 						})
 					}
 					else if((!patients.value.patientReferralSource && patients.value.patientReferralSource == null)
-					|| (!patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician == null)) {
+					&& (patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null)) {
+						if(conditions.sameAsAbove == 1) {
+							(conditions.name = conditions.referralName),
+							(conditions.designation = conditions.referralDesignation),
+							(conditions.email = conditions.referralEmail),
+							(conditions.phoneNumber = conditions.referralPhoneNumber),
+							(conditions.fax = conditions.referralFax);
+						}
+						store.dispatch("updateCondition", {
+							data: conditions,
+							id: idPatient,
+							referalID: null,
+							physicianId: patients.value.patientPrimaryPhysician.id ? patients.value.patientPrimaryPhysician.id : null,
+						}).then(() => {
+							isValueChanged.value = false;
+							// store.commit('errorMsg',null)
+						})
+					}
+					else if((patients.value.patientReferralSource && patients.value.patientReferralSource != null)
+					&& (!patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician == null)) {
+						if(conditions.sameAsAbove == 1) {
+							(conditions.name = conditions.referralName),
+							(conditions.designation = conditions.referralDesignation),
+							(conditions.email = conditions.referralEmail),
+							(conditions.phoneNumber = conditions.referralPhoneNumber),
+							(conditions.fax = conditions.referralFax);
+						}
+						store.dispatch("updateCondition", {
+							data: conditions,
+							id: idPatient,
+							referalID: patients.value.patientReferralSource.id ? patients.value.patientReferralSource.id : null,
+							physicianId: null,
+						}).then(() => {
+							isValueChanged.value = false;
+							// store.commit('errorMsg',null)
+						})
+					}
+					else if((!patients.value.patientReferralSource || patients.value.patientReferralSource == null)
+					|| (!patients.value.patientPrimaryPhysician || patients.value.patientPrimaryPhysician == null)) {
 						if(conditions.sameAsAbove == 1) {
 							(conditions.name = conditions.referralName),
 							(conditions.designation = conditions.referralDesignation),
@@ -1199,7 +1233,7 @@ export default defineComponent( {
 				}
 				else if(patients.value.addCondition != null || patients.value.addPatientReferals != null || patients.value.addPatientPhysician != null) {
 					if((patients.value.patientReferralSource && patients.value.patientReferralSource != null)
-						|| patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null) {
+						&& patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null) {
 						if(conditions.sameAsAbove == 1) {
 							(conditions.name = conditions.referralName),
 							(conditions.designation = conditions.referralDesignation),
@@ -1218,6 +1252,44 @@ export default defineComponent( {
 						})
 					}
 					else if((!patients.value.patientReferralSource && patients.value.patientReferralSource == null)
+						&& patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null) {
+						if(conditions.sameAsAbove == 1) {
+							(conditions.name = conditions.referralName),
+							(conditions.designation = conditions.referralDesignation),
+							(conditions.email = conditions.referralEmail),
+							(conditions.phoneNumber = conditions.referralPhoneNumber),
+							(conditions.fax = conditions.referralFax);
+						}
+						store.dispatch("updateCondition", {
+							data: conditions,
+							id: idPatient,
+							referalID: null,
+              physicianId: patients.value.patientPrimaryPhysician.id ? patients.value.patientPrimaryPhysician.id : null,
+						}).then(() => {
+							isValueChanged.value = false;
+							// store.commit('errorMsg',null)
+						})
+					}
+					else if((patients.value.patientReferralSource && patients.value.patientReferralSource != null)
+						&& !patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician == null) {
+						if(conditions.sameAsAbove == 1) {
+							(conditions.name = conditions.referralName),
+							(conditions.designation = conditions.referralDesignation),
+							(conditions.email = conditions.referralEmail),
+							(conditions.phoneNumber = conditions.referralPhoneNumber),
+							(conditions.fax = conditions.referralFax);
+						}
+						store.dispatch("updateCondition", {
+							data: conditions,
+							id: idPatient,
+							referalID: patients.value.patientReferralSource.id ? patients.value.patientReferralSource.id : null,
+              physicianId: null,
+						}).then(() => {
+							isValueChanged.value = false;
+							// store.commit('errorMsg',null)
+						})
+					}
+					else if((!patients.value.patientReferralSource && patients.value.patientReferralSource == null)
 					|| (!patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician == null)) {
 						if(conditions.sameAsAbove == 1) {
 							(conditions.name = conditions.referralName),
@@ -1229,8 +1301,8 @@ export default defineComponent( {
 						store.dispatch("updateCondition", {
 							data: conditions,
 							id: idPatient,
-							referalID: patients.value.addPatientReferals.id ? patients.value.addPatientReferals.id : null,
-							physicianId: patients.value.addPatientPhysician.id ? patients.value.addPatientPhysician.id : null,
+							referalID: null,
+							physicianId: null,
 						}).then(() => {
 							isValueChanged.value = false;
 							// store.commit('errorMsg',null)
@@ -1364,7 +1436,6 @@ export default defineComponent( {
     }
 
     function closeModal() {
-			// console.log('steps[current]', current.value)
 			current.value = 0
         if(isValueChanged.value) {
             warningSwal(messages.modalWarning).then((response) => {
