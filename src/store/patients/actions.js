@@ -1,6 +1,7 @@
 import serviceMethod from '@/services/serviceMethod';
 import { successSwal, errorSwal } from '@/commonMethods/commonMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
+import { ref } from 'vue';
 const errorMessage = []
 export const addDemographic = async ({commit}, data) => {
   commit('loadingStatus', true)
@@ -69,135 +70,174 @@ export const addCondition = async ({commit}, request) => {
   const data = request.data;
   const patientId = request.id;
   commit('loadingStatus', true)
-  await serviceMethod.common("post", `patient/${patientId}/condition`, null, data).then((response) => {
-    commit('patientConditions', response.data.data);
-    commit('addCondition', response.data.data);
-    commit('loadingStatus', false)
-    errorMessage.push(true)
-  }).catch((error) => {
-    if (error.response.status === 422) {
+  const isError = ref(false)
+  try {
+    await serviceMethod.common("post", `patient/${patientId}/condition`, null, data).then(response => {
+      commit('patients.value', response.data.data);
+      commit('addCondition', response.data.data);
+      commit('loadingStatus', false)
+      errorMessage.push(true)
+    })
+  }
+  catch(error) {
+    if (error.response.status == 422) {
       commit('errorMsg', error.response.data)
-      
-    errorMessage.push(true)
+      isError.value = true
+      errorMessage.push(true)
       commit('loadingStatus', false)
     } else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
       commit('loadingStatus', false)
+      isError.value = true
     } else if (error.response.status === 401) {
       errorSwal(error.response.data.message)
       commit('loadingStatus', false)
+      isError.value = true
     }
-  })
-  commit('errorMessage', errorMessage)
-}
+  }
 
-export const addPatientReferals = async ({ commit }, request) => {
-  const data = request.data;
-  console.log('console.log addPatientReferals', data)
-  const patientId = request.id;
-  await serviceMethod.common("post", `patient/${patientId}/referals`, null, data).then((response) => {
-    commit('addPatientReferals', response.data.data);
-    
-    errorMessage.push(false)
-  }).catch((error) => {
-    if (error.response.status === 422) {
-      commit('errorMsg', error.response.data)
-      
-    errorMessage.push(true)
+  try {
+    if((data.referralDesignation != null || data.referralEmail != null || data.referralFax != null || data.referralName != null || data.referralPhoneNumber != null) && (data.referralDesignation != "" || data.referralEmail != "" || data.referralFax != "" || data.referralName != "" || data.referralPhoneNumber != "")) {
+      await serviceMethod.common("post", `patient/${patientId}/referals`, null, data).then(response => {
+        commit('addPatientReferals', response.data.data);
+        errorMessage.push(false)
+      })
+    }
+  }
+  catch (error) {
+    if (error.response.status == 422) {
+      commit('referralErrorMsg', error.response.data)
+      isError.value = true
+      errorMessage.push(true)
       commit('loadingStatus', false)
     } else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
       commit('loadingStatus', false)
+      isError.value = true
     } else if (error.response.status === 401) {
       errorSwal(error.response.data.message)
       commit('loadingStatus', false)
+      isError.value = true
     }
-  })
+  }
+
+  try {
+    if((data.designation != null || data.email != null || data.fax != null || data.name != null || data.phoneNumber != null) && (data.designation != "" || data.email != "" || data.fax != "" || data.name != "" || data.phoneNumber != "")) {
+      await serviceMethod.common("post", `patient/${patientId}/physician`, null, data).then(response => {
+        commit('addPatientPhysician', response.data.data);
+        errorMessage.push(false)
+      })
+    }
+  }
+  catch (error) {
+    if (error.response.status == 422) {
+      commit('physicianErrorMsg', error.response.data)
+      isError.value = true
+      errorMessage.push(true)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
+      isError.value = true
+    } else if (error.response.status === 401) {
+      errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
+      isError.value = true
+    }
+  }
+
+  if(isError.value != true) {
+    commit('counterPlus')
+  }
+  
   commit('errorMessage', errorMessage)
 }
 
-export const updatePatientReferals = async ({ commit }, request) => {
+export const updateCondition = async ({commit}, request) => {
   const data = request.data;
-  console.log('console.log updatePatientReferals', data)
   const patientId = request.id;
   const referalID = request.referalID;
-  await serviceMethod.common("put", `patient/${patientId}/referals/${referalID}`, null, data).then((response) => {
-    commit('updatePatientReferals', response.data.data);
-    
-    errorMessage.push(false)
-  }).catch((error) => {
-    if (error.response.status === 422) {
-      commit('errorMsg', error.response.data)
-      
-    errorMessage.push(true)
-      commit('loadingStatus', false)
-    } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
-      commit('loadingStatus', false)
-    } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
-      commit('loadingStatus', false)
-    }
-  })
-  commit('errorMessage', errorMessage)
-}
-
-
-export const addPatientPhysician = async ({ commit }, request) => {
-  const data = request.data;
-  console.log('console.log addPatientPhysician', data)
-  const patientId = request.id;
-  commit('loadingStatus', true)
-  await serviceMethod.common("post", `patient/${patientId}/physician`, null, data).then((response) => {
-    commit('addPatientPhysician', response.data.data);
-    commit('loadingStatus', false)
-    
-    errorMessage.push(false)
-  }).catch((error) => {
-    if (error.response.status === 422) {
-      commit('errorMsg', error.response.data)
-      
-    errorMessage.push(true)
-      commit('loadingStatus', false)
-    } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
-      commit('loadingStatus', false)
-    } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
-      commit('loadingStatus', false)
-    }
-  })
-  commit('errorMessage', errorMessage)
-}
-
-export const updatePatientPhysician = async ({commit}, request) => {
-  const data = request.data;
-  console.log('console.log updatePatientPhysician', data)
-  const patientId = request.id;
   const physicianId = request.physicianId;
   commit('loadingStatus', true)
-  await serviceMethod.common("put", `patient/${patientId}/physician/${physicianId}`, null, data).then((response) => {
-    commit('updatePatientPhysician', response.data.data);
+  const isError = ref(false)
+  try {
+    let addConditionResp = await serviceMethod.common("post", `patient/${patientId}/condition`, null, data)
+    commit('patientConditions', addConditionResp.data.data);
+    commit('addCondition', addConditionResp.data.data);
     commit('loadingStatus', false)
-    
-    errorMessage.push(false)
-  }).catch((error) => {
-    if (error.response.status === 422) {
-      commit('errorMsg', error.response.data)
-      
     errorMessage.push(true)
+  }
+  catch(error) {
+    if (error.response.status == 422) {
+      commit('errorMsg', error.response.data)
+      isError.value = true
+      errorMessage.push(true)
       commit('loadingStatus', false)
     } else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
       commit('loadingStatus', false)
+      isError.value = true
     } else if (error.response.status === 401) {
       errorSwal(error.response.data.message)
       commit('loadingStatus', false)
+      isError.value = true
     }
-  })
+  }
+
+  try {
+    if((data.referralDesignation != null || data.referralEmail != null || data.referralFax != null || data.referralName != null || data.referralPhoneNumber != null) && (data.referralDesignation != "" || data.referralEmail != "" || data.referralFax != "" || data.referralName != "" || data.referralPhoneNumber != "")) {
+      let addReferral = await serviceMethod.common("put", `patient/${patientId}/referals/${referalID}`, null, data)
+      commit('addPatientReferals', addReferral.data.data);
+      errorMessage.push(false)
+    }
+  }
+  catch (error) {
+    if (error.response.status == 422) {
+      commit('referralErrorMsg', error.response.data)
+      isError.value = true
+      errorMessage.push(true)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
+      isError.value = true
+    } else if (error.response.status === 401) {
+      errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
+      isError.value = true
+    }
+  }
+
+  try {
+    if((data.designation != null || data.email != null || data.fax != null || data.name != null || data.phoneNumber != null) && (data.designation != "" || data.email != "" || data.fax != "" || data.name != "" || data.phoneNumber != "")) {
+      let addPhysician = await serviceMethod.common("put", `patient/${patientId}/physician/${physicianId}`, null, data)
+      commit('addPatientPhysician', addPhysician.data.data);
+      errorMessage.push(false)
+    }
+  }
+  catch (error) {
+    if (error.response.status == 422) {
+      commit('physicianErrorMsg', error.response.data)
+      isError.value = true
+      errorMessage.push(true)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
+      isError.value = true
+    } else if (error.response.status === 401) {
+      errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
+      isError.value = true
+    }
+  }
+
+  if(isError.value != true) {
+    commit('counterPlus')
+  }
+  
   commit('errorMessage', errorMessage)
 }
-
 
 export const patientConditions = async ({ commit }, id) => {
   commit('loadingStatus', true)
@@ -278,7 +318,6 @@ export const program = async ({
 export const addDevice = async ({
   commit
 }, data) => {
-  console.log('DATA..', data)
   await serviceMethod.common("post", `patient/${data.id}/inventory`, null, data.data).then((response) => {
     commit('addDevice', response.data.data);
     // successSwal(response.data.message)
@@ -351,11 +390,14 @@ export const inventoryList = async ({ commit }, data) => {
               : `inventory?isAvailable=${data.isAvailable}&deviceType=${data.deviceType}`
   await serviceMethod.common("get", url, null, null).then((response) => {
     commit('inventoryList', response.data.data);
-    if(response.data.data[0]=='' || response.data.data.length==0){
-    errorSwal('Data not found!')
-    }
   }).catch((error) => {
-    errorSwal(error.response.data.message)
+    if (error.response.status === 404) {
+      console.log('errorMsg', error.response.data)
+      commit('errorMsg', error.response.data)
+    }
+    else {
+      errorSwal(error.response.data.message)
+    }
   })
 }
 
@@ -605,9 +647,7 @@ export const documents = async ({
 
 
 
-export const uploadFile = async ({
-  commit
-}, data) => {
+export const uploadFile = async ({ commit }, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("post", `file`, null, data).then((response) => {
     commit('uploadFile', response.data.data.path);
@@ -628,7 +668,7 @@ export const uploadFile = async ({
 export const patientDetails = async ({commit}, id) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", API_ENDPOINTS['patient'], id, null).then((response) => {
-    commit('patientDetailsSuccess', response.data.data);
+    commit('patientDetails', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
     // errorSwal(error.response.data.message)
@@ -637,14 +677,14 @@ export const patientDetails = async ({commit}, id) => {
   })
 }
 
-export const patientTimeline = async ({commit}, id) => {
-  commit('loadingStatus', true)
-  await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/timeLine', null, null).then((response) => {
+export const patientTimeline = async ({commit}, data) => {
+  
+  await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+data.id+'/timeLine?type='+data.type, null, null).then((response) => {
     commit('patientTimelineSuccess', response.data.data);
-    commit('loadingStatus', false)
+    
   }).catch((error) => {
     errorSwal(error.response.data.message)
-    commit('loadingStatus', false)
+    
   })
 }
 
@@ -1085,5 +1125,15 @@ export const deleteEmergencyContact = async ({commit}, data) => {
       commit('loadingStatus', false)
     }
     commit('loadingStatus', false)
+  })
+}
+export const timeLineType = async ({commit}) => {
+  
+  await serviceMethod.common("get", API_ENDPOINTS['timeLineType'], null, null).then((response) => {
+    commit('timeLineType', response.data.data);
+   
+  }).catch((error) => {
+    errorSwal(error.response.data.message)
+    
   })
 }

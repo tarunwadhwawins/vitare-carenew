@@ -102,6 +102,10 @@ export const successMsg = (state, data) => {
     state.successMsg = data
 }
 
+export const actionTrack = (state, data) => {
+    state.actionTrack = data
+}
+
 export const staffListSuccess = (state, data) => {
     
     const staffList = []
@@ -162,5 +166,8 @@ export const checkChangeInput = (state, data) => {
   
   export const searchTable = (state, data) => {
     state.searchTable = data
+  }
+  export const orderTable = (state, data) => {
+    state.orderTable = data
   }
   

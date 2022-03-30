@@ -23,7 +23,8 @@
                         </a-col>
                         <a-col :span="12">
                             <div class="text-right mb-24" v-if="arrayToObjact(roleAndPermissions,5)">
-                                <Button :name="exportButtonName" />
+                                <!-- <Button :name="exportButtonName" /> -->
+                                 <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('roleAndPermission_report')"/>
                             </div>
                         </a-col>
                         <a-col :span="24">
@@ -50,7 +51,8 @@ import RolesAndPermissionsModal from "@/components/modals/RolesAndPermissionsMod
 import Button from "@/components/common/button/Button";
 import {computed,ref,onUnmounted} from "vue";
 import {useStore } from "vuex"
-import { arrayToObjact } from "@/commonMethods/commonMethod";
+import {arrayToObjact,exportExcel} from "@/commonMethods/commonMethod"
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 export default {
     components: {
         Header,
@@ -59,6 +61,7 @@ export default {
         RolesAndPermissionsModal,
         SearchField,
         Button,
+        ExportToExcel
     },
 
     setup() {
@@ -100,6 +103,7 @@ export default {
             store.dispatch("searchTable",'')
         })
         return {
+            exportExcel,
             editShow,
             arrayToObjact,
             roleAndPermissions,
@@ -110,7 +114,6 @@ export default {
             searchData,
             edit,
             editRole,
-            exportButtonName: "Export to Excel",
             buttonName: "Add Role",
             pageTitle: "Roles & Permissions"
         };

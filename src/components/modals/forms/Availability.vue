@@ -1,7 +1,7 @@
 <template>
 <a-form :model="availability" ref="formRest" scrollToFirstError=true name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addAvailability" @finishFailed="availabilityDataFailed">
     <a-row :gutter="24">
-        <a-col :md="8" :sm="12" :xs="24">
+        <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.startTime')" name="startTime" :rules="[{ required: true, message: $t('global.startTime')+' '+$t('global.validation') }]">
                     <a-time-picker  use12-hours format="hh:mm A" v-model:value="availability.startTime"  value-format="HH:mm"  @change="checkChangeInput()"/>
@@ -9,7 +9,7 @@
                 </a-form-item>
             </div>
         </a-col>
-        <a-col :md="8" :sm="12" :xs="24">
+        <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.endTime')" name="endTime" :rules="[{ required: true, message: $t('global.endTime')+' '+$t('global.validation') }]">
                     <a-time-picker v-model:value="availability.endTime" use12-hours format="hh:mm A" value-format="HH:mm" @change="checkChangeInput()"/>
@@ -21,7 +21,7 @@
     <a-row :gutter="24" class="mb-24">
       <a-col :span="24" v-if="paramId">
         <a-button  html-type="reset" style="margin-right: 8px" @reset="reset()"  @click="reset()">{{$t('global.clear')}}</a-button>
-        <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
+        <a-button type="primary" html-type="submit" :disabled="button ? false : true">{{$t('global.save')}}</a-button>
         </a-col>
         <a-col :span="24" v-else>
             <a-button class="btn primaryBtn" html-type="submit" :disabled="button ? false : true">{{$t('global.add')}}</a-button>

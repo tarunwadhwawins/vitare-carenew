@@ -104,9 +104,7 @@ export default defineComponent({
     watchEffect(()=>{
         store.dispatch('activeCptCodes')
         if(props.Id){
-
         Object.assign(auditTimeLog,timeLogReports.value)
-    console.log('-->',Object.assign(auditTimeLog,timeLogReports.value))
         }
     })
 

@@ -23,7 +23,7 @@
             <a-col :sm="8" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('globalCodes.activeStatus')" name="status">
-                        <a-switch :checked="globalCodeForm.status ? true : false" @change="UpdateStatus($event)" />
+                        <a-switch :checked="globalCodeForm.isActive ? true : false" @change="UpdateStatus($event)" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -97,7 +97,7 @@ export default {
             globalCodeCategory: '',
             name: '',
             description: '',
-            status: true,
+            isActive: true,
         });
 
         watchEffect(() => {
@@ -135,7 +135,7 @@ export default {
                 const data = {
                     "name": globalCodeForm.name,
                     "description": globalCodeForm.description,
-                    "status": globalCodeForm.status,
+                    "isActive": globalCodeForm.isActive,
                     "globalCodeCategory": globalCodeForm.globalCodeCategory
                 }
                 const id = props.isAdd;

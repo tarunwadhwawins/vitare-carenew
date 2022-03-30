@@ -3,7 +3,7 @@ import { API_ENDPOINTS } from "../../config/apiConfig"
 import { successSwal, errorSwal } from '@/commonMethods/commonMethod'
 
 export const resetPassword = async ({ commit }, data) => {
-	console.log('data', data)
+	
 	await ServiceMethod.common("post", API_ENDPOINTS['changePassword'], null, data).then((response) => {
     successSwal(response.data.message)
     commit('errorMsg', null)
@@ -23,7 +23,6 @@ export const resetPassword = async ({ commit }, data) => {
 }
 
 export const forgotPassword = async ({ commit }, data) => {
-	console.log('data', data)
 	await ServiceMethod.common("post", API_ENDPOINTS['forgotPassword']+`?email=${data.email}`, null, null).then((response) => {
     successSwal(response.data.message)
     commit('errorMsg', null)
@@ -67,7 +66,6 @@ export const validateCode = async ({ commit }, data) => {
 
 export const setupPassword = async ({ commit }, data) => {
   commit('loadingStatus', true)
-	console.log('data', data)
 	await ServiceMethod.common("post", API_ENDPOINTS['setupPassword']+`?code=${data.code}&newPassword=${data.newPassword}&confirmNewPassword=${data.confirmNewPassword}`, null, null).then((response) => {
     commit('errorMsg', null)
     successSwal(response.data.message)

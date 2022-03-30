@@ -24,7 +24,6 @@ export default {
     watch(
       pageRef,
       (page) => {
-        console.log(page)
         fetchItems(page)
       },
       { immediate: true }

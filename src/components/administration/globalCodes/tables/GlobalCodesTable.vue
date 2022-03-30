@@ -3,7 +3,7 @@
   <a-table  rowKey="id"
     :columns="globalCodesColumns"
     :data-source="globalCodesList"
-    :scroll="{ y: tableYScroller ,x: 1020}" :pagination=false>
+    :scroll="{ y: tableYScroller }" :pagination=false>
     <template #actions="{record}">
       <a-tooltip placement="bottom" v-if="arrayToObjact(globalCodesPermissions,7)">
         <template #title>
@@ -19,8 +19,8 @@
       </a-tooltip>
     </template>
     <!-- v-if="arrayToObjact(globalCodesPermissions,266)"> -->
-    <template #status="{record}" >
-      <a-switch v-model:checked="record.status" @change="updateStatus(record.id, $event)" />
+    <template #isActive="{record}" >
+      <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
     </template>
   </a-table>
 </template>
@@ -91,7 +91,7 @@ export default {
 
     const updateStatus = (id, status) => {
       const data = {
-        "status": status
+        "isActive": status
       };
       store.dispatch('updateGlobalCode', {id, data}).then(() => {
         store.dispatch('globalCodesList')
@@ -113,51 +113,43 @@ export default {
         title: "Category",
         dataIndex: "globalCodeCategory",
         key: "globalCodeCategory",
-        className: "codeCategory",
-        sorter: {
-          compare: (a, b) => a.globalCodeCategory - b.globalCodeCategory,
-        },
+      
+        
       },
       {
         title: "Code Name",
         dataIndex: "name",
         key: "name",
-        className: "codename",
-        sorter: {
-          compare: (a, b) => a.name - b.name,
-        },
+        
+        
+        
       },
       {
         title: "Description",
         dataIndex: "description",
         key: "description",
-        className: 'description',
-        sorter: {
-          compare: (a, b) => a.description - b.description,
-        },
+        
+       
       },
       {
         title: "Used Count",
         dataIndex: "usedCount",
-        key: "usedCount",
-        className: "usedCount",
-        sorter: {
-          compare: (a, b) => a.id - b.id,
-        },
+        
+        
+        
       },
       {
         title: "Status",
-        dataIndex: "status",
-        key: "status",
-        className: "codeStatus",
+        dataIndex: "isActive",
+        
+       
         slots: {
-          customRender: "status"
+          customRender: "isActive"
         },
       },
       {
         title: "Actions",
         dataIndex: "actions",
-        className: "codeActions",
         slots: {
           customRender: "actions",
         },

@@ -92,12 +92,10 @@
             </div>
           </div>
           <div class="search" v-if="accessPermission != 0">
-            <!-- <a-input
+            <HeaderSearch
               v-model:value="value"
-              size="large"
-              placeholder="Enter search"
-            /> -->
-            <HeaderSearch v-model:value="value" @handleChange="handleChange($event)"/>
+              @handleChange="handleChange($event)"
+            />
           </div>
           <div class="profile" :class="ellipse ? 'show' : ''">
             <div class="quick-actions d-flex align-items-center">
@@ -123,11 +121,6 @@
                         $t("header.addPatient")
                       }}</a>
                     </a-menu-item>
-                    <!-- <a-menu-item key="3">
-                      <a href="javascript:void(0)" @click="addCare"
-                        >Add Care Coordinator</a
-                      ></a-menu-item
-                    > -->
                     <a-menu-item key="4">
                       <a href="javascript:void(0)" @click="addTask">{{
                         $t("header.addTask")
@@ -152,7 +145,7 @@
                 <a class="ant-dropdown-link" @click.prevent>
                   <div class="icon">
                     <a-badge
-                      :count="count?count:''"
+                      :count="count ? count : ''"
                       :number-style="{ backgroundColor: '#267dff' }"
                     >
                       <NotificationOutlined />
@@ -160,31 +153,40 @@
                   </div>
                 </a>
                 <template #overlay>
-                  <a-menu class="headerDropdown" style="max-height: 400px;overflow: auto;">
+                  <a-menu
+                    class="headerDropdown"
+                    style="max-height: 400px; overflow: auto"
+                  >
                     <li class="title">{{ $t("header.notification") }}</li>
                     <li
                       class="listing"
                       v-for="(notification, index) in notifications"
                       :key="index"
-
-                      
                     >
-                      <router-link :to="notification.type=='Appointment'?'appointment-calendar':'/communications'" @click="isReadNotification(notification.id,notification.type)" >
+                      <router-link
+                        :to="
+                          notification.type == 'Appointment'
+                            ? 'appointment-calendar'
+                            : '/communications'
+                        "
+                        @click="
+                          isReadNotification(notification.id, notification.type)
+                        "
+                      >
                         <a class="d-flex align-items-center" href="#">
-                          <!-- <div class="flex-shrink-0 imgProfile">
-                            <img src="@/assets/images/userAvatar.png" alt="image" width="50" />
-                          </div> -->
                           <div class="flex-grow-1 ms-3 summary">
                             <h3>{{ notification.title }}</h3>
                             <p>{{ notification.body }}</p>
                             <br />
-                            <strong class="" v-if="notification.date">{{
-                              dobFormat(date)==dobFormat(notification.date)?'':dobFormat(notification.date)
+                            <strong class="" v-if="notification.time">{{
+                              dateOnlyFormat(date) === dateOnlyFormat(notification.time)
+                                ? ""
+                                : dateOnlyFormat(notification.time)
                             }}</strong
                             >&nbsp;
                             <strong class="" v-if="notification.time">{{
                               meridiemFormatFromTimestamp(notification.time)
-                            }}</strong>
+                            }} </strong>
                           </div>
                         </a>
                       </router-link>
@@ -220,15 +222,19 @@
                 </a>
                 <template #overlay>
                   <a-menu class="headerDropdown">
-                    
                     <a-menu-item key="0">
-                      <router-link :to="{ name: 'CoordinatorSummary', params: { udid: userName.user.staffUdid  }}">
+                      <router-link
+                        :to="{
+                          name: 'CoordinatorSummary',
+                          params: { udid: userName.user.staffUdid },
+                        }"
+                      >
                         {{ $t("header.myProfile") }}
                       </router-link>
                     </a-menu-item>
-                    
+
                     <a-menu-item key="3">
-                      <router-link :to="{ name: 'ResetPassword' }" >
+                      <router-link :to="{ name: 'ResetPassword' }">
                         Reset Password
                       </router-link>
                     </a-menu-item>
@@ -236,7 +242,6 @@
                     <a-menu-item key="3" @click="logoutUser">
                       <a href="javascript:void(0)">Logout</a>
                     </a-menu-item>
-
                   </a-menu>
                 </template>
               </a-dropdown>
@@ -267,7 +272,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watchEffect, } from "vue";
+import { defineComponent, ref, computed, watchEffect ,onUnmounted} from "vue";
 import AddAppointment from "@/components/modals/AddAppointment";
 import TasksModal from "@/components/modals/TasksModal";
 import PatientsModal from "@/components/modals/PatientsModal";
@@ -275,13 +280,14 @@ import CoordinatorsModal from "@/components/modals/CoordinatorsModal";
 import AddStartCall from "@/components/modals/AddStartCall";
 import SendMessage from "@/components/modals/SendMessage";
 import { useStore } from "vuex";
-import HeaderSearch from "./HeaderSearch"
+import HeaderSearch from "./HeaderSearch";
 import {
   arrayToObjact,
   meridiemFormatFromTimestamp,
   dobFormat,
+  dateOnlyFormat
 } from "@/commonMethods/commonMethod";
-import {useRouter } from "vue-router"
+import { useRouter } from "vue-router";
 import {
   NotificationOutlined,
   DownOutlined,
@@ -302,17 +308,20 @@ export default defineComponent({
     CoordinatorsModal,
     AddStartCall,
     SendMessage,
-    HeaderSearch
+    HeaderSearch,
   },
-  props: {},
-  setup(props, { emit }) {
+ props:{
+
+ },
+  setup(props,{emit}) {
     const store = useStore();
-    const router = useRouter()
+    const router = useRouter();
     const toggle = ref(false);
     const ellipse = ref(false);
     const tasksModal = ref(false);
-    const date = Date.now()
-    const userName = JSON.parse(localStorage.getItem("auth"))
+    const date = Math.round(+new Date()/1000);
+    console.log('Today-date',date)
+    const userName = JSON.parse(localStorage.getItem("auth"));
     const logoutUser = () => {
       store.state.authentication.errorMsg = "";
       store.dispatch("logoutUser");
@@ -323,24 +332,30 @@ export default defineComponent({
       document.body.classList.toggle("show");
     }
 
-    // function collapsMenu(){
-    //   toggle.value=!toggle.value
-    //   emit('collapsMenu',toggle.value)
-    // }
-
     watchEffect(() => {
       store.dispatch("notificationList");
-
     });
-
+    onUnmounted(()=>{
+            store.dispatch("searchTable",'')
+            store.dispatch('orderTable','')
+        })
     const appointmentModal = ref(false);
     const addAppt = () => {
       appointmentModal.value = true;
     };
 
     function showModal(event) {
-      appointmentModal.value = event;
-      emit("is-visible", event);
+      
+      if(event.date){
+        
+        appointmentModal.value = event.check;
+        emit("is-heardeVisible",event)
+      }else{
+        appointmentModal.value = event
+      }
+     
+
+      
     }
     const apptOk = () => {
       appointmentModal.value = false;
@@ -349,12 +364,8 @@ export default defineComponent({
     const addTask = () => {
       tasksModal.value = true;
     };
-    // const taskOk = () => {
-    //   TasksModal.value = false;
-    // };
-
+    
     const PatientsModal = ref(false);
-
     const addPatient = () => {
       PatientsModal.value = true;
     };
@@ -402,30 +413,33 @@ export default defineComponent({
     const notifications = computed(() => {
       return store.state.common.getNotifications;
     });
-    const handleChange = (val)=>{
-        // console.log('object',val.split('=>'));
-        let checkData = val.split('=>')
-        if(checkData[1]==="Patient"){
-            value.value=val
-            router.push({ name: 'PatientSummary', params: { udid: checkData[0] } })
-        }else{
-            value.value=val
-            router.push({ name: 'CoordinatorSummary', params: { udid: checkData[0] } })
-        }
-    }
+    const handleChange = (val) => {
+      // console.log('object',val.split('=>'));
+      let checkData = val.split("=>");
+      if (checkData[1] === "Patient") {
+        value.value = val;
+        router.push({ name: "PatientSummary", params: { udid: checkData[0] } });
+      } else {
+        value.value = val;
+        router.push({
+          name: "CoordinatorSummary",
+          params: { udid: checkData[0] },
+        });
+      }
+    };
 
-    const  isReadNotification =(id,type)=>{
-        console.log(id,type);
-        if(type=='Appointment'){
-
-            store.dispatch("isReadUpdateNotification",id)
-        }else{
-            store.dispatch("isReadUpdateNotification",id) 
-        }
-    }
+    const isReadNotification = (id, type) => {
+      if (type == "Appointment") {
+        store.dispatch("isReadUpdateNotification", id);
+      } else {
+        store.dispatch("isReadUpdateNotification", id);
+      }
+      store.dispatch("notificationList");
+    };
     return {
+      dateOnlyFormat,
       isReadNotification,
-      count:store.getters.notificationCount,
+      count: store.getters.notificationCount,
       date,
       handleChange,
       dobFormat,
@@ -434,7 +448,6 @@ export default defineComponent({
       communicationPermissions,
       accessPermission,
       handleTaskOk,
-      // collapsMenu,
       userName,
       logoutUser,
       value,
@@ -443,27 +456,21 @@ export default defineComponent({
       ellipse,
       SendMessage,
       addsendMessage,
-
       appointmentModal,
       apptOk,
       addAppt,
-
       tasksModal,
       addTask,
       arrayToObjact,
-      // taskOk,
-
       PatientsModal,
       addPatient,
       closeAppointModal,
-
       CoordinatorsModal,
       addCare,
       AddStartCall,
       showStartCallModal,
       closeStartCallModal,
       startOk,
-
       handleOk,
       showModal,
       patientsPermissions,

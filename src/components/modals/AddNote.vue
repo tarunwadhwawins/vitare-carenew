@@ -79,8 +79,6 @@ export default defineComponent({
     const noteCategories = computed(() => {
       return store.state.common.noteCategories;
     })
-    console.log('noteTypes', noteTypes.value)
-    console.log('noteCategories', noteCategories.value)
 
     const addNoteForm = reactive({
       date: "",

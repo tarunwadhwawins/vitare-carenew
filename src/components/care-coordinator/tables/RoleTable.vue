@@ -36,7 +36,6 @@ export default {
   setup(props) {
     const store = useStore();
     const router = useRoute();
-    console.log("==", router.params.udid);
 
     function deleteRole(id) {
       warningSwal(messages.deleteWarning).then((response) => {

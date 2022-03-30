@@ -215,9 +215,10 @@ export default {
     const store = useStore();
     const router = useRoute();
     const clearData = ref(false)
-    console.log("id=>", router.params.udid);
+    //console.log("id=>", router.params.udid);
 
     watchEffect(() => {
+        if(router.params.udid&&  router.name == 'CoordinatorSummary'){
       store.dispatch("staffSummary", router.params.udid);
       store.dispatch("availabilityList", router.params.udid);
       store.dispatch("staffContactList", router.params.udid);
@@ -225,6 +226,7 @@ export default {
       store.dispatch("staffDocuments", router.params.udid);
       store.dispatch("staffSummaryAppointment", router.params.udid);
       store.dispatch("staffSummaryPatient", router.params.udid);
+        }
     });
 
     const staffs = computed(() => {

@@ -20,8 +20,8 @@
                 </a>
             </a-tooltip>
         </template>
-        <template #status="{record}" v-if="arrayToObjact(programsPermissions,18)">
-            <a-switch v-model:checked="record.status" @change="UpdateProgramStatus(record.udid, $event)" />
+        <template #isActive="{record}" v-if="arrayToObjact(programsPermissions,18)">
+            <a-switch v-model:checked="record.isActive" @change="UpdateProgramStatus(record.udid, $event)" />
         </template>
     </a-table>
     <Loader />
@@ -91,7 +91,7 @@ export default {
         }
         const UpdateProgramStatus = (id, status) => {
             const data = {
-                "status": status
+                "isActive": status
             };
 
             store.dispatch('updateManageProgram', {

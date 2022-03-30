@@ -5,12 +5,16 @@ export const addInventorySuccess = async (state, inventory) => {
 }
 
 export const inventory = async (state, inventories) => {
-  state.inventoriesList = inventories.data;
+  state.inventoriesList = inventories.map(data => {
+    ///data.isActive = data.isActive
+    data.isAvailable = data.isAvailable == 1 ? '' : 'Assigned'
+    return data
+  });
   state.inventoryMeta = inventories.meta.pagination
 }
 
 export const inventoryDetailsSuccess = async (state, inventory) => {
-  inventory.isActive = inventory.status;
+  //inventory.isActive = inventory.isActive;
   state.inventoryDetails = inventory;
 }
 

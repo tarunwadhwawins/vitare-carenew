@@ -1,17 +1,27 @@
 <template>
-<div class="highLight">Patients are highlighted</div>
+<a-alert class="mb-24" message="Patients are highlighted" type="error" />
+
 <a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900, y: tableYScroller }" :pagination="false" :rowClassName="(record) => auth.user.id!=record.messageSender && record.isRead==0 ? 'bold':''">
      <template #from="{ record }" class="custom">
-         <span v-if="record.is_sender_patient" class="customTd">{{record.from}}</span>
+         <span v-if="record.is_sender_patient" class="customTd">
+            <router-link :to="{ name: 'PatientSummary', params: { udid: record.fromId } }">
+                {{record.from}}
+            </router-link></span>
         <span v-else>
-            {{record.from}}
-          </span>
+            <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.fromId } }">
+                {{record.from}}
+            </router-link></span>
+           
+         
         </template>
     <template #to="{ record }" class="custom">
-         <span v-if="record.is_receiver_patient" class="customTd">{{record.to}}</span>
-        <span v-else>
+         <span v-if="record.is_receiver_patient" class="customTd"><router-link :to="{ name: 'PatientSummary', params: { udid: record.toId } }">
             {{record.to}}
-          </span>
+        </router-link></span>
+        <span v-else>
+            <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.toId } }">
+                {{record.to}}
+            </router-link></span>
         </template>
     <template #resend>
         <a-tooltip placement="bottom">
@@ -22,16 +32,16 @@
                 <EyeOutlined /></a>
         </a-tooltip>
     </template>
-    <template #patient="">
-        <router-link :to="linkTo">
+    <!-- <template #patient="{ record }">
+        <router-link :to="{ name: 'PatientSummary', params: { udid: record.id } }">
             {{ text.text }}
         </router-link>
     </template>
     <template #staff="{ record }">
-        <router-link v-for="staff in record.staff.data" :key="staff.id" to="coordinator-summary">
+        <router-link v-for="staff in record.staff.data" :key="staff.id" to="{ name: 'CoordinatorSummary', params: { udid:staff.uuid?record.staff:'eyrer8758458958495'  }}">
             {{ staff.staff }}
         </router-link>
-    </template>
+    </template> -->
 
     <template #priority="{ record }">
         <a-tooltip placement="right">

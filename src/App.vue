@@ -1,5 +1,5 @@
 <template>
-<div>
+  <div>
     <!-- <div class="SelectLanguage">
       <span for="Select Language">Select Language <SelectLanguage /></span>
     </div> -->
@@ -12,22 +12,18 @@
       </a-radio-group>
     </div> -->
     <a-config-provider :locale="locale === 'en' ? enUS : esES">
-        <div>
-            <router-view />
-        </div>
-        <!-- <div v-else>
+      <div>
+        <router-view />
+      </div>
+      <!-- <div v-else>
         <router-view />
       </div> -->
     </a-config-provider>
-</div>
+  </div>
 </template>
 
 <script>
-import {
-    watchEffect,
-    ref,
-    onMounted
-} from "vue";
+import { watchEffect, ref, onMounted, computed } from "vue";
 import enUS from "ant-design-vue/es/locale/en_US";
 import esES from "ant-design-vue/es/locale/es_ES";
 // import moment from "moment";
@@ -35,63 +31,71 @@ import esES from "ant-design-vue/es/locale/es_ES";
 // import { onMounted } from "vue";
 // import SelectLanguage from "./views/localization/SelectLanguage.vue";
 // moment.locale("en");
-import {
-    useStore
-} from "vuex"
+import { useStore } from "vuex";
+
 export default {
-    //   components: {
-    //     SelectLanguage,
-    //   },
-    setup() {
-      const store = useStore()
-      //     const auth = localStorage.getItem("auth");
-      const locale = ref(enUS.locale)
-      
-      watchEffect(() => {
-        store.dispatch("globalCodes")
-        store.dispatch("timeLine", 122)
-        store.dispatch("permissions")
-        store.dispatch("appointmentConference")
-        store.dispatch('notificationList')
-        
-        //       moment.locale(val);
-      });
-          onMounted(() => {
-          
-            document.body.classList.add("test");
-        });
-        return {
-            //       auth,
-            enUS,
-            esES,
-            locale,
-            //       moment,
-            //     };
+  //   components: {
+  //     SelectLanguage,
+  //   },
+  setup() {
+    const store = useStore();
+    const locale = ref(enUS.locale);
+    let date = new Date();
+    const refreshToken = computed(() => {
+      return store.state.authentication.expiresIn;
+    });
+
+    watchEffect(() => {
+      if (refreshToken.value != null) {
+        store.dispatch("globalCodes");
+        store.dispatch("timeLine", 122);
+        store.dispatch("permissions");
+        store.dispatch("appointmentConference");
+        store.dispatch("notificationList");
+        if (refreshToken.value > date.getTime()) {
+          let differenceDate = refreshToken.value - date.getTime();
+          setTimeout(() => {
+            store.dispatch("refreshToken");
+          }, differenceDate);
+        } else {
+          store.dispatch("logoutUser");
         }
-    }
-}
+      }
+    });
+
+    onMounted(() => {
+      document.body.classList.add("test");
+    });
+
+    return {
+      enUS,
+      esES,
+      locale,
+    };
+  },
+};
 </script>
 
 <style lang="scss">
 #app {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #2c3e50;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
 }
 
 #nav {
-    a {
-        font-weight: bold;
-        color: #2c3e50;
+  a {
+    font-weight: bold;
+    color: #2c3e50;
 
-        &.router-link-exact-active {
-            color: #42b983;
-        }
+    &.router-link-exact-active {
+      color: #42b983;
     }
+  }
 }
 
 .SelectLanguage {
-    padding-top: 10px;
-    text-align: center;
+  padding-top: 10px;
+  text-align: center;
 }
 </style>

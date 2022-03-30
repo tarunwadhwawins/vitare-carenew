@@ -4,13 +4,14 @@
       <SearchField  endPoint="communication"/>
     </a-col>
     <a-col :span="12" v-if="arrayToObjact(communicationPermissions,110)">
-      <div class="text-right mb-24">
+      <!-- <div class="text-right mb-24">
         <a-button class="primaryBtn">{{ $t('global.exportToExcel') }}</a-button>
-      </div>
+      </div> -->
+      <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('communication_report')"/>
     </a-col>
     <a-col :span="24">
 
-      <ListViewTable  />
+      <ListViewTable  /> 
     </a-col>
   </a-row>
 </template>
@@ -20,11 +21,14 @@ import { watchEffect,computed ,onUnmounted} from 'vue';
 import { useStore } from "vuex"
 import SearchField from "@/components/common/input/SearchField";
 import ListViewTable from "@/components/communications/tables/ListViewTable";
-import {arrayToObjact} from "@/commonMethods/commonMethod"
+import {arrayToObjact,exportExcel} from "@/commonMethods/commonMethod"
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
+
 export default {
   components: {
     SearchField,
     ListViewTable,
+    ExportToExcel
   },
   setup() {
     const store = useStore()
@@ -48,7 +52,7 @@ export default {
     return {
       communicationPermissions,
       arrayToObjact,
-      
+      exportExcel,
       searchData,
       linkTo,
       onChange: () => {

@@ -26,9 +26,9 @@ export const cptCode = async (state, cptCodes) => {
     },
     {
       title: "Active/Inactive",
-      dataIndex: "status",
+      dataIndex: "isActive",
       slots: {
-        customRender: "status",
+        customRender: "isActive",
       },
     },
     {

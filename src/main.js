@@ -29,7 +29,6 @@ const firebaseApp = initializeApp(firebaseConfig);
 
 const messaging = getMessaging();
 getToken(messaging, { vapidKey: 'BLuPXuT693CDqZoVL-uUKfn-VFDHGail1U9Dk6i8krkcyjvmkvLSrGn2un21gjiEAUnJ6bdCAMNSrIoHeSaqW60' }).then((currentToken) => {
-    console.log("tokenFirebase", currentToken);
     localStorage.setItem('fireBaseToken',currentToken)
     if (currentToken) {
         // Send the token to your server and update the UI if necessary
@@ -38,7 +37,7 @@ getToken(messaging, { vapidKey: 'BLuPXuT693CDqZoVL-uUKfn-VFDHGail1U9Dk6i8krkcyjv
 
     } else {
         // Show permission request UI
-        console.log('No registration token available. Request permission to generate one.');
+        // console.log('No registration token available. Request permission to generate one.');
         // ...
     }
 }).catch((err) => {
@@ -47,7 +46,6 @@ getToken(messaging, { vapidKey: 'BLuPXuT693CDqZoVL-uUKfn-VFDHGail1U9Dk6i8krkcyjv
 });
 
 onMessage(messaging, (payload) => {
-  console.log('Message received. ', payload);
   store.dispatch('notificationList')
   const key = `open${Date.now()}`;
   notification.open({

@@ -20,7 +20,10 @@
       </a-tooltip>
     </template>
     <template #isActive="{record}">
-      <a-switch v-model:checked="record.status" @change="updateStatus(record.id, $event)" />
+      <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
+    </template>
+    <template #isAvailable="{record}">
+      <span>{{ record.isAvailable }}</span>
     </template>
   </a-table>
   <Loader/>
@@ -122,54 +125,47 @@ export default {
         title: "Device Type",
         dataIndex: "deviceType",
         key: "deviceType",
-        className: "deviceType",
-        sorter: {
-          compare: (a, b) => a.deviceType - b.deviceType,
-        },
+        
       },
       {
         title: "Model Number",
         dataIndex: "modelNumber",
-        key: "modelNumber",
-        className: "modelNumber",
-        sorter: {
-          compare: (a, b) => a.modelNumber - b.modelNumber,
-        },
+        
+        
       },
       {
         title: "Serial Number",
         dataIndex: "serialNumber",
-        key: "serialNumber",
-        className: 'serialNumber',
-        sorter: {
-          compare: (a, b) => a.serialNumber - b.serialNumber,
-        },
+        
+        
       },
       {
         title: "Mac Address",
         dataIndex: "macAddress",
-        key: "macAddress",
-        className: "macAddress",
-        sorter: {
-          compare: (a, b) => a.macAddress - b.macAddress,
-        },
+        
+        
       },
       {
         title: "Active/Inactive",
         dataIndex: "isActive",
-        key: "isActive",
-        className: "isActive",
-        sorter: {
-          compare: (a, b) => a.isActive - b.isActive,
-        },
+        
+        
+        
         slots: {
           customRender: "isActive",
         },
       },
       {
+        title: "Assigned/Unassigned",
+        dataIndex: "isAvailable",
+        slots: {
+          customRender: "isAvailable",
+        },
+      },
+      {
         title: "Actions",
         dataIndex: "actions",
-        className: "codeActions",
+       
         slots: {
           customRender: "actions",
         },

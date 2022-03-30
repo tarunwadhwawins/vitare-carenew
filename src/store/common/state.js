@@ -40,8 +40,9 @@ export default {
     searchTable:null,
     notificationList:null,
     dropdownLoadingStatus:false,
-
-    loadingTableStatus:null
+    loadingTableStatus:null,
+    actionTrack:null,
+    orderTable:null,
 
 
 }

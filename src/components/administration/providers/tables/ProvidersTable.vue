@@ -1,11 +1,11 @@
 <template>
-<a-table  rowKey="id" :columns="providerListColumns" :data-source="providersListAll" :scroll="{ y: tableYScroller }" :pagination=false>
+<a-table  rowKey="id" :columns="providerListColumns" :data-source="providersListAll" :scroll="{ y: tableYScroller }" :pagination=false @change="handleTableChange">
     <template #name="{text,record}">
                <router-link :to="{ name: 'providerSummary', params: { id:record.id  }}">{{text}}</router-link>
     </template>
     <!-- v-if="arrayToObjact(globalCodesPermissions,25)" -->
-    <template #status="{record}" v-if="arrayToObjact(providersPermissions,25)">
-        <a-switch v-model:checked="record.status" @change="updateStatus(record.id, $event)" />
+    <template #isActive="{record}" v-if="arrayToObjact(providersPermissions,25)">
+        <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
     </template>
     <template #action="text">
       <!--  -->
@@ -47,7 +47,8 @@ export default {
     
     const providersListAll = store.getters.providersListAll
     const meta = store.getters.providerMeta
-        let data = ''
+    let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
+        let data = []
         let scroller = ''
         onMounted(() => {
             var tableContent = document.querySelector('.ant-table-body')
@@ -63,8 +64,8 @@ export default {
                         meta.value = ""
                         data = providersListAll.value
                         store.state.provider.providersListAll = ""
-                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
-                        store.dispatch("providersListAll", "&search="+url+"&page=" + current_page).then(() => {
+                        let ordring = store.getters.orderTable.value  
+                        store.dispatch("providersListAll", "&search="+url+"&page=" + current_page+ordring.data).then(() => {
                             loadMoredata()
                         })
 
@@ -149,7 +150,19 @@ export default {
     });
 
     const providersPermissions =store.getters.permissionRecords.value.providersPermissions
-
+    const handleTableChange = (pag, filters, sorter) => {
+      if(sorter.order){
+        let order =sorter.order=='ascend' ? 'ASC': 'DESC'
+        let orderParam = '&orderField='+sorter.field+'&orderBy='+order
+        store.dispatch('orderTable',{data:orderParam,orderBy:order,page:pag,filters:filters})
+        store.dispatch("providersListAll", '&search='+url+orderParam)
+        
+      }else{
+        store.dispatch('orderTable',{field:'',orderBy:''})
+      }
+      
+      
+    }
     return {
       providersPermissions,
       arrayToObjact,
@@ -165,6 +178,7 @@ export default {
       props,
       tableYScroller,
       text: "provider-summary",
+      handleTableChange,
     };
   },
 };

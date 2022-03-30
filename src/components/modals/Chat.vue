@@ -158,10 +158,8 @@ export default {
         //     arrayElements[i][1].style.height = desiredHeightValue;
         // }
         setTimeout(()=>{
-            console.log("event",tableContent[0].clientHeight)
             tableContent[0].scrollTop(0,300)
         },1000)
-                console.log("event",tableContent)
                 // tableContent.addEventListener('scroll', (event) => {
                 // let maxScroll = event.target.scrollHeight - event.target.clientHeight
                 // let currentScroll = event.target.scrollTop + 2
