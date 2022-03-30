@@ -870,7 +870,6 @@ export default defineComponent( {
       return store.state.common;
     });
     const idPatient = props.patientId ? reactive(props.patientId) : null;
-		// alert('props.isEditPatient : '+props.isEditPatient)
     var isEdit = props.isEditPatient == true ? true : false;
 
     const patients = computed(() => {
@@ -1120,10 +1119,8 @@ export default defineComponent( {
 				console.log('patients.value.addPatientReferals', patients.value.addPatientReferals)
 				console.log('patients.value.addPatientPhysician', patients.value.addPatientPhysician)
 				if(patients.value.addCondition == null && patients.value.addPatientReferals == null && patients.value.addPatientPhysician == null) {
-					alert('1')
 					if((patients.value.patientReferralSource && patients.value.patientReferralSource != null)
 					|| patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null) {
-						alert('2')
 						if(conditions.sameAsAbove == 1) {
 							(conditions.name = conditions.referralName),
 							(conditions.designation = conditions.referralDesignation),
@@ -1143,7 +1140,6 @@ export default defineComponent( {
 					}
 					else if((!patients.value.patientReferralSource && patients.value.patientReferralSource == null)
 					|| (!patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician == null)) {
-						alert('3')
 						if(conditions.sameAsAbove == 1) {
 							(conditions.name = conditions.referralName),
 							(conditions.designation = conditions.referralDesignation),
@@ -1163,10 +1159,8 @@ export default defineComponent( {
 					}
 				}
 				else if(patients.value.addCondition != null || patients.value.addPatientReferals != null || patients.value.addPatientPhysician != null) {
-					alert('4')
 					if((patients.value.patientReferralSource && patients.value.patientReferralSource != null)
 						|| patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null) {
-						alert('5')
 						if(conditions.sameAsAbove == 1) {
 							(conditions.name = conditions.referralName),
 							(conditions.designation = conditions.referralDesignation),
@@ -1186,7 +1180,6 @@ export default defineComponent( {
 					}
 					else if((!patients.value.patientReferralSource && patients.value.patientReferralSource == null)
 					|| (!patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician == null)) {
-						alert('6')
 						if(conditions.sameAsAbove == 1) {
 							(conditions.name = conditions.referralName),
 							(conditions.designation = conditions.referralDesignation),
