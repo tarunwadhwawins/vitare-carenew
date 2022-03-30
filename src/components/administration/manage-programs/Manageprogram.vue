@@ -91,7 +91,10 @@ export default {
       console.log(`selected ${value}`);
     };
     onUnmounted(() => {
-      store.dispatch("searchTable", "");
+      store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
     });
     const searchoptions = ref([
       {

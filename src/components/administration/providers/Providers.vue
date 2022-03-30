@@ -111,6 +111,7 @@ export default {
         };
         watchEffect(() => {
             store.dispatch("providersListAll")
+            store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
             })
@@ -129,7 +130,7 @@ export default {
 
         const providersPermissions = store.getters.permissionRecords.value.providersPermissions
         onUnmounted(() => {
-            store.dispatch("searchTable", '')
+            store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
             })
