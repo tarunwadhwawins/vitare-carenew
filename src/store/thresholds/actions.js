@@ -1,6 +1,6 @@
-import serviceMethod from '../../services/serviceMethod'
-import { API_ENDPOINTS } from "../../config/apiConfig"
-import { errorSwal, successSwal } from '../../commonMethods/commonMethod'
+import serviceMethod from '@/services/serviceMethod'
+import { API_ENDPOINTS } from "@/config/apiConfig"
+import { errorSwal, successSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
 
 export const getVital = async ({
   commit
@@ -11,6 +11,7 @@ export const getVital = async ({
         commit('getVitals', response.data.data);
         
       }).catch((error) => {
+        errorLogWithDeviceInfo(error.response)
         if (error.response.status === 422) {
           errorSwal(error.response.data)
         } else if (error.response.status === 500) {
@@ -52,6 +53,7 @@ export const addGeneralParameterGroup = async ({
     commit('vitalSuccessMsg', response.data.message)
     successSwal(response.data.message)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       errorSwal(error.response.data)
     } else if (error.response.status === 500) {
@@ -72,6 +74,7 @@ export const generalParameterList = async ({
     commit('generalParameterGroup', response.data)
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       errorSwal(error.response.data)
     } else if (error.response.status === 500) {
@@ -91,6 +94,7 @@ export const generalParameterEdit = async ({
     
     commit('vitalEdit', response.data.data)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       errorSwal(error.response.data)
     } else if (error.response.status === 500) {
@@ -109,6 +113,7 @@ export const updateGeneralParameterGroup = async ({
     commit('vitalSuccessMsg', response.data.message)
     successSwal(response.data.message)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       errorSwal(error.response.data)
     } else if (error.response.status === 500) {
@@ -127,6 +132,7 @@ export const generalParameterDelete = async ({
     successSwal(response.data.message)
     commit('vitalSuccessMsg', '')
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       errorSwal(error.response.data)
     } else if (error.response.status === 500) {

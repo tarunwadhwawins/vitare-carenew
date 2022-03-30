@@ -1,5 +1,6 @@
-import serviceMethod from '../../services/serviceMethod';
-import { API_ENDPOINTS } from "../../config/apiConfig";
+import serviceMethod from '@/services/serviceMethod';
+import { API_ENDPOINTS } from "@/config/apiConfig";
+import { errorLogWithDeviceInfo } from '@/commonMethods/commonMethod';
 
 export const addCareTeam = async ({ commit }, {patientUdid, data}) => {
   commit('loadingStatus', true)
@@ -8,6 +9,7 @@ export const addCareTeam = async ({ commit }, {patientUdid, data}) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -23,6 +25,7 @@ export const careTeamList = async ({ commit }, patientUdid) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -38,6 +41,7 @@ export const deleteStaff = async ({ commit }, {patientUdid, patientStaffUdid}) =
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}

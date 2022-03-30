@@ -1,13 +1,13 @@
-import ServiceMethodService from '../../services/serviceMethod';
-// import AuthService from '../../services/auth';
-import { API_ENDPOINTS } from "../../config/apiConfig"
-import { successSwal, errorSwal,startimeAdd, endTimeAdd, timeStamp} from '../../commonMethods/commonMethod'
+import ServiceMethodService from '@/services/serviceMethod';
+import { API_ENDPOINTS } from "@/config/apiConfig"
+import { successSwal, errorSwal,startimeAdd, endTimeAdd, timeStamp,errorLogWithDeviceInfo} from '@/commonMethods/commonMethod'
 export const callPlanned = async ({ commit },from) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['CallPlanned']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null, null).then((response) => {
 		
 		commit('callPlannedSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -21,6 +21,7 @@ export const addCommunication = async ({ commit }, data) => {
 		successSwal(response.data.message)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -35,10 +36,7 @@ export const communicationTypes = async ({ commit },from) => {
 		commit('communicationTypesSuccess', response.data.data);
 	})
 	.catch((error) => {
-		// if (error.response.status == 401) {
-		// 	//AuthService.logout();
-		// }
-		// commit('failure', error.response.data);
+		errorLogWithDeviceInfo(error.response)
 		commit('failure', error);
 	})
 }
@@ -51,6 +49,7 @@ export const communicationsList = async ({ commit }, page) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -64,6 +63,7 @@ export const patientsList = async ({ commit }) => {
 		commit('patientsListSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -76,6 +76,7 @@ export const futureAppointments = async ({ commit }) => {
 		commit('futureAppointmentsSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -88,6 +89,7 @@ export const newRequests = async ({ commit }) => {
 		commit('newRequestsSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -100,6 +102,7 @@ export const communicationsCount = async ({ commit }, from) => {
 		commit('communicationsCountSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -112,6 +115,7 @@ export const searchCommunications = async ({ commit }, params) => {
 		commit('searchCommunicationsSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -124,6 +128,7 @@ export const conversation = async ({ commit }, id) => {
 		commit('conversation', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -135,6 +140,7 @@ export const conversationSend = async ({ commit },data) => {
 		commit('conversationSend', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -146,6 +152,7 @@ export const status = async ({ commit },from) => {
         commit('callStatusSuccess', response.data.data)
 
     }).catch((error) => {
+		errorLogWithDeviceInfo(error.response)
         if (error.response.status == 401) {
             //AuthService.logout();
         }

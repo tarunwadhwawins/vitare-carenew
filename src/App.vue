@@ -26,12 +26,11 @@
 import { watchEffect, ref, onMounted, computed } from "vue";
 import enUS from "ant-design-vue/es/locale/en_US";
 import esES from "ant-design-vue/es/locale/es_ES";
-// import moment from "moment";
 // import 'moment/dist/locale/es';
-// import { onMounted } from "vue";
 // import SelectLanguage from "./views/localization/SelectLanguage.vue";
 // moment.locale("en");
 import { useStore } from "vuex";
+
 
 export default {
   //   components: {

@@ -1,12 +1,19 @@
 import Swal from 'sweetalert2';
 import moment from 'moment';
 import store from '@/store/index'
+import Bowser from "bowser"; 
 
 //for all timeStamp to according date and time format
 export function dateAndTimeFormate(timeStamp,format) {
 	var date = moment.unix(new Date(timeStamp));
 	return date.format(format);
 }
+
+export function errorLogWithDeviceInfo(errorMessage){
+let deviceInfo = Bowser.parse(window.navigator.userAgent)
+store.dispatch('errorLogWithDeviceInfo',{deviceInfo:JSON.stringify(deviceInfo),errorMessage:JSON.stringify(errorMessage)})
+}
+
 // for all table export excel data
 export function exportExcel(data,date="?fromDate=&toDate="){
 	store.dispatch('exportReportRequest',{data:data,date:date})
