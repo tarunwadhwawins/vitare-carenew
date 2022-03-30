@@ -33,9 +33,6 @@
                 </a-select>
               </a-col>
               <a-col :span="12">
-                <!-- <div class="text-right mb-24">
-                  <a-button class="primaryBtn">Export to Excel</a-button>
-                </div> -->
                  <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('template_report')"/>
               </a-col>
               <a-col :span="24">
