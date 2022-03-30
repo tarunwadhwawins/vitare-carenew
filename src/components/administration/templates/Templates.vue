@@ -33,9 +33,10 @@
                 </a-select>
               </a-col>
               <a-col :span="12">
-                <div class="text-right mb-24">
+                <!-- <div class="text-right mb-24">
                   <a-button class="primaryBtn">Export to Excel</a-button>
-                </div>
+                </div> -->
+                 <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('template_report')"/>
               </a-col>
               <a-col :span="24">
                 <a-table  rowKey="id"
@@ -80,6 +81,8 @@ import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import AdminTemplates from "@/components/modals/AdminTemplates";
 import { ref } from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
+import { exportExcel } from "@/commonMethods/commonMethod";
 const columns = [
   {
     title: "Template",
@@ -131,6 +134,7 @@ export default {
     DeleteOutlined,
     EditOutlined,
     AdminTemplates,
+    ExportToExcel,
   },
 
   setup() {
@@ -164,10 +168,10 @@ export default {
       },
     ]);
     return {
+      exportExcel,
       columns,
       data,
       checked,
-
       visible,
       showModal,
       handleOk,

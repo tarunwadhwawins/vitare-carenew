@@ -17,8 +17,8 @@
                 <DeleteOutlined /></a>
         </a-tooltip>
     </template>
-    <template #status="{record}" v-if="arrayToObjact(cptCodePermissions,12)">
-        <a-switch v-model:checked="record.status" @change="UpdateCptStatus(record.udid, $event)" />
+    <template #isActive="{record}" v-if="arrayToObjact(cptCodePermissions,12)">
+        <a-switch v-model:checked="record.isActive" @change="UpdateCptStatus(record.udid, $event)" />
     </template>
 </a-table>
 <Loader/>
@@ -73,7 +73,7 @@ export default {
         }
         const UpdateCptStatus = (id, status) => {
             const data = {
-                status: status,
+                isActive: status,
             };
 
             store
@@ -102,7 +102,6 @@ export default {
             var tableContent = document.querySelector(".ant-table-body");
             tableContent.addEventListener("scroll", (event) => {
                 let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-                console.log("hight",event.target.clientHeight)
                 let currentScroll = event.target.scrollTop + 2;
                 if (currentScroll >= maxScroll) {
                     let current_page = meta.cptMeta.current_page + 1;

@@ -167,4 +167,7 @@ export const checkChangeInput = (state, data) => {
   export const searchTable = (state, data) => {
     state.searchTable = data
   }
+  export const orderTable = (state, data) => {
+    state.orderTable = data
+  }
   

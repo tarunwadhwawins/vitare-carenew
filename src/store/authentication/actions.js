@@ -1,7 +1,7 @@
 
-import ServiceMethodService from '../../services/serviceMethod'
-import { API_ENDPOINTS } from "../../config/apiConfig"
-import { errorSwal, successSwal } from '../../commonMethods/commonMethod'
+import ServiceMethodService from '@/services/serviceMethod'
+import { API_ENDPOINTS } from "@/config/apiConfig"
+import { errorSwal, successSwal } from '@/commonMethods/commonMethod'
 import router from "@/router";
 
 let date = new Date();
@@ -28,7 +28,6 @@ const roleAccess = async ({ commit }) => {
 	await ServiceMethodService.common("get", "staff/access", null, null).then((response) => {
 		commit('accessPermission', response.data.data.length)
 		localStorage.setItem('accessPermission', response.data.data.length)
-		console.log("access", response.data)
 		localStorage.setItem('access', true)
 		localStorage.setItem('roleAuth', response.data.data[0] ? response.data.data[0].roleId : '');
 		permission({ commit })
@@ -76,9 +75,9 @@ export const logoutUser = async ({ commit }) => {
 export const refreshToken = async ({ commit }) => {
 	await ServiceMethodService.common("post", API_ENDPOINTS['refreshToken'], null, true).then((response) => {
 		commit('refreshTokenSuccess', response.data);
-		console.log('token', response.data.token);
 		localStorage.setItem('token', response.data.token);
 		commit('expiresIn', date.setSeconds(date.getSeconds() + ((response.data.expiresIn/100)-10)))
+		localStorage.setItem('expiresIn', date.setSeconds(date.getSeconds() + ((response.data.expiresIn/100)-10)));
 	})
 		.catch((error) => {
 			if (error.response.status == 401) {

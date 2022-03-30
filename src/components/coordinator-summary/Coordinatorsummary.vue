@@ -218,7 +218,7 @@ export default {
     //console.log("id=>", router.params.udid);
 
     watchEffect(() => {
-        if(router.params.udid){
+        if(router.params.udid&&  router.name == 'CoordinatorSummary'){
       store.dispatch("staffSummary", router.params.udid);
       store.dispatch("availabilityList", router.params.udid);
       store.dispatch("staffContactList", router.params.udid);

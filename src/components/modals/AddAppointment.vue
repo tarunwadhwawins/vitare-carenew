@@ -139,14 +139,10 @@ import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
       const patientData = ref([]);
       const patientUdid = route.params.udid;
       const idPatient = reactive(props.patientId);
-      const patientName = reactive(props.patientName);
       const disabled = ref(false);
       const filterOption = (input, option) => {
-                  return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-                };
-      
-      console.log('patientName', patientName)
-  
+        return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      };
       const appointmentForm = reactive({
         patientId: '',
         staffId: '',
@@ -201,6 +197,7 @@ import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
       
       
       const sendMessage = () => {
+        
         const date = appointmentForm.startDate
         const  timeFormat = (moment(appointmentForm.startTime)).format('HH:mm');
         store.dispatch('addAppointment', {
@@ -220,10 +217,12 @@ import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
         });
         setTimeout(()=>{
             if(store.state.appointment.successMsg){
+             
               store.dispatch("calendarDateSelect", moment(date))
               store.state.appointment.successMsg=null
-              handleCancel()
               emit('is-visible', {check:false,date:moment(date)});
+              emit('is-heardeVisible', {check:false,date:moment(date)});
+              handleCancel()
             }
             },3000)
       }
@@ -253,6 +252,7 @@ import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
                     if (response == true) {
                      handleCancel();
                         emit("is-visible", false);
+                        emit('is-heardeVisible', false);
                         store.commit('checkChangeInput',false)
 
                     } else {

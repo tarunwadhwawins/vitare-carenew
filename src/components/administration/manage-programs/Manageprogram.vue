@@ -77,8 +77,7 @@ export default {
             programId.value = null
         };
         const programId = ref(null)
-        const handleOk = (e) => {
-            console.log(e);
+        const handleOk = () => {
             visible.value = false;
         };
         const handleChange2 = (value) => {

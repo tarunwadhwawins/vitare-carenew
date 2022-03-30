@@ -11,7 +11,6 @@ import {
   convertChartResponse,
   // createDynamicColumns,
 } from '../../commonMethods/commonMethod';
-const VUE_APP_ROOT_API = process.env.VUE_APP_ROOT_API
 
 export const addDemographic = (state, data) => {
   state.addDemographic = data
@@ -462,10 +461,7 @@ export const addDocument = (state, data) => {
 }
 
 export const documents = (state, data) => {
-  state.documents = data.map(item => {
-    item.document = VUE_APP_ROOT_API + item.document
-    return item
-  })
+  state.documents = data
   state.documentColumns = [
     {
       title: "Name",
@@ -551,7 +547,7 @@ export const patientDetails = (state, patient) => {
     patient.isPrimary = null;
     patient.emergencyGender = null;
   }
-  console.log('In Console patient', patient)
+
   state.patientDetails = patient
 }
 
@@ -559,9 +555,20 @@ export const patientTimelineSuccess = (state, timeline) => {
   state.patientTimeline = timeline
 }
 
+export const addCondition = (state, data) => {
+  state.addCondition = data
+}
+
+export const addPatientReferals = (state, data) => {
+  state.addPatientReferals = data
+}
+
+export const addPatientPhysician = (state, data) => {
+  state.addPatientPhysician = data
+}
+
 export const patientDocumentsSuccess = (state, documents) => {
   state.patientDocuments = documents.map(data => {
-    data.document = VUE_APP_ROOT_API + data.document
     data.createdAt = meridiemFormatFromTimestamp(data.createdAt);
     return data;
   })
@@ -622,6 +629,14 @@ export const latestVital = (state, data) => {
 
 export const errorMsg = (state, data) => {
   state.errorMsg = data
+}
+
+export const referralErrorMsg = (state, data) => {
+  state.referralErrorMsg = data
+}
+
+export const physicianErrorMsg = (state, data) => {
+  state.physicianErrorMsg = data
 }
 
 export const closeModal = (state, data) => {

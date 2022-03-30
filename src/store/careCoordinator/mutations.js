@@ -1,5 +1,4 @@
  import{meridiemFormatFromTimestamp} from "../../commonMethods/commonMethod"
-//  const VUE_APP_ROOT_API = process.env.VUE_APP_ROOT_API
  export const counterPlus = (state,data) => {
    if(data){
      state.counter = data

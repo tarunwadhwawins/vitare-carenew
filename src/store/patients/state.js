@@ -27,6 +27,8 @@ export default {
     uploadFile:null,
     status:false,
     errorMsg:null,
+    referralErrorMsg:null,
+    physicianErrorMsg:null,
     errorMessage:null,
     patientDetails:null,
     patientTimeline:null,
@@ -68,5 +70,9 @@ export default {
     emergencyContactsList:null,
     emergencyContactDetails:null,
     timeLineType:null,
+
+    addCondition:null,
+    addPatientReferals:null,
+    addPatientPhysician:null,
 
 }

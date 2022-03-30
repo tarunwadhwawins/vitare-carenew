@@ -34,9 +34,10 @@
       <SearchField  endPoint="patient"/>
     </a-col>
     <a-col :span="12" v-if="arrayToObjact(patientsPermissions,66)">
-        <div class="text-right mb-24">
+        <!-- <div class="text-right mb-24">
             <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
-        </div>
+        </div> -->
+        <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('patient_report')"/>
     </a-col>
     <a-col :span="24" >
 
@@ -56,23 +57,20 @@ import PatientsModal from "@/components/modals/PatientsModal";
 import CounterCard from "./counter-card/CounterCard";
 import ShowModalButton from "@/components/common/show-modal-button/ShowModalButton";
 import Loader from "@/components/loader/Loader"
-import { arrayToObjact } from "@/commonMethods/commonMethod";
-// import { messages } from "../../config/messages";
+import { arrayToObjact,exportExcel } from "@/commonMethods/commonMethod";
 import DataTable from "./data-table/DataTable"
 import SearchField from "@/components/common/input/SearchField";
-// import Card from "@/components/common/cards/Card"
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 export default {
   name: "Patients",
   components: {
     PatientsModal,
-    // UserOutlined,
-    // WarningOutlined,
     CounterCard,
     ShowModalButton,
     DataTable,
     Loader,
-    SearchField
-    // Card
+    SearchField,
+    ExportToExcel
   },
 
   setup() {
@@ -104,6 +102,7 @@ export default {
             store.dispatch("searchTable",'')
         })
     return {
+      exportExcel,
       totalPatients,
       patientsPermissions,
       arrayToObjact,

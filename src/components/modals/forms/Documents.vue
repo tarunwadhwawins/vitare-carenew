@@ -235,20 +235,6 @@ export default defineComponent({
     const globalCode = computed(() => {
       return store.state.common;
     });
-
-    // function deleteDocument(id) {
-    //   warningSwal(messages.deleteWarning).then((response) => {
-    //     if (response == true) {
-    //       store.dispatch("deleteDocument", {
-    //         id: patients.value.addDemographic.id,
-    //         documentId: id,
-    //       });
-    //       setTimeout(() => {
-    //         store.dispatch("documents", patients.value.addDemographic.id);
-    //       }, 2000);
-    //     }
-    //   });
-    // }
     const handleChange = (value) => {
       console.log(`selected ${value}`);
     };

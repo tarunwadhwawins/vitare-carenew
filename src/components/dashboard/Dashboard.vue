@@ -61,7 +61,7 @@
             <ApexChart :title="$t('dashboard.cPTCodeBillingSummary')" type="bar" :height="350" :options="cptCodeValue.code" :series="cptCodeValue.value" linkTo="cpt-codes"></ApexChart>
 
         </a-col>
-        <a-col :sm="12" :xs="24" v-if="arrayToObjact(permission.dashboardPermissions,7) && cptCodeValue">
+        <a-col :sm="12" :xs="24" v-if="arrayToObjact(permission.dashboardPermissions,7) && financialValue">
 
             <!-- <div class="list-group">
                   <div class="list-group-item">
@@ -151,7 +151,7 @@ export default {
             store.dispatch("specialization", dateFormate)
             store.dispatch("network", dateFormate)
             store.dispatch("cptCode", dateFormate)
-            //store.dispatch("financial", dateFormate)
+            store.dispatch("financial", dateFormate)
             store.dispatch("totalPatientsChart", dateFormate)
             store.dispatch("appointmentChart", dateFormate)
 

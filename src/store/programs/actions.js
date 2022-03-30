@@ -27,8 +27,6 @@ export const manageProgramList = async ({
 export const addManageProgram = async ({
   commit
 }, data) => {
-
-  console.log("data", data.data)
   await serviceMethod.common("post", API_ENDPOINTS['programsList'], null, data.data).then((response) => {
 
     commit('programMsg', response.data.message);

@@ -29,9 +29,10 @@
         
     </a-col>
     <a-col :span="12" v-if="arrayToObjact(staffPermissions,41)">
-        <div class="text-right mb-24">
+        <!-- <div class="text-right mb-24">
             <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
-        </div>
+        </div> -->
+        <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('careCoordinator_report')"/>
     </a-col>
     <a-col :span="24" >
       
@@ -54,19 +55,19 @@ import CareCoordinatorModalForms from "@/components/modals/CoordinatorsModal"
 import Loader from "@/components/loader/Loader"
 import {useStore} from "vuex"
 import ShowModalButton from "@/components/common/show-modal-button/ShowModalButton"
-import {arrayToObjact} from "@/commonMethods/commonMethod"
+import {arrayToObjact,exportExcel} from "@/commonMethods/commonMethod"
 import SearchField from "@/components/common/input/SearchField";
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 export default {
-    data() {
-        return {};
-    },
+ 
     components: {
         LongCard,
         CoordinatorTable,
         Loader,
         CareCoordinatorModalForms,
         ShowModalButton,
-        SearchField
+        SearchField,
+        ExportToExcel
     },
     setup() {
         const store = useStore()
@@ -94,13 +95,13 @@ export default {
             store.dispatch("searchTable",'')
         })
         return {
+            exportExcel,
             staffPermissions,
             arrayToObjact,
             showModal,
             visible,
             handleOk,
-            searchoptions,
-            
+            searchoptions, 
             staffs:store.getters.staffRecord.value,
             value2: ref(),
             size: ref(),

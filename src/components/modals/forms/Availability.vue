@@ -21,7 +21,7 @@
     <a-row :gutter="24" class="mb-24">
       <a-col :span="24" v-if="paramId">
         <a-button  html-type="reset" style="margin-right: 8px" @reset="reset()"  @click="reset()">{{$t('global.clear')}}</a-button>
-        <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
+        <a-button type="primary" html-type="submit" :disabled="button ? false : true">{{$t('global.save')}}</a-button>
         </a-col>
         <a-col :span="24" v-else>
             <a-button class="btn primaryBtn" html-type="submit" :disabled="button ? false : true">{{$t('global.add')}}</a-button>

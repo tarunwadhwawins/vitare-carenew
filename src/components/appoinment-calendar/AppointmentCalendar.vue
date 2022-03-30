@@ -1,7 +1,7 @@
 <template>
 <div>
     <!---->
-    <a-layout-content>
+    <a-layout-content >
         <Title :title="$t('appointmentCalendar.appointmentCalendar')" @calenderToggle="calenderView($event)" :isActive="toggle" :button="{
             fullCalendarView: $t('appointmentCalendar.fullCalendarView'),
             hideCalendarView:$t('appointmentCalendar.hideCalendarView')
@@ -85,8 +85,12 @@ export default {
         WeekAppointment,
         Loader
     },
-
-    setup() {
+props:{
+    headerData:{
+        type:String
+    }
+},
+    setup(props) {
         const toggle = ref(true);
         const maskebale = ref(false)
         const activeKey = ref('1');
@@ -178,7 +182,10 @@ export default {
 
             store.dispatch("allPatientsList")
             store.dispatch("allStaffList")
-
+if(props.headerData){
+    console.log("check",props.headerData)
+    selectDate(props.headerData)
+}
             searchApi()
         })
 
@@ -211,6 +218,7 @@ export default {
         }
         const appointmentModal = ref(false);
         const showModal = (event) => {
+            console.log("data",event)
             if (event.date) {
                 selectDate(event.date)
                 appointmentModal.value = event.check;

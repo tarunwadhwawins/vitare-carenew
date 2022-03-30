@@ -28,9 +28,12 @@ export default defineComponent({
             search.value = value.target.value;
 
             function fake() {
+                let ordring = store.getters.orderTable.value
                 store.dispatch("searchTableData", {
                   data:search.value,
-                  endPoint:endPoints
+                  endPoint:endPoints,
+                  field:ordring? ordring.field:'',
+                  orderBy: ordring? ordring.orderBy: ''
                 })
                 store.dispatch("searchTable",search.value)
             }
