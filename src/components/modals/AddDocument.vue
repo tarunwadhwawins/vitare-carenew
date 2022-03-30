@@ -123,7 +123,10 @@ export default defineComponent({
         store.dispatch('latestDocument', route.params.udid)
         formRef.value.resetFields();
         Object.assign(addDocumentForm, form)
-        emit('closeModal');
+        emit("closeModal", {
+          modal: 'addDocument',
+          value: false
+        });
       });
     }
 
