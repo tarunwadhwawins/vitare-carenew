@@ -2,10 +2,14 @@ import Swal from 'sweetalert2';
 import moment from 'moment';
 import store from '@/store/index'
 
-
+//for all timeStamp to according date and time format
+export function dateAndTimeFormate(timeStamp,format) {
+	var date = moment.unix(new Date(timeStamp));
+	return date.format(format);
+}
 // for all table export excel data
-export function exportExcel(data){
-	store.dispatch('exportReportRequest',{data:data})
+export function exportExcel(data,date="?fromDate=&toDate="){
+	store.dispatch('exportReportRequest',{data:data,date:date})
 }
 
 //action tracking when user click on any action 

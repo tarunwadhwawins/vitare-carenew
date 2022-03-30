@@ -158,7 +158,7 @@ export default {
         store.dispatch("providersListAll", '&search='+url+orderParam)
         
       }else{
-        store.dispatch('orderTable',{field:'',orderBy:''})
+        store.dispatch('orderTable',{data:'&orderField=&orderBy='})
       }
       
       
