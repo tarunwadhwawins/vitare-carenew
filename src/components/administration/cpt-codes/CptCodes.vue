@@ -89,6 +89,10 @@ export default {
         watchEffect(() => {
             store.dispatch('serviceList')
             store.dispatch('cptCodesList')
+            store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
 
         })
         
@@ -96,7 +100,11 @@ export default {
             return store.state.screenPermissions.cptCodePermissions
         })
         onUnmounted(()=>{
-            store.dispatch("searchTable",'')
+            store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+
         })
         return {
             exportExcel,
