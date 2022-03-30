@@ -1,7 +1,7 @@
 
 import ServiceMethodService from '@/services/serviceMethod'
 import { API_ENDPOINTS } from "@/config/apiConfig"
-import { errorSwal, successSwal } from '@/commonMethods/commonMethod'
+import { errorSwal, successSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
 import router from "@/router";
 
 let date = new Date();
@@ -16,6 +16,7 @@ export const login = async ({ commit }, user) => {
 
 	})
 		.catch((error) => {
+			errorLogWithDeviceInfo(error.response)
 			if (error.response.status == 401) {
 				commit('loginFailure', 'Invalid Login Credentials');
 			}
@@ -34,6 +35,7 @@ const roleAccess = async ({ commit }) => {
 
 	})
 		.catch((error) => {
+			errorLogWithDeviceInfo(error.response)
 			errorSwal(error.response.data.message)
 		})
 }
@@ -52,6 +54,7 @@ const permission = async ({ commit }) => {
 
 	})
 		.catch((error) => {
+			errorLogWithDeviceInfo(error.response)
 			errorSwal(error.response.data.message)
 		})
 }
@@ -80,6 +83,7 @@ export const refreshToken = async ({ commit }) => {
 		localStorage.setItem('expiresIn', date.setSeconds(date.getSeconds() + ((response.data.expiresIn/100)-10)));
 	})
 		.catch((error) => {
+			errorLogWithDeviceInfo(error.response)
 			if (error.response.status == 401) {
 				//AuthService.logout();
 			}

@@ -280,24 +280,20 @@ export const addDevice = (state, data) => {
 
 export const inventoryList = (state, data) => {
   // const devices = state.devices;
-  // console.log('deviceData 2', devices)
   // var list = [];
   // data.map(item => {
   //   list = []
   //   devices.map(device => {
   //     // if(item.modelNumber == device.modelNumber) {
   //       if(item.macAddress != device.macAddress) {
-  //         console.log('deviceData 3', item)
   //         list.push(item)
   //       }
   //     // }
   //     // else {
-  //     //   console.log('deviceData 4', item)
   //     //   list.push(item)
   //     // }
   //   })
   // })
-  // console.log('deviceData 5', list)
   // state.inventoryList = list
   state.inventoryList = data
 }
@@ -500,7 +496,6 @@ export const uploadFile = (state, data) => {
 }
 
 export const patientDetails = (state, patient) => {
-  alert(dobFormat(patient.dob))
   patient.email = patient.user.data.email ? patient.user.data.email : null;
   patient.country = patient.countryId ? patient.countryId : null;
   patient.state = patient.stateId ? patient.stateId : null;
@@ -585,16 +580,16 @@ export const patientConditions = (state, conditions) => {
 export const patientReferralSource = (state, referralSource) => {
   if (referralSource) {
     referralSource.referralDesignation = referralSource.referralDesignationId;
+    state.patientReferralSource = referralSource;
   }
-  state.patientReferralSource = referralSource;
 }
 
 export const patientPrimaryPhysician = (state, primaryPhysician) => {
   if (primaryPhysician) {
     primaryPhysician.sameAsAbove = primaryPhysician.sameAsReferal;
     primaryPhysician.designation = primaryPhysician.designationId;
+    state.patientPrimaryPhysician = primaryPhysician;
   }
-  state.patientPrimaryPhysician = primaryPhysician;
 }
 
 export const deleteDocument = (state, data) => {
@@ -675,6 +670,11 @@ export const patientSearchWithBitrix = (state, data) => {
 
 export const getBitrixFieldsName = (state, data) => {
   state.getBitrixFieldsName = data
+}
+
+
+export const bitrixFormCheck = (state, data) => {
+  state.bitrixFormCheck = data
 }
 
 
@@ -982,9 +982,6 @@ export const patientVitals = (state, vitals) => {
       },
     ];
     // }
-    // console.log('state.bloodPressureColumns', state.bloodPressureColumns)
-    // console.log('state.bloodOxygenColumns', state.bloodOxygenColumns)
-    // console.log('state.bloodGlucoseColumns', state.bloodGlucoseColumns)
   }
   else {
     state.bloodPressure = null;

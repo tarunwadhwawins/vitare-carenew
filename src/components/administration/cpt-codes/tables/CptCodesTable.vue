@@ -1,6 +1,5 @@
 <template>
-    
-<a-table rowKey="id"  :columns="meta.cptCodesColumns" :data-source="meta.cptCodesList" :scroll="{ y: tableYScroller}"  :pagination="false" @change="onChange">
+<a-table rowKey="id" :columns="meta.cptCodesColumns" :data-source="meta.cptCodesList" :scroll="{ y: tableYScroller}" :pagination="false" @change="handleTableChange">
     <template #actions="{record}">
         <a-tooltip placement="bottom" @click="editCpt(record.udid)" v-if="arrayToObjact(cptCodePermissions,10)">
             <template #title>
@@ -21,7 +20,7 @@
         <a-switch v-model:checked="record.isActive" @change="UpdateCptStatus(record.udid, $event)" />
     </template>
 </a-table>
-<Loader/>
+<Loader />
 </template>
 
 <script>
@@ -61,6 +60,7 @@ export default {
     }) {
 
         const store = useStore();
+
         function deleteCpt(id) {
             warningSwal(messages.deleteWarning).then((response) => {
                 if (response == true) {
@@ -92,10 +92,10 @@ export default {
             });
         }
 
-
         //infinite scroll
-        let data = ''
+        let data = []
         let scroller = ''
+        const url = store.getters.searchTable
         const meta = store.getters.cptRecords.value;
         const loader = ref(false);
         onMounted(() => {
@@ -112,8 +112,8 @@ export default {
                         loader.value = true;
                         meta.cptMeta = "";
                         store.state.cptCodes.cptCodesList = "";
-                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
-                        store.dispatch("cptCodesList", "&search="+url+"&page=" + current_page).then(() => {
+
+                        store.dispatch("cptCodesList", "&page=" + current_page + store.getters.orderTable.value.data + '&search=' + url.value == null ? '' : url.value).then(() => {
                             loadMoredata();
                         });
                     }
@@ -139,6 +139,24 @@ export default {
         const cptCodePermissions = computed(() => {
             return store.state.screenPermissions.cptCodePermissions
         })
+        const handleTableChange = (pag, filters, sorter) => {
+            if (sorter.order) {
+                let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
+                let orderParam = '&orderField=' + sorter.field + '&orderBy=' + order
+                store.dispatch('orderTable', {
+                    data: orderParam,
+                    orderBy: order,
+                    page: pag,
+                    filters: filters
+                })
+                store.dispatch("cptCodesList", url.value + orderParam)
+
+            } else {
+                store.dispatch('orderTable', {
+                    data: '&orderField=&orderBy='
+                })
+            }
+        }
 
         return {
             cptCodePermissions,
@@ -148,13 +166,14 @@ export default {
             editCpt,
             UpdateCptStatus,
             meta,
-            tableYScroller
-        
+            tableYScroller,
+            handleTableChange
 
         };
     },
 };
 </script>
+
 <style>
 
 </style>

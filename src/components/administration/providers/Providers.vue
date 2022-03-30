@@ -26,7 +26,9 @@
                             <!--  -->
                             <div class="text-right mb-24" v-if="arrayToObjact(providersPermissions,26)">
                                 <!-- <Button :name="exportButtonName" /> -->
-                                <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('provider_report')" />
+                                <div class="text-right mb-24">
+                                    <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+                                </div>
                             </div>
                         </a-col>
                     </a-row>
@@ -109,6 +111,7 @@ export default {
         };
         watchEffect(() => {
             store.dispatch("providersListAll")
+            store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
             })
@@ -127,7 +130,7 @@ export default {
 
         const providersPermissions = store.getters.permissionRecords.value.providersPermissions
         onUnmounted(() => {
-            store.dispatch("searchTable", '')
+            store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
             })

@@ -20,7 +20,9 @@
                         <SearchField endPoint="cptCode"/>
                     </a-col>
                     <a-col :span="12">
-                        <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('cptCode_report')"/>
+                        <div class="text-right mb-24">
+                            <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+                        </div>
                     </a-col>
                     <a-col :span="24">
                         <CptCodesTable  @is-visible="editModal($event)" />
@@ -89,6 +91,10 @@ export default {
         watchEffect(() => {
             store.dispatch('serviceList')
             store.dispatch('cptCodesList')
+            store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
 
         })
         
@@ -96,7 +102,11 @@ export default {
             return store.state.screenPermissions.cptCodePermissions
         })
         onUnmounted(()=>{
-            store.dispatch("searchTable",'')
+            store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+
         })
         return {
             exportExcel,

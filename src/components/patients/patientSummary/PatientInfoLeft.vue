@@ -326,7 +326,6 @@ export default defineComponent({
     })
     
     const handleOk = ({modal, value}) => {
-      console.log('modal, value', {modal, value})
       if(value) {
         addEmergencyContactModalVisible.value = modal == 'addEmergencyContact' ? value : false;
         addPhysicianModalVisible.value = modal == 'addPhysician' ? value : false;
@@ -335,6 +334,8 @@ export default defineComponent({
         addDocumentVisible.value = modal == 'addDocument' ? value : false;
         documentDetailVisible.value = modal == 'documentDetails' ? value : false;
         addTimeLogsVisible.value = modal == 'addTimeLog' ? value : false;
+        flagsModalVisible.value = modal == 'addFlag' ? value : false;
+        criticalNotesDetailVisible.value = modal == 'criticalNotesDetails' ? value : false;
       }
       else {
         flagsModalVisible.value = false;
@@ -355,6 +356,7 @@ export default defineComponent({
         addDocumentVisible.value = false;
         documentDetailVisible.value = false;
         addTimeLogsVisible.value = false;
+        criticalNotesDetailVisible.value = false;
       }
     };
 

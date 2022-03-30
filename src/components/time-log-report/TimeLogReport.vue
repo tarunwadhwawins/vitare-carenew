@@ -33,10 +33,9 @@
                                 </div>
                             </a-col>
                             <a-col :sm="4" :xs="24">
-                                <!-- <div class="text-right mt-28">
-                                    <a-button class="btn primaryBtn" @click="reportExport()">{{$t('global.exportToExcel')}}</a-button>
-                                </div> -->
-                                <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('patientTimelog_report',filtterDates)" />
+                                <div class="text-right mb-24">
+                                    <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+                                </div>
                             </a-col>
                         </a-row>
                     </a-form>

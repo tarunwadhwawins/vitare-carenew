@@ -1,12 +1,13 @@
 import serviceMethod from '@/services/serviceMethod';
 import {API_ENDPOINTS} from "@/config/apiConfig"
-import { errorSwal } from '@/commonMethods/commonMethod'
+import { errorSwal,errorLogWithDeviceInfo} from '@/commonMethods/commonMethod'
 
 
 export const globalCodes = async ({commit}) => {
   await serviceMethod.common("get", "globalCodeCategory?all=all", null, null).then((response) => {
     commit('globalCodes', response.data.data);
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status == 401) {
       //AuthService.logout();
     }
@@ -20,6 +21,7 @@ export const vitalFieldsList = async ({ commit }, deviceId) => {
     commit('vitalFieldsList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     commit('failure', error);
     commit('loadingStatus', false)
   })
@@ -31,6 +33,7 @@ export const vitalFieldsByDeviceId = async ({ commit }, deviceId) => {
     commit('vitalFieldsByDeviceId', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     commit('failure', error);
     commit('loadingStatus', false)
   })
@@ -42,6 +45,7 @@ export const allPatientsList = async ({ commit }) => {
     commit('allPatientsList', response.data.data);
     //commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     commit('failure', error);
     commit('loadingStatus', false)
   })
@@ -53,6 +57,7 @@ export const allStaffList = async ({ commit }) => {
     commit('allStaffList', response.data.data);
     //commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     commit('failure', error);
     commit('loadingStatus', false)
   })
@@ -64,6 +69,7 @@ export const activeCptCodes = async ({ commit }) => {
     commit('activeCptCodes', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     commit('failure', error);
     commit('loadingStatus', false)
   })
@@ -83,6 +89,7 @@ export const notificationList = async ({ commit }) => {
     commit('getNotifications', response.data.data);
     commit('notificationList', response.data.data.length);
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
   })
 }
@@ -95,6 +102,7 @@ export const isReadUpdateNotification = async ({
   await serviceMethod.common("put", `notification/isRead/${id}`, null, true).then((response) => {
     commit('isReadUpdateNotification', response.data.data);
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -106,7 +114,7 @@ export const isReadUpdateNotification = async ({
 }
 
 export const searchTable = async ({ commit }, search) => {
-  commit("searchTable", search)
+  commit("searchTable", search ? search :'')
 }
 export const orderTable = async ({ commit},data) => {
   commit("orderTable",data)
@@ -120,6 +128,7 @@ export const searchTableData = async ({ commit }, search) => {
     commit(search.endPoint, response.data);
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     commit('errorMsg', error);
     if (error.response.status === 500) {
       errorSwal(error.response.data.message)
@@ -134,6 +143,7 @@ export const actionTrack = async ({ commit }, data) => {
     commit('actionTrack', response.data.data);
     // successSwal(response.data.message)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -158,3 +168,5 @@ export const exportReportRequest = async ({ commit }, data) => {
   let type = reportType.replace('_','/');
   await  window.open(API_URL+`${type}/export/${udid}`, '_blank')
 }
+
+

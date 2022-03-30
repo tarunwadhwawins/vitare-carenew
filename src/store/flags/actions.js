@@ -1,5 +1,6 @@
-import serviceMethod from '../../services/serviceMethod';
-import { API_ENDPOINTS } from "../../config/apiConfig";
+import serviceMethod from '@/services/serviceMethod';
+import { API_ENDPOINTS } from "@/config/apiConfig";
+import { errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
 
 export const flagsList = async ({ commit }) => {
 	commit('loadingStatus', true)
@@ -8,6 +9,7 @@ export const flagsList = async ({ commit }) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		commit('failure', error.response.data);
 		commit('loadingStatus', false)
 	})
@@ -19,6 +21,7 @@ export const addPatientFlag = async ({ commit }, {patientUdid, data}) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		commit('failure', error.response.data);
 		commit('loadingStatus', false)
 	})
@@ -31,6 +34,7 @@ export const patientFlagsList = async ({ commit }, patientUdid) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		commit('failure', error.response.data);
 		commit('loadingStatus', false)
 	})

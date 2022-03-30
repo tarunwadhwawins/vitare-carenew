@@ -260,7 +260,7 @@
       v-model:visible="tasksModal"
       @saveTaskModal="handleTaskOk($event)"
     />
-    <PatientsModal
+    <PatientsModal 
       v-model:visible="PatientsModal"
       @saveModal="closeAppointModal($event)"
     />
@@ -272,10 +272,10 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watchEffect ,onUnmounted} from "vue";
+import { defineComponent, ref, computed, watchEffect ,onUnmounted,defineAsyncComponent} from "vue";
 import AddAppointment from "@/components/modals/AddAppointment";
 import TasksModal from "@/components/modals/TasksModal";
-import PatientsModal from "@/components/modals/PatientsModal";
+// import PatientsModal from "@/components/modals/PatientsModal";
 import CoordinatorsModal from "@/components/modals/CoordinatorsModal";
 import AddStartCall from "@/components/modals/AddStartCall";
 import SendMessage from "@/components/modals/SendMessage";
@@ -304,7 +304,7 @@ export default defineComponent({
     MoreOutlined,
     AddAppointment,
     TasksModal,
-    PatientsModal,
+    PatientsModal:defineAsyncComponent(()=>import("@/components/modals/PatientsModal")),
     CoordinatorsModal,
     AddStartCall,
     SendMessage,
@@ -366,6 +366,7 @@ export default defineComponent({
     };
     
     const PatientsModal = ref(false);
+
     const addPatient = () => {
       PatientsModal.value = true;
     };
@@ -436,7 +437,11 @@ export default defineComponent({
       }
       store.dispatch("notificationList");
     };
+    const bitrixFormCheck = computed(()=>{
+        return store.state.patients.bitrixFormCheck
+    })
     return {
+      bitrixFormCheck,
       dateOnlyFormat,
       isReadNotification,
       count: store.getters.notificationCount,

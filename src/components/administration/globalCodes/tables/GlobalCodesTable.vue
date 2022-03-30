@@ -94,7 +94,7 @@ export default {
         "isActive": status
       };
       store.dispatch('updateGlobalCode', {id, data}).then(() => {
-        store.dispatch('globalCodesList')
+        
       })
     }
 

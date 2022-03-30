@@ -23,7 +23,7 @@
             <a-col :sm="8" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('globalCodes.activeStatus')" name="status">
-                        <a-switch :checked="globalCodeForm.isActive ? true : false" @change="UpdateStatus($event)" />
+                        <a-switch v-model:checked="globalCodeForm.isActive" @change="UpdateStatus($event)" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -106,6 +106,7 @@ export default {
                 // console.log("sdffds")
                 codeDetails.value = store.state.globalCodes.globalCodeDetails
                 Object.assign(globalCodeForm, codeDetails.value)
+                globalCodeForm.isActive = codeDetails.value.isActive ? true : false
             }
         })
 
@@ -113,13 +114,7 @@ export default {
             return store.state.common.globalCodeCategories;
         })
 
-        //const categories = ref([])
-        // globalCodeCategories.value ? globalCodeCategories.value.forEach(element => {
-        //     categories.value.push({
-        //         value: element.name,
-        //         id: element.id,
-        //     })
-        // }) : ''
+        
 
         const form = reactive({
             ...globalCodeForm
@@ -185,7 +180,9 @@ export default {
         }
 
         function UpdateStatus(event) {
-            globalCodeForm.status = event
+            
+            globalCodeForm.isActive = event
+            
         }
         return {
             UpdateStatus,
