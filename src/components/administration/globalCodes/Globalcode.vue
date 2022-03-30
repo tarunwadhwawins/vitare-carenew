@@ -23,9 +23,7 @@
                 <SearchField endPoint="globalCodeCategory"/>
               </a-col>
               <a-col :span="12" v-if="arrayToObjact(globalCodesPermissions,265)">
-                <div class="text-right mb-24">
-                  <a-button class="primaryBtn">Export to Excel</a-button>
-                </div>
+                <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('globalCode_report')"/>
               </a-col>
               <a-col :span="24">
                 <Loader/>
@@ -52,8 +50,9 @@ import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
 import { defineComponent,defineAsyncComponent, computed, ref,onUnmounted } from "vue";
 import { useStore } from "vuex";
-import { arrayToObjact } from "@/commonMethods/commonMethod";
+import { arrayToObjact,exportExcel } from "@/commonMethods/commonMethod";
 import Loader from "@/components/loader/Loader"
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 export default defineComponent({
   components: {
     Header,
@@ -62,7 +61,8 @@ export default defineComponent({
     GlobalCodesTable,
     SearchField,
     Button,
-    Loader
+    Loader,
+    ExportToExcel
   },
   setup() {
     const store = useStore()
@@ -95,6 +95,7 @@ export default defineComponent({
             store.dispatch("searchTable",'')
         })
     return {
+      exportExcel,
       arrayToObjact,
       globalCodesPermissions,
       isAdd,

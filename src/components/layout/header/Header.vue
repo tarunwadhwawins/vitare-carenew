@@ -178,15 +178,15 @@
                             <h3>{{ notification.title }}</h3>
                             <p>{{ notification.body }}</p>
                             <br />
-                            <strong class="" v-if="notification.date">{{
-                              dobFormat(date) == dobFormat(notification.date)
+                            <strong class="" v-if="notification.time">{{
+                              dateOnlyFormat(date) === dateOnlyFormat(notification.time)
                                 ? ""
-                                : dobFormat(notification.date)
+                                : dateOnlyFormat(notification.time)
                             }}</strong
                             >&nbsp;
                             <strong class="" v-if="notification.time">{{
                               meridiemFormatFromTimestamp(notification.time)
-                            }}</strong>
+                            }} </strong>
                           </div>
                         </a>
                       </router-link>
@@ -285,6 +285,7 @@ import {
   arrayToObjact,
   meridiemFormatFromTimestamp,
   dobFormat,
+  dateOnlyFormat
 } from "@/commonMethods/commonMethod";
 import { useRouter } from "vue-router";
 import {
@@ -318,7 +319,8 @@ export default defineComponent({
     const toggle = ref(false);
     const ellipse = ref(false);
     const tasksModal = ref(false);
-    const date = Date.now();
+    const date = Math.round(+new Date()/1000);
+    console.log('Today-date',date)
     const userName = JSON.parse(localStorage.getItem("auth"));
     const logoutUser = () => {
       store.state.authentication.errorMsg = "";
@@ -332,10 +334,10 @@ export default defineComponent({
 
     watchEffect(() => {
       store.dispatch("notificationList");
+      
     });
     onUnmounted(()=>{
-            store.dispatch("searchTable",'')
-            store.dispatch('orderTable','')
+            
         })
     const appointmentModal = ref(false);
     const addAppt = () => {
@@ -435,6 +437,7 @@ export default defineComponent({
       store.dispatch("notificationList");
     };
     return {
+      dateOnlyFormat,
       isReadNotification,
       count: store.getters.notificationCount,
       date,

@@ -2,25 +2,35 @@ import Swal from 'sweetalert2';
 import moment from 'moment';
 import store from '@/store/index'
 
-export function exportExcel(data){
-	store.dispatch('exportReportRequest',{data:data})
+//for all timeStamp to according date and time format
+export function dateAndTimeFormate(timeStamp,format) {
+	var date = moment.unix(new Date(timeStamp));
+	return date.format(format);
+}
+// for all table export excel data
+export function exportExcel(data,date="?fromDate=&toDate="){
+	store.dispatch('exportReportRequest',{data:data,date:date})
 }
 
+//action tracking when user click on any action 
 export function actionTrack(id,actionId,endPoint){
 	store.dispatch('actionTrack',{id:id,actionId:actionId,endPoint:endPoint})
 }
 
+ // encode a string
 export function deCodeString(value) {
-	let decode = window.atob(value); // encode a string
+	let decode = window.atob(value);
 	return decode.replace('=', '');
 }
 
+// encode a string
 export function enCodeString(value) {
-	return window.btoa(value); // encode a string
+	return window.btoa(value); 
 }
 
+//Capitalize a string
 function capitalize(str) {
-	return str.charAt(0).toUpperCase() + str.slice(1); //Capitalize a string
+	return str.charAt(0).toUpperCase() + str.slice(1); 
 }
 
 // swal for success message

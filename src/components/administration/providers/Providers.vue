@@ -13,19 +13,20 @@
                             <h2 class="pageTittle">
                                 {{ pageTitle }}
                                 <!--  -->
-                                 <div class="commonBtn" v-if="arrayToObjact(providersPermissions,22)">
+                                <div class="commonBtn" v-if="arrayToObjact(providersPermissions,22)">
                                     <Button :name="buttonName" @click="showModal(true)" />
-                                </div> 
+                                </div>
                             </h2>
                         </a-col>
                         <!--  -->
-                         <a-col :span="12" v-if="arrayToObjact(providersPermissions,21)">
-                            <SearchField endPoint="provider"/>
+                        <a-col :span="12" v-if="arrayToObjact(providersPermissions,21)">
+                            <SearchField endPoint="provider" />
                         </a-col>
                         <a-col :span="12">
                             <!--  -->
                             <div class="text-right mb-24" v-if="arrayToObjact(providersPermissions,26)">
-                                <Button :name="exportButtonName" />
+                                <!-- <Button :name="exportButtonName" /> -->
+                                <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('provider_report')" />
                             </div>
                         </a-col>
                     </a-row>
@@ -53,12 +54,22 @@ import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import AdminProvidersModal from "@/components/modals/AdminProvidersModal";
 import ProvidersTable from "@/components/administration/providers/tables/ProvidersTable";
-import {useStore} from "vuex";
+import {
+    useStore
+} from "vuex";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
-import {ref , watchEffect,onUnmounted} from "vue";
-import { arrayToObjact } from "@/commonMethods/commonMethod";
+import {
+    ref,
+    watchEffect,
+    onUnmounted
+} from "vue";
 import Loader from "@/components/loader/Loader"
+import {
+    arrayToObjact,
+    exportExcel
+} from "@/commonMethods/commonMethod"
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 
 export default {
     components: {
@@ -69,6 +80,7 @@ export default {
         SearchField,
         Button,
         Loader,
+        ExportToExcel
     },
 
     setup() {
@@ -80,25 +92,28 @@ export default {
             if (e.providerId) {
                 providerID.value = e.providerId
                 isAdd.value = true;
-            }else{
+            } else {
                 providerID.value = null
                 isAdd.value = false;
-                
+
             }
             visible.value = e;
-            
+
         }
         const closeModal = (e) => {
             visible.value = e;
-            
+
         };
         const searchData = () => {
 
         };
-watchEffect(()=>{
-    store.dispatch("providersListAll")
-  
-})
+        watchEffect(() => {
+            store.dispatch("providersListAll")
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+
+        })
         const handleOk = () => {
             visible.value = false;
         };
@@ -109,14 +124,18 @@ watchEffect(()=>{
             })
         }
         const checked = ref([false]);
-       
+
         const providersPermissions = store.getters.permissionRecords.value.providersPermissions
-        onUnmounted(()=>{
-            store.dispatch("searchTable",'')
-           
+        onUnmounted(() => {
+            store.dispatch("searchTable", '')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+
         })
         return {
-          providersPermissions,
+            exportExcel,
+            providersPermissions,
             arrayToObjact,
             editSingleProvider,
             searchData,
@@ -130,7 +149,6 @@ watchEffect(()=>{
             closeModal,
             pageTitle: "Providers",
             buttonName: "Add New Provider",
-            exportButtonName: "Export to Excel",
         };
     },
 };

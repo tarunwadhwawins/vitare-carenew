@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" title="Add Care Team">
+  <a-modal width="1000px" :title="$t('global.addCareTeam')">
     <a-form ref="formRef" :model="addCareTeamForm" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :sm="20" :xs="24">

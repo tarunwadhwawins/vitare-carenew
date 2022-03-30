@@ -1,5 +1,5 @@
 <template>
-	<a-modal width="60%" title="Add Family Member" centered @cancel="closeModal()">
+	<a-modal width="60%" :title="$t('global.addFamilyMembers')" centered @cancel="closeModal()">
 		<a-form ref="formRef" :model="familyMemberForm" layout="vertical" @finish="submitForm">
 			<a-row :gutter="24">
 
@@ -66,7 +66,7 @@
 					</div>
 				</a-col>
 
-				<a-col v-if="isEdit" :md="12" :sm="12" :xs="24">
+				<a-col v-if="isFamilyMemberEdit" :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('global.isPrimary')" name="isPrimary">
               <a-switch v-model:checked="familyMemberForm.isPrimary" size="large" />
@@ -85,7 +85,7 @@
 
 <script>
 import ModalButtons from "@/components/common/button/ModalButtons";
-import { computed, reactive, ref, onMounted, onUnmounted } from 'vue-demi';
+import { computed, reactive, ref, watchEffect, onUnmounted } from 'vue-demi';
 import { useStore } from 'vuex';
 import Loader from "@/components/loader/Loader.vue";
 import { useRoute } from 'vue-router';
@@ -113,7 +113,6 @@ export default {
 		const route = useRoute()
 		const formRef = ref()
 		const patientUdid = reactive(props.patientId)
-		const isEdit = reactive(props.isFamilyMemberEdit)
     const isValueChanged = ref(false);
 
     const globalCode = computed(() => {
@@ -166,12 +165,12 @@ export default {
     }
 		
 		const id = ref(null)
-		if(isEdit) {
+		if(props.isFamilyMemberEdit) {
 			id.value = patients.value.familyMemberDetails;
 		}
 
-    onMounted(() => {
-      if(isEdit) {
+    watchEffect(() => {
+      if(props.isFamilyMemberEdit) {
         Object.assign(familyMemberForm, patients.value.familyMemberDetails);
       }
     })
@@ -189,7 +188,7 @@ export default {
 			return store.state.patients.closeModal
 		})
 		const submitForm = () => {
-      if(isEdit) {
+      if(props.isFamilyMemberEdit) {
 				store.dispatch('updateFamilyMember', {
 					patientUdid: patientUdid,
 					familyUdid: patients.value.familyMemberDetails.id,
@@ -235,7 +234,6 @@ export default {
 
 		return {
       changedValue,
-      isEdit,
       formRef,
 			globalCode,
 			familyMemberForm,

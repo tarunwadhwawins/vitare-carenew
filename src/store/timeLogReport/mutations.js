@@ -1,4 +1,4 @@
-import { secondsToTime } from '../../commonMethods/commonMethod';
+import { secondsToTime,dateAndTimeFormate } from '../../commonMethods/commonMethod';
 
 
 export const timeLogReportList = async (state, data) => {
@@ -7,10 +7,7 @@ export const timeLogReportList = async (state, data) => {
     {
       title: "Staff",
       dataIndex: "performedBy",
-      sorter: {
-        compare: (a, b) => a.template - b.template,
-        multiple: 3,
-      },
+      sorter: true,
       slots: {
         customRender: "staff",
       },
@@ -18,31 +15,31 @@ export const timeLogReportList = async (state, data) => {
     {
       title: "Patient",
       dataIndex: "patient",
-      sorter: {
-        compare: (a, b) => a.template - b.template,
-        multiple: 3,
-      },
+      sorter: true,
       slots: {
         customRender: "patient",
       },
     },
     {
+      title: "Date",
+      dataIndex: "date",
+      sorter:true
+    },
+    {
       title: "Time (MM:SS)",
       dataIndex: "timeAmount",
-      sorter: {
-        compare: (a, b) => a.template - b.template,
-        multiple: 3,
-      },
+      sorter:true
     },
     {
       title: "CPT Codes ",
       dataIndex: "cptCode",
     },
+    
     {
       title: "Notes ", 
       dataIndex: "note",
     },
-
+    
     {
       title: "Actions",
       dataIndex: "actions",
@@ -53,6 +50,7 @@ export const timeLogReportList = async (state, data) => {
   ];
   state.timeLogReportList = data.data.map(item => {
     item.timeAmount = secondsToTime(item.timeAmount)
+    item.date = dateAndTimeFormate(item.date,'MMM DD, yyyy')
     return item
   })
     
@@ -113,4 +111,7 @@ export const auditTimePermissions = (state, auth) => {
     state.auditTimePermissions =[]
   }
 
+}
+export const auditTimeLogFilterDates = (state, date) => {
+state.auditTimeLogFilterDates = date
 }

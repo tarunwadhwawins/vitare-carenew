@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="90%" title="Family Members" centered>
+  <a-modal width="90%" :title="$t('global.familyMembers')" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <a-table
