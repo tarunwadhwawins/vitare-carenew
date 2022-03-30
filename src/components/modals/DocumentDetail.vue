@@ -129,6 +129,10 @@ export default defineComponent({
               });
             }
             store.dispatch('latestDocument', route.params.udid)
+            store.dispatch('patientTimeline', {
+              id: route.params.udid,
+              type: ''
+            });
           })
         }
       })
