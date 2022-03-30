@@ -1,6 +1,6 @@
 import ServiceMethodService from '../../services/serviceMethod';
 import { API_ENDPOINTS } from "../../config/apiConfig"
-import { successSwal, errorSwal } from '@/commonMethods/commonMethod';
+import { successSwal, errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod';
 
 export const globalCodesList = async ({ commit },page) => {
 	commit('loadingStatus', true)
@@ -11,6 +11,7 @@ export const globalCodesList = async ({ commit },page) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -24,6 +25,7 @@ export const searchGlobalCodes = async ({ commit }, params) => {
 		commit('searchGlobalCodesSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -38,6 +40,7 @@ export const addGlobalCode = async ({ commit }, data) => {
 		successSwal(response.data.message)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -52,6 +55,7 @@ export const deleteGlobalCode = async ({ commit }, id) => {
 		successSwal(response.data.message)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -65,6 +69,7 @@ export const globalCodeDetails = async ({ commit }, id) => {
 		commit('globalCodeDetailsSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -78,6 +83,7 @@ export const updateGlobalCode = async ({ commit }, {id, data}) => {
 		successSwal(response.data.message)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}

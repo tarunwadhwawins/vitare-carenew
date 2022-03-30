@@ -1,5 +1,5 @@
 import ServiceMethodService from '@/services/serviceMethod';
-import { successSwal, errorSwal } from '@/commonMethods/commonMethod';
+import { successSwal, errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod';
 import { API_ENDPOINTS } from '@/config/apiConfig';
 
 export const tasksList = async ({ commit }, page) => {
@@ -12,6 +12,7 @@ export const tasksList = async ({ commit }, page) => {
 			//commit('loadingStatus', false)
 		})
 		.catch((error) => {
+			errorLogWithDeviceInfo(error.response)
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
@@ -33,6 +34,7 @@ export const addTask = async ({ commit }, data) => {
 			commit('addTask', response.data.data);
 		})
 		.catch((error) => {
+			errorLogWithDeviceInfo(error.response)
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
@@ -55,6 +57,7 @@ export const editTask = async ({ commit }, id) => {
 			commit('loadingStatus', false);
 		})
 		.catch((error) => {
+			errorLogWithDeviceInfo(error.response)
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
@@ -77,6 +80,7 @@ export const tasksDelete = async ({ commit }, id) => {
 			commit('loadingStatus', false);
 		})
 		.catch((error) => {
+			errorLogWithDeviceInfo(error.response)
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
@@ -100,6 +104,7 @@ export const updateTask = async ({ commit }, data) => {
 			commit('loadingStatus', false);
 		})
 		.catch((error) => {
+			errorLogWithDeviceInfo(error.response)
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
@@ -122,6 +127,7 @@ export const taskStatus = async ({ commit }) => {
 			commit('loadingStatus', false);
 		})
 		.catch((error) => {
+			errorLogWithDeviceInfo(error.response)
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
@@ -142,6 +148,7 @@ export const allTaskStatus = async ({ commit }) => {
 			commit('loadingStatus', false);
 		})
 		.catch((error) => {
+			errorLogWithDeviceInfo(error.response)
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
@@ -163,6 +170,7 @@ export const completeTaskRate = async ({ commit }) => {
 			commit('loadingStatus', false);
 		})
 		.catch((error) => {
+			errorLogWithDeviceInfo(error.response)
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 			} else if (error.response.status === 500) {
@@ -181,6 +189,7 @@ export const taskPriority = async ({ commit }) => {
 			commit('loadingStatus', false);
 		})
 		.catch((error) => {
+			errorLogWithDeviceInfo(error.response)
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
@@ -202,6 +211,7 @@ export const taskTeamMember = async ({ commit }) => {
 			commit('loadingStatus', false);
 		})
 		.catch((error) => {
+			errorLogWithDeviceInfo(error.response)
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
@@ -223,6 +233,7 @@ export const taskCategory = async ({ commit }) => {
 			commit('loadingStatus', false);
 		})
 		.catch((error) => {
+			errorLogWithDeviceInfo(error.response)
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
@@ -242,6 +253,7 @@ export const searchTasks = async ({ commit }, params) => {
 			commit('searchTasksSuccess', response.data.data);
 		})
 		.catch((error) => {
+			errorLogWithDeviceInfo(error.response)
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
@@ -265,6 +277,7 @@ export const latestTask = async ({ commit }, id) => {
 			}
 		})
 		.catch((error) => {
+			errorLogWithDeviceInfo(error.response)
 			if (error.response.status == 401) {
 				//AuthService.logout();
 			}

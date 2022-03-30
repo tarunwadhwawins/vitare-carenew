@@ -1,6 +1,6 @@
-import serviceMethod from '../../services/serviceMethod'
-import { API_ENDPOINTS } from "../../config/apiConfig"
-import { successSwal, errorSwal, startimeAdd, endTimeAdd, timeStamp } from '../../commonMethods/commonMethod'
+import serviceMethod from '@/services/serviceMethod'
+import { API_ENDPOINTS } from "@/config/apiConfig"
+import { successSwal, errorSwal, startimeAdd, endTimeAdd, timeStamp,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
 
 export const addAppointment = async ({
   commit
@@ -9,6 +9,7 @@ export const addAppointment = async ({
     successSwal(response.data.message)
     commit('successMsg', response.data.message);
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
     }else if(error.response.status === 500){
@@ -21,19 +22,16 @@ export const addAppointment = async ({
 export const searchAppointment = async ({
   commit
 },from) => {
- 
   commit('loadingStatus', true)
-  await serviceMethod.common("get", API_ENDPOINTS['seacrhAppointment']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate))+"&staffId="+from.physiciansId, null, null).then((response) => {
-    
+  await serviceMethod.common("get", API_ENDPOINTS['seacrhAppointment']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate))+"&staffId="+from.physiciansId, null, null).then((response) => { 
     if(from.tabId=='today'){
       commit('todayAppointmentSuccess', response.data.data) 
     }else{
     commit('searchAppointmentSuccess', {data:response.data.data,key:from.tabId});
-    
     }
     commit('loadingStatus', false)
   }).catch((error) => {
-    
+      errorLogWithDeviceInfo(error.response)
       commit('loadingStatus', false)
       errorSwal(error.response.data.message)
     
@@ -60,6 +58,7 @@ export const latestAppointment = async ({ commit }, id) => {
     }
 	})
 	.catch((error) => {
+    errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -74,6 +73,7 @@ export const appointmentConference = async ({ commit }) => {
 		commit('appointmentConference', response.data.data);
 	})
 	.catch((error) => {
+    errorLogWithDeviceInfo(error.response)
 		commit('failure', error.response.data);
 	})
 }
