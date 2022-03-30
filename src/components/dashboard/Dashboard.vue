@@ -129,15 +129,24 @@ export default {
                 to = moment().subtract(data.number, data.intervalType);
             }
             let dateFormate = ''
+            let cptDateFormate = ''
             if (data.globalCodeId == 122) {
                 dateFormate = {
                     fromDate: timeStamp(startimeAdd(from)),
                     toDate: timeStamp(endTimeAdd(to))
                 }
+                cptDateFormate = {
+                    fromDate: from.format("YYYY-MM-DD"),
+                    toDate: to.format("YYYY-MM-DD")
+                }
             } else {
                 dateFormate = {
                     fromDate: timeStamp(startimeAdd(to)),
                     toDate: timeStamp(endTimeAdd(from))
+                }
+                cptDateFormate = {
+                    fromDate: to.format("YYYY-MM-DD"),
+                    toDate: from.format("YYYY-MM-DD")
                 }
             }
             store.dispatch("permissions")
@@ -150,7 +159,7 @@ export default {
             store.dispatch("callStatus", dateFormate)
             store.dispatch("specialization", dateFormate)
             store.dispatch("network", dateFormate)
-            store.dispatch("cptCode", dateFormate)
+            store.dispatch("cptCode", cptDateFormate)
             store.dispatch("financial", dateFormate)
             store.dispatch("totalPatientsChart", dateFormate)
             store.dispatch("appointmentChart", dateFormate)

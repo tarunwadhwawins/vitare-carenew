@@ -63,7 +63,7 @@
 					</div>
 				</a-col>
 
-				<!-- <a-col v-if="isEdit" :md="12" :sm="12" :xs="24">
+				<!-- <a-col v-if="isEmergencyContactEdit" :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('global.isPrimary')" name="isPrimary">
               <a-switch v-model:checked="emergencyContactForm.isPrimary" size="large" />
@@ -82,7 +82,7 @@
 
 <script>
 import ModalButtons from "@/components/common/button/ModalButtons";
-import { computed, reactive, ref, onMounted, onUnmounted } from 'vue-demi';
+import { computed, reactive, ref, watchEffect, onUnmounted } from 'vue-demi';
 import { useStore } from 'vuex';
 import Loader from "@/components/loader/Loader.vue";
 import { useRoute } from 'vue-router';
@@ -110,7 +110,6 @@ export default {
 		const route = useRoute()
 		const formRef = ref()
 		const patientUdid = route.params.udid
-		const isEdit = reactive(props.isEmergencyContactEdit)
     const isValueChanged = ref(false);
 
     const globalCode = computed(() => {
@@ -133,12 +132,12 @@ export default {
 		console.log('emergencyContactDetails', patients.value)
 		
 		const id = ref(null)
-		if(isEdit) {
+		if(props.isEmergencyContactEdit) {
 			id.value = patients.value.emergencyContactDetails;
 		}
 
-    onMounted(() => {
-      if(isEdit) {
+    watchEffect(() => {
+      if(props.isEmergencyContactEdit) {
         Object.assign(emergencyContactForm, patients.value.emergencyContactDetails);
       }
     })
@@ -183,7 +182,7 @@ export default {
     }
 
 		const submitForm = () => {
-      if(isEdit) {
+      if(props.isEmergencyContactEdit) {
 				store.dispatch('updateEmergencyContact', {
 					patientUdid: patientUdid,
 					contactUdid: patients.value.emergencyContactDetails.id,
@@ -192,7 +191,7 @@ export default {
 					if(route.name == 'PatientSummary') {
 						store.dispatch('emergencyContactsList', patientUdid);
 					}
-					if(closeModal.value == true) {
+					if(modalClose.value == true) {
 						emit('closeModal')
 						formRef.value.resetFields();
 						Object.assign(emergencyContactForm, form)
@@ -207,7 +206,7 @@ export default {
 					if(route.name == 'PatientSummary') {
 						store.dispatch('emergencyContactsList', patientUdid);
 					}
-					if(closeModal.value == true) {
+					if(modalClose.value == true) {
 						emit('closeModal')
 						formRef.value.resetFields();
 						Object.assign(emergencyContactForm, form)
@@ -226,7 +225,6 @@ export default {
 		})
 
 		return {
-      isEdit,
       formRef,
 			globalCode,
 			emergencyContactForm,

@@ -6,5 +6,6 @@ export default {
   auditTimePermissions:null,
   timeLogView:null,
   viuewTimeReportModal:null,
+  auditTimeLogFilterDates:null
  
 }

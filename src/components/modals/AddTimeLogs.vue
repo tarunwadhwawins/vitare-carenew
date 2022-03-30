@@ -104,9 +104,6 @@ export default defineComponent({
     GlobalCodeDropDown,
   },
   props: {
-    timeLogDetails: {
-      type: Object
-    },
     isEditForm: {
       type: Boolean
     },
@@ -122,7 +119,6 @@ export default defineComponent({
     const route = useRoute()
     const formRef = ref();
     const form = reactive({ ...addTimeLogForm });
-    const isEdit = reactive(props.isEditForm);
     const isTimerLog = reactive(props.isTimeLog);
     const isDisabled = props.isTimeLog == true ? true : false;
     const loggedInUserDetails = JSON.parse(localStorage.getItem('auth'))
@@ -180,7 +176,7 @@ export default defineComponent({
     }
 
     const submitForm = () => {
-      if(isEdit) {
+      if(props.isEditForm) {
         // store.dispatch('updateTimeLog', {timeLogId, addTimeLogForm});
       }
       else {
@@ -203,7 +199,10 @@ export default defineComponent({
             data: data
           }).then(() => {
             store.dispatch('latestTimeLog', route.params.udid)
-            emit('closeModal');
+            emit('closeModal', {
+              modal: "addTimeLog",
+              value: false
+            });
             formRef.value.resetFields();
             Object.assign(addTimeLogForm, form)
           });
@@ -221,7 +220,10 @@ export default defineComponent({
           const patientId = route.params.udid;
           store.dispatch('addTimeLog', {id: patientId, data: data}).then(() => {
             store.dispatch('latestTimeLog', route.params.udid)
-            emit('closeModal');
+            emit('closeModal', {
+              modal: "addTimeLog",
+              value: false
+            });
             formRef.value.resetFields();
             Object.assign(addTimeLogForm, form)
           });
