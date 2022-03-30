@@ -310,7 +310,9 @@ export default {
             }
             store.state.provider.providersListAll = "";
             //console.log("check",store.state.provider.providersListAll)
-            store.dispatch("providersListAll");
+            setTimeout(()=>{
+                store.dispatch("providersListAll")
+            },2000);
 
             current.value++;
         };

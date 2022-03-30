@@ -555,6 +555,18 @@ export const patientTimelineSuccess = (state, timeline) => {
   state.patientTimeline = timeline
 }
 
+export const addCondition = (state, data) => {
+  state.addCondition = data
+}
+
+export const addPatientReferals = (state, data) => {
+  state.addPatientReferals = data
+}
+
+export const addPatientPhysician = (state, data) => {
+  state.addPatientPhysician = data
+}
+
 export const patientDocumentsSuccess = (state, documents) => {
   state.patientDocuments = documents.map(data => {
     data.createdAt = meridiemFormatFromTimestamp(data.createdAt);

@@ -32,8 +32,8 @@ export default defineComponent({
                 store.dispatch("searchTableData", {
                   data:search.value,
                   endPoint:endPoints,
-                  field:ordring? ordring.field:'',
-                  orderBy: ordring? ordring.orderBy: ''
+                  field:ordring.data,
+                  
                 })
                 store.dispatch("searchTable",search.value)
             }

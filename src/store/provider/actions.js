@@ -40,7 +40,7 @@ export const providersListAll = async ({
   commit
 },page) => {
   commit('loadingStatus', true)
-  let link = page? "patiprovider?active=1"+page : "provider?active=1"
+  let link = page? "provider?active=1"+page : "provider?active=1"
   await serviceMethod.common("get", link, null, null).then((response) => {
     commit('provider', response.data);
     commit('loadingStatus', false)

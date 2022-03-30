@@ -474,7 +474,7 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.name')" name="referralName" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
                                     <a-input @change="changedValue" v-model:value="conditions.referralName" size="large" />
-																		<ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralEmail?referralErrorMsg.referralEmail[0]:''" />
+																		<ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralName?referralErrorMsg.referralName[0]:''" />
                                 </a-form-item>
 
                             </div>
@@ -870,7 +870,6 @@ export default defineComponent( {
       return store.state.common;
     });
     const idPatient = props.patientId ? reactive(props.patientId) : null;
-		// alert('props.isEditPatient : '+props.isEditPatient)
     var isEdit = props.isEditPatient == true ? true : false;
 
     const patients = computed(() => {
@@ -1116,6 +1115,9 @@ export default defineComponent( {
 			isEdit = false
 			// const errors = []
 			if(idPatient != null) {
+				console.log('patients.value.addCondition', patients.value.addCondition)
+				console.log('patients.value.addPatientReferals', patients.value.addPatientReferals)
+				console.log('patients.value.addPatientPhysician', patients.value.addPatientPhysician)
 				if(patients.value.addCondition == null && patients.value.addPatientReferals == null && patients.value.addPatientPhysician == null) {
 					if((patients.value.patientReferralSource && patients.value.patientReferralSource != null)
 					|| patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null) {
@@ -1156,7 +1158,7 @@ export default defineComponent( {
 						})
 					}
 				}
-				else {
+				else if(patients.value.addCondition != null || patients.value.addPatientReferals != null || patients.value.addPatientPhysician != null) {
 					if((patients.value.patientReferralSource && patients.value.patientReferralSource != null)
 						|| patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null) {
 						if(conditions.sameAsAbove == 1) {
@@ -1185,7 +1187,7 @@ export default defineComponent( {
 							(conditions.phoneNumber = conditions.referralPhoneNumber),
 							(conditions.fax = conditions.referralFax);
 						}
-						store.dispatch("addCondition", {
+						store.dispatch("updateCondition", {
 							data: conditions,
 							id: idPatient,
 							referalID: patients.value.addPatientReferals.id ? patients.value.addPatientReferals.id : null,

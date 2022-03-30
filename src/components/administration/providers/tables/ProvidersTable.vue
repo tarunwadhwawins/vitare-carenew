@@ -47,7 +47,8 @@ export default {
     
     const providersListAll = store.getters.providersListAll
     const meta = store.getters.providerMeta
-        let data = ''
+    let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
+        let data = []
         let scroller = ''
         onMounted(() => {
             var tableContent = document.querySelector('.ant-table-body')
@@ -63,8 +64,8 @@ export default {
                         meta.value = ""
                         data = providersListAll.value
                         store.state.provider.providersListAll = ""
-                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
-                        store.dispatch("providersListAll", "&search="+url+"&page=" + current_page).then(() => {
+                        let ordring = store.getters.orderTable.value  
+                        store.dispatch("providersListAll", "&search="+url+"&page=" + current_page+ordring.data).then(() => {
                             loadMoredata()
                         })
 
@@ -151,14 +152,17 @@ export default {
     const providersPermissions =store.getters.permissionRecords.value.providersPermissions
     const handleTableChange = (pag, filters, sorter) => {
       if(sorter.order){
-        store.dispatch('orderTable',{field:sorter.field,orderBy:sorter.order})
-        console.log(pag, filters,sorter)
+        let order =sorter.order=='ascend' ? 'ASC': 'DESC'
+        let orderParam = '&orderField='+sorter.field+'&orderBy='+order
+        store.dispatch('orderTable',{data:orderParam,orderBy:order,page:pag,filters:filters})
+        store.dispatch("providersListAll", '&search='+url+orderParam)
+        
       }else{
         store.dispatch('orderTable',{field:'',orderBy:''})
       }
       
       
-    };
+    }
     return {
       providersPermissions,
       arrayToObjact,
