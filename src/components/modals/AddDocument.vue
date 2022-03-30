@@ -121,6 +121,7 @@ export default defineComponent({
       }
       store.dispatch("addDocument", documentFormData).then(() => {
         store.dispatch('latestDocument', route.params.udid)
+        store.dispatch('patientDocuments', route.params.udid)
         formRef.value.resetFields();
         Object.assign(addDocumentForm, form)
         emit("closeModal", {
