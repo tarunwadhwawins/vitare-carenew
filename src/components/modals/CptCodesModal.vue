@@ -64,7 +64,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <label>Active/Inactive</label>
-                    <a-switch v-model:checked="cptCodeForm.status" @change="UpdateStatus($event)" />
+                    <a-switch v-model:checked="cptCodeForm.isActive" @change="UpdateStatus($event)" />
                 </div>
             </a-col>
             <a-col :span="24">
@@ -112,7 +112,7 @@ export default {
       billingAmout: "",
       description: "",
       durationId: "",
-      status: true,
+      isActive: true,
     });
     const onFinishFailed = () => {
       //
@@ -120,7 +120,7 @@ export default {
     const cptCodesGetters = store.getters.cptRecords;
 
     function UpdateStatus(event) {
-      cptCodeForm.status = event;
+      cptCodeForm.isActive = event;
     }
     const formButton = ref(false);
     const durationList = store.getters.commonRecords.value;

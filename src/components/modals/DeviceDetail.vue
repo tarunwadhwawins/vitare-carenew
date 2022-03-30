@@ -110,7 +110,7 @@ export default defineComponent({
             }
             if(route.name == 'PatientSummary') {
               store.dispatch('latestDevice', route.params.udid)
-              store.dispatch('patientTimeline', route.params.udid);
+              store.dispatch('patientTimeline', {id:route.params.udid,type:''});
             }
           });
         }

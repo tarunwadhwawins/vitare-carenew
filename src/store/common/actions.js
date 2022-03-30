@@ -108,6 +108,12 @@ export const isReadUpdateNotification = async ({
 export const searchTable = async ({ commit }, search) => {
   commit("searchTable", search)
 }
+export const orderTable = async ({ commit},data) => {
+  console.log("data",data)
+  commit("orderTable",data)
+}
+
+  
 export const searchTableData = async ({ commit }, search) => {
 
   commit('loadingStatus', true)

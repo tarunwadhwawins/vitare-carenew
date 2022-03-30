@@ -1,5 +1,5 @@
 <template>
-	<a-modal width="60%" title="Add Physician" centered>
+	<a-modal width="60%" title="Add Physician" centered @cancel="closeModal()">
 		<a-row :gutter="24">
       <a-col :sm="24" :xs="24">
 				<a-form layout="vertical" ref="formRef" :model="addPhysicianForm" @finish="submitForm">
@@ -8,7 +8,7 @@
 						<a-col :sm="12" :xs="24">
 							<div class="form-group">
 								<a-form-item :label="$t('global.name')" name="name" :rules="[{ required: true, message: $t('global.name')+' '+$t('global.validation') }]">
-									<a-input v-model:value="addPhysicianForm.name" size="large" />
+									<a-input @change="changedValue" v-model:value="addPhysicianForm.name" size="large" />
 									<ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
 								</a-form-item>
 							</div>
@@ -17,10 +17,6 @@
 						<a-col :sm="12" :xs="24">
 							<div class="form-group">
 								<a-form-item :label="$t('global.designation')" name="designation" :rules="[{ required: true, message: $t('global.designation')+' '+$t('global.validation') }]">
-									<!-- <a-select @change="changedValue" ref="select" v-model:value="addPhysicianForm.designation" style="width: 100%" size="large">
-										<a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
-										<a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
-									</a-select> -->
 									<GlobalCodeDropDown @change="changedValue"  v-model:value="addPhysicianForm.designation" :globalCode="globalCode.designations"/>
 									<ErrorMessage v-if="errorMsg" :name="errorMsg.designation?errorMsg.designation[0]:''" />
 								</a-form-item>
@@ -74,6 +70,9 @@ import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import ErrorMessage from "../common/messages/ErrorMessage"
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+import { warningSwal } from "@/commonMethods/commonMethod";
+import { messages } from "../../config/messages";
+
 export default {
   components: {
     ModalButtons,
@@ -92,10 +91,15 @@ export default {
 		const formRef = ref()
 		const patientUdid = route.params.udid
 		const isEdit = reactive(props.isPhysicianEdit)
+    const isValueChanged = ref(false);
 
     const globalCode = computed(() => {
       return store.state.common;
     });
+
+		const modalClose = computed(() => {
+			return store.state.patients.closeModal
+		})
 
 		const addPhysicianForm = reactive({
 			name: '',
@@ -105,6 +109,35 @@ export default {
 			fax: '',
 		})
     const form = reactive({ ...addPhysicianForm });
+
+    const changedValue = (value) => {
+			if(value == false) {
+				isValueChanged.value = false;
+			}
+			else {
+				isValueChanged.value = true;
+			}
+    }
+
+    function closeModal() {
+			if(isValueChanged.value) {
+				warningSwal(messages.modalWarning).then((response) => {
+					if (response == true) {
+						emit("closeModal", {
+							modal: 'addPhysician',
+							value: false
+						});
+						Object.assign(addPhysicianForm, form);
+					}
+					else {
+						emit("closeModal", {
+							modal: 'addPhysician',
+							value: true
+						});
+					}
+				})
+			}
+    }
 
     const patients = computed(() => {
       return store.state.patients;
@@ -169,10 +202,6 @@ export default {
 			return store.state.patients.errorMsg
 		})
 
-		const closeModal = computed(() => {
-			return store.state.patients.closeModal
-		})
-
 		return {
 			formRef,
 			globalCode,
@@ -180,7 +209,10 @@ export default {
 			submitForm,
 			handleClear,
 			errorMsg,
+			modalClose,
 			closeModal,
+			changedValue,
+			isValueChanged,
 			id,
 		}
 	}

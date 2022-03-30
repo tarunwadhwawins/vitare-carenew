@@ -1,11 +1,11 @@
 <template>
-<a-table  rowKey="id" :columns="providerListColumns" :data-source="providersListAll" :scroll="{ y: tableYScroller }" :pagination=false>
+<a-table  rowKey="id" :columns="providerListColumns" :data-source="providersListAll" :scroll="{ y: tableYScroller }" :pagination=false @change="handleTableChange">
     <template #name="{text,record}">
                <router-link :to="{ name: 'providerSummary', params: { id:record.id  }}">{{text}}</router-link>
     </template>
     <!-- v-if="arrayToObjact(globalCodesPermissions,25)" -->
-    <template #status="{record}" v-if="arrayToObjact(providersPermissions,25)">
-        <a-switch v-model:checked="record.status" @change="updateStatus(record.id, $event)" />
+    <template #isActive="{record}" v-if="arrayToObjact(providersPermissions,25)">
+        <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
     </template>
     <template #action="text">
       <!--  -->
@@ -149,7 +149,16 @@ export default {
     });
 
     const providersPermissions =store.getters.permissionRecords.value.providersPermissions
-
+    const handleTableChange = (pag, filters, sorter) => {
+      if(sorter.order){
+        store.dispatch('orderTable',{field:sorter.field,orderBy:sorter.order})
+        console.log(pag, filters,sorter)
+      }else{
+        store.dispatch('orderTable',{field:'',orderBy:''})
+      }
+      
+      
+    };
     return {
       providersPermissions,
       arrayToObjact,
@@ -165,6 +174,7 @@ export default {
       props,
       tableYScroller,
       text: "provider-summary",
+      handleTableChange,
     };
   },
 };

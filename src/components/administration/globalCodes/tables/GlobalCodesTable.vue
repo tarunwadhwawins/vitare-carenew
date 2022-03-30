@@ -19,8 +19,8 @@
       </a-tooltip>
     </template>
     <!-- v-if="arrayToObjact(globalCodesPermissions,266)"> -->
-    <template #status="{record}" >
-      <a-switch v-model:checked="record.status" @change="updateStatus(record.id, $event)" />
+    <template #isActive="{record}" >
+      <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
     </template>
   </a-table>
 </template>
@@ -91,7 +91,7 @@ export default {
 
     const updateStatus = (id, status) => {
       const data = {
-        "status": status
+        "isActive": status
       };
       store.dispatch('updateGlobalCode', {id, data}).then(() => {
         store.dispatch('globalCodesList')
@@ -140,11 +140,11 @@ export default {
       },
       {
         title: "Status",
-        dataIndex: "status",
+        dataIndex: "isActive",
         
        
         slots: {
-          customRender: "status"
+          customRender: "isActive"
         },
       },
       {

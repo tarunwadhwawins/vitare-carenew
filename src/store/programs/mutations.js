@@ -19,9 +19,9 @@ export const program = async (state, data) => {
     },
     {
       title: "Active/Inactive",
-      dataIndex: "status",
+      dataIndex: "isActive",
       slots: {
-        customRender: "status",
+        customRender: "isActive",
       },
     },
     {
@@ -33,7 +33,7 @@ export const program = async (state, data) => {
     },
   ]
   state.manageProgramList = data.data.map((item, index) => {
-    item.status = item.status == 1 ? true : false
+    item.isActive = item.isActive == 1 ? true : false
     item.key = index
     return item
   })

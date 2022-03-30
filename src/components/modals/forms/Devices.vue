@@ -207,6 +207,7 @@ export default defineComponent({
     }
 
     const changeStatus = (id, status) => {
+      
       store.dispatch("changeStatus", {
         id: patientId,
         inventoryId: id,

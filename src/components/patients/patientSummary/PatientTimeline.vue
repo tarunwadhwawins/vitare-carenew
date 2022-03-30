@@ -1,7 +1,7 @@
 <template>
   <div :class="className">
-    <a-checkbox-group v-model:value="tab" >
-      <a-checkbox v-for="timeline in timeLineType" :key="timeline.id" @change="chnageTab()" :value="timeline.id">{{timeline.name}}</a-checkbox>
+    <a-checkbox-group v-model:value="tab" @change="chnageTab()">
+      <a-checkbox v-for="timeline in timeLineType" :key="timeline.id"  :value="timeline.id" >{{timeline.name}}</a-checkbox>
     
     </a-checkbox-group>
      
@@ -27,13 +27,13 @@
                 <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
               </div>
             </div>
-            <!-- <div class="timelineBody">
+            <div class="timelineBody">
               <div class="content">
                 <p class="timeline-float timeline-title">{{ timeline.title }}</p>
-                <a class="timeline-float more-link" href="javascript:void(0)">more</a>
+                <!-- <a class="timeline-float more-link" href="javascript:void(0)">more</a> -->
               </div>
-              <MailOutlined />
-            </div> -->
+              <!-- <MailOutlined /> -->
+            </div>
           </div>
         </a-timeline-item>
         
@@ -60,7 +60,7 @@ import {
   
   // createDynamicColumns,
 } from '@/commonMethods/commonMethod';
-import { computed, ref, watchEffect, reactive, toRefs} from 'vue-demi';
+import { computed, ref, onMounted, reactive, toRefs} from 'vue-demi';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import TableLoader from "@/components/loader/TableLoader";
@@ -87,10 +87,10 @@ export default {
     const tabvalue = reactive({
       tab:[]
     });
-    watchEffect(() => {
+    onMounted(() => {
       if(route.name == 'PatientSummary') {
         store.dispatch('timeLineType')
-        store.dispatch('patientTimeline', {id:route.params.udid,type:tabvalue.tab.length == 0 ? '' :tabvalue.tab.join(",")});
+        store.dispatch('patientTimeline', {id:route.params.udid,type:''});
       }
     })
     const patientTimeline = computed(() => {
@@ -102,17 +102,20 @@ export default {
     };
 function chnageTab(){
   store.commit('loadingTableStatus', true)
+  
   store.dispatch('patientTimeline', {id:route.params.udid,type:tabvalue.tab.length == 0 ? '' :tabvalue.tab.join(",")}).then(()=>{
     store.commit('loadingTableStatus', false)
   })
 }
+
     return {
       showModalCustom,
       custom,
       patientTimeline,
       timeLineType:store.getters.timeLineType,
       chnageTab,
-      ...toRefs(tabvalue),
+      //tabvalue,
+     ...toRefs(tabvalue),
       moment,
       dateFormat
     }
