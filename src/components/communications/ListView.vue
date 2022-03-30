@@ -11,7 +11,7 @@
     </a-col>
     <a-col :span="24">
 
-      <ListViewTable  />
+      <ListViewTable  /> 
     </a-col>
   </a-row>
 </template>

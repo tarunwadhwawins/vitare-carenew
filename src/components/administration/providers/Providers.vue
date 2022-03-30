@@ -25,7 +25,8 @@
                         <a-col :span="12">
                             <!--  -->
                             <div class="text-right mb-24" v-if="arrayToObjact(providersPermissions,26)">
-                                <Button :name="exportButtonName" />
+                                <!-- <Button :name="exportButtonName" /> -->
+                                <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('provider_report')"/>
                             </div>
                         </a-col>
                     </a-row>
@@ -57,8 +58,9 @@ import {useStore} from "vuex";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
 import {ref , watchEffect,onUnmounted} from "vue";
-import { arrayToObjact } from "@/commonMethods/commonMethod";
 import Loader from "@/components/loader/Loader"
+import {arrayToObjact,exportExcel} from "@/commonMethods/commonMethod"
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 
 export default {
     components: {
@@ -69,6 +71,7 @@ export default {
         SearchField,
         Button,
         Loader,
+        ExportToExcel
     },
 
     setup() {
@@ -116,6 +119,7 @@ watchEffect(()=>{
            
         })
         return {
+            exportExcel,
           providersPermissions,
             arrayToObjact,
             editSingleProvider,
@@ -130,7 +134,6 @@ watchEffect(()=>{
             closeModal,
             pageTitle: "Providers",
             buttonName: "Add New Provider",
-            exportButtonName: "Export to Excel",
         };
     },
 };
