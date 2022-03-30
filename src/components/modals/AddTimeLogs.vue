@@ -119,7 +119,7 @@ export default defineComponent({
     const route = useRoute()
     const formRef = ref();
     const form = reactive({ ...addTimeLogForm });
-    const isTimerLog = reactive(props.isTimeLog);
+    // const isTimerLog = reactive(props.isTimeLog);
     const isDisabled = props.isTimeLog == true ? true : false;
     const loggedInUserDetails = JSON.parse(localStorage.getItem('auth'))
     /* const seconds = moment(props.timerValue, "HH:mm:ss").format('ss')
@@ -156,7 +156,7 @@ export default defineComponent({
     });
 
     watchEffect(() => {
-      if(isTimerLog == true) {
+      if(props.isTimeLog == true) {
         Object.assign(addTimeLogForm, {
           loggedBy: loggedInUserId.value != null ? loggedInUserId.value : "",
           performedBy: loggedInUserId.value != null ? loggedInUserId.value : "",
