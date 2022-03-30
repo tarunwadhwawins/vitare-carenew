@@ -170,6 +170,7 @@ export default {
         
       }else{
         store.dispatch('orderTable',{data:'&orderField=&orderBy='})
+        store.dispatch("timeLogReportList", '?search='+ store.getters.orderTable.value.data)
       }
     }
     return {
