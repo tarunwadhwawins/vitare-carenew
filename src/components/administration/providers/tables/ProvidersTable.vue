@@ -154,7 +154,6 @@ export default {
       if(sorter.order){
         let order =sorter.order=='ascend' ? 'ASC': 'DESC'
         let orderParam = '&orderField='+sorter.field+'&orderBy='+order
-        //console.log('check',orderParam)
         store.dispatch('orderTable',{data:orderParam,orderBy:order,page:pag,filters:filters})
         store.dispatch("providersListAll", '&search='+url+orderParam)
         
@@ -163,7 +162,7 @@ export default {
       }
       
       
-    };
+    }
     return {
       providersPermissions,
       arrayToObjact,
