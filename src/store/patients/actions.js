@@ -820,6 +820,7 @@ export const getBitrixFieldsName = async ({ commit }) => {
 export const fetchFromBitrix = async ({ commit }, id) => {
 	await serviceMethod.common("get", `bitrix/deal/${id}`, null, null).then((response) => {
 		commit('fetchFromBitrix', response.data.result);
+    commit('bitrixFormCheck',true)
 	})
 	.catch((error) => {
     errorLogWithDeviceInfo(error.response)
