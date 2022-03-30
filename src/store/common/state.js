@@ -42,6 +42,7 @@ export default {
     dropdownLoadingStatus:false,
     loadingTableStatus:null,
     actionTrack:null,
+    orderTable:null,
 
 
 }

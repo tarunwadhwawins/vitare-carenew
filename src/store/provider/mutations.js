@@ -10,7 +10,7 @@ export const providerLocation = (state, data) => {
 
 export const provider = (state, data) => {
 	state.providersListAll = data.data.map((element) => {
-		element.status = element.status == 1 ? true : false;
+		element.isActive = element.isActive == 1 ? true : false;
 		return element;
 	});
 	state.providerMeta = data.meta.pagination;
@@ -18,6 +18,7 @@ export const provider = (state, data) => {
 		{
 			title: 'Provider Name',
 			dataIndex: 'name',
+			sorter: true,
 			slots: {
 				customRender: 'name'
 			}
@@ -28,9 +29,9 @@ export const provider = (state, data) => {
 		},
 		{
 			title: 'Active/Inactive',
-			dataIndex: 'status',
+			dataIndex: 'isActive',
 			slots: {
-				customRender: 'status'
+				customRender: 'isActive'
 			}
 		},
 		{
