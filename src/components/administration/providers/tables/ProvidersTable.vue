@@ -159,6 +159,7 @@ export default {
         
       }else{
         store.dispatch('orderTable',{data:'&orderField=&orderBy='})
+        store.dispatch("providersListAll", store.getters.searchTable.value + store.getters.orderTable.value.data)
       }
     }
     return {

@@ -334,7 +334,9 @@ export default defineComponent({
 
     watchEffect(() => {
       store.dispatch("notificationList");
-      
+      store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
     });
     onUnmounted(()=>{
             

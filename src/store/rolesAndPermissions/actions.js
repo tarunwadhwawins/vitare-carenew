@@ -1,9 +1,10 @@
  import ServiceMethodService from '@/services/serviceMethod';
  import { API_ENDPOINTS } from "@/config/apiConfig"
  import { successSwal, errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
-export const rolesList = async ({ commit }) => {
+export const rolesList = async ({ commit },page) => {
 	commit('loadingStatus', true)
-	await ServiceMethodService.common("get", API_ENDPOINTS['rolesList']+'?active=1', null, null).then((response) => {
+	let link = page?API_ENDPOINTS['rolesList']+'?active=1'+page:API_ENDPOINTS['rolesList']+'?active=1'
+	await ServiceMethodService.common("get", link, null, null).then((response) => {
 		//console.log("data",response.data.data)
 		commit('roleList', response.data);
 		commit('loadingStatus', false)
