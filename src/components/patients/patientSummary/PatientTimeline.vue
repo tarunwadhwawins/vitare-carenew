@@ -44,8 +44,8 @@
 
 <script>
 import {
-  // FolderOpenOutlined,
-  // FilePdfOutlined,
+  FolderOpenOutlined,
+  FilePdfOutlined,
   BellOutlined,
   HeatMapOutlined,
   ClockCircleOutlined,
@@ -67,8 +67,8 @@ import TableLoader from "@/components/loader/TableLoader";
 import moment from "moment"
 export default {
   components: {
-    // FolderOpZenOutlined,
-    // FilePdfOutlined,
+    FolderOpenOutlined,
+    FilePdfOutlined,
     BellOutlined,
     HeatMapOutlined,
     ClockCircleOutlined,

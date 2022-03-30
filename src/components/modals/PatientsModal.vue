@@ -958,7 +958,6 @@ export default defineComponent( {
 					if(isEdit && patients.value.patientReferralSource != null) {
 						Object.assign(conditions, patients.value.patientReferralSource)
 					}
-					// alert(isEdit)
 					console.log('primaryPhysician 222', patients.value.patientPrimaryPhysician)
 					if(isEdit && patients.value.patientPrimaryPhysician != null) {
 						Object.assign(conditions, patients.value.patientPrimaryPhysician)
@@ -1326,7 +1325,6 @@ export default defineComponent( {
 
     function closeModal() {
 			// console.log('steps[current]', current.value)
-			// alert(current.value)
 			current.value = 0
         if(isValueChanged.value) {
             warningSwal(messages.modalWarning).then((response) => {
