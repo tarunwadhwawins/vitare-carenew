@@ -48,11 +48,14 @@ export default {
       const form = reactive({ ...addFlagForm })
 
       const submitForm = () => {
-				emit('closeModal')
         store.dispatch('addPatientFlag', { patientUdid: patientUdid, data: addFlagForm }).then(() => {
           store.dispatch('patientFlagsList', patientUdid);
           formRef.value.resetFields();
           Object.assign(addFlagForm, form);
+          emit("closeModal", {
+            modal: 'addFlag',
+            value: false
+          });
         })
       }
 

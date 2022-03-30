@@ -335,6 +335,7 @@ export default defineComponent({
         addDocumentVisible.value = modal == 'addDocument' ? value : false;
         documentDetailVisible.value = modal == 'documentDetails' ? value : false;
         addTimeLogsVisible.value = modal == 'addTimeLog' ? value : false;
+        flagsModalVisible.value = modal == 'addFlag' ? value : false;
       }
       else {
         flagsModalVisible.value = false;
