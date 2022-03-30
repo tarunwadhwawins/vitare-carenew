@@ -39,7 +39,7 @@ export default defineComponent({
    DeleteOutlined,
    Loader
   },
-  setup() {
+  setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
 
@@ -79,13 +79,17 @@ export default defineComponent({
           store.dispatch("criticalNotesDelete", {
             id: route.params.udid,
             documentId: id,
-          });
-          store.state.patients.patientCriticalNotes=''
-          setTimeout(() => {
+          }).then(() => {
             store.dispatch('criticalNotesList', route.params.udid);
-			store.dispatch('patientCriticalNotes', route.params.udid)
-             
-          }, 2000);
+            if(criticalNotesList.value.length <= 1) {
+              emit('closeModal', {
+                modal: 'criticalNotesDetails',
+                value: false
+              });
+            }
+            store.dispatch('patientCriticalNotes', route.params.udid)
+          })
+          store.state.patients.patientCriticalNotes=''
         }
       });
     }
