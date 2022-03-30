@@ -977,6 +977,46 @@ export default defineComponent( {
     const parameters = reactive([]);
 
     const demographic = () => {
+        const demographicsData = {
+					firstName: demographics.firstName ? demographics.firstName : "",
+					middleName: demographics.middleName ? demographics.middleName : "",
+					lastName: demographics.lastName ? demographics.lastName : "",
+					dob: demographics.dob ? demographics.dob : "",
+					gender: demographics.gender ? demographics.gender : "",
+					language: demographics.language ? demographics.language : "",
+					otherLanguage: demographics.otherLanguage ? demographics.otherLanguage : "",
+					nickName: demographics.nickName ? demographics.nickName : "",
+					weight: demographics.weight ? demographics.weight : "",
+					height: demographics.height ? demographics.height : "",
+					email: demographics.email ? demographics.email : "",
+					phoneNumber: demographics.phoneNumber ? demographics.phoneNumber : "",
+					contactType: demographics.contactType ? demographics.contactType : "",
+					contactTime: demographics.contactTime ? demographics.contactTime : "",
+					medicalRecordNumber: demographics.medicalRecordNumber ? demographics.medicalRecordNumber : "",
+					country: demographics.country ? demographics.country : "",
+					state: demographics.state ? demographics.state : "",
+					city: demographics.city ? demographics.city : "",
+					zipCode: demographics.zipCode ? demographics.zipCode : "",
+					appartment: demographics.appartment ? demographics.appartment : "",
+					address: demographics.address ? demographics.address : "",
+					fullName: demographics.fullName ? demographics.fullName : "",
+					familyEmail: demographics.familyEmail ? demographics.familyEmail : "",
+					familyPhoneNumber: demographics.familyPhoneNumber ? demographics.familyPhoneNumber : "",
+					familyContactType: demographics.familyContactType ? demographics.familyContactType : "",
+					familyContactTime: demographics.familyContactTime ? demographics.familyContactTime : "",
+					familyGender: demographics.familyGender ? demographics.familyGender : "",
+					relation: demographics.relation ? demographics.relation : "",
+					emergencyFullName: demographics.emergencyFullName ? demographics.emergencyFullName : "",
+					emergencyEmail: demographics.emergencyEmail ? demographics.emergencyEmail : "",
+					emergencyPhoneNumber: demographics.emergencyPhoneNumber ? demographics.emergencyPhoneNumber : "",
+					emergencyContactType: demographics.emergencyContactType ? demographics.emergencyContactType : "",
+					emergencyContactTime: demographics.emergencyContactTime ? demographics.emergencyContactTime : "",
+					emergencyGender: demographics.emergencyGender ? demographics.emergencyGender : "",
+					sameAsPrimary: demographics.sameAsPrimary ? demographics.sameAsPrimary : "",
+					isPrimary: demographics.isPrimary ? demographics.isPrimary : "",
+					familyMemberId: demographics.familyMemberId ? demographics.familyMemberId : "",
+					emergencyId: demographics.emergencyId ? demographics.emergencyId : "",
+        }
 			isEdit = false
 			if(idPatient != null) {
 					if(patients.value.addDemographic == null) {
@@ -984,7 +1024,7 @@ export default defineComponent( {
 									(demographics.emergencyId = patients.value.patientDetails.emergencyContact.data ? patients.value.patientDetails.emergencyContact.data.id : ''),
 									(demographics.familyMemberId = patients.value.patientDetails.patientFamilyMember.data ? patients.value.patientDetails.patientFamilyMember.data.id : ''),
 									store.dispatch("updateDemographic", {
-											data: demographics,
+											data: demographicsData,
 											id: idPatient,
 									}).then(() => {
 											if(route.name == 'PatientSummary') {
@@ -1003,7 +1043,7 @@ export default defineComponent( {
 									(demographics.emergencyId = patients.value.patientDetails.emergencyContact.data ? patients.value.patientDetails.emergencyContact.data.id : ''),
 									(demographics.familyMemberId = patients.value.patientDetails.patientFamilyMember.data ? patients.value.patientDetails.patientFamilyMember.data.id : ''),
 									store.dispatch("updateDemographic", {
-											data: demographics,
+											data: demographicsData,
 											id: idPatient,
 									}).then(() => {
 											if(route.name == 'PatientSummary') {
@@ -1018,7 +1058,7 @@ export default defineComponent( {
 									(demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
 									(demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
 									store.dispatch("updateDemographic", {
-											data: demographics,
+											data: demographicsData,
 											id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
 									}).then(() => {
 											if(route.name == 'PatientSummary') {
@@ -1037,7 +1077,7 @@ export default defineComponent( {
 									(demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
 									(demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
 									store.dispatch("updateDemographic", {
-											data: demographics,
+											data: demographicsData,
 											id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
 									}).then(() => {
 											if(route.name == 'PatientSummary') {
@@ -1078,7 +1118,7 @@ export default defineComponent( {
 									(demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
 									(demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
 									store.dispatch("updateDemographic", {
-											data: demographics,
+											data: demographicsData,
 											id: patients.value.addDemographic.id,
 									}).then(() => {
 											if(route.name == 'PatientSummary') {
@@ -1097,7 +1137,7 @@ export default defineComponent( {
 									(demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
 									(demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
 									store.dispatch("updateDemographic", {
-											data: demographics,
+											data: demographicsData,
 											id: patients.value.addDemographic.id,
 									}).then(() => {
 											if(route.name == 'PatientSummary') {

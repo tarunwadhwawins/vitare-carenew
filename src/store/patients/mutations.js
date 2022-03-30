@@ -500,7 +500,6 @@ export const uploadFile = (state, data) => {
 }
 
 export const patientDetails = (state, patient) => {
-  alert(dobFormat(patient.dob))
   patient.email = patient.user.data.email ? patient.user.data.email : null;
   patient.country = patient.countryId ? patient.countryId : null;
   patient.state = patient.stateId ? patient.stateId : null;
