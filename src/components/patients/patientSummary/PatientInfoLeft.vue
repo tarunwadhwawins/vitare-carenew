@@ -176,6 +176,7 @@ import AddFamilyMemberModal from "@/components/modals/AddFamilyMemberModal"
 import AddPhysicianModal from "@/components/modals/AddPhysicianModal"
 import AddEmergencyContacts from "@/components/modals/AddEmergencyContacts"
 import DocumentDetailModal from "@/components/modals/DocumentDetail"
+import AddDocumentModal from "@/components/modals/AddDocument"
 import {
   ref,
   // reactive,
@@ -204,7 +205,7 @@ export default defineComponent({
     AddTasksModal: defineAsyncComponent(()=>import("@/components/modals/TasksModal")),
     AddNotesModal: defineAsyncComponent(()=>import("@/components/modals/AddNote")),
     NotesDetailModal: defineAsyncComponent(()=>import("@/components/modals/NotesDetail")),
-    AddDocumentModal: defineAsyncComponent(()=>import("@/components/modals/AddDocument")),
+    AddDocumentModal,
     DocumentDetailModal,
     AddCareTeamModal: defineAsyncComponent(()=>import("@/components/modals/CareCoordinators")),
     AddTimeLogsModal: defineAsyncComponent(()=>import("@/components/modals/AddTimeLogs")),
@@ -336,7 +337,7 @@ export default defineComponent({
       patientVitalsVisible.value = false;
       addNoteVisible.value = false;
       notesDetailVisible.value = false;
-      addDocumentVisible.value = false;
+      addDocumentVisible.value = modal == 'addDocument' && value ? value : false;
       documentDetailVisible.value = false;
       careCoordinatorsVisible.value = false;
       addTimeLogsVisible.value = false;
