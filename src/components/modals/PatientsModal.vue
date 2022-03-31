@@ -733,7 +733,7 @@
 </template>
 
 <script>
-import { ref, computed, reactive, watchEffect, defineComponent, defineAsyncComponent,onUnmounted } from "vue";
+import { ref, computed, reactive, watchEffect, defineComponent, defineAsyncComponent,onUnmounted, onMounted } from "vue";
 // import Demographics from "@/components/modals/forms/Demographics";
 // import Conditions from "@/components/modals/forms/Conditions";
 import Programs from "@/components/modals/forms/Programs";
@@ -948,11 +948,17 @@ export default defineComponent( {
       ...demographics,
     });
 
+    onMounted(()=>{
+        Object.assign(demographics, form)
+    })
+
     watchEffect(() => {
         // Bitrix data assign 
 
         if(patients.value.fetchFromBitrix){ 
 			Object.assign(demographics, patients.value.fetchFromBitrix);
+        }else if(!patients.value.fetchFromBitrix){
+            Object.assign(demographics, form)
         }
           
         //end
@@ -978,7 +984,7 @@ export default defineComponent( {
                 medicalRecordNumber: medicalRecordNumber
             });
         } */
-          Object.assign(demographics, form)
+          
     })
 
     const parameters = reactive([]);
