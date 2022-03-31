@@ -25,7 +25,7 @@
               }}</a-button>
           </div> -->
           <div class="text-right mb-24">
-            <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+            <ExportToExcel  @click="exportExcel('generalParameter_report')"/>
           </div>
         </a-col>
         
