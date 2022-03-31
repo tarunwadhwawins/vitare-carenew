@@ -391,7 +391,7 @@ export const staffDocuments = async ({
 export const updateStaffStatus = async ({commit}, data) => {
   await serviceMethod.common("put", `staff/${data.id}/status`, null, data.data).then((response) => {
     commit('updateStaffStatus', response.data.data);
-    // successSwal(response.data.message)
+     successSwal(response.data.message)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {

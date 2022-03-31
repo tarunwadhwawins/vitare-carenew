@@ -68,8 +68,8 @@ export default {
             
             data = meta.patientList;
             store.state.patients.patientList = "";
-            let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
-            store.dispatch("patients", "?search="+url+"&page=" + current_page).then(() => {
+         
+            store.dispatch("patients", "?page=" + current_page+store.getters.searchTable.value).then(() => {
               //console.log('response',response)
               loadMoredata();
             });
