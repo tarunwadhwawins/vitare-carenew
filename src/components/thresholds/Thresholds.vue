@@ -66,6 +66,10 @@
       watchEffect(() => {
         store.getters.vitalDataGetters.vitalList=""
         store.dispatch("generalParameterList");
+        store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
       });
       
       function nullId (){
@@ -119,7 +123,10 @@
         },
       ]);
       onUnmounted(()=>{
-            store.dispatch("searchTable",'')
+        store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
         })
       return {
         exportExcel,

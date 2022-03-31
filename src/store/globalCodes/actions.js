@@ -4,10 +4,10 @@ import { successSwal, errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/c
 
 export const globalCodesList = async ({ commit },page) => {
 	commit('loadingStatus', true)
-	let link = page? API_ENDPOINTS['globalCodesList']+"?active=1"+page : API_ENDPOINTS['globalCodesList']+"?active=1"
+	let link = page? API_ENDPOINTS['globalCode']+"?active=1"+page : API_ENDPOINTS['globalCode']+"?active=1"
 	await ServiceMethodService.common("get", link, null, null).then((response) => {
 		//console.log(response.data.data)
-		commit('globalCodeCategory', response.data);
+		commit('globalCode', response.data);
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {

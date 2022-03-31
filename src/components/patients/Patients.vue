@@ -91,6 +91,10 @@ export default {
       store.getters.patientsRecord.patientList=""
       store.dispatch("programList");
       store.dispatch("patients");
+      store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
     });
 
     const patientsPermissions=computed(()=>{

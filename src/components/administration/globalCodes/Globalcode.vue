@@ -20,7 +20,7 @@
                 </h2>
               </a-col>
               <a-col :span="12" >
-                <SearchField endPoint="globalCodeCategory"/>
+                <SearchField endPoint="globalCodes"/>
               </a-col>
               <a-col :span="12" v-if="arrayToObjact(globalCodesPermissions,265)">
                 <div class="text-right mb-24">

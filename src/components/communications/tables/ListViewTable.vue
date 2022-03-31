@@ -1,28 +1,32 @@
 <template>
 <a-alert class="mb-24" message="Patients are highlighted" type="error" />
 
-<a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900, y: tableYScroller }" :pagination="false" :rowClassName="(record) => auth.user.id!=record.messageSender && record.isRead==0 ? 'bold':''">
-     <template #from="{ record }" class="custom">
-         <span v-if="record.is_sender_patient" class="customTd">
+<a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900, y: tableYScroller }" :pagination="false" :rowClassName="(record) => auth.user.id!=record.messageSender && record.isRead==0 ? 'bold':''" @change="handleTableChange">
+    <template #from="{ record }" class="custom">
+        <span v-if="record.is_sender_patient" class="customTd">
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.fromId } }">
                 {{record.from}}
-            </router-link></span>
+            </router-link>
+        </span>
         <span v-else>
             <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.fromId } }">
                 {{record.from}}
-            </router-link></span>
-           
-         
-        </template>
+            </router-link>
+        </span>
+
+    </template>
     <template #to="{ record }" class="custom">
-         <span v-if="record.is_receiver_patient" class="customTd"><router-link :to="{ name: 'PatientSummary', params: { udid: record.toId } }">
-            {{record.to}}
-        </router-link></span>
+        <span v-if="record.is_receiver_patient" class="customTd">
+            <router-link :to="{ name: 'PatientSummary', params: { udid: record.toId } }">
+                {{record.to}}
+            </router-link>
+        </span>
         <span v-else>
             <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.toId } }">
                 {{record.to}}
-            </router-link></span>
-        </template>
+            </router-link>
+        </span>
+    </template>
     <template #resend>
         <a-tooltip placement="bottom">
             <template #title>
@@ -113,7 +117,6 @@
     </template>
 </a-table>
 
-
 <Chat v-model:visible="visible" v-if="communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
 </template>
 
@@ -147,7 +150,7 @@ export default {
         PhoneOutlined,
         MailOutlined,
         AlertOutlined,
- 
+
         Chat,
     },
     props: {
@@ -158,7 +161,8 @@ export default {
                 title: "From",
                 dataIndex: "from",
                 key: "from",
-               slots: {
+                sorter: true,
+                slots: {
                     customRender: "from",
                 },
             },
@@ -166,8 +170,8 @@ export default {
                 title: "To",
                 dataIndex: "to",
                 key: "to",
-                
-               slots: {
+                sorter: true,
+                slots: {
                     customRender: "to",
                 },
             },
@@ -218,7 +222,7 @@ export default {
         const communicationId = ref(null)
         const auth = JSON.parse(localStorage.getItem("auth"))
         const meta = store.getters.communicationRecord.value;
-    
+
         let scroller = ''
         let data = []
         onMounted(() => {
@@ -232,13 +236,13 @@ export default {
                     let current_page = meta.communicationMeta.current_page + 1;
 
                     if (current_page <= meta.communicationMeta.total_pages) {
-                    
+
                         scroller = maxScroll
                         data = meta.communicationsList
                         meta.communicationMeta = "";
                         store.state.communications.communicationsList = "";
-                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
-                        store.dispatch("communicationsList", "?search="+url+"&page=" + current_page)
+
+                        store.dispatch("communicationsList", "?page=" + current_page + store.getters.searchTable.value + store.getters.orderTable.value.data)
                             .then(() => {
                                 //console.log('response',response)
                                 loadMoredata();
@@ -260,9 +264,27 @@ export default {
             setTimeout(() => {
                 tableContent.scrollTo(0, scroller)
             }, 5000)
-         
-        }
 
+        }
+        const handleTableChange = (pag, filters, sorter) => {
+            if (sorter.order) {
+                let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
+                let orderParam = '&orderField=' + sorter.field + '&orderBy=' + order
+                store.dispatch('orderTable', {
+                    data: orderParam,
+                    orderBy: order,
+                    page: pag,
+                    filters: filters
+                })
+                store.dispatch("communicationsList", "?page=" + store.getters.searchTable.value + orderParam)
+
+            } else {
+                store.dispatch('orderTable', {
+                    data: '&orderField=&orderBy='
+                })
+                store.dispatch("communicationsList", "?page=" + store.getters.searchTable.value + store.getters.orderTable.value.data)
+            }
+        }
         const visible = ref(false);
         const showModal = (e) => {
 
@@ -277,26 +299,29 @@ export default {
         return {
             communicationColumns,
             meta,
-    
+
             visible,
             showModal,
             handleOk,
             communicationId,
             auth,
-            tableYScroller
+            tableYScroller,
+            handleTableChange
         };
     },
 };
 </script>
+
 <style>
-.customTd{
+.customTd {
     display: block;
     background-color: rgb(255 250 96);
     width: 100%;
     height: 100%;
     padding: 7px;
 }
-.highLight{
-    color:red
+
+.highLight {
+    color: red
 }
 </style>

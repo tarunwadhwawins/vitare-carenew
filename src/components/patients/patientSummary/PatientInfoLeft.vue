@@ -138,7 +138,7 @@
     <AddPhysicianModal v-model:visible="addPhysicianModalVisible" @closeModal="handleOk" :isPhysicianEdit="isPhysicianEdit" />
     <AddEmergencyContacts v-model:visible="addEmergencyContactModalVisible" @closeModal="handleOk" :isEmergencyContactEdit="isEmergencyContactEdit" />
     <AddCriticalNote v-model:visible="criticalModalVisible" @closeModal="handleOk" @saveModal="handleCriticalNote($event)"/>
-    <AddAppointmentModal v-model:visible="addAppointmentVisible" :patientId="patientDetails.id" :patientName="patientDetails.patientFullName" @closeModal="handleOk" />
+    <AddAppointmentModal v-model:visible="addAppointmentVisible" :patientId="patientDetails.id" :patientName="patientDetails.patientFullName" @closeModal="handleOk" @is-visible="handleOk" />
     <AddTasksModal v-model:visible="taskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
     <AddNotesModal v-model:visible="addNoteVisible" @closeModal="handleOk" />
     <AddDocumentModal v-model:visible="addDocumentVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
@@ -336,6 +336,11 @@ export default defineComponent({
         addTimeLogsVisible.value = modal == 'addTimeLog' ? value : false;
         flagsModalVisible.value = modal == 'addFlag' ? value : false;
         criticalNotesDetailVisible.value = modal == 'criticalNotesDetails' ? value : false;
+        addAppointmentVisible.value = modal == 'addAppointment' ? value : false;
+        taskModalVisible.value = modal == 'addTask' ? value : false;
+        addNoteVisible.value = modal == 'addNote' ? value : false;
+        careCoordinatorsVisible.value = modal == 'addCareTeam' ? value : false;
+        addDeviceVisible.value = modal == 'addInventory' ? value : false;
       }
       else {
         flagsModalVisible.value = false;
@@ -472,7 +477,9 @@ export default defineComponent({
     }
 
     const showTimelogModal = () => {
-      store.dispatch('timeLogsList')
+      store.dispatch('timeLogsList', {
+        id: route.params.udid
+      })
       timeLogsDetailVisible.value = true;
     }
 

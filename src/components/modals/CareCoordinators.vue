@@ -1,11 +1,11 @@
 <template>
-  <a-modal width="1000px" :title="$t('global.addCareTeam')">
+  <a-modal width="1000px" :title="$t('global.addCareTeam')" @cancel="onCloseModal()">
     <a-form ref="formRef" :model="addCareTeamForm" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :sm="20" :xs="24">
           <a-form-item :label="$t('tasks.tasksModal.staff')" name="staff"
             :rules="[{ required: true, message: $t('tasks.tasksModal.staff')+' '+$t('global.validation') }]">
-            <a-select ref="select" v-model:value="addCareTeamForm.staff" style="width: 100%" size="large">
+            <a-select @change="changedValue" ref="select" v-model:value="addCareTeamForm.staff" style="width: 100%" size="large">
               <a-select-option value="" hidden>Select Staff</a-select-option>
               <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{staff.fullName}}
               </a-select-option>
@@ -66,10 +66,11 @@ import { messages } from '@/config/messages';
       // EyeOutlined,
       Loader,
     },
-    setup() {
+    setup(props, { emit }) {
       const store = useStore();
       const route = useRoute();
       const patientUdid = route.params.udid;
+      const isValueChanged = ref(false);
       const careTeamColumns = [
         {
           title: "Staff",
@@ -104,6 +105,32 @@ import { messages } from '@/config/messages';
       })
 
       const form = reactive({ ...addCareTeamForm })
+
+      const changedValue = () => {
+        isValueChanged.value = true;
+      }
+
+      function onCloseModal() {
+        if(isValueChanged.value) {
+          warningSwal(messages.modalWarning).then((response) => {
+            if (response == true) {
+              emit("closeModal", {
+                modal: 'addCareTeam',
+                value: false
+              });
+              Object.assign(addCareTeamForm, form);
+              isValueChanged.value = false;
+            }
+            else {
+              emit("closeModal", {
+                modal: 'addCareTeam',
+                value: true
+              });
+            }
+          })
+        }
+      }
+      
       const formRef = ref();
       const submitForm = () => {
         store.dispatch('addCareTeam', { patientUdid: patientUdid, data: addCareTeamForm }).then(() => {
@@ -133,6 +160,9 @@ import { messages } from '@/config/messages';
         submitForm,
         formRef,
         staffList,
+        isValueChanged,
+        changedValue,
+        onCloseModal,
       };
     },
   });
