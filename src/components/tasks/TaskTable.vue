@@ -1,6 +1,6 @@
 <template>
 <a-col :sm="24">
-    <a-table rowKey="id" :columns="meta.tasksListColumns" :data-source="meta.tasksList" :scroll="{ x: 900 ,y:tableYScroller }" :pagination="false" @change="onChange">
+    <a-table rowKey="id" :columns="meta.tasksListColumns" :data-source="meta.tasksList" :scroll="{ x: 900 ,y:tableYScroller }" :pagination="false" @change="handleTableChange">
         <template #taskName="text">
             <router-link to="#" @click="showModal">{{ text.text }}</router-link>
         </template>
@@ -60,7 +60,8 @@ import {
     messages
 } from "@/config/messages";
 import {
-    warningSwal,tableYScroller
+    warningSwal,
+    tableYScroller
 } from "@/commonMethods/commonMethod";
 import InfiniteLoader from "@/components/loader/InfiniteLoader";
 import {
@@ -82,7 +83,7 @@ export default {
     }) {
         const store = useStore();
 
-        let data = ''
+        let data = []
         const meta = store.getters.taskRecords.value;
         const loader = ref(false);
         let scroller = ''
@@ -99,8 +100,8 @@ export default {
                         loader.value = true;
                         meta.taskMeta = "";
                         store.state.tasks.tasksList = ''
-                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
-                        store.dispatch("tasksList", "?search="+url+"&page=" + current_page).then(() => {
+
+                        store.dispatch("tasksList", "?page=" + current_page + store.getters.searchTable.value + store.getters.orderTable.value.data).then(() => {
 
                             loadMoredata();
                         });
@@ -148,6 +149,25 @@ export default {
         const tasksDashboardPermissions = computed(() => {
             return store.state.screenPermissions.tasksDashboardPermissions
         })
+        const handleTableChange = (pag, filters, sorter) => {
+            if (sorter.order) {
+                let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
+                let orderParam = '&orderField=' + sorter.field + '&orderBy=' + order
+                store.dispatch('orderTable', {
+                    data: orderParam,
+                    orderBy: order,
+                    page: pag,
+                    filters: filters
+                })
+                store.dispatch("tasksList", "?page=" + store.getters.searchTable.value + orderParam)
+
+            } else {
+                store.dispatch('orderTable', {
+                    data: '&orderField=&orderBy='
+                })
+                store.dispatch("tasksList", "?page=" + store.getters.searchTable.value + store.getters.orderTable.value.data)
+            }
+        }
         return {
             tasksDashboardPermissions,
             tasks,
@@ -157,6 +177,7 @@ export default {
             loader,
             meta,
             tableYScroller,
+            handleTableChange
         };
     },
 };
