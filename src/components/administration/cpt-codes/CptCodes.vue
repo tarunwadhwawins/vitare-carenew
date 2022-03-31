@@ -21,7 +21,7 @@
                     </a-col>
                     <a-col :span="12">
                         <div class="text-right mb-24">
-                            <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+                            <ExportToExcel  @click="exportExcel('cptCode_report')"/>
                         </div>
                     </a-col>
                     <a-col :span="24">

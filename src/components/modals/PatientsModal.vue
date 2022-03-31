@@ -8,8 +8,8 @@
          </a-button>
         </div>
         <a-col :span="24">
-            <a-steps v-model:current="current">
-                <a-step v-for="item in steps" :key="item.title" :title="item.title" />
+            <a-steps v-model:current="current" @change="scrollToTop($event)">
+                <a-step v-for="item in steps" :key="item.title" :title="item.title" ><span :id="item"></span></a-step>
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Demographics'">
                 <!-- <Demographics /> -->
@@ -428,7 +428,7 @@
                      <PatientSearch v-model:visible="patientSearch" @closeSearchPatient="closeSearchPatient($event)" @clearValidtion="clearValidtion"/>
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                        <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
+                        <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current)" html-type="submit">{{$t('global.next')}}</a-button>
                         <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
                             {{$t('global.done')}}
                         </a-button>
@@ -633,7 +633,7 @@
 
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                        <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
+                        <a-button v-if="current < steps.length - 1"  type="primary" html-type="submit">{{$t('global.next')}}</a-button>
                         <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
                             {{$t('global.done')}}
                         </a-button>
@@ -1551,8 +1551,12 @@ export default defineComponent( {
 			}
 		}
 
+    function scrollToTop(){
+        window.scrollTo(0, 0)  
+    }
     return {
     // formatPhoneNumber,
+    scrollToTop,
     formRef,
     clearValidtion,
     changedValue,

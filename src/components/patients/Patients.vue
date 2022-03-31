@@ -38,7 +38,7 @@
             <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
         </div> -->
         <div class="text-right mb-24">
-          <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+          <ExportToExcel />
         </div>
     </a-col>
     <a-col :span="24" >
