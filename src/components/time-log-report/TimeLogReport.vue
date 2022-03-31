@@ -24,7 +24,7 @@
                             <a-col :sm="8" :xs="24">
                                 <div class="form-group">
                                     <label>{{$t('global.endDate')}}</label>
-                                    <a-date-picker format="MM/DD/YYYY" value-format="YYYY-MM-DD" v-model:value="auditTimeLog.endDate" :size="size" style="width: 100%" />
+                                    <a-date-picker format="MM/DD/YYYY"  value-format="YYYY-MM-DD" v-model:value="auditTimeLog.endDate" :size="size" style="width: 100%" />
                                 </div>
                             </a-col>
                             <a-col :sm="4" :xs="24">
@@ -105,11 +105,15 @@ export default {
         })
 
         function updateAuditTime() {
+            if(auditTimeLog.startDate && auditTimeLog.endDate){
+
+           
             store.getters.timeLogReports.value.timeLogReportList = ""
             startDate.value = auditTimeLog.startDate ? (moment(auditTimeLog.startDate)).format("YYYY-MM-DD") : ''
             endDate.value = auditTimeLog.endDate ? (moment(auditTimeLog.endDate)).format("YYYY-MM-DD") : ''
             store.dispatch('auditTimeLogFilterDates', "?fromDate=" + startDate.value + "&toDate=" + endDate.value)
             store.dispatch("timeLogReportList", "?fromDate=" + startDate.value + "&toDate=" + endDate.value)
+            }
         }
         onUnmounted(() => {
             store.dispatch('auditTimeLogFilterDates', "?fromDate=&toDate=")

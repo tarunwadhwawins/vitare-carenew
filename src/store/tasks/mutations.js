@@ -11,6 +11,7 @@ export const task = async (state, tasks) => {
     {
       title: "Task Name",
       dataIndex: "title",
+      sorter:true,
       slots: {
         customRender: "taskName",
       },
@@ -29,6 +30,7 @@ export const task = async (state, tasks) => {
     {
       title: "Task Status ",
       dataIndex: "taskStatus",
+      sorter:true,
       slots: {
         customRender: "status",
       },
@@ -36,6 +38,7 @@ export const task = async (state, tasks) => {
     {
       title: "Priority ",
       dataIndex: "priority",
+      sorter:true,
       //   filters: [
       //     {
       //       text: "High",
@@ -55,6 +58,7 @@ export const task = async (state, tasks) => {
     {
       title: "Category",
       dataIndex: "category",
+      sorter:true,
       slots: {
         customRender: "category",
       },
@@ -62,6 +66,7 @@ export const task = async (state, tasks) => {
     {
       title: "Due Date ",
       dataIndex: "dueDate",
+      sorter:true,
       //   filters: [
       //     {
       //       text: "Dec 24, 2021",

@@ -31,6 +31,10 @@ export default {
     watchEffect(() => {
       store.getters.taskRecords.tasksList = "";
       store.dispatch("tasksList");
+      store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
     });
 
     const handleChange = (value) => {
@@ -53,7 +57,10 @@ export default {
       return store.state.screenPermissions.tasksDashboardPermissions;
     });
     onUnmounted(() => {
-      store.dispatch("searchTable", "");
+      store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
     });
     return {
       search:store.getters.searchTable,

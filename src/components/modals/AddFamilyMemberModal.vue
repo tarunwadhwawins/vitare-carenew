@@ -135,13 +135,8 @@ export default {
 		})
     const form = reactive({ ...familyMemberForm });
 
-    const changedValue = (value) => {
-			if(value == false) {
-				isValueChanged.value = false;
-			}
-			else {
-				isValueChanged.value = true;
-			}
+    const changedValue = () => {
+			isValueChanged.value = true;
     }
 
     function closeModal() {
@@ -153,11 +148,12 @@ export default {
 							value: false
 						});
 						Object.assign(familyMemberForm, form);
+						isValueChanged.value = false;
 					}
 					else {
 						emit("closeModal", {
 							modal: 'addFamilyMember',
-							value: false
+							value: true
 						});
 					}
 				})
