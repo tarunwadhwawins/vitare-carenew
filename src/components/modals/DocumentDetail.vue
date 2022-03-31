@@ -39,7 +39,7 @@ import {
 import { useStore } from "vuex";
 import {warningSwal} from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
-import { useRoute } from "vue-router";
+// import { useRoute } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -55,7 +55,7 @@ export default defineComponent({
   },
   setup(props, {emit}) {
     const store = useStore();
-    const route = useRoute();
+    // const route = useRoute();
     const patientId = reactive(props.patientDetails.id);
     const documentsColumns = [
       {
@@ -128,9 +128,9 @@ export default defineComponent({
                 value: false
               });
             }
-            store.dispatch('latestDocument', route.params.udid)
+            store.dispatch('latestDocument', patientId)
             store.dispatch('patientTimeline', {
-              id: route.params.udid,
+              id: patientId,
               type: ''
             });
           })

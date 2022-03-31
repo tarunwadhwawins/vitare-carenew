@@ -1,6 +1,6 @@
 <template>
 <a-col :span="24">
-    
+
     <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.manageProgramList" :scroll="{ x: 900 ,y : tableYScroller }" @change="handleTableChange" :pagination=false>
         <template #actions="text">
             <a-tooltip placement="bottom" v-if="arrayToObjact(programsPermissions,16)">
@@ -26,7 +26,6 @@
     </a-table>
     <Loader />
 </a-col>
-
 </template>
 
 <script>
@@ -42,7 +41,8 @@ import {
 } from "@ant-design/icons-vue";
 import {
     warningSwal,
-    arrayToObjact,tableYScroller
+    arrayToObjact,
+    tableYScroller
 } from "@/commonMethods/commonMethod";
 import {
     messages
@@ -76,6 +76,7 @@ export default {
                 data: '&orderField=&orderBy='
             })
         })
+
         function editProgram(getRecord) {
             store.dispatch('editManageProgram', getRecord.udid)
             emit('is-edit', {
@@ -124,8 +125,8 @@ export default {
                         loader.value = true
                         store.state.program.programMeta = ""
                         store.state.programs.manageProgramList = ""
-                       
-                        store.dispatch("manageProgramList", store.getters.searchTable.value+"&page=" + current_page).then(() => {
+
+                        store.dispatch("manageProgramList", store.getters.searchTable.value + "&page=" + current_page+store.getters.orderTable.value.data).then(() => {
                             loadMoredata()
                         })
                     }
@@ -150,16 +151,24 @@ export default {
             return store.state.screenPermissions.programsPermissions
         })
         const handleTableChange = (pag, filters, sorter) => {
-      if(sorter.order){
-        let order =sorter.order=='ascend' ? 'ASC': 'DESC'
-        let orderParam = '&orderField='+sorter.field+'&orderBy='+order
-        store.dispatch('orderTable',{data:orderParam,orderBy:order,page:pag,filters:filters})
-        store.dispatch("providersListAll", store.getters.searchTable.value+orderParam)
-        
-      }else{
-        store.dispatch('orderTable',{data:'&orderField=&orderBy='})
-      }
-    }
+            if (sorter.order) {
+                let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
+                let orderParam = '&orderField=' + sorter.field + '&orderBy=' + order
+                store.dispatch('orderTable', {
+                    data: orderParam,
+                    orderBy: order,
+                    page: pag,
+                    filters: filters
+                })
+                store.dispatch("manageProgramList", store.getters.searchTable.value + orderParam)
+
+            } else {
+                store.dispatch('orderTable', {
+                    data: '&orderField=&orderBy='
+                })
+                store.dispatch("manageProgramList", store.getters.searchTable.value + store.getters.orderTable.value.data)
+            }
+        }
         return {
             meta,
             programsPermissions,

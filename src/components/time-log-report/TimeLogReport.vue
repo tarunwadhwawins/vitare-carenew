@@ -18,13 +18,13 @@
                             <a-col :sm="8" :xs="24">
                                 <div class="form-group">
                                     <label>{{$t('global.startDate')}}</label>
-                                    <a-date-picker format="MM/DD/YYYY" value-format="YYYY-MM-DD" v-model:value="auditTimeLog.startDate" :size="size" style="width: 100%" />
+                                    <a-date-picker format="MM/DD/YYYY" value-format="YYYY-MM-DD" :disabledDate="d => !d || d.isAfter(dateSelect)" v-model:value="auditTimeLog.startDate" :size="size" style="width: 100%" />
                                 </div>
                             </a-col>
                             <a-col :sm="8" :xs="24">
                                 <div class="form-group">
                                     <label>{{$t('global.endDate')}}</label>
-                                    <a-date-picker format="MM/DD/YYYY" value-format="YYYY-MM-DD" v-model:value="auditTimeLog.endDate" :size="size" style="width: 100%" />
+                                    <a-date-picker format="MM/DD/YYYY" :disabledDate="d => !d || d.isSameOrBefore(auditTimeLog.startDate)" value-format="YYYY-MM-DD" v-model:value="auditTimeLog.endDate" :size="size" style="width: 100%" @change="dateChange" />
                                 </div>
                             </a-col>
                             <a-col :sm="4" :xs="24">
@@ -34,7 +34,7 @@
                             </a-col>
                             <a-col :sm="4" :xs="24">
                                 <div class="text-right mb-24">
-                                    <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+                                    <ExportToExcel @click="exportExcel('careCoordinator_report')" />
                                 </div>
                             </a-col>
                         </a-row>
@@ -90,9 +90,16 @@ export default {
             startDate: '',
             endDate: '',
         })
+        const dateSelect = ref(null)
         const startDate = ref(null)
         const endDate = ref(null)
+
+        function dateChange() {
+            dateSelect.value = moment(auditTimeLog.endDate).add(1, 'day')
+        }
+
         watchEffect(() => {
+
             store.getters.timeLogReports.value.timeLogReportList = ""
             store.dispatch("timeLogReportList")
 
@@ -105,11 +112,14 @@ export default {
         })
 
         function updateAuditTime() {
-            store.getters.timeLogReports.value.timeLogReportList = ""
-            startDate.value = auditTimeLog.startDate ? (moment(auditTimeLog.startDate)).format("YYYY-MM-DD") : ''
-            endDate.value = auditTimeLog.endDate ? (moment(auditTimeLog.endDate)).format("YYYY-MM-DD") : ''
-            store.dispatch('auditTimeLogFilterDates', "?fromDate=" + startDate.value + "&toDate=" + endDate.value)
-            store.dispatch("timeLogReportList", "?fromDate=" + startDate.value + "&toDate=" + endDate.value)
+            if (auditTimeLog.startDate && auditTimeLog.endDate) {
+
+                store.getters.timeLogReports.value.timeLogReportList = ""
+                startDate.value = auditTimeLog.startDate ? (moment(auditTimeLog.startDate)).format("YYYY-MM-DD") : ''
+                endDate.value = auditTimeLog.endDate ? (moment(auditTimeLog.endDate)).format("YYYY-MM-DD") : ''
+                store.dispatch('auditTimeLogFilterDates', "?fromDate=" + startDate.value + "&toDate=" + endDate.value)
+                store.dispatch("timeLogReportList", "?fromDate=" + startDate.value + "&toDate=" + endDate.value)
+            }
         }
         onUnmounted(() => {
             store.dispatch('auditTimeLogFilterDates', "?fromDate=&toDate=")
@@ -123,8 +133,10 @@ export default {
             linkTo,
             updateAuditTime,
             checked,
+            dateSelect,
             // reportExport,
             auditTimeLog,
+            dateChange,
             filtterDates: store.getters.auditTimeLogFilterDates,
             value1: ref(),
             size: ref("large"),

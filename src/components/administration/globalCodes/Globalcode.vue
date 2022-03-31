@@ -20,7 +20,7 @@
                 </h2>
               </a-col>
               <a-col :span="12" >
-                <SearchField endPoint="globalCodeCategory"/>
+                <SearchField endPoint="globalCodes"/>
               </a-col>
               <a-col :span="12" v-if="arrayToObjact(globalCodesPermissions,265)">
                 <div class="text-right mb-24">
@@ -94,7 +94,10 @@ export default defineComponent({
       return store.state.screenPermissions.globalCodesPermissions
     })
     onUnmounted(()=>{
-            store.dispatch("searchTable",'')
+      store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
         })
     return {
       exportExcel,

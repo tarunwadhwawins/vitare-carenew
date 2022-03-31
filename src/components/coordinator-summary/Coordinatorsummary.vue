@@ -40,10 +40,6 @@
                                     <div class="thumb-desc">{{getstaffSummary?getstaffSummary.specialization:''}}</div>
                                 </div>
                                 <div class="pat-profile-inner">
-                                    <div class="thumb-head">Expertise</div>
-                                    <div class="thumb-desc">{{getstaffSummary?getstaffSummary.expertise:''}}</div>
-                                </div>
-                                <div class="pat-profile-inner">
                                     <div class="thumb-head">Network</div>
                                     <div class="thumb-desc">{{getstaffSummary?getstaffSummary.network:''}}</div>
                                 </div>
@@ -147,7 +143,7 @@
         <RoleForm  :clearData="clearData" :paramId="paramId" @saveModal="roleCloseModal($event)"/>
     </a-modal>
     <!------>
-    <a-modal width="50%" v-model:visible="visibleAvailability" title="Add Availability" @ok="AvailabilityCloseModal()" :maskClosable="false" centered  @cancel="closeModal('visibleAvailability')">
+    <a-modal width="50%" v-model:visible="visibleAvailability" title="Add Availability"  :maskClosable="false" centered  @cancel="closeModal('visibleAvailability')">
         <AvailabilityForm  :clearData="clearData" :paramId="paramId"  @saveModal="AvailabilityCloseModal($event)" />
     </a-modal>
     <!---->
@@ -162,7 +158,7 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { ref, computed, watchEffect } from "vue";
+import { ref, computed, watchEffect, onUnmounted } from "vue";
 import {
   // DeleteOutlined,
   EditOutlined,
@@ -215,7 +211,6 @@ export default {
     const store = useStore();
     const router = useRoute();
     const clearData = ref(false)
-    //console.log("id=>", router.params.udid);
 
     watchEffect(() => {
         if(router.params.udid&&  router.name == 'CoordinatorSummary'){
@@ -272,18 +267,22 @@ export default {
     const showDocModal = () => {
       visibleStaffDoc.value = true;
       clearData.value=false
+      store.commit('clearStaffFormValidation',false)
     };
     const showModalRole = () => {
       visibleRole.value = true;
       clearData.value=false
+      store.commit('clearStaffFormValidation',false)
     };
     const showModalvailability = () => {
       visibleAvailability.value = true;
       clearData.value=false
+       store.commit('clearStaffFormValidation',false)
     };
     const showModalContact = () => {
       visibleContact.value = true;
       clearData.value=false
+      store.commit('clearStaffFormValidation',false)
     };
 
     const handleOk = (e) => {
@@ -325,8 +324,14 @@ export default {
           }
         }
       });
-      }
+      }else{
+          store.commit('clearStaffFormValidation',true)
+      }    
+        
     }
+    onUnmounted(()=>{
+        store.commit('clearStaffFormValidation',false)
+    })
     return {
       clearData,
       roleCloseModal,

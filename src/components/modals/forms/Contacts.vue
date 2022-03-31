@@ -109,6 +109,7 @@ export default defineComponent({
         if(staffs.value.closeModal==true){
           store.dispatch("staffContactList", props.paramId?props.paramId:staffs.value.addStaff.id);
           reset()
+          store.state.careCoordinator.errorMsg=''
           emit("saveModal", false)
       }
       }, 2000);
@@ -129,6 +130,9 @@ export default defineComponent({
     watchEffect(()=>{
     if(props.clearData==true){
       Object.assign(contact,form)
+    }
+    if(staffs.value.clearStaffFormValidation){
+      formRest.value.resetFields();
     }
     })
     function checkChangeInput(){

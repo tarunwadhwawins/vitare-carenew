@@ -385,3 +385,24 @@ export const staffDocuments = async ({
     errorSwal(error.response.data.message)
   })
 }
+
+
+
+export const updateStaffStatus = async ({commit}, data) => {
+  await serviceMethod.common("put", `staff/${data.id}/status`, null, data.data).then((response) => {
+    commit('updateStaffStatus', response.data.data);
+     successSwal(response.data.message)
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+      commit('closeModal',false)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+      commit('closeModal',false)
+    } else if (error.response.status === 401) {
+      // commit('errorMsg', error.response.data.message)
+      errorSwal(error.response.data.message)
+    }
+  })
+}

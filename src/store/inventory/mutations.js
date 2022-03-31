@@ -5,7 +5,7 @@ export const addInventorySuccess = async (state, inventory) => {
 }
 
 export const inventory = async (state, inventories) => {
-  state.inventoriesList = inventories.map(data => {
+  state.inventoriesList = inventories.data.map(data => {
     ///data.isActive = data.isActive
     data.isAvailable = data.isAvailable == 1 ? '' : 'Assigned'
     return data

@@ -439,7 +439,6 @@
             <div  class="steps-content" v-if="steps[current].title == 'Conditions'" >
                 <!-- <Conditions /> -->
                 <a-form :model="conditions" name="basic" :label-col="{ span: 8 }" scrollToFirstError=true :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="condition" @finishFailed="conditionsFailed">
-                    <Loader />
                     <a-row :gutter="24">
                         <a-col :span="24">
                             <div class="formHeading">
@@ -641,6 +640,7 @@
                         </a-button>
                     </div>
                 </a-form>
+                <Loader />
                 <!--  -->
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Programs'">
@@ -733,7 +733,7 @@
 </template>
 
 <script>
-import { ref, computed, reactive, watchEffect, defineComponent, defineAsyncComponent,onUnmounted } from "vue";
+import { ref, computed, reactive, watchEffect, defineComponent, defineAsyncComponent,onUnmounted, onMounted } from "vue";
 // import Demographics from "@/components/modals/forms/Demographics";
 // import Conditions from "@/components/modals/forms/Conditions";
 import Programs from "@/components/modals/forms/Programs";
@@ -858,7 +858,7 @@ export default defineComponent( {
         else {
             isValueChanged.value = true;
         }
-				isEdit = false
+				// isEdit = false
     }
     const showSearchPatient = ()=>{
         patientSearch.value =true
@@ -870,7 +870,7 @@ export default defineComponent( {
       return store.state.common;
     });
     const idPatient = props.patientId ? reactive(props.patientId) : null;
-    var isEdit = props.isEditPatient == true ? true : false;
+    // var isEdit = props.isEditPatient == true ? true : false;
 
     const patients = computed(() => {
       return store.state.patients;
@@ -948,27 +948,33 @@ export default defineComponent( {
       ...demographics,
     });
 
+    onMounted(()=>{
+        Object.assign(demographics, form)
+    })
+
     watchEffect(() => {
         // Bitrix data assign 
 
         if(patients.value.fetchFromBitrix){ 
 			Object.assign(demographics, patients.value.fetchFromBitrix);
+        }else if(!patients.value.fetchFromBitrix){
+            Object.assign(demographics, form)
         }
           
         //end
 
         if(idPatient) {
 					Object.assign(demographics, patientDetail);
-					if(isEdit && patients.value.patientInsurance != null) {
+					if(props.isEditPatient && patients.value.patientInsurance != null) {
 						Object.assign(insuranceData, patients.value.patientInsurance)
 					}
-					if(isEdit && patients.value.patientReferralSource != null) {
+					if(props.isEditPatient && patients.value.patientReferralSource != null) {
 						Object.assign(conditions, patients.value.patientReferralSource)
 					}
-					if(isEdit && patients.value.patientPrimaryPhysician != null) {
+					if(props.isEditPatient && patients.value.patientPrimaryPhysician != null) {
 						Object.assign(conditions, patients.value.patientPrimaryPhysician)
 					}
-					if(isEdit && patients.value.patientConditions != null) {
+					if(props.isEditPatient && patients.value.patientConditions != null) {
 						Object.assign(conditions.condition, patients.value.patientConditions)
 					}
         }
@@ -978,7 +984,7 @@ export default defineComponent( {
                 medicalRecordNumber: medicalRecordNumber
             });
         } */
-          Object.assign(demographics, form)
+          
     })
 
     const parameters = reactive([]);
@@ -1024,7 +1030,7 @@ export default defineComponent( {
 					familyMemberId: demographics.familyMemberId ? demographics.familyMemberId : "",
 					emergencyId: demographics.emergencyId ? demographics.emergencyId : "",
         }
-			isEdit = false
+			// isEdit = false
 			if(idPatient != null) {
 					if(patients.value.addDemographic == null) {
 							if(demographics.sameAsPrimary == false) {
@@ -1158,7 +1164,7 @@ export default defineComponent( {
     };
 
 		const condition = () => {
-			isEdit = false
+			// isEdit = false
 			// const errors = []
 			if(idPatient != null) {
 				if(patients.value.addCondition == null && patients.value.addPatientReferals == null && patients.value.addPatientPhysician == null) {
@@ -1329,7 +1335,7 @@ export default defineComponent( {
 					}
 					store.dispatch("addCondition", {
 						data: conditions,
-						id: idPatient,
+						id: patients.value.addDemographic ? patients.value.addDemographic.id : null,
 						referalID: null,
 						physicianId: null,
 					}).then(() => {
@@ -1347,7 +1353,7 @@ export default defineComponent( {
 					}
 					store.dispatch("addCondition", {
 						data: conditions,
-						id: idPatient,
+						id: patients.value.addDemographic ? patients.value.addDemographic.id : null,
 						referalID: patients.value.addPatientReferals ? patients.value.addPatientReferals.id : null,
 						physicianId: patients.value.addPatientPhysician ? patients.value.addPatientPhysician.id : null,
 					}).then(() => {

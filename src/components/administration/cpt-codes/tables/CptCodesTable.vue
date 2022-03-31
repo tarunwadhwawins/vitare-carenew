@@ -95,7 +95,7 @@ export default {
         //infinite scroll
         let data = []
         let scroller = ''
-        const url = store.getters.searchTable
+       
         const meta = store.getters.cptRecords.value;
         const loader = ref(false);
         onMounted(() => {
@@ -113,7 +113,7 @@ export default {
                         meta.cptMeta = "";
                         store.state.cptCodes.cptCodesList = "";
 
-                        store.dispatch("cptCodesList", "&page=" + current_page + store.getters.orderTable.value.data + '&search=' + url.value == null ? '' : url.value).then(() => {
+                        store.dispatch("cptCodesList", store.getters.searchTable.value+"&page=" + current_page + store.getters.orderTable.value.data).then(() => {
                             loadMoredata();
                         });
                     }
@@ -149,12 +149,13 @@ export default {
                     page: pag,
                     filters: filters
                 })
-                store.dispatch("cptCodesList", url.value + orderParam)
+                store.dispatch("cptCodesList", store.getters.searchTable.value + orderParam)
 
             } else {
                 store.dispatch('orderTable', {
                     data: '&orderField=&orderBy='
                 })
+                store.dispatch("cptCodesList", store.getters.searchTable.value + store.getters.orderTable.value.data)
             }
         }
 

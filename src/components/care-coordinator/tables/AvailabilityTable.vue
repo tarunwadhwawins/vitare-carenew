@@ -1,5 +1,5 @@
 <template>
-<a-table rowKey="id" :pagination="false" :columns="staffs.availabilityListColms" :data-source="staffs.availabilityList" :scroll="{ x: 900 }">
+<a-table rowKey="id" :pagination="false" :columns="staffs.availabilityListColms" :data-source="staffs.availabilityList" >
     <template #action="text" v-if="arrayToObjact(staffPermissions,53)">
         <a-tooltip placement="bottom" @click="deleteAvailability(text.record.id)">
             <template #title>

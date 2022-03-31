@@ -1,21 +1,17 @@
 <template>
-<a-table rowKey="id" :data-source="meta.staffs" :scroll="{ y: tableYScrollerCounterPage ,x: 1020}" :pagination=false :columns="meta.columns">
+<a-table rowKey="id" :data-source="meta.staffs" :scroll="{ y: tableYScrollerCounterPage ,x: 1020}" :pagination=false :columns="meta.columns" @change="handleTableChange">
     <template #name="{text,record}">
         <!-- <router-link :to="linkTo">{{ text.text }}</router-link> -->
-        <router-link @click="staffSummery(record.uuid)" :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}">{{ text }}</router-link>
+        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}">{{ text }}</router-link>
     </template>
 
     <template #createdDate="text">
         <span>{{ dateFormat(text.text) }}</span>
     </template>
-    <template #action="">
+    <template #status="{record}">
         <!-- <router-link >{{ text.text }}</router-link> -->
+        <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
     </template>
-    <!-- <template #compliance>
-        <a class="icons">
-            <WarningOutlined /></a>
-    </template> -->
-
     <template #lastReadingDate>
         <WarningOutlined />
     </template>
@@ -25,9 +21,10 @@
 <script>
 import {
     WarningOutlined
-} from "@ant-design/icons-vue"
+} from "@ant-design/icons-vue";
 import {
-    dateFormat,tableYScrollerCounterPage
+    dateFormat,
+    tableYScrollerCounterPage
 } from "../../../commonMethods/commonMethod"
 import {
     onMounted
@@ -46,12 +43,12 @@ export default {
 
     },
     setup() {
-       
+
         const store = useStore();
         //const fields = reactive(props.staffRecords.columns)
 
         const meta = store.getters.staffRecord.value
-        let data = ''
+        let data = []
         let scroller = ''
         onMounted(() => {
             var tableContent = document.querySelector('.ant-table-body')
@@ -67,8 +64,8 @@ export default {
                         meta.staffMeta = ""
                         data = meta.staffs
                         store.state.careCoordinator.staffs = ""
-                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
-                        store.dispatch("staffs", "?search="+url+"&page=" + current_page).then(() => {
+
+                        store.dispatch("staffs", "?page=" + current_page + store.getters.searchTable.value + store.getters.orderTable.value.data).then(() => {
                             loadMoredata()
                         })
 
@@ -85,21 +82,44 @@ export default {
             });
             meta.staffs = data
             var tableContent = document.querySelector('.ant-table-body')
-
             setTimeout(() => {
-                tableContent.scrollTo(0, scroller)
-            }, 50)
+                tableContent.scrollTo(0, scroller);
+            }, 50);
+        }
+        const handleTableChange = (pag, filters, sorter) => {
+            if (sorter.order) {
+                let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
+                let orderParam = '&orderField=' + sorter.field + '&orderBy=' + order
+                store.dispatch('orderTable', {
+                    data: orderParam,
+                    orderBy: order,
+                    page: pag,
+                    filters: filters
+                })
+                store.dispatch("staffs", "?page=" + store.getters.searchTable.value + orderParam)
 
+            } else {
+                store.dispatch('orderTable', {
+                    data: '&orderField=&orderBy='
+                })
+                store.dispatch("staffs", "?page=" + store.getters.searchTable.value + store.getters.orderTable.value.data)
+            }
         }
 
-        function staffSummery(uuid) {
-            console.log('value', uuid);
-        }
+        const updateStatus = (id, status) => {
+            const data = {
+                isActive: status,
+            };
+            store.dispatch("updateStaffStatus", {
+                id,
+                data
+            })
+        };
         return {
-
+            updateStatus,
             meta,
-            staffSummery,
             dateFormat,
+            handleTableChange,
             tableYScrollerCounterPage
         }
     },
