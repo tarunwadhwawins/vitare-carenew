@@ -2,7 +2,7 @@
 <a-col :sm="24" :xs="24">
     <a-table rowKey="id" :columns="columns" :data-source="meta.vitalList" :scroll="{ y: tableYScroller }" :pagination="false" @change="handleTableChange">
         <template #actions="text">
-            <a-tooltip placement="bottom">
+            <a-tooltip placement="bottom" v-if="arrayToObjact(globalCodesPermissions,330)">
                 <template #title>
                     <span>{{ $t("global.edit") }}</span>
                 </template>
@@ -10,7 +10,7 @@
                     <EditOutlined />
                 </a>
             </a-tooltip>
-            <a-tooltip placement="bottom">
+            <a-tooltip placement="bottom" v-if="arrayToObjact(globalCodesPermissions,331)">
                 <template #title>
                     <span>{{ $t("global.delete") }}</span>
                 </template>
@@ -28,7 +28,7 @@
 
 <script>
 import {
-    onMounted
+    onMounted,computed
 } from "vue";
 import {
     DeleteOutlined,
@@ -36,7 +36,8 @@ import {
 } from "@ant-design/icons-vue";
 import {
     warningSwal,
-    tableYScroller
+    tableYScroller,
+    arrayToObjact
 } from "@/commonMethods/commonMethod";
 import {
     messages
@@ -210,7 +211,13 @@ export default {
                 store.dispatch("generalParameterList", "?page=" + store.getters.searchTable.value + store.getters.orderTable.value.data)
             }
         }
+
+        const globalCodesPermissions = computed(()=>{
+            return store.state.screenPermissions.globalCodesPermissions
+        })
         return {
+            globalCodesPermissions,
+            arrayToObjact,
             deleteParameter,
             editParameter,
             meta,
