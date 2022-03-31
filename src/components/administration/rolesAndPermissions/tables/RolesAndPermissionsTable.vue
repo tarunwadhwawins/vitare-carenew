@@ -1,5 +1,5 @@
 <template>
-<a-table rowKey="id" :columns="rolesColumns" :data-source="meta.rolesList" :scroll="{ x: 900 ,y : tableYScroller }" :pagination=false>
+<a-table rowKey="id" :columns="rolesColumns" :data-source="meta.rolesList" :scroll="{ x: 900 ,y : tableYScroller }" :pagination=false @change="handleTableChange">
     <template #actions="{record}" v-if="arrayToObjact(roleAndPermissions,2)">
         <a-tooltip placement="bottom" v-if="record.id ===1" disabled>
             <template #title disabled>
@@ -82,6 +82,10 @@ export default {
 
         watchEffect(() => {
             store.dispatch('rolesList')
+            store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
         })
 
         const editRole = (id) => {
@@ -130,26 +134,17 @@ export default {
         const rolesColumns = [{
                 title: "Role Name",
                 dataIndex: "name",
-                sorter: {
-                    compare: (a, b) => a.name - b.name,
-                    multiple: 3,
-                },
+                sorter: true
             },
             {
                 title: "Type of Role ",
                 dataIndex: "roleType",
-                sorter: {
-                    compare: (a, b) => a.roleType - b.roleType,
-                    multiple: 3,
-                },
+                sorter: true
             },
             {
                 title: "Description",
                 dataIndex: "description",
-                sorter: {
-                    compare: (a, b) => a.description - b.description,
-                    multiple: 3,
-                },
+                sorter: true
             },
             {
                 title: "Active/Inactive",
@@ -169,7 +164,7 @@ export default {
         //ifinitescroller
         let scroller
         const meta = store.getters.rolesAndPermissionsRecord.value
-        let data = ''
+        let data = []
         const loader = ref(false)
         onMounted(() => {
             var tableContent = document.querySelector('.ant-table-body')
@@ -187,8 +182,8 @@ export default {
                         loader.value = true
                         store.state.rolesAndPermissions.rolesMeta = ""
                         store.state.rolesAndPermissions.rolesList = ""
-                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
-                        store.dispatch("rolesList", "?search="+url+"&page=" + current_page).then(() => {
+                        
+                        store.dispatch("rolesList", store.getters.searchTable.value+"&page=" + current_page+store.getters.orderTable.value.data).then(() => {
                             loadMoredata()
                         })
                     }
@@ -212,6 +207,25 @@ export default {
         const roleAndPermissions = computed(() => {
             return store.state.screenPermissions.roleAndPermissions
         })
+        const handleTableChange = (pag, filters, sorter) => {
+            if (sorter.order) {
+                let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
+                let orderParam = '&orderField=' + sorter.field + '&orderBy=' + order
+                store.dispatch('orderTable', {
+                    data: orderParam,
+                    orderBy: order,
+                    page: pag,
+                    filters: filters
+                })
+                store.dispatch("rolesList", store.getters.searchTable.value + orderParam)
+
+            } else {
+                store.dispatch('orderTable', {
+                    data: '&orderField=&orderBy='
+                })
+                store.dispatch("rolesList", store.getters.searchTable.value + store.getters.orderTable.value.data)
+            }
+        }
         return {
             loader,
             arrayToObjact,
@@ -223,7 +237,8 @@ export default {
             copyRole,
             UpdateRoleStatus,
             meta,
-            tableYScroller
+            tableYScroller,
+            handleTableChange
         }
     }
 }

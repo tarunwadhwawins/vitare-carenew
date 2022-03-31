@@ -3,7 +3,8 @@
   <a-table  rowKey="id"
     :columns="globalCodesColumns"
     :data-source="globalCodesList"
-    :scroll="{ y: tableYScroller }" :pagination=false>
+    :scroll="{ y: tableYScroller }" :pagination=false
+    @change="handleTableChange">
     <template #actions="{record}">
       <a-tooltip placement="bottom" v-if="arrayToObjact(globalCodesPermissions,7)">
         <template #title>
@@ -41,6 +42,10 @@ export default {
     const store = useStore()
     watchEffect(() => {
       store.dispatch('globalCodesList')
+      store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
     })
     
     const globalCodesList = store.getters.globalCodesList
@@ -61,8 +66,8 @@ export default {
                         meta.value = ""
                         data = globalCodesList.value
                         store.state.globalCodes.globalCodesList = ""
-                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
-                        store.dispatch("globalCodesList", "&search="+url+"&page=" + current_page).then(() => {
+                        
+                        store.dispatch("globalCodesList", store.getters.searchTable.value+"&page=" + current_page+store.getters.orderTable.value.data).then(() => {
                             loadMoredata()
                         })
 
@@ -113,23 +118,21 @@ export default {
         title: "Category",
         dataIndex: "globalCodeCategory",
         key: "globalCodeCategory",
+        sorter:true
       
         
       },
       {
         title: "Code Name",
         dataIndex: "name",
-        key: "name",
         
-        
-        
+        sorter:true
       },
       {
         title: "Description",
         dataIndex: "description",
         key: "description",
-        
-       
+        sorter:true
       },
       {
         title: "Used Count",
@@ -159,7 +162,26 @@ export default {
     const globalCodesPermissions = computed(()=>{
       return store.state.screenPermissions.globalCodesPermissions
     })
-    
+    const handleTableChange = (pag, filters, sorter) => {
+            if (sorter.order) {
+                let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
+                let orderParam = '&orderField=' + sorter.field + '&orderBy=' + order
+                store.dispatch('orderTable', {
+                    data: orderParam,
+                    orderBy: order,
+                    page: pag,
+                    filters: filters
+                })
+                store.dispatch("globalCodesList", store.getters.searchTable.value + orderParam)
+
+            } else {
+
+                store.dispatch('orderTable', {
+                    data: '&orderField=&orderBy='
+                })
+                store.dispatch("globalCodesList", store.getters.searchTable.value + store.getters.orderTable.value.data)
+            }
+        }
     return {
       globalCodesPermissions,
       arrayToObjact,
@@ -169,7 +191,8 @@ export default {
       globalCodesList,
       updateStatus,
       warningSwal,
-      tableYScroller
+      tableYScroller,
+      handleTableChange
     }
   }
 }

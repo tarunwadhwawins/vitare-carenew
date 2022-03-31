@@ -102,7 +102,10 @@ export default {
             return store.state.screenPermissions.roleAndPermissions
         })
         onUnmounted(()=>{
-            store.dispatch("searchTable",'')
+            store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
         })
         return {
             exportExcel,
