@@ -107,7 +107,7 @@ export default defineComponent({
     isEditForm: {
       type: Boolean
     },
-    isTimeLog: {
+    isEditTimeLog: {
       type: Boolean
     },
     timerValue: {
@@ -156,7 +156,7 @@ export default defineComponent({
     });
 
     watchEffect(() => {
-      if(props.isTimeLog == true) {
+      if(props.isEditTimeLog == true) {
         Object.assign(addTimeLogForm, {
           loggedBy: loggedInUserId.value != null ? loggedInUserId.value : "",
           performedBy: loggedInUserId.value != null ? loggedInUserId.value : "",
