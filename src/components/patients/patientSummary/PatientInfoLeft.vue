@@ -110,10 +110,12 @@
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">
-          {{ $t('global.careTeam') }} <PlusOutlined @click="addCateTeamModal();actionTrack(paramsId,298,'patient')" />
+          {{ $t('global.careTeam') }} <PlusOutlined @click="addCareTeamModal();actionTrack(paramsId,298,'patient')" />
         </div>
         <div v-if="latestCareTeam != null" class="thumb-desc">
-          <router-link :to="{ name: 'CoordinatorSummary', params: { udid: latestCareTeam.staffId  }}" >{{ latestCareTeam.staff }}</router-link>
+          <router-link target="_blank" :to="{ name: 'CoordinatorSummary', params: { udid: latestCareTeam.staffId  }}" >
+            {{ latestCareTeam.staff }}
+          </router-link>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -467,7 +469,7 @@ export default defineComponent({
       documentDetailVisible.value = true;
     }
 
-    const addCateTeamModal = () => {
+    const addCareTeamModal = () => {
       careCoordinatorsVisible.value = true;
     }
 
@@ -546,7 +548,7 @@ export default defineComponent({
       showNotesModal,
       addDocumentsModal,
       showDocumentsModal,
-      addCateTeamModal,
+      addCareTeamModal,
       addTimelogModal,
       showTimelogModal,
       addDeviceModal,
