@@ -1,10 +1,10 @@
 <template>
-<a-form :model="roles" name="basic" scrollToFirstError=true :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addRole" @finishFailed="roleDataFailed">
+<a-form :model="roles" ref="formRest" name="basic" scrollToFirstError=true :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addRole" @finishFailed="roleDataFailed">
     <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
             <div class="form-group">
               <a-form-item :label="$t('careCoordinator.roles.role')" name="roles" :rules="[{ required: true, message: $t('careCoordinator.roles.role')+' '+$t('global.validation') }]">
-              <RoleDropDown v-model:value="roles.roles" @handleRoleChange="handleRoleChange($event)"/>
+              <RoleDropDown v-model:value="roles.roles" @handleRoleChange="handleRoleChange($event)" @change="checkChangeInput()"/>
               </a-form-item>
             </div>
         </a-col>
@@ -45,7 +45,7 @@ export default defineComponent({
   },
   setup(props,{emit}) {
     const store = useStore();
-    // const roleData = ref();
+    const formRest =ref();
     const roles = reactive({
       roles: [],
     });
@@ -84,6 +84,9 @@ export default defineComponent({
     if(props.clearData==true){
       Object.assign(roles,form)
     }
+    if(staffs.value.clearStaffFormValidation){
+        formRest.value.resetFields();
+      }
     })
     
     function checkChangeInput(){
@@ -93,7 +96,9 @@ export default defineComponent({
       return store.state.careCoordinator.errorMsg;
     });
     const Id = staffs.value.addStaff?staffs.value.addStaff.id:''
+
     return {
+      formRest,
       loadingStatus:store.getters.loadingStatus,
       handleRoleChange,
       errorMsg,

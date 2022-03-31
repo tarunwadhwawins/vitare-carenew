@@ -56,7 +56,7 @@ import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import AvailabilityTable from "../../care-coordinator/tables/AvailabilityTable.vue";
 import moment from  "moment"
 import {  timeStamp,errorSwal } from '@/commonMethods/commonMethod'
-import { messages } from "../../../config/messages";
+import { messages } from "@/config/messages";
 export default defineComponent({
   components: {
     // EditOutlined,
@@ -116,6 +116,7 @@ const button= ref(true)
     const form = reactive({
       ...availability,
     });
+
     function reset(){
       formRest.value.resetFields();
       Object.assign(availability,form)
@@ -124,6 +125,9 @@ const button= ref(true)
   watchEffect(()=>{
     if(props.clearData==true){
       Object.assign(availability,form)
+    }
+    if(staffs.value.clearStaffFormValidation){
+      formRest.value.resetFields();
     }
   })
     onUnmounted(()=>{
