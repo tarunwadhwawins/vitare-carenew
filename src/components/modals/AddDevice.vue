@@ -1,14 +1,10 @@
 <template>
   <a-modal width="60%" title="Add Device" centered>
-    <a-form ref="formRef" :model="inventoryForm" name="basic" layout="vertical" @finish="submitForm">
+    <a-form ref="formRef" :model="inventoryForm" name="basic" layout="vertical" @finish="submitForm" @cancel="onCloseModal()">
       <a-row :gutter="24">
         <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('patient.devices.deviceType')" name="deviceType" :rules="[{ required: true, message: $t('patient.devices.deviceType')+' '+$t('global.validation') }]">
-              <!-- <a-select ref="select" v-model:value="inventoryForm.deviceType" style="width: 100%" size="large" @change="handleInventory">
-                <a-select-option value="" disabled>{{'Select Device Type'}}</a-select-option>
-                <a-select-option v-for="device in globalCode.deviceType.globalCode" :key="device.id" :value="device.id">{{device.name}}</a-select-option>
-              </a-select> -->
               <GlobalCodeDropDown @change="handleInventory" v-model:value="inventoryForm.deviceType" :globalCode="globalCode.deviceType"/>
               <ErrorMessage v-if="errorMsg && errorMsg.message" :name="errorMsg.message ? errorMsg.message : ''" />
               <ErrorMessage v-if="errorMsg && errorMsg.deviceType" :name="errorMsg.deviceType?errorMsg.deviceType[0]:''" />
@@ -18,10 +14,6 @@
         <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item  :label="$t('patient.devices.inventory')" name="inventory" :rules="[{ required: true, message: $t('patient.devices.inventory')+' '+$t('global.validation') }]">
-              <!-- <a-select :disabled="patients.inventoryList.length==0" ref="select" v-model:value="inventoryForm.inventory" style="width: 100%" size="large" @change="handleChange(inventoryForm.inventory)">
-                <a-select-option value="" disabled>{{'Select Inventory'}}</a-select-option>
-                <a-select-option v-for="device in patients.inventoryList" :key="device.id" :value="device.id">{{device.modelNumber +' ('+device.macAddress+')'}}</a-select-option>
-              </a-select> -->
               <InventoryGlobalCodeDropDown :disabled="patients.inventoryList.length==0 || inventoryForm.deviceType==''" v-model:value="inventoryForm.inventory" :globalCode="patients.inventoryList" @change="handleChange(inventoryForm.inventory)"/>
                 <ErrorMessage v-if="errorMsg" :name="errorMsg.inventory?errorMsg.inventory[0]:''" />
             </a-form-item>
@@ -31,7 +23,7 @@
           <div class="form-group">
             <a-form-item :label="$t('patient.devices.modelNo')" name="modelNumber" :rules="[{ required: false, message: $t('patient.devices.modelNo')+' '+$t('global.validation') }]">
               <div >
-                <a-input size="large"   v-model:value="inventoryForm.modelNumber"  disabled />
+                <a-input @change="changedValue" size="large"   v-model:value="inventoryForm.modelNumber"  disabled />
               </div>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.modelNumber?errorMsg.modelNumber[0]:''" />
             </a-form-item>
@@ -41,7 +33,7 @@
           <div class="form-group">
             <a-form-item :label="$t('patient.devices.serialNo')" name="serialNumber" :rules="[{ required: false, message: $t('patient.devices.serialNo')+' '+$t('global.validation') }]">
               <div >
-                <a-input size="large"    v-model:value="inventoryForm.serialNumber"  disabled />
+                <a-input @change="changedValue" size="large"    v-model:value="inventoryForm.serialNumber"  disabled />
               </div>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.serialNumber?errorMsg.serialNumber[0]:''" />
             </a-form-item>
@@ -51,7 +43,7 @@
           <div class="form-group">
             <a-form-item :label="$t('patient.devices.MACAddress')" name="macAddress" :rules="[{ required: false, message: $t('patient.devices.MACAddress')+' '+$t('global.validation') }]">
               <div >
-                <a-input size="large"   v-model:value="inventoryForm.macAddress"  disabled />
+                <a-input @change="changedValue" size="large"   v-model:value="inventoryForm.macAddress"  disabled />
               </div>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.macAddress?errorMsg.macAddress[0]:''" />
             </a-form-item>
@@ -91,6 +83,7 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const status = ref([]);
+    const isValueChanged = ref(false);
     // const patientDetail = reactive(props.patientDetails);
     const inventoryForm = reactive({
       inventory: "",
@@ -101,6 +94,32 @@ export default defineComponent({
     });
 
     const form = reactive({ ...inventoryForm })
+
+    const changedValue = () => {
+      isValueChanged.value = true;
+    }
+
+    function onCloseModal() {
+			if(isValueChanged.value) {
+				warningSwal(messages.modalWarning).then((response) => {
+					if (response == true) {
+						emit("closeModal", {
+							modal: 'addInventory',
+							value: false
+						});
+						Object.assign(inventoryForm, form);
+						isValueChanged.value = false;
+					}
+					else {
+						emit("closeModal", {
+							modal: 'addInventory',
+							value: true
+						});
+					}
+				})
+			}
+    }
+
     const formRef = ref();
 
     const submitForm = () => {
@@ -206,6 +225,9 @@ export default defineComponent({
       deviceData,
       deviceColumns,
       errorMsg,
+      isValueChanged,
+      changedValue,
+      onCloseModal,
     };
   },
 });

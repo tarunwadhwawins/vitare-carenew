@@ -29,7 +29,7 @@ export const addTimeLog = async ({ commit }, {id, data}) => {
 	})
 }
 
-export const timeLogsList = async ({ commit }, id) => {
+export const timeLogsList = async ({ commit }, {id}) => {
   commit('loadingStatus', true)
 	await ServiceMethodService.common("get", API_ENDPOINTS['patient']+"/"+id+"/timeLog", null, null).then((response) => {
 		commit('timeLogsListSuccess', response.data.data);

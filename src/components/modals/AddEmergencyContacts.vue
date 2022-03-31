@@ -152,13 +152,8 @@ export default {
 
     const form = reactive({ ...emergencyContactForm });
 
-    const changedValue = (value) => {
-			if(value == false) {
-				isValueChanged.value = false;
-			}
-			else {
-				isValueChanged.value = true;
-			}
+    const changedValue = () => {
+			isValueChanged.value = true;
     }
 
     function closeModal() {
@@ -170,6 +165,7 @@ export default {
 							value: false
 						});
 						Object.assign(emergencyContactForm, form);
+						isValueChanged.value = false;
 					}
 					else {
 						emit("closeModal", {

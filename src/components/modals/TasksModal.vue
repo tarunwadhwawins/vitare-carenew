@@ -267,12 +267,20 @@ export default defineComponent({
       if(checkFieldsData.value){
       warningSwal(messages.modalWarning).then((response) => {
         if (response == true) {
+          emit("closeModal", {
+            modal: 'addTask',
+            value: false
+          });
           formRef.value.resetFields();
           emit("saveTaskModal", false);
           Object.assign(taskForm, form)
           store.commit('checkChangeInput',false)
         } else {
           emit("saveTaskModal", true);
+          emit("closeModal", {
+            modal: 'addTask',
+            value: true
+          });
         }
       })
       }else{
