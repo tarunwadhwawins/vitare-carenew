@@ -1,7 +1,7 @@
 <template>
 <a-modal width="800px" title="Reply" centered @cancel="closeModal()" class="chatModal">
     <a-row :gutter="24">
-        <a-col :span="24">
+        <a-col :span="24" class="chatBox2">
             <div class="chatBox" ref="scroll" id="chatBox">
                 <a-list item-layout="horizontal">
                     <a-list-item>
@@ -110,16 +110,27 @@ export default {
         const auth = JSON.parse(localStorage.getItem("auth"))
         let interval = setInterval(() => {
             store.dispatch("conversation", props.communication.id)
+            getScroll()
         }, 5000);
+        const scrollHeight = ref(null)
+        const tableContent = ref(null)
         watchEffect(() => {
             store.state.communications.conversationList = ""
             store.dispatch("conversation", props.communication.id)
             store.dispatch("communicationsList");
-            //  const container = scroll.value;
-            //   container.scrollTop = container.scrollHeight;
+
+             tableContent.value = document.getElementsByClassName('chatBox')
+            getScroll()
+          
+              
 
         })
-
+function getScroll(){
+    setTimeout(()=>{
+                scrollHeight.value = tableContent.value[0].scrollHeight
+                tableContent.value[0].scrollTop=tableContent.value[0].scrollHeight
+        },2000)
+}
         const list = store.getters.communicationRecord.value
 
         function sendMsg() {
@@ -151,15 +162,7 @@ export default {
             clearInterval(interval);
         }
         onMounted(() => {
-            var tableContent = document.getElementsByClassName('chatBox')
-            //const rect = tableContent.getBoundingClientRect();
-            //var arrayElements = Object.entries(tableContent);
-        //     for(var i = 0; i< arrayElements.length; i++) {
-        //     arrayElements[i][1].style.height = desiredHeightValue;
-        // }
-        setTimeout(()=>{
-            tableContent[0].scrollTop(0,300)
-        },1000)
+           
                 // tableContent.addEventListener('scroll', (event) => {
                 // let maxScroll = event.target.scrollHeight - event.target.clientHeight
                 // let currentScroll = event.target.scrollTop + 2
