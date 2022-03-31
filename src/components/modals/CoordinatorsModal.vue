@@ -216,7 +216,7 @@ export default {
         }
         if (addStaff.value!=null) {
           store.dispatch("staffs");
-          // store.state.careCoordinator.errorMsg=''
+          store.state.careCoordinator.errorMsg=''
           store.dispatch("updateStaff", {
            id:addStaff.value.id,
            data:personalInfoData
