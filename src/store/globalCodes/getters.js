@@ -9,3 +9,8 @@ export const globalMeta = (state)=>{
         return state.globalMeta
     })
 }
+export const globalCodeDetails = (state)=>{
+    return computed(()=>{
+        return state.globalCodeDetails
+    })
+}

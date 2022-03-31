@@ -1,16 +1,14 @@
 import { dateFormat } from '../../commonMethods/commonMethod';
 
-export const globalCodeCategory = async (state, globalCodes) => {
-  const codesList = [];
-  globalCodes.data.map(codes => {
-    codes.globalCode.map(code => {
-      code.isActive = code.isActive == 1 ? true : false
-      codesList.push(code)
-    })
+export const globalCode = async (state, globalCodes) => {
+  state.globalCodesList = globalCodes.data.map(codes => {
+   
+      codes.isActive = codes.isActive == 1 ? true : false
+  return codes
   });
  
 
-  state.globalCodesList = codesList;
+  
   state.globalMeta = globalCodes.meta.pagination
 }
 
