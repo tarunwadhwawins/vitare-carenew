@@ -17,11 +17,11 @@
       <span v-if="record.glucose_fasting_blood_sugar" :class="className">{{ record.glucose_fasting_blood_sugar }}</span>
     </template>
     
-    <template #oxymeter_spo2="{record}">
-      <span v-if="record.oxymeter_spo2" :class="className">{{ record.oxymeter_spo2 }}</span>
+    <template #oximeter_spo2="{record}">
+      <span v-if="record.oximeter_spo2" :class="className">{{ record.oximeter_spo2 }}</span>
     </template>
-    <template #oxymeter_bpm="{record}">
-      <span v-if="record.oxymeter_bpm" :class="className">{{ record.oxymeter_bpm }}</span>
+    <template #oximeter_bpm="{record}">
+      <span v-if="record.oximeter_bpm" :class="className">{{ record.oximeter_bpm }}</span>
     </template>
 
   </a-table>
