@@ -27,7 +27,7 @@
                             <div class="text-right mb-24" v-if="arrayToObjact(providersPermissions,26)">
                                 <!-- <Button :name="exportButtonName" /> -->
                                 <div class="text-right mb-24">
-                                    <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+                                    <ExportToExcel  @click="exportExcel('provider_report')"/>
                                 </div>
                             </div>
                         </a-col>

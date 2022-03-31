@@ -7,8 +7,7 @@
             <a-col :sm="8" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('globalCodes.category')" name="globalCodeCategory" :rules="[{ required: true, message: $t('globalCodes.category')+' '+$t('global.validation')  }]">
-                        <!-- <a-select v-if="globalCodeCategories" ref="select" v-model:value="globalCodeForm.globalCodeCategory" style="width: 100%" size="large" placeholder="Select Device Type" :options="globalCodeCategories.map((item) => ({label: item.name, value: item.id }))" @change="checkChangeInput()"></a-select> -->
-                        <!-- <AutoComplete :options="globalCodeCategories.map((item) => ({label: item.name, value: item.id }))"  v-if="globalCodeCategories" v-model:value="globalCodeForm.globalCodeCategory" @change="checkChangeInput()" /> -->
+
                             <GlobalCodeDropDown  v-if="globalCodeCategories" @change="checkChangeInput()"  v-model:value="globalCodeForm.globalCodeCategory" :globalCode="globalCodeCategories"/>
                     </a-form-item>
                 </div>
@@ -39,6 +38,7 @@
             </a-col>
         </a-row>
     </a-form>
+    <Loader />
 </a-modal>
 </template>
 
@@ -53,7 +53,6 @@ import {
     useStore
 } from "vuex"
 import ModalButtons from "@/components/common/button/ModalButtons";
-//import AutoComplete from "@/components/common/input/AutoComplete";
 import {
     warningSwal
 } from "@/commonMethods/commonMethod";
@@ -61,11 +60,12 @@ import {
     messages
 } from "../../config/messages";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+import Loader from "@/components/loader/Loader"
 export default {
     components: {
         ModalButtons,
-        // AutoComplete,
-        GlobalCodeDropDown
+        GlobalCodeDropDown,
+        Loader
     },
     props: {
         isAdd: {
@@ -84,15 +84,8 @@ export default {
             emit('is-visible', false);
         };
 
-        //const codecategoryId = ref(null);
-        //onst onSelectOption = (selected) => {
-        // categories.value.forEach(category => {
-        //     if (category.value == selected) {
-        //         codecategoryId.value = category.id
-        //     }
-        // });
-        //};
-        const codeDetails = ref(null)
+    
+        const codeDetails = store.getters.globalCodeDetails
         const globalCodeForm = reactive({
             globalCodeCategory: '',
             name: '',
@@ -104,7 +97,6 @@ export default {
             formButton.value=false
             if (props.isAdd != null) {
                 // console.log("sdffds")
-                codeDetails.value = store.state.globalCodes.globalCodeDetails
                 Object.assign(globalCodeForm, codeDetails.value)
                 globalCodeForm.isActive = codeDetails.value.isActive ? true : false
             }
@@ -191,13 +183,10 @@ export default {
             closeModal,
             formRef,
             handleClear,
-            //onSelectOption,
             globalCodeCategories,
-
             globalCodeForm,
             submitForm,
             handleCancel,
-            //categories,
             size: ref("large"),
             checked,
             formButton

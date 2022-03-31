@@ -172,7 +172,7 @@ export default {
                 },
             },
             {
-                title: "Assigned/Unassigned",
+                title: "Availability",
                 dataIndex: "isAvailable",
                 slots: {
                     customRender: "isAvailable",

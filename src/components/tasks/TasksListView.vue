@@ -5,7 +5,7 @@
     </a-col>
     <a-col :span="12" v-if="arrayToObjact(tasksDashboardPermissions, 118)">
       <div class="text-right mb-24">
-        <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+        <ExportToExcel  @click="exportExcel('task_report')"/>
       </div>
     </a-col>
     <TaskTable @is-Edit="editTask($event)"></TaskTable>
