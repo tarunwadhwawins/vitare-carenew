@@ -6,7 +6,7 @@
           <h2 class="pageTittle">
             {{ $t("thresholds.generalParameters") }}
 
-            <div class="commonBtn">
+            <div class="commonBtn" v-if="arrayToObjact(globalCodesPermissions,329)">
               <a-button class="btn primaryBtn" @click="showModal(true)">{{
                 $t("thresholds.addNewParameters")
                 }}</a-button>
@@ -43,14 +43,14 @@
   <Thresholds v-else v-model:visible="Thresholds" @is-visible="isEdit($event)" />
 </template>
 <script>
-  import { ref, watchEffect,onUnmounted } from "vue";
+  import { ref, watchEffect,onUnmounted,computed } from "vue";
   import Thresholds from "@/components/modals/Thresholds";
   import ThresholdsTable from "./ThresholdsTable";
   import { useStore } from "vuex";
   import Loader from "@/components/loader/Loader";
   import SearchField from "@/components/common/input/SearchField";
   import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
-  import { exportExcel } from "@/commonMethods/commonMethod";
+  import { exportExcel,arrayToObjact } from "@/commonMethods/commonMethod";
   export default {
     components: {
       ThresholdsTable,
@@ -128,7 +128,12 @@
                 data: '&orderField=&orderBy='
             })
         })
+        const globalCodesPermissions = computed(()=>{
+            return store.state.screenPermissions.globalCodesPermissions
+        })
       return {
+        globalCodesPermissions,
+        arrayToObjact,
         exportExcel,
         checked,
         Thresholds,
