@@ -18,7 +18,10 @@
 </template>
 
 <script>
-import { computed, defineComponent, watchEffect } from "vue";
+import {
+  computed,
+  defineComponent,
+} from "vue";
 import {
   // DeleteOutlined,
   // EditOutlined
@@ -38,6 +41,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const route = useRoute();
+    const patientId = route.params.udid;
     
     const timeLogColumns = [
       {
@@ -106,10 +110,6 @@ export default defineComponent({
         },
       }, */
     ];
-    
-    watchEffect(() => {
-      store.dispatch('timeLogsList', route.params.udid)
-    })
 
     const timeLogsList =  computed(() => {
       return store.state.timeLogs.timeLogsList
@@ -118,10 +118,11 @@ export default defineComponent({
     const deleteTimeLog = (timeLogId) => {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
-          const patientId = route.params.udid;
           store.dispatch('deleteTimeLog', {patientId, timeLogId}).then(() => {
-            store.dispatch('timeLogsList', patientId);
-            store.dispatch('latestTimeLog', patientId)
+            store.dispatch('timeLogsList', {
+              id: route.params.udid
+            });
+            store.dispatch('latestTimeLog', route.params.udid)
           });
         }
       })

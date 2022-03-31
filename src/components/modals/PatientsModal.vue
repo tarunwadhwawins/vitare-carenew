@@ -1335,7 +1335,7 @@ export default defineComponent( {
 					}
 					store.dispatch("addCondition", {
 						data: conditions,
-						id: idPatient,
+						id: patients.value.addDemographic ? patients.value.addDemographic.id : null,
 						referalID: null,
 						physicianId: null,
 					}).then(() => {
@@ -1353,7 +1353,7 @@ export default defineComponent( {
 					}
 					store.dispatch("addCondition", {
 						data: conditions,
-						id: idPatient,
+						id: patients.value.addDemographic ? patients.value.addDemographic.id : null,
 						referalID: patients.value.addPatientReferals ? patients.value.addPatientReferals.id : null,
 						physicianId: patients.value.addPatientPhysician ? patients.value.addPatientPhysician.id : null,
 					}).then(() => {

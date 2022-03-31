@@ -110,13 +110,8 @@ export default {
 		})
     const form = reactive({ ...addPhysicianForm });
 
-    const changedValue = (value) => {
-			if(value == false) {
-				isValueChanged.value = false;
-			}
-			else {
-				isValueChanged.value = true;
-			}
+    const changedValue = () => {
+			isValueChanged.value = true;
     }
 
     function closeModal() {
@@ -128,6 +123,7 @@ export default {
 							value: false
 						});
 						Object.assign(addPhysicianForm, form);
+						isValueChanged.value = false;
 					}
 					else {
 						emit("closeModal", {

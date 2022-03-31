@@ -1,16 +1,12 @@
 <template>
-  <a-modal width="1000px" title="Add Time Logs " centered>
+  <a-modal width="1000px" title="Add Time Logs " centered @cancel="onCloseModal()">
     <a-form layout="vertical" ref="formRef" :model="addTimeLogForm" @finish="submitForm">
       <a-row :gutter="24">
 
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.category')" name="category" :rules="[{ required: true, message: $t('timeLogs.category')+' '+$t('global.validation')  }]">
-              <!-- <a-select ref="select" v-model:value="addTimeLogForm.category" style="width: 100%" size="large" >
-                <a-select-option value="" hidden>Select Category</a-select-option>
-                <a-select-option v-for="category in timeLogCategories.globalCode" :key="category.id">{{ category.name }}</a-select-option>
-              </a-select> -->
-              <GlobalCodeDropDown v-model:value="addTimeLogForm.category" :globalCode="timeLogCategories"/>
+              <GlobalCodeDropDown @change="changedValue" v-model:value="addTimeLogForm.category" :globalCode="timeLogCategories"/>
             </a-form-item>
           </div>
         </a-col>
@@ -18,7 +14,7 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.loggedBy')" name="loggedBy" :rules="[{ required: true, message: $t('timeLogs.loggedBy')+' '+$t('global.validation')  }]">
-              <a-select ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.loggedBy" style="width: 100%" size="large">
+              <a-select @change="changedValue" ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.loggedBy" style="width: 100%" size="large">
                 <a-select-option value="" hidden>Select Logged By</a-select-option>
                 <a-select-option v-for="staff in staffList" :value="staff.id" :key="staff.id">{{ staff.fullName }}</a-select-option>
               </a-select>
@@ -29,7 +25,7 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.performedBy')" name="performedBy" :rules="[{ required: true, message: $t('timeLogs.performedBy')+' '+$t('global.validation')  }]">
-              <a-select ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.performedBy" style="width: 100%" size="large">
+              <a-select @change="changedValue" ref="select" :disabled="isDisabled" v-model:value="addTimeLogForm.performedBy" style="width: 100%" size="large">
                 <a-select-option value="" hidden>Select Performed By</a-select-option>
                 <a-select-option v-for="staff in staffList" :value="staff.id" :key="staff.id">{{ staff.fullName }}</a-select-option>
               </a-select>
@@ -40,7 +36,7 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.date')" name="date" :rules="[{ required: true, message: $t('timeLogs.date')+' '+$t('global.validation')  }]">
-              <a-date-picker :disabled="isDisabled" v-model:value="addTimeLogForm.date" :size="size" style="width: 100%" format="MM/DD/YYYY" />
+              <a-date-picker @change="changedValue" :disabled="isDisabled" v-model:value="addTimeLogForm.date" :size="size" style="width: 100%" format="MM/DD/YYYY" />
             </a-form-item>
           </div>
         </a-col>
@@ -48,7 +44,7 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.timeAmount')" name="timeAmount" :rules="[{ required: true, message: $t('timeLogs.timeAmount')+' '+$t('global.validation')  }]">
-              <a-time-picker :disabled="isDisabled" v-model:value="addTimeLogForm.timeAmount" :default-value="defaultValue" format="HH:mm:ss" :size="size" style="width: 100%"/>
+              <a-time-picker @change="changedValue" :disabled="isDisabled" v-model:value="addTimeLogForm.timeAmount" :default-value="defaultValue" format="HH:mm:ss" :size="size" style="width: 100%"/>
             </a-form-item>
           </div>
         </a-col>
@@ -56,11 +52,7 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.cptCode')" name="cptCode" :rules="[{ required: true, message: $t('timeLogs.cptCode')+' '+$t('global.validation')  }]">
-              <!-- <a-select ref="select" v-model:value="addTimeLogForm.cptCode" style="width: 100%" size="large" >
-                <a-select-option value="" hidden>Select CPT Code</a-select-option>
-                <a-select-option v-for="code in cptCodesList" :key="code.udid" :value="code.udid">{{ code.name }}</a-select-option>
-              </a-select> -->
-              <GlobalCodeDropDown v-model:value="addTimeLogForm.cptCode" :globalCode="cptCodesList"/>
+              <GlobalCodeDropDown @change="changedValue" v-model:value="addTimeLogForm.cptCode" :globalCode="cptCodesList"/>
             </a-form-item>
           </div>
         </a-col>
@@ -68,7 +60,7 @@
         <a-col :sm="24" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.note')" name="note" :rules="[{ required: true, message: $t('timeLogs.note')+' '+$t('global.validation')  }]">
-              <a-textarea v-model:value="addTimeLogForm.note" size="large" style="width: 100%" />
+              <a-textarea @change="changedValue" v-model:value="addTimeLogForm.note" size="large" style="width: 100%" />
             </a-form-item>
           </div>
         </a-col>
@@ -98,6 +90,8 @@ import { useRoute } from "vue-router";
 import moment from "moment";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 
+import { warningSwal } from "@/commonMethods/commonMethod";
+import { messages } from "../../config/messages";
 export default defineComponent({
   components: {
     ModalButtons,
@@ -118,7 +112,7 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute()
     const formRef = ref();
-    const form = reactive({ ...addTimeLogForm });
+    const isValueChanged = ref(false);
     // const isTimerLog = reactive(props.isTimeLog);
     const isDisabled = props.isTimeLog == true ? true : false;
     const loggedInUserDetails = JSON.parse(localStorage.getItem('auth'))
@@ -147,13 +141,41 @@ export default defineComponent({
       cptCode: "",
       note: "",
     })
+    const form = reactive({ ...addTimeLogForm });
+
+    const changedValue = () => {
+      isValueChanged.value = true;
+    }
+
+    function onCloseModal() {
+			if(isValueChanged.value) {
+				warningSwal(messages.modalWarning).then((response) => {
+					if (response == true) {
+						emit("closeModal", {
+							modal: 'addTimeLog',
+							value: false
+						});
+						Object.assign(addTimeLogForm, form);
+						isValueChanged.value = false;
+					}
+					else {
+						emit("closeModal", {
+							modal: 'addTimeLog',
+							value: true
+						});
+					}
+				})
+			}
+    }
 
     const loggedInUserId = ref(null);
-    staffList.value.forEach(staff => {
-      if(staff.uuid == loggedInUserDetails.user.staffUdid) {
-        loggedInUserId.value = staff.uuid;
-      }
-    });
+    if(staffList.value && staffList.value != null) {
+      staffList.value.forEach(staff => {
+        if(staff.uuid == loggedInUserDetails.user.staffUdid) {
+          loggedInUserId.value = staff.uuid;
+        }
+      });
+    }
 
     watchEffect(() => {
       if(props.isEditTimeLog == true) {
@@ -241,6 +263,9 @@ export default defineComponent({
       timeLogCategories,
       isDisabled,
       cptCodesList,
+      isValueChanged,
+      changedValue,
+      onCloseModal,
     };
   },
 });

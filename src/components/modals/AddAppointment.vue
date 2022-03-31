@@ -252,12 +252,20 @@ import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
                     if (response == true) {
                      handleCancel();
                         emit("is-visible", false);
+                        emit("closeModal", {
+                          modal: 'addAppointment',
+                          value: false
+                        });
                         emit('is-heardeVisible', false);
                         store.commit('checkChangeInput',false)
 
                     } else {
 
-                        emit("is-visible", true);
+                      emit("is-visible", true);
+                      emit("closeModal", {
+                        modal: 'addAppointment',
+                        value: true
+                      });
                     }
                 });
             }
