@@ -1,5 +1,5 @@
 <template>
-<a-table rowKey="id" :data-source="meta.staffs" :scroll="{ y: tableYScrollerCounterPage ,x: 1020}" :pagination=false :columns="meta.columns">
+<a-table rowKey="id" :data-source="meta.staffs" :scroll="{ y: tableYScrollerCounterPage ,x: 1020}" :pagination=false :columns="meta.columns" @change="handleTableChange">
     <template #name="{text,record}">
         <!-- <router-link :to="linkTo">{{ text.text }}</router-link> -->
         <router-link @click="staffSummery(record.uuid)" :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}">{{ text }}</router-link>
@@ -27,7 +27,8 @@ import {
     WarningOutlined
 } from "@ant-design/icons-vue"
 import {
-    dateFormat,tableYScrollerCounterPage
+    dateFormat,
+    tableYScrollerCounterPage
 } from "../../../commonMethods/commonMethod"
 import {
     onMounted
@@ -46,12 +47,12 @@ export default {
 
     },
     setup() {
-       
+
         const store = useStore();
         //const fields = reactive(props.staffRecords.columns)
 
         const meta = store.getters.staffRecord.value
-        let data = ''
+        let data = []
         let scroller = ''
         onMounted(() => {
             var tableContent = document.querySelector('.ant-table-body')
@@ -67,8 +68,8 @@ export default {
                         meta.staffMeta = ""
                         data = meta.staffs
                         store.state.careCoordinator.staffs = ""
-                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
-                        store.dispatch("staffs", "?search="+url+"&page=" + current_page).then(() => {
+
+                        store.dispatch("staffs", "?page=" + current_page + store.getters.searchTable.value + store.getters.orderTable.value.data).then(() => {
                             loadMoredata()
                         })
 
@@ -91,6 +92,25 @@ export default {
             }, 50)
 
         }
+        const handleTableChange = (pag, filters, sorter) => {
+            if (sorter.order) {
+                let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
+                let orderParam = '&orderField=' + sorter.field + '&orderBy=' + order
+                store.dispatch('orderTable', {
+                    data: orderParam,
+                    orderBy: order,
+                    page: pag,
+                    filters: filters
+                })
+                store.dispatch("staffs", "?page=" + store.getters.searchTable.value + orderParam)
+
+            } else {
+                store.dispatch('orderTable', {
+                    data: '&orderField=&orderBy='
+                })
+                store.dispatch("staffs", "?page=" + store.getters.searchTable.value + store.getters.orderTable.value.data)
+            }
+        }
 
         function staffSummery(uuid) {
             console.log('value', uuid);
@@ -100,6 +120,7 @@ export default {
             meta,
             staffSummery,
             dateFormat,
+            handleTableChange,
             tableYScrollerCounterPage
         }
     },

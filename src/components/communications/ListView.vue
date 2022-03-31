@@ -38,6 +38,10 @@ export default {
 
     watchEffect(() => {
       store.dispatch('communicationsList')
+      store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
     })
    
     const searchData = (value) => {
@@ -49,7 +53,10 @@ export default {
       return store.state.screenPermissions.communicationPermissions
     })
     onUnmounted(()=>{
-            store.dispatch("searchTable",'')
+      store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
         })
     return {
       communicationPermissions,
