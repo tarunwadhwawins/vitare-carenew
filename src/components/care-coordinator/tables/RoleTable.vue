@@ -1,6 +1,6 @@
 
 <template>
-<a-table  rowKey="id" :pagination="false" :columns="staffs.roleListColms" :data-source="staffs.roleList" :scroll="{ x: 900 }">
+<a-table  rowKey="id" :pagination="false" :columns="staffs.roleListColms" :data-source="staffs.roleList" >
   <template #role="{record}">
         <span>{{ record.role.name }}</span>
     </template>

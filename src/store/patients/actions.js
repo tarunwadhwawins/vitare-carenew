@@ -1,5 +1,5 @@
 import serviceMethod from '@/services/serviceMethod';
-import { successSwal, errorSwal } from '@/commonMethods/commonMethod';
+import { successSwal, errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
 import { ref } from 'vue';
 const errorMessage = []
@@ -12,6 +12,7 @@ export const addDemographic = async ({commit}, data) => {
     // successSwal(response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
@@ -34,6 +35,7 @@ export const updateDemographic = async ({commit}, data) => {
     commit('counterPlus')
     
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
@@ -59,6 +61,7 @@ export const patients = async ({
     commit('patient', response.data);
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
@@ -244,13 +247,24 @@ export const patientConditions = async ({ commit }, id) => {
   await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/condition', null, null).then((condition) => {
     commit('patientConditions', condition.data.data);
     serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/referals', null, null).then((referal) => {
-      commit('patientReferralSource', referal.data.data[0]);
+      if(referal.data.data.length > 0) {
+        commit('patientReferralSource', referal.data.data[0]);
+      }
+      else {
+        commit('patientReferralSource', null);
+      }
       serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/physician', null, null).then((physician) => {
-        commit('patientPrimaryPhysician', physician.data.data[0]);
+        if(physician.data.data.length > 0) {
+          commit('patientPrimaryPhysician', physician.data.data[0]);
+        }
+        else {
+          commit('patientPrimaryPhysician', null);
+        }
         commit('loadingStatus', false)
       });
     });
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     commit('loadingStatus', false)
     errorSwal(error.response.data.message)
   })
@@ -264,6 +278,7 @@ export const programList = async ({
     commit('programList', response.data.data);
    // commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     //commit('loadingStatus', false)
     errorSwal(error.response.data.message)
   })
@@ -277,6 +292,7 @@ export const addPatientProgram = async ({
     commit('addPatientProgram', response.data.data);
     // successSwal(response.data.message)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -294,6 +310,7 @@ export const deleteProgram = async ({commit}, data) => {
     commit('deleteProgram', response.data.data);
     successSwal(response.data.message)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
   })
 
@@ -309,6 +326,7 @@ export const program = async ({
     commit('programPatients', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
@@ -322,6 +340,7 @@ export const addDevice = async ({
     commit('addDevice', response.data.data);
     // successSwal(response.data.message)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -346,6 +365,7 @@ export const changeStatus = async ({
     commit('changeStatus', response.data.data);
     successSwal(response.data.message)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -365,6 +385,7 @@ export const deleteDevice = async ({
     successSwal(response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
@@ -378,6 +399,7 @@ export const devices = async ({
     commit('devices', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     commit('loadingStatus', false)
     errorSwal(error.response.data.message)
   })
@@ -391,8 +413,8 @@ export const inventoryList = async ({ commit }, data) => {
   await serviceMethod.common("get", url, null, null).then((response) => {
     commit('inventoryList', response.data.data);
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 404) {
-      console.log('errorMsg', error.response.data)
       commit('errorMsg', error.response.data)
     }
     else {
@@ -422,6 +444,7 @@ export const parameter = async ({
     commit('counterPlus')
     // successSwal(response.data.message)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -442,6 +465,7 @@ export const addClinicalHistory = async ({
     commit('addClinicalHistory', response.data.data);
     // successSwal(response.data.message)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -458,6 +482,7 @@ export const deleteClinicalData = async ({commit}, data) => {
     commit('deleteClinicalData', response.data.data);
     successSwal(response.data.message)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
   })
 }
@@ -471,6 +496,7 @@ export const clinicalHistoryList = async ({
     commit('clinicalHistoryList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
@@ -486,6 +512,7 @@ export const addClinicalMedicat = async ({
     commit('addClinicalMedicat', response.data.data);
     // successSwal(response.data.message)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -502,6 +529,7 @@ export const deleteClinicalMedicat = async ({commit}, data) => {
     commit('deleteClinicalMedicat', response.data.data);
     successSwal(response.data.message)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
   })
 }
@@ -514,6 +542,7 @@ export const clinicalMedicatList = async ({
     commit('clinicalMedicatList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     commit('loadingStatus', false)
     errorSwal(error.response.data.message)
   })
@@ -542,6 +571,7 @@ export const addInsurance = async ({ commit }, data) => {
     // successSwal(response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
@@ -577,6 +607,7 @@ export const updateInsurance = async ({ commit }, data) => {
     // successSwal(response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
@@ -597,6 +628,7 @@ export const patientInsurance = async ({ commit }, id) => {
     commit('patientInsurance', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
@@ -607,6 +639,7 @@ export const addDocument = async ({commit}, data) => {
     commit('addDocument', response.data.data);
     successSwal(response.data.message)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -626,6 +659,7 @@ export const deleteDocument = async ({
     commit('deleteDocument', response.data.data);
     successSwal(response.data.message)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
   })
 }
@@ -640,6 +674,7 @@ export const documents = async ({
     commit('documents', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     commit('loadingStatus', false)
     errorSwal(error.response.data.message)
   })
@@ -653,6 +688,7 @@ export const uploadFile = async ({ commit }, data) => {
     commit('uploadFile', response.data.data.path);
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -671,8 +707,10 @@ export const patientDetails = async ({commit}, id) => {
     commit('patientDetails', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     // errorSwal(error.response.data.message)
     console.log('Error', error)
+    // errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
 }
@@ -683,6 +721,7 @@ export const patientTimeline = async ({commit}, data) => {
     commit('patientTimelineSuccess', response.data.data);
     
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
     
   })
@@ -692,6 +731,7 @@ export const patientDocuments = async ({commit}, id) => {
   await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/document', null, null).then((response) => {
     commit('patientDocumentsSuccess', response.data.data);
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
   })
 }
@@ -706,6 +746,7 @@ export const latestDocument = async ({ commit }, id) => {
     }
 	})
 	.catch((error) => {
+    errorLogWithDeviceInfo(error.response)
 		/* if (error.response.status == 401) {
 			//AuthService.logout();
 		} */
@@ -723,6 +764,7 @@ export const latestDevice = async ({ commit }, id) => {
     }
 	})
 	.catch((error) => {
+    errorLogWithDeviceInfo(error.response)
 		/* if (error.response.status == 401) {
 			//AuthService.logout();
 		} */
@@ -740,6 +782,7 @@ export const latestVital = async ({ commit }, id) => {
     }
 	})
 	.catch((error) => {
+    errorLogWithDeviceInfo(error.response)
 		/* if (error.response.status == 401) {
 			//AuthService.logout();
 		} */
@@ -754,6 +797,7 @@ export const patientSearchWithBitrix = async ({ commit }, data) => {
 		commit('patientSearchWithBitrix', response.data.result);
 	})
 	.catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -765,6 +809,7 @@ export const getBitrixFieldsName = async ({ commit }) => {
 		commit('getBitrixFieldsName', response.data.data);
 	})
 	.catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -775,8 +820,10 @@ export const getBitrixFieldsName = async ({ commit }) => {
 export const fetchFromBitrix = async ({ commit }, id) => {
 	await serviceMethod.common("get", `bitrix/deal/${id}`, null, null).then((response) => {
 		commit('fetchFromBitrix', response.data.result);
+    commit('bitrixFormCheck',true)
 	})
 	.catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -794,18 +841,19 @@ export const patientVitals = async ({ commit }, {patientId, deviceType}) => {
     commit('loadingStatus', false)
 	})
 	.catch((error) => {
+    errorLogWithDeviceInfo(error.response)
 		commit('failure', error);
     commit('loadingStatus', false)
 	})
 }
 
 export const addVital = async ({ commit }, data) => {
-  //console.log('data', data)
   commit('loadingStatus', true)
 	await serviceMethod.common("post", API_ENDPOINTS['patient']+'/'+data.patientId+'/vital', null, data.data).then(() => {
     commit('loadingStatus', false)
 	})
 	.catch((error) => {
+    errorLogWithDeviceInfo(error.response)
 		commit('failure', error);
     commit('loadingStatus', false)
 	})
@@ -819,6 +867,7 @@ export const addCriticalNote = async ({commit}, data) => {
     successSwal(response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
@@ -836,6 +885,7 @@ export const patientCriticalNotes = async ({commit}, patientUdid) => {
   await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+patientUdid+'/'+API_ENDPOINTS['criticalNote']+"?isRead=0", null).then((response) => {
     commit('patientCriticalNotes', response.data.data);
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
@@ -843,6 +893,7 @@ export const patientCriticalNotes = async ({commit}, patientUdid) => {
 
 export const readCriticalNote = async ({commit}, data) => {
   await serviceMethod.common("put", API_ENDPOINTS['patient']+'/'+data.patientUdid+'/'+API_ENDPOINTS['criticalNote']+'/'+data.criticalNoteUdid, null, { isRead: 1 }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
@@ -851,10 +902,10 @@ export const readCriticalNote = async ({commit}, data) => {
 export const criticalNotesList = async ({commit}, id) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", `${API_ENDPOINTS['patient']}/${id}/criticalNote`, null, null).then((response) => {
-    //console.log("check",response.data.data)
     commit('criticalNotesList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
@@ -875,6 +926,7 @@ export const criticalNotesDelete = async ({commit}, data) => {
     successSwal(response.data.message)
     commit('closeModal', true)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
   })
 }
@@ -889,6 +941,7 @@ export const familyMembersList = async ({commit}, patientUdid) => {
     commit('familyMembersList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 500) {
       errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -904,6 +957,7 @@ export const addFamilyMember = async ({commit}, data) => {
     commit('loadingStatus', false)
     commit('closeModal', true)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     }
@@ -922,6 +976,7 @@ export const updateFamilyMember = async ({commit}, data) => {
     commit('loadingStatus', false)
     commit('closeModal', true)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     }
@@ -940,6 +995,7 @@ export const deleteFamilyMember = async ({commit}, data) => {
     commit('loadingStatus', false)
     commit('closeModal', true)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 500) {
       errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -954,6 +1010,7 @@ export const familyMemberDetails = async ({commit}, data) => {
     commit('familyMemberDetails', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 500) {
       errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -972,6 +1029,7 @@ export const addPhysician = async ({commit}, data) => {
     successSwal(response.data.message)
     commit('closeModal', true)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     }
@@ -990,6 +1048,7 @@ export const updatePhysician = async ({commit}, data) => {
     successSwal(response.data.message)
     commit('closeModal', true)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     }
@@ -1007,6 +1066,7 @@ export const physiciansList = async ({commit}, patientUdid) => {
     commit('physiciansList', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 500) {
       errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -1022,6 +1082,7 @@ export const deletePhysician = async ({commit}, data) => {
     commit('loadingStatus', false)
     commit('closeModal', true)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 500) {
       errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -1033,10 +1094,10 @@ export const deletePhysician = async ({commit}, data) => {
 export const physicianDetails = async ({commit}, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", API_ENDPOINTS['patient']+`/${data.patientUdid}/physician/${data.physicianUdid}`, null, null).then((response) => {
-    console.log('physicianDetails', response.data.data)
     commit('physicianDetails', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 500) {
       errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -1055,6 +1116,7 @@ export const emergencyContactsList = async ({commit}, patientUdid) => {
     commit('emergencyContactsList', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 500) {
       errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -1069,6 +1131,7 @@ export const emergencyContactDetails = async ({commit}, data) => {
     commit('emergencyContactDetails', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 500) {
       errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -1084,6 +1147,7 @@ export const addEmergencyContact = async ({commit}, data) => {
     commit('loadingStatus', false)
     commit('closeModal', true)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     }
@@ -1102,6 +1166,7 @@ export const updateEmergencyContact = async ({commit}, data) => {
     commit('loadingStatus', false)
     commit('closeModal', true)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     }
@@ -1120,6 +1185,7 @@ export const deleteEmergencyContact = async ({commit}, data) => {
     commit('loadingStatus', false)
     commit('closeModal', true)
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     if (error.response.status === 500) {
       errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -1133,6 +1199,7 @@ export const timeLineType = async ({commit}) => {
     commit('timeLineType', response.data.data);
    
   }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
     
   })

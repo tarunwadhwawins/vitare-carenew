@@ -3,26 +3,17 @@ export const cptCode = async (state, cptCodes) => {
     {
       title: "Cpt Code",
       dataIndex: "name",
-      sorter: {
-        compare: (a, b) => a.name - b.name,
-        multiple: 3,
-      },
+      sorter:true
     },
     {
       title: "Description",
       dataIndex: "description",
-      sorter: {
-        compare: (a, b) => a.description - b.description,
-        multiple: 3,
-      },
+      sorter:true
     },
     {
       title: "Billing Amount",
       dataIndex: "billingAmout",
-      sorter: {
-        compare: (a, b) => a.billingAmout - b.billingAmout,
-        multiple: 2,
-      },
+      sorter:true
     },
     {
       title: "Active/Inactive",

@@ -1,7 +1,7 @@
 <template>
 <a-col :span="24">
     
-    <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.manageProgramList" :scroll="{ x: 900 ,y : tableYScroller }" @change="onChange" :pagination=false>
+    <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.manageProgramList" :scroll="{ x: 900 ,y : tableYScroller }" @change="handleTableChange" :pagination=false>
         <template #actions="text">
             <a-tooltip placement="bottom" v-if="arrayToObjact(programsPermissions,16)">
                 <template #title>
@@ -71,6 +71,10 @@ export default {
         const checked = ref([false]);
         watchEffect(() => {
             store.dispatch('manageProgramList')
+            store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
         })
         function editProgram(getRecord) {
             store.dispatch('editManageProgram', getRecord.udid)
@@ -103,7 +107,7 @@ export default {
         const meta = store.getters.programsRecord.value
         const loader = ref(false)
         let scroller = ''
-        let data = ''
+        let data = []
         onMounted(() => {
             var tableContent = document.querySelector('.ant-table-body')
             tableContent.addEventListener('scroll', (event) => {
@@ -120,8 +124,8 @@ export default {
                         loader.value = true
                         store.state.program.programMeta = ""
                         store.state.programs.manageProgramList = ""
-                        let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
-                        store.dispatch("manageProgramList", "&search="+url+"&page=" + current_page).then(() => {
+                       
+                        store.dispatch("manageProgramList", store.getters.searchTable.value+"&page=" + current_page).then(() => {
                             loadMoredata()
                         })
                     }
@@ -145,6 +149,18 @@ export default {
         const programsPermissions = computed(() => {
             return store.state.screenPermissions.programsPermissions
         })
+        const handleTableChange = (pag, filters, sorter) => {
+      if(sorter.order){
+        let order =sorter.order=='ascend' ? 'ASC': 'DESC'
+        let orderParam = '&orderField='+sorter.field+'&orderBy='+order
+        store.dispatch('orderTable',{data:orderParam,orderBy:order,page:pag,filters:filters})
+        store.dispatch("manageProgramList", store.getters.searchTable.value+orderParam)
+        
+      }else{
+        store.dispatch('orderTable',{data:'&orderField=&orderBy='})
+        store.dispatch("manageProgramList", store.getters.searchTable.value + store.getters.orderTable.value.data)
+      }
+    }
         return {
             meta,
             programsPermissions,
@@ -155,7 +171,8 @@ export default {
             deleteProgram,
             editProgram,
             UpdateProgramStatus,
-            tableYScroller
+            tableYScroller,
+            handleTableChange
         };
     },
 };

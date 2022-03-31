@@ -40,10 +40,6 @@
                                     <div class="thumb-desc">{{getstaffSummary?getstaffSummary.specialization:''}}</div>
                                 </div>
                                 <div class="pat-profile-inner">
-                                    <div class="thumb-head">Expertise</div>
-                                    <div class="thumb-desc">{{getstaffSummary?getstaffSummary.expertise:''}}</div>
-                                </div>
-                                <div class="pat-profile-inner">
                                     <div class="thumb-head">Network</div>
                                     <div class="thumb-desc">{{getstaffSummary?getstaffSummary.network:''}}</div>
                                 </div>

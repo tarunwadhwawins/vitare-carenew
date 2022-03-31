@@ -1,7 +1,7 @@
 <template>
   <a-table  rowKey="id" :columns="appointments.staffSummaryAppointmentCols" :data-source="appointments.staffSummaryAppointment" :pagination="false">
     <template #patient="{ record }">
-      <router-link :to="{ name: 'PatientSummary', params: { udid: record.id } }">{{ record.patient }}</router-link>
+      <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientUdid } }">{{ record.patient }}</router-link>
     </template> 
     <template #appt="text">
       <span >{{ text.text }}</span>

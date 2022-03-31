@@ -74,5 +74,6 @@ export default {
     addCondition:null,
     addPatientReferals:null,
     addPatientPhysician:null,
+    bitrixFormCheck:false
 
 }

@@ -1,6 +1,6 @@
-import ServiceMethod from '../../services/serviceMethod'
-import { API_ENDPOINTS } from "../../config/apiConfig"
-import { successSwal, errorSwal } from '@/commonMethods/commonMethod'
+import ServiceMethod from '@/services/serviceMethod'
+import { API_ENDPOINTS } from "@/config/apiConfig"
+import { successSwal, errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
 
 export const resetPassword = async ({ commit }, data) => {
 	
@@ -9,6 +9,7 @@ export const resetPassword = async ({ commit }, data) => {
     commit('errorMsg', null)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if(error.response.status == 422) {
       commit('errorMsg', error.response.data)
 		}
@@ -28,6 +29,7 @@ export const forgotPassword = async ({ commit }, data) => {
     commit('errorMsg', null)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if(error.response.status == 422) {
       commit('errorMsg', error.response.data)
 		}
@@ -48,6 +50,7 @@ export const validateCode = async ({ commit }, data) => {
     commit('errorMsg', null)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if(error.response.status == 404) {
       commit('validateCode', false)
       errorSwal('Invalid Code')
@@ -72,6 +75,7 @@ export const setupPassword = async ({ commit }, data) => {
     commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if(error.response.status == 500) {
       errorSwal(error.response.data.message)
       commit('loadingStatus', false)

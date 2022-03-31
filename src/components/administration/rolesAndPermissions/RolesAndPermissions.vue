@@ -24,7 +24,9 @@
                         <a-col :span="12">
                             <div class="text-right mb-24" v-if="arrayToObjact(roleAndPermissions,5)">
                                 <!-- <Button :name="exportButtonName" /> -->
-                                 <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('roleAndPermission_report')"/>
+                                 <div class="text-right mb-24">
+                                    <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+                                </div>
                             </div>
                         </a-col>
                         <a-col :span="24">
@@ -100,7 +102,10 @@ export default {
             return store.state.screenPermissions.roleAndPermissions
         })
         onUnmounted(()=>{
-            store.dispatch("searchTable",'')
+            store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
         })
         return {
             exportExcel,

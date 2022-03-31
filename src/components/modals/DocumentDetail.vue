@@ -23,12 +23,14 @@
             </a>
           </template>
         </a-table>
+        <Loader />
       </a-col>
     </a-row>
   </a-modal>
 </template>
 <script>
 import { computed, defineComponent, watchEffect, reactive } from "vue";
+import Loader from "@/components/loader/Loader";
 import {
   FileOutlined,
   DeleteOutlined,
@@ -41,6 +43,7 @@ import { useRoute } from "vue-router";
 
 export default defineComponent({
   components: {
+    Loader,
     FileOutlined,
     DeleteOutlined,
     // EditOutlined,
@@ -120,9 +123,16 @@ export default defineComponent({
           store.dispatch('deleteDocument', data).then(() => {
             store.dispatch('patientDocuments', patientId)
             if(patientDocuments.value.length <= 1) {
-              emit('closeModal')
+              emit('closeModal', {
+                modal: 'documentDetails',
+                value: false
+              });
             }
             store.dispatch('latestDocument', route.params.udid)
+            store.dispatch('patientTimeline', {
+              id: route.params.udid,
+              type: ''
+            });
           })
         }
       })

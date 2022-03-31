@@ -280,24 +280,20 @@ export const addDevice = (state, data) => {
 
 export const inventoryList = (state, data) => {
   // const devices = state.devices;
-  // console.log('deviceData 2', devices)
   // var list = [];
   // data.map(item => {
   //   list = []
   //   devices.map(device => {
   //     // if(item.modelNumber == device.modelNumber) {
   //       if(item.macAddress != device.macAddress) {
-  //         console.log('deviceData 3', item)
   //         list.push(item)
   //       }
   //     // }
   //     // else {
-  //     //   console.log('deviceData 4', item)
   //     //   list.push(item)
   //     // }
   //   })
   // })
-  // console.log('deviceData 5', list)
   // state.inventoryList = list
   state.inventoryList = data
 }
@@ -508,7 +504,7 @@ export const patientDetails = (state, patient) => {
   patient.contactTime = patient.contactTimeId.length > 0 ? JSON.parse(patient.contactTimeId) : [];
   patient.contactType = patient.contactType.length > 0 ? JSON.parse(patient.contactType) : [];
   patient.otherLanguage = patient.otherLanguage.length > 0 ? JSON.parse(patient.otherLanguage) : [];
-  patient.dob = patient.dob ? dobFormat(patient.dob) : null;
+  patient.patientDob = patient.dob ? dobFormat(patient.dob) : null;
   
   if(patient.patientFamilyMember && patient.patientFamilyMember.data) {
     patient.fullName = patient.patientFamilyMember.data.fullName ? patient.patientFamilyMember.data.fullName : null;
@@ -584,16 +580,16 @@ export const patientConditions = (state, conditions) => {
 export const patientReferralSource = (state, referralSource) => {
   if (referralSource) {
     referralSource.referralDesignation = referralSource.referralDesignationId;
+    state.patientReferralSource = referralSource;
   }
-  state.patientReferralSource = referralSource;
 }
 
 export const patientPrimaryPhysician = (state, primaryPhysician) => {
   if (primaryPhysician) {
     primaryPhysician.sameAsAbove = primaryPhysician.sameAsReferal;
     primaryPhysician.designation = primaryPhysician.designationId;
+    state.patientPrimaryPhysician = primaryPhysician;
   }
-  state.patientPrimaryPhysician = primaryPhysician;
 }
 
 export const deleteDocument = (state, data) => {
@@ -674,6 +670,11 @@ export const patientSearchWithBitrix = (state, data) => {
 
 export const getBitrixFieldsName = (state, data) => {
   state.getBitrixFieldsName = data
+}
+
+
+export const bitrixFormCheck = (state, data) => {
+  state.bitrixFormCheck = data
 }
 
 
@@ -981,9 +982,6 @@ export const patientVitals = (state, vitals) => {
       },
     ];
     // }
-    // console.log('state.bloodPressureColumns', state.bloodPressureColumns)
-    // console.log('state.bloodOxygenColumns', state.bloodOxygenColumns)
-    // console.log('state.bloodGlucoseColumns', state.bloodGlucoseColumns)
   }
   else {
     state.bloodPressure = null;

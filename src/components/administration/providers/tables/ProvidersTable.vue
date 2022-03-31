@@ -47,7 +47,7 @@ export default {
     
     const providersListAll = store.getters.providersListAll
     const meta = store.getters.providerMeta
-    let url=store.getters.searchTable.value ? store.getters.searchTable.value :''
+    let url=store.getters.searchTable
         let data = []
         let scroller = ''
         onMounted(() => {
@@ -65,7 +65,7 @@ export default {
                         data = providersListAll.value
                         store.state.provider.providersListAll = ""
                         let ordring = store.getters.orderTable.value  
-                        store.dispatch("providersListAll", "&search="+url+"&page=" + current_page+ordring.data).then(() => {
+                        store.dispatch("providersListAll", url.value+"&page=" + current_page+ordring.data).then(() => {
                             loadMoredata()
                         })
 
@@ -155,13 +155,12 @@ export default {
         let order =sorter.order=='ascend' ? 'ASC': 'DESC'
         let orderParam = '&orderField='+sorter.field+'&orderBy='+order
         store.dispatch('orderTable',{data:orderParam,orderBy:order,page:pag,filters:filters})
-        store.dispatch("providersListAll", '&search='+url+orderParam)
+        store.dispatch("providersListAll", url.value+orderParam)
         
       }else{
-        store.dispatch('orderTable',{field:'',orderBy:''})
+        store.dispatch('orderTable',{data:'&orderField=&orderBy='})
+        store.dispatch("providersListAll", store.getters.searchTable.value + store.getters.orderTable.value.data)
       }
-      
-      
     }
     return {
       providersPermissions,

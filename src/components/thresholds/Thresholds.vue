@@ -24,7 +24,9 @@
               $t("global.exportToExcel")
               }}</a-button>
           </div> -->
-          <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('generalParameter_report')"/>
+          <div class="text-right mb-24">
+            <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+          </div>
         </a-col>
         
           

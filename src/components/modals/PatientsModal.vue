@@ -439,7 +439,6 @@
             <div  class="steps-content" v-if="steps[current].title == 'Conditions'" >
                 <!-- <Conditions /> -->
                 <a-form :model="conditions" name="basic" :label-col="{ span: 8 }" scrollToFirstError=true :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="condition" @finishFailed="conditionsFailed">
-                    <Loader />
                     <a-row :gutter="24">
                         <a-col :span="24">
                             <div class="formHeading">
@@ -641,6 +640,7 @@
                         </a-button>
                     </div>
                 </a-form>
+                <Loader />
                 <!--  -->
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Programs'">
@@ -733,7 +733,7 @@
 </template>
 
 <script>
-import { ref, computed, reactive, watchEffect, defineComponent, defineAsyncComponent,onUnmounted } from "vue";
+import { ref, computed, reactive, watchEffect, defineComponent, defineAsyncComponent,onUnmounted, onMounted } from "vue";
 // import Demographics from "@/components/modals/forms/Demographics";
 // import Conditions from "@/components/modals/forms/Conditions";
 import Programs from "@/components/modals/forms/Programs";
@@ -858,7 +858,7 @@ export default defineComponent( {
         else {
             isValueChanged.value = true;
         }
-				isEdit = false
+				// isEdit = false
     }
     const showSearchPatient = ()=>{
         patientSearch.value =true
@@ -870,7 +870,7 @@ export default defineComponent( {
       return store.state.common;
     });
     const idPatient = props.patientId ? reactive(props.patientId) : null;
-    var isEdit = props.isEditPatient == true ? true : false;
+    // var isEdit = props.isEditPatient == true ? true : false;
 
     const patients = computed(() => {
       return store.state.patients;
@@ -944,26 +944,37 @@ export default defineComponent( {
       insuranceType: [],
     });
 
+     const form = reactive({
+      ...demographics,
+    });
+
+    onMounted(()=>{
+        Object.assign(demographics, form)
+    })
+
     watchEffect(() => {
         // Bitrix data assign 
+
         if(patients.value.fetchFromBitrix){ 
-					Object.assign(demographics, patients.value.fetchFromBitrix);
-        } //end
+			Object.assign(demographics, patients.value.fetchFromBitrix);
+        }else if(!patients.value.fetchFromBitrix){
+            Object.assign(demographics, form)
+        }
+          
+        //end
 
         if(idPatient) {
 					Object.assign(demographics, patientDetail);
-					if(isEdit && patients.value.patientInsurance != null) {
+					if(props.isEditPatient && patients.value.patientInsurance != null) {
 						Object.assign(insuranceData, patients.value.patientInsurance)
 					}
-					if(isEdit && patients.value.patientReferralSource != null) {
+					if(props.isEditPatient && patients.value.patientReferralSource != null) {
 						Object.assign(conditions, patients.value.patientReferralSource)
 					}
-					// alert(isEdit)
-					console.log('primaryPhysician 222', patients.value.patientPrimaryPhysician)
-					if(isEdit && patients.value.patientPrimaryPhysician != null) {
+					if(props.isEditPatient && patients.value.patientPrimaryPhysician != null) {
 						Object.assign(conditions, patients.value.patientPrimaryPhysician)
 					}
-					if(isEdit && patients.value.patientConditions != null) {
+					if(props.isEditPatient && patients.value.patientConditions != null) {
 						Object.assign(conditions.condition, patients.value.patientConditions)
 					}
         }
@@ -973,19 +984,60 @@ export default defineComponent( {
                 medicalRecordNumber: medicalRecordNumber
             });
         } */
+          
     })
 
     const parameters = reactive([]);
 
     const demographic = () => {
-			isEdit = false
+        const demographicsData = {
+					firstName: demographics.firstName ? demographics.firstName : "",
+					middleName: demographics.middleName ? demographics.middleName : "",
+					lastName: demographics.lastName ? demographics.lastName : "",
+					dob: demographics.dob ? demographics.dob : "",
+					gender: demographics.gender ? demographics.gender : "",
+					language: demographics.language ? demographics.language : "",
+					otherLanguage: demographics.otherLanguage ? demographics.otherLanguage : "",
+					nickName: demographics.nickName ? demographics.nickName : "",
+					weight: demographics.weight ? demographics.weight : "",
+					height: demographics.height ? demographics.height : "",
+					email: demographics.email ? demographics.email : "",
+					phoneNumber: demographics.phoneNumber ? demographics.phoneNumber : "",
+					contactType: demographics.contactType ? demographics.contactType : "",
+					contactTime: demographics.contactTime ? demographics.contactTime : "",
+					medicalRecordNumber: demographics.medicalRecordNumber ? demographics.medicalRecordNumber : "",
+					country: demographics.country ? demographics.country : "",
+					state: demographics.state ? demographics.state : "",
+					city: demographics.city ? demographics.city : "",
+					zipCode: demographics.zipCode ? demographics.zipCode : "",
+					appartment: demographics.appartment ? demographics.appartment : "",
+					address: demographics.address ? demographics.address : "",
+					fullName: demographics.fullName ? demographics.fullName : "",
+					familyEmail: demographics.familyEmail ? demographics.familyEmail : "",
+					familyPhoneNumber: demographics.familyPhoneNumber ? demographics.familyPhoneNumber : "",
+					familyContactType: demographics.familyContactType ? demographics.familyContactType : "",
+					familyContactTime: demographics.familyContactTime ? demographics.familyContactTime : "",
+					familyGender: demographics.familyGender ? demographics.familyGender : "",
+					relation: demographics.relation ? demographics.relation : "",
+					emergencyFullName: demographics.emergencyFullName ? demographics.emergencyFullName : "",
+					emergencyEmail: demographics.emergencyEmail ? demographics.emergencyEmail : "",
+					emergencyPhoneNumber: demographics.emergencyPhoneNumber ? demographics.emergencyPhoneNumber : "",
+					emergencyContactType: demographics.emergencyContactType ? demographics.emergencyContactType : "",
+					emergencyContactTime: demographics.emergencyContactTime ? demographics.emergencyContactTime : "",
+					emergencyGender: demographics.emergencyGender ? demographics.emergencyGender : "",
+					sameAsPrimary: demographics.sameAsPrimary ? demographics.sameAsPrimary : "",
+					isPrimary: demographics.isPrimary ? demographics.isPrimary : "",
+					familyMemberId: demographics.familyMemberId ? demographics.familyMemberId : "",
+					emergencyId: demographics.emergencyId ? demographics.emergencyId : "",
+        }
+			// isEdit = false
 			if(idPatient != null) {
 					if(patients.value.addDemographic == null) {
 							if(demographics.sameAsPrimary == false) {
 									(demographics.emergencyId = patients.value.patientDetails.emergencyContact.data ? patients.value.patientDetails.emergencyContact.data.id : ''),
 									(demographics.familyMemberId = patients.value.patientDetails.patientFamilyMember.data ? patients.value.patientDetails.patientFamilyMember.data.id : ''),
 									store.dispatch("updateDemographic", {
-											data: demographics,
+											data: demographicsData,
 											id: idPatient,
 									}).then(() => {
 											if(route.name == 'PatientSummary') {
@@ -1004,7 +1056,7 @@ export default defineComponent( {
 									(demographics.emergencyId = patients.value.patientDetails.emergencyContact.data ? patients.value.patientDetails.emergencyContact.data.id : ''),
 									(demographics.familyMemberId = patients.value.patientDetails.patientFamilyMember.data ? patients.value.patientDetails.patientFamilyMember.data.id : ''),
 									store.dispatch("updateDemographic", {
-											data: demographics,
+											data: demographicsData,
 											id: idPatient,
 									}).then(() => {
 											if(route.name == 'PatientSummary') {
@@ -1019,7 +1071,7 @@ export default defineComponent( {
 									(demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
 									(demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
 									store.dispatch("updateDemographic", {
-											data: demographics,
+											data: demographicsData,
 											id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
 									}).then(() => {
 											if(route.name == 'PatientSummary') {
@@ -1038,7 +1090,7 @@ export default defineComponent( {
 									(demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
 									(demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
 									store.dispatch("updateDemographic", {
-											data: demographics,
+											data: demographicsData,
 											id: patients.value.addDemographic.id ? patients.value.addDemographic.id : idPatient,
 									}).then(() => {
 											if(route.name == 'PatientSummary') {
@@ -1079,7 +1131,7 @@ export default defineComponent( {
 									(demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
 									(demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
 									store.dispatch("updateDemographic", {
-											data: demographics,
+											data: demographicsData,
 											id: patients.value.addDemographic.id,
 									}).then(() => {
 											if(route.name == 'PatientSummary') {
@@ -1098,7 +1150,7 @@ export default defineComponent( {
 									(demographics.emergencyId = patients.value.addDemographic.emergencyContact.data ? patients.value.addDemographic.emergencyContact.data.id : ''),
 									(demographics.familyMemberId = patients.value.addDemographic.patientFamilyMember.data ? patients.value.addDemographic.patientFamilyMember.data.id : ''),
 									store.dispatch("updateDemographic", {
-											data: demographics,
+											data: demographicsData,
 											id: patients.value.addDemographic.id,
 									}).then(() => {
 											if(route.name == 'PatientSummary') {
@@ -1112,15 +1164,12 @@ export default defineComponent( {
     };
 
 		const condition = () => {
-			isEdit = false
+			// isEdit = false
 			// const errors = []
 			if(idPatient != null) {
-				console.log('patients.value.addCondition', patients.value.addCondition)
-				console.log('patients.value.addPatientReferals', patients.value.addPatientReferals)
-				console.log('patients.value.addPatientPhysician', patients.value.addPatientPhysician)
 				if(patients.value.addCondition == null && patients.value.addPatientReferals == null && patients.value.addPatientPhysician == null) {
 					if((patients.value.patientReferralSource && patients.value.patientReferralSource != null)
-					|| patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null) {
+					&& (patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null)) {
 						if(conditions.sameAsAbove == 1) {
 							(conditions.name = conditions.referralName),
 							(conditions.designation = conditions.referralDesignation),
@@ -1139,7 +1188,45 @@ export default defineComponent( {
 						})
 					}
 					else if((!patients.value.patientReferralSource && patients.value.patientReferralSource == null)
-					|| (!patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician == null)) {
+					&& (patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null)) {
+						if(conditions.sameAsAbove == 1) {
+							(conditions.name = conditions.referralName),
+							(conditions.designation = conditions.referralDesignation),
+							(conditions.email = conditions.referralEmail),
+							(conditions.phoneNumber = conditions.referralPhoneNumber),
+							(conditions.fax = conditions.referralFax);
+						}
+						store.dispatch("updateCondition", {
+							data: conditions,
+							id: idPatient,
+							referalID: null,
+							physicianId: patients.value.patientPrimaryPhysician.id ? patients.value.patientPrimaryPhysician.id : null,
+						}).then(() => {
+							isValueChanged.value = false;
+							// store.commit('errorMsg',null)
+						})
+					}
+					else if((patients.value.patientReferralSource && patients.value.patientReferralSource != null)
+					&& (!patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician == null)) {
+						if(conditions.sameAsAbove == 1) {
+							(conditions.name = conditions.referralName),
+							(conditions.designation = conditions.referralDesignation),
+							(conditions.email = conditions.referralEmail),
+							(conditions.phoneNumber = conditions.referralPhoneNumber),
+							(conditions.fax = conditions.referralFax);
+						}
+						store.dispatch("updateCondition", {
+							data: conditions,
+							id: idPatient,
+							referalID: patients.value.patientReferralSource.id ? patients.value.patientReferralSource.id : null,
+							physicianId: null,
+						}).then(() => {
+							isValueChanged.value = false;
+							// store.commit('errorMsg',null)
+						})
+					}
+					else if((!patients.value.patientReferralSource || patients.value.patientReferralSource == null)
+					|| (!patients.value.patientPrimaryPhysician || patients.value.patientPrimaryPhysician == null)) {
 						if(conditions.sameAsAbove == 1) {
 							(conditions.name = conditions.referralName),
 							(conditions.designation = conditions.referralDesignation),
@@ -1160,7 +1247,7 @@ export default defineComponent( {
 				}
 				else if(patients.value.addCondition != null || patients.value.addPatientReferals != null || patients.value.addPatientPhysician != null) {
 					if((patients.value.patientReferralSource && patients.value.patientReferralSource != null)
-						|| patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null) {
+						&& patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null) {
 						if(conditions.sameAsAbove == 1) {
 							(conditions.name = conditions.referralName),
 							(conditions.designation = conditions.referralDesignation),
@@ -1179,6 +1266,44 @@ export default defineComponent( {
 						})
 					}
 					else if((!patients.value.patientReferralSource && patients.value.patientReferralSource == null)
+						&& patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null) {
+						if(conditions.sameAsAbove == 1) {
+							(conditions.name = conditions.referralName),
+							(conditions.designation = conditions.referralDesignation),
+							(conditions.email = conditions.referralEmail),
+							(conditions.phoneNumber = conditions.referralPhoneNumber),
+							(conditions.fax = conditions.referralFax);
+						}
+						store.dispatch("updateCondition", {
+							data: conditions,
+							id: idPatient,
+							referalID: null,
+              physicianId: patients.value.patientPrimaryPhysician.id ? patients.value.patientPrimaryPhysician.id : null,
+						}).then(() => {
+							isValueChanged.value = false;
+							// store.commit('errorMsg',null)
+						})
+					}
+					else if((patients.value.patientReferralSource && patients.value.patientReferralSource != null)
+						&& !patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician == null) {
+						if(conditions.sameAsAbove == 1) {
+							(conditions.name = conditions.referralName),
+							(conditions.designation = conditions.referralDesignation),
+							(conditions.email = conditions.referralEmail),
+							(conditions.phoneNumber = conditions.referralPhoneNumber),
+							(conditions.fax = conditions.referralFax);
+						}
+						store.dispatch("updateCondition", {
+							data: conditions,
+							id: idPatient,
+							referalID: patients.value.patientReferralSource.id ? patients.value.patientReferralSource.id : null,
+              physicianId: null,
+						}).then(() => {
+							isValueChanged.value = false;
+							// store.commit('errorMsg',null)
+						})
+					}
+					else if((!patients.value.patientReferralSource && patients.value.patientReferralSource == null)
 					|| (!patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician == null)) {
 						if(conditions.sameAsAbove == 1) {
 							(conditions.name = conditions.referralName),
@@ -1190,8 +1315,8 @@ export default defineComponent( {
 						store.dispatch("updateCondition", {
 							data: conditions,
 							id: idPatient,
-							referalID: patients.value.addPatientReferals.id ? patients.value.addPatientReferals.id : null,
-							physicianId: patients.value.addPatientPhysician.id ? patients.value.addPatientPhysician.id : null,
+							referalID: null,
+							physicianId: null,
 						}).then(() => {
 							isValueChanged.value = false;
 							// store.commit('errorMsg',null)
@@ -1310,9 +1435,7 @@ export default defineComponent( {
       return store.state.patients.parameterFields;
     });
 
-    const form = reactive({
-      ...demographics,
-    });
+   
 
     function saveModal() {
       emit("saveModal", false);
@@ -1324,13 +1447,16 @@ export default defineComponent( {
 			current.value = 0
     }
 
+    const bitrixFormCheck = computed(()=>{
+        return store.state.patients.bitrixFormCheck
+    })
+
     function closeModal() {
-			// console.log('steps[current]', current.value)
-			// alert(current.value)
 			current.value = 0
-        if(isValueChanged.value) {
+        if(isValueChanged.value || bitrixFormCheck.value) {
             warningSwal(messages.modalWarning).then((response) => {
                 if (response == true) {
+                    store.commit('bitrixFormCheck',false)
                     emit("saveModal", false);
                     emit("closeModal", {
                         modal: 'editPatient',
@@ -1340,6 +1466,7 @@ export default defineComponent( {
                     store.dispatch("patients");
                     store.commit("resetCounter");
                     store.state.patients.addDemographic = null
+                    store.state.patients.fetchFromBitrix =null
                 }
                 else {
                     emit("saveModal", true);
@@ -1363,6 +1490,7 @@ export default defineComponent( {
                 }
             })
         } */
+       
     }
 
     function emailChange(){

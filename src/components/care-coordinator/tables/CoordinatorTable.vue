@@ -9,7 +9,7 @@
         <span>{{ dateFormat(text.text) }}</span>
     </template>
     <template #action="">
-        <!-- <router-link >{{ text.text }}</router-link> -->
+        <!-- <router-link >{{ text.text }}</router-link> --> 
     </template>
     <!-- <template #compliance>
         <a class="icons">

@@ -15,3 +15,8 @@ export const timeLogReports = (state)=>{
         return state.viuewTimeReportModal
     })
   }
+  export const auditTimeLogFilterDates = (state)=>{
+    return computed(()=>{
+        return state.auditTimeLogFilterDates
+    })
+  }

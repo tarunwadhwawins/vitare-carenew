@@ -33,39 +33,41 @@
                                 </div>
                             </a-col>
                             <a-col :sm="4" :xs="24">
-                                <!-- <div class="text-right mt-28">
-                                    <a-button class="btn primaryBtn" @click="reportExport()">{{$t('global.exportToExcel')}}</a-button>
-                                </div> -->
-                                <ExportToExcel custumClass="text-right mb-24" @click="exportExcel('patientTimelog_report')"/>
+                                <div class="text-right mb-24">
+                                    <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+                                </div>
                             </a-col>
                         </a-row>
                     </a-form>
                     <a-row>
-                        <TimeLogTable  ></TimeLogTable>
+                        <TimeLogTable></TimeLogTable>
                     </a-row>
                 </div>
             </a-layout-content>
         </a-layout>
     </a-layout>
 </div>
-
 </template>
 
 <script>
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
-import { exportExcel } from "@/commonMethods/commonMethod";
+import {
+    exportExcel
+} from "@/commonMethods/commonMethod";
 import {
     ref,
     watchEffect,
     reactive,
+    onUnmounted,
+    onMounted
 } from "vue";
-import {
-    startimeAdd,
-    endTimeAdd,
-    timeStamp
-} from '@/commonMethods/commonMethod'
+// import {
+//     startimeAdd,
+//     endTimeAdd,
+//     timeStamp
+// } from '@/commonMethods/commonMethod'
 
 import {
     useStore
@@ -88,33 +90,34 @@ export default {
             startDate: '',
             endDate: '',
         })
-        const startDate =ref(null)
+        const startDate = ref(null)
         const endDate = ref(null)
         watchEffect(() => {
             store.getters.timeLogReports.value.timeLogReportList = ""
             store.dispatch("timeLogReportList")
+
         })
- 
+        onMounted(() => {
+            store.dispatch('auditTimeLogFilterDates', "?fromDate=&toDate=")
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+        })
+
         function updateAuditTime() {
             store.getters.timeLogReports.value.timeLogReportList = ""
-            startDate.value =auditTimeLog.startDate ? timeStamp(startimeAdd(moment(auditTimeLog.startDate))): ''
-            endDate.value = auditTimeLog.endDate ? timeStamp(endTimeAdd(moment(auditTimeLog.endDate))) : ''
+            startDate.value = auditTimeLog.startDate ? (moment(auditTimeLog.startDate)).format("YYYY-MM-DD") : ''
+            endDate.value = auditTimeLog.endDate ? (moment(auditTimeLog.endDate)).format("YYYY-MM-DD") : ''
+            store.dispatch('auditTimeLogFilterDates', "?fromDate=" + startDate.value + "&toDate=" + endDate.value)
             store.dispatch("timeLogReportList", "?fromDate=" + startDate.value + "&toDate=" + endDate.value)
         }
+        onUnmounted(() => {
+            store.dispatch('auditTimeLogFilterDates', "?fromDate=&toDate=")
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+        })
 
-        // function reportExport() {
-        //     store.dispatch("reportExport", {
-        //         reportType: "patient_time_log_report"
-        //     }).then(() => {            
-        //         const API_URL = process.env.VUE_APP_API_URL      
-        //       if(startDate.value && endDate.value){     
-        //     window.open(API_URL + 'timelog/report/export/' + store.state.timeLogReport.reportExport.data.udid + '?fromDate=' + startDate.value + '&toDate=' +  endDate.value, '_blank') 
-        //     }else{
-        //         window.open(API_URL + 'timelog/report/export/' + store.state.timeLogReport.reportExport.data.udid + '?fromDate=&toDate=', '_blank')
-        //       }
-               
-        //     })
-        // }
         return {
             exportExcel,
             linkTo,
@@ -122,6 +125,7 @@ export default {
             checked,
             // reportExport,
             auditTimeLog,
+            filtterDates: store.getters.auditTimeLogFilterDates,
             value1: ref(),
             size: ref("large"),
             timeLogReports: store.getters.timeLogReports.value,

@@ -1,7 +1,7 @@
 
 <template>
 <a-col :sm="24" :xs="24" >
-    <a-table  rowKey="id" :columns="meta.timeLogReportColumns" :pagination="false" :data-source="meta.timeLogReportList" :scroll="{ y: tableYScroller }" @change="onChange">
+    <a-table  rowKey="id" :columns="meta.timeLogReportColumns" :pagination="false" :data-source="meta.timeLogReportList" :scroll="{ y: tableYScroller }"  @change="handleTableChange">
         <template #staff="{record}">
             <span>{{record.staff}}</span>
         </template>
@@ -113,7 +113,7 @@ export default {
     //infinite scroll
     const meta = store.getters.timeLogReports.value;
     const loader = ref(false);
-    let data = ''
+    let data = []
     let scroller = ''
     onMounted(() => {
       var tableContent = document.querySelector(".ant-table-body");
@@ -123,7 +123,7 @@ export default {
         let currentScroll = event.target.scrollTop + 2;
         if (currentScroll >= maxScroll) {
           let current_page = meta.timeLogeMeta.current_page + 1;
-
+          scroller = ''
           if (current_page <= meta.timeLogeMeta.total_pages) {
             scroller = maxScroll
                      data =meta.timeLogReportList
@@ -131,7 +131,8 @@ export default {
             loader.value = true;
             meta.timeLogeMeta = "";
             store.state.timeLogReport.timeLogReportList =""
-            store.dispatch("timeLogReportList", "?page=" + current_page).then(()=>{
+            
+            store.dispatch("timeLogReportList", store.getters.auditTimeLogFilterDates.value+"&page=" + current_page+store.getters.orderTable.value.data ).then(()=>{
               loadMoredata();
             })
 
@@ -160,8 +161,20 @@ export default {
     const auditTimes =computed(()=>{
         return store.state.timeLogReport
     })
-   
+    const handleTableChange = (pag, filters, sorter) => {
+      if(sorter.order){
+        let order =sorter.order=='ascend' ? 'ASC': 'DESC'
+        let orderParam = '&orderField='+sorter.field+'&orderBy='+order
+        store.dispatch('orderTable',{data:orderParam,orderBy:order,page:pag,filters:filters})
+        store.dispatch("timeLogReportList", '?search='+orderParam)
+        
+      }else{
+        store.dispatch('orderTable',{data:'&orderField=&orderBy='})
+        store.dispatch("timeLogReportList", '?search='+ store.getters.orderTable.value.data)
+      }
+    }
     return {
+      handleTableChange,
       Id,
       arrayToObjact,
       auditTimes,
