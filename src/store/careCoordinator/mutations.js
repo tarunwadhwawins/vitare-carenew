@@ -40,10 +40,7 @@ export const staff = async (state, data) => {
 		{
 			title: 'Name',
 			dataIndex: 'fullName',
-			sorter: {
-				compare: (a, b) => a.first_name - b.first_name,
-				multiple: 3
-			},
+			sorter: true,
 			slots: {
 				customRender: 'name'
 			}
@@ -72,18 +69,11 @@ export const staff = async (state, data) => {
 		{
 			title: 'Network',
 			dataIndex: 'network',
-			sorter: {
-				compare: (a, b) => a.network - b.network,
-				multiple: 1
-			}
 		},
 		{
 			title: 'Created At',
 			dataIndex: 'createdAt',
-			sorter: {
-				compare: (a, b) => a.created_at - b.created_at,
-				multiple: 1
-			},
+			sorter: true,
 			slots: {
 				customRender: 'createdDate'
 			}
@@ -91,10 +81,6 @@ export const staff = async (state, data) => {
 		{
 			title: 'Status',
 			dataIndex: 'status',
-			sorter: {
-				compare: (a, b) => a.status - b.status,
-				multiple: 1
-			},
 			slots: {
 				customRender: 'status'
 			}

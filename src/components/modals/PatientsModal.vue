@@ -472,7 +472,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.name')" name="referralName" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue" v-model:value="conditions.referralName" size="large" />
+                                    <a-input @change="changedValue" @keyup="onKeyUp('referralName')" v-model:value="conditions.referralName" size="large" />
 																		<ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralName?referralErrorMsg.referralName[0]:''" />
                                 </a-form-item>
 
@@ -485,7 +485,7 @@
                                         <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
                                         <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
                                     </a-select> -->
-																		<GlobalCodeDropDown @change="changedValue" v-model:value="conditions.referralDesignation"  :globalCode="globalCode.designations"/>
+																		<GlobalCodeDropDown @change="changedValue" @keyup="onKeyUp('referralDesignation')" v-model:value="conditions.referralDesignation"  :globalCode="globalCode.designations"/>
                                     <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralDesignation?referralErrorMsg.referralDesignation[0]:''" />
                                 </a-form-item>
 
@@ -494,9 +494,8 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="referralEmail" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                                    <a-input @change="changedValue" v-model:value="conditions.referralEmail" placeholder="test@test.com" size="large" @input="emailChange()" />
-                
-                                    <ErrorMessage v-if="referralErrorMsg && referralErrorMsg.referralEmail!=null" :name="referralErrorMsg.referralEmail?referralErrorMsg.referralEmail[0]:''" />
+                                    <a-input @change="changedValue" @keyup="onKeyUp('referralEmail')" v-model:value="conditions.referralEmail" placeholder="test@test.com" size="large" @input="emailChange()" />
+                                    <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralEmail?referralErrorMsg.referralEmail[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -536,7 +535,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.name')" name="referralName" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue" v-model:value="conditions.referralName" size="large" disabled />
+                                    <a-input @change="changedValue" @keyup="onKeyUp('referralName')" v-model:value="conditions.referralName" size="large" disabled />
                                     <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralName?referralErrorMsg.referralName[0]:''" />
                                 </a-form-item>
 
@@ -549,7 +548,7 @@
                                         <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
                                         <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
                                     </a-select> -->
-																		<GlobalCodeDropDown @change="changedValue" v-model:value="conditions.referralDesignation"  :globalCode="globalCode.designations"/>
+																		<GlobalCodeDropDown @change="changedValue" @keyup="onKeyUp('referralDesignation')" v-model:value="conditions.referralDesignation"  :globalCode="globalCode.designations"/>
                                     <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralDesignation?referralErrorMsg.referralDesignation[0]:''" />
                                 </a-form-item>
 
@@ -558,7 +557,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="referralEmail" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                                    <a-input @change="changedValue" v-model:value="conditions.referralEmail" placeholder="test@test.com" size="large" disabled>
+                                    <a-input @change="changedValue" @keyup="onKeyUp('referralEmail')" v-model:value="conditions.referralEmail" placeholder="test@test.com" size="large" disabled>
                                     </a-input>
                                     <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralEmail?referralErrorMsg.referralEmail[0]:''" />
                                 </a-form-item>
@@ -588,7 +587,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue" v-model:value="conditions.name" size="large" />
+                                    <a-input @change="changedValue" @keyup="onKeyUp('name')" v-model:value="conditions.name" size="large" />
                                     <ErrorMessage v-if="physicianErrorMsg" :name="physicianErrorMsg.name?physicianErrorMsg.name[0]:''" />
                                 </a-form-item>
                             </div>
@@ -600,7 +599,7 @@
                                         <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
                                         <a-select-option v-for="designation in globalCode.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
                                     </a-select> -->
-                                        <GlobalCodeDropDown @change="changedValue" v-model:value="conditions.designation"  :globalCode="globalCode.designations"/>
+                                        <GlobalCodeDropDown @change="changedValue" @keyup="onKeyUp('designation')" v-model:value="conditions.designation"  :globalCode="globalCode.designations"/>
                                     <ErrorMessage v-if="physicianErrorMsg" :name="physicianErrorMsg.designation?physicianErrorMsg.designation[0]:''" />
                                 </a-form-item>
                             </div>
@@ -608,7 +607,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                                    <a-input @change="changedValue" v-model:value="conditions.email" placeholder="test@test.com" size="large" @input="emailChange()" />
+                                    <a-input @change="changedValue" @keyup="onKeyUp('email')" v-model:value="conditions.email" placeholder="test@test.com" size="large" @input="emailChange()" />
                                     <ErrorMessage v-if="physicianErrorMsg && physicianErrorMsg.email!=null" :name="physicianErrorMsg.email?physicianErrorMsg.email[0]:''" />
                                 </a-form-item>
 
@@ -1527,6 +1526,31 @@ export default defineComponent( {
        Object.assign(demographics, patients.value.fetchFromBitrix);
     }
 
+		const onKeyUp = (value) => {
+			switch (value) {
+				case 'referralName':
+					referralErrorMsg.value.referralName = ''
+					break;
+				case 'referralDesignation':
+					referralErrorMsg.value.referralDesignation = ''
+					break;
+				case 'referralEmail':
+					referralErrorMsg.value.referralEmail = ''
+					break;
+				case 'name':
+					physicianErrorMsg.value.name = ''
+					break;
+				case 'designation':
+					physicianErrorMsg.value.designation = ''
+					break;
+				case 'email':
+					physicianErrorMsg.value.email = ''
+					break;
+				default:
+					break;
+			}
+		}
+
     return {
     // formatPhoneNumber,
     formRef,
@@ -1573,6 +1597,7 @@ export default defineComponent( {
       patientDetail,
       title,
       disabled,
+      onKeyUp,
     };
   },
 });
