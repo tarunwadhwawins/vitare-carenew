@@ -152,10 +152,16 @@ export default defineComponent({
       store.commit('checkChangeInput',true)
       store.dispatch("uploadFile", formData);
     };
+    const addStaffs = computed(() => {
+      return store.state.careCoordinator;
+    });
 
     watchEffect(() => {
       if(patientId != null) {
         store.dispatch("documents", patientUdid);
+      }
+      if(addStaffs.value.clearStaffFormValidation){
+        formRest.value.resetFields();
       }
     })
 
@@ -171,9 +177,7 @@ export default defineComponent({
       entity: "staff",
     });
 
-    const addStaffs = computed(() => {
-      return store.state.careCoordinator;
-    });
+    
 
     const addDocument = () => {
       if(filePath.value==null){

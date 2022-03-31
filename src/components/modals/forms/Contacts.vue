@@ -130,6 +130,9 @@ export default defineComponent({
     if(props.clearData==true){
       Object.assign(contact,form)
     }
+    if(staffs.value.clearStaffFormValidation){
+      formRest.value.resetFields();
+    }
     })
     function checkChangeInput(){
       store.commit('checkChangeInput',true)

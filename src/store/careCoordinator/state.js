@@ -23,6 +23,7 @@ export default{
     staffMeta:null,
     addStaffDocument:null,
     staffDocuments:null,
-    closeModal:false
+    closeModal:false,
+    clearStaffFormValidation:false
     
 }

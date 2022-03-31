@@ -101,6 +101,9 @@ export const staff= async (state, data) => {
             compare: (a, b) => a.status - b.status,
             multiple: 1,
           },
+          slots: {
+            customRender: "status",
+          },
         },
         // {
         //   title: "Action",
@@ -284,4 +287,9 @@ export const staffDocuments = (state, data) => {
 
 export const closeModal = (state, data) => {
   state.closeModal = data
+}
+
+
+export const clearStaffFormValidation = (state, data) => {
+  state.clearStaffFormValidation = data
 }
