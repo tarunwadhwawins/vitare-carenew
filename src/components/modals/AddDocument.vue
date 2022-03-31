@@ -88,6 +88,7 @@ export default defineComponent({
       let formData = new FormData();
       formData.append("file", doc_file);
       store.dispatch("uploadFile", formData);
+      isValueChanged.value = true;
     };
 
     const filePath = computed(() => {
