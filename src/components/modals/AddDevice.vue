@@ -1,6 +1,6 @@
 <template>
-  <a-modal width="60%" title="Add Device" centered>
-    <a-form ref="formRef" :model="inventoryForm" name="basic" layout="vertical" @finish="submitForm" @cancel="onCloseModal()">
+  <a-modal width="60%" title="Add Device" centered @cancel="onCloseModal()">
+    <a-form ref="formRef" :model="inventoryForm" name="basic" layout="vertical" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, computed, ref } from "vue";
+import { defineComponent, reactive, computed, ref, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import { warningSwal} from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
@@ -97,27 +97,6 @@ export default defineComponent({
 
     const changedValue = () => {
       isValueChanged.value = true;
-    }
-
-    function onCloseModal() {
-			if(isValueChanged.value) {
-				warningSwal(messages.modalWarning).then((response) => {
-					if (response == true) {
-						emit("closeModal", {
-							modal: 'addInventory',
-							value: false
-						});
-						Object.assign(inventoryForm, form);
-						isValueChanged.value = false;
-					}
-					else {
-						emit("closeModal", {
-							modal: 'addInventory',
-							value: true
-						});
-					}
-				})
-			}
     }
 
     const formRef = ref();
@@ -191,9 +170,11 @@ export default defineComponent({
       inventoryForm.serialNumber =null,
       inventoryForm.macAddress = null
       store.commit('errorMsg', null)
+      isValueChanged.value = true;
     }
 
     function handleChange(id){
+      isValueChanged.value = true;
       patients.value.inventoryList.forEach(element => {
         if(element.id==id)
         inventoryForm.modelNumber = element.modelNumber,
@@ -207,6 +188,32 @@ export default defineComponent({
     };
     const errorMsg = computed(() => {
       return store.state.patients.errorMsg
+    })
+
+    function onCloseModal() {
+			if(isValueChanged.value) {
+				warningSwal(messages.modalWarning).then((response) => {
+					if (response == true) {
+						emit("closeModal", {
+							modal: 'addInventory',
+							value: false
+						});
+						Object.assign(inventoryForm, form);
+						isValueChanged.value = false;
+            store.commit('errorMsg', null)
+					}
+					else {
+						emit("closeModal", {
+							modal: 'addInventory',
+							value: true
+						});
+					}
+				})
+			}
+    }
+
+    onUnmounted(() => {
+      store.commit('errorMsg', null)
     })
 
     return {
