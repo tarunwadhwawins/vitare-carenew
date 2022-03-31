@@ -215,7 +215,8 @@ export default {
           store.dispatch("addStaff", personalInfoData);
         }
         if (addStaff.value!=null) {
-          // store.dispatch("allStaffList");
+          store.dispatch("staffs");
+          // store.state.careCoordinator.errorMsg=''
           store.dispatch("updateStaff", {
            id:addStaff.value.id,
            data:personalInfoData
@@ -264,10 +265,11 @@ export default {
         emit("saveModal", false);
         successSwal(messages.formSuccess);
         Object.assign(personalInfoData, form);
-        store.dispatch("allStaffList");
+        store.dispatch("staffs");
         store.dispatch('specializationStaff')
         store.dispatch('networkStaff')
         store.commit("resetCounter");
+        store.state.careCoordinator.errorMsg=''
       }else{
         warningSwal('No data have to save!').then((response) => {
         if (response == true) {
@@ -293,7 +295,7 @@ export default {
         if (response == true) {
           emit("saveModal", false)
           Object.assign(personalInfoData, form);
-          store.dispatch("allStaffList")
+          store.dispatch("staffs")
           store.dispatch('specializationStaff')
           store.dispatch('networkStaff')
           store.commit("resetCounter")

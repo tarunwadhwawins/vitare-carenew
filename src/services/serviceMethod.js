@@ -69,7 +69,7 @@ class ServiceMethodService {
                 code: "utf-8",
                 search: value,
             });
-            axios.get(API_URL + `${endpoint}` + '?' + `${str}`, { headers: authHeader() })
+            axios.get(API_URL + `${endpoint}` + '?' + `${str.trim()}`, { headers: authHeader() })
                 .then((response) => response)
                 .then((d) => {
                     store.commit('dropdownLoadingStatus', false)
