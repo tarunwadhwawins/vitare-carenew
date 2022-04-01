@@ -78,7 +78,7 @@
           Task <PlusOutlined @click="addTaskModal();actionTrack(paramsId,295,'patient')" /><br />
         </div>
         <div v-if="latestTask != null" class="thumb-desc">
-          <router-link to="/tasks" @click="actionTrack(paramsId,314,'patient')">{{ latestTask[0].title }}</router-link>
+          <router-link target="_blank" to="/tasks" @click="actionTrack(paramsId,314,'patient')">{{ latestTask[0].title }}</router-link>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -86,7 +86,7 @@
           Vital Summary
           <!-- <PlusOutlined @click="addVitalsModel" /> -->
         </div>
-        <div v-if="latestVital != null" class="thumb-desc">
+        <div v-if="bloodPressure != null || bloodGlucose != null || bloodOxygen != null || latestVital != null" class="thumb-desc">
           <a href="javascript:void(0)">
             <span @click="showVitalssModal">{{ latestVital.deviceType }} {{ latestVital.value }} {{ latestVital.takeTime }}</span>
           </a>
@@ -141,7 +141,7 @@
     <AddEmergencyContacts v-model:visible="addEmergencyContactModalVisible" @closeModal="handleOk" :isEmergencyContactEdit="isEmergencyContactEdit" />
     <AddCriticalNote v-model:visible="criticalModalVisible" @closeModal="handleOk" @saveModal="handleCriticalNote($event)"/>
     <AddAppointmentModal v-model:visible="addAppointmentVisible" :patientId="patientDetails.id" :patientName="patientDetails.patientFullName" @closeModal="handleOk" @is-visible="handleOk" />
-    <AddTasksModal v-model:visible="taskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
+    <AddTasksModal v-model:visible="addTaskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
     <AddNotesModal v-model:visible="addNoteVisible" @closeModal="handleOk" />
     <AddDocumentModal v-model:visible="addDocumentVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
     <AddCareTeamModal v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" />
@@ -241,7 +241,7 @@ export default defineComponent({
     const criticalModalVisible =ref(false)
     const patientsModalVisible = ref(false);
     const addAppointmentVisible = ref(false);
-    const taskModalVisible = ref(false);
+    const addTaskModalVisible = ref(false);
     const addVitalsVisible = ref(false);
     const patientVitalsVisible = ref(false);
     const addNoteVisible = ref(false);
@@ -339,7 +339,7 @@ export default defineComponent({
         flagsModalVisible.value = modal == 'addFlag' ? value : false;
         criticalNotesDetailVisible.value = modal == 'criticalNotesDetails' ? value : false;
         addAppointmentVisible.value = modal == 'addAppointment' ? value : false;
-        taskModalVisible.value = modal == 'addTask' ? value : false;
+        addTaskModalVisible.value = modal == 'addTask' ? value : false;
         addNoteVisible.value = modal == 'addNote' ? value : false;
         careCoordinatorsVisible.value = modal == 'addCareTeam' ? value : false;
         addDeviceVisible.value = modal == 'addInventory' ? value : false;
@@ -352,7 +352,7 @@ export default defineComponent({
         flagsModalVisible.value = false;
         notesDetailVisible.value = false;
         addAppointmentVisible.value = false;
-        taskModalVisible.value = false;
+        addTaskModalVisible.value = false;
         addVitalsVisible.value = false;
         patientVitalsVisible.value = false;
         addNoteVisible.value = false;
@@ -445,7 +445,7 @@ export default defineComponent({
     };
 
     const addTaskModal = () => {
-      taskModalVisible.value = true;
+      addTaskModalVisible.value = true;
     }
 
     const addVitalsModel = () => {
@@ -504,7 +504,6 @@ export default defineComponent({
     const editTimeLog = (value) => {
       isEditTimeLog.value = true;
       timeLogDetails.value = value;
-      // addTimeLogsVisible.value = true;
     }
 
 
@@ -534,7 +533,7 @@ export default defineComponent({
       criticalModalVisible,
       patientsModalVisible,
       addAppointmentVisible,
-      taskModalVisible,
+      addTaskModalVisible,
       addVitalsVisible,
       patientVitalsVisible,
       addNoteVisible,
