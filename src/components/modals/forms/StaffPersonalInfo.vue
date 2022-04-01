@@ -46,7 +46,7 @@
         </a-col>
         <a-col :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase()}]">
+                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
                     <vue-tel-input  v-model.trim:value="personalInfoData.phoneNumber" v-bind="bindProps" @change="checkChangeInput()"/>
                     <ErrorMessage v-if="errorMsg && !personalInfoData.phoneNumber" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                 </a-form-item>

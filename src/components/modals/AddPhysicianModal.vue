@@ -34,7 +34,7 @@
 						
 						<a-col :sm="12" :xs="24">
 							<div class="form-group">
-								<a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.phoneNo')+' '+$t('global.validation') }]">
+								<a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.phoneNo')+' '+$t('global.validation'),pattern:regex.phoneNumber }]">
 									<!-- <a-input-number @change="changedValue" v-model:value="addPhysicianForm.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" /> -->
 									<vue-tel-input  @change="changedValue" v-model.trim:value="addPhysicianForm.phoneNumber" v-bind="bindProps" />
 									<ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
