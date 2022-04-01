@@ -52,6 +52,9 @@ import { computed, ref } from 'vue-demi';
 import AddVitalsModal from "@/components/modals/AddVitalsModal";
 import VitalsGrid from "@/components/patients/patientSummary/common/VitalsGrid";
 import { useStore } from 'vuex';
+import {
+  yaxis,
+} from '@/commonMethods/commonMethod'
 export default {
   components: {
     AddVitalsModal,
@@ -132,8 +135,12 @@ export default {
         curve: "smooth",
       },
       xaxis: {
+        title:{
+          text: 'Time'
+        },
         categories: bloodPressureTimesArray,
       },
+      yaxis: yaxis("Number of Vitals"),
     };
     
     const bloodOxygenOptions = {
@@ -148,8 +155,12 @@ export default {
         curve: "smooth",
       },
       xaxis: {
+        title:{
+          text: 'Time'
+        },
         categories: bloodOxygenTimesArray,
       },
+      yaxis: yaxis("Number of Vitals"),
     };
     
     const bloodGlucoseOptions = {
@@ -164,8 +175,12 @@ export default {
         curve: "smooth",
       },
       xaxis: {
+        title:{
+          text: 'Time'
+        },
         categories: bloodGlucoseTimesArray,
       },
+      yaxis: yaxis("Number of Vitals"),
     };
 
     return {

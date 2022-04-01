@@ -935,18 +935,18 @@ export const patientVitals = (state, vitals) => {
       },
       {
         title: "SPO2",
-        dataIndex: "oxymeter_spo2",
-        key: "oxymeter_spo2",
+        dataIndex: "oximeter_spo2",
+        key: "oximeter_spo2",
         slots: {
-          customRender: "oxymeter_spo2",
+          customRender: "oximeter_spo2",
         },
       },
       {
         title: "BPM",
-        dataIndex: "oxymeter_bpm",
-        key: "oxymeter_bpm",
+        dataIndex: "oximeter_bpm",
+        key: "oximeter_bpm",
         slots: {
-          customRender: "oxymeter_bpm",
+          customRender: "oximeter_bpm",
         },
       },
     ];
