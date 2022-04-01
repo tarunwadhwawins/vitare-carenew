@@ -431,6 +431,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="referralPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase() }]">
+                                    <vue-tel-input  @change="changedValue" v-model.trim:value="conditions.referralPhoneNumber" v-bind="bindProps" />
                                     <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralPhoneNumber?referralErrorMsg.referralPhoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
