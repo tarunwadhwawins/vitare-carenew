@@ -51,7 +51,7 @@ export default defineComponent({
       type: Object
     }
   },
-  setup(props) {
+  setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
     const patientDetail = reactive(props.patientDetails);
@@ -102,12 +102,13 @@ export default defineComponent({
             id: patientDetail.id,
             deviceId: id,
           }).then(() => {
-            if(route.name == 'PatientSummary') {
-              store.dispatch('devices', route.params.udid)
+            if(devicesList.value.length <= 1) {
+              emit("closeModal", {
+                modal: 'devicesListing',
+                value: false
+              });
             }
-            else {
-              store.dispatch('devices', patientDetail.id)
-            }
+            store.dispatch('devices', route.params.udid)
             if(route.name == 'PatientSummary') {
               store.dispatch('latestDevice', route.params.udid)
               store.dispatch('patientTimeline', {id:route.params.udid,type:''});

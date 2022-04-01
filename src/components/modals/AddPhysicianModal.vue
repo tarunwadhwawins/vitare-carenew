@@ -166,7 +166,10 @@ export default {
 						store.dispatch('physiciansList', patientUdid);
 					}
 					if(modalClose.value == true) {
-						emit('closeModal')
+						emit("closeModal", {
+							modal: 'addPhysician',
+							value: false
+						});
 						formRef.value.resetFields();
 						Object.assign(addPhysicianForm, form)
 					}
@@ -182,7 +185,10 @@ export default {
 						store.dispatch('physiciansList', patientUdid);
 					}
 					if(modalClose.value == true) {
-						emit('closeModal')
+						emit("closeModal", {
+							modal: 'addPhysician',
+							value: false
+						});
 						formRef.value.resetFields();
 						Object.assign(addPhysicianForm, form)
 					}

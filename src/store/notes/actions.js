@@ -1,19 +1,31 @@
 import ServiceMethodService from '@/services/serviceMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
-import { errorLogWithDeviceInfo} from '@/commonMethods/commonMethod'
+import {
+	successSwal,
+	errorSwal,
+	errorLogWithDeviceInfo
+} from '@/commonMethods/commonMethod'
 
 export const addNote = async ({ commit }, { id, data }) => {
-	console.log('data', data)
+  commit('loadingStatus', true)
 	await ServiceMethodService.common("post", API_ENDPOINTS['patient'] + '/' + id + '/notes', null, data).then((response) => {
 		commit('addNoteSuccess', response.data.data);
+		commit('loadingStatus', false)
+    successSwal(response.data.message)
+    commit('errorMsg', null)
+	}).catch((error) => {
+		errorLogWithDeviceInfo(error.response)
+		if(error.response.status == 422) {
+      commit('errorMsg', error.response.data)
+		}
+		else if(error.response.status == 500) {
+      errorSwal(error.response.data.message)
+		}
+		else if (error.response.status == 401) {
+			//AuthService.logout()
+		}
+		commit('failure', error.response.data)
 	})
-		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
-			if (error.response.status == 401) {
-				//AuthService.logout();
-			}
-			commit('failure', error.response.data);
-		})
 }
 
 export const notesList = async ({ commit }, id) => {

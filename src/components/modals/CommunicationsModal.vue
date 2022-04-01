@@ -72,14 +72,14 @@
             <a-col :span="24">
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.subject')" name="subject" :rules="[{ required: true, message: $t('communications.communicationsModal.subject')+' '+$t('global.validation')  }]">
-                        <a-input v-model:value="messageForm.subject" size="large" @change="checkChangeInput()" />
+                        <a-input v-model.trim:value="messageForm.subject" size="large" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
             <a-col :span="24">
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.message')" name="message" :rules="[{ required: true, message: $t('communications.communicationsModal.message')+' '+$t('global.validation')  }]">
-                        <a-textarea v-model:value="messageForm.message" allow-clear @change="checkChangeInput()" />
+                        <a-textarea v-model.trim:value="messageForm.message" allow-clear @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -129,7 +129,7 @@ export default defineComponent({
         const staffData = ref([]);
         const patientData = ref([]);
         const value = ref();
-        // const loadingStatus = ref()
+       
         const auth = JSON.parse(localStorage.getItem("auth"));
         const messageForm = reactive({
             from: "",
