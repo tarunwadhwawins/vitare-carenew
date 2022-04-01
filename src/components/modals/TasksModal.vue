@@ -196,6 +196,10 @@ export default defineComponent({
                     id: props.taskId
                 }).then(() => {
                     closeValue.value = false
+										emit("closeModal", {
+											modal: 'addTask',
+											value: false
+										});
                 })
             } else {
                 store.dispatch("addTask", {
@@ -211,8 +215,12 @@ export default defineComponent({
                 }).then(() => {
                     closeValue.value = false
                     if (route.name == 'PatientSummary') {
-                        store.dispatch('latestTask', route.params.udid)
+											store.dispatch('latestTask', route.params.udid)
                     }
+										emit("closeModal", {
+											modal: 'addTask',
+											value: false
+										});
                 })
             }
 

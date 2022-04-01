@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { reactive } from "vue-demi";
+import { computed, reactive } from "vue-demi";
 import { useStore } from "vuex";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { warningSwal, actionTrack } from "@/commonMethods/commonMethod";
@@ -75,9 +75,9 @@ export default {
     patientId: {
       type: Number,
     },
-    familyMembersList: {
+    /* familyMembersList: {
       type: Array,
-    },
+    }, */
   },
   setup(props, { emit }) {
     const store = useStore();
@@ -142,6 +142,10 @@ export default {
         },
       },
     ];
+    
+    const familyMembersList = computed(() => {
+      return store.state.patients.familyMembersList
+    })
 
     const editFamilyMember = (value) => {
       store.dispatch("familyMemberDetails", {
@@ -164,6 +168,12 @@ export default {
               if (route.name == "PatientSummary") {
                 store.dispatch('patientDetails', patientUdid)
                 store.dispatch("familyMembersList", patientUdid);
+                if(familyMembersList.value.length <= 1) {
+                  emit('closeModal', {
+                    modal: 'familyMembersList',
+                    value: false
+                  })
+                }
               }
             });
         }
@@ -174,6 +184,7 @@ export default {
       actionTrack,
       paramsId:route.params.udid,
       familyMembersColumns,
+      familyMembersList,
       editFamilyMember,
       deleteFamilyMember,
     };
