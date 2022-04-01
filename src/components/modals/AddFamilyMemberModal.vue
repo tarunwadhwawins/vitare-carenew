@@ -1,5 +1,5 @@
 <template>
-	<a-modal width="60%" :title="$t('global.addFamilyMembers')" centered @cancel="closeModal()">
+	<a-modal width="60%" :title="$t('global.addFamilyMembers')" centered @cancel="closeModal()" zIndex="9999">
 		<a-form ref="formRef" :model="familyMemberForm" layout="vertical" @finish="submitForm">
 			<a-row :gutter="24">
 
