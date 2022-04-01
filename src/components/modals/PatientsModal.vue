@@ -857,7 +857,7 @@ export default defineComponent( {
         //end
 
         if(idPatient) {
-					Object.assign(demographics, patientDetail);
+					Object.assign(demographics, patients.value.patientDetails);
 					if(props.isEditPatient && patients.value.patientInsurance != null) {
 						Object.assign(insuranceData, patients.value.patientInsurance)
 					}
