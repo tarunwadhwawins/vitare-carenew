@@ -121,7 +121,10 @@ export default defineComponent({
           store.dispatch('patientTimeline', {id:route.params.udid,type:''});
           store.dispatch('devices', route.params.udid)
         }
-        emit('closeModal');
+        emit("closeModal", {
+          modal: 'addInventory',
+          value: false
+        });
       });
     };
 

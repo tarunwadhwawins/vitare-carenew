@@ -176,6 +176,11 @@ export default defineComponent({
           entityType:taskForm.entityType
         },
         id:props.taskId
+        }).then(() => {
+          emit("closeModal", {
+            modal: 'addTask',
+            value: false
+          });
         })
       }
       else {
@@ -193,6 +198,11 @@ export default defineComponent({
           if(route.name == 'PatientSummary') {
             store.dispatch('latestTask', route.params.udid)
           }
+        }).then(() => {
+          emit("closeModal", {
+            modal: 'addTask',
+            value: false
+          });
         })
       }
 

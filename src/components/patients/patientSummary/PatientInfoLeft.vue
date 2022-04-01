@@ -346,6 +346,7 @@ export default defineComponent({
         familyMembersModalVisible.value = modal == 'familyMembersList' ? value : false;
         physiciansModalVisible.value = modal == 'physiciansList' ? value : false;
         emergencyContactsModalVisible.value = modal == 'emergencyContactsList' ? value : false;
+        deviceDetailVisible.value = modal == 'devicesListing' ? value : false;
       }
       else {
         flagsModalVisible.value = false;
