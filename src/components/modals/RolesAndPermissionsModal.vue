@@ -73,17 +73,17 @@
                         <a-col :span="24" v-for="module in rolesAndPermissions.rolePermissions.modules" :key="module.id">
                             <div v-if="module.name=='mobile'">
                             </div>
-                            
+
                             <a-card v-else :title="module.name">
                                 <div class="screens" v-for="screen in module.screens" :key="screen.moduleId">
                                     <a-checkbox v-model:checked="addPermissionsForm.screen[screen.moduleId]" @change="checkAll(screen.actions,screen.moduleId)"><strong>{{ screen.name }}</strong></a-checkbox>
                                     <a-divider class="transparent" />
-                                    <a-checkbox class="actions" v-for="action in screen.actions" :key="action.id" v-model:checked="addPermissionsForm.action[action.id]" @change="checkStatus(action.id,screen.moduleId)">{{ action.name }}</a-checkbox>
+                                    <a-checkbox class="actions" v-for="action in screen.actions" :key="action.id" v-model:checked="addPermissionsForm.action[action.id]" @change="checkStatus(action.id,screen.moduleId,screen.actions)">{{ action.name }}</a-checkbox>
                                     <a-divider class="transparent" />
                                 </div>
                             </a-card>
                             <a-divider class="transparent" />
-                        
+
                         </a-col>
                     </a-row>
                     <div class="steps-action">
@@ -197,19 +197,19 @@ export default {
             store.dispatch('rolePermissions')
             store.dispatch('dashboardWidget')
             if (props.editRole) {
-                
+
                 Object.assign(addRoleForm, rolesAndPermissions.roleDetails ? rolesAndPermissions.roleDetails : '')
                 if (rolesAndPermissions.editRolesAndPermissions) {
                     copyPermission()
-                    
+
                 }
 
             } else if (props.roleId) {
-               
+
                 store.dispatch('editdWidget', props.roleId)
                 store.dispatch('editPermissions', props.roleId).then(() => {
                     copyPermission()
-                    
+
                 })
 
             }
@@ -226,7 +226,7 @@ export default {
                         ...addRoleForm
                     },
                     id: getRoleId,
-                    show:false
+                    show: false
                 })
             } else {
                 store.dispatch('addRole', addRoleForm)
@@ -326,9 +326,13 @@ export default {
             })
         }
 
-        function checkStatus(actions, value) {
-
-            addPermissionsForm.action[actions] == true ? "" : addPermissionsForm.screen[value] = false
+        function checkStatus(actions, value, check) {
+            let checkBox = false
+            check.forEach((item) => {
+                addPermissionsForm.action[item.id] == true ? checkBox = true : checkBox = false
+            })
+            checkBox ? addPermissionsForm.screen[value] = true : addPermissionsForm.screen[value] = false
+            //addPermissionsForm.action[actions] == true ? "" : addPermissionsForm.screen[value] = false
         }
         const form = reactive({
             ...addRoleForm,
@@ -361,7 +365,7 @@ export default {
             Object.assign(dashboardPermission, formThird)
             // props.editRole = null
             //props.roleId = null
-            
+
         }
         const next = () => {
             current.value++;
