@@ -5,11 +5,12 @@
         <a-col :sm="20" :xs="24">
           <a-form-item :label="$t('tasks.tasksModal.staff')" name="staff"
             :rules="[{ required: true, message: $t('tasks.tasksModal.staff')+' '+$t('global.validation') }]">
-            <a-select @change="changedValue" ref="select" v-model:value="addCareTeamForm.staff" style="width: 100%" size="large">
+            <!-- <a-select @change="changedValue" ref="select" v-model:value="addCareTeamForm.staff" style="width: 100%" size="large">
               <a-select-option value="" hidden>Select Staff</a-select-option>
               <a-select-option v-for="staff in staffList" :key="staff.id" :value="staff.id">{{staff.fullName}}
               </a-select-option>
-            </a-select>
+            </a-select> -->
+              <StaffDropDown v-model:value="addCareTeamForm.staff" @handleStaffChange="handleStaffChange($event)" @change="checkChangeInput()" :close="closeValue" />
           </a-form-item>
         </a-col>
         <a-col :sm="4" :xs="24">
@@ -60,11 +61,14 @@ import { useRoute } from "vue-router";
 import Loader from "@/components/loader/Loader";
 import {warningSwal,actionTrack} from "@/commonMethods/commonMethod";
 import { messages } from '@/config/messages';
+import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
+
   export default defineComponent({
     components: {
       DeleteOutlined,
       // EyeOutlined,
       Loader,
+      StaffDropDown,
     },
     setup(props, { emit }) {
       const store = useStore();
@@ -103,6 +107,14 @@ import { messages } from '@/config/messages';
       const addCareTeamForm = reactive({
         staff: ""
       })
+
+      const handleStaffChange = (val) => {
+        addCareTeamForm.staff = val;
+      };
+
+      function checkChangeInput() {
+        store.commit('checkChangeInput', true)
+      }
 
       const form = reactive({ ...addCareTeamForm })
 
@@ -163,6 +175,8 @@ import { messages } from '@/config/messages';
         isValueChanged,
         changedValue,
         onCloseModal,
+        handleStaffChange,
+        checkChangeInput,
       };
     },
   });
