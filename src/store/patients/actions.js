@@ -338,7 +338,7 @@ export const addDevice = async ({
 }, data) => {
   await serviceMethod.common("post", `patient/${data.id}/inventory`, null, data.data).then((response) => {
     commit('addDevice', response.data.data);
-    // successSwal(response.data.message)
+    successSwal(response.data.message)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
