@@ -20,7 +20,7 @@
       </a-tooltip>
     </template>
     <!-- v-if="arrayToObjact(globalCodesPermissions,266)"> -->
-    <template #isActive="{record}" >
+    <template #isActive="{record}" v-if="arrayToObjact(globalCodesPermissions,328)">
       <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
     </template>
   </a-table>

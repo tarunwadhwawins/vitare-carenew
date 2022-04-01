@@ -28,7 +28,7 @@
               </a-col>
               <a-col :span="12" v-if="arrayToObjact(programsPermissions, 19)">
                 <div class="text-right mb-24">
-                  <ExportToExcel  @click="exportExcel('careCoordinator_report')"/>
+                  <ExportToExcel  @click="exportExcel('program_report')"/>
                 </div>
               </a-col>
 

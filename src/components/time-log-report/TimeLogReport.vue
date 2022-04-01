@@ -34,7 +34,7 @@
                             </a-col>
                             <a-col :sm="4" :xs="24">
                                 <div class="text-right mb-24">
-                                    <ExportToExcel @click="exportExcel('careCoordinator_report')" />
+                                    <ExportToExcel @click="exportExcel('patientTimelog_report',filtterDates)" />
                                 </div>
                             </a-col>
                         </a-row>

@@ -264,6 +264,7 @@ function isLoggedIn() {
 }
 
 router.beforeEach((to, from, next) => {
+  window.scrollTo(0, 0)
   if (to.matched.some(record => record.meta.authAdmin)) {
     if (!isLoggedIn()) {
       next({
