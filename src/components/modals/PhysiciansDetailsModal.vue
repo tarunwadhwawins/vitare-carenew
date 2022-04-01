@@ -30,21 +30,21 @@ import { warningSwal, actionTrack } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+import { computed } from 'vue-demi';
 export default {
   components: {
     DeleteOutlined,
     EditOutlined,
     Loader,
   },
-  props: {
-    physiciansList: {
-      type: Array,
-    },
-  },
   setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
     const patientUdid = route.params.udid;
+
+    const physiciansList = computed(() => {
+      return store.state.patients.physiciansList
+    })
 
     const physiciansColumns = [
       {
@@ -100,6 +100,12 @@ export default {
               if (route.name == "PatientSummary") {
                 store.dispatch("physiciansList", patientUdid);
               }
+              if(physiciansList.value.length <= 1) {
+                emit('closeModal', {
+                  modal: 'physiciansList',
+                  value: false
+                })
+              }
             });
         }
       });
@@ -109,6 +115,7 @@ export default {
       actionTrack,
       paramsId:route.params.udid,
       physiciansColumns,
+      physiciansList,
       editPhysician,
       deletePhysician,
     };

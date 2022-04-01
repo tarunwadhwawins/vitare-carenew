@@ -188,7 +188,10 @@ export default {
 						store.dispatch('emergencyContactsList', patientUdid);
 					}
 					if(modalClose.value == true) {
-						emit('closeModal')
+						emit("closeModal", {
+							modal: 'addEmergencyContact',
+							value: false
+						});
 						formRef.value.resetFields();
 						Object.assign(emergencyContactForm, form)
 					}
@@ -203,7 +206,10 @@ export default {
 						store.dispatch('emergencyContactsList', patientUdid);
 					}
 					if(modalClose.value == true) {
-						emit('closeModal')
+						emit("closeModal", {
+							modal: 'addEmergencyContact',
+							value: false
+						});
 						formRef.value.resetFields();
 						Object.assign(emergencyContactForm, form)
 					}

@@ -150,9 +150,9 @@
     <PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
     <PatientsModal v-model:visible="patientsModalVisible" :patientId="patientDetails.id" :isEditPatient="isEditPatient" @closeModal="handleOk" @saveModal="handleOk($event)" />
 
-    <FamilyMembersDetailsModal v-model:visible="familyMembersModalVisible" :familyMembersList="familyMembersList" :patientId="patientDetails.id" @isFamilyMemberEdit="editFamilyMember" />
-    <PhysiciansDetailsModal v-model:visible="physiciansModalVisible" :physiciansList="physiciansList" @isPhysicianEdit="editPhysician" />
-    <EmergencyContactsDetailsModal v-model:visible="emergencyContactsModalVisible" :emergencyContactsList="emergencyContactsList" @isEmergencyContactEdit="editEmergencyContact" />
+    <FamilyMembersDetailsModal v-model:visible="familyMembersModalVisible" :patientId="patientDetails.id" @isFamilyMemberEdit="editFamilyMember" @closeModal="handleOk" />
+    <PhysiciansDetailsModal v-model:visible="physiciansModalVisible" @isPhysicianEdit="editPhysician" @closeModal="handleOk" />
+    <EmergencyContactsDetailsModal v-model:visible="emergencyContactsModalVisible" @isEmergencyContactEdit="editEmergencyContact" @closeModal="handleOk" />
     <CriticalNotesDetailModal v-model:visible="criticalNotesDetailVisible" @closeModal="handleOk"/>
     <PatientVitalsDetailsModal v-model:visible="patientVitalsVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
     <NotesDetailModal v-model:visible="notesDetailVisible" @closeModal="handleOk" />
@@ -343,6 +343,9 @@ export default defineComponent({
         addNoteVisible.value = modal == 'addNote' ? value : false;
         careCoordinatorsVisible.value = modal == 'addCareTeam' ? value : false;
         addDeviceVisible.value = modal == 'addInventory' ? value : false;
+        familyMembersModalVisible.value = modal == 'familyMembersList' ? value : false;
+        physiciansModalVisible.value = modal == 'physiciansList' ? value : false;
+        emergencyContactsModalVisible.value = modal == 'emergencyContactsList' ? value : false;
       }
       else {
         flagsModalVisible.value = false;
@@ -364,6 +367,9 @@ export default defineComponent({
         documentDetailVisible.value = false;
         addTimeLogsVisible.value = false;
         criticalNotesDetailVisible.value = false;
+        familyMembersModalVisible.value = false;
+        physiciansModalVisible.value = false;
+        emergencyContactsModalVisible.value = false;
       }
     };
 
