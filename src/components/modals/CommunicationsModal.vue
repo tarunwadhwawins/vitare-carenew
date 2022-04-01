@@ -8,7 +8,7 @@
 
                     <a-form-item :label="$t('communications.communicationsModal.from')" name="from" :rules="[{ required: true, message: $t('communications.communicationsModal.from')+' '+$t('global.validation')  }]">
 
-                        <StaffDropDown :disabled="arrayToObjact(staffPermissions,37) ? false : true" v-model:value="messageForm.from" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
+                        <StaffDropDown :disabled="arrayToObjact(staffPermissions,37) ? false : true" v-model:value="messageForm.from" @handleStaffChange="handleStaffChange($event)" :close="closeValue" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -29,14 +29,14 @@
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.patient')" name="referenceId" :rules="[{ required: true, message: $t('communications.communicationsModal.patient')+' '+$t('global.validation')  }]">
 
-                        <PatientDropDown v-if="patientsList" v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event)" :close="closeValue" />
+                        <PatientDropDown v-if="patientsList" v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event)" :close="closeValue" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
             <a-col :sm="12" :xs="24" v-show="!toggleTo">
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.staff')" name="referenceId" :rules="[{ required: true, message: $t('communications.communicationsModal.staff')+' '+$t('global.validation')  }]">
-                        <StaffDropDown v-if="staffList" :checkSameAsStaff="true" v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event)" />
+                        <StaffDropDown v-if="staffList" :checkSameAsStaff="true" v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -59,7 +59,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.messageType')" name="messageTypeId" :rules="[{ required: true, message: $t('communications.communicationsModal.messageType')+' '+$t('global.validation')  }]">
-                        <a-select ref="select" v-model:value="messageForm.messageTypeId" style="width: 100%" size="large">
+                        <a-select ref="select" v-model:value="messageForm.messageTypeId" style="width: 100%" size="large" @change="checkChangeInput()">
                             <a-select-option value="" disabled>{{'Select Message Type'}}</a-select-option>
                             <template v-for="type in messageType">
                                 <a-select-option v-if="type.name == 'SMS' || type.name == 'Email'" :key="type.id" :value="type.id">{{ type.name }}</a-select-option>
@@ -72,19 +72,19 @@
             <a-col :span="24">
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.subject')" name="subject" :rules="[{ required: true, message: $t('communications.communicationsModal.subject')+' '+$t('global.validation')  }]">
-                        <a-input v-model:value="messageForm.subject" size="large" />
+                        <a-input v-model:value="messageForm.subject" size="large" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
             <a-col :span="24">
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.message')" name="message" :rules="[{ required: true, message: $t('communications.communicationsModal.message')+' '+$t('global.validation')  }]">
-                        <a-textarea v-model:value="messageForm.message" allow-clear />
+                        <a-textarea v-model:value="messageForm.message" allow-clear @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
             <a-col :span="24">
-                <ModalButtons name="communication" />
+                <ModalButtons name="communication" @is_click="handleCancel"/>
 
             </a-col>
         </a-row>
@@ -142,6 +142,9 @@ export default defineComponent({
             message: "",
         });
         const closeValue = ref(false)
+        const checkFieldsData = computed(() => {
+            return store.state.common.checkChangeInput;
+        })
         watchEffect(() => {
             store.dispatch("globalCodes");
             store.dispatch("allPatientsList");
@@ -151,15 +154,12 @@ export default defineComponent({
         const sendMessageFailed = () => {}
 
         onMounted(() => {
-           
-        })
 
-       
+        })
 
         const handleStaffChange = (val) => {
             messageForm.from = val;
         };
-
 
         const handlePatientChange = (val) => {
             messageForm.referenceId = val;
@@ -194,6 +194,7 @@ export default defineComponent({
                 store.dispatch("communicationsList");
                 store.dispatch("communicationTypes");
                 closeValue.value = false
+                store.commit('checkChangeInput', false)
             });
 
             emit("is-visible", false);
@@ -202,27 +203,24 @@ export default defineComponent({
         };
 
         const handleCancel = () => {
+          store.commit('checkChangeInput', false)
             formRef.value.resetFields();
             Object.assign(messageForm, form);
         };
 
+        function checkChangeInput() {
+            store.commit('checkChangeInput', true)
+        }
+
         function closeModal() {
-            if (
-                messageForm.entityType != "" ||
-                messageForm.referenceId != "" ||
-                messageForm.subject != "" ||
-                messageForm.messageCategoryId != "" ||
-                messageForm.priorityId != "" ||
-                messageForm.message != "" ||
-                messageForm.messageTypeId != ""
-            ) {
+            if (checkFieldsData.value) {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
                         closeValue.value = true
                         setTimeout(() => {
                             closeValue.value = false
                         }, 100)
-                        ///console.log("check2")
+                        store.commit('checkChangeInput', false)
                         handleCancel();
                         emit("is-visible", false);
                     } else {
@@ -242,6 +240,7 @@ export default defineComponent({
             return store.state.screenPermissions.staffPermissions;
         });
 
+       
         return {
             loadingStatus: store.getters.loadingStatus,
             staffData,
@@ -269,6 +268,7 @@ export default defineComponent({
             // handlePatientSearch,
             handlePatientChange,
             closeValue,
+            checkChangeInput
         };
     },
 });
