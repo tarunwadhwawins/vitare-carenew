@@ -76,7 +76,7 @@
           <a-col :sm="12" :xs="24">
               <div class="form-group">
                   <a-form-item :label="$t('global.startDate')" name="startDate" :rules="[{ required: true, message: $t('global.startDate')+' '+$t('global.validation') }]">
-                      <a-date-picker @change="changedValue" v-model:value="clinicalMedication.startDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                      <a-date-picker @change="changedValue" v-model:value="clinicalMedication.startDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" size="large" style="width: 100%" />
                       <ErrorMessage v-if="errorMsg" :name="errorMsg.startDate?errorMsg.startDate[0]:''" />
                   </a-form-item>
               </div>
@@ -84,7 +84,7 @@
           <a-col :sm="12" :xs="24">
               <div class="form-group">
                   <a-form-item :label="$t('global.endDate')" name="endDate" :rules="[{ required: true, message: $t('global.endDate')+' '+$t('global.validation') }]">
-                      <a-date-picker @change="changedValue" v-model:value="clinicalMedication.endDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                      <a-date-picker @change="changedValue" v-model:value="clinicalMedication.endDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" size="large" style="width: 100%" />
                       <ErrorMessage v-if="errorMsg" :name="errorMsg.endDate?errorMsg.endDate[0]:''" />
                   </a-form-item>
               </div>
