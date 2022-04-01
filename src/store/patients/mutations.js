@@ -533,6 +533,7 @@ export const patientDetails = (state, patient) => {
     patient.emergencyContactType = patient.emergencyContact.data.contactType.length > 0 ? JSON.parse(patient.emergencyContact.data.contactType) : [];
     patient.emergencyContactTime = patient.emergencyContact.data.contactTimeId.length > 0 ? JSON.parse(patient.emergencyContact.data.contactTimeId) : [];
     patient.emergencyGender = patient.emergencyContact.data.genderId;
+    patient.sameAsPrimary = patient.emergencyContact.data.sameAsPrimary;
   }
   else {
     patient.emergencyFullName = null;

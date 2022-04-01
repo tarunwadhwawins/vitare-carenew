@@ -49,7 +49,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.dateOfBirth')" name="dob" :rules="[{ required: true, message: $t('global.dateOfBirth')+' '+$t('global.validation') }]">
-                                    <a-date-picker @change="changedValue" v-model:value="demographics.dob" format="DD, MMM YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                                    <a-date-picker @change="changedValue" v-model:value="demographics.dob" :disabledDate="d => !d || d.isAfter(moment())" format="DD, MMM YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.dob?errorMsg.dob[0]:''" />
                                 </a-form-item>
                             </div>
@@ -662,6 +662,7 @@ import {successSwal,warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 import { useRoute } from 'vue-router';
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+import moment from "moment"
 export default defineComponent( {
   components: {
     GlobalCodeDropDown,
@@ -856,7 +857,7 @@ export default defineComponent( {
         //end
 
         if(idPatient) {
-					Object.assign(demographics, patientDetail);
+					Object.assign(demographics, patients.value.patientDetails);
 					if(props.isEditPatient && patients.value.patientInsurance != null) {
 						Object.assign(insuranceData, patients.value.patientInsurance)
 					}
@@ -1454,6 +1455,7 @@ export default defineComponent( {
       disabled,
       onKeyUp,
       bindProps: store.state.common.bindProps,
+      moment,
     };
   },
 });

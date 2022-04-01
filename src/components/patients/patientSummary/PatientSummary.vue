@@ -50,7 +50,7 @@
         </a-layout-content>
       </a-layout>
     </a-layout>
-    <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isTimeLog="isTimeLog" :timerValue="formattedElapsedTime" @closeModal="handleOk" @cancel="start" />
+    <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isAutomaticTimeLog="isAutomaticTimeLog" :isEditTimeLog="isEditTimeLog" :timerValue="formattedElapsedTime" @closeModal="handleOk" @cancel="start" />
     <!-- <TimeTracker v-model:visible="stoptimervisible" @ok="handleOk" /> -->
   </div>
 </template>
@@ -112,6 +112,7 @@ export default {
     const bloodoxygenvisible = ref(false);
     const bloodglucosevisible = ref(false);
     const stoptimervisible = ref(false);
+    const isEditTimeLog = ref(false);
     
     const startOn = ref(false);
 
@@ -281,12 +282,13 @@ export default {
       startOn.value = false;
     }
 
-    const isTimeLog = ref(false);
+    const isAutomaticTimeLog = ref(false);
     const showStopTimerModal = () => {
       clearInterval(timer.value);
       clearInterval(myInterval.value);
       stoptimervisible.value = true;
-      isTimeLog.value = true;
+      isAutomaticTimeLog.value = true;
+      isEditTimeLog.value = true;
     };
   
     const handleOk = (e) => {
@@ -308,7 +310,8 @@ export default {
       actionTrack,
       showStopTimerModal,
       formattedElapsedTime,
-      isTimeLog,
+      isAutomaticTimeLog,
+      isEditTimeLog,
       start,
       handleOkcustom,
       custom,
