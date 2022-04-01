@@ -12,7 +12,7 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation') }]">
-                                    <a-input v-model.trim:value="personalInfoData.firstName"  class="firstName" @change="checkChangeInput()"/>
+                                    <a-input v-model:value.trim="personalInfoData.firstName"  class="firstName" @change="checkChangeInput()"/>
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.firstName" :name="errorMsg.firstName?errorMsg.firstName[0]:''" />
                                 </a-form-item>
                             </div>
@@ -20,7 +20,7 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.lastName')" name="lastName" :rules="[{ required: true, message: $t('global.lastName')+' '+$t('global.validation') }]">
-                                    <a-input v-model.trim:value="personalInfoData.lastName" @change="checkChangeInput()"/>
+                                    <a-input v-model:value.trim="personalInfoData.lastName" @change="checkChangeInput()"/>
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.lastName" :name="errorMsg.lastName?errorMsg.lastName[0]:''" />
                                 </a-form-item>
                             </div>
@@ -53,16 +53,16 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(),type: 'email' }]">
-                                    <a-input v-model.trim:value="personalInfoData.email" placeholder="test@test.com" @input="emailChange()" @change="checkChangeInput()"/>
+                                    <a-input v-model:value.trim="personalInfoData.email" placeholder="test@test.com" @input="emailChange()" @change="checkChangeInput()"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase()}]">
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
                                     <!-- <a-input v-model:value="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" @change="checkChangeInput()"/> -->
-                                    <vue-tel-input  v-model.trim:value="personalInfoData.phoneNumber" v-bind="bindProps" @change="checkChangeInput()" />
+                                    <vue-tel-input  v-model="personalInfoData.phoneNumber"  v-bind="bindProps"  />
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.phoneNumber" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -321,6 +321,7 @@ export default {
       }
     })
     const paramId = addStaff.value?addStaff.value.id:''
+
     return {
       phone,
       info,

@@ -45,17 +45,16 @@ export default {
     orderTable:null,
     // phone msaking objects
     bindProps:{
-        autoFormat:true,
         mode: "national",
         defaultCountry: "US",
         disabledFetchingCountry: true,
         disabled: false,
-        disabledFormatting: false,
+        disabledFormatting: true,
         placeholder: "Enter a phone number",
         required: true,
         enabledCountryCode: false,
         enabledFlags: true,
-        autocomplete: "off",
+        autocomplete: "off", 
         onlyCountries:['US']
     }
 
