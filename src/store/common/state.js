@@ -43,6 +43,20 @@ export default {
     loadingTableStatus:null,
     actionTrack:null,
     orderTable:null,
+    // phone msaking objects
+    bindProps:{
+        mode: "international",
+        defaultCountry: "US",
+        disabledFetchingCountry: true,
+        disabled: false,
+        disabledFormatting: false,
+        placeholder: "Enter a phone number",
+        required: true,
+        enabledCountryCode: false,
+        enabledFlags: true,
+        autocomplete: "off",
+        onlyCountries:['US']
+    }
 
 
 }
