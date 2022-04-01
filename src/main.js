@@ -8,6 +8,9 @@ import store from './store'
 import './assets/scss/common.scss'
 import VueApexCharts from "vue3-apexcharts";
 import { notification, Button } from "ant-design-vue";
+//Phone number masking 
+import VueTelInput from 'vue-tel-input';
+import 'vue-tel-input/dist/vue-tel-input.css';
 
 const app = createApp(App)
 
@@ -92,6 +95,6 @@ if (store.state.authentication.loggedInUser) {
 
 
 
-app.use(Antd).use(firebaseApp).use(VueApexCharts).use(store).use(router).use(i18n).mount('#app')
+app.use(Antd).use(VueTelInput).use(firebaseApp).use(VueApexCharts).use(store).use(router).use(i18n).mount('#app')
 
 
