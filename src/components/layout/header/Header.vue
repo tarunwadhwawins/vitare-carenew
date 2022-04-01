@@ -158,21 +158,8 @@
                     style="max-height: 400px; overflow: auto"
                   >
                     <li class="title">{{ $t("header.notification") }}</li>
-                    <li
-                      class="listing"
-                      v-for="(notification, index) in notifications"
-                      :key="index"
-                    >
-                      <router-link
-                        :to="
-                          notification.type == 'Appointment'
-                            ? 'appointment-calendar'
-                            : '/communications'
-                        "
-                        @click="
-                          isReadNotification(notification.id, notification.type)
-                        "
-                      >
+                    <li class="listing" v-for="(notification, index) in notifications" :key="index" >
+                      <router-link :to="notification.type == 'Appointment' ? 'appointment-calendar': '/communications' " @click=" isReadNotification(notification.id, notification.type)">
                         <a class="d-flex align-items-center" href="#">
                           <div class="flex-grow-1 ms-3 summary">
                             <h3>{{ notification.title }}</h3>
@@ -191,7 +178,18 @@
                         </a>
                       </router-link>
                     </li>
-                    <!-- <li class="listing">
+                    <!-- <li class="listing read"> 
+                      <a class="d-flex align-items-center" href="#">
+                        <div class="flex-shrink-0 imgProfile">
+                          <img src="../../../assets/images/user-1.jpg" alt="image" width="50" />
+                        </div>
+                        <div class="flex-grow-1 ms-3 summary">
+                          <p>Just a reminder that you have appoinment</p>
+                          <span class="date">20 minutes ago</span>
+                        </div>
+                      </a>
+                    </li>
+                    <li class="listing unread">
                       <a class="d-flex align-items-center" href="#">
                         <div class="flex-shrink-0 imgProfile">
                           <img src="../../../assets/images/user-1.jpg" alt="image" width="50" />
@@ -203,7 +201,7 @@
                       </a>
                     </li> -->
                     <!-- <li class="allNotication">
-                      <a href="#">{{$t('header.checkAllNotifications')}}</a>
+                      <router-link to="notifications">{{$t('header.checkAllNotifications')}}</router-link>
                     </li> -->
                   </a-menu>
                 </template>

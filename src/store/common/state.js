@@ -45,6 +45,8 @@ export default {
     orderTable:null,
     // phone msaking objects
     bindProps:{
+        autoFormat:true,
+        mode: "national",
         defaultCountry: "US",
         disabledFetchingCountry: true,
         disabled: false,

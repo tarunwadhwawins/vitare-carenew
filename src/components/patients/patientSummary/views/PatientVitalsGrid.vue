@@ -1,11 +1,11 @@
 <template>
   <a-row :gutter="24">
 
-    <a-col v-if="patientDevices.length <= 0" :sm="24">
+    <a-col v-if="(bloodPressure != null || bloodGlucose != null || bloodOxygen != null) && patientDevices.length <= 0" :sm="24">
       <a-alert message="No devices are assigned to this Patient. Please assign device(s) to see Vitals." type="error" />
     </a-col>
     
-    <template v-for="device in patientDevices" :key="device.id">
+    <template v-else v-for="device in patientDevices" :key="device.id">
       <VitalsGrid
         v-if="device.deviceType == 'Blood Pressure'"
         title="Blood Pressure"

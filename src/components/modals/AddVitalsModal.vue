@@ -109,11 +109,12 @@ export default {
         }]
       }
       store.dispatch('addVital', { patientId, data }).then(() => {
-        store.dispatch('patientVitals', { patientId: patientId, deviceType: idDevice }).then(() => {
-          formRef.value.resetFields()
-          Object.assign(addVitalForm, form)
-          emit('closeModal')
-        })
+        store.dispatch('patientVitals', {patientId: patientId, deviceType: 99});
+        store.dispatch('patientVitals', {patientId: patientId, deviceType: 100});
+        store.dispatch('patientVitals', {patientId: patientId, deviceType: 101});
+        formRef.value.resetFields()
+        Object.assign(addVitalForm, form)
+        emit('closeModal')
       })
     }
     

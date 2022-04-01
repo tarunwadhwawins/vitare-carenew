@@ -67,21 +67,21 @@ import { warningSwal, actionTrack } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import Loader from "@/components/loader/Loader.vue";
 import { useRoute } from "vue-router";
+import { computed } from 'vue-demi';
 export default {
   components: {
     DeleteOutlined,
     EditOutlined,
     Loader,
   },
-  props: {
-    emergencyContactsList: {
-      type: Array,
-    },
-  },
   setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
     const patientUdid = route.params.udid;
+
+    const emergencyContactsList = computed(() => {
+      return store.state.patients.emergencyContactsList
+    })
 
     const emergencyContactsColumns = [
       {
@@ -165,6 +165,12 @@ export default {
               if (route.name == "PatientSummary") {
                 store.dispatch("emergencyContactsList", patientUdid);
               }
+              if(emergencyContactsList.value.length <= 1) {
+                emit("closeModal", {
+                  modal: 'emergencyContactsList',
+                  value: false
+                });
+              }
             });
         }
       });
@@ -178,6 +184,7 @@ export default {
       actionTrack,
       paramsId:route.params.udid,
       emergencyContactsColumns,
+      emergencyContactsList,
       editEmergencyContact,
       deleteEmergencyContact,
     };
