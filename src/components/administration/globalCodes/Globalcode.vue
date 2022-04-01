@@ -24,7 +24,7 @@
               </a-col>
               <a-col :span="12" v-if="arrayToObjact(globalCodesPermissions,327)">
                 <div class="text-right mb-24">
-                  <ExportToExcel  />
+                  <ExportToExcel @click="exportExcel('globalCode_report')" />
                 </div>
               </a-col>
               <a-col :span="24">

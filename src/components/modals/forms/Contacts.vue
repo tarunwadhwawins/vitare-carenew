@@ -27,9 +27,9 @@
         </a-col>
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern: regex.phoneNumber}]">
-                    <a-input v-model:value="contact.phoneNumber" placeholder="Please enter 10 digit number" size="large" />
-                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" @change="checkChangeInput()"/>
+                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase()}]">
+                    <vue-tel-input  v-model.trim:value="contact.phoneNumber" v-bind="bindProps" @change="checkChangeInput()"/>
+                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                 </a-form-item>
             </div>
         </a-col>
@@ -45,17 +45,6 @@
     </a-row>
     <a-row :gutter="24" v-show="!paramId">
         <a-col :span="24">
-            <!-- <a-table  rowKey="id" :pagination="false" :columns="staffs.staffContactColms" :data-source="staffs.staffContactList" :scroll="{ x: 900 }">
-                <template #action="text">
-                    <a-tooltip placement="bottom" @click="deleteContact(text.record.id)">
-                        <template #title>
-                            <span>{{$t('global.delete')}}</span>
-                        </template>
-                        <a class="icons">
-                            <DeleteOutlined /></a>
-                    </a-tooltip>
-                </template>
-            </a-table> -->
             <ContactTable :Id="Id"/>
             <Loader />
         </a-col>
@@ -67,21 +56,14 @@
 import { defineComponent, reactive, ref, computed,watchEffect } from "vue";
 import { useStore } from "vuex";
 import { regex } from "@/RegularExpressions/regex";
-// import { warningSwal } from "@/commonMethods/commonMethod";
-// import { messages } from "@/config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import Loader from "@/components/loader/Loader";
-
 import {
-  // EditOutlined,
-  // DeleteOutlined,
 } from "@ant-design/icons-vue";
 import ContactTable from "../../care-coordinator/tables/ContactTable.vue";
 
 export default defineComponent({
   components: {
-    // EditOutlined,
-    // DeleteOutlined,
     Loader,
     ErrorMessage,
     ContactTable
@@ -150,14 +132,14 @@ export default defineComponent({
       checkChangeInput,
       reset,
       Id,
-      // deleteContact,
       addContacts,
       contact,
       size: ref("large"),
       staffs,
       regex,
       errorMsg,
-      emailChange
+      emailChange,
+      bindProps: store.state.common.bindProps,
     };
   },
 });
