@@ -112,7 +112,7 @@ export default {
             store.dispatch("conversation", props.communication.id)
             getScroll()
         }, 5000);
-        const scrollHeight = ref(null)
+        
         const tableContent = ref(null)
         watchEffect(() => {
             store.state.communications.conversationList = ""
@@ -127,8 +127,8 @@ export default {
         })
 function getScroll(){
     setTimeout(()=>{
-                scrollHeight.value = tableContent.value[0].scrollHeight
-                tableContent.value[0].scrollTop=tableContent.value[0].scrollHeight
+                
+                tableContent.value[0].scrollTop=tableContent.value[0].scrollHeight+10
         },2000)
 }
         const list = store.getters.communicationRecord.value
@@ -155,6 +155,7 @@ function getScroll(){
 
                 //store.dispatch("conversation", props.communication.id)
             }
+            getScroll()
         }
 
         function closeModal() {

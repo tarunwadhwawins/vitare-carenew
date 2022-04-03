@@ -199,7 +199,7 @@ export const patient = (state, data) => {
         element.weight = element.weight ? element.weight : '',
         element.bp = element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'Systolic') { return JSON.parse(vitalData.value) } if (vitalData.vitalField == 'Diastolic') { return '/' + JSON.parse(vitalData.value) } }),
         element.spo2 = element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'SPO2') { return JSON.parse(vitalData.value) } }),
-        element.glucose = element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'Random Blood Sugar') { return JSON.parse(vitalData.value) } }),
+        element.glucose = element.patientVitals.data.map(vitalData => { if (vitalData.deviceType == 'Glucose') { return JSON.parse(vitalData.value) } }),
         element.dob = Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10) > 0 ? Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10) : 1
       return element
     })
@@ -533,6 +533,7 @@ export const patientDetails = (state, patient) => {
     patient.emergencyContactType = patient.emergencyContact.data.contactType.length > 0 ? JSON.parse(patient.emergencyContact.data.contactType) : [];
     patient.emergencyContactTime = patient.emergencyContact.data.contactTimeId.length > 0 ? JSON.parse(patient.emergencyContact.data.contactTimeId) : [];
     patient.emergencyGender = patient.emergencyContact.data.genderId;
+    patient.sameAsPrimary = patient.emergencyContact.data.sameAsPrimary;
   }
   else {
     patient.emergencyFullName = null;

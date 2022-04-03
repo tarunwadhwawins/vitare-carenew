@@ -4,7 +4,7 @@
   ref="select"
   :value="value"
    @input="updateValue"
-  style="width: 130%"
+  style="width: 100%"
   show-search
   placeholder="Please search on first & last name, phone number, email..."
   :show-arrow="false"

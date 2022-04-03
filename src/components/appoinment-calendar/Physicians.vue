@@ -3,7 +3,7 @@
     <a-row :gutter="16">
         <a-col :span="24">
             <div class="phyInner">
-                <h2>Physicians</h2>
+                <h2>Care Coordinator</h2>
             </div>
         </a-col>
 
@@ -23,7 +23,7 @@
        
         <a-col :span="12">
             <div class="phyInner" @click="showModal2(true)">
-                <a-avatar :size="80" title="Add Physician">
+                <a-avatar :size="80" title="Care Coordinator">
                     <template #icon>
                         <PlusOutlined />
                     </template>

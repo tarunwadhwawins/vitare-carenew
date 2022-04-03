@@ -98,6 +98,13 @@ const routes = [
     component: () => import('../components/time-log-report/TimeLogReport'),
     meta: { authAdmin: true }
   },
+
+  {
+    path: '/notifications',
+    name: 'Notifications',
+    component: () => import('@/components/notifications/Notifications'),
+    meta: { authAdmin: true }
+  },
   {
     path: '/video-call/:id?',
     name: 'videoCall',
@@ -251,6 +258,7 @@ const routes = [
     component: () => import('@/components/TestCountdown.vue'),
     meta: { authAdmin: true }
   },
+ 
 
 
 ]

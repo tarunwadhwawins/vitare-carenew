@@ -1,30 +1,31 @@
 import Swal from 'sweetalert2';
 import moment from 'moment';
 import store from '@/store/index'
-import Bowser from "bowser"; 
+import Bowser from "bowser";
+
 
 //for all timeStamp to according date and time format
-export function dateAndTimeFormate(timeStamp,format) {
+export function dateAndTimeFormate(timeStamp, format) {
 	var date = moment.unix(new Date(timeStamp));
 	return date.format(format);
 }
 
-export function errorLogWithDeviceInfo(errorMessage){
-let deviceInfo = Bowser.parse(window.navigator.userAgent)
-store.dispatch('errorLogWithDeviceInfo',{deviceInfo:JSON.stringify(deviceInfo),errorMessage:JSON.stringify(errorMessage)})
+export function errorLogWithDeviceInfo(errorMessage) {
+	let deviceInfo = Bowser.parse(window.navigator.userAgent)
+	store.dispatch('errorLogWithDeviceInfo', { deviceInfo: JSON.stringify(deviceInfo), errorMessage: JSON.stringify(errorMessage) })
 }
 
 // for all table export excel data
-export function exportExcel(data,date="?fromDate=&toDate="){
-	store.dispatch('exportReportRequest',{data:data,date:date})
+export function exportExcel(data, date = "?fromDate=&toDate=") {
+	store.dispatch('exportReportRequest', { data: data, date: date })
 }
 
 //action tracking when user click on any action 
-export function actionTrack(id,actionId,endPoint){
-	store.dispatch('actionTrack',{id:id,actionId:actionId,endPoint:endPoint})
+export function actionTrack(id, actionId, endPoint) {
+	store.dispatch('actionTrack', { id: id, actionId: actionId, endPoint: endPoint })
 }
 
- // encode a string
+// encode a string
 export function deCodeString(value) {
 	let decode = window.atob(value);
 	return decode.replace('=', '');
@@ -32,12 +33,12 @@ export function deCodeString(value) {
 
 // encode a string
 export function enCodeString(value) {
-	return window.btoa(value); 
+	return window.btoa(value);
 }
 
 //Capitalize a string
 function capitalize(str) {
-	return str.charAt(0).toUpperCase() + str.slice(1); 
+	return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 // swal for success message
@@ -112,7 +113,7 @@ export function dateTimeFormat(date) {
 }
 
 export function meridiemFormat(time) {
-	time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [ time ];
+	time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
 	if (time.length > 1) {
 		time = time.slice(1);
 		time[4] = +time[0] < 12 ? ' AM' : ' PM';
@@ -141,7 +142,7 @@ export function timeOnly(date) {
 export function yaxis(title) {
 	return {
 		labels: {
-			formatter: function(val) {
+			formatter: function (val) {
 				return val.toFixed(0);
 			}
 		},
@@ -276,8 +277,8 @@ export function chartTimeCount(timeLine, count) {
 		let today = moment();
 		//console.log('check',count)
 		today.subtract(timeLine.number, timeLine.intervalType);
-    today.subtract(1, timeLine.intervalType);
-    //console.log("day",today.subtract((timeLine.number+1), timeLine.intervalType))
+		today.subtract(1, timeLine.intervalType);
+		//console.log("day",today.subtract((timeLine.number+1), timeLine.intervalType))
 		for (let i = 0; i <= timeLine.number; i++) {
 			var day = today.add(1, 'days');
 			let obj = count.find((o) => moment(dateFormat(o.duration)).format('dddd') === day.format('dddd'));
@@ -441,7 +442,7 @@ export function createDynamicColumns(patientVitals) {
 	if (patientVitals.length > 0) {
 		patientVitals.map((item) => {
 			var field = (item.deviceType + '_' + item.vitalField).replace(/ /g, '_').toLowerCase();
-			var exists = itemObject.columns.some(function(dataIndex) {
+			var exists = itemObject.columns.some(function (dataIndex) {
 				return dataIndex.dataIndex === field;
 			});
 			if (!exists) {
