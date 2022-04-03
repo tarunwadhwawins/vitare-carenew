@@ -104,6 +104,9 @@ export default defineComponent({
     isEditTimeLog: {
       type: Boolean
     },
+    isAutomaticTimeLog: {
+      type: Boolean
+    },
     timerValue: {
       type: String
     },
@@ -113,8 +116,8 @@ export default defineComponent({
     const route = useRoute()
     const formRef = ref();
     const isValueChanged = ref(false);
-    // const isTimerLog = reactive(props.isTimeLog);
-    const isDisabled = props.isTimeLog == true ? true : false;
+    // const isTimerLog = reactive(props.isAutomaticTimeLog);
+    const isDisabled = props.isAutomaticTimeLog == true ? true : false;
     const loggedInUserDetails = JSON.parse(localStorage.getItem('auth'))
     /* const seconds = moment(props.timerValue, "HH:mm:ss").format('ss')
     const timer = ref(null);

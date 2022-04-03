@@ -19,7 +19,7 @@ const patient = {
     preferredTimeofDayforContact:'Preferred time of day for contact',
     MRN:'MRN( Medical Record Number) ',
     suiteorApartment:'Suite or Apartment',
-    primaryFamilyMember:'Primary Family Member',
+    primaryFamilyMember:'Primary Family Coordinator',
     fullName:'Full Name',
     emailAddress:'Email Address',
     emergencyContact:'Emergency Contact',
@@ -38,7 +38,7 @@ const patient = {
     I00:'Diseases of the circulatory system (I00-I99)',
     referralSource:'Referral Source (Assisted Living, Home Health, Cardiologist)',
     fax:'Fax',
-    primaryPhysician:'Primary Physician',
+    primaryPhysician:'Primary Care Coordinator',
     sameAsabove:'Same as above'
 
   },

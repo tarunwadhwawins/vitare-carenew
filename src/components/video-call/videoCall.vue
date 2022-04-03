@@ -31,7 +31,7 @@
                                     <img src="@/assets/images/userAvatar.png" />
                                     <div class="name">
                                         <h4>{{acceptVideoCallDetails.name}}</h4>
-                                        <router-link v-if="acceptVideoCallDetails" :to="{ name: 'PatientSummary', params: { udid:acceptVideoCallDetails?acceptVideoCallDetails.patient.id:'' }}">View Profile</router-link>
+                                        <router-link v-if="acceptVideoCallDetails" :to="{ name: 'PatientSummary', params: { udid:acceptVideoCallDetails?acceptVideoCallDetails.patient.id:'' }}" target="_blank">View Profile</router-link>
                                     </div>
                                     <!-- <span class="callTime">7:20</span> -->
                                 </div>
@@ -40,7 +40,7 @@
                                     <img src="@/assets/images/userAvatar.png" />
                                     <div class="name">
                                         <h4>{{getVideoDetails?getVideoDetails.patient:''}}</h4>
-                                        <router-link v-if="getVideoDetails" :to="{ name: 'PatientSummary', params: { udid:getVideoDetails?getVideoDetails.patientDetailed.id:'' }}">View Profile</router-link>
+                                        <router-link v-if="getVideoDetails" :to="{ name: 'PatientSummary', params: { udid:getVideoDetails?getVideoDetails.patientDetailed.id:'' }}" target="_blank">View Profile</router-link>
                                     </div>
                                     <!-- <span class="callTime">7:20</span> -->
                                 </div>
