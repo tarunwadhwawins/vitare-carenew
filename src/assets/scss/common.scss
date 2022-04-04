@@ -409,3 +409,9 @@ button.swal2-default-outline {
 .common-card.grapCardWrap {
 	min-height: 376px;
 }
+
+.thumb-desc {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
