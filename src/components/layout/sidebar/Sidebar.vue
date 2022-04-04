@@ -1,5 +1,5 @@
 <template>
-  <a-layout-sider v-show="accessPermission!=0"
+  <a-layout-sider v-show="accessPermission!=0" 
     :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"
   >
     <div class="menuList">
@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, toRefs, onUnmounted, computed } from "vue";
+import { defineComponent, reactive, toRefs, computed } from "vue";
 import {
   HomeOutlined,
   MailOutlined,
@@ -109,9 +109,8 @@ export default defineComponent({
     const roles = computed(() =>{
       return localStorage.getItem('roleAuth')
     })
-    onUnmounted(() => {
-      document.body.classList.remove("show");
-    });
+  
+     
 
     const accessPermission = computed(()=>{
       return store.state.authentication.accessPermission
