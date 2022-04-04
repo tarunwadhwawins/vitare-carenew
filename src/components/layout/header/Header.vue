@@ -322,7 +322,6 @@ export default defineComponent({
     const ellipse = ref(false);
     const tasksModal = ref(false);
     const date = Math.round(+new Date() / 1000);
-    console.log("Today-date", date);
     const userName = JSON.parse(localStorage.getItem("auth"));
     const logoutUser = () => {
       store.state.authentication.errorMsg = "";

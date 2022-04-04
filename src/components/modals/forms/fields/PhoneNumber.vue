@@ -5,6 +5,7 @@
       @input="onInput"
       @validate="onValid"
       v-bind="bindProps"
+      :disabled="false"
     />
   </div>
 </template>
@@ -30,8 +31,8 @@ export default {
       }
     };
 
-    const onValid = (number) => {
-      console.log("number", number);
+    const onValid = () => {
+      // console.log("number", number);
     };
     return {
       onValid,
