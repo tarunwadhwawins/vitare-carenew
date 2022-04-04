@@ -9,7 +9,7 @@
         <p v-if="patientDetails.medicalRecordNumber">MRN : {{ patientDetails.medicalRecordNumber }}</p>
         <p v-if="patientDetails.email"><a @click="actionTrack(paramsId,321,'patient')" href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
         <p v-if="patientDetails.phoneNumber"><a @click="actionTrack(paramsId,322,'patient')" href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
-        <p v-if="patientDetails.address">{{ patientDetails.address }}</p>
+        <p v-if="patientDetails.address"><HomeOutlined/> <span class="address-text">{{ patientDetails.address }}</span></p>
       </div>
       <EditOutlined class="editIcon" @click="editPatient({udid: patientDetails.id, id: patientDetails.id});;actionTrack(paramsId,301,'patient')" />
     </div>
@@ -170,6 +170,7 @@ import {
   PlusOutlined,
   EditOutlined,
   PhoneOutlined,
+  HomeOutlined,
 } from "@ant-design/icons-vue";
 
 // import Flags from "@/components/common/flags/Flags";
@@ -202,6 +203,7 @@ export default defineComponent({
     PlusOutlined,
     EditOutlined,
     PhoneOutlined,
+    HomeOutlined,
     PatientFlagsModal: defineAsyncComponent(()=>import("@/components/modals/PatientFlagsModal")),
     PatientsModal: defineAsyncComponent(()=>import("@/components/modals/PatientsModal")),
     AddAppointmentModal: defineAsyncComponent(()=>import("@/components/modals/AddAppointment")),
