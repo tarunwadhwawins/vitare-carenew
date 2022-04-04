@@ -158,14 +158,14 @@ export default defineComponent({
 							modal: 'addTimeLog',
 							value: true
 						});
-						Object.assign(addTimeLogForm, form);
-						isValueChanged.value = false;
 					}
 					else {
 						emit("closeModal", {
 							modal: 'addTimeLog',
 							value: false
 						});
+						Object.assign(addTimeLogForm, form);
+						isValueChanged.value = false;
 					}
 				})
 			}
