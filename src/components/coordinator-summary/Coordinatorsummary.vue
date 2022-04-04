@@ -66,7 +66,7 @@
                                 <a-tab-pane key="3" tab="Availability">
                                     <a-row :gutter="24">
                                         <a-col :sm="24" :xs="24">
-                                            <div class="common-btn mb-24" v-if="arrayToObjact(staffPermissions,51)">
+                                            <div class="common-btn mb-24" v-if="arrayToObjact(screensPermissions,51)">
                                                 <a-button class="btn blackBtn" @click="showModalvailability">
                                                     <PlusOutlined />
                                                 </a-button>
@@ -82,7 +82,7 @@
                                 <a-tab-pane key="4" tab="Contacts">
                                     <a-row :gutter="24">
                                         <a-col :span="24">
-                                            <div class="common-btn mb-24" v-if="arrayToObjact(staffPermissions,47)">
+                                            <div class="common-btn mb-24" v-if="arrayToObjact(screensPermissions,47)">
                                                 <a-button class="btn blackBtn" @click="showModalContact" >
                                                     <PlusOutlined />
                                                 </a-button>
@@ -98,7 +98,7 @@
                                 <a-tab-pane key="5" tab="Roles">
                                     <a-row :gutter="24">
                                         <a-col :sm="24" :xs="24">
-                                            <div class="common-btn mb-24" v-if="arrayToObjact(staffPermissions,55)">
+                                            <div class="common-btn mb-24" v-if="arrayToObjact(screensPermissions,55)">
                                                 <a-button class="btn blackBtn" @click="showModalRole">
                                                     <PlusOutlined />
                                                 </a-button>
@@ -114,7 +114,7 @@
                                 <a-tab-pane key="6" tab="Documents">
                                     <a-col :sm="24" :xs="24">
                                         <div class="common-btn mb-24">
-                                            <a-button class="btn blackBtn" @click="showDocModal" v-if="arrayToObjact(staffPermissions,59)">
+                                            <a-button class="btn blackBtn" @click="showDocModal" v-if="arrayToObjact(screensPermissions,59)">
                                                 <PlusOutlined />
                                             </a-button>
                                         </div>
@@ -289,9 +289,7 @@ export default {
       console.log(e);
       visibleStaffDoc.value = false;
     };
-    const staffPermissions = computed(()=>{
-     return store.state.screenPermissions.staffPermissions
-    })
+    
 
     const checkFieldsData = computed(()=>{
       return store.state.common.checkChangeInput;
@@ -342,7 +340,7 @@ export default {
       editStaffCloseModal,
       editStaff,
       visibleEditStaff,
-      staffPermissions,
+      screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       paramId: router.params.udid,
       staffs,

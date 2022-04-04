@@ -19,109 +19,113 @@
 </template>
 
 <script>
+import { WarningOutlined } from "@ant-design/icons-vue";
 import {
-    WarningOutlined
-} from "@ant-design/icons-vue";
-import {
-    dateFormat,
-    tableYScrollerCounterPage
-} from "../../../commonMethods/commonMethod"
-import {
-    onMounted
-} from "vue"
-import {
-    useStore
-} from "vuex";
+  dateFormat,
+  tableYScrollerCounterPage,
+} from "@/commonMethods/commonMethod";
+import { onMounted } from "vue";
+import { useStore } from "vuex";
 //import InfiniteLoader from "@/components/loader/InfiniteLoader";
 export default {
-    name: "DataTable",
-    components: {
-        WarningOutlined,
-        //  InfiniteLoader
-    },
-    props: {
+  name: "DataTable",
+  components: {
+    WarningOutlined,
+    //  InfiniteLoader
+  },
+  props: {},
+  setup() {
+    const store = useStore();
+    //const fields = reactive(props.staffRecords.columns)
 
-    },
-    setup() {
+    const meta = store.getters.staffRecord.value;
+    let data = [];
+    let scroller = "";
+    onMounted(() => {
+      var tableContent = document.querySelector(".ant-table-body");
+      tableContent.addEventListener("scroll", (event) => {
+        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+        let currentScroll = event.target.scrollTop + 2;
+        if (currentScroll >= maxScroll) {
+          let current_page = meta.staffMeta.current_page + 1;
 
-        const store = useStore();
-        //const fields = reactive(props.staffRecords.columns)
+          if (current_page <= meta.staffMeta.total_pages) {
+            scroller = maxScroll;
+            meta.staffMeta = "";
+            data = meta.staffs;
+            store.state.careCoordinator.staffs = "";
 
-        const meta = store.getters.staffRecord.value
-        let data = []
-        let scroller = ''
-        onMounted(() => {
-            var tableContent = document.querySelector('.ant-table-body')
-            tableContent.addEventListener('scroll', (event) => {
-                let maxScroll = event.target.scrollHeight - event.target.clientHeight
-                let currentScroll = event.target.scrollTop + 2
-                if (currentScroll >= maxScroll) {
-
-                    let current_page = meta.staffMeta.current_page + 1
-
-                    if (current_page <= meta.staffMeta.total_pages) {
-                        scroller = maxScroll
-                        meta.staffMeta = ""
-                        data = meta.staffs
-                        store.state.careCoordinator.staffs = ""
-
-                        store.dispatch("staffs", "?page=" + current_page + store.getters.searchTable.value + store.getters.orderTable.value.data).then(() => {
-                            loadMoredata()
-                        })
-
-                    }
-                }
-            })
-        })
-
-        function loadMoredata() {
-            const newData = meta.staffs
-
-            newData.forEach(element => {
-                data.push(element)
-            });
-            meta.staffs = data
-            var tableContent = document.querySelector('.ant-table-body')
-            setTimeout(() => {
-                tableContent.scrollTo(0, scroller);
-            }, 50);
+            store
+              .dispatch(
+                "staffs",
+                "?page=" +
+                  current_page +
+                  store.getters.searchTable.value +
+                  store.getters.orderTable.value.data
+              )
+              .then(() => {
+                loadMoredata();
+              });
+          }
         }
-        const handleTableChange = (pag, filters, sorter) => {
-            if (sorter.order) {
-                let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
-                let orderParam = '&orderField=' + sorter.field + '&orderBy=' + order
-                store.dispatch('orderTable', {
-                    data: orderParam,
-                    orderBy: order,
-                    page: pag,
-                    filters: filters
-                })
-                store.dispatch("staffs", "?page=" + store.getters.searchTable.value + orderParam)
+      });
+    });
 
-            } else {
-                store.dispatch('orderTable', {
-                    data: '&orderField=&orderBy='
-                })
-                store.dispatch("staffs", "?page=" + store.getters.searchTable.value + store.getters.orderTable.value.data)
-            }
-        }
+    function loadMoredata() {
+      const newData = meta.staffs;
 
-        const updateStatus = (id, status) => {
-            const data = {
-                isActive: status,
-            };
-            store.dispatch("updateStaffStatus", {
-                id,
-                data
-            })
-        };
-        return {
-            updateStatus,
-            meta,
-            dateFormat,
-            handleTableChange,
-            tableYScrollerCounterPage
-        }
-    },
+      newData.forEach((element) => {
+        data.push(element);
+      });
+      meta.staffs = data;
+      var tableContent = document.querySelector(".ant-table-body");
+      setTimeout(() => {
+        tableContent.scrollTo(0, scroller);
+      }, 50);
+    }
+    const handleTableChange = (pag, filters, sorter) => {
+      if (sorter.order) {
+        let order = sorter.order == "ascend" ? "ASC" : "DESC";
+        let orderParam = "&orderField=" + sorter.field + "&orderBy=" + order;
+        store.dispatch("orderTable", {
+          data: orderParam,
+          orderBy: order,
+          page: pag,
+          filters: filters,
+        });
+        store.dispatch(
+          "staffs",
+          "?page=" + store.getters.searchTable.value + orderParam
+        );
+      } else {
+        store.dispatch("orderTable", {
+          data: "&orderField=&orderBy=",
+        });
+        store.dispatch(
+          "staffs",
+          "?page=" +
+            store.getters.searchTable.value +
+            store.getters.orderTable.value.data
+        );
+      }
+    };
+
+    const updateStatus = (id, status) => {
+      const data = {
+        isActive: status,
+      };
+      store.dispatch("updateStaffStatus", {
+        id,
+        data,
+      });
+    };
+    return {
+      updateStatus,
+      meta,
+      dateFormat,
+      handleTableChange,
+      tableYScrollerCounterPage,
+    };
+  },
 };
 </script>

@@ -14,8 +14,8 @@
                         <h2 class="pageTittle">
                             {{ $t('communications.communications') }}
                             <div class="addtaskButton">
-                                <StartCall @click="showStartCallModal" v-if="arrayToObjact(communicationPermissions,107)"></StartCall>
-                                <SendMessage v-if="arrayToObjact(communicationPermissions,109)"></SendMessage>
+                                <StartCall @click="showStartCallModal" v-if="arrayToObjact(screensPermissions,107)"></StartCall>
+                                <SendMessage v-if="arrayToObjact(screensPermissions,109)"></SendMessage>
                             </div>
                             <div class="filter">
                                 <button class="btn" :class="toggle ? 'active' : ''" @click="toggle = !toggle">
@@ -50,7 +50,7 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { ref, h,computed, defineComponent,defineAsyncComponent} from "vue";
+import { ref, h, defineComponent,defineAsyncComponent} from "vue";
 import DashboardView from "@/components/communications/DashboardView";
 import ListView from "@/components/communications/ListView";
 import StartCall from "@/components/communications/top/StartCall";
@@ -167,12 +167,9 @@ export default defineComponent({
       AddStartCall.value =false
     }
 
-    const communicationPermissions = computed(()=>{
-      return store.state.screenPermissions.communicationPermissions
-    })
-
+ 
     return {
-      communicationPermissions,
+      screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       closeStartCallModal,
       showStartCallModal,

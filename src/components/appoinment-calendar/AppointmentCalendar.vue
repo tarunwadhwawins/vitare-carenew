@@ -8,14 +8,14 @@
           }" />
         <a-row :gutter="24">
             <a-col :xl="6" :sm="10" :xs="24" v-show="toggle">
-                <div class="apptBtn" v-if="arrayToObjact(appointmentCalendarPermissions,112)">
+                <div class="apptBtn" v-if="arrayToObjact(screensPermissions,112)">
                     <a-button class="btn primaryBtn" @click="showModal(true)">
                         {{$t('appointmentCalendar.newAppointment')}}</a-button>
                 </div>
 
                 <Calendar @is-click="selectDate($event)" />
 
-                <Physicians @staff-select="staffSelect($event)" :physiciansId="physiciansId" v-if="arrayToObjact(staffPermissions,37)" />
+                <Physicians @staff-select="staffSelect($event)" :physiciansId="physiciansId" v-if="arrayToObjact(screensPermissions,37)" />
 
             </a-col>
             <a-col :xl="toggle == false ? 24 : 18" :sm="toggle == false ? 24 : 14" :xs="24">
@@ -250,14 +250,9 @@ export default {
 
         }
 
-        const appointmentCalendarPermissions = computed(() => {
-            return store.state.screenPermissions.appointmentCalendarPermissions
-        })
-        const staffPermissions = computed(() => {
-            return store.state.screenPermissions.staffPermissions
-        })
+       
         return {
-            appointmentCalendarPermissions,
+            screensPermissions:store.getters.screensPermissions,
             arrayToObjact,
             month,
             appointmentSearch: store.getters.searchAppointmentRecords,
@@ -283,7 +278,6 @@ export default {
             showLoaderMain,
             moment,
             weekChange,
-            staffPermissions,
             monthRecord
         };
     },

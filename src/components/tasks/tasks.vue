@@ -14,7 +14,7 @@
               <a-col :span="24">
                 <h2 class="pageTittle">
                   {{$t('tasks.tasks')}}
-                  <div class="addtaskButton"  v-if="arrayToObjact(tasksDashboardPermissions,113)">
+                  <div class="addtaskButton"  v-if="arrayToObjact(screensPermissions,113)">
                     <Button :name="buttonName" @click="showModal" />
                   </div>
                   <div class="filter">
@@ -98,11 +98,9 @@ export default {
     const tasks = computed(()=>{
       return store.state.tasks
     })
-    const tasksDashboardPermissions = computed(()=>{
-      return store.state.screenPermissions.tasksDashboardPermissions
-    })
+   
     return {
-      tasksDashboardPermissions,
+      screensPermissions:store.getters.screensPermissions,
       tasks,
       arrayToObjact,
       toggleButton,

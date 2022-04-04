@@ -8,7 +8,7 @@
 
                     <a-form-item :label="$t('communications.communicationsModal.from')" name="from" :rules="[{ required: true, message: $t('communications.communicationsModal.from')+' '+$t('global.validation')  }]">
 
-                        <StaffDropDown :disabled="arrayToObjact(staffPermissions,37) ? false : true" v-model:value="messageForm.from" @handleStaffChange="handleStaffChange($event)" :close="closeValue" @change="checkChangeInput()" />
+                        <StaffDropDown :disabled="arrayToObjact(screensPermissions,37) ? false : true" v-model:value="messageForm.from" @handleStaffChange="handleStaffChange($event)" :close="closeValue" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -236,10 +236,7 @@ export default defineComponent({
         function referenceId() {
             messageForm.referenceId = "";
         }
-        const staffPermissions = computed(() => {
-            return store.state.screenPermissions.staffPermissions;
-        });
-
+       
        
         return {
             loadingStatus: store.getters.loadingStatus,
@@ -261,7 +258,7 @@ export default defineComponent({
             auth,
             closeModal,
             referenceId,
-            staffPermissions,
+            screensPermissions:store.getters.screensPermissions,
             arrayToObjact,
             // handleStaffSearch,
             handleStaffChange,
