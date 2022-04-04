@@ -11,15 +11,17 @@
         </a-col>
         <a-col :sm="12" :xs="24">
             <div class="form-group">
-                <!-- <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: false, message: $t('global.document')+' '+$t('global.validation') }]">
+                <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: true, message: $t('global.document')+' '+$t('global.validation') }]">
                     <a-input name="document_file" size="large" type="file" @change="onFileUpload" />
+                    <ErrorMessage v-if="docValidationError" name="Document is required." />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
-                </a-form-item> -->
-                <label><span style="color:red">* </span>{{$t('global.document')}}
+                    <!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" /> -->
+                </a-form-item>
+                <!-- <label><span style="color:red">* </span>{{$t('global.document')}}
                     <a-input  name="document_file" size="large" type="file" @change="onFileUpload" />
                     <ErrorMessage v-if="docValidationError" name="Document is required." />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
-                </label>
+                </label> -->
             </div>
         </a-col>
         <a-col :sm="12" :xs="24">
@@ -38,7 +40,7 @@
             <div class="form-group">
                 <a-form-item :label="$t('global.tags')" name="tags" :rules="[{ required: true, message: $t('global.tags')+' '+$t('global.validation') }]">
                     <!-- <a-select v-model:value="documents.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" @change="changedValue" /> -->
-                       <GlobalCodeDropDown @change="changedValue"  v-model:value="documents.tags" mode="multiple" :globalCode="globalCode.documentTags"/>
+                       <GlobalCodeDropDown @change="changedValue" size="large" v-model:value="documents.tags" mode="multiple" :globalCode="globalCode.documentTags"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.tags?errorMsg.tags[0]:''" />
                 </a-form-item>
             </div>
