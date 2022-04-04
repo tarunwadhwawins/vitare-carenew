@@ -88,7 +88,7 @@
         </div>
         <div v-if="bloodPressure != null || bloodGlucose != null || bloodOxygen != null || latestVital != null" class="thumb-desc">
           <a href="javascript:void(0)">
-            <span @click="showVitalssModal">{{ latestVital.deviceType }} {{ latestVital.value }} {{ latestVital.takeTime }}</span>
+            <span @click="showVitalsModal">{{ latestVital.deviceType }} {{ latestVital.value }} {{ latestVital.takeTime }}</span>
           </a>
         </div>
       </div>
@@ -457,7 +457,7 @@ export default defineComponent({
       flagsModalVisible.value = true;
     }
 
-    const showVitalssModal = () => {
+    const showVitalsModal = () => {
       patientVitalsVisible.value = true;
     }
 
@@ -466,6 +466,7 @@ export default defineComponent({
     }
 
     const showNotesModal = () => {
+      store.dispatch('notesList', route.params.udid);
       notesDetailVisible.value = true;
     }
 
@@ -551,7 +552,7 @@ export default defineComponent({
       showAddFlagModal,
       addTaskModal,
       addVitalsModel,
-      showVitalssModal,
+      showVitalsModal,
       addNotesModal,
       showNotesModal,
       addDocumentsModal,

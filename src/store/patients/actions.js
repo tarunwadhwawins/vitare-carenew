@@ -415,6 +415,7 @@ export const inventoryList = async ({ commit }, data) => {
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 404) {
+      commit('inventoryList', [])
       commit('errorMsg', error.response.data)
     }
     else {

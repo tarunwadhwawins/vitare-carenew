@@ -1,13 +1,13 @@
 <template>
-<a-modal max-width="1140px" width="100%" :title="title" centered :footer="null"  :maskClosable="false" @cancel="closeModal()">
+<a-modal max-width="1140px" width="100%"  :title="title" centered :footer="null"  :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
-        <div class="common-btn mb-24">
+        <div class="common-btn mb-24" ref="customScrollTop">
           <a-button type="primary" @click="showSearchPatient">
             Bitrix Lookup
          </a-button>
         </div>
-        <a-col :span="24">
-            <a-steps v-model:current="current" @change="scrollToTop($event)">
+        <a-col :span="24" >
+            <a-steps v-model:current="current" @change="scrollToTop($event)" >
                 <a-step v-for="item in steps" :key="item.title" :title="item.title" ><span :id="item"></span></a-step>
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Demographics'">
@@ -280,7 +280,8 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase() }]">
                                      <!-- <vue-tel-input  @change="changedValue" v-model.trim:value="demographics.familyPhoneNumber" v-bind="bindProps" disabled/> -->
-                                     <PhoneNumber  @change="changedValue" v-model.trim:value="demographics.familyPhoneNumber" @setPhoneNumber="setPhoneNumberDemographicFamily" disabled/>
+                                    <!-- <PhoneNumber  @change="changedValue" v-model.trim:value="demographics.familyPhoneNumber" @setPhoneNumber="setPhoneNumberDemographicFamily" disabled/> -->
+                                    <a-input  @change="changedValue" size="large" v-model:value="demographics.familyPhoneNumber"  disabled/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyPhoneNumber?errorMsg.familyPhoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -375,7 +376,7 @@
             </div>
             <div  class="steps-content" v-if="steps[current].title == 'Conditions'" >
                 <!-- <Conditions /> -->
-                <a-form :model="conditions" name="basic" :label-col="{ span: 8 }" scrollToFirstError=true :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="condition" @finishFailed="conditionsFailed">
+                <a-form :model="conditions" name="basic" :label-col="{ span: 8 }"  scrollToFirstError=true :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="condition" @finishFailed="conditionsFailed">
                     <a-row :gutter="24">
                         <a-col :span="24">
                             <div class="formHeading">
@@ -478,7 +479,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.designation')" name="referralDesignation" :rules="[{ required: false, message: $t('global.designation')+' '+$t('global.validation') }]">
-									<GlobalCodeDropDown @change="changedValue" @keyup="onKeyUp('referralDesignation')" v-model:value="conditions.referralDesignation"  :globalCode="globalCode.designations"/>
+									<GlobalCodeDropDown @change="changedValue" @keyup="onKeyUp('referralDesignation')" v-model:value="conditions.referralDesignation"  :globalCode="globalCode.designations" disabled/>
                                     <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralDesignation?referralErrorMsg.referralDesignation[0]:''" />
                                 </a-form-item>
 
@@ -487,8 +488,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="referralEmail" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                                    <a-input @change="changedValue" @keyup="onKeyUp('referralEmail')" v-model:value="conditions.referralEmail" placeholder="test@test.com" size="large" disabled>
-                                    </a-input>
+                                    <a-input @change="changedValue" @keyup="onKeyUp('referralEmail')" v-model:value="conditions.referralEmail" placeholder="test@test.com" size="large" disabled />
                                     <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralEmail?referralErrorMsg.referralEmail[0]:''" />
                                 </a-form-item>
                             </div>
@@ -497,7 +497,8 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="referralPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase() }]">
                                     <!-- <vue-tel-input  @change="changedValue" v-model.trim:value="conditions.referralPhoneNumber" v-bind="bindProps" /> -->
-                                    <PhoneNumber  @change="changedValue" v-model.trim:value="conditions.referralPhoneNumber" @setPhoneNumber="setPhoneNumberReferralPhoneNumber" disabled/>
+                                    <!-- <PhoneNumber  @change="changedValue" v-model.trim:value="conditions.referralPhoneNumber" @setPhoneNumber="setPhoneNumberReferralPhoneNumber" disabled/> -->
+                                    <a-input  @change="changedValue" v-model.trim:value="conditions.referralPhoneNumber" disabled/>
                                     <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralPhoneNumber?referralErrorMsg.referralPhoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -561,7 +562,7 @@
 
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                        <a-button v-if="current < steps.length - 1"  type="primary" html-type="submit">{{$t('global.next')}}</a-button>
+                        <a-button v-if="current < steps.length - 1"  type="primary" @click="scrollToTop(current)" html-type="submit">{{$t('global.next')}}</a-button>
                         <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
                             {{$t('global.done')}}
                         </a-button>
@@ -575,7 +576,7 @@
 
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                    <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
+                    <a-button v-if="current < steps.length - 1" type="primary" @click="next();scrollToTop(current)">{{$t('global.next')}}</a-button>
                 </div>
                 <!-- end  -->
             </div>
@@ -583,7 +584,7 @@
                 <Devices :idPatient="idPatient" @onChange="changedValue" />
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                    <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
+                    <a-button v-if="current < steps.length - 1" type="primary" @click="next();scrollToTop(current)">{{$t('global.next')}}</a-button>
                 </div>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Clinical Data'">
@@ -591,7 +592,7 @@
 
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                    <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
+                    <a-button v-if="current < steps.length - 1" type="primary" @click="next();scrollToTop(current)">{{$t('global.next')}}</a-button>
                 </div>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Insurance'">
@@ -633,7 +634,7 @@
                     </a-row>
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                        <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
+                        <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current)" html-type="submit">{{$t('global.next')}}</a-button>
                     </div>
                 </a-form>
             </div>
@@ -642,7 +643,7 @@
 
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                    <a-button v-if="current < steps.length - 1" type="primary">{{$t('global.next')}}</a-button>
+                    <a-button v-if="current < steps.length - 1" @click="scrollToTop(current)" type="primary">{{$t('global.next')}}</a-button>
                     <a-button v-if="current == steps.length - 1" type="primary" @click="saveModal()">
                         {{$t('global.save')}}
                     </a-button>
@@ -697,6 +698,7 @@ export default defineComponent( {
     const isValueChanged = ref(false);
     const formRef =ref()
     const patientSearch =ref(false)
+    const customScrollTop =ref()
     const errorMsg = computed(() => {
       return store.state.patients.errorMsg;
     });
@@ -1315,6 +1317,7 @@ export default defineComponent( {
     };
     const prev = () => {
       store.commit("counterMinus");
+      customScrollTop.value.scrollIntoView({behavior: 'smooth'});
     };
 
     const demographicsFailed = (e) => {
@@ -1431,10 +1434,14 @@ export default defineComponent( {
 			}
 		}
 
-    function scrollToTop(){
-        window.scrollTo(0, 0)  
+    function scrollToTop(event){
+        console.log('scroll',event);
+        customScrollTop.value.scrollIntoView({behavior: 'smooth'});
+        console.log('customScrollTop',customScrollTop.value);
     }
+    
     return {
+        customScrollTop,
     setPhoneNumberConditionPhoneNumber,
     setPhoneNumberReferralPhoneNumber,
     setPhoneNumberEmergencyPhoneNumber,

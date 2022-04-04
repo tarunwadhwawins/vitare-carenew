@@ -1,14 +1,11 @@
 <template>
-  <div v-if="isCodeValid" class="loginWrapper setupPassword">
+  <div v-if="isCodeValid" class="loginWrapper">
     <div class="logIn">
       <div class="loginInner">
         <a-row>
-          <a-col :md="24">
+          <WelcomeScreen />
+          <a-col :md="12">
             <div class="rightWrapper">
-
-              <div class="logo">
-                <img src="@/assets/images/logo.svg" alt="image" />
-              </div>
               <img class="rightImg" src="@/assets/images/curve.png" alt="image" />
               <h2>Setup Password</h2>
 
@@ -65,10 +62,12 @@ import {
 import { useStore } from "vuex";
 import ErrorMessage from "@/components/common/messages/ErrorMessage"
 import Loader from "../loader/Loader"
+import WelcomeScreen from "@/components/common/Welcome";
 export default defineComponent({
   components: {
     ErrorMessage,
     Loader,
+    WelcomeScreen,
   },
   setup() {
     const store = useStore()

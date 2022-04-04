@@ -153,10 +153,10 @@ export default defineComponent({
     function onCloseModal() {
 			if(isValueChanged.value) {
 				warningSwal(messages.modalWarning).then((response) => {
-					if (response == true) {
+					if (response != true) {
 						emit("closeModal", {
 							modal: 'addTimeLog',
-							value: false
+							value: true
 						});
 						Object.assign(addTimeLogForm, form);
 						isValueChanged.value = false;
@@ -164,7 +164,7 @@ export default defineComponent({
 					else {
 						emit("closeModal", {
 							modal: 'addTimeLog',
-							value: true
+							value: false
 						});
 					}
 				})

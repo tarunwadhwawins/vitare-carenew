@@ -14,7 +14,7 @@
         <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item  :label="$t('patient.devices.inventory')" name="inventory" :rules="[{ required: true, message: $t('patient.devices.inventory')+' '+$t('global.validation') }]">
-              <InventoryGlobalCodeDropDown :disabled="patients.inventoryList.length==0 || inventoryForm.deviceType==''" v-model:value="inventoryForm.inventory" :globalCode="patients.inventoryList" @change="handleChange(inventoryForm.inventory)"/>
+              <InventoryGlobalCodeDropDown :disabled="inventoryList.length==0 || inventoryForm.deviceType==''" v-model:value="inventoryForm.inventory" :globalCode="inventoryList" @change="handleChange(inventoryForm.inventory)"/>
                 <ErrorMessage v-if="errorMsg" :name="errorMsg.inventory?errorMsg.inventory[0]:''" />
             </a-form-item>
           </div>
@@ -131,6 +131,10 @@ export default defineComponent({
     const globalCode = computed(() => {
       return store.state.common;
     });
+
+    const inventoryList = computed(() => {
+      return store.state.patients.inventoryList;
+    });
     const deviceData = computed(() => {
       return store.state.patients.devices;
     });
@@ -238,6 +242,7 @@ export default defineComponent({
       isValueChanged,
       changedValue,
       onCloseModal,
+      inventoryList,
     };
   },
 });
