@@ -41,7 +41,7 @@
           <ExportToExcel />
         </div>
     </a-col>
-    <a-col :span="24" >
+    <a-col :span="24" v-if="arrayToObjact(patientsPermissions, 65)">
 
         <DataTable />
      <Loader />
