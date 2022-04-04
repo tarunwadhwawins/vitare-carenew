@@ -145,7 +145,7 @@
     <AddNotesModal v-model:visible="addNoteVisible" @closeModal="handleOk" />
     <AddDocumentModal v-model:visible="addDocumentVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
     <AddCareTeamModal v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" />
-    <AddTimeLogsModal v-model:visible="addTimeLogsVisible" :isEditTimeLog="isEditTimeLog" @closeModal="handleOk" />
+    <AddTimeLogsModal v-model:visible="addTimeLogsVisible" :isEditTimeLog="isEditTimeLog" :isAutomatic="isAutomatic" @closeModal="handleOk" />
     <AddDeviceModal v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
     <PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
     <PatientsModal v-model:visible="patientsModalVisible" :patientId="patientDetails.id" :isEditPatient="isEditPatient" @closeModal="handleOk" @saveModal="handleOk($event)" />
@@ -258,6 +258,7 @@ export default defineComponent({
     const addEmergencyContactModalVisible = ref(false);
     const isEmergencyContactEdit = ref(false);
     const emergencyContactsModalVisible = ref(false);
+    const isAutomatic = ref(false);
 
     watchEffect(() => {
       if(route.name == 'PatientSummary') {
@@ -481,9 +482,9 @@ export default defineComponent({
     }
 
     const addTimelogModal = () => {
-      localStorage.removeItem('timeLogId')
       addTimeLogsVisible.value = true;
       isEditTimeLog.value = false;
+      isAutomatic.value = false;
     }
 
     const showTimelogModal = () => {
