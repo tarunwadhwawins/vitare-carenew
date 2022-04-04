@@ -64,8 +64,9 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                                    <vue-tel-input  @change="changedValue" v-model.trim:value="demographics.phoneNumber" v-bind="bindProps" />
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase()}]">
+                                    <!-- <vue-tel-input  @change="changedValue" v-model.trim:value="demographics.phoneNumber" v-bind="bindProps" /> -->
+                                    <PhoneNumber @change="changedValue" v-model.trim:value="demographics.phoneNumber" @setPhoneNumber="setPhoneNumberDemographics"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -203,8 +204,9 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                                     <vue-tel-input  @change="changedValue" v-model.trim:value="demographics.familyPhoneNumber" v-bind="bindProps" />
+                                <a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase()}]">
+                                     <!-- <vue-tel-input  @change="changedValue" v-model.trim:value="demographics.familyPhoneNumber" v-bind="bindProps" /> -->
+                                     <PhoneNumber  @change="changedValue" v-model.trim:value="demographics.familyPhoneNumber" @setPhoneNumber="setPhoneNumberDemographicFamily"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyPhoneNumber?errorMsg.familyPhoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -276,8 +278,9 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber }]">
-                                     <vue-tel-input  @change="changedValue" v-model.trim:value="demographics.familyPhoneNumber" v-bind="bindProps" disabled/>
+                                <a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase() }]">
+                                     <!-- <vue-tel-input  @change="changedValue" v-model.trim:value="demographics.familyPhoneNumber" v-bind="bindProps" disabled/> -->
+                                     <PhoneNumber  @change="changedValue" v-model.trim:value="demographics.familyPhoneNumber" @setPhoneNumber="setPhoneNumberDemographicFamily" disabled/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyPhoneNumber?errorMsg.familyPhoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -327,8 +330,9 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="emergencyPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber }]">
-                                    <vue-tel-input  @change="changedValue" v-model.trim:value="demographics.emergencyPhoneNumber" v-bind="bindProps" />
+                                <a-form-item :label="$t('global.phoneNo')" name="emergencyPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase() }]">
+                                    <!-- <vue-tel-input  @change="changedValue" v-model.trim:value="demographics.emergencyPhoneNumber" v-bind="bindProps" /> -->
+                                    <PhoneNumber  @change="changedValue" v-model.trim:value="demographics.emergencyPhoneNumber" @setPhoneNumber="setPhoneNumberEmergencyPhoneNumber" />
                                 </a-form-item>
                                 <ErrorMessage v-if="errorMsg" :name="errorMsg.emergencyPhoneNumber?errorMsg.emergencyPhoneNumber[0]:''" />
                             </div>
@@ -430,8 +434,9 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="referralPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber }]">
-                                    <vue-tel-input  @change="changedValue" v-model.trim:value="conditions.referralPhoneNumber" v-bind="bindProps" />
+                                <a-form-item :label="$t('global.phoneNo')" name="referralPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase() }]">
+                                    <!-- <vue-tel-input  @change="changedValue" v-model.trim:value="conditions.referralPhoneNumber" v-bind="bindProps" /> -->
+                                    <PhoneNumber  @change="changedValue" v-model.trim:value="conditions.referralPhoneNumber" @setPhoneNumber="setPhoneNumberReferralPhoneNumber" />
                                     <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralPhoneNumber?referralErrorMsg.referralPhoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -490,8 +495,9 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="referralPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber }]">
-                                    <vue-tel-input  @change="changedValue" v-model.trim:value="conditions.referralPhoneNumber" v-bind="bindProps" />
+                                <a-form-item :label="$t('global.phoneNo')" name="referralPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase() }]">
+                                    <!-- <vue-tel-input  @change="changedValue" v-model.trim:value="conditions.referralPhoneNumber" v-bind="bindProps" /> -->
+                                    <PhoneNumber  @change="changedValue" v-model.trim:value="conditions.referralPhoneNumber" @setPhoneNumber="setPhoneNumberReferralPhoneNumber" disabled/>
                                     <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralPhoneNumber?referralErrorMsg.referralPhoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -536,8 +542,9 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber }]">
-                                    <vue-tel-input  @change="changedValue" v-model.trim:value="conditions.phoneNumber" v-bind="bindProps" />
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase() }]">
+                                    <!-- <vue-tel-input  @change="changedValue" v-model.trim:value="conditions.phoneNumber" v-bind="bindProps" /> -->
+                                    <PhoneNumber  @change="changedValue" v-model.trim:value="conditions.phoneNumber" @setPhoneNumber="setPhoneNumberConditionPhoneNumber" />
                                     <ErrorMessage v-if="physicianErrorMsg" :name="physicianErrorMsg.phoneNumber?physicianErrorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -663,8 +670,10 @@ import { messages } from "../../config/messages";
 import { useRoute } from 'vue-router';
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 import moment from "moment"
+import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
 export default defineComponent( {
   components: {
+    PhoneNumber,
     GlobalCodeDropDown,
     Programs,
     Devices,
@@ -836,6 +845,23 @@ export default defineComponent( {
       expirationDate: [],
       insuranceType: [],
     });
+
+    const setPhoneNumberDemographics = (value) => {
+      demographics.phoneNumber = value;
+    };
+    const setPhoneNumberDemographicFamily = (value) => {
+      demographics.familyPhoneNumber = value;
+    };
+    const setPhoneNumberEmergencyPhoneNumber = (value) => {
+      demographics.emergencyPhoneNumber = value;
+    };
+    const setPhoneNumberReferralPhoneNumber = (value) => {
+      conditions.phoneNumber = value;
+    };
+
+    const setPhoneNumberConditionPhoneNumber = (value) => {
+      conditions.phoneNumber = value;
+    };
 
      const form = reactive({
       ...demographics,
@@ -1409,6 +1435,11 @@ export default defineComponent( {
         window.scrollTo(0, 0)  
     }
     return {
+    setPhoneNumberConditionPhoneNumber,
+    setPhoneNumberReferralPhoneNumber,
+    setPhoneNumberEmergencyPhoneNumber,
+    setPhoneNumberDemographicFamily,
+    setPhoneNumberDemographics,
     scrollToTop,
     formRef,
     clearValidtion,
