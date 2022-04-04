@@ -481,6 +481,7 @@ export default defineComponent({
     }
 
     const addTimelogModal = () => {
+      localStorage.removeItem('timeLogId')
       addTimeLogsVisible.value = true;
       isEditTimeLog.value = false;
     }
