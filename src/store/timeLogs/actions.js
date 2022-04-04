@@ -3,18 +3,15 @@ import { API_ENDPOINTS } from "@/config/apiConfig"
 import { successSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
 
 export const addTimeLog = async ({ commit }, {id, data}) => {
-	if(data.isAutomatic && data.isAutomatic == false) {
+	if(data.isAutomatic == false) {
 		commit('loadingStatus', true)
 	}
 	await ServiceMethodService.common("post", API_ENDPOINTS['patient']+"/"+id+"/timeLog", null, data).then((response) => {
 		commit('addTimeLogSuccess', response.data.data);
-		if(data.isAutomatic && data.isAutomatic == true) {
+		if(data.isAutomatic == true) {
 			localStorage.setItem('timeLogId', response.data.data.id)
 		}
-		else {
-			localStorage.removeItem('timeLogId')
-		}
-		if(data.isAutomatic && data.isAutomatic == false) {
+		if(data.isAutomatic == false) {
 			successSwal(response.data.message)
 		}
 		commit('loadingStatus', false)

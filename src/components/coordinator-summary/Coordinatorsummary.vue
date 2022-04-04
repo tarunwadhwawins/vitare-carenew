@@ -45,7 +45,7 @@
                                 </div>
                                  <div class="pat-profile-inner">
                                     <div class="thumb-head">Status</div>
-                                    <div class="thumb-desc">{{getstaffSummary?getstaffSummary.status:''}}</div>
+                                    <div class="thumb-desc">{{getstaffSummary?getstaffSummary.isActive==true?'Active':'Inactive':''}}</div>
                                 </div>
                             </div>
                         </div>
