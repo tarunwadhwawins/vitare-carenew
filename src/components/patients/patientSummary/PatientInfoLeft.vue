@@ -9,7 +9,7 @@
         <p v-if="patientDetails.medicalRecordNumber">MRN : {{ patientDetails.medicalRecordNumber }}</p>
         <p v-if="patientDetails.email"><a @click="actionTrack(paramsId,321,'patient')" href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
         <p v-if="patientDetails.phoneNumber"><a @click="actionTrack(paramsId,322,'patient')" href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
-        <p v-if="patientDetails.address">{{ patientDetails.address }}</p>
+        <p v-if="patientDetails.address"><HomeOutlined/> <span class="address-text">{{ patientDetails.address }}</span></p>
       </div>
       <EditOutlined class="editIcon" @click="editPatient({udid: patientDetails.id, id: patientDetails.id});;actionTrack(paramsId,301,'patient')" />
     </div>
@@ -51,9 +51,12 @@
         <div class="thumb-head" @click="showCriticalModal(); actionTrack(paramsId,293,'patient')">Critical Note
           <PlusOutlined />
         </div>
-        <div v-if="criticalNotesList" class="thumb-desc">
-          <a href="javascript:void(0)" @click="showCriticalNotesDetails();actionTrack(paramsId,311,'patient')" >{{ criticalNotesList[0]?criticalNotesList[0].criticalNote.substring(0,20)+'...':'' }}</a>
+        <div v-if="criticalNotesList != null" class="thumb-desc">
+          <a href="javascript:void(0)" @click="showCriticalNotesDetails();actionTrack(paramsId,311,'patient')" >{{ criticalNotesList[0]?criticalNotesList[0].criticalNote:'' }}</a>
         </div>
+        <!-- <div v-if="criticalNotesList" class="thumb-desc">
+          <a href="javascript:void(0)" @click="showCriticalNotesDetails();actionTrack(paramsId,311,'patient')" >{{ criticalNotesList[0]?criticalNotesList[0].criticalNote.substring(0,20):'' }}</a>
+        </div> -->
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">Non Compliance</div>
@@ -88,7 +91,7 @@
         </div>
         <div v-if="bloodPressure != null || bloodGlucose != null || bloodOxygen != null || latestVital != null" class="thumb-desc">
           <a href="javascript:void(0)">
-            <span @click="showVitalssModal">{{ latestVital.deviceType }} {{ latestVital.value }} {{ latestVital.takeTime }}</span>
+            <span @click="showVitalsModal">{{ latestVital.deviceType }} {{ latestVital.value }} {{ latestVital.takeTime }}</span>
           </a>
         </div>
       </div>
@@ -170,6 +173,7 @@ import {
   PlusOutlined,
   EditOutlined,
   PhoneOutlined,
+  HomeOutlined,
 } from "@ant-design/icons-vue";
 
 // import Flags from "@/components/common/flags/Flags";
@@ -202,6 +206,7 @@ export default defineComponent({
     PlusOutlined,
     EditOutlined,
     PhoneOutlined,
+    HomeOutlined,
     PatientFlagsModal: defineAsyncComponent(()=>import("@/components/modals/PatientFlagsModal")),
     PatientsModal: defineAsyncComponent(()=>import("@/components/modals/PatientsModal")),
     AddAppointmentModal: defineAsyncComponent(()=>import("@/components/modals/AddAppointment")),
@@ -457,7 +462,7 @@ export default defineComponent({
       flagsModalVisible.value = true;
     }
 
-    const showVitalssModal = () => {
+    const showVitalsModal = () => {
       patientVitalsVisible.value = true;
     }
 
@@ -552,7 +557,7 @@ export default defineComponent({
       showAddFlagModal,
       addTaskModal,
       addVitalsModel,
-      showVitalssModal,
+      showVitalsModal,
       addNotesModal,
       showNotesModal,
       addDocumentsModal,

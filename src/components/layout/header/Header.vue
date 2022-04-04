@@ -330,6 +330,13 @@ export default defineComponent({
     const value = ref();
 
     function barMenu() {
+      var barMenu = JSON.parse(localStorage.getItem('barmenu'))
+      if(barMenu==true){
+        localStorage.setItem('barmenu', JSON.stringify(false));
+      }else{
+        localStorage.setItem('barmenu', JSON.stringify(true));
+      }
+     
       document.body.classList.toggle("show");
     }
 
@@ -338,6 +345,13 @@ export default defineComponent({
       store.dispatch("orderTable", {
         data: "&orderField=&orderBy=",
       });
+     
+    if(JSON.parse(localStorage.getItem('barmenu'))==true){
+  
+      document.body.classList.add("show");
+    }
+      //document.body.classList.remove("show");
+
     });
     onUnmounted(() => {});
     const appointmentModal = ref(false);
