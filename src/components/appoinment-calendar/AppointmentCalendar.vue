@@ -1,7 +1,7 @@
 <template>
 <div>
     <!---->
-    <a-layout-content >
+    <a-layout-content>
         <Title :title="$t('appointmentCalendar.appointmentCalendar')" @calenderToggle="calenderView($event)" :isActive="toggle" :button="{
             fullCalendarView: $t('appointmentCalendar.fullCalendarView'),
             hideCalendarView:$t('appointmentCalendar.hideCalendarView')
@@ -15,7 +15,7 @@
 
                 <Calendar @is-click="selectDate($event)" />
 
-                <Physicians @staff-select="staffSelect($event)" :physiciansId="physiciansId" v-if="arrayToObjact(staffPermissions,37)"/>
+                <Physicians @staff-select="staffSelect($event)" :physiciansId="physiciansId" v-if="arrayToObjact(staffPermissions,37)" />
 
             </a-col>
             <a-col :xl="toggle == false ? 24 : 18" :sm="toggle == false ? 24 : 14" :xs="24">
@@ -36,7 +36,7 @@
                     </a-tab-pane>
                     <a-tab-pane key="4" tab="Month">
 
-                        <MonthAppointment v-if="appointmentSearch" :appointment="appointmentSearch" @is-dateClick="selectDate($event)" @is-month="monthDate($event)" :seclectDate="month"></MonthAppointment>
+                        <MonthAppointment v-if="monthRecord" :appointment="appointmentSearch" @is-dateClick="selectDate($event)" @is-month="monthDate($event)" :seclectDate="month"></MonthAppointment>
 
                     </a-tab-pane>
                 </a-tabs>
@@ -85,11 +85,11 @@ export default {
         WeekAppointment,
         Loader
     },
-props:{
-    headerData:{
-        type:String
-    }
-},
+    props: {
+        headerData: {
+            type: String
+        }
+    },
     setup(props) {
         const toggle = ref(true);
         const maskebale = ref(false)
@@ -101,6 +101,7 @@ props:{
         let datePick = moment()
         const physiciansId = ref([])
         const showLoaderMain = ref(true)
+        const monthRecord = ref(false)
         ///This fuction is working for date select in calendar and view appointment according select date
         function selectDate(event) {
             showLoaderMain.value = false
@@ -145,10 +146,12 @@ props:{
                 toDate.value = moment(tabDate).endOf('week')
 
             } else if (value == 4) {
+                monthRecord.value = false
                 datePick = moment(tabDate).startOf('month')
+                month.value = moment()
                 fromDate.value = moment(tabDate).startOf('month')
                 toDate.value = moment(tabDate).endOf('month')
-                //console.log("check",fromDate.value,toDate.value)
+
             } else {
                 datePick = tabDate
                 fromDate.value = tabDate
@@ -158,10 +161,12 @@ props:{
         }
 
         function monthDate(event) {
+            monthRecord.value = false
+
             showLoaderMain.value = false
             activeKey.value = ref('4')
             month.value = moment(event)
-            store.state.appointment.searchAppointmentRecords = ''
+
             datePick = moment(event)
             fromDate.value = moment(event).startOf('month')
             toDate.value = moment(event).endOf('month')
@@ -170,22 +175,23 @@ props:{
                 toDate: toDate.value,
                 tabId: 4,
                 physiciansId: physiciansId.value.length == 0 ? '' : physiciansId.value.join(",")
+            }).then(() => {
+                monthRecord.value = true
             })
 
         }
-        //const appointmentSearch = store.getters.searchAppointmentRecords.value
 
         watchEffect(() => {
             store.dispatch("getStaffs").then(() => {
-                //onsole.log("check")
+
             })
 
             store.dispatch("allPatientsList")
             store.dispatch("allStaffList")
-if(props.headerData){
-    console.log("check",props.headerData)
-    selectDate(props.headerData)
-}
+            if (props.headerData) {
+                console.log("check", props.headerData)
+                selectDate(props.headerData)
+            }
             searchApi()
         })
 
@@ -197,13 +203,15 @@ if(props.headerData){
             physiciansId.value = staffId;
             store.state.appointment.searchAppointmentRecords = ''
             store.state.appointment.calendarDate = ''
-            //console.log("select", datePick)
+
             store.dispatch("calendarDateSelect", datePick)
             store.dispatch("searchAppointment", {
                 fromDate: fromDate.value,
                 toDate: toDate.value,
                 tabId: activeKey.value,
                 physiciansId: physiciansId.value.length == 0 ? '' : physiciansId.value.join(",")
+            }).then(() => {
+                monthRecord.value = true
             })
         }
         const patientsList = computed(() => {
@@ -218,7 +226,7 @@ if(props.headerData){
         }
         const appointmentModal = ref(false);
         const showModal = (event) => {
-            console.log("data",event)
+
             if (event.date) {
                 selectDate(event.date)
                 appointmentModal.value = event.check;
@@ -245,7 +253,7 @@ if(props.headerData){
         const appointmentCalendarPermissions = computed(() => {
             return store.state.screenPermissions.appointmentCalendarPermissions
         })
-        const staffPermissions = computed(()=>{
+        const staffPermissions = computed(() => {
             return store.state.screenPermissions.staffPermissions
         })
         return {
@@ -275,7 +283,8 @@ if(props.headerData){
             showLoaderMain,
             moment,
             weekChange,
-            staffPermissions
+            staffPermissions,
+            monthRecord
         };
     },
 };
