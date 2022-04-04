@@ -104,7 +104,7 @@ export default defineComponent({
     isEditTimeLog: {
       type: Boolean
     },
-    isAutomaticTimeLog: {
+    isAutomatic: {
       type: Boolean
     },
     timerValue: {
@@ -116,8 +116,8 @@ export default defineComponent({
     const route = useRoute()
     const formRef = ref();
     const isValueChanged = ref(false);
-    // const isTimerLog = reactive(props.isAutomaticTimeLog);
-    const isDisabled = props.isAutomaticTimeLog == true ? true : false;
+    // const isTimerLog = reactive(props.isAutomatic);
+    const isDisabled = props.isAutomatic == true ? true : false;
     const loggedInUserDetails = JSON.parse(localStorage.getItem('auth'))
     /* const seconds = moment(props.timerValue, "HH:mm:ss").format('ss')
     const timer = ref(null);
@@ -207,7 +207,7 @@ export default defineComponent({
       else {
         const timeLogId =  localStorage.getItem('timeLogId')
         const timeAmount = getSeconds(moment(addTimeLogForm.timeAmount).format('HH:mm:ss'))
-        if((timeLogId && timeLogId != null)) {
+        if((timeLogId && timeLogId != null) && props.isAutomatic == true) {
           const data = {
             category: addTimeLogForm.category,
             loggedBy: addTimeLogForm.loggedBy,
@@ -241,6 +241,7 @@ export default defineComponent({
             timeAmount: timeAmount,
             cptCode: addTimeLogForm.cptCode,
             note: addTimeLogForm.note,
+            isAutomatic: false,
           }
           const patientId = route.params.udid;
           store.dispatch('addTimeLog', {id: patientId, data: data}).then(() => {

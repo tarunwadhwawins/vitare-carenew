@@ -168,10 +168,10 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :md="12" :sm="12" :span="24">
+                        <a-col :md="8" :sm="12" :span="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.address')" name="address" :rules="[{ required: false, message: $t('global.address')+' '+$t('global.validation') }]">
-                                    <a-textarea @change="changedValue" v-model:value="demographics.address" allow-clear />
+                                    <a-textarea size="large" @change="changedValue" v-model:value="demographics.address" allow-clear />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.address?errorMsg.address[0]:''" />
                                 </a-form-item>
                             </div>
