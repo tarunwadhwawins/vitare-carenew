@@ -14,20 +14,13 @@
             <span v-if="text.match(/two/g)"><img class="reportFlag" src="../../assets/images/flag-red.svg" alt="image" /></span>
         </template>
         <template #actions="{record}" >
-            <a-tooltip placement="bottom" @click="editTimeLog(record.id)">
+            <a-tooltip placement="bottom" @click="editTimeLog(record.id)" v-if="arrayToObjact(screensPermissions, 334)">
                 <template #title>
                     <span>{{$t('global.edit')}}</span>
                 </template>
                 <a class="icons">
                     <EditOutlined /></a>
             </a-tooltip>
-            <!-- <a-tooltip placement="bottom" @click="deleteTimeLog(record.id)">
-                <template #title>
-                    <span>{{$t('global.delete')}}</span>
-                </template>
-                <a class="icons">
-                    <DeleteOutlined /></a>
-            </a-tooltip> -->
             <a-tooltip placement="bottom" @click="viewTimeLog(record.id)">
               <template #title>
                 <span>{{ $t("common.view") }}</span>
@@ -173,7 +166,9 @@ export default {
         store.dispatch("timeLogReportList", '?search='+ store.getters.orderTable.value.data)
       }
     }
+    
     return {
+      screensPermissions:store.getters.screensPermissions,
       handleTableChange,
       Id,
       arrayToObjact,

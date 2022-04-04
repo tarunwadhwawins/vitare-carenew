@@ -115,7 +115,7 @@
                     </a-menu-item>
                     <a-menu-item
                       key="1"
-                      v-if="arrayToObjact(patientsPermissions, 62)"
+                      v-if="arrayToObjact(screensPermissions, 62)"
                     >
                       <a href="javascript:void(0)" @click="addPatient">{{
                         $t("header.addPatient")
@@ -128,7 +128,7 @@
                     </a-menu-item>
                     <a-menu-item
                       key="4"
-                      v-if="arrayToObjact(communicationPermissions, 107)"
+                      v-if="arrayToObjact(screensPermissions, 107)"
                     >
                       <a
                         href="javascript:void(0)"
@@ -397,15 +397,7 @@ export default defineComponent({
       AddStartCall.value = false;
     };
 
-    const accessPermission = computed(() => {
-      return store.state.authentication.accessPermission;
-    });
-    const patientsPermissions = computed(() => {
-      return store.state.screenPermissions.patientsPermissions;
-    });
-    const communicationPermissions = computed(() => {
-      return store.state.screenPermissions.communicationPermissions;
-    });
+    
 
     const notifications = computed(() => {
       return store.state.common.getNotificationsList;
@@ -437,6 +429,7 @@ export default defineComponent({
       return store.state.patients.bitrixFormCheck;
     });
     return {
+      screensPermissions:store.getters.screensPermissions,
       bitrixFormCheck,
       dateOnlyFormat,
       isReadNotification,
@@ -446,8 +439,6 @@ export default defineComponent({
       dobFormat,
       meridiemFormatFromTimestamp,
       notifications,
-      communicationPermissions,
-      accessPermission,
       handleTaskOk,
       userName,
       logoutUser,
@@ -474,7 +465,7 @@ export default defineComponent({
       startOk,
       handleOk,
       showModal,
-      patientsPermissions,
+    
     };
   },
 });

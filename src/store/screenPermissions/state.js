@@ -8,5 +8,6 @@ export default {
   staffPermissions:null,
   communicationPermissions:null,
   appointmentCalendarPermissions:null,
-  tasksDashboardPermissions:null
+  tasksDashboardPermissions:null,
+  screensPermissions:JSON.parse(localStorage.getItem("permission"))
 }

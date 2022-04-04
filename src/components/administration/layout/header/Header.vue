@@ -60,7 +60,7 @@
                     <a-menu-item key="0">
                       <a href="javascript:void(0)" @click="addAppt">Add Appointment</a>
                     </a-menu-item>
-                    <a-menu-item key="1" v-if="arrayToObjact(patientsPermissions,62)">
+                    <a-menu-item key="1" v-if="arrayToObjact(screensPermissions,62)">
                       <a href="javascript:void(0)" @click="addPatient">Add Patient</a>
                     </a-menu-item>
                     <!-- <a-menu-item key="3">
@@ -238,11 +238,9 @@
       const showStartCallModal = () => {
         AddStartCall.value = true;
       };
-      const patientsPermissions=computed(()=>{
-     return store.state.screenPermissions.patientsPermissions
-    })
+      
       return {
-        patientsPermissions,
+        screensPermissions:store.getters.screensPermissions,
         userName,
         // loggedInUser,
         barMenu,

@@ -15,7 +15,7 @@
                   Programs
                   <div
                     class="commonBtn"
-                    v-if="arrayToObjact(programsPermissions, 15)"
+                    v-if="arrayToObjact(screensPermissions, 15)"
                   >
                     <a-button class="btn primaryBtn" @click="showModal(true)"
                       >Add New Program</a-button
@@ -23,10 +23,10 @@
                   </div>
                 </h2>
               </a-col>
-              <a-col :span="12" v-if="arrayToObjact(programsPermissions, 20)">
+              <a-col :span="12" v-if="arrayToObjact(screensPermissions, 20)">
                 <SearchField endPoint="program" />
               </a-col>
-              <a-col :span="12" v-if="arrayToObjact(programsPermissions, 19)">
+              <a-col :span="12" v-if="arrayToObjact(screensPermissions, 19)">
                 <div class="text-right mb-24">
                   <ExportToExcel  @click="exportExcel('program_report')"/>
                 </div>
@@ -60,7 +60,7 @@
 import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import AdminPrograms from "@/components/modals/AdminPrograms";
-import { ref, onUnmounted, computed } from "vue";
+import { ref, onUnmounted } from "vue";
 import ProgramTable from "./ProgramTable";
 import { useStore } from "vuex";
 import SearchField from "@/components/common/input/SearchField";
@@ -121,13 +121,11 @@ export default {
 
       //console.log("check",programId.value)
     };
-    const programsPermissions = computed(() => {
-      return store.state.screenPermissions.programsPermissions;
-    });
+    
     return {
       exportExcel,
       arrayToObjact,
-      programsPermissions,
+      screensPermissions:store.getters.screensPermissions,
       programId,
       showEdit,
       handleChange2,

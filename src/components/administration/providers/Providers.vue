@@ -13,18 +13,18 @@
                             <h2 class="pageTittle">
                                 {{ pageTitle }}
                                 <!--  -->
-                                <div class="commonBtn" v-if="arrayToObjact(providersPermissions,22)">
+                                <div class="commonBtn" v-if="arrayToObjact(screensPermissions,22)">
                                     <Button :name="buttonName" @click="showModal(true)" />
                                 </div>
                             </h2>
                         </a-col>
                         <!--  -->
-                        <a-col :span="12" v-if="arrayToObjact(providersPermissions,21)">
+                        <a-col :span="12" v-if="arrayToObjact(screensPermissions,21)">
                             <SearchField endPoint="provider" />
                         </a-col>
                         <a-col :span="12">
                             <!--  -->
-                            <div class="text-right mb-24" v-if="arrayToObjact(providersPermissions,26)">
+                            <div class="text-right mb-24" v-if="arrayToObjact(screensPermissions,26)">
                                 <!-- <Button :name="exportButtonName" /> -->
                                 <div class="text-right mb-24">
                                     <ExportToExcel  @click="exportExcel('provider_report')"/>
@@ -128,7 +128,6 @@ export default {
         }
         const checked = ref([false]);
 
-        const providersPermissions = store.getters.permissionRecords.value.providersPermissions
         onUnmounted(() => {
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
@@ -138,7 +137,7 @@ export default {
         })
         return {
             exportExcel,
-            providersPermissions,
+           screensPermissions:store.getters.screensPermissions,
             arrayToObjact,
             editSingleProvider,
             searchData,

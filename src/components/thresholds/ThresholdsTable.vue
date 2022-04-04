@@ -2,7 +2,7 @@
 <a-col :sm="24" :xs="24">
     <a-table rowKey="id" :columns="columns" :data-source="meta.vitalList" :scroll="{ y: tableYScroller }" :pagination="false" @change="handleTableChange">
         <template #actions="text">
-            <a-tooltip placement="bottom" v-if="arrayToObjact(globalCodesPermissions,330)">
+            <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,330)">
                 <template #title>
                     <span>{{ $t("global.edit") }}</span>
                 </template>
@@ -10,7 +10,7 @@
                     <EditOutlined />
                 </a>
             </a-tooltip>
-            <a-tooltip placement="bottom" v-if="arrayToObjact(globalCodesPermissions,331)">
+            <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,331)">
                 <template #title>
                     <span>{{ $t("global.delete") }}</span>
                 </template>
@@ -28,7 +28,7 @@
 
 <script>
 import {
-    onMounted,computed
+    onMounted
 } from "vue";
 import {
     DeleteOutlined,
@@ -212,11 +212,9 @@ export default {
             }
         }
 
-        const globalCodesPermissions = computed(()=>{
-            return store.state.screenPermissions.globalCodesPermissions
-        })
+        
         return {
-            globalCodesPermissions,
+            screensPermissions:store.getters.screensPermissions,
             arrayToObjact,
             deleteParameter,
             editParameter,

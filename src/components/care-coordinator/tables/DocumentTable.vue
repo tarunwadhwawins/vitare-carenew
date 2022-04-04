@@ -10,7 +10,7 @@
           </a>
     </template>
     <template #action="text">
-        <a-tooltip placement="bottom" v-if="arrayToObjact(staffPermissions,61)">
+        <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,61)">
             <template #title>
                 <span>{{$t('global.delete')}}</span>
             </template>
@@ -63,12 +63,10 @@ export default {
     const documentColumns = computed(() => {
       return store.state.careCoordinator.documentColumns;
     });
-    const staffPermissions = computed(()=>{
-        return store.state.screenPermissions.staffPermissions
-    })
+    
     return {
       arrayToObjact,
-      staffPermissions,
+      screensPermissions:store.getters.screensPermissions,
       documentColumns,
       documentsData,
       deleteDocument,
