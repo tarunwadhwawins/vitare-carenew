@@ -200,9 +200,9 @@
                         </div>
                       </a>
                     </li> -->
-                    <!-- <li class="allNotication">
-                      <router-link to="notifications">{{$t('header.checkAllNotifications')}}</router-link>
-                    </li> -->
+                    <li class="allNotication">
+                      <router-link to="/notifications" >{{$t('header.checkAllNotifications')}}</router-link>
+                    </li>
                   </a-menu>
                 </template>
               </a-dropdown>
@@ -270,10 +270,16 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed, watchEffect ,onUnmounted,defineAsyncComponent} from "vue";
+import {
+  defineComponent,
+  ref,
+  computed,
+  watchEffect,
+  onUnmounted,
+  defineAsyncComponent,
+} from "vue";
 import AddAppointment from "@/components/modals/AddAppointment";
 import TasksModal from "@/components/modals/TasksModal";
-// import PatientsModal from "@/components/modals/PatientsModal";
 import CoordinatorsModal from "@/components/modals/CoordinatorsModal";
 import AddStartCall from "@/components/modals/AddStartCall";
 import SendMessage from "@/components/modals/SendMessage";
@@ -283,7 +289,7 @@ import {
   arrayToObjact,
   meridiemFormatFromTimestamp,
   dobFormat,
-  dateOnlyFormat
+  dateOnlyFormat,
 } from "@/commonMethods/commonMethod";
 import { useRouter } from "vue-router";
 import {
@@ -302,23 +308,21 @@ export default defineComponent({
     MoreOutlined,
     AddAppointment,
     TasksModal,
-    PatientsModal:defineAsyncComponent(()=>import("@/components/modals/PatientsModal")),
+    PatientsModal: defineAsyncComponent(() =>import("@/components/modals/PatientsModal")),
     CoordinatorsModal,
     AddStartCall,
     SendMessage,
     HeaderSearch,
   },
- props:{
-
- },
-  setup(props,{emit}) {
+  props: {},
+  setup(props, { emit }) {
     const store = useStore();
     const router = useRouter();
     const toggle = ref(false);
     const ellipse = ref(false);
     const tasksModal = ref(false);
-    const date = Math.round(+new Date()/1000);
-    console.log('Today-date',date)
+    const date = Math.round(+new Date() / 1000);
+    console.log("Today-date", date);
     const userName = JSON.parse(localStorage.getItem("auth"));
     const logoutUser = () => {
       store.state.authentication.errorMsg = "";
@@ -332,30 +336,23 @@ export default defineComponent({
 
     watchEffect(() => {
       store.dispatch("notificationList");
-      store.dispatch('orderTable', {
-                data: '&orderField=&orderBy='
-            })
+      store.dispatch("orderTable", {
+        data: "&orderField=&orderBy=",
+      });
     });
-    onUnmounted(()=>{
-            
-        })
+    onUnmounted(() => {});
     const appointmentModal = ref(false);
     const addAppt = () => {
       appointmentModal.value = true;
     };
 
     function showModal(event) {
-      
-      if(event.date){
-        
+      if (event.date) {
         appointmentModal.value = event.check;
-        emit("is-heardeVisible",event)
-      }else{
-        appointmentModal.value = event
+        emit("is-heardeVisible", event);
+      } else {
+        appointmentModal.value = event;
       }
-     
-
-      
     }
     const apptOk = () => {
       appointmentModal.value = false;
@@ -364,7 +361,7 @@ export default defineComponent({
     const addTask = () => {
       tasksModal.value = true;
     };
-    
+
     const PatientsModal = ref(false);
 
     const addPatient = () => {
@@ -412,7 +409,7 @@ export default defineComponent({
     });
 
     const notifications = computed(() => {
-      return store.state.common.getNotifications;
+      return store.state.common.getNotificationsList;
     });
     const handleChange = (val) => {
       // console.log('object',val.split('=>'));
@@ -437,9 +434,9 @@ export default defineComponent({
       }
       store.dispatch("notificationList");
     };
-    const bitrixFormCheck = computed(()=>{
-        return store.state.patients.bitrixFormCheck
-    })
+    const bitrixFormCheck = computed(() => {
+      return store.state.patients.bitrixFormCheck;
+    });
     return {
       bitrixFormCheck,
       dateOnlyFormat,
