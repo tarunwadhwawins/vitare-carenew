@@ -111,6 +111,12 @@ class ServiceMethodService {
             timeout = null;
         }
         currentValue = value;
+        function groupArrayOfObjects(list, key) {
+            return list.reduce(function(rv, x) {
+              (rv[x[key]] = rv[x[key]] || []).push(x)
+              return rv;
+            }, {})
+          }
         function fake() {
             const str = qs.stringify({
                 code: "utf-8",
@@ -122,7 +128,8 @@ class ServiceMethodService {
                     store.commit('dropdownLoadingStatus', false)
                     if (currentValue === value) {
                         const result = d.data.data;
-                        const data = result;
+                        const data = result.length > 0 ? groupArrayOfObjects(result,'type') : result
+                        
                         callback(data);
 
                     }
