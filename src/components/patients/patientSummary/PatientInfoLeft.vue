@@ -51,9 +51,12 @@
         <div class="thumb-head" @click="showCriticalModal(); actionTrack(paramsId,293,'patient')">Critical Note
           <PlusOutlined />
         </div>
-        <div v-if="criticalNotesList" class="thumb-desc">
-          <a href="javascript:void(0)" @click="showCriticalNotesDetails();actionTrack(paramsId,311,'patient')" >{{ criticalNotesList[0]?criticalNotesList[0].criticalNote.substring(0,20)+'...':'' }}</a>
+        <div v-if="criticalNotesList != null" class="thumb-desc">
+          <a href="javascript:void(0)" @click="showCriticalNotesDetails();actionTrack(paramsId,311,'patient')" >{{ criticalNotesList[0]?criticalNotesList[0].criticalNote:'' }}</a>
         </div>
+        <!-- <div v-if="criticalNotesList" class="thumb-desc">
+          <a href="javascript:void(0)" @click="showCriticalNotesDetails();actionTrack(paramsId,311,'patient')" >{{ criticalNotesList[0]?criticalNotesList[0].criticalNote.substring(0,20):'' }}</a>
+        </div> -->
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head">Non Compliance</div>
