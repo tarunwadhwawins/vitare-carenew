@@ -59,9 +59,8 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('providers.phoneNumber')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase()}]">
-                                    <!-- <a-input v-model:value="providerForm.phoneNumber" placeholder="Please enter 10 digit number" size="large" @change="checkChangeInput()" /> -->
-                                    <!-- <vue-tel-input  @change="checkChangeInput()" v-model.trim:value="providerForm.phoneNumber" v-bind="bindProps" /> -->
-                                    <PhoneNumber @change="checkChangeInput()" v-model.trim:value="providerForm.phoneNumber" @setPhoneNumber="setPhoneNumberProviderForm"/>
+                                    
+                                    <PhoneNumber @change="checkChangeInput()" v-model:value.trim="providerForm.phoneNumber" @setPhoneNumber="setPhoneNumberProviderForm"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -154,7 +153,7 @@
                                 <a-form-item :label="$t('providers.phoneNumber')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase()}]">
                                     <!-- <a-input v-model:value="providerLocationForm.phoneNumber" size="large" @change="checkChangeInput()" /> -->
                                     <!-- <vue-tel-input  v-model.trim:value="providerLocationForm.phoneNumber" v-bind="bindProps" @change="checkChangeInput()" /> -->
-                                    <PhoneNumber @change="checkChangeInput()" v-model.trim:value="providerLocationForm.phoneNumber" @setPhoneNumber="setPhoneNumberProviderLocationForm"/>
+                                    <PhoneNumber @change="checkChangeInput()" v-model:value.trim="providerLocationForm.phoneNumber" @setPhoneNumber="setPhoneNumberProviderLocationForm"/>
                                 </a-form-item>
                             </div>
                         </a-col>
