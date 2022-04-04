@@ -466,6 +466,7 @@ export default defineComponent({
     }
 
     const showNotesModal = () => {
+      store.dispatch('notesList', route.params.udid);
       notesDetailVisible.value = true;
     }
 

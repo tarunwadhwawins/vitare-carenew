@@ -25,8 +25,8 @@
             <a-col :xl="8" :lg="24">
               <div class="timer" @click="actionTrack(paramsId,288)">
                 <h3>{{$t('patientSummary.currentSession')}} : {{formattedElapsedTime}}</h3>
-                <a-button v-if="startOn" class="primaryBtn" @click="start">{{$t('patientSummary.startTimer')}}</a-button>
-                <a-button v-if="!startOn" class="primaryBtn" id="timer" @click="showStopTimerModal">{{$t('patientSummary.stopTimer')}}</a-button>
+                <a-button v-if="startOn" class="primaryBtn" @click="startTimer">{{$t('patientSummary.startTimer')}}</a-button>
+                <a-button v-if="!startOn" class="primaryBtn" id="timer" @click="stopTimer">{{$t('patientSummary.stopTimer')}}</a-button>
               </div>
             </a-col>
             <a-col :sm="24">
@@ -50,8 +50,7 @@
         </a-layout-content>
       </a-layout>
     </a-layout>
-    <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isAutomatic="isAutomatic" :isEditTimeLog="isEditTimeLog" :timerValue="formattedElapsedTime" @closeModal="handleOk" @cancel="start" />
-    <!-- <TimeTracker v-model:visible="stoptimervisible" @ok="handleOk" /> -->
+    <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isAutomatic="isAutomatic" :isEditTimeLog="isEditTimeLog" :timerValue="formattedElapsedTime" @closeModal="handleClose" @cancel="handleClose" />
   </div>
 </template>
 
@@ -98,7 +97,6 @@ export default {
     const authUser =  JSON.parse(localStorage.getItem('auth'))
     const loggedInUserId =  authUser.user.staffUdid
     
-    const visible = ref(false);
     const visible1 = ref(false);
     const visible2 = ref(false);
     const visible7 = ref(false);
@@ -234,7 +232,7 @@ export default {
       }
     })
 
-    const start = () => {
+    const startTimer = () => {
       timer.value = setInterval(() => {
         elapsedTime.value += 1000;
         if((elapsedTime.value)%timerValue.value === 0) {
@@ -283,7 +281,7 @@ export default {
     }
 
     const isAutomatic = ref(false);
-    const showStopTimerModal = () => {
+    const stopTimer = () => {
       clearInterval(timer.value);
       clearInterval(myInterval.value);
       stoptimervisible.value = true;
@@ -291,12 +289,61 @@ export default {
       isEditTimeLog.value = true;
     };
   
-    const handleOk = (e) => {
-      elapsedTime.value = 0;
-      startOn.value = true;
-      console.log(e);
-      visible.value = false;
-      stoptimervisible.value = false;
+    const handleClose = ({modal, value}) => {
+      if(value && modal == 'addTimeLog') {
+        stoptimervisible.value = value;
+        clearInterval(timer.value);
+      }
+      else {
+        stoptimervisible.value = false;
+      }
+      if(value == undefined) {
+        timer.value = setInterval(() => {
+          elapsedTime.value += 1000;
+          if((elapsedTime.value)%timerValue.value === 0) {
+            const newFormattedElapsedTime = getSeconds(formattedElapsedTime.value)
+            const timeLogId =  localStorage.getItem('timeLogId')
+            if((timeLogId && timeLogId != null)) {
+              const data = {
+                category: '',
+                loggedBy: loggedInUserId,
+                performedBy: loggedInUserId,
+                date: timeStamp(new Date()),
+                timeAmount: newFormattedElapsedTime,
+                cptCode: '',
+                note: 'Time Log',
+                isAutomatic: true,
+              }
+              store.dispatch('updatePatientTimeLog', {
+                timeLogId: timeLogId,
+                patientUdid: patientUdid,
+                data: data
+              }).then(() => {
+                store.dispatch('latestTimeLog', patientUdid)
+              });
+            }
+            else {
+              const data = {
+                category: '',
+                loggedBy: loggedInUserId,
+                performedBy: loggedInUserId,
+                date: timeStamp(new Date()),
+                timeAmount: newFormattedElapsedTime,
+                cptCode: '',
+                note: 'Time Log',
+                isAutomatic: true,
+              }
+              store.dispatch('addTimeLog', {
+                id: patientUdid,
+                data: data
+              }).then(() => {
+                store.dispatch('latestTimeLog', patientUdid)
+              });
+            }
+          }
+        }, 1000);
+        startOn.value = false;
+      }
     };
     
     onBeforeMount(() =>{
@@ -308,17 +355,16 @@ export default {
     return {
       paramsId:route.params.udid,
       actionTrack,
-      showStopTimerModal,
+      stopTimer,
       formattedElapsedTime,
       isAutomatic,
       isEditTimeLog,
-      start,
+      startTimer,
       handleOkcustom,
       custom,
       next,
       prev,
       handleChange,
-      visible,
       visible1,
       visible2,
       visible7,
@@ -334,7 +380,7 @@ export default {
       stoptimervisible,
       patientCriticalNotes,
 
-      handleOk,
+      handleClose,
       onChange: (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
       },
