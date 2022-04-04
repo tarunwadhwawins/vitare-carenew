@@ -159,6 +159,11 @@ export const checkChangeInput = (state, data) => {
     state.getNotifications = data
   }
 
+  
+  export const getNotificationsList = (state, data) => {
+    state.getNotificationsList = data
+  }
+
   export const notificationList = (state, data) => {
     state.notificationList = data;
   }

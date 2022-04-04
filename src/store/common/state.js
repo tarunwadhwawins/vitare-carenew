@@ -43,6 +43,7 @@ export default {
     loadingTableStatus:null,
     actionTrack:null,
     orderTable:null,
+    getNotificationsList:null,
     // phone msaking objects
     bindProps:{
         mode:"national",
