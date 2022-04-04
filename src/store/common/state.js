@@ -43,9 +43,10 @@ export default {
     loadingTableStatus:null,
     actionTrack:null,
     orderTable:null,
+    getNotificationsList:null,
     // phone msaking objects
     bindProps:{
-        mode: "national",
+        mode:"national",
         defaultCountry: "US",
         disabledFetchingCountry: true,
         disabled: false,
@@ -55,7 +56,8 @@ export default {
         enabledCountryCode: false,
         enabledFlags: true,
         autocomplete: "off", 
-        onlyCountries:['US']
+        onlyCountries:['US'],
+        
     }
 
 

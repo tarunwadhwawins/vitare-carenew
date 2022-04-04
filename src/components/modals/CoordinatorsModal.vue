@@ -28,10 +28,6 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item name="designationId" :label="$t('global.designation')" :rules="[{ required: true, message: $t('global.designation')+' '+$t('global.validation') }]">
-                                    <!-- <a-select ref="select" v-model:value="personalInfoData.designationId" style="width: 100%" size="large" @change="checkChangeInput()">
-                                        <a-select-option value="" disabled>{{'Select Designation'}}</a-select-option>
-                                        <a-select-option v-for="designation in careCordinator.designations.globalCode" :key="designation.id" :value="designation.id">{{designation.name}}</a-select-option>
-                                    </a-select> -->
                                   <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.designationId" :globalCode="careCordinator.designations"/>
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.designationId" :name="errorMsg.designationId?errorMsg.designationId[0]:''" />
                                 </a-form-item>
@@ -41,10 +37,6 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item name="genderId" :label="$t('global.gender')" :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
-                                    <!-- <a-select ref="select" v-model:value="personalInfoData.genderId" style="width: 100%" size="large" @change="checkChangeInput()">
-                                        <a-select-option value="" disabled>{{'Select Gender'}}</a-select-option>
-                                        <a-select-option v-for="gender in careCordinator.gender.globalCode" :key="gender.id" :value="gender.id">{{gender.name}}</a-select-option>
-                                    </a-select> -->
                                     <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.genderId" :globalCode="careCordinator.gender"/>
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.genderId" :name="errorMsg.genderId?errorMsg.genderId[0]:''" />
                                 </a-form-item>
@@ -60,9 +52,8 @@
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                                    <!-- <a-input v-model:value="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" @change="checkChangeInput()"/> -->
-                                    <vue-tel-input  v-model="personalInfoData.phoneNumber"  v-bind="bindProps"  />
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase()}]">
+                                    <PhoneNumber v-model:value="personalInfoData.phoneNumber" @setPhoneNumber="setPhoneNumber"/>
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.phoneNumber" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -70,10 +61,7 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.specialization')" name="specializationId" :rules="[{ required: true, message: $t('global.specialization')+' '+$t('global.validation') }]">
-                                    <!-- <a-select ref="select" v-model:value="personalInfoData.specializationId" style="width: 100%" size="large" @change="checkChangeInput()">
-                                        <a-select-option value="" disabled>{{'Select Specialization'}}</a-select-option>
-                                        <a-select-option v-for="network in careCordinator.specialization.globalCode" :key="network.id" :value="network.id">{{network.name}}</a-select-option>
-                                    </a-select> -->
+                                   
                                     <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.specializationId" :globalCode="careCordinator.specialization"/>
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.specializationId" :name="errorMsg.specializationId?errorMsg.specializationId[0]:''" />
                                 </a-form-item>
@@ -82,10 +70,6 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.network')" name="networkId" :rules="[{ required: true, message: $t('global.network')+' '+$t('global.validation') }]">
-                                    <!-- <a-select ref="select" v-model:value="personalInfoData.networkId" style="width: 100%" size="large" @change="checkChangeInput()">
-                                        <a-select-option value="" disabled>{{'Select Network'}}</a-select-option>
-                                        <a-select-option v-for="network in careCordinator.network.globalCode" :key="network.id" :value="network.id">{{network.name}}</a-select-option>
-                                    </a-select> -->
                                     <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.networkId" :globalCode="careCordinator.network"/>
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.networkId" :name="errorMsg.networkId?errorMsg.networkId[0]:''" />
                                 </a-form-item>
@@ -133,16 +117,7 @@
                     </a-button>
                 </div>
             </div>
-            <!-- <div class="steps-content" v-if="steps[current].title == 'Providers'">
-                <Providers />
-                <div class="steps-action">
-                    <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                    <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
-                    <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
-                        {{$t('global.save')}}
-                    </a-button>
-                </div>
-            </div> -->
+           
         </a-col>
     </a-row>
     
@@ -151,28 +126,26 @@
 
 <script>
 import {reactive, computed,onUnmounted, watchEffect,ref } from "vue";
-// import PersonalInformation from "@/components/modals/forms/PersonalInformation"
 import Contacts from "@/components/modals/forms/Contacts";
 import Availability from "@/components/modals/forms/Availability";
 import Roles from "@/components/modals/forms/Roles";
 import StaffDocuments from "@/components/modals/forms/StaffDocuments";
-// import Providers from "@/components/modals/forms/Providers";
 import { useStore } from "vuex";
 import ErrorMessage from "@/components/common/messages/ErrorMessage";
 import { regex } from "@/RegularExpressions/regex";
 import { successSwal,warningSwal,errorSwal} from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
 export default {
   components: {
-    // PersonalInformation,
     Contacts,
     Availability,
     Roles,
     StaffDocuments,
-    // Providers,
     ErrorMessage,
-    GlobalCodeDropDown
+    GlobalCodeDropDown,
+    PhoneNumber
   },
   setup(props, { emit }) {
     const store = useStore();
@@ -209,6 +182,10 @@ export default {
       roleId: '',
       
     });
+
+    const setPhoneNumber = (value) =>{
+      personalInfoData.phoneNumber= value
+    }
 
     const personalInfo = () => {
       // setTimeout(() => {
@@ -321,8 +298,10 @@ export default {
       }
     })
     const paramId = addStaff.value?addStaff.value.id:''
+    
 
     return {
+      setPhoneNumber,
       phone,
       info,
       checkFieldsData,
@@ -333,7 +312,6 @@ export default {
       saveModal,
       emailChange,
       handleChange,
-      // scrollToTop,
       regex,
       errorMsg,
       addStaff,
@@ -362,15 +340,11 @@ export default {
           title: "Documents",
           content: "Second-content",
         },
-        // {
-        //   title: "Providers",
-        //   content: "Last-content",
-        // },
+        
       ],
       next,
       prev,
       onFinishFailed,
-      bindProps:store.state.common.bindProps
     };
   },
 };

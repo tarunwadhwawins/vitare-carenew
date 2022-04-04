@@ -58,9 +58,9 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('providers.phoneNumber')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                                    <!-- <a-input v-model:value="providerForm.phoneNumber" placeholder="Please enter 10 digit number" size="large" @change="checkChangeInput()" /> -->
-                                    <vue-tel-input  @change="checkChangeInput()" v-model.trim:value="providerForm.phoneNumber" v-bind="bindProps" />
+                                <a-form-item :label="$t('providers.phoneNumber')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase()}]">
+                                    
+                                    <PhoneNumber @change="checkChangeInput()" v-model:value.trim="providerForm.phoneNumber" @setPhoneNumber="setPhoneNumberProviderForm"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -150,9 +150,10 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('providers.phoneNumber')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
+                                <a-form-item :label="$t('providers.phoneNumber')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase()}]">
                                     <!-- <a-input v-model:value="providerLocationForm.phoneNumber" size="large" @change="checkChangeInput()" /> -->
-                                    <vue-tel-input  v-model.trim:value="providerLocationForm.phoneNumber" v-bind="bindProps" @change="checkChangeInput()" />
+                                    <!-- <vue-tel-input  v-model.trim:value="providerLocationForm.phoneNumber" v-bind="bindProps" @change="checkChangeInput()" /> -->
+                                    <PhoneNumber @change="checkChangeInput()" v-model:value.trim="providerLocationForm.phoneNumber" @setPhoneNumber="setPhoneNumberProviderLocationForm"/>
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -227,12 +228,14 @@ import {
     regex
 } from "@/RegularExpressions/regex";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
+import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
 
 export default {
     components: {
         DeleteOutlined,
         Loader,
         GlobalCodeDropDown,
+        PhoneNumber
     },
     props: {
         isAdd: {
@@ -275,6 +278,13 @@ export default {
             email: "",
             website: "",
         });
+
+        const setPhoneNumberProviderForm = (value) => {
+            providerForm.phoneNumber = value;
+        };
+        const setPhoneNumberProviderLocationForm = (value) => {
+            providerLocationForm.phoneNumber = value;
+        };
 
         function UpdateStatus(event) {
             providerForm.isActive = event;
@@ -464,6 +474,8 @@ export default {
         });
 
         return {
+            setPhoneNumberProviderForm,
+            setPhoneNumberProviderLocationForm,
             checkChangeInput,
             checkFieldsData,
             UpdateStatus,

@@ -27,8 +27,9 @@
         </a-col>
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                    <vue-tel-input  v-model.trim:value="contact.phoneNumber" v-bind="bindProps" @change="checkChangeInput()"/>
+                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase()}]">
+                    <!-- <vue-tel-input  v-model.trim:value="contact.phoneNumber" v-bind="bindProps" @change="checkChangeInput()"/> -->
+                     <PhoneNumber @change="checkChangeInput()" v-model.trim:value="contact.phoneNumber" @setPhoneNumber="setPhoneNumber"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                 </a-form-item>
             </div>
@@ -61,9 +62,10 @@ import Loader from "@/components/loader/Loader";
 import {
 } from "@ant-design/icons-vue";
 import ContactTable from "../../care-coordinator/tables/ContactTable.vue";
-
+import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
 export default defineComponent({
   components: {
+    PhoneNumber,
     Loader,
     ErrorMessage,
     ContactTable
@@ -81,6 +83,10 @@ export default defineComponent({
       email: "",
       phoneNumber: "",
     });
+
+    const setPhoneNumber = (value) => {
+      contact.phoneNumber = value;
+    };
    
     function addContacts() {
       store.dispatch("addContacts", {
@@ -128,6 +134,7 @@ export default defineComponent({
         errorMsg.value.email?errorMsg.value.email[0]=null:''
     }
     return {
+      setPhoneNumber,
       formRest,
       checkChangeInput,
       reset,

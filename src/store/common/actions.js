@@ -75,18 +75,18 @@ export const activeCptCodes = async ({ commit }) => {
   })
 }
 
-// export const getNotifications = async ({ commit}) => {
-//   await serviceMethod.common("get", API_ENDPOINTS['notification'], null, null).then((response) => {
-//     commit('getNotifications', response.data.data);
-//     commit('loadingStatus', false)
-//   }).catch(() => {
-//     commit('loadingStatus', false)
-//   })
-// }
+export const getNotifications = async ({ commit}) => {
+  await serviceMethod.common("get", API_ENDPOINTS['notification'], null, null).then((response) => {
+    commit('getNotifications', response.data.data);
+    commit('loadingStatus', false)
+  }).catch(() => {
+    commit('loadingStatus', false)
+  })
+}
 
 export const notificationList = async ({ commit }) => {
   await serviceMethod.common("get", `notification/isReadList`, null, null).then((response) => {
-    commit('getNotifications', response.data.data);
+    commit('getNotificationsList', response.data.data);
     commit('notificationList', response.data.data.length);
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)

@@ -46,8 +46,9 @@
         </a-col>
         <a-col :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                    <vue-tel-input  v-model.trim:value="personalInfoData.phoneNumber" v-bind="bindProps" @change="checkChangeInput()"/>
+                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase()}]">
+                    <!-- <vue-tel-input  v-model.trim:value="personalInfoData.phoneNumber" v-bind="bindProps" @change="checkChangeInput()"/> -->
+                    <PhoneNumber @change="checkChangeInput()"  v-model.trim:value="personalInfoData.phoneNumber" @setPhoneNumber="setPhoneNumber"/>
                     <ErrorMessage v-if="errorMsg && !personalInfoData.phoneNumber" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                 </a-form-item>
             </div>
@@ -87,8 +88,10 @@ import { successSwal,warningSwal, } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import { useRoute } from "vue-router";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
 export default {
   components: {
+    PhoneNumber,
     ErrorMessage,
     GlobalCodeDropDown
   },
@@ -107,6 +110,10 @@ export default {
       roleId: '',
       
     });
+
+     const setPhoneNumber = (value) => {
+      personalInfoData.phoneNumber = value;
+    };
 
     const getstaffSummary = computed(() => {
       return store.state.careCoordinatorSummary.staffSummary;
@@ -189,6 +196,7 @@ export default {
     })
          
     return {
+      setPhoneNumber,
       checkFieldsData,
       checkChangeInput,
       getstaffSummary,

@@ -14,6 +14,11 @@ export function errorLogWithDeviceInfo(errorMessage) {
 	let deviceInfo = Bowser.parse(window.navigator.userAgent)
 	store.dispatch('errorLogWithDeviceInfo', { deviceInfo: JSON.stringify(deviceInfo), errorMessage: JSON.stringify(errorMessage) })
 }
+export function timeStampFormate(timeStamp,format) {
+	
+	return moment.unix(timeStamp).format(format);
+}
+
 
 // for all table export excel data
 export function exportExcel(data, date = "?fromDate=&toDate=") {
@@ -490,3 +495,4 @@ export function secondsToTime(secs) {
 }
 export const tableYScroller = 700
 export const tableYScrollerCounterPage = 500
+export const disableHours = [1,2,3,4,5,6,7,21,22,23,24]

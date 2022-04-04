@@ -1,3 +1,4 @@
+
 <template>
 	<a-modal width="60%" title="Add Emergency Contact" centered @cancel="closeModal()">
 		<a-form ref="formRef" :model="emergencyContactForm" layout="vertical" @finish="submitForm">
@@ -25,7 +26,8 @@
 					<div class="form-group">
 						<a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.phoneNo')+' '+$t('global.validation'),pattern:regex.phoneNumber }]">
 							<!-- <a-input-number @change="changedValue" v-model:value="emergencyContactForm.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" /> -->
-							<vue-tel-input  @change="changedValue" v-model.trim:value="emergencyContactForm.phoneNumber" v-bind="bindProps" />
+							<!-- <vue-tel-input  @change="changedValue" v-model.trim:value="emergencyContactForm.phoneNumber" v-bind="bindProps" /> -->
+							<PhoneNumber @change="changedValue" v-model.trim:value="emergencyContactForm.phoneNumber" @setPhoneNumber="setPhoneNumber"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
 						</a-form-item>
 					</div>
@@ -80,37 +82,38 @@
 		<Loader />
 	</a-modal>
 </template>
-
 <script>
 import ModalButtons from "@/components/common/button/ModalButtons";
-import { computed, reactive, ref, watchEffect, onUnmounted } from 'vue-demi';
-import { useStore } from 'vuex';
+import { computed, reactive, ref, watchEffect, onUnmounted } from "vue-demi";
+import { useStore } from "vuex";
 import Loader from "@/components/loader/Loader.vue";
-import { useRoute } from 'vue-router';
-import ErrorMessage from "../common/messages/ErrorMessage"
-import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+import { useRoute } from "vue-router";
+import ErrorMessage from "../common/messages/ErrorMessage";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
+import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
 export default {
   components: {
     ModalButtons,
     Loader,
-	ErrorMessage,
-	GlobalCodeDropDown,
+    ErrorMessage,
+    GlobalCodeDropDown,
+	PhoneNumber
   },
   props: {
     patientId: {
-			type: Number
-		},
+      type: Number,
+    },
     isEmergencyContactEdit: {
-			type: Boolean
-		},
+      type: Boolean,
+    },
   },
-	setup(props, { emit }) {
-		const store = useStore()
-		const route = useRoute()
-		const formRef = ref()
-		const patientUdid = route.params.udid
+  setup(props, { emit }) {
+    const store = useStore();
+    const route = useRoute();
+    const formRef = ref();
+    const patientUdid = route.params.udid;
     const isValueChanged = ref(false);
 
     const globalCode = computed(() => {
@@ -120,127 +123,135 @@ export default {
     const patients = computed(() => {
       return store.state.patients;
     });
-		
-		const emergencyContactForm = reactive({
-			fullName: '',
-			emergencyEmail: '',
-			phoneNumber: '',
-			contactType: [],
-			contactTime: [],
-			gender: '',
-			// isPrimary: patients.value.emergencyContactDetails && patients.value.emergencyContactDetails.isPrimary ? patients.value.emergencyContactDetails.isPrimary : false,
-		})
-		console.log('emergencyContactDetails', patients.value)
-		
-		const id = ref(null)
-		if(props.isEmergencyContactEdit) {
-			id.value = patients.value.emergencyContactDetails;
-		}
+
+    const emergencyContactForm = reactive({
+      fullName: "",
+      emergencyEmail: "",
+      phoneNumber: "",
+      contactType: [],
+      contactTime: [],
+      gender: "",
+      // isPrimary: patients.value.emergencyContactDetails && patients.value.emergencyContactDetails.isPrimary ? patients.value.emergencyContactDetails.isPrimary : false,
+    });
+
+    const setPhoneNumber = (value) => {
+      emergencyContactForm.phoneNumber = value;
+    };
+    const id = ref(null);
+    if (props.isEmergencyContactEdit) {
+      id.value = patients.value.emergencyContactDetails;
+    }
 
     watchEffect(() => {
-      if(props.isEmergencyContactEdit) {
-        Object.assign(emergencyContactForm, patients.value.emergencyContactDetails);
+      if (props.isEmergencyContactEdit) {
+        Object.assign(
+          emergencyContactForm,
+          patients.value.emergencyContactDetails
+        );
       }
-    })
+    });
 
-		onUnmounted(() => {
-			store.commit('errorMsg', null)
-		})
+    onUnmounted(() => {
+      store.commit("errorMsg", null);
+    });
 
-		const modalClose = computed(() => {
-			return store.state.patients.closeModal
-		})
+    const modalClose = computed(() => {
+      return store.state.patients.closeModal;
+    });
 
     const form = reactive({ ...emergencyContactForm });
 
     const changedValue = () => {
-			isValueChanged.value = true;
-    }
+      isValueChanged.value = true;
+    };
 
     function closeModal() {
-			if(isValueChanged.value) {
-				warningSwal(messages.modalWarning).then((response) => {
-					if (response == true) {
-						emit("closeModal", {
-							modal: 'addEmergencyContact',
-							value: false
-						});
-						Object.assign(emergencyContactForm, form);
-						isValueChanged.value = false;
-					}
-					else {
-						emit("closeModal", {
-							modal: 'addEmergencyContact',
-							value: true
-						});
-					}
-				})
-			}
+      if (isValueChanged.value) {
+        warningSwal(messages.modalWarning).then((response) => {
+          if (response == true) {
+            emit("closeModal", {
+              modal: "addEmergencyContact",
+              value: false,
+            });
+            Object.assign(emergencyContactForm, form);
+            isValueChanged.value = false;
+          } else {
+            emit("closeModal", {
+              modal: "addEmergencyContact",
+              value: true,
+            });
+          }
+        });
+      }
     }
 
-		const submitForm = () => {
-      if(props.isEmergencyContactEdit) {
-				store.dispatch('updateEmergencyContact', {
-					patientUdid: patientUdid,
-					contactUdid: patients.value.emergencyContactDetails.id,
-					data: emergencyContactForm
-				}).then(() => {
-					if(route.name == 'PatientSummary') {
-						store.dispatch('emergencyContactsList', patientUdid);
-					}
-					if(modalClose.value == true) {
-						emit("closeModal", {
-							modal: 'addEmergencyContact',
-							value: false
-						});
-						formRef.value.resetFields();
-						Object.assign(emergencyContactForm, form)
-					}
-				})
-			}
-			else {
-				store.dispatch('addEmergencyContact', {
-					patientUdid: patientUdid,
-					data: emergencyContactForm
-				}).then(() => {
-					if(route.name == 'PatientSummary') {
-						store.dispatch('emergencyContactsList', patientUdid);
-					}
-					if(modalClose.value == true) {
-						emit("closeModal", {
-							modal: 'addEmergencyContact',
-							value: false
-						});
-						formRef.value.resetFields();
-						Object.assign(emergencyContactForm, form)
-					}
-				})
-			}
-		}
+    const submitForm = () => {
+      if (props.isEmergencyContactEdit) {
+        store
+          .dispatch("updateEmergencyContact", {
+            patientUdid: patientUdid,
+            contactUdid: patients.value.emergencyContactDetails.id,
+            data: emergencyContactForm,
+          })
+          .then(() => {
+            if (route.name == "PatientSummary") {
+              store.dispatch("emergencyContactsList", patientUdid);
+            }
+            if (modalClose.value == true) {
+              emit("closeModal", {
+                modal: "addEmergencyContact",
+                value: false,
+              });
+              formRef.value.resetFields();
+              Object.assign(emergencyContactForm, form);
+            }
+          });
+      } else {
+        store
+          .dispatch("addEmergencyContact", {
+            patientUdid: patientUdid,
+            data: emergencyContactForm,
+          })
+          .then(() => {
+            if (route.name == "PatientSummary") {
+              store.dispatch("emergencyContactsList", patientUdid);
+            }
+            if (modalClose.value == true) {
+              emit("closeModal", {
+                modal: "addEmergencyContact",
+                value: false,
+              });
+              formRef.value.resetFields();
+              Object.assign(emergencyContactForm, form);
+            }
+          });
+      }
+    };
 
     const handleClear = () => {
       formRef.value.resetFields();
-      Object.assign(emergencyContactForm, form)
-    }
+      Object.assign(emergencyContactForm, form);
+    };
 
-		const errorMsg = computed(() => {
-			return store.state.patients.errorMsg
-		})
+    const errorMsg = computed(() => {
+      return store.state.patients.errorMsg;
+    });
 
-		return {
+    return {
+      setPhoneNumber,
       formRef,
-			globalCode,
-			emergencyContactForm,
-			submitForm,
-			handleClear,
-			errorMsg,
-			closeModal,
-			modalClose,
-			id,
+      globalCode,
+      emergencyContactForm,
+      submitForm,
+      handleClear,
+      errorMsg,
+      closeModal,
+      modalClose,
+      id,
       changedValue,
-			isValueChanged,
-			bindProps: store.state.common.bindProps,
-		}
-	}
-}
+      isValueChanged,
+      bindProps: store.state.common.bindProps,
+    };
+  },
+};
 </script>
