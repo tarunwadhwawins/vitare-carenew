@@ -1,21 +1,15 @@
 <template>
-  <!-- <span>{{data.length>0 ? data.map((item,index)=>{ 
-    console.log('fs',item[index])
-    return {'type':item[index], 
-    data:item[index].map((item)=>{ return item.type })}
-    }) 
-    : ''}}</span>   -->
   <a-select
   ref="select"
   :value="value"
-   @input="updateValue"
+  @input="updateValue"
   style="width: 100%"
   show-search
   placeholder="Please search on first & last name, phone number, email..."
   :show-arrow="false"
   :filter-option="false"
   :not-found-content="loadingStatus ? undefined : null"
-  :options="options.map((item) => ({label: item.type,options:[{label:item.firstName+' '+item.lastName+' ('+item.phoneNumber+') ('+item.email+')',value:item.udid?item.udid+'-'+item.type:item.id+'=>'+item.type }]}))"
+  :options="data.map((item) => ({label: item.type,options:[{label:item.firstName+' '+item.lastName+' ('+item.phoneNumber+') ('+item.email+')',value:item.udid?item.udid+'-'+item.type:item.id+'=>'+item.type }]}))"
   @search="handleSearch"
   @change="handleChange"
   size="large">
@@ -47,31 +41,20 @@ export default defineComponent({
         context.emit('update:modelValue', event.target.value);
     }
     
-
-    const options = ref([])
     const handleSearch = (val) => {
       store.commit('dropdownLoadingStatus', true)
       Services.headerSearch(val, (d) => (data.value = d), 'search')
-     
-      
-     
-
     }
-    
    
     const handleChange = (val) => {
         context.emit('handleChange',val)
     };
-    
-
-    
 
     return {
       loadingStatus:store.getters.dropdownLoadingStatus,
       handleChange,
       handleSearch,
       data,
-      options,
       updateValue
     };
   },
