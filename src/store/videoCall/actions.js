@@ -22,6 +22,29 @@ export const getVideoDetails = async ({commit},id) => {
   })
 }
 
+export const appointmentCalls = async ({commit},data) => {
+  commit('loadingStatus', true)
+  try{
+    let response = await serviceMethod.common("post", `appointment/calls`, null, data)
+      commit('conferenceId', response.data.data.conferenceId);
+      commit('loadingStatus', false)
+     
+  }
+ catch(error) {
+    errorLogWithDeviceInfo(error.response)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 401) {
+      // commit('errorMsg', error.response.data.message)
+      commit('loadingStatus', false)
+    }
+  }
+}
+
 
 export const acceptVideoCallDetails = async ({commit},id) => {
   commit('loadingStatus', true)

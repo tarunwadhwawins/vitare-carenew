@@ -1,4 +1,5 @@
 export default {
     getVideoDetails:null,
-    acceptVideoCallDetails:null
+    acceptVideoCallDetails:null,
+    conferenceId:null
 }

@@ -4,11 +4,12 @@
         <a-row :gutter="24">
             <a-col :sm="18" :xs="24">
                 <div class="form-group">
-                    <a-form-item :label="$t('appointmentCalendar.appointment')" name="conferenceId" :rules="[{ required: true, message: $t('appointmentCalendar.appointment')+' '+$t('global.validation') }]">
-                        <a-select ref="select" v-model:value="startCall.conferenceId" style="width: 100%" size="large">
+                    <a-form-item label="Patient List" name="patientId" :rules="[{ required: true, message: 'Patient'+' '+$t('global.validation') }]">
+                        <!-- <a-select ref="select" v-model:value="startCall.patientId" style="width: 100%" size="large">
                             <a-select-option value="" disabled>{{'Select Appointment'}}</a-select-option>
-                            <a-select-option v-for="data in dropdownData.appointmentConference" :key="data.id" :value="data.conferenceId">{{data.patient}} {{`(${data.appointmentType})`}} {{`(${dateOnlyFormat(data.date)+' '+meridiemFormatFromTimestamp(data.time)})`}}</a-select-option>
-                        </a-select>
+                            <a-select-option v-for="data in dropdownData.appointmentConference" :key="data.id" :value="data.patientId">{{data.patient}} {{`(${data.appointmentType})`}} {{`(${dateOnlyFormat(data.date)+' '+meridiemFormatFromTimestamp(data.time)})`}}</a-select-option>
+                        </a-select> -->
+                        <PatientDropDown  v-model:value="startCall.patientId" @handlePatientChange="handlePatientChange($event)" />
                     </a-form-item>
                 </div> 
             </a-col>
@@ -23,34 +24,42 @@
 </template>
 
 <script>
-import { computed, reactive,ref } from "vue";
+import { computed, onUnmounted, reactive,ref } from "vue";
 import { useStore } from "vuex";
 import {
   dateOnlyFormat,
   meridiemFormatFromTimestamp,
   deCodeString,enCodeString
-} from "../../commonMethods/commonMethod";
+} from "@/commonMethods/commonMethod";
+import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue";
 import { useRouter } from "vue-router";
 export default {
+  components:{
+    PatientDropDown
+  },
   setup() {
     const store = useStore();
     const router = useRouter();
     const formRef =ref()
     const startCall = reactive({
-      conferenceId: "",
+      patientId: "",
     });
     const dropdownData = computed(() => {
       return store.state.appointment;
     });
 
     function videoCall() {
-      // console.log('object',enCodeString(startCall.conferenceId));
-      store.commit("conferenceId", startCall.conferenceId);
-      store.dispatch("getVideoDetails",startCall.conferenceId)
-      if (conferenceId.value) {
-        router.push({ name: 'videoCall', params: { id: enCodeString(startCall.conferenceId) } })
-      }
+      store.dispatch("appointmentCalls",{patientId:startCall.patientId})
+      setTimeout(()=>{
+        if(conferenceId.value){
+           router.push({ name: 'videoCall', params: { id: enCodeString(conferenceId.value) } })
+        }
+      },2000)
     }
+
+    onUnmounted(()=>{
+      store.dispatch("getVideoDetails",conferenceId.value)
+    })
 
     function videoCallFailed(value){
       console.log(value);
@@ -62,18 +71,23 @@ export default {
     function closeModal() {
       formRef.value.resetFields();
     }
+    const handlePatientChange = (val) => {
+      startCall.patientId = val;
+    }
 
-    const conferenceId = computed(() => {
-      return store.state.communications.conferenceId;
-    });
+    const conferenceId = computed(()=>{
+      return store.state.videoCall.conferenceId
+    })
+    
     return {
+      conferenceId,
+      handlePatientChange,
       closeModal,
       formRef,
       form,
       videoCallFailed,
       enCodeString,
       deCodeString,
-      conferenceId,
       videoCall,
       dateOnlyFormat,
       meridiemFormatFromTimestamp,
