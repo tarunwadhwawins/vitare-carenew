@@ -148,7 +148,7 @@
     <AddTasksModal v-model:visible="addTaskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
     <AddNotesModal v-model:visible="addNoteVisible" @closeModal="handleOk" />
     <AddDocumentModal v-model:visible="addDocumentVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
-    <AddCareTeamModal v-if="careCoordinatorsVisible" v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" :staffType="staffType" />
+    <AddCareTeamModal v-if="careCoordinatorsVisible" v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" :staffType="staffType" :title="title" />
     <AddTimeLogsModal v-model:visible="addTimeLogsVisible" :isEditTimeLog="isEditTimeLog" :isAutomatic="isAutomatic" @closeModal="handleOk" />
     <AddDeviceModal v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
     <PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
@@ -157,7 +157,7 @@
     <FamilyMembersDetailsModal v-model:visible="familyMembersModalVisible" :patientId="patientDetails.id" @isFamilyMemberEdit="editFamilyMember" @closeModal="handleOk" />
     <!-- <PhysiciansDetailsModal v-if="physiciansModalVisible" v-model:visible="physiciansModalVisible" @isPhysicianEdit="editPhysician" @closeModal="handleOk" :staffType="staffType" /> -->
     <EmergencyContactsDetailsModal v-model:visible="emergencyContactsModalVisible" @isEmergencyContactEdit="editEmergencyContact" @closeModal="handleOk" />
-    <CoordinatorsListingModal v-if="coordinatorsListingModalVisible" v-model:visible="coordinatorsListingModalVisible" :staffType="staffType" />
+    <CoordinatorsListingModal v-if="coordinatorsListingModalVisible" v-model:visible="coordinatorsListingModalVisible" :staffType="staffType" :title="title" />
     <CriticalNotesDetailModal v-model:visible="criticalNotesDetailVisible" @closeModal="handleOk"/>
     <PatientVitalsDetailsModal v-model:visible="patientVitalsVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
     <NotesDetailModal v-model:visible="notesDetailVisible" @closeModal="handleOk" />
@@ -269,6 +269,7 @@ export default defineComponent({
     const emergencyContactsModalVisible = ref(false);
     const isAutomatic = ref(false);
     const staffType = ref(0);
+    const title = ref(null);
 
     watchEffect(() => {
       if(route.name == 'PatientSummary') {
@@ -429,6 +430,7 @@ export default defineComponent({
       careCoordinatorsVisible.value = true
       isPhysicianEdit.value = false
       staffType.value = val;
+      title.value = val == 1 ? 'Add Care Coordinator' : 'Add Health Team'
     }
 
     // const showPhysiciansModal = (val) => {
@@ -439,6 +441,7 @@ export default defineComponent({
     const showCoordinatorsListingModal = (val) => {
       coordinatorsListingModalVisible.value = true
       staffType.value = val
+      title.value = val == 1 ? 'Care Coordinators' : '  Health Team'
     }
 
     const editPhysician = () => {
@@ -630,6 +633,7 @@ export default defineComponent({
       emergencyContactsModalVisible,
       
       staffType,
+      title,
     }
   }
 })

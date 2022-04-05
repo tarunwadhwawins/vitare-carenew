@@ -1,7 +1,11 @@
 <template>
   <a-modal width="80%" :title="$t('global.addCareTeam')" @cancel="onCloseModal()">
-    <AddCoordinatorsModal :staffType="staffType" />
-    <CoordinatorsListingTable :staffType="staffType" />
+    <div class="wide">
+      <AddCoordinatorsModal :staffType="staffType" />
+    </div>
+    <div class="wide">
+      <CoordinatorsListingTable :staffType="staffType" />
+    </div>
   </a-modal>
 </template>
 
@@ -21,3 +25,9 @@ export default {
   },
 }
 </script>
+
+<style>
+.wide {
+  padding: 30px;
+}
+</style>

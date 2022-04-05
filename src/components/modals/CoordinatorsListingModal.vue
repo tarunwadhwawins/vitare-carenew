@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="60%" :title="$t('global.addCareTeam')">
+  <a-modal width="60%" :title="title">
     <CoordinatorsListingTable :staffType="staffType" />
   </a-modal>
 </template>
@@ -14,6 +14,9 @@ import CoordinatorsListingTable from "@/components/modals/CoordinatorsListingTab
       CoordinatorsListingTable,
     },
     props: {
+      title: {
+        type: String
+      },
       staffType: {
         type: Number
       },
