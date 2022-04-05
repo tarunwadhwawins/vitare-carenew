@@ -9,10 +9,16 @@
         <a-layout-content>
           <Loader />
           <a-row>
-            <a-col :xl="5" :lg="10">
+            <a-col :xl="4" :lg="8">
               <h2 class="pageTittle">{{$t('patientSummary.patientSummary')}}</h2>
             </a-col>
-            <a-col :xl="11" :lg="14">
+            <a-col :xm="1" :lg="2">
+              <div>
+                  <!-- <a-button class="blueBtn" @click="videoCall()" >Start Call</a-button> -->
+                  <router-link class="blueBtn" v-if="conferenceId" :to="{ name: 'videoCall', params: { id: enCodeString(conferenceId) } }" target="_blank">Start Call</router-link>
+              </div>
+            </a-col>
+            <a-col :xl="9" :lg="12">
               <div class="pageTittle">
                 <div class="filter">
                     <a-button @click="showButton1() ; actionTrack(paramsId,323,'patient')" :class="button == 1 ? 'active' : ''" >Default</a-button>
@@ -72,7 +78,8 @@ import { useRoute  } from 'vue-router';
 import {
   timeStamp,
   getSeconds,
-  actionTrack
+  actionTrack,
+  enCodeString
 } from '@/commonMethods/commonMethod';
 const value = ref(dayjs("12:08", "HH:mm"));
 
@@ -117,6 +124,10 @@ export default {
     const onClose = (e) => {
       console.log(e, "I was closed.");
     };
+
+     function videoCall() {
+      store.dispatch("appointmentCalls",{patientId:patientUdid})
+    }
 
     const custom = ref(false);
     const current = ref(0);
@@ -170,6 +181,7 @@ export default {
     const timerValue = ref(30000)
     
     watchEffect(() => {
+      store.dispatch("appointmentCalls",{patientId:patientUdid})
       timer.value = setInterval(() => {
         elapsedTime.value += 1000;
         if((elapsedTime.value)%timerValue.value === 0) {
@@ -352,7 +364,12 @@ export default {
       });
     })
 
+    
+
     return {
+      enCodeString,
+      conferenceId:store.getters.conferenceId,
+      videoCall,
       paramsId:route.params.udid,
       actionTrack,
       stopTimer,

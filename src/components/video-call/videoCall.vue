@@ -162,6 +162,7 @@ export default {
     });
    
     onMounted(() => {
+      store.dispatch("getVideoDetails",deCodeString(route.params.id))
       store.commit("loadingStatus", true);
       //accept videoCall code
       if (session.value) {
