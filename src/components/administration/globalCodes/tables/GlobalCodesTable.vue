@@ -6,21 +6,21 @@
     :scroll="{ y: tableYScroller }" :pagination=false
     @change="handleTableChange">
     <template #actions="{record}">
-      <a-tooltip placement="bottom" v-if="arrayToObjact(globalCodesPermissions,7)">
+      <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,7)">
         <template #title>
           <span>Edit</span>
         </template>
         <span class="icons"><EditOutlined @click="editGlobalCode(record.id)" /></span>
       </a-tooltip>
-      <a-tooltip placement="bottom" v-if="arrayToObjact(globalCodesPermissions,8)">
+      <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,8)">
         <template #title>
           <span>Delete</span>
         </template>
         <span class="icons"><DeleteOutlined @click="deleteGlobalCode(record.id)" /></span>
       </a-tooltip>
     </template>
-    <!-- v-if="arrayToObjact(globalCodesPermissions,266)"> -->
-    <template #isActive="{record}" v-if="arrayToObjact(globalCodesPermissions,328)">
+    <!-- v-if="arrayToObjact(screensPermissions,266)"> -->
+    <template #isActive="{record}" v-if="arrayToObjact(screensPermissions,328)">
       <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
     </template>
   </a-table>
@@ -28,7 +28,7 @@
 
 <script>
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-import { watchEffect, computed ,onMounted} from "vue";
+import { watchEffect ,onMounted} from "vue";
 import { useStore } from "vuex";
 // import swal from 'sweetalert2';
 import {warningSwal,arrayToObjact,tableYScroller} from "@/commonMethods/commonMethod"
@@ -159,9 +159,7 @@ export default {
       },
     ];
 
-    const globalCodesPermissions = computed(()=>{
-      return store.state.screenPermissions.globalCodesPermissions
-    })
+   
     const handleTableChange = (pag, filters, sorter) => {
             if (sorter.order) {
                 let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
@@ -183,7 +181,7 @@ export default {
             }
         }
     return {
-      globalCodesPermissions,
+      screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       editGlobalCode,
       deleteGlobalCode,

@@ -11,12 +11,12 @@
                     <a-col :span="24">
                         <h2 class="pageTittle">
                             CPT Codes
-                            <div class="commonBtn" v-if="arrayToObjact(cptCodePermissions,9)">
+                            <div class="commonBtn" v-if="arrayToObjact(screensPermissions,9)">
                                 <Button :name="buttonName" @click="showModal(true)" />
                             </div>
                         </h2>
                     </a-col>
-                    <a-col :span="12" v-if="arrayToObjact(cptCodePermissions,14)">
+                    <a-col :span="12" v-if="arrayToObjact(screensPermissions,14)">
                         <SearchField endPoint="cptCode"/>
                     </a-col>
                     <a-col :span="12">
@@ -45,7 +45,7 @@ import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import CptCodesModal from "@/components/modals/CptCodesModal";
 import CptCodesTable from "@/components/administration/cpt-codes/tables/CptCodesTable";
-import {computed, ref,watchEffect,onUnmounted} from "vue";
+import { ref,watchEffect,onUnmounted} from "vue";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
 import { arrayToObjact,exportExcel } from "@/commonMethods/commonMethod";
@@ -98,9 +98,7 @@ export default {
 
         })
         
-        const cptCodePermissions = computed(()=>{
-            return store.state.screenPermissions.cptCodePermissions
-        })
+        
         onUnmounted(()=>{
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
@@ -110,7 +108,7 @@ export default {
         })
         return {
             exportExcel,
-            cptCodePermissions,
+            screensPermissions:store.getters.screensPermissions,
             arrayToObjact,
             searchData,
             visible,

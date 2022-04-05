@@ -3,7 +3,7 @@
     <a-col :span="12">
       <SearchField  endPoint="communication"/>
     </a-col>
-    <a-col :span="12" v-if="arrayToObjact(communicationPermissions,110)">
+    <a-col :span="12" v-if="arrayToObjact(screensPermissions,110)">
       <!-- <div class="text-right mb-24">
         <a-button class="primaryBtn">{{ $t('global.exportToExcel') }}</a-button>
       </div> -->
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { watchEffect,computed ,onUnmounted} from 'vue';
+import { watchEffect ,onUnmounted} from 'vue';
 import { useStore } from "vuex"
 import SearchField from "@/components/common/input/SearchField";
 import ListViewTable from "@/components/communications/tables/ListViewTable";
@@ -49,9 +49,7 @@ export default {
       store.dispatch('searchCommunications', value)
     };
 
-    const communicationPermissions = computed(()=>{
-      return store.state.screenPermissions.communicationPermissions
-    })
+    
     onUnmounted(()=>{
       store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
@@ -59,7 +57,7 @@ export default {
             })
         })
     return {
-      communicationPermissions,
+     screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       exportExcel,
       searchData,

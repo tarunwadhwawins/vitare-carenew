@@ -1,6 +1,6 @@
 <template>
 <a-table rowKey="id" :pagination="false" :columns="staffs.availabilityListColms" :data-source="staffs.availabilityList" >
-    <template #action="text" v-if="arrayToObjact(staffPermissions,53)">
+    <template #action="text" v-if="arrayToObjact(screensPermissions,53)">
         <a-tooltip placement="bottom" @click="deleteAvailability(text.record.id)">
             <template #title>
                 <span>{{$t('global.delete')}}</span>
@@ -52,11 +52,9 @@ export default {
     const staffs = computed(() => {
       return store.state.careCoordinator;
     });
-    const staffPermissions = computed(()=>{
-        return store.state.screenPermissions.staffPermissions
-    })
+   
     return {
-    staffPermissions,
+    screensPermissions:store.getters.screensPermissions,
      arrayToObjact,
       staffs,
       deleteAvailability,

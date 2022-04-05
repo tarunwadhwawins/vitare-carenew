@@ -3,7 +3,7 @@
 
     <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.manageProgramList" :scroll="{ x: 900 ,y : tableYScroller }" @change="handleTableChange" :pagination=false>
         <template #actions="text">
-            <a-tooltip placement="bottom" v-if="arrayToObjact(programsPermissions,16)">
+            <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,16)">
                 <template #title>
                     <span>{{$t('global.edit')}}</span>
                 </template>
@@ -11,7 +11,7 @@
                     <EditOutlined />
                 </a>
             </a-tooltip>
-            <a-tooltip placement="bottom" v-if="arrayToObjact(programsPermissions,17)">
+            <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,17)">
                 <template #title>
                     <span>{{$t('global.delete')}}</span>
                 </template>
@@ -20,7 +20,7 @@
                 </a>
             </a-tooltip>
         </template>
-        <template #isActive="{record}" v-if="arrayToObjact(programsPermissions,18)">
+        <template #isActive="{record}" v-if="arrayToObjact(screensPermissions,18)">
             <a-switch v-model:checked="record.isActive" @change="UpdateProgramStatus(record.udid, $event)" />
         </template>
     </a-table>
@@ -32,7 +32,6 @@
 import {
     ref,
     onMounted,
-    computed,
     watchEffect
 } from "vue";
 import {
@@ -147,9 +146,7 @@ export default {
             }, 5000)
             loader.value = false
         }
-        const programsPermissions = computed(() => {
-            return store.state.screenPermissions.programsPermissions
-        })
+        
         const handleTableChange = (pag, filters, sorter) => {
             if (sorter.order) {
                 let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
@@ -171,7 +168,7 @@ export default {
         }
         return {
             meta,
-            programsPermissions,
+            screensPermissions:store.getters.screensPermissions,
             arrayToObjact,
             loader,
             checked,

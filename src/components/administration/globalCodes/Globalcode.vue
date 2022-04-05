@@ -14,7 +14,7 @@
                 <h2 class="pageTittle">
                   Global Codes
                   
-                  <div class="commonBtn" v-if="arrayToObjact(globalCodesPermissions,6)">
+                  <div class="commonBtn" v-if="arrayToObjact(screensPermissions,6)">
                     <Button :name="buttonName" @click="showModal" />
                   </div>
                 </h2>
@@ -22,7 +22,7 @@
               <a-col :span="12" >
                 <SearchField endPoint="globalCodes"/>
               </a-col>
-              <a-col :span="12" v-if="arrayToObjact(globalCodesPermissions,327)">
+              <a-col :span="12" v-if="arrayToObjact(screensPermissions,327)">
                 <div class="text-right mb-24">
                   <ExportToExcel @click="exportExcel('globalCode_report')" />
                 </div>
@@ -50,7 +50,7 @@ import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import GlobalCodesTable from "@/components/administration/globalCodes/tables/GlobalCodesTable";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
-import { defineComponent,defineAsyncComponent, computed, ref,onUnmounted } from "vue";
+import { defineComponent,defineAsyncComponent, ref,onUnmounted } from "vue";
 import { useStore } from "vuex";
 import { arrayToObjact,exportExcel } from "@/commonMethods/commonMethod";
 import Loader from "@/components/loader/Loader"
@@ -90,9 +90,7 @@ export default defineComponent({
       })
     }
 
-    const globalCodesPermissions = computed(()=>{
-      return store.state.screenPermissions.globalCodesPermissions
-    })
+    
     onUnmounted(()=>{
       store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
@@ -102,7 +100,7 @@ export default defineComponent({
     return {
       exportExcel,
       arrayToObjact,
-      globalCodesPermissions,
+      screensPermissions:store.getters.screensPermissions,
       isAdd,
       buttonName: "Add Global Code",
       editGlobalCode,

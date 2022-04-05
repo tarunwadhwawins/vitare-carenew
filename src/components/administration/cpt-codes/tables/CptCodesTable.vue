@@ -1,14 +1,14 @@
 <template>
 <a-table rowKey="id" :columns="meta.cptCodesColumns" :data-source="meta.cptCodesList" :scroll="{ y: tableYScroller}" :pagination="false" @change="handleTableChange">
     <template #actions="{record}">
-        <a-tooltip placement="bottom" @click="editCpt(record.udid)" v-if="arrayToObjact(cptCodePermissions,10)">
+        <a-tooltip placement="bottom" @click="editCpt(record.udid)" v-if="arrayToObjact(screensPermissions,10)">
             <template #title>
                 <span>{{$t('global.edit')}}</span>
             </template>
             <a class="icons">
                 <EditOutlined /></a>
         </a-tooltip>
-        <a-tooltip placement="bottom" @click="deleteCpt(record.udid)" v-if="arrayToObjact(cptCodePermissions,11)">
+        <a-tooltip placement="bottom" @click="deleteCpt(record.udid)" v-if="arrayToObjact(screensPermissions,11)">
             <template #title>
                 <span>{{$t('global.delete')}}</span>
             </template>
@@ -16,7 +16,7 @@
                 <DeleteOutlined /></a>
         </a-tooltip>
     </template>
-    <template #isActive="{record}" v-if="arrayToObjact(cptCodePermissions,12)">
+    <template #isActive="{record}" v-if="arrayToObjact(screensPermissions,12)">
         <a-switch v-model:checked="record.isActive" @change="UpdateCptStatus(record.udid, $event)" />
     </template>
 </a-table>
@@ -27,8 +27,7 @@
 import {
     ref,
 
-    onMounted,
-    computed
+    onMounted
 } from "vue";
 import {
     DeleteOutlined,
@@ -136,9 +135,7 @@ export default {
             loader.value = false;
         }
 
-        const cptCodePermissions = computed(() => {
-            return store.state.screenPermissions.cptCodePermissions
-        })
+       
         const handleTableChange = (pag, filters, sorter) => {
             if (sorter.order) {
                 let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
@@ -160,7 +157,7 @@ export default {
         }
 
         return {
-            cptCodePermissions,
+            screensPermissions:store.getters.screensPermissions,
             arrayToObjact,
             loader,
             deleteCpt,

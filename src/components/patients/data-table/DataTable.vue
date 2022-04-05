@@ -8,17 +8,16 @@
       :pagination="false"
     >
       <template
-        #firstName="{ text, record }"
-        v-if="arrayToObjact(patientsPermissions, 65)"
+        #firstName="{ text, record }"  
       >
         <router-link
           :to="{ name: 'PatientSummary', params: { udid: record.id } }"
           >{{ text }}</router-link
         >
       </template>
-      <template #firstName="{ text }" v-else>
+      <!-- <template #firstName="{ text }" v-else>
         <span>{{ text }}</span>
-      </template>
+      </template> -->
       <template #flags="text">
         <span class="box" :style="{ 'background-color': text.text }"></span>
         <!-- <span class="box" :class="(text = text.match(/yellowBgColor/g))" v-if="text.match(/yellowBgColor/g)"></span> -->
@@ -43,7 +42,7 @@ import { WarningOutlined } from "@ant-design/icons-vue";
 import { onMounted, computed } from "vue";
 import { useStore } from "vuex";
 
-import { arrayToObjact ,tableYScrollerCounterPage} from "@/commonMethods/commonMethod";
+import {tableYScrollerCounterPage} from "@/commonMethods/commonMethod";
 export default {
   name: "DataTable",
   components: {
@@ -95,7 +94,6 @@ export default {
     });
     return {
       patientsPermissions,
-      arrayToObjact,
       meta,
       tableYScrollerCounterPage
     };

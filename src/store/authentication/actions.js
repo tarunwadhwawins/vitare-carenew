@@ -47,6 +47,7 @@ const permission = async ({ commit }) => {
 			logoutUser({ commit })
 		} else {
 			localStorage.setItem('permission', JSON.stringify(response.data))
+			commit('screensPermissions',response.data)
 			router.push({
 				path: "/dashboard"
 			});

@@ -15,31 +15,31 @@
                     </a-row>
                     <a-form :model="auditTimeLog" name="auditTimeLog" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="updateAuditTime" @finishFailed="auditTimeLogFailed">
                         <a-row :gutter="24">
-                            <a-col :sm="8" :xs="24">
+                            <a-col :sm="8" :xs="24" v-if="arrayToObjact(screensPermissions, 332)">
                                 <div class="form-group">
                                     <label>{{$t('global.startDate')}}</label>
                                     <a-date-picker format="MM/DD/YYYY" value-format="YYYY-MM-DD" :disabledDate="d => !d || d.isAfter(dateSelect)" v-model:value="auditTimeLog.startDate" :size="size" style="width: 100%" />
                                 </div>
                             </a-col>
-                            <a-col :sm="8" :xs="24">
+                            <a-col :sm="8" :xs="24" v-if="arrayToObjact(screensPermissions, 332)">
                                 <div class="form-group">
                                     <label>{{$t('global.endDate')}}</label>
                                     <a-date-picker format="MM/DD/YYYY" :disabledDate="d => !d || d.isSameOrBefore(auditTimeLog.startDate)" value-format="YYYY-MM-DD" v-model:value="auditTimeLog.endDate" :size="size" style="width: 100%" @change="dateChange" />
                                 </div>
                             </a-col>
-                            <a-col :sm="4" :xs="24">
+                            <a-col :sm="4" :xs="24" v-if="arrayToObjact(screensPermissions, 332)">
                                 <div class="text-right mt-28">
                                     <a-button class="btn primaryBtn" html-type="submit">{{$t('timeLogReport.view')}}</a-button>
                                 </div>
                             </a-col>
-                            <a-col :sm="4" :xs="24">
+                            <a-col :sm="4" :xs="24" v-if="arrayToObjact(screensPermissions, 333)">
                                 <div class="text-right mb-24">
                                     <ExportToExcel @click="exportExcel('patientTimelog_report',filtterDates)" />
                                 </div>
                             </a-col>
                         </a-row>
                     </a-form>
-                    <a-row>
+                    <a-row v-if="arrayToObjact(screensPermissions, 332)">
                         <TimeLogTable></TimeLogTable>
                     </a-row>
                 </div>
@@ -54,21 +54,16 @@ import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 import {
-    exportExcel
+    exportExcel,
+    arrayToObjact
 } from "@/commonMethods/commonMethod";
 import {
     ref,
     watchEffect,
     reactive,
     onUnmounted,
-    onMounted
+    onMounted,
 } from "vue";
-// import {
-//     startimeAdd,
-//     endTimeAdd,
-//     timeStamp
-// } from '@/commonMethods/commonMethod'
-
 import {
     useStore
 } from "vuex";
@@ -128,13 +123,16 @@ export default {
             })
         })
 
+        
+
         return {
+            arrayToObjact,
+            screensPermissions:store.getters.screensPermissions,
             exportExcel,
             linkTo,
             updateAuditTime,
             checked,
             dateSelect,
-            // reportExport,
             auditTimeLog,
             dateChange,
             filtterDates: store.getters.auditTimeLogFilterDates,
