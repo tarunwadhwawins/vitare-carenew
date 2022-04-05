@@ -183,7 +183,7 @@ export default {
               date: timeStamp(new Date()),
               timeAmount: newFormattedElapsedTime,
               cptCode: '',
-              note: 'Time Log',
+              note: '',
               isAutomatic: true,
             }
             store.dispatch('updatePatientTimeLog', {
@@ -202,7 +202,7 @@ export default {
               date: timeStamp(new Date()),
               timeAmount: newFormattedElapsedTime,
               cptCode: '',
-              note: 'Time Log',
+              note: '',
               isAutomatic: true,
             }
             store.dispatch('addTimeLog', {
@@ -246,7 +246,7 @@ export default {
               date: timeStamp(new Date()),
               timeAmount: newFormattedElapsedTime,
               cptCode: '',
-              note: 'Time Log',
+              note: '',
               isAutomatic: true,
             }
             store.dispatch('updatePatientTimeLog', {
@@ -265,7 +265,7 @@ export default {
               date: timeStamp(new Date()),
               timeAmount: newFormattedElapsedTime,
               cptCode: '',
-              note: 'Time Log',
+              note: '',
               isAutomatic: true,
             }
             store.dispatch('addTimeLog', {
@@ -311,7 +311,7 @@ export default {
                 date: timeStamp(new Date()),
                 timeAmount: newFormattedElapsedTime,
                 cptCode: '',
-                note: 'Time Log',
+                note: '',
                 isAutomatic: true,
               }
               store.dispatch('updatePatientTimeLog', {
@@ -330,7 +330,7 @@ export default {
                 date: timeStamp(new Date()),
                 timeAmount: newFormattedElapsedTime,
                 cptCode: '',
-                note: 'Time Log',
+                note: '',
                 isAutomatic: true,
               }
               store.dispatch('addTimeLog', {
