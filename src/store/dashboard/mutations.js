@@ -19,7 +19,8 @@ export const failure = (state, error) => {
   state.errorMsg = error;
 }
 export const callStatusSuccess = (state, count) => {
-
+  let categories= count.length > 0 ? count.map((item) => { return item.text }) : ['Completed','In Queue']
+  let data = count.length > 0 ? count.map((item) => { return item.total }) : [0,0]
   state.callStatus = {
     calloption: {
       annotations: annotations("In", 0, "#775DD0", 0, "#fff", "#775DD0"),
@@ -44,14 +45,14 @@ export const callStatusSuccess = (state, count) => {
         labels: {
           rotate: -45,
         },
-        categories: count.map((item) => { return item.text }),
+        categories: categories,
       },
       yaxis: yaxis("Number of Count")
     },
     callseries: [
       {
         name: "Call Queue",
-        data: count.map((item) => { return item.total }),
+        data: data,
       },
     ],
   };
@@ -59,6 +60,8 @@ export const callStatusSuccess = (state, count) => {
 
 
 export const specializationSuccess = (state, count) => {
+  let categories= count.length > 0 ? count.map((item) => { return item.text }) : ['Wellness','Behaviour']
+  let data = count.length > 0 ? count.map((item) => { return item.total }) : [0,0]
   state.specialization = {
     wellness: {
       annotations: annotations("Wellness", 0, "#ff0000", 0, "#fff", "#ff0000"),
@@ -83,14 +86,14 @@ export const specializationSuccess = (state, count) => {
         labels: {
           rotate: -45,
         },
-        categories: count.map((item) => { return item.text }),
+        categories: categories,
       },
       yaxis: yaxis("Specialization")
     },
     behavior: [
       {
         name: "Specialization",
-        data: count.map((item) => { return item.total }),
+        data: data,
       },
     ],
   };
@@ -98,6 +101,9 @@ export const specializationSuccess = (state, count) => {
 
 
 export const networkSuccess = (state, count) => {
+  
+  let categories= count.length > 0 ? count.map((item) => { return item.text }) : ['In','Out']
+  let data = count.length > 0 ? count.map((item) => { return item.total }) : [0,0]
   state.network = {
     In: {
       annotations: annotations("In", 0, "#775DD0", 0, "#fff", "#775DD0"),
@@ -119,14 +125,14 @@ export const networkSuccess = (state, count) => {
         labels: {
           rotate: -45,
         },
-        categories: count.map((item) => { return item.text }),
+        categories: categories,
       },
       yaxis: yaxis("Network")
     },
     Out: [
       {
         name: "Network",
-        data: count.map((item) => { return item.total }),
+        data: data,
       },
     ],
   };
