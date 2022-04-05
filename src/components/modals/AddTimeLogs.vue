@@ -56,6 +56,15 @@
             </a-form-item>
           </div>
         </a-col>
+
+				<a-col :sm="24" :xs="24">
+					<div class="form-group">
+						<a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation')  }]">
+							<GlobalCodeDropDown v-model:value="addTimeLogForm.flag" :globalCode="flagsList"/>
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
+						</a-form-item>
+					</div>
+				</a-col>
         
         <a-col :sm="24" :xs="24">
           <div class="form-group">
@@ -142,6 +151,7 @@ export default defineComponent({
       date: "",
       timeAmount: '',
       cptCode: "",
+      flag: "",
       note: "",
     })
     const form = reactive({ ...addTimeLogForm });
@@ -195,6 +205,10 @@ export default defineComponent({
       return store.state.common.activeCptCodes
     })
 
+    const flagsList = computed(() => {
+      return store.state.flags.flagsList
+    })
+
     const handleClear = () => {
       formRef.value.resetFields();
       Object.assign(addTimeLogForm, form)
@@ -215,6 +229,7 @@ export default defineComponent({
             date: timeStamp(addTimeLogForm.date),
             timeAmount: timeAmount,
             cptCode: addTimeLogForm.cptCode,
+            flag: addTimeLogForm.flag,
             note: addTimeLogForm.note,
             isAutomatic: false,
           }
@@ -240,6 +255,7 @@ export default defineComponent({
             date: timeStamp(addTimeLogForm.date),
             timeAmount: timeAmount,
             cptCode: addTimeLogForm.cptCode,
+            flag: addTimeLogForm.flag,
             note: addTimeLogForm.note,
             isAutomatic: false,
           }
@@ -270,6 +286,7 @@ export default defineComponent({
       isValueChanged,
       changedValue,
       onCloseModal,
+      flagsList,
     };
   },
 });
