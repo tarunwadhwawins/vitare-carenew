@@ -2,7 +2,7 @@
   <a-modal width="1000px" title="Add Note" centered @cancel="onCloseModal()">
     <a-form layout="vertical" ref="formRef" :model="addNoteForm" @finish="submitForm">
       <a-row :gutter="24">
-        <a-col :sm="8" :xs="24">
+        <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('notes.date')" name="date" :rules="[{ required: true, message: $t('notes.date')+' '+$t('global.validation')  }]">
               <a-date-picker @change="changedValue" v-model:value="addNoteForm.date" :size="size" style="width: 100%" format="MM/DD/YYYY" />
@@ -10,7 +10,7 @@
           </div>
         </a-col>
 
-        <a-col :sm="8" :xs="24">
+        <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('notes.category')" name="category" :rules="[{ required: true, message: $t('notes.category')+' '+$t('global.validation')  }]">
               <GlobalCodeDropDown @change="changedValue"  v-model:value="addNoteForm.category" :globalCode="noteCategories"/>
@@ -18,13 +18,22 @@
           </div>
         </a-col>
 
-        <a-col :sm="8" :xs="24">
+        <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('notes.type')" name="type" :rules="[{ required: true, message: $t('notes.type')+' '+$t('global.validation')  }]">
               <GlobalCodeDropDown @change="changedValue"  v-model:value="addNoteForm.type" :globalCode="noteTypes"/>
             </a-form-item>
           </div>
         </a-col>
+
+				<a-col :sm="12" :xs="24">
+					<div class="form-group">
+						<a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation')  }]">
+							<GlobalCodeDropDown v-model:value="addNoteForm.flag" :globalCode="flagsList"/>
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
+						</a-form-item>
+					</div>
+				</a-col>
 
         <a-col :sm="24" :xs="24">
           <div class="form-group">
@@ -68,6 +77,10 @@ export default defineComponent({
       store.dispatch('globalCodes')
     })
 
+    const flagsList = computed(() => {
+      return store.state.flags.flagsList
+    })
+
     const noteTypes = computed(() => {
       return store.state.common.noteTypes;
     })
@@ -79,6 +92,7 @@ export default defineComponent({
       date: "",
       category: "",
       type: "",
+      flag: "",
       note: "",
       entityType: "patient",
     })
@@ -119,6 +133,7 @@ export default defineComponent({
         date: timeStamp(addNoteForm.date),
         category: addNoteForm.category,
         type: addNoteForm.type,
+        flag: addNoteForm.flag,
         note: addNoteForm.note,
         entityType: addNoteForm.entityType,
       }
@@ -145,6 +160,7 @@ export default defineComponent({
       isValueChanged,
       changedValue,
       onCloseModal,
+      flagsList,
     };
   },
 });
