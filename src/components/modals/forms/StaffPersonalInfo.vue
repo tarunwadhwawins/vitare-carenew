@@ -46,9 +46,11 @@
         </a-col>
         <a-col :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase()}]">
-                    
-                    <PhoneNumber @change="checkChangeInput()"  v-model.trim:value="personalInfoData.phoneNumber" @setPhoneNumber="setPhoneNumber"/>
+                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
+                    <!-- <vue-tel-input  v-model.trim:value="personalInfoData.phoneNumber" v-bind="bindProps" @change="checkChangeInput()"/> -->
+                    <!-- <PhoneNumber @change="checkChangeInput()"  v-model.trim:value="personalInfoData.phoneNumber" @setPhoneNumber="setPhoneNumber"/> -->
+                      <a-input-number @change="checkChangeInput()" v-model:value.trim="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" size="large" style="width: 100%"   maxlength="10" />
+
                     <ErrorMessage v-if="errorMsg && !personalInfoData.phoneNumber" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                 </a-form-item>
             </div>
@@ -88,10 +90,10 @@ import { successSwal,warningSwal, } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import { useRoute } from "vue-router";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
-import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
+// import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
 export default {
   components: {
-    PhoneNumber,
+    // PhoneNumber,
     ErrorMessage,
     GlobalCodeDropDown
   },

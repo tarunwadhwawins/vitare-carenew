@@ -291,14 +291,14 @@ export function chartTimeCount(timeLine, count) {
 			if (typeof obj === 'undefined') {
 				let value_obj = {
 					key: i,
-					duration: day.format('dddd'),
+					duration: day.format('ddd'),
 					total: 0
 				};
 				newPatient.push(value_obj);
 			} else {
 				let value_obj2 = {
 					key: i,
-					duration: day.format('dddd'),
+					duration: day.format('ddd'),
 					total: obj.total
 				};
 				//console.log('check2',obj)

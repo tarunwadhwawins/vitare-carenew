@@ -27,9 +27,10 @@
         </a-col>
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase()}]">
+                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
                     <!-- <vue-tel-input  v-model.trim:value="contact.phoneNumber" v-bind="bindProps" @change="checkChangeInput()"/> -->
-                     <PhoneNumber @change="checkChangeInput()" v-model.trim:value="contact.phoneNumber" @setPhoneNumber="setPhoneNumber"/>
+                     <!-- <PhoneNumber @change="checkChangeInput()" v-model.trim:value="contact.phoneNumber" @setPhoneNumber="setPhoneNumber"/> -->
+                      <a-input-number @change="checkChangeInput()" v-model:value.trim="contact.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                 </a-form-item>
             </div>
@@ -62,10 +63,10 @@ import Loader from "@/components/loader/Loader";
 import {
 } from "@ant-design/icons-vue";
 import ContactTable from "../../care-coordinator/tables/ContactTable.vue";
-import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
+// import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
 export default defineComponent({
   components: {
-    PhoneNumber,
+    // PhoneNumber,
     Loader,
     ErrorMessage,
     ContactTable
