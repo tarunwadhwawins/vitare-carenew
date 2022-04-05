@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="80%" :title="$t('global.addCareTeam')" @cancel="onCloseModal()">
+  <a-modal width="50%" :title="$t('global.addCareTeam')" @cancel="onCloseModal()">
     <div class="wide">
       <AddCoordinatorsModal :staffType="staffType" />
     </div>
