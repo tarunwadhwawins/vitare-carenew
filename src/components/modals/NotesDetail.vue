@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" title="Notes Detail" centered>
+  <a-modal width="80%" title="Notes Detail" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <div class="text-right mb-24">
@@ -49,21 +49,25 @@ export default defineComponent({
         title: "Date",
         dataIndex: "date",
         key: "date",
+        className: "note-date",
       },
       {
         title: "Category",
         dataIndex: "category",
         key: "category",
+        className: "note-category",
       },
       {
         title: "Type",
         dataIndex: "type",
         key: "type",
+        className: "note-type",
       },
       {
         title: "Note",
         dataIndex: "note",
         key: "note",
+        className: "note-text",
       },
       {
         title: "Added By",
@@ -77,6 +81,7 @@ export default defineComponent({
         slots: {
           customRender: "flags",
         },
+        className: "note-flag",
       },
     ];
 
