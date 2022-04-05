@@ -277,6 +277,7 @@ import {
   watchEffect,
   onUnmounted,
   defineAsyncComponent,
+  onMounted
 } from "vue";
 import AddAppointment from "@/components/modals/AddAppointment";
 import TasksModal from "@/components/modals/TasksModal";
@@ -353,6 +354,12 @@ export default defineComponent({
       //document.body.classList.remove("show");
 
     });
+    onMounted(()=>{
+      if(JSON.parse(localStorage.getItem('barmenu'))==true){
+  
+  document.body.classList.add("show");
+}
+    })
     onUnmounted(() => {});
     const appointmentModal = ref(false);
     const addAppt = () => {
