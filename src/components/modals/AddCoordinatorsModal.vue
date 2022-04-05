@@ -1,12 +1,12 @@
 <template>
-  <a-form ref="formRef" :model="addCareTeamForm" @finish="submitForm">
+  <a-form ref="formRef" layout="vertical" :model="addCareTeamForm" @finish="submitForm">
     <a-row :gutter="24">
-      <a-col :sm="15" :xs="24">
+      <a-col :sm="24" :xs="24">
         <a-form-item :label="$t('tasks.tasksModal.staff')" name="staff" :rules="[{ required: true, message: $t('tasks.tasksModal.staff')+' '+$t('global.validation') }]">
             <StaffDropDown v-model:value="addCareTeamForm.staff" @handleStaffChange="handleStaffChange($event)" @change="checkChangeInput()" :close="closeValue" />
         </a-form-item>
       </a-col>
-      <a-col :sm="5" :xs="24">
+      <a-col :sm="24" :xs="24">
         <a-form-item :label="$t('global.isPrimary')" name="isPrimary" :rules="[{ required: true, message: $t('global.isPrimary')+' '+$t('global.validation') }]">
           <a-switch v-model:checked="addCareTeamForm.isPrimary" size="large" />
         </a-form-item>
@@ -137,3 +137,13 @@ export default defineComponent({
   },
 });
 </script>
+
+
+<style>
+  .add-button {
+    color: #fff;
+    background: #1890ff;
+    border-color: #1890ff;
+    width: 70%;
+  }
+</style>
