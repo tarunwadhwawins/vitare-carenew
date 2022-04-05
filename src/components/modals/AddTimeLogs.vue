@@ -215,10 +215,10 @@ export default defineComponent({
     }
 
     const submitForm = () => {
-      if(props.isEditForm) {
-        // store.dispatch('updateTimeLog', {timeLogId, addTimeLogForm});
-      }
-      else {
+      // if(props.isEditForm) {
+      //   // store.dispatch('updateTimeLog', {timeLogId, addTimeLogForm});
+      // }
+      // else {
         const timeLogId =  localStorage.getItem('timeLogId')
         const timeAmount = getSeconds(moment(addTimeLogForm.timeAmount).format('HH:mm:ss'))
         if((timeLogId && timeLogId != null) && props.isAutomatic == true) {
@@ -270,7 +270,7 @@ export default defineComponent({
             Object.assign(addTimeLogForm, form)
           });
         }
-      }
+      // }
     }
 
     return {

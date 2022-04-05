@@ -6,7 +6,7 @@
         </div>
         <a-table  rowKey="id"  :columns="notesColumns" :data-source="notesList" :pagination="false">
           <template #flags="{ record }">
-            <Flags :flag="record.flag" />
+            <Flags :flag="record.color" />
           </template>
         </a-table>
       </a-col>
@@ -76,8 +76,8 @@ export default defineComponent({
       },
       {
         title: "Flag",
-        dataIndex: "flag",
-        key: "flag",
+        dataIndex: "color",
+        key: "color",
         slots: {
           customRender: "flags",
         },
