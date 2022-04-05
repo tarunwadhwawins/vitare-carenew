@@ -129,14 +129,15 @@ export const searchTableData = async ({ commit }, search) => {
     commit('loadingStatus', false)
   }).catch((error) => {
     if(!error.__CANCEL__){
-      
+
       errorLogWithDeviceInfo(error.response)
       commit('errorMsg', error);
       if (error.response.status === 500) {
         errorSwal(error.response.data.message)
       }
+      commit('loadingStatus', false)
     }
-    commit('loadingStatus', false)
+    
   })
 }
 
