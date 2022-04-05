@@ -31,7 +31,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('global.startTime')" name="startTime" :rules="[{ required: true, message: $t('global.startTime')+' '+$t('global.validation') }]">
-                        <a-time-picker use12-hours format="hh:mm A" v-model:value="appointmentForm.startTime" :disabledHours="() => disableHours" :size="size" style="width: 100%" @change="checkChangeInput()" />
+                        <a-time-picker use12-hours format="hh:mm A" v-model:value="appointmentForm.startTime" :disabledHours="() => disableHours" :size="size" style="width: 100%" @change="checkChangeInput(); getTime()" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.startTime?errorMsg.startTime[0]:''" />
                     </a-form-item>
                 </div>
@@ -39,7 +39,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('global.duration') +' '+$t('global.time')" name="durationId" :rules="[{ required: true, message: $t('global.duration') +' '+$t('global.time')+' '+$t('global.validation')  }]">
-                      
+
                         <GlobalCodeDropDown v-if="durationList" v-model:value="appointmentForm.durationId" :globalCode="durationList" @change="checkChangeInput()" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.durationId?errorMsg.durationId[0]:''" />
                     </a-form-item>
@@ -48,7 +48,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('appointmentCalendar.addAppointment.typeOfVisit')" name="typeOfVisit" :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.typeOfVisit')+' '+$t('global.validation')  }]">
-                     
+
                         <GlobalCodeDropDown v-if="typeOfVisitList" v-model:value="appointmentForm.typeOfVisit" :globalCode="typeOfVisitList" @change="checkChangeInput()" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.typeOfVisit?errorMsg.typeOfVisit[0]:''" />
                     </a-form-item>
@@ -85,7 +85,8 @@ import {
 import ErrorMessage from "../common/messages/ErrorMessage"
 import {
     timeStamp,
-    disableHours
+    disableHours,
+    timeStampFormate
 } from "../../commonMethods/commonMethod"
 import moment from 'moment';
 import ModalButtons from "@/components/common/button/ModalButtons";
@@ -230,7 +231,6 @@ export default {
                     value: false
                 });
             });
-            
 
         }
         const errorMsg = computed(() => {
@@ -282,9 +282,20 @@ export default {
                         });
                     }
                 });
+            } else {
+                formRef.value.resetFields();
             }
         }
 
+        function getTime() {
+            let timeSelect = timeStamp(appointmentForm.startTime)
+
+            if (timeStampFormate(timeSelect, 'HH:00') < '08:00' || timeStampFormate(timeSelect, 'HH:00') > '20:00') {
+
+                appointmentForm.startTime = ''
+            }
+
+        }
         return {
             checkFieldsData,
             checkChangeInput,
@@ -311,7 +322,8 @@ export default {
             disabled,
             filterOption,
             closeValue,
-            disableHours
+            disableHours,
+            getTime
         };
     },
 };
