@@ -1,6 +1,6 @@
 <template>
 <a-table rowKey="id" :columns="rolesColumns" :data-source="meta.rolesList" :scroll="{ x: 900 ,y : tableYScroller }" :pagination=false @change="handleTableChange">
-    <template #actions="{record}" v-if="arrayToObjact(roleAndPermissions,2)">
+    <template #actions="{record}" v-if="arrayToObjact(screensPermissions,2)">
         <a-tooltip placement="bottom" v-if="record.id ===1" disabled>
             <template #title disabled>
                 <span>Edit</span>
@@ -15,7 +15,7 @@
             <a class="icons" @click="editRole(record.udid)">
                 <EditOutlined /></a>
         </a-tooltip>
-        <a-tooltip placement="bottom" v-if="arrayToObjact(roleAndPermissions,3)">
+        <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,3)">
             <template #title v-if="record.id ===1" disabled>
                 <span>Delete</span>
             </template>
@@ -55,7 +55,6 @@ import {
 } from "vuex";
 import {
     watchEffect,
-    computed,
     onMounted,
     ref
 } from 'vue';
@@ -65,7 +64,7 @@ import {
 } from "@/commonMethods/commonMethod";
 import {
     messages
-} from '../../../../config/messages';
+} from '@/config/messages';
 import Loader from "@/components/loader/Loader"
 export default {
     components: {
@@ -204,9 +203,7 @@ export default {
             }, 50)
             loader.value = false
         }
-        const roleAndPermissions = computed(() => {
-            return store.state.screenPermissions.roleAndPermissions
-        })
+        
         const handleTableChange = (pag, filters, sorter) => {
             if (sorter.order) {
                 let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
@@ -229,7 +226,7 @@ export default {
         return {
             loader,
             arrayToObjact,
-            roleAndPermissions,
+            screensPermissions:store.getters.screensPermissions,
             rolesColumns,
             data,
             editRole,

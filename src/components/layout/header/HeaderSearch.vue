@@ -10,10 +10,11 @@
   :show-arrow="false"
   :filter-option="false"
   :not-found-content="loadingStatus ? undefined : null"
-  :options="data.map((item) => ({label: item.firstName+' '+item.lastName+' '+item.phoneNumber+' '+item.email,value:item.udid?item.udid+'-'+item.type:item.id+'=>'+item.type }))"
+  :options="data.map((item) => ({label: item.type,options:[{label:item.firstName+' '+item.lastName+' '+item.phoneNumber+' '+item.email,value:item.udid?item.udid+'-'+item.type:item.id+'=>'+item.type }]}))"
   @search="handleSearch"
   @change="handleChange"
   size="large">
+  
   <template  v-if="loadingStatus" #notFoundContent>
     <a-spin size="small" />
     <p>Data not found!</p>

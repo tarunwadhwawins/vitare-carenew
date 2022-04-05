@@ -6,7 +6,7 @@
           <h2 class="pageTittle">
             {{ $t("thresholds.generalParameters") }}
 
-            <div class="commonBtn" v-if="arrayToObjact(globalCodesPermissions,329)">
+            <div class="commonBtn" v-if="arrayToObjact(screensPermissions,329)">
               <a-button class="btn primaryBtn" @click="showModal(true)">{{
                 $t("thresholds.addNewParameters")
                 }}</a-button>
@@ -18,12 +18,7 @@
         <a-col :span="12">
           <SearchField  endPoint="generalParameterGroup"/>
         </a-col>
-        <a-col :span="12">
-          <!-- <div class="text-right mb-24">
-            <a-button class="primaryBtn">{{
-              $t("global.exportToExcel")
-              }}</a-button>
-          </div> -->
+        <a-col :span="12" v-if="arrayToObjact(screensPermissions,335)">
           <div class="text-right mb-24">
             <ExportToExcel  @click="exportExcel('generalParameter_report')"/>
           </div>
@@ -43,7 +38,7 @@
   <Thresholds v-else v-model:visible="Thresholds" @is-visible="isEdit($event)" />
 </template>
 <script>
-  import { ref, watchEffect,onUnmounted,computed } from "vue";
+  import { ref, watchEffect,onUnmounted } from "vue";
   import Thresholds from "@/components/modals/Thresholds";
   import ThresholdsTable from "./ThresholdsTable";
   import { useStore } from "vuex";
@@ -128,11 +123,9 @@
                 data: '&orderField=&orderBy='
             })
         })
-        const globalCodesPermissions = computed(()=>{
-            return store.state.screenPermissions.globalCodesPermissions
-        })
+        
       return {
-        globalCodesPermissions,
+        screensPermissions:store.getters.screensPermissions,
         arrayToObjact,
         exportExcel,
         checked,

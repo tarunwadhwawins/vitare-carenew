@@ -410,6 +410,9 @@ button.swal2-default-outline {
 	min-height: 376px;
 }
 
+.thumb-head {
+	white-space: nowrap;
+}
 .thumb-desc {
 	white-space: nowrap;
 	overflow: hidden;
@@ -418,4 +421,9 @@ button.swal2-default-outline {
 
 input.vti__input {
 	height: 36.5px;
+}
+span.address-text {
+	position: relative;
+	top: 4px;
+	left: 3px;
 }

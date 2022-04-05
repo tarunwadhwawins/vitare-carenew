@@ -66,7 +66,7 @@
         </a-col>
 
         <a-col :sm="24" :span="24">
-          <ModalButtons @is_click="handleClear"/>
+          <ModalButtons :isTimeLog="true" @is_click="handleClear"/>
         </a-col>
       </a-row>
     </a-form>
@@ -158,14 +158,14 @@ export default defineComponent({
 							modal: 'addTimeLog',
 							value: true
 						});
-						Object.assign(addTimeLogForm, form);
-						isValueChanged.value = false;
 					}
 					else {
 						emit("closeModal", {
 							modal: 'addTimeLog',
 							value: false
 						});
+						Object.assign(addTimeLogForm, form);
+						isValueChanged.value = false;
 					}
 				})
 			}

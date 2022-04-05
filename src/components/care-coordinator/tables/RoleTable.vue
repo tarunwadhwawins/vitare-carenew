@@ -4,7 +4,7 @@
   <template #role="{record}">
         <span>{{ record.role.name }}</span>
     </template>
-    <template #action="text" v-if="arrayToObjact(staffPermissions,57)">
+    <template #action="text" v-if="arrayToObjact(screensPermissions,57)">
         <a-tooltip placement="bottom" @click="deleteRole(text.record.id)">
             <template #title>
                 <span>{{$t('global.delete')}}</span>
@@ -56,11 +56,9 @@ export default {
     const staffs = computed(() => {
       return store.state.careCoordinator;
     });
-    const staffPermissions = computed(()=>{
-        return store.state.screenPermissions.staffPermissions
-    })
+    
     return {
-      staffPermissions,
+      screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       staffs,
       deleteRole,

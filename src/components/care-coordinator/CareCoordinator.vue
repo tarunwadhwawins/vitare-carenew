@@ -1,6 +1,6 @@
 <template>
 <a-row>
-    <a-col :span="24" v-if="arrayToObjact(staffPermissions,37)">
+    <a-col :span="24" v-if="arrayToObjact(screensPermissions,37)">
         <ShowModalButton @isVisible="showModal($event)" :headingText="$t('careCoordinator.coordinatorsModal.careCoordinator')" :buttonText="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" />
     </a-col>
 </a-row>
@@ -28,7 +28,7 @@
         <SearchField endPoint="staff" />
 
     </a-col>
-    <a-col :span="12" v-if="arrayToObjact(staffPermissions,41)">
+    <a-col :span="12" v-if="arrayToObjact(screensPermissions,41)">
         <div class="text-right mb-24">
             <ExportToExcel @click="exportExcel('careCoordinator_report')" />
         </div>
@@ -45,7 +45,6 @@
 <script>
 import {
     watchEffect,
-    computed,
     ref,
     onUnmounted
 } from "vue"
@@ -96,9 +95,7 @@ export default {
             visible.value = value;
         };
 
-        const staffPermissions = computed(() => {
-            return store.state.screenPermissions.staffPermissions
-        })
+      
         onUnmounted(() => {
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
@@ -107,7 +104,7 @@ export default {
         })
         return {
             exportExcel,
-            staffPermissions,
+            screensPermissions:store.getters.screensPermissions,
             arrayToObjact,
             showModal,
             visible,

@@ -1,87 +1,52 @@
+
 <template>
-  <a-layout-sider v-show="accessPermission!=0"
-    :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"
-  >
+<a-layout-sider  :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
     <div class="menuList">
-      <a-menu>
-        <router-link to="/dashboard"
-          ><a-menu-item
-            ><HomeOutlined /><span class="menuItem"
-              >{{$t('global.dashboard')}}</span
-            ></a-menu-item
-          ></router-link
-        >
-        <router-link to="/communications"
-          ><a-menu-item
-            ><MailOutlined /><span class="menuItem"
-              >{{$t('sidebar.communications')}}</span
-            ></a-menu-item
-          ></router-link
-        >
-        <router-link to="/manage-care-coordinator"
-          ><a-menu-item
-            ><UserOutlined /><span class="menuItem"
-              >{{$t('sidebar.careCoordinator')}}</span
-            ></a-menu-item
-          ></router-link
-        >
-        <router-link to="/manage-patients"
-          ><a-menu-item
-            ><UserOutlined /><span class="menuItem"
-              >{{$t('sidebar.patients')}}</span
-            ></a-menu-item
-          ></router-link
-        >
-        <router-link to="/appointment-calendar"
-          ><a-menu-item
-            ><CalendarOutlined /><span class="menuItem"
-              >{{$t('sidebar.appointmentCalendar')}}</span
-            ></a-menu-item
-          ></router-link
-        >
-        <router-link to="/tasks"
-          ><a-menu-item
-            ><CalendarOutlined /><span class="menuItem"
-              >{{$t('sidebar.tasks')}}</span
-            ></a-menu-item
-          ></router-link
-        >
-        <!-- <router-link to="/time-tracking-report"
-          ><a-menu-item
-            ><FileTextOutlined /><span class="menuItem"
-              >{{$t('sidebar.reports')}}</span
-            ></a-menu-item
-          ></router-link
-        > -->
-        <router-link to="/thresholds"
-          ><a-menu-item
-            ><FileTextOutlined /><span class="menuItem"
-              >{{$t('sidebar.generalParameters')}}</span
-            ></a-menu-item
-          ></router-link
-        >
-        <router-link to="/time-log-report"
-          ><a-menu-item
-            ><FileTextOutlined /><span class="menuItem"
-              >{{$t('sidebar.auditTimeLog')}}</span
-            ></a-menu-item
-          ></router-link
-        >
+        <a-menu>
+            <router-link to="/dashboard">
+                <a-menu-item>
+                    <HomeOutlined /><span class="menuItem">{{$t('global.dashboard')}}</span></a-menu-item>
+            </router-link>
+            <router-link to="/communications" v-if="arrayToObjact(screensPermissions, 109)">
+                <a-menu-item>
+                    <MailOutlined /><span class="menuItem">{{$t('sidebar.communications')}}</span></a-menu-item>
+            </router-link>
+            <router-link to="/manage-care-coordinator" v-if="arrayToObjact(screensPermissions, 40)">
+                <a-menu-item>
+                    <UserOutlined /><span class="menuItem">{{$t('sidebar.careCoordinator')}}</span></a-menu-item>
+            </router-link>
+            <router-link to="/manage-patients" v-if="arrayToObjact(screensPermissions, 65)">
+                <a-menu-item>
+                    <UserOutlined /><span class="menuItem">{{$t('sidebar.patients')}}</span></a-menu-item>
+            </router-link>
+            <router-link to="/appointment-calendar"  v-if="arrayToObjact(screensPermissions, 112)">
+                <a-menu-item>
+                    <CalendarOutlined /><span class="menuItem">{{$t('sidebar.appointmentCalendar')}}</span></a-menu-item>
+            </router-link>
+            <router-link to="/tasks" v-if="arrayToObjact(screensPermissions, 113)">
+                <a-menu-item>
+                    <CalendarOutlined /><span class="menuItem">{{$t('sidebar.tasks')}}</span></a-menu-item>
+            </router-link>
+            <router-link to="/thresholds" v-if="arrayToObjact(screensPermissions, 329)">
+                <a-menu-item>
+                    <FileTextOutlined /><span class="menuItem">{{$t('sidebar.generalParameters')}}</span></a-menu-item>
+            </router-link>
+            <router-link to="/time-log-report" v-if="arrayToObjact(screensPermissions, 332)">
+                <a-menu-item>
+                    <FileTextOutlined /><span class="menuItem">{{$t('sidebar.auditTimeLog')}}</span></a-menu-item>
+            </router-link>
 
-        <router-link to="/cpt-codes"
-          v-if="roles==1"><a-menu-item
-            ><CalendarOutlined /><span class="menuItem"
-              >{{$t('sidebar.administration')}}
-            </span></a-menu-item
-          ></router-link
-        >
-      </a-menu>
+            <router-link to="/cpt-codes" v-if="arrayToObjact(screensPermissions, 9)">
+                <a-menu-item>
+                    <CalendarOutlined /><span class="menuItem">{{$t('sidebar.administration')}}
+                    </span></a-menu-item>
+            </router-link>
+        </a-menu>
     </div>
-  </a-layout-sider>
+</a-layout-sider>
 </template>
-
 <script>
-import { defineComponent, reactive, toRefs, onUnmounted, computed } from "vue";
+import { defineComponent, reactive, toRefs, computed,onUnmounted } from "vue";
 import {
   HomeOutlined,
   MailOutlined,
@@ -90,7 +55,8 @@ import {
   FileTextOutlined,
   // UnlockOutlined
 } from "@ant-design/icons-vue";
-import {useStore} from "vuex"
+import { useStore } from "vuex";
+import { arrayToObjact } from "@/commonMethods/commonMethod";
 export default defineComponent({
   components: {
     HomeOutlined,
@@ -102,31 +68,35 @@ export default defineComponent({
   },
 
   setup() {
-    const store = useStore()
+    const store = useStore();
     const state = reactive({
       selectedKeys: ["1"],
     });
-    const roles = computed(() =>{
-      return localStorage.getItem('roleAuth')
-    })
+    const roles = computed(() => {
+      return localStorage.getItem("roleAuth");
+    });
     onUnmounted(() => {
       document.body.classList.remove("show");
     });
 
-    const accessPermission = computed(()=>{
-      return store.state.authentication.accessPermission
-    })
-    return { 
-      accessPermission,
+    
+    
+    return {
+      screensPermissions:store.getters.screensPermissions,
+      arrayToObjact,
+      // accessPermission,
       roles,
-      ...toRefs(state) };
+      ...toRefs(state),
+    };
   },
 });
 </script>
+
 <style lang="scss">
 #nav {
   a {
     color: #000;
+
     &.router-link-exact-active {
       color: #42b983;
     }

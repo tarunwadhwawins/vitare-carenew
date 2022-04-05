@@ -47,6 +47,7 @@ const permission = async ({ commit }) => {
 			logoutUser({ commit })
 		} else {
 			localStorage.setItem('permission', JSON.stringify(response.data))
+			commit('screensPermissions',response.data)
 			router.push({
 				path: "/dashboard"
 			});
@@ -60,6 +61,7 @@ const permission = async ({ commit }) => {
 }
 export const logoutUser = async ({ commit }) => {
 	localStorage.removeItem('user');
+	localStorage.removeItem('barmenu');
 	localStorage.removeItem('staff');
 	localStorage.removeItem('token');
 	localStorage.removeItem('auth');

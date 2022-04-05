@@ -13,7 +13,7 @@
                         <a-col :span="24">
                             <h2 class="pageTittle">
                                 {{ pageTitle }}
-                                <div class="commonBtn" v-if="arrayToObjact(roleAndPermissions,1)">
+                                <div class="commonBtn" v-if="arrayToObjact(screensPermissions,1)">
                                     <Button :name="buttonName" @click="showModal(true)" />
                                 </div>
                             </h2>
@@ -22,7 +22,7 @@
                             <SearchField endPoint="roleList"/>
                         </a-col>
                         <a-col :span="12">
-                            <div class="text-right mb-24" v-if="arrayToObjact(roleAndPermissions,5)">
+                            <div class="text-right mb-24" v-if="arrayToObjact(screensPermissions,5)">
                                 <!-- <Button :name="exportButtonName" /> -->
                                  <div class="text-right mb-24">
                                     <ExportToExcel  @click="exportExcel('roleAndPermission_report')"/>
@@ -51,7 +51,7 @@ import RolesAndPermissionsTable from "@/components/administration/rolesAndPermis
 import SearchField from "@/components/common/input/SearchField";
 import RolesAndPermissionsModal from "@/components/modals/RolesAndPermissionsModal";
 import Button from "@/components/common/button/Button";
-import {computed,ref,onUnmounted} from "vue";
+import {ref,onUnmounted} from "vue";
 import {useStore } from "vuex"
 import {arrayToObjact,exportExcel} from "@/commonMethods/commonMethod"
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
@@ -98,9 +98,7 @@ export default {
 
         const searchData = () => {};
 
-        const roleAndPermissions = computed(()=>{
-            return store.state.screenPermissions.roleAndPermissions
-        })
+       
         onUnmounted(()=>{
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
@@ -111,7 +109,7 @@ export default {
             exportExcel,
             editShow,
             arrayToObjact,
-            roleAndPermissions,
+           screensPermissions:store.getters.screensPermissions,
             roleId,
             visible,
             showModal,

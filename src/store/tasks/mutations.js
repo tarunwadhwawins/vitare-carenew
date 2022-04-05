@@ -423,62 +423,7 @@ export const latestTaskSuccess = async (state, result) => {
 }
 
 
-export const taskPermissions = (state, permission) => {
-  state.taskPermissions = permission.actionId
-  // if (auth == 1) {
-
-  //   state.taskPermissions = [{
-  //     id: 1,
-  //     name: "Add New Task"
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Dashboard View"
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "List View"
-  //   },
-
-  //   {
-  //     id: 4,
-  //     name: "Counter Card"
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Task Bar"
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "List Table"
-  //   },
-  //   {
-  //     id: 7,
-  //     name: "Table Action"
-  //   }
-  // ]
-  // } else if (auth == 2) {
-  //   state.taskPermissions = [
-  //     {
-  //       id: 2,
-  //       name: "Dashboard View"
-  //     },
-  //     {
-  //       id: 3,
-  //       name: "List View"
-  //     },
-  //     {
-  //       id: 4,
-  //       name: "Counter Card"
-  //     },
-
-  //     {
-  //       id: 6,
-  //       name: "List Table"
-  //     },
-  //   ]
-  // }else{
-  //   state.patientsPermissions =[]
-  // }
-
-}
+// export const taskPermissions = (state, permission) => {
+//   state.taskPermissions = permission.actionId
+  
+// }

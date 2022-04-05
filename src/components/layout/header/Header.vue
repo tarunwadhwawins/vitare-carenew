@@ -115,7 +115,7 @@
                     </a-menu-item>
                     <a-menu-item
                       key="1"
-                      v-if="arrayToObjact(patientsPermissions, 62)"
+                      v-if="arrayToObjact(screensPermissions, 62)"
                     >
                       <a href="javascript:void(0)" @click="addPatient">{{
                         $t("header.addPatient")
@@ -128,7 +128,7 @@
                     </a-menu-item>
                     <a-menu-item
                       key="4"
-                      v-if="arrayToObjact(communicationPermissions, 107)"
+                      v-if="arrayToObjact(screensPermissions, 107)"
                     >
                       <a
                         href="javascript:void(0)"
@@ -330,6 +330,13 @@ export default defineComponent({
     const value = ref();
 
     function barMenu() {
+      var barMenu = JSON.parse(localStorage.getItem('barmenu'))
+      if(barMenu==true){
+        localStorage.setItem('barmenu', JSON.stringify(false));
+      }else{
+        localStorage.setItem('barmenu', JSON.stringify(true));
+      }
+     
       document.body.classList.toggle("show");
     }
 
@@ -338,6 +345,13 @@ export default defineComponent({
       store.dispatch("orderTable", {
         data: "&orderField=&orderBy=",
       });
+     
+    if(JSON.parse(localStorage.getItem('barmenu'))==true){
+  
+      document.body.classList.add("show");
+    }
+      //document.body.classList.remove("show");
+
     });
     onUnmounted(() => {});
     const appointmentModal = ref(false);
@@ -397,15 +411,7 @@ export default defineComponent({
       AddStartCall.value = false;
     };
 
-    const accessPermission = computed(() => {
-      return store.state.authentication.accessPermission;
-    });
-    const patientsPermissions = computed(() => {
-      return store.state.screenPermissions.patientsPermissions;
-    });
-    const communicationPermissions = computed(() => {
-      return store.state.screenPermissions.communicationPermissions;
-    });
+    
 
     const notifications = computed(() => {
       return store.state.common.getNotificationsList;
@@ -437,6 +443,7 @@ export default defineComponent({
       return store.state.patients.bitrixFormCheck;
     });
     return {
+      screensPermissions:store.getters.screensPermissions,
       bitrixFormCheck,
       dateOnlyFormat,
       isReadNotification,
@@ -446,8 +453,6 @@ export default defineComponent({
       dobFormat,
       meridiemFormatFromTimestamp,
       notifications,
-      communicationPermissions,
-      accessPermission,
       handleTaskOk,
       userName,
       logoutUser,
@@ -474,7 +479,7 @@ export default defineComponent({
       startOk,
       handleOk,
       showModal,
-      patientsPermissions,
+    
     };
   },
 });

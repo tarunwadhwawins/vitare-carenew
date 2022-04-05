@@ -1,74 +1,48 @@
 <template>
-  <a-layout-sider
-    :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"
-  >
+<a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
     <div class="menuList">
-      <a-menu>
-        <!-- <router-link to="#"
-          ><a-menu-item
-            ><DashboardOutlined /> <span class="menuItem">Dashboard</span></a-menu-item
-          ></router-link
-        > -->
-        <router-link to="/cpt-codes"
-          ><a-menu-item
-            ><CreditCardOutlined /><span class="menuItem">CPT Codes</span></a-menu-item
-          ></router-link
-        >
-        <!-- <router-link to="/care-coordinator"
-          ><a-menu-item
-            ><TeamOutlined /><span class="menuItem">Care Coordinator</span></a-menu-item
-          ></router-link
-        > -->
-        <router-link to="/manage-programs"
-          ><a-menu-item
-            ><MailOutlined /><span class="menuItem">Programs</span></a-menu-item
-          ></router-link
-        >
-        <router-link to="/providers"
-          ><a-menu-item
-            ><MailOutlined /><span class="menuItem">Providers</span></a-menu-item
-          ></router-link
-        >
-        <router-link to="/roles-and-permissions"
-          ><a-menu-item
-            ><SafetyOutlined /><span class="menuItem"
-              >Roles & Permissions
-            </span></a-menu-item
-          ></router-link
-        >
-        <!-- <router-link to="/reports"
-          ><a-menu-item
-            ><FileDoneOutlined /><span class="menuItem">Reports </span></a-menu-item
-          ></router-link
-        > -->
-        <router-link to="/templates"
-          ><a-menu-item
-            ><ReconciliationOutlined /><span class="menuItem"
-              >Templates</span
-            ></a-menu-item
-          ></router-link
-        >
-        <router-link to="/global-codes"
-          ><a-menu-item
-            ><GlobalOutlined /><span class="menuItem">Global Codes</span></a-menu-item
-          ></router-link
-        >
-        <router-link to="/inventory">
-          <a-menu-item>
-            <FileDoneOutlined />
-            <span class="menuItem">{{$t('sidebar.inventory')}}</span>
-          </a-menu-item>
-        </router-link>
-        <router-link to="/dashboard"
-          ><a-menu-item
-            ><HomeOutlined /><span class="menuItem">Home</span></a-menu-item
-          ></router-link
-        >
-      </a-menu>
+        <a-menu>
+            <router-link to="/cpt-codes">
+                <a-menu-item>
+                    <CreditCardOutlined /><span class="menuItem">CPT Codes</span></a-menu-item>
+            </router-link>
+           
+            <router-link to="/manage-programs">
+                <a-menu-item>
+                    <MailOutlined /><span class="menuItem">Programs</span></a-menu-item>
+            </router-link>
+            <router-link to="/providers">
+                <a-menu-item>
+                    <MailOutlined /><span class="menuItem">Providers</span></a-menu-item>
+            </router-link>
+            <router-link to="/roles-and-permissions">
+                <a-menu-item>
+                    <SafetyOutlined /><span class="menuItem">Roles & Permissions
+                    </span></a-menu-item>
+            </router-link>
+           
+            <router-link to="/templates">
+                <a-menu-item>
+                    <ReconciliationOutlined /><span class="menuItem">Templates</span></a-menu-item>
+            </router-link>
+            <router-link to="/global-codes">
+                <a-menu-item>
+                    <GlobalOutlined /><span class="menuItem">Global Codes</span></a-menu-item>
+            </router-link>
+            <router-link to="/inventory">
+                <a-menu-item>
+                    <FileDoneOutlined />
+                    <span class="menuItem">{{$t('sidebar.inventory')}}</span>
+                </a-menu-item>
+            </router-link>
+            <router-link to="/dashboard">
+                <a-menu-item>
+                    <HomeOutlined /><span class="menuItem">Home</span></a-menu-item>
+            </router-link>
+        </a-menu>
     </div>
-  </a-layout-sider>
+</a-layout-sider>
 </template>
-
 <script>
 import { defineComponent, reactive, toRefs, onUnmounted } from "vue";
 import {

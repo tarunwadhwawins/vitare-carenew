@@ -3,7 +3,7 @@
     <a-col :span="12">
       <SearchField endPoint="task" />
     </a-col>
-    <a-col :span="12" v-if="arrayToObjact(tasksDashboardPermissions, 118)">
+    <a-col :span="12" v-if="arrayToObjact(screensPermissions, 118)">
       <div class="text-right mb-24">
         <ExportToExcel  @click="exportExcel('task_report')"/>
       </div>
@@ -12,7 +12,7 @@
   </a-row>
 </template>
 <script>
-import { ref, watchEffect, computed, onUnmounted } from "vue";
+import { ref, watchEffect, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import SearchField from "@/components/common/input/SearchField";
 import TaskTable from "./TaskTable";
@@ -53,9 +53,7 @@ export default {
       // console.log('createAppointment', id)
     };
 
-    const tasksDashboardPermissions = computed(() => {
-      return store.state.screenPermissions.tasksDashboardPermissions;
-    });
+    
     onUnmounted(() => {
       store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
@@ -65,7 +63,7 @@ export default {
     return {
       search:store.getters.searchTable,
       exportExcel,
-      tasksDashboardPermissions,
+      screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       size: ref([]),
       handleChange,

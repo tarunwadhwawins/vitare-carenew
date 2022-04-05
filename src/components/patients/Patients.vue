@@ -1,6 +1,6 @@
 
 <template>
-<a-row v-if="arrayToObjact(patientsPermissions,62)" >
+<a-row v-if="arrayToObjact(screensPermissions,62)" >
     <a-col :span="24" >
         <ShowModalButton @isVisible="showModal($event)" :headingText="$t('patient.patients')" :buttonText="$t('patient.addNewPatients')" />
     </a-col>
@@ -33,7 +33,7 @@
     <a-col :span="12">
       <SearchField  endPoint="patient"/>
     </a-col>
-    <a-col :span="12" v-if="arrayToObjact(patientsPermissions,66)">
+    <a-col :span="12" v-if="arrayToObjact(screensPermissions,66)">
         <!-- <div class="text-right mb-24">
             <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
         </div> -->
@@ -41,7 +41,7 @@
           <ExportToExcel />
         </div>
     </a-col>
-    <a-col :span="24" >
+    <a-col :span="24" v-if="arrayToObjact(screensPermissions, 65)">
 
         <DataTable />
      <Loader />
@@ -97,9 +97,7 @@ export default {
             })
     });
 
-    const patientsPermissions=computed(()=>{
-     return store.state.screenPermissions.patientsPermissions
-    })
+  
 
     const totalPatients = computed(() => {
         return store.state.counterCards.totalPatientcount
@@ -110,7 +108,7 @@ export default {
     return {
       exportExcel,
       totalPatients,
-      patientsPermissions,
+       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       PatientsModal,
       showModal,

@@ -2,7 +2,7 @@
   <a-row
     class="mb-24"
     :gutter="24"
-    v-if="arrayToObjact(tasks.taskPermissions, 4)"
+    v-if="arrayToObjact(screensPermissions, 4)"
   >
     <a-col
       :xl="6"
@@ -20,7 +20,7 @@
       />
     </a-col>
   </a-row>
-  <a-row :gutter="24" v-if="arrayToObjact(tasks.taskPermissions, 5)">
+  <a-row :gutter="24" v-if="arrayToObjact(screensPermissions, 5)">
     <a-col :xl="8" :sm="12" :xs="24">
       <a-card title="Task Priority" class="common-card grapCardWrap">
         <IncompleteTasksFilter />
@@ -147,6 +147,7 @@ export default {
     });
 
     return {
+      screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       tasks,
       clickHandler,
