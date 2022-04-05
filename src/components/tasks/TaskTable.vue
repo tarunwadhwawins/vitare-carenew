@@ -13,7 +13,7 @@
                 {{i==0?' ':','}} {{ category }}
             </span>
         </template>
-        <template #action="{ record }" v-if="arrayToObjact(tasksDashboardPermissions,115)">
+        <template #action="{ record }" v-if="arrayToObjact(screensPermissions,115)">
             <a-tooltip placement="bottom">
                 <template #title>
                     <span>{{ $t('global.edit') }}</span>
@@ -21,7 +21,7 @@
                 <a class="icons">
                     <EditOutlined @click="editTask(record.id)" /></a>
             </a-tooltip>
-            <a-tooltip placement="bottom" v-if="arrayToObjact(tasksDashboardPermissions,116)">
+            <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,116)">
                 <template #title>
                     <span>{{$t('global.delete')}}</span>
                 </template>
@@ -146,9 +146,7 @@ export default {
         const tasks = computed(() => {
             return store.state.tasks
         })
-        const tasksDashboardPermissions = computed(() => {
-            return store.state.screenPermissions.tasksDashboardPermissions
-        })
+       
         const handleTableChange = (pag, filters, sorter) => {
             if (sorter.order) {
                 let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
@@ -169,7 +167,7 @@ export default {
             }
         }
         return {
-            tasksDashboardPermissions,
+            screensPermissions:store.getters.screensPermissions,
             tasks,
             arrayToObjact,
             editTask,
