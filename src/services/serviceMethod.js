@@ -9,6 +9,7 @@ import { errorSwal } from '@/commonMethods/commonMethod';
 const API_URL = process.env.VUE_APP_API_URL
 let timeout;
 let currentValue = "";
+let request = "";
 class ServiceMethodService {
 
     checkMethod(method) {
@@ -25,23 +26,47 @@ class ServiceMethodService {
         }
     }
 
-    common(method, endPoint, id, data) {
-
+    common(method, endPoint, id, data,clearLast=null) {
+        
+        
         let axiosMethod = this.checkMethod(method)
+        if(clearLast){
+            if(request!=""){
 
-        if (id && !data) {
+                request.cancel();
+            }
+            const axiosSource = axios.CancelToken.source();
+            request = { cancel: axiosSource.cancel, msg: "Loading..." };
+             if (id && !data) {
 
-            return axiosMethod(API_URL + endPoint + '/' + id, { headers: authHeader() })
-        } else if (id && data) {
+                return axiosMethod(API_URL + endPoint + '/' + id, { cancelToken: axiosSource.token,headers: authHeader() })
+            } else if (id && data) {
 
-            return axiosMethod(API_URL + endPoint + '/' + id, data, { headers: authHeader() })
+                return axiosMethod(API_URL + endPoint + '/' + id, data, { cancelToken: axiosSource.token,headers: authHeader() })
 
-        } else if (!id && data) {
-            return axiosMethod(API_URL + endPoint, data, { headers: authHeader() })
-        }
-        else {
+            } else if (!id && data) {
+                return axiosMethod(API_URL + endPoint, data, { cancelToken: axiosSource.token,headers: authHeader() })
+            }
+            else {
 
-            return axiosMethod(API_URL + endPoint, { headers: authHeader() })
+                return axiosMethod(API_URL + endPoint, { cancelToken: axiosSource.token,headers: authHeader() })
+            }
+        }else{
+
+            if (id && !data) {
+
+                return axiosMethod(API_URL + endPoint + '/' + id, { headers: authHeader() })
+            } else if (id && data) {
+
+                return axiosMethod(API_URL + endPoint + '/' + id, data, { headers: authHeader() })
+
+            } else if (!id && data) {
+                return axiosMethod(API_URL + endPoint, data, { headers: authHeader() })
+            }
+            else {
+
+                return axiosMethod(API_URL + endPoint, { headers: authHeader() })
+            }
         }
 
 

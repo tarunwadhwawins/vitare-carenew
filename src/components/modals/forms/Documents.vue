@@ -136,13 +136,14 @@ export default defineComponent({
 
     const documents = reactive({
       name: "",
-      document: "",
+      document: filePath.value ? filePath.value : "",
       type: "",
       tags: [],
       entity: "patient",
     });
     const form = reactive({ ...documents })
 
+    
     const onFileUpload = (event) => {
       let docFile = event.target.files[0];
       if((docFile.size/1024) > 5120) {
@@ -168,8 +169,9 @@ export default defineComponent({
         return false
       }
       let formData = new FormData();
-      formData.append("file", docFile);
-      docValidationError.value=false
+       formData.append("file", docFile);
+       docValidationError.value=false
+      store.commit('checkChangeInput',true)
       store.dispatch("uploadFile", formData);
     };
 
