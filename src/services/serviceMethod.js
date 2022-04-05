@@ -116,14 +116,30 @@ class ServiceMethodService {
                 code: "utf-8",
                 search: value,
             });
+            // async function  groupArrayOfObjects(list, key) {
+            //     return list.reduce(function(rv, x) {
+            //       (rv[x[key]] = rv[x[key]] || []).push(x)
+            //       return rv;
+            //     }, {})
+            //   }
             axios.get(API_URL + `${endpoint}` + '?' + `${str}`, { headers: authHeader() })
                 .then((response) => response)
-                .then((d) => {
+                .then(async (d) => {
                     store.commit('dropdownLoadingStatus', false)
                     if (currentValue === value) {
-                        const result = d.data.data;
-                        const data = result;
-                        callback(data);
+                        const response = d.data.data;
+                        let result = response;
+                        if(response.lenght>0){
+                          return result.reduce(function(data, item) {
+                                (data[item["type"]] = data[item["type"]] || []).push(item)
+                                return data;
+                              }, []);
+                            
+                        }else{
+                            result
+                        }
+                         
+                        callback(result);
 
                     }
 
