@@ -124,14 +124,17 @@ export const orderTable = async ({ commit},data) => {
 export const searchTableData = async ({ commit }, search) => {
 
   commit('loadingStatus', true)
-  await serviceMethod.common("get", search.endPoint + '?active=1&search=' + search.data+search.field, null, null).then((response) => {
+  await serviceMethod.common("get", search.endPoint + '?active=1&search=' + search.data+search.field, null, null,true).then((response) => {
     commit(search.endPoint, response.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
-    commit('errorMsg', error);
-    if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+    if(!error.__CANCEL__){
+      
+      errorLogWithDeviceInfo(error.response)
+      commit('errorMsg', error);
+      if (error.response.status === 500) {
+        errorSwal(error.response.data.message)
+      }
     }
     commit('loadingStatus', false)
   })
