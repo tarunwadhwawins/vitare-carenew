@@ -181,13 +181,13 @@ if(results.length>0){
   results.forEach((items)=>{
       task.push({
         count:items.total,
-        time:items.time
+        time:day.format('ddd')
       })
   })
   
 }else{
   obj= {count:0,
-  time:day.format('dddd')
+  time:day.format('ddd')
   }
   task.push(obj)
     }

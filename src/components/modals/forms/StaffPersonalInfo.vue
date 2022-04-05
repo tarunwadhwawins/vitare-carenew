@@ -114,6 +114,7 @@ export default {
     });
 
      const setPhoneNumber = (value) => {
+       console.log(personalInfoData.phoneNumber)
       personalInfoData.phoneNumber = value;
     };
 

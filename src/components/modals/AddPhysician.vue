@@ -4,7 +4,7 @@
         <a-row :gutter="24">
             <a-col :sm="24" :xs="24">
                 <div class="form-group">
-                    <a-form-item :label="$t('appointmentCalendar.physician')" name="staffId" :rules="[{ required: true, message: $t('appointmentCalendar.physician')+' '+$t('global.validation')  }]">
+                    <a-form-item :label="$t('appointmentCalendar.careCoordinator')" name="staffId" :rules="[{ required: true, message: $t('appointmentCalendar.careCoordinator')+' '+$t('global.validation')  }]">
 
                         <StaffDropDown v-if="staffList.allStaffList" v-model:value="physicianForm.staffId" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
                     </a-form-item>
