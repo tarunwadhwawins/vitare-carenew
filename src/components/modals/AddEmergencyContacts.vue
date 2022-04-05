@@ -24,10 +24,10 @@
 
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
-						<a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.phoneNo')+' '+$t('global.validation') }]">
-							<!-- <a-input-number @change="changedValue" v-model:value="emergencyContactForm.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" /> -->
+						<a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.phoneNo')+' '+$t('global.validation'),pattern:regex.phoneNumber }]">
+							<a-input-number @change="changedValue" v-model:value="emergencyContactForm.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
 							<!-- <vue-tel-input  @change="changedValue" v-model.trim:value="emergencyContactForm.phoneNumber" v-bind="bindProps" /> -->
-							<PhoneNumber @change="changedValue" v-model.trim:value="emergencyContactForm.phoneNumber" @setPhoneNumber="setPhoneNumber"/>
+							<!-- <PhoneNumber @change="changedValue" v-model.trim:value="emergencyContactForm.phoneNumber" @setPhoneNumber="setPhoneNumber"/> -->
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
 						</a-form-item>
 					</div>
@@ -92,14 +92,14 @@ import ErrorMessage from "../common/messages/ErrorMessage";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
-import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
+// import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
 export default {
   components: {
     ModalButtons,
     Loader,
     ErrorMessage,
     GlobalCodeDropDown,
-	PhoneNumber
+	// PhoneNumber
   },
   props: {
     patientId: {
