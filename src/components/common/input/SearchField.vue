@@ -1,5 +1,5 @@
 <template>
-<a-input-search v-model:value="value" placeholder="Search..." style="width: 100%" @search="onSearch" @input="handleChange" size="large" />
+<a-input-search v-model:value="value" placeholder="Search..." style="width: 100%"  @input="handleChange" size="large" />
 </template>
 
 <script>

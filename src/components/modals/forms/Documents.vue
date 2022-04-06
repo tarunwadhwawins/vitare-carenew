@@ -11,16 +11,16 @@
         </a-col>
         <a-col :sm="12" :xs="24">
             <div class="form-group">
-                <!-- <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: true, message: $t('global.document')+' '+$t('global.validation') }]">
+                <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: true, message: $t('global.document')+' '+$t('global.validation') }]">
                     <a-input name="document_file" size="large" type="file" @change="onFileUpload" />
-                    <ErrorMessage v-if="docValidationError" name="Document is required." />
+                    <!-- <ErrorMessage v-if="docValidationError" name="Document is required." /> -->
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
-                </a-form-item> -->
-                <label><span style="color:red">* </span>{{$t('global.document')}}
+                </a-form-item>
+                <!-- <label><span style="color:red">* </span>{{$t('global.document')}}
                     <a-input  name="document_file" size="large" type="file" @change="onFileUpload" />
                     <ErrorMessage v-if="docValidationError" name="Document is required." />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
-                </label>
+                </label> -->
             </div>
         </a-col>
         <a-col :sm="12" :xs="24">
@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, reactive, watchEffect, ref } from "vue";
+import { defineComponent, computed, reactive, watchEffect, ref, onMounted } from "vue";
 // import { DeleteOutlined, FileOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "@/components/loader/Loader";
@@ -171,8 +171,8 @@ export default defineComponent({
       
       let formData = new FormData();
        formData.append("file", docFile);
-      //  documents.document=docFile
        docValidationError.value=false
+       documents.document = docFile
       store.commit('checkChangeInput',true)
       store.dispatch("uploadFile", formData);
     };
@@ -186,26 +186,28 @@ export default defineComponent({
     });
 
     const addDocument = () => {
-      // if(props.entity=="patient") {
-      //   const patientData = {
-      //     name: documents.name,
-      //     document: filePath.value ? filePath.value : "",
-      //     type: documents.type,
-      //     tags: documents.tags,
-      //     entity: "patient",
-      //   }
-      //   if(patientId != null) {
-      //     store.dispatch("addDocument", {
-      //       data: patientData,
-      //       id: patientId,
-      //     }).then(() => {
-      //       emit('onChange', false)
-      //       formRef.value.resetFields();
-      //       Object.assign(documents, form)
-      //       store.dispatch("documents", patientUdid);
-      //     });
-      //   }
-      //   else {
+      if(props.entity=="patient") {
+        const patientData = {
+          name: documents.name,
+          document: filePath.value ? filePath.value : "",
+          type: documents.type,
+          tags: documents.tags,
+          entity: "patient",
+        }
+        if(patientId != null) {
+          store.dispatch("addDocument", {
+            data: patientData,
+            id: patientId,
+          }).then(() => {
+            emit('onChange', false)
+            formRef.value.resetFields();
+            Object.assign(documents, form)
+            store.state.patients.uploadFile=null
+            documents.document =''
+            store.dispatch("documents", patientUdid);
+          });
+        }
+        else {
         if(filePath.value==null){
           
         docValidationError.value=true
@@ -224,11 +226,13 @@ export default defineComponent({
             emit('onChange', false)
             formRef.value.resetFields();
             Object.assign(documents, form)
+            store.state.patients.uploadFile=null
+            documents.document =''
             store.dispatch("documents", patients.value.addDemographic.id);
           });
       }
-        // }
-      // }
+        }
+      }
       
     }
     
@@ -259,9 +263,15 @@ export default defineComponent({
       }
     }
 
+    onMounted(()=>{
+      reset();
+    })
+
     function reset(){
       Object.assign(documents,form)
+      store.state.patients.uploadFile=null
     }
+
     return {
       docValidationError,
       changedValue,
