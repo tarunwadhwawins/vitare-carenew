@@ -982,6 +982,46 @@ export const patientVitals = (state, vitals) => {
           customRender: "glucose_fasting_blood_sugar",
         },
       },
+      {
+        title: "Fasting",
+        dataIndex: "glucose_fasting",
+        key: "glucose_fasting",
+        slots: {
+          customRender: "glucose_fasting",
+        },
+      },
+      {
+        title: "Pre Meal",
+        dataIndex: "glucose_pre_meal",
+        key: "glucose_pre_meal",
+        slots: {
+          customRender: "glucose_pre_meal",
+        },
+      },
+      {
+        title: "Post Meal",
+        dataIndex: "glucose_post_meal",
+        key: "glucose_post_meal",
+        slots: {
+          customRender: "glucose_post_meal",
+        },
+      },
+      {
+        title: "Before Sleep",
+        dataIndex: "glucose_before_sleep",
+        key: "glucose_before_sleep",
+        slots: {
+          customRender: "glucose_before_sleep",
+        },
+      },
+      {
+        title: "General",
+        dataIndex: "glucose_general",
+        key: "glucose_general",
+        slots: {
+          customRender: "glucose_general",
+        },
+      },
     ];
     // }
   }

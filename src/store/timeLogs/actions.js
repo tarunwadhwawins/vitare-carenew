@@ -103,20 +103,19 @@ export const updateTimeLog = async ({ commit }, {udid, data}) => {
 }
 
 export const updatePatientTimeLog = async ({ commit }, {patientUdid, timeLogId, data}) => {
-	if(data.isAutomatic && data.isAutomatic == false) {
+	if(data.isAutomatic == false) {
 		commit('loadingStatus', true)
 	}
 	await ServiceMethodService.common("put", API_ENDPOINTS['patient']+`/${patientUdid}/timeLog`, timeLogId, data).then((response) => {
 		commit('updatePatientTimeLog', response.data.data);
-		if(data.isAutomatic && data.isAutomatic == true) {
+		if(data.isAutomatic == true) {
 			localStorage.setItem('timeLogId', response.data.data.id)
 		}
 		else {
 			localStorage.removeItem('timeLogId')
-		}
-		if(data.isAutomatic && data.isAutomatic == false) {
 			successSwal(response.data.message)
 		}
+		commit('loadingStatus', false)
 	})
 	.catch((error) => {
 		errorLogWithDeviceInfo(error.response)

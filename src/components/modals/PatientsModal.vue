@@ -464,7 +464,7 @@
 
 									<a-row :gutter="24">
 										<a-col :sm="24" :xs="24">
-											<a-form-item :label="$t('tasks.tasksModal.staff')" name="staff" :rules="[{ required: false, message: $t('tasks.tasksModal.staff')+' '+$t('global.validation') }]">
+											<a-form-item :label="$t('global.careCoodinator')" name="staff" :rules="[{ required: false, message: $t('global.careCoodinator')+' '+$t('global.validation') }]">
 												<StaffDropDown v-model:value="conditions.staff" @handleStaffChange="handleStaffChange($event)" @change="checkChangeInput()" :close="closeValue" />
 											</a-form-item>
 										</a-col>

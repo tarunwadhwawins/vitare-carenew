@@ -2,7 +2,7 @@
   <a-form ref="formRef" layout="vertical" :model="addCareTeamForm" @finish="submitForm">
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
-        <a-form-item :label="$t('tasks.tasksModal.staff')" name="staff" :rules="[{ required: true, message: $t('tasks.tasksModal.staff')+' '+$t('global.validation') }]">
+        <a-form-item :label="$t('global.careCoodinator')" name="staff" :rules="[{ required: true, message: $t('global.careCoodinator')+' '+$t('global.validation') }]">
             <StaffDropDown v-model:value="addCareTeamForm.staff" @handleStaffChange="handleStaffChange($event)" @change="checkChangeInput()" :close="closeValue" />
         </a-form-item>
       </a-col>
@@ -97,6 +97,7 @@ export default defineComponent({
     
     const formRef = ref();
     const submitForm = () => {
+      addCareTeamForm.isPrimary = addCareTeamForm.isPrimary == true ? 1 : 0
       store.dispatch('addCareTeam', { patientUdid: patientUdid, data: addCareTeamForm }).then(() => {
         store.dispatch('careTeamList', {
           patientUdid: patientUdid,

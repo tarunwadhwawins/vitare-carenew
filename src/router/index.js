@@ -150,7 +150,7 @@ const routes = [
 
   {
     path: '/manage-staff',
-    name: 'Manage Staff',
+    name: 'ManageCareCoodinator',
     component: () => import('../components/administration/manage-staff/Managestaff'),
     meta: { authAdmin: true }
   },
