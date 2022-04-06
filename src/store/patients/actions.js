@@ -125,8 +125,8 @@ export const addCondition = async ({commit}, request) => {
   }
 
   try {
-    if((data.designation != null || data.email != null || data.fax != null || data.name != null || data.phoneNumber != null) && (data.designation != "" || data.email != "" || data.fax != "" || data.name != "" || data.phoneNumber != "")) {
-      await serviceMethod.common("post", `patient/${patientId}/physician`, null, data).then(response => {
+    if(data.staff) {
+      await serviceMethod.common("post", `patient/${patientId}/staff?type=1`, null, data).then(response => {
         commit('addPatientPhysician', response.data.data);
         errorMessage.push(false)
       })
@@ -159,16 +159,17 @@ export const addCondition = async ({commit}, request) => {
 export const updateCondition = async ({commit}, request) => {
   const data = request.data;
   const patientId = request.id;
-  const referalID = request.referalID;
-  const physicianId = request.physicianId;
+  const primaryPhysicianId = request.primaryPhysicianId;
+  const referalId = request.referalId;
   commit('loadingStatus', true)
   const isError = ref(false)
   try {
-    let addConditionResp = await serviceMethod.common("post", `patient/${patientId}/condition`, null, data)
-    commit('patientConditions', addConditionResp.data.data);
-    commit('addCondition', addConditionResp.data.data);
-    commit('loadingStatus', false)
-    errorMessage.push(true)
+    await serviceMethod.common("post", `patient/${patientId}/condition`, null, data).then((response) => {
+      commit('patientConditions', response.data.data);
+      commit('addCondition', response.data.data);
+      commit('loadingStatus', false)
+      errorMessage.push(false)
+    })
   }
   catch(error) {
     if (error.response.status == 422) {
@@ -189,9 +190,10 @@ export const updateCondition = async ({commit}, request) => {
 
   try {
     if((data.referralDesignation != null || data.referralEmail != null || data.referralFax != null || data.referralName != null || data.referralPhoneNumber != null) && (data.referralDesignation != "" || data.referralEmail != "" || data.referralFax != "" || data.referralName != "" || data.referralPhoneNumber != "")) {
-      let addReferral = await serviceMethod.common("put", `patient/${patientId}/referals/${referalID}`, null, data)
-      commit('addPatientReferals', addReferral.data.data);
-      errorMessage.push(false)
+      await serviceMethod.common("put", `patient/${patientId}/referals/${referalId}`, null, data).then((response) => {
+        commit('addPatientReferals', response.data.data);
+        errorMessage.push(false)
+      })
     }
   }
   catch (error) {
@@ -212,10 +214,11 @@ export const updateCondition = async ({commit}, request) => {
   }
 
   try {
-    if((data.designation != null || data.email != null || data.fax != null || data.name != null || data.phoneNumber != null) && (data.designation != "" || data.email != "" || data.fax != "" || data.name != "" || data.phoneNumber != "")) {
-      let addPhysician = await serviceMethod.common("put", `patient/${patientId}/physician/${physicianId}`, null, data)
-      commit('addPatientPhysician', addPhysician.data.data);
-      errorMessage.push(false)
+    if(data.staff) {
+      await serviceMethod.common("put", `patient/${patientId}/staff/${primaryPhysicianId}?type=1`, null, data).then(response => {
+        commit('addPatientPhysician', response.data.data);
+        errorMessage.push(false)
+      })
     }
   }
   catch (error) {
@@ -253,7 +256,7 @@ export const patientConditions = async ({ commit }, id) => {
       else {
         commit('patientReferralSource', null);
       }
-      serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/physician', null, null).then((physician) => {
+      serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/staff?isPrimary=1&type=1', null, null).then((physician) => {
         if(physician.data.data.length > 0) {
           commit('patientPrimaryPhysician', physician.data.data[0]);
         }

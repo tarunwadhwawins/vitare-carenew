@@ -586,11 +586,12 @@ export const patientReferralSource = (state, referralSource) => {
 }
 
 export const patientPrimaryPhysician = (state, primaryPhysician) => {
-  if (primaryPhysician) {
-    primaryPhysician.sameAsAbove = primaryPhysician.sameAsReferal;
-    primaryPhysician.designation = primaryPhysician.designationId;
-    state.patientPrimaryPhysician = primaryPhysician;
-  }
+  primaryPhysician.staff = primaryPhysician.staffId
+  state.patientPrimaryPhysician = primaryPhysician
+}
+
+export const isEditPatient = (state, data) => {
+  state.isEditPatient = data
 }
 
 export const deleteDocument = (state, data) => {
