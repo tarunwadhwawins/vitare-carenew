@@ -5,7 +5,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('appointmentCalendar.addAppointment.patient')" name="patientId" :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.patient')+' '+$t('global.validation')  }]">
-                        <PatientDropDown v-model:value="appointmentForm.patientId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" :close="closeValue" />
+                        <PatientDropDown :disabled="disabled" v-model:value="appointmentForm.patientId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" :close="closeValue" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.patientId?errorMsg.patientId[0]:''" />
                     </a-form-item>
                 </div>

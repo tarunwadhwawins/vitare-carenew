@@ -97,6 +97,7 @@ export default defineComponent({
     
     const formRef = ref();
     const submitForm = () => {
+      addCareTeamForm.isPrimary = addCareTeamForm.isPrimary == true ? 1 : 0
       store.dispatch('addCareTeam', { patientUdid: patientUdid, data: addCareTeamForm }).then(() => {
         store.dispatch('careTeamList', {
           patientUdid: patientUdid,
