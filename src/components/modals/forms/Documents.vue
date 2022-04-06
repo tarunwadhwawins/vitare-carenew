@@ -11,17 +11,16 @@
         </a-col>
         <a-col :sm="12" :xs="24">
             <div class="form-group">
-                <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: true, message: $t('global.document')+' '+$t('global.validation') }]">
+                <!-- <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: true, message: $t('global.document')+' '+$t('global.validation') }]">
                     <a-input name="document_file" size="large" type="file" @change="onFileUpload" />
                     <ErrorMessage v-if="docValidationError" name="Document is required." />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
-                    <!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" /> -->
-                </a-form-item>
-                <!-- <label><span style="color:red">* </span>{{$t('global.document')}}
+                </a-form-item> -->
+                <label><span style="color:red">* </span>{{$t('global.document')}}
                     <a-input  name="document_file" size="large" type="file" @change="onFileUpload" />
                     <ErrorMessage v-if="docValidationError" name="Document is required." />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
-                </label> -->
+                </label>
             </div>
         </a-col>
         <a-col :sm="12" :xs="24">
@@ -146,6 +145,7 @@ export default defineComponent({
     
     const onFileUpload = (event) => {
       let docFile = event.target.files[0];
+      emit('onChange')
       if((docFile.size/1024) > 5120) {
         Object.assign(documents, {
           document: ""
@@ -170,6 +170,7 @@ export default defineComponent({
       }
       let formData = new FormData();
        formData.append("file", docFile);
+      //  documents.document=docFile
        docValidationError.value=false
       store.commit('checkChangeInput',true)
       store.dispatch("uploadFile", formData);
