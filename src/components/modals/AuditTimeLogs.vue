@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, computed, watchEffect, ref } from "vue";
+import { defineComponent, reactive, computed, watchEffect, ref, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { getSeconds} from '@/commonMethods/commonMethod'
@@ -133,7 +133,16 @@ export default defineComponent({
       }
     })
 
+    const closeModal = () => {
+      store.commit('errorMsg', null)
+    }
+
+    onUnmounted(() => {
+      store.commit('errorMsg', null)
+    })
+
     return {
+      closeModal,
       disabledFlag,
       disabledCptCode,
       disabledCategory,
