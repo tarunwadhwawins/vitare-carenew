@@ -85,3 +85,8 @@ export const appointmentConference = (state, data) => {
 export const getStaffs = async (state, data) => {
 	state.getStaff = data;
 };
+
+
+export const appointmentDetails = (state, data) => {
+	state.appointmentDetails = data;
+};

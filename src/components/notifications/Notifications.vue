@@ -16,7 +16,7 @@
                 <ul>
                   <div v-for="(notification, index) in notifications" :key="index" style="margin: 0 0 15px;">
                   <li class="listing " :class="notf.Isread?'read':'unread'" v-for="(notf, index) in notification.value" :key="index">
-                      <router-link  class="d-flex align-items-center" :to="notf.type == 'Appointment' ? 'appointment-calendar': '/communications' " @click=" isReadNotification(notification.id, notification.type)">
+                      <router-link  class="d-flex align-items-center" :to="notf.type == 'Appointment' ? '': '/communications'" @click="isReadNotification(notf.id, notf.type,notf.type_id)">
                       <div class="flex-grow-1 ms-3 summary">
                             <h3>{{ notf.title }}</h3>
                             <p>{{ notf.body }}</p>
@@ -54,6 +54,7 @@
               </a-col>
             </a-row>
           </div>
+          <AppointmentDetails v-if="isAppointment"  v-model:visible="isAppointment" @closeModal="closeModal(event)" />
         </a-layout-content>
       </a-layout>
     </a-layout>
@@ -61,7 +62,7 @@
 </template>
 
 <script>
-import { onMounted,computed } from 'vue';
+import { onMounted,computed,ref } from 'vue';
 import { useStore } from "vuex";
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
@@ -69,13 +70,16 @@ import {
   meridiemFormatFromTimestamp,
   dateOnlyFormat,
 } from "@/commonMethods/commonMethod";
+import AppointmentDetails from "@/components/modals/AppointmentDetails"
 export default {
   components: {
     Header,
     Sidebar,
+    AppointmentDetails
   },
   setup() {
-    const store = useStore()
+    const store = useStore();
+    const isAppointment =ref(false);
     const date = Math.round(+new Date() / 1000);
     onMounted(()=>{
       store.dispatch("getNotifications")
@@ -83,7 +87,25 @@ export default {
      const notifications = computed(() => {
       return store.state.common.getNotifications;
     });
+
+    const isReadNotification = (id, type,typeId) => {
+      if (type == "Appointment") {
+        isAppointment.value=true
+        store.dispatch("isReadUpdateNotification", id);
+        store.dispatch("appointmentDetails",typeId)
+      } else {
+        store.dispatch("isReadUpdateNotification", id);
+      }
+      store.dispatch("notificationList");
+    };
+
+    function closeModal(status){
+      isAppointment.value=status
+    }
     return{
+      closeModal,
+      isAppointment,
+      isReadNotification,
       notifications,
       meridiemFormatFromTimestamp,
       dateOnlyFormat,

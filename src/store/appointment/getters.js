@@ -10,3 +10,9 @@ export const searchAppointmentRecords = (state) => {
     return state.searchAppointmentRecords
   })
 }
+
+export const appointmentDetails = (state) => {
+  return computed(() => {
+    return state.appointmentDetails
+  })
+}
