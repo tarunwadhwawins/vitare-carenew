@@ -1,16 +1,12 @@
 <template>
   <a-modal width="50%" :title="$t('global.addCareTeam')" @cancel="onCloseModal()">
     <div class="wide">
-      <AddCoordinatorsModal :staffType="staffType" />
-    </div>
-    <div class="wide">
-      <CoordinatorsListingTable :staffType="staffType" />
+      <AddCoordinatorsModal :staffType="staffType" @closeModal="handleOk" />
     </div>
   </a-modal>
 </template>
 
 <script>
-import CoordinatorsListingTable from "@/components/modals/CoordinatorsListingTable"
 import AddCoordinatorsModal from "@/components/modals/AddCoordinatorsModal"
 
 export default {
@@ -20,9 +16,20 @@ export default {
     },
   },
   components: {
-    CoordinatorsListingTable,
     AddCoordinatorsModal,
   },
+  setup(props, { emit }) {
+    const handleOk = ({modal, value}) => {
+      emit("closeModal", {
+        modal: modal,
+        value: value
+      });
+    }
+
+    return {
+      handleOk
+    }
+  }
 }
 </script>
 

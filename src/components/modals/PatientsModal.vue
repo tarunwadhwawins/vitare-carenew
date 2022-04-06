@@ -379,200 +379,106 @@
             </div>
             <div  class="steps-content" v-if="steps[current].title == 'Conditions'" >
                 <!-- <Conditions /> -->
-                <a-form :model="conditions" name="basic" :label-col="{ span: 8 }"  scrollToFirstError=true :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="condition" @finishFailed="conditionsFailed">
-                    <a-row :gutter="24">
-                        <a-col :span="24">
-                            <div class="formHeading">
-                                <h2>{{$t('patient.conditions.healthConditions')}}</h2>
-                            </div>
-                        </a-col>
-                    </a-row>
-                    <a-row :gutter="24" class="mb-24">
-                        <a-col :md="24" :sm="24" :xs="24" class="mb-24">
-                            <a-input-search @change="changedValue" v-model:value="search" placeholder="Search..." style="width: 100%" size="large" @search="onSearch" />
-                        </a-col>
-                        <a-col :md="24" :sm="24" :xs="24">
-                            <div class="form-group conditionsCheckboxs">
-                                <a-form-item name="condition" :rules="[{ required: true, message: $t('patient.conditions.healthConditions')+' '+$t('global.validation') }]">
-                                    <a-checkbox-group @change="changedValue" v-model:value="conditions.condition">
-                                        <a-checkbox v-for="condition in globalCode.healthCondition" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
-                                    </a-checkbox-group>
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                    </a-row>
-                    <a-row :gutter="24">
-                        <a-col :span="24">
-                            <div class="formHeading">
-                                <h2>{{$t('patient.conditions.referralSource')}}</h2>
-                            </div>
-                        </a-col>
-                    </a-row>
-                    
-										<a-row :gutter="24">
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.name')" name="referralName" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue" @keyup="onKeyUp('referralName')" v-model:value="conditions.referralName" size="large" />
-									<ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralName?referralErrorMsg.referralName[0]:''" />
-                                </a-form-item>
+                <a-form :model="conditions" name="basic" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="condition" @finishFailed="conditionsFailed">
+									<a-row :gutter="24">
+										<a-col :span="24">
+											<div class="formHeading">
+												<h2>{{$t('patient.conditions.healthConditions')}}</h2>
+											</div>
+										</a-col>
+									</a-row>
 
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.designation')" name="referralDesignation" :rules="[{ required: false, message: $t('global.designation')+' '+$t('global.validation') }]">
-									<GlobalCodeDropDown @change="changedValue" @keyup="onKeyUp('referralDesignation')" v-model:value="conditions.referralDesignation"  :globalCode="globalCode.designations"/>
-                                    <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralDesignation?referralErrorMsg.referralDesignation[0]:''" />
-                                </a-form-item>
+									<a-row :gutter="24" class="mb-24">
+										<a-col :md="24" :sm="24" :xs="24" class="mb-24">
+											<a-input-search @change="changedValue" v-model:value="search" placeholder="Search..." style="width: 100%" size="large" @search="onSearch" />
+										</a-col>
+										<a-col :md="24" :sm="24" :xs="24">
+											<div class="form-group conditionsCheckboxs">
+												<a-form-item name="condition" :rules="[{ required: true, message: $t('patient.conditions.healthConditions')+' '+$t('global.validation') }]">
+													<a-checkbox-group @change="changedValue" v-model:value="conditions.condition">
+														<a-checkbox v-for="condition in globalCode.healthCondition" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
+													</a-checkbox-group>
+												</a-form-item>
+											</div>
+										</a-col>
+									</a-row>
 
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.email')" name="referralEmail" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                                    <a-input @change="changedValue" @keyup="onKeyUp('referralEmail')" v-model:value="conditions.referralEmail" placeholder="test@test.com" size="large" @input="emailChange()" />
-                                    <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralEmail?referralErrorMsg.referralEmail[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="referralPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber }]">
-                                    <!-- <vue-tel-input  @change="changedValue" v-model.trim:value="conditions.referralPhoneNumber" v-bind="bindProps" /> -->
-                                    <!-- <PhoneNumber  @change="changedValue" v-model.trim:value="conditions.referralPhoneNumber" @setPhoneNumber="setPhoneNumberReferralPhoneNumber" /> -->
-                                    <a-input-number @change="changedValue" v-model:value.trim="conditions.referralPhoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%"/>
-                                    <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralPhoneNumber?referralErrorMsg.referralPhoneNumber[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('patient.conditions.fax')" name="referralFax" :rules="[{ required: false, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue" v-model:value="conditions.referralFax" size="large" />
-                                    <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralFax?referralErrorMsg.referralFax[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                    </a-row>
-                    <a-row :gutter="24">
-                        <a-col :span="24">
-                            <div class="formHeading">
-                                <h2>{{$t('patient.conditions.primaryPhysician')}}</h2>
-                            </div>
-                        </a-col>
-                    </a-row>
-                    <a-row>
-                        <a-col :md="24" :sm="24" :xs="24" class="mb-24">
-                            <a-checkbox @change="changedValue" v-model:checked="conditions.sameAsAbove"> {{$t('patient.conditions.sameAsabove')}} </a-checkbox>
-                        </a-col>
-                    </a-row>
+									<a-row :gutter="24">
+										<a-col :span="24">
+											<div class="formHeading">
+												<h2>{{$t('patient.conditions.referralSource')}}</h2>
+											</div>
+										</a-col>
+									</a-row>
+									
+									<a-row :gutter="24">
+										<a-col :md="8" :sm="12" :xs="24">
+											<div class="form-group">
+												<a-form-item :label="$t('global.name')" name="referralName" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
+													<a-input @change="changedValue" @keyup="onKeyUp('referralName')" v-model:value="conditions.referralName" size="large" />
+													<ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralName?referralErrorMsg.referralName[0]:''" />
+												</a-form-item>
+											</div>
+										</a-col>
+										<a-col :md="8" :sm="12" :xs="24">
+											<div class="form-group">
+												<a-form-item :label="$t('global.designation')" name="referralDesignation" :rules="[{ required: false, message: $t('global.designation')+' '+$t('global.validation') }]">
+													<GlobalCodeDropDown @change="changedValue" @keyup="onKeyUp('referralDesignation')" v-model:value="conditions.referralDesignation"  :globalCode="globalCode.designations"/>
+													<ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralDesignation?referralErrorMsg.referralDesignation[0]:''" />
+												</a-form-item>
+											</div>
+										</a-col>
+										<a-col :md="8" :sm="12" :xs="24">
+											<div class="form-group">
+												<a-form-item :label="$t('global.email')" name="referralEmail" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
+													<a-input @change="changedValue" @keyup="onKeyUp('referralEmail')" v-model:value="conditions.referralEmail" placeholder="test@test.com" size="large" @input="emailChange()" />
+													<ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralEmail?referralErrorMsg.referralEmail[0]:''" />
+												</a-form-item>
+											</div>
+										</a-col>
+										<a-col :md="8" :sm="12" :xs="24">
+											<div class="form-group">
+												<a-form-item :label="$t('global.phoneNo')" name="referralPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase() }]">
+													<a-input-number @change="changedValue" v-model:value.trim="conditions.referralPhoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%"/>
+													<ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralPhoneNumber?referralErrorMsg.referralPhoneNumber[0]:''" />
+												</a-form-item>
+											</div>
+										</a-col>
+										<a-col :md="8" :sm="12" :xs="24">
+											<div class="form-group">
+												<a-form-item :label="$t('patient.conditions.fax')" name="referralFax" :rules="[{ required: false, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
+													<a-input @change="changedValue" v-model:value="conditions.referralFax" size="large" />
+													<ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralFax?referralErrorMsg.referralFax[0]:''" />
+												</a-form-item>
+											</div>
+										</a-col>
+									</a-row>
 
-					<!-- Same As Above -->
+									<a-row :gutter="24">
+										<a-col :span="24">
+											<div class="formHeading">
+												<h2>{{$t('patient.conditions.primaryPhysician')}}</h2>
+											</div>
+										</a-col>
+									</a-row>
 
-                    <a-row :gutter="24" v-if="conditions.sameAsAbove">
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.name')" name="referralName" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue" @keyup="onKeyUp('referralName')" v-model:value="conditions.referralName" size="large" disabled />
-                                    <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralName?referralErrorMsg.referralName[0]:''" />
-                                </a-form-item>
+									<a-row :gutter="24">
+										<a-col :sm="24" :xs="24">
+											<a-form-item :label="$t('tasks.tasksModal.staff')" name="staff" :rules="[{ required: false, message: $t('tasks.tasksModal.staff')+' '+$t('global.validation') }]">
+												<StaffDropDown v-model:value="conditions.staff" @handleStaffChange="handleStaffChange($event)" @change="checkChangeInput()" :close="closeValue" />
+											</a-form-item>
+										</a-col>
+									</a-row>
 
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.designation')" name="referralDesignation" :rules="[{ required: false, message: $t('global.designation')+' '+$t('global.validation') }]">
-									<GlobalCodeDropDown @change="changedValue" @keyup="onKeyUp('referralDesignation')" v-model:value="conditions.referralDesignation"  :globalCode="globalCode.designations" disabled/>
-                                    <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralDesignation?referralErrorMsg.referralDesignation[0]:''" />
-                                </a-form-item>
-
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.email')" name="referralEmail" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                                    <a-input @change="changedValue" @keyup="onKeyUp('referralEmail')" v-model:value="conditions.referralEmail" placeholder="test@test.com" size="large" disabled />
-                                    <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralEmail?referralErrorMsg.referralEmail[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="referralPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber }]">
-                                    <!-- <vue-tel-input  @change="changedValue" v-model.trim:value="conditions.referralPhoneNumber" v-bind="bindProps" /> -->
-                                    <!-- <PhoneNumber  @change="changedValue" v-model.trim:value="conditions.referralPhoneNumber" @setPhoneNumber="setPhoneNumberReferralPhoneNumber" disabled/> -->
-                                    <a-input-number  @change="changedValue" v-model:value.trim="conditions.referralPhoneNumber" style="width: 100%" disabled/>
-                                    <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralPhoneNumber?referralErrorMsg.referralPhoneNumber[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('patient.conditions.fax')" name="referralFax" :rules="[{ required: false, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue" v-model:value="conditions.referralFax" size="large" disabled />
-                                    <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralFax?referralErrorMsg.referralFax[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                    </a-row>
-
-					<!-- Not Same As Above -->
-
-                    <a-row :gutter="24" v-else>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue" @keyup="onKeyUp('name')" v-model:value="conditions.name" size="large" />
-                                    <ErrorMessage v-if="physicianErrorMsg" :name="physicianErrorMsg.name?physicianErrorMsg.name[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.designation')" name="designation" :rules="[{ required: false, message: $t('global.designation')+' '+$t('global.validation') }]">
-                                        <GlobalCodeDropDown @change="changedValue" @keyup="onKeyUp('designation')" v-model:value="conditions.designation"  :globalCode="globalCode.designations"/>
-                                    <ErrorMessage v-if="physicianErrorMsg" :name="physicianErrorMsg.designation?physicianErrorMsg.designation[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                                    <a-input @change="changedValue" @keyup="onKeyUp('email')" v-model:value="conditions.email" placeholder="test@test.com" size="large" @input="emailChange()" />
-                                    <ErrorMessage v-if="physicianErrorMsg && physicianErrorMsg.email!=null" :name="physicianErrorMsg.email?physicianErrorMsg.email[0]:''" />
-                                </a-form-item>
-
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber }]">
-                                    <!-- <vue-tel-input  @change="changedValue" v-model.trim:value="conditions.phoneNumber" v-bind="bindProps" /> -->
-                                    <!-- <PhoneNumber  @change="changedValue" v-model.trim:value="conditions.phoneNumber" @setPhoneNumber="setPhoneNumberConditionPhoneNumber" /> -->
-                                    <a-input-number @change="changedValue" v-model:value.trim="conditions.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%"/>
-                                    <ErrorMessage v-if="physicianErrorMsg" :name="physicianErrorMsg.phoneNumber?physicianErrorMsg.phoneNumber[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('patient.conditions.fax')" name="fax" :rules="[{ required: false, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue" v-model:value="conditions.fax" size="large" />
-                                    <ErrorMessage v-if="physicianErrorMsg" :name="physicianErrorMsg.fax?physicianErrorMsg.fax[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                    </a-row>
-
-                    <div class="steps-action">
-                        <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                        <a-button v-if="current < steps.length - 1"  type="primary" @click="scrollToTop(current)" html-type="submit">{{$t('global.next')}}</a-button>
-                        <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
-                            {{$t('global.done')}}
-                        </a-button>
-                    </div>
-                </a-form>
+									<div class="steps-action">
+										<a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
+										<a-button v-if="current < steps.length - 1"  type="primary" @click="scrollToTop(current)" html-type="submit">{{$t('global.next')}}</a-button>
+										<a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
+											{{$t('global.done')}}
+										</a-button>
+									</div>
+									
+								</a-form>
                 <Loader />
                 <!--  -->
             </div>
@@ -631,7 +537,7 @@
                         <a-col :sm="8" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.insurance.expirationDate')" name="expirationDate" :rules="i==0?[{ required: true, message: $t('patient.insurance.expirationDate')+' '+$t('global.validation') }]:''">
-                                    <a-date-picker @change="changedValue" v-model:value="insuranceData.expirationDate[i]" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                                    <a-date-picker @change="changedValue" v-model:value="insuranceData.expirationDate[i]" format="DD, MMM YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.expirationDate?errorMsg.expirationDate[0]:''" />
                                 </a-form-item>
                             </div>
@@ -675,11 +581,13 @@ import {successSwal,warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 import { useRoute } from 'vue-router';
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
 import moment from "moment"
 // import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
 export default defineComponent( {
   components: {
     // PhoneNumber,
+    StaffDropDown,
     GlobalCodeDropDown,
     Programs,
     Devices,
@@ -688,14 +596,6 @@ export default defineComponent( {
     ErrorMessage,
     Loader,
     PatientSearch: defineAsyncComponent(() => import("../modals/search/PatientModal")),
-  },
-  props: {
-    isEditPatient: {
-			type: Boolean
-    },
-    patientId: {
-        type: Number
-    },
   },
   setup(props, { emit }) {
     const store = useStore();
@@ -764,13 +664,8 @@ export default defineComponent( {
     })
 
     const changedValue = (value) => {
-        if(value == false) {
-            isValueChanged.value = false;
-        }
-        else {
-            isValueChanged.value = true;
-        }
-				// isEdit = false
+			store.commit('isEditPatient', false)
+			isValueChanged.value = value
     }
     const showSearchPatient = ()=>{
         patientSearch.value =true
@@ -781,14 +676,17 @@ export default defineComponent( {
     const globalCode = computed(() => {
       return store.state.common;
     });
-    const idPatient = props.patientId ? reactive(props.patientId) : null;
+    const idPatient = route.name == "PatientSummary" ? route.params.udid : null;
 
     const patients = computed(() => {
       return store.state.patients;
     });
+    const isEditPatient = computed(() => {
+      return store.state.patients.isEditPatient
+    })
     const patientDetail = patients.value.patientDetails;
-    const title = props.isEditPatient == true ? 'Edit Patient' : 'Add New Patient'
-    const disabled = props.isEditPatient == true ? true : false
+    const title = isEditPatient.value == true ? 'Edit Patient' : 'Add New Patient'
+    const disabled = isEditPatient.value == true ? true : false
     
     const demographics = reactive({
       firstName: "",
@@ -838,12 +736,14 @@ export default defineComponent( {
       referralEmail: "",
       referralPhoneNumber: "",
       referralFax: "",
-      sameAsAbove: false,
+      staff: "",
+      isPrimary: 1,
+      /* sameAsAbove: false,
       name: "",
       designation: "",
       email: "",
       phoneNumber: "",
-      fax: "",
+      fax: "", */
     });
 
     const insuranceData = reactive({
@@ -862,50 +762,37 @@ export default defineComponent( {
     const setPhoneNumberEmergencyPhoneNumber = (value) => {
       demographics.emergencyPhoneNumber = value;
     };
-    const setPhoneNumberReferralPhoneNumber = (value) => {
-      conditions.phoneNumber = value;
-    };
 
-    const setPhoneNumberConditionPhoneNumber = (value) => {
-      conditions.phoneNumber = value;
-    };
+     const form = reactive({ ...demographics, });
 
-     const form = reactive({
-      ...demographics,
-    });
-
-    onMounted(()=>{
-        Object.assign(demographics, form)
+    onMounted(() => {
+			Object.assign(demographics, form)
     })
 
-    watchEffect(() => {
-        // Bitrix data assign 
-
-        if(patients.value.fetchFromBitrix){ 
-			Object.assign(demographics, patients.value.fetchFromBitrix);
-        }else if(!patients.value.fetchFromBitrix){
-            Object.assign(demographics, form)
-        }
-          
-        //end
-
-        if(idPatient) {
-					Object.assign(demographics, patients.value.patientDetails);
-					if(props.isEditPatient && patients.value.patientInsurance != null) {
-						Object.assign(insuranceData, patients.value.patientInsurance)
-					}
-					if(props.isEditPatient && patients.value.patientReferralSource != null) {
-						Object.assign(conditions, patients.value.patientReferralSource)
-					}
-					if(props.isEditPatient && patients.value.patientPrimaryPhysician != null) {
-						Object.assign(conditions, patients.value.patientPrimaryPhysician)
-					}
-					if(props.isEditPatient && patients.value.patientConditions != null) {
-						Object.assign(conditions.condition, patients.value.patientConditions)
-					}
-        }
-        
-          
+		watchEffect(() => {
+			// Bitrix data assign 
+			if(patients.value.fetchFromBitrix) { 
+				Object.assign(demographics, patients.value.fetchFromBitrix);
+			}
+			else if(!patients.value.fetchFromBitrix) {
+				Object.assign(demographics, form)
+			}
+			
+			if(idPatient) {
+				Object.assign(demographics, patients.value.patientDetails);
+				if(patients.value.patientPrimaryPhysician != null) {
+					Object.assign(conditions, patients.value.patientPrimaryPhysician)
+				}
+				if(isEditPatient.value && patients.value.patientConditions != null) {
+					Object.assign(conditions.condition, patients.value.patientConditions)
+				}
+				if(patients.value.patientReferralSource != null) {
+					Object.assign(conditions, patients.value.patientReferralSource)
+				}
+				if(patients.value.patientInsurance != null) {
+					Object.assign(insuranceData, patients.value.patientInsurance)
+				}
+			}
     })
 
     const parameters = reactive([]);
@@ -951,7 +838,7 @@ export default defineComponent( {
 					familyMemberId: "",
 					emergencyId: "",
         }
-			// isEdit = false
+				
 			if(idPatient != null) {
 					if(patients.value.addDemographic == null) {
 							if(demographicsData.sameAsPrimary == false) {
@@ -1089,18 +976,11 @@ export default defineComponent( {
 				if(patients.value.addCondition == null && patients.value.addPatientReferals == null && patients.value.addPatientPhysician == null) {
 					if((patients.value.patientReferralSource && patients.value.patientReferralSource != null)
 					&& (patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null)) {
-						if(conditions.sameAsAbove == 1) {
-							(conditions.name = conditions.referralName),
-							(conditions.designation = conditions.referralDesignation),
-							(conditions.email = conditions.referralEmail),
-							(conditions.phoneNumber = conditions.referralPhoneNumber),
-							(conditions.fax = conditions.referralFax);
-						}
 						store.dispatch("updateCondition", {
 							data: conditions,
 							id: idPatient,
-							referalID: patients.value.patientReferralSource.id ? patients.value.patientReferralSource.id : null,
-							physicianId: patients.value.patientPrimaryPhysician.id ? patients.value.patientPrimaryPhysician.id : null,
+							referalId: patients.value.patientReferralSource.id ? patients.value.patientReferralSource.id : null,
+							primaryPhysicianId: patients.value.patientPrimaryPhysician.id ? patients.value.patientPrimaryPhysician.id : null,
 						}).then(() => {
 							isValueChanged.value = false;
 							// store.commit('errorMsg',null)
@@ -1108,18 +988,11 @@ export default defineComponent( {
 					}
 					else if((!patients.value.patientReferralSource && patients.value.patientReferralSource == null)
 					&& (patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null)) {
-						if(conditions.sameAsAbove == 1) {
-							(conditions.name = conditions.referralName),
-							(conditions.designation = conditions.referralDesignation),
-							(conditions.email = conditions.referralEmail),
-							(conditions.phoneNumber = conditions.referralPhoneNumber),
-							(conditions.fax = conditions.referralFax);
-						}
 						store.dispatch("updateCondition", {
 							data: conditions,
 							id: idPatient,
-							referalID: null,
-							physicianId: patients.value.patientPrimaryPhysician.id ? patients.value.patientPrimaryPhysician.id : null,
+							referalId: null,
+							primaryPhysicianId: patients.value.patientPrimaryPhysician.id ? patients.value.patientPrimaryPhysician.id : null,
 						}).then(() => {
 							isValueChanged.value = false;
 							// store.commit('errorMsg',null)
@@ -1127,18 +1000,11 @@ export default defineComponent( {
 					}
 					else if((patients.value.patientReferralSource && patients.value.patientReferralSource != null)
 					&& (!patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician == null)) {
-						if(conditions.sameAsAbove == 1) {
-							(conditions.name = conditions.referralName),
-							(conditions.designation = conditions.referralDesignation),
-							(conditions.email = conditions.referralEmail),
-							(conditions.phoneNumber = conditions.referralPhoneNumber),
-							(conditions.fax = conditions.referralFax);
-						}
 						store.dispatch("updateCondition", {
 							data: conditions,
 							id: idPatient,
-							referalID: patients.value.patientReferralSource.id ? patients.value.patientReferralSource.id : null,
-							physicianId: null,
+							referalId: patients.value.patientReferralSource.id ? patients.value.patientReferralSource.id : null,
+							primaryPhysicianId: null,
 						}).then(() => {
 							isValueChanged.value = false;
 							// store.commit('errorMsg',null)
@@ -1146,18 +1012,11 @@ export default defineComponent( {
 					}
 					else if((!patients.value.patientReferralSource || patients.value.patientReferralSource == null)
 					|| (!patients.value.patientPrimaryPhysician || patients.value.patientPrimaryPhysician == null)) {
-						if(conditions.sameAsAbove == 1) {
-							(conditions.name = conditions.referralName),
-							(conditions.designation = conditions.referralDesignation),
-							(conditions.email = conditions.referralEmail),
-							(conditions.phoneNumber = conditions.referralPhoneNumber),
-							(conditions.fax = conditions.referralFax);
-						}
 						store.dispatch("addCondition", {
 							data: conditions,
 							id: idPatient,
-							referalID: null,
-							physicianId: null,
+							referalId: null,
+							primaryPhysicianId: null,
 						}).then(() => {
 							isValueChanged.value = false;
 							// store.commit('errorMsg',null)
@@ -1167,18 +1026,11 @@ export default defineComponent( {
 				else if(patients.value.addCondition != null || patients.value.addPatientReferals != null || patients.value.addPatientPhysician != null) {
 					if((patients.value.patientReferralSource && patients.value.patientReferralSource != null)
 						&& patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null) {
-						if(conditions.sameAsAbove == 1) {
-							(conditions.name = conditions.referralName),
-							(conditions.designation = conditions.referralDesignation),
-							(conditions.email = conditions.referralEmail),
-							(conditions.phoneNumber = conditions.referralPhoneNumber),
-							(conditions.fax = conditions.referralFax);
-						}
 						store.dispatch("updateCondition", {
 							data: conditions,
 							id: idPatient,
-							referalID: patients.value.patientReferralSource.id ? patients.value.patientReferralSource.id : null,
-							physicianId: patients.value.patientPrimaryPhysician.id ? patients.value.patientPrimaryPhysician.id : null,
+							referalId: patients.value.patientReferralSource.id ? patients.value.patientReferralSource.id : null,
+							primaryPhysicianId: patients.value.patientPrimaryPhysician.id ? patients.value.patientPrimaryPhysician.id : null,
 						}).then(() => {
 							isValueChanged.value = false;
 							// store.commit('errorMsg',null)
@@ -1186,18 +1038,11 @@ export default defineComponent( {
 					}
 					else if((!patients.value.patientReferralSource && patients.value.patientReferralSource == null)
 						&& patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician != null) {
-						if(conditions.sameAsAbove == 1) {
-							(conditions.name = conditions.referralName),
-							(conditions.designation = conditions.referralDesignation),
-							(conditions.email = conditions.referralEmail),
-							(conditions.phoneNumber = conditions.referralPhoneNumber),
-							(conditions.fax = conditions.referralFax);
-						}
 						store.dispatch("updateCondition", {
 							data: conditions,
 							id: idPatient,
-							referalID: null,
-              physicianId: patients.value.patientPrimaryPhysician.id ? patients.value.patientPrimaryPhysician.id : null,
+							referalId: patients.value.addPatientReferals ? patients.value.addPatientReferals.id : null,
+              primaryPhysicianId: patients.value.patientPrimaryPhysician.id ? patients.value.patientPrimaryPhysician.id : null,
 						}).then(() => {
 							isValueChanged.value = false;
 							// store.commit('errorMsg',null)
@@ -1205,79 +1050,51 @@ export default defineComponent( {
 					}
 					else if((patients.value.patientReferralSource && patients.value.patientReferralSource != null)
 						&& !patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician == null) {
-						if(conditions.sameAsAbove == 1) {
-							(conditions.name = conditions.referralName),
-							(conditions.designation = conditions.referralDesignation),
-							(conditions.email = conditions.referralEmail),
-							(conditions.phoneNumber = conditions.referralPhoneNumber),
-							(conditions.fax = conditions.referralFax);
-						}
 						store.dispatch("updateCondition", {
 							data: conditions,
 							id: idPatient,
-							referalID: patients.value.patientReferralSource.id ? patients.value.patientReferralSource.id : null,
-              physicianId: null,
+							referalId: patients.value.patientReferralSource.id ? patients.value.patientReferralSource.id : null,
+              primaryPhysicianId: patients.value.addPatientPhysician ? patients.value.addPatientPhysician.id : null,
 						}).then(() => {
 							isValueChanged.value = false;
 						})
 					}
 					else if((!patients.value.patientReferralSource && patients.value.patientReferralSource == null)
 					|| (!patients.value.patientPrimaryPhysician && patients.value.patientPrimaryPhysician == null)) {
-						if(conditions.sameAsAbove == 1) {
-							(conditions.name = conditions.referralName),
-							(conditions.designation = conditions.referralDesignation),
-							(conditions.email = conditions.referralEmail),
-							(conditions.phoneNumber = conditions.referralPhoneNumber),
-							(conditions.fax = conditions.referralFax);
-						}
 						store.dispatch("updateCondition", {
 							data: conditions,
 							id: idPatient,
-							referalID: null,
-							physicianId: null,
+							referalId: patients.value.addPatientReferals ? patients.value.addPatientReferals : null,
+							primaryPhysicianId: patients.value.addPatientPhysician ? patients.value.addPatientPhysician.id : null,
 						}).then(() => {
 							isValueChanged.value = false;
 						})
 					}
 				}
-			}
+      }
 			else {	// Add Patient
 				if(patients.value.addCondition == null && patients.value.addPatientReferals == null && patients.value.addPatientPhysician == null) {
-					if(conditions.sameAsAbove == 1) {
-						(conditions.name = conditions.referralName),
-						(conditions.designation = conditions.referralDesignation),
-						(conditions.email = conditions.referralEmail),
-						(conditions.phoneNumber = conditions.referralPhoneNumber),
-						(conditions.fax = conditions.referralFax);
-					}
 					store.dispatch("addCondition", {
 						data: conditions,
 						id: patients.value.addDemographic ? patients.value.addDemographic.id : null,
-						referalID: null,
-						physicianId: null,
+						referalId: null,
 					}).then(() => {
 						isValueChanged.value = false;
 						// store.commit('errorMsg',null)
 					})
 				}
 				else if(patients.value.addCondition != null || patients.value.addPatientReferals != null || patients.value.addPatientPhysician != null) {
-					if(conditions.sameAsAbove == 1) {
-						(conditions.name = conditions.referralName),
-						(conditions.designation = conditions.referralDesignation),
-						(conditions.email = conditions.referralEmail),
-						(conditions.phoneNumber = conditions.referralPhoneNumber),
-						(conditions.fax = conditions.referralFax);
-					}
 					store.dispatch("addCondition", {
 						data: conditions,
 						id: patients.value.addDemographic ? patients.value.addDemographic.id : null,
-						referalID: patients.value.addPatientReferals ? patients.value.addPatientReferals.id : null,
-						physicianId: patients.value.addPatientPhysician ? patients.value.addPatientPhysician.id : null,
+						referalId: patients.value.addPatientReferals ? patients.value.addPatientReferals.id : null,
+						primaryPhysicianId: patients.value.addPatientPhysician ? patients.value.addPatientPhysician.id : null,
 					}).then(() => {
 						isValueChanged.value = false;
 					})
 				}
 			}
+
 			store.dispatch('checkForErrors')
 			const checkForErrors = computed(() => {
 				return store.state.patients.checkForErrors
@@ -1381,7 +1198,8 @@ export default defineComponent( {
                     store.dispatch("patients");
                     store.commit("resetCounter");
                     store.state.patients.addDemographic = null
-                    store.state.patients.fetchFromBitrix =null
+                    store.state.patients.fetchFromBitrix = null
+										store.state.patients.uploadFile = null
                 }
                 else {
                     emit("saveModal", true);
@@ -1444,11 +1262,19 @@ export default defineComponent( {
         customScrollTop.value.scrollIntoView({behavior: 'smooth'});
         console.log('customScrollTop',customScrollTop.value);
     }
+
+    const handleStaffChange = (val) => {
+      conditions.staff = val;
+    };
+
+    function checkChangeInput() {
+      store.commit('checkChangeInput', true)
+    }
     
     return {
-        customScrollTop,
-    setPhoneNumberConditionPhoneNumber,
-    setPhoneNumberReferralPhoneNumber,
+		handleStaffChange,
+		checkChangeInput,
+		customScrollTop,
     setPhoneNumberEmergencyPhoneNumber,
     setPhoneNumberDemographicFamily,
     setPhoneNumberDemographics,
