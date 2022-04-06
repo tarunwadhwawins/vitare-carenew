@@ -34,6 +34,13 @@ export const timeLogReportList = async (state, data) => {
       title: "CPT Codes ",
       dataIndex: "cptCode",
     },
+    {
+      title: "Flag",
+      dataIndex: "flagColor",
+      slots: {
+        customRender: "flags",
+      },
+    },
     
     {
       title: "Notes ", 
@@ -81,11 +88,9 @@ export const reportExport = (state, data) => {
   state.reportExport = data
 }
 export const editAuditTimeLog = async (state, data) => {
+  data.flag = data.flagId
+  data.timeAmount = secondsToTime(data.timeAmount)
   state.editAuditTimeLog = data
-    // data.staff = data.staffId,
-    // data.patient = data.patientId
-    data.timeAmount = secondsToTime(data.timeAmount)
-    return data
 }
 
 export const auditTimePermissions = (state, auth) => {
