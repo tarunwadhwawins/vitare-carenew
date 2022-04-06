@@ -300,7 +300,14 @@ export default {
     };
   
     const handleClose = ({modal, value}) => {
-      if(value && modal == 'addTimeLog') {
+      if(modal == 'addTimeLog') {
+        elapsedTime.value = 0;
+        startOn.value = true;
+        stoptimervisible.value = false;
+        clearInterval(timer.value);
+        clearInterval(myInterval.value);
+      }
+      else if(value && modal == 'closeTimeLogModal') {
         stoptimervisible.value = value;
         clearInterval(timer.value);
       }
