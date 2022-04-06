@@ -12,11 +12,9 @@
             <a-col :xl="4" :lg="8">
               <h2 class="pageTittle">{{$t('patientSummary.patientSummary')}}</h2>
             </a-col>
-            <a-col :xm="1" :lg="2">
-              <div>
-                  <!-- <a-button class="blueBtn" @click="videoCall()" >Start Call</a-button> -->
-                  <router-link class="blueBtn" v-if="conferenceId" :to="{ name: 'videoCall', params: { id: enCodeString(conferenceId) } }" target="_blank">Start Call</router-link>
-              </div>
+            <a-col :xl="2" :lg="12">
+              <!-- <a-button class="blueBtn" @click="videoCall()" >Start Call</a-button> -->
+              <router-link class="blueBtn" v-if="conferenceId" :to="{ name: 'videoCall', params: { id: enCodeString(conferenceId) } }" target="_blank">Start Call</router-link>
             </a-col>
             <a-col :xl="9" :lg="12">
               <div class="pageTittle">
@@ -449,5 +447,11 @@ export default {
   h3 {
     margin: 0 10px 0 0;
   }
+}
+.blueBtn {
+  padding: 10px 15px 9px 15px;
+  position: relative;
+  top: 7px;
+  left: -75px;
 }
 </style>

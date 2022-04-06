@@ -152,12 +152,12 @@
     <AddTimeLogsModal v-model:visible="addTimeLogsVisible" :isEditTimeLog="isEditTimeLog" :isAutomatic="isAutomatic" @closeModal="handleOk" />
     <AddDeviceModal v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
     <PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
-    <PatientsModal v-model:visible="patientsModalVisible" :patientId="patientDetails.id" :isEditPatient="isEditPatient" @closeModal="handleOk" @saveModal="handleOk($event)" />
+    <PatientsModal v-model:visible="patientsModalVisible" @closeModal="handleOk" @saveModal="handleOk($event)" />
 
     <FamilyMembersDetailsModal v-model:visible="familyMembersModalVisible" :patientId="patientDetails.id" @isFamilyMemberEdit="editFamilyMember" @closeModal="handleOk" />
     <!-- <PhysiciansDetailsModal v-if="physiciansModalVisible" v-model:visible="physiciansModalVisible" @isPhysicianEdit="editPhysician" @closeModal="handleOk" :staffType="staffType" /> -->
     <EmergencyContactsDetailsModal v-model:visible="emergencyContactsModalVisible" @isEmergencyContactEdit="editEmergencyContact" @closeModal="handleOk" />
-    <CoordinatorsListingModal v-if="coordinatorsListingModalVisible" v-model:visible="coordinatorsListingModalVisible" :staffType="staffType" :title="title" />
+    <CoordinatorsListingModal v-if="coordinatorsListingModalVisible" v-model:visible="coordinatorsListingModalVisible" :staffType="staffType" :title="title" @closeModal="handleOk" />
     <CriticalNotesDetailModal v-model:visible="criticalNotesDetailVisible" @closeModal="handleOk"/>
     <PatientVitalsDetailsModal v-model:visible="patientVitalsVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
     <NotesDetailModal v-model:visible="notesDetailVisible" @closeModal="handleOk" />
@@ -238,7 +238,6 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const custom = ref(false);
-    const isEditPatient = ref(false);
     const isEditTimeLog = ref(false);
     const isFamilyMemberEdit = ref(false);
     const isPhysicianEdit = ref(false);
@@ -370,6 +369,7 @@ export default defineComponent({
         // physiciansModalVisible.value = modal == 'physiciansList' ? value : false;
         emergencyContactsModalVisible.value = modal == 'emergencyContactsList' ? value : false;
         deviceDetailVisible.value = modal == 'devicesListing' ? value : false;
+        coordinatorsListingModalVisible.value = modal == 'deleteCareTeam' ? value : false;
       }
       else {
         flagsModalVisible.value = false;
@@ -394,6 +394,7 @@ export default defineComponent({
         familyMembersModalVisible.value = false;
         // physiciansModalVisible.value = false;
         emergencyContactsModalVisible.value = false;
+        coordinatorsListingModalVisible.value = false;
       }
     };
 
@@ -465,7 +466,7 @@ export default defineComponent({
     };
 
     const editPatient = ({udid, id}) => {
-      isEditPatient.value = true;
+      store.commit('isEditPatient', true)
       console.log('udid', udid)
       store.dispatch('patientConditions', id)
       store.dispatch("programList");
@@ -605,7 +606,6 @@ export default defineComponent({
       isPhysicianEdit,
       isFamilyMemberEdit,
       isEditTimeLog,
-      isEditPatient,
 
       latestFlag,
       latestAppointment,

@@ -104,6 +104,10 @@ export default defineComponent({
         })
         formRef.value.resetFields();
         Object.assign(addCareTeamForm, form);
+        emit("closeModal", {
+          modal: 'addCareTeam',
+          value: false
+        });
       })
     }
 

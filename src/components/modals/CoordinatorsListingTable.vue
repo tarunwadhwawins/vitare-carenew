@@ -40,7 +40,7 @@ import { messages } from '@/config/messages';
     components: {
       DeleteOutlined,
     },
-    setup(props) {
+    setup(props, { emit }) {
       const store = useStore();
       const route = useRoute();
       const patientUdid = route.params.udid;
@@ -50,11 +50,6 @@ import { messages } from '@/config/messages';
           dataIndex: "staff",
           key: "staff",
         },
-        /* {
-          title: "Type",
-          dataIndex: "type",
-          key: "type",
-        }, */
         {
           title: "Is Primary",
           dataIndex: "isPrimary",
@@ -93,6 +88,13 @@ import { messages } from '@/config/messages';
                 patientUdid: patientUdid,
                 type: props.staffType
               })
+              const newPatientStaff = props.staffType == 0 ? careTeamList.value : physiciansList.value
+              if(newPatientStaff.length <= 1) {
+                emit("closeModal", {
+                  modal: 'deleteCareTeam',
+                  value: false
+                });
+              }
             })
           }
         })
