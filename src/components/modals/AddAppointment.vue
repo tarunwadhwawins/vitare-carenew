@@ -12,7 +12,7 @@
             </a-col>
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
-                    <a-form-item :label="$t('appointmentCalendar.addAppointment.staff')" name="staffId" :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.staff')+' '+$t('global.validation')  }]">
+                    <a-form-item :label="$t('global.careCoodinator')" name="staffId" :rules="[{ required: true, message: $t('global.careCoodinator')+' '+$t('global.validation')  }]">
                         <StaffDropDown v-model:value="appointmentForm.staffId" @handleStaffChange="handleStaffChange($event)" @change="checkChangeInput()" :close="closeValue" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.staffId?errorMsg.staffId[0]:''" />
                     </a-form-item>
