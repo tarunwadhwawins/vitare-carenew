@@ -77,7 +77,6 @@
                   placeholder="Search . . ."
                   enter-button="Search"
                   size="large"
-                  @search="onSearch"
                   class="mb-24"
                 />
               </a-col>

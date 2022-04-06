@@ -91,7 +91,7 @@
               <MoreOutlined />
             </div>
           </div>
-          <div class="search" v-if="accessPermission != 0">
+          <div class="search" >
             <HeaderSearch
               v-model:value="value"
               @handleChange="handleChange($event)"
@@ -99,7 +99,7 @@
           </div>
           <div class="profile" :class="ellipse ? 'show' : ''">
             <div class="quick-actions d-flex align-items-center">
-              <a-dropdown :trigger="['click']" v-if="accessPermission != 0">
+              <a-dropdown :trigger="['click']" >
                 <a class="ant-dropdown-link" @click.prevent>
                   <div class="name">
                     {{ $t("header.quickAction") }}
