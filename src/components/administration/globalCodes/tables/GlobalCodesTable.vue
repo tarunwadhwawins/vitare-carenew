@@ -135,13 +135,6 @@ export default {
         sorter:true
       },
       {
-        title: "Used Count",
-        dataIndex: "usedCount",
-        
-        
-        
-      },
-      {
         title: "Status",
         dataIndex: "isActive",
         
