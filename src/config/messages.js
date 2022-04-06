@@ -1,5 +1,6 @@
 export const messages={
     //alert messages
+    warning:'Are you sure ?',
     deleteWarning:'Do you want to delete ?',
     modalWarning:'Your data may be loss!',
     formSuccess:'Data successfully added!',

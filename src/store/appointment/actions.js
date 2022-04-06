@@ -102,3 +102,30 @@ localStorage.setItem('staff', JSON.stringify(staff));
 
 
 
+export const appointmentDetails = async ({commit},id) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("get", `appointment/detail/${id}`, null, null).then((response) => { 
+    commit('appointmentDetails', response.data.data);
+    commit('loadingStatus', false)
+  }).catch((error) => {
+      errorLogWithDeviceInfo(error.response)
+      commit('loadingStatus', false)
+      errorSwal(error.response.data.message)
+    
+  })
+}
+
+
+export const appintmentStatus = async ({commit},data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("put", `appointment/status/${data.id}?statusId=${data.statusId}`, null, true).then((response) => { 
+    commit('appintmentStatus', response.data.data);
+    commit('loadingStatus', false)
+  }).catch((error) => {
+      errorLogWithDeviceInfo(error.response)
+      commit('loadingStatus', false)
+      errorSwal(error.response.data.message)
+    
+  })
+}
+

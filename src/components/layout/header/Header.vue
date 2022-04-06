@@ -159,7 +159,7 @@
                   >
                     <li class="title">{{ $t("header.notification") }}</li>
                     <li class="listing" v-for="(notification, index) in notifications" :key="index" >
-                      <router-link :to="notification.type == 'Appointment' ? 'appointment-calendar': '/communications' " @click=" isReadNotification(notification.id, notification.type)">
+                      <router-link :to="notification.type == 'Appointment' ? '': '/communications'" @click=" isReadNotification(notification.id, notification.type,notification.type_id)">
                         <a class="d-flex align-items-center" href="#">
                           <div class="flex-grow-1 ms-3 summary">
                             <h3>{{ notification.title }}</h3>
@@ -266,6 +266,7 @@
     <AddStartCall v-model:visible="AddStartCall" @ok="closeStartCallModal" />
     <SendMessage v-model:visible="SendMessage" @ok="startOk" />
     <!---->
+    <AppointmentDetails v-if="isAppointment"  v-model:visible="isAppointment"  @closeModal="closeModal(event)" />
   </div>
 </template>
 
@@ -286,6 +287,7 @@ import AddStartCall from "@/components/modals/AddStartCall";
 import SendMessage from "@/components/modals/SendMessage";
 import { useStore } from "vuex";
 import HeaderSearch from "./HeaderSearch";
+import AppointmentDetails from "../../modals/AppointmentDetails"
 import {
   arrayToObjact,
   meridiemFormatFromTimestamp,
@@ -302,6 +304,7 @@ import {
 } from "@ant-design/icons-vue";
 export default defineComponent({
   components: {
+    AppointmentDetails,
     NotificationOutlined,
     DownOutlined,
     MenuOutlined,
@@ -322,6 +325,7 @@ export default defineComponent({
     const toggle = ref(false);
     const ellipse = ref(false);
     const tasksModal = ref(false);
+    const isAppointment = ref();
     const date = Math.round(+new Date() / 1000);
     const userName = JSON.parse(localStorage.getItem("auth"));
     const logoutUser = () => {
@@ -438,8 +442,10 @@ export default defineComponent({
       }
     };
 
-    const isReadNotification = (id, type) => {
+    const isReadNotification = (id, type,typeId) => {
       if (type == "Appointment") {
+        isAppointment.value=true
+        store.dispatch("appointmentDetails",typeId)
         store.dispatch("isReadUpdateNotification", id);
       } else {
         store.dispatch("isReadUpdateNotification", id);
@@ -448,8 +454,13 @@ export default defineComponent({
     };
     const bitrixFormCheck = computed(() => {
       return store.state.patients.bitrixFormCheck;
-    });
+    })
+    function closeModal(status){
+      isAppointment.value=status
+    }
     return {
+      closeModal,
+      isAppointment,
       screensPermissions:store.getters.screensPermissions,
       bitrixFormCheck,
       dateOnlyFormat,
