@@ -10,20 +10,14 @@
             </div>
         </a-col>
         <a-col :sm="12" :xs="24">
-            <div class="form-group">
-                <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: true, message: $t('global.document')+' '+$t('global.validation') }]">
-                    <a-input name="document_file" size="large" type="file" @change="onFileUpload" />
-                    <ErrorMessage v-if="docValidationError" name="Document is required." />
-                    <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
-                    <!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" /> -->
-                </a-form-item>
-                <!-- <label><span style="color:red">* </span>{{$t('global.document')}}
-                    <a-input  name="document_file" size="large" type="file" @change="onFileUpload" />
-                    <ErrorMessage v-if="docValidationError" name="Document is required." />
-                    <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
-                </label> -->
-            </div>
-        </a-col>
+          <div class="form-group">
+              <label><span style="color:red">* </span>{{$t('global.document')}}
+                  <a-input  name="document_file" size="large" type="file" @change="onFileUpload" />
+                  <ErrorMessage v-if="docValidationError" name="Document is required." />
+                  <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
+              </label>
+          </div>
+      </a-col>
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.type')" name="type" :rules="[{ required: true, message: $t('global.type')+' '+$t('global.validation') }]">
@@ -146,6 +140,7 @@ export default defineComponent({
     
     const onFileUpload = (event) => {
       let docFile = event.target.files[0];
+
       if((docFile.size/1024) > 5120) {
         Object.assign(documents, {
           document: ""
@@ -168,6 +163,7 @@ export default defineComponent({
         errorSwal('Allowed file types are JPG, JPEG, TIFF, TIF, BMP, PNG and PDF only');
         return false
       }
+      
       let formData = new FormData();
        formData.append("file", docFile);
        docValidationError.value=false
@@ -205,11 +201,12 @@ export default defineComponent({
       //   }
       //   else {
         if(filePath.value==null){
-          docValidationError.value=true
+          
+        docValidationError.value=true
         }else{
         const patientData = {
           name: documents.name,
-          document: filePath.value,
+          document: filePath.value ? filePath.value : "",
           type: documents.type,
           tags: documents.tags,
           entity: "patient",
