@@ -152,7 +152,7 @@
     <AddTimeLogsModal v-model:visible="addTimeLogsVisible" :isEditTimeLog="isEditTimeLog" :isAutomatic="isAutomatic" @closeModal="handleOk" />
     <AddDeviceModal v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
     <PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
-    <PatientsModal v-model:visible="patientsModalVisible" :patientId="patientDetails.id" :isEditPatient="isEditPatient" @closeModal="handleOk" @saveModal="handleOk($event)" />
+    <PatientsModal v-model:visible="patientsModalVisible" @closeModal="handleOk" @saveModal="handleOk($event)" />
 
     <FamilyMembersDetailsModal v-model:visible="familyMembersModalVisible" :patientId="patientDetails.id" @isFamilyMemberEdit="editFamilyMember" @closeModal="handleOk" />
     <!-- <PhysiciansDetailsModal v-if="physiciansModalVisible" v-model:visible="physiciansModalVisible" @isPhysicianEdit="editPhysician" @closeModal="handleOk" :staffType="staffType" /> -->
@@ -238,7 +238,6 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const custom = ref(false);
-    const isEditPatient = ref(false);
     const isEditTimeLog = ref(false);
     const isFamilyMemberEdit = ref(false);
     const isPhysicianEdit = ref(false);
@@ -465,7 +464,7 @@ export default defineComponent({
     };
 
     const editPatient = ({udid, id}) => {
-      isEditPatient.value = true;
+      store.commit('isEditPatient', true)
       console.log('udid', udid)
       store.dispatch('patientConditions', id)
       store.dispatch("programList");
@@ -605,7 +604,6 @@ export default defineComponent({
       isPhysicianEdit,
       isFamilyMemberEdit,
       isEditTimeLog,
-      isEditPatient,
 
       latestFlag,
       latestAppointment,
