@@ -168,6 +168,7 @@ export default defineComponent({
         errorSwal('Allowed file types are JPG, JPEG, TIFF, TIF, BMP, PNG and PDF only');
         return false
       }
+      
       let formData = new FormData();
        formData.append("file", docFile);
       //  documents.document=docFile
@@ -206,11 +207,12 @@ export default defineComponent({
       //   }
       //   else {
         if(filePath.value==null){
-          docValidationError.value=true
+          
+        docValidationError.value=true
         }else{
         const patientData = {
           name: documents.name,
-          document: filePath.value,
+          document: filePath.value ? filePath.value : "",
           type: documents.type,
           tags: documents.tags,
           entity: "patient",
