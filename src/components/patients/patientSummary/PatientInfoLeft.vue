@@ -157,7 +157,7 @@
     <FamilyMembersDetailsModal v-model:visible="familyMembersModalVisible" :patientId="patientDetails.id" @isFamilyMemberEdit="editFamilyMember" @closeModal="handleOk" />
     <!-- <PhysiciansDetailsModal v-if="physiciansModalVisible" v-model:visible="physiciansModalVisible" @isPhysicianEdit="editPhysician" @closeModal="handleOk" :staffType="staffType" /> -->
     <EmergencyContactsDetailsModal v-model:visible="emergencyContactsModalVisible" @isEmergencyContactEdit="editEmergencyContact" @closeModal="handleOk" />
-    <CoordinatorsListingModal v-if="coordinatorsListingModalVisible" v-model:visible="coordinatorsListingModalVisible" :staffType="staffType" :title="title" />
+    <CoordinatorsListingModal v-if="coordinatorsListingModalVisible" v-model:visible="coordinatorsListingModalVisible" :staffType="staffType" :title="title" @closeModal="handleOk" />
     <CriticalNotesDetailModal v-model:visible="criticalNotesDetailVisible" @closeModal="handleOk"/>
     <PatientVitalsDetailsModal v-model:visible="patientVitalsVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
     <NotesDetailModal v-model:visible="notesDetailVisible" @closeModal="handleOk" />
@@ -369,6 +369,7 @@ export default defineComponent({
         // physiciansModalVisible.value = modal == 'physiciansList' ? value : false;
         emergencyContactsModalVisible.value = modal == 'emergencyContactsList' ? value : false;
         deviceDetailVisible.value = modal == 'devicesListing' ? value : false;
+        coordinatorsListingModalVisible.value = modal == 'deleteCareTeam' ? value : false;
       }
       else {
         flagsModalVisible.value = false;
@@ -393,6 +394,7 @@ export default defineComponent({
         familyMembersModalVisible.value = false;
         // physiciansModalVisible.value = false;
         emergencyContactsModalVisible.value = false;
+        coordinatorsListingModalVisible.value = false;
       }
     };
 

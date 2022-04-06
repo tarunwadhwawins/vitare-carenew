@@ -1198,7 +1198,8 @@ export default defineComponent( {
                     store.dispatch("patients");
                     store.commit("resetCounter");
                     store.state.patients.addDemographic = null
-                    store.state.patients.fetchFromBitrix =null
+                    store.state.patients.fetchFromBitrix = null
+										store.state.patients.uploadFile = null
                 }
                 else {
                     emit("saveModal", true);

@@ -1,6 +1,6 @@
 <template>
   <a-modal width="60%" :title="title">
-    <CoordinatorsListingTable :staffType="staffType" />
+    <CoordinatorsListingTable :staffType="staffType" @closeModal="handleOk" />
   </a-modal>
 </template>
 
@@ -21,10 +21,16 @@ import CoordinatorsListingTable from "@/components/modals/CoordinatorsListingTab
         type: Number
       },
     },
-    setup() {
+    setup(props, { emit }) {
+      const handleOk = ({modal, value}) => {
+        emit("closeModal", {
+          modal: modal,
+          value: value
+        });
+      }
 
       return {
-        
+        handleOk
       };
     },
   });
