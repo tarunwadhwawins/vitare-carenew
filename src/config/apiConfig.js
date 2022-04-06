@@ -30,7 +30,7 @@ export const API_ENDPOINTS = {
     seacrhAppointment:"appointment/search",
     appointmentConference:'appointment/conference',
 
-    // Staff
+    // Care Coordinator
     staffList:"staff",
     specialization:"staff/specialization",
     network:"staff/network",
