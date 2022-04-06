@@ -85,6 +85,7 @@ export default {
     };
 
     const editTimeLog = (id) => {
+      store.commit('errorMsg', null)
       store.dispatch("editAuditTimeLog", id);
       visible.value = true;
       Id.value = id
