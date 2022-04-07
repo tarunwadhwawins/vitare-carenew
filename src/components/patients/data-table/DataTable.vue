@@ -6,6 +6,7 @@
       :data-source="meta.patientList"
       :scroll="{ y: tableYScrollerCounterPage, x: 2000 }"
       :pagination="false"
+      @change="handleTableChange"
     >
       <template
         #firstName="{ text, record }"  
@@ -68,7 +69,8 @@ export default {
             data = meta.patientList;
             store.state.patients.patientList = "";
          
-            store.dispatch("patients", "?page=" + current_page+store.getters.searchTable.value).then(() => {
+            store.dispatch("patients", "?page=" +  store.getters.searchTable.value +
+                  store.getters.orderTable.value.data).then(() => {
               //console.log('response',response)
               loadMoredata();
             });
@@ -92,10 +94,37 @@ export default {
     const patientsPermissions = computed(() => {
       return store.state.screenPermissions.patientsPermissions;
     });
+    const handleTableChange = (pag, filters, sorter) => {
+      if (sorter.order) {
+        let order = sorter.order == "ascend" ? "ASC" : "DESC";
+        let orderParam = "&orderField=" + sorter.field + "&orderBy=" + order;
+        store.dispatch("orderTable", {
+          data: orderParam,
+          orderBy: order,
+          page: pag,
+          filters: filters,
+        });
+        store.dispatch(
+          "patients",
+          "?page=" + store.getters.searchTable.value + orderParam
+        );
+      } else {
+        store.dispatch("orderTable", {
+          data: "&orderField=&orderBy=",
+        });
+        store.dispatch(
+          "patients",
+          "?page=" +
+            store.getters.searchTable.value +
+            store.getters.orderTable.value.data
+        );
+      }
+    };
     return {
       patientsPermissions,
       meta,
-      tableYScrollerCounterPage
+      tableYScrollerCounterPage,
+      handleTableChange
     };
   },
 };

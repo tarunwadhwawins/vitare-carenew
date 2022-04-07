@@ -24,9 +24,8 @@ export const patient = (state, data) => {
   state.column = [{
     title: "Flags",
     dataIndex: "flags",
-    slots: {
-      customRender: "flags",
-    },
+    slots:true,
+    sorter: true
   },
   {
     title: "Last Name",
@@ -34,10 +33,7 @@ export const patient = (state, data) => {
     slots: {
       customRender: "lastName",
     },
-    sorter: {
-      compare: (a, b) => a.reading - b.reading,
-      multiple: 1,
-    },
+    sorter: true
   },
   {
     title: "First Name",
@@ -45,10 +41,7 @@ export const patient = (state, data) => {
     slots: {
       customRender: "firstName",
     },
-    sorter: {
-      compare: (a, b) => a.reading - b.reading,
-      multiple: 1,
-    },
+    sorter: true,
   },
 
   // {
@@ -63,10 +56,7 @@ export const patient = (state, data) => {
   {
     title: "Readings ",
     dataIndex: "patientVitals",
-    sorter: {
-      compare: (a, b) => a.readingvalues - b.readingvalues,
-      multiple: 1,
-    },
+    
     slots: {
       customRender: "patientVitals",
     },
@@ -89,6 +79,7 @@ export const patient = (state, data) => {
       title: "Weight (LBS)",
       dataIndex: "weight",
       key: "weight",
+      sorter:true,
     },
     ],
   },
@@ -129,10 +120,7 @@ export const patient = (state, data) => {
   {
     title: "Non Compliant",
     dataIndex: "nonCompliance",
-    sorter: {
-      compare: (a, b) => a.compliance - b.compliance,
-      multiple: 1,
-    },
+   
     slots: {
       customRender: "compliance",
     },
@@ -140,10 +128,7 @@ export const patient = (state, data) => {
   {
     title: "Last Message Sent",
     dataIndex: "lastMessageSent",
-    sorter: {
-      compare: (a, b) => a.message - b.message,
-      multiple: 1,
-    },
+    
     ellipsis: true,
     // filters: [{
     //         text: "Flag",
@@ -175,18 +160,12 @@ export const patient = (state, data) => {
   {
     title: "Age ",
     dataIndex: "dob",
-    sorter: {
-      compare: (a, b) => a.reading - b.reading,
-      multiple: 1,
-    },
+    sorter: true,
   },
   {
     title: "Sex ",
     dataIndex: "gender",
-    sorter: {
-      compare: (a, b) => a.reading - b.reading,
-      multiple: 1,
-    },
+    sorter: true,
   }
   ];
   state.patientMeta = data.meta.pagination;

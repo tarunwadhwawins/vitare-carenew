@@ -1,5 +1,5 @@
 <template>
-  <a-table :scroll="{ x:1400 }" rowKey="id" :columns="columns" :data-source="data" :pagination="false" >
+  <a-table :scroll="{ x:1350 }" rowKey="id" :columns="columns" :data-source="data" :pagination="false" >
     <template #blood_pressure_systolic="{record}">
       <span v-if="record.blood_pressure_systolic" :class="className">{{ record.blood_pressure_systolic }}</span>
     </template>
