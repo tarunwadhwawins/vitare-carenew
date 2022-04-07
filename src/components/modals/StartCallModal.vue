@@ -73,6 +73,10 @@ export default {
       store.dispatch("appointmentCalls", startCallForm)
       let redirect = router.resolve({name: 'videoCall', params: {id: enCodeString(conferenceId.value)}});
       window.open(redirect.href, '_blank');
+      emit("closeModal", {
+        modal: 'startCall',
+        value: false
+      });
     }
 
 		const checkChangeInput = () => {
