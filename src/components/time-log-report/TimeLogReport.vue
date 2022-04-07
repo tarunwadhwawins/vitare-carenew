@@ -40,7 +40,7 @@
                         </a-row>
                     </a-form>
                     <a-row v-if="arrayToObjact(screensPermissions, 332)">
-                        <TimeLogTable></TimeLogTable>
+                        <TimeLogTable @scrolller="scrolller"></TimeLogTable>
                     </a-row>
                 </div>
             </a-layout-content>
@@ -106,6 +106,13 @@ export default {
             })
         })
 
+        function scrolller() {
+            setTimeout(() => {
+                window.scrollTo(0, 0)
+            }, 100)
+
+        }
+
         function updateAuditTime() {
             if (auditTimeLog.startDate && auditTimeLog.endDate) {
 
@@ -123,11 +130,9 @@ export default {
             })
         })
 
-        
-
         return {
             arrayToObjact,
-            screensPermissions:store.getters.screensPermissions,
+            screensPermissions: store.getters.screensPermissions,
             exportExcel,
             linkTo,
             updateAuditTime,
@@ -139,6 +144,7 @@ export default {
             value1: ref(),
             size: ref("large"),
             timeLogReports: store.getters.timeLogReports.value,
+            scrolller
         };
     },
 };
