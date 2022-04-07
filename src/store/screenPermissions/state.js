@@ -1,3 +1,4 @@
 export default {
-  screensPermissions:JSON.parse(localStorage.getItem("permission"))
+  widgetsPermissions:JSON.parse(localStorage.getItem("widgetsPermission")),
+  screensPermissions:JSON.parse(localStorage.getItem("screensPermission"))
 }

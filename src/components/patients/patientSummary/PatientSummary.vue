@@ -126,9 +126,9 @@ export default {
       console.log(e, "I was closed.");
     };
 
-     function videoCall() {
-      store.dispatch("appointmentCalls",{patientId:patientUdid})
-    }
+    //  function videoCall() {
+    //   store.dispatch("appointmentCalls",{patientId:patientUdid})
+    // }
 
     const custom = ref(false);
     const current = ref(0);
@@ -182,7 +182,7 @@ export default {
     const timerValue = ref(30000)
     
     watchEffect(() => {
-      store.dispatch("appointmentCalls",{patientId:patientUdid})
+      // store.dispatch("appointmentCalls",{patientId:patientUdid})
       timer.value = setInterval(() => {
         elapsedTime.value += 1000;
         if((elapsedTime.value)%timerValue.value === 0) {
@@ -377,7 +377,7 @@ export default {
     return {
       enCodeString,
       conferenceId:store.getters.conferenceId,
-      videoCall,
+      // videoCall,
       paramsId:route.params.udid,
       actionTrack,
       stopTimer,

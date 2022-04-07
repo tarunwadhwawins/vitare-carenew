@@ -62,12 +62,17 @@ export function successSwal(message) {
 }
 
 // swal for error message
-export function errorSwal(message) {
-	Swal.fire({
+export async function errorSwal(message) {
+	const result = await Swal.fire({
 		icon: 'error',
 		title: 'Oops...',
 		text: message.split(' ').map(capitalize).join(' ')
 	});
+	if (result.isConfirmed) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 // swal for warning message
