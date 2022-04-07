@@ -20,6 +20,7 @@ export const timeLogReportList = async (state, data) => {
         customRender: "patient",
       },
     },
+
     {
       title: "Date",
       dataIndex: "date",
@@ -30,6 +31,12 @@ export const timeLogReportList = async (state, data) => {
       dataIndex: "timeAmount",
       sorter:true
     },
+    {
+      title: "Category", 
+      dataIndex: "category",
+      ellipsis: true,
+    },
+
     {
       title: "CPT Codes ",
       dataIndex: "cptCode",
@@ -43,7 +50,7 @@ export const timeLogReportList = async (state, data) => {
     },
     
     {
-      title: "Notes ", 
+      title: "Notes", 
       dataIndex: "note",
     },
     
