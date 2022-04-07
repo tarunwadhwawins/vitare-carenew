@@ -134,6 +134,7 @@ export default defineComponent({
     })
 
     const closeModal = () => {
+      emit('saveAuditTimeLog')
       store.commit('errorMsg', null)
     }
 
