@@ -7,51 +7,51 @@
         <p v-if="patientDetails.patientFullName">Name: {{ patientDetails.patientFullName }}</p>
         <p v-if="patientDetails.patientDob">DOB : {{ patientDetails.patientDob }}</p>
         <p v-if="patientDetails.medicalRecordNumber">MRN : {{ patientDetails.medicalRecordNumber }}</p>
-        <p v-if="patientDetails.email"><a @click="actionTrack(paramsId,321,'patient')" href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
-        <p v-if="patientDetails.phoneNumber"><a @click="actionTrack(paramsId,322,'patient')" href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
+        <p v-if="patientDetails.email"><a @click="actionTrack(paramsId,321,'patient')" v-if="arrayToObjact(screensPermissions, 321)" href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
+        <p v-if="patientDetails.phoneNumber"><a @click="actionTrack(paramsId,322,'patient')" v-if="arrayToObjact(screensPermissions, 322)" href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
         <p v-if="patientDetails.address"><HomeOutlined/> <span class="address-text">{{ patientDetails.address }}</span></p>
       </div>
-      <EditOutlined class="editIcon" @click="editPatient({udid: patientDetails.id, id: patientDetails.id});;actionTrack(paramsId,301,'patient')" />
+      <EditOutlined class="editIcon" @click="editPatient({udid: patientDetails.id, id: patientDetails.id});;actionTrack(paramsId,301,'patient')" v-if="arrayToObjact(screensPermissions, 301)"/>
     </div>
 
     <div class="pat-profile">
       <div class="pat-profile-inner">
-        <div class="thumb-head" >
-          Flags <PlusOutlined @click="showAddFlagModal(); actionTrack(paramsId,289,'patient')"/><br />
+        <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 289)">
+          Flags <PlusOutlined @click="showAddFlagModal(); actionTrack(paramsId,289,'patient')" /><br />
         </div>
         <div class="thumb-desc" v-if="latestFlag">
           <Flags :data="latestFlag.flags.data" :flag="latestFlag.color" />
         </div>
       </div>
       <div class="pat-profile-inner" >
-        <div class="thumb-head">
+        <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 290)">
           {{ $t('global.familyMembers') }} <PlusOutlined @click="showAddFamilyMemberModal();actionTrack(paramsId,290,'patient')"/><br />
         </div>
-        <div v-if="familyMembersList && familyMembersList.length > 0" class="thumb-desc">
+        <div v-if="familyMembersList && familyMembersList.length > 0 && arrayToObjact(screensPermissions, 302)" class="thumb-desc">
           <a href="javascript:void(0)" @click="showFamilyMembersModal();actionTrack(paramsId,302,'patient')" >{{familyMembersList[0].fullName}}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
-        <div class="thumb-head">
+        <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 291)">
           {{ $t('global.physicians') }} <PlusOutlined @click="showAddPhysicianModal(1);actionTrack(paramsId,291,'patient')"/><br />
         </div>
-        <div v-if="latestPhysician != null" class="thumb-desc">
+        <div v-if="latestPhysician != null && arrayToObjact(screensPermissions, 305)" class="thumb-desc">
           <a href="javascript:void(0)" @click="showCoordinatorsListingModal(1);actionTrack(paramsId,305,'patient')" >{{ latestPhysician.staff }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
-        <div class="thumb-head">
+        <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 292)">
           Emergency Contacts <PlusOutlined @click="showAddEmergencyContactModal();actionTrack(paramsId,292,'patient')"/><br />
         </div>
-        <div v-if="emergencyContactsList && emergencyContactsList.length > 0" class="thumb-desc">
+        <div v-if="emergencyContactsList && emergencyContactsList.length > 0 && arrayToObjact(screensPermissions, 308)" class="thumb-desc">
           <a href="javascript:void(0)" @click="showEmergencyContactDetailsModal();actionTrack(paramsId,308,'patient')" >{{ emergencyContactsList[0].fullName }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
-        <div class="thumb-head" @click="showCriticalModal(); actionTrack(paramsId,293,'patient')">Critical Note
+        <div class="thumb-head" @click="showCriticalModal(); actionTrack(paramsId,293,'patient')" v-if="arrayToObjact(screensPermissions, 293)">Critical Note
           <PlusOutlined />
         </div>
-        <div v-if="criticalNotesList != null" class="thumb-desc">
+        <div v-if="criticalNotesList != null && arrayToObjact(screensPermissions, 311)" class="thumb-desc">
           <a href="javascript:void(0)" @click="showCriticalNotesDetails();actionTrack(paramsId,311,'patient')" >{{ criticalNotesList[0]?criticalNotesList[0].criticalNote:'' }}</a>
         </div>
         <!-- <div v-if="criticalNotesList" class="thumb-desc">
@@ -65,7 +65,7 @@
         </div>
       </div>
       <div class="pat-profile-inner">
-        <div class="thumb-head">
+        <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 294)">
           Appointments
           <PlusOutlined @click="showAddAppointmentModal();actionTrack(paramsId,294,'patient')"/><br />
         </div>
@@ -77,10 +77,10 @@
       </div>
 
       <div class="pat-profile-inner">
-        <div class="thumb-head">
+        <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 295)">
           Task <PlusOutlined @click="addTaskModal();actionTrack(paramsId,295,'patient')" /><br />
         </div>
-        <div v-if="latestTask != null" class="thumb-desc">
+        <div v-if="latestTask != null && arrayToObjact(screensPermissions, 295)" class="thumb-desc">
           <router-link target="_blank" to="/tasks" @click="actionTrack(paramsId,314,'patient')">{{ latestTask[0].title }}</router-link>
         </div>
       </div>
@@ -90,32 +90,32 @@
           <!-- <PlusOutlined @click="addVitalsModel" /> -->
         </div>
         <div v-if="bloodPressure != null || bloodGlucose != null || bloodOxygen != null || latestVital != null" class="thumb-desc">
-          <a href="javascript:void(0)">
-            <span @click="showVitalsModal">{{ latestVital.deviceType }} {{ latestVital.value }} {{ latestVital.takeTime }}</span>
+          <a href="javascript:void(0)" v-if="arrayToObjact(screensPermissions, 287)">
+            <span @click="showVitalsModal();actionTrack(paramsId,287,'patient')">{{ latestVital.deviceType }} {{ latestVital.value }} {{ latestVital.takeTime }}</span>
           </a>
         </div>
       </div>
       <div class="pat-profile-inner">
-        <div class="thumb-head">
+        <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 296)">
           Notes <PlusOutlined @click="addNotesModal();actionTrack(paramsId,296,'patient')" />
         </div>
-        <div v-if="latestNotes != null" class="thumb-desc">
+        <div v-if="latestNotes != null && arrayToObjact(screensPermissions, 324)" class="thumb-desc" >
           <a href="javascript:void(0)" @click="showNotesModal();actionTrack(paramsId,324,'patient')" >{{ latestNotes[0].note }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
-        <div class="thumb-head">
+        <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 297)">
           Documents <PlusOutlined @click="addDocumentsModal();actionTrack(paramsId,297,'patient')" />
         </div>
-        <div v-if="latestDocument != null" class="thumb-desc">
+        <div v-if="latestDocument != null && arrayToObjact(screensPermissions, 317)" class="thumb-desc">
           <a href="javascript:void(0)" @click="showDocumentsModal();actionTrack(paramsId,317,'patient')" >{{ latestDocument[0].name }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
-        <div class="thumb-head">
+        <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 298)">
           {{ $t('global.careTeam') }} <PlusOutlined @click="showAddPhysicianModal(0);actionTrack(paramsId,298,'patient')" />
         </div>
-        <div v-if="latestCareTeam != null" class="thumb-desc">
+        <div v-if="latestCareTeam != null && arrayToObjact(screensPermissions, 305)" class="thumb-desc">
           <a href="javascript:void(0)" @click="showCoordinatorsListingModal(0);actionTrack(paramsId,305,'patient')" >{{ latestCareTeam.staff }}</a>
           <!-- <router-link target="_blank" :to="{ name: 'CoordinatorSummary', params: { udid: latestCareTeam.staffId  }}" >
             {{ latestCareTeam.staff }}
@@ -123,18 +123,18 @@
         </div>
       </div>
       <div class="pat-profile-inner">
-        <div class="thumb-head">
+        <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 299)">
           TimeLogs <PlusOutlined @click="addTimelogModal();actionTrack(paramsId,299,'patient')" />
         </div>
-        <div v-if="latestTimeLog != null" class="thumb-desc">
+        <div v-if="latestTimeLog != null && arrayToObjact(screensPermissions, 325)" class="thumb-desc">
           <a href="javascript:void(0)" @click="showTimelogModal();actionTrack(paramsId,325,'patient')" >{{ latestTimeLog[0].category+' '+latestTimeLog[0].date }}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
-        <div class="thumb-head">
+        <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 300)">
           Devices <PlusOutlined @click="addDeviceModal();actionTrack(paramsId,300,'patient')" />
         </div>
-        <div v-if="latestDevice != null" class="thumb-desc">
+        <div v-if="latestDevice != null && arrayToObjact(screensPermissions, 326)" class="thumb-desc">
           <a href="javascript:void(0)" @click="showDeviceModal();actionTrack(paramsId,326,'patient')" >{{ latestDevice[0].deviceType+'('+latestDevice[0].modelNumber+')' }}</a>
         </div>
       </div>
@@ -197,7 +197,8 @@ import {
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import {
-  actionTrack
+  actionTrack,
+  arrayToObjact
 } from '@/commonMethods/commonMethod';
 
 
@@ -545,6 +546,8 @@ export default defineComponent({
 
 
     return {
+      screensPermissions:store.getters.screensPermissions,
+      arrayToObjact,
       actionTrack,
       paramsId:route.params.udid,
       criticalNotesList,

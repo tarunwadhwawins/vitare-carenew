@@ -1,8 +1,6 @@
 <template>
 <div class="monthCalendarView">
-
     <FullCalendar v-if="appointments" :options="option" ref="cal">
-
     </FullCalendar>
 </div>
 </template>
@@ -10,7 +8,7 @@
 <script>
 import {
     dateFormat
-} from "../../commonMethods/commonMethod"
+} from "@/commonMethods/commonMethod"
 import {
     reactive,
     ref,
@@ -128,7 +126,6 @@ export default {
                 calendarApi.prev();
             }
             emit("is-month", moment(calendarApi.currentData.currentDate))
-           
         }
         return {
             dayGridPlugin,
@@ -136,8 +133,6 @@ export default {
             TimeGridPlugin,
             ListPlugin,
             moment,
-            //popupShow,
-            //calendarOptions,
             linkToCoordinator,
             cal,
             getDate,

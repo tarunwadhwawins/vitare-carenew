@@ -5,7 +5,6 @@
         <a-col :span="24">
           <h2 class="pageTittle">
             {{ $t("thresholds.generalParameters") }}
-
             <div class="commonBtn" v-if="arrayToObjact(screensPermissions,329)">
               <a-button class="btn primaryBtn" @click="showModal(true)">{{
                 $t("thresholds.addNewParameters")
@@ -23,17 +22,11 @@
             <ExportToExcel  @click="exportExcel('generalParameter_report')"/>
           </div>
         </a-col>
-        
-          
-       
         <ThresholdsTable  @is-edit="showEdit($event)"></ThresholdsTable>
         <Loader />
-        
       </a-row>
     </div>
-
   </a-layout-content>
-
   <Thresholds v-if="threshodsId" v-model:visible="Thresholds" @is-visible="isEdit($event)" :threshodId="threshodsId" />
   <Thresholds v-else v-model:visible="Thresholds" @is-visible="isEdit($event)" />
 </template>

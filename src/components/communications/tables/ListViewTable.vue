@@ -2,30 +2,49 @@
 <a-alert class="mb-24" message="Patients are highlighted" type="error" />
 
 <a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900, y: tableYScroller }" :pagination="false" :rowClassName="(record) => auth.user.id!=record.messageSender && record.isRead==0 ? 'bold':''" @change="handleTableChange">
-    <template #from="{ record }" class="custom">
-        <span v-if="record.is_sender_patient" class="customTd">
-            <router-link :to="{ name: 'PatientSummary', params: { udid: record.fromId } }">
+    <template #from="{ record }" class="custom" >
+        <div v-if="record.is_sender_patient" class="customTd">
+            <span v-if="arrayToObjact(screensPermissions,63)">
+            <router-link :to="{ name: 'PatientSummary', params: { udid: record.fromId } }" >
                 {{record.from}}
             </router-link>
-        </span>
-        <span v-else>
+            </span>
+            <span v-else>
+                {{record.from}}
+            </span>
+        </div>
+        <div v-else>
+            <span v-if="arrayToObjact(screensPermissions,38)">
             <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.fromId } }">
                 {{record.from}}
             </router-link>
-        </span>
-
+            </span>
+            <span v-else>
+                {{record.from}}
+            </span>
+        </div>
     </template>
     <template #to="{ record }" class="custom">
-        <span v-if="record.is_receiver_patient" class="customTd">
+        <div v-if="record.is_receiver_patient" class="customTd">
+            <span v-if="arrayToObjact(screensPermissions,63)">
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.toId } }">
                 {{record.to}}
             </router-link>
-        </span>
-        <span v-else>
+            </span>
+            <span v-else>
+                {{record.to}}
+            </span>
+        </div>
+        <div v-else>
+            <span v-if="arrayToObjact(screensPermissions,38)">
             <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.toId } }">
                 {{record.to}}
             </router-link>
-        </span>
+            </span>
+            <span v-else>
+                {{record.to}}
+            </span>
+        </div>
     </template>
     <template #resend>
         <a-tooltip placement="bottom">
@@ -36,17 +55,6 @@
                 <EyeOutlined /></a>
         </a-tooltip>
     </template>
-    <!-- <template #patient="{ record }">
-        <router-link :to="{ name: 'PatientSummary', params: { udid: record.id } }">
-            {{ text.text }}
-        </router-link>
-    </template>
-    <template #staff="{ record }">
-        <router-link v-for="staff in record.staff.data" :key="staff.id" to="{ name: 'CoordinatorSummary', params: { udid:staff.uuid?record.staff:'eyrer8758458958495'  }}">
-            {{ staff.staff }}
-        </router-link>
-    </template> -->
-
     <template #priority="{ record }">
         <a-tooltip placement="right">
             <template #title>{{ $t("common.urgent") }}</template>
@@ -97,8 +105,7 @@
         </a-tooltip>
     </template>
 
-    <template #action="{record}">
-        
+    <template #action="{record}" v-if="arrayToObjact(screensPermissions,109)">
         <a-tooltip placement="bottom" v-if="record.type == 'SMS'">
             <template #title>
                 <span>{{ $t("common.reply") }}</span>
@@ -122,214 +129,218 @@
 </template>
 
 <script>
-import {
-    ref,
-
-    onMounted
-} from "vue";
-import {
-    useStore
-} from "vuex";
-
+import { ref, onMounted } from "vue";
+import { useStore } from "vuex";
 import Chat from "@/components/modals/Chat";
-import {
-    tableYScroller
-} from "@/commonMethods/commonMethod";
+import { tableYScroller, arrayToObjact, } from "@/commonMethods/commonMethod";
+
 import CommunicationGmailView from '@/components/modals/CommunicationGmailView'
 import {
+  EyeOutlined,
+  MessageOutlined,
+  CommentOutlined,
+  PhoneOutlined,
+  MailOutlined,
+  AlertOutlined,
+} from "@ant-design/icons-vue";
+export default {
+  components: {
     EyeOutlined,
     MessageOutlined,
     CommentOutlined,
     PhoneOutlined,
     MailOutlined,
     AlertOutlined,
-} from "@ant-design/icons-vue";
-export default {
-    components: {
-        EyeOutlined,
-        MessageOutlined,
-        CommentOutlined,
-        PhoneOutlined,
-        MailOutlined,
-        AlertOutlined,
-        CommunicationGmailView,
-        Chat,
-    },
-    props: {
+CommunicationGmailView,
+    Chat,
+  },
+  props: {},
+  setup() {
+    const communicationColumns = [
+      {
+        title: "From",
+        dataIndex: "from",
+        key: "from",
+        sorter: true,
+        slots: {
+          customRender: "from",
+        },
+      },
+      {
+        title: "To",
+        dataIndex: "to",
+        key: "to",
+        sorter: true,
+        slots: {
+          customRender: "to",
+        },
+      },
+      {
+        title: "Type",
+        dataIndex: "type",
+        key: "type",
+        slots: {
+          customRender: "type",
+        },
+      },
+      {
+        title: "Priority",
+        dataIndex: "priority",
+        key: "priority",
+        slots: {
+          customRender: "priority",
+        },
+      },
+      {
+        title: "Category",
+        dataIndex: "category",
+        key: "category",
+        sorter: {
+          compare: (a, b) => a.category - b.category,
+          multiple: 2,
+        },
+      },
+      {
+        title: "Date Sent",
+        dataIndex: "createdAt",
+        key: "createdAt",
+        sorter: {
+          compare: (a, b) => a.createdAt - b.createdAt,
+          multiple: 2,
+        },
+      },
+      {
+        title: "Action",
+        dataIndex: "action",
+        key: "action",
+        slots: {
+          customRender: "action",
+        },
+      },
+    ];
+    const store = useStore();
+    const visibleGmail = ref(false)
+    const communicationId = ref(null);
+    const auth = JSON.parse(localStorage.getItem("auth"));
+    const meta = store.getters.communicationRecord.value;
 
-    },
-    setup() {
-        const communicationColumns = [{
-                title: "From",
-                dataIndex: "from",
-                key: "from",
-                sorter: true,
-                slots: {
-                    customRender: "from",
-                },
-            },
-            {
-                title: "To",
-                dataIndex: "to",
-                key: "to",
-                sorter: true,
-                slots: {
-                    customRender: "to",
-                },
-            },
-            {
-                title: "Type",
-                dataIndex: "type",
-                key: "type",
-                slots: {
-                    customRender: "type",
-                },
-            },
-            {
-                title: "Priority",
-                dataIndex: "priority",
-                key: "priority",
-                slots: {
-                    customRender: "priority",
-                },
-            },
-            {
-                title: "Category",
-                dataIndex: "category",
-                key: "category",
-                sorter: {
-                    compare: (a, b) => a.category - b.category,
-                    multiple: 2,
-                },
-            },
-            {
-                title: "Date Sent",
-                dataIndex: "createdAt",
-                key: "createdAt",
-                sorter: {
-                    compare: (a, b) => a.createdAt - b.createdAt,
-                    multiple: 2,
-                },
-            },
-            {
-                title: "Action",
-                dataIndex: "action",
-                key: "action",
-                slots: {
-                    customRender: "action",
-                },
-            },
-        ];
-        const store = useStore();
-        const communicationId = ref(null)
-        const auth = JSON.parse(localStorage.getItem("auth"))
-        const meta = store.getters.communicationRecord.value;
-const visibleGmail= ref(false)
-        let scroller = ''
-        let data = []
-        onMounted(() => {
-            var tableContent = document.querySelector(".ant-table-body");
+    let scroller = "";
+    let data = [];
+    onMounted(() => {
+      var tableContent = document.querySelector(".ant-table-body");
 
-            tableContent.addEventListener("scroll", (event) => {
-                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-                let currentScroll = event.target.scrollTop + 2;
+      tableContent.addEventListener("scroll", (event) => {
+        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+        let currentScroll = event.target.scrollTop + 2;
 
-                if (currentScroll >= maxScroll) {
-                    let current_page = meta.communicationMeta.current_page + 1;
+        if (currentScroll >= maxScroll) {
+          let current_page = meta.communicationMeta.current_page + 1;
 
-                    if (current_page <= meta.communicationMeta.total_pages) {
+          if (current_page <= meta.communicationMeta.total_pages) {
+            scroller = maxScroll;
+            data = meta.communicationsList;
+            meta.communicationMeta = "";
+            store.state.communications.communicationsList = "";
 
-                        scroller = maxScroll
-                        data = meta.communicationsList
-                        meta.communicationMeta = "";
-                        store.state.communications.communicationsList = "";
+            store
+              .dispatch(
+                "communicationsList",
+                "?page=" +
+                  current_page +
+                  store.getters.searchTable.value +
+                  store.getters.orderTable.value.data
+              )
+              .then(() => {
+                //console.log('response',response)
+                loadMoredata();
+              });
+          }
+        }
+      });
+    });
 
-                        store.dispatch("communicationsList", "?page=" + current_page + store.getters.searchTable.value + store.getters.orderTable.value.data)
-                            .then(() => {
-                                //console.log('response',response)
-                                loadMoredata();
-                            });
-                    }
-                }
-            });
+    function loadMoredata() {
+      const newData = meta.communicationsList;
+
+      newData.forEach((element) => {
+        data.push(element);
+      });
+      meta.communicationsList = data;
+      var tableContent = document.querySelector(".ant-table-body");
+
+      setTimeout(() => {
+        tableContent.scrollTo(0, scroller);
+      }, 5000);
+    }
+    const handleTableChange = (pag, filters, sorter) => {
+      if (sorter.order) {
+        let order = sorter.order == "ascend" ? "ASC" : "DESC";
+        let orderParam = "&orderField=" + sorter.field + "&orderBy=" + order;
+        store.dispatch("orderTable", {
+          data: orderParam,
+          orderBy: order,
+          page: pag,
+          filters: filters,
         });
+        store.dispatch(
+          "communicationsList",
+          "?page=" + store.getters.searchTable.value + orderParam
+        );
+      } else {
+        store.dispatch("orderTable", {
+          data: "&orderField=&orderBy=",
+        });
+        store.dispatch(
+          "communicationsList",
+          "?page=" +
+            store.getters.searchTable.value +
+            store.getters.orderTable.value.data
+        );
+      }
+    };
+    const visible = ref(false);
+    const showModal = (e) => {
+      communicationId.value = e;
+      visible.value = true;
+    }
+    const showGmail = (e) => {
+      store.dispatch('communicationsView',e.id)
+      visibleGmail.value = true;
+    };
 
-        function loadMoredata() {
-            const newData = meta.communicationsList;
+    const handleOk = () => {
+      visible.value = false;
+    };
 
-            newData.forEach((element) => {
-                data.push(element);
-            });
-            meta.communicationsList = data
-            var tableContent = document.querySelector('.ant-table-body')
-
-            setTimeout(() => {
-                tableContent.scrollTo(0, scroller)
-            }, 500)
-
-        }
-        const handleTableChange = (pag, filters, sorter) => {
-            if (sorter.order) {
-                let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
-                let orderParam = '&orderField=' + sorter.field + '&orderBy=' + order
-                store.dispatch('orderTable', {
-                    data: orderParam,
-                    orderBy: order,
-                    page: pag,
-                    filters: filters
-                })
-                store.dispatch("communicationsList", "?page=" + store.getters.searchTable.value + orderParam)
-
-            } else {
-                store.dispatch('orderTable', {
-                    data: '&orderField=&orderBy='
-                })
-                store.dispatch("communicationsList", "?page=" + store.getters.searchTable.value + store.getters.orderTable.value.data)
-            }
-        }
-        const visible = ref(false);
-        const showModal = (e) => {
-
-            communicationId.value = e
-            visible.value = true;
-        };
-        const showGmail = (e) => {
-            
-            store.dispatch('communicationsView',e.id)
-            visibleGmail.value = true;
-
-};
-        const handleOk = () => {
-            visible.value = false;
-        };
-
-        return {
-            communicationColumns,
-            meta,
-            showGmail,
-            visible,
-            showModal,
-            handleOk,
-            communicationId,
-            auth,
-            tableYScroller,
-            handleTableChange,
-            visibleGmail
-        };
-    },
+    return {
+      screensPermissions:store.getters.screensPermissions,
+      arrayToObjact,
+      communicationColumns,
+      meta,
+      visible,
+      showModal,
+      handleOk,
+      communicationId,
+      auth,
+      tableYScroller,
+      handleTableChange,
+      showGmail,
+      visibleGmail,
+    };
+  },
 };
 </script>
 
 <style>
 .customTd {
-    display: block;
-    background-color: rgb(255 250 96);
-    width: 100%;
-    height: 100%;
-    padding: 7px;
+  display: block;
+  background-color: rgb(255 250 96);
+  width: 100%;
+  height: 100%;
+  padding: 7px;
 }
 
 .highLight {
-    color: red
+  color: red;
 }
 </style>
