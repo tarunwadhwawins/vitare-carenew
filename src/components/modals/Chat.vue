@@ -77,8 +77,9 @@ import {
 import {
     watchEffect,
     reactive,
-    onMounted,
-    ref
+    
+    ref,
+    onUnmounted
 } from "vue"
 import {
     useStore
@@ -162,8 +163,8 @@ function getScroll(){
             store.state.communications.conversationList = ""
             clearInterval(interval);
         }
-        onMounted(() => {
-           
+        onUnmounted(() => {
+            clearInterval(interval)
                 // tableContent.addEventListener('scroll', (event) => {
                 // let maxScroll = event.target.scrollHeight - event.target.clientHeight
                 // let currentScroll = event.target.scrollTop + 2
