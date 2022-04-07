@@ -52,8 +52,10 @@ const permission = async ({ commit }) => {
 			})
 
 		} else {
+			localStorage.setItem('screensPermission', JSON.stringify(response.data.actionId))
+			localStorage.setItem('widgetsPermission', JSON.stringify(response.data.widgetId))
 			localStorage.setItem('permission', JSON.stringify(response.data))
-			commit('screensPermissions',response.data)
+			commit('permissions',response.data)
 			router.push({
 				path: "/dashboard"
 			});
@@ -76,6 +78,8 @@ export const logoutUser = async ({ commit }) => {
 	localStorage.removeItem('access');
 	localStorage.removeItem('accessPermission');
 	localStorage.removeItem('permission');
+	localStorage.removeItem('screensPermission');
+	localStorage.removeItem('widgetsPermission');
 	commit('logoutSuccess', 'Success');
 	localStorage.removeItem('fireBaseToken')
 	localStorage.removeItem('expiresIn')
