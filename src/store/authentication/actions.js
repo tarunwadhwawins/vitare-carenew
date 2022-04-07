@@ -66,6 +66,7 @@ const permission = async ({ commit }) => {
 		})
 }
 export const logoutUser = async ({ commit }) => {
+	commit('loadingStatus', false)
 	localStorage.removeItem('user');
 	localStorage.removeItem('barmenu');
 	localStorage.removeItem('staff');
