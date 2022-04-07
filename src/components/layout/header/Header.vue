@@ -132,7 +132,7 @@
                     >
                       <a
                         href="javascript:void(0)"
-                        @click="showStartCallModal"
+                        @click="showStartCallModal(true)"
                         >{{ $t("header.startCall") }}</a
                       >
                     </a-menu-item>
@@ -263,7 +263,7 @@
       @saveModal="closeAppointModal($event)"
     />
     <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" />
-    <AddStartCall v-model:visible="AddStartCall" @ok="closeStartCallModal" />
+    <AddStartCall v-model:visible="AddStartCall" @ok="closeStartCallModal"  @is-visibale="showStartCallModal($event)"/>
     <SendMessage v-model:visible="SendMessage" @ok="startOk" />
     <!---->
     <AppointmentDetails v-if="isAppointment"  v-model:visible="isAppointment"  @closeModal="closeModal(event)" />
@@ -408,8 +408,8 @@ export default defineComponent({
     };
 
     const AddStartCall = ref(false);
-    const showStartCallModal = () => {
-      AddStartCall.value = true;
+    const showStartCallModal = (e) => {
+      AddStartCall.value = e;
     };
     const SendMessage = ref(false);
     const addsendMessage = () => {
