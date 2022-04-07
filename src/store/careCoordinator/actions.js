@@ -202,6 +202,32 @@ export const deleteAvailability = async ({commit},data) => {
   })
 }
 
+export const availabilityDetails = async ({commit}, data) => {
+  await serviceMethod.common("get", `staff/${data.id}/availability/${data.availabilityId}`, null, null).then((response) => {
+    commit('availabilityDetails', response.data.data);
+    successSwal(response.data.message)
+  }).catch((error) => { 
+    errorLogWithDeviceInfo(error.response)
+    commit('errorMsg', error);
+    if(error.response.status === 500){
+      errorSwal(error.response.data.message)
+    }
+  })
+}
+
+
+export const updateAvailability = async ({commit}, data) => {
+  await serviceMethod.common("put", `staff/${data.id}/availability/${data.availabilityId}`, null, data.data).then((response) => {
+    successSwal(response.data.message)
+  }).catch((error) => { 
+    errorLogWithDeviceInfo(error.response)
+    commit('errorMsg', error);
+    if(error.response.status === 500) {
+      errorSwal(error.response.data.message)
+    }
+  })
+}
+
 
 export const roles = async ({commit}) => {
   commit('loadingStatus', true)
