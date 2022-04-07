@@ -10,3 +10,9 @@ import { computed } from "vue";
         return state.screensPermissions
        })
   }
+
+  export  const widgetsPermissions=(state)=>{
+    return computed(()=>{
+        return state.widgetsPermissions
+       })
+  }
