@@ -1,6 +1,5 @@
 <template>
 <div>
-    <!---->
     <a-layout-content>
         <Title :title="$t('appointmentCalendar.appointmentCalendar')" @calenderToggle="calenderView($event)" :isActive="toggle" :button="{
             fullCalendarView: $t('appointmentCalendar.fullCalendarView'),
@@ -12,46 +11,34 @@
                     <a-button class="btn primaryBtn" @click="showModal(true)">
                         {{$t('appointmentCalendar.newAppointment')}}</a-button>
                 </div>
-
                 <Calendar @is-click="selectDate($event)" />
-
                 <Physicians @staff-select="staffSelect($event)" :physiciansId="physiciansId" v-if="arrayToObjact(screensPermissions,37)" />
-
             </a-col>
             <a-col :xl="toggle == false ? 24 : 18" :sm="toggle == false ? 24 : 14" :xs="24">
                 <Loader v-if="!showLoaderMain" />
                 <a-tabs v-model:activeKey="activeKey" @change="tabClick(activeKey,moment())">
-
                     <a-tab-pane key="1" tab="Day">
-
                         <DayAppointment />
                     </a-tab-pane>
                     <a-tab-pane key="2" tab="Tomorrow">
-
                         <DayAppointment />
                     </a-tab-pane>
                     <a-tab-pane key="3" tab="Week">
-
                         <WeekAppointment @is-dateClick="selectDate($event)" @week-select="weekChange($event)" tabName="week"></WeekAppointment>
                     </a-tab-pane>
                     <a-tab-pane key="4" tab="Month">
-
                         <MonthAppointment v-if="monthRecord" :appointment="appointmentSearch" @is-dateClick="selectDate($event)" @is-month="monthDate($event)" :seclectDate="month"></MonthAppointment>
-
                     </a-tab-pane>
                 </a-tabs>
             </a-col>
         </a-row>
         <Loader v-if="showLoaderMain" />
     </a-layout-content>
-
     <!--modal-->
     <AddAppointment v-if="staffList && patientsList" :maskClosable="maskebale" v-model:visible="appointmentModal" @ok="handleOk" @is-visible="showModal($event)" :staff="staffList" :patient="patientsList" />
-
     <!---->
 </div>
 </template>
-
 <script>
 import AddAppointment from "@/components/modals/AddAppointment";
 import Title from "./Title"
@@ -73,7 +60,6 @@ import Loader from "@/components/loader/Loader"
 import {
     arrayToObjact
 } from "@/commonMethods/commonMethod"
-//import Loader from "../loader/Loader"
 export default {
     components: {
         AddAppointment,
@@ -128,9 +114,7 @@ export default {
                 fromDate.value = tabDate
                 toDate.value = tabDate
             } else if (value == 2) {
-
                 datePick = moment().add(1, 'days')
-                //console.log(datePick)
                 fromDate.value = moment().add(1, 'days')
                 toDate.value = moment().add(1, 'days')
             } else if (value == 3) {
@@ -142,16 +126,13 @@ export default {
                     to: moment(tabDate).endOf('week')
                 })
                 fromDate.value = moment(tabDate).startOf('week')
-
                 toDate.value = moment(tabDate).endOf('week')
-
             } else if (value == 4) {
                 monthRecord.value = false
                 datePick = moment(tabDate).startOf('month')
                 month.value = moment()
                 fromDate.value = moment(tabDate).startOf('month')
                 toDate.value = moment(tabDate).endOf('month')
-
             } else {
                 datePick = tabDate
                 fromDate.value = tabDate
@@ -162,11 +143,9 @@ export default {
 
         function monthDate(event) {
             monthRecord.value = false
-
             showLoaderMain.value = false
             activeKey.value = ref('4')
             month.value = moment(event)
-
             datePick = moment(event)
             fromDate.value = moment(event).startOf('month')
             toDate.value = moment(event).endOf('month')
@@ -178,14 +157,12 @@ export default {
             }).then(() => {
                 monthRecord.value = true
             })
-
         }
 
         watchEffect(() => {
             store.dispatch("getStaffs").then(() => {
 
             })
-
             store.dispatch("allPatientsList")
             store.dispatch("allStaffList")
             if (props.headerData) {
@@ -241,13 +218,7 @@ export default {
         };
 
         function staffSelect() {
-            // let staffId = []
-            //  store.getters.appointmentRecords.value.getStaff.map((item) => {  
-            //         staffId.push(item.id)
-            // })
             showLoaderMain.value = false
-            //physiciansId.value = staffId;
-
         }
 
        

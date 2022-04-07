@@ -4,12 +4,6 @@
       <span>{{ record.frequency }} / {{ record.frequencyType }}</span>
     </template>
     <template #actions="{record}">
-      <!-- <a-tooltip placement="bottom">
-        <template #title>
-          <span>Edit</span>
-        </template>
-        <a class="icons"><EditOutlined /></a>
-      </a-tooltip> -->
       <a-tooltip placement="bottom">
         <template #title>
           <span>Delete</span>

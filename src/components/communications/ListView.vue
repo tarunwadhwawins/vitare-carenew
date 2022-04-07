@@ -1,18 +1,14 @@
 <template>
   <a-row>
-    <a-col :span="12">
+    <a-col :span="12" >
       <SearchField  endPoint="communication"/>
     </a-col>
     <a-col :span="12" v-if="arrayToObjact(screensPermissions,110)">
-      <!-- <div class="text-right mb-24">
-        <a-button class="primaryBtn">{{ $t('global.exportToExcel') }}</a-button>
-      </div> -->
       <div class="text-right mb-24">
         <ExportToExcel  @click="exportExcel('communication_report')"/>
       </div>
     </a-col>
     <a-col :span="24">
-
       <ListViewTable  /> 
     </a-col>
   </a-row>

@@ -16,8 +16,6 @@
 import { computed } from "vue";
 import {
   DeleteOutlined,
-  // EditOutlined,
-  //   PlusOutlined,
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";

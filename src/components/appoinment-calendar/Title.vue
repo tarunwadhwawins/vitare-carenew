@@ -14,31 +14,31 @@
 </template>
 
 <script>
- import { ref } from "vue"
+import { ref } from "vue";
 
 export default {
   props: {
-      title:{
-          type:String
-      },
-      button:{
-      type:Object
-      },
-      isActive:{
-          type:Boolean,
-          default: true
-      }
+    title: {
+      type: String,
+    },
+    button: {
+      type: Object,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
-  setup(props, {emit}) {
-    const toggle = ref(props.isActive)
+  setup(props, { emit }) {
+    const toggle = ref(props.isActive);
     function click(value) {
-            emit('calenderToggle',value);
-        }
+      emit("calenderToggle", value);
+    }
 
     return {
-        click,
-        toggle
-    }
-  }
-}
+      click,
+      toggle,
+    };
+  },
+};
 </script>

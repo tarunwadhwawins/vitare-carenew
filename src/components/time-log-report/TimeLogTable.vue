@@ -24,7 +24,7 @@
                 <a class="icons">
                     <EditOutlined /></a>
             </a-tooltip>
-            <a-tooltip placement="bottom" @click="viewTimeLog(record.id)">
+            <a-tooltip placement="bottom" @click="viewTimeLog(record.id)" v-if="arrayToObjact(screensPermissions, 332)">
               <template #title>
                 <span>{{ $t("common.view") }}</span>
               </template>
@@ -38,12 +38,10 @@
         </template>
     </a-table>
     <Loader/>
-    
     <AuditTimeLog v-model:visible="visible" @saveAuditTimeLog="handleOk($event)" :Id="Id" />
 </a-col>
 <a-modal width="1100px" centered v-model:visible="viewReport" title="Audit Time Log Change Report" @ok="handleOk">
   <a-table  rowKey="id" :columns="columns" :data-source="modalData">
-
   </a-table>
   <TableLoader/>
 </a-modal>
@@ -106,9 +104,7 @@ export default {
         }
       });
     }
-    // console.log("props.timeLogRecords",props.timeLogRecords)
-    // const fields = reactive(props.columns);
-    // const data = reactive(props.timeLogRecords);
+ 
     //infinite scroll
     const meta = store.getters.timeLogReports.value;
     const loader = ref(false);

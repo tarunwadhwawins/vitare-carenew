@@ -22,15 +22,15 @@
             <a-col :xl="8" :lg="12">
               <div class="pageTittle">
                 <div class="filter">
-                  <a-button @click="showButton1() ; actionTrack(paramsId,323,'patient')" :class="button == 1 ? 'active' : ''" >Default</a-button>
-                  <a-button @click="showButton2() ; actionTrack(paramsId,285,'patient')" :class="button == 2 ? 'active' : ''" >Timeline</a-button>
-                  <a-button @click="showButton3() ; actionTrack(paramsId,286,'patient')" :class="button == 3 ? 'active' : ''" >Care Plan</a-button>
-                  <a-button @click="showButton4() ; actionTrack(paramsId,287,'patient')" :class="button == 4 ? 'active' : ''" >Patient Vitals</a-button>
+                  <a-button @click="showButton1() ; actionTrack(paramsId,323,'patient')" :class="button == 1 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 323)">Default</a-button>
+                  <a-button @click="showButton2() ; actionTrack(paramsId,285,'patient')" :class="button == 2 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 285)">Timeline</a-button>
+                  <a-button @click="showButton3() ; actionTrack(paramsId,286,'patient')" :class="button == 3 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 286)">Care Plan</a-button>
+                  <a-button @click="showButton4() ; actionTrack(paramsId,287,'patient')" :class="button == 4 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Patient Vitals</a-button>
                 </div>
               </div>
             </a-col>
             <a-col :xl="8" :lg="24">
-              <div class="timer" @click="actionTrack(paramsId,288)">
+              <div class="timer" @click="actionTrack(paramsId,288)" v-if="arrayToObjact(screensPermissions, 288)">
                 <h3>{{$t('patientSummary.currentSession')}} : {{formattedElapsedTime}}</h3>
                 <a-button v-if="startOn" class="primaryBtn" @click="startTimer">{{$t('patientSummary.startTimer')}}</a-button>
                 <a-button v-if="!startOn" class="primaryBtn" id="timer" @click="stopTimer">{{$t('patientSummary.stopTimer')}}</a-button>
@@ -80,7 +80,8 @@ import {
   timeStamp,
   getSeconds,
   actionTrack,
-  enCodeString
+  enCodeString,
+  arrayToObjact
 } from '@/commonMethods/commonMethod';
 const value = ref(dayjs("12:08", "HH:mm"));
 
@@ -375,6 +376,8 @@ export default {
     
 
     return {
+      screensPermissions:store.getters.screensPermissions,
+      arrayToObjact,
       enCodeString,
       conferenceId:store.getters.conferenceId,
       // videoCall,
