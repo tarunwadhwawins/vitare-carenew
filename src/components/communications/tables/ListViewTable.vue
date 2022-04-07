@@ -98,14 +98,7 @@
     </template>
 
     <template #action="{record}">
-        <!-- <a-tooltip placement="bottom">
-        <template #title>
-          <span>{{ $t("common.view") }}</span>
-        </template>
-        <a class="icons">
-          <EyeOutlined />
-        </a>
-      </a-tooltip> -->
+        
         <a-tooltip placement="bottom" v-if="record.type == 'SMS'">
             <template #title>
                 <span>{{ $t("common.reply") }}</span>
@@ -114,9 +107,17 @@
                 <MessageOutlined />
             </a>
         </a-tooltip>
+        <a-tooltip placement="bottom" v-else>
+            <template #title>
+              <span>{{ $t("common.view") }}</span>
+            </template>
+            <a class="icons" @click="showGmail(record)">
+              <EyeOutlined />
+            </a>
+          </a-tooltip>
     </template>
 </a-table>
-
+<CommunicationGmailView v-model:visible="visibleGmail" />
 <Chat v-model:visible="visible" v-if="communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
 </template>
 
@@ -134,6 +135,7 @@ import Chat from "@/components/modals/Chat";
 import {
     tableYScroller
 } from "@/commonMethods/commonMethod";
+import CommunicationGmailView from '@/components/modals/CommunicationGmailView'
 import {
     EyeOutlined,
     MessageOutlined,
@@ -150,7 +152,7 @@ export default {
         PhoneOutlined,
         MailOutlined,
         AlertOutlined,
-
+        CommunicationGmailView,
         Chat,
     },
     props: {
@@ -222,7 +224,7 @@ export default {
         const communicationId = ref(null)
         const auth = JSON.parse(localStorage.getItem("auth"))
         const meta = store.getters.communicationRecord.value;
-
+const visibleGmail= ref(false)
         let scroller = ''
         let data = []
         onMounted(() => {
@@ -291,7 +293,12 @@ export default {
             communicationId.value = e
             visible.value = true;
         };
+        const showGmail = (e) => {
+            
+            store.dispatch('communicationsView',e.id)
+            visibleGmail.value = true;
 
+};
         const handleOk = () => {
             visible.value = false;
         };
@@ -299,14 +306,15 @@ export default {
         return {
             communicationColumns,
             meta,
-
+            showGmail,
             visible,
             showModal,
             handleOk,
             communicationId,
             auth,
             tableYScroller,
-            handleTableChange
+            handleTableChange,
+            visibleGmail
         };
     },
 };

@@ -29,7 +29,22 @@ export const addCommunication = async ({ commit }, data) => {
 		errorSwal(error.response.data.message)
 	})
 }
-
+export const communicationsView = async ({ commit },id) => {
+	commit('loadingTableStatus', true)
+	await ServiceMethodService.common("get", API_ENDPOINTS['communicationsView'], id, null).then((response) => {
+		
+		commit('communicationsView', response.data.data);
+		commit('loadingTableStatus', false)
+	})
+	.catch((error) => {
+		commit('loadingTableStatus', false)
+		errorLogWithDeviceInfo(error.response)
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}
 export const communicationTypes = async ({ commit },from) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['communicationTypes']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null, null).then((response) => {
 		//console.log("check",response.data.data)
