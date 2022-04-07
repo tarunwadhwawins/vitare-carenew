@@ -25,7 +25,7 @@
                 <a-menu-item>
                     <GlobalOutlined /><span class="menuItem">Global Codes</span></a-menu-item>
             </router-link>
-            <router-link to="/inventory" >
+            <router-link to="/inventory" v-if="arrayToObjact(screensPermissions, 336)">
                 <a-menu-item>
                     <FileDoneOutlined />
                     <span class="menuItem">{{$t('sidebar.inventory')}}</span>

@@ -23,13 +23,13 @@
                 <a class="icons">
                     <EditOutlined /></a>
             </a-tooltip>
-            <a-tooltip placement="bottom" @click="viewTimeLog(record.id)">
-                <template #title>
-                    <span>{{ $t("common.view") }}</span>
-                </template>
-                <a class="icons">
-                    <EyeOutlined />
-                </a>
+            <a-tooltip placement="bottom" @click="viewTimeLog(record.id)" v-if="arrayToObjact(screensPermissions, 332)">
+              <template #title>
+                <span>{{ $t("common.view") }}</span>
+              </template>
+              <a class="icons">
+                <EyeOutlined />
+              </a>
             </a-tooltip>
         </template>
         <template #active="key">

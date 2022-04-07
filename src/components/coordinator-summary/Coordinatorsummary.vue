@@ -16,7 +16,7 @@
                 <a-row :gutter="24">
                     <a-col :sm="7" :xs="24">
                         <div class="patientInfo">
-                            <EditOutlined class="editIcon" style="float:right;padding:10px" @click="editStaff()"/>
+                            <EditOutlined class="editIcon" style="float:right;padding:10px" @click="editStaff()" v-if="arrayToObjact(screensPermissions,38)"/>
                             <div class="patientImg">
                                 <!-- <img v-if="getstaffSummary.profilePhoto" :src="getstaffSummary.profilePhoto" alt="image"/> -->
                                 <img  src="@/assets/images/userAvatar.png" alt="image"/>

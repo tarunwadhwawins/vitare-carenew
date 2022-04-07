@@ -1,15 +1,16 @@
 <template>
 <a-table  rowKey="id" :columns="patients.staffSummaryPatientCols" :data-source="patients.staffSummaryPatient" :pagination="false" @change="onChange">
-    <template #firstName="{ record }">
+    <template #firstName="{ record }" v-if="arrayToObjact(screensPermissions,63)">
         <router-link :to="{ name: 'PatientSummary', params: { udid: record.id } }">{{ record.firstName }}</router-link>
     </template>
+     <template #firstName="{ record }" v-else>
+        <span >{{ record.firstName }}</span>
+    </template>
     <template #lastName="text">
-        <router-link :to="linkTo">{{ text.text }}</router-link>
+        <span >{{ text.text }}</span>
     </template>
     <template #flags="{ text }">
         <span class="box" :style="{'background-color':text}"></span>
-        <!-- <span class="box" :class="text"></span>
-        <span class="box" :class="(text = text.match(/yellowBgColor/g))" v-if="text.match(/yellowBgColor/g)"></span> -->
     </template>
     <template #compliance>
         <a class="icons">
@@ -19,7 +20,7 @@
     <template #lastReadingValues>
         <WarningOutlined />
     </template>
-    <template #action="">
+    <template #action="" v-if="arrayToObjact(screensPermissions,64)">
         <a-tooltip placement="bottom" >
             <template #title>
                 <span>{{$t('global.delete')}}</span>
@@ -35,6 +36,9 @@
 import{useStore} from "vuex"
 import{computed} from "vue"
 import {DeleteOutlined,} from "@ant-design/icons-vue";
+import {
+    arrayToObjact,
+} from "@/commonMethods/commonMethod"
 export default {
     comments:{
         DeleteOutlined
@@ -45,6 +49,8 @@ export default {
            return store.state.careCoordinatorSummary
         })
         return{
+            arrayToObjact,
+            screensPermissions:store.getters.screensPermissions,
             patients
         }
     }
