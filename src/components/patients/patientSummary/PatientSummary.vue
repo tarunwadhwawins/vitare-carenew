@@ -15,7 +15,8 @@
                   <h2 class="pageTittle">{{$t('patientSummary.patientSummary')}}</h2>
                 </a-col>
                 <a-col :xl="12" :lg="12">
-                  <router-link class="blueBtn" v-if="conferenceId" :to="{ name: 'videoCall', params: { id: enCodeString(conferenceId) } }" target="_blank">Start Call</router-link>
+                  <a-button class="blueBtn" @click="startCall">Start Call</a-button>
+                  <!-- <router-link class="blueBtn" :to="{ name: 'videoCall', params: { id: enCodeString(conferenceId) } }" target="_blank">Start Call</router-link> -->
                 </a-col>
               </a-row>
             </a-col>
@@ -58,6 +59,7 @@
       </a-layout>
     </a-layout>
     <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isAutomatic="isAutomatic" :isEditTimeLog="isEditTimeLog" :timerValue="formattedElapsedTime" @closeModal="handleClose" @cancel="handleClose" />
+    <StartCallModal v-model:visible="startCallModalVisible" @closeModal="handleClose" @cancel="handleClose" />
   </div>
 </template>
 
@@ -71,6 +73,7 @@ import PatientVitalsView from "@/components/patients/patientSummary/views/Patien
 import CriticalNotes from "@/components/patients/patientSummary/common/CriticalNotes";
 import Loader from "@/components/loader/Loader";
 import AddTimeLogModal from "@/components/modals/AddTimeLogs";
+import StartCallModal from "@/components/modals/StartCallModal";
 
 import dayjs from "dayjs";
 import { ref, computed, watchEffect,onBeforeMount} from "vue";
@@ -96,6 +99,7 @@ export default {
     Loader,
     AddTimeLogModal,
     CriticalNotes,
+    StartCallModal,
   },
   setup() {
     localStorage.removeItem('timeLogId')
@@ -119,6 +123,7 @@ export default {
     const bloodglucosevisible = ref(false);
     const stoptimervisible = ref(false);
     const isEditTimeLog = ref(false);
+    const startCallModalVisible = ref(false);
     
     const startOn = ref(false);
 
@@ -126,9 +131,13 @@ export default {
       console.log(e, "I was closed.");
     };
 
-    //  function videoCall() {
-    //   store.dispatch("appointmentCalls",{patientId:patientUdid})
-    // }
+    const startCall = () => {
+      startCallModalVisible.value = true
+    }
+
+     function videoCall() {
+      store.dispatch("appointmentCalls",{patientId:patientUdid})
+    }
 
     const custom = ref(false);
     const current = ref(0);
@@ -315,7 +324,7 @@ export default {
         clearInterval(timer.value);
       }
       else {
-        stoptimervisible.value = false;
+        startCallModalVisible.value = modal == "startCall" ? value : false;
       }
       if(value == undefined) {
         timer.value = setInterval(() => {
@@ -377,7 +386,9 @@ export default {
     return {
       enCodeString,
       conferenceId:store.getters.conferenceId,
-      // videoCall,
+      videoCall,
+      startCall,
+      startCallModalVisible,
       paramsId:route.params.udid,
       actionTrack,
       stopTimer,
@@ -459,9 +470,7 @@ export default {
   }
 }
 .blueBtn {
-  padding: 10px 15px 9px 15px;
   position: relative;
-  top: 7px;
-  // left: -75px;
+  top: 3px;
 }
 </style>
