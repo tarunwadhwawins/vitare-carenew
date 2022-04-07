@@ -1,7 +1,6 @@
 <template>
   <a-row :gutter="24">
-
-    <a-col v-if="(bloodPressure != null || bloodGlucose != null || bloodOxygen != null) && patientDevices.length <= 0" :sm="24">
+    <a-col v-if="((!bloodPressure && bloodPressure == null) || (!bloodGlucose && bloodGlucose == null) || (!bloodOxygen && bloodOxygen == null)) && patientDevices.length <= 0" :sm="24">
       <a-alert message="No devices are assigned to this Patient. Please assign device(s) to see Vitals." type="error" />
     </a-col>
     
