@@ -78,7 +78,7 @@ export default {
   setup() {
     const store = useStore();
     const visible = ref(false);
-     const viewReport = ref(false);
+    const viewReport = ref(false);
     const Id =ref()
     const handleOk = () => {
       visible.value = false;

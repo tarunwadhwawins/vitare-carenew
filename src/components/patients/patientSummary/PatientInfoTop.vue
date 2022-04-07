@@ -4,8 +4,8 @@
       <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
     <div class="info">
       <h2 v-if="patientDetails.patientFullName">{{ patientDetails.patientFullName }}</h2>
-      <p v-if="patientDetails.medicalRecordNumber">Patient Id : #{{ patientDetails.medicalRecordNumber }}</p>
       <p v-if="patientDetails.patientDob">DOB : {{ patientDetails.patientDob }}</p>
+      <p v-if="patientDetails.medicalRecordNumber">MRN : {{ patientDetails.medicalRecordNumber }}</p>
       <p v-if="patientDetails.email"><a href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
       <p v-if="patientDetails.phoneNumber"><a href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
       <p v-if="patientDetails.address"><HomeOutlined/> <span class="address-text">{{ patientDetails.address }}</span></p>
