@@ -38,7 +38,7 @@
             <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
         </div> -->
         <div class="text-right mb-24">
-          <ExportToExcel />
+          <ExportToExcel @click="exportExcel('patient_report')" />
         </div>
     </a-col>
     <a-col :span="24" v-if="arrayToObjact(screensPermissions, 65)">
