@@ -9,5 +9,6 @@ export default{
     latestAppointment:null,
     showMoreRecords:null,
     appointmentConference:null,
-    getStaff:null
+    getStaff:null,
+    appointmentDetails:null
 }

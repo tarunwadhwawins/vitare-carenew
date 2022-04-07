@@ -38,7 +38,7 @@
                             <span class="btn-content">{{ $t('tasks.tasksModal.patient') }}</span>
                         </div>
                         <div class="btn toggleButton" :class="toggleTo ? '' : 'active'" @click="buttonToggle()">
-                            <span class="btn-content">{{ $t('tasks.tasksModal.staff') }}</span>
+                            <span class="btn-content">{{ $t('global.careCoodinator') }}</span>
                         </div>
                         <a-input type="hidden" id="entityType" :value="toggleTo?taskForm.entityType= 'patient' : taskForm.entityType='staff'" />
                     </a-form-item>
@@ -53,7 +53,7 @@
             </a-col>
             <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="!toggleTo">
                 <div class="form-group">
-                    <a-form-item :label="$t('tasks.tasksModal.staff')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.staff')+' '+$t('global.validation')  }]">
+                    <a-form-item :label="$t('global.careCoodinator')" name="assignedTo" :rules="[{ required: true, message: $t('global.careCoodinator')+' '+$t('global.validation')  }]">
                         <StaffDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.assignedTo" @handleStaffChange="handleStaffChange($event)" :close="closeValue"/>
                     </a-form-item>
                 </div>

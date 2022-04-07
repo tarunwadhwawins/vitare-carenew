@@ -15,19 +15,20 @@
                 <a-row :gutter="24" class="mb-24">
                     <a-col :sm="8" :xs="24">
                         <div class="patientInfo">
+                          <EditOutlined class="editIcon" style="float:right;padding:10px" @click="showModal(getProviderSummary?.id)"/>
                             <div class="patientImg">
-                                <img src="@/assets/images/profile-4.jpg" alt="image" />
+                                
                                 <div class="info">
                                     <p>
 
-                                        {{getProviderSummary?getProviderSummary.name:''}}
+                                      Name :   {{ getProviderSummary?getProviderSummary.name:''}}
                                     </p>
                                     <p>
                                         <a href="tel:1234567890">
-                                            <PhoneOutlined :rotate="90" /> {{getProviderSummary?getProviderSummary.phoneNumber:''}}
+                                          Phone :   <PhoneOutlined :rotate="90" /> {{ getProviderSummary?getProviderSummary.phoneNumber:''}}
                                         </a>
                                     </p>
-                                    <p> {{getProviderSummary?getProviderSummary.address:''}}
+                                    <p> Address : {{ getProviderSummary?getProviderSummary.address:''}}
                                     </p>
                                 </div>
                             </div>
@@ -51,14 +52,8 @@
                     <a-col :sm="16" :xs="24" v-if="arrayToObjact(screensPermissions,31)">
                         <div class="summary-tabs">
                             <h2 class="mb-24">Locations</h2>
-                            <a-table :pagination="false" :columns="columns3" :data-source="providerLocationlistData" :scroll="{ x: 600 }">
-                                <template #action="text">
-                                    <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,34)">
-                                        <a class="icons" @click="deleteProviderLocation(text.record.id)">
-                                            <DeleteOutlined />
-                                        </a>
-                                    </a-tooltip>
-                                </template>
+                            <a-table :pagination="false" :columns="columns" :data-source="providerLocationlistData" :scroll="{ x: 600 }">
+                                
                             </a-table>
                         </div>
                     </a-col>
@@ -66,8 +61,9 @@
             </a-layout-content>
         </a-layout>
     </a-layout>
+     <AdminProvidersModal v-if="visible" v-model:visible="visible"  @closeModal="closeModal($event)" :isAdd="true" :providerId="providerID" />
     <!---->
-    <a-modal v-model:visible="visible" title="Add Locations" centered @ok="handleOk">
+    <!-- <a-modal v-model:visible="visible" title="Add Locations" centered @ok="handleOk">
         <a-row :gutter="24">
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
@@ -87,12 +83,12 @@
                     <a-input v-model="value" size="large" />
                 </div>
             </a-col>
-            <!-- <a-col :sm="16" :xs="24"> -->
-            <!-- <div class="summary-tabs">
+            <a-col :sm="16" :xs="24">
+            <div class="summary-tabs">
                 <h2 class="mb-24">Locations</h2>
                 <a-table  rowKey="id"
                   :pagination="false"
-                  :columns="columns3"
+                  :columns="columns"
                   :data-source="data3"
                   :scroll="{ x: 600 }"
                 >
@@ -111,7 +107,7 @@
                     </a-tooltip>
                   </template>
                 </a-table>
-              </div> -->
+              </div>
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <label>Zipcode</label>
@@ -125,22 +121,25 @@
                 </div>
             </a-col>
         </a-row>
-    </a-modal>
+    </a-modal> -->
     <!---->
+    
 </div>
 </template>
+
 
 <script>
 import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
-import { ref, computed, watchEffect, onMounted } from "vue";
+import { ref, computed, watchEffect, onMounted, defineComponent, defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { DeleteOutlined } from "@ant-design/icons-vue";
+import { EditOutlined,PhoneOutlined } from "@ant-design/icons-vue";
 import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
+// import AdminProvidersModal from "@/components/modals/AdminProvidersModal";
 
-const columns3 = [
+const columns = [
   {
     title: "Location Name",
     dataIndex: "locationName",
@@ -157,20 +156,16 @@ const columns3 = [
     title: "Address",
     dataIndex: "address",
   },
-  {
-    title: "Actions",
-    dataIndex: "actions",
-    slots: {
-      customRender: "action",
-    },
-  },
+  
 ];
 
-export default {
+export default defineComponent({
   components: {
     Header,
     Sidebar,
-    DeleteOutlined,
+    EditOutlined,
+    PhoneOutlined,
+    AdminProvidersModal:defineAsyncComponent(()=>import("@/components/modals/AdminProvidersModal"))
   },
 
   setup() {
@@ -181,16 +176,21 @@ export default {
     const store = useStore();
     const router = useRoute();
     const visible = ref(false);
-    const showModal = () => {
+    const providerID = ref();
+
+    const showModal = (id) => {
+      providerID.value =id
       visible.value = true;
+       store.dispatch('editSingleProvider', id)
     };
-    const handleOk = () => {
-      visible.value = false;
+    const closeModal = (e) => {
+      visible.value = e;
     };
 
     onMounted(() => {
       store.dispatch("editSingleProvider", router.params.id);
     });
+
 
     watchEffect(() => {
       store.dispatch("providerLocationList", router.params.id);
@@ -244,23 +244,22 @@ export default {
     }
     
     return {
-     screensPermissions:store.getters.screensPermissions,
+      providerID,
+      screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       logout,
       globalCode,
       getProviderSummary,
       providerLocationlistData,
-      columns3,
+      columns,
       providerModules,
       providerTags,
-      activeKey: ref("1"),
-      activeKey1: ref("1"),
       watchEffect,
       visible,
       deleteProviderLocation,
       showModal,
-      handleOk,
+      closeModal,
     };
   },
-};
+});
 </script>

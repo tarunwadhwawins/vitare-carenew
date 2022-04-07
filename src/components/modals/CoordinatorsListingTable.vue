@@ -46,7 +46,7 @@ import { messages } from '@/config/messages';
       const patientUdid = route.params.udid;
       const careTeamColumns = [
         {
-          title: "Staff",
+          title: "Care Coordinator",
           dataIndex: "staff",
           key: "staff",
         },

@@ -12,10 +12,10 @@
             <a-row>
               <a-col :span="24">
                 <h2 class="pageTittle">
-                  Manage Staff
+                  Manage {{ $t('global.careCoodinator') }}
                   <div class="commonBtn">
                     <a-button class="btn primaryBtn" @click="showModal"
-                      >Add New Staff</a-button
+                      >Add New {{ $t('global.careCoodinator') }}</a-button
                     >
                   </div>
                 </h2>
