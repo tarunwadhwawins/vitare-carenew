@@ -68,6 +68,7 @@ export default defineComponent({
         dataIndex: "note",
         key: "note",
         className: "note-text",
+        ellipsis: true,
       },
       {
         title: "Added By",
