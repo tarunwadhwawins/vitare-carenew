@@ -1,9 +1,8 @@
 <template>
-<a-modal width="1000px" title="Appointment Details" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal width="400px" title="Appointment Details" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <a-col :sm="24" :xs="24">
             <div class="form-group">
-
                 <div class="calendarDropdown">
                     <div class="itemWrapper">
                         <div class="leftWrapper">Appointment Type</div>
