@@ -5,7 +5,8 @@
 				<a-col :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('appointmentCalendar.addAppointment.patient')" name="patientId" :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.patient')+' '+$t('global.validation')  }]">
-							<PatientDropDown :disabled="disabled" v-model:value="appointmentForm.patientId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" :close="closeValue" />
+							<a-input v-if="isPatientSummary" :value="patientName" :disabled="isPatientSummary" size="large" />
+							<PatientDropDown v-else :disabled="isPatientSummary" v-model:value="appointmentForm.patientId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" :close="closeValue" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.patientId?errorMsg.patientId[0]:''" />
 						</a-form-item>
 					</div>
@@ -142,6 +143,7 @@ export default {
 		const patientUdid = route.params.udid;
 		const idPatient = reactive(props.patientId);
 		const disabled = ref(false)
+		const isPatientSummary = ref(false)
 		const closeValue = ref(false)
 		const filterOption = (input, option) => {
 			return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
@@ -171,6 +173,9 @@ export default {
 					patientId: idPatient
 				})
 				disabled.value = true
+				if(route.name == "PatientSummary") {
+					isPatientSummary.value = true
+				}
 			}
 			store.state.common.allPatientsList ? "" : store.dispatch("allPatientsList")
 			store.state.common.allStaffList ? "" : store.dispatch("allStaffList")
@@ -209,7 +214,7 @@ export default {
 			closeValue.value = true
 			const timeFormat = (moment(appointmentForm.startTime)).format('HH:mm');
 			store.dispatch('addAppointment', {
-				patientId: appointmentForm.patientId,
+				patientId: idPatient ? idPatient : appointmentForm.patientId,
 				staffId: appointmentForm.staffId,
 				startDate: timeStamp(date + " " + timeFormat),
 				startTime: timeFormat,
@@ -330,6 +335,7 @@ export default {
 			list,
 			closeModal,
 			disabled,
+			isPatientSummary,
 			filterOption,
 			closeValue,
 			disableHours,
