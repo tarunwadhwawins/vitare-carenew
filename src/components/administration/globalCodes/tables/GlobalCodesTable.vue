@@ -1,5 +1,4 @@
 <template>
-  
   <a-table  rowKey="id"
     :columns="globalCodesColumns"
     :data-source="globalCodesList"
@@ -19,7 +18,6 @@
         <span class="icons"><DeleteOutlined @click="deleteGlobalCode(record.id)" /></span>
       </a-tooltip>
     </template>
-    <!-- v-if="arrayToObjact(screensPermissions,266)"> -->
     <template #isActive="{record}" v-if="arrayToObjact(screensPermissions,328)">
       <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
     </template>
@@ -30,7 +28,6 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { watchEffect ,onMounted} from "vue";
 import { useStore } from "vuex";
-// import swal from 'sweetalert2';
 import {warningSwal,arrayToObjact,tableYScroller} from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
 export default {

@@ -9,7 +9,7 @@
       </a>
     </template>
     <template #action="text">
-        <a-tooltip placement="bottom">
+        <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions, 84)">
             <template #title>
                 <span>{{$t('global.delete')}}</span>
             </template>
@@ -25,7 +25,7 @@ import { computed } from "vue";
 import { DeleteOutlined, FileOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { warningSwal,actionTrack } from "@/commonMethods/commonMethod";
+import { warningSwal,actionTrack,arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 export default {
   components: {
@@ -62,6 +62,8 @@ export default {
       return store.state.patients.documentColumns;
     });
     return {
+      screensPermissions:store.getters.screensPermissions,
+      arrayToObjact,
       actionTrack,
       paramsId:router.params.udid,
       documentColumns,

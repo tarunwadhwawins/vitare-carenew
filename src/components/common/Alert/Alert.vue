@@ -1,5 +1,4 @@
 <template>
-	
 	<a-alert @close="onCloseAlert(itemId)" v-if="closable" :message="text" :type="type" closable/>
 	<a-alert @close="onCloseAlert(itemId)" v-else :message="text" :type="type"/>
 </template>

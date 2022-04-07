@@ -1,3 +1,4 @@
+
 <template>
   <div class="patientTable">
     <a-table
@@ -8,14 +9,12 @@
       :pagination="false"
       @change="handleTableChange"
     >
-      <template
-        #firstName="{ text, record }"  
-      >
-        <router-link
-          :to="{ name: 'PatientSummary', params: { udid: record.id } }"
-          >{{ text }}</router-link
-        >
-      </template>
+      <template #firstName="{ text, record }" v-if="arrayToObjact(screensPermissions, 63)">
+            <router-link :to="{ name: 'PatientSummary', params: { udid: record.id } }">{{ text }}</router-link>
+        </template>
+        <template #firstName="{ text }" v-else>
+            <span>{{ text }}</span>
+        </template>
       <!-- <template #firstName="{ text }" v-else>
         <span>{{ text }}</span>
       </template> -->
@@ -35,15 +34,13 @@
         <WarningOutlined />
       </template>
     </a-table>
-  </div>
+</div>
 </template>
-
 <script>
 import { WarningOutlined } from "@ant-design/icons-vue";
-import { onMounted, computed } from "vue";
+import { onMounted } from "vue";
 import { useStore } from "vuex";
-
-import {tableYScrollerCounterPage} from "@/commonMethods/commonMethod";
+import { tableYScrollerCounterPage ,arrayToObjact} from "@/commonMethods/commonMethod";
 export default {
   name: "DataTable",
   components: {
@@ -65,7 +62,7 @@ export default {
           if (current_page <= meta.patientMeta.total_pages) {
             scroller = maxScroll;
             meta.patientMeta = "";
-            
+
             data = meta.patientList;
             store.state.patients.patientList = "";
          
@@ -91,9 +88,7 @@ export default {
         tableContent.scrollTo(0, scroller);
       }, 50);
     }
-    const patientsPermissions = computed(() => {
-      return store.state.screenPermissions.patientsPermissions;
-    });
+   
     const handleTableChange = (pag, filters, sorter) => {
       if (sorter.order) {
         let order = sorter.order == "ascend" ? "ASC" : "DESC";
@@ -121,7 +116,8 @@ export default {
       }
     };
     return {
-      patientsPermissions,
+      screensPermissions:store.getters.screensPermissions,
+      arrayToObjact,
       meta,
       tableYScrollerCounterPage,
       handleTableChange

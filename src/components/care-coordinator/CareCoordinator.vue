@@ -24,17 +24,15 @@
 </a-row>
 
 <a-row>
-    <a-col :span="12">
+    <a-col :span="12" v-if="arrayToObjact(screensPermissions,40)">
         <SearchField endPoint="staff" />
-
     </a-col>
     <a-col :span="12" v-if="arrayToObjact(screensPermissions,41)">
         <div class="text-right mb-24">
             <ExportToExcel @click="exportExcel('careCoordinator_report')" />
         </div>
     </a-col>
-    <a-col :span="24">
-
+    <a-col :span="24" >
         <CoordinatorTable></CoordinatorTable>
         <Loader />
     </a-col>

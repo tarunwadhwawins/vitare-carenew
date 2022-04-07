@@ -4,17 +4,13 @@
         <a-col :span="24">
             <h2 class="pageTittle">
                 {{$t('global.dashboard')}}
-
                 <div class="filter" v-if="timeline && Buttons">
                     <a-button v-for="item in timeline" :key="item.id" @click="showButton(item.id)" :class="Buttons.globalCodeId== item.id ? 'active' : ''"> {{item.name}}</a-button>
                 </div>
             </h2>
         </a-col>
-
         <a-col :span="24">
-
             <a-row :gutter="24" v-if="arrayToObjact(widgetsPermissions,1) && grid">
-
                 <Card v-for="item in totalPatients" :key="item.count" :count="item.total" :text='item.text' link="manage-patients" :xl="grid.xlGrid" :color="item.color" :sm="grid.smGrid" :textColor="item.textColor">
                 </Card>
 
@@ -22,8 +18,6 @@
         </a-col>
     </a-row>
     <a-row :gutter="24">
-        <!-- <Appointement  :appointment="todayAppointment" :columns="columns4" :title="$t('dashboard.todayAppointment')">
-        </Appointement> -->
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,2) && todayAppointment">
           <a-card :title="$t('dashboard.todayAppointment')" class="common-card">
             <div class="apptNumber">
@@ -35,12 +29,9 @@
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,3) && callStatus">
             <ApexChart :title="$t('global.callQueue')" type="bar" :height="250" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="communications" />
         </a-col>
-
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,4) &&  patientsCondition">
-
             <ApexChart title="Patients Stats" type="bar" :height="412" :options="patientsCondition.option1" :series="patientsCondition.series1" linkTo="manage-patients">
             </ApexChart>
-
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,5) &&  specialization">
             <a-card :title="$t('dashboard.careCoordinatorStats') " class="common-card">
@@ -55,27 +46,14 @@
                 </a-tabs>
             </a-card>
         </a-col>
-
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  cptCodeValue">
-
             <ApexChart :title="$t('dashboard.cPTCodeBillingSummary')" type="bar" :height="350" :options="cptCodeValue.code" :series="cptCodeValue.value" linkTo="cpt-codes"></ApexChart>
-
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && financialValue">
-
-            <!-- <div class="list-group">
-                  <div class="list-group-item">
-                    <div class="name">Billed</div>
-                    <div class="value">4567 $</div>
-                  </div>
-                </div> -->
             <ApexChart :title="$t('dashboard.financialStats')" type="pie" :height="360" :options="financialValue.billed" :series="financialValue.due" linkTo="time-tracking-report"></ApexChart>
         </a-col>
-
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,8) && totalPatientsChartValue">
-
             <ApexChart :title="$t('dashboard.newPatientsChart')" type="area" :height="350" :options="totalPatientsChartValue.chartOptions" :series="totalPatientsChartValue.series" linkTo="manage-patients"></ApexChart>
-
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,9) && appointmentChartValue">
             <ApexChart :title="$t('dashboard.appointmentSummary')" type="area" :height="350" :options="appointmentChartValue.chartOptions" :series="appointmentChartValue.series" linkTo="appointment-calendar"></ApexChart>
@@ -83,8 +61,6 @@
     </a-row>
     <Loader />
 </a-layout-content>
-
-<!---->
 </template>
 
 <script>

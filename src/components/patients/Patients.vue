@@ -30,19 +30,15 @@
     </a-col>
 </a-row>
 <a-row >
-    <a-col :span="12">
+    <a-col :span="12" v-if="arrayToObjact(screensPermissions, 65)">
       <SearchField  endPoint="patient"/>
     </a-col>
     <a-col :span="12" v-if="arrayToObjact(screensPermissions,66)">
-        <!-- <div class="text-right mb-24">
-            <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
-        </div> -->
         <div class="text-right mb-24">
           <ExportToExcel @click="exportExcel('patient_report')" />
         </div>
     </a-col>
     <a-col :span="24" v-if="arrayToObjact(screensPermissions, 65)">
-
         <DataTable />
      <Loader />
     </a-col>
@@ -111,7 +107,7 @@ export default {
     return {
       exportExcel,
       totalPatients,
-       screensPermissions:store.getters.screensPermissions,
+      screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       PatientsModal,
       showModal,

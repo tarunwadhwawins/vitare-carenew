@@ -1,15 +1,16 @@
 <template>
 <a-table rowKey="id" :data-source="meta.staffs" :scroll="{ y: tableYScrollerCounterPage ,x: 1020}" :pagination=false :columns="meta.columns" @change="handleTableChange">
-    <template #name="{text,record}">
-        <!-- <router-link :to="linkTo">{{ text.text }}</router-link> -->
+    <template #name="{text,record}" v-if="arrayToObjact(screensPermissions,38)">
         <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}">{{ text }}</router-link>
+    </template>
+    <template #name="{text}" v-else>
+        <span>{{ text }}</span>
     </template>
 
     <template #createdDate="text">
         <span>{{ dateFormat(text.text) }}</span>
     </template>
-    <template #status="{record}">
-        <!-- <router-link >{{ text.text }}</router-link> -->
+    <template #status="{record}" v-if="arrayToObjact(screensPermissions,38)">
         <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
     </template>
     <template #lastReadingDate>
@@ -23,6 +24,7 @@ import { WarningOutlined } from "@ant-design/icons-vue";
 import {
   dateFormat,
   tableYScrollerCounterPage,
+  arrayToObjact
 } from "@/commonMethods/commonMethod";
 import { onMounted } from "vue";
 import { useStore } from "vuex";
@@ -120,6 +122,8 @@ export default {
       });
     };
     return {
+      screensPermissions:store.getters.screensPermissions,
+      arrayToObjact,
       updateStatus,
       meta,
       dateFormat,

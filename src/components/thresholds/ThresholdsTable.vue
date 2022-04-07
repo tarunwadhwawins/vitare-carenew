@@ -19,7 +19,7 @@
                 </a>
             </a-tooltip>
         </template>
-        <template #active="key">
+        <template #active="key" v-if="arrayToObjact(screensPermissions,330)">
             <a-switch v-model:checked="checked[key.record.key]" />
         </template>
     </a-table>

@@ -4,7 +4,6 @@
         <span v-for="tag in text.text.data" :key="tag.id">{{ tag.tag+ " "}}</span>
     </template>
     <template #document="text">
-        <!-- <router-link  :to="text.text"> -->
           <a :href="text.text" target="_blank" >
             <FileOutlined />
           </a>

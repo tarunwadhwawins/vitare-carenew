@@ -13,8 +13,8 @@
                 {{i==0?' ':','}} {{ category }}
             </span>
         </template>
-        <template #action="{ record }" v-if="arrayToObjact(screensPermissions,115)">
-            <a-tooltip placement="bottom">
+        <template #action="{ record }" >
+            <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,115)">
                 <template #title>
                     <span>{{ $t('global.edit') }}</span>
                 </template>
@@ -32,7 +32,7 @@
                 <template #title>
                     <span>{{$t('tasks.createAppointment')}}</span>
                 </template>
-                <router-link to="appointment-calendar" class="icons">
+                <router-link to="appointment-calendar" class="icons" v-if="arrayToObjact(screensPermissions,112)">
                     <CalendarOutlined @click="createAppointment(record.id)" />
                 </router-link>
             </a-tooltip>
