@@ -80,6 +80,7 @@ const global = {
   addCareTeam:'Add Health Team',
   careCoodinator:'Care Coodinator',
   staff:'Staff',
+  startCall:'Start Call',
 
 }
 

@@ -25,10 +25,10 @@ export const getVideoDetails = async ({commit},id) => {
 export const appointmentCalls = async ({commit},data) => {
   commit('loadingStatus', true)
   try{
-    let response = await serviceMethod.common("post", `appointment/calls`, null, data)
+    await serviceMethod.common("post", `appointment/calls`, null, data).then((response) => {
       commit('conferenceId', response.data.data.conferenceId);
       commit('loadingStatus', false)
-     
+    })
   }
  catch(error) {
     errorLogWithDeviceInfo(error.response)
