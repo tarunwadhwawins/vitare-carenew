@@ -70,7 +70,7 @@
           <PlusOutlined @click="showAddAppointmentModal();actionTrack(paramsId,294,'patient')"/><br />
         </div>
         <div v-if="latestAppointment != null" class="thumb-desc">
-          <router-link :to="'/appointment-calendar/'+patientDetails.id">
+          <router-link target="_blank" :to="'/appointment-calendar/'+patientDetails.id">
           {{ latestAppointment[0].staff.fullName+' '+latestAppointment[0].date }}
           </router-link>
         </div>

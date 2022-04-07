@@ -19,7 +19,7 @@
                             <span class="btn-content">{{ $t('communications.communicationsModal.patient') }}</span>
                         </div>
                         <div class="btn toggleButton" :class="toggleTo ? '' : 'active'" @click="toggleTo = !toggleTo">
-                            <span class="btn-content">{{ $t('communications.communicationsModal.staff') }}</span>
+                            <span class="btn-content">{{ $t('global.careCoodinator') }}</span>
                         </div>
                         <a-input type="hidden" id="entityType" v-model="messageForm.entityType" :value="toggleTo ? 'patient' : 'staff'" />
                     </a-form-item>
@@ -35,7 +35,7 @@
             </a-col>
             <a-col :sm="12" :xs="24" v-show="!toggleTo">
                 <div class="form-group">
-                    <a-form-item :label="$t('communications.communicationsModal.staff')" name="referenceId" :rules="[{ required: true, message: $t('communications.communicationsModal.staff')+' '+$t('global.validation')  }]">
+                    <a-form-item :label="$t('global.careCoodinator')" name="referenceId" :rules="[{ required: true, message: $t('global.careCoodinator')+' '+$t('global.validation')  }]">
                         <StaffDropDown v-if="staffList" :checkSameAsStaff="true" v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>

@@ -19,7 +19,7 @@ const patient = {
     preferredTimeofDayforContact:'Preferred time of day for contact',
     MRN:'MRN( Medical Record Number) ',
     suiteorApartment:'Suite or Apartment',
-    primaryFamilyMember:'Primary Family Coordinator',
+    primaryFamilyMember:'Primary Family Member',
     fullName:'Full Name',
     emailAddress:'Email Address',
     emergencyContact:'Emergency Contact',

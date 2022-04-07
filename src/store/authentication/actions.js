@@ -1,7 +1,7 @@
 
 import ServiceMethodService from '@/services/serviceMethod'
 import { API_ENDPOINTS } from "@/config/apiConfig"
-import { errorSwal, successSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
+import { errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
 import router from "@/router";
 
 let date = new Date();
@@ -43,8 +43,14 @@ const permission = async ({ commit }) => {
 	await ServiceMethodService.common("get", "staff/access/action", null, null).then((response) => {
 
 		if (response.data.actionId.length == 0) {
-			successSwal("You don't have permission")
-			logoutUser({ commit })
+			errorSwal("You don't have permission! Contact to Admin").then((response) => {
+				if(response == true){
+					logoutUser({ commit })
+				}else{
+					logoutUser({ commit })
+				}
+			})
+
 		} else {
 			localStorage.setItem('permission', JSON.stringify(response.data))
 			commit('screensPermissions',response.data)

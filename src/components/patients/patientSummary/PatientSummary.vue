@@ -9,20 +9,23 @@
         <a-layout-content>
           <Loader />
           <a-row>
-            <a-col :xl="4" :lg="8">
-              <h2 class="pageTittle">{{$t('patientSummary.patientSummary')}}</h2>
+            <a-col :xl="8" :lg="12">
+              <a-row :gutter="24">
+                <a-col :xl="12" :lg="12">
+                  <h2 class="pageTittle">{{$t('patientSummary.patientSummary')}}</h2>
+                </a-col>
+                <a-col :xl="12" :lg="12">
+                  <router-link class="blueBtn" v-if="conferenceId" :to="{ name: 'videoCall', params: { id: enCodeString(conferenceId) } }" target="_blank">Start Call</router-link>
+                </a-col>
+              </a-row>
             </a-col>
-            <a-col :xl="2" :lg="12">
-              <!-- <a-button class="blueBtn" @click="videoCall()" >Start Call</a-button> -->
-              <router-link class="blueBtn" v-if="conferenceId" :to="{ name: 'videoCall', params: { id: enCodeString(conferenceId) } }" target="_blank">Start Call</router-link>
-            </a-col>
-            <a-col :xl="9" :lg="12">
+            <a-col :xl="8" :lg="12">
               <div class="pageTittle">
                 <div class="filter">
-                    <a-button @click="showButton1() ; actionTrack(paramsId,323,'patient')" :class="button == 1 ? 'active' : ''" >Default</a-button>
-                    <a-button @click="showButton2() ; actionTrack(paramsId,285,'patient')" :class="button == 2 ? 'active' : ''" >Timeline</a-button>
-                    <a-button @click="showButton3() ; actionTrack(paramsId,286,'patient')" :class="button == 3 ? 'active' : ''" >Care Plan</a-button>
-                    <a-button @click="showButton4() ; actionTrack(paramsId,287,'patient')" :class="button == 4 ? 'active' : ''" >Patient Vitals</a-button>
+                  <a-button @click="showButton1() ; actionTrack(paramsId,323,'patient')" :class="button == 1 ? 'active' : ''" >Default</a-button>
+                  <a-button @click="showButton2() ; actionTrack(paramsId,285,'patient')" :class="button == 2 ? 'active' : ''" >Timeline</a-button>
+                  <a-button @click="showButton3() ; actionTrack(paramsId,286,'patient')" :class="button == 3 ? 'active' : ''" >Care Plan</a-button>
+                  <a-button @click="showButton4() ; actionTrack(paramsId,287,'patient')" :class="button == 4 ? 'active' : ''" >Patient Vitals</a-button>
                 </div>
               </div>
             </a-col>
@@ -300,7 +303,14 @@ export default {
     };
   
     const handleClose = ({modal, value}) => {
-      if(value && modal == 'addTimeLog') {
+      if(modal == 'addTimeLog') {
+        elapsedTime.value = 0;
+        startOn.value = true;
+        stoptimervisible.value = false;
+        clearInterval(timer.value);
+        clearInterval(myInterval.value);
+      }
+      else if(value && modal == 'closeTimeLogModal') {
         stoptimervisible.value = value;
         clearInterval(timer.value);
       }
@@ -356,7 +366,7 @@ export default {
       }
     };
     
-    onBeforeMount(() =>{
+    onBeforeMount(() => {
       window.addEventListener('beforeunload', (event) => {
         event.returnValue = 'ffghg';
       });
@@ -452,6 +462,6 @@ export default {
   padding: 10px 15px 9px 15px;
   position: relative;
   top: 7px;
-  left: -75px;
+  // left: -75px;
 }
 </style>

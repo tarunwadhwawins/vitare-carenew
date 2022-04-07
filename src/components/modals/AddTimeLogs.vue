@@ -165,13 +165,13 @@ export default defineComponent({
 				warningSwal(messages.modalWarning).then((response) => {
 					if (response != true) {
 						emit("closeModal", {
-							modal: 'addTimeLog',
+							modal: 'closeTimeLogModal',
 							value: true
 						});
 					}
 					else {
 						emit("closeModal", {
-							modal: 'addTimeLog',
+							modal: 'closeTimeLogModal',
 							value: false
 						});
 						Object.assign(addTimeLogForm, form);

@@ -8,6 +8,9 @@
         <template #patient="{record}">
             <span>{{record.patient}}</span>
         </template>
+        <template #flags="{ record }">
+          <Flags :flag="record.flagColor" />
+        </template>
         <template #flag="{ text }">
             <span>
                 <img class="reportFlag" src="../../assets/images/flag-orange.svg" alt="image" /></span>
@@ -58,7 +61,8 @@ import { messages } from "@/config/messages";
 import TableLoader from "@/components/loader/TableLoader";
 import { useStore } from "vuex";
 import { warningSwal,arrayToObjact,tableYScroller } from "@/commonMethods/commonMethod";
-import Loader from "../loader/Loader" 
+import Loader from "../loader/Loader"
+import Flags from "@/components/common/flags/Flags";
 
 export default {
   components: {
@@ -68,18 +72,20 @@ export default {
     TableLoader,
     AuditTimeLog,
     Loader,
+    Flags,
   },
   
   setup() {
     const store = useStore();
     const visible = ref(false);
-     const viewReport = ref(false);
+    const viewReport = ref(false);
     const Id =ref()
     const handleOk = () => {
       visible.value = false;
     };
 
-    function editTimeLog(id) {
+    const editTimeLog = (id) => {
+      store.commit('errorMsg', null)
       store.dispatch("editAuditTimeLog", id);
       visible.value = true;
       Id.value = id
