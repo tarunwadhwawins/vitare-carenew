@@ -76,7 +76,7 @@ import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 import StartCallModal from "@/components/modals/StartCallModal";
 
 import dayjs from "dayjs";
-import { ref, computed, watchEffect,onBeforeMount} from "vue";
+import { ref, computed, watchEffect,onBeforeMount, onUnmounted} from "vue";
 import { useStore } from 'vuex';
 import { useRoute  } from 'vue-router';
 import {
@@ -180,7 +180,6 @@ export default {
     // Countdown Timer
     const elapsedTime = ref(0)
     const timer = ref(undefined)
-    const myInterval = ref(undefined)
     
     const formattedElapsedTime = computed(() => {
       const date = new Date(null);
@@ -302,10 +301,14 @@ export default {
       startOn.value = false;
     }
 
+    onUnmounted(() => {
+      clearInterval(timer.value);
+      localStorage.removeItem('timeLogId')
+    })
+
     const isAutomatic = ref(false);
     const stopTimer = () => {
       clearInterval(timer.value);
-      clearInterval(myInterval.value);
       stoptimervisible.value = true;
       isAutomatic.value = true;
       isEditTimeLog.value = true;
@@ -317,7 +320,6 @@ export default {
         startOn.value = true;
         stoptimervisible.value = false;
         clearInterval(timer.value);
-        clearInterval(myInterval.value);
       }
       else if(value && modal == 'closeTimeLogModal') {
         stoptimervisible.value = value;

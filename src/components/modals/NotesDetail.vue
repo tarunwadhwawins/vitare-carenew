@@ -35,8 +35,9 @@ export default defineComponent({
     watchEffect(() => {
       if(props.Id){
       store.dispatch('notesList', props.Id);
-      }else{
-      store.dispatch('notesList', route.params.udid);
+      }
+      else if(route.name == "PatientSummary") {
+        store.dispatch('notesList', route.params.udid);
       }
     })
 
