@@ -46,14 +46,13 @@
 </a-layout-sider>
 </template>
 <script>
-import { defineComponent, reactive, toRefs, computed,onUnmounted } from "vue";
+import { defineComponent, computed,onUnmounted } from "vue";
 import {
   HomeOutlined,
   MailOutlined,
   UserOutlined,
   CalendarOutlined,
   FileTextOutlined,
-  // UnlockOutlined
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { arrayToObjact } from "@/commonMethods/commonMethod";
@@ -64,14 +63,10 @@ export default defineComponent({
     UserOutlined,
     CalendarOutlined,
     FileTextOutlined,
-    // UnlockOutlined
   },
 
   setup() {
     const store = useStore();
-    const state = reactive({
-      selectedKeys: ["1"],
-    });
     const roles = computed(() => {
       return localStorage.getItem("roleAuth");
     });
@@ -81,12 +76,10 @@ export default defineComponent({
 
     
     
-    return {
+    return { 
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
-      // accessPermission,
       roles,
-      ...toRefs(state),
     };
   },
 });

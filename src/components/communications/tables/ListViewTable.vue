@@ -263,7 +263,7 @@ export default {
 
             setTimeout(() => {
                 tableContent.scrollTo(0, scroller)
-            }, 5000)
+            }, 500)
 
         }
         const handleTableChange = (pag, filters, sorter) => {

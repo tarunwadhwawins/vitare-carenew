@@ -2,40 +2,36 @@
 <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
     <div class="menuList">
         <a-menu>
-            <router-link to="/cpt-codes">
+            <router-link to="/cpt-codes" v-if="arrayToObjact(screensPermissions, 9)">
                 <a-menu-item>
                     <CreditCardOutlined /><span class="menuItem">CPT Codes</span></a-menu-item>
             </router-link>
            
-            <router-link to="/manage-programs">
+            <router-link to="/manage-programs" v-if="arrayToObjact(screensPermissions, 15)">
                 <a-menu-item>
                     <MailOutlined /><span class="menuItem">Programs</span></a-menu-item>
             </router-link>
-            <router-link to="/providers">
+            <router-link to="/providers" v-if="arrayToObjact(screensPermissions, 22)">
                 <a-menu-item>
                     <MailOutlined /><span class="menuItem">Providers</span></a-menu-item>
             </router-link>
-            <router-link to="/roles-and-permissions">
+            <router-link to="/roles-and-permissions" v-if="arrayToObjact(screensPermissions, 1)">
                 <a-menu-item>
                     <SafetyOutlined /><span class="menuItem">Roles & Permissions
                     </span></a-menu-item>
             </router-link>
            
-            <router-link to="/templates">
-                <a-menu-item>
-                    <ReconciliationOutlined /><span class="menuItem">Templates</span></a-menu-item>
-            </router-link>
-            <router-link to="/global-codes">
+            <router-link to="/global-codes" v-if="arrayToObjact(screensPermissions, 6)">
                 <a-menu-item>
                     <GlobalOutlined /><span class="menuItem">Global Codes</span></a-menu-item>
             </router-link>
-            <router-link to="/inventory">
+            <router-link to="/inventory" >
                 <a-menu-item>
                     <FileDoneOutlined />
                     <span class="menuItem">{{$t('sidebar.inventory')}}</span>
                 </a-menu-item>
             </router-link>
-            <router-link to="/dashboard">
+            <router-link to="/dashboard" >
                 <a-menu-item>
                     <HomeOutlined /><span class="menuItem">Home</span></a-menu-item>
             </router-link>
@@ -44,37 +40,36 @@
 </a-layout-sider>
 </template>
 <script>
-import { defineComponent, reactive, toRefs, onUnmounted } from "vue";
+import { defineComponent, onUnmounted } from "vue";
 import {
-  // DashboardOutlined,
   MailOutlined,
   CreditCardOutlined,
   FileDoneOutlined,
   HomeOutlined,
   SafetyOutlined,
-  ReconciliationOutlined,
   GlobalOutlined,
 } from "@ant-design/icons-vue";
+import { useStore } from "vuex";
+import { arrayToObjact } from "@/commonMethods/commonMethod";
 export default defineComponent({
   components: {
     MailOutlined,
-    // DashboardOutlined,
     CreditCardOutlined,
     FileDoneOutlined,
     HomeOutlined,
     SafetyOutlined,
-    ReconciliationOutlined,
     GlobalOutlined,
   },
 
   setup() {
-    const state = reactive({
-      selectedKeys: ["1"],
-    });
+    const store = useStore();
     onUnmounted(() => {
       document.body.classList.remove("show");
     });
-    return { ...toRefs(state) };
+    return {
+      arrayToObjact,
+      screensPermissions: store.getters.screensPermissions,
+    };
   },
 });
 </script>
