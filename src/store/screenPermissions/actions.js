@@ -1,3 +1,3 @@
 export const permissions = async ({commit}) => {
-	commit('screensPermissions', JSON.parse(localStorage.getItem("permission")))
+	commit('permissions', JSON.parse(localStorage.getItem("permission")))
 }
