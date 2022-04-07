@@ -137,8 +137,6 @@ export default {
       {
         title: "Status",
         dataIndex: "isActive",
-        
-       
         slots: {
           customRender: "isActive"
         },

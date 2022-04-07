@@ -5,6 +5,7 @@ export const timeLine = async ({ commit }, id) => {
     commit('loadingStatus', true)
     await ServiceMethodService.common("get", API_ENDPOINTS['interval'] + "?timelineId=" + id, null, null).then((response) => {
         commit('timelineSuccess', response.data.data);
+        commit('loadingStatus', false)
     })
         .catch((error) => {
             errorLogWithDeviceInfo(error.response)
