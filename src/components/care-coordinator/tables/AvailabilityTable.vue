@@ -3,7 +3,7 @@
     <template #action="text" v-if="arrayToObjact(screensPermissions,53)">
       <a-tooltip placement="bottom" @click="editAvailability(text.record.id)">
         <template #title>
-          <span>{{$t('global.delete')}}</span>
+          <span>{{$t('global.edit')}}</span>
         </template>
         <a class="icons">
           <EditOutlined />

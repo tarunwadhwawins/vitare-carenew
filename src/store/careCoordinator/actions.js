@@ -144,6 +144,31 @@ export const deleteContact = async ({commit},data) => {
   })
 }
 
+export const contactDetails = async ({ commit }, data) => {
+  await serviceMethod.common("get", `staff/${data.id}/contact/${data.contactId}`, null, null).then((response) => {
+    commit('contactDetails', response.data.data);
+    successSwal(response.data.message)
+  }).catch((error) => { 
+    errorLogWithDeviceInfo(error.response)
+    commit('errorMsg', error);
+    if(error.response.status === 500){
+      errorSwal(error.response.data.message)
+    }
+  })
+}
+
+export const updateContact = async ({ commit }, data) => {
+  await serviceMethod.common("put", `staff/${data.id}/contact/${data.contactId}`, null, data.data).then((response) => {
+    successSwal(response.data.message)
+  }).catch((error) => { 
+    errorLogWithDeviceInfo(error.response)
+    commit('errorMsg', error);
+    if(error.response.status === 500){
+      errorSwal(error.response.data.message)
+    }
+  })
+}
+
 
 
 
