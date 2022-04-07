@@ -1,5 +1,5 @@
 <template>
-  <a-col :sm="12" :xs="24" class="mb-24">
+  <a-col :sm="24" :xs="24" class="mb-24">
     <a-card :title="title">
       <a-tabs v-model:activeKey="activeKey1">
         <a-tab-pane key="1" tab="Table" force-render>
