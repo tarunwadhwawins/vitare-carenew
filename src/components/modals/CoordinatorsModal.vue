@@ -266,6 +266,7 @@ export default {
                 store.dispatch('networkStaff')
                 store.commit("resetCounter");
                 store.state.careCoordinator.errorMsg = ''
+                store.state.careCoordinator.addStaff = null
             } else {
                 warningSwal('No data have to save!').then((response) => {
                     if (response == true) {
