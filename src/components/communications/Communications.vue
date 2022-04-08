@@ -18,22 +18,22 @@
                                 <SendMessage v-if="arrayToObjact(screensPermissions,109)"></SendMessage>
                             </div>
                             <div class="filter">
-                                <button class="btn" :class="toggle ? 'active' : ''" @click="toggle = !toggle">
-                                    <span class="btn-content">{{ $t('communications.dashboardView') }}</span>
-                                </button>
-                                <button class="btn" :class="toggle ? '' : 'active'" @click="toggle = !toggle">
-                                    <span class="btn-content">{{ $t('global.listView') }}</span>
-                                </button>
+                              <button class="btn dashboardView" :class="toggle ? 'active' : ''" @click="toggleButton('dashboard')"  >
+                                <span class="btn-content">{{$t('tasks.dashboardView')}}</span>
+                              </button>
+                              <button class="btn listView" :class="!toggle ? 'active' : ''" @click="toggleButton('list')">
+                                <span class="btn-content">{{$t('global.listView')}}</span>
+                              </button>
                             </div>
                         </h2>
                     </a-col>
                     <a-col :span="24">
                         <!-- Dashboard View -->
-                        <div class="dashboard-view" v-show="toggle">
+                        <div class="dashboard-view" v-show="toggle && dashboardView">
                             <DashboardView />
                         </div>
                         <!-- List View -->
-                        <div class="list-view" v-show="!toggle">
+                        <div class="list-view" v-show="!toggle && listView">
                             <ListView />
                         </div>
                     </a-col>
@@ -50,7 +50,7 @@
 <script>
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
-import { ref, h, defineComponent,defineAsyncComponent} from "vue";
+import { ref, h, defineComponent, defineAsyncComponent, watchEffect } from "vue";
 import DashboardView from "@/components/communications/DashboardView";
 import ListView from "@/components/communications/ListView";
 import StartCall from "@/components/communications/top/StartCall";
@@ -58,6 +58,7 @@ import { notification, Button } from "ant-design-vue";
 import { useStore } from "vuex";
 import {arrayToObjact} from "@/commonMethods/commonMethod"
 import Loader from "@/components/loader/Loader";
+import { useRoute, useRouter } from 'vue-router';
 
 
 export default defineComponent({
@@ -76,6 +77,47 @@ export default defineComponent({
   
   setup() {
     const toggle = ref(true);
+    const router = useRouter()
+    const route = useRoute()
+    const dashboardView = ref(true)
+    const listView = ref(false)
+    
+    watchEffect(() => {
+      console.log('route.query.view', route.query.view)
+      if(route.query.view == 'list') {
+        dashboardView.value = false
+        listView.value = true
+        toggle.value = false
+      }
+      else if(route.query.view == 'dashboard') {
+        dashboardView.value = true
+        listView.value = false
+        toggle.value = true
+      }
+    })
+
+    function toggleButton(val) {
+      store.commit('loadingStatus', true)
+
+      if(val == 'list') {
+        router.replace({query: {view: 'list'}});
+        dashboardView.value = false
+        listView.value = true
+        toggle.value = false
+      }
+      else if(val == 'dashboard') {
+        router.replace({query: {view: 'dashboard'}});
+        dashboardView.value = true
+        listView.value = false
+        toggle.value = true
+      }
+
+      setTimeout(()=>{
+        // toggle.value=!toggle.value
+        store.commit('loadingStatus', false)
+      },1000)
+    }
+
     const AddStartCall = ref(false)
     const handleChange = () => {
     };
@@ -177,7 +219,9 @@ export default defineComponent({
       toggle,
       openNotification,
       handleChange,
-
+      toggleButton,
+      dashboardView,
+      listView,
     };
   },
 });
