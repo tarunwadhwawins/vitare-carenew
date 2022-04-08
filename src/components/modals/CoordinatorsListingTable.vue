@@ -5,10 +5,18 @@
         <template #actions="{record}">
           <a-tooltip placement="bottom">
             <template #title>
+              <span>Edit</span>
+            </template>
+            <a class="icons">
+              <EditOutlined @click="editStaff(record.id);actionTrack(patientUdid,319,'patient')" />
+            </a>
+          </a-tooltip>
+          <a-tooltip placement="bottom">
+            <template #title>
               <span>Delete</span>
             </template>
             <a class="icons">
-              <DeleteOutlined @click="deleteStaff(record.id);actionTrack(patientUdid,319,'patient')" />
+              <DeleteOutlined @click="deletePatientCareCoordinator(record.id);actionTrack(patientUdid,319,'patient')" />
             </a>
           </a-tooltip>
         </template>
@@ -18,13 +26,15 @@
       </a-table>
     </a-col>
   </a-row>
+  <AddCoordinatorsModal v-if="careCoordinatorsVisible" v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" :staffType="staffType" :title="title" :isEditCareCoordinator="true"/>
 </template>
 
 <script>
 
-import { computed, defineComponent, watchEffect } from "vue";
+import { computed, defineComponent, defineAsyncComponent, watchEffect, ref } from "vue";
 import {
   DeleteOutlined,
+  EditOutlined,
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
@@ -39,11 +49,16 @@ import { messages } from '@/config/messages';
     },
     components: {
       DeleteOutlined,
+      EditOutlined,
+      AddCoordinatorsModal: defineAsyncComponent(()=>import("@/components/modals/AddCoordinatorsModal")),
     },
     setup(props, { emit }) {
       const store = useStore();
       const route = useRoute();
       const patientUdid = route.params.udid;
+      const careCoordinatorsVisible = ref(false);
+      const title = props.staffType == 1 ? 'Edit Care Coordinator' : 'Edit Health Team'
+
       const careTeamColumns = [
         {
           title: "Care Coordinator",
@@ -66,7 +81,7 @@ import { messages } from '@/config/messages';
 
       watchEffect(() => {
         console.log('props.staffType', props.staffType)
-        store.dispatch('careTeamList', {
+        store.dispatch('patientCareCoordinatorsList', {
           patientUdid: patientUdid,
           type: props.staffType
         })
@@ -80,11 +95,11 @@ import { messages } from '@/config/messages';
         return store.state.careTeam.physiciansList
       })
 
-      const deleteStaff = (patientStaffUdid) => {
+      const deletePatientCareCoordinator = (patientStaffUdid) => {
         warningSwal(messages.deleteWarning).then((response) => {
           if (response == true) {
-              store.dispatch('deleteStaff', { patientUdid: patientUdid, patientStaffUdid: patientStaffUdid }).then(() => {
-              store.dispatch('careTeamList', {
+              store.dispatch('deletePatientCareCoordinator', { patientUdid: patientUdid, patientStaffUdid: patientStaffUdid }).then(() => {
+              store.dispatch('patientCareCoordinatorsList', {
                 patientUdid: patientUdid,
                 type: props.staffType
               })
@@ -100,6 +115,19 @@ import { messages } from '@/config/messages';
         })
       }
 
+      const editStaff = (patientStaffUdid) => {
+        store.dispatch('patientCareCoordinatorDetails', {
+          patientUdid: route.params.id,
+          patientStaffUdid: patientStaffUdid,
+        }).then(() => {
+          careCoordinatorsVisible.value = true;
+        })
+      }
+
+      const handleOk = ({modal, value}) => {
+        careCoordinatorsVisible.value = modal == 'addCareTeam' ? value : false;
+      }
+
       const patientStaff = props.staffType == 0 ? careTeamList : physiciansList
 
       return {
@@ -107,7 +135,11 @@ import { messages } from '@/config/messages';
         patientUdid,
         careTeamColumns,
         patientStaff,
-        deleteStaff,
+        deletePatientCareCoordinator,
+        editStaff,
+        careCoordinatorsVisible,
+        title,
+        handleOk,
       };
     },
   });

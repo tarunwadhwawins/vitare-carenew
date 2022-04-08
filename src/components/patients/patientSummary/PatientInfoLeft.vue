@@ -11,7 +11,7 @@
         <p v-if="patientDetails.phoneNumber"><a @click="actionTrack(paramsId,322,'patient')" v-if="arrayToObjact(screensPermissions, 322)" href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
         <p v-if="patientDetails.address"><HomeOutlined/> <span class="address-text">{{ patientDetails.address }}</span></p>
       </div>
-      <EditOutlined class="editIcon" @click="editPatient({udid: patientDetails.id, id: patientDetails.id});;actionTrack(paramsId,301,'patient')" v-if="arrayToObjact(screensPermissions, 301)"/>
+      <EditOutlined class="editIcon" @click="editPatient({udid: patientDetails.id, id: patientDetails.id});actionTrack(paramsId,301,'patient')" v-if="arrayToObjact(screensPermissions, 301)||arrayToObjact(screensPermissions, 63)"/>
     </div>
 
     <div class="pat-profile">
@@ -81,7 +81,7 @@
           Task <PlusOutlined @click="addTaskModal();actionTrack(paramsId,295,'patient')" /><br />
         </div>
         <div v-if="latestTask != null && arrayToObjact(screensPermissions, 295)" class="thumb-desc">
-          <router-link target="_blank" to="/tasks" @click="actionTrack(paramsId,314,'patient')">{{ latestTask[0].title }}</router-link>
+          <router-link target="_blank" :to="{ name: 'Tasks', query: {view: 'dashboard'} }" @click="actionTrack(paramsId,314,'patient')">{{ latestTask[0].title }}</router-link>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -148,7 +148,7 @@
     <AddTasksModal v-model:visible="addTaskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
     <AddNotesModal v-model:visible="addNoteVisible" @closeModal="handleOk" />
     <AddDocumentModal v-model:visible="addDocumentVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
-    <AddCareTeamModal v-if="careCoordinatorsVisible" v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" :staffType="staffType" :title="title" />
+    <AddCoordinatorsModal v-if="careCoordinatorsVisible" v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" :staffType="staffType" :title="title" :isEditCareCoordinator="false" />
     <AddTimeLogsModal v-model:visible="addTimeLogsVisible" :isEditTimeLog="isEditTimeLog" :isAutomatic="isAutomatic" @closeModal="handleOk" />
     <AddDeviceModal v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
     <PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
@@ -218,7 +218,7 @@ export default defineComponent({
     NotesDetailModal: defineAsyncComponent(()=>import("@/components/modals/NotesDetail")),
     AddDocumentModal: defineAsyncComponent(()=>import("@/components/modals/AddDocument")),
     DocumentDetailModal: defineAsyncComponent(()=>import("@/components/modals/DocumentDetail")),
-    AddCareTeamModal: defineAsyncComponent(()=>import("@/components/modals/CareCoordinators")),
+    AddCoordinatorsModal: defineAsyncComponent(()=>import("@/components/modals/AddCoordinatorsModal")),
     AddTimeLogsModal: defineAsyncComponent(()=>import("@/components/modals/AddTimeLogs")),
     TimeLogsDetailModal: defineAsyncComponent(()=>import("@/components/modals/TimeLogsDetail")),
     AddDeviceModal: defineAsyncComponent(()=>import("@/components/modals/AddDevice")),
@@ -279,11 +279,11 @@ export default defineComponent({
         store.dispatch('latestVital', route.params.udid)
         store.dispatch('latestNotes', route.params.udid)
         store.dispatch('latestDocument', route.params.udid)
-        store.dispatch('careTeamList', {
+        store.dispatch('patientCareCoordinatorsList', {
           patientUdid: route.params.udid,
           type: 1
         })
-        store.dispatch('careTeamList', {
+        store.dispatch('patientCareCoordinatorsList', {
           patientUdid: route.params.udid,
           type: 0
         })

@@ -1,21 +1,27 @@
 <template>
-  <a-form ref="formRef" layout="vertical" :model="addCareTeamForm" @finish="submitForm">
-    <a-row :gutter="24">
-      <a-col :sm="24" :xs="24">
-        <a-form-item :label="$t('global.careCoodinator')" name="staff" :rules="[{ required: true, message: $t('global.careCoodinator')+' '+$t('global.validation') }]">
-            <StaffDropDown v-model:value="addCareTeamForm.staff" @handleStaffChange="handleStaffChange($event)" @change="checkChangeInput()" :close="closeValue" />
-        </a-form-item>
-      </a-col>
-      <a-col :sm="24" :xs="24">
-        <a-form-item :label="$t('global.isPrimary')" name="isPrimary" :rules="[{ required: true, message: $t('global.isPrimary')+' '+$t('global.validation') }]">
-          <a-switch v-model:checked="addCareTeamForm.isPrimary" size="large" />
-        </a-form-item>
-      </a-col>
-      <a-col :sm="4" :xs="24">
-        <a-button class="add-button" size="large" html-type="submit">Add</a-button>
-      </a-col>
-    </a-row>
-  </a-form>
+  <a-modal width="50%" :title="title" @cancel="onCloseModal()">
+    <div class="wide">
+      <a-form ref="formRef" layout="vertical" :model="addCareTeamForm" @finish="submitForm">
+        <a-row :gutter="24">
+          <a-col :sm="24" :xs="24">
+            <a-form-item :label="$t('global.careCoodinator')" name="staff" :rules="[{ required: true, message: $t('global.careCoodinator')+' '+$t('global.validation') }]">
+              <a-input v-if="isEditCareCoordinator" :disabled="disabled" :value="patientCareCoordinatorName" size="large" />
+              <StaffDropDown v-else :disabled="disabled" v-model:value="addCareTeamForm.staff" @handleStaffChange="handleStaffChange($event)" @change="checkChangeInput()" :close="closeValue" />
+            </a-form-item>
+          </a-col>
+          <a-col :sm="24" :xs="24">
+            <a-form-item :label="$t('global.isPrimary')" name="isPrimary" :rules="[{ required: true, message: $t('global.isPrimary')+' '+$t('global.validation') }]">
+              <a-switch v-model:checked="addCareTeamForm.isPrimary" size="large" />
+            </a-form-item>
+          </a-col>
+          <a-col :sm="4" :xs="24">
+            <a-button class="add-button" size="large" html-type="submit">{{ buttontext }}</a-button>
+          </a-col>
+        </a-row>
+      </a-form>
+      <Loader />
+    </div>
+  </a-modal>
 </template>
 
 <script>
@@ -26,25 +32,52 @@ import { useRoute } from "vue-router";
 import {warningSwal,actionTrack} from "@/commonMethods/commonMethod";
 import { messages } from '@/config/messages';
 import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
+import Loader from "@/components/loader/Loader";
 
 export default defineComponent({
   props: {
+    title: {
+      title: String
+    },
     staffType: {
       type: Number
+    },
+    isEditCareCoordinator: {
+      type: Boolean
     },
   },
   components: {
     StaffDropDown,
+    Loader,
   },
   setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
     const patientUdid = route.params.udid;
     const isValueChanged = ref(false);
+    const patientCareCoordinatorName = ref(null);
+    const disabled = props.isEditCareCoordinator == true ? true : false
+    var isEdit = props.isEditCareCoordinator == true ? true : false
+    var buttontext = props.isEditCareCoordinator == true ? 'Update' : 'Add'
+
+    const patientCareCoordinatorDetails = computed(() => {
+      return store.state.careTeam.patientCareCoordinatorDetails
+    })
+
+    const addCareTeamForm = reactive({
+      staff: "",
+      isPrimary: false,
+      type: props.staffType
+    })
+    const form = reactive({ ...addCareTeamForm })
 
     watchEffect(() => {
+      if(isEdit == true) {
+        Object.assign(addCareTeamForm, patientCareCoordinatorDetails.value)
+        patientCareCoordinatorName.value = patientCareCoordinatorDetails.value != null ? patientCareCoordinatorDetails.value.staff : ''
+      }
       console.log('props.staffType', props.staffType)
-      store.dispatch('careTeamList', {
+      store.dispatch('patientCareCoordinatorsList', {
         patientUdid: patientUdid,
         type: props.staffType
       })
@@ -54,12 +87,6 @@ export default defineComponent({
       return store.state.common.allStaffList
     })
 
-    const addCareTeamForm = reactive({
-      staff: "",
-      isPrimary: false,
-      type: props.staffType
-    })
-
     const handleStaffChange = (val) => {
       addCareTeamForm.staff = val;
     };
@@ -67,8 +94,6 @@ export default defineComponent({
     function checkChangeInput() {
       store.commit('checkChangeInput', true)
     }
-
-    const form = reactive({ ...addCareTeamForm })
 
     const changedValue = () => {
       isValueChanged.value = true;
@@ -97,26 +122,53 @@ export default defineComponent({
     
     const formRef = ref();
     const submitForm = () => {
-      addCareTeamForm.isPrimary = addCareTeamForm.isPrimary == true ? 1 : 0
-      store.dispatch('addCareTeam', { patientUdid: patientUdid, data: addCareTeamForm }).then(() => {
-        store.dispatch('careTeamList', {
+      if(props.isEditCareCoordinator) {
+        store.dispatch('updatePatientCareCoordinator', {
           patientUdid: patientUdid,
-          type: props.staffType
+          patientStaffUdid: patientCareCoordinatorDetails.value.id,
+          data: {
+            isPrimary: addCareTeamForm.isPrimary == true ? 1 : 0,
+            type: props.staffType,
+          }
+        }).then(() => {
+          store.dispatch('patientCareCoordinatorsList', {
+            patientUdid: patientUdid,
+            type: props.staffType
+          })
+          formRef.value.resetFields();
+          Object.assign(addCareTeamForm, form);
+          emit("closeModal", {
+            modal: 'addCareTeam',
+            value: false
+          });
+          isEdit = false
         })
-        formRef.value.resetFields();
-        Object.assign(addCareTeamForm, form);
-        emit("closeModal", {
-          modal: 'addCareTeam',
-          value: false
-        });
-      })
+      }
+      else {
+        store.dispatch('addPatientCareCoordinator', {
+          patientUdid: patientUdid,
+          data: addCareTeamForm
+        }).then(() => {
+          store.dispatch('patientCareCoordinatorsList', {
+            patientUdid: patientUdid,
+            type: props.staffType
+          })
+          formRef.value.resetFields();
+          Object.assign(addCareTeamForm, form);
+          emit("closeModal", {
+            modal: 'addCareTeam',
+            value: false
+          });
+          isEdit = false
+        })
+      }
     }
 
     const deleteStaff = (patientStaffUdid) => {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
             store.dispatch('deleteStaff', { patientUdid: patientUdid, patientStaffUdid: patientStaffUdid }).then(() => {
-            store.dispatch('careTeamList', {
+            store.dispatch('patientCareCoordinatorsList', {
               patientUdid: patientUdid,
               type: props.staffType
             })
@@ -138,6 +190,9 @@ export default defineComponent({
       onCloseModal,
       handleStaffChange,
       checkChangeInput,
+      disabled,
+      patientCareCoordinatorName,
+      buttontext,
     };
   },
 });
