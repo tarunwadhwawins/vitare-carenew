@@ -7,7 +7,7 @@
                 <a-menu-item>
                     <HomeOutlined /><span class="menuItem">{{$t('global.dashboard')}}</span></a-menu-item>
             </router-link>
-            <router-link to="/communications" v-if="arrayToObjact(screensPermissions, 109)">
+            <router-link :to="{ name: 'Communications', query: {view: 'dashboard'} }" v-if="arrayToObjact(screensPermissions, 109)">
                 <a-menu-item>
                     <MailOutlined /><span class="menuItem">{{$t('sidebar.communications')}}</span></a-menu-item>
             </router-link>
@@ -23,7 +23,7 @@
                 <a-menu-item>
                     <CalendarOutlined /><span class="menuItem">{{$t('sidebar.appointmentCalendar')}}</span></a-menu-item>
             </router-link>
-            <router-link to="/tasks" v-if="arrayToObjact(screensPermissions, 113)">
+            <router-link :to="{ name: 'Tasks', query: {view: 'dashboard'} }" v-if="arrayToObjact(screensPermissions, 113)">
                 <a-menu-item>
                     <CalendarOutlined /><span class="menuItem">{{$t('sidebar.tasks')}}</span></a-menu-item>
             </router-link>
