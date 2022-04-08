@@ -49,9 +49,9 @@ import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import RolesAndPermissionsTable from "@/components/administration/rolesAndPermissions/tables/RolesAndPermissionsTable";
 import SearchField from "@/components/common/input/SearchField";
-import RolesAndPermissionsModal from "@/components/modals/RolesAndPermissionsModal";
+
 import Button from "@/components/common/button/Button";
-import {ref,onUnmounted} from "vue";
+import {ref,onUnmounted,defineAsyncComponent} from "vue";
 import {useStore } from "vuex"
 import {arrayToObjact,exportExcel} from "@/commonMethods/commonMethod"
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
@@ -60,7 +60,7 @@ export default {
         Header,
         Sidebar,
         RolesAndPermissionsTable,
-        RolesAndPermissionsModal,
+        RolesAndPermissionsModal: defineAsyncComponent(() =>import("@/components/modals/RolesAndPermissionsModal")),
         SearchField,
         Button,
         ExportToExcel

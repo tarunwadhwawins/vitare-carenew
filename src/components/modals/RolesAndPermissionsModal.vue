@@ -71,14 +71,14 @@
                 <a-form ref="formRef" :model="addPermissionsForm" @finish="addPermissions" v-if="rolesAndPermissions.rolePermissions.modules">
                     <a-row>
                         <a-col :span="24" v-for="module in rolesAndPermissions.rolePermissions.modules" :key="module.id">
-                            <div v-if="module.name=='mobile'">
+                            <div v-if="module.id==18">
                             </div>
 
                             <a-card v-else :title="module.name">
                                 <div class="screens" v-for="screen in module.screens" :key="screen.moduleId">
-                                    <a-checkbox v-model:checked="addPermissionsForm.screen[screen.moduleId]" @change="checkAll(screen.actions,screen.moduleId)"><strong>{{ screen.name }}</strong></a-checkbox>
+                                    <a-checkbox v-model:checked="addPermissionsForm.screen[screen.id]" @change="checkAll(screen.actions,screen.id)" id="screen"><strong>{{ screen.name }}</strong></a-checkbox>
                                     <a-divider class="transparent" />
-                                    <a-checkbox class="actions" v-for="action in screen.actions" :key="action.id" v-model:checked="addPermissionsForm.action[action.id]" @change="checkStatus(action.id,screen.moduleId,screen.actions)">{{ action.name }}</a-checkbox>
+                                    <a-checkbox class="actions" v-for="action in screen.actions" :key="action.id" v-model:checked="addPermissionsForm.action[action.id]" @change="checkStatus(action.id,screen.moduleId,screen.actions)" id="screen">{{ action.name }}</a-checkbox>
                                     <a-divider class="transparent" />
                                 </div>
                             </a-card>
@@ -125,7 +125,8 @@
 import {
     reactive,
     ref,
-    watchEffect
+    watchEffect,
+    onMounted
 } from "vue";
 import {
     useStore
@@ -169,6 +170,7 @@ export default {
         const rolesAndPermissions = store.getters.rolesAndPermissionsRecord.value
         const formRef = ref()
         const formRef2 = ref()
+        const screen = ref()
         const addRoleForm = reactive({
             name: '',
             description: ''
@@ -193,9 +195,9 @@ export default {
         }
         getId.value = props.editRole ? reactive(props.editRole) : reactive(props.roleId)
         getId.value ? current.value++ : ''
+
         watchEffect(() => {
-            store.dispatch('rolePermissions')
-            store.dispatch('dashboardWidget')
+
             if (props.editRole) {
 
                 Object.assign(addRoleForm, rolesAndPermissions.roleDetails ? rolesAndPermissions.roleDetails : '')
@@ -213,6 +215,17 @@ export default {
                 })
 
             }
+            if (current.value == 2) {
+                setTimeout(() => {
+                    var x = document.getElementById("screen").length
+                    console.log('checkkk', x)
+                }, 100)
+
+            }
+        })
+        onMounted(() => {
+            store.dispatch('rolePermissions')
+            store.dispatch('dashboardWidget')
         })
         ///role submit
         const submitForm = () => {
@@ -303,8 +316,19 @@ export default {
 
         function copyPermission() {
             rolesAndPermissions.editRolesAndPermissions.forEach((Element) => {
+
                 Element.screen.forEach((screenElement) => {
+
                     screenElement.forEach((getData) => {
+
+                        rolesAndPermissions.rolePermissions ? rolesAndPermissions.rolePermissions.modules.forEach((formModule) => {
+
+                            formModule.screens.forEach((formScreen) => {
+
+                                getData.action.length === formScreen.actions.length ? addPermissionsForm.screen[getData.id] = true : addPermissionsForm.screen[getData.id] = false
+                            })
+                        }) : ''
+
                         getData.action ? getData.action.forEach((action) => {
                             action.forEach((getAction) => {
                                 addPermissionsForm.action[getAction.id] = true
@@ -321,7 +345,9 @@ export default {
         }
 
         function checkAll(actions, value) {
+            console.log('action', actions, value)
             actions.map((item) => {
+               
                 addPermissionsForm.screen[value] == true ? addPermissionsForm.action[item.id] = true : addPermissionsForm.action[item.id] = false
             })
         }
@@ -376,6 +402,8 @@ export default {
         }
 
         return {
+
+            screen,
             rolesAndPermissions,
             addRoleForm,
             addPermissionsForm,
