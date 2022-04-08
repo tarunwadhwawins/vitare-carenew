@@ -26,5 +26,6 @@ export default{
     closeModal:false,
     clearStaffFormValidation:false,
     availabilityDetails:false,
+    contactDetails:false,
     
 }
