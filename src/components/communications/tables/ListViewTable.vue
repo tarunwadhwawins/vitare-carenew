@@ -114,9 +114,17 @@
                 <MessageOutlined />
             </a>
         </a-tooltip>
+        <a-tooltip placement="bottom" v-else>
+            <template #title>
+              <span>{{ $t("common.view") }}</span>
+            </template>
+            <a class="icons" @click="showGmail(record)">
+              <EyeOutlined />
+            </a>
+          </a-tooltip>
     </template>
 </a-table>
-
+<CommunicationGmailView v-model:visible="visibleGmail" />
 <Chat v-model:visible="visible" v-if="communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
 </template>
 
@@ -125,6 +133,8 @@ import { ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import Chat from "@/components/modals/Chat";
 import { tableYScroller, arrayToObjact, } from "@/commonMethods/commonMethod";
+
+import CommunicationGmailView from '@/components/modals/CommunicationGmailView'
 import {
   EyeOutlined,
   MessageOutlined,
@@ -141,7 +151,7 @@ export default {
     PhoneOutlined,
     MailOutlined,
     AlertOutlined,
-
+CommunicationGmailView,
     Chat,
   },
   props: {},
@@ -209,6 +219,7 @@ export default {
       },
     ];
     const store = useStore();
+    const visibleGmail = ref(false)
     const communicationId = ref(null);
     const auth = JSON.parse(localStorage.getItem("auth"));
     const meta = store.getters.communicationRecord.value;
@@ -291,6 +302,10 @@ export default {
     const showModal = (e) => {
       communicationId.value = e;
       visible.value = true;
+    }
+    const showGmail = (e) => {
+      store.dispatch('communicationsView',e.id)
+      visibleGmail.value = true;
     };
 
     const handleOk = () => {
@@ -309,6 +324,8 @@ export default {
       auth,
       tableYScroller,
       handleTableChange,
+      showGmail,
+      visibleGmail,
     };
   },
 };

@@ -183,3 +183,6 @@ export const conversation = async (state, data) => {
 export const conversationSend = async (state, data) => {
   state.conversationSend = data;
 }
+export const communicationsView = async (state, data) => {
+  state.communicationsView = data;
+}
