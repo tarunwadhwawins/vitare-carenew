@@ -31,7 +31,8 @@
               </div>
             </a-col>
             <a-col :xl="8" :lg="24">
-              <div class="timer" @click="actionTrack(paramsId,288)" v-if="arrayToObjact(screensPermissions, 288)">
+              <!-- <div class="timer" @click="actionTrack(paramsId,288)" v-if="arrayToObjact(screensPermissions, 288)"> -->
+                <div class="timer" @click="actionTrack(paramsId,288)" >
                 <h3>{{$t('patientSummary.currentSession')}} : {{formattedElapsedTime}}</h3>
                 <a-button v-if="startOn" class="primaryBtn" @click="startTimer">{{$t('patientSummary.startTimer')}}</a-button>
                 <a-button v-if="!startOn" class="primaryBtn" id="timer" @click="stopTimer">{{$t('patientSummary.stopTimer')}}</a-button>
