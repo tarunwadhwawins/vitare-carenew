@@ -24,8 +24,10 @@ export const patient = (state, data) => {
   state.column = [{
     title: "Flags",
     dataIndex: "flags",
-    slots:true,
-    sorter: true
+    slots: {
+      customRender: "flags",
+    },
+    
   },
   {
     title: "Last Name",

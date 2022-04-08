@@ -51,6 +51,10 @@
                         <div class="leftWrapper">Duration</div>
                         <div class="rightWrapper">{{ cardRecords.duration }}</div>
                     </div>
+                    <div class="itemWrapper">
+                      <div class="leftWrapper">Flags</div>
+                      <div class="rightWrapper"><span class="box" :style="{ 'background-color': cardRecords.flags }"></span></div>
+                  </div>
                     <div class="notesWrapper">
                         <span>Notes</span>
                         <p>
@@ -78,6 +82,10 @@
 <div v-else></div>
 <a-modal width="1100px" centered v-model:visible="visible" title="Appointment" @ok="handleOk" maskClosable="true" @cancel="closeModal()">
     <a-table rowKey="id" :columns="columns" :data-source="getMoreAppointment">
+      <template #flags="text">
+        <span class="box" :style="{ 'background-color': text.text }"></span>
+        <!-- <span class="box" :class="(text = text.match(/yellowBgColor/g))" v-if="text.match(/yellowBgColor/g)"></span> -->
+      </template>
     </a-table>
 </a-modal>
 </template>
@@ -128,6 +136,14 @@ const columns = [
     dataIndex: "notes",
     key: "notes",
     ellipsis: true,
+  },
+  {
+    title: "Flags",
+    dataIndex: "flags",
+    key: "flags",
+    slots: {
+      customRender: "flags",
+    },
   },
 ];
 export default {
