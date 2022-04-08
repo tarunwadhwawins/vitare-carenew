@@ -1,9 +1,9 @@
 <template>
-<a-modal width="400px" title="Appointment Details" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal width="500px" title="Appointment Details" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <a-col :sm="24" :xs="24">
             <div class="form-group">
-                <div class="calendarDropdown">
+                <div class="calendarDropdown notificationModal">
                     <div class="itemWrapper">
                         <div class="leftWrapper">Appointment Type</div>
                         <div class="rightWrapper">{{appointmentDetails?.appointmentType}}</div>
@@ -115,3 +115,21 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.notificationModal {
+  width: 100%!important;
+  .itemWrapper {
+    align-items: flex-start!important;
+    .leftWrapper {
+      padding: 0 10px 0 0;
+      width: 35%;
+      
+    }
+    .rightWrapper {
+      padding: 0 0 0 10px;
+      width: 65%;
+      text-align: right;
+    }
+  }
+}
+</style>
