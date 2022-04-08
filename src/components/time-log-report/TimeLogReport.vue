@@ -95,11 +95,11 @@ export default {
 
         watchEffect(() => {
 
-            store.getters.timeLogReports.value.timeLogReportList = ""
-            store.dispatch("timeLogReportList")
+           
 
         })
         onMounted(() => {
+            store.dispatch("timeLogReportList")
             store.dispatch('auditTimeLogFilterDates', "?fromDate=&toDate=")
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
@@ -116,11 +116,12 @@ export default {
         function updateAuditTime() {
             if (auditTimeLog.startDate && auditTimeLog.endDate) {
 
-                store.getters.timeLogReports.value.timeLogReportList = ""
+                //store.getters.timeLogReports.value.timeLogReportList = ""
+                store.getters.timeLogReports.value.timeLogeMeta=''
                 startDate.value = auditTimeLog.startDate ? (moment(auditTimeLog.startDate)).format("YYYY-MM-DD") : ''
                 endDate.value = auditTimeLog.endDate ? (moment(auditTimeLog.endDate)).format("YYYY-MM-DD") : ''
                 store.dispatch('auditTimeLogFilterDates', "?fromDate=" + startDate.value + "&toDate=" + endDate.value)
-                store.dispatch("timeLogReportList", "?fromDate=" + startDate.value + "&toDate=" + endDate.value)
+                store.dispatch("timeLogReportList", "?fromDate=" + startDate.value + "&toDate=" + endDate.value+"&page=")
             }
         }
         onUnmounted(() => {

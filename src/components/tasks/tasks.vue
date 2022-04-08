@@ -18,10 +18,10 @@
                     <Button :name="buttonName" @click="showModal" />
                   </div>
                   <div class="filter">
-                    <button class="btn" :class="toggle ? 'active' : ''" @click="toggleButton()"  >
+                    <button class="btn dashboardView" :class="toggle ? 'active' : ''" @click="toggleButton('dashboard')"  >
                       <span class="btn-content">{{$t('tasks.dashboardView')}}</span>
                     </button>
-                    <button class="btn" :class="toggle ? '' : 'active'" @click="toggleButton()">
+                    <button class="btn listView" :class="!toggle ? 'active' : ''" @click="toggleButton('list')">
                       <span class="btn-content">{{$t('global.listView')}}</span>
                     </button>
                   </div>
@@ -30,13 +30,13 @@
             </a-row>
 
               <!-- Dashboard View -->
-            <div class="dashboard-view" v-show="toggle" >
-                <TasksDashboardView/>
+            <div class="dashboard-view" v-show="toggle && dashboardView" >
+              <TasksDashboardView/>
             </div>
 
               <!-- List View -->
-            <div class="list-view" v-show="!toggle">
-                <TasksListView @isEdit="showModal($event)"/>
+            <div class="list-view" v-show="!toggle && listView">
+              <TasksListView @isEdit="showModal($event)"/>
             </div>
 
           </div>
@@ -54,13 +54,14 @@
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
 import TasksModal from "@/components/modals/TasksModal";
-import { ref,computed } from "vue";
+import { ref,computed, watchEffect } from "vue";
 import Button from "@/components/common/button/Button";
 import TasksDashboardView from "@/components/tasks/TasksDashboardView";
 import TasksListView from "@/components/tasks/TasksListView";
 import {useStore} from "vuex"
 import Loader from "@/components/loader/Loader";
 import { arrayToObjact } from "@/commonMethods/commonMethod";
+import { useRoute, useRouter } from 'vue-router';
 export default {
   components: {
     Header,
@@ -73,9 +74,14 @@ export default {
   },
   setup() {
     const store = useStore();
+    const router = useRouter()
+    const route = useRoute()
     const toggle = ref(true);
     const visible = ref(false);
+    const dashboardView = ref(true)
+    const listView = ref(false)
     const taskID =ref();
+
     const showModal = (task) => {
       // console.log('=>',task)
       if(task.id){
@@ -87,11 +93,39 @@ export default {
     const handleOk = (value) => {
       visible.value = value;
     };
+    
+    watchEffect(() => {
+      console.log('route.query.view', route.query.view)
+      if(route.query.view == 'list') {
+        dashboardView.value = false
+        listView.value = true
+        toggle.value = false
+      }
+      else if(route.query.view == 'dashboard') {
+        dashboardView.value = true
+        listView.value = false
+        toggle.value = true
+      }
+    })
 
-    function toggleButton(){
+    function toggleButton(val) {
       store.commit('loadingStatus', true)
+
+      if(val == 'list') {
+        router.replace({query: {view: 'list'}});
+        dashboardView.value = false
+        listView.value = true
+        toggle.value = false
+      }
+      else if(val == 'dashboard') {
+        router.replace({query: {view: 'dashboard'}});
+        dashboardView.value = true
+        listView.value = false
+        toggle.value = true
+      }
+
       setTimeout(()=>{
-        toggle.value=!toggle.value
+        // toggle.value=!toggle.value
         store.commit('loadingStatus', false)
       },1000)
     }
@@ -110,6 +144,8 @@ export default {
       visible,
       showModal,
       handleOk,
+      dashboardView,
+      listView,
     };
   },
 };
