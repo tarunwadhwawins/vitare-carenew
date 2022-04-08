@@ -145,27 +145,33 @@ export const deleteContact = async ({commit},data) => {
 }
 
 export const contactDetails = async ({ commit }, data) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("get", `staff/${data.id}/contact/${data.contactId}`, null, null).then((response) => {
     commit('contactDetails', response.data.data);
     successSwal(response.data.message)
+    commit('loadingStatus', false)
   }).catch((error) => { 
     errorLogWithDeviceInfo(error.response)
     commit('errorMsg', error);
     if(error.response.status === 500){
       errorSwal(error.response.data.message)
     }
+    commit('loadingStatus', false)
   })
 }
 
 export const updateContact = async ({ commit }, data) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("put", `staff/${data.id}/contact/${data.contactId}`, null, data.data).then((response) => {
+    commit('loadingStatus', false)
     successSwal(response.data.message)
-  }).catch((error) => { 
+  }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     commit('errorMsg', error);
     if(error.response.status === 500){
       errorSwal(error.response.data.message)
     }
+    commit('loadingStatus', false)
   })
 }
 
@@ -228,28 +234,34 @@ export const deleteAvailability = async ({commit},data) => {
 }
 
 export const availabilityDetails = async ({commit}, data) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("get", `staff/${data.id}/availability/${data.availabilityId}`, null, null).then((response) => {
     commit('availabilityDetails', response.data.data);
     successSwal(response.data.message)
+    commit('loadingStatus', false)
   }).catch((error) => { 
     errorLogWithDeviceInfo(error.response)
     commit('errorMsg', error);
     if(error.response.status === 500){
       errorSwal(error.response.data.message)
     }
+    commit('loadingStatus', false)
   })
 }
 
 
 export const updateAvailability = async ({commit}, data) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("put", `staff/${data.id}/availability/${data.availabilityId}`, null, data.data).then((response) => {
     successSwal(response.data.message)
+    commit('loadingStatus', false)
   }).catch((error) => { 
     errorLogWithDeviceInfo(error.response)
     commit('errorMsg', error);
     if(error.response.status === 500) {
       errorSwal(error.response.data.message)
     }
+    commit('loadingStatus', false)
   })
 }
 

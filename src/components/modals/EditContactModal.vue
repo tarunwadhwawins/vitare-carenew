@@ -39,6 +39,7 @@
       </a-col>
     </a-row>
     </a-form>
+    <Loader />
   </a-modal>
 </template>
 
@@ -46,12 +47,16 @@
 import { computed, watchEffect, reactive, ref } from 'vue-demi'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
+import Loader from "@/components/loader/Loader";
 
 export default {
   props: {
     isContactEdit: {
       type: Number
     }
+  },
+  components: {
+    Loader,
   },
   setup(props, { emit }) {
     const store = useStore()
