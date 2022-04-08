@@ -18,7 +18,7 @@
                             <a-col :sm="8" :xs="24" v-if="arrayToObjact(screensPermissions, 332)">
                                 <div class="form-group">
                                     <label>{{$t('global.startDate')}}</label>
-                                    <a-date-picker format="MM/DD/YYYY" value-format="YYYY-MM-DD" :disabledDate="d => !d || d.isAfter(dateSelect)" v-model:value="auditTimeLog.startDate" :size="size" style="width: 100%" />
+                                    <a-date-picker format="MM/DD/YYYY" value-format="YYYY-MM-DD" :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" v-model:value="auditTimeLog.startDate" :size="size" style="width: 100%" />
                                 </div>
                             </a-col>
                             <a-col :sm="8" :xs="24" v-if="arrayToObjact(screensPermissions, 332)">
