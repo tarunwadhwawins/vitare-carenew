@@ -36,7 +36,7 @@
                     <FileTextOutlined /><span class="menuItem">{{$t('sidebar.auditTimeLog')}}</span></a-menu-item>
             </router-link>
 
-            <router-link to="/cpt-codes" v-if="arrayToObjact(screensPermissions, 9)">
+            <router-link v-if="linkTo" :to="linkTo" >
                 <a-menu-item>
                     <CalendarOutlined /><span class="menuItem">{{$t('sidebar.administration')}}
                     </span></a-menu-item>
@@ -46,7 +46,7 @@
 </a-layout-sider>
 </template>
 <script>
-import { defineComponent, computed,onUnmounted } from "vue";
+import { defineComponent, computed,onUnmounted,ref, onMounted } from "vue";
 import {
   HomeOutlined,
   MailOutlined,
@@ -66,7 +66,13 @@ export default defineComponent({
   },
 
   setup() {
+
     const store = useStore();
+    const linkTo = ref(null)
+
+    const screensPermissions = computed(()=>{
+      return store.state.screenPermissions.screensPermissions
+    })
     const roles = computed(() => {
       return localStorage.getItem("roleAuth");
     });
@@ -74,10 +80,36 @@ export default defineComponent({
       document.body.classList.remove("show");
     });
 
+
+    onMounted(()=>{
+      if(screensPermissions.value){
+
+        if(arrayToObjact(screensPermissions.value, 9)){
+          linkTo.value="/cpt-codes"
+        }
+        else if(arrayToObjact(screensPermissions.value, 15)){
+          linkTo.value="/manage-programs"
+        }
+        else if(arrayToObjact(screensPermissions.value, 22)){
+          linkTo.value="/providers"
+        }
+        else if(arrayToObjact(screensPermissions.value, 1)){
+          linkTo.value="/roles-and-permissions"
+        }
+       else if(arrayToObjact(screensPermissions.value, 6)){
+          linkTo.value="/global-codes"
+        }
+       else if(arrayToObjact(screensPermissions.value, 336)){
+          linkTo.value="/inventory"
+        }
+      }
+    })
+
     
     
     return { 
-      screensPermissions:store.getters.screensPermissions,
+      linkTo,
+      screensPermissions,
       arrayToObjact,
       roles,
     };

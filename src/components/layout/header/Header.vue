@@ -444,13 +444,14 @@ export default defineComponent({
 
     const isReadNotification = (id, type,typeId) => {
       if (type == "Appointment") {
-        isAppointment.value=true
-        store.dispatch("appointmentDetails",typeId)
         store.dispatch("isReadUpdateNotification", id);
+        store.dispatch("appointmentDetails",typeId)
+        store.dispatch("notificationList");
+        isAppointment.value=true
       } else {
         store.dispatch("isReadUpdateNotification", id);
+        store.dispatch("notificationList");
       }
-      store.dispatch("notificationList");
     };
     const bitrixFormCheck = computed(() => {
       return store.state.patients.bitrixFormCheck;
