@@ -263,3 +263,7 @@ export const availabilityDetails = (state, data) => {
 	data.endTime = meridiemFormatFromTimestamp(data.endTime)
 	state.availabilityDetails = data;
 };
+
+export const contactDetails = (state, data) => {
+	state.contactDetails = data;
+};
