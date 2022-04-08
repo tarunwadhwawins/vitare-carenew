@@ -85,7 +85,6 @@
             </a-col>
             <a-col :span="24">
                 <ModalButtons name="communication" @is_click="handleCancel"/>
-
             </a-col>
         </a-row>
     </a-form>
