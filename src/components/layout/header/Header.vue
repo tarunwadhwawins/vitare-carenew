@@ -108,7 +108,7 @@
                 </a>
                 <template #overlay>
                   <a-menu class="headerDropdown">
-                    <a-menu-item key="0">
+                    <a-menu-item key="0" v-if="arrayToObjact(screensPermissions, 112)">
                       <a href="javascript:void(0)" @click="addAppt">{{
                         $t("header.addAppointment")
                       }}</a>
@@ -121,7 +121,7 @@
                         $t("header.addPatient")
                       }}</a>
                     </a-menu-item>
-                    <a-menu-item key="4">
+                    <a-menu-item key="4" v-if="arrayToObjact(screensPermissions, 113)">
                       <a href="javascript:void(0)" @click="addTask">{{
                         $t("header.addTask")
                       }}</a>
