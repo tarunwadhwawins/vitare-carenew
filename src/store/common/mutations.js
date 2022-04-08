@@ -1,6 +1,6 @@
 
 export const globalCodes = (state, data) => {
-    state.globalCodeCategories = data;
+    state.globalCodeCategories = data.filter((item)=>item.preDefined!=1);
     data.forEach(element => {
         if (element.name === 'Gender') {
             state.gender = element.globalCode;

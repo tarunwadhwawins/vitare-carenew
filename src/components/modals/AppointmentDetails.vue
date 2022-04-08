@@ -12,7 +12,6 @@
                         <div class="leftWrapper">Date Time</div>
                         <div class="rightWrapper">
                             {{ dateAndTimeFormate(appointmentDetails?.startDateTime,'MMM DD, yyyy hh:mm A')}}
-
                         </div>
                     </div>
                     <div class="itemWrapper">
@@ -38,6 +37,16 @@
                     <div class="itemWrapper">
                         <div class="leftWrapper">Status</div>
                         <div class="rightWrapper">{{ appointmentDetails?.status }}</div>
+                    </div>
+                    <div class="itemWrapper">
+                        <div class="leftWrapper">flag</div>
+                        <div class="rightWrapper">
+                          <span class="box" :style="{ 'background-color': appointmentDetails?.flagColor}"></span>
+                        </div>
+                    </div>
+                    <div class="itemWrapper">
+                        <div class="leftWrapper">Note</div>
+                        <div class="rightWrapper">{{ appointmentDetails?.notes }}</div>
                     </div>
 
                 </div>
@@ -65,13 +74,6 @@ export default {
    
 
     function accept(id, statusId) {
-      //   warningSwal('Accept').then((response) => {
-      //   if (response == true) {
-      //     store.dispatch("appintmentStatus",{id:id,statusId:statusId});
-      //     emit("closeModal",false);
-      //   }
-      // })
-
       Swal.fire({
         title: "Are you sure want to accept ?",
         icon: "warning",
@@ -88,12 +90,6 @@ export default {
     }
 
     function reject(id, statusId) {
-      // warningSwal("Reject").then((response) => {
-        // if (response == true) {
-        //   store.dispatch("appintmentStatus",{id:id,statusId:statusId});
-        //   emit("closeModal",false);
-        // }
-        // });
         Swal.fire({
           title: "Are you sure want to reject ?",
           icon: "warning",
