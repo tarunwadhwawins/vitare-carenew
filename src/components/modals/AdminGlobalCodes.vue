@@ -4,22 +4,21 @@
     <a-form ref="formRef" :model="globalCodeForm" layout="vertical" @finish="submitForm">
 
         <a-row :gutter="24">
-            <a-col :sm="8" :xs="24">
+            <a-col :sm="9" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('globalCodes.category')" name="globalCodeCategory" :rules="[{ required: true, message: $t('globalCodes.category')+' '+$t('global.validation')  }]">
-
                             <GlobalCodeDropDown  v-if="globalCodeCategories" @change="checkChangeInput()"  v-model:value="globalCodeForm.globalCodeCategory" :globalCode="globalCodeCategories"/>
                     </a-form-item>
                 </div>
             </a-col>
-            <a-col :sm="8" :xs="24">
+            <a-col :sm="9" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('globalCodes.codeName')" name="name" :rules="[{ required: true, message: $t('globalCodes.codeName')+' '+$t('global.validation')  }]">
                         <a-input v-model:value="globalCodeForm.name" size="large" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
-            <a-col :sm="8" :xs="24">
+            <a-col :sm="6" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('globalCodes.activeStatus')" name="status">
                         <a-switch v-model:checked="globalCodeForm.isActive" @change="UpdateStatus($event)" />
