@@ -345,7 +345,7 @@ export default defineComponent({
   padding: 6px 16px;
   display: inline-block;
   cursor: pointer;
-  width: 100px;
+  width: fit-content;
 }
 
 .toggleButton.active {

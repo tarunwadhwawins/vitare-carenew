@@ -5,3 +5,8 @@ export const communicationRecord = (state)=>{
         return state
     })
   }
+  export const communicationsView = (state)=>{
+    return computed(()=>{
+        return state.communicationsView
+    })
+  }

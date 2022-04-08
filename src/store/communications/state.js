@@ -13,4 +13,5 @@ export default {
   conferenceId:null,
   conversationList:null,
   conversationSend:null,
+  communicationsView:null,
 }
