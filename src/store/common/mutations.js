@@ -8,7 +8,7 @@ export const globalCodes = (state, data) => {
         if (element.name === 'Task Priority') {
             state.taskPriority = element.globalCode;
         }
-        if (element.name === 'MessageCategory') {
+        if (element.name === 'Message Category') {
             state.messageCategories = element.globalCode;
         }
         if (element.name === 'Message Type') {
