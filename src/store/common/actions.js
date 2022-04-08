@@ -100,7 +100,8 @@ export const isReadUpdateNotification = async ({
 }, id) => {
 
   await serviceMethod.common("put", `notification/isRead/${id}`, null, true).then((response) => {
-    commit('isReadUpdateNotification', response.data.data);
+    // commit('isReadUpdateNotification', response.data.data);
+    console.log(response);
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {

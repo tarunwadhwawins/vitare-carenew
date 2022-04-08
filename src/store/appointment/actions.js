@@ -118,14 +118,18 @@ export const appointmentDetails = async ({commit},id) => {
 
 export const appintmentStatus = async ({commit},data) => {
   commit('loadingStatus', true)
-  await serviceMethod.common("put", `appointment/status/${data.id}?statusId=${data.statusId}`, null, true).then((response) => { 
+  let result =null
+  await serviceMethod.common("put", `appointment/status/${data.id}?statusId=${data.statusId}`, null, {cancellationNote:data.cancellationNote}).then((response) => { 
     commit('appintmentStatus', response.data.data);
     commit('loadingStatus', false)
+    result = response
   }).catch((error) => {
       errorLogWithDeviceInfo(error.response)
       commit('loadingStatus', false)
       errorSwal(error.response.data.message)
     
   })
+
+  return result
 }
 
