@@ -40,6 +40,7 @@ export const API_ENDPOINTS = {
     communicationTypes:"communication/type",
     addCommunication:"communication",
     communicationsCount:"communication/count",
+    communicationsView:"communication/messages",
     callStatus:"call/status",
     CallPlanned:"call/staff",
 

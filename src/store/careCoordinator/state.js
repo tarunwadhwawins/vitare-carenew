@@ -24,6 +24,7 @@ export default{
     addStaffDocument:null,
     staffDocuments:null,
     closeModal:false,
-    clearStaffFormValidation:false
+    clearStaffFormValidation:false,
+    availabilityDetails:false,
     
 }

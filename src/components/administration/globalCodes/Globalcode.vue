@@ -1,73 +1,70 @@
 <template>
-  <div>
-    <!---->
+<div>
     <a-layout>
-      <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
-        <Header />
-      </a-layout-header>
-      <a-layout>
-        <Sidebar />
-        <a-layout-content>
-          <div class="common-bg">
-            <a-row>
-              <a-col :span="24">
-                <h2 class="pageTittle">
-                  Global Codes
-                  
-                  <div class="commonBtn" v-if="arrayToObjact(screensPermissions,6)">
-                    <Button :name="buttonName" @click="showModal" />
-                  </div>
-                </h2>
-              </a-col>
-              <a-col :span="12" >
-                <SearchField endPoint="globalCodes"/>
-              </a-col>
-              <a-col :span="12" v-if="arrayToObjact(screensPermissions,327)">
-                <div class="text-right mb-24">
-                  <ExportToExcel @click="exportExcel('globalCode_report')" />
+        <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
+            <Header />
+        </a-layout-header>
+        <a-layout>
+            <Sidebar />
+            <a-layout-content>
+                <div class="common-bg">
+                    <a-row>
+                        <a-col :span="24">
+                            <h2 class="pageTittle">
+                                Global Codes
+                                <div class="commonBtn" v-if="arrayToObjact(screensPermissions,6)">
+                                    <Button :name="buttonName" @click="showModal" />
+                                </div>
+                            </h2>
+                        </a-col>
+                        <a-col :span="12">
+                            <SearchField endPoint="globalCodes" />
+                        </a-col>
+                        <a-col :span="12" v-if="arrayToObjact(screensPermissions,327)">
+                            <div class="text-right mb-24">
+                                <ExportToExcel @click="exportExcel('globalCode_report')" />
+                            </div>
+                        </a-col>
+                        <a-col :span="24">
+                            <Loader />
+                            <GlobalCodesTable @edit-global-code="editGlobalCode($event)" />
+                        </a-col>
+                    </a-row>
                 </div>
-              </a-col>
-              <a-col :span="24">
-                <Loader/>
-                <GlobalCodesTable @edit-global-code="editGlobalCode($event)"/>
-              </a-col>
-            </a-row>
-          </div>
-        </a-layout-content>
-      </a-layout>
+            </a-layout-content>
+        </a-layout>
     </a-layout>
     <!--modals-->
-    <AdminGlobalCodes  v-model:visible="visible" @close-modal="handleClose($event)" :isAdd="isAdd" />
-    
-    <!---->
-  </div>
+    <AdminGlobalCodes v-model:visible="visible" @close-modal="handleClose($event)" :isAdd="isAdd" />
+</div>
 </template>
 
 <script>
 import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
-//import AdminGlobalCodes from "@/components/modals/AdminGlobalCodes";
 import GlobalCodesTable from "@/components/administration/globalCodes/tables/GlobalCodesTable";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
-import { defineComponent,defineAsyncComponent, ref,onUnmounted } from "vue";
+import { defineComponent, defineAsyncComponent, ref, onUnmounted } from "vue";
 import { useStore } from "vuex";
-import { arrayToObjact,exportExcel } from "@/commonMethods/commonMethod";
-import Loader from "@/components/loader/Loader"
+import { arrayToObjact, exportExcel } from "@/commonMethods/commonMethod";
+import Loader from "@/components/loader/Loader";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 export default defineComponent({
   components: {
     Header,
     Sidebar,
-    AdminGlobalCodes:defineAsyncComponent(()=>import("@/components/modals/AdminGlobalCodes")),
+    AdminGlobalCodes: defineAsyncComponent(() =>
+      import("@/components/modals/AdminGlobalCodes")
+    ),
     GlobalCodesTable,
     SearchField,
     Button,
     Loader,
-    ExportToExcel
+    ExportToExcel,
   },
   setup() {
-    const store = useStore()
+    const store = useStore();
     const checked = ref([false]);
     const visible = ref(false);
     const isAdd = ref(null);
@@ -85,22 +82,21 @@ export default defineComponent({
 
     const editGlobalCode = (id) => {
       isAdd.value = id;
-      store.dispatch('globalCodeDetails', id).then(() => {
+      store.dispatch("globalCodeDetails", id).then(() => {
         visible.value = true;
-      })
-    }
+      });
+    };
 
-    
-    onUnmounted(()=>{
-      store.dispatch("searchTable", '&search=')
-            store.dispatch('orderTable', {
-                data: '&orderField=&orderBy='
-            })
-        })
+    onUnmounted(() => {
+      store.dispatch("searchTable", "&search=");
+      store.dispatch("orderTable", {
+        data: "&orderField=&orderBy=",
+      });
+    });
     return {
       exportExcel,
       arrayToObjact,
-      screensPermissions:store.getters.screensPermissions,
+      screensPermissions: store.getters.screensPermissions,
       isAdd,
       buttonName: "Add Global Code",
       editGlobalCode,

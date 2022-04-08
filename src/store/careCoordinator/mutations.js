@@ -257,3 +257,9 @@ export const staffDocuments = (state, data) => {
 export const closeModal = (state, data) => {
 	state.closeModal = data;
 };
+
+export const availabilityDetails = (state, data) => {
+	data.startTime = meridiemFormatFromTimestamp(data.startTime)
+	data.endTime = meridiemFormatFromTimestamp(data.endTime)
+	state.availabilityDetails = data;
+};

@@ -4,21 +4,24 @@
     :columns="colomnsRecord"
     :data-source="dataRecord"
     :pagination="pagination">
-    <template #patient="{record}">
-      
+    <template #patient="{record}" v-if="arrayToObjact(screensPermissions,63)">
       <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientUdid } }">
         {{ record.patient }}
       </router-link>
     </template>
-    <template #action="{record}">
-      <!-- <router-link :to="{ name: 'videoCall', params: { id: enCodeString(record.conferenceId) } }" class="btn blueBtn">{{$t('communications.start')}}</router-link> -->
+    <template #patient="{record}" v-else>
+      <span>
+        {{ record.patient }}
+      </span>
+    </template>
+    <template #action="{record}" v-if="arrayToObjact(screensPermissions,107)">
       <a-button @click="videoCall(record.conferenceId)" class="btn blueBtn">{{$t('communications.start')}}</a-button>
     </template>
   </a-table>
 </template>
 
 <script>
-import {enCodeString} from "@/commonMethods/commonMethod";
+import {enCodeString,arrayToObjact} from "@/commonMethods/commonMethod";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 export default {
@@ -35,6 +38,8 @@ props:["colomnsRecord","dataRecord","linkTo","rowKey","pagination"],
       }
     }
     return {
+      screensPermissions:store.getters.screensPermissions,
+      arrayToObjact,
       videoCall,
      enCodeString
     }

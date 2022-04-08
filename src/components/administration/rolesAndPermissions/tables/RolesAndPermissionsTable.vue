@@ -1,3 +1,4 @@
+
 <template>
 <a-table rowKey="id" :columns="rolesColumns" :data-source="meta.rolesList" :scroll="{ x: 900 ,y : tableYScroller }" :pagination=false @change="handleTableChange">
     <template #actions="{record}" v-if="arrayToObjact(screensPermissions,2)">
@@ -43,200 +44,204 @@
 </a-table>
 <Loader />
 </template>
-
 <script>
 import {
+  DeleteOutlined,
+  EditOutlined,
+  CopyOutlined,
+} from "@ant-design/icons-vue";
+import { useStore } from "vuex";
+import { watchEffect, onMounted, ref } from "vue";
+import {
+  warningSwal,
+  arrayToObjact,
+  tableYScroller,
+} from "@/commonMethods/commonMethod";
+import { messages } from "@/config/messages";
+import Loader from "@/components/loader/Loader";
+export default {
+  components: {
     DeleteOutlined,
     EditOutlined,
-    CopyOutlined
-} from "@ant-design/icons-vue";
-import {
-    useStore
-} from "vuex";
-import {
-    watchEffect,
-    onMounted,
-    ref
-} from 'vue';
-import {
-    warningSwal,
-    arrayToObjact,tableYScroller
-} from "@/commonMethods/commonMethod";
-import {
-    messages
-} from '@/config/messages';
-import Loader from "@/components/loader/Loader"
-export default {
-    components: {
-        DeleteOutlined,
-        EditOutlined,
-        CopyOutlined,
-        Loader,
-    },
-    props: {},
-    setup(props, {
-        emit
-    }) {
-        const store = useStore()
+    CopyOutlined,
+    Loader,
+  },
 
-        watchEffect(() => {
-            store.dispatch('rolesList')
-            store.dispatch("searchTable", '&search=')
-            store.dispatch('orderTable', {
-                data: '&orderField=&orderBy='
-            })
+  setup(props, { emit }) {
+    const store = useStore();
+
+    watchEffect(() => {
+      store.dispatch("rolesList");
+      store.dispatch("searchTable", "&search=");
+      store.dispatch("orderTable", {
+        data: "&orderField=&orderBy=",
+      });
+    });
+
+    const editRole = (id) => {
+      store.dispatch("roleDetails", id);
+      store.dispatch("editPermissions", id);
+      store.dispatch("editdWidget", id);
+      emit("is-edit", {
+        check: true,
+        id: id,
+      });
+    };
+
+    const deleteRole = (id) => {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          store.dispatch("deleteRole", id).then(() => {
+            store.dispatch("rolesList");
+          });
+        }
+      });
+    };
+
+    const copyRole = (id) => {
+      store.dispatch("roleDetails", id);
+      emit("is-copy", {
+        check: true,
+        id: id,
+      });
+    };
+
+    const UpdateRoleStatus = (id, status) => {
+      //console.log("id",id)
+      const data = {
+        isActive: status,
+      };
+      store
+        .dispatch("UpdateRole", {
+          id,
+          data,
+          show: true,
         })
+        .then(() => {
+          //store.dispatch('rolesList')
+        });
+    };
 
-        const editRole = (id) => {
+    const rolesColumns = [
+      {
+        title: "Role Name",
+        dataIndex: "name",
+        sorter: true,
+      },
+      {
+        title: "Type of Role ",
+        dataIndex: "roleType",
+        sorter: true,
+      },
+      {
+        title: "Description",
+        dataIndex: "description",
+        sorter: true,
+      },
+      {
+        title: "Active/Inactive",
+        dataIndex: "isActive",
+        slots: {
+          customRender: "isActive",
+        },
+      },
+      {
+        title: "Actions",
+        dataIndex: "actions",
+        slots: {
+          customRender: "actions",
+        },
+      },
+    ];
+    //ifinitescroller
+    let scroller;
+    const meta = store.getters.rolesAndPermissionsRecord.value;
+    let data = [];
+    const loader = ref(false);
+    onMounted(() => {
+      var tableContent = document.querySelector(".ant-table-body");
+      tableContent.addEventListener("scroll", (event) => {
+        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+        let currentScroll = event.target.scrollTop + 2;
+        //console.log("data",currentScroll)
+        if (currentScroll >= maxScroll) {
+          let current_page = meta.rolesMeta.current_page + 1;
 
-            store.dispatch('roleDetails', id)
-            store.dispatch('editPermissions', id)
-            store.dispatch('editdWidget', id)
-            emit("is-edit", {
-                check: true,
-                id: id
-            })
+          if (current_page <= meta.rolesMeta.total_pages) {
+            scroller = maxScroll;
+            data = meta.rolesList;
+            loader.value = true;
+            store.state.rolesAndPermissions.rolesMeta = "";
+            store.state.rolesAndPermissions.rolesList = "";
+
+            store
+              .dispatch(
+                "rolesList",
+                store.getters.searchTable.value +
+                  "&page=" +
+                  current_page +
+                  store.getters.orderTable.value.data
+              )
+              .then(() => {
+                loadMoredata();
+              });
+          }
         }
+      });
+    });
 
-        const deleteRole = (id) => {
-            warningSwal(messages.deleteWarning).then((response) => {
-                if (response == true) {
-                    store.dispatch('deleteRole', id).then(() => {
-                        store.dispatch('rolesList')
-                    })
-                }
-            })
-        }
+    function loadMoredata() {
+      const newData = meta.rolesList;
+      newData.forEach((element) => {
+        data.push(element);
+      });
+      meta.rolesList = data;
+      var tableContent = document.querySelector(".ant-table-body");
 
-        const copyRole = (id) => {
-            store.dispatch('roleDetails', id)
-            emit("is-copy", {
-                check: true,
-                id: id
-            })
-        }
-
-        const UpdateRoleStatus = (id, status) => {
-            //console.log("id",id)
-            const data = {
-                "isActive": status
-            };
-            store.dispatch('UpdateRole', {
-                id,
-                data,
-                show: true
-            }).then(() => {
-                //store.dispatch('rolesList')
-            })
-        }
-
-        const rolesColumns = [{
-                title: "Role Name",
-                dataIndex: "name",
-                sorter: true
-            },
-            {
-                title: "Type of Role ",
-                dataIndex: "roleType",
-                sorter: true
-            },
-            {
-                title: "Description",
-                dataIndex: "description",
-                sorter: true
-            },
-            {
-                title: "Active/Inactive",
-                dataIndex: "isActive",
-                slots: {
-                    customRender: "isActive",
-                },
-            },
-            {
-                title: "Actions",
-                dataIndex: "actions",
-                slots: {
-                    customRender: "actions",
-                },
-            },
-        ];
-        //ifinitescroller
-        let scroller
-        const meta = store.getters.rolesAndPermissionsRecord.value
-        let data = []
-        const loader = ref(false)
-        onMounted(() => {
-            var tableContent = document.querySelector('.ant-table-body')
-            tableContent.addEventListener('scroll', (event) => {
-                let maxScroll = event.target.scrollHeight - event.target.clientHeight
-                let currentScroll = event.target.scrollTop + 2
-                //console.log("data",currentScroll)
-                if (currentScroll >= maxScroll) {
-
-                    let current_page = meta.rolesMeta.current_page + 1
-
-                    if (current_page <= meta.rolesMeta.total_pages) {
-                        scroller = maxScroll
-                        data = meta.rolesList
-                        loader.value = true
-                        store.state.rolesAndPermissions.rolesMeta = ""
-                        store.state.rolesAndPermissions.rolesList = ""
-                        
-                        store.dispatch("rolesList", store.getters.searchTable.value+"&page=" + current_page+store.getters.orderTable.value.data).then(() => {
-                            loadMoredata()
-                        })
-                    }
-                }
-            })
-        })
-
-        function loadMoredata() {
-            const newData = meta.rolesList
-            newData.forEach(element => {
-                data.push(element)
-            });
-            meta.rolesList = data
-            var tableContent = document.querySelector('.ant-table-body')
-
-            setTimeout(() => {
-                tableContent.scrollTo(0, scroller)
-            }, 50)
-            loader.value = false
-        }
-        
-        const handleTableChange = (pag, filters, sorter) => {
-            if (sorter.order) {
-                let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
-                let orderParam = '&orderField=' + sorter.field + '&orderBy=' + order
-                store.dispatch('orderTable', {
-                    data: orderParam,
-                    orderBy: order,
-                    page: pag,
-                    filters: filters
-                })
-                store.dispatch("rolesList", store.getters.searchTable.value + orderParam)
-
-            } else {
-                store.dispatch('orderTable', {
-                    data: '&orderField=&orderBy='
-                })
-                store.dispatch("rolesList", store.getters.searchTable.value + store.getters.orderTable.value.data)
-            }
-        }
-        return {
-            loader,
-            arrayToObjact,
-            screensPermissions:store.getters.screensPermissions,
-            rolesColumns,
-            data,
-            editRole,
-            deleteRole,
-            copyRole,
-            UpdateRoleStatus,
-            meta,
-            tableYScroller,
-            handleTableChange
-        }
+      setTimeout(() => {
+        tableContent.scrollTo(0, scroller);
+      }, 50);
+      loader.value = false;
     }
-}
+
+    const handleTableChange = (pag, filters, sorter) => {
+      if (sorter.order) {
+        let order = sorter.order == "ascend" ? "ASC" : "DESC";
+        let orderParam = "&orderField=" + sorter.field + "&orderBy=" + order;
+        store.dispatch("orderTable", {
+          data: orderParam,
+          orderBy: order,
+          page: pag,
+          filters: filters,
+        });
+        store.dispatch(
+          "rolesList",
+          store.getters.searchTable.value + orderParam
+        );
+      } else {
+        store.dispatch("orderTable", {
+          data: "&orderField=&orderBy=",
+        });
+        store.dispatch(
+          "rolesList",
+          store.getters.searchTable.value + store.getters.orderTable.value.data
+        );
+      }
+    };
+    return {
+      loader,
+      arrayToObjact,
+      screensPermissions: store.getters.screensPermissions,
+      rolesColumns,
+      data,
+      editRole,
+      deleteRole,
+      copyRole,
+      UpdateRoleStatus,
+      meta,
+      tableYScroller,
+      handleTableChange,
+    };
+  },
+};
 </script>

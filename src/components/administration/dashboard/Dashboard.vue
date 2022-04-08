@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!---->
     <a-layout>
       <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
         <Header />
@@ -10,7 +9,6 @@
         <a-layout-content> </a-layout-content>
       </a-layout>
     </a-layout>
-    <!---->
   </div>
 </template>
 

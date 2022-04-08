@@ -118,8 +118,6 @@ export default {
       } else {
         visible.value = e;
       }
-
-      //console.log("check",programId.value)
     };
     
     return {
