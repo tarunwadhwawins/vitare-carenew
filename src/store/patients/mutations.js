@@ -167,7 +167,7 @@ export const patient = (state, data) => {
   {
     title: "Sex ",
     dataIndex: "gender",
-    sorter: true,
+   
   }
   ];
   state.patientMeta = data.meta.pagination;

@@ -66,7 +66,7 @@ export default {
             data = meta.patientList;
             store.state.patients.patientList = "";
          
-            store.dispatch("patients", "?page=" +  store.getters.searchTable.value +
+            store.dispatch("patients", "?page=" +current_page +  store.getters.searchTable.value +
                   store.getters.orderTable.value.data).then(() => {
               //console.log('response',response)
               loadMoredata();
