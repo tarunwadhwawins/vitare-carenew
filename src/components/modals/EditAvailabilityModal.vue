@@ -23,6 +23,7 @@
         <a-button type="primary" html-type="submit">{{$t('global.update')}}</a-button>
       </a-col>
     </a-form>
+    <Loader />
   </a-modal>
 </template>
 
@@ -32,12 +33,16 @@ import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { timeStamp } from '../../commonMethods/commonMethod';
 import moment from 'moment';
+import Loader from "@/components/loader/Loader";
 
 export default {
   props: {
     isAvailabilityEdit: {
       type: Number
     }
+  },
+  components: {
+    Loader,
   },
   setup(props, { emit }) {
     const store = useStore()
