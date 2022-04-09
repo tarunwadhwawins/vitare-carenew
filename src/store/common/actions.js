@@ -165,8 +165,8 @@ export const actionTrack = async ({ commit }, data) => {
 
 const API_URL = process.env.VUE_APP_API_URL
 export const exportReportRequest = async ({ commit }, data) => {
- 
- let response = await serviceMethod.common("post", `export/report/request`+ data.date, null, { reportType: data.data })
+ console.log('object',data);
+ let response = await serviceMethod.common("post", `export/report/request`+ data.date, null, { reportType: data.data ,timezone:data.timezone})
   console.log(commit)
   let udid = response.data.data.udid;
   let reportType = response.data.data.reportType;

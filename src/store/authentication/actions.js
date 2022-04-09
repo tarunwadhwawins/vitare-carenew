@@ -42,7 +42,7 @@ const roleAccess = async ({ commit }) => {
 const permission = async ({ commit }) => {
 	await ServiceMethodService.common("get", "staff/access/action", null, null).then((response) => {
 
-		if (response.data.actionId.length == 0) {
+		if (response.data.actionId.length == 0 && response.data.widgetId.length==0) {
 			errorSwal("You don't have permission! Contact to Admin").then((response) => {
 				if(response == true){
 					logoutUser({ commit })
