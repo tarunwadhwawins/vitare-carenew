@@ -91,7 +91,7 @@
               <MoreOutlined />
             </div>
           </div>
-          <div class="search" >
+          <div class="search" v-if="arrayToObjact(screensPermissions, 38)">
             <HeaderSearch
               v-model:value="value"
               @handleChange="handleChange($event)"
