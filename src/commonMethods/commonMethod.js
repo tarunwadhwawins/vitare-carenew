@@ -2,6 +2,8 @@ import Swal from 'sweetalert2';
 import moment from 'moment';
 import store from '@/store/index'
 import Bowser from "bowser";
+// import momentTimeZone from 'moment-timezone';
+
 
 
 //for all timeStamp to according date and time format
@@ -22,7 +24,9 @@ export function timeStampFormate(timeStamp,format) {
 
 // for all table export excel data
 export function exportExcel(data, date = "?fromDate=&toDate=") {
-	store.dispatch('exportReportRequest', { data: data, date: date })
+	let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+	// let timeZone = momentTimeZone.tz.guess();
+	store.dispatch('exportReportRequest', { data: data, date: date,timezone:timeZone })
 }
 
 //action tracking when user click on any action 
