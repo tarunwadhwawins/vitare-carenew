@@ -57,7 +57,7 @@
                 </a>
                 <template #overlay>
                   <a-menu>
-                    <a-menu-item key="0">
+                    <a-menu-item key="0"  v-if="arrayToObjact(screensPermissions, 112)">
                       <a href="javascript:void(0)" @click="addAppt">Add Appointment</a>
                     </a-menu-item>
                     <a-menu-item key="1" v-if="arrayToObjact(screensPermissions,62)">
@@ -68,10 +68,10 @@
                         >Add Care Coordinator</a
                       ></a-menu-item
                     > -->
-                    <a-menu-item key="4">
+                    <a-menu-item key="4"  v-if="arrayToObjact(screensPermissions, 113)">
                       <a href="javascript:void(0)" @click="addTask">Add Task</a>
                     </a-menu-item>
-                    <a-menu-item key="5">
+                    <a-menu-item key="5" v-if="arrayToObjact(screensPermissions, 107)">
                       <a href="javascript:void(0)" @click="showStartCallModal">{{$t('header.startCall')}}</a>
                     </a-menu-item>
                   </a-menu>
