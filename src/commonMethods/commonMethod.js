@@ -16,8 +16,8 @@ export function errorLogWithDeviceInfo(errorMessage) {
 	let deviceInfo = Bowser.parse(window.navigator.userAgent)
 	store.dispatch('errorLogWithDeviceInfo', { deviceInfo: JSON.stringify(deviceInfo), errorMessage: JSON.stringify(errorMessage) })
 }
-export function timeStampFormate(timeStamp,format) {
-	
+export function timeStampFormate(timeStamp, format) {
+
 	return moment.unix(timeStamp).format(format);
 }
 
@@ -252,9 +252,46 @@ export function responseConvert(time, data, format) {
 	});
 	return record;
 }
+export function findOcc(arr, key) {
+	let arr2 = [];
+
+	arr.forEach((x) => {
+
+		// Checking if there is any object in arr2
+		// which contains the key value
+		if (arr2.some((val) => { return val[key] == x[key] })) {
+
+			// If yes! then increase the occurrence by 1
+			arr2.forEach((k) => {
+				if (k[key] === x[key]) {
+
+					k["total"] = x.total++
+				}
+			})
+
+		} else {
+			// If not! Then create a new object initialize 
+			// it with the present iteration key's value and 
+			// set the occurrence to 1
+			let a = {}
+			a[key] = x[key]
+			a['duration'] = x.duration
+			a["total"] = x.total
+			arr2.push(a);
+		}
+	})
+
+	return arr2
+}
 export function chartTimeCount(timeLine, count) {
 	let newPatient = [];
 	if (timeLine.globalCodeId == 122) {
+		let array = count.map((item) => {
+			item.time = moment(dateFormat(item.duration)).format('hh:00 A')
+			return item
+		})
+
+		let getTotal = findOcc(array, 'time')
 		const time = [
 			'08:00 AM',
 			'09:00 AM',
@@ -271,7 +308,9 @@ export function chartTimeCount(timeLine, count) {
 			'08:00 PM'
 		];
 		time.forEach((item, i) => {
-			let obj = count.find((o) => moment(dateFormat(o.duration)).format('hh:00 A') === item);
+
+			let obj = getTotal.find((o) => moment(dateFormat(o.duration)).format('hh:00 A') === item);
+			
 			if (typeof obj === 'undefined') {
 				let value_obj = {
 					key: i,
@@ -280,6 +319,7 @@ export function chartTimeCount(timeLine, count) {
 				};
 				newPatient.push(value_obj);
 			} else {
+				
 				let value_obj_get = {
 					duration: moment(dateFormat(obj.duration)).format('hh:00 A'),
 					total: obj.total
@@ -289,10 +329,10 @@ export function chartTimeCount(timeLine, count) {
 		});
 	} else if (timeLine.globalCodeId == 123) {
 		let today = moment();
-		//console.log('check',count)
+	
 		today.subtract(timeLine.number, timeLine.intervalType);
 		today.subtract(1, timeLine.intervalType);
-		//console.log("day",today.subtract((timeLine.number+1), timeLine.intervalType))
+		
 		for (let i = 0; i <= timeLine.number; i++) {
 			var day = today.add(1, 'days');
 			let obj = count.find((o) => moment(dateFormat(o.duration)).format('dddd') === day.format('dddd'));
@@ -503,4 +543,4 @@ export function secondsToTime(secs) {
 }
 export const tableYScroller = 700
 export const tableYScrollerCounterPage = 500
-export const disableHours = [1,2,3,4,5,6,7,21,22,23,24]
+export const disableHours = [1, 2, 3, 4, 5, 6, 7, 21, 22, 23, 24]
