@@ -54,9 +54,9 @@ export const updateDemographic = async ({commit}, data) => {
 export const patients = async ({
   commit
 },page) => {
-  let link = page? "patient"+page : "patient"
   commit('loadingStatus', true)
-  
+  let link = page? "patient"+page : "patient"
+ 
   await serviceMethod.common("get", link, null, null).then((response) => {
     commit('patient', response.data);
     commit('loadingStatus', false)
