@@ -20,12 +20,23 @@
 <script>
 import Login from "@/components/login/Login";
 import WelcomeScreen from "@/components/common/Welcome";
+import { onMounted } from 'vue';
+import router from "@/router";
 export default {
 	name: "ViewLogin",
 	components: {
 		Login,
 		WelcomeScreen
 	},
+    setup(){
+
+        onMounted(()=>{
+            router.push("/")
+        })
+        return{
+
+        }
+    }
 };
 </script>
 

@@ -327,9 +327,11 @@ export default defineComponent({
     const isAppointment = ref();
     const date = Math.round(+new Date() / 1000);
     const userName = JSON.parse(localStorage.getItem("auth"));
+
     const logoutUser = () => {
       store.state.authentication.errorMsg = "";
-      store.dispatch("logoutUser");
+      // store.dispatch("logoutUser");
+      router.push('/logout')
     };
     const value = ref();
 

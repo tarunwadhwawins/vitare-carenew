@@ -67,8 +67,7 @@ const permission = async ({ commit }) => {
 			errorSwal(error.response.data.message)
 		})
 }
-export const logoutUser = async () => {
-	router.push("/") 
+export const logoutUser = async () => {	
 	localStorage.removeItem('user');
 	localStorage.removeItem('barmenu');
 	localStorage.removeItem('staff');
@@ -82,6 +81,7 @@ export const logoutUser = async () => {
 	localStorage.removeItem('widgetsPermission');
 	localStorage.removeItem('fireBaseToken')
 	localStorage.removeItem('expiresIn')
+	// router.push("/") 
 	router.go();
 }
 
