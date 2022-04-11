@@ -35,7 +35,7 @@
         <Loader v-if="showLoaderMain" />
     </a-layout-content>
     <!--modal-->
-    <AddAppointment v-if="staffList && patientsList" :maskClosable="maskebale" v-model:visible="appointmentModal" @ok="handleOk" @is-visible="showModal($event)" :staff="staffList" :patient="patientsList" />
+    <AddAppointment  :maskClosable="maskebale" v-model:visible="appointmentModal" @ok="handleOk" @is-visible="showModal($event)" :staff="staffList" :patient="patientsList" />
     <!---->
 </div>
 </template>
