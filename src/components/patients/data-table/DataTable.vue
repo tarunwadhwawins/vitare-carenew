@@ -63,12 +63,11 @@ export default {
             scroller = maxScroll;
             meta.patientMeta = "";
 
-            data = meta.patientList;
-            store.state.patients.patientList = "";
+            data = meta.patientList
+            //store.state.patients.patientList = ""
          
             store.dispatch("patients", "?page=" +current_page +  store.getters.searchTable.value +
                   store.getters.orderTable.value.data).then(() => {
-              //console.log('response',response)
               loadMoredata();
             });
           }
