@@ -10,12 +10,14 @@
     </a-col>
     <TaskTable @is-Edit="editTask($event)"></TaskTable>
   </a-row>
+  <TableLoader />
 </template>
 <script>
 import { ref, watchEffect, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import SearchField from "@/components/common/input/SearchField";
 import TaskTable from "./TaskTable";
+import TableLoader from "@/components/loader/TableLoader";
 import { arrayToObjact,exportExcel } from "@/commonMethods/commonMethod";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 
@@ -23,13 +25,13 @@ export default {
   components: {
     SearchField,
     TaskTable,
-    // Loader,
+    TableLoader,
     ExportToExcel,
   },
   setup(props, { emit }) {
     const store = useStore();
     watchEffect(() => {
-      store.getters.taskRecords.tasksList = "";
+      
       store.dispatch("tasksList");
       store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {

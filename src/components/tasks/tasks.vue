@@ -40,7 +40,7 @@
             </div>
 
           </div>
-          <Loader />
+         
         </a-layout-content>
       </a-layout>
     </a-layout>
@@ -59,7 +59,7 @@ import Button from "@/components/common/button/Button";
 import TasksDashboardView from "@/components/tasks/TasksDashboardView";
 import TasksListView from "@/components/tasks/TasksListView";
 import {useStore} from "vuex"
-import Loader from "@/components/loader/Loader";
+
 import { arrayToObjact } from "@/commonMethods/commonMethod";
 import { useRoute, useRouter } from 'vue-router';
 export default {
@@ -70,7 +70,7 @@ export default {
     Button,
     TasksDashboardView,
     TasksListView,
-    Loader
+    
   },
   setup() {
     const store = useStore();
