@@ -16,7 +16,12 @@ export const login = async ({ commit }, user) => {
 
 	})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			console.log('error',error);
+			if(error.response){
+				errorLogWithDeviceInfo(error.response)
+			}else{
+				errorLogWithDeviceInfo(error)
+			}
 			if (error.response.status == 401) {
 				commit('loginFailure', 'Invalid Login Credentials');
 				commit('failure', 'Invalid Login Credentials')
