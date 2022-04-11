@@ -13,8 +13,7 @@
               <span class="tags">{{ tag.tag }}</span>
             </div>
           </template>
-          <template #action="{record}">
-            <!-- <a class="icons"><EditOutlined /></a> -->
+          <template #action="{record}" v-if="arrayToObjact(screensPermissions,318)">
             <a class="icons"><DeleteOutlined @click="deleteDocument(record.id)" /></a>
           </template>
           <template #document="{record}">
@@ -37,7 +36,7 @@ import {
   // EditOutlined
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
-import {warningSwal} from "@/commonMethods/commonMethod"
+import {warningSwal,arrayToObjact} from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
 // import { useRoute } from "vue-router";
 
@@ -139,6 +138,8 @@ export default defineComponent({
     }
 
     return {
+      screensPermissions: store.getters.screensPermissions,
+      arrayToObjact,
       documentsColumns,
       patientDocuments,
       deleteDocument,

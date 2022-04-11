@@ -12,7 +12,7 @@
           </a-popover>
         </template>
         <template #action="{record}">
-        <a-tooltip placement="bottom">
+        <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,313)">
             <template #title>
                 <span>{{$t('global.delete')}}</span>
             </template>
@@ -30,7 +30,7 @@
 import { computed, defineComponent,watchEffect } from "vue";
 import { useStore } from "vuex";
 import {DeleteOutlined} from "@ant-design/icons-vue";
-import { warningSwal,actionTrack } from "@/commonMethods/commonMethod";
+import { warningSwal,actionTrack,arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import {useRoute} from "vue-router"
 import Loader from "@/components/loader/Loader"
@@ -95,6 +95,8 @@ export default defineComponent({
     }
 
     return {
+      arrayToObjact,
+      screensPermissions: store.getters.screensPermissions,
       actionTrack,
       paramsId:route.params.udid,
       deleteDocument,

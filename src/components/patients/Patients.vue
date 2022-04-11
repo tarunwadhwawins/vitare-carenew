@@ -6,7 +6,7 @@
     </a-col>
 </a-row>
 <a-row>
-    <a-col :span="24">
+    <a-col :span="24" v-if="arrayToObjact(screensPermissions,65)">
         <a-row :gutter="24">
             <a-col :xl="4" :sm="8" :xs="24">
                 <CounterCard colorBox="colorBox red" :count="5" :text="$t('patient.critical')" />
@@ -113,10 +113,7 @@ export default {
       showModal,
       handleOk,
       handleChange,
-      searchoptions,
-      size: ref(),
-      value2: ref(),
-      //patients:store.getters.patientsRecord,
+      searchoptions
      
     };
   },

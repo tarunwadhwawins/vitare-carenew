@@ -30,8 +30,8 @@
             </a-row>
 
               <!-- Dashboard View -->
-            <div class="dashboard-view" v-show="toggle && dashboardView" >
-              <TasksDashboardView/>
+            <div class="dashboard-view" v-show="toggle && dashboardView"  >
+              <TasksDashboardView v-if="arrayToObjact(screensPermissions,109)"/>
             </div>
 
               <!-- List View -->

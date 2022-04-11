@@ -3,13 +3,6 @@
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <a-table  rowKey="id"  :columns="timeLogColumns" :data-source="timeLogsList" :scroll="{ x: 900 }" :pagination="false" >
-          <!-- <template #category="{record}">
-            <span>{{record.category.name}}</span>
-          </template>
-          <template #action="{record}">
-            <a class="icons"><EditOutlined @click="editTimeLog(record.id)" /></a>
-            <a class="icons"><DeleteOutlined @click="deleteTimeLog(record.id)"/></a>
-          </template> -->
         </a-table>
         <Loader/>
       </a-col>

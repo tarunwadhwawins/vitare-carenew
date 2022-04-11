@@ -16,20 +16,11 @@
                     <!-- <ErrorMessage v-if="docValidationError" name="Document is required." /> -->
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
                 </a-form-item>
-                <!-- <label><span style="color:red">* </span>{{$t('global.document')}}
-                    <a-input  name="document_file" size="large" type="file" @change="onFileUpload" />
-                    <ErrorMessage v-if="docValidationError" name="Document is required." />
-                    <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
-                </label> -->
             </div>
         </a-col>
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.type')" name="type" :rules="[{ required: true, message: $t('global.type')+' '+$t('global.validation') }]">
-                    <!-- <a-select ref="select" v-model:value="documents.type" style="width: 100%" size="large" @change="changedValue">
-                        <a-select-option value="" disabled>{{'Select Type'}}</a-select-option>
-                        <a-select-option v-for="documentType in globalCode.documentTypes.globalCode" :key="documentType.id" :value="documentType.id">{{documentType.name}}</a-select-option>
-                    </a-select> -->
                     <GlobalCodeDropDown @change="changedValue" v-model:value="documents.type" :globalCode="globalCode.documentTypes"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.type?errorMsg.type[0]:''" />
                 </a-form-item>
@@ -56,25 +47,6 @@
     </a-row>
     <a-row :gutter="24" class="mb-24" v-show="!paramId">
         <a-col :span="24">
-            <!-- <a-table  rowKey="id" :columns="documentColumns" :data-source="documentsData" :pagination="false" :scroll="{ x: 900 }">
-                <template #tags="text">
-                    <span v-for="tag in text.text.data" :key="tag.id">{{ tag.tag+ " "}}</span>
-                </template>
-                <template #document="text">
-                    <router-link :to="text.text">
-                        <FileOutlined />
-                    </router-link>
-                </template>
-                <template #action="text">
-                    <a-tooltip placement="bottom">
-                        <template #title>
-                            <span>{{$t('global.delete')}}</span>
-                        </template>
-                        <a class="icons" @click="deleteDocument(text.record.id)">
-                            <DeleteOutlined /></a>
-                    </a-tooltip>
-                </template>
-            </a-table> -->
             <DocumentTable :Id="Id" />
             <Loader />
         </a-col>
@@ -85,15 +57,12 @@
 
 <script>
 import { defineComponent, computed, reactive, watchEffect, ref, onMounted } from "vue";
-// import { DeleteOutlined, FileOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "@/components/loader/Loader";
-// import { warningSwal } from "@/commonMethods/commonMethod";
-// import { messages } from "@/config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import { useRoute } from "vue-router";
 import DocumentTable from "../../patients/data-table/DocumentTable.vue";
-import { errorSwal } from "../../../commonMethods/commonMethod";
+import { errorSwal } from "@/commonMethods/commonMethod";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 
 export default defineComponent({

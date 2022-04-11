@@ -29,8 +29,8 @@
                     </a-col>
                     <a-col :span="24">
                         <!-- Dashboard View -->
-                        <div class="dashboard-view" v-show="toggle && dashboardView">
-                            <DashboardView />
+                        <div class="dashboard-view" v-show="toggle && dashboardView" >
+                            <DashboardView v-if="arrayToObjact(screensPermissions,109)"/>
                         </div>
                         <!-- List View -->
                         <div class="list-view" v-show="!toggle && listView">

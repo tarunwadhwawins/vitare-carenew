@@ -178,28 +178,6 @@
                         </a>
                       </router-link>
                     </li>
-                    <!-- <li class="listing read"> 
-                      <a class="d-flex align-items-center" href="#">
-                        <div class="flex-shrink-0 imgProfile">
-                          <img src="../../../assets/images/user-1.jpg" alt="image" width="50" />
-                        </div>
-                        <div class="flex-grow-1 ms-3 summary">
-                          <p>Just a reminder that you have appoinment</p>
-                          <span class="date">20 minutes ago</span>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="listing unread">
-                      <a class="d-flex align-items-center" href="#">
-                        <div class="flex-shrink-0 imgProfile">
-                          <img src="../../../assets/images/user-1.jpg" alt="image" width="50" />
-                        </div>
-                        <div class="flex-grow-1 ms-3 summary">
-                          <p>Just a reminder that you have appoinment</p>
-                          <span class="date">20 minutes ago</span>
-                        </div>
-                      </a>
-                    </li> -->
                     <li class="allNotication">
                       <router-link to="/notifications" >{{$t('header.checkAllNotifications')}}</router-link>
                     </li>

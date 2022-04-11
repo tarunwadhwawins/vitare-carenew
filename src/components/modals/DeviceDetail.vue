@@ -16,10 +16,10 @@
               v-if="text.match(/yellowBgColor/g)"
             ></span>
           </template>
-          <template #active>
+          <template #active v-if="arrayToObjact(screensPermissions,326)">
             <a-switch v-model:checked="checked" />
           </template>
-          <template #action="{record}">
+          <template #action="{record}" v-if="arrayToObjact(screensPermissions,320)">
             <!-- <a class="icons"><EditOutlined @click="editDevice(record.id)" /></a> -->
             <a class="icons"><DeleteOutlined @click="deleteDevice(record.id);actionTrack(paramsId,320,'patient')" /></a>
           </template>
@@ -37,7 +37,7 @@ import {
   // EditOutlined
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
-import {warningSwal,actionTrack} from "@/commonMethods/commonMethod"
+import {warningSwal,actionTrack,arrayToObjact} from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
 import { useRoute } from "vue-router";
 export default defineComponent({
@@ -119,6 +119,8 @@ export default defineComponent({
     }
 
     return {
+      arrayToObjact,
+      screensPermissions: store.getters.screensPermissions,
       actionTrack,
       paramsId:route.params.udid,
       devicesColumns,
