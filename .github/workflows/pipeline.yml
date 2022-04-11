@@ -1,7 +1,7 @@
 name: Virtare Care Frontend Pipeline
 on:
   push:
-    branches: [ staging ]
+    branches: [ master ]
 jobs:
   build:
     runs-on: [self-hosted, prod]
