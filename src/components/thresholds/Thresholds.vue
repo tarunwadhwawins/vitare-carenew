@@ -52,7 +52,7 @@
       const store = useStore();
       const threshodsId = ref()
       watchEffect(() => {
-        store.getters.vitalDataGetters.vitalList=""
+        
         store.dispatch("generalParameterList");
         store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {

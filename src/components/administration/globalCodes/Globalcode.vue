@@ -26,7 +26,7 @@
                             </div>
                         </a-col>
                         <a-col :span="24">
-                            <Loader />
+                            <TableLoader />
                             <GlobalCodesTable @edit-global-code="editGlobalCode($event)" />
                         </a-col>
                     </a-row>
@@ -48,7 +48,7 @@ import Button from "@/components/common/button/Button";
 import { defineComponent, defineAsyncComponent, ref, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import { arrayToObjact, exportExcel } from "@/commonMethods/commonMethod";
-import Loader from "@/components/loader/Loader";
+import TableLoader from "@/components/loader/TableLoader";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 export default defineComponent({
   components: {
@@ -60,7 +60,7 @@ export default defineComponent({
     GlobalCodesTable,
     SearchField,
     Button,
-    Loader,
+    TableLoader,
     ExportToExcel,
   },
   setup() {
