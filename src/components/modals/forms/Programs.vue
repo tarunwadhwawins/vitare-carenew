@@ -4,10 +4,6 @@
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('patient.programs.program')" name="program" :rules="[{ required: true, message: $t('patient.programs.program')+' '+$t('global.validation') }]">
-                    <!-- <a-select ref="select" v-model:value="program.program" style="width: 100%" size="large"  @change="changedValue">
-                        <a-select-option value="" disabled>{{'Select Program'}}</a-select-option>
-                        <a-select-option v-for="program in patients.programList" :key="program.id" :value="program.id">{{program.name}}</a-select-option>
-                    </a-select> -->
                     <GlobalCodeDropDown v-model:value="program.program" :globalCode="patients.programList" @change="changedValue"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.program?errorMsg.program[0]:''" />
                 </a-form-item>
@@ -47,7 +43,7 @@
     <a-row :gutter="24" class="mb-24">
         <a-col :span="24">
             <a-table  rowKey="id" :columns="columns" :data-source="programsData" :pagination="false" :scroll="{ x: 900 }">
-                <template #action="text">
+                <template #action="text" v-if="arrayToObjact(screensPermissions,70)">
                     <a-tooltip placement="bottom">
                         <a class="icons" @click="deleteProgram(text.record.id)">
                             <DeleteOutlined />
@@ -68,7 +64,8 @@ import { useStore } from "vuex";
 import Loader from "../../loader/Loader"
 import {
   warningSwal,
-  timeStamp
+  timeStamp,
+  arrayToObjact
 } from "@/commonMethods/commonMethod"
 import { messages } from "@/config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
@@ -185,6 +182,8 @@ export default defineComponent({
     //     };
     
     return {
+      screensPermissions: store.getters.screensPermissions,
+      arrayToObjact,
       changedValue,
       // programFailed,
       timeStamp,
