@@ -34,7 +34,7 @@
     </a-col>
     <a-col :span="24" >
         <CoordinatorTable></CoordinatorTable>
-        <Loader />
+        <TableLoader />
     </a-col>
     <CareCoordinatorModalForms v-model:visible="visible" @saveModal="handleOk($event)"></CareCoordinatorModalForms>
 </a-row>
@@ -49,7 +49,7 @@ import {
 import LongCard from "@/components/common/cards/LongCard"
 import CoordinatorTable from "./tables/CoordinatorTable"
 import CareCoordinatorModalForms from "@/components/modals/CoordinatorsModal"
-import Loader from "@/components/loader/Loader"
+import TableLoader from "@/components/loader/TableLoader"
 import {
     useStore
 } from "vuex"
@@ -65,7 +65,7 @@ export default {
     components: {
         LongCard,
         CoordinatorTable,
-        Loader,
+        TableLoader,
         CareCoordinatorModalForms,
         ShowModalButton,
         SearchField,
@@ -76,10 +76,11 @@ export default {
         const searchoptions = ref([])
         const visible = ref(false)
         watchEffect(() => {
-            store.getters.staffRecord.staffs = ""
-            store.dispatch("staffs")
+            
+            
             store.dispatch('specializationStaff')
             store.dispatch('networkStaff')
+            store.dispatch("staffs")
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='

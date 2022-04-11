@@ -78,7 +78,7 @@ const global = {
   addPhysician:'Add Care Coordinator',
   careTeam:'Health Team',
   addCareTeam:'Add Health Team',
-  careCoodinator:'Care Coodinator',
+  careCoodinator:'Care Coordinator',
   staff:'Staff',
   startCall:'Start Call',
 

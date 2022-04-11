@@ -54,16 +54,16 @@ export const updateDemographic = async ({commit}, data) => {
 export const patients = async ({
   commit
 },page) => {
+  commit('loadingTableStatus', true)
   let link = page? "patient"+page : "patient"
-  commit('loadingStatus', true)
-  
+ 
   await serviceMethod.common("get", link, null, null).then((response) => {
     commit('patient', response.data);
-    commit('loadingStatus', false)
+    commit('loadingTableStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
-    commit('loadingStatus', false)
+    commit('loadingTableStatus', false)
   })
 
 }
