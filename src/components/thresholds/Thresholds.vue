@@ -23,7 +23,7 @@
           </div>
         </a-col>
         <ThresholdsTable  @is-edit="showEdit($event)"></ThresholdsTable>
-        <Loader />
+        <TableLoader />
       </a-row>
     </div>
   </a-layout-content>
@@ -35,7 +35,7 @@
   import Thresholds from "@/components/modals/Thresholds";
   import ThresholdsTable from "./ThresholdsTable";
   import { useStore } from "vuex";
-  import Loader from "@/components/loader/Loader";
+  import TableLoader from "@/components/loader/TableLoader";
   import SearchField from "@/components/common/input/SearchField";
   import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
   import { exportExcel,arrayToObjact } from "@/commonMethods/commonMethod";
@@ -43,7 +43,7 @@
     components: {
       ThresholdsTable,
       Thresholds,
-      Loader,
+      TableLoader,
       SearchField,
       ExportToExcel
     },
