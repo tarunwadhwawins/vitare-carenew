@@ -2,11 +2,9 @@ name: Virtare Care Frontend Pipeline
 on:
   push:
     branches: [ staging ]
-  pull_request:
-    branches: [ staging ]
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: [self-hosted, prod]
     strategy:
       matrix:
         node-version: [10.19.0]
