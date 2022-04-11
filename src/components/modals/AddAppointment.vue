@@ -164,7 +164,7 @@ export default {
 		})
 
 		onMounted(() => {
-			store.dispatch('flagsList')
+			store.state.flags.flagsList ? '':store.dispatch('flagsList')
 		})
 
 		watchEffect(() => {
