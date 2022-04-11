@@ -36,11 +36,11 @@
             <a-switch v-model:checked="checked[key.record.key]" />
         </template>
     </a-table>
-    <Loader />
+    <TableLoader />
 
     <AuditTimeLog v-model:visible="visible" @saveAuditTimeLog="handleOk($event)" :Id="Id" />
 </a-col>
-<a-modal width="1100px" centered v-model:visible="viewReport" title="Audit Time Log Change Report" @ok="handleOk">
+<a-modal width="1100px" centered v-model:visible="viewReport" title="Audit Time Log Change Report" @ok="handleOk" :footer="false">
     <a-table rowKey="id" :columns="columns" :data-source="modalData">
 
     </a-table>
@@ -72,7 +72,7 @@ import {
     arrayToObjact,
     tableYScroller
 } from "@/commonMethods/commonMethod";
-import Loader from "../loader/Loader"
+
 import Flags from "@/components/common/flags/Flags";
 
 export default {
@@ -82,7 +82,7 @@ export default {
         EditOutlined,
         TableLoader,
         AuditTimeLog,
-        Loader,
+  
         Flags,
     },
 
@@ -142,7 +142,7 @@ export default {
 
                         loader.value = true;
                         meta.timeLogeMeta = "";
-                        store.state.timeLogReport.timeLogReportList = ""
+                        //store.state.timeLogReport.timeLogReportList = ""
 
                         store.dispatch("timeLogReportList", store.getters.auditTimeLogFilterDates.value + "&page=" + current_page + store.getters.orderTable.value.data).then(() => {
                             loadMoredata();
