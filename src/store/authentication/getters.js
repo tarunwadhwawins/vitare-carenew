@@ -4,14 +4,13 @@ import router from '@/router/index'
 import state from './state';
 import { notification, Button } from "ant-design-vue";
 import { successSwal } from '@/commonMethods/commonMethod';
-
-
+const sipDomain = process.env.VUE_APP_SIP_DOMAIN
 
 export function videoCall() {
     let callNotification =0
     const key = `open${Date.now()}`;
     state.options = Web.SimpleUserOptions = {
-        aor: `sip:${state.loggedInUser.user.sipId}@tele.icc-heaalth.com`,
+        aor: `sip:${state.loggedInUser.user.sipId}@${sipDomain}`,
         media: {
             constraints: {
                 audio: true,

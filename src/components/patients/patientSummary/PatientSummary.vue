@@ -303,9 +303,16 @@ export default {
       startOn.value = false;
     }
 
+    function clearEvent(event){
+        event.returnValue = '';
+      
+    }
+
     onUnmounted(() => {
       clearInterval(timer.value);
       localStorage.removeItem('timeLogId')
+
+      window.removeEventListener('beforeunload', clearEvent); 
     })
 
     const isAutomatic = ref(false);
@@ -380,14 +387,12 @@ export default {
     };
     
     onBeforeMount(() => {
-      window.addEventListener('beforeunload', (event) => {
-        event.returnValue = 'ffghg';
-      });
+      window.addEventListener('beforeunload',clearEvent);
     })
 
-    
 
     return {
+      clearEvent,
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       enCodeString,
