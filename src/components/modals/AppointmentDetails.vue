@@ -15,7 +15,7 @@
                         </div>
                     </div>
                     <div class="itemWrapper">
-                        <div class="leftWrapper">Coordinator</div>
+                        <div class="leftWrapper">Care-Coordinator</div>
                         <div class="rightWrapper">
                             {{appointmentDetails?.staff}}
                         </div>
@@ -41,7 +41,9 @@
                     <div class="itemWrapper">
                         <div class="leftWrapper">flag</div>
                         <div class="rightWrapper">
-                          <span class="box" :style="{ 'background-color': appointmentDetails?.flagColor}"></span>
+                           <a-tooltip placement="top" :title="appointmentDetails?.flagName">
+                            <span class="box" :style="{ 'background-color': appointmentDetails?.flagColor}"></span>
+                           </a-tooltip>
                         </div>
                     </div>
                     <div class="itemWrapper">
