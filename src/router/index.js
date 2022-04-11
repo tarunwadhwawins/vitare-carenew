@@ -128,6 +128,12 @@ const routes = [
     name: 'Login',
     component: () => import('@/views/login/Login')
   },
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: () => import('@/views/logout/Logout'),
+    meta: { authAdmin: true }
+  },
 
   {
     path: '/setup-password',

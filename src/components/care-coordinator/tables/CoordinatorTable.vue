@@ -55,7 +55,7 @@ export default {
             scroller = maxScroll;
             meta.staffMeta = "";
             data = meta.staffs;
-            store.state.careCoordinator.staffs = "";
+            //store.state.careCoordinator.staffs = "";
 
             store
               .dispatch(

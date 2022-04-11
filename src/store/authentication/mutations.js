@@ -4,6 +4,7 @@ import { successSwal } from "@/commonMethods/commonMethod";
 import { h } from 'vue'
 import { notification, Button } from "ant-design-vue";
 
+const sipDomain = process.env.VUE_APP_SIP_DOMAIN
 const key = `open${Date.now()}`;
 let date = new Date();
 export const loginSuccess = async (state, data) => {
@@ -14,7 +15,7 @@ export const loginSuccess = async (state, data) => {
   let callNotification = 0
 // console.log('loginDetails=>',state.loggedInUser.user.sipId);
 state.options= Web.SimpleUserOptions = {
-    aor:`sip:${state.loggedInUser.user.sipId}@tele.icc-heaalth.com`,
+    aor:`sip:${state.loggedInUser.user.sipId}@${sipDomain}`,
     media: {
       constraints: {
         // This demo is making "video only" calls

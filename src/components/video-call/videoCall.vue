@@ -128,6 +128,7 @@ export default {
 
   setup() {
     // the DOM element(video) will be assigned to the ref after initial render
+    const sipDomain = process.env.VUE_APP_SIP_DOMAIN
     const store = useStore();
     const videoCall = ref();
     const notesDetailVisible =ref(false)
@@ -186,7 +187,7 @@ export default {
           let callNotification = 0;
           const key = `open${Date.now()}`;
           authentication.value.options = Web.SimpleUserOptions = {
-            aor: `sip:${authentication.value.loggedInUser.user.sipId}@tele.icc-heaalth.com`,
+            aor: `sip:${authentication.value.loggedInUser.user.sipId}@${sipDomain}`,
             media: {
               constraints: {
                 audio: true,
@@ -247,7 +248,7 @@ export default {
                 //call start api/
                 store.dispatch("callNotification",{id:decodedUrl.value,status:'start'})
                 simpleUser.call(
-                  `sip:${decodedUrl.value}@tele.icc-heaalth.com`
+                  `sip:${decodedUrl.value}@${sipDomain}`
                 );
                 simpleUserHangup.value = simpleUser;
               });

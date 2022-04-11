@@ -33,7 +33,7 @@ export default {
 
     },
     setup() {
-       const data = ref(false)
+       const data = ref('')
         const appointment = event => {
             
             data.value = event.date

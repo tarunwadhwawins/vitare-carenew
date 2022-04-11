@@ -6,19 +6,20 @@
 import {
     defineComponent,
     ref,
-    reactive
+
 } from 'vue';
 import { useStore } from "vuex"
 export default defineComponent({
     props: {
         endPoint: {
+            required: true,
             type: String
         }
     },
     setup(props) {
       const store = useStore()
         let timeout = ''
-        let endPoints= reactive(props.endPoint)
+        let endPoints= ref(props.endPoint)
         const search = ref(null)
         const handleChange = value => {
             if (timeout && value.target.value != '') {
@@ -31,7 +32,7 @@ export default defineComponent({
                 let ordring = store.getters.orderTable.value
                 store.dispatch("searchTableData", {
                   data:search.value,
-                  endPoint:endPoints,
+                  endPoint:endPoints.value,
                   field:ordring.data,
                   
                 })
