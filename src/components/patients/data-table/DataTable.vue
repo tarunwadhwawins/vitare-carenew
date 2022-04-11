@@ -15,17 +15,9 @@
         <template #firstName="{ text }" v-else>
             <span>{{ text }}</span>
         </template>
-      <!-- <template #firstName="{ text }" v-else>
-        <span>{{ text }}</span>
-      </template> -->
       <template #flags="text">
         <span class="box" :style="{ 'background-color': text.text }"></span>
-        <!-- <span class="box" :class="(text = text.match(/yellowBgColor/g))" v-if="text.match(/yellowBgColor/g)"></span> -->
       </template>
-      <!-- <template #compliance>
-        <a class="icons">
-            <WarningOutlined /></a>
-    </template> -->
       <template #patientVitals>
         <WarningOutlined />
       </template>

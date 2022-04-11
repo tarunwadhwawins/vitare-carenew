@@ -17,14 +17,7 @@
   <a-row :gutter="24" class="mb-24">
     <a-col :span="24">
       <a-table  rowKey="id" :columns="clinicalHistoryColumns" :data-source="clinicalsData" :scroll="{ x: 500 }">
-       
         <template #history="text">
-          <!-- <a-tooltip placement="bottom">
-            <template #title>
-              {{ text.record.history }}
-            </template>
-            {{ text.record.history }}
-          </a-tooltip> -->
           <a-popover>
             <template #content>
               <p :ellipsis=true>{{ text.record.history }}</p>
@@ -33,7 +26,7 @@
           </a-popover>
         </template>
         
-        <template #action="text">
+        <template #action="text" v-if="arrayToObjact(screensPermissions,77)">
           <a-tooltip placement="bottom">
             <template #title>
               <span>{{$t('global.delete')}}</span>
@@ -100,7 +93,7 @@
   <a-row :gutter="24" class="mb-24">
       <a-col :span="24">
           <a-table  rowKey="id" :columns="clinicalMedicatColumns" :data-source="clinicalMedicatData" :scroll="{ x: 900 }">
-              <template #action="text">
+              <template #action="text"  v-if="arrayToObjact(screensPermissions,80)">
                   <a-tooltip placement="bottom">
                       <template #title>
                           <span>{{$t('global.delete')}}</span>
@@ -121,8 +114,8 @@ import { defineComponent, reactive, computed, watchEffect, ref } from "vue";
 import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "../../loader/Loader.vue";
-import { warningSwal,timeStamp} from "../../../commonMethods/commonMethod";
-import { messages } from "../../../config/messages";
+import { warningSwal,timeStamp,arrayToObjact} from "@/commonMethods/commonMethod";
+import { messages } from "@/config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 export default defineComponent({
   components: {
@@ -305,6 +298,8 @@ export default defineComponent({
     //     errorSwal(messages.fieldsRequired)
     // };
     return {
+      arrayToObjact,
+      screensPermissions: store.getters.screensPermissions,
       changedValue,
       // clinicalDataFailed,
       deleteClinicalData,

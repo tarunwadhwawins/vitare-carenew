@@ -9,10 +9,10 @@
           :pagination="false"
         >
           <template #actions="{ record }">
-            <a class="icons"
+            <a class="icons" v-if="arrayToObjact(screensPermissions,306)"
               ><EditOutlined @click="editPhysician(record.id);actionTrack(paramsId,306,'patient')"
             /></a>
-            <a class="icons"
+            <a class="icons" v-if="arrayToObjact(screensPermissions,307)"
               ><DeleteOutlined @click="deletePhysician(record.id);actionTrack(paramsId,307,'patient')"
             /></a>
           </template>
@@ -26,7 +26,7 @@
 <script>
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import Loader from "@/components/loader/Loader.vue";
-import { warningSwal, actionTrack } from "@/commonMethods/commonMethod";
+import { warningSwal, actionTrack,arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
@@ -112,6 +112,8 @@ export default {
     };
 
     return {
+      screensPermissions: store.getters.screensPermissions,
+      arrayToObjact,
       actionTrack,
       paramsId:route.params.udid,
       physiciansColumns,

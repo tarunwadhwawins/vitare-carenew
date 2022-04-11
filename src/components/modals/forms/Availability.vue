@@ -30,17 +30,6 @@
 </a-form>
 <a-row :gutter="24" v-show="!paramId">
     <a-col :span="24">
-        <!-- <a-table  rowKey="id" :pagination="false" :columns="staffs.availabilityListColms" :data-source="staffs.availabilityList" :scroll="{ x: 900 }">
-            <template #action="text">
-                <a-tooltip placement="bottom" @click="deleteAvailability(text.record.id)">
-                    <template #title>
-                        <span>{{$t('global.delete')}}</span>
-                    </template>
-                    <a class="icons">
-                        <DeleteOutlined /></a>
-                </a-tooltip>
-            </template>
-        </a-table> -->
         <AvailabilityTable :Id="Id" />
         <Loader />
     </a-col>

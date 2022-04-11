@@ -4,7 +4,7 @@
         <ShowModalButton @isVisible="showModal($event)" :headingText="$t('careCoordinator.coordinatorsModal.careCoordinator')" :buttonText="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" />
     </a-col>
 </a-row>
-<a-row class="mb-24" :gutter="24">
+<a-row class="mb-24" :gutter="24" v-if="arrayToObjact(screensPermissions,40)">
     <a-col :sm="12" :xs="24">
         <h2>{{$t('global.specialization')}}</h2>
         <a-row :gutter="24">
@@ -24,12 +24,12 @@
 </a-row>
 
 <a-row>
-    <a-col :span="12" v-if="arrayToObjact(screensPermissions,40)">
-        <SearchField endPoint="staff" />
+    <a-col :span="12" >
+        <SearchField endPoint="staff" v-if="arrayToObjact(screensPermissions,40)"/>
     </a-col>
-    <a-col :span="12" v-if="arrayToObjact(screensPermissions,41)">
+    <a-col :span="12" >
         <div class="text-right mb-24">
-            <ExportToExcel @click="exportExcel('careCoordinator_report')" />
+            <ExportToExcel @click="exportExcel('careCoordinator_report')" v-if="arrayToObjact(screensPermissions,41)"/>
         </div>
     </a-col>
     <a-col :span="24" >
@@ -110,8 +110,6 @@ export default {
             handleOk,
             searchoptions,
             staffs: store.getters.staffRecord.value,
-            value2: ref(),
-            size: ref(),
         };
     },
 };
