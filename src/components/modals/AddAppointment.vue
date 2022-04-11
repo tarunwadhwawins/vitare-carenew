@@ -141,7 +141,7 @@ export default {
 		const staffData = ref([]);
 		const patientData = ref([]);
 		const patientUdid = route.params.udid;
-		const idPatient = reactive(props.patientId);
+		const idPatient = props.patientId ? reactive(props.patientId) : ''
 		const disabled = ref(false)
 		const isPatientSummary = ref(false)
 		const closeValue = ref(false)

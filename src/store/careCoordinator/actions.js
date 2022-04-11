@@ -46,17 +46,17 @@ export const updateStaff = async ({
 
 export const staffs = async ({commit}, page) => {
   let link = page ? 'staff'+page : 'staff'
-commit('loadingStatus', true)
+commit('loadingTableStatus', true)
   await serviceMethod.common("get", link, null, null).then((response) => {
     commit('staff', response.data);
-   commit('loadingStatus', false)
+   commit('loadingTableStatus', false)
   }).catch((error) => { 
     errorLogWithDeviceInfo(error.response)
     commit('errorMsg', error);
     if(error.response.status === 500){
       errorSwal(error.response.data.message)
     }
-    commit('loadingStatus', false)
+    commit('loadingTableStatus', false)
   })
 }
 

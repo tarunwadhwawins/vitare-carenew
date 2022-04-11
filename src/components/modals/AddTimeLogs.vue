@@ -36,7 +36,7 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('timeLogs.date')" name="date" :rules="[{ required: true, message: $t('timeLogs.date')+' '+$t('global.validation')  }]">
-              <a-date-picker @change="changedValue" :disabled="isDisabled" v-model:value="addTimeLogForm.date" :size="size" style="width: 100%" format="MM/DD/YYYY" />
+              <a-date-picker @change="changedValue" :disabled="isDisabled" :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" v-model:value="addTimeLogForm.date" :size="size" style="width: 100%" format="MM/DD/YYYY" />
             </a-form-item>
           </div>
         </a-col>
@@ -124,6 +124,7 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute()
     const formRef = ref();
+    const dateSelect = ref(moment().add(1,'day'))
     const isValueChanged = ref(false);
     // const isTimerLog = reactive(props.isAutomatic);
     const isDisabled = props.isAutomatic == true ? true : false;
@@ -287,6 +288,7 @@ export default defineComponent({
       changedValue,
       onCloseModal,
       flagsList,
+      dateSelect
     };
   },
 });
