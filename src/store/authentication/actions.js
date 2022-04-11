@@ -19,6 +19,7 @@ export const login = async ({ commit }, user) => {
 			errorLogWithDeviceInfo(error.response)
 			if (error.response.status == 401) {
 				commit('loginFailure', 'Invalid Login Credentials');
+				commit('failure', 'Invalid Login Credentials')
 			}
 			else {
 				commit('loginFailure', error);
@@ -44,6 +45,7 @@ const permission = async ({ commit }) => {
 
 		if (response.data.actionId.length == 0 && response.data.widgetId.length==0) {
 			errorSwal("You don't have permission! Contact to Admin").then((response) => {
+				commit('failure', 'true')
 				if(response == true){
 					logoutUser({ commit })
 				}else{
