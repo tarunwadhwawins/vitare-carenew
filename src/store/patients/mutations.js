@@ -46,15 +46,6 @@ export const patient = (state, data) => {
     sorter: true,
   },
 
-  // {
-  //     title: "Date of Readings ",
-  //     dataIndex: "lastReadingDate",
-  //     sorter: {
-  //         compare: (a, b) => a.reading - b.reading,
-  //         multiple: 1,
-  //     },
-  // },
-
   {
     title: "Readings ",
     dataIndex: "patientVitals",
@@ -85,40 +76,7 @@ export const patient = (state, data) => {
     },
     ],
   },
-  // {
-  //     title: "Non Compliant",
-  //     dataIndex: "compliance",
-  //     sorter: {
-  //         compare: (a, b) => a.reading - b.reading,
-  //         multiple: 1,
-  //     },
-  //     filters: [{
-  //             text: "Flag",
-  //             value: "flag",
-  //         },
-  //         {
-  //             text: "Name",
-  //             value: "name",
-  //         },
-  //         {
-  //             text: "Last Reading Date",
-  //             value: "readdate",
-  //         },
-  //         {
-  //             text: "Last Reading Value",
-  //             value: "readvalue",
-  //         },
-  //         {
-  //             text: "Non Compliance ",
-  //             value: "noncompliance",
-  //         },
-  //         {
-  //             text: "Last Message Seen",
-  //             value: "messagseen",
-  //         },
-  //     ],
-  //     onFilter: (value, record) => record.name.indexOf(value) === 0,
-  // },
+ 
   {
     title: "Non Compliant",
     dataIndex: "nonCompliance",
@@ -132,31 +90,7 @@ export const patient = (state, data) => {
     dataIndex: "lastMessageSent",
     
     ellipsis: true,
-    // filters: [{
-    //         text: "Flag",
-    //         value: "flag",
-    //     },
-    //     {
-    //         text: "Name",
-    //         value: "name",
-    //     },
-    //     {
-    //         text: "Last Reading Date",
-    //         value: "readdate",
-    //     },
-    //     {
-    //         text: "Last Reading Value",
-    //         value: "readvalue",
-    //     },
-    //     {
-    //         text: "Non Compliance ",
-    //         value: "noncompliance",
-    //     },
-    //     {
-    //         text: "Last Message Seen",
-    //         value: "messagseen",
-    //     },
-    // ],
+    
     onFilter: (value, record) => record.name.indexOf(value) === 0,
   },
   {
