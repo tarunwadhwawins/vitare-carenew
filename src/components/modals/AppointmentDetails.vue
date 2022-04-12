@@ -15,7 +15,7 @@
                         </div>
                     </div>
                     <div class="itemWrapper">
-                        <div class="leftWrapper">Care-Coordinator</div>
+                        <div class="leftWrapper">Care Coordinator</div>
                         <div class="rightWrapper">
                             {{appointmentDetails?.staff}}
                         </div>

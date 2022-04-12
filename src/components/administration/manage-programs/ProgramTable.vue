@@ -24,7 +24,7 @@
             <a-switch v-model:checked="record.isActive" @change="UpdateProgramStatus(record.udid, $event)" />
         </template>
     </a-table>
-    <Loader />
+    <TableLoader />
 </a-col>
 </template>
 <script>
@@ -38,10 +38,10 @@ import {
 import { messages } from "@/config/messages";
 import { useStore } from "vuex";
 
-import Loader from "@/components/loader/Loader";
+import TableLoader from "@/components/loader/TableLoader";
 export default {
   components: {
-    Loader,
+    TableLoader,
     DeleteOutlined,
     EditOutlined,
   },
