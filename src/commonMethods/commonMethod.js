@@ -222,6 +222,12 @@ export function startimeAdd(value) {
 	return moment(value.format('MM/DD/YYYY') + ' ' + timeStart).format();
 }
 
+export function timestampToDate(timestamp, format) {
+	var day = moment.unix(timestamp);
+	console.log('dayday', day.format(format))
+	return day.format(format);
+}
+
 export function endTimeAdd(value) {
 	let endTime = '23:59:59';
 	return moment(value.format('MM/DD/YYYY') + ' ' + endTime).format();
