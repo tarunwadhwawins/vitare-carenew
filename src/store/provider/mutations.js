@@ -84,3 +84,8 @@ export const providerLocationList = (state, data) => {
 export const updateSingleProvider = (state, data) => {
 	state.updateSingleProvider = data;
 };
+
+
+export const editProviderLocation = (state, data) => {
+	state.editProviderLocation = data;
+};
