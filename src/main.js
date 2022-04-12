@@ -9,9 +9,6 @@ import './assets/scss/common.scss'
 import VueApexCharts from "vue3-apexcharts";
 import { notification, Button } from "ant-design-vue";
 
-import { Cropper } from 'vue-advanced-cropper'
-import 'vue-advanced-cropper/dist/style.css';
-
 import Maska from 'maska'
 
 
@@ -103,6 +100,6 @@ if (store.state.authentication.loggedInUser) {
   
 
 
-app.use(Antd).use(Cropper).use(Maska).use(firebaseApp).use(VueApexCharts).use(store).use(router).use(i18n).mount('#app')
+app.use(Antd).use(Maska).use(firebaseApp).use(VueApexCharts).use(store).use(router).use(i18n).mount('#app')
 
 

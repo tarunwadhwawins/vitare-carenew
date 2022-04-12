@@ -10,6 +10,7 @@
 <script>
 import { ref } from 'vue-demi'
 import { Cropper } from 'vue-advanced-cropper'
+import 'vue-advanced-cropper/dist/style.css';
 export default {
   components: {
     Cropper,
