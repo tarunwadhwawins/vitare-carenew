@@ -32,8 +32,8 @@
                 </a>
             </a-tooltip>
         </template>
-        <template #active="key">
-            <a-switch v-model:checked="checked[key.record.key]" />
+        <template #active="key" >
+            <a-switch v-model:checked="checked[key.record.key]" :disabled="!arrayToObjact(screensPermissions,334)"/>
         </template>
     </a-table>
     <TableLoader />

@@ -59,8 +59,8 @@
   <a-row :gutter="24" class="mb-24">
     <a-col :span="24">
       <a-table  rowKey="id" :columns="deviceColumns" :data-source="deviceData" :pagination="false" :scroll="{ x: 900 }">
-        <template #active="{record}">
-          <a-switch v-model:checked="record.status" @change="changeStatus(record.id, $event)" />
+        <template #active="{record}" >
+          <a-switch v-model:checked="record.status" @change="changeStatus(record.id, $event)" :disabled="!arrayToObjact(screensPermissions,102)"/>
         </template>
         <template #action="text" v-if="arrayToObjact(screensPermissions,73)">
           <a class="icons" @click="deleteDevice(text.record.id)">

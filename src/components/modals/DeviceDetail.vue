@@ -16,8 +16,8 @@
               v-if="text.match(/yellowBgColor/g)"
             ></span>
           </template>
-          <template #active v-if="arrayToObjact(screensPermissions,326)">
-            <a-switch v-model:checked="checked" />
+          <template #active >
+            <a-switch v-model:checked="checked" :disabled="!arrayToObjact(screensPermissions,326)"/>
           </template>
           <template #action="{record}" v-if="arrayToObjact(screensPermissions,320)">
             <!-- <a class="icons"><EditOutlined @click="editDevice(record.id)" /></a> -->
