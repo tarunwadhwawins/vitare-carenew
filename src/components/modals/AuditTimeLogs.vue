@@ -33,7 +33,7 @@
           </a-col>
           <a-col :sm="24" :md="24" :xs="24">
             <div class="form-group">
-              <a-form-item :label="$t('timeLogReport.note')" name="note" :rules="[{ required: false, message: $t('timeLogReport.note')+' '+$t('global.validation') }]">
+              <a-form-item :label="$t('timeLogReport.note')" name="note" :rules="[{ required: true, message: $t('timeLogReport.note')+' '+$t('global.validation') }]">
                 <a-textarea v-model:value="auditTimeLog.note" allow-clear />
               </a-form-item>
             </div>

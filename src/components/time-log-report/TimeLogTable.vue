@@ -40,12 +40,8 @@
 
     <AuditTimeLog v-model:visible="visible" @saveAuditTimeLog="handleOk($event)" :Id="Id" />
 </a-col>
-<a-modal width="1100px" centered v-model:visible="viewReport" title="Audit Time Log Change Report" @ok="handleOk" :footer="false">
-    <a-table rowKey="id" :columns="columns" :data-source="modalData">
+<ViewTimeLogTable v-model:visible="viewReport" :id="auditId"/>
 
-    </a-table>
-    <TableLoader />
-</a-modal>
 </template>
 
 <script>
@@ -60,6 +56,7 @@ import {
     EyeOutlined
 } from "@ant-design/icons-vue";
 import AuditTimeLog from "../modals/AuditTimeLogs";
+import ViewTimeLogTable from "./ViewTimeLogTable"
 import {
     messages
 } from "@/config/messages";
@@ -82,7 +79,7 @@ export default {
         EditOutlined,
         TableLoader,
         AuditTimeLog,
-  
+        ViewTimeLogTable,
         Flags,
     },
 
@@ -105,12 +102,14 @@ export default {
             visible.value = true;
             Id.value = id
         }
-
+const auditId = ref('')
         function viewTimeLog(id) {
+   
             store.dispatch("timeLogView", id);
             viewReport.value = true
+            auditId.value= id
         }
-        const modalData = store.getters.timeLogView
+       // const modalData = store.getters.timeLogView
         const columns = store.getters.viuewTimeReportModal
 
         function deleteTimeLog(id) {
@@ -193,8 +192,10 @@ export default {
                 store.dispatch("timeLogReportList", '?search=' + store.getters.orderTable.value.data)
             }
         }
-
+        
+        
         return {
+           
             screensPermissions: store.getters.screensPermissions,
             handleTableChange,
             Id,
@@ -208,10 +209,13 @@ export default {
             meta,
             tableYScroller,
             viewTimeLog,
-            modalData,
+            modalData:store.getters.timeLogView,
             columns,
-            viewReport
-
+            viewReport,
+           
+           
+            auditId
+            
         };
     },
 };
