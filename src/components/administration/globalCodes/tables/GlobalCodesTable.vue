@@ -18,11 +18,8 @@
         <span class="icons"><DeleteOutlined @click="deleteGlobalCode(record.id)" /></span>
       </a-tooltip>
     </template>
-    <template #isActive="{record}" v-if="arrayToObjact(screensPermissions,328)">
-      <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
-    </template>
-     <template #isActive="{record}" v-else>
-      <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" disabled/>
+    <template #isActive="{record}" >
+      <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" :disabled="!arrayToObjact(screensPermissions,328)"/>
     </template>
   </a-table>
 </template>

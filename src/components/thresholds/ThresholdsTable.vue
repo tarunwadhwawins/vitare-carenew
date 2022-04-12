@@ -19,11 +19,8 @@
                 </a>
             </a-tooltip>
         </template>
-        <template #active="key" v-if="arrayToObjact(screensPermissions,330)">
-            <a-switch v-model:checked="checked[key.record.key]" />
-        </template>
-        <template #active="key" v-else>
-            <a-switch v-model:checked="checked[key.record.key]" disabled/>
+        <template #active="key" >
+            <a-switch v-model:checked="checked[key.record.key]" :disabled="!arrayToObjact(screensPermissions,330)"/>
         </template>
     </a-table>
 </a-col>

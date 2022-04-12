@@ -17,11 +17,8 @@
                 <DeleteOutlined /></a>
         </a-tooltip>
     </template>
-    <template #isActive="{record}" v-if="arrayToObjact(screensPermissions,10)">
-        <a-switch v-model:checked="record.isActive" @change="UpdateCptStatus(record.udid, $event)" />
-    </template>
-    <template #isActive="{record}" v-else>
-        <a-switch v-model:checked="record.isActive" @change="UpdateCptStatus(record.udid, $event)" disabled/>
+    <template #isActive="{record}" >
+        <a-switch v-model:checked="record.isActive" @change="UpdateCptStatus(record.udid, $event)" :disabled="!arrayToObjact(screensPermissions,10)"/>
     </template>
 </a-table>
 <Loader />
