@@ -110,7 +110,7 @@ class ServiceMethodService {
                         });
                         // console.log('object', data);
                        
-                        
+                        callback(data);
 
                     }
 
