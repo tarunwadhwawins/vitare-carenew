@@ -101,6 +101,9 @@
                       <template #title>
                           <span>{{$t('global.delete')}}</span>
                       </template>
+                      <a class="icons" @click="editMedication(text.record.id, null)">
+                        <EditOutlined />
+                      </a>
                       <a class="icons" @click="deleteClinicalData(text.record.id, null)">
                           <DeleteOutlined />
                       </a>
@@ -138,8 +141,10 @@ export default defineComponent({
     const route = useRoute()
     const patientId = reactive(props.idPatient);
     const formRef = ref()
-    const isEdit = ref(false)
+    const isEditMedicalHistory = ref(false)
+    const isEditMedicalRoutine = ref(false)
     const medicalHistoryUdid = ref(null)
+    const medicalRoutineUdid = ref(null)
     const clinicals = reactive({
       history: "",
     });
@@ -168,13 +173,24 @@ export default defineComponent({
     });
 
     const editClinicalData = (id) => {
-      isEdit.value = true;
+      isEditMedicalHistory.value = true;
       medicalHistoryUdid.value = id;
       store.dispatch('medicalHistoryDetails', {
         patientUdid: route.params.udid,
         medicalHistoryUdid: id,
       }).then(() => {
         Object.assign(clinicals, medicalHistoryDetails.value)
+      })
+    }
+
+    const editMedication = (id) => {
+      isEditMedicalRoutine.value = true;
+      medicalRoutineUdid.value = id;
+      store.dispatch('medicationDetails', {
+        patientUdid: route.params.udid,
+        medicalHistoryUdid: id,
+      }).then(() => {
+        Object.assign(clinicalMedication, medicationDetails.value)
       })
     }
 
@@ -190,7 +206,7 @@ export default defineComponent({
           Object.assign(clinicals, clinicalsForm)
         });
       } */
-      if(isEdit.value) {
+      if(isEditMedicalHistory.value) {
         store.dispatch("updateClinicalHistory", {
           data: clinicals,
           patientUdid: route.params.udid,
@@ -218,18 +234,19 @@ export default defineComponent({
     };
 
     const clinicalMedicat = () => {
-      if(patientId != null) {
-        store.dispatch("addClinicalMedicat", {
+      if(isEditMedicalRoutine.value) {
+        store.dispatch("updateMedicalRoutine", {
           data: {
             medicine: clinicalMedication.medicine,
             frequency: clinicalMedication.frequency,
             startDate: timeStamp(clinicalMedication.startDate ),
             endDate: timeStamp(clinicalMedication.endDate )
           },
-          id: patientId,
+          patientUdid: route.params.udid,
+          medicalRoutineUdid: medicalRoutineUdid.value,
         }).then(() => {
           emit('onChange', false)
-          store.dispatch("clinicalMedicatList", patientId);
+          store.dispatch("clinicalMedicatList", route.params.udid);
           formRef.value.resetFields()
           Object.assign(clinicalMedication, medicationForm)
         });
@@ -272,6 +289,10 @@ export default defineComponent({
 
     const medicalHistoryDetails = computed(() => {
       return store.state.patients.medicalHistoryDetails
+    })
+
+    const medicationDetails = computed(() => {
+      return store.state.patients.medicationDetails
     })
 
     function deleteClinicalData(id, name) {
@@ -337,6 +358,7 @@ export default defineComponent({
       screensPermissions: store.getters.screensPermissions,
       changedValue,
       // clinicalDataFailed,
+      editMedication,
       editClinicalData,
       deleteClinicalData,
       clinicalHistory,

@@ -80,5 +80,6 @@ export default {
     
     programDetails:null,
     medicalHistoryDetails:null,
+    medicationDetails:null,
 
 }
