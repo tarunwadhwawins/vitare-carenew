@@ -1,45 +1,70 @@
-<!--<template>
-  <div>
-    <vue-tel-input
-      v-model="phone"
-      @input="onInput"
-      @validate="onValid" 
-      v-bind="bindProps"
-      :disabled="false"
-    />
-  </div>
+<template>
+  <a-upload name="avatar" list-type="picture-card" class="avatar-uploader" :show-upload-list="false" action="https://www.mocky.io/v2/5cc8019d300000980a055e76" @change="handleChange" >
+    <img v-if="imageUrl" :src="imageUrl" alt="avatar" class="after-image" />
+    <div>
+      <div class="ant-upload-text">Upload</div>
+    </div>
+  </a-upload>
+  <ImageCropper v-if="modalVisible" v-model:visible="modalVisible" :imageUrl="imageUrl" @closeModal="closeModal" @crop="onCrop" />
 </template>
+
 <script>
-import { reactive, toRefs } from "vue";
-import { VueTelInput } from "vue3-tel-input";
-import "vue3-tel-input/dist/vue3-tel-input.css";
-import { useStore } from "vuex";
-export default {
+import { defineComponent, defineAsyncComponent, ref } from 'vue';
+
+export default defineComponent({
   components: {
-    VueTelInput,
+    ImageCropper: defineAsyncComponent(()=>import("@/components/common/ImageCropper")),
   },
 
-  setup(props, { emit }) {
-    const store = useStore();
-    const state = reactive({
-      phone: null,
-    });
+  setup() {
+    const imageUrl = ref('');
+    const modalVisible = ref(false);
 
-    const onInput = (number, phoneObject) => {
-      if (phoneObject?.formatted) {
-        emit("setPhoneNumber", phoneObject.nationalNumber);
-      }
+    function getBase64(img, callback) {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => callback(reader.result));
+      reader.readAsDataURL(img);
+    }
+
+    const handleChange = info => {
+      getBase64(info.file.originFileObj, base64Url => {
+        imageUrl.value = base64Url;
+      });
+      modalVisible.value = true;
     };
 
-    const onValid = () => {
-      // console.log("number", number);
-    };
+    const onCrop = (image) => {
+      console.log('image', image)
+      imageUrl.value = image.src;
+    }
+
+    const closeModal = () => {
+      modalVisible.value = false;
+    }
+
     return {
-      onValid,
-      onInput,
-      ...toRefs(state),
-      bindProps: store.state.common.bindProps,
+      imageUrl,
+      handleChange,
+      modalVisible,
+      onCrop,
+      closeModal,
     };
   },
-};
-</script>-->
+
+});
+</script>
+<style>
+.avatar-uploader > .ant-upload {
+  width: 128px;
+  height: 128px;
+}
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
+
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
+}
+</style>

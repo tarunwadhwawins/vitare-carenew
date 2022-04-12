@@ -1,8 +1,13 @@
 <template>
   <div class="patientInfo" v-if="patientDetails">
     <div class="patientImg" @click="showModalCustom()">
-      <img v-if="patientDetails.profilePhoto" :src="patientDetails.profilePhoto" alt="image"/>
-      <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
+      <a-upload :show-upload-list="false" action="https://www.mocky.io/v2/5cc8019d300000980a055e76" @change="handleChange" >
+        <img v-if="patientDetails.profilePhoto" class="ant-upload-text" :src="patientDetails.profilePhoto" alt="image"/>
+        <img v-else-if="imageUrl" :src="imageUrl" alt="avatar" class="after-image ant-upload-text" />
+        <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
+      </a-upload>
+      <!-- <img v-if="patientDetails.profilePhoto" :src="patientDetails.profilePhoto" alt="image"/>
+      <img v-else src="@/assets/images/userAvatar.png" alt="image"/> -->
       <div class="info">
         <p v-if="patientDetails.patientFullName">Name: {{ patientDetails.patientFullName }}</p>
         <p v-if="patientDetails.patientDob">DOB : {{ patientDetails.patientDob }}</p>
@@ -164,6 +169,7 @@
     <DocumentDetailModal v-model:visible="documentDetailVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
     <TimeLogsDetailModal v-model:visible="timeLogsDetailVisible" @editTimeLog="editTimeLog($event)" />
     <DeviceDetailModal v-model:visible="deviceDetailVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
+    <ImageCropper v-if="modalVisible" v-model:visible="modalVisible" :imageUrl="imageinCropper" @closeModal="closeImageModal" @crop="onCrop" />
 
   </div>
 </template>
@@ -234,6 +240,7 @@ export default defineComponent({
     AddEmergencyContacts: defineAsyncComponent(()=>import("@/components/modals/AddEmergencyContacts")),
     EmergencyContactsDetailsModal: defineAsyncComponent(()=>import("@/components/modals/EmergencyContactsDetailsModal")),
     CoordinatorsListingModal: defineAsyncComponent(()=>import("@/components/modals/CoordinatorsListingModal")),
+    ImageCropper: defineAsyncComponent(()=>import("@/components/common/ImageCropper")),
   },
   setup() {
     const store = useStore();
@@ -270,6 +277,54 @@ export default defineComponent({
     const isAutomatic = ref(false);
     const staffType = ref(0);
     const title = ref(null);
+
+    const imageinCropper = ref('');
+    const imageUrl = ref('');
+    const modalVisible = ref(false);
+
+    function getBase64(img, callback) {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => callback(reader.result));
+      reader.readAsDataURL(img);
+    }
+
+    const handleChange = info => {
+      getBase64(info.file.originFileObj, base64Url => {
+        imageinCropper.value = base64Url;
+      });
+      modalVisible.value = true;
+    };
+
+    const onCrop = ({image, dataURL}) => {
+      // console.log('newInput', dataURL)
+      let formData = new FormData();
+      let imageSrc = image.src;
+      imageUrl.value = imageSrc;
+        
+      var file = dataURLtoFile(dataURL, 'image.png');
+      console.log('newInput', file);
+
+      formData.append("file", file);
+      store.dispatch("uploadFile", file);
+      
+    }
+
+     function dataURLtoFile(dataurl, filename) {
+      var arr = dataurl.split(','),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), 
+        n = bstr.length, 
+        u8arr = new Uint8Array(n);
+          
+      while(n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], filename, {type:mime});
+    }
+
+    const closeImageModal = () => {
+      modalVisible.value = false;
+    }
 
     watchEffect(() => {
       if(route.name == 'PatientSummary') {
@@ -637,6 +692,13 @@ export default defineComponent({
       
       staffType,
       title,
+
+      imageinCropper,
+      imageUrl,
+      handleChange,
+      modalVisible,
+      onCrop,
+      closeImageModal,
     }
   }
 })
