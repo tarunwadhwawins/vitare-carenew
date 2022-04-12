@@ -23,10 +23,10 @@ export function timeStampFormate(timeStamp, format) {
 
 
 // for all table export excel data
-export function exportExcel(data, date = "?fromDate=&toDate=") {
+export function exportExcel(data, field = "?fromDate=&toDate=") {
 	let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 	// let timeZone = momentTimeZone.tz.guess();
-	store.dispatch('exportReportRequest', { data: data, field: date,timezone:timeZone })
+	store.dispatch('exportReportRequest', { data: data, field: field,timezone:timeZone })
 }
 
 //action tracking when user click on any action 
