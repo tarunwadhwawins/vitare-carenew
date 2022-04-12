@@ -10,10 +10,11 @@
             </div>
         </a-col>
         <a-col :sm="12" :xs="24">
+        
             <div class="form-group">
                 <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: true, message: $t('global.document')+' '+$t('global.validation') }]">
-                    <a-input name="document_file" size="large" type="file" @change="onFileUpload" />
-                    <!-- <ErrorMessage v-if="docValidationError" name="Document is required." /> -->
+                    <a-input ref="image" name="document_file" size="large" type="file" @change="onFileUpload" />
+                    <ErrorMessage v-if="docValidationError" name="Document is required." />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
                 </a-form-item>
             </div>
@@ -48,7 +49,7 @@
     <a-row :gutter="24" class="mb-24" v-show="!paramId">
         <a-col :span="24">
             <DocumentTable :Id="Id" />
-            <Loader />
+            <TableLoader />
         </a-col>
     </a-row>
   </a-form>
@@ -59,6 +60,7 @@
 import { defineComponent, computed, reactive, watchEffect, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import Loader from "@/components/loader/Loader";
+import TableLoader from "@/components/loader/TableLoader";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import { useRoute } from "vue-router";
 import DocumentTable from "../../patients/data-table/DocumentTable.vue";
@@ -72,7 +74,8 @@ export default defineComponent({
     // FileOutlined,
     ErrorMessage,
     DocumentTable,
-    GlobalCodeDropDown
+    GlobalCodeDropDown,
+    TableLoader
   },
   props: {
     idPatient: {
@@ -88,6 +91,7 @@ export default defineComponent({
     const patientUdid = route.params.udid;
     const docValidationError = ref(false)
     const formRef = ref()
+    const image = ref()
     const changedValue = () => {
       emit('onChange')
     }
@@ -142,6 +146,7 @@ export default defineComponent({
        formData.append("file", docFile);
        docValidationError.value=false
        documents.document = docFile
+       
       store.commit('checkChangeInput',true)
       store.dispatch("uploadFile", formData);
     };
@@ -170,9 +175,13 @@ export default defineComponent({
           }).then(() => {
             emit('onChange', false)
             formRef.value.resetFields();
-            Object.assign(documents, form)
+            
             store.state.patients.uploadFile=null
             documents.document =''
+            
+            image.value.stateValue=''
+            docValidationError.value=false
+            Object.assign(documents, form)
             store.dispatch("documents", patientUdid);
           });
         }
@@ -194,9 +203,12 @@ export default defineComponent({
           }).then(() => {
             emit('onChange', false)
             formRef.value.resetFields();
-            Object.assign(documents, form)
+            
+            image.value.stateValue=''
+            docValidationError.value=false
             store.state.patients.uploadFile=null
             documents.document =''
+            Object.assign(documents, form)
             store.dispatch("documents", patients.value.addDemographic.id);
           });
       }
@@ -242,6 +254,7 @@ export default defineComponent({
     }
 
     return {
+      image,
       docValidationError,
       changedValue,
       formRef,
