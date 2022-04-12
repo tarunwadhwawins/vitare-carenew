@@ -24,12 +24,12 @@
                     <EditOutlined /></a>
             </a-tooltip>
             <a-tooltip placement="bottom" @click="viewTimeLog(record.id)" v-if="arrayToObjact(screensPermissions, 332)">
-              <template #title>
-                <span>{{ $t("common.view") }}</span>
-              </template>
-              <a class="icons">
-                <EyeOutlined />
-              </a>
+                <template #title>
+                    <span>{{ $t("common.view") }}</span>
+                </template>
+                <a class="icons">
+                    <EyeOutlined />
+                </a>
             </a-tooltip>
         </template>
         <template #active="key">
@@ -38,10 +38,9 @@
     </a-table>
     <TableLoader />
 
-    <AuditTimeLog v-model:visible="visible" @saveAuditTimeLog="handleOk($event)" :Id="Id" />
+    <AuditTimeLog v-if="visible" v-model:visible="visible" @saveAuditTimeLog="handleOk($event)" :Id="Id" />
 </a-col>
-<ViewTimeLogTable v-model:visible="viewReport" :id="auditId"/>
-
+<ViewTimeLogTable v-if="viewReport" v-model:visible="viewReport" :id="auditId" />
 </template>
 
 <script>
@@ -82,7 +81,9 @@ export default {
         ViewTimeLogTable,
         Flags,
     },
+props:{
 
+},
     setup(props, {
         emit
     }) {
@@ -102,14 +103,15 @@ export default {
             visible.value = true;
             Id.value = id
         }
-const auditId = ref('')
+        const auditId = ref('')
+
         function viewTimeLog(id) {
-   
+
             store.dispatch("timeLogView", id);
             viewReport.value = true
-            auditId.value= id
+            auditId.value = id
         }
-       // const modalData = store.getters.timeLogView
+        // const modalData = store.getters.timeLogView
         const columns = store.getters.viuewTimeReportModal
 
         function deleteTimeLog(id) {
@@ -141,7 +143,7 @@ const auditId = ref('')
 
                         loader.value = true;
                         meta.timeLogeMeta = "";
-                        //store.state.timeLogReport.timeLogReportList = ""
+                        console.log("fsfs", current_page)
 
                         store.dispatch("timeLogReportList", store.getters.auditTimeLogFilterDates.value + "&page=" + current_page + store.getters.orderTable.value.data).then(() => {
                             loadMoredata();
@@ -163,7 +165,7 @@ const auditId = ref('')
             var tableContent = document.querySelector('.ant-table-body')
 
             setTimeout(() => {
-              
+
                 tableContent.scrollTo(0, scroller)
             }, 100)
             loader.value = false;
@@ -183,19 +185,18 @@ const auditId = ref('')
                     page: pag,
                     filters: filters
                 })
-                store.dispatch("timeLogReportList", '?search=' + orderParam)
+                store.dispatch("timeLogReportList", store.getters.auditTimeLogFilterDates.value + '&search=' + orderParam)
 
             } else {
                 store.dispatch('orderTable', {
                     data: '&orderField=&orderBy='
                 })
-                store.dispatch("timeLogReportList", '?search=' + store.getters.orderTable.value.data)
+                store.dispatch("timeLogReportList", store.getters.auditTimeLogFilterDates.value + '&search=' + store.getters.orderTable.value.data)
             }
         }
-        
-        
+
         return {
-           
+
             screensPermissions: store.getters.screensPermissions,
             handleTableChange,
             Id,
@@ -209,13 +210,12 @@ const auditId = ref('')
             meta,
             tableYScroller,
             viewTimeLog,
-            modalData:store.getters.timeLogView,
+            modalData: store.getters.timeLogView,
             columns,
             viewReport,
-           
-           
+
             auditId
-            
+
         };
     },
 };

@@ -70,7 +70,7 @@ export const timeLogReportList = async (state, data) => {
     
 }
 export const timeLogView = async (state, data) => {
-
+  //state.auditMetaLog= data.meta.pagination
   state.viuewTimeReportModal = [ 
     {
       title: "Change By",
@@ -85,10 +85,11 @@ export const timeLogView = async (state, data) => {
     title: "Notes ", 
     dataIndex: "note",
   },]
-  state.timeLogView = data.map(item => {
+  state.timeLogView = data.data.map(item => {
     item.timeAmount = secondsToTime(item.timeAmount)
     return item
   })
+ 
     
 }
 export const reportExport = (state, data) => {
