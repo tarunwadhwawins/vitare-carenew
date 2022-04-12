@@ -26,7 +26,7 @@ export function timeStampFormate(timeStamp, format) {
 export function exportExcel(data, date = "?fromDate=&toDate=") {
 	let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 	// let timeZone = momentTimeZone.tz.guess();
-	store.dispatch('exportReportRequest', { data: data, date: date,timezone:timeZone })
+	store.dispatch('exportReportRequest', { data: data, field: date,timezone:timeZone })
 }
 
 //action tracking when user click on any action 
@@ -220,6 +220,12 @@ export function arrayToObjact(data, id) {
 export function startimeAdd(value) {
 	let timeStart = '00:00:00';
 	return moment(value.format('MM/DD/YYYY') + ' ' + timeStart).format();
+}
+
+export function timestampToDate(timestamp, format) {
+	var day = moment.unix(timestamp);
+	console.log('dayday', day.format(format))
+	return day.format(format);
 }
 
 export function endTimeAdd(value) {
