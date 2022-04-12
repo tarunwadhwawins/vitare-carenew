@@ -23,6 +23,9 @@
         <template #isActive="{record}" v-if="arrayToObjact(screensPermissions,16)">
             <a-switch v-model:checked="record.isActive" @change="UpdateProgramStatus(record.udid, $event)" />
         </template>
+        <template #isActive="{record}" v-else>
+            <a-switch v-model:checked="record.isActive" @change="UpdateProgramStatus(record.udid, $event)" disabled/>
+        </template>
     </a-table>
     <TableLoader />
 </a-col>

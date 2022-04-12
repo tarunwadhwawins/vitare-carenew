@@ -19,6 +19,9 @@
           <template #active v-if="arrayToObjact(screensPermissions,326)">
             <a-switch v-model:checked="checked" />
           </template>
+          <template #active v-else>
+            <a-switch v-model:checked="checked" disabled/>
+          </template>
           <template #action="{record}" v-if="arrayToObjact(screensPermissions,320)">
             <!-- <a class="icons"><EditOutlined @click="editDevice(record.id)" /></a> -->
             <a class="icons"><DeleteOutlined @click="deleteDevice(record.id);actionTrack(paramsId,320,'patient')" /></a>

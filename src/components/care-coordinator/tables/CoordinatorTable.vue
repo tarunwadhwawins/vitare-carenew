@@ -13,6 +13,9 @@
     <template #status="{record}" v-if="arrayToObjact(screensPermissions,38)">
         <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
     </template>
+    <template #status="{record}" v-else >
+        <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" disabled/>
+    </template>
     <template #lastReadingDate>
         <WarningOutlined />
     </template>

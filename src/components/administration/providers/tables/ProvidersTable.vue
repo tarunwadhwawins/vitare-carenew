@@ -9,6 +9,9 @@
     <template #isActive="{record}" v-if="arrayToObjact(screensPermissions,23)">
         <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
     </template>
+    <template #isActive="{record}" v-else>
+        <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" disabled/>
+    </template>
     <template #action="text">
         <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,23)">
             <a class="icons">
