@@ -6,7 +6,7 @@
     <template #name="{text}" v-else>
         <span >{{text}}</span>
     </template>
-    <template #isActive="{record}" v-if="arrayToObjact(screensPermissions,25)">
+    <template #isActive="{record}" v-if="arrayToObjact(screensPermissions,23)">
         <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
     </template>
     <template #action="text">
