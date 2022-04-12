@@ -673,13 +673,13 @@ export const deleteDocument = async ({
 export const documents = async ({
   commit
 }, id) => {
-  commit('loadingStatus', true)
+  commit('loadingTableStatus', true)
   await serviceMethod.common("get", `patient/${id}/document`, null, null).then((response) => {
     commit('documents', response.data.data);
-    commit('loadingStatus', false)
+    commit('loadingTableStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
-    commit('loadingStatus', false)
+    commit('loadingTableStatus', false)
     errorSwal(error.response.data.message)
   })
 }
