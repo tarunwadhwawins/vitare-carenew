@@ -79,5 +79,7 @@ export default {
     isEditPatient:false,
     
     programDetails:null,
+    medicalHistoryDetails:null,
+    medicationDetails:null,
 
 }
