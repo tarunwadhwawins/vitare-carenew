@@ -1031,3 +1031,7 @@ export const programDetails = (state, data) => {
   data.dischargeDate = timestampToDate(data.dischargeDate, format)
   state.programDetails = data
 }
+
+export const medicalHistoryDetails = (state, data) => {
+  state.medicalHistoryDetails = data
+}
