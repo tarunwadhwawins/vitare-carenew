@@ -1,13 +1,15 @@
 <template>
   <div class="patientInfo" v-if="patientDetails">
     <div class="patientImg" @click="showModalCustom()">
-      <a-upload :show-upload-list="false" action="https://www.mocky.io/v2/5cc8019d300000980a055e76" @change="handleChange" >
+      <a-upload class="content" :show-upload-list="false" action="https://www.mocky.io/v2/5cc8019d300000980a055e76" @change="handleChange" >
+        <div class="content-overlay"></div>
         <img v-if="patientDetails.profilePhoto" class="ant-upload-text" :src="patientDetails.profilePhoto" alt="image"/>
-        <img v-else-if="imageUrl" :src="imageUrl" alt="avatar" class="after-image ant-upload-text" />
+        <img v-else-if="imageUrl" :src="imageUrl" alt="avatar" class="ant-upload-text" />
         <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
+        <div class="content-details fadeIn-bottom">
+          <h3 class="content-title">Change Image</h3>
+        </div>
       </a-upload>
-      <!-- <img v-if="patientDetails.profilePhoto" :src="patientDetails.profilePhoto" alt="image"/>
-      <img v-else src="@/assets/images/userAvatar.png" alt="image"/> -->
       <div class="info">
         <p v-if="patientDetails.patientFullName">Name: {{ patientDetails.patientFullName }}</p>
         <p v-if="patientDetails.patientDob">DOB : {{ patientDetails.patientDob }}</p>
@@ -169,7 +171,7 @@
     <DocumentDetailModal v-model:visible="documentDetailVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
     <TimeLogsDetailModal v-model:visible="timeLogsDetailVisible" @editTimeLog="editTimeLog($event)" />
     <DeviceDetailModal v-model:visible="deviceDetailVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
-    <ImageCropper v-if="modalVisible" v-model:visible="modalVisible" :imageUrl="imageinCropper" @closeModal="closeImageModal" @crop="onCrop" />
+    <ImageCropper v-if="modalVisible" v-model:visible="modalVisible" :imageUrl="imageinCropper" @closeModal="closeImageModal" @crop="updateProfileImage" />
 
   </div>
 </template>
@@ -281,6 +283,7 @@ export default defineComponent({
     const imageinCropper = ref('');
     const imageUrl = ref('');
     const modalVisible = ref(false);
+    const fileName = ref('');
 
     function getBase64(img, callback) {
       const reader = new FileReader();
@@ -289,24 +292,29 @@ export default defineComponent({
     }
 
     const handleChange = info => {
+      store.commit('uploadFile', null)
+      store.commit('errorMsg', null)
+      fileName.value = info.file.name
       getBase64(info.file.originFileObj, base64Url => {
         imageinCropper.value = base64Url;
       });
       modalVisible.value = true;
     };
 
-    const onCrop = ({image, dataURL}) => {
-      // console.log('newInput', dataURL)
+    const updateProfileImage = (dataURL) => {
+      var file = dataURLtoFile(dataURL, fileName.value);
       let formData = new FormData();
-      let imageSrc = image.src;
-      imageUrl.value = imageSrc;
-        
-      var file = dataURLtoFile(dataURL, 'image.png');
-      console.log('newInput', file);
-
       formData.append("file", file);
-      store.dispatch("uploadFile", file);
-      
+
+      store.dispatch("updateProfileImage", {
+        formData: formData,
+        patientUdid: route.params.udid,
+      }).then(() => {
+        store.dispatch("patientDetails", route.params.udid).then(() => {
+          store.commit('uploadFile', null)
+          store.commit('errorMsg', null)
+        })
+      })
     }
 
      function dataURLtoFile(dataurl, filename) {
@@ -697,7 +705,7 @@ export default defineComponent({
       imageUrl,
       handleChange,
       modalVisible,
-      onCrop,
+      updateProfileImage,
       closeImageModal,
     }
   }
@@ -708,5 +716,104 @@ export default defineComponent({
 span.anticon.anticon-plus {
   position: relative;
   top: -2px;
+}
+
+.container {
+  padding: 1em 0;
+  float: left;
+  width: 50%;
+}
+.container .title {
+  color: #1a1a1a;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* .content {
+  margin: 0 auto;
+  position: relative;
+} */
+
+.content {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  margin: 0 15px 0 0;
+}
+
+.content .content-overlay {
+  background: rgba(0,0,0,0.7);
+  position: absolute;
+  /* height: 99%; */
+  /* width: 30%; */
+  left: 15px;
+  top: 21px;
+  bottom: 0;
+  right: 0;
+  opacity: 0;
+  -webkit-transition: all 0.4s ease-in-out 0s;
+  -moz-transition: all 0.4s ease-in-out 0s;
+  transition: all 0.4s ease-in-out 0s;
+
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  margin: 0 15px 0 0;
+}
+
+.content:hover .content-overlay {
+  opacity: 1;
+}
+
+.content:hover {
+  cursor: pointer;
+}
+
+.content-details {
+  position: relative;
+  text-align: center;
+  padding-left: 1em;
+  padding-right: 1em;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  -moz-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.content:hover .content-details {
+  top: 50%;
+  left: 50%;
+  opacity: 1;
+}
+
+.content-details h3 {
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  margin-bottom: 0.5em;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.content-details p {
+  color: #fff;
+  font-size: 0.8em;
+}
+
+.fadeIn-bottom {
+  top: -62px !important;
+  position: relative;
+  width: 200px;
+  left: 66px !important;
 }
 </style>

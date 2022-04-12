@@ -1,7 +1,12 @@
 <template>
   <a-modal title="Crop Image" width="50%" @cancel="closeModal">
     <div class="cropperContainer" >
-      <Cropper :src="imageUrl" @change="change" class="circle-stencil" :stencil-props="{ aspectRatio: 9/9 }" />
+      <Cropper
+      :src="imageUrl"
+      @change="change"
+      class="circle-stencil"
+      :stencil-props="{ aspectRatio: 1/1 }"
+      />
     </div>
     <a-button class="modal-button" type="primary" html-type="submit" @click="cropImage">{{$t('global.save')}}</a-button>
   </a-modal>
@@ -38,11 +43,9 @@ export default {
           URL.revokeObjectURL(url);
         };
         newImg.src = url;
+        const dataURL = canvas.toDataURL();
 
-        emit("crop", {
-          image: newImg,
-          dataURL: canvas.toDataURL()
-        })
+        emit("crop", dataURL)
         emit('closeModal')
       });
     }
