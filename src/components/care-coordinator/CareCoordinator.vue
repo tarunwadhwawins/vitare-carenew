@@ -29,7 +29,7 @@
     </a-col>
     <a-col :span="12" >
         <div class="text-right mb-24">
-            <ExportToExcel @click="exportExcel('careCoordinator_report')" v-if="arrayToObjact(screensPermissions,41)"/>
+            <ExportToExcel @click="exportExcel('careCoordinator_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions,41)"/>
         </div>
     </a-col>
     <a-col :span="24" >
@@ -109,7 +109,8 @@ export default {
             visible,
             handleOk,
             searchoptions,
-            staffs: store.getters.staffRecord.value,
+            search:store.getters.searchTable,
+            staffs: store.getters.staffRecord,
         };
     },
 };
