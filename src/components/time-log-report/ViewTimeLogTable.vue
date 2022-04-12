@@ -86,7 +86,7 @@ export default {
         return {       
             columns,
             closeModal,
-            modalData:store.getters.timeLogView.value,
+            modalData:store.getters.timeLogView,
             
         };
     },
