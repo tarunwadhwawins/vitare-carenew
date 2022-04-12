@@ -13,7 +13,7 @@
                             <h2 class="pageTittle">{{$t('timeLogReport.auditTimeLog')}}</h2>
                         </a-col>
                     </a-row>
-                    <a-form :model="auditTimeLog" name="auditTimeLog" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="updateAuditTime" @finishFailed="auditTimeLogFailed">
+                    <a-form :model="auditTimeLog" name="auditTimeLog" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="updateAuditTime" >
                         <a-row :gutter="24">
                             <a-col :sm="8" :xs="24" v-if="arrayToObjact(screensPermissions, 332)">
                                 <div class="form-group">
@@ -27,9 +27,15 @@
                                     <a-date-picker format="MM/DD/YYYY" :disabledDate="d => !d || d.isSameOrBefore(auditTimeLog.startDate)" value-format="YYYY-MM-DD" v-model:value="auditTimeLog.endDate" :size="size" style="width: 100%" @change="dateChange" />
                                 </div>
                             </a-col>
-                            <a-col :sm="4" :xs="24" v-if="arrayToObjact(screensPermissions, 332)">
+
+                            <a-col :sm="2" :xs="24" v-if="arrayToObjact(screensPermissions, 332)">
                                 <div class="text-right mt-28">
                                     <a-button class="btn primaryBtn" html-type="submit">{{$t('timeLogReport.view')}}</a-button>
+                                </div>
+                            </a-col>
+                            <a-col :sm="2" :xs="24">
+                                <div class="text-right mt-28">
+                                    <a-button class="btn primaryBtn" @click="clearData">{{$t('global.clear')}}</a-button>
                                 </div>
                             </a-col>
                             <a-col :sm="4" :xs="24" v-if="arrayToObjact(screensPermissions, 333)">
@@ -59,7 +65,7 @@ import {
 } from "@/commonMethods/commonMethod";
 import {
     ref,
-    watchEffect,
+
     reactive,
     onUnmounted,
     onMounted,
@@ -93,11 +99,6 @@ export default {
             dateSelect.value = moment(auditTimeLog.endDate).add(1, 'day')
         }
 
-        watchEffect(() => {
-
-           
-
-        })
         onMounted(() => {
             store.dispatch("timeLogReportList")
             store.dispatch('auditTimeLogFilterDates', "?fromDate=&toDate=")
@@ -105,6 +106,12 @@ export default {
                 data: '&orderField=&orderBy='
             })
         })
+
+        function clearData() {
+            auditTimeLog.startDate = ''
+            auditTimeLog.endDate = ''
+            store.dispatch("timeLogReportList", "?fromDate=&toDate=&page=")
+        }
 
         function scrolller() {
             setTimeout(() => {
@@ -117,11 +124,11 @@ export default {
             if (auditTimeLog.startDate && auditTimeLog.endDate) {
 
                 //store.getters.timeLogReports.value.timeLogReportList = ""
-                store.getters.timeLogReports.value.timeLogeMeta=''
+                store.getters.timeLogReports.value.timeLogeMeta = ''
                 startDate.value = auditTimeLog.startDate ? (moment(auditTimeLog.startDate)).format("YYYY-MM-DD") : ''
                 endDate.value = auditTimeLog.endDate ? (moment(auditTimeLog.endDate)).format("YYYY-MM-DD") : ''
                 store.dispatch('auditTimeLogFilterDates', "?fromDate=" + startDate.value + "&toDate=" + endDate.value)
-                store.dispatch("timeLogReportList", "?fromDate=" + startDate.value + "&toDate=" + endDate.value+"&page=")
+                store.dispatch("timeLogReportList", "?fromDate=" + startDate.value + "&toDate=" + endDate.value + "&page=")
             }
         }
         onUnmounted(() => {
@@ -145,7 +152,8 @@ export default {
             value1: ref(),
             size: ref("large"),
             timeLogReports: store.getters.timeLogReports.value,
-            scrolller
+            scrolller,
+            clearData
         };
     },
 };
