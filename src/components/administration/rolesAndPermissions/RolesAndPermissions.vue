@@ -23,7 +23,6 @@
                         </a-col>
                         <a-col :span="12">
                             <div class="text-right mb-24" v-if="arrayToObjact(screensPermissions,5)">
-                                <!-- <Button :name="exportButtonName" /> -->
                                  <div class="text-right mb-24">
                                     <ExportToExcel  @click="exportExcel('roleAndPermission_report')"/>
                                 </div>

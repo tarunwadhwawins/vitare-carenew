@@ -6,7 +6,7 @@
     </a-col>
 </a-row>
 <a-row>
-    <a-col :span="24">
+    <a-col :span="24" v-if="arrayToObjact(screensPermissions,65)">
         <a-row :gutter="24">
             <a-col :xl="4" :sm="8" :xs="24">
                 <CounterCard colorBox="colorBox red" :count="5" :text="$t('patient.critical')" />
@@ -40,7 +40,7 @@
     </a-col>
     <a-col :span="24" v-if="arrayToObjact(screensPermissions, 65)">
         <DataTable />
-     <Loader />
+     <TableLoader />
     </a-col>
 </a-row>
 
@@ -54,7 +54,7 @@ import { useStore } from "vuex";
 import PatientsModal from "@/components/modals/PatientsModal";
 import CounterCard from "./counter-card/CounterCard";
 import ShowModalButton from "@/components/common/show-modal-button/ShowModalButton";
-import Loader from "@/components/loader/Loader"
+import TableLoader from "@/components/loader/TableLoader"
 import { arrayToObjact,exportExcel } from "@/commonMethods/commonMethod";
 import DataTable from "./data-table/DataTable"
 import SearchField from "@/components/common/input/SearchField";
@@ -66,7 +66,7 @@ export default {
     CounterCard,
     ShowModalButton,
     DataTable,
-    Loader,
+    TableLoader,
     SearchField,
     ExportToExcel
   },
@@ -113,10 +113,7 @@ export default {
       showModal,
       handleOk,
       handleChange,
-      searchoptions,
-      size: ref(),
-      value2: ref(),
-      //patients:store.getters.patientsRecord,
+      searchoptions
      
     };
   },

@@ -43,6 +43,7 @@
         </a-card>
     </a-col>
 </a-row>
+<Loader />
 </template>
 
 <script>
@@ -57,6 +58,7 @@ import IncompleteTasksFilter from "@/components/tasks/chartFilters/IncompleteTas
 import TeamMemberFilter from "@/components/tasks/chartFilters/TeamMember";
 import AllTasksFilter from "@/components/tasks/chartFilters/AllTasks";
 import CategoryViewFilter from "@/components/tasks/chartFilters/CategoryView";
+import Loader from "@/components/loader/Loader";
 import {
     useStore
 } from "vuex";
@@ -71,6 +73,7 @@ export default {
         TeamMemberFilter,
         AllTasksFilter,
         CategoryViewFilter,
+        Loader
     },
     setup() {
         const store = useStore();

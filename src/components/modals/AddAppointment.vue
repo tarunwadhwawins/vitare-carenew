@@ -1,5 +1,5 @@
 <template>
-	<a-modal width="1000px" :title="$t('appointmentCalendar.addAppointment.addAppointment')" centered :maskClosable="maskebale" @cancel="closeModal()">
+	<a-modal width="1000px" :title="$t('appointmentCalendar.addAppointment.addAppointment')" centered :maskClosable="maskebale" @cancel="closeModal()" :footer="false">
     <a-form ref="formRef" :model="appointmentForm" layout="vertical" @finish="sendMessage" @finishFailed="onFinishFailed">
 			<a-row :gutter="24">
 				<a-col :sm="12" :xs="24">
@@ -141,7 +141,7 @@ export default {
 		const staffData = ref([]);
 		const patientData = ref([]);
 		const patientUdid = route.params.udid;
-		const idPatient = reactive(props.patientId);
+		const idPatient = props.patientId ? reactive(props.patientId) : ''
 		const disabled = ref(false)
 		const isPatientSummary = ref(false)
 		const closeValue = ref(false)
@@ -164,7 +164,7 @@ export default {
 		})
 
 		onMounted(() => {
-			store.dispatch('flagsList')
+			store.state.flags.flagsList ? '':store.dispatch('flagsList')
 		})
 
 		watchEffect(() => {

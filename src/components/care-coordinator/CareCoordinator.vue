@@ -4,7 +4,7 @@
         <ShowModalButton @isVisible="showModal($event)" :headingText="$t('careCoordinator.coordinatorsModal.careCoordinator')" :buttonText="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" />
     </a-col>
 </a-row>
-<a-row class="mb-24" :gutter="24">
+<a-row class="mb-24" :gutter="24" v-if="arrayToObjact(screensPermissions,40)">
     <a-col :sm="12" :xs="24">
         <h2>{{$t('global.specialization')}}</h2>
         <a-row :gutter="24">
@@ -24,17 +24,17 @@
 </a-row>
 
 <a-row>
-    <a-col :span="12" v-if="arrayToObjact(screensPermissions,40)">
-        <SearchField endPoint="staff" />
+    <a-col :span="12" >
+        <SearchField endPoint="staff" v-if="arrayToObjact(screensPermissions,40)"/>
     </a-col>
-    <a-col :span="12" v-if="arrayToObjact(screensPermissions,41)">
+    <a-col :span="12" >
         <div class="text-right mb-24">
-            <ExportToExcel @click="exportExcel('careCoordinator_report')" />
+            <ExportToExcel @click="exportExcel('careCoordinator_report')" v-if="arrayToObjact(screensPermissions,41)"/>
         </div>
     </a-col>
     <a-col :span="24" >
         <CoordinatorTable></CoordinatorTable>
-        <Loader />
+        <TableLoader />
     </a-col>
     <CareCoordinatorModalForms v-model:visible="visible" @saveModal="handleOk($event)"></CareCoordinatorModalForms>
 </a-row>
@@ -49,7 +49,7 @@ import {
 import LongCard from "@/components/common/cards/LongCard"
 import CoordinatorTable from "./tables/CoordinatorTable"
 import CareCoordinatorModalForms from "@/components/modals/CoordinatorsModal"
-import Loader from "@/components/loader/Loader"
+import TableLoader from "@/components/loader/TableLoader"
 import {
     useStore
 } from "vuex"
@@ -65,7 +65,7 @@ export default {
     components: {
         LongCard,
         CoordinatorTable,
-        Loader,
+        TableLoader,
         CareCoordinatorModalForms,
         ShowModalButton,
         SearchField,
@@ -76,10 +76,11 @@ export default {
         const searchoptions = ref([])
         const visible = ref(false)
         watchEffect(() => {
-            store.getters.staffRecord.staffs = ""
-            store.dispatch("staffs")
+            
+            
             store.dispatch('specializationStaff')
             store.dispatch('networkStaff')
+            store.dispatch("staffs")
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
@@ -109,8 +110,6 @@ export default {
             handleOk,
             searchoptions,
             staffs: store.getters.staffRecord.value,
-            value2: ref(),
-            size: ref(),
         };
     },
 };

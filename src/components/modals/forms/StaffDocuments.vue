@@ -51,25 +51,6 @@
     </a-row>
     <a-row :gutter="24" class="mb-24" v-show="!paramId">
         <a-col :span="24">
-            <!-- <a-table  rowKey="id" :columns="addStaffs.documentColumns" :data-source="addStaffs.staffDocuments" :pagination="false" :scroll="{ x: 900 }">
-                <template #tags="text">
-                    <span v-for="tag in text.text.data" :key="tag.id">{{ tag.tag+ " "}}</span>
-                </template>
-                <template #document="text">
-                    <router-link :to="text.text">
-                        <FileOutlined />
-                    </router-link>
-                </template>
-                <template #action="text">
-                    <a-tooltip placement="bottom">
-                        <template #title>
-                            <span>{{$t('global.delete')}}</span>
-                        </template>
-                        <a class="icons" @click="deleteDocument(text.record.id)">
-                            <DeleteOutlined /></a>
-                    </a-tooltip>
-                </template>
-            </a-table> -->
             <DocumentTable :Id="Id"/>
             <Loader />
         </a-col>

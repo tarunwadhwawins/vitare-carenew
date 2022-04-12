@@ -38,13 +38,13 @@
             </a-tooltip>
         </template>
     </a-table>
-    <InfiniteLoader v-if="loader" />
+    
 </a-col>
 </template>
 
 <script>
 import {
-    ref,
+   
     onMounted,
     computed
 } from "vue";
@@ -61,19 +61,17 @@ import {
 } from "@/config/messages";
 import {
     warningSwal,
-    tableYScroller
-} from "@/commonMethods/commonMethod";
-import InfiniteLoader from "@/components/loader/InfiniteLoader";
-import {
+    tableYScroller,
     arrayToObjact
 } from "@/commonMethods/commonMethod";
+
 export default {
     name: "TaskTable",
     components: {
         DeleteOutlined,
         EditOutlined,
         CalendarOutlined,
-        InfiniteLoader,
+        
     },
     props: {
 
@@ -85,7 +83,7 @@ export default {
 
         let data = []
         const meta = store.getters.taskRecords.value;
-        const loader = ref(false);
+        
         let scroller = ''
         onMounted(() => {
             var tableContent = document.querySelector(".ant-table-body");
@@ -97,9 +95,9 @@ export default {
                     if (current_page <= meta.taskMeta.total_pages) {
                         scroller = maxScroll
                         data = meta.tasksList
-                        loader.value = true;
+                       
                         meta.taskMeta = "";
-                        store.state.tasks.tasksList = ''
+                        
 
                         store.dispatch("tasksList", "?page=" + current_page + store.getters.searchTable.value + store.getters.orderTable.value.data).then(() => {
 
@@ -123,7 +121,7 @@ export default {
             setTimeout(() => {
                 tableContent.scrollTo(0, scroller)
             }, 50)
-            loader.value = false;
+           
         }
         const editTask = (id) => {
             emit("is-Edit", {
@@ -172,7 +170,6 @@ export default {
             arrayToObjact,
             editTask,
             deleteTask,
-            loader,
             meta,
             tableYScroller,
             handleTableChange

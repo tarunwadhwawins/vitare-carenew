@@ -31,22 +31,11 @@
             </template>
           </template>
 
-          <!-- <template #isPrimary="{ record }">
-						<a-tooltip v-if="record.isPrimary" placement="right">
-							<template #title>Yes</template>
-							<span class="circleBox" style="background-color: #3D8116"></span>
-						</a-tooltip>
-						<a-tooltip v-else placement="right">
-							<template #title>No</template>
-							<span class="circleBox" style="background-color: #89250B"></span>
-						</a-tooltip>
-					</template> -->
-
           <template #action="{ record }">
-            <a class="icons"
+            <a class="icons" v-if="arrayToObjact(screensPermissions,303)"
               ><EditOutlined @click="editFamilyMember(record.id);actionTrack(paramsId,303,'patient')"
             /></a>
-            <a class="icons"
+            <a class="icons" v-if="arrayToObjact(screensPermissions,304)"
               ><DeleteOutlined @click="deleteFamilyMember(record.id);actionTrack(paramsId,304,'patient')"
             /></a>
           </template>
@@ -61,7 +50,7 @@
 import { computed, reactive } from "vue-demi";
 import { useStore } from "vuex";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-import { warningSwal, actionTrack } from "@/commonMethods/commonMethod";
+import { warningSwal, actionTrack,arrayToObjact, } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import Loader from "@/components/loader/Loader.vue";
 import { useRoute } from "vue-router";
@@ -181,6 +170,8 @@ export default {
     };
 
     return {
+      arrayToObjact,
+      screensPermissions: store.getters.screensPermissions,
       actionTrack,
       paramsId:route.params.udid,
       familyMembersColumns,

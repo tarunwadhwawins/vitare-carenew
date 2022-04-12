@@ -1,5 +1,5 @@
 <template>
-<a-modal :title="title" max-width="1040px" width="100%" v-model:visible="visible" :maskClosable="false" @cancel="closeModal()">
+<a-modal :title="title" max-width="1040px" width="100%" v-model:visible="visible" :footer="null"  :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <a-col :span="24">
             <a-steps :current="current">
@@ -171,12 +171,12 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :span="24">
+                        <a-col :span="24" v-if="arrayToObjact(screensPermissions,32)">
                             <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
                         </a-col>
                         <a-col :span="24">
-                            <a-table class="tableCommonSpace" v-if="providerLocationlistData" :columns="columns" :data-source="providerLocationlistData" :pagination="false" :scroll="{ x: 900 }">
-                                <template #action="text">
+                            <a-table  class="tableCommonSpace" v-if="providerLocationlistData && arrayToObjact(screensPermissions,31) " :columns="columns" :data-source="providerLocationlistData" :pagination="false" :scroll="{ x: 900 }">
+                                <template #action="text" v-if="arrayToObjact(screensPermissions,34)">
                                     <a-tooltip placement="bottom">
                                         <a class="icons" @click="deleteProviderLocation(text.record.id)">
                                             <DeleteOutlined />
@@ -216,11 +216,12 @@ import {
 import Loader from "./../loader/Loader";
 import {
     warningSwal,
-    successSwal
-} from "./../../commonMethods/commonMethod";
+    successSwal,
+    arrayToObjact
+} from "@/commonMethods/commonMethod";
 import {
     messages
-} from "./../../config/messages";
+} from "@/config/messages";
 import {
     DeleteOutlined
 } from "@ant-design/icons-vue";
@@ -474,6 +475,8 @@ export default {
         });
 
         return {
+            screensPermissions: store.getters.screensPermissions,
+            arrayToObjact,
             setPhoneNumberProviderForm,
             setPhoneNumberProviderLocationForm,
             checkChangeInput,

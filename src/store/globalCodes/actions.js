@@ -3,19 +3,19 @@ import { API_ENDPOINTS } from "../../config/apiConfig"
 import { successSwal, errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod';
 
 export const globalCodesList = async ({ commit },page) => {
-	commit('loadingStatus', true)
+	commit('loadingTableStatus', true)
 	let link = page? API_ENDPOINTS['globalCode']+"?active=1"+page : API_ENDPOINTS['globalCode']+"?active=1"
 	await ServiceMethodService.common("get", link, null, null).then((response) => {
 		//console.log(response.data.data)
 		commit('globalCode', response.data);
-		commit('loadingStatus', false)
+		commit('loadingTableStatus', false)
 	})
 	.catch((error) => {
 		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
-		commit('loadingStatus', false)
+		commit('loadingTableStatus', false)
 		commit('failure', error.response.data);
 	})
 }
