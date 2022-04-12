@@ -180,7 +180,7 @@ export const cptCodeSuccess = (state,data) => {
 export const financialSuccess = (state,data) => {
 
   state.financialValue = {
-    due: [data.Due ? Math.round(data.Due): 0,data.Billed ? Math.round(data.Billed):0],
+    due: [data.Due!=null ? Math.round(data.Due): 0,data.Billed!=null ? Math.round(data.Billed):0],
     billed: {
       chart: {
         type: "pie",

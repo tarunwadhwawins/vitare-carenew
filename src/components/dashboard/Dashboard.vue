@@ -106,10 +106,11 @@ export default {
             }
             let dateFormate = ''
             let cptDateFormate = ''
+           
             if (data.globalCodeId == 122) {
                 dateFormate = {
-                    fromDate: timeStamp(startimeAdd(from)),
-                    toDate: timeStamp(endTimeAdd(to))
+                    fromDate: from ? timeStamp(startimeAdd(from)) : '',
+                    toDate: to ? timeStamp(endTimeAdd(to)) : ''
                 }
                 cptDateFormate = {
                     fromDate: from.format("YYYY-MM-DD"),
