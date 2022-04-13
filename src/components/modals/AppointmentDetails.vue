@@ -1,5 +1,5 @@
 <template>
-<a-modal width="45%" title="Appointment Details" centered :footer="null" :maskClosable="false" zIndex="1070">
+<a-modal width="45%" title="Appointment Details" centered :footer="null" :maskClosable="false" zIndex="1060">
     <a-row :gutter="24">
         <a-col :sm="24" :xs="24">
             <div class="form-group">
@@ -56,7 +56,7 @@
             </div>
         </a-col>
         <a-col :sm="24" :xs="24">
-            <div class="text-right mt-28" v-if="appointmentDetails?.statusId==144">
+            <div class="text-right mt-28" v-if="appointmentDetails?.statusId!=144">
                 <a-button type="primary" style="margin-right: 8px" @click="accept(appointmentDetails?.udid,155)">{{'Accept'}}</a-button>
                 <a-button @click="reject()">{{'Reject'}}</a-button>
             </div>
@@ -142,4 +142,5 @@ export default defineComponent({
     }
   }
 }
+
 </style>
