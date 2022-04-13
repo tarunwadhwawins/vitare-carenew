@@ -9,6 +9,7 @@ import {
   convertResponse,
   convertData,
   convertChartResponse,
+  timestampToDate,
   // createDynamicColumns,
 } from '../../commonMethods/commonMethod';
 
@@ -148,6 +149,7 @@ export const addPatientProgram = (state, data) => {
 
 export const programPatients = (state, data) => {
   state.program = data.map(element => {
+    element.status = element.status == 1 ? 'Active' : 'Inactive'
     element.onboardingScheduleDate = dateOnlyFormat(element.onboardingScheduleDate),
       element.dischargeDate = dateOnlyFormat(element.dischargeDate)
     return element;
@@ -1020,4 +1022,23 @@ export const emergencyContactDetails = (state, emergencyContact) => {
 
 export const timeLineType = (state, data) => {
   state.timeLineType = data
+}
+
+export const programDetails = (state, data) => {
+  const format = 'YYYY-MM-DD';
+  data.program = data.programId
+  data.onboardingScheduleDate = timestampToDate(data.onboardingScheduleDate, format)
+  data.dischargeDate = timestampToDate(data.dischargeDate, format)
+  state.programDetails = data
+}
+
+export const medicalHistoryDetails = (state, data) => {
+  state.medicalHistoryDetails = data
+}
+
+export const medicationDetails = (state, data) => {
+  const format = 'YYYY-MM-DD';
+  data.startDate = timestampToDate(data.startDate, format)
+  data.endDate = timestampToDate(data.endDate, format)
+  state.medicationDetails = data
 }

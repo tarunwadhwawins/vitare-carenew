@@ -1,6 +1,6 @@
 <template>
   <a-table  
-    :rowKey="dataRecord.key"
+    
     :columns="colomnsRecord"
     :data-source="dataRecord"
     :pagination="pagination">

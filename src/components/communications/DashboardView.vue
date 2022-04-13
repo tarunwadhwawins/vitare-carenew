@@ -20,8 +20,8 @@
     <a-col :sm="12" :xs="24">
       <a-card :title="$t('communications.populateWaitingRoom')" class="common-card grapCardWrap" >
         <a-tabs v-model:activeKey="activeKey">
-          <PopulateWaitingRoomTab v-if="newRequestsData" :key="key1" tab="New Requests" :column="newRequestsColumns" :data="newRequestsData" :linkTo="linkTo" :pagination="false" />
-          <PopulateWaitingRoomTab v-if="futureAppointmentsData" :key="key2" tab="Future Appointments" :column="futureAppointmentsColumns" :data="futureAppointmentsData" :linkTo="linkTo" :pagination="false" />
+          <PopulateWaitingRoomTab v-if="newRequestsData"  tab="New Requests" :column="newRequestsColumns" :data="newRequestsData" :linkTo="linkTo" :pagination="false" />
+          <PopulateWaitingRoomTab v-if="futureAppointmentsData"  tab="Future Appointments" :column="futureAppointmentsColumns" :data="futureAppointmentsData" :linkTo="linkTo" :pagination="false" />
         </a-tabs>
       </a-card>
     </a-col>
@@ -133,14 +133,12 @@
       const communicationsCount = computed(() => {
         return store.state.communications.communicationsCount
       })
-      const key1 = 1;
-      const key2 = 2;
+      
       
       return {
-        activeKey: ref(key1),
+        activeKey: ref(1),
         callPlanned,
-        key1,
-        key2,
+        
         newRequestsColumns,
         newRequestsData,
         futureAppointmentsColumns,

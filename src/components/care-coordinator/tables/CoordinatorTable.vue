@@ -10,8 +10,8 @@
     <template #createdDate="text">
         <span>{{ dateFormat(text.text) }}</span>
     </template>
-    <template #status="{record}" v-if="arrayToObjact(screensPermissions,38)">
-        <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
+    <template #status="{record}"> 
+        <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" :disabled="!arrayToObjact(screensPermissions,38)"/>
     </template>
     <template #lastReadingDate>
         <WarningOutlined />

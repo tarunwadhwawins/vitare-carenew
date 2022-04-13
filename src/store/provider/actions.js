@@ -19,13 +19,13 @@ export const provider = async ({
   })
 }
 
-export const providerLocation = async ({
-  commit
-}, data) => {
+export const providerLocation = async ({commit}, data) => {
+  let status = false
   commit('loadingStatus', true)
-  await serviceMethod.common("post", `provider/${data.data.providerId}/location`, null, data.data).then((response) => {
+  await serviceMethod.common("post", `provider/${data.id}/location`, null, data.data).then((response) => {
     successSwal(response.data.message)
     commit('providerLocation', response.data.data);
+    status = true
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
@@ -36,6 +36,47 @@ export const providerLocation = async ({
       commit('errorMsg', error.response.data.message)
     }
   })
+  return status
+}
+
+
+export const editProviderLocation = async ({commit}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("get", `provider/${data.id}/location/${data.locationId}`, null, null).then((response) => {
+    commit('editProviderLocation', response.data.data);
+    commit("checkChangeInput", true)
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      commit('errorMsg', error.response.data.message)
+    }
+  })
+}
+
+
+export const updateProviderLocation = async ({commit}, data) => {
+    let status = false
+  commit('loadingStatus', true)
+  await serviceMethod.common("put", `provider/${data.id}/location/${data.locationId}`, null, data.data).then((response) => {
+    successSwal(response.data.message)
+    commit('updateProviderLocation', response.data.data);
+    commit("checkChangeInput", false)
+    status=true
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      commit('errorMsg', error.response.data.message)
+    }
+  })
+  return status
 }
 
 export const providersListAll = async ({

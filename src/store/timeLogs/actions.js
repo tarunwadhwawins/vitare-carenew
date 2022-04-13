@@ -11,10 +11,10 @@ export const addTimeLog = async ({ commit }, {id, data}) => {
 		if(data.isAutomatic == true) {
 			localStorage.setItem('timeLogId', response.data.data.id)
 		}
-		if(data.isAutomatic == false) {
+		else {
 			successSwal(response.data.message)
+			commit('loadingStatus', false)
 		}
-		commit('loadingStatus', false)
 	})
 	.catch((error) => {
 		errorLogWithDeviceInfo(error.response)
@@ -114,8 +114,8 @@ export const updatePatientTimeLog = async ({ commit }, {patientUdid, timeLogId, 
 		else {
 			localStorage.removeItem('timeLogId')
 			successSwal(response.data.message)
+			commit('loadingStatus', false)
 		}
-		commit('loadingStatus', false)
 	})
 	.catch((error) => {
 		errorLogWithDeviceInfo(error.response)

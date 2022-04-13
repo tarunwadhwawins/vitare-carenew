@@ -77,5 +77,9 @@ export default {
     bitrixFormCheck:false,
     
     isEditPatient:false,
+    
+    programDetails:null,
+    medicalHistoryDetails:null,
+    medicationDetails:null,
 
 }

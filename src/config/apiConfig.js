@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
     totalPatientsChart:"patient/chart",
     timeLine:"patient/new",
     timeLineType:"timeLineType",
+    patientProfile:"patientProfile",
     
     // Appointments
     appointment:"appointment",

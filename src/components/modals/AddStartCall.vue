@@ -36,134 +36,123 @@
 </template>
 
 <script>
+import { computed, onUnmounted, reactive, ref, onMounted } from "vue";
+import { useStore } from "vuex";
 import {
-    computed,
-    onUnmounted,
-    reactive,
-    ref,
-    onMounted
-} from "vue";
-import {
-    useStore
-} from "vuex";
-import {
-    dateOnlyFormat,
-    meridiemFormatFromTimestamp,
-    deCodeString,
-    enCodeString
+  dateOnlyFormat,
+  meridiemFormatFromTimestamp,
+  deCodeString,
+  enCodeString,
 } from "@/commonMethods/commonMethod";
 import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue";
-import {
-    useRouter
-} from "vue-router";
-import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+import { useRouter } from "vue-router";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 export default {
-    components: {
-        PatientDropDown,
-        GlobalCodeDropDown
-    },
-    setup(props,{emit}) {
-        const store = useStore();
-        const router = useRouter();
-        const formRef = ref()
-        const isChangeInput = ref(false)
-        const startCall = reactive({
-            patientId: "",
-            flag: '',
-            note:''
-        });
-        const dropdownData = computed(() => {
-            return store.state.appointment;
-        });
-        onMounted(() => {
-            store.dispatch('flagsList')
-        })
-        const flagsList = computed(() => {
-            return store.state.flags.flagsList
-        })
+  components: {
+    PatientDropDown,
+    GlobalCodeDropDown,
+  },
+  setup(props, { emit }) {
+    const store = useStore();
+    const router = useRouter();
+    const formRef = ref();
+    const isChangeInput = ref(false);
+    const startCall = reactive({
+      patientId: "",
+      flag: "",
+      note: "",
+    });
+    const dropdownData = computed(() => {
+      return store.state.appointment;
+    });
+    onMounted(() => {
+      store.dispatch("flagsList");
+    });
+    const flagsList = computed(() => {
+      return store.state.flags.flagsList;
+    });
 
-        function videoCall() {
-            store.dispatch("appointmentCalls", {
-                patientId: startCall.patientId,
-                flag: startCall.flag,
-                note:startCall.note
-            })
-            setTimeout(() => {
-                if (conferenceId.value) {
-                    router.push({
-                        name: 'videoCall',
-                        params: {
-                            id: enCodeString(conferenceId.value)
-                        }
-                    })
-                }
-                emit("is-visibale",false)
-            }, 2000)
+    function videoCall() {
+      store.dispatch("appointmentCalls", {
+        patientId: startCall.patientId,
+        flag: startCall.flag,
+        note: startCall.note,
+      });
+      setTimeout(() => {
+        if (conferenceId.value) {
+          router.push({
+            name: "videoCall",
+            params: {
+              id: enCodeString(conferenceId.value),
+            },
+          });
         }
+        emit("is-visibale", false);
+      }, 2000);
+    }
 
-        onUnmounted(() => {
-            store.dispatch("getVideoDetails", conferenceId.value)
-        })
+    onUnmounted(() => {
+      store.dispatch("getVideoDetails", conferenceId.value);
+    });
 
-        function videoCallFailed(value) {
-            console.log(value);
-        }
+    function videoCallFailed(value) {
+      console.log(value);
+    }
 
-        const form = reactive({
-            ...startCall
-        })
+    const form = reactive({
+      ...startCall,
+    });
 
-        function closeModal() {
+    function closeModal() {
+      formRef.value.resetFields();
+    }
+    const onCloseModal = () => {
+      if (isChangeInput.value) {
+        warningSwal(messages.modalWarning).then((response) => {
+          if (response == true) {
+            emit("is-visibale", false);
             formRef.value.resetFields();
-        }
-         const onCloseModal = () => {
-			if (isChangeInput.value) {
-				warningSwal(messages.modalWarning).then((response) => {
-					if (response == true) {
-						emit("is-visibale",false)
-            formRef.value.resetFields();
-            Object.assign(startCall, form)
-            isChangeInput.value = false
-					}else{
-            emit("is-visibale",true)
+            Object.assign(startCall, form);
+            isChangeInput.value = false;
+          } else {
+            emit("is-visibale", true);
           }
-				});
-			}
-			else {
-        emit("is-visibale",false)
-				formRef.value.resetFields();
-			}
-		}
-        const handlePatientChange = (val) => {
-            startCall.patientId = val;
-        }
+        });
+      } else {
+        emit("is-visibale", false);
+        formRef.value.resetFields();
+      }
+    };
+    const handlePatientChange = (val) => {
+      startCall.patientId = val;
+    };
 
-        const conferenceId = computed(() => {
-            return store.state.videoCall.conferenceId
-        })
-	const checkChangeInput = () => {
-			isChangeInput.value = true
-		}
-        return {
-            conferenceId,
-            handlePatientChange,
-            closeModal,
-            formRef,
-            form,
-            videoCallFailed,
-            enCodeString,
-            deCodeString,
-            videoCall,
-            dateOnlyFormat,
-            meridiemFormatFromTimestamp,
-            startCall,
-            dropdownData,
-            flagsList,
-            onCloseModal,
-            checkChangeInput
-        };
-    },
+    const conferenceId = computed(() => {
+      return store.state.videoCall.conferenceId;
+    });
+    const checkChangeInput = () => {
+      isChangeInput.value = true;
+    };
+    return {
+      conferenceId,
+      handlePatientChange,
+      closeModal,
+      formRef,
+      form,
+      videoCallFailed,
+      enCodeString,
+      deCodeString,
+      videoCall,
+      dateOnlyFormat,
+      meridiemFormatFromTimestamp,
+      startCall,
+      dropdownData,
+      flagsList,
+      onCloseModal,
+      checkChangeInput,
+    };
+  },
 };
 </script>

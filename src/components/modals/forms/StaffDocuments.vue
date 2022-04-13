@@ -12,7 +12,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <label><span style="color:red">* </span>{{$t('global.document')}}
-                    <a-input  name="document_file" size="large" type="file" @change="onFileUpload" />
+                    <a-input ref="image" name="document_file" size="large" type="file" @change="onFileUpload" />
                     <ErrorMessage v-if="docValidationError" name="Document is required." />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
                 </label>
@@ -95,6 +95,7 @@ export default defineComponent({
     const patientId = reactive(props.idPatient);
     const patientUdid = route.params.udid;
     const docValidationError = ref(false)
+    const image = ref()
     // const onFileUpload = (event) => {
     //   let docFile = event.target.files[0];
     //   let formData = new FormData();
@@ -127,10 +128,12 @@ export default defineComponent({
         errorSwal('Allowed file types are JPG, JPEG, TIFF, TIF, BMP, PNG and PDF only');
         return false
       }
+     
       let formData = new FormData();
        formData.append("file", docFile);
        docValidationError.value=false
       store.commit('checkChangeInput',true)
+     
       store.dispatch("uploadFile", formData);
     };
     const addStaffs = computed(() => {
@@ -176,6 +179,8 @@ export default defineComponent({
         });
         setTimeout(() => {
           if(addStaffs.value.closeModal==true){
+            image.value.stateValue=''
+            docValidationError.value=false
           store.dispatch("staffDocuments",  props.paramId?props.paramId:addStaffs.value.addStaff.id);
             reset()
             emit("saveModal", false)
@@ -232,6 +237,7 @@ export default defineComponent({
     }
     
     return {
+      image,
       formRest,
       docValidationError,
       checkChangeInput,

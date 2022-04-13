@@ -6,8 +6,8 @@
     <template #name="{text}" v-else>
         <span >{{text}}</span>
     </template>
-    <template #isActive="{record}" v-if="arrayToObjact(screensPermissions,25)">
-        <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
+    <template #isActive="{record}" >
+        <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" :disabled="!arrayToObjact(screensPermissions,23)"/>
     </template>
     <template #action="text">
         <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,23)">
