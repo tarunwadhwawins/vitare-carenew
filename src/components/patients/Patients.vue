@@ -1,8 +1,8 @@
 
 <template>
-<a-row v-if="arrayToObjact(screensPermissions,62)" >
+<a-row  >
     <a-col :span="24" >
-        <ShowModalButton @isVisible="showModal($event)" :headingText="$t('patient.patients')" :buttonText="$t('patient.addNewPatients')" />
+        <ShowModalButton @isVisible="showModal($event)" :headingText="$t('patient.patients')" :buttonText="$t('patient.addNewPatients')" v-if="arrayToObjact(screensPermissions,62)"/>
     </a-col>
 </a-row>
 <a-row>
@@ -30,16 +30,16 @@
     </a-col>
 </a-row>
 <a-row >
-    <a-col :span="12" v-if="arrayToObjact(screensPermissions, 65)">
-      <SearchField  endPoint="patient"/>
+    <a-col :span="12" >
+      <SearchField  endPoint="patient" v-if="arrayToObjact(screensPermissions, 65)"/>
     </a-col>
-    <a-col :span="12" v-if="arrayToObjact(screensPermissions,66)">
+    <a-col :span="12" >
         <div class="text-right mb-24">
-          <ExportToExcel @click="exportExcel('patient_report')" />
+          <ExportToExcel @click="exportExcel('patient_report')" v-if="arrayToObjact(screensPermissions,66)"/>
         </div>
     </a-col>
-    <a-col :span="24" v-if="arrayToObjact(screensPermissions, 65)">
-        <DataTable />
+    <a-col :span="24" >
+        <DataTable v-if="arrayToObjact(screensPermissions, 65)"/>
      <TableLoader />
     </a-col>
 </a-row>

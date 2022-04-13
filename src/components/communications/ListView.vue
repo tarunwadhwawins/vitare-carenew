@@ -3,9 +3,9 @@
     <a-col :span="12" >
       <SearchField  endPoint="communication"/>
     </a-col>
-    <a-col :span="12" v-if="arrayToObjact(screensPermissions,110)">
+    <a-col :span="12" >
       <div class="text-right mb-24">
-        <ExportToExcel  @click="exportExcel('communication_report')"/>
+        <ExportToExcel  @click="exportExcel('communication_report')" v-if="arrayToObjact(screensPermissions,110)"/>
       </div>
     </a-col>
     <a-col :span="24">

@@ -50,8 +50,8 @@
                             </div>
                         </div>
                     </a-col>
-                    <a-col :sm="16" :xs="24" v-if="arrayToObjact(screensPermissions,31)">
-                        <div class="summary-tabs">
+                    <a-col :sm="16" :xs="24" >
+                        <div class="summary-tabs" v-if="arrayToObjact(screensPermissions,31)">
                             <h2 class="mb-24">Locations</h2>
                             <a-table :pagination="false" :columns="columns" :data-source="providerLocationlistData" :scroll="{ x: 600 }">
 
