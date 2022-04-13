@@ -1,13 +1,9 @@
 <template>
   <a-row :gutter="24">
 
-    <a-col v-if="patientDevices.length <= 0" :sm="24">
-      <a-alert message="No devices are assigned to this Patient. Please assign device(s) to see Vitals." type="error" />
-    </a-col>
-    
-    <template v-else v-for="device in patientDevices" :key="device.id">
+    <template v-if="showVitals == true">
       <VitalsGrid
-        v-if="device.deviceType == 'Blood Pressure'"
+        v-if="bloodPressure && bloodPressure.length > 0"
         title="Blood Pressure"
         :activeKey="activeKey1"
         className="dangerValue"
@@ -19,7 +15,7 @@
       />
 
       <VitalsGrid
-        v-if="device.deviceType == 'Glucose'"
+        v-if="bloodGlucose && bloodGlucose.length > 0"
         title="Blood Glucose"
         :activeKey="activeKey2"
         className="dangerValue"
@@ -31,7 +27,7 @@
       />
 
       <VitalsGrid
-        v-if="device.deviceType == 'Oximeter'"
+        v-if="bloodOxygen && bloodOxygen.length > 0"
         title="Blood Oxygen Saturation"
         :activeKey="activeKey3"
         className="dangerValue"
@@ -42,6 +38,12 @@
         @showModal="showAddBloodOxygenModal"
       />
     </template>
+
+  <template v-else>
+    <a-col :sm="24">
+      <a-alert message="No devices are assigned to this Patient. Please assign device(s) to see Vitals." type="error" />
+    </a-col>
+  </template>
 
   </a-row>
   <AddVitalsModal v-if="visibleAddVitalsModal" v-model:visible="visibleAddVitalsModal" :title="title" :deviceId="deviceId" @closeModal="handleOk" @ok="handleOk" />
@@ -72,6 +74,7 @@ export default {
     const title = ref(null)
     const vitalType = ref(null)
     const deviceId = ref(null)
+    const showVitals = ref(false)
 
     const patients = computed(() => {
       return store.state.patients
@@ -84,9 +87,18 @@ export default {
     const bloodPressureColumns = patients.value.bloodPressureColumns
     const bloodOxygenColumns = patients.value.bloodOxygenColumns
     const bloodGlucoseColumns = patients.value.bloodGlucoseColumns
-    const bloodPressure = patients.value.bloodPressure
-    const bloodGlucose = patients.value.bloodGlucose
-    const bloodOxygen = patients.value.bloodOxygen
+    const bloodPressure = computed(() => {
+      return store.state.patients.bloodPressure
+    })
+    const bloodGlucose = computed(() => {
+      return store.state.patients.bloodGlucose
+    })
+    const bloodOxygen = computed(() => {
+      return store.state.patients.bloodOxygen
+    })
+    if(bloodPressure.value.length > 0 || bloodGlucose.value.length > 0 || bloodOxygen.value.length > 0) {
+      showVitals.value = true;
+    }
     const bloodPressureGraph = patients.value.bloodPressureGraph
     const bloodOxygenGraph = patients.value.bloodOxygenGraph
     const bloodGlucoseGraph = patients.value.bloodGlucoseGraph
@@ -214,6 +226,7 @@ export default {
       bloodOxygenSeries,
 
       patientDevices,
+      showVitals,
     }
   }
 }

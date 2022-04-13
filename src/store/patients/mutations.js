@@ -783,15 +783,15 @@ export const patientVitals = (state, vitals) => {
     vitalsArray.forEach(vital => {
       switch (vital.deviceType) {
         case 'Blood Pressure':
-          state.bloodPressure = patientVitals;
+          state.bloodPressure = patientVitals.length > 0 ? patientVitals : null;
           state.bloodPressureGraph = patientGraphData;
           break;
         case 'Oximeter':
-          state.bloodOxygen = patientVitals;
+          state.bloodOxygen = patientVitals.length > 0 ? patientVitals : null;
           state.bloodOxygenGraph = patientGraphData;
           break;
         case 'Glucose':
-          state.bloodGlucose = patientVitals;
+          state.bloodGlucose = patientVitals.length > 0 ? patientVitals : null;
           state.bloodGlucoseGraph = patientGraphData;
           break;
         default:
