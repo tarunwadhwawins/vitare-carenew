@@ -1339,3 +1339,39 @@ export const updateMedicalRoutine = async ({commit}, data) => {
     commit('loadingStatus', false)
   })
 }
+
+export const documentDetails = async ({commit}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("get", API_ENDPOINTS['patient']+`/${data.patientUdid}/document/${data.documentUdid}`, null, null).then((response) => {
+    commit('documentDetails', response.data.data)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      errorSwal(error.response.data.message)
+    }
+    commit('loadingStatus', false)
+  })
+}
+
+export const updateDocument = async ({commit}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("put", API_ENDPOINTS['patient']+`/${data.patientUdid}/document/${data.documentUdid}`, null, data.data).then((result) => {
+    successSwal(result.data.message)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      errorSwal(error.response.data.message)
+    }
+    commit('loadingStatus', false)
+  })
+}

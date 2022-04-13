@@ -1,37 +1,18 @@
 <template>
-  <div class="patientSummary" v-if="patientDetails">
-      <img v-if="patientDetails.profilePhoto" :src="patientDetails.profilePhoto" alt="image"/>
-      <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
-    <div class="info">
-      <h2 v-if="patientDetails.patientFullName">{{ patientDetails.patientFullName }}</h2>
-      <p v-if="patientDetails.patientDob">DOB : {{ patientDetails.patientDob }}</p>
-      <p v-if="patientDetails.medicalRecordNumber">MRN : {{ patientDetails.medicalRecordNumber }}</p>
-      <p v-if="patientDetails.email"><a href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
-      <p v-if="patientDetails.phoneNumber"><a href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
-      <p v-if="patientDetails.address"><HomeOutlined/> <span class="address-text">{{ patientDetails.address }}</span></p>
-    </div>
-    <!-- <EditOutlined @click="addPatient" /> -->
+  <div class="patientInfo" v-if="patientDetails">
+    <ProfileImage :patientDetails="patientDetails" :isLeft="false" />
   </div>
   <PatientsModal v-model:visible="PatientsModal" @ok="handleOk" />
 </template>
 
 <script>
-import {
-  MailOutlined,
-  PhoneOutlined,
-  HomeOutlined,
-  // EditOutlined,
-} from "@ant-design/icons-vue";
 import PatientsModal from "@/components/modals/PatientsModal";
-import { ref, computed } from 'vue-demi';
+import { ref, computed, defineAsyncComponent } from 'vue-demi';
 import { useStore } from "vuex";
 export default {
   components: {
-    MailOutlined,
-    PhoneOutlined,
-    HomeOutlined,
-    // EditOutlined,
     PatientsModal,
+    ProfileImage: defineAsyncComponent(()=>import("@/components/common/ProfileImage")),
   },
   setup() {
     const store = useStore();
@@ -53,12 +34,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.patientSummary img {
-  height: 150px;
-  width: 150px;
-  -o-object-fit: cover;
-  object-fit: cover;
-}
-</style>
