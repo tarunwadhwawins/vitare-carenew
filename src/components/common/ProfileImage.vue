@@ -71,10 +71,14 @@ export default {
     HomeOutlined,
     ImageCropper: defineAsyncComponent(()=>import("@/components/common/ImageCropper")),
   },
-  setup() {
+  setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
     const modalVisible = ref(false);
+
+    const editPatient = ({udid, id}) => {
+      emit('onEditPatient', {udid, id})
+    };
 
     const imageinCropper = ref('');
     const imageUrl = ref('');
@@ -140,6 +144,7 @@ export default {
       closeImageModal,
       arrayToObjact,
       actionTrack,
+      editPatient,
     }
   }
 }
