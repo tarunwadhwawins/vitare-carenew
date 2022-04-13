@@ -38,9 +38,9 @@
             </a>
         </a-tooltip>
     </template>
-    <template #isActive="{record}" v-if="arrayToObjact(screensPermissions,2)" >
+    <template #isActive="{record}" >
         <a-switch v-if="record.id ===1" v-model:checked="record.status"  disabled/>
-        <a-switch v-else v-model:checked="record.isActive"  @change="UpdateRoleStatus(record.udid, $event)"/>
+        <a-switch v-else v-model:checked="record.isActive"  @change="UpdateRoleStatus(record.udid, $event)" :disabled="!arrayToObjact(screensPermissions,2)"/>
     </template>
 </a-table>
 <Loader />
