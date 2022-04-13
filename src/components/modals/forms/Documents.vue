@@ -124,11 +124,9 @@ export default defineComponent({
     const form = reactive({ ...documents })
 
     const updateDocument = (documentDetails) => {
-      console.log('documentDetails', documentDetails)
       isEditDocument.value = true
       isDocumentrequired.value = false
       documentUdid.value = documentDetails.id
-      console.log('documentDetails', documentDetails)
       Object.assign(documents, documentDetails)
     }
     
