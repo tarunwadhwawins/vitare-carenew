@@ -66,8 +66,8 @@
                                 <a-tab-pane key="3" tab="Availability">
                                     <a-row :gutter="24">
                                         <a-col :sm="24" :xs="24">
-                                            <div class="common-btn mb-24" v-if="arrayToObjact(screensPermissions,51)">
-                                                <a-button class="btn blackBtn" @click="showModalvailability">
+                                            <div class="common-btn mb-24" >
+                                                <a-button class="btn blackBtn" @click="showModalvailability" v-if="arrayToObjact(screensPermissions,51)">
                                                     <PlusOutlined />
                                                 </a-button>
                                             </div>
@@ -98,8 +98,8 @@
                                 <a-tab-pane key="5" tab="Roles">
                                     <a-row :gutter="24">
                                         <a-col :sm="24" :xs="24">
-                                            <div class="common-btn mb-24" v-if="arrayToObjact(screensPermissions,55)">
-                                                <a-button class="btn blackBtn" @click="showModalRole">
+                                            <div class="common-btn mb-24" >
+                                                <a-button class="btn blackBtn" @click="showModalRole" v-if="arrayToObjact(screensPermissions,55)">
                                                     <PlusOutlined />
                                                 </a-button>
                                             </div>
