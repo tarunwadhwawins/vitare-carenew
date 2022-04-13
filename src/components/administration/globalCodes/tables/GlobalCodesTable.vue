@@ -19,7 +19,7 @@
       </a-tooltip>
     </template>
     <template #isActive="{record}" >
-      <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" :disabled="!arrayToObjact(screensPermissions,328)"/>
+      <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" :disabled="!arrayToObjact(screensPermissions,7)"/>
     </template>
   </a-table>
 </template>
