@@ -1,12 +1,14 @@
 <template>
 <a-modal width="1000px" title="Start Call" centered :footer="null" :maskClosable="false" @cancel="onCloseModal()">
     <a-form :model="startCall" ref="formRef" name="basic" autocomplete="off" layout="vertical" @finish="videoCall" @finishFailed="videoCallFailed">
+      
         <a-row :gutter="24">
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item label="Patient List" name="patientId" :rules="[{ required: true, message: 'Patient'+' '+$t('global.validation') }]">
                         <PatientDropDown v-model:value="startCall.patientId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" />
-                    </a-form-item>
+                        <ErrorMessage v-if="errorMsg" :name="errorMsg.patientId ? errorMsg.patientId[0] : ''" />
+                      </a-form-item>
                 </div>
             </a-col>
             <a-col :sm="12" :xs="24">
