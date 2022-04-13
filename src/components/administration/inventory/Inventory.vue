@@ -36,7 +36,7 @@
         </a-layout>
     </a-layout>
     <!--modals-->
-    <InventoryModal v-if="visible" v-model:visible="visible" @ok="handleOk" @is-visible="handleOk" :isAdd="isAdd" />
+    <InventoryModal  v-model:visible="visible"  @is-visible="handleOk($event)" :isAdd="isAdd" />
     <!---->
 </div>
 </template>
@@ -69,18 +69,18 @@ export default {
     const isAdd = ref(false);
 
     const showModal = () => {
-      isAdd.value = true;
+      isAdd.value = false;
       visible.value = true;
     };
-    const handleOk = () => {
-      visible.value = false;
+    const handleOk = (event) => {
+      visible.value = event;
     };
     const searchData = (value) => {
       store.dispatch("searchGlobalCodes", value);
     };
 
     const editInventory = ({ id, deviceTypeId }) => {
-      isAdd.value = false;
+      isAdd.value = true;
       store.dispatch("inventoryDetails", id).then(() => {
         store.dispatch("deviceModalsList", deviceTypeId).then(() => {
           visible.value = true;
