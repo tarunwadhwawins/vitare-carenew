@@ -395,7 +395,9 @@ export const editTask = async (state, result) => {
   state.editTask.assignedTo.forEach((item)=>{
     state.editTask.entityType= item.entityType
   })
+  state.editTask.assignedName  = state.editTask.assignedTo.map((item) => item.name)
   state.editTask.assignedTo = state.editTask.assignedTo.map((item) => item.id)
+ 
   state.editTask.taskCategory = state.editTask.category.map((item) => item.id)
   state.editTask.dueDate = dateOnlyFormatSImple(state.editTask.dueDate)
   state.editTask.startDate = dateOnlyFormatSImple(state.editTask.startDate)
