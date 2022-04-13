@@ -1,6 +1,6 @@
 <template>
   <a-table  
-    
+    rowKey="id"
     :columns="colomnsRecord"
     :data-source="dataRecord"
     :pagination="pagination">
@@ -25,7 +25,7 @@ import {enCodeString,arrayToObjact} from "@/commonMethods/commonMethod";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 export default {
-props:["colomnsRecord","dataRecord","linkTo","rowKey","pagination"],
+props:["colomnsRecord","dataRecord","pagination"],
   setup() {
     const store =useStore()
     const router = useRouter();

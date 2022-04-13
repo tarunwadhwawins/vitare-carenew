@@ -1042,3 +1042,15 @@ export const medicationDetails = (state, data) => {
   data.endDate = timestampToDate(data.endDate, format)
   state.medicationDetails = data
 }
+
+export const documentDetails = (state, data) => {
+  const tags = []
+  data.tag.map(tag => {
+    tags.push(tag.tagId)
+  })
+  data.tags = tags
+  data.document = data.path
+  data.type = data.typeId
+  // data.documentPath = data.path.split('/')[5]
+  state.documentDetails = data
+}
