@@ -304,7 +304,16 @@ export default {
     // used for patient vital
     watchEffect(()=>{
       if(getVideoDetails.value!=null){
-        console.log('getVideoDetails');
+        // start loader untill load video element
+      let MuteInterval = setInterval(function () {
+        //start loader
+        store.commit("loadingStatus", true)
+        if(!document.querySelector('#videoCallLoader').paused){
+          //remove loder
+          store.commit("loadingStatus", false)
+            clearInterval(MuteInterval);
+        }
+      }, 3000);
         store.dispatch('patientVitals', {patientId: getVideoDetails.value.patientDetailed.id, deviceType: 99})
         store.dispatch('patientVitals', {patientId: getVideoDetails.value.patientDetailed.id, deviceType: 100})
         store.dispatch('patientVitals', {patientId: getVideoDetails.value.patientDetailed.id, deviceType: 101})
@@ -317,16 +326,7 @@ export default {
         store.dispatch('devices', acceptVideoCallDetails.value.patient.id)
       }
 
-      // start loader untill load video element
-      let MuteInterval = setInterval(function () {
-        //start loader
-        store.commit("loadingStatus", true)
-        if(!document.querySelector('#videoCallLoader').paused){
-          //remove loder
-          store.commit("loadingStatus", false)
-            clearInterval(MuteInterval);
-        }
-      }, 3000);
+      
       
 
     })//end 
