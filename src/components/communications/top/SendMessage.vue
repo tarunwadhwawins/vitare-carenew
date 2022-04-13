@@ -4,7 +4,7 @@
   </a-button>
 
   <!-- Modal -->
-  <CommunicationsModal v-model:visible="visible" @ok="handleOk" @is-visible="showModal($event)" />
+  <CommunicationsModal v-model:visible="visible"  @is-visible="showModal($event)" />
 </template>
 
 <script>

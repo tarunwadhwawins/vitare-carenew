@@ -14,21 +14,21 @@
                         <a-col :span="24">
                             <h2 class="pageTittle">
                                 Inventory
-                                <div class="commonBtn" v-if="arrayToObjact(screensPermissions,337)">
-                                    <Button :name="buttonName" @click="showModal" />
+                                <div class="commonBtn" >
+                                    <Button :name="buttonName" @click="showModal" v-if="arrayToObjact(screensPermissions,337)"/>
                                 </div>
                             </h2>
                         </a-col>
-                        <a-col :span="12" v-if="arrayToObjact(screensPermissions,336)">
-                            <SearchField endPoint="inventory" />
+                        <a-col :span="12" >
+                            <SearchField endPoint="inventory" v-if="arrayToObjact(screensPermissions,336)"/>
                         </a-col>
-                        <a-col :span="12" v-if="arrayToObjact(screensPermissions,340)">
+                        <a-col :span="12" >
                             <div class="text-right mb-24">
-                                <ExportToExcel @click="exportExcel('inventory_report')" />
+                                <ExportToExcel @click="exportExcel('inventory_report')" v-if="arrayToObjact(screensPermissions,340)"/>
                             </div>
                         </a-col>
-                        <a-col :span="24" v-if="arrayToObjact(screensPermissions,336)">
-                            <InventoryTable @edit-inventory="editInventory" />
+                        <a-col :span="24" >
+                            <InventoryTable @edit-inventory="editInventory" v-if="arrayToObjact(screensPermissions,336)"/>
                         </a-col>
                     </a-row>
                 </div>
@@ -36,7 +36,7 @@
         </a-layout>
     </a-layout>
     <!--modals-->
-    <InventoryModal v-if="visible" v-model:visible="visible" @ok="handleOk" @is-visible="handleOk" :isAdd="isAdd" />
+    <InventoryModal  v-model:visible="visible"  @is-visible="handleOk($event)" :isAdd="isAdd" />
     <!---->
 </div>
 </template>
@@ -69,18 +69,18 @@ export default {
     const isAdd = ref(false);
 
     const showModal = () => {
-      isAdd.value = true;
+      isAdd.value = false;
       visible.value = true;
     };
-    const handleOk = () => {
-      visible.value = false;
+    const handleOk = (event) => {
+      visible.value = event;
     };
     const searchData = (value) => {
       store.dispatch("searchGlobalCodes", value);
     };
 
     const editInventory = ({ id, deviceTypeId }) => {
-      isAdd.value = false;
+      isAdd.value = true;
       store.dispatch("inventoryDetails", id).then(() => {
         store.dispatch("deviceModalsList", deviceTypeId).then(() => {
           visible.value = true;

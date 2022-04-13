@@ -46,16 +46,21 @@
             </a-col>
             <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="toggleTo">
                 <div class="form-group">
+                
                     <a-form-item :label="$t('tasks.tasksModal.patient')" name="assignedTo" :rules="[{ required: true, message: $t('tasks.tasksModal.patient')+' '+$t('global.validation')  }]">
-                        <PatientDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.assignedTo" @handlePatientChange="handlePatientChange($event)" :close="closeValue"/>
-                    </a-form-item>
+                        <PatientDropDown v-if="!taskId" mode="multiple" v-model:value="taskForm.assignedTo" @handlePatientChange="handlePatientChange($event)" :close="closeValue"/>
+                        <PatientDropDown v-else mode="multiple" :disabled="true"  v-model:value="taskForm.assignedName" @handlePatientChange="handlePatientChange($event)" :close="closeValue"/>
+                        
+                      </a-form-item>
                 </div>
             </a-col>
             <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="!toggleTo">
-                <div class="form-group">
+                <div class="form-group" >
                     <a-form-item :label="$t('global.careCoodinator')" name="assignedTo" :rules="[{ required: true, message: $t('global.careCoodinator')+' '+$t('global.validation')  }]">
-                        <StaffDropDown :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.assignedTo" @handleStaffChange="handleStaffChange($event)" :close="closeValue"/>
-                    </a-form-item>
+                        <StaffDropDown v-if="!taskId" :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.assignedTo" @handleStaffChange="handleStaffChange($event)" :close="closeValue"/>
+                        <StaffDropDown v-else :disabled="true" mode="multiple" v-model:value="taskForm.assignedName" @handleStaffChange="handleStaffChange($event)" :close="closeValue"/>
+                   
+                      </a-form-item>
                 </div>
             </a-col>
             <a-col :span="12">
@@ -136,6 +141,7 @@ export default defineComponent({
       taskStatus: "",
       priority: "",
       assignedTo: [],
+      assignedName: [],
       taskCategory: [],
       startDate: "",
       dueDate: "",

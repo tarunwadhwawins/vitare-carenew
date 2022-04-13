@@ -14,7 +14,7 @@
                         <h2 class="pageTittle">
                             {{ $t('communications.communications') }}
                             <div class="addtaskButton">
-                                <StartCall @click="showStartCallModal" v-if="arrayToObjact(screensPermissions,107)"></StartCall>
+                                <StartCall @click="showStartCallModal" v-if="arrayToObjact(screensPermissions,107)" data-v-5d567869="showStartCallModal"></StartCall>
                                 <SendMessage v-if="arrayToObjact(screensPermissions,109)"></SendMessage>
                             </div>
                             <div class="filter">
@@ -44,7 +44,7 @@
         </a-layout>
 
     </a-layout>
-    <AddStartCall v-model:visible="AddStartCall" @ok="startOk" />
+    <AddStartCall v-model:visible="AddStartCall" />
 </div>
 </template>
 <script>
@@ -83,7 +83,7 @@ export default defineComponent({
     const listView = ref(false)
     
     watchEffect(() => {
-      console.log('route.query.view', route.query.view)
+      
       if(route.query.view == 'list') {
         dashboardView.value = false
         listView.value = true

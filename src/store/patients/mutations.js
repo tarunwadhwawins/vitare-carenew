@@ -783,15 +783,15 @@ export const patientVitals = (state, vitals) => {
     vitalsArray.forEach(vital => {
       switch (vital.deviceType) {
         case 'Blood Pressure':
-          state.bloodPressure = patientVitals;
+          state.bloodPressure = patientVitals.length > 0 ? patientVitals : null;
           state.bloodPressureGraph = patientGraphData;
           break;
         case 'Oximeter':
-          state.bloodOxygen = patientVitals;
+          state.bloodOxygen = patientVitals.length > 0 ? patientVitals : null;
           state.bloodOxygenGraph = patientGraphData;
           break;
         case 'Glucose':
-          state.bloodGlucose = patientVitals;
+          state.bloodGlucose = patientVitals.length > 0 ? patientVitals : null;
           state.bloodGlucoseGraph = patientGraphData;
           break;
         default:
@@ -1041,4 +1041,16 @@ export const medicationDetails = (state, data) => {
   data.startDate = timestampToDate(data.startDate, format)
   data.endDate = timestampToDate(data.endDate, format)
   state.medicationDetails = data
+}
+
+export const documentDetails = (state, data) => {
+  const tags = []
+  data.tag.map(tag => {
+    tags.push(tag.tagId)
+  })
+  data.tags = tags
+  data.document = data.path
+  data.type = data.typeId
+  // data.documentPath = data.path.split('/')[5]
+  state.documentDetails = data
 }

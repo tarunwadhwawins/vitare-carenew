@@ -1,7 +1,7 @@
 <template>
 <a-row>
-    <a-col :span="24" v-if="arrayToObjact(screensPermissions,37)">
-        <ShowModalButton @isVisible="showModal($event)" :headingText="$t('careCoordinator.coordinatorsModal.careCoordinator')" :buttonText="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" />
+    <a-col :span="24" >
+        <ShowModalButton @isVisible="showModal($event)" :headingText="$t('careCoordinator.coordinatorsModal.careCoordinator')" :buttonText="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" v-if="arrayToObjact(screensPermissions,37)"/>
     </a-col>
 </a-row>
 <a-row class="mb-24" :gutter="24" v-if="arrayToObjact(screensPermissions,40)">

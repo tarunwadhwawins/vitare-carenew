@@ -12,17 +12,17 @@
                         <a-col :span="24">
                             <h2 class="pageTittle">
                                 Global Codes
-                                <div class="commonBtn" v-if="arrayToObjact(screensPermissions,6)">
-                                    <Button :name="buttonName" @click="showModal" />
+                                <div class="commonBtn" >
+                                    <Button :name="buttonName" @click="showModal" v-if="arrayToObjact(screensPermissions,6)" />
                                 </div>
                             </h2>
                         </a-col>
                         <a-col :span="12">
                             <SearchField endPoint="globalCodes" />
                         </a-col>
-                        <a-col :span="12" v-if="arrayToObjact(screensPermissions,327)">
+                        <a-col :span="12" >
                             <div class="text-right mb-24">
-                                <ExportToExcel @click="exportExcel('globalCode_report')" />
+                                <ExportToExcel @click="exportExcel('globalCode_report')" v-if="arrayToObjact(screensPermissions,327)"/>
                             </div>
                         </a-col>
                         <a-col :span="24">

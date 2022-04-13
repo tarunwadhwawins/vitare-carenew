@@ -3,9 +3,9 @@
     <a-col :span="12">
       <SearchField endPoint="task" />
     </a-col>
-    <a-col :span="12" v-if="arrayToObjact(screensPermissions, 118)">
+    <a-col :span="12" >
       <div class="text-right mb-24">
-        <ExportToExcel  @click="exportExcel('task_report')"/>
+        <ExportToExcel  @click="exportExcel('task_report')" v-if="arrayToObjact(screensPermissions, 118)"/>
       </div>
     </a-col>
     <TaskTable @is-Edit="editTask($event)"></TaskTable>

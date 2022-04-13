@@ -15,21 +15,21 @@
                     </a-row>
                     <a-form :model="auditTimeLog" name="auditTimeLog" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="updateAuditTime" >
                         <a-row :gutter="24">
-                            <a-col :sm="8" :xs="24" v-if="arrayToObjact(screensPermissions, 332)">
-                                <div class="form-group">
+                            <a-col :sm="8" :xs="24">
+                                <div class="form-group"  v-if="arrayToObjact(screensPermissions, 332)">
                                     <label>{{$t('global.startDate')}}</label>
                                     <a-date-picker format="MM/DD/YYYY" value-format="YYYY-MM-DD" :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" v-model:value="auditTimeLog.startDate" :size="size" style="width: 100%" />
                                 </div>
                             </a-col>
-                            <a-col :sm="8" :xs="24" v-if="arrayToObjact(screensPermissions, 332)">
-                                <div class="form-group">
+                            <a-col :sm="8" :xs="24" >
+                                <div class="form-group" v-if="arrayToObjact(screensPermissions, 332)">
                                     <label>{{$t('global.endDate')}}</label>
                                     <a-date-picker format="MM/DD/YYYY" :disabledDate="d => !d || d.isSameOrBefore(auditTimeLog.startDate)" value-format="YYYY-MM-DD" v-model:value="auditTimeLog.endDate" :size="size" style="width: 100%" @change="dateChange" />
                                 </div>
                             </a-col>
 
-                            <a-col :sm="2" :xs="24" v-if="arrayToObjact(screensPermissions, 332)">
-                                <div class="text-right mt-28">
+                            <a-col :sm="2" :xs="24" >
+                                <div class="text-right mt-28" v-if="arrayToObjact(screensPermissions, 332)">
                                     <a-button class="btn primaryBtn" html-type="submit">{{$t('timeLogReport.view')}}</a-button>
                                 </div>
                             </a-col>
@@ -38,15 +38,15 @@
                                     <a-button class="btn primaryBtn" @click="clearData">{{$t('global.clear')}}</a-button>
                                 </div>
                             </a-col>
-                            <a-col :sm="4" :xs="24" v-if="arrayToObjact(screensPermissions, 333)">
+                            <a-col :sm="4" :xs="24" >
                                 <div class="text-right mb-24">
-                                    <ExportToExcel @click="exportExcel('patientTimelog_report',filtterDates)" />
+                                    <ExportToExcel @click="exportExcel('patientTimelog_report',filtterDates)" v-if="arrayToObjact(screensPermissions, 333)"/>
                                 </div>
                             </a-col>
                         </a-row>
                     </a-form>
-                    <a-row v-if="arrayToObjact(screensPermissions, 332)">
-                        <TimeLogTable @scrolller="scrolller"></TimeLogTable>
+                    <a-row >
+                        <TimeLogTable @scrolller="scrolller" v-if="arrayToObjact(screensPermissions, 332)"/>
                     </a-row>
                 </div>
             </a-layout-content>

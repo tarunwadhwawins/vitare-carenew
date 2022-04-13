@@ -11,13 +11,13 @@
                     <a-col :span="24">
                         <h2 class="pageTittle">
                             CPT Codes
-                            <div class="commonBtn" v-if="arrayToObjact(screensPermissions,9)">
-                                <Button :name="buttonName" @click="showModal(true)" />
+                            <div class="commonBtn" >
+                                <Button :name="buttonName" @click="showModal(true)" v-if="arrayToObjact(screensPermissions,9)"/>
                             </div>
                         </h2>
                     </a-col>
-                    <a-col :span="12" v-if="arrayToObjact(screensPermissions,14)">
-                        <SearchField endPoint="cptCode"/>
+                    <a-col :span="12" >
+                        <SearchField endPoint="cptCode" v-if="arrayToObjact(screensPermissions,14)"/>
                     </a-col>
                     <a-col :span="12">
                         <div class="text-right mb-24">

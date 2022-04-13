@@ -18,11 +18,11 @@
                     </a-row>
                     <a-row :gutter="24">
                         <a-col :xl="16" :lg="14">
-                            <Loader />
                             <!-- video call  -->
-                            <div class="videoCall">
-                                <video ref="videoCall"></video>
+                            <div class="videoCall" >
+                                <video id="videoCallLoader" ref="videoCall"></video>
                             </div>
+                            <Loader />
                         </a-col>
                         <a-col :xl="8" :lg="10">
                             <div class="callRightWrapper">
@@ -163,11 +163,11 @@ export default {
     });
    
     onMounted(() => {
-        store.dispatch("getVideoDetails",deCodeString(route.params.id))
+      store.dispatch("getVideoDetails",deCodeString(route.params.id))
       store.commit("loadingStatus", true);
       //accept videoCall code
       if (session.value) {
-         store.commit("loadingStatus", false);
+        //  store.commit("loadingStatus", false);
         session.value.options.media.remote = {
           video: videoCall.value ? videoCall.value : <video></video>,
         };
@@ -180,7 +180,7 @@ export default {
       //Start conference video call code
       else {
         if (route.params.id) {
-          store.commit("loadingStatus", false);
+          // store.commit("loadingStatus", false);
           currentUrl.value= window.location.href
           decodedUrl.value = deCodeString(route.params.id)
           console.log('video deCodeString',decodedUrl.value);
@@ -267,10 +267,10 @@ export default {
       if (decodedUrl.value) {
         simpleUserHangup.value.hangup().then(() => {
           //call end api
-          store.dispatch("callNotification",{id:decodedUrl.value,status:'end'})
+          // store.dispatch("callNotification",{id:decodedUrl.value,status:'end'})
           store.state.videoCall.getVideoDetails=null;
           store.state.videoCall.acceptVideoCallDetails=null;
-          router.push("/dashboard");
+          // router.push("/dashboard");
         });
       } else {
         session.value.hangup().then(() => {
@@ -303,17 +303,32 @@ export default {
 
     // used for patient vital
     watchEffect(()=>{
-      if(getVideoDetails.value){
+      if(getVideoDetails.value!=null){
+        // start loader untill load video element
+      let MuteInterval = setInterval(function () {
+        //start loader
+        store.commit("loadingStatus", true)
+        if(!document.querySelector('#videoCallLoader').paused){
+          //remove loder
+          store.commit("loadingStatus", false)
+            clearInterval(MuteInterval);
+        }
+      }, 3000);
         store.dispatch('patientVitals', {patientId: getVideoDetails.value.patientDetailed.id, deviceType: 99})
         store.dispatch('patientVitals', {patientId: getVideoDetails.value.patientDetailed.id, deviceType: 100})
         store.dispatch('patientVitals', {patientId: getVideoDetails.value.patientDetailed.id, deviceType: 101})
         store.dispatch('devices', getVideoDetails.value.patientDetailed.id)
-      }else if(acceptVideoCallDetails.value){
+      }else if(acceptVideoCallDetails.value !=null){
+        console.log('acceptVideoCallDetails');
         store.dispatch('patientVitals', {patientId: acceptVideoCallDetails.value.patient.id, deviceType: 99})
         store.dispatch('patientVitals', {patientId: acceptVideoCallDetails.value.patient.id, deviceType: 100})
         store.dispatch('patientVitals', {patientId: acceptVideoCallDetails.value.patient.id, deviceType: 101})
         store.dispatch('devices', acceptVideoCallDetails.value.patient.id)
       }
+
+      
+      
+
     })//end 
 
     return {

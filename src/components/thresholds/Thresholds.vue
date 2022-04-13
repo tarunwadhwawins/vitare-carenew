@@ -17,9 +17,9 @@
         <a-col :span="12">
           <SearchField  endPoint="generalParameterGroup"/>
         </a-col>
-        <a-col :span="12" v-if="arrayToObjact(screensPermissions,335)">
+        <a-col :span="12" >
           <div class="text-right mb-24">
-            <ExportToExcel  @click="exportExcel('generalParameter_report')"/>
+            <ExportToExcel  @click="exportExcel('generalParameter_report')" v-if="arrayToObjact(screensPermissions,335)"/>
           </div>
         </a-col>
         <ThresholdsTable  @is-edit="showEdit($event)"></ThresholdsTable>
