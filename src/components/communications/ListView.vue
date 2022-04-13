@@ -30,7 +30,7 @@ export default {
   },
   setup() {
     const store = useStore()
-    const linkTo = "patients-summary"
+    
 
     watchEffect(() => {
       store.dispatch('communicationsList')
@@ -57,7 +57,7 @@ export default {
       arrayToObjact,
       exportExcel,
       searchData,
-      linkTo,
+      
       onChange: () => {
         // console.log("params", );
       },
