@@ -1,6 +1,6 @@
 <template>
-  <a-tab-pane :key="key" :tab="tab">
-    <PopulateWaitingRoomTable :linkTo="linkTo" :colomnsRecord="columns" :dataRecord="dataSource" :pagination="pagination" />
+  <a-tab-pane :key="1" :tab="tab">
+    <PopulateWaitingRoomTable  :colomnsRecord="columns" :dataRecord="dataSource" :pagination="false" />
   </a-tab-pane>
 </template>
 
@@ -10,10 +10,7 @@ import { reactive } from "vue"
 import PopulateWaitingRoomTable from "@/components/communications/tables/PopulateWaitingRoomTable";
 export default {
   props: {
-    linkTo: {
-      type: String,
-      required: true
-    },
+    
     tab: {
       type: String,
       required: true
@@ -26,24 +23,21 @@ export default {
       type: Array,
       required: true
     },
-    pagination: {
-      type: Boolean,
-      required: true
-    },
+    
   },
   components: {
     PopulateWaitingRoomTable,
   },
 
   setup(props) {
-    const link=reactive(props.linkTo)
+    
     const columns=reactive(props.column)
     const dataSource= reactive(props.data)
     // const router = useRouter();
 
     return {
       columns,
-      link,
+      
       dataSource,
     }
   },

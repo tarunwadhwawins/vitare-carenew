@@ -1,6 +1,6 @@
 <template>
   <a-modal width="1000px" title="Add Goal" centered>
-    <a-form ref="formRef" :model="addCarePlanForm" layout="vertical" @finish="submitForm">
+    <a-form ref="formRef" :model="addCarePlanForm" layout="vertical" @finish="submitForm" :footer="false">
       <a-row :gutter="24">
         
         <a-col :sm="8" :xs="24">

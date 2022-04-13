@@ -2,12 +2,9 @@
 <a-modal width="1000px" title="Communications" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
     <a-form ref="formRef" :model="messageForm" layout="vertical" @finish="sendMessage" @finishFailed="sendMessageFailed">
         <a-row :gutter="24">
-
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
-
                     <a-form-item :label="$t('communications.communicationsModal.from')" name="from" :rules="[{ required: true, message: $t('communications.communicationsModal.from')+' '+$t('global.validation')  }]">
-
                         <StaffDropDown :disabled="arrayToObjact(screensPermissions,37) ? false : true" v-model:value="messageForm.from" @handleStaffChange="handleStaffChange($event)" :close="closeValue" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
@@ -36,7 +33,7 @@
             <a-col :sm="12" :xs="24" v-show="!toggleTo">
                 <div class="form-group">
                     <a-form-item :label="$t('global.careCoodinator')" name="referenceId" :rules="[{ required: true, message: $t('global.careCoodinator')+' '+$t('global.validation')  }]">
-                        <StaffDropDown v-if="staffList" :checkSameAsStaff="true" v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" />
+                        <StaffDropDown v-if="staffList" :checkSameAsStaff="true" v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" :close="closeValue"/>
                     </a-form-item>
                 </div>
             </a-col>
@@ -59,7 +56,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.messageType')" name="messageTypeId" :rules="[{ required: true, message: $t('communications.communicationsModal.messageType')+' '+$t('global.validation')  }]">
-                        <a-select ref="select" v-model:value="messageForm.messageTypeId" style="width: 100%" size="large" @change="checkChangeInput()">
+                        <a-select  v-model:value="messageForm.messageTypeId" style="width: 100%" size="large" @change="checkChangeInput()">
                             <a-select-option value="" disabled>{{'Select Message Type'}}</a-select-option>
                             <template v-for="type in messageType">
                                 <a-select-option v-if="type.name == 'SMS' || type.name == 'Email'" :key="type.id" :value="type.id">{{ type.name }}</a-select-option>
