@@ -12,8 +12,8 @@
         <a-col :sm="12" :xs="24">
         
             <div class="form-group">
-                <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: true, message: $t('global.document')+' '+$t('global.validation') }]">
-                    <a-input ref="image" name="document_file" size="large" type="file" @change="onFileUpload" />
+                <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: isDocumentrequired, message: $t('global.document')+' '+$t('global.validation') }]">
+                    <a-input ref="image" name="document_file" id="document_file" size="large" type="file" @change="onFileUpload" />
                     <ErrorMessage v-if="docValidationError" name="Document is required." />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
                 </a-form-item>
@@ -43,12 +43,12 @@
         <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
         </a-col>
         <a-col :span="24" v-else>
-            <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
+            <a-button class="btn primaryBtn" html-type="submit">{{$t('global.save')}}</a-button>
         </a-col>
     </a-row>
     <a-row :gutter="24" class="mb-24" v-show="!paramId">
         <a-col :span="24">
-            <DocumentTable :Id="Id" />
+            <DocumentTable :Id="Id" @onEditDocument="updateDocument" />
             <TableLoader />
         </a-col>
     </a-row>
@@ -92,6 +92,10 @@ export default defineComponent({
     const docValidationError = ref(false)
     const formRef = ref()
     const image = ref()
+    const isEditDocument = ref(false)
+    const isDocumentrequired = ref(true)
+    const documentUdid = ref(null)
+
     const changedValue = () => {
       emit('onChange')
     }
@@ -106,6 +110,10 @@ export default defineComponent({
       return store.state.patients.uploadFile;
     });
 
+    const documentDetail = computed(() => {
+      return store.state.patients.documentDetails
+    })
+
     const documents = reactive({
       name: "",
       document: filePath.value ? filePath.value : "",
@@ -115,6 +123,14 @@ export default defineComponent({
     });
     const form = reactive({ ...documents })
 
+    const updateDocument = (documentDetails) => {
+      console.log('documentDetails', documentDetails)
+      isEditDocument.value = true
+      isDocumentrequired.value = false
+      documentUdid.value = documentDetails.id
+      console.log('documentDetails', documentDetails)
+      Object.assign(documents, documentDetails)
+    }
     
     const onFileUpload = (event) => {
       let docFile = event.target.files[0];
@@ -160,18 +176,27 @@ export default defineComponent({
     });
 
     const addDocument = () => {
-      if(props.entity=="patient") {
+      if(props.entity == "patient") {
+        const document = ref(null)
+        if(filePath.value && filePath.value != null) {
+          document.value = filePath.value
+        }
+        else {
+          document.value = documentDetail.value.document
+        }
         const patientData = {
           name: documents.name,
-          document: filePath.value ? filePath.value : "",
+          document: document.value,
           type: documents.type,
           tags: documents.tags,
           entity: "patient",
         }
-        if(patientId != null) {
-          store.dispatch("addDocument", {
+        
+        if(isEditDocument.value) {
+          store.dispatch("updateDocument", {
             data: patientData,
-            id: patientId,
+            patientUdid: route.params.udid,
+            documentUdid: documentUdid.value,
           }).then(() => {
             emit('onChange', false)
             formRef.value.resetFields();
@@ -182,36 +207,29 @@ export default defineComponent({
             image.value.stateValue=''
             docValidationError.value=false
             Object.assign(documents, form)
-            store.dispatch("documents", patientUdid);
+            store.dispatch("documents", route.params.udid);
+            isDocumentrequired.value = true
           });
         }
         else {
-        if(filePath.value==null){
-          
-        docValidationError.value=true
-        }else{
-        const patientData = {
-          name: documents.name,
-          document: filePath.value ? filePath.value : "",
-          type: documents.type,
-          tags: documents.tags,
-          entity: "patient",
-        }
-          store.dispatch("addDocument", {
-            data: patientData,
-            id: patients.value.addDemographic.id,
-          }).then(() => {
-            emit('onChange', false)
-            formRef.value.resetFields();
-            
-            image.value.stateValue=''
-            docValidationError.value=false
-            store.state.patients.uploadFile=null
-            documents.document =''
-            Object.assign(documents, form)
-            store.dispatch("documents", patients.value.addDemographic.id);
-          });
-      }
+          if(filePath.value == null) {
+            docValidationError.value=true
+          }
+          else {
+            store.dispatch("addDocument", {
+              data: patientData,
+              id: patients.value.addDemographic ? patients.value.addDemographic.id : route.params.udid,
+            }).then(() => {
+              store.dispatch("documents", route.params.udid);
+              emit('onChange', false)
+              formRef.value.resetFields();
+              image.value.stateValue=''
+              docValidationError.value=false
+              store.state.patients.uploadFile=null
+              documents.document =''
+              Object.assign(documents, form)
+            });
+          }
         }
       }
       
@@ -253,6 +271,10 @@ export default defineComponent({
       store.state.patients.uploadFile=null
     }
 
+    const errorMsg = computed(() => {
+      return store.state.patients.errorMsg
+    })
+
     return {
       image,
       docValidationError,
@@ -272,7 +294,9 @@ export default defineComponent({
       patients,
       documentColumns,
       documentsData,
-      errorMsg: patients.value.errorMsg,
+      updateDocument,
+      errorMsg,
+      isDocumentrequired,
     };
   },
 });
