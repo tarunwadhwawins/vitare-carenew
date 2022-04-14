@@ -912,7 +912,7 @@ export default defineComponent( {
 			else {
 					if(patients.value.addDemographic == null) {
 							if(demographicsData.sameAsPrimary == false) {
-									store.dispatch("addDemographic", demographics).then(() => {
+									store.dispatch("addDemographic", demographicsData).then(() => {
 											if(route.name == 'PatientSummary') {
 													store.dispatch('patientDetails', route.params.udid)
 													isValueChanged.value = false;
@@ -926,7 +926,7 @@ export default defineComponent( {
 									(demographicsData.emergencyContactType = demographicsData.familyContactType),
 									(demographicsData.emergencyContactTime = demographicsData.familyContactTime),
 									(demographicsData.emergencyGender = demographicsData.familyGender),
-									store.dispatch("addDemographic", demographics).then(() => {
+									store.dispatch("addDemographic", demographicsData).then(() => {
 											if(route.name == 'PatientSummary') {
 													store.dispatch('patientDetails', route.params.udid)
 													isValueChanged.value = false;
