@@ -1,6 +1,6 @@
 <template>
   <div class="patientInfo" v-if="patientDetails">
-      <ProfileImage :patientDetails="patientDetails" :isLeft="true" @onEditPatient="editPatient" />
+      <ProfileImage :isLeft="true" @onEditPatient="editPatient" />
 
     <div class="pat-profile">
       <div class="pat-profile-inner">
