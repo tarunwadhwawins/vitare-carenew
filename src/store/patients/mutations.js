@@ -375,6 +375,7 @@ export const addDocument = (state, data) => {
 
 export const documents = (state, data) => {
   state.documents = data
+  console.log("check",data)
   state.documentColumns = [
     {
       title: "Name",

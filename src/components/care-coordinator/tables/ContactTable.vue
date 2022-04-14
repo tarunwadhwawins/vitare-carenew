@@ -70,7 +70,7 @@ export default {
 
     const editContact = (contactId) => {
       store.dispatch("contactDetails", {
-        id: router.params.udid,
+        id: props.Id ? props.Id : router.params.udid,
         contactId: contactId,
       });
       contactFormVisible.value = true

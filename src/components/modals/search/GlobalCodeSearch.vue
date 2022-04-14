@@ -8,7 +8,6 @@
     size="large"
     :options="globalCode.map((item) => ({label: item.name, value: item.id?item.id:item.udid }))"
     :filter-option="filterOption"
-    @change="handleChange"
   ></a-select>
   <a-select v-else>
      <a-select-option value="" hidden>{{'Please Select'}}</a-select-option>
@@ -22,10 +21,7 @@ export default defineComponent({
     mode:String
   },
   setup() {
-    const handleChange =  {
-      //console.log(`selected ${value}`);
-    };
-
+ 
     const filterOption = (input, globalCode) => {
       return globalCode.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     };
@@ -33,7 +29,6 @@ export default defineComponent({
     return {
       value: ref(undefined),
       filterOption,
-      handleChange,
     };
   },
 
