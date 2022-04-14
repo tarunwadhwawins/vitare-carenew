@@ -3,6 +3,7 @@
     <a-row :gutter="24">
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
+                
                 <a-form-item :label="$t('global.startTime')" name="startTime" :rules="[{ required: true, message: $t('global.startTime')+' '+$t('global.validation') }]">
                     <a-time-picker use12-hours :disabledHours="() => disableHours" format="hh:mm A" v-model:value="availability.startTime" value-format="HH:mm" @change="checkChangeInput(); getTime('startTime')" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.startTime?errorMsg.startTime[0]:''" />

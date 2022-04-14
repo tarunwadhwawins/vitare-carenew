@@ -249,6 +249,7 @@ export default {
 					value: false
 				});
 			});
+			store.commit('checkChangeInput', false)
 		}
 
 		const errorMsg = computed(() => {

@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="50%" title="Edit Availability" centered >
+  <a-modal width="50%" title="Edit Availability" centered :footer="false">
     <a-form :model="editAvailabilityForm" ref="formRest" autocomplete="off" layout="vertical" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :span="12">
