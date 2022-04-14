@@ -290,9 +290,9 @@ export function chartTimeCount(timeLine, count) {
 			item.time = moment(dateFormat(item.duration)).format('hh:00 A')
 			return item
 		})
-		console.log("check2",array)
+		
 		let getTotal = findOcc(array, 'time')
-		console.log("check",getTotal)
+		
 		const time = [
 			'08:00 AM',
 			'09:00 AM',
