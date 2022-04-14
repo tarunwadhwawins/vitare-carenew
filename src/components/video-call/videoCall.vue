@@ -102,10 +102,10 @@
 <script>
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
-import { ref, onMounted, computed, reactive, watchEffect } from "vue";
+import { ref, onMounted, computed, reactive, watchEffect, onUnmounted } from "vue";
 import { useRoute,useRouter } from "vue-router";
 import { useStore } from "vuex";
-import Loader from "@/components/loader/Loader";
+import Loader from "@/components/loader/VideoLoader";
 import { Web } from "@/assets/js/sip-0.20.0";
 import { notification } from "ant-design-vue";
 import { successSwal,deCodeString } from "@/commonMethods/commonMethod";
@@ -164,7 +164,7 @@ export default {
    
     onMounted(() => {
       store.dispatch("getVideoDetails",deCodeString(route.params.id))
-      store.commit("loadingStatus", true);
+      store.commit("videoLoadingStatus", true);
       //accept videoCall code
       if (session.value) {
         //  store.commit("loadingStatus", false);
@@ -304,34 +304,40 @@ export default {
     // used for patient vital
     watchEffect(()=>{
       if(getVideoDetails.value!=null){
-        // start loader untill load video element
-      let MuteInterval = setInterval(function () {
-        //start loader
-        store.commit("loadingStatus", true)
-        if(!document.querySelector('#videoCallLoader').paused){
-          //remove loder
-          store.commit("loadingStatus", false)
-            clearInterval(MuteInterval);
-        }
-      }, 3000);
+        videoLoader();
         store.dispatch('patientVitals', {patientId: getVideoDetails.value.patientDetailed.id, deviceType: 99})
         store.dispatch('patientVitals', {patientId: getVideoDetails.value.patientDetailed.id, deviceType: 100})
         store.dispatch('patientVitals', {patientId: getVideoDetails.value.patientDetailed.id, deviceType: 101})
         store.dispatch('devices', getVideoDetails.value.patientDetailed.id)
       }else if(acceptVideoCallDetails.value !=null){
+        videoLoader();
         console.log('acceptVideoCallDetails');
         store.dispatch('patientVitals', {patientId: acceptVideoCallDetails.value.patient.id, deviceType: 99})
         store.dispatch('patientVitals', {patientId: acceptVideoCallDetails.value.patient.id, deviceType: 100})
         store.dispatch('patientVitals', {patientId: acceptVideoCallDetails.value.patient.id, deviceType: 101})
         store.dispatch('devices', acceptVideoCallDetails.value.patient.id)
       }
-
-      
-      
-
     })//end 
 
+    function videoLoader(){
+         // start loader untill load video element
+      let MuteInterval = setInterval(function () {
+        //start loader
+        store.commit("videoLoadingStatus", true)
+        if(!document.querySelector('#videoCallLoader').paused){
+          //remove loder
+          store.commit("videoLoadingStatus", false)
+            clearInterval(MuteInterval);
+        }
+      }, 3000);
+    }
+
+    onUnmounted(()=>{
+      store.commit("videoLoadingStatus", false)
+    })
+
     return {
+      videoLoader,
       decodedUrl,
       copyURL,
       currentUrl,
