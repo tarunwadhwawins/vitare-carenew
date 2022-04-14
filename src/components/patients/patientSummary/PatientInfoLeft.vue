@@ -93,7 +93,7 @@
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 297)">
-          Documents <PlusOutlined @click="addDocumentsModal();actionTrack(paramsId,297,'patient')" />
+          Documents <PlusOutlined @click="addDocumentsModal('true');actionTrack(paramsId,297,'patient')" />
         </div>
         <div v-if="latestDocument != null && arrayToObjact(screensPermissions, 317)" class="thumb-desc">
           <a href="javascript:void(0)" @click="showDocumentsModal();actionTrack(paramsId,317,'patient')" >{{ latestDocument[0].name }}</a>
@@ -135,7 +135,9 @@
     <AddAppointmentModal v-model:visible="addAppointmentVisible" :patientId="patientDetails.id" :patientName="patientDetails.patientFullName" @closeModal="handleOk" @is-visible="handleOk" />
     <AddTasksModal v-model:visible="addTaskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
     <AddNotesModal v-model:visible="addNoteVisible" @closeModal="handleOk" />
-    <AddDocumentModal v-model:visible="addDocumentVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
+    <a-modal width="50%" v-model:visible="addDocumentVisible" title="Add Documents" :maskClosable="false" centered  @cancel="closeModal()" :footer="false">
+    <Documents  :paramId="paramsId" :idPatient="patientDetails.id"  entity="patient" @document="addDocumentsModal($event)"/>
+    </a-modal>
     <AddCoordinatorsModal v-if="careCoordinatorsVisible" v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" :staffType="staffType" :title="title" :isEditCareCoordinator="false" />
     <AddTimeLogsModal v-model:visible="addTimeLogsVisible" :isEditTimeLog="isEditTimeLog" :isAutomatic="isAutomatic" @closeModal="handleOk" />
     <AddDeviceModal v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
@@ -162,14 +164,8 @@ import {
   PlusOutlined,
 } from "@ant-design/icons-vue";
 
-// import Flags from "@/components/common/flags/Flags";
-/* import PatientsModal from "@/components/modals/PatientsModal"
-import AddFamilyMemberModal from "@/components/modals/AddFamilyMemberModal"
-import AddPhysicianModal from "@/components/modals/AddPhysicianModal"
-import AddEmergencyContacts from "@/components/modals/AddEmergencyContacts"
-import DocumentDetailModal from "@/components/modals/DocumentDetail"
-import AddDocumentModal from "@/components/modals/AddDocument" */
-
+import { warningSwal } from "@/commonMethods/commonMethod";
+import { messages } from "@/config/messages";
 import {
   ref,
   // reactive,
@@ -196,7 +192,7 @@ export default defineComponent({
     AddTasksModal: defineAsyncComponent(()=>import("@/components/modals/TasksModal")),
     AddNotesModal: defineAsyncComponent(()=>import("@/components/modals/AddNote")),
     NotesDetailModal: defineAsyncComponent(()=>import("@/components/modals/NotesDetail")),
-    AddDocumentModal: defineAsyncComponent(()=>import("@/components/modals/AddDocument")),
+    Documents: defineAsyncComponent(()=>import("@/components/modals/forms/Documents")),
     DocumentDetailModal: defineAsyncComponent(()=>import("@/components/modals/DocumentDetail")),
     AddCoordinatorsModal: defineAsyncComponent(()=>import("@/components/modals/AddCoordinatorsModal")),
     AddTimeLogsModal: defineAsyncComponent(()=>import("@/components/modals/AddTimeLogs")),
@@ -251,6 +247,7 @@ export default defineComponent({
     const isAutomatic = ref(false);
     const staffType = ref(0);
     const title = ref(null);
+   
 
     watchEffect(() => {
       if(route.name == 'PatientSummary') {
@@ -337,7 +334,7 @@ export default defineComponent({
         // addPhysicianModalVisible.value = modal == 'addPhysician' ? value : false;
         addFamilyMembersModalVisible.value = modal == 'addFamilyMember' ? value : false;
         patientsModalVisible.value = modal == 'editPatient' ? value : false;
-        addDocumentVisible.value = modal == 'addDocument' ? value : false;
+        //addDocumentVisible.value = modal == 'addDocument' ? value : false;
         documentDetailVisible.value = modal == 'documentDetails' ? value : false;
         addTimeLogsVisible.value = modal == 'addTimeLog' ? value : false;
         flagsModalVisible.value = modal == 'addFlag' ? value : false;
@@ -485,8 +482,9 @@ export default defineComponent({
       notesDetailVisible.value = true;
     }
 
-    const addDocumentsModal = () => {
-      addDocumentVisible.value = true;
+    const addDocumentsModal = (event) => {
+      
+      addDocumentVisible.value = event;
     }
 
     const showDocumentsModal = () => {
@@ -525,7 +523,30 @@ export default defineComponent({
       timeLogDetails.value = value;
     }
 
+const checkFieldsData = computed(()=>{
+      return store.state.common.checkChangeInput;
+    })
 
+
+    function closeModal() {
+      if(checkFieldsData.value){
+      warningSwal(messages.modalWarning).then((response) => {
+        if (response == true) {
+          
+           addDocumentVisible.value =false
+          store.commit('checkChangeInput',false)
+          store.state.careCoordinator.addStaff =null
+         
+        } else {
+              addDocumentVisible.value =true
+          
+        }
+      });
+      }else{
+          store.commit('clearStaffFormValidation',true)
+      }    
+        
+    }
     return {
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
@@ -618,6 +639,8 @@ export default defineComponent({
       
       staffType,
       title,
+      closeModal,
+      
     }
   }
 })
