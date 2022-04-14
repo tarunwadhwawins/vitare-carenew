@@ -389,6 +389,10 @@ button.swal2-default-outline {
 	left: auto;
 	right: 0;
 }
+.popup_open_top .monthCalendarDropDown {
+    top: 0;
+    transform: translateY(-100%);
+}
 .bold {
 	font-weight: bold;
 	background-color: #f6f7f6;
