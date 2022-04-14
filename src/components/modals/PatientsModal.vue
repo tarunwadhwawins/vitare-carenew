@@ -546,7 +546,7 @@
                 </a-form>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Documents'">
-                <Documents entity="patient" :idPatient="idPatient" @onChange="changedValue" />
+                <Documents entity="patient" :idPatient="idPatient? idPatient : patients.addDemographic.id" @onChange="changedValue" />
 
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
