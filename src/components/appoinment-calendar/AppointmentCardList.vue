@@ -28,7 +28,7 @@
                     <div class="itemWrapper">
                         <div class="leftWrapper">Coordinator</div>
                         <div class="rightWrapper" v-if="arrayToObjact(screensPermissions,38)">
-                            <router-link :to="'/coordinator-summary/'+cardRecords.staff_id">{{cardRecords.staff}}</router-link>
+                            <router-link :to="{ name: 'CoordinatorSummary', params: { udid:cardRecords.staff_id}}">{{cardRecords.staff}}</router-link>
                         </div>
                         <div class="rightWrapper" v-else>
                             <span >{{cardRecords.staff}}</span>
@@ -37,7 +37,7 @@
                     <div class="itemWrapper">
                         <div class="leftWrapper">Patient</div>
                         <div class="rightWrapper" v-if="arrayToObjact(screensPermissions,63)">
-                            <router-link :to="'/patients-summary/'+cardRecords.patient_id">{{cardRecords.patient}}</router-link>
+                            <router-link :to="{ name: 'PatientSummary', params: { udid:cardRecords.patient_id}}">{{cardRecords.patient}}</router-link>
                         </div>
                         <div class="rightWrapper" v-else>
                             <span >{{cardRecords.patient}}</span>

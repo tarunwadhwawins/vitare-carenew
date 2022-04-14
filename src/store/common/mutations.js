@@ -42,7 +42,9 @@ export const globalCodes = (state, data) => {
             state.deviceType = element.globalCode;
         }
         if (element.name === 'Timeline') {
-            state.timeline = element.globalCode;
+            state.timeline = element.globalCode.sort(function(a, b) { 
+                return a.id - b.id 
+              });
         }
         if (element.name === 'Network') {
             state.network = element.globalCode;

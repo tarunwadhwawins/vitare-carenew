@@ -5,7 +5,7 @@
       rowKey="id"
       :columns="meta.column"
       :data-source="meta.patientList"
-      :scroll="{ y: tableYScrollerCounterPage, x: 2000 }"
+      :scroll="{ y: tableYScrollerCounterPage, x: 1500 }"
       :pagination="false"
       @change="handleTableChange"
     >
