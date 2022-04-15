@@ -19,7 +19,7 @@
         </a-col>
         <a-col :span="12" >
           <div class="text-right mb-24">
-            <ExportToExcel  @click="exportExcel('generalParameter_report')" v-if="arrayToObjact(screensPermissions,335)"/>
+            <ExportToExcel  @click="exportExcel('generalParameter_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions,335)"/>
           </div>
         </a-col>
         <ThresholdsTable  @is-edit="showEdit($event)"></ThresholdsTable>
@@ -131,7 +131,8 @@
         threshodsId,
         showEdit,
         nullId,
-        isEdit
+        isEdit,
+        search: store.getters.searchTable,
       };
     },
   };
