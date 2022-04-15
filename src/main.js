@@ -14,6 +14,7 @@ import 'vue3-tel-input/dist/vue3-tel-input.css'
 
 const VueTelInputOptions = {
     onlyCountries: ["US"],
+    mode: "international",
     // defaultCountry: "US"
 }
 
