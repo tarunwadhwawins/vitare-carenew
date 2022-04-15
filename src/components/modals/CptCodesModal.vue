@@ -1,6 +1,6 @@
 
 <template>
-<a-modal max-width="1140px" width="100%" :title="cptCodeId ? 'Edit CPT Codes' : 'Add CPT Codes'" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal max-width="1140px" width="100%" :title="cptId ? 'Edit CPT Codes' : 'Add CPT Codes'" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
     <a-form ref="formRef" :model="cptCodeForm" layout="vertical" @finish="submitForm" @finishFailed="onFinishFailed">
         <a-row :gutter="24">
             <a-col :sm="12" :xs="24">
@@ -8,7 +8,7 @@
 
                     <a-form-item :label="$t('global.service')" name="serviceId" :rules="[{ required: true, message: $t('global.service') +' '+$t('global.service')+' '+$t('global.validation')  }]">
                       
-                        <GlobalCodeDropDown v-if="cptCodesGetters.service" v-model:value="cptCodeForm.serviceId" :globalCode="cptCodesGetters.service" />
+                        <GlobalCodeDropDown v-if="cptCodesGetters.service" v-model:value="cptCodeForm.serviceId" :globalCode="cptCodesGetters.service" @change="checkChangeInput()"/>
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.serviceId?errorMsg.serviceId[0]:''" />
                     </a-form-item>
                 </div>
@@ -16,7 +16,7 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item label="CPT Code" name="name" :rules="[{required: true,message:'CPT Code ' +$t('global.validation'),},]">
-                        <a-input v-model:value="cptCodeForm.name" size="large" />
+                        <a-input v-model:value="cptCodeForm.name" size="large" @change="checkChangeInput()"/>
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.name ? errorMsg.name[0] : ''" />
                     </a-form-item>
                 </div>
@@ -25,7 +25,7 @@
             <a-col :sm="6" :xs="24">
                 <div class="form-group">
                     <a-form-item label="Billing Amount" name="billingAmout" :rules="[{required: true,message:'Billing Amount ' +$t('global.validation'),},]">
-                        <a-input-number v-model:value="cptCodeForm.billingAmout" :formatter="value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')" :parser="value => value.replace(/\$\s?|(,*)/g, '')" size="large" style="width: 100%" />
+                        <a-input-number v-model:value="cptCodeForm.billingAmout" :formatter="value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')" :parser="value => value.replace(/\$\s?|(,*)/g, '')" size="large" style="width: 100%" @change="checkChangeInput()"/>
                        
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.billingAmout ? errorMsg.billingAmout[0] : ''" />
                     </a-form-item>
@@ -36,7 +36,7 @@
                 <div class="form-group">
                     <a-form-item :label="$t('global.duration') +' '+$t('global.time')" name="durationId" :rules="[{ required: true, message: $t('global.duration') +' '+$t('global.time')+' '+$t('global.validation')  }]">
                        
-                        <GlobalCodeDropDown v-if="durationList.duration" v-model:value="cptCodeForm.durationId" :globalCode="durationList.duration" />
+                        <GlobalCodeDropDown v-if="durationList.duration" v-model:value="cptCodeForm.durationId" :globalCode="durationList.duration" @change="checkChangeInput()"/>
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.durationId?errorMsg.durationId[0]:''" />
                     </a-form-item>
                 </div>
@@ -44,7 +44,7 @@
             <a-col :sm="24" :xs="24">
                 <div class="form-group">
                     <a-form-item label="Description" name="description" :rules="[{required: true,message:'Description ' +$t('global.validation')}]">
-                        <a-textarea v-model:value="cptCodeForm.description" placeholder="Message" allow-clear />
+                        <a-textarea v-model:value="cptCodeForm.description" placeholder="Message" allow-clear @change="checkChangeInput()"/>
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.description ? errorMsg.description[0] : ''" />
                     </a-form-item>
                 </div>
@@ -59,7 +59,7 @@
             <a-col :span="24">
 
                 <div class="steps-action">
-                    <ModalButtons @is_click="reset" isReset="true" :disabled="formButton" :Id="cptCodeId" />
+                    <ModalButtons @is_click="reset" isReset="true" :disabled="formButton" :Id="cptId" />
                 </div>
             </a-col>
         </a-row>
@@ -68,7 +68,7 @@
 </a-modal>
 </template>
 <script>
-import { ref, reactive, watchEffect } from "vue";
+import { ref, reactive, watchEffect,computed } from "vue";
 import { useStore } from "vuex";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
@@ -93,7 +93,7 @@ export default {
     const store = useStore();
     const checked = ref([false]);
     const formRef = ref(false);
-    const cptCodeId = reactive(props.cptId);
+    
     const cptCodeForm = reactive({
       serviceId: "",
       name: "",
@@ -114,12 +114,13 @@ export default {
     const formButton = ref(false);
     const durationList = store.getters.commonRecords.value;
     watchEffect(() => {
-      if (cptCodeId) {
+      if (props.cptId) {
         store.commit("loadingStatus", true);
         if (cptCodesGetters.value.cptCodeDetails) {
           Object.assign(cptCodeForm, cptCodesGetters.value.cptCodeDetails);
+          store.commit("loadingStatus", false);
         }
-        store.commit("loadingStatus", false);
+        
       }
     });
     const submitForm = () => {
@@ -135,7 +136,7 @@ export default {
           store.dispatch("cptCodesList");
         })
       }
-
+      store.commit('checkChangeInput', false)
       reset();
       
       emit("is-visible", false);
@@ -145,28 +146,38 @@ export default {
     });
 
     function reset() {
-      formRef.value.resetFields();
+      
       Object.assign(cptCodeForm, form);
+      formRef.value.resetFields();
       formButton.value = false;
     }
+    function checkChangeInput() {
+			store.commit('checkChangeInput', true)
+		}
 
+		const checkFieldsData = computed(() => {
+			return store.state.common.checkChangeInput;
+		})
     function closeModal() {
-      if (
-        cptCodeForm.name != "" ||
-        cptCodeForm.description != "" ||
-        cptCodeForm.serviceId != "" ||
-        cptCodeForm.billingAmout != "" ||
-        cptCodeForm.durationId != ""
-      ) {
-        warningSwal(messages.modalWarning).then((response) => {
-          if (response == true) {
+      if (checkFieldsData.value) {
+				warningSwal(messages.modalWarning).then((response) => {
+					if (response == true) {
             reset();
             emit("is-visible", false);
-          } else {
+						
+						store.commit('checkChangeInput', false)
+					} else {
+					
             emit("is-visible", true);
-          }
-        });
-      }
+						
+						store.commit('checkChangeInput', true)
+					}
+				});
+			}
+			else {
+				reset()
+			}
+      
     }
     return {
       formButton,
@@ -181,7 +192,8 @@ export default {
       formRef,
       reset,
       closeModal,
-      cptCodeId,
+    
+      checkChangeInput,
     };
   },
 };

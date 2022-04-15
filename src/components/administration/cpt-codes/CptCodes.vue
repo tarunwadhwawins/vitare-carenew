@@ -36,8 +36,8 @@
 </a-layout>
 
 <!-- Add CPT Code Modal -->
-<CptCodesModal v-if="editId" v-model:visible="visible" @ok="handleOk" @is-visible="showModal($event)" :cptId="editId" />
-<CptCodesModal v-else v-model:visible="visible" @ok="handleOk" @is-visible="showModal($event)" />
+<CptCodesModal  v-model:visible="visible" @ok="handleOk" @is-visible="showModal($event)" :cptId="editId" />
+
 </template>
 
 <script>
@@ -67,7 +67,7 @@ export default {
     setup() {
         const visible = ref(false);
         const showModal = (e) => {
-            editId.value = null
+            editId.value = ''
             visible.value = e;
 
         };
