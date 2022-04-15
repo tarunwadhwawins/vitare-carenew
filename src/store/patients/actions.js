@@ -157,6 +157,7 @@ export const addCondition = async ({commit}, request) => {
 }
 
 export const updateCondition = async ({commit}, request) => {
+  console.log('request',request);
   const data = request.data;
   const patientId = request.id;
   const primaryPhysicianId = request.primaryPhysicianId;
@@ -215,10 +216,17 @@ export const updateCondition = async ({commit}, request) => {
 
   try {
     if(data.staff) {
-      await serviceMethod.common("put", `patient/${patientId}/staff/${primaryPhysicianId}?type=1`, null, data).then(response => {
-        commit('addPatientPhysician', response.data.data);
-        errorMessage.push(false)
-      })
+      if(primaryPhysicianId){
+        await serviceMethod.common("put", `patient/${patientId}/staff/${primaryPhysicianId}?type=1`, null, data).then(response => {
+          commit('addPatientPhysician', response.data.data);
+          errorMessage.push(false)
+        })
+      }else{
+        await serviceMethod.common("post", `patient/${patientId}/staff?type=1`, null, data).then(response => {
+          commit('addPatientPhysician', response.data.data);
+          errorMessage.push(false)
+        })
+      }
     }
   }
   catch (error) {

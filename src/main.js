@@ -9,14 +9,14 @@ import './assets/scss/common.scss'
 import VueApexCharts from "vue3-apexcharts";
 import { notification, Button } from "ant-design-vue";
 
-import VueTelInput from 'vue3-tel-input'
-import 'vue3-tel-input/dist/vue3-tel-input.css'
+// import VueTelInput from 'vue3-tel-input'
+// import 'vue3-tel-input/dist/vue3-tel-input.css'
 
-const VueTelInputOptions = {
-    onlyCountries: ["US"],
-    mode: "international",
-    // defaultCountry: "US"
-}
+// const VueTelInputOptions = {
+//     onlyCountries: ["US"],
+//     mode: "international",
+//     // defaultCountry: "US"
+// }
 
 const app = createApp(App)
 
@@ -101,6 +101,6 @@ if (store.state.authentication.loggedInUser) {
 
 
 
-app.use(Antd).use(firebaseApp).use(VueTelInput, VueTelInputOptions).use(VueApexCharts).use(store).use(router).use(i18n).mount('#app')
+app.use(Antd).use(firebaseApp).use(VueApexCharts).use(store).use(router).use(i18n).mount('#app')
 
 
