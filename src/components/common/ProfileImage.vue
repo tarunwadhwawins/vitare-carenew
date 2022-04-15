@@ -1,12 +1,13 @@
 <template>
   <div class="patientImg">
     <div class="image-section">
-    <img v-if="patientDetails.profilePhoto" class="ant-upload-text" :src="patientDetails.profilePhoto" alt="image"/>
-    <img v-else-if="imageUrl" :src="imageUrl" alt="avatar" class="ant-upload-text" />
-    <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
+    <img v-if="isPicuteLoading" class="picture-loader" src="@/assets/images/loader.gif" />
+    <img v-if="patientDetails.profilePhoto && !isPicuteLoading" class="ant-upload-text" :src="patientDetails.profilePhoto" alt="image"/>
+    <img v-else-if="imageUrl && !isPicuteLoading" :src="imageUrl" alt="avatar" class="ant-upload-text" />
+    <img v-else-if="!isPicuteLoading" src="@/assets/images/userAvatar.png" alt="image"/>
   </div>
   <div class="button-section">
-    <a-upload :show-upload-list="false" action="https://www.mocky.io/v2/5cc8019d300000980a055e76" @change="handleChange" >
+    <a-upload :show-upload-list="false" @change="handleChange" >
       <div class="button-details">
         <a class="edit-button">
           <span class="edit-icon">
@@ -40,7 +41,8 @@
 <script>
 import {
   ref,
-  defineAsyncComponent
+  defineAsyncComponent,
+  computed
 } from 'vue-demi';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
@@ -57,9 +59,6 @@ import {
 
 export default {
   props: {
-    patientDetails: {
-      type: Array
-    },
     isLeft: {
       type: Boolean
     }
@@ -76,9 +75,18 @@ export default {
     const route = useRoute();
     const modalVisible = ref(false);
 
+    const isPicuteLoading = computed(() => {
+      return store.state.patients.isPicuteLoading
+    })
+
     const editPatient = ({udid, id}) => {
       emit('onEditPatient', {udid, id})
     };
+    
+    const patientDetails = computed(() => {
+      return store.state.patients.patientDetails
+    })
+    console.log('profilePhoto 1', patientDetails.value.profilePhoto)
 
     const imageinCropper = ref('');
     const imageUrl = ref('');
@@ -110,9 +118,15 @@ export default {
         patientUdid: route.params.udid,
       }).then(() => {
         store.dispatch("patientDetails", route.params.udid).then(() => {
+          imageUrl.value = patientDetails.value.profilePhoto
+          console.log('profilePhoto 2', patientDetails.value.profilePhoto)
           store.commit('uploadFile', null)
           store.commit('errorMsg', null)
+          store.commit('loadingStatus', false)
         })
+        setTimeout(() => {
+          store.commit('isPicuteLoading', false)
+        }, 2500);
       })
     }
 
@@ -145,6 +159,8 @@ export default {
       arrayToObjact,
       actionTrack,
       editPatient,
+      patientDetails,
+      isPicuteLoading,
     }
   }
 }
