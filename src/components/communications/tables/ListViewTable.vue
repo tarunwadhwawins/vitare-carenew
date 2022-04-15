@@ -110,7 +110,7 @@
             <template #title>
                 <span>{{ $t("common.reply") }}</span>
             </template>
-            <a class="icons" @click="showModal(record)">
+            <a class="icons" @click="showModal(record,$event)">
                 <MessageOutlined />
             </a>
         </a-tooltip>
@@ -151,7 +151,7 @@ export default {
     PhoneOutlined,
     MailOutlined,
     AlertOutlined,
-CommunicationGmailView,
+    CommunicationGmailView,
     Chat,
   },
   props: {},
@@ -299,8 +299,10 @@ CommunicationGmailView,
       }
     };
     const visible = ref(false);
-    const showModal = (e) => {
+    const showModal = (e,event) => {
+      event.target.parentElement.parentElement.parentElement.parentElement.classList.remove('bold')
       communicationId.value = e;
+
       visible.value = true;
     }
     const showGmail = (e) => {

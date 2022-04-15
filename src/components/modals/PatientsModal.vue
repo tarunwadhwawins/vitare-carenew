@@ -1,5 +1,5 @@
 <template>
-<a-modal max-width="1140px" width="100%"  :title="title" centered :footer="null"  :maskClosable="false" @cancel="closeModal()">
+<a-modal max-width="1140px" width="100%"  :title="isEditPatient == true ? 'Edit Patient' : 'Add New Patient'" centered :footer="null"  :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <div class="common-btn mb-24" ref="customScrollTop">
           <a-button type="primary" @click="showSearchPatient">
@@ -700,7 +700,7 @@ export default defineComponent( {
       return store.state.patients.isEditPatient
     })
     const patientDetail = patients.value.patientDetails;
-    const title = isEditPatient.value == true ? 'Edit Patient' : 'Add New Patient'
+    //const title = isEditPatient.value == true ? 'Edit Patient' : 'Add New Patient'
     const disabled = isEditPatient.value == true ? true : false
     
     const demographics = reactive({
@@ -1337,7 +1337,7 @@ export default defineComponent( {
       demographicsFailed,
       idPatient,
       patientDetail,
-      title,
+      isEditPatient,
       disabled,
       onKeyUp,
       bindProps: store.state.common.bindProps,
