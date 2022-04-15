@@ -72,7 +72,9 @@ export const globalCodes = (state, data) => {
             state.documentTypes = element.globalCode;
         }
         if (element.name === 'Duration') {
-            state.duration = element.globalCode;
+            state.duration = element.globalCode.sort(function(a, b) { 
+                return a.id - b.id 
+              })
         }
         if (element.name === 'Appointment Type') {
             state.typeOfVisit = element.globalCode;
