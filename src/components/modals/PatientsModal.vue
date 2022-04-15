@@ -1,8 +1,8 @@
 <template>
-<a-modal max-width="1140px" width="100%"  :title="isEditPatient == true ? 'Edit Patient' : 'Add New Patient'" centered :footer="null"  :maskClosable="false" @cancel="closeModal()">
+<a-modal max-width="1140px" width="100%"  :title="isEdit == true ? 'Edit Patient' : 'Add New Patient'" centered :footer="null"  :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <div class="common-btn mb-24" ref="customScrollTop">
-          <a-button type="primary" @click="showSearchPatient">
+          <a-button type="primary" @click="showSearchPatient" v-if="!isEdit">
             Bitrix Lookup
          </a-button>
         </div>
@@ -64,9 +64,9 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase()}]">
 																	<!-- <PhoneNumber @change="changedValue" v-model.trim:value="demographics.phoneNumber" @setPhoneNumber="setPhoneNumberDemographics"/> -->
-                                    <a-input-number @change="changedValue" v-model:value.trim="demographics.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
+                                    <a-input-number @change="changedValue" v-model:value="demographics.phoneNumber" placeholder="Please enter 10 digit number" size="large"  style="width: 100%" />
                                      <ErrorMessage v-if="errorMsg && !demographics.phoneNumber" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                      
                                 </a-form-item>
@@ -370,7 +370,7 @@
                         <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
                             {{$t('global.done')}}
                         </a-button>
-                    </div>
+                    </div> 
                 </a-form>
                 <!--  -->
             </div>
@@ -582,6 +582,9 @@ import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
 import moment from "moment"
 //import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
 export default defineComponent( {
+    props:{
+        isEdit:Boolean
+    },
   components: {
    // PhoneNumber,
     StaffDropDown,
@@ -768,15 +771,15 @@ export default defineComponent( {
       insuranceType: [],
     });
 
-    const setPhoneNumberDemographics = (value) => {
-      demographics.phoneNumber = value;
-    };
-    const setPhoneNumberDemographicFamily = (value) => {
-      demographics.familyPhoneNumber = value;
-    };
-    const setPhoneNumberEmergencyPhoneNumber = (value) => {
-      demographics.emergencyPhoneNumber = value;
-    };
+    // const setPhoneNumberDemographics = (value) => {
+    //   demographics.phoneNumber = value;
+    // };
+    // const setPhoneNumberDemographicFamily = (value) => {
+    //   demographics.familyPhoneNumber = value;
+    // };
+    // const setPhoneNumberEmergencyPhoneNumber = (value) => {
+    //   demographics.emergencyPhoneNumber = value;
+    // };
 
      const form = reactive({ ...demographics, });
 
@@ -1291,9 +1294,9 @@ export default defineComponent( {
 		handleStaffChange,
 		checkChangeInput,
 		customScrollTop,
-    setPhoneNumberEmergencyPhoneNumber,
-    setPhoneNumberDemographicFamily,
-    setPhoneNumberDemographics,
+    // setPhoneNumberEmergencyPhoneNumber,
+    // setPhoneNumberDemographicFamily,
+    // setPhoneNumberDemographics,
     scrollToTop,
     formRef,
     clearValidtion,
