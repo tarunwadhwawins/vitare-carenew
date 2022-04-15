@@ -80,6 +80,7 @@ export default {
     });
 
     const editRole = (id) => {
+      store.getters.rolesAndPermissionsRecord.value.editRolesAndPermissions = ""
       store.dispatch("roleDetails", id);
       store.dispatch("editPermissions", id);
       store.dispatch("editdWidget", id);
