@@ -794,7 +794,7 @@ export default defineComponent( {
 			}
 			
 			if(idPatient) {
-				console.log('patientDetails', patients.value.patientDetails.phoneNumber)
+				
 				Object.assign(demographics, patients.value.patientDetails);
 				if(patients.value.patientPrimaryPhysician != null) {
 					Object.assign(conditions, patients.value.patientPrimaryPhysician)
