@@ -53,7 +53,7 @@
                     </div>
                     <div class="itemWrapper">
                       <div class="leftWrapper">Flags</div>
-                      <div class="rightWrapper"><span class="box" :style="{ 'background-color': cardRecords.flags }"></span></div>
+                      <div class="rightWrapper"><span class="box" :title="cardRecords.flagName" :style="{ 'background-color': cardRecords.flags }"></span></div>
                   </div>
                     <div class="notesWrapper">
                         <span>Notes</span>

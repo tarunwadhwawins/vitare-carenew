@@ -1,70 +1,57 @@
 <template>
-  <a-upload name="avatar" list-type="picture-card" class="avatar-uploader" :show-upload-list="false" action="https://www.mocky.io/v2/5cc8019d300000980a055e76" @change="handleChange" >
-    <img v-if="imageUrl" :src="imageUrl" alt="avatar" class="after-image" />
-    <div>
-      <div class="ant-upload-text">Upload</div>
+   <div id="box-droppable1" @drop="drop" @dragover="allowDrop">
+    <h3>Draggaable area 1:</h3>
+    <hr>
+    
+    <div class="" draggable="true" @dragstart="onDragging" id="123">
+      <h2>Drag mee</h2>
+      <p>this is a text</p>
     </div>
-  </a-upload>
-  <ImageCropper v-if="modalVisible" v-model:visible="modalVisible" :imageUrl="imageUrl" @closeModal="closeModal" @crop="onCrop" />
+     
+    <img id="img-draggable" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" draggable="true" @dragstart="drag" width="336">
+  </div>
+  
+  <div id="box-droppable2" @drop="drop" @dragover="allowDrop">
+    <h3>Droppable area 2:</h3>
+    <hr>
+  </div>
 </template>
 
 <script>
-import { defineComponent, defineAsyncComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   components: {
-    ImageCropper: defineAsyncComponent(()=>import("@/components/common/ImageCropper")),
+    
   },
-
-  setup() {
-    const imageUrl = ref('');
-    const modalVisible = ref(false);
-
-    function getBase64(img, callback) {
-      const reader = new FileReader();
-      reader.addEventListener('load', () => callback(reader.result));
-      reader.readAsDataURL(img);
-    }
-
-    const handleChange = info => {
-      getBase64(info.file.originFileObj, base64Url => {
-        imageUrl.value = base64Url;
-      });
-      modalVisible.value = true;
+setup() {
+    const onDragging = (ev) => {
+        console.log(ev);
+        ev.dataTransfer.setData("text", ev.target.id);
     };
-
-    const onCrop = (image) => {
-      console.log('image', image)
-      imageUrl.value = image.src;
+    const allowDrop = (ev) => {
+        ev.preventDefault();
+    };
+    const drag = (ev) => {
+        ev.dataTransfer.setData("text", ev.target.id);
+    };
+    const drop = (ev) => {
+        ev.preventDefault();
+        let data = ev.dataTransfer.getData("text");
+        console.log(data);
+        ev.target.appendChild(document.getElementById(data));
     }
-
-    const closeModal = () => {
-      modalVisible.value = false;
-    }
-
     return {
-      imageUrl,
-      handleChange,
-      modalVisible,
-      onCrop,
-      closeModal,
-    };
-  },
+        onDragging,
+        allowDrop,
+        drag,
+        drop,
+    }
+}
+  
 
 });
 </script>
 <style>
-.avatar-uploader > .ant-upload {
-  width: 128px;
-  height: 128px;
-}
-.ant-upload-select-picture-card i {
-  font-size: 32px;
-  color: #999;
-}
 
-.ant-upload-select-picture-card .ant-upload-text {
-  margin-top: 8px;
-  color: #666;
-}
 </style>

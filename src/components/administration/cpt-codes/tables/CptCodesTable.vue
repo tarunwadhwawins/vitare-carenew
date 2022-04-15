@@ -68,6 +68,7 @@ export default {
     };
 
     function editCpt(id) {
+      store.getters.cptRecords.value.cptCodeDetails=''
       store.dispatch("cptCodeDetails", id);
       emit("is-visible", {
         check: true,
