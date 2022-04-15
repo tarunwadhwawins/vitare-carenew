@@ -82,5 +82,6 @@ export default {
     medicalHistoryDetails:null,
     medicationDetails:null,
     documentDetails:null,
+    isPicuteLoading:false,
 
 }

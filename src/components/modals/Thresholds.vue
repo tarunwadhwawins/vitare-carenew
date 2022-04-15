@@ -142,7 +142,7 @@ export default {
         });
 
         function closeModal() {
-            console.log("check", thresholdForm);
+           
             if (
                 thresholdForm.generalParametersGroup != "" ||
                 thresholdForm.deviceTypeId != ""
