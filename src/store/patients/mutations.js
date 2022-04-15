@@ -413,6 +413,15 @@ export const uploadFile = (state, data) => {
   state.uploadFile = data
 }
 
+function formatPhoneNumber(phoneNumberString) {
+  var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+  var match = cleaned.match(/^(\d{3})?[s]?(\d{3})(\d{4})$/);
+  if (match) {
+    return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+  }
+  return null;
+}
+
 export const patientDetails = (state, patient) => {
   patient.email = patient.user.data.email ? patient.user.data.email : null;
   patient.country = patient.countryId ? patient.countryId : null;
@@ -423,6 +432,7 @@ export const patientDetails = (state, patient) => {
   patient.contactType = patient.contactType.length > 0 ? JSON.parse(patient.contactType) : [];
   patient.otherLanguage = patient.otherLanguage.length > 0 ? JSON.parse(patient.otherLanguage) : [];
   patient.patientDob = patient.dob ? dobFormat(patient.dob) : null;
+  patient.phoneNumber = patient.phoneNumber ? formatPhoneNumber(patient.phoneNumber) : null;
   
   if(patient.patientFamilyMember && patient.patientFamilyMember.data) {
     patient.fullName = patient.patientFamilyMember.data.fullName ? patient.patientFamilyMember.data.fullName : null;
@@ -1054,4 +1064,8 @@ export const documentDetails = (state, data) => {
   data.type = data.typeId
   // data.documentPath = data.path.split('/')[5]
   state.documentDetails = data
+}
+
+export const isPicuteLoading = (state, data) => {
+  state.isPicuteLoading = data
 }

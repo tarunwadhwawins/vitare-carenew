@@ -15,7 +15,7 @@
         <template #title>
           <span>{{$t('global.edit')}}</span>
         </template>
-        <a class="icons" @click="editDocument(text.record.id);actionTrack(paramsId,318,'patient')">
+        <a class="icons" @click="editDocument(text.record.id);actionTrack(Id,318,'patient')">
           <EditOutlined />
         </a>
       </a-tooltip>
@@ -23,7 +23,7 @@
         <template #title>
           <span>{{$t('global.delete')}}</span>
         </template>
-        <a class="icons" @click="deleteDocument(text.record.id);actionTrack(paramsId,318,'patient')">
+        <a class="icons" @click="deleteDocument(text.record.id);actionTrack(Id,318,'patient')">
           <DeleteOutlined />
         </a>
       </a-tooltip>
@@ -59,7 +59,7 @@ export default {
     const editDocument = (id) => {
       store.commit('errorMsg', null)
       store.dispatch('documentDetails', {
-        patientUdid: route.params.udid,
+        patientUdid: props.Id ? props.Id : route.params.udid,
         documentUdid: id
       }).then(() => {
         emit('onEditDocument', documentDetails.value)
