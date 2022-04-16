@@ -1,23 +1,43 @@
 <template>
-<div>
-   <a-input v-model="value"  @input="onInput"/>
-</div>
+  <div>
+    <vue-tel-input
+      v-model="phone"
+      @input="onInput"
+      @validate="onValid"
+      v-bind="bindProps"
+    />
+  </div>
 </template>
 <script>
-import { ref } from 'vue';
-
+import { reactive, toRefs } from "vue";
+import { VueTelInput } from "vue3-tel-input";
+import "vue3-tel-input/dist/vue3-tel-input.css";
+import { useStore } from "vuex";
 export default {
+  components: {
+    VueTelInput,
+  },
 
-  setup(props, context) {
-    const onInput = (event) => {
-      console.log('object',event);
-      context.emit("update:modelValue", event.target.value);
-      // context.emit("setPhoneNumber", event.target.value);
+  setup(props, { emit }) {
+    const store = useStore();
+    const state = reactive({
+      phone: null,
+    });
+
+    const onInput = (number, phoneObject) => {
+      if (phoneObject?.formatted) {
+        emit("setPhoneNumber", phoneObject.nationalNumber);
+      }
     };
 
+    const onValid = (number) => {
+      console.log("number", number);
+    };
     return {
-      value:ref,
+      onValid,
       onInput,
+      ...toRefs(state),
+      bindProps: store.state.common.bindProps,
     };
   },
 };

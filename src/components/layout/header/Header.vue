@@ -178,28 +178,6 @@
                         </a>
                       </router-link>
                     </li>
-                    <!-- <li class="listing read"> 
-                      <a class="d-flex align-items-center" href="#">
-                        <div class="flex-shrink-0 imgProfile">
-                          <img src="../../../assets/images/user-1.jpg" alt="image" width="50" />
-                        </div>
-                        <div class="flex-grow-1 ms-3 summary">
-                          <p>Just a reminder that you have appoinment</p>
-                          <span class="date">20 minutes ago</span>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="listing unread">
-                      <a class="d-flex align-items-center" href="#">
-                        <div class="flex-shrink-0 imgProfile">
-                          <img src="../../../assets/images/user-1.jpg" alt="image" width="50" />
-                        </div>
-                        <div class="flex-grow-1 ms-3 summary">
-                          <p>Just a reminder that you have appoinment</p>
-                          <span class="date">20 minutes ago</span>
-                        </div>
-                      </a>
-                    </li> -->
                     <li class="allNotication">
                       <router-link to="/notifications" >{{$t('header.checkAllNotifications')}}</router-link>
                     </li>
@@ -262,8 +240,8 @@
       v-model:visible="PatientsModal"
       @saveModal="closeAppointModal($event)"
     />
-    <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" />
-    <AddStartCall v-model:visible="AddStartCall" @ok="closeStartCallModal"  @is-visibale="showStartCallModal($event)"/>
+    <!-- <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" /> -->
+    <AddStartCall  v-if="AddStartCall" v-model:visible="AddStartCall" @ok="closeStartCallModal"  @is-visibale="showStartCallModal($event)"/>
     <SendMessage v-model:visible="SendMessage" @ok="startOk" />
     <!---->
     <AppointmentDetails v-if="isAppointment"  v-model:visible="isAppointment"  @closeModal="closeModal(event)" />
@@ -280,10 +258,9 @@ import {
   defineAsyncComponent,
   onMounted
 } from "vue";
-import AddAppointment from "@/components/modals/AddAppointment";
-import TasksModal from "@/components/modals/TasksModal";
-import CoordinatorsModal from "@/components/modals/CoordinatorsModal";
-import AddStartCall from "@/components/modals/AddStartCall";
+
+
+
 import SendMessage from "@/components/modals/SendMessage";
 import { useStore } from "vuex";
 import HeaderSearch from "./HeaderSearch";
@@ -310,11 +287,11 @@ export default defineComponent({
     MenuOutlined,
     SearchOutlined,
     MoreOutlined,
-    AddAppointment,
-    TasksModal,
+    AddAppointment:defineAsyncComponent(() =>import("@/components/modals/AddAppointment")),
+    TasksModal: defineAsyncComponent(() =>import("@/components/modals/AddAppointment")),
     PatientsModal: defineAsyncComponent(() =>import("@/components/modals/PatientsModal")),
-    CoordinatorsModal,
-    AddStartCall,
+    //CoordinatorsModal:defineAsyncComponent(() =>import("@/components/modals/CoordinatorsModal")),
+    AddStartCall:defineAsyncComponent(() =>import("@/components/modals/AddStartCall")),
     SendMessage,
     HeaderSearch,
   },
@@ -328,9 +305,11 @@ export default defineComponent({
     const isAppointment = ref();
     const date = Math.round(+new Date() / 1000);
     const userName = JSON.parse(localStorage.getItem("auth"));
+
     const logoutUser = () => {
       store.state.authentication.errorMsg = "";
-      store.dispatch("logoutUser");
+      // store.dispatch("logoutUser");
+      router.push('/logout')
     };
     const value = ref();
 

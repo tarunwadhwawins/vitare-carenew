@@ -109,6 +109,7 @@ class ServiceMethodService {
                             });
                         });
                         // console.log('object', data);
+                       
                         callback(data);
 
                     }
@@ -134,8 +135,14 @@ class ServiceMethodService {
         if (timeout) {
             clearTimeout(timeout);
             timeout = null;
+            callback('');
         }
+        
         currentValue = value;
+        if(value == ''){
+            callback(null);
+            return;
+        }
         function fake() {
             const str = qs.stringify({
                 code: "utf-8",
@@ -164,7 +171,10 @@ class ServiceMethodService {
                             result
                         }
                          
-                        callback(result);
+                        
+                           
+                            callback(result); 
+            
 
                     }
 

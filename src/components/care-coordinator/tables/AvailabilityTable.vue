@@ -1,7 +1,7 @@
 <template>
   <a-table rowKey="id" :pagination="false" :columns="staffs.availabilityListColms" :data-source="staffs.availabilityList" >
-    <template #action="text" v-if="arrayToObjact(screensPermissions,53)">
-      <a-tooltip placement="bottom" @click="editAvailability(text.record.id)">
+    <template #action="text" >
+      <a-tooltip placement="bottom" @click="editAvailability(text.record.id)" v-if="arrayToObjact(screensPermissions,52)">
         <template #title>
           <span>{{$t('global.edit')}}</span>
         </template>
@@ -9,7 +9,7 @@
           <EditOutlined />
         </a>
       </a-tooltip>
-      <a-tooltip placement="bottom" @click="deleteAvailability(text.record.id)">
+      <a-tooltip placement="bottom" @click="deleteAvailability(text.record.id)" v-if="arrayToObjact(screensPermissions,53)">
         <template #title>
           <span>{{$t('global.delete')}}</span>
         </template>
@@ -70,7 +70,7 @@ export default {
 
     const editAvailability = (availabilityId) => {
       store.dispatch("availabilityDetails", {
-        id: router.params.udid,
+        id: router.params.udid ? router.params.udid : props.Id,
         availabilityId: availabilityId,
       });
       availabilityFormvisible.value = true

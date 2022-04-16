@@ -36,6 +36,8 @@ export const networkStaff = (state, data) => {
 };
 
 export const staff = async (state, data) => {
+
+	state.staffs = data.data;
 	state.columns = [
 		{
 			title: 'Name',
@@ -45,14 +47,6 @@ export const staff = async (state, data) => {
 				customRender: 'name'
 			}
 		},
-		// {
-		//   title: "Last Name",
-		//   dataIndex: "last_name",
-		//   sorter: {
-		//     compare: (a, b) => a.last_name - b.last_name,
-		//     multiple: 3,
-		//   },
-		// },
 		{
 			title: 'Role',
 			dataIndex: 'role',
@@ -85,15 +79,7 @@ export const staff = async (state, data) => {
 				customRender: 'status'
 			}
 		}
-		// {
-		//   title: "Action",
-		//   dataIndex: "action",
-		//   slots: {
-		//     customRender: "action",
-		//   },
-		// },
 	];
-	state.staffs = data.data;
 	state.staffMeta = data.meta.pagination;
 };
 

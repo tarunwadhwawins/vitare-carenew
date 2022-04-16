@@ -66,8 +66,8 @@
                                 <a-tab-pane key="3" tab="Availability">
                                     <a-row :gutter="24">
                                         <a-col :sm="24" :xs="24">
-                                            <div class="common-btn mb-24" v-if="arrayToObjact(screensPermissions,51)">
-                                                <a-button class="btn blackBtn" @click="showModalvailability">
+                                            <div class="common-btn mb-24" >
+                                                <a-button class="btn blackBtn" @click="showModalvailability" v-if="arrayToObjact(screensPermissions,51)">
                                                     <PlusOutlined />
                                                 </a-button>
                                             </div>
@@ -98,8 +98,8 @@
                                 <a-tab-pane key="5" tab="Roles">
                                     <a-row :gutter="24">
                                         <a-col :sm="24" :xs="24">
-                                            <div class="common-btn mb-24" v-if="arrayToObjact(screensPermissions,55)">
-                                                <a-button class="btn blackBtn" @click="showModalRole">
+                                            <div class="common-btn mb-24" >
+                                                <a-button class="btn blackBtn" @click="showModalRole" v-if="arrayToObjact(screensPermissions,55)">
                                                     <PlusOutlined />
                                                 </a-button>
                                             </div>
@@ -135,19 +135,19 @@
         </a-layout>
     </a-layout>
     <!--modals-->
-    <a-modal width="50%" v-model:visible="visibleStaffDoc" title="Add Documents" :maskClosable="false" centered  @cancel="closeModal('visibleStaffDoc')">
-        <StaffDocumentForm :clearData="clearData" ref="StaffDocumentForm" entity="staff" :paramId="paramId" @saveModal="staffDocCloseModal($event)"/>
+    <a-modal width="50%" v-model:visible="visibleStaffDoc" title="Add Documents" :maskClosable="false" centered  @cancel="closeModal('visibleStaffDoc')" :footer="false">
+        <StaffDocumentForm :clearData="clearData" ref="StaffDocumentForm" entity="staff" :paramId="paramId" @saveModal="staffDocCloseModal($event)" />
     </a-modal>
     <!---->
-    <a-modal width="50%" v-model:visible="visibleRole" title="Add Roles" :maskClosable="false" centered  @cancel="closeModal('visibleRole')">
+    <a-modal width="50%" v-model:visible="visibleRole" title="Add Roles" :maskClosable="false" centered  @cancel="closeModal('visibleRole')" :footer="false">
         <RoleForm  :clearData="clearData" :paramId="paramId" @saveModal="roleCloseModal($event)"/>
     </a-modal>
     <!------>
-    <a-modal width="50%" v-model:visible="visibleAvailability" title="Add Availability"  :maskClosable="false" centered  @cancel="closeModal('visibleAvailability')">
+    <a-modal width="50%" v-model:visible="visibleAvailability" title="Add Availability"  :maskClosable="false" centered  @cancel="closeModal('visibleAvailability')" :footer="false">
         <AvailabilityForm  :clearData="clearData" :paramId="paramId"  @saveModal="AvailabilityCloseModal($event)" />
     </a-modal>
     <!---->
-    <a-modal width="60%" v-model:visible="visibleContact" title="Add Contacts" :maskClosable="false" centered  @cancel="closeModal('visibleContact')">
+    <a-modal width="60%" v-model:visible="visibleContact" title="Add Contacts" :maskClosable="false" centered  @cancel="closeModal('visibleContact')" :footer="false">
         <ContactForm :clearData="clearData" :paramId="paramId" @saveModal="contactCloseModal($event)"/>
     </a-modal>
     <!---->
@@ -168,8 +168,7 @@ import {
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-// import { warningSwal } from "@/commonMethods/commonMethod";
-// import { messages } from "@/config/messages";
+
 import AppointmentTable from ".././care-coordinator/tables/AppointmentTable";
 import PatientTable from ".././care-coordinator/tables/PatientTable";
 import AvailabilityTable from ".././care-coordinator/tables/AvailabilityTable";
@@ -239,6 +238,7 @@ export default {
 
     const visibleEditStaff =ref(false)
     const editStaff = () => {
+        store.commit('errorMsg', null)
       visibleEditStaff.value = true;
     };
 
@@ -247,6 +247,7 @@ export default {
     };
 
     const staffDocCloseModal = (value) => {
+        store.commit('errorMsg', null)
       visibleStaffDoc.value = value;
     };
 
@@ -261,25 +262,30 @@ export default {
 
     
     const contactCloseModal = (value) => {
+        store.commit('errorMsg', null)
       visibleContact.value = value;
     };
 
     const showDocModal = () => {
+        store.commit('errorMsg', null)
       visibleStaffDoc.value = true;
       clearData.value=false
       store.commit('clearStaffFormValidation',false)
     };
     const showModalRole = () => {
+        store.commit('errorMsg', null)
       visibleRole.value = true;
       clearData.value=false
       store.commit('clearStaffFormValidation',false)
     };
     const showModalvailability = () => {
+        store.commit('errorMsg', null)
       visibleAvailability.value = true;
       clearData.value=false
        store.commit('clearStaffFormValidation',false)
     };
     const showModalContact = () => {
+        store.commit('errorMsg', null)
       visibleContact.value = true;
       clearData.value=false
       store.commit('clearStaffFormValidation',false)

@@ -3,19 +3,21 @@
     <a-col :span="12">
       <SearchField endPoint="task" />
     </a-col>
-    <a-col :span="12" v-if="arrayToObjact(screensPermissions, 118)">
+    <a-col :span="12" >
       <div class="text-right mb-24">
-        <ExportToExcel  @click="exportExcel('task_report')"/>
+        <ExportToExcel  @click="exportExcel('task_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions, 118)"/>
       </div>
     </a-col>
     <TaskTable @is-Edit="editTask($event)"></TaskTable>
   </a-row>
+  <TableLoader />
 </template>
 <script>
 import { ref, watchEffect, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import SearchField from "@/components/common/input/SearchField";
 import TaskTable from "./TaskTable";
+import TableLoader from "@/components/loader/TableLoader";
 import { arrayToObjact,exportExcel } from "@/commonMethods/commonMethod";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 
@@ -23,13 +25,13 @@ export default {
   components: {
     SearchField,
     TaskTable,
-    // Loader,
+    TableLoader,
     ExportToExcel,
   },
   setup(props, { emit }) {
     const store = useStore();
     watchEffect(() => {
-      store.getters.taskRecords.tasksList = "";
+      
       store.dispatch("tasksList");
       store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
@@ -71,6 +73,7 @@ export default {
       editTask,
       updateTask,
       createAppointment,
+     
     };
   },
 };

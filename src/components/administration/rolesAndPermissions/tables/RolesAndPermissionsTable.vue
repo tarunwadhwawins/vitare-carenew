@@ -1,31 +1,31 @@
 
 <template>
 <a-table rowKey="id" :columns="rolesColumns" :data-source="meta.rolesList" :scroll="{ x: 900 ,y : tableYScroller }" :pagination=false @change="handleTableChange">
-    <template #actions="{record}" v-if="arrayToObjact(screensPermissions,2)">
-        <a-tooltip placement="bottom" v-if="record.id ===1" disabled>
-            <template #title disabled>
+    <template #actions="{record}" >
+        <a-tooltip placement="bottom" v-if="record.id ===1" disabled >
+            <template #title disabled v-if="arrayToObjact(screensPermissions,2)">
                 <span>Edit</span>
             </template>
-            <a class="icons" disabled>
+            <a class="icons" disabled v-if="arrayToObjact(screensPermissions,2)">
                 <EditOutlined /></a>
         </a-tooltip>
-        <a-tooltip placement="bottom" v-else>
-            <template #title>
+        <a-tooltip placement="bottom" v-else >
+            <template #title v-if="arrayToObjact(screensPermissions,2)">
                 <span>Edit</span>
             </template>
-            <a class="icons" @click="editRole(record.udid)">
+            <a class="icons" @click="editRole(record.udid)" v-if="arrayToObjact(screensPermissions,2)">
                 <EditOutlined /></a>
         </a-tooltip>
-        <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,3)">
-            <template #title v-if="record.id ===1" disabled>
+        <a-tooltip placement="bottom" >
+            <template #title v-if="record.id ===1 && arrayToObjact(screensPermissions,3)" disabled>
                 <span>Delete</span>
             </template>
-            <template #title v-else>
+            <template #title v-else-if="record.id !=1 && arrayToObjact(screensPermissions,3)" >
                 <span>Delete</span>
             </template>
-            <a class="icons" v-if="record.id ===1" disabled>
+            <a class="icons" v-if="record.id ===1 && arrayToObjact(screensPermissions,3)" disabled>
                 <DeleteOutlined /></a>
-            <a class="icons" v-else @click="deleteRole(record.udid)">
+            <a class="icons" v-else-if="record.id !=1 && arrayToObjact(screensPermissions,3)" @click="deleteRole(record.udid)">
                 <DeleteOutlined /></a>
         </a-tooltip>
 
@@ -33,13 +33,14 @@
             <template #title>
                 <span>Copy</span>
             </template>
-            <a class="icons" @click="copyRole(record.udid)">
-                <CopyOutlined /></a>
+            <a class="icons" @click="copyRole(record.udid)" v-if="arrayToObjact(screensPermissions,1)">
+                <CopyOutlined />
+            </a>
         </a-tooltip>
     </template>
-    <template #isActive="{record}" v-if="arrayToObjact(screensPermissions,4)" >
+    <template #isActive="{record}" >
         <a-switch v-if="record.id ===1" v-model:checked="record.status"  disabled/>
-        <a-switch v-else v-model:checked="record.isActive"  @change="UpdateRoleStatus(record.udid, $event)"/>
+        <a-switch v-else v-model:checked="record.isActive"  @change="UpdateRoleStatus(record.udid, $event)" :disabled="!arrayToObjact(screensPermissions,2)"/>
     </template>
 </a-table>
 <Loader />
@@ -79,6 +80,7 @@ export default {
     });
 
     const editRole = (id) => {
+      store.getters.rolesAndPermissionsRecord.value.editRolesAndPermissions = ""
       store.dispatch("roleDetails", id);
       store.dispatch("editPermissions", id);
       store.dispatch("editdWidget", id);

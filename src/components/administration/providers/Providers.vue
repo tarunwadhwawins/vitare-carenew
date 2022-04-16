@@ -14,28 +14,28 @@
                             <h2 class="pageTittle">
                                 {{ pageTitle }}
                                 <!--  -->
-                                <div class="commonBtn" v-if="arrayToObjact(screensPermissions,22)">
-                                    <Button :name="buttonName" @click="showModal(true)" />
+                                <div class="commonBtn" >
+                                    <Button :name="buttonName" @click="showModal(true)" v-if="arrayToObjact(screensPermissions,22)"/>
                                 </div>
                             </h2>
                         </a-col>
                         <!--  -->
-                        <a-col :span="12" v-if="arrayToObjact(screensPermissions,21)">
-                            <SearchField endPoint="provider" />
+                        <a-col :span="12" >
+                            <SearchField endPoint="provider" v-if="arrayToObjact(screensPermissions,21)" />
                         </a-col>
                         <a-col :span="12">
                             <!--  -->
-                            <div class="text-right mb-24" v-if="arrayToObjact(screensPermissions,26)">
+                            <div class="text-right mb-24" >
                                 <div class="text-right mb-24">
-                                    <ExportToExcel  @click="exportExcel('provider_report')"/>
+                                    <ExportToExcel  @click="exportExcel('provider_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions,26)"/>
                                 </div>
                             </div>
                         </a-col>
                     </a-row>
                     <a-row :gutter="24">
-                        <a-col :span="24" v-if="arrayToObjact(screensPermissions,21)">
+                        <a-col :span="24" >
                             <div class="list-view" v-show="!toggle">
-                                <ProvidersTable @isEdit="showModal($event)" />
+                                <ProvidersTable @isEdit="showModal($event)" v-if="arrayToObjact(screensPermissions,21)"/>
                                 <Loader />
                             </div>
                         </a-col>
@@ -132,6 +132,7 @@ export default {
       closeModal,
       pageTitle: "Providers",
       buttonName: "Add New Provider",
+      search: store.getters.searchTable,
     };
   },
 };

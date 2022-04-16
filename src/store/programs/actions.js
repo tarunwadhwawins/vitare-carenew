@@ -6,11 +6,11 @@ export const manageProgramList = async ({
   commit
 }, page) => {
   let link = page ? API_ENDPOINTS['programsList']+"?active=1" + page : API_ENDPOINTS['programsList']+"?active=1"
-  commit('loadingStatus', true)
+  commit('loadingTableStatus', true)
   await serviceMethod.common("get", link, null, null).then((response) => {
 
     commit('program', response.data);
-    commit('loadingStatus', false)
+    commit('loadingTableStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
@@ -20,6 +20,7 @@ export const manageProgramList = async ({
     } else if (error.response.status === 401) {
       errorSwal(error.response.data.message)
     }
+    commit('loadingTableStatus', false)
   });
 
 

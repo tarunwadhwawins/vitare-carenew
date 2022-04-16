@@ -1,5 +1,5 @@
 <template>
-	<a-modal width="1000px" :title="$t('appointmentCalendar.addAppointment.addAppointment')" centered :maskClosable="maskebale" @cancel="closeModal()">
+	<a-modal width="1000px" :title="$t('appointmentCalendar.addAppointment.addAppointment')" centered :maskClosable="maskebale" @cancel="closeModal()" :footer="false">
     <a-form ref="formRef" :model="appointmentForm" layout="vertical" @finish="sendMessage" @finishFailed="onFinishFailed">
 			<a-row :gutter="24">
 				<a-col :sm="12" :xs="24">
@@ -21,8 +21,9 @@
 				</a-col>
 				<a-col :sm="12" :xs="24">
 					<div class="form-group">
+					
 						<a-form-item :label="$t('appointmentCalendar.addAppointment.startDate')" name="startDate" :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.startDate')+' '+$t('global.validation') }]">
-							<a-date-picker v-model:value="appointmentForm.startDate" format="DD, MMM YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()" />
+							<a-date-picker :disabledDate="d => !d || d.isSameOrBefore(moment().subtract(1,'days'))" v-model:value="appointmentForm.startDate" format="DD, MMM YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.startDate?errorMsg.startDate[0]:''" />
 						</a-form-item>
 					</div>
@@ -109,6 +110,7 @@ import {
 } from "../../config/messages";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 
+
 export default {
 	components: {
 		ErrorMessage,
@@ -141,10 +143,11 @@ export default {
 		const staffData = ref([]);
 		const patientData = ref([]);
 		const patientUdid = route.params.udid;
-		const idPatient = reactive(props.patientId);
+		const idPatient = props.patientId ? reactive(props.patientId) : ''
 		const disabled = ref(false)
 		const isPatientSummary = ref(false)
 		const closeValue = ref(false)
+	
 		const filterOption = (input, option) => {
 			return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 		};
@@ -164,10 +167,12 @@ export default {
 		})
 
 		onMounted(() => {
-			store.dispatch('flagsList')
+			store.state.flags.flagsList ? '':store.dispatch('flagsList')
+			
 		})
 
 		watchEffect(() => {
+		
 			if (idPatient != null) {
 				Object.assign(appointmentForm, {
 					patientId: idPatient
@@ -249,6 +254,7 @@ export default {
 					value: false
 				});
 			});
+			store.commit('checkChangeInput', false)
 		}
 
 		const errorMsg = computed(() => {
@@ -341,6 +347,7 @@ export default {
 			disableHours,
 			getTime,
 			flagsList,
+		
 		};
 	},
 };

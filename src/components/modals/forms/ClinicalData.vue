@@ -9,7 +9,7 @@
       </div>
       <a-row :gutter="24" class="mb-24">
           <a-col :span="24">
-              <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
+              <a-button class="btn primaryBtn" html-type="submit">{{$t('global.save')}}</a-button>
           </a-col>
       </a-row>
   </a-form>
@@ -17,14 +17,7 @@
   <a-row :gutter="24" class="mb-24">
     <a-col :span="24">
       <a-table  rowKey="id" :columns="clinicalHistoryColumns" :data-source="clinicalsData" :scroll="{ x: 500 }">
-       
         <template #history="text">
-          <!-- <a-tooltip placement="bottom">
-            <template #title>
-              {{ text.record.history }}
-            </template>
-            {{ text.record.history }}
-          </a-tooltip> -->
           <a-popover>
             <template #content>
               <p :ellipsis=true>{{ text.record.history }}</p>
@@ -33,12 +26,15 @@
           </a-popover>
         </template>
         
-        <template #action="text">
+        <template #action="text" v-if="arrayToObjact(screensPermissions,77)">
           <a-tooltip placement="bottom">
             <template #title>
               <span>{{$t('global.delete')}}</span>
             </template>
-            <a class="icons" @click="deleteClinicalData(text.record.id,'deleteClinicalData')">
+            <a class="icons" @click="editClinicalData(text.record.id)">
+              <EditOutlined />
+            </a>
+            <a class="icons" @click="deleteClinicalData(text.record.id, 'deleteClinicalData')">
               <DeleteOutlined />
             </a>
           </a-tooltip>
@@ -92,7 +88,7 @@
       </a-row>
       <a-row :gutter="24" class="mb-24">
           <a-col :span="24">
-              <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
+              <a-button class="btn primaryBtn" html-type="submit">{{$t('global.save')}}</a-button>
           </a-col>
       </a-row>
   </a-form>
@@ -100,11 +96,14 @@
   <a-row :gutter="24" class="mb-24">
       <a-col :span="24">
           <a-table  rowKey="id" :columns="clinicalMedicatColumns" :data-source="clinicalMedicatData" :scroll="{ x: 900 }">
-              <template #action="text">
+              <template #action="text"  v-if="arrayToObjact(screensPermissions,80)">
                   <a-tooltip placement="bottom">
                       <template #title>
                           <span>{{$t('global.delete')}}</span>
                       </template>
+                      <a class="icons" @click="editMedication(text.record.id, null)">
+                        <EditOutlined />
+                      </a>
                       <a class="icons" @click="deleteClinicalData(text.record.id, null)">
                           <DeleteOutlined />
                       </a>
@@ -118,14 +117,16 @@
 </template>
 <script>
 import { defineComponent, reactive, computed, watchEffect, ref } from "vue";
-import { DeleteOutlined } from "@ant-design/icons-vue";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import Loader from "../../loader/Loader.vue";
-import { warningSwal,timeStamp} from "../../../commonMethods/commonMethod";
-import { messages } from "../../../config/messages";
+import { warningSwal,timeStamp,arrayToObjact} from "@/commonMethods/commonMethod";
+import { messages } from "@/config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
+import { useRoute } from "vue-router";
 export default defineComponent({
   components: {
+    EditOutlined,
     DeleteOutlined,
     Loader,
     ErrorMessage
@@ -137,8 +138,13 @@ export default defineComponent({
   },
   setup(props, {emit}) {
     const store = useStore();
+    const route = useRoute()
     const patientId = reactive(props.idPatient);
     const formRef = ref()
+    const isEditMedicalHistory = ref(false)
+    const isEditMedicalRoutine = ref(false)
+    const medicalHistoryUdid = ref(null)
+    const medicalRoutineUdid = ref(null)
     const clinicals = reactive({
       history: "",
     });
@@ -166,8 +172,30 @@ export default defineComponent({
       return store.state.common;
     });
 
+    const editClinicalData = (id) => {
+      isEditMedicalHistory.value = true;
+      medicalHistoryUdid.value = id;
+      store.dispatch('medicalHistoryDetails', {
+        patientUdid: route.params.udid,
+        medicalHistoryUdid: id,
+      }).then(() => {
+        Object.assign(clinicals, medicalHistoryDetails.value)
+      })
+    }
+
+    const editMedication = (id) => {
+      isEditMedicalRoutine.value = true;
+      medicalRoutineUdid.value = id;
+      store.dispatch('medicationDetails', {
+        patientUdid: route.params.udid,
+        medicalHistoryUdid: id,
+      }).then(() => {
+        Object.assign(clinicalMedication, medicationDetails.value)
+      })
+    }
+
     const clinicalHistory = () => {
-      if(patientId != null) {
+      /* if(patientId != null) {
         store.dispatch("addClinicalHistory", {
           data: clinicals,
           id: patientId,
@@ -177,35 +205,50 @@ export default defineComponent({
           formRef.value.resetFields();
           Object.assign(clinicals, clinicalsForm)
         });
+      } */
+     
+      if(isEditMedicalHistory.value) {
+        store.dispatch("updateClinicalHistory", {
+          data: clinicals,
+          patientUdid: route.params.udid ? route.params.udid:patients.value.addDemographic.id,
+          medicalHistoryUdid: medicalHistoryUdid.value,
+        }).then(() => {
+          emit('onChange', false)
+          store.dispatch("clinicalHistoryList", route.params.udid ? route.params.udid:patients.value.addDemographic.id);
+          formRef.value.resetFields();
+          Object.assign(clinicals, clinicalsForm)
+        });
       }
       else {
         store.dispatch("addClinicalHistory", {
           data: clinicals,
-          id: patients.value.addDemographic.id,
+          id: patientId ==null? patients.value.addDemographic.id : patientId,
         }).then(() => {
           emit('onChange', false)
           formRef.value.resetFields();
           Object.assign(clinicals, clinicalsForm)
         }).then(() => {
           emit('onChange', false)
-          store.dispatch("clinicalHistoryList", patients.value.addDemographic.id);
+          store.dispatch("clinicalHistoryList", patientId ==null? patients.value.addDemographic.id : patientId);
         });
       }
     };
 
     const clinicalMedicat = () => {
-      if(patientId != null) {
-        store.dispatch("addClinicalMedicat", {
+      
+      if(isEditMedicalRoutine.value) {
+        store.dispatch("updateMedicalRoutine", {
           data: {
             medicine: clinicalMedication.medicine,
             frequency: clinicalMedication.frequency,
             startDate: timeStamp(clinicalMedication.startDate ),
             endDate: timeStamp(clinicalMedication.endDate )
           },
-          id: patientId,
+          patientUdid: route.params.udid ? route.params.udid:patients.value.addDemographic.id,
+          medicalRoutineUdid: medicalRoutineUdid.value,
         }).then(() => {
           emit('onChange', false)
-          store.dispatch("clinicalMedicatList", patientId);
+          store.dispatch("clinicalMedicatList", route.params.udid ? route.params.udid:patients.value.addDemographic.id);
           formRef.value.resetFields()
           Object.assign(clinicalMedication, medicationForm)
         });
@@ -216,10 +259,10 @@ export default defineComponent({
           frequency: clinicalMedication.frequency,
           startDate: timeStamp(clinicalMedication.startDate ),
           endDate: timeStamp(clinicalMedication.endDate )},
-          id: patients.value.addDemographic.id,
+          id: patientId ==null? patients.value.addDemographic.id : patientId,
         }).then(() => {
           emit('onChange', false)
-          store.dispatch("clinicalMedicatList", patients.value.addDemographic.id);
+          store.dispatch("clinicalMedicatList", patientId ==null? patients.value.addDemographic.id : patientId);
           formRef.value.resetFields()
           Object.assign(clinicalMedication, medicationForm)
         });
@@ -245,6 +288,14 @@ export default defineComponent({
     const clinicalMedicatColumns = computed(() => {
       return store.state.patients.clinicalMedicatListColumns;
     });
+
+    const medicalHistoryDetails = computed(() => {
+      return store.state.patients.medicalHistoryDetails
+    })
+
+    const medicationDetails = computed(() => {
+      return store.state.patients.medicationDetails
+    })
 
     function deleteClinicalData(id, name) {
       warningSwal(messages.deleteWarning).then((response) => {
@@ -305,8 +356,12 @@ export default defineComponent({
     //     errorSwal(messages.fieldsRequired)
     // };
     return {
+      arrayToObjact,
+      screensPermissions: store.getters.screensPermissions,
       changedValue,
       // clinicalDataFailed,
+      editMedication,
+      editClinicalData,
       deleteClinicalData,
       clinicalHistory,
       clinicalMedicat,

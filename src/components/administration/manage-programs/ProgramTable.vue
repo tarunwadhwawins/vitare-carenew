@@ -20,11 +20,11 @@
                 </a>
             </a-tooltip>
         </template>
-        <template #isActive="{record}" v-if="arrayToObjact(screensPermissions,18)">
-            <a-switch v-model:checked="record.isActive" @change="UpdateProgramStatus(record.udid, $event)" />
+        <template #isActive="{record}" >
+            <a-switch v-model:checked="record.isActive" @change="UpdateProgramStatus(record.udid, $event)" :disabled="!arrayToObjact(screensPermissions,16)"/>
         </template>
     </a-table>
-    <Loader />
+    <TableLoader />
 </a-col>
 </template>
 <script>
@@ -38,10 +38,10 @@ import {
 import { messages } from "@/config/messages";
 import { useStore } from "vuex";
 
-import Loader from "@/components/loader/Loader";
+import TableLoader from "@/components/loader/TableLoader";
 export default {
   components: {
-    Loader,
+    TableLoader,
     DeleteOutlined,
     EditOutlined,
   },

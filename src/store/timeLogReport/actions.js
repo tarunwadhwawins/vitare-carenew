@@ -3,28 +3,28 @@ import { successSwal, errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/c
 
 
 export const timeLogReportList = async ({ commit }, page) => {
-	commit('loadingStatus', true)
+	commit('loadingTableStatus', true)
 	let link = page ? "timeLog" + page : "timeLog"
 	await ServiceMethodService.common("get", link, null, null).then((response) => {
 		commit('timeLogReportList', response.data);
-		commit('loadingStatus', false)
+		commit('loadingTableStatus', false)
 	}).catch((error) => {
 		errorLogWithDeviceInfo(error.response)
 		if (error.response.status === 422) {
 			commit('errorMsg', error.response.data)
-			commit('loadingStatus', false)
+			commit('loadingTableStatus', false)
 		} else if (error.response.status === 500) {
 			errorSwal(error.response.data.message)
-			commit('loadingStatus', false)
+			commit('loadingTableStatus', false)
 		} else if (error.response.status === 401) {
-			commit('loadingStatus', false)
+			commit('loadingTableStatus', false)
 		}
 	})
 }
 export const timeLogView = async ({ commit }, data) => {
 	commit('loadingTableStatus', true)
 	await ServiceMethodService.common("get", 'changeAuditLog', data, null).then((response) => {
-		commit('timeLogView', response.data.data);
+		commit('timeLogView', response.data);
 		commit('loadingTableStatus', false)
 		
 	}).catch((error) => {

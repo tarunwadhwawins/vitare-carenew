@@ -13,8 +13,8 @@
                         <a-col :span="24">
                             <h2 class="pageTittle">
                                 {{ pageTitle }}
-                                <div class="commonBtn" v-if="arrayToObjact(screensPermissions,1)">
-                                    <Button :name="buttonName" @click="showModal(true)" />
+                                <div class="commonBtn" >
+                                    <Button :name="buttonName" @click="showModal(true)" v-if="arrayToObjact(screensPermissions,1)"/>
                                 </div>
                             </h2>
                         </a-col>
@@ -22,10 +22,9 @@
                             <SearchField endPoint="roleList"/>
                         </a-col>
                         <a-col :span="12">
-                            <div class="text-right mb-24" v-if="arrayToObjact(screensPermissions,5)">
-                                <!-- <Button :name="exportButtonName" /> -->
+                            <div class="text-right mb-24" >
                                  <div class="text-right mb-24">
-                                    <ExportToExcel  @click="exportExcel('roleAndPermission_report')"/>
+                                    <ExportToExcel  @click="exportExcel('roleAndPermission_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions,5)"/>
                                 </div>
                             </div>
                         </a-col>
@@ -118,7 +117,8 @@ export default {
             edit,
             editRole,
             buttonName: "Add Role",
-            pageTitle: "Roles & Permissions"
+            pageTitle: "Roles & Permissions",
+            search: store.getters.searchTable,
         };
     },
 };

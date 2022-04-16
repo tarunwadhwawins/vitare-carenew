@@ -23,10 +23,10 @@ export function timeStampFormate(timeStamp, format) {
 
 
 // for all table export excel data
-export function exportExcel(data, date = "?fromDate=&toDate=") {
+export function exportExcel(data, field = "?fromDate=&toDate=") {
 	let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 	// let timeZone = momentTimeZone.tz.guess();
-	store.dispatch('exportReportRequest', { data: data, date: date,timezone:timeZone })
+	store.dispatch('exportReportRequest', { data: data, field: field,timezone:timeZone })
 }
 
 //action tracking when user click on any action 
@@ -222,6 +222,12 @@ export function startimeAdd(value) {
 	return moment(value.format('MM/DD/YYYY') + ' ' + timeStart).format();
 }
 
+export function timestampToDate(timestamp, format) {
+	var day = moment.unix(timestamp);
+	console.log('dayday', day.format(format))
+	return day.format(format);
+}
+
 export function endTimeAdd(value) {
 	let endTime = '23:59:59';
 	return moment(value.format('MM/DD/YYYY') + ' ' + endTime).format();
@@ -256,23 +262,17 @@ export function findOcc(arr, key) {
 	let arr2 = [];
 
 	arr.forEach((x) => {
-
-		// Checking if there is any object in arr2
-		// which contains the key value
-		if (arr2.some((val) => { return val[key] == x[key] })) {
-
-			// If yes! then increase the occurrence by 1
-			arr2.forEach((k) => {
+		let isFound = 0;
+			arr2.forEach((k,index) => {
+			
 				if (k[key] === x[key]) {
-
-					k["total"] = x.total++
+					arr2[index]["total"] = x.total+arr2[index]["total"];
+					isFound = 1;
 				}
 			})
 
-		} else {
-			// If not! Then create a new object initialize 
-			// it with the present iteration key's value and 
-			// set the occurrence to 1
+		if(isFound==0) {
+			
 			let a = {}
 			a[key] = x[key]
 			a['duration'] = x.duration
@@ -290,8 +290,9 @@ export function chartTimeCount(timeLine, count) {
 			item.time = moment(dateFormat(item.duration)).format('hh:00 A')
 			return item
 		})
-
+		
 		let getTotal = findOcc(array, 'time')
+		
 		const time = [
 			'08:00 AM',
 			'09:00 AM',

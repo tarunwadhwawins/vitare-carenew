@@ -1,7 +1,7 @@
 <template>
   <a-table  rowKey="id" :pagination="false" :columns="staffs.staffContactColms" :data-source="staffs.staffContactList" >
-    <template #action="text" v-if="arrayToObjact(screensPermissions,49)">
-      <a-tooltip placement="bottom" @click="editContact(text.record.id)">
+    <template #action="text" >
+      <a-tooltip placement="bottom" @click="editContact(text.record.id)" v-if="arrayToObjact(screensPermissions,48)">
         <template #title>
           <span>{{$t('global.edit')}}</span>
         </template>
@@ -9,7 +9,7 @@
           <EditOutlined />
         </a>
       </a-tooltip>
-      <a-tooltip placement="bottom" @click="deleteContact(text.record.id)">
+      <a-tooltip placement="bottom" @click="deleteContact(text.record.id)" v-if="arrayToObjact(screensPermissions,49)">
         <template #title>
           <span>{{$t('global.delete')}}</span>
         </template>
@@ -70,7 +70,7 @@ export default {
 
     const editContact = (contactId) => {
       store.dispatch("contactDetails", {
-        id: router.params.udid,
+        id: props.Id ? props.Id : router.params.udid,
         contactId: contactId,
       });
       contactFormVisible.value = true

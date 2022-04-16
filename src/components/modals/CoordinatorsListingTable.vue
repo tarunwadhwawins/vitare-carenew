@@ -3,15 +3,15 @@
     <a-col :sm="24" :xs="24">
       <a-table rowKey="id" :columns="careTeamColumns" :data-source="patientStaff" :pagination="false">
         <template #actions="{record}">
-          <a-tooltip placement="bottom">
+          <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,298)">
             <template #title>
               <span>Edit</span>
             </template>
-            <a class="icons">
-              <EditOutlined @click="editStaff(record.id);actionTrack(patientUdid,319,'patient')" />
+            <a class="icons" >
+              <EditOutlined @click="editStaff(record.id);actionTrack(patientUdid,298,'patient')" />
             </a>
           </a-tooltip>
-          <a-tooltip placement="bottom">
+          <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,319)">
             <template #title>
               <span>Delete</span>
             </template>
@@ -38,7 +38,7 @@ import {
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { warningSwal, actionTrack } from "@/commonMethods/commonMethod";
+import { warningSwal, actionTrack,arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from '@/config/messages';
 
   export default defineComponent({
@@ -131,6 +131,8 @@ import { messages } from '@/config/messages';
       const patientStaff = props.staffType == 0 ? careTeamList : physiciansList
 
       return {
+        screensPermissions: store.getters.screensPermissions,
+        arrayToObjact,
         actionTrack,
         patientUdid,
         careTeamColumns,

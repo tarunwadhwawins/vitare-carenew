@@ -1,8 +1,8 @@
 <template>
-<a-modal max-width="1140px" width="100%"  :title="title" centered :footer="null"  :maskClosable="false" @cancel="closeModal()">
+<a-modal max-width="1140px" width="100%"  :title="isEdit == true ? 'Edit Patient' : 'Add New Patient'" centered :footer="null"  :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <div class="common-btn mb-24" ref="customScrollTop">
-          <a-button type="primary" @click="showSearchPatient">
+          <a-button type="primary" @click="showSearchPatient" v-if="!isEdit">
             Bitrix Lookup
          </a-button>
         </div>
@@ -65,10 +65,10 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                                    <!-- <vue-tel-input  @change="changedValue" v-model.trim:value="demographics.phoneNumber" v-bind="bindProps" /> -->
-                                    <!-- <PhoneNumber @change="changedValue" v-model.trim:value="demographics.phoneNumber" @setPhoneNumber="setPhoneNumberDemographics"/> -->
-                                    <a-input-number @change="changedValue" v-model:value.trim="demographics.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
+																	<!-- <PhoneNumber @change="changedValue" v-model.trim:value="demographics.phoneNumber" @setPhoneNumber="setPhoneNumberDemographics"/> -->
+                                    <a-input-number @change="changedValue" v-model:value="demographics.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10"   style="width: 100%" />
+                                     <ErrorMessage v-if="errorMsg && !demographics.phoneNumber" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
+                                     
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -206,7 +206,6 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                                     <!-- <vue-tel-input  @change="changedValue" v-model.trim:value="demographics.familyPhoneNumber" v-bind="bindProps" /> -->
                                      <!-- <PhoneNumber  @change="changedValue" v-model.trim:value="demographics.familyPhoneNumber" @setPhoneNumber="setPhoneNumberDemographicFamily"/> -->
                                     <a-input-number @change="changedValue" v-model:value.trim="demographics.familyPhoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyPhoneNumber?errorMsg.familyPhoneNumber[0]:''" />
@@ -281,7 +280,6 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber }]">
-                                     <!-- <vue-tel-input  @change="changedValue" v-model.trim:value="demographics.familyPhoneNumber" v-bind="bindProps" disabled/> -->
                                     <!-- <PhoneNumber  @change="changedValue" v-model.trim:value="demographics.familyPhoneNumber" @setPhoneNumber="setPhoneNumberDemographicFamily" disabled/> -->
                                     <a-input-number  @change="changedValue" size="large" v-model:value="demographics.familyPhoneNumber"  style="width: 100%" disabled/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.familyPhoneNumber?errorMsg.familyPhoneNumber[0]:''" />
@@ -333,8 +331,7 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="emergencyPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber }]">
-                                    <!-- <vue-tel-input  @change="changedValue" v-model.trim:value="demographics.emergencyPhoneNumber" v-bind="bindProps" /> -->
+                                <a-form-item :label="$t('global.phoneNo')" name="emergencyPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase() }]">
                                     <!-- <PhoneNumber  @change="changedValue" v-model.trim:value="demographics.emergencyPhoneNumber" @setPhoneNumber="setPhoneNumberEmergencyPhoneNumber" /> -->
                                     <a-input-number @change="changedValue" v-model:value.trim="demographics.emergencyPhoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%"/>
                                 </a-form-item>
@@ -373,7 +370,7 @@
                         <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
                             {{$t('global.done')}}
                         </a-button>
-                    </div>
+                    </div> 
                 </a-form>
                 <!--  -->
             </div>
@@ -550,7 +547,7 @@
                 </a-form>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Documents'">
-                <Documents entity="patient" :idPatient="idPatient" @onChange="changedValue" />
+                <Documents entity="patient" :idPatient="idPatient? idPatient : patients.addDemographic.id" @onChange="changedValue" />
 
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
@@ -583,10 +580,13 @@ import { useRoute } from 'vue-router';
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
 import moment from "moment"
-// import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
+//import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
 export default defineComponent( {
+    props:{
+        isEdit:Boolean
+    },
   components: {
-    // PhoneNumber,
+   // PhoneNumber,
     StaffDropDown,
     GlobalCodeDropDown,
     Programs,
@@ -663,10 +663,28 @@ export default defineComponent( {
       },
     })
 
-    const changedValue = (value) => {
+    const changedValue = () => {
+			
 			store.commit('isEditPatient', false)
-			isValueChanged.value = value
+			
     }
+    const changedPhoneNumber = () => {
+			store.commit('isEditPatient', false)
+			isValueChanged.value = true
+			// const phoneNumberLength = (value.target.value).length
+			// console.log('phoneNumberLength', phoneNumberLength)
+			// if(phoneNumberLength != 14) {
+			// 	store.commit('errorMsg', {
+			// 		phoneNumber: [
+			// 			// "Please enter a 10 digits Phone Number"
+			// 		]
+			// 	})
+			// }
+			// else {
+			// 	store.commit('errorMsg', null)
+			// }
+    }
+
     const showSearchPatient = ()=>{
         patientSearch.value =true
     }
@@ -685,7 +703,7 @@ export default defineComponent( {
       return store.state.patients.isEditPatient
     })
     const patientDetail = patients.value.patientDetails;
-    const title = isEditPatient.value == true ? 'Edit Patient' : 'Add New Patient'
+    //const title = isEditPatient.value == true ? 'Edit Patient' : 'Add New Patient'
     const disabled = isEditPatient.value == true ? true : false
     
     const demographics = reactive({
@@ -753,15 +771,15 @@ export default defineComponent( {
       insuranceType: [],
     });
 
-    const setPhoneNumberDemographics = (value) => {
-      demographics.phoneNumber = value;
-    };
-    const setPhoneNumberDemographicFamily = (value) => {
-      demographics.familyPhoneNumber = value;
-    };
-    const setPhoneNumberEmergencyPhoneNumber = (value) => {
-      demographics.emergencyPhoneNumber = value;
-    };
+    // const setPhoneNumberDemographics = (value) => {
+    //   demographics.phoneNumber = value;
+    // };
+    // const setPhoneNumberDemographicFamily = (value) => {
+    //   demographics.familyPhoneNumber = value;
+    // };
+    // const setPhoneNumberEmergencyPhoneNumber = (value) => {
+    //   demographics.emergencyPhoneNumber = value;
+    // };
 
      const form = reactive({ ...demographics, });
 
@@ -779,6 +797,7 @@ export default defineComponent( {
 			}
 			
 			if(idPatient) {
+				
 				Object.assign(demographics, patients.value.patientDetails);
 				if(patients.value.patientPrimaryPhysician != null) {
 					Object.assign(conditions, patients.value.patientPrimaryPhysician)
@@ -912,7 +931,7 @@ export default defineComponent( {
 			else {
 					if(patients.value.addDemographic == null) {
 							if(demographicsData.sameAsPrimary == false) {
-									store.dispatch("addDemographic", demographics).then(() => {
+									store.dispatch("addDemographic", demographicsData).then(() => {
 											if(route.name == 'PatientSummary') {
 													store.dispatch('patientDetails', route.params.udid)
 													isValueChanged.value = false;
@@ -926,7 +945,7 @@ export default defineComponent( {
 									(demographicsData.emergencyContactType = demographicsData.familyContactType),
 									(demographicsData.emergencyContactTime = demographicsData.familyContactTime),
 									(demographicsData.emergencyGender = demographicsData.familyGender),
-									store.dispatch("addDemographic", demographics).then(() => {
+									store.dispatch("addDemographic", demographicsData).then(() => {
 											if(route.name == 'PatientSummary') {
 													store.dispatch('patientDetails', route.params.udid)
 													isValueChanged.value = false;
@@ -1275,13 +1294,14 @@ export default defineComponent( {
 		handleStaffChange,
 		checkChangeInput,
 		customScrollTop,
-    setPhoneNumberEmergencyPhoneNumber,
-    setPhoneNumberDemographicFamily,
-    setPhoneNumberDemographics,
+    // setPhoneNumberEmergencyPhoneNumber,
+    // setPhoneNumberDemographicFamily,
+    // setPhoneNumberDemographics,
     scrollToTop,
     formRef,
     clearValidtion,
     changedValue,
+    changedPhoneNumber,
     closeSearchPatient,
      showSearchPatient,
       patientSearch,
@@ -1320,7 +1340,7 @@ export default defineComponent( {
       demographicsFailed,
       idPatient,
       patientDetail,
-      title,
+      isEditPatient,
       disabled,
       onKeyUp,
       bindProps: store.state.common.bindProps,

@@ -24,28 +24,23 @@
                     <EditOutlined /></a>
             </a-tooltip>
             <a-tooltip placement="bottom" @click="viewTimeLog(record.id)" v-if="arrayToObjact(screensPermissions, 332)">
-              <template #title>
-                <span>{{ $t("common.view") }}</span>
-              </template>
-              <a class="icons">
-                <EyeOutlined />
-              </a>
+                <template #title>
+                    <span>{{ $t("common.view") }}</span>
+                </template>
+                <a class="icons">
+                    <EyeOutlined />
+                </a>
             </a-tooltip>
         </template>
-        <template #active="key">
-            <a-switch v-model:checked="checked[key.record.key]" />
+        <template #active="key" >
+            <a-switch v-model:checked="checked[key.record.key]" :disabled="!arrayToObjact(screensPermissions,334)"/>
         </template>
     </a-table>
-    <Loader />
-
-    <AuditTimeLog v-model:visible="visible" @saveAuditTimeLog="handleOk($event)" :Id="Id" />
-</a-col>
-<a-modal width="1100px" centered v-model:visible="viewReport" title="Audit Time Log Change Report" @ok="handleOk">
-    <a-table rowKey="id" :columns="columns" :data-source="modalData">
-
-    </a-table>
     <TableLoader />
-</a-modal>
+
+    <AuditTimeLog v-if="visible" v-model:visible="visible" @saveAuditTimeLog="handleOk($event)" :Id="Id" />
+</a-col>
+<ViewTimeLogTable v-if="viewReport" v-model:visible="viewReport" :id="auditId" />
 </template>
 
 <script>
@@ -60,6 +55,7 @@ import {
     EyeOutlined
 } from "@ant-design/icons-vue";
 import AuditTimeLog from "../modals/AuditTimeLogs";
+import ViewTimeLogTable from "./ViewTimeLogTable"
 import {
     messages
 } from "@/config/messages";
@@ -72,7 +68,7 @@ import {
     arrayToObjact,
     tableYScroller
 } from "@/commonMethods/commonMethod";
-import Loader from "../loader/Loader"
+
 import Flags from "@/components/common/flags/Flags";
 
 export default {
@@ -82,10 +78,12 @@ export default {
         EditOutlined,
         TableLoader,
         AuditTimeLog,
-        Loader,
+        ViewTimeLogTable,
         Flags,
     },
+props:{
 
+},
     setup(props, {
         emit
     }) {
@@ -105,12 +103,15 @@ export default {
             visible.value = true;
             Id.value = id
         }
+        const auditId = ref('')
 
         function viewTimeLog(id) {
+
             store.dispatch("timeLogView", id);
             viewReport.value = true
+            auditId.value = id
         }
-        const modalData = store.getters.timeLogView
+        // const modalData = store.getters.timeLogView
         const columns = store.getters.viuewTimeReportModal
 
         function deleteTimeLog(id) {
@@ -142,7 +143,7 @@ export default {
 
                         loader.value = true;
                         meta.timeLogeMeta = "";
-                        store.state.timeLogReport.timeLogReportList = ""
+                        console.log("fsfs", current_page)
 
                         store.dispatch("timeLogReportList", store.getters.auditTimeLogFilterDates.value + "&page=" + current_page + store.getters.orderTable.value.data).then(() => {
                             loadMoredata();
@@ -164,7 +165,7 @@ export default {
             var tableContent = document.querySelector('.ant-table-body')
 
             setTimeout(() => {
-              
+
                 tableContent.scrollTo(0, scroller)
             }, 100)
             loader.value = false;
@@ -184,17 +185,18 @@ export default {
                     page: pag,
                     filters: filters
                 })
-                store.dispatch("timeLogReportList", '?search=' + orderParam)
+                store.dispatch("timeLogReportList", store.getters.auditTimeLogFilterDates.value + '&search=' + orderParam)
 
             } else {
                 store.dispatch('orderTable', {
                     data: '&orderField=&orderBy='
                 })
-                store.dispatch("timeLogReportList", '?search=' + store.getters.orderTable.value.data)
+                store.dispatch("timeLogReportList", store.getters.auditTimeLogFilterDates.value + '&search=' + store.getters.orderTable.value.data)
             }
         }
 
         return {
+
             screensPermissions: store.getters.screensPermissions,
             handleTableChange,
             Id,
@@ -208,9 +210,11 @@ export default {
             meta,
             tableYScroller,
             viewTimeLog,
-            modalData,
+            modalData: store.getters.timeLogView,
             columns,
-            viewReport
+            viewReport,
+
+            auditId
 
         };
     },

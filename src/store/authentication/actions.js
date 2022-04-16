@@ -16,9 +16,15 @@ export const login = async ({ commit }, user) => {
 
 	})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			console.log('error',error);
+			if(error.response){
+				errorLogWithDeviceInfo(error.response)
+			}else{
+				errorLogWithDeviceInfo(error)
+			}
 			if (error.response.status == 401) {
 				commit('loginFailure', 'Invalid Login Credentials');
+				commit('failure', 'Invalid Login Credentials')
 			}
 			else {
 				commit('loginFailure', error);
@@ -44,6 +50,7 @@ const permission = async ({ commit }) => {
 
 		if (response.data.actionId.length == 0 && response.data.widgetId.length==0) {
 			errorSwal("You don't have permission! Contact to Admin").then((response) => {
+				commit('failure', 'true')
 				if(response == true){
 					logoutUser({ commit })
 				}else{
@@ -56,9 +63,7 @@ const permission = async ({ commit }) => {
 			localStorage.setItem('widgetsPermission', JSON.stringify(response.data.widgetId))
 			localStorage.setItem('permission', JSON.stringify(response.data))
 			commit('permissions',response.data)
-			router.push({
-				path: "/dashboard"
-			});
+			router.push(router.currentRoute.value.query.redirect || '/dashboard')
 		}
 
 	})
@@ -67,8 +72,7 @@ const permission = async ({ commit }) => {
 			errorSwal(error.response.data.message)
 		})
 }
-export const logoutUser = async () => {
-	router.push("/") 
+export const logoutUser = async () => {	
 	localStorage.removeItem('user');
 	localStorage.removeItem('barmenu');
 	localStorage.removeItem('staff');
@@ -82,6 +86,7 @@ export const logoutUser = async () => {
 	localStorage.removeItem('widgetsPermission');
 	localStorage.removeItem('fireBaseToken')
 	localStorage.removeItem('expiresIn')
+	// router.push("/") 
 	router.go();
 }
 

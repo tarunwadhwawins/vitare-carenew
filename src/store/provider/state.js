@@ -7,4 +7,5 @@ export default {
     editSingleProvider: null,
     updateSingleProvider: null,
     providerMeta:null,
+    editProviderLocation:null
 }

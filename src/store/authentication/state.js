@@ -7,7 +7,7 @@ export default {
   refreshToken: null,
   errorMsg: null,
   options:null,
-  server:'wss://tele.icc-health.com:7443',
+  server:`wss://${process.env.VUE_APP_SIP_DOMAIN}:7443`,
   simpleUser:null,//localStorage.getItem("simpleUser"),
   accessPermission:JSON.parse(localStorage.getItem('accessPermission')),
   

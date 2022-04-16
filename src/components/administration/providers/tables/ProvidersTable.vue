@@ -1,10 +1,13 @@
 <template>
 <a-table  rowKey="id" :columns="providerListColumns" :data-source="providersListAll" :scroll="{ y: tableYScroller }" :pagination=false @change="handleTableChange">
-    <template #name="{text,record}">
+    <template #name="{text,record}" v-if="arrayToObjact(screensPermissions,23)">
         <router-link :to="{ name: 'providerSummary', params: { id:record.id  }}">{{text}}</router-link>
     </template>
-    <template #isActive="{record}" v-if="arrayToObjact(screensPermissions,25)">
-        <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" />
+    <template #name="{text}" v-else>
+        <span >{{text}}</span>
+    </template>
+    <template #isActive="{record}" >
+        <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" :disabled="!arrayToObjact(screensPermissions,23)"/>
     </template>
     <template #action="text">
         <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,23)">

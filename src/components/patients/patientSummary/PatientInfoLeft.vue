@@ -1,18 +1,6 @@
 <template>
   <div class="patientInfo" v-if="patientDetails">
-    <div class="patientImg" @click="showModalCustom()">
-      <img v-if="patientDetails.profilePhoto" :src="patientDetails.profilePhoto" alt="image"/>
-      <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
-      <div class="info">
-        <p v-if="patientDetails.patientFullName">Name: {{ patientDetails.patientFullName }}</p>
-        <p v-if="patientDetails.patientDob">DOB : {{ patientDetails.patientDob }}</p>
-        <p v-if="patientDetails.medicalRecordNumber">MRN : {{ patientDetails.medicalRecordNumber }}</p>
-        <p v-if="patientDetails.email"><a @click="actionTrack(paramsId,321,'patient')" v-if="arrayToObjact(screensPermissions, 321)" href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
-        <p v-if="patientDetails.phoneNumber"><a @click="actionTrack(paramsId,322,'patient')" v-if="arrayToObjact(screensPermissions, 322)" href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
-        <p v-if="patientDetails.address"><HomeOutlined/> <span class="address-text">{{ patientDetails.address }}</span></p>
-      </div>
-      <EditOutlined class="editIcon" @click="editPatient({udid: patientDetails.id, id: patientDetails.id});actionTrack(paramsId,301,'patient')" v-if="arrayToObjact(screensPermissions, 301)||arrayToObjact(screensPermissions, 63)"/>
-    </div>
+      <ProfileImage :isLeft="true" @onEditPatient="editPatient" />
 
     <div class="pat-profile">
       <div class="pat-profile-inner">
@@ -105,7 +93,7 @@
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 297)">
-          Documents <PlusOutlined @click="addDocumentsModal();actionTrack(paramsId,297,'patient')" />
+          Documents <PlusOutlined @click="addDocumentsModal('true');actionTrack(paramsId,297,'patient')" />
         </div>
         <div v-if="latestDocument != null && arrayToObjact(screensPermissions, 317)" class="thumb-desc">
           <a href="javascript:void(0)" @click="showDocumentsModal();actionTrack(paramsId,317,'patient')" >{{ latestDocument[0].name }}</a>
@@ -147,12 +135,14 @@
     <AddAppointmentModal v-model:visible="addAppointmentVisible" :patientId="patientDetails.id" :patientName="patientDetails.patientFullName" @closeModal="handleOk" @is-visible="handleOk" />
     <AddTasksModal v-model:visible="addTaskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
     <AddNotesModal v-model:visible="addNoteVisible" @closeModal="handleOk" />
-    <AddDocumentModal v-model:visible="addDocumentVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
+    <a-modal width="50%" v-model:visible="addDocumentVisible" title="Add Documents" :maskClosable="false" centered  @cancel="closeModal()" :footer="false">
+    <Documents  :paramId="paramsId" :idPatient="patientDetails.id"  entity="patient" @document="addDocumentsModal($event)"/>
+    </a-modal>
     <AddCoordinatorsModal v-if="careCoordinatorsVisible" v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" :staffType="staffType" :title="title" :isEditCareCoordinator="false" />
     <AddTimeLogsModal v-model:visible="addTimeLogsVisible" :isEditTimeLog="isEditTimeLog" :isAutomatic="isAutomatic" @closeModal="handleOk" />
     <AddDeviceModal v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
     <PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
-    <PatientsModal v-model:visible="patientsModalVisible" @closeModal="handleOk" @saveModal="handleOk($event)" />
+    <PatientsModal v-model:visible="patientsModalVisible" :isEdit="true" @closeModal="handleOk" @saveModal="handleOk($event)" />
 
     <FamilyMembersDetailsModal v-model:visible="familyMembersModalVisible" :patientId="patientDetails.id" @isFamilyMemberEdit="editFamilyMember" @closeModal="handleOk" />
     <!-- <PhysiciansDetailsModal v-if="physiciansModalVisible" v-model:visible="physiciansModalVisible" @isPhysicianEdit="editPhysician" @closeModal="handleOk" :staffType="staffType" /> -->
@@ -171,21 +161,11 @@
 <script>
 import {
   WarningOutlined,
-  MailOutlined,
   PlusOutlined,
-  EditOutlined,
-  PhoneOutlined,
-  HomeOutlined,
 } from "@ant-design/icons-vue";
 
-// import Flags from "@/components/common/flags/Flags";
-/* import PatientsModal from "@/components/modals/PatientsModal"
-import AddFamilyMemberModal from "@/components/modals/AddFamilyMemberModal"
-import AddPhysicianModal from "@/components/modals/AddPhysicianModal"
-import AddEmergencyContacts from "@/components/modals/AddEmergencyContacts"
-import DocumentDetailModal from "@/components/modals/DocumentDetail"
-import AddDocumentModal from "@/components/modals/AddDocument" */
-
+import { warningSwal } from "@/commonMethods/commonMethod";
+import { messages } from "@/config/messages";
 import {
   ref,
   // reactive,
@@ -205,18 +185,14 @@ import {
 export default defineComponent({
   components: {
     WarningOutlined,
-    MailOutlined,
     PlusOutlined,
-    EditOutlined,
-    PhoneOutlined,
-    HomeOutlined,
     PatientFlagsModal: defineAsyncComponent(()=>import("@/components/modals/PatientFlagsModal")),
     PatientsModal: defineAsyncComponent(()=>import("@/components/modals/PatientsModal")),
     AddAppointmentModal: defineAsyncComponent(()=>import("@/components/modals/AddAppointment")),
     AddTasksModal: defineAsyncComponent(()=>import("@/components/modals/TasksModal")),
     AddNotesModal: defineAsyncComponent(()=>import("@/components/modals/AddNote")),
     NotesDetailModal: defineAsyncComponent(()=>import("@/components/modals/NotesDetail")),
-    AddDocumentModal: defineAsyncComponent(()=>import("@/components/modals/AddDocument")),
+    Documents: defineAsyncComponent(()=>import("@/components/modals/forms/Documents")),
     DocumentDetailModal: defineAsyncComponent(()=>import("@/components/modals/DocumentDetail")),
     AddCoordinatorsModal: defineAsyncComponent(()=>import("@/components/modals/AddCoordinatorsModal")),
     AddTimeLogsModal: defineAsyncComponent(()=>import("@/components/modals/AddTimeLogs")),
@@ -234,6 +210,7 @@ export default defineComponent({
     AddEmergencyContacts: defineAsyncComponent(()=>import("@/components/modals/AddEmergencyContacts")),
     EmergencyContactsDetailsModal: defineAsyncComponent(()=>import("@/components/modals/EmergencyContactsDetailsModal")),
     CoordinatorsListingModal: defineAsyncComponent(()=>import("@/components/modals/CoordinatorsListingModal")),
+    ProfileImage: defineAsyncComponent(()=>import("@/components/common/ProfileImage")),
   },
   setup() {
     const store = useStore();
@@ -270,6 +247,7 @@ export default defineComponent({
     const isAutomatic = ref(false);
     const staffType = ref(0);
     const title = ref(null);
+   
 
     watchEffect(() => {
       if(route.name == 'PatientSummary') {
@@ -356,7 +334,7 @@ export default defineComponent({
         // addPhysicianModalVisible.value = modal == 'addPhysician' ? value : false;
         addFamilyMembersModalVisible.value = modal == 'addFamilyMember' ? value : false;
         patientsModalVisible.value = modal == 'editPatient' ? value : false;
-        addDocumentVisible.value = modal == 'addDocument' ? value : false;
+        //addDocumentVisible.value = modal == 'addDocument' ? value : false;
         documentDetailVisible.value = modal == 'documentDetails' ? value : false;
         addTimeLogsVisible.value = modal == 'addTimeLog' ? value : false;
         flagsModalVisible.value = modal == 'addFlag' ? value : false;
@@ -504,8 +482,9 @@ export default defineComponent({
       notesDetailVisible.value = true;
     }
 
-    const addDocumentsModal = () => {
-      addDocumentVisible.value = true;
+    const addDocumentsModal = (event) => {
+      
+      addDocumentVisible.value = event;
     }
 
     const showDocumentsModal = () => {
@@ -544,7 +523,30 @@ export default defineComponent({
       timeLogDetails.value = value;
     }
 
+const checkFieldsData = computed(()=>{
+      return store.state.common.checkChangeInput;
+    })
 
+
+    function closeModal() {
+      if(checkFieldsData.value){
+      warningSwal(messages.modalWarning).then((response) => {
+        if (response == true) {
+          
+           addDocumentVisible.value =false
+          store.commit('checkChangeInput',false)
+          store.state.careCoordinator.addStaff =null
+         
+        } else {
+              addDocumentVisible.value =true
+          
+        }
+      });
+      }else{
+          store.commit('clearStaffFormValidation',true)
+      }    
+        
+    }
     return {
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
@@ -637,14 +639,9 @@ export default defineComponent({
       
       staffType,
       title,
+      closeModal,
+      
     }
   }
 })
 </script>
-
-<style scoped>
-span.anticon.anticon-plus {
-  position: relative;
-  top: -2px;
-}
-</style>

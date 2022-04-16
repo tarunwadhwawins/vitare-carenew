@@ -15,20 +15,20 @@
                   Programs
                   <div
                     class="commonBtn"
-                    v-if="arrayToObjact(screensPermissions, 15)"
+                    
                   >
-                    <a-button class="btn primaryBtn" @click="showModal(true)"
+                    <a-button class="btn primaryBtn" @click="showModal(true)" v-if="arrayToObjact(screensPermissions, 15)"
                       >Add New Program</a-button
                     >
                   </div>
                 </h2>
               </a-col>
-              <a-col :span="12" v-if="arrayToObjact(screensPermissions, 20)">
-                <SearchField endPoint="program" />
+              <a-col :span="12" >
+                <SearchField endPoint="program" v-if="arrayToObjact(screensPermissions, 20)"/>
               </a-col>
-              <a-col :span="12" v-if="arrayToObjact(screensPermissions, 19)">
+              <a-col :span="12" >
                 <div class="text-right mb-24">
-                  <ExportToExcel  @click="exportExcel('program_report')"/>
+                  <ExportToExcel  @click="exportExcel('program_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions, 19)"/>
                 </div>
               </a-col>
 
@@ -132,6 +132,7 @@ export default {
       visible,
       showModal,
       handleOk,
+      search: store.getters.searchTable,
     };
   },
 };

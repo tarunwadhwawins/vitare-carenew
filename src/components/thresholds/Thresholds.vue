@@ -17,13 +17,13 @@
         <a-col :span="12">
           <SearchField  endPoint="generalParameterGroup"/>
         </a-col>
-        <a-col :span="12" v-if="arrayToObjact(screensPermissions,335)">
+        <a-col :span="12" >
           <div class="text-right mb-24">
-            <ExportToExcel  @click="exportExcel('generalParameter_report')"/>
+            <ExportToExcel  @click="exportExcel('generalParameter_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions,335)"/>
           </div>
         </a-col>
         <ThresholdsTable  @is-edit="showEdit($event)"></ThresholdsTable>
-        <Loader />
+        <TableLoader />
       </a-row>
     </div>
   </a-layout-content>
@@ -35,7 +35,7 @@
   import Thresholds from "@/components/modals/Thresholds";
   import ThresholdsTable from "./ThresholdsTable";
   import { useStore } from "vuex";
-  import Loader from "@/components/loader/Loader";
+  import TableLoader from "@/components/loader/TableLoader";
   import SearchField from "@/components/common/input/SearchField";
   import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
   import { exportExcel,arrayToObjact } from "@/commonMethods/commonMethod";
@@ -43,7 +43,7 @@
     components: {
       ThresholdsTable,
       Thresholds,
-      Loader,
+      TableLoader,
       SearchField,
       ExportToExcel
     },
@@ -52,7 +52,7 @@
       const store = useStore();
       const threshodsId = ref()
       watchEffect(() => {
-        store.getters.vitalDataGetters.vitalList=""
+        
         store.dispatch("generalParameterList");
         store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
@@ -131,7 +131,8 @@
         threshodsId,
         showEdit,
         nullId,
-        isEdit
+        isEdit,
+        search: store.getters.searchTable,
       };
     },
   };

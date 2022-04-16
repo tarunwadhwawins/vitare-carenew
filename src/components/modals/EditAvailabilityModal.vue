@@ -1,6 +1,6 @@
 <template>
-  <a-modal width="50%" title="Edit Availability" centered >
-    <a-form :model="editAvailabilityForm" ref="formRest" autocomplete="off" layout="vertical" @finish="submitForm">
+  <a-modal width="50%" title="Edit Availability" centered :footer="false">
+    <a-form :model="editAvailabilityForm" ref="formRest" :footer="null" autocomplete="off" layout="vertical" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :span="12">
           <div class="form-group">
@@ -60,6 +60,10 @@ export default {
       endTime: "",
     })
 
+     const addStaff = computed(() => {
+            return store.state.careCoordinator.addStaff;
+        });
+
     
     watchEffect(() => {
       if(isEdit) {
@@ -77,17 +81,18 @@ export default {
         endTime: endTime,
       }
       store.dispatch('updateAvailability', {
-        id: route.params.udid,
+        id: addStaff.value?addStaff.value.id:route.params.udid,
         availabilityId: availabilityDetails.value.id,
         data: data,
       }).then(() => {
         emit('closeModal')
         Object.assign(editAvailabilityForm, form)
-        store.dispatch("availabilityList", route.params.udid);
+        store.dispatch("availabilityList", addStaff.value?addStaff.value.id:route.params.udid);
       })
     }
 
     return {
+      addStaff,
       formRef,
       editAvailabilityForm,
       paramId,

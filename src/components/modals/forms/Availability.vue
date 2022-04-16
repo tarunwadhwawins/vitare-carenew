@@ -3,6 +3,7 @@
     <a-row :gutter="24">
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
+                
                 <a-form-item :label="$t('global.startTime')" name="startTime" :rules="[{ required: true, message: $t('global.startTime')+' '+$t('global.validation') }]">
                     <a-time-picker use12-hours :disabledHours="() => disableHours" format="hh:mm A" v-model:value="availability.startTime" value-format="HH:mm" @change="checkChangeInput(); getTime('startTime')" />
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.startTime?errorMsg.startTime[0]:''" />
@@ -30,17 +31,6 @@
 </a-form>
 <a-row :gutter="24" v-show="!paramId">
     <a-col :span="24">
-        <!-- <a-table  rowKey="id" :pagination="false" :columns="staffs.availabilityListColms" :data-source="staffs.availabilityList" :scroll="{ x: 900 }">
-            <template #action="text">
-                <a-tooltip placement="bottom" @click="deleteAvailability(text.record.id)">
-                    <template #title>
-                        <span>{{$t('global.delete')}}</span>
-                    </template>
-                    <a class="icons">
-                        <DeleteOutlined /></a>
-                </a-tooltip>
-            </template>
-        </a-table> -->
         <AvailabilityTable :Id="Id" />
         <Loader />
     </a-col>

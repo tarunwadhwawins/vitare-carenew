@@ -1,13 +1,16 @@
 <template>
   <div>
-    <a-layout>
+    
+    <a-layout >
+      
       <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
         <Header />
       </a-layout-header>
       <a-layout>
         <Sidebar />
-        <a-layout-content>
-          <Loader />
+        <TableLoader v-if="loader"/>
+        <a-layout-content v-else >
+         
           <a-row>
             <a-col :xl="8" :lg="12">
               <a-row :gutter="24">
@@ -72,7 +75,8 @@ import TimelineView from "@/components/patients/patientSummary/views/TimelineVie
 import CarePlanView from "@/components/patients/patientSummary/views/CarePlanView";
 import PatientVitalsView from "@/components/patients/patientSummary/views/PatientVitalsView";
 import CriticalNotes from "@/components/patients/patientSummary/common/CriticalNotes";
-import Loader from "@/components/loader/Loader";
+
+import TableLoader from "@/components/loader/TableLoader";
 import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 import StartCallModal from "@/components/modals/StartCallModal";
 
@@ -98,7 +102,8 @@ export default {
     TimelineView,
     CarePlanView,
     PatientVitalsView,
-    Loader,
+    TableLoader,
+    
     AddTimeLogModal,
     CriticalNotes,
     StartCallModal,
@@ -126,7 +131,7 @@ export default {
     const stoptimervisible = ref(false);
     const isEditTimeLog = ref(false);
     const startCallModalVisible = ref(false);
-    
+    const loader= ref(true)
     const startOn = ref(false);
 
     const onClose = (e) => {
@@ -239,6 +244,8 @@ export default {
       }, 1000);
 
       if(route.name == 'PatientSummary') {
+        store.commit("loadingTableStatus",true)
+        loader.value = true
         store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 99});
         store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 100});
         store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 101});
@@ -251,7 +258,10 @@ export default {
         store.dispatch('patientCriticalNotes', patientUdid);
         store.dispatch('familyMembersList', patientUdid);
         store.dispatch('physiciansList', patientUdid);
-        store.dispatch('emergencyContactsList', patientUdid);
+        store.dispatch('emergencyContactsList', patientUdid).then(()=>{
+          store.commit("loadingTableStatus",false)
+          loader.value = false
+        })
       }
     })
 
@@ -303,9 +313,16 @@ export default {
       startOn.value = false;
     }
 
+    function clearEvent(event){
+        event.returnValue = '';
+      
+    }
+
     onUnmounted(() => {
       clearInterval(timer.value);
       localStorage.removeItem('timeLogId')
+
+      window.removeEventListener('beforeunload', clearEvent); 
     })
 
     const isAutomatic = ref(false);
@@ -380,14 +397,12 @@ export default {
     };
     
     onBeforeMount(() => {
-      window.addEventListener('beforeunload', (event) => {
-        event.returnValue = 'ffghg';
-      });
+      window.addEventListener('beforeunload',clearEvent);
     })
 
-    
 
     return {
+      clearEvent,
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       enCodeString,
@@ -444,6 +459,7 @@ export default {
       showButton4,
       value10: ref([]),
       startOn,
+      loader
     };
 
     

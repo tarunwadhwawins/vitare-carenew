@@ -9,6 +9,7 @@ import {
   convertResponse,
   convertData,
   convertChartResponse,
+  timestampToDate,
   // createDynamicColumns,
 } from '../../commonMethods/commonMethod';
 
@@ -46,15 +47,6 @@ export const patient = (state, data) => {
     sorter: true,
   },
 
-  // {
-  //     title: "Date of Readings ",
-  //     dataIndex: "lastReadingDate",
-  //     sorter: {
-  //         compare: (a, b) => a.reading - b.reading,
-  //         multiple: 1,
-  //     },
-  // },
-
   {
     title: "Readings ",
     dataIndex: "patientVitals",
@@ -85,40 +77,7 @@ export const patient = (state, data) => {
     },
     ],
   },
-  // {
-  //     title: "Non Compliant",
-  //     dataIndex: "compliance",
-  //     sorter: {
-  //         compare: (a, b) => a.reading - b.reading,
-  //         multiple: 1,
-  //     },
-  //     filters: [{
-  //             text: "Flag",
-  //             value: "flag",
-  //         },
-  //         {
-  //             text: "Name",
-  //             value: "name",
-  //         },
-  //         {
-  //             text: "Last Reading Date",
-  //             value: "readdate",
-  //         },
-  //         {
-  //             text: "Last Reading Value",
-  //             value: "readvalue",
-  //         },
-  //         {
-  //             text: "Non Compliance ",
-  //             value: "noncompliance",
-  //         },
-  //         {
-  //             text: "Last Message Seen",
-  //             value: "messagseen",
-  //         },
-  //     ],
-  //     onFilter: (value, record) => record.name.indexOf(value) === 0,
-  // },
+ 
   {
     title: "Non Compliant",
     dataIndex: "nonCompliance",
@@ -132,31 +91,7 @@ export const patient = (state, data) => {
     dataIndex: "lastMessageSent",
     
     ellipsis: true,
-    // filters: [{
-    //         text: "Flag",
-    //         value: "flag",
-    //     },
-    //     {
-    //         text: "Name",
-    //         value: "name",
-    //     },
-    //     {
-    //         text: "Last Reading Date",
-    //         value: "readdate",
-    //     },
-    //     {
-    //         text: "Last Reading Value",
-    //         value: "readvalue",
-    //     },
-    //     {
-    //         text: "Non Compliance ",
-    //         value: "noncompliance",
-    //     },
-    //     {
-    //         text: "Last Message Seen",
-    //         value: "messagseen",
-    //     },
-    // ],
+    
     onFilter: (value, record) => record.name.indexOf(value) === 0,
   },
   {
@@ -214,6 +149,7 @@ export const addPatientProgram = (state, data) => {
 
 export const programPatients = (state, data) => {
   state.program = data.map(element => {
+    element.status = element.status == 1 ? 'Active' : 'Inactive'
     element.onboardingScheduleDate = dateOnlyFormat(element.onboardingScheduleDate),
       element.dischargeDate = dateOnlyFormat(element.dischargeDate)
     return element;
@@ -439,6 +375,7 @@ export const addDocument = (state, data) => {
 
 export const documents = (state, data) => {
   state.documents = data
+  console.log("check",data)
   state.documentColumns = [
     {
       title: "Name",
@@ -476,6 +413,15 @@ export const uploadFile = (state, data) => {
   state.uploadFile = data
 }
 
+// function formatPhoneNumber(phoneNumberString) {
+//   var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+//   var match = cleaned.match(/^(\d{3})?[s]?(\d{3})(\d{4})$/);
+//   if (match) {
+//     return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+//   }
+//   return null;
+// }
+
 export const patientDetails = (state, patient) => {
   patient.email = patient.user.data.email ? patient.user.data.email : null;
   patient.country = patient.countryId ? patient.countryId : null;
@@ -486,6 +432,8 @@ export const patientDetails = (state, patient) => {
   patient.contactType = patient.contactType.length > 0 ? JSON.parse(patient.contactType) : [];
   patient.otherLanguage = patient.otherLanguage.length > 0 ? JSON.parse(patient.otherLanguage) : [];
   patient.patientDob = patient.dob ? dobFormat(patient.dob) : null;
+  // patient.phoneNumber = patient.phoneNumber ? formatPhoneNumber(patient.phoneNumber) : null;
+  patient.phoneNumber = patient.phoneNumber ? patient.phoneNumber : null;
   
   if(patient.patientFamilyMember && patient.patientFamilyMember.data) {
     patient.fullName = patient.patientFamilyMember.data.fullName ? patient.patientFamilyMember.data.fullName : null;
@@ -847,15 +795,15 @@ export const patientVitals = (state, vitals) => {
     vitalsArray.forEach(vital => {
       switch (vital.deviceType) {
         case 'Blood Pressure':
-          state.bloodPressure = patientVitals;
+          state.bloodPressure = patientVitals.length > 0 ? patientVitals : null;
           state.bloodPressureGraph = patientGraphData;
           break;
         case 'Oximeter':
-          state.bloodOxygen = patientVitals;
+          state.bloodOxygen = patientVitals.length > 0 ? patientVitals : null;
           state.bloodOxygenGraph = patientGraphData;
           break;
         case 'Glucose':
-          state.bloodGlucose = patientVitals;
+          state.bloodGlucose = patientVitals.length > 0 ? patientVitals : null;
           state.bloodGlucoseGraph = patientGraphData;
           break;
         default:
@@ -1086,4 +1034,39 @@ export const emergencyContactDetails = (state, emergencyContact) => {
 
 export const timeLineType = (state, data) => {
   state.timeLineType = data
+}
+
+export const programDetails = (state, data) => {
+  const format = 'YYYY-MM-DD';
+  data.program = data.programId
+  data.onboardingScheduleDate = timestampToDate(data.onboardingScheduleDate, format)
+  data.dischargeDate = timestampToDate(data.dischargeDate, format)
+  state.programDetails = data
+}
+
+export const medicalHistoryDetails = (state, data) => {
+  state.medicalHistoryDetails = data
+}
+
+export const medicationDetails = (state, data) => {
+  const format = 'YYYY-MM-DD';
+  data.startDate = timestampToDate(data.startDate, format)
+  data.endDate = timestampToDate(data.endDate, format)
+  state.medicationDetails = data
+}
+
+export const documentDetails = (state, data) => {
+  const tags = []
+  data.tag.map(tag => {
+    tags.push(tag.tagId)
+  })
+  data.tags = tags
+  data.document = data.path
+  data.type = data.typeId
+  // data.documentPath = data.path.split('/')[5]
+  state.documentDetails = data
+}
+
+export const isPicuteLoading = (state, data) => {
+  state.isPicuteLoading = data
 }

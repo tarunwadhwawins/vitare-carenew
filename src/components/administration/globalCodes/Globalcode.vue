@@ -12,21 +12,21 @@
                         <a-col :span="24">
                             <h2 class="pageTittle">
                                 Global Codes
-                                <div class="commonBtn" v-if="arrayToObjact(screensPermissions,6)">
-                                    <Button :name="buttonName" @click="showModal" />
+                                <div class="commonBtn" >
+                                    <Button :name="buttonName" @click="showModal" v-if="arrayToObjact(screensPermissions,6)" />
                                 </div>
                             </h2>
                         </a-col>
                         <a-col :span="12">
                             <SearchField endPoint="globalCodes" />
                         </a-col>
-                        <a-col :span="12" v-if="arrayToObjact(screensPermissions,327)">
+                        <a-col :span="12" >
                             <div class="text-right mb-24">
-                                <ExportToExcel @click="exportExcel('globalCode_report')" />
+                                <ExportToExcel @click="exportExcel('globalCode_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions,327)"/>
                             </div>
                         </a-col>
                         <a-col :span="24">
-                            <Loader />
+                            <TableLoader />
                             <GlobalCodesTable @edit-global-code="editGlobalCode($event)" />
                         </a-col>
                     </a-row>
@@ -48,7 +48,7 @@ import Button from "@/components/common/button/Button";
 import { defineComponent, defineAsyncComponent, ref, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import { arrayToObjact, exportExcel } from "@/commonMethods/commonMethod";
-import Loader from "@/components/loader/Loader";
+import TableLoader from "@/components/loader/TableLoader";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 export default defineComponent({
   components: {
@@ -60,7 +60,7 @@ export default defineComponent({
     GlobalCodesTable,
     SearchField,
     Button,
-    Loader,
+    TableLoader,
     ExportToExcel,
   },
   setup() {
@@ -106,6 +106,7 @@ export default defineComponent({
       handleClose,
       searchData,
       size: ref([]),
+      search: store.getters.searchTable,
     };
   },
 });
