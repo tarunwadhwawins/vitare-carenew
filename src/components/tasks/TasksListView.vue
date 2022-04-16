@@ -5,7 +5,7 @@
     </a-col>
     <a-col :span="12" >
       <div class="text-right mb-24">
-        <ExportToExcel  @click="exportExcel('task_report')" v-if="arrayToObjact(screensPermissions, 118)"/>
+        <ExportToExcel  @click="exportExcel('task_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions, 118)"/>
       </div>
     </a-col>
     <TaskTable @is-Edit="editTask($event)"></TaskTable>
@@ -73,6 +73,7 @@ export default {
       editTask,
       updateTask,
       createAppointment,
+     
     };
   },
 };

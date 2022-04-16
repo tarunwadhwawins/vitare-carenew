@@ -24,7 +24,7 @@
                         <a-col :span="12">
                             <div class="text-right mb-24" >
                                  <div class="text-right mb-24">
-                                    <ExportToExcel  @click="exportExcel('roleAndPermission_report')" v-if="arrayToObjact(screensPermissions,5)"/>
+                                    <ExportToExcel  @click="exportExcel('roleAndPermission_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions,5)"/>
                                 </div>
                             </div>
                         </a-col>
@@ -117,7 +117,8 @@ export default {
             edit,
             editRole,
             buttonName: "Add Role",
-            pageTitle: "Roles & Permissions"
+            pageTitle: "Roles & Permissions",
+            search: store.getters.searchTable,
         };
     },
 };

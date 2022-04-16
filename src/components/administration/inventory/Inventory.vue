@@ -24,7 +24,7 @@
                         </a-col>
                         <a-col :span="12" >
                             <div class="text-right mb-24">
-                                <ExportToExcel @click="exportExcel('inventory_report')" v-if="arrayToObjact(screensPermissions,340)"/>
+                                <ExportToExcel @click="exportExcel('inventory_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions,340)"/>
                             </div>
                         </a-col>
                         <a-col :span="24" >
@@ -106,6 +106,7 @@ export default {
       handleOk,
       searchData,
       size: ref([]),
+      search: store.getters.searchTable,
     };
   },
 };

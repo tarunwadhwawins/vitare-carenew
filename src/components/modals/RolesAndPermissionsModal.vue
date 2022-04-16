@@ -304,6 +304,7 @@ export default {
                     id: udid,
                     check: check
                 })
+                store.commit('checkChangeInput', false)
             }
             reset();
             rolesAndPermissions.addRole = ''

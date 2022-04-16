@@ -21,7 +21,7 @@
                     </a-col>
                     <a-col :span="12">
                         <div class="text-right mb-24">
-                            <ExportToExcel  @click="exportExcel('cptCode_report')"/>
+                            <ExportToExcel  @click="exportExcel('cptCode_report','?fromDate=&toDate='+search)"/>
                         </div>
                     </a-col>
                     <a-col :span="24">
@@ -117,6 +117,7 @@ export default {
             editId,
             editModal,
             buttonName: 'Add CPT Code',
+            search: store.getters.searchTable,
         };
     },
 };

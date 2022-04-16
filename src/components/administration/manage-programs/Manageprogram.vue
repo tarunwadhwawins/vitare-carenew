@@ -28,7 +28,7 @@
               </a-col>
               <a-col :span="12" >
                 <div class="text-right mb-24">
-                  <ExportToExcel  @click="exportExcel('program_report')" v-if="arrayToObjact(screensPermissions, 19)"/>
+                  <ExportToExcel  @click="exportExcel('program_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions, 19)"/>
                 </div>
               </a-col>
 
@@ -132,6 +132,7 @@ export default {
       visible,
       showModal,
       handleOk,
+      search: store.getters.searchTable,
     };
   },
 };
