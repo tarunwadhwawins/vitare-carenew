@@ -111,7 +111,7 @@ export default {
             ...globalCodeForm
         })
         const handleClear = () => {
-            //formRef.value.resetFields();
+            formRef.value.resetFields();
             Object.assign(globalCodeForm, form)
             formButton.value = false
         }
