@@ -293,6 +293,7 @@ export default {
                     if (response == true) {
                         emit("saveModal", false)
                         Object.assign(personalInfoData, form);
+                        info.value.resetFields()
                         store.dispatch("staffs")
                         store.dispatch('specializationStaff')
                         store.dispatch('networkStaff')
@@ -304,10 +305,13 @@ export default {
                         emit("saveModal", true);
                     }
                 });
+            }else{
+                info.value.resetFields()
             }
         }
         onUnmounted(() => {
             store.commit('errorMsg', null)
+            store.state.careCoordinator.addStaff =null
         })
         watchEffect(() => {
             if (addStaff.value) {
