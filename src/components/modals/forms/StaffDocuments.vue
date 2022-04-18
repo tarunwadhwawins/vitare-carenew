@@ -146,14 +146,7 @@ export default defineComponent({
       return store.state.careCoordinator;
     });
 
-    watchEffect(() => {
-      if (patientId != null) {
-        store.dispatch("documents", patientUdid);
-      }
-      if (addStaffs.value.clearStaffFormValidation) {
-        formRest.value.resetFields();
-      }
-    });
+    
 
     const filePath = computed(() => {
       return store.state.patients.uploadFile;
@@ -237,9 +230,17 @@ export default defineComponent({
       Object.assign(documents, form);
       console.log('documents',documents);
     }
+
     watchEffect(() => {
-      if (props.clearData == true) {
+       if (props.clearData == true) {
         Object.assign(documents, form);
+        formRest.value.resetFields();
+      }
+      if (patientId != null) {
+        store.dispatch("documents", patientUdid);
+      }
+      if (addStaffs.value.clearStaffFormValidation) {
+        formRest.value.resetFields();
       }
     });
 
