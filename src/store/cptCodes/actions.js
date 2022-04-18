@@ -11,7 +11,7 @@ export const cptCodesList = async ({ commit },page) => {
 	.catch((error) => {
 		errorLogWithDeviceInfo(error.response)
 		commit('loadingStatus', false)
-		commit('failure', error.response.data);
+		commit('errorMsg', error.response.data)
 
 	})
 }
@@ -26,7 +26,7 @@ export const addCptCode = async ({ commit }, data) => {
 	.catch((error) => {
 		errorLogWithDeviceInfo(error.response)
 		errorSwal(error.response.data.message)
-		commit('failure', error.response.data);
+		commit('errorMsg', error.response.data)
 	})
 }
 
@@ -37,7 +37,7 @@ export const deleteCptCode = async ({ commit }, id) => {
 	})
 	.catch((error) => {
 		errorLogWithDeviceInfo(error.response)
-		commit('failure', error.response.data);
+		commit('errorMsg', error.response.data)
 	})
 }
 
@@ -47,7 +47,7 @@ export const cptCodeDetails = async ({ commit }, id) => {
 	})
 	.catch((error) => {
 		errorLogWithDeviceInfo(error.response)
-		commit('failure', error.response.data);
+		commit('errorMsg', error.response.data)
 	})
 }
 
@@ -61,7 +61,7 @@ export const updateCptCode = async ({ commit }, data) => {
 	})
 	.catch((error) => {
 		errorLogWithDeviceInfo(error.response)
-		commit('failure', error.response.data);
+		commit('errorMsg', error.response.data)
 	})
 }
 export const serviceList = async ({ commit } ) => {
@@ -71,6 +71,6 @@ export const serviceList = async ({ commit } ) => {
 	})
 	.catch((error) => {
 		errorLogWithDeviceInfo(error.response)
-		commit('failure', error.response.data);
+		commit('errorMsg', error.response.data)
 	})
 }
