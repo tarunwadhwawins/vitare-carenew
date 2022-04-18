@@ -5,7 +5,7 @@
             <div class="form-group">
                 <a-form-item :label="$t('global.name')" name="name" :rules="[{ required: true, message: $t('global.name')+' '+$t('global.validation') }]">
                     <a-input v-model:value="documents.name" size="large" @change="checkChangeInput()" />
-                    <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
+                    <!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" /> -->
                 </a-form-item>
             </div>
         </a-col>
@@ -14,7 +14,7 @@
                 <a-form-item :label="$t('global.document')" name="document" :rules="[{ required: true, message: $t('global.document')+' '+$t('global.validation') }]">
                     <a-input ref="image" name="document_file" id="document_file" size="large" type="file" @change="onFileUpload" />
                     <ErrorMessage v-if="docValidationError" name="Document is required." />
-                    <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" />
+                    <!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.document?errorMsg.document[0]:''" /> -->
                 </a-form-item>
                 <!-- <label><span style="color:red">* </span>{{$t('global.document')}}
                     <a-input ref="image" name="document_file" size="large" type="file" @change="onFileUpload" />
@@ -31,7 +31,7 @@
                         <a-select-option v-for="documentType in globalCode.documentTypes.globalCode" :key="documentType.id" :value="documentType.id">{{documentType.name}}</a-select-option>
                     </a-select> -->
                     <GlobalCodeDropDown v-model:value="documents.type" :globalCode="globalCode.documentTypes" @change="checkChangeInput()" />
-                    <ErrorMessage v-if="errorMsg" :name="errorMsg.type?errorMsg.type[0]:''" />
+                    <!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.type?errorMsg.type[0]:''" /> -->
                 </a-form-item>
             </div>
         </a-col>
@@ -40,7 +40,7 @@
                 <a-form-item :label="$t('global.tags')" name="tags" :rules="[{ required: true, message: $t('global.tags')+' '+$t('global.validation') }]">
                     <!-- <a-select v-model:value="documents.tags" mode="multiple" size="large" placeholder="Select Tags" style="width: 100%" :options="globalCode.documentTags.globalCode.map((item) => ({ label: item.name, value: item.id }))" @change="checkChangeInput()" /> -->
                     <GlobalCodeDropDown v-model:value="documents.tags" mode="multiple" :globalCode="globalCode.documentTags" @change="checkChangeInput()" />
-                    <ErrorMessage v-if="errorMsg" :name="errorMsg.tags?errorMsg.tags[0]:''" />
+                    <!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.tags?errorMsg.tags[0]:''" /> -->
                 </a-form-item>
             </div>
         </a-col>
@@ -108,6 +108,7 @@ export default defineComponent({
     // };
 
     const onFileUpload = (event) => {
+       store.commit("checkChangeInput", true)
       let docFile = event.target.files[0];
       if (docFile.size / 1024 > 5120) {
         Object.assign(documents, {
