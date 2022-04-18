@@ -223,6 +223,8 @@ export default defineComponent({
                         emit("is-visible", true);
                     }
                 });
+            }else{
+                formRef.value.resetFields();
             }
         }
         const patientChange = (value) => {
