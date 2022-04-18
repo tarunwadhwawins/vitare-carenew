@@ -27,7 +27,7 @@
                             <!--  -->
                             <div class="text-right mb-24" >
                                 <div class="text-right mb-24">
-                                    <ExportToExcel  @click="exportExcel('provider_report')" v-if="arrayToObjact(screensPermissions,26)"/>
+                                    <ExportToExcel  @click="exportExcel('provider_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions,26)"/>
                                 </div>
                             </div>
                         </a-col>
@@ -132,6 +132,7 @@ export default {
       closeModal,
       pageTitle: "Providers",
       buttonName: "Add New Provider",
+      search: store.getters.searchTable,
     };
   },
 };

@@ -64,9 +64,9 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase()}]">
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
 																	<!-- <PhoneNumber @change="changedValue" v-model.trim:value="demographics.phoneNumber" @setPhoneNumber="setPhoneNumberDemographics"/> -->
-                                    <a-input-number @change="changedValue" v-model:value="demographics.phoneNumber" placeholder="Please enter 10 digit number" size="large"  style="width: 100%" />
+                                    <a-input-number @change="changedValue" v-model:value="demographics.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10"   style="width: 100%" />
                                      <ErrorMessage v-if="errorMsg && !demographics.phoneNumber" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                      
                                 </a-form-item>
