@@ -139,7 +139,7 @@
     <Documents  :paramId="paramsId" :idPatient="patientDetails.id"  entity="patient" @document="addDocumentsModal($event)"/>
     </a-modal>
     <AddCoordinatorsModal v-if="careCoordinatorsVisible" v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" :staffType="staffType" :title="title" :isEditCareCoordinator="false" />
-    <AddTimeLogsModal v-model:visible="addTimeLogsVisible" :isEditTimeLog="isEditTimeLog" :isAutomatic="isAutomatic" @closeModal="handleOk" />
+    <AddTimeLogsModal v-model:visible="addTimeLogsVisible" :isEditTimeLog="isEditTimeLog" :isAutomatic="isAutomatic" @closeModal="addTimeLogsClose($event)" />
     <AddDeviceModal v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
     <PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
     <PatientsModal v-model:visible="patientsModalVisible" :isEdit="true" @closeModal="handleOk" @saveModal="handleOk($event)" />
@@ -501,6 +501,11 @@ export default defineComponent({
       isEditTimeLog.value = false;
       isAutomatic.value = false;
     }
+     const addTimeLogsClose = (event) => {
+      addTimeLogsVisible.value = event.value;
+      isEditTimeLog.value = false;
+      isAutomatic.value = false;
+    }
 
     const showTimelogModal = () => {
       store.dispatch('timeLogsList', {
@@ -640,6 +645,7 @@ const checkFieldsData = computed(()=>{
       staffType,
       title,
       closeModal,
+      addTimeLogsClose
       
     }
   }
