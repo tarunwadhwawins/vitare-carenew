@@ -771,15 +771,7 @@ export default defineComponent( {
       insuranceType: [],
     });
 
-    // const setPhoneNumberDemographics = (value) => {
-    //   demographics.phoneNumber = value;
-    // };
-    // const setPhoneNumberDemographicFamily = (value) => {
-    //   demographics.familyPhoneNumber = value;
-    // };
-    // const setPhoneNumberEmergencyPhoneNumber = (value) => {
-    //   demographics.emergencyPhoneNumber = value;
-    // };
+    
 
      const form = reactive({ ...demographics, });
 
@@ -1228,6 +1220,9 @@ export default defineComponent( {
                     });
                 }
             })
+        }else{
+            
+            formRef.value.resetFields()
         }
         
     }
