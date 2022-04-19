@@ -285,7 +285,7 @@ export default {
        store.commit('clearStaffFormValidation',false)
     };
     const showModalContact = () => {
-        store.commit('errorMsg', null)
+      store.commit('errorMsg', null)
       visibleContact.value = true;
       clearData.value=false
       store.commit('clearStaffFormValidation',false)
@@ -312,6 +312,7 @@ export default {
         //   Object.assign();
           store.dispatch("allStaffList")
           store.commit('checkChangeInput',false)
+           store.commit('clearStaffFormValidation',true)
           store.state.careCoordinator.addStaff =null
          
         } else {

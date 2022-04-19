@@ -86,6 +86,7 @@ export default {
         store.commit("loadingStatus", true);
         if (programEdit.value.editProgram) {
           Object.assign(program, programEdit.value.editProgram[0]);
+          program.isActive = programEdit.value.editProgram[0].isActive? true : false
           setTimeout(() => {
             store.commit("loadingStatus", false);
           }, 2000);
@@ -103,28 +104,31 @@ export default {
             name: program.name,
             description: program.description,
             typeId: program.typeId,
-            isActive: program.isActive ? 1 : 0,
+            isActive: program.isActive,
           },
           id: programId,
-        });
+        }).then(()=>{
+          reset();
+          store.dispatch("manageProgramList")
+          emit("is-visible", false);
+        })
       } else {
         store.dispatch("addManageProgram", {
           data: {
             name: program.name,
             description: program.description,
             typeId: program.typeId,
-            isActive: program.isActive ? 1 : 0,
+            isActive: program.isActive,
           },
-        });
+        }).then(()=>{
+          reset();
+          store.dispatch("manageProgramList")
+          emit("is-visible", false);
+        })
         
       }
       store.commit('checkChangeInput', false)
-      //store.state.programs.programList = ''
-      setTimeout(() => {
-        reset();
-        store.dispatch("manageProgramList");
-        emit("is-visible", false);
-      }, 1000);
+     
 
     };
 
