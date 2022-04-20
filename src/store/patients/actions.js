@@ -157,7 +157,7 @@ export const addCondition = async ({commit}, request) => {
 }
 
 export const updateCondition = async ({commit}, request) => {
-  console.log('request',request);
+ 
   const data = request.data;
   const patientId = request.id;
   const primaryPhysicianId = request.primaryPhysicianId;

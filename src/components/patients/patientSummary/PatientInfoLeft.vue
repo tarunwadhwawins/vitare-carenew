@@ -135,8 +135,8 @@
     <AddAppointmentModal v-model:visible="addAppointmentVisible" :patientId="patientDetails.id" :patientName="patientDetails.patientFullName" @closeModal="handleOk" @is-visible="handleOk" />
     <AddTasksModal v-model:visible="addTaskModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
     <AddNotesModal v-model:visible="addNoteVisible" @closeModal="handleOk" />
-    <a-modal width="50%" v-model:visible="addDocumentVisible" title="Add Documents" :maskClosable="false" centered  @cancel="closeModal()" :footer="false">
-    <Documents  :paramId="paramsId" :idPatient="patientDetails.id"  entity="patient" @document="addDocumentsModal($event)"/>
+    <a-modal width="70%" v-model:visible="addDocumentVisible" title="Add Documents" :maskClosable="false" centered  @cancel="closeModal()" :footer="false">
+    <Documents  :paramId="paramsId" :idPatient="patientDetails.id"  entity="patient" @document="addDocumentsModal($event)" />
     </a-modal>
     <AddCoordinatorsModal v-if="careCoordinatorsVisible" v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" :staffType="staffType" :title="title" :isEditCareCoordinator="false" />
     <AddTimeLogsModal v-model:visible="addTimeLogsVisible" :isEditTimeLog="isEditTimeLog" :isAutomatic="isAutomatic" @closeModal="addTimeLogsClose($event)" />
@@ -484,10 +484,12 @@ export default defineComponent({
 
     const addDocumentsModal = (event) => {
       
+      store.commit('clearStaffFormValidation',false)
       addDocumentVisible.value = event;
     }
 
     const showDocumentsModal = () => {
+      
       documentDetailVisible.value = true;
     }
 
@@ -537,12 +539,16 @@ const checkFieldsData = computed(()=>{
       if(checkFieldsData.value){
       warningSwal(messages.modalWarning).then((response) => {
         if (response == true) {
-          
+         
            addDocumentVisible.value =false
+           store.commit('clearStaffFormValidation',true)
           store.commit('checkChangeInput',false)
+           
           store.state.careCoordinator.addStaff =null
          
         } else {
+          store.commit('clearStaffFormValidation',false)
+          
               addDocumentVisible.value =true
           
         }
@@ -553,6 +559,7 @@ const checkFieldsData = computed(()=>{
         
     }
     return {
+      
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       actionTrack,
