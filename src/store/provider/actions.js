@@ -139,7 +139,7 @@ export const deleteProviderLocation = async ({ commit }, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("delete", `provider/${data.id}/location/${data.locationId}`, null, null).then((response) => {
     successSwal(response.data.message)
-    commit('loadingStatus', false)
+   
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
