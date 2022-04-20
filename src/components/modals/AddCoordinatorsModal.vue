@@ -14,8 +14,10 @@
               <a-switch v-model:checked="addCareTeamForm.isPrimary" size="large" />
             </a-form-item>
           </a-col>
-          <a-col :sm="4" :xs="24">
+          <a-col  :sm="4" :md="8" :xs="24">
+            
             <a-button class="add-button" size="large" html-type="submit">{{ buttontext }}</a-button>
+          
           </a-col>
         </a-row>
       </a-form>
