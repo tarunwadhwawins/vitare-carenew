@@ -69,6 +69,7 @@ export default {
     function deleteDocument(id) {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
+          emit("deleteDoc")
           store.dispatch("deleteDocument", {
             id: props.Id ? props.Id : router.params.udid,
             documentId: id,
