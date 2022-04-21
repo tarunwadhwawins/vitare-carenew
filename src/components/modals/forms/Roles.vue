@@ -92,7 +92,8 @@ export default defineComponent({
       }
     })
     
-    function checkChangeInput(){
+    function checkChangeInput(){ 
+      store.state.careCoordinator.errorMsg = ''
       store.commit('checkChangeInput',true)
     }
     const errorMsg = computed(() => {

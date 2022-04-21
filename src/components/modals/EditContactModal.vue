@@ -62,7 +62,7 @@ export default {
     const store = useStore()
     const route = useRoute()
     const paramId = route.params.udid
-    const formRef = ref()
+    const formRest = ref()
     var isEdit = reactive(props.isContactEdit)
 
     const contactDetails = computed(() => {
@@ -95,6 +95,7 @@ export default {
         data: editContactForm,
       }).then(() => {
         emit('closeModal')
+        formRest.value.resetFields();
         Object.assign(editContactForm, form)
         store.dispatch("staffContactList", staffs.value?staffs.value.id:route.params.udid);
       })
@@ -102,7 +103,7 @@ export default {
 
     return {
       staffs,
-      formRef,
+      formRest,
       editContactForm,
       paramId,
       submitForm,
