@@ -58,7 +58,7 @@
     <a-row :gutter="24" class="mb-24" v-show="!paramId">
       <a-col :span="24">
      
-        <DocumentTable :Id="Id" @onEditDocument="updateDocument" />
+        <DocumentTable :Id="Id" @onEditDocument="updateDocument" @deleteDoc="deleteDoc()"/>
         <TableLoader />
       </a-col>
     </a-row>
@@ -317,8 +317,14 @@
       const errorMsg = computed(() => {
         return store.state.patients.errorMsg
       })
-
+function deleteDoc(){
+  reset()
+  isEditDocument.value = false
+        isDocumentrequired.value = false
+        documentUdid.value = ''
+}
       return {
+        deleteDoc,
         image,
         docValidationError,
         changedValue,

@@ -425,6 +425,8 @@ export default {
       if (providerId != null) {
         warningSwal(messages.deleteWarning).then((response) => {
           if (response == true) {
+            store.state.provider.editProviderLocation=''
+            Object.assign(providerLocationForm, form)
             store.commit("loadingStatus", true);
             store
               .dispatch("deleteProviderLocation", {
@@ -439,6 +441,8 @@ export default {
       } else {
         warningSwal(messages.deleteWarning).then((response) => {
           if (response == true) {
+            store.state.provider.editProviderLocation=''
+            Object.assign(providerLocationForm, form)
             store.commit("loadingStatus", true);
             store.dispatch("deleteProviderLocation", {
               id: providersData.value.provider.id,
