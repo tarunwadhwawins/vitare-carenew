@@ -1,5 +1,5 @@
 <template>
-<a-modal max-width="1140px" scrollToFirstError=true width="100%" :title="$t('careCoordinator.coordinatorsModal.updateCoordinator')" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal max-width="1140px" scrollToFirstError=true width="100%" :title="$t('careCoordinator.coordinatorsModal.updateCoordinator')" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
 <a-form :model="personalInfoData" class="basic" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="personalInfo" @finishFailed="onFinishFailed">
     <!-- <PersonalInformation /> -->
     <a-row :gutter="24">

@@ -1,5 +1,5 @@
 <template>
-<a-modal width="800px" :title="isAdd ? 'Edit Global Code' : 'Add Global Code'" :footer="null" :maskClosable="false" @cancel="closeModal()" centered>
+<a-modal width="800px" :title="isAdd ? 'Edit Global Code' : 'Add Global Code'" :footer="false" :maskClosable="false" @cancel="closeModal()" centered>
 
     <a-form ref="formRef" :model="globalCodeForm" layout="vertical" @finish="submitForm">
 
