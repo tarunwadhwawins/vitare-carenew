@@ -157,7 +157,7 @@ export const addCondition = async ({commit}, request) => {
 }
 
 export const updateCondition = async ({commit}, request) => {
-  console.log('request',request);
+ 
   const data = request.data;
   const patientId = request.id;
   const primaryPhysicianId = request.primaryPhysicianId;
@@ -692,12 +692,15 @@ export const addDocument = async ({commit}, data) => {
 export const deleteDocument = async ({
   commit
 }, data) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("delete", `patient/${data.id}/document/${data.documentId}`, null, null).then((response) => {
     commit('deleteDocument', response.data.data);
     successSwal(response.data.message)
+    commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
   })
 }
 

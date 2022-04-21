@@ -92,7 +92,8 @@
         type: String
       },
       entity: String,
-      paramId: String
+      paramId: String,
+      
     },
     setup(props, { emit }) {
 
@@ -112,12 +113,7 @@
         store.commit('checkChangeInput',true)
       }
 
-      watchEffect(() => {
-        if (patientUdid) {
-          
-          store.dispatch("documents", patientUdid);
-        }
-      })
+      
 
       const filePath = computed(() => {
         return store.state.patients.uploadFile;
@@ -177,7 +173,20 @@
         store.commit('checkChangeInput', true)
         store.dispatch("uploadFile", formData);
       };
-
+      const staffs = computed(() => {
+      return store.state.careCoordinator;
+    });
+      watchEffect(() => {
+       
+        if(staffs.value.clearStaffFormValidation){
+          formRef.value.resetFields();
+          Object.assign(documents, form)
+    }
+        if (patientUdid) {
+          
+          store.dispatch("documents", patientUdid);
+        }
+      })
       const patients = computed(() => {
         return store.state.patients;
       });
@@ -297,6 +306,7 @@
 
       onMounted(() => {
         reset();
+        formRef.value.resetFields();
       })
 
       function reset() {

@@ -49,7 +49,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.dateOfBirth')" name="dob" :rules="[{ required: true, message: $t('global.dateOfBirth')+' '+$t('global.validation') }]">
-                                    <a-date-picker @change="changedValue" v-model:value="demographics.dob" :disabledDate="d => !d || d.isAfter(moment())" format="DD, MMM YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                                    <a-date-picker @change="changedValue" v-model:value="demographics.dob" :disabledDate="d => !d || d.isAfter(moment())" :format="globalDateFormat" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.dob?errorMsg.dob[0]:''" />
                                 </a-form-item>
                             </div>
@@ -534,7 +534,7 @@
                         <a-col :sm="8" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.insurance.expirationDate')" name="expirationDate" :rules="i==0?[{ required: true, message: $t('patient.insurance.expirationDate')+' '+$t('global.validation') }]:''">
-                                    <a-date-picker @change="changedValue" v-model:value="insuranceData.expirationDate[i]" format="DD, MMM YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                                    <a-date-picker @change="changedValue" v-model:value="insuranceData.expirationDate[i]" :format="globalDateFormat" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.expirationDate?errorMsg.expirationDate[0]:''" />
                                 </a-form-item>
                             </div>
@@ -574,7 +574,7 @@ import { useStore } from "vuex";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import { regex } from "@/RegularExpressions/regex";
 import Loader from "@/components/loader/Loader";
-import {successSwal,warningSwal } from "@/commonMethods/commonMethod";
+import {successSwal,warningSwal,globalDateFormat } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 import { useRoute } from 'vue-router';
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
@@ -771,15 +771,7 @@ export default defineComponent( {
       insuranceType: [],
     });
 
-    // const setPhoneNumberDemographics = (value) => {
-    //   demographics.phoneNumber = value;
-    // };
-    // const setPhoneNumberDemographicFamily = (value) => {
-    //   demographics.familyPhoneNumber = value;
-    // };
-    // const setPhoneNumberEmergencyPhoneNumber = (value) => {
-    //   demographics.emergencyPhoneNumber = value;
-    // };
+    
 
      const form = reactive({ ...demographics, });
 
@@ -1228,6 +1220,9 @@ export default defineComponent( {
                     });
                 }
             })
+        }else{
+            
+            formRef.value.resetFields()
         }
         
     }
@@ -1345,6 +1340,7 @@ export default defineComponent( {
       onKeyUp,
       bindProps: store.state.common.bindProps,
       moment,
+      globalDateFormat
     };
   },
 });

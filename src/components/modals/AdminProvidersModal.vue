@@ -405,6 +405,7 @@ export default {
     }
 
     function editProviderLocation(id) {
+      store.commit("loadingStatus", true);
       if (providerId != null) {
             store
               .dispatch("editProviderLocation", {
@@ -420,9 +421,11 @@ export default {
     }
 
     function deleteProviderLocation(id) {
+      
       if (providerId != null) {
         warningSwal(messages.deleteWarning).then((response) => {
           if (response == true) {
+            store.commit("loadingStatus", true);
             store
               .dispatch("deleteProviderLocation", {
                 id: providerId,
@@ -430,12 +433,13 @@ export default {
               })
               .then(() => {
                 store.dispatch("providerLocationList", providerId);
-              }, 2000);
+              });
           }
         });
       } else {
         warningSwal(messages.deleteWarning).then((response) => {
           if (response == true) {
+            store.commit("loadingStatus", true);
             store.dispatch("deleteProviderLocation", {
               id: providersData.value.provider.id,
               locationId: id,
