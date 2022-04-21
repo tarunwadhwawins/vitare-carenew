@@ -173,6 +173,7 @@ export default defineComponent({
     });
 
     const editClinicalData = (id) => {
+
       isEditMedicalHistory.value = true;
       medicalHistoryUdid.value = id;
       store.dispatch('medicalHistoryDetails', {
@@ -298,8 +299,10 @@ export default defineComponent({
     })
 
     function deleteClinicalData(id, name) {
+
       warningSwal(messages.deleteWarning).then((response) => {
         if(response == true) {
+          store.commit('loadingStatus', true)
           if(patientId != null) {
             if(name == "deleteClinicalData") {
               store.dispatch("deleteClinicalData", {

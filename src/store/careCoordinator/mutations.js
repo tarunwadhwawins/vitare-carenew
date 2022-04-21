@@ -258,3 +258,15 @@ export const contactDetails = (state, data) => {
 export const clearStaffFormValidation = (state, data) => {
 	state.clearStaffFormValidation = data;
 };
+
+
+export const documentStaffDetails = (state, data) => {
+ const tags = []
+  data.tag.map(tag => {
+    tags.push(tag.tagId)
+  })
+  data.tags = tags
+  data.document = data.path
+  data.type = data.typeId
+  state.documentStaffDetails = data
+};

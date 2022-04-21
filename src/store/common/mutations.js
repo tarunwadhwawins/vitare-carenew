@@ -21,7 +21,9 @@ export const globalCodes = (state, data) => {
             state.country = element.globalCode;
         }
         if (element.name === 'States') {
-            state.state = element.globalCode
+            state.state = element.globalCode.sort(function(a, b) { 
+                return a.id - b.id 
+              })
         }
         if (element.name === 'Contact Type') {
             state.pmOfcontact = element.globalCode;

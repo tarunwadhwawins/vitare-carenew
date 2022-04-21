@@ -5,6 +5,7 @@
             <div class="form-group">
               <a-form-item :label="$t('careCoordinator.roles.role')" name="roles" :rules="[{ required: true, message: $t('careCoordinator.roles.role')+' '+$t('global.validation') }]">
               <RoleDropDown v-model:value="roles.roles" @handleRoleChange="handleRoleChange($event)" @change="checkChangeInput()"/>
+              <ErrorMessage v-if="errorMsg" :name="errorMsg.roles?errorMsg.roles:''" />
               </a-form-item>
             </div>
         </a-col>
@@ -33,11 +34,13 @@ import { useStore } from "vuex";
 import Loader from "@/components/loader/Loader";
 import RoleTable from "../../care-coordinator/tables/RoleTable";
 import RoleDropDown from "@/components/modals/search/RoleDropdownSearch.vue"
+import ErrorMessage from "@/components/common/messages/ErrorMessage";
 export default defineComponent({
   components: {
     Loader,
     RoleTable,
-    RoleDropDown
+    RoleDropDown,
+    ErrorMessage
   },
   props:{
     paramId:String,

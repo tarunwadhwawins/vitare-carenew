@@ -20,7 +20,7 @@
         </a-col>
       </a-row>
       <a-col :span="24">
-        <a-button type="primary" html-type="submit">{{$t('global.update')}}</a-button>
+        <a-button type="primary" html-type="submit" :disabled="button ? false : true">{{$t('global.update')}}</a-button>
       </a-col>
     </a-form>
     <Loader />
@@ -31,9 +31,12 @@
 import { computed, watchEffect, reactive, ref } from 'vue-demi'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import { timeStamp,timeStampFormate,disableHours } from '../../commonMethods/commonMethod';
+import { timeStamp,timeStampFormate,disableHours,errorSwal, } from '../../commonMethods/commonMethod';
 import moment from 'moment';
 import Loader from "@/components/loader/Loader";
+import {
+    messages
+} from "@/config/messages"
 
 export default {
   props: {
@@ -49,6 +52,7 @@ export default {
     const route = useRoute()
     const paramId = route.params.udid
     const formRef = ref()
+    const button = ref(true)
     var isEdit = reactive(props.isAvailabilityEdit)
 
     const availabilityDetails = computed(() => {
@@ -74,22 +78,28 @@ export default {
     const form = reactive({ ...editAvailabilityForm })
     const submitForm = () => {
       isEdit = false
+       button.value = false
       let startTime = timeStamp(moment().format('MM/DD/YYYY') + ' ' + editAvailabilityForm.startTime + ':00');
       let endTime = timeStamp(moment().format('MM/DD/YYYY') + ' ' + editAvailabilityForm.endTime + ':00')
-      console.log('object',editAvailabilityForm);
       const data = {
         startTime: startTime,
         endTime: endTime,
       }
-      store.dispatch('updateAvailability', {
-        id: addStaff.value?addStaff.value.id:route.params.udid,
-        availabilityId: availabilityDetails.value.id,
-        data: data,
-      }).then(() => {
-        emit('closeModal')
-        Object.assign(editAvailabilityForm, form)
-        store.dispatch("availabilityList", addStaff.value?addStaff.value.id:route.params.udid);
-      })
+      if (startTime === endTime || startTime > endTime) {
+                errorSwal(messages.startTimeAndEndTime)
+                button.value = true
+            }else{
+
+              store.dispatch('updateAvailability', {
+                id: addStaff.value?addStaff.value.id:route.params.udid,
+                availabilityId: availabilityDetails.value.id,
+                data: data,
+              }).then(() => {
+                emit('closeModal')
+                Object.assign(editAvailabilityForm, form)
+                store.dispatch("availabilityList", addStaff.value?addStaff.value.id:route.params.udid);
+              })
+            }
     }
 
     function getTime(event) {
@@ -114,6 +124,7 @@ export default {
         }
 
     return {
+      button,
       disableHours,
       checkChangeInput,
       addStaff,

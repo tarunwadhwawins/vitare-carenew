@@ -268,10 +268,12 @@ export default {
 
     const showDocModal = () => {
         store.commit('errorMsg', null)
+        store.state.careCoordinator.documentStaffDetails=null
       visibleStaffDoc.value = true;
       clearData.value=false
       store.commit('clearStaffFormValidation',false)
     };
+ 
     const showModalRole = () => {
         store.commit('errorMsg', null)
       visibleRole.value = true;
