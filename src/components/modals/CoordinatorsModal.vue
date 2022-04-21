@@ -131,7 +131,8 @@ import {
     computed,
     onUnmounted,
     watchEffect,
-    ref
+    ref,
+    onMounted
 } from "vue";
 import Contacts from "@/components/modals/forms/Contacts";
 import Availability from "@/components/modals/forms/Availability";
@@ -309,6 +310,9 @@ export default {
                 info.value.resetFields()
             }
         }
+        onMounted(()=>{
+            store.state.careCoordinator.documentStaffDetails=null
+        })
         onUnmounted(() => {
             store.commit('errorMsg', null)
             store.state.careCoordinator.addStaff =null

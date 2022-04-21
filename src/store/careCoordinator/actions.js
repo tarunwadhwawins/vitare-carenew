@@ -434,6 +434,44 @@ export const deleteStaffDocument = async ({
 }
 
 
+export const documentStaffDetails = async ({commit}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("get", `staff/${data.staffUdid}/document/${data.documentUdid}`, null, null).then((response) => {
+    commit('documentStaffDetails', response.data.data)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      errorSwal(error.response.data.message)
+    }
+    commit('loadingStatus', false)
+  })
+}
+
+export const updateStaffDocument = async ({commit}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("put", `staff/${data.staffUdid}/document/${data.documentUdid}`, null, data.data).then((result) => {
+    successSwal(result.data.message)
+    commit('loadingStatus', false)
+    commit('closeModal',true)
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      errorSwal(error.response.data.message)
+    }
+    commit('loadingStatus', false)
+  })
+}
+
+
 
 export const staffDocuments = async ({
   commit

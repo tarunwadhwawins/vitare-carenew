@@ -46,9 +46,12 @@
         </a-col>
     </a-row>
     <a-row :gutter="24" class="mb-24">
-        <a-col :span="24" v-if="paramId">
+        <a-col :span="24" v-if="paramId && !documentDetails">
             <a-button html-type="reset" style="margin-right: 8px" @click="reset()">{{$t('global.clear')}}</a-button>
             <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
+        </a-col>
+        <a-col :span="24" v-else-if="paramId && documentDetails">
+            <a-button type="primary" html-type="submit">{{$t('global.update')}}</a-button>
         </a-col>
         <a-col :span="24" v-else>
             <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
@@ -146,7 +149,9 @@ export default defineComponent({
       return store.state.careCoordinator;
     });
 
-    
+    const documentDetails = computed(() => {
+      return store.state.careCoordinator.documentStaffDetails
+    })
 
     const filePath = computed(() => {
       return store.state.patients.uploadFile;
@@ -154,16 +159,44 @@ export default defineComponent({
 
     const documents = reactive({
       name: "",
-      document: filePath.value ? filePath.value : "",
+      document: documentDetails.value?documentDetails.value.path:filePath.value,
       type: "",
       tags: [],
       entity: "staff",
     });
 
+   
+
     const addDocument = () => {
-      if (filePath.value == null) {
+      if (filePath.value == null && !documentDetails.value) {
         docValidationError.value = true;
-      } else {
+      } else if (documentDetails.value) {
+            store.dispatch("updateStaffDocument", {
+              data: {
+            name: documents.name,
+            document: filePath.value? filePath.value:documentDetails.value.path ,
+            type: documents.type,
+            tags: documents.tags,
+            entity: "staff",
+          },
+              satffUdid: route.params.udid? route.params.udid: addStaffs.value.addStaff.id ,
+              documentUdid: documentDetails.value.id,
+            })
+            setTimeout(() => {
+          if (addStaffs.value.closeModal == true) {
+            image.value.stateValue = "";
+            docValidationError.value = false;
+            store.dispatch(
+              "staffDocuments",
+              route.params.udid? route.params.udid: addStaffs.value.addStaff.id
+            );
+            reset();
+            store.state.careCoordinator.documentStaffDetails=null
+            image.value.stateValue = ''
+            emit("saveModal", false);
+          }
+        }, 2000);
+      }else {
         store.dispatch("addStaffDocument", {
           data: {
             name: documents.name,
@@ -188,7 +221,13 @@ export default defineComponent({
           }
         }, 2000);
       }
+    
+      
     };
+
+     const form = reactive({
+      ...documents,
+    });
 
     const documentsData = computed(() => {
       return store.state.patients.documents;
@@ -217,11 +256,9 @@ export default defineComponent({
     const handleChange = (value) => {
       console.log(`selected ${value}`);
     };
-    const onFinishFailed = () => {};
-
-    const form = reactive({
-      ...documents,
-    });
+    const onFinishFailed = (value) => {
+      console.log('staff Document',value);
+    };
 
     function reset() {
       formRest.value.resetFields();
@@ -242,6 +279,12 @@ export default defineComponent({
       if (addStaffs.value.clearStaffFormValidation) {
         formRest.value.resetFields();
       }
+      if(documentDetails.value){
+        Object.assign(documents, documentDetails.value)
+      }else{
+        Object.assign(documents, form);
+        // formRest.value.resetFields();
+      }
     });
 
     function checkChangeInput() {
@@ -249,6 +292,7 @@ export default defineComponent({
     }
 
     return {
+      documentDetails,
       image,
       formRest,
       docValidationError,
