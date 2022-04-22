@@ -13,7 +13,7 @@
         placeholder="Search..."
         style="width: 100%"
         size="large"
-        @search="onSearch"
+        
       />
     </a-col>
     <a-col :md="24" :sm="24" :xs="24">

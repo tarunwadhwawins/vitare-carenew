@@ -1,12 +1,16 @@
- import ServiceMethodService from '../../services/serviceMethod';
- import { API_ENDPOINTS } from "../../config/apiConfig"
- import { successSwal, errorSwal } from '../../commonMethods/commonMethod'
-export const rolesList = async ({ commit }) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['rolesList'], null, null).then((response) => {
+ import ServiceMethodService from '@/services/serviceMethod';
+ import { API_ENDPOINTS } from "@/config/apiConfig"
+ import { successSwal, errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
+export const rolesList = async ({ commit },page) => {
+	commit('loadingStatus', true)
+	let link = page?API_ENDPOINTS['rolesList']+'?active=1'+page:API_ENDPOINTS['rolesList']+'?active=1'
+	await ServiceMethodService.common("get", link, null, null).then((response) => {
 		//console.log("data",response.data.data)
-		commit('rolesListSuccess', response.data);
+		commit('roleList', response.data);
+		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -18,6 +22,7 @@ export const rolePermissions = async ({ commit }) => {
 		commit('rolePermissionsSuccess', response.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -28,6 +33,7 @@ export const addRole = async ({ commit }, data) => {
 		commit('addRoleSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -38,16 +44,20 @@ export const addPermissions = async ({ commit }, data) => {
 		
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
 }
 export const editPermissions = async ({ commit }, id) => {
+	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", API_ENDPOINTS['rolePermissionEdit'], id, null).then((response) => {
 		commit('editRoleSuccess', response.data.data);
+		commit('loadingStatus', false)
 		
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -56,10 +66,15 @@ export const editPermissions = async ({ commit }, id) => {
 export const UpdateRole = async ({ commit }, data) => {
 	
 	await ServiceMethodService.common("put", API_ENDPOINTS['role'], data.id, data.data).then((response) => {
-		//successSwal(response.data.message)
+		if(data.show){
+			successSwal(response.data.message)
+		}
+		
 		commit('UpdateRoleSuccess', response.data.data);
+
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -70,6 +85,7 @@ export const updatePermission = async ({ commit }, data) => {
 		//successSwal(response.data.message)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		
 		commit('failure', error.response.data);
 	})
@@ -79,6 +95,7 @@ export const roleDetails = async ({ commit }, id) => {
 		commit('roleDetailsSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		
 		commit('failure', error.response.data);
 	})
@@ -89,6 +106,7 @@ export const deleteRole = async ({ commit }, id) => {
 		successSwal(response.data.message)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		
 		commit('failure', error.response.data);
 	})
@@ -96,11 +114,11 @@ export const deleteRole = async ({ commit }, id) => {
 //dashboardWidget
 export const dashboardWidget = async ({ commit }) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['dashboardWidget'], null, null).then((response) => {
-		console.log(response.data.data)
 		commit('dashboardWidget', response.data.data);
 		
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -111,6 +129,7 @@ export const addDashboardWidget = async ({ commit },data) => {
 		
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})
@@ -121,6 +140,7 @@ export const editdWidget = async ({ commit },id) => {
 		
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		errorSwal(error.response.data.message)
 		commit('failure', error.response.data);
 	})

@@ -1,12 +1,11 @@
-
 <template>
-<a-row v-if="arrayToObjact(patients.patientsPermissions,1)">
-    <a-col :span="24" >
-        <ShowModalButton @isVisible="showModal($event)" :headingText="$t('patient.patients')" :buttonText="$t('patient.addNewPatients')" />
+<a-row>
+    <a-col :span="24">
+        <ShowModalButton @isVisible="showModal($event)" :headingText="$t('patient.patients')" :buttonText="$t('patient.addNewPatients')" v-if="arrayToObjact(screensPermissions,62)" />
     </a-col>
 </a-row>
-<a-row v-if="arrayToObjact(patients.patientsPermissions,2)">
-    <a-col :span="24">
+<a-row>
+    <a-col :span="24" v-if="arrayToObjact(screensPermissions,65)">
         <a-row :gutter="24">
             <a-col :xl="4" :sm="8" :xs="24">
                 <CounterCard colorBox="colorBox red" :count="5" :text="$t('patient.critical')" />
@@ -29,20 +28,18 @@
         </a-row>
     </a-col>
 </a-row>
-<a-row >
+<a-row>
     <a-col :span="12">
-        <a-select v-model:value="value2" :size="size" mode="tags" style="width: 100%" placeholder="Search . . ." :options="searchoptions" @change="handleChange">
-        </a-select>
+        <SearchField endPoint="patient" v-if="arrayToObjact(screensPermissions, 65)" />
     </a-col>
-    <a-col :span="12" v-if="arrayToObjact(patients.patientsPermissions,3)">
+    <a-col :span="12">
         <div class="text-right mb-24">
-            <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
+            <ExportToExcel @click="exportExcel('patient_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions,66)" />
         </div>
     </a-col>
-    <a-col :span="24" v-if="arrayToObjact(patients.patientsPermissions,4)">
-
-        <DataTable v-if="patients.column" :columns="patients.column" :patientRecords="patients.patientList"  />
-     
+    <a-col :span="24">
+        <DataTable v-if="arrayToObjact(screensPermissions, 65)" />
+        <TableLoader />
     </a-col>
 </a-row>
 
@@ -50,62 +47,84 @@
 <PatientsModal v-model:visible="PatientsModal" @saveModal="handleOk($event)" />
 <!--end-->
 </template>
+
 <script>
-import {  ref, watchEffect } from "vue";
-import { useStore } from "vuex";
+import {
+    ref,
+    watchEffect,
+    computed,
+    onUnmounted
+} from "vue";
+import {
+    useStore
+} from "vuex";
 import PatientsModal from "@/components/modals/PatientsModal";
 import CounterCard from "./counter-card/CounterCard";
 import ShowModalButton from "@/components/common/show-modal-button/ShowModalButton";
-
-import { arrayToObjact } from "@/commonMethods/commonMethod";
-// import { messages } from "../../config/messages";
+import TableLoader from "@/components/loader/TableLoader"
+import {
+    arrayToObjact,
+    exportExcel
+} from "@/commonMethods/commonMethod";
 import DataTable from "./data-table/DataTable"
+import SearchField from "@/components/common/input/SearchField";
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 export default {
-  name: "Patients",
-  components: {
-    PatientsModal,
-    // UserOutlined,
-    // WarningOutlined,
-    CounterCard,
-    ShowModalButton,
-    DataTable
-  },
+    name: "Patients",
+    components: {
+        PatientsModal,
+        CounterCard,
+        ShowModalButton,
+        DataTable,
+        TableLoader,
+        SearchField,
+        ExportToExcel
+    },
 
-  setup() {
-    const store = useStore();
-    const searchoptions = ref([]);
-    const PatientsModal = ref(false);
-    const showModal = (value) => {
-      PatientsModal.value = value;
-    };
-    const handleOk = (status) => {
-      PatientsModal.value = status;
-    };
-    const handleChange = () => {};
+    setup() {
+        const store = useStore();
+        const searchoptions = ref([]);
+        const PatientsModal = ref(false);
+        const showModal = (value) => {
+            PatientsModal.value = value;
+        };
+        const handleOk = (status) => {
+            PatientsModal.value = status;
+        };
+        const handleChange = () => {};
 
-    watchEffect(() => {
-      store.getters.patientsRecord.patientList=""
-      store.dispatch("programList");
-      store.dispatch("patients");
-    });
+        watchEffect(() => {
+            store.getters.patientsRecord.patientList = ""
+            store.dispatch("programList");
+            store.dispatch("patients");
+            store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+        });
 
-   
+        const totalPatients = computed(() => {
+            return store.state.counterCards.totalPatientcount
+        })
+        onUnmounted(() => {
+            store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+        })
+        return {
+            exportExcel,
+            totalPatients,
+            screensPermissions: store.getters.screensPermissions,
+            arrayToObjact,
+            PatientsModal,
+            showModal,
+            handleOk,
+            handleChange,
+            searchoptions,
+            search: store.getters.searchTable,
 
- 
-     
-
-    return {
-      arrayToObjact,
-      PatientsModal,
-      showModal,
-      handleOk,
-      handleChange,
-      searchoptions,
-      size: ref(),
-      value2: ref(),
-      patients:store.getters.patientsRecord,
-     
-    };
-  },
+        };
+    },
 };
 </script>

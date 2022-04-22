@@ -1,10 +1,12 @@
 <template>
-<a-form :model="roles" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addRole" @finishFailed="roleDataFailed">
+<a-form :model="roles" ref="formRest" name="basic" scrollToFirstError=true :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addRole" @finishFailed="roleDataFailed">
     <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
             <div class="form-group">
-                <label>{{$t('careCoordinator.roles.role')}}</label>
-                <a-select v-if="staffs.roles!=null" v-model:value="roles.roles"  size="large" placeholder="Select Role" style="width: 100%" :options="staffs.roles.map((item) => ({ label: item.name?item.name:'', value: item.id }))" @change="handleChange" />
+              <a-form-item :label="$t('careCoordinator.roles.role')" name="roles" :rules="[{ required: true, message: $t('careCoordinator.roles.role')+' '+$t('global.validation') }]">
+              <RoleDropDown v-model:value="roles.roles" @handleRoleChange="handleRoleChange($event)" @change="checkChangeInput()"/>
+              <ErrorMessage v-if="errorMsg" :name="errorMsg.roles?errorMsg.roles:''" />
+              </a-form-item>
             </div>
         </a-col>
     </a-row>
@@ -18,19 +20,8 @@
     </a-row>
 </a-form>
 
-<a-row :gutter="24" v-show="!paramId">
+<a-row :gutter="24" v-if="!paramId">
     <a-col :span="24">
-        <!-- <a-table  rowKey="id" :pagination="false" :columns="staffs.roleListColms" :data-source="staffs.roleList" :scroll="{ x: 900 }">
-            <template #action="text">
-                <a-tooltip placement="bottom" @click="deleteRole(text.record.id)">
-                    <template #title>
-                        <span>{{$t('global.delete')}}</span>
-                    </template>
-                    <a class="icons">
-                        <DeleteOutlined /></a>
-                </a-tooltip>
-            </template>
-        </a-table> -->
         <RoleTable :Id="Id" />
         <Loader />
     </a-col>
@@ -39,23 +30,25 @@
 
 <script>
 import { defineComponent, reactive, ref, computed, watchEffect } from "vue";
-// import { DeleteOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
-// import { warningSwal } from "@/commonMethods/commonMethod";
-// import { messages } from "@/config/messages";
 import Loader from "@/components/loader/Loader";
 import RoleTable from "../../care-coordinator/tables/RoleTable";
+import RoleDropDown from "@/components/modals/search/RoleDropdownSearch.vue"
+import ErrorMessage from "@/components/common/messages/ErrorMessage";
 export default defineComponent({
   components: {
-    // DeleteOutlined,
     Loader,
     RoleTable,
+    RoleDropDown,
+    ErrorMessage
   },
   props:{
-    paramId:String
+    paramId:String,
+    clearData:Boolean
   },
-  setup(props) {
+  setup(props,{emit}) {
     const store = useStore();
+    const formRest =ref();
     const roles = reactive({
       roles: [],
     });
@@ -66,36 +59,57 @@ export default defineComponent({
         data: {roles:Object.values(roles)},
       });
       setTimeout(() => {
+        if(staffs.value.closeModal==true){
         store.dispatch("roleList", props.paramId?props.paramId:staffs.value.addStaff.id);
+          reset()
+          emit("saveModal", false)
+      }
       }, 2000);
     }
 
-    // function deleteRole(id) {
-    //   warningSwal(messages.deleteWarning).then((response) => {
-    //     if (response == true) {
-    //       store.dispatch("deleteStaffRole", {
-    //         id: staffs.value.addStaff.id,
-    //         roleID: id,
-    //       });
-    //       setTimeout(() => {
-    //         store.dispatch("roleList",staffs.value.addStaff.id);
-    //       }, 2000);
-    //     }
-    //   });
-    // }
+    const handleRoleChange = (val) => {
+      roles.roles = val;
+    };
+
     const staffs = computed(() => {
       return store.state.careCoordinator;
     });
 
-    watchEffect(() => {
-      store.dispatch("roles");
+    const form = reactive({
+      ...roles,
     });
+    function reset(){
+      Object.assign(roles,form)
+    }
 
+    watchEffect(()=>{
+    store.dispatch("roles");
+    if(props.clearData==true){
+      Object.assign(roles,form)
+    }
+    if(staffs.value.clearStaffFormValidation){
+        formRest.value.resetFields();
+      }
+    })
+    
+    function checkChangeInput(){ 
+      store.state.careCoordinator.errorMsg = ''
+      store.commit('checkChangeInput',true)
+    }
+    const errorMsg = computed(() => {
+      return store.state.careCoordinator.errorMsg;
+    });
     const Id = staffs.value.addStaff?staffs.value.addStaff.id:''
+
     return {
+      formRest,
+      loadingStatus:store.getters.loadingStatus,
+      handleRoleChange,
+      errorMsg,
+      reset,
+      checkChangeInput,
       Id,
       staffs,
-      // deleteRole,
       addRole,
       size: ref("large"),
       roles,

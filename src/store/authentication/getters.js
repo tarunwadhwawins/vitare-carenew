@@ -4,14 +4,13 @@ import router from '@/router/index'
 import state from './state';
 import { notification, Button } from "ant-design-vue";
 import { successSwal } from '@/commonMethods/commonMethod';
-
+const sipDomain = process.env.VUE_APP_SIP_DOMAIN
 
 export function videoCall() {
     let callNotification =0
     const key = `open${Date.now()}`;
-    console.log('loginDetails=>', state.loggedInUser.user.sipId);
     state.options = Web.SimpleUserOptions = {
-        aor: `sip:${state.loggedInUser.user.sipId}@dev.icc-heaalth.com`,
+        aor: `sip:${state.loggedInUser.user.sipId}@${sipDomain}`,
         media: {
             constraints: {
                 audio: true,
@@ -35,7 +34,7 @@ export function videoCall() {
                             onClick: () => {
                                 callNotification=0
                                 state.simpleUser = simpleUser,
-                                router.push('/video-call/sjx56ko0'), notification.close(key)
+                                router.push('/video-call'), notification.close(key)
                             }
                         },
                             "Accept"
@@ -97,3 +96,5 @@ export function videoCall() {
     // }
 
 }
+
+

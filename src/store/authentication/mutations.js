@@ -3,15 +3,19 @@ import router from '@/router/index'
 import { successSwal } from "@/commonMethods/commonMethod";
 import { h } from 'vue'
 import { notification, Button } from "ant-design-vue";
+
+const sipDomain = process.env.VUE_APP_SIP_DOMAIN
 const key = `open${Date.now()}`;
-export const loginSuccess = async (state, login) => {
-  state.token = login;
-  state.loggedInUser=JSON.parse(localStorage.getItem('auth'))
+let date = new Date();
+export const loginSuccess = async (state, data) => {
+  state.token = data.user;
+  state.loggedInUser=JSON.parse(localStorage.getItem('auth')),
+  state.expiresIn= data?date.setSeconds(date.getSeconds() + ((data.expiresIn/100)-10)):localStorage.getItem('expiresIn')
   state.loginErrorMsg = null;
   let callNotification = 0
 // console.log('loginDetails=>',state.loggedInUser.user.sipId);
 state.options= Web.SimpleUserOptions = {
-    aor:`sip:${state.loggedInUser.user.sipId}@dev.icc-heaalth.com`,
+    aor:`sip:${state.loggedInUser.user.sipId}@${sipDomain}`,
     media: {
       constraints: {
         // This demo is making "video only" calls
@@ -34,7 +38,7 @@ state.options= Web.SimpleUserOptions = {
               h(Button,{
                   type: "primary",
                   onClick: () =>  {callNotification=0,state.simpleUser = simpleUser,
-                  router.push('/video-call/sjx56ko0'),notification.close(key)}
+                  router.push('/video-call'),notification.close(key)}
                 },
                 "Accept"
               ),
@@ -49,7 +53,6 @@ state.options= Web.SimpleUserOptions = {
         },
         onCallHangup: async () => {
           if(callNotification==1){
-              console.log('callHangValue',callNotification);
               notification.close(key)
           }else{
             successSwal('Call Ended! Thank You')
@@ -96,10 +99,18 @@ state.options= Web.SimpleUserOptions = {
 
 }
 
-export const logoutSuccess = async (state, logout) => {
-  state.logout = logout;
-  state.token = '';
-  state.errorMsg = '';
+
+export const logoutSuccess = async (state) => {
+  const simpleUser = new Web.SimpleUser(state.server, state.options);
+  state.logout = null;
+  state.token = null;
+  state.errorMsg = null;
+  state.accessPermission=null
+  simpleUser.disconnect()
+	state.options = null
+	state.loggedInUser = null
+	state.simpleUser=null
+	state.acceptVideoCallDetails=null
 }
 
 export const refreshTokenSuccess = async (state, token) => {
@@ -115,3 +126,9 @@ export const loginFailure = (state, error) => {
 export const accessPermission = (state, data) => {
   state.accessPermission = data;
 }
+
+
+export const expiresIn = (state, data) => {
+  state.expiresIn = data;
+}
+

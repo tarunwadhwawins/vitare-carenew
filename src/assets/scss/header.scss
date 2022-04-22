@@ -15,7 +15,7 @@
         width: 160px;
       }
       .logoInner {
-        width: 120px;
+        width: 80px;
         @media screen and (max-width: 991px) {
           padding-left: 30px;
         }
@@ -29,7 +29,7 @@
         top: 0;
         // display: none;
         cursor: pointer;
-        left: 155px;
+        right: 0;
         @media screen and (max-width: 767px) {
           right: 7px;
         }
@@ -76,7 +76,8 @@
         }
       }
       .search {
-        min-width: 300px;
+        min-width: 500px;
+        max-width: 500px;
         @media screen and (max-width: 1199px) {
           min-width: 150px;
         }
@@ -150,7 +151,7 @@
   }
   .icon {
     svg {
-      font-size: 22px;
+      font-size: 26px;
     }
   }
 }
@@ -172,6 +173,16 @@
     }
     .listing {
       border-bottom: 1px solid #e3e3e3;
+      &.read {
+        a {
+          p {
+            font-family: $font-family-semi-bold;
+          }
+        }
+      }
+      &.unread {
+        background-color: $gray-color-100;
+      }
       a {
         text-decoration: none;
         padding: 10px 15px;

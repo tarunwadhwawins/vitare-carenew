@@ -1,15 +1,8 @@
 <template>
-  <a-modal width="1000px" title="Time Logs Detail" centered>
+  <a-modal width="95%" title="Time Logs Detail" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <a-table  rowKey="id"  :columns="timeLogColumns" :data-source="timeLogsList" :scroll="{ x: 900 }" :pagination="false" >
-          <!-- <template #category="{record}">
-            <span>{{record.category.name}}</span>
-          </template> -->
-          <template #action="{record}">
-            <!-- <a class="icons"><EditOutlined @click="editTimeLog(record.id)" /></a> -->
-            <a class="icons"><DeleteOutlined @click="deleteTimeLog(record.id)"/></a>
-          </template>
         </a-table>
         <Loader/>
       </a-col>
@@ -18,9 +11,12 @@
 </template>
 
 <script>
-import { computed, defineComponent, watchEffect } from "vue";
 import {
-  DeleteOutlined,
+  computed,
+  defineComponent,
+} from "vue";
+import {
+  // DeleteOutlined,
   // EditOutlined
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
@@ -32,12 +28,13 @@ import Loader from "../loader/Loader"
 export default defineComponent({
   components: {
     Loader,
-    DeleteOutlined,
+    // DeleteOutlined,
     // EditOutlined,
   },
   setup() {
     const store = useStore();
     const route = useRoute();
+    const patientId = route.params.udid;
     
     const timeLogColumns = [
       {
@@ -81,17 +78,31 @@ export default defineComponent({
         },
       },
       {
+        title: "CPT Code",
+        dataIndex: "cptCode",
+        key: "cptCode",
+        sorter: {
+          compare: (a, b) => a.cptCode - b.cptCode,
+          multiple: 2,
+        },
+      },
+      {
+        title: "Note",
+        dataIndex: "note",
+        key: "note",
+        sorter: {
+          compare: (a, b) => a.note - b.note,
+          multiple: 2,
+        },
+      },
+      /* {
         title: "Action",
         dataIndex: "action",
         slots: {
           customRender: "action",
         },
-      },
+      }, */
     ];
-    
-    watchEffect(() => {
-      store.dispatch('timeLogsList', route.params.udid)
-    })
 
     const timeLogsList =  computed(() => {
       return store.state.timeLogs.timeLogsList
@@ -100,10 +111,11 @@ export default defineComponent({
     const deleteTimeLog = (timeLogId) => {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
-          const patientId = route.params.udid;
           store.dispatch('deleteTimeLog', {patientId, timeLogId}).then(() => {
-            store.dispatch('timeLogsList', patientId);
-            store.dispatch('latestTimeLog', patientId)
+            store.dispatch('timeLogsList', {
+              id: route.params.udid
+            });
+            store.dispatch('latestTimeLog', route.params.udid)
           });
         }
       })

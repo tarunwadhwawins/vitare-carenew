@@ -30,7 +30,7 @@ const global = {
   previous: 'Previous',
   next: 'Next',
   done: 'Done',
-  callQueue: 'Call Queue',
+  callQueue: 'Call State',
   add:'Add',
   edit:'Edit',
   delete:'Delete',
@@ -64,7 +64,23 @@ const global = {
   save:'Save',
   clear:'Clear',
   send:'Send',
-  service:'Service'
+  service:'Service',
+  isPrimary:'Is Primary',
+  currentPassword:'Current Password',
+  newPassword:'New Password',
+  confirmPassword:'Confirm Password',
+  confirmNewPassword:'Confirm New Password',
+  resetPassword:'Reset Password',
+  submit:'Submit',
+  familyMembers:'Family Members',
+  addFamilyMembers:'Add Family Member',
+  physicians:'Care Coordinators',
+  addPhysician:'Add Care Coordinator',
+  careTeam:'Health Team',
+  addCareTeam:'Add Health Team',
+  careCoodinator:'Care Coordinator',
+  staff:'Staff',
+  startCall:'Start Call',
 
 }
 

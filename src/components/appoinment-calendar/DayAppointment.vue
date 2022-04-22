@@ -1,25 +1,7 @@
 <template>
   <a-row :gutter="16">
-    <a-col :span="12">
-      <div class="calenderLeftRightBtn">
-        <a-button type="primary">
-          <template #icon>
-            <LeftOutlined />
-          </template>
-        </a-button>
-        <a-button type="primary">
-          <template #icon>
-            <RightOutlined />
-          </template>
-        </a-button>
-      </div>
-    </a-col>
-    <a-col :span="12">
-      <h3>March 02, 2022</h3>
-    </a-col>
     <a-col :span="24">
       <div class="dayCalendar">
-        <Loader />
         <table class="table table-bordered" v-if="appointmentSearch">
           <tbody v-for="(timeHeding, k) in appointmentSearch" :key="k">
             <tr>
@@ -46,18 +28,13 @@
 </template>
 <script>
 import AppointmentCardList from "./AppointmentCardList";
-import { timeStampToTime } from "../../commonMethods/commonMethod";
-import Loader from "../loader/Loader";
+import { timeStampToTime } from "@/commonMethods/commonMethod";
 import { computed } from "vue";
 import { useStore } from "vuex";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons-vue";
 
 export default {
   components: {
     AppointmentCardList,
-    Loader,
-    LeftOutlined,
-    RightOutlined,
   },
   props: {},
   setup() {
@@ -66,7 +43,6 @@ export default {
       return store.state.appointment.officeTime;
     });
 
-    //console.log(appointment)
     const linkTo = "patients-summary";
     const appointmentSearch = computed(() => {
       return store.state.appointment.searchAppointmentRecords;

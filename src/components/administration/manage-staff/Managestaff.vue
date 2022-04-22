@@ -12,10 +12,10 @@
             <a-row>
               <a-col :span="24">
                 <h2 class="pageTittle">
-                  Manage Staff
+                  Manage {{ $t('global.careCoodinator') }}
                   <div class="commonBtn">
                     <a-button class="btn primaryBtn" @click="showModal"
-                      >Add New Staff</a-button
+                      >Add New {{ $t('global.careCoodinator') }}</a-button
                     >
                   </div>
                 </h2>
@@ -158,7 +158,7 @@
 </template>
 
 <script>
-import Header from "@/components/administration/layout/header/Header";
+import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import { ref } from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";

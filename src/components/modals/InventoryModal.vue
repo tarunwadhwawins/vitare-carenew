@@ -1,40 +1,36 @@
 <template>
-  <a-modal width="800px" :title="title">
-    <a-form :model="inventoryForm" layout="vertical" @finish="submitForm">
+  <a-modal width="800px" :title="isAdd ? 'Edit Inventory' :'Add Inventory'" :footer="false" @cancel="closeModal()" centered :maskClosable="false">
+    <a-form ref="formRef" :model="inventoryForm" layout="vertical" @finish="submitForm" >
       <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
           <div class="form-group">
+            
             <a-form-item :label="$t('inventory.deviceType')" name="deviceType" :rules="[{ required: true, message: $t('inventory.deviceType')+' '+$t('global.validation')  }]">
-              <AutoComplete
-                :options="deviceTypes"
-                @on-select="onSelectOption"
-                v-if="deviceTypes"
-                v-model:value="inventoryForm.deviceType" />
+               
+                <GlobalCodeDropDown v-model:value="inventoryForm.deviceType" :globalCode="inventoryTypes" @change="onSelectOption(); checkChangeInput()" />
             </a-form-item>
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('inventory.modelNumber')" name="deviceModelId" :rules="[{ required: true, message: $t('inventory.modelNumber')+' '+$t('global.validation')  }]">
-              <AutoComplete
-                :options="deviceModals"
-                @on-select="onSelectModal"
-                v-if="deviceModals"
-                v-model:value="inventoryForm.deviceModelId" />
+                
+                <GlobalCodeDropDown   v-model:value="inventoryForm.deviceModelId" :globalCode="deviceModalsList" @change="checkChangeInput()"/>
             </a-form-item>
+            
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('inventory.serialNumber')" name="serialNumber" :rules="[{ required: true, message: $t('inventory.serialNumber')+' '+$t('global.validation')  }]">
-              <a-input v-model:value="inventoryForm.serialNumber" size="large" />
+              <a-input v-model:value="inventoryForm.serialNumber" size="large" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('inventory.macAddress')" name="macAddress" :rules="[{ required: true, message: $t('inventory.macAddress')+' '+$t('global.validation')  }]">
-              <a-input v-model:value="inventoryForm.macAddress" size="large" />
+              <a-input v-model:value="inventoryForm.macAddress" size="large" @change="checkChangeInput()"/>
             </a-form-item>
           </div>
         </a-col>
@@ -46,21 +42,32 @@
           </div>
         </a-col>
         <a-col :sm="24" :span="24">
-          <ModalButtons/>
+          <ModalButtons  :Id="isAdd"/>
         </a-col>
       </a-row>
+      <Loader />
     </a-form>
   </a-modal>
 </template>
 <script>
-import { ref, reactive, computed, watchEffect, onMounted } from "vue";
+import { ref, reactive, computed, watchEffect } from "vue";
 import { useStore } from "vuex"
 import ModalButtons from "@/components/common/button/ModalButtons";
-import AutoComplete from "@/components/common/input/AutoComplete";
+import Loader from "@/components/loader/Loader"
+// import AutoComplete from "@/components/common/input/AutoComplete";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
+import {
+	warningSwal
+} from "@/commonMethods/commonMethod";
+import {
+	messages
+} from "../../config/messages";
 export default {
   components: {
     ModalButtons,
-    AutoComplete,
+    // AutoComplete,
+    Loader,
+    GlobalCodeDropDown
   },
   props: {
     isAdd: {
@@ -70,30 +77,11 @@ export default {
   setup(props, {emit}) {
     const store = useStore()
     const checked = ref([false]);
-    const title = props.isAdd ? "Add Inventory" : "Edit Inventory";
-    const isEdit = props.isAdd ? false : true;
-    const disabled = props.isAdd ? false : true;
-    
-    const handleCancel = () => {
-      emit('is-visible', false);
-    };
+    const formRef = ref()
+   
 
     const inventory = computed(() => {
       return store.state.inventory;
-    })
-    console.log('inventory', inventory)
-    const inventoryDetail = inventory.value.inventoryDetails;
-    
-    var switchOn;
-    if(isEdit) {
-      switchOn = inventoryDetail && inventoryDetail.isActive ? true : false;
-    }
-    else {
-      switchOn = true;
-    }
-    
-    const inventoryTypes = computed(() => {
-      return store.state.common.deviceType;
     })
     
     const inventoryForm = reactive({
@@ -101,94 +89,103 @@ export default {
       deviceModelId: '',
       serialNumber: '',
       macAddress: '',
-      isActive: switchOn,
+      isActive: true,
     });
-
-    onMounted(() => {
-      if(isEdit) {
-        Object.assign(inventoryForm, inventory.value.inventoryDetails);
-      }
+    
+    const inventoryTypes = computed(() => {
+      return store.state.common.deviceType;
     })
-    
-    const deviceTypes = ref([])
-    inventoryTypes.value.globalCode.forEach(element => {
-      deviceTypes.value.push({
-        value: element.name,
-        id: element.id,
-      })
-    });
 
-    const onSelectOption = (selected) => {
-      deviceModalsList.value = null;
-      deviceTypes.value.forEach(type => {
-        if(type.value == selected) {
-          store.dispatch('deviceModalsList', type.id)
-        }
-      });
-    };
-    
-    const deviceModals = ref([])
-    var deviceModalsList = ref(null)
     watchEffect(() => {
-      deviceModalsList = computed(() => {
-        return store.state.inventory.deviceModalsList
-      });
-      deviceModals.value = [];
-      if(deviceModalsList.value != null) {
-        deviceModalsList.value.forEach(element => {
-          deviceModals.value.push({
-            value: element.modelNumber,
-            id: element.id,
-          })
-        });
+     
+      if(inventory.value.inventoryDetails){
+      if(props.isAdd) {
+     
+        Object.assign(inventoryForm, inventory.value.inventoryDetails);
+       // inventoryForm.deviceModelId= inventory.value.inventoryDetails.modelNumber
+      }
       }
     })
+   
+    const deviceModalsList = computed(() => {
+      return store.state.inventory.deviceModalsList
+    });
 
-    const modelId = ref(null);
-    const onSelectModal = (selected) => {
-      deviceModals.value.forEach(modal => {
-        if(modal.value == selected) {
-          modelId.value = modal.id;
-        }
-      });
+    const onSelectOption = () => {
+      inventoryForm.deviceModelId =null
+      store.dispatch('deviceModalsList', inventoryForm.deviceType)
     };
+    
+   
+    
+
+   
 
     const submitForm = () => {
-      if(isEdit) {
-        const data = {
-          "deviceModelId": modelId.value != null ? modelId.value : inventoryDetail.modelId,
-          "serialNumber": inventoryForm.serialNumber,
-          "macAddress": inventoryForm.macAddress,
-          "isActive": inventoryForm.isActive,
-        }
-        console.log('data', data)
-        const id = inventoryDetail.id;
-        store.dispatch('updateInventory', {id, data}).then(() => {
+      if(props.isAdd) {
+        
+        store.dispatch('updateInventory', {id: inventoryForm.id, data: inventoryForm}).then(() => {
           store.dispatch('inventoriesList')
+
           emit('is-visible', false);
         })
       }
       else {
-        inventoryForm.deviceModelId = modelId.value;
+        console.log('data', inventoryForm)
         store.dispatch('addInventory', inventoryForm).then(() => {
           store.dispatch('inventoriesList')
           emit('is-visible', false);
         })
       }
+      handleCancel();
+      store.commit('checkChangeInput', false)
     }
-    
+    function checkChangeInput() {
+			store.commit('checkChangeInput', true)
+		}
+
+		const checkFieldsData = computed(() => {
+			return store.state.common.checkChangeInput;
+		})
+    const form = reactive({ ...inventoryForm })
+    const handleCancel = () => {
+				formRef.value.resetFields();
+				Object.assign(inventoryForm, form)
+				//emit('is-visible', false);
+		};
+
+    function closeModal() {
+			if (checkFieldsData.value) {
+				warningSwal(messages.modalWarning).then((response) => {
+					if (response == true) {
+						handleCancel();
+						emit("is-visible", false);
+						store.commit('checkChangeInput', false)
+					} else {
+						emit("is-visible", true);
+					}
+				});
+			}
+			else {
+				formRef.value.resetFields();
+			}
+		}
     return {
-      onSelectModal,
-      deviceModals,
-      disabled,
-      title,
+      
+    
       inventoryForm,
       submitForm,
       handleCancel,
-      deviceTypes,
+     
       size: ref("large"),
       checked,
       onSelectOption,
+      inventoryTypes,
+      deviceModalsList,
+      closeModal,
+      checkFieldsData,
+			checkChangeInput,
+      formRef,
     };
   },
 };

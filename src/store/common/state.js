@@ -16,7 +16,6 @@ export default {
     network:null,
     specialization:null,
     taskCategory:null,
-    // errorMsg:null,
     successMsg:null, 
     insuranceName:null,
     insuranceType:null,
@@ -29,7 +28,37 @@ export default {
     noteTypes:null,
     noteCategories:null,
     programCategories:null,
-
+    vitalFieldsList:null,
+    vitalFieldsByDeviceId:null,
+    frequencyTypes:null,
+    modules:null,
+    allPatientsList:null,
+    allStaffList:null,
+    activeCptCodes:null,
+    checkChangeInput:false,
+    getNotifications:null,
+    searchTable:null,
+    notificationList:null,
+    dropdownLoadingStatus:false,
+    loadingTableStatus:null,
+    actionTrack:null,
+    orderTable:null,
+    getNotificationsList:null,
+    // phone msaking objects
+    bindProps:{
+        mode:"national",
+        defaultCountry: "US",
+        disabledFetchingCountry: true,
+        disabled: false,
+        disabledFormatting: true,
+        placeholder: "Enter a phone number",
+        required: true,
+        enabledCountryCode: false,
+        enabledFlags: true,
+        autocomplete: "off", 
+        onlyCountries:['US'],
+        
+    }
 
 
 }

@@ -1,6 +1,5 @@
 <template>
 <div>
-    <!---->
     <a-layout>
         <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
             <Header />
@@ -14,31 +13,40 @@
                             <h2 class="pageTittle">{{$t('timeLogReport.auditTimeLog')}}</h2>
                         </a-col>
                     </a-row>
-                    <a-row :gutter="24">
-                        <a-col :sm="10" :xs="24">
-                            <div class="form-group">
-                                <label>{{$t('timeLogReport.filterBy')}}</label>
-                                <a-select ref="select" v-model="value1" style="width: 100%" size="large" @focus="focus" @change="handleChange">
-                                    <a-select-option value="lucy">Patient</a-select-option>
-                                    <a-select-option value="lucy">Staff</a-select-option>
-                                </a-select>
-                            </div>
-                        </a-col>
-                        <a-col :sm="10" :xs="24">
-                            <div class="form-group">
-                                <label>{{$t('global.name')}}</label>
-                                <a-input v-model="value" size="large" />
-                            </div>
-                        </a-col>
-                        <a-col :sm="4" :xs="24">
-                            <div class="text-right mt-28">
-                                <a-button class="btn primaryBtn" @click="showModal">{{$t('timeLogReport.view')}}</a-button>
-                            </div>
-                        </a-col>
-                    </a-row>
-                    <a-row>
-                        
-                        <TimeLogTable v-if="timeLogReports.timeLogReportList" :columns="timeLogReports.timeLogReportColumns" :timeLogRecords="timeLogReports.timeLogReportList" ></TimeLogTable>
+                    <a-form :model="auditTimeLog" name="auditTimeLog" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="updateAuditTime" >
+                        <a-row :gutter="24">
+                            <a-col :sm="8" :xs="24">
+                                <div class="form-group"  v-if="arrayToObjact(screensPermissions, 332)">
+                                    <label>{{$t('global.startDate')}}</label>
+                                    <a-date-picker format="MM/DD/YYYY" value-format="YYYY-MM-DD" :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" v-model:value="auditTimeLog.startDate" :size="size" style="width: 100%" />
+                                </div>
+                            </a-col>
+                            <a-col :sm="8" :xs="24" >
+                                <div class="form-group" v-if="arrayToObjact(screensPermissions, 332)">
+                                    <label>{{$t('global.endDate')}}</label>
+                                    <a-date-picker format="MM/DD/YYYY" :disabledDate="d => !d || d.isSameOrBefore(auditTimeLog.startDate)" value-format="YYYY-MM-DD" v-model:value="auditTimeLog.endDate" :size="size" style="width: 100%" @change="dateChange" />
+                                </div>
+                            </a-col>
+
+                            <a-col :sm="2" :xs="24" >
+                                <div class="text-right mt-28" v-if="arrayToObjact(screensPermissions, 332)">
+                                    <a-button class="btn primaryBtn" html-type="submit">{{$t('timeLogReport.view')}}</a-button>
+                                </div>
+                            </a-col>
+                            <a-col :sm="2" :xs="24">
+                                <div class="text-right mt-28">
+                                    <a-button class="btn primaryBtn" @click="clearData">{{$t('global.clear')}}</a-button>
+                                </div>
+                            </a-col>
+                            <a-col :sm="4" :xs="24" >
+                                <div class="text-right mb-24">
+                                    <ExportToExcel @click="exportExcel('patientTimelog_report',filtterDates)" v-if="arrayToObjact(screensPermissions, 333)"/>
+                                </div>
+                            </a-col>
+                        </a-row>
+                    </a-form>
+                    <a-row >
+                        <TimeLogTable @scrolller="scrolller" v-if="arrayToObjact(screensPermissions, 332)"/>
                     </a-row>
                 </div>
             </a-layout-content>
@@ -50,45 +58,104 @@
 <script>
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
+import {
+    exportExcel,
+    arrayToObjact
+} from "@/commonMethods/commonMethod";
+import {
+    ref,
 
-import { ref, watchEffect } from "vue";
-import { useStore } from "vuex";
+    reactive,
+    onUnmounted,
+    onMounted,
+} from "vue";
+import {
+    useStore
+} from "vuex";
 import TimeLogTable from "./TimeLogTable"
+import moment from "moment"
+
 export default {
-  components: {
-    Header,
-    Sidebar,
-    TimeLogTable,
-  },
+    components: {
+        Header,
+        Sidebar,
+        TimeLogTable,
+        ExportToExcel
+    },
+    setup() {
+        const store = useStore();
+        const checked = ref([false]);
+        const linkTo = "patients-summary";
+        const auditTimeLog = reactive({
+            startDate: '',
+            endDate: '',
+        })
+        const dateSelect = ref(null)
+        const startDate = ref(null)
+        const endDate = ref(null)
 
-  setup() {
-    const store = useStore();
-    const checked = ref([false]);
-    const linkTo = "patients-summary";
-    
+        function dateChange() {
+            dateSelect.value = moment(auditTimeLog.endDate).add(1, 'day')
+        }
 
-    watchEffect(() => {
-        store.getters.timeLogReports.value.timeLogReportList=""
-      store.dispatch("timeLogReportList")
-    })
+        onMounted(() => {
+            store.dispatch("timeLogReportList")
+            store.dispatch('auditTimeLogFilterDates', "?fromDate=&toDate=")
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+        })
 
+        function clearData() {
+            auditTimeLog.startDate = ''
+            auditTimeLog.endDate = ''
+            store.dispatch("timeLogReportList", "?fromDate=&toDate=&page=")
+        }
 
-    // const timeLogReports = computed(() => {
-    //   return store.state.timeLogReport;
-    // });
+        function scrolller() {
+            setTimeout(() => {
+                window.scrollTo(0, 0)
+            }, 100)
 
-   
+        }
 
+        function updateAuditTime() {
+            if (auditTimeLog.startDate && auditTimeLog.endDate) {
 
-    return {
-      
-      linkTo,
-      checked,
-      value1: ref(),
-      size: ref("large"),
-      timeLogReports:store.getters.timeLogReports.value,
-    };
-  },
+                //store.getters.timeLogReports.value.timeLogReportList = ""
+                store.getters.timeLogReports.value.timeLogeMeta = ''
+                startDate.value = auditTimeLog.startDate ? (moment(auditTimeLog.startDate)).format("YYYY-MM-DD") : ''
+                endDate.value = auditTimeLog.endDate ? (moment(auditTimeLog.endDate)).format("YYYY-MM-DD") : ''
+                store.dispatch('auditTimeLogFilterDates', "?fromDate=" + startDate.value + "&toDate=" + endDate.value)
+                store.dispatch("timeLogReportList", "?fromDate=" + startDate.value + "&toDate=" + endDate.value + "&page=")
+            }
+        }
+        onUnmounted(() => {
+            store.dispatch('auditTimeLogFilterDates', "?fromDate=&toDate=")
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+        })
+
+        return {
+            arrayToObjact,
+            screensPermissions: store.getters.screensPermissions,
+            exportExcel,
+            linkTo,
+            updateAuditTime,
+            checked,
+            dateSelect,
+            auditTimeLog,
+            dateChange,
+            filtterDates: store.getters.auditTimeLogFilterDates,
+            value1: ref(),
+            size: ref("large"),
+            timeLogReports: store.getters.timeLogReports.value,
+            scrolller,
+            clearData
+        };
+    },
 };
 </script>
 

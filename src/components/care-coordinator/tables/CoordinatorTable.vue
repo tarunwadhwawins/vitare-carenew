@@ -1,94 +1,135 @@
 <template>
- 
-    <a-table  rowKey="id" :data-source="data" :scroll="{ y: 300 ,x: 1020}" :pagination=false :columns="fields" >
-    <template #name="{text,record}" >
-        <!-- <router-link :to="linkTo">{{ text.text }}</router-link> -->
-        <router-link @click="staffSummery(record.uuid)" :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}">{{ text }}</router-link>
+<a-table rowKey="id" :data-source="meta.staffs" :scroll="{ y: tableYScrollerCounterPage ,x: 1020}" :pagination=false :columns="meta.columns" @change="handleTableChange">
+    <template #name="{text,record}" v-if="arrayToObjact(screensPermissions,38)">
+        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}">{{ text }}</router-link>
+    </template>
+    <template #name="{text}" v-else>
+        <span>{{ text }}</span>
     </template>
 
     <template #createdDate="text">
         <span>{{ dateFormat(text.text) }}</span>
     </template>
-    <template #action="text">
-        <router-link :to="linkTo">{{ text.text }}</router-link>
+    <template #status="{record}"> 
+        <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" :disabled="!arrayToObjact(screensPermissions,38)"/>
     </template>
-    <!-- <template #compliance>
-        <a class="icons">
-            <WarningOutlined /></a>
-    </template> -->
-
     <template #lastReadingDate>
-        <WarningOutlined /> 
+        <WarningOutlined />
     </template>
 </a-table>
-<InfiniteLoader v-if="loader" />
 </template>
+
 <script>
-import { WarningOutlined } from "@ant-design/icons-vue"
-import {dateFormat} from "../../../commonMethods/commonMethod"
-import { ref, reactive,  onMounted } from "vue"
+import { WarningOutlined } from "@ant-design/icons-vue";
+import {
+  dateFormat,
+  tableYScrollerCounterPage,
+  arrayToObjact
+} from "@/commonMethods/commonMethod";
+import { onMounted } from "vue";
 import { useStore } from "vuex";
-import InfiniteLoader from "@/components/loader/InfiniteLoader";
+//import InfiniteLoader from "@/components/loader/InfiniteLoader";
 export default {
   name: "DataTable",
   components: {
     WarningOutlined,
-    InfiniteLoader
+    //  InfiniteLoader
   },
-  props: {
-        
-        staffRecords: {
-            type: Array,
-        },
-    },
-  setup(props) {
-    console.log(props.staffRecords)
+  props: {},
+  setup() {
     const store = useStore();
-        const fields = reactive(props.staffRecords.columns)
-        const data = reactive(props.staffRecords.staffs)
-        const meta = store.getters.staffRecord
-        const loader = ref(false)
-        onMounted(() => {
-            var tableContent = document.querySelector('.ant-table-body')
-            tableContent.addEventListener('scroll', (event) => {
-                let maxScroll = event.target.scrollHeight - event.target.clientHeight
-                let currentScroll = event.target.scrollTop + 2
-                if (currentScroll >= maxScroll) {
+    //const fields = reactive(props.staffRecords.columns)
 
-                    let current_page = meta.value.staffMeta.current_page + 1
+    const meta = store.getters.staffRecord.value;
+    let data = [];
+    let scroller = "";
+    onMounted(() => {
+      var tableContent = document.querySelector(".ant-table-body");
+      tableContent.addEventListener("scroll", (event) => {
+        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+        let currentScroll = event.target.scrollTop + 2;
+        if (currentScroll >= maxScroll) {
+          let current_page = meta.staffMeta.current_page + 1;
 
-                    if (current_page <= meta.value.staffMeta.total_pages) {
-                        loader.value = true
-                        meta.value.staffMeta = ""
-                        store.state.careCoordinator.staffs = ""
-                        store.dispatch("staffs", "?page=" + current_page).then(()=>{
-                            loadMoredata() 
-                        })
-                       
+          if (current_page <= meta.staffMeta.total_pages) {
+            scroller = maxScroll;
+            meta.staffMeta = "";
+            data = meta.staffs;
+            //store.state.careCoordinator.staffs = "";
 
-                    }
-                }
-            })
-        })
-
-        function loadMoredata() {
-            const newData = meta.value.staffs
-            
-            newData.forEach(element => {
-                data.push(element)
-            });
-            loader.value = false
+            store
+              .dispatch(
+                "staffs",
+                "?page=" +
+                  current_page +
+                  store.getters.searchTable.value +
+                  store.getters.orderTable.value.data
+              )
+              .then(() => {
+                loadMoredata();
+              });
+          }
         }
+      });
+    });
 
-    function staffSummery(uuid){
-      console.log('value',uuid);
+    function loadMoredata() {
+      const newData = meta.staffs;
+
+      newData.forEach((element) => {
+        data.push(element);
+      });
+      meta.staffs = data;
+      var tableContent = document.querySelector(".ant-table-body");
+      setTimeout(() => {
+        tableContent.scrollTo(0, scroller);
+      }, 50);
     }
+    const handleTableChange = (pag, filters, sorter) => {
+      if (sorter.order) {
+        let order = sorter.order == "ascend" ? "ASC" : "DESC";
+        let orderParam = "&orderField=" + sorter.field + "&orderBy=" + order;
+        store.dispatch("orderTable", {
+          data: orderParam,
+          orderBy: order,
+          page: pag,
+          filters: filters,
+        });
+        store.dispatch(
+          "staffs",
+          "?page=" + store.getters.searchTable.value + orderParam
+        );
+      } else {
+        store.dispatch("orderTable", {
+          data: "&orderField=&orderBy=",
+        });
+        store.dispatch(
+          "staffs",
+          "?page=" +
+            store.getters.searchTable.value +
+            store.getters.orderTable.value.data
+        );
+      }
+    };
+
+    const updateStatus = (id, status) => {
+      const data = {
+        isActive: status,
+      };
+      store.dispatch("updateStaffStatus", {
+        id,
+        data,
+      });
+    };
     return {
-      fields,
-      data,
-      staffSummery,
-      dateFormat
-    }
+      screensPermissions:store.getters.screensPermissions,
+      arrayToObjact,
+      updateStatus,
+      meta,
+      dateFormat,
+      handleTableChange,
+      tableYScrollerCounterPage,
+    };
   },
 };
 </script>

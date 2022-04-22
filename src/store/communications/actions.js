@@ -1,12 +1,13 @@
-import ServiceMethodService from '../../services/serviceMethod';
-// import AuthService from '../../services/auth';
-import { API_ENDPOINTS } from "../../config/apiConfig"
-
-export const callPlanned = async ({ commit }) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['CallPlanned'], null, null).then((response) => {
+import ServiceMethodService from '@/services/serviceMethod';
+import { API_ENDPOINTS } from "@/config/apiConfig"
+import { successSwal, errorSwal,startimeAdd, endTimeAdd, timeStamp,errorLogWithDeviceInfo} from '@/commonMethods/commonMethod'
+export const callPlanned = async ({ commit },from) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['CallPlanned']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null, null).then((response) => {
+		
 		commit('callPlannedSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -17,24 +18,40 @@ export const callPlanned = async ({ commit }) => {
 export const addCommunication = async ({ commit }, data) => {
 	await ServiceMethodService.common("post", API_ENDPOINTS['addCommunication'], null, data).then((response) => {
 		commit('addCommunicationSuccess', response.data.data);
+		successSwal(response.data.message)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+		errorSwal(error.response.data.message)
+	})
+}
+export const communicationsView = async ({ commit },id) => {
+	commit('loadingTableStatus', true)
+	await ServiceMethodService.common("get", API_ENDPOINTS['communicationsView'], id, null).then((response) => {
+		
+		commit('communicationsView', response.data.data);
+		commit('loadingTableStatus', false)
+	})
+	.catch((error) => {
+		commit('loadingTableStatus', false)
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
 	})
 }
-
-export const communicationTypes = async ({ commit }) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['communicationTypes'], null, null).then((response) => {
+export const communicationTypes = async ({ commit },from) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['communicationTypes']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null, null).then((response) => {
+		//console.log("check",response.data.data)
 		commit('communicationTypesSuccess', response.data.data);
 	})
 	.catch((error) => {
-		// if (error.response.status == 401) {
-		// 	//AuthService.logout();
-		// }
-		// commit('failure', error.response.data);
+		errorLogWithDeviceInfo(error.response)
 		commit('failure', error);
 	})
 }
@@ -43,10 +60,11 @@ export const communicationsList = async ({ commit }, page) => {
 	let link = page ?API_ENDPOINTS['communicationsList']+page : API_ENDPOINTS['communicationsList']
 	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", link, null, null).then((response) => {
-		commit('communicationsSuccess', response.data);
+		commit('communication', response.data);
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -60,6 +78,7 @@ export const patientsList = async ({ commit }) => {
 		commit('patientsListSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -72,6 +91,7 @@ export const futureAppointments = async ({ commit }) => {
 		commit('futureAppointmentsSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -84,6 +104,7 @@ export const newRequests = async ({ commit }) => {
 		commit('newRequestsSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -91,11 +112,12 @@ export const newRequests = async ({ commit }) => {
 	})
 }
 
-export const communicationsCount = async ({ commit }, date) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['communicationsCount']+'?date='+date, null).then((response) => {
+export const communicationsCount = async ({ commit }, from) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['communicationsCount']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null).then((response) => {
 		commit('communicationsCountSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -108,9 +130,47 @@ export const searchCommunications = async ({ commit }, params) => {
 		commit('searchCommunicationsSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
 	})
+}
+
+export const conversation = async ({ commit }, id) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['conversation']+"?conversationId="+id, null, null).then((response) => {
+		commit('conversation', response.data.data);
+	})
+	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}
+export const conversationSend = async ({ commit },data) => {
+	await ServiceMethodService.common("post", API_ENDPOINTS['conversationSend'], null, data).then((response) => {
+		commit('conversationSend', response.data.data);
+	})
+	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+	})
+}
+export const status = async ({ commit },from) => {
+    await ServiceMethodService.common("get", API_ENDPOINTS['callStatus'] +"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null, null).then((response) => {
+        commit('callStatusSuccess', response.data.data)
+
+    }).catch((error) => {
+		errorLogWithDeviceInfo(error.response)
+        if (error.response.status == 401) {
+            //AuthService.logout();
+        }
+        commit('failure', error.response.data);
+    })
 }

@@ -38,7 +38,7 @@
                   <a-date-picker
                     v-model:value="value1"
                     :size="size"
-                    style="width: 100%"
+                    style="width: 100%" format="MM/DD/YYYY"
                   />
                 </div>
               </a-col>
@@ -48,7 +48,7 @@
                   <a-date-picker
                     v-model:value="value1"
                     :size="size"
-                    style="width: 100%"
+                    style="width: 100%" format="MM/DD/YYYY"
                   />
                 </div>
               </a-col>
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import Header from "@/components/administration/layout/header/Header";
+import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import { ref } from "vue";
 export default {

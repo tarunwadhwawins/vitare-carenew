@@ -1,14 +1,21 @@
 import ServiceMethodService from '../../services/serviceMethod';
 import { API_ENDPOINTS } from "../../config/apiConfig"
+import { successSwal, errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod';
 
-export const globalCodesList = async ({ commit }) => {
-	await ServiceMethodService.common("get", API_ENDPOINTS['globalCodesList'], null, null).then((response) => {
-		commit('globalCodesListSuccess', response.data.data);
+export const globalCodesList = async ({ commit },page) => {
+	commit('loadingTableStatus', true)
+	let link = page? API_ENDPOINTS['globalCode']+"?active=1"+page : API_ENDPOINTS['globalCode']+"?active=1"
+	await ServiceMethodService.common("get", link, null, null).then((response) => {
+		//console.log(response.data.data)
+		commit('globalCode', response.data);
+		commit('loadingTableStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
+		commit('loadingTableStatus', false)
 		commit('failure', error.response.data);
 	})
 }
@@ -18,34 +25,42 @@ export const searchGlobalCodes = async ({ commit }, params) => {
 		commit('searchGlobalCodesSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
+		errorSwal(error.response.data.message)
 	})
 }
 
 export const addGlobalCode = async ({ commit }, data) => {
 	await ServiceMethodService.common("post", API_ENDPOINTS['globalCode'], null, data).then((response) => {
 		commit('addGlobalCodeSuccess', response.data.data);
+		successSwal(response.data.message)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
+		errorSwal(error.response.data.message)
 	})
 }
 
 export const deleteGlobalCode = async ({ commit }, id) => {
 	await ServiceMethodService.common("delete", API_ENDPOINTS['globalCode'], id, null).then((response) => {
 		commit('deleteGlobalCodeSuccess', response.data.data);
+		successSwal(response.data.message)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
+		errorSwal(error.response.data.message)
 	})
 }
 
@@ -54,6 +69,7 @@ export const globalCodeDetails = async ({ commit }, id) => {
 		commit('globalCodeDetailsSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -62,15 +78,16 @@ export const globalCodeDetails = async ({ commit }, id) => {
 }
 
 export const updateGlobalCode = async ({ commit }, {id, data}) => {
-	console.log('Edit Record Id', id)
-	console.log('Edit Record data', data)
 	await ServiceMethodService.common("patch", API_ENDPOINTS['globalCode'], id, data).then((response) => {
 		commit('updateGlobalCodeSuccess', response.data.data);
+		successSwal(response.data.message)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
+		errorSwal(error.response.data.message)
 	})
 }

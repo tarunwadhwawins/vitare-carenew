@@ -19,8 +19,14 @@ import { timeLogReport } from "./timeLogReport/index"
 import { careTeam } from "./careTeam/index"
 import { programs } from "./programs/index"
 import { cptCodes } from "./cptCodes/index"
+import { carePlan } from "./carePlan/index"
+import {screenPermissions} from "./screenPermissions/index"
+import {provider} from "./provider/index"
 import { videoCall } from "./videoCall/index"
+import { flags } from "./flags/index"
+import { password } from "./password/index"
 import createPersistedState from "vuex-persistedstate";
+import { errorLogWithDeviceInfo} from "./errorLogWithDeviceInfo"
 
 export default createStore({
   modules: {
@@ -44,7 +50,13 @@ export default createStore({
     careTeam,
     programs,
     cptCodes,
-    videoCall
+    carePlan,
+    videoCall,
+    provider,
+    flags,
+    password,
+    screenPermissions,
+    errorLogWithDeviceInfo
   },
   plugins: [ createPersistedState({
     reducer(state) {

@@ -10,24 +10,24 @@
 
     <!-- Charts -->
     <a-col :sm="12" :xs="24" v-if="callPlanned">
-      <ApexChart :title="$t('communications.callPlanned')" type="bar" :height="350" :options="callPlanned.calloption" :series="callPlanned.callseries" linkTo="coordinator-summary" />
+      <ApexChart :title="$t('communications.callPlanned')" type="bar" :height="283" :options="callPlanned.calloption" :series="callPlanned.callseries" linkTo="coordinator-summary" />
     </a-col>
 
     <a-col :sm="12" :xs="24" v-if="callStatus">
-      <ApexChart :title="$t('global.callQueue')" type="bar" :height="350" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="communications" />
+      <ApexChart :title="$t('global.callQueue')" type="bar" :height="283" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="communications" />
     </a-col>
     
     <a-col :sm="12" :xs="24">
-      <a-card :title="$t('communications.populateWaitingRoom')" class="common-card">
-        <a-tabs v-model:activeKey="activeKey">
-          <PopulateWaitingRoomTab v-if="newRequestsData" :key="key1" tab="New Requests" :column="newRequestsColumns" :data="newRequestsData" :linkTo="linkTo" :pagination="false" />
-          <PopulateWaitingRoomTab v-if="futureAppointmentsData" :key="key2" tab="Future Appointments" :column="futureAppointmentsColumns" :data="futureAppointmentsData" :linkTo="linkTo" :pagination="false" />
+      <a-card :title="$t('communications.populateWaitingRoom')" class="common-card grapCardWrap" >
+        <a-tabs default-active-key="activeKey">
+          <PopulateWaitingRoomTab v-if="newRequestsData"  tab="New Requests" :column="newRequestsColumns" :data="newRequestsData"  />
+          <PopulateWaitingRoomTab v-if="futureAppointmentsData"  tab="Future Appointments" :column="futureAppointmentsColumns" :data="futureAppointmentsData"  />
         </a-tabs>
       </a-card>
     </a-col>
 
     <a-col :sm="12" :xs="24" v-if="communicationTypes">
-      <ApexChart :title="$t('communications.communicationType')" type="area" :height="245" :options="communicationTypes.calloption" :series="communicationTypes.callseries" />
+      <ApexChart :title="$t('communications.communicationType')" type="area" :height="283" :options="communicationTypes.calloption" :series="communicationTypes.callseries" />
     </a-col>
     
     <template #action>
@@ -52,15 +52,16 @@
     },
     setup() {
       const store = useStore()
-      const dateTimeNow = moment(new Date()).format('YYYY-MM-DD')
-      const linkTo = "patients-summary"
-
+      //const dateTimeNow = moment(new Date()).format('YYYY-MM-DD')
+      
+      const fromDate = ref(moment())
+        const toDate = ref(moment())
       const newRequestsColumns = [
         {
           title: "Patient Name",
           dataIndex: "patient",
           slots: {
-            customRender: "patientName",
+            customRender: "patient",
           },
         },
         {
@@ -98,12 +99,20 @@
       ];
       
       watchEffect(() => {
-        store.dispatch("callPlanned")
-        store.dispatch("callStatus", 122)
-        store.dispatch("communicationTypes")
-        store.dispatch("futureAppointments")
+        store.dispatch("callPlanned",{
+                fromDate: fromDate.value,
+                toDate: toDate.value})
+        store.dispatch("status", {
+                fromDate: fromDate.value,
+                toDate: toDate.value})
+        store.dispatch("communicationTypes",{
+                fromDate: fromDate.value,
+                toDate: toDate.value})
+        //store.dispatch("futureAppointments")
         store.dispatch("newRequests")
-        store.dispatch("communicationsCount", dateTimeNow)
+        store.dispatch("communicationsCount", {
+                fromDate: fromDate.value,
+                toDate: toDate.value})
       })
       
       const callPlanned = computed(() => {
@@ -124,14 +133,12 @@
       const communicationsCount = computed(() => {
         return store.state.communications.communicationsCount
       })
-      const key1 = 1;
-      const key2 = 2;
+      
       
       return {
-        activeKey: ref(key1),
+        activeKey: ref(1),
         callPlanned,
-        key1,
-        key2,
+        
         newRequestsColumns,
         newRequestsData,
         futureAppointmentsColumns,
@@ -139,7 +146,7 @@
         communicationsCount,
         communicationTypes,
         callStatus,
-        linkTo
+        
       };
     },
   };

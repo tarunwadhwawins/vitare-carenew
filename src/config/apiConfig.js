@@ -1,21 +1,25 @@
-
-
-// API end points 
+// API end points
 export const API_ENDPOINTS = {
     // Authentication
     login: "login",
     logout: "logout",
     refreshToken: "refreshToken",
 
+    //dashboard
+    interval:"globalstartEnd/date",
+    cptCodeGraph:"cptCode/billingSummary",
+
     // Patients
     patient:"patient",
     patientsList:"patient",
     patientDetails:"patient",
     counterCard:"patient/count",
-    financial:"patient/count",
+    financial:"financialStats",
     cptCode:"patient/count",
     totalPatientsChart:"patient/chart",
     timeLine:"patient/new",
+    timeLineType:"timeLineType",
+    patientProfile:"patientProfile",
     
     // Appointments
     appointment:"appointment",
@@ -27,7 +31,7 @@ export const API_ENDPOINTS = {
     seacrhAppointment:"appointment/search",
     appointmentConference:'appointment/conference',
 
-    // Staff
+    // Care Coordinator
     staffList:"staff",
     specialization:"staff/specialization",
     network:"staff/network",
@@ -37,17 +41,24 @@ export const API_ENDPOINTS = {
     communicationTypes:"communication/type",
     addCommunication:"communication",
     communicationsCount:"communication/count",
+    communicationsView:"communication/messages",
     callStatus:"call/status",
     CallPlanned:"call/staff",
+
+    //conversation
+    conversation:'get-conversation',
+    conversationSend:'send-message',
 
     // Tasks
     addTask:"task",
     tasksList:"task",
     taskStatus:"task/status",
+    allTaskStatus:"task/status/summery",
     taskPriority:"task/priority",
     searchTasks:"task/search",
     taskTeamMember:'task/staff',
-    taskCategory:'task/category',
+    taskCategory: 'task/category',
+	completeTaskRate: 'task/completion/rates',
 
     
     // Global Codes
@@ -84,9 +95,29 @@ export const API_ENDPOINTS = {
 
     // CPT Codes
     cptCodes: 'cptCode',
-    service: 'service'
+    service: 'service',
+
+    // Vital Fields
+    field: 'field',
     
 
+    //Providers
+    provider:'provider',
+
+    // Flags
+    flag:'flag',
+
+    // Critical Notes
+    criticalNote:'criticalNote',
+
+    //notification
+    notification:'notification',
+    
+    // Change Password
+    changePassword:'changePassword',
+    forgotPassword:'forgot/password',
+    validateCode:'forgotPassword/verify',
+    setupPassword:'generate/newPassword',
 };
 
 // export const getApiUrl = key => {

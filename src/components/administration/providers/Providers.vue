@@ -1,55 +1,66 @@
+
 <template>
-  <div>
+<div>
     <a-layout>
-      <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
-        <Header />
-      </a-layout-header>
-      <a-layout>
-        <Sidebar />
-        <a-layout-content>
-          <div class="common-bg">
-            <a-row>
-              <a-col :span="24">
-                <h2 class="pageTittle">
-                  {{ pageTitle }}
-                  <div class="commonBtn">
-                    <Button :name="buttonName" @click="showModal" />
-                  </div>
-                </h2>
-              </a-col>
-              <a-col :span="12">
-                <SearchField @change="searchData"/>
-              </a-col>
-              <a-col :span="12">
-                <div class="text-right mb-24">
-                  <Button :name="exportButtonName" />
+        <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
+            <Header />
+        </a-layout-header>
+        <a-layout>
+            <Sidebar />
+            <a-layout-content>
+                <div class="common-bg">
+                    <a-row>
+                        <a-col :span="24">
+                            <h2 class="pageTittle">
+                                {{ pageTitle }}
+                                <!--  -->
+                                <div class="commonBtn" >
+                                    <Button :name="buttonName" @click="showModal(true)" v-if="arrayToObjact(screensPermissions,22)"/>
+                                </div>
+                            </h2>
+                        </a-col>
+                        <!--  -->
+                        <a-col :span="12" >
+                            <SearchField endPoint="provider" v-if="arrayToObjact(screensPermissions,21)" />
+                        </a-col>
+                        <a-col :span="12">
+                            <!--  -->
+                            <div class="text-right mb-24" >
+                                <div class="text-right mb-24">
+                                    <ExportToExcel  @click="exportExcel('provider_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions,26)"/>
+                                </div>
+                            </div>
+                        </a-col>
+                    </a-row>
+                    <a-row :gutter="24">
+                        <a-col :span="24" >
+                            <div class="list-view" v-show="!toggle">
+                                <ProvidersTable @isEdit="showModal($event)" v-if="arrayToObjact(screensPermissions,21)"/>
+                                <Loader />
+                            </div>
+                        </a-col>
+                    </a-row>
                 </div>
-              </a-col>
-            </a-row>
-            <a-row :gutter="24">
-              <a-col :span="24">
-                <ProvidersTable/>
-              </a-col>
-            </a-row>
-          </div>
-        </a-layout-content>
-      </a-layout>
+            </a-layout-content>
+        </a-layout>
     </a-layout>
-
     <!-- Modal -->
-    <AdminProvidersModal v-if="visible" v-model:visible="visible" @ok="handleOk" />
-    
-  </div>
+    <AdminProvidersModal v-if="visible" v-model:visible="visible" @ok="handleOk" @closeModal="closeModal($event)" :isAdd="isAdd" :providerId="providerID" />
+</div>
 </template>
-
 <script>
-import Header from "@/components/administration/layout/header/Header";
+import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import AdminProvidersModal from "@/components/modals/AdminProvidersModal";
 import ProvidersTable from "@/components/administration/providers/tables/ProvidersTable";
+import { useStore } from "vuex";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
-import { ref } from "vue";
+import { ref, watchEffect, onUnmounted } from "vue";
+import Loader from "@/components/loader/Loader";
+import { arrayToObjact, exportExcel } from "@/commonMethods/commonMethod";
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
+
 export default {
   components: {
     Header,
@@ -58,32 +69,70 @@ export default {
     ProvidersTable,
     SearchField,
     Button,
+    Loader,
+    ExportToExcel,
   },
 
   setup() {
+    const store = useStore();
+    const isAdd = ref(false);
     const visible = ref(false);
-    const showModal = () => {
-      visible.value = true;
+    const providerID = ref();
+    const showModal = (e) => {
+      if (e.providerId) {
+        providerID.value = e.providerId;
+        isAdd.value = true;
+      } else {
+        providerID.value = null;
+        isAdd.value = false;
+      }
+      visible.value = e;
     };
-    const searchData = () => {
-      
+    const closeModal = (e) => {
+      visible.value = e;
     };
-
+    const searchData = () => {};
+    watchEffect(() => {
+      store.dispatch("providersListAll");
+      store.dispatch("searchTable", "&search=");
+      store.dispatch("orderTable", {
+        data: "&orderField=&orderBy=",
+      });
+    });
     const handleOk = () => {
       visible.value = false;
     };
+    const editSingleProvider = (id) => {
+      isAdd.value = false;
+      store.dispatch("editSingleProvider", id).then(() => {
+        visible.value = true;
+      });
+    };
     const checked = ref([false]);
+
+    onUnmounted(() => {
+      store.dispatch("searchTable", "&search=");
+      store.dispatch("orderTable", {
+        data: "&orderField=&orderBy=",
+      });
+    });
     return {
+      exportExcel,
+      screensPermissions: store.getters.screensPermissions,
+      arrayToObjact,
+      editSingleProvider,
       searchData,
-      // searchoptions,
+      providerID,
       size: ref([]),
       visible,
       showModal,
       handleOk,
+      isAdd,
       checked,
+      closeModal,
       pageTitle: "Providers",
       buttonName: "Add New Provider",
-      exportButtonName: "Export to Excel",
+      search: store.getters.searchTable,
     };
   },
 };

@@ -1,38 +1,35 @@
 <template>
-<a-modal width="1000px" :title="threshodId ? 'Edit General Parameters': $t('thresholds.thresholdModal.generalParameters')" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal width="1000px" :title="threshodId ? 'Edit General Parameters': $t('thresholds.thresholdModal.generalParameters')" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
 
     <Loader v-if="threshodId" />
 
-    <a-form ref="formRef" :model="thresholdForm" layout="vertical" @finish="submitForm"  @finishFailed="taskFormFailed">
+    <a-form ref="formRef" :model="thresholdForm" layout="vertical" @finish="submitForm" @finishFailed="taskFormFailed">
         <a-row :gutter="24">
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('thresholds.thresholdModal.generalParametersGroup')" name="generalParametersGroup" :rules="[{required: true,message:$t('thresholds.thresholdModal.generalParametersGroup') + ' ' +$t('global.validation'),},]">
-                        <a-input v-model:value="thresholdForm.generalParametersGroup" size="large" />
+                        <a-input v-model:value="thresholdForm.generalParametersGroup" size="large" @change="checkChangeInput()"/>
                     </a-form-item>
                 </div>
             </a-col>
             <a-col :md="12" :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('global.type')" name="deviceTypeId" :rules="[{required: true,message: $t('global.type') + ' ' + $t('global.validation'),},]">
-                        <a-select v-if="globalCode.deviceType.globalCode" ref="select" v-model:value="thresholdForm.deviceTypeId" style="width: 100%" size="large" :disabled="threshodId ? true : false" placeholder="Select Device Type" @change="handleDevice">
-                            <a-select-option value hidden disabled>
-                                {{ "Select Device Type" }}
-                            </a-select-option>
-                            <a-select-option v-for="device in globalCode.deviceType.globalCode" :key="device.id" :value="device.id">{{ device.name }}</a-select-option>
-                        </a-select>
+                       
+                        <GlobalCodeDropDown v-model:value="thresholdForm.deviceTypeId" :globalCode="globalCode.deviceType" :disabled="threshodId ? true : false" @change="handleDevice(); checkChangeInput();" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.deviceType ? errorMsg.deviceType[0] : ''" />
                     </a-form-item>
                 </div>
             </a-col>
         </a-row>
+
         <div v-if="vitalData">
             <a-row :gutter="24" v-for="(vital, i) in vitalData" :key="i">
                 <a-col :md="12" :sm="12" :xs="24">
                     <div class="form-group">
                         <a-form-item :label="$t('thresholds.thresholdModal.highLimit') +'(' +vital.field +')'" name="generalParametershigh[vital.id]" :rules="[{required:false, message:'Only number is required.',pattern:new RegExp(/\d+(\.\d{1,2})?$/g)}]">
                             <!-- <a-input v-model="value" size="large" /> -->
-                            <a-input v-model:value="thresholdForm.generalParametershigh[vital.id]" size="large" style="width: 100%" />
+                            <a-input v-model:value="thresholdForm.generalParametershigh[vital.id]" size="large" style="width: 100%" @change="checkChangeInput()"/>
                             <ErrorMessage v-if="errorMsg" :name="errorMsg.note ? errorMsg.high[0] : ''" />
                         </a-form-item>
                     </div>
@@ -41,7 +38,7 @@
                     <div class="form-group">
                         <a-form-item :label="$t('thresholds.thresholdModal.lowLimit') +'(' +vital.field +')'" name="generalParameterslow[vital.id]" :rules="[{required:false, message:'Only number is required.',pattern:new RegExp(/\d+(\.\d{1,2})?$/g)}]">
                             <!-- <a-input v-model="value" size="large" /> -->
-                            <a-input v-model:value="thresholdForm.generalParameterslow[vital.id]" size="large" style="width: 100%" />
+                            <a-input v-model:value="thresholdForm.generalParameterslow[vital.id]" size="large" style="width: 100%" @change="checkChangeInput()"/>
                             <ErrorMessage v-if="errorMsg" :name="errorMsg.note ? errorMsg.low[0] : ''" />
                         </a-form-item>
                     </div>
@@ -51,7 +48,7 @@
         <a-row :gutter="24">
             <a-col :span="24">
                 <div class="steps-action">
-                    <ModalButtons @is_click="handleCancel" :Id="threshodId" />
+                    <ModalButtons @is_click="handleCancel" :disabled="formButton" :Id="threshodId" />
                 </div>
             </a-col>
         </a-row>
@@ -61,7 +58,6 @@
 
 <script>
 import {
-
     ref,
     reactive,
     computed,
@@ -82,6 +78,8 @@ import {
 import {
     messages
 } from "../../config/messages";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
+
 const OPTIONS = ["Jane Doe", "Steve Smith", "Joseph William"];
 const OPTIONSTAG = ["Admin", "Clinical", "Office", "Personal"];
 
@@ -90,6 +88,7 @@ export default {
         ErrorMessage,
         ModalButtons,
         Loader,
+        GlobalCodeDropDown,
     },
     props: {
         threshodId: {
@@ -104,6 +103,7 @@ export default {
         const value = ref();
         const value2 = ref();
         const formRef = ref();
+        const formButton = ref(false);
         const selectedItems = ref(["Jane Doe"]);
         const filteredOptions = computed(() =>
             OPTIONS.filter((o) => !selectedItems.value.includes(o))
@@ -123,7 +123,7 @@ export default {
             udid: [],
         });
         const form = reactive({
-            ...thresholdForm
+            ...thresholdForm,
         });
         const globalCode = computed(() => {
             return store.state.common;
@@ -135,20 +135,34 @@ export default {
         const vitalEdit = computed(() => {
             return store.state.thresholds;
         });
+        function checkChangeInput() {
+			store.commit('checkChangeInput', true)
+		}
 
+		const checkFieldsData = computed(() => {
+			return store.state.common.checkChangeInput;
+		})
         function closeModal() {
-            if (thresholdForm.generalParametersGroup != "" || thresholdForm.deviceTypeId != "") {
-                warningSwal(messages.modalWarning).then((response) => {
-                    if (response == true) {
-                     handleCancel();
+            if (checkFieldsData.value) {
+				warningSwal(messages.modalWarning).then((response) => {
+					if (response == true) {
+                        handleCancel();
                         emit("is-visible", false);
-
-                    } else {
-
+						
+						store.commit('checkChangeInput', false)
+					} else {
+					
                         emit("is-visible", true);
-                    }
-                });
-            }
+						
+						store.commit('checkChangeInput', true)
+					}
+				});
+			}
+			else {
+				handleCancel()
+			}
+           
+           
         }
 
         function handleDevice() {
@@ -159,6 +173,7 @@ export default {
         }
 
         const submitForm = () => {
+            formButton.value = true;
             let parameter = [];
             thresholdForm.generalParameterslow.forEach(function (Element, i) {
                 if (Element) {
@@ -179,42 +194,42 @@ export default {
                         parameter: parameter,
                     },
                     id: props.threshodId,
-                });
+                }).then(() => {
+                    store.dispatch("generalParameterList")
+                    emit("is-visible", false)
+                    handleCancel()
+                })
             } else {
                 store.dispatch("addGeneralParameterGroup", {
                     deviceTypeId: thresholdForm.deviceTypeId,
                     generalParameterGroup: thresholdForm.generalParametersGroup,
                     parameter: parameter,
-                });
+                }).then(() => {
+                    store.dispatch("generalParameterList")
+                    emit("is-visible", false)
+                    handleCancel()
+                })
             }
-           
-            setTimeout(() => {
-                store.getters.vitalDataGetters.value.vitalList=''
-                store.dispatch("generalParameterList");
-                emit("is-visible", false);
-                handleCancel();
-            }, 2000);
+            store.commit('checkChangeInput', false) 
+
         };
 
         const handleCancel = () => {
-                formRef.value.resetFields();
-                Object.assign(thresholdForm, form);
-           store.commit('vitalNull')
-        
-           //console.log(vitalData.value)
-
+            formRef.value.resetFields();
+            Object.assign(thresholdForm, form);
+            store.commit("vitalNull");
         };
         watchEffect(() => {
-            store.commit('loadingStatus', true)
-            if (props.threshodId!= null) {
-                
+            if (props.threshodId != null) {
                 if (vitalEdit.value.vitalEdit) {
+                    store.commit("loadingStatus", true);
                     store.dispatch("getVital", vitalEdit.value.vitalEdit.deviceTypeId);
-                    Object.assign(thresholdForm, vitalEdit.value.vitalEdit);
-                    setTimeout(() => {
-                        store.commit('loadingStatus', false)
-                    }, 2000)
 
+                    Object.assign(thresholdForm, vitalEdit.value.vitalEdit);
+
+                    setTimeout(() => {
+                        store.commit("loadingStatus", false);
+                    }, 2000);
                 }
             }
         });
@@ -237,7 +252,8 @@ export default {
             regex,
             vitalEdit,
             closeModal,
-
+            formButton,
+            checkChangeInput
         };
     },
 };

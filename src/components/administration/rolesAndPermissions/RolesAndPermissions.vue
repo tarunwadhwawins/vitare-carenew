@@ -13,17 +13,19 @@
                         <a-col :span="24">
                             <h2 class="pageTittle">
                                 {{ pageTitle }}
-                                <div class="commonBtn">
-                                    <Button :name="buttonName" @click="showModal(true)" />
+                                <div class="commonBtn" >
+                                    <Button :name="buttonName" @click="showModal(true)" v-if="arrayToObjact(screensPermissions,1)"/>
                                 </div>
                             </h2>
                         </a-col>
                         <a-col :span="12">
-                            <SearchField @change="searchData" />
+                            <SearchField endPoint="roleList"/>
                         </a-col>
                         <a-col :span="12">
-                            <div class="text-right mb-24">
-                                <Button :name="exportButtonName" />
+                            <div class="text-right mb-24" >
+                                 <div class="text-right mb-24">
+                                    <ExportToExcel  @click="exportExcel('roleAndPermission_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions,5)"/>
+                                </div>
                             </div>
                         </a-col>
                         <a-col :span="24">
@@ -36,35 +38,38 @@
     </a-layout>
 
     <!-- Modal -->
-    <RolesAndPermissionsModal v-if="visible" v-model:visible="visible" @ok="handleOk" @on-submit="handleOk" :roleId="roleId" :editRole="editRole" />
+    <RolesAndPermissionsModal v-if="visible" v-model:visible="visible" @ok="handleOk" @on-submit="handleOk" :roleId="roleId" :editRole="editRole" @is-visible="editShow($event)" />
 
 </div>
 </template>
 
 <script>
-import Header from "@/components/administration/layout/header/Header";
+import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import RolesAndPermissionsTable from "@/components/administration/rolesAndPermissions/tables/RolesAndPermissionsTable";
 import SearchField from "@/components/common/input/SearchField";
-import RolesAndPermissionsModal from "@/components/modals/RolesAndPermissionsModal";
+
 import Button from "@/components/common/button/Button";
-import {
-    ref
-} from "vue";
+import {ref,onUnmounted,defineAsyncComponent} from "vue";
+import {useStore } from "vuex"
+import {arrayToObjact,exportExcel} from "@/commonMethods/commonMethod"
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 export default {
     components: {
         Header,
         Sidebar,
         RolesAndPermissionsTable,
-        RolesAndPermissionsModal,
+        RolesAndPermissionsModal: defineAsyncComponent(() =>import("@/components/modals/RolesAndPermissionsModal")),
         SearchField,
         Button,
+        ExportToExcel
     },
 
     setup() {
-        const visible = ref(false);
-        const roleId = ref(null);
+        const visible = ref(false)
+        const roleId = ref(null)
         const editRole = ref(null)
+        const store = useStore()
         const showModal = (e) => {
             visible.value = e;
             if (e.id) {
@@ -76,6 +81,9 @@ export default {
                 roleId.value = null
             }
 
+        };
+        const editShow = (e) => {
+            visible.value = e;
         };
         const edit = (e) => {
             roleId.value = null
@@ -89,7 +97,18 @@ export default {
 
         const searchData = () => {};
 
+       
+        onUnmounted(()=>{
+            store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+        })
         return {
+            exportExcel,
+            editShow,
+            arrayToObjact,
+           screensPermissions:store.getters.screensPermissions,
             roleId,
             visible,
             showModal,
@@ -97,9 +116,9 @@ export default {
             searchData,
             edit,
             editRole,
-            exportButtonName: "Export to Excel",
             buttonName: "Add Role",
-            pageTitle: "Roles & Permissions"
+            pageTitle: "Roles & Permissions",
+            search: store.getters.searchTable,
         };
     },
 };

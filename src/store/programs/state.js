@@ -1,7 +1,7 @@
 export default{
     errorMsg:null,
     successMsg:null,
-    programList:null,
+    manageProgramList:null,
     programColumns:null,
     programMeta:null,
     editProgram:null,

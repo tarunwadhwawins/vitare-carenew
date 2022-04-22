@@ -148,6 +148,25 @@
             }
         }
     }
+    &.completionRate {
+        .ant-card-body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 325px;
+            text-align: center;
+        }
+    }
+    .apptNumber {
+        h3 {
+            font-size: 30px;
+        }
+        h2 {
+            font-size: 150px;
+            line-height: 218px;
+            color: #267dff;
+        }
+    }
 }
 
 /*----*/
@@ -514,6 +533,12 @@
             margin: 0 auto;
             cursor: pointer;
         }
+        img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
     }
 }
 
@@ -569,6 +594,7 @@
     }
 }
 .patientSummary {
+    padding: 20px;
     display: flex;
     background-color: #fff;
     border-radius: 5px;
@@ -606,6 +632,7 @@
     }
 }
 .patientSummary {
+    padding: 20px;
     display: flex;
     background-color: #fff;
     border-radius: 5px;
@@ -650,6 +677,10 @@
         border-bottom: 1px solid #eee;
         .thumb-head {
             padding: 7px 15px;
+            .anticon {
+                position: relative;
+                top: -3px;
+            }
         }
         .thumb-desc {
             padding: 7px 15px;
@@ -1331,4 +1362,108 @@
     border-radius: 0 0 0 10px;
     text-align: center;
     font-size: 14px;
+}
+
+// Chat Box
+.chatBox {
+    position: relative;
+    height: 500px;
+    overflow: auto;
+    .ant-list {
+        position: sticky;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+    .ant-list-item {
+        background-color: #f9f9f9;
+        padding: 10px 15px;
+        .ant-list-item-meta {
+            align-items: center;
+            .ant-list-item-meta-avatar {
+                .ant-avatar-circle {
+                    width: 45px;
+                    height: 45px;
+                    .ant-avatar-string {
+                        position: initial;
+                    }
+                }
+            }
+            .ant-list-item-meta-content {
+                .ant-list-item-meta-title {
+                    margin: 0;
+                    line-height: normal;
+                }
+                .ant-list-item-meta-description {
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+    .chatBoxInner {
+        border: 1px solid #f9f9f9;
+        padding: 15px;
+        max-height: 360px;
+        overflow: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        .chatWrapper {
+            padding: 10px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            &.right {
+                align-items: flex-end;
+            }
+            &.left {
+                .message {
+                    background-color: #1890ff;
+                    color: $primary-color-contrast;
+                }
+            }
+            .message {
+                max-width: 500px;
+                font-size: 13px;
+                background-color: #f9f9f9;
+                border-radius: 5px;
+                padding: 10px;
+                color: $primary-color;
+            }
+            .time {
+                font-size: 12px;
+                color: #999;
+                padding: 3px 0 0 0px;
+            }
+        }
+    }
+    .sendMessage {
+        .ant-input-group-wrapper {
+            .ant-input-wrapper {
+                .ant-input {
+                    border-radius: 0;
+                }
+                .ant-input-group-addon {
+                    border-radius: 0;
+                }
+            }
+        }
+    }
+}
+.popup_open {
+    position: relative;
+    z-index: 99 !important;
+    .popup_element {
+        z-index: 99 !important;
+    }
+}
+
+.patientTable {
+    .ant-table-thead {
+        th {
+            vertical-align: bottom !important;
+        }
+    }
 }

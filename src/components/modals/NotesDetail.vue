@@ -1,13 +1,12 @@
 <template>
-  <a-modal width="1000px" title="Notes Detail" centered>
+  <a-modal width="80%" title="Notes Detail" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <div class="text-right mb-24">
-          <a-button class="btn blueBtn" @click="showModal">Export to Excel/PDF</a-button>
         </div>
         <a-table  rowKey="id"  :columns="notesColumns" :data-source="notesList" :pagination="false">
           <template #flags="{ record }">
-            <Flags :flag="record.flag" />
+            <Flags :flag="record.color" />
           </template>
         </a-table>
       </a-col>
@@ -19,6 +18,9 @@ import { computed, defineComponent, watchEffect } from "vue";
 import { useStore } from "vuex";
 import Flags from "@/components/common/flags/Flags";
 import { useRoute } from "vue-router";
+import {
+  actionTrack
+} from '@/commonMethods/commonMethod';
 export default defineComponent({
   components: {
     Flags,
@@ -33,8 +35,9 @@ export default defineComponent({
     watchEffect(() => {
       if(props.Id){
       store.dispatch('notesList', props.Id);
-      }else{
-      store.dispatch('notesList', route.params.udid);
+      }
+      else if(route.name == "PatientSummary") {
+        store.dispatch('notesList', route.params.udid);
       }
     })
 
@@ -47,21 +50,26 @@ export default defineComponent({
         title: "Date",
         dataIndex: "date",
         key: "date",
+        className: "note-date",
       },
       {
         title: "Category",
         dataIndex: "category",
         key: "category",
+        className: "note-category",
       },
       {
         title: "Type",
         dataIndex: "type",
         key: "type",
+        className: "note-type",
       },
       {
         title: "Note",
         dataIndex: "note",
         key: "note",
+        className: "note-text",
+        ellipsis: true,
       },
       {
         title: "Added By",
@@ -70,15 +78,23 @@ export default defineComponent({
       },
       {
         title: "Flag",
-        dataIndex: "flag",
-        key: "flag",
+        dataIndex: "color",
+        key: "color",
         slots: {
           customRender: "flags",
         },
+        className: "note-flag",
       },
     ];
 
+    function showModal(){
+      // console.log(object);
+    }
+
     return {
+      showModal,
+      paramsId:route.params.udid,
+      actionTrack,
       notesList,
       notesColumns,
     };

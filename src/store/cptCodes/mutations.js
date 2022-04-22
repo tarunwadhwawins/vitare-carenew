@@ -1,34 +1,25 @@
-export const cptCodesList = async (state, cptCodes) => {
+export const cptCode = async (state, cptCodes) => {
  state.cptCodesColumns = [
     {
       title: "Cpt Code",
       dataIndex: "name",
-      sorter: {
-        compare: (a, b) => a.name - b.name,
-        multiple: 3,
-      },
+      sorter:true
     },
     {
       title: "Description",
       dataIndex: "description",
-      sorter: {
-        compare: (a, b) => a.description - b.description,
-        multiple: 3,
-      },
+      sorter:true
     },
     {
       title: "Billing Amount",
       dataIndex: "billingAmout",
-      sorter: {
-        compare: (a, b) => a.billingAmout - b.billingAmout,
-        multiple: 2,
-      },
+      sorter:true
     },
     {
       title: "Active/Inactive",
-      dataIndex: "status",
+      dataIndex: "isActive",
       slots: {
-        customRender: "status",
+        customRender: "isActive",
       },
     },
     {
@@ -39,7 +30,10 @@ export const cptCodesList = async (state, cptCodes) => {
       },
     },
   ];
-  state.cptCodesList = cptCodes.data;
+  state.cptCodesList = cptCodes.data.map((item)=>{
+    item.billingAmout = '$ ' + item.billingAmout 
+    return item
+  });
   state.cptMeta=cptCodes.meta ? cptCodes.meta.pagination : ''
 }
 

@@ -1,7 +1,10 @@
 
 <template>
-<a-table  rowKey="id" :pagination="false" :columns="staffs.roleListColms" :data-source="staffs.roleList" :scroll="{ x: 900 }">
-    <template #action="text">
+<a-table  rowKey="id" :pagination="false" :columns="staffs.roleListColms" :data-source="staffs.roleList" >
+  <template #role="{record}">
+        <span>{{ record.role.name }}</span>
+    </template>
+    <template #action="text" v-if="arrayToObjact(screensPermissions,57)">
         <a-tooltip placement="bottom" @click="deleteRole(text.record.id)">
             <template #title>
                 <span>{{$t('global.delete')}}</span>
@@ -16,12 +19,10 @@
 import { computed } from "vue";
 import {
   DeleteOutlined,
-  // EditOutlined,
-  //   PlusOutlined,
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { warningSwal } from "@/commonMethods/commonMethod";
+import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 export default {
   components: {
@@ -33,7 +34,6 @@ export default {
   setup(props) {
     const store = useStore();
     const router = useRoute();
-    console.log("==", router.params.udid);
 
     function deleteRole(id) {
       warningSwal(messages.deleteWarning).then((response) => {
@@ -54,7 +54,10 @@ export default {
     const staffs = computed(() => {
       return store.state.careCoordinator;
     });
+    
     return {
+      screensPermissions:store.getters.screensPermissions,
+      arrayToObjact,
       staffs,
       deleteRole,
     };

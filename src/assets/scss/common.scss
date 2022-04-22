@@ -213,7 +213,7 @@ img.reportFlag {
 	}
 	.ant-modal-body {
 		overflow: auto;
-		max-height: calc(100vh - 240px);
+		max-height: 80vh;
 	}
 }
 
@@ -307,6 +307,9 @@ img.reportFlag {
 				.ant-table-tbody {
 					tr {
 						td {
+							white-space: nowrap;
+							overflow: hidden;
+							text-overflow: ellipsis;
 							padding: 8px 10px;
 							font-size: 13px;
 						}
@@ -324,19 +327,22 @@ img.reportFlag {
 
 /*----*/
 
-body {
-	&.show {
-		.ant-layout {
-			.ant-layout-has-sider {
-				transition: all 0.5s !important;
-				.ant-layout-sider {
-					left: 0px !important;
-					z-index: 99;
-				}
-			}
-		}
-	}
-}
+// body {
+// 	&.show {
+// 		.ant-layout {
+// 			.ant-layout-has-sider {
+// 				transition: all 0.5s !important;
+// 				.ant-layout-sider {
+// 					z-index: 99;
+// 					left: 0 !important;
+// 					@media (min-width: 1200px) {
+// 						left: 0px !important;
+// 					}
+// 				}
+// 			}
+// 		}
+// 	}
+// }
 
 /*----*/
 .common-btn {
@@ -370,4 +376,58 @@ body {
 button.swal2-default-outline {
 	padding: 10px 0;
 	width: 100px !important;
+}
+/* table css */
+.tableCommonSpace {
+	margin: 20px 0;
+}
+
+.ant-table-body {
+	overflow-y: auto !important;
+}
+.calendarLastCol .monthCalendarDropDown {
+	left: auto;
+	right: 0;
+}
+.popup_open_top .monthCalendarDropDown {
+    top: 0;
+    transform: translateY(-100%);
+}
+.bold {
+	font-weight: bold;
+	background-color: #f6f7f6;
+}
+.chatModal .ant-modal-footer {
+	display: block;
+}
+.chatModal .ant-modal-footer .ant-input-group-addon {
+	background-color: #1890ff;
+}
+.chatModal .ant-modal-footer .ant-input-group-addon .anticon {
+	color: #ffffff;
+}
+
+.critical-notes ul li:not(:first-child) {
+	display: none;
+}
+.common-card.grapCardWrap {
+	min-height: 376px;
+}
+
+.thumb-head {
+	white-space: nowrap;
+}
+.thumb-desc {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+input.vti__input {
+	height: 36.5px;
+}
+span.address-text {
+	position: relative;
+	top: 4px;
+	left: 3px;
 }

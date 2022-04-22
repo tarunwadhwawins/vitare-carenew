@@ -5,10 +5,15 @@ export const addNoteSuccess = async (state, note) => {
 }
 
 export const notesListSuccess = async (state, notes) => {
-  state.notesList = notes.map(note => {
-    note.date = dateOnlyFormat(note.date);
-    return note;
-  });
+  if(notes) {
+    state.notesList = notes.map(note => {
+      note.date = dateOnlyFormat(note.date);
+      return note;
+    });
+  }
+  else {
+    state.notesList = null
+  }
 }
 
 export const latestNotesSuccess = async (state, note) => {

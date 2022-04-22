@@ -1,34 +1,35 @@
 <template>
   <a-table  rowKey="id"
     :columns="globalCodesColumns"
-    :data-source="globalCodesList">
+    :data-source="globalCodesList"
+    :scroll="{ y: tableYScroller }" :pagination=false
+    @change="handleTableChange">
     <template #actions="{record}">
-      <a-tooltip placement="bottom">
+      <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,7)">
         <template #title>
           <span>Edit</span>
         </template>
         <span class="icons"><EditOutlined @click="editGlobalCode(record.id)" /></span>
       </a-tooltip>
-      <a-tooltip placement="bottom">
+      <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,8)">
         <template #title>
           <span>Delete</span>
         </template>
         <span class="icons"><DeleteOutlined @click="deleteGlobalCode(record.id)" /></span>
       </a-tooltip>
     </template>
-    <template #status="{record}">
-      <a-switch v-model:checked="record.status" @change="updateStatus(record.id, $event)" />
+    <template #isActive="{record}" >
+      <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" :disabled="!arrayToObjact(screensPermissions,7)"/>
     </template>
   </a-table>
 </template>
 
 <script>
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-import { watchEffect, computed } from "vue";
+import { watchEffect ,onMounted} from "vue";
 import { useStore } from "vuex";
-// import swal from 'sweetalert2';
-import {warningSwal} from "../../../../commonMethods/commonMethod"
-import { messages } from '../../../../config/messages';
+import {warningSwal,arrayToObjact,tableYScroller} from "@/commonMethods/commonMethod"
+import { messages } from '@/config/messages';
 export default {
   components: {
     DeleteOutlined,
@@ -38,21 +39,64 @@ export default {
     const store = useStore()
     watchEffect(() => {
       store.dispatch('globalCodesList')
+      store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
     })
-    const globalCodesList = computed(() => {
-      return store.state.globalCodes.globalCodesList
-    })
+    
+    const globalCodesList = store.getters.globalCodesList
+    const meta = store.getters.globalMeta
+        let data = ''
+        let scroller = ''
+        onMounted(() => {
+            var tableContent = document.querySelector('.ant-table-body')
+            tableContent.addEventListener('scroll', (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight
+                let currentScroll = event.target.scrollTop + 2
+                if (currentScroll >= maxScroll) {
 
+                    let current_page = meta.current_page + 1
+
+                    if (current_page <= meta.total_pages) {
+                        scroller = maxScroll
+                        meta.value = ""
+                        data = globalCodesList.value
+                        store.state.globalCodes.globalCodesList = ""
+                        
+                        store.dispatch("globalCodesList", store.getters.searchTable.value+"&page=" + current_page+store.getters.orderTable.value.data).then(() => {
+                            loadMoredata()
+                        })
+
+                    }
+                }
+            })
+        })
+
+        function loadMoredata() {
+            const newData = globalCodesList.value
+
+            newData.forEach(element => {
+                data.push(element)
+            });
+            globalCodesList.value = data
+            var tableContent = document.querySelector('.ant-table-body')
+
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller)
+            }, 50)
+
+        }
     const editGlobalCode = (id) => {
       emit('edit-global-code', id)
     }
 
     const updateStatus = (id, status) => {
       const data = {
-        "status": status
+        "isActive": status
       };
       store.dispatch('updateGlobalCode', {id, data}).then(() => {
-        store.dispatch('globalCodesList')
+        
       })
     }
 
@@ -71,64 +115,70 @@ export default {
         title: "Category",
         dataIndex: "globalCodeCategory",
         key: "globalCodeCategory",
-        className: "codeCategory",
-        sorter: {
-          compare: (a, b) => a.globalCodeCategory - b.globalCodeCategory,
-        },
+        sorter:true
+      
+        
       },
       {
         title: "Code Name",
         dataIndex: "name",
-        key: "name",
-        className: "codename",
-        sorter: {
-          compare: (a, b) => a.name - b.name,
-        },
+        
+        sorter:true
       },
       {
         title: "Description",
         dataIndex: "description",
         key: "description",
-        className: 'description',
-        sorter: {
-          compare: (a, b) => a.description - b.description,
-        },
-      },
-      {
-        title: "Used Count",
-        dataIndex: "usedCount",
-        key: "usedCount",
-        className: "usedCount",
-        sorter: {
-          compare: (a, b) => a.id - b.id,
-        },
+        sorter:true
       },
       {
         title: "Status",
-        dataIndex: "status",
-        key: "status",
-        className: "codeStatus",
+        dataIndex: "isActive",
         slots: {
-          customRender: "status"
+          customRender: "isActive"
         },
       },
       {
         title: "Actions",
         dataIndex: "actions",
-        className: "codeActions",
         slots: {
           customRender: "actions",
         },
       },
     ];
-    
+
+   
+    const handleTableChange = (pag, filters, sorter) => {
+            if (sorter.order) {
+                let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
+                let orderParam = '&orderField=' + sorter.field + '&orderBy=' + order
+                store.dispatch('orderTable', {
+                    data: orderParam,
+                    orderBy: order,
+                    page: pag,
+                    filters: filters
+                })
+                store.dispatch("globalCodesList", store.getters.searchTable.value + orderParam)
+
+            } else {
+
+                store.dispatch('orderTable', {
+                    data: '&orderField=&orderBy='
+                })
+                store.dispatch("globalCodesList", store.getters.searchTable.value + store.getters.orderTable.value.data)
+            }
+        }
     return {
+      screensPermissions:store.getters.screensPermissions,
+      arrayToObjact,
       editGlobalCode,
       deleteGlobalCode,
       globalCodesColumns,
       globalCodesList,
       updateStatus,
       warningSwal,
+      tableYScroller,
+      handleTableChange
     }
   }
 }
@@ -141,10 +191,5 @@ export default {
   th.codeStatus, th.usedCount {
     width: 150px;
   }
-  td {
-    /* text-transform: capitalize; */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+ 
 </style>

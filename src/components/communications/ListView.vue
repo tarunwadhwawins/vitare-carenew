@@ -1,36 +1,43 @@
 <template>
   <a-row>
-    <a-col :span="12">
-      <SearchField @change="searchData"/>
+    <a-col :span="12" >
+      <SearchField  endPoint="communication"/>
     </a-col>
-    <a-col :span="12">
+    <a-col :span="12" >
       <div class="text-right mb-24">
-        <a-button class="primaryBtn">{{ $t('global.exportToExcel') }}</a-button>
+        <ExportToExcel  @click="exportExcel('communication_report')" v-if="arrayToObjact(screensPermissions,110)"/>
       </div>
     </a-col>
     <a-col :span="24">
-
-      <ListViewTable v-if="communicationsList.communicationsList" :communicationsList="communicationsList.communicationsList" />
+      <ListViewTable  /> 
     </a-col>
   </a-row>
 </template>
 
 <script>
-import { watchEffect } from 'vue';
+import { watchEffect ,onUnmounted} from 'vue';
 import { useStore } from "vuex"
 import SearchField from "@/components/common/input/SearchField";
 import ListViewTable from "@/components/communications/tables/ListViewTable";
+import {arrayToObjact,exportExcel} from "@/commonMethods/commonMethod"
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
+
 export default {
   components: {
     SearchField,
     ListViewTable,
+    ExportToExcel
   },
   setup() {
     const store = useStore()
-    const linkTo = "patients-summary"
+    
 
     watchEffect(() => {
       store.dispatch('communicationsList')
+      store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
     })
    
     const searchData = (value) => {
@@ -38,10 +45,19 @@ export default {
       store.dispatch('searchCommunications', value)
     };
 
+    
+    onUnmounted(()=>{
+      store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+        })
     return {
-      communicationsList:store.getters.communicationRecord.value,
+     screensPermissions:store.getters.screensPermissions,
+      arrayToObjact,
+      exportExcel,
       searchData,
-      linkTo,
+      
       onChange: () => {
         // console.log("params", );
       },

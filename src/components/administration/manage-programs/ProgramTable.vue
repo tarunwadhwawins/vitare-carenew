@@ -1,14 +1,9 @@
+
 <template>
-    <a-col :span="24">
-        <a-table  rowKey="id"
-          :columns="columns"
-          :data-source="data"
-          :scroll="{ x: 900 ,y : 430 }"
-          @change="onChange"
-          :pagination=false
-        >
+<a-col :span="24">
+    <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.manageProgramList" :scroll="{ x: 900 ,y : tableYScroller }" @change="handleTableChange" :pagination=false>
         <template #actions="text">
-            <a-tooltip placement="bottom">
+            <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,16)">
                 <template #title>
                     <span>{{$t('global.edit')}}</span>
                 </template>
@@ -16,7 +11,7 @@
                     <EditOutlined />
                 </a>
             </a-tooltip>
-            <a-tooltip placement="bottom">
+            <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,17)">
                 <template #title>
                     <span>{{$t('global.delete')}}</span>
                 </template>
@@ -25,115 +20,151 @@
                 </a>
             </a-tooltip>
         </template>
-        <template #status="{record}">
-            <a-switch v-model:checked="record.status" @change="UpdateProgramStatus(record.udid, $event)" />
+        <template #isActive="{record}" >
+            <a-switch v-model:checked="record.isActive" @change="UpdateProgramStatus(record.udid, $event)" :disabled="!arrayToObjact(screensPermissions,16)"/>
         </template>
     </a-table>
+    <TableLoader />
 </a-col>
-<InfiniteLoader v-if="loader" />
 </template>
-
 <script>
-import { ref, reactive, onMounted} from "vue";
+import { ref, onMounted, watchEffect } from "vue";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-import { warningSwal } from "@/commonMethods/commonMethod";
+import {
+  warningSwal,
+  arrayToObjact,
+  tableYScroller,
+} from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import { useStore } from "vuex";
-import InfiniteLoader from "@/components/loader/InfiniteLoader";
+
+import TableLoader from "@/components/loader/TableLoader";
 export default {
-    components: {
+  components: {
+    TableLoader,
+    DeleteOutlined,
+    EditOutlined,
+  },
+  setup(props, { emit }) {
+    const store = useStore();
+    const checked = ref([false]);
+    watchEffect(() => {
+      store.dispatch("manageProgramList");
+      store.dispatch("searchTable", "&search=");
+      store.dispatch("orderTable", {
+        data: "&orderField=&orderBy=",
+      });
+    });
 
-        DeleteOutlined,
-        EditOutlined,
-        InfiniteLoader
-    },
-    props: {
-        programData: {
-            type: Array
+    function editProgram(getRecord) {
+      store.dispatch("editManageProgram", getRecord.udid);
+      emit("is-edit", {
+        check: true,
+        id: getRecord.udid,
+      });
+    }
+
+    function deleteProgram(id) {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          store.dispatch("deleteManageProgram", id.udid);
+          store.state.programs.programList = "";
+          store.dispatch("manageProgramList");
         }
-    },
+      });
+    }
+    const UpdateProgramStatus = (id, status) => {
+      const data = {
+        isActive: status,
+      };
+      store.dispatch("updateManageProgram", {id,data,})
+    };
+    //ifinitescroller
+    const meta = store.getters.programsRecord.value;
+    const loader = ref(false);
+    let scroller = "";
+    let data = [];
+    onMounted(() => {
+      var tableContent = document.querySelector(".ant-table-body");
+      tableContent.addEventListener("scroll", (event) => {
+        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+        let currentScroll = event.target.scrollTop + 2;
+        if (currentScroll >= maxScroll) {
+          let current_page = meta.programMeta.current_page + 1;
 
-    setup(props, {
-        emit
-    }) {
-        const store = useStore();
-        const data = reactive(props.programData.programList)
-        const columns = reactive(props.programData.programColumns)
-        const checked = ref([false]);
+          if (current_page <= meta.programMeta.total_pages) {
+            scroller = maxScroll;
+            data = meta.manageProgramList;
+            loader.value = true;
+            store.state.program.programMeta = "";
+            store.state.programs.manageProgramList = "";
 
-        function editProgram(getRecord) {
-            store.dispatch('editProgram', getRecord.udid)
-            emit('is-edit', {
-                check: true,
-                id: getRecord.udid
-            })
+            store
+              .dispatch(
+                "manageProgramList",
+                store.getters.searchTable.value +
+                  "&page=" +
+                  current_page +
+                  store.getters.orderTable.value.data
+              )
+              .then(() => {
+                loadMoredata();
+              });
+          }
         }
+      });
+    });
 
-        function deleteProgram(id) {
-            warningSwal(messages.deleteWarning).then((response) => {
-                if (response == true) {
-                    store.dispatch('deleteProgram', id.udid)
-                    store.state.programs.programList = ''
-                    setTimeout(() => {
+    function loadMoredata() {
+      const newData = meta.manageProgramList;
+      newData.forEach((element) => {
+        data.push(element);
+      });
+      meta.manageProgramList = data;
+      var tableContent = document.querySelector(".ant-table-body");
 
-                        store.dispatch("programList");
-                    }, 2000);
-                }
-            });
-        }
-        const UpdateProgramStatus = (id, status) => {
-            const data = {
-                "isActive": status
-            };
+      setTimeout(() => {
+        tableContent.scrollTo(0, scroller);
+      }, 5000);
+      loader.value = false;
+    }
 
-            store.dispatch('updateProgram', {
-                id,
-                data
-            }).then(() => {})
-        }
-        //ifinitescroller
-        const meta = store.getters.programsRecord
-        const loader = ref(false)
-        onMounted(() => {
-            var tableContent = document.querySelector('.ant-table-body')
-            tableContent.addEventListener('scroll', (event) => {
-                let maxScroll = event.target.scrollHeight - event.target.clientHeight
-                let currentScroll = event.target.scrollTop + 2
-                //console.log("data",currentScroll)
-                if (currentScroll >= maxScroll) {
-
-                    let current_page = meta.value.programMeta.current_page + 1
-
-                    if (current_page <= meta.value.programMeta.total_pages) {
-                        loader.value = true
-                        store.state.program.programMeta = ""
-                        store.state.programs.programList = ""
-                        store.dispatch("programList", "?page=" + current_page).then(()=>{
-                          loadMoredata()
-                        })
-                        
-
-                    }
-                }
-            })
-        })
-
-        function loadMoredata() {
-            const newData = meta.value.programList
-            newData.forEach(element => {
-                data.push(element)
-            });
-            loader.value = false
-        }
-        return {
-            loader,
-            checked,
-            columns,
-            data,
-            deleteProgram,
-            editProgram,
-            UpdateProgramStatus
-        };
-    },
+    const handleTableChange = (pag, filters, sorter) => {
+      if (sorter.order) {
+        let order = sorter.order == "ascend" ? "ASC" : "DESC";
+        let orderParam = "&orderField=" + sorter.field + "&orderBy=" + order;
+        store.dispatch("orderTable", {
+          data: orderParam,
+          orderBy: order,
+          page: pag,
+          filters: filters,
+        });
+        store.dispatch(
+          "manageProgramList",
+          store.getters.searchTable.value + orderParam
+        );
+      } else {
+        store.dispatch("orderTable", {
+          data: "&orderField=&orderBy=",
+        });
+        store.dispatch(
+          "manageProgramList",
+          store.getters.searchTable.value + store.getters.orderTable.value.data
+        );
+      }
+    };
+    return {
+      meta,
+      screensPermissions: store.getters.screensPermissions,
+      arrayToObjact,
+      loader,
+      checked,
+      deleteProgram,
+      editProgram,
+      UpdateProgramStatus,
+      tableYScroller,
+      handleTableChange,
+    };
+  },
 };
 </script>

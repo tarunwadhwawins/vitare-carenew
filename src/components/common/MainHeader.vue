@@ -20,7 +20,7 @@
 
   <!-- Modal -->
   <a-modal v-model:visible="visible" max-width="1140px" width="100%" :title="buttonText" centered @ok="handleOk" @cancel="handleCancel"
-    :footer="null">
+    :footer="false">
     <AddCommunicationModal v-if="modalScreen == 'communication'"></AddCommunicationModal>
     <CareCoordinatorModal v-if="modalScreen == 'coordinator'"></CareCoordinatorModal>
   </a-modal>

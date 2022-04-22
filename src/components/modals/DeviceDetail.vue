@@ -16,39 +16,42 @@
               v-if="text.match(/yellowBgColor/g)"
             ></span>
           </template>
-          <template #active>
-            <a-switch v-model:checked="checked" />
+          <template #active >
+            <a-switch v-model:checked="checked" :disabled="!arrayToObjact(screensPermissions,326)"/>
           </template>
-          <template #action="{record}">
+          <template #action="{record}" v-if="arrayToObjact(screensPermissions,320)">
             <!-- <a class="icons"><EditOutlined @click="editDevice(record.id)" /></a> -->
-            <a class="icons"><DeleteOutlined @click="deleteDevice(record.id)" /></a>
+            <a class="icons"><DeleteOutlined @click="deleteDevice(record.id);actionTrack(paramsId,320,'patient')" /></a>
           </template>
         </a-table>
+        <Loader />
       </a-col>
     </a-row>
   </a-modal>
 </template>
 <script>
 import { computed, defineComponent, reactive, watchEffect } from "vue";
+import Loader from "@/components/loader/Loader.vue";
 import {
   DeleteOutlined,
   // EditOutlined
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
-import {warningSwal} from "@/commonMethods/commonMethod"
+import {warningSwal,actionTrack,arrayToObjact} from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
 import { useRoute } from "vue-router";
 export default defineComponent({
   components: {
     DeleteOutlined,
     // EditOutlined,
+    Loader,
   },
   props: {
     patientDetails: {
       type: Object
     }
   },
-  setup(props) {
+  setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
     const patientDetail = reactive(props.patientDetails);
@@ -99,15 +102,16 @@ export default defineComponent({
             id: patientDetail.id,
             deviceId: id,
           }).then(() => {
-            if(route.name == 'PatientSummary') {
-              store.dispatch('devices', route.params.udid)
+            if(devicesList.value.length <= 1) {
+              emit("closeModal", {
+                modal: 'devicesListing',
+                value: false
+              });
             }
-            else {
-              store.dispatch('devices', patientDetail.id)
-            }
+            store.dispatch('devices', route.params.udid)
             if(route.name == 'PatientSummary') {
               store.dispatch('latestDevice', route.params.udid)
-              store.dispatch('patientTimeline', route.params.udid);
+              store.dispatch('patientTimeline', {id:route.params.udid,type:''});
             }
           });
         }
@@ -115,6 +119,10 @@ export default defineComponent({
     }
 
     return {
+      arrayToObjact,
+      screensPermissions: store.getters.screensPermissions,
+      actionTrack,
+      paramsId:route.params.udid,
       devicesColumns,
       devicesList,
       // editDevice,

@@ -8,5 +8,7 @@ export default{
     calendarDate:null,
     latestAppointment:null,
     showMoreRecords:null,
-    appointmentConference:null
+    appointmentConference:null,
+    getStaff:null,
+    appointmentDetails:null
 }

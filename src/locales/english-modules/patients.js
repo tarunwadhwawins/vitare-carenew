@@ -38,7 +38,7 @@ const patient = {
     I00:'Diseases of the circulatory system (I00-I99)',
     referralSource:'Referral Source (Assisted Living, Home Health, Cardiologist)',
     fax:'Fax',
-    primaryPhysician:'Primary Physician',
+    primaryPhysician:'Primary Care Coordinator',
     sameAsabove:'Same as above'
 
   },

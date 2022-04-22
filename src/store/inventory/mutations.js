@@ -4,14 +4,17 @@ export const addInventorySuccess = async (state, inventory) => {
   state.addInventory = inventory;
 }
 
-export const inventoriesListSuccess = async (state, inventories) => {
-  state.inventoriesList = inventories;
+export const inventory = async (state, inventories) => {
+  state.inventoriesList = inventories.data.map(data => {
+    ///data.isActive = data.isActive
+    data.isAvailable = data.isAvailable == 1 ? '' : 'Assigned'
+    return data
+  });
+  state.inventoryMeta = inventories.meta.pagination
 }
 
 export const inventoryDetailsSuccess = async (state, inventory) => {
-  inventory.modelId = inventory.deviceModelId;
-  inventory.deviceModelId = inventory.modelNumber;
-  inventory.isActive = inventory.status;
+  //inventory.isActive = inventory.isActive;
   state.inventoryDetails = inventory;
 }
 
@@ -24,5 +27,8 @@ export const deleteInventorySuccess = async (state, inventories) => {
 }
 
 export const deviceModalsListSuccess = async (state, inventories) => {
-  state.deviceModalsList = inventories;
+  state.deviceModalsList = inventories.map(item=>{
+    item.name = item.modelNumber
+    return item;
+  });
 }

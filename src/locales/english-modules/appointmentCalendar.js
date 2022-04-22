@@ -4,6 +4,8 @@ const appointmentCalendar = {
     newAppointment:'New Appointment',
     fullCalendarView:'Full Calendar View',
     hideCalendarView:'Hide Calendar View',
+    physician:'Physician',
+    careCoordinator:'Care Coordinator',
 
     addAppointment:{
         appointmentDetail:'Appointment Detail',

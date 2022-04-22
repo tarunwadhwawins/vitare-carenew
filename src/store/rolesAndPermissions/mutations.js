@@ -1,8 +1,9 @@
-export const rolesListSuccess = async (state, roles) => {
+export const roleList = async (state, roles) => {
   state.rolesList = roles.data.map(role => {
-    role.status = role.status == 1 ? true : false;
+    role.isActive = role.isActive == 1 ? true : false;
     return role
   })
+  state.rolesMeta= roles.meta ? roles.meta.pagination : ''
 }
 
 export const rolePermissionsSuccess = async (state, roles) => {

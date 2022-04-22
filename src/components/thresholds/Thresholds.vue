@@ -5,8 +5,7 @@
         <a-col :span="24">
           <h2 class="pageTittle">
             {{ $t("thresholds.generalParameters") }}
-
-            <div class="commonBtn">
+            <div class="commonBtn" v-if="arrayToObjact(screensPermissions,329)">
               <a-button class="btn primaryBtn" @click="showModal(true)">{{
                 $t("thresholds.addNewParameters")
                 }}</a-button>
@@ -16,53 +15,51 @@
       </a-row>
       <a-row>
         <a-col :span="12">
-          <a-select v-model:value="value" :size="size" mode="tags" style="width: 100%" placeholder="Search . . ."
-            :options="options" @change="handleChange">
-          </a-select>
+          <SearchField  endPoint="generalParameterGroup"/>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="12" >
           <div class="text-right mb-24">
-            <a-button class="primaryBtn">{{
-              $t("global.exportToExcel")
-              }}</a-button>
+            <ExportToExcel  @click="exportExcel('generalParameter_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions,335)"/>
           </div>
         </a-col>
-       
-          
-       
-        <ThresholdsTable v-if="vitalList.vitalList" :thresholdsData="vitalList.vitalList" @is-edit="showEdit($event)"></ThresholdsTable>
-        <div v-else><Loader /></div>
-        
+        <ThresholdsTable  @is-edit="showEdit($event)"></ThresholdsTable>
+        <TableLoader />
       </a-row>
     </div>
-
   </a-layout-content>
-
-  <Thresholds v-if="threshodsId" v-model:visible="Thresholds" @is-visible="showModal($event)" :threshodId="threshodsId? threshodsId:''" />
-  <Thresholds v-else v-model:visible="Thresholds" @is-visible="showModal($event)" />
+  <Thresholds v-if="threshodsId" v-model:visible="Thresholds" @is-visible="isEdit($event)" :threshodId="threshodsId" />
+  <Thresholds v-else v-model:visible="Thresholds" @is-visible="isEdit($event)" />
 </template>
 <script>
-  import { ref, watchEffect } from "vue";
+  import { ref, watchEffect,onUnmounted } from "vue";
   import Thresholds from "@/components/modals/Thresholds";
   import ThresholdsTable from "./ThresholdsTable";
   import { useStore } from "vuex";
-  import Loader from "@/components/loader/Loader";
-
+  import TableLoader from "@/components/loader/TableLoader";
+  import SearchField from "@/components/common/input/SearchField";
+  import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
+  import { exportExcel,arrayToObjact } from "@/commonMethods/commonMethod";
   export default {
     components: {
       ThresholdsTable,
       Thresholds,
-      Loader
+      TableLoader,
+      SearchField,
+      ExportToExcel
     },
 
     setup() {
       const store = useStore();
       const threshodsId = ref()
       watchEffect(() => {
-        store.getters.vitalDataGetters.vitalList=""
+        
         store.dispatch("generalParameterList");
+        store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
       });
-      const vitalList = store.getters.vitalDataGetters.value
+      
       function nullId (){
         threshodsId.value=''
       }
@@ -74,6 +71,9 @@
       const Thresholds = ref(false);
       const showModal = (e) => {
         threshodsId.value=null
+        Thresholds.value = e;
+      };
+      const isEdit = (e) => {
         Thresholds.value = e;
       };
       const showEdit = (e) =>{
@@ -110,10 +110,17 @@
           label: "Group Three",
         },
       ]);
-
-      return {
+      onUnmounted(()=>{
+        store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+        })
         
-        vitalList,
+      return {
+        screensPermissions:store.getters.screensPermissions,
+        arrayToObjact,
+        exportExcel,
         checked,
         Thresholds,
         showModal,
@@ -123,7 +130,9 @@
         size: ref([]),
         threshodsId,
         showEdit,
-        nullId
+        nullId,
+        isEdit,
+        search: store.getters.searchTable,
       };
     },
   };

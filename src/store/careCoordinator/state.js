@@ -2,7 +2,7 @@ export default{
     counter:0,
     addStaff:null,
     updateStaff:null,
-    staffs:null,
+    staffs:[],
     columns:null,
     errorMsg:null,
     specializationStaff:null,
@@ -20,8 +20,13 @@ export default{
     providerListColms:null,
     roles:null,
     providers:null,
-    staffPermissions:[],
     staffMeta:null,
     addStaffDocument:null,
-    staffDocuments:null
+    staffDocuments:null,
+    closeModal:false,
+    clearStaffFormValidation:false,
+    availabilityDetails:false,
+    contactDetails:false,
+    documentStaffDetails:null
+    
 }

@@ -1,13 +1,23 @@
 import ServiceMethodService from '@/services/serviceMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
+import { successSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
 
 export const addTimeLog = async ({ commit }, {id, data}) => {
-  commit('loadingStatus', true)
+	if(data.isAutomatic == false) {
+		commit('loadingStatus', true)
+	}
 	await ServiceMethodService.common("post", API_ENDPOINTS['patient']+"/"+id+"/timeLog", null, data).then((response) => {
 		commit('addTimeLogSuccess', response.data.data);
-		commit('loadingStatus', false)
+		if(data.isAutomatic == true) {
+			localStorage.setItem('timeLogId', response.data.data.id)
+		}
+		else {
+			successSwal(response.data.message)
+			commit('loadingStatus', false)
+		}
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -16,13 +26,14 @@ export const addTimeLog = async ({ commit }, {id, data}) => {
 	})
 }
 
-export const timeLogsList = async ({ commit }, id) => {
+export const timeLogsList = async ({ commit }, {id}) => {
   commit('loadingStatus', true)
 	await ServiceMethodService.common("get", API_ENDPOINTS['patient']+"/"+id+"/timeLog", null, null).then((response) => {
 		commit('timeLogsListSuccess', response.data.data);
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -38,6 +49,7 @@ export const deleteTimeLog = async ({ commit }, {id, timeLogId}) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -56,6 +68,7 @@ export const latestTimeLog = async ({ commit }, id) => {
     }
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -68,6 +81,7 @@ export const timeLogDetails = async ({ commit }, udid) => {
 		commit('timeLogDetailsSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -76,14 +90,39 @@ export const timeLogDetails = async ({ commit }, udid) => {
 }
 
 export const updateTimeLog = async ({ commit }, {udid, data}) => {
-	console.log('updateTimeLog', data)
 	await ServiceMethodService.common("put", API_ENDPOINTS['timeLog'], udid, data).then((response) => {
 		commit('updateTimeLogSuccess', response.data.data);
 	})
 	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
+	})
+}
+
+export const updatePatientTimeLog = async ({ commit }, {patientUdid, timeLogId, data}) => {
+	if(data.isAutomatic == false) {
+		commit('loadingStatus', true)
+	}
+	await ServiceMethodService.common("put", API_ENDPOINTS['patient']+`/${patientUdid}/timeLog`, timeLogId, data).then((response) => {
+		commit('updatePatientTimeLog', response.data.data);
+		if(data.isAutomatic == true) {
+			localStorage.setItem('timeLogId', response.data.data.id)
+		}
+		else {
+			localStorage.removeItem('timeLogId')
+			successSwal(response.data.message)
+			commit('loadingStatus', false)
+		}
+	})
+	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
+		if (error.response.status == 401) {
+			//AuthService.logout();
+		}
+		commit('failure', error.response.data);
+		commit('loadingStatus', false)
 	})
 }

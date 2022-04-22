@@ -1,54 +1,56 @@
 <template>
 <a-col :sm="24" :xs="24">
-
-    <a-table  rowKey="id" :columns="columns" :data-source="data" :scroll="{ y: 420 }" :pagination=false>
+    <a-table rowKey="id" :columns="columns" :data-source="meta.vitalList" :scroll="{ y: tableYScroller }" :pagination="false" @change="handleTableChange">
         <template #actions="text">
-            <a-tooltip placement="bottom">
+            <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,330)">
                 <template #title>
-                    <span>{{$t('global.edit')}}</span>
+                    <span>{{ $t("global.edit") }}</span>
                 </template>
                 <a class="icons" @click="editParameter(text.record)">
                     <EditOutlined />
                 </a>
             </a-tooltip>
-            <a-tooltip placement="bottom">
+            <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,331)">
                 <template #title>
-                    <span>{{$t('global.delete')}}</span>
+                    <span>{{ $t("global.delete") }}</span>
                 </template>
                 <a class="icons" @click="deleteParameter(text.record)">
                     <DeleteOutlined />
                 </a>
             </a-tooltip>
         </template>
-        <template #active="key">
-            <a-switch v-model:checked="checked[key.record.key]" />
+        <template #active="key" >
+            <a-switch v-model:checked="checked[key.record.key]" :disabled="!arrayToObjact(screensPermissions,330)"/>
         </template>
     </a-table>
-    <InfiniteLoader v-if="loader" />
-
 </a-col>
 </template>
 
 <script>
- import { ref, reactive,  onMounted } from "vue"
-  import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
-  import { warningSwal } from "@/commonMethods/commonMethod";
-  import { messages } from "@/config/messages";
-  import InfiniteLoader from "@/components/loader/InfiniteLoader";
-  import { useStore } from "vuex";
+import {
+    onMounted
+} from "vue";
+import {
+    DeleteOutlined,
+    EditOutlined
+} from "@ant-design/icons-vue";
+import {
+    warningSwal,
+    tableYScroller,
+    arrayToObjact
+} from "@/commonMethods/commonMethod";
+import {
+    messages
+} from "@/config/messages";
+import {
+    useStore
+} from "vuex";
 export default {
-
     components: {
         DeleteOutlined,
-        EditOutlined,
-        InfiniteLoader
+        EditOutlined
     },
-    props: {
-        thresholdsData: {
-            type: Array,
-        },
-
-    },
+    props: {},
     setup(props, {
         emit
     }) {
@@ -60,7 +62,7 @@ export default {
             const obj = {
                 children: text,
                 props: {
-                    colSpan: null
+                    colSpan: null,
                 },
             };
 
@@ -68,19 +70,19 @@ export default {
         };
 
         function editParameter(getRecord) {
-            store.dispatch('generalParameterEdit', getRecord.generalparameterId)
-            emit('is-edit', {
+            store.dispatch("generalParameterEdit", getRecord.generalparameterId);
+            emit("is-edit", {
                 check: true,
-                id: getRecord.generalparameterId
-            })
+                id: getRecord.generalparameterId,
+            });
         }
 
         function deleteParameter(id) {
             warningSwal(messages.deleteWarning).then((response) => {
                 if (response == true) {
-                    store.dispatch('generalParameterDelete', id.id)
+                    store.dispatch("generalParameterDelete", id.id);
                     setTimeout(() => {
-                        store.getters.vitalDataGetters.value.vitalList=''
+                        store.getters.vitalDataGetters.value.vitalList = "";
                         store.dispatch("generalParameterList");
                     }, 2000);
                 }
@@ -88,69 +90,54 @@ export default {
         }
         const columns = [{
                 title: "General Parameters Group",
-                dataIndex: "data",
-                sorter: {
-                    compare: (a, b) => a.template - b.template,
-                    multiple: 3,
-                },
+                dataIndex: "generalParameterGroup",
+                sorter: true,
                 customRender: ({
-                    text,
                     index
                 }) => {
+                    //console.log(meta.vitalList[index])
                     const obj = {
-                        children: data[index].generalParameterGroup,
+                        children: meta.vitalList[index].generalParameterGroup,
                         props: {},
                     };
 
-                    obj.props.rowSpan = text;
+                    obj.props.rowSpan = meta.vitalList[index].data;
                     return obj;
                 },
             },
             {
                 title: "Device Type",
-                dataIndex: "data",
-                sorter: {
-                    compare: (a, b) => a.template - b.template,
-                    multiple: 3,
-                },
+                dataIndex: "deviceType",
+                sorter: true,
                 customRender: ({
-                    text,
                     index
                 }) => {
+                    //console.log(text)
                     const obj = {
-                        children: data[index].deviceType,
+                        children: meta.vitalList[index].deviceType,
                         props: {},
                     };
 
-                    obj.props.rowSpan = text;
+                    obj.props.rowSpan = meta.vitalList[index].data;
                     return obj;
                 },
             },
             {
                 title: "Type",
                 dataIndex: "vitalFieldName",
-                sorter: {
-                    compare: (a, b) => a.template - b.template,
-                    multiple: 3,
-                },
+                sorter: true,
                 customRender: renderContent,
             },
             {
                 title: "High Limit ",
                 dataIndex: "highLimit",
-                sorter: {
-                    compare: (a, b) => a.template - b.template,
-                    multiple: 3,
-                },
+
                 customRender: renderContent,
             },
             {
                 title: "Low Limit ",
                 dataIndex: "lowLimit",
-                sorter: {
-                    compare: (a, b) => a.template - b.template,
-                    multiple: 3,
-                },
+
                 customRender: renderContent,
             },
 
@@ -162,48 +149,82 @@ export default {
                 },
             },
         ];
-        const data = reactive(props.thresholdsData)
-        const meta = store.getters.vitalDataGetters
-        const loader = ref(false)
+
+        const meta = store.getters.vitalDataGetters.value;
+        let data = [];
+        let scroller = "";
         onMounted(() => {
-            var tableContent = document.querySelector('.ant-table-body')
-            tableContent.addEventListener('scroll', (event) => {
-                let maxScroll = event.target.scrollHeight - event.target.clientHeight
-                let currentScroll = event.target.scrollTop + 2
+            var tableContent = document.querySelector(".ant-table-body");
+            tableContent.addEventListener("scroll", (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+                let currentScroll = event.target.scrollTop + 2;
                 if (currentScroll >= maxScroll) {
+                    let current_page = meta.generalParameterMeta.current_page + 1;
 
-                    let current_page = meta.value.generalParameterMeta.current_page + 1
+                    if (current_page <= meta.generalParameterMeta.total_pages) {
+                        scroller = maxScroll;
+                        data = meta.vitalList;
+                        store.state.thresholds.generalParameterMeta = "";
+                        store.state.thresholds.vitalList = "";
 
-                    if (current_page <= meta.value.generalParameterMeta.total_pages) {
-                        loader.value = true
-                        store.state.thresholds.generalParameterMeta = ""
-                        store.state.thresholds.vitalList= ""
-                        store.dispatch("generalParameterList", "?page=" + current_page).then(()=>{
-                            loadMoredata()
-                        })
-                        
+                        store
+                            .dispatch(
+                                "generalParameterList",
+                                "?page=" + current_page + store.getters.searchTable.value + store.getters.orderTable.value.data
+                            )
+                            .then(() => {
+                                loadMoredata();
+                            });
                     }
                 }
-            })
-        })
+            });
+        });
 
         function loadMoredata() {
-            const newData = meta.value.vitalList
-            newData.forEach(element => {
-                data.push(element)
+            const newData = meta.vitalList;
+            newData.forEach((element) => {
+                data.push(element);
             });
-            loader.value = false
+            meta.vitalList = data;
+            var tableContent = document.querySelector(".ant-table-body");
+
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller);
+            }, 500);
         }
+        const handleTableChange = (pag, filters, sorter) => {
+            if (sorter.order) {
+                let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
+                let orderParam = '&orderField=' + sorter.field + '&orderBy=' + order
+                store.dispatch('orderTable', {
+                    data: orderParam,
+                    orderBy: order,
+                    page: pag,
+                    filters: filters
+                })
+                store.dispatch("generalParameterList", "?page=" + store.getters.searchTable.value + orderParam)
+
+            } else {
+                store.dispatch('orderTable', {
+                    data: '&orderField=&orderBy='
+                })
+                store.dispatch("generalParameterList", "?page=" + store.getters.searchTable.value + store.getters.orderTable.value.data)
+            }
+        }
+
+        
         return {
+            screensPermissions:store.getters.screensPermissions,
+            arrayToObjact,
             deleteParameter,
             editParameter,
-            data,
+            meta,
             columns,
-            loader,
-
-        }
-    }
-}
+            tableYScroller,
+            handleTableChange
+        };
+    },
+};
 </script>
 
 <style>

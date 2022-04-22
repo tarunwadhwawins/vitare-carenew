@@ -12,7 +12,7 @@ export const vitalSuccessMsg = async (state, data) => {
 export const vitalNull = async (state) => {
   state.vitalData = ''
 }
-export const vitalSuccessList = async (state, vitalRecord) => {
+export const generalParameterGroup = async (state, vitalRecord) => {
   state.generalParameterMeta = vitalRecord.meta.pagination
   state.vitalList = ''
   let record = []
@@ -55,7 +55,7 @@ export const vitalEdit = async (state, vitaledit) => {
   record['udid'] = udid
   record['deviceTypeId'] = vitaledit.deviceTypeId
   record.push(record)
- 
-  state.vitalEdit = record
+  console.log(record)
+  state.vitalEdit = {...record}
 
 }

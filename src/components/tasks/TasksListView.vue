@@ -1,52 +1,50 @@
 <template>
   <a-row :gutter="24">
     <a-col :span="12">
-      <SearchField @change="handleChange"/>
+      <SearchField endPoint="task" />
     </a-col>
-    <a-col :span="12">
+    <a-col :span="12" >
       <div class="text-right mb-24">
-        <a-button class="primaryBtn">{{$t('global.exportToExcel')}}</a-button>
+        <ExportToExcel  @click="exportExcel('task_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions, 118)"/>
       </div>
     </a-col>
-    
-   
-     <TaskTable v-if="tasksList.tasksList" :taskRecords="tasksList" @is-Edit="editTask($event)"></TaskTable>
-      
-    
+    <TaskTable @is-Edit="editTask($event)"></TaskTable>
   </a-row>
+  <TableLoader />
 </template>
-
 <script>
-
-import { ref, watchEffect } from "vue";
-import { useStore } from "vuex"
-// import swal from 'sweetalert2';
+import { ref, watchEffect, onUnmounted } from "vue";
+import { useStore } from "vuex";
 import SearchField from "@/components/common/input/SearchField";
-
-
- import TaskTable from "./TaskTable"
+import TaskTable from "./TaskTable";
+import TableLoader from "@/components/loader/TableLoader";
+import { arrayToObjact,exportExcel } from "@/commonMethods/commonMethod";
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 
 export default {
   components: {
     SearchField,
     TaskTable,
-    // Loader
+    TableLoader,
+    ExportToExcel,
   },
-  setup(props, {emit}) {
-    const store = useStore()
+  setup(props, { emit }) {
+    const store = useStore();
     watchEffect(() => {
-      store.getters.taskRecords.tasksList=""
-      store.dispatch("tasksList")
-    })
+      
+      store.dispatch("tasksList");
+      store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+    });
 
     const handleChange = (value) => {
-      store.dispatch('searchTasks', value)
+      store.dispatch("searchTasks", value);
     };
 
-   
-
     const editTask = (id) => {
-      emit('isEdit', {check:true,id:id});
+      emit("isEdit", { check: true, id: id });
     };
 
     const updateTask = () => {
@@ -56,17 +54,27 @@ export default {
     const createAppointment = () => {
       // console.log('createAppointment', id)
     };
-    const tasksList = store.getters.taskRecords.value
 
-   return {
+    
+    onUnmounted(() => {
+      store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+    });
+    return {
+      search:store.getters.searchTable,
+      exportExcel,
+      screensPermissions:store.getters.screensPermissions,
+      arrayToObjact,
       size: ref([]),
       handleChange,
       // tasksColumns,
-      tasksList,
       editTask,
       updateTask,
       createAppointment,
-    } 
-  }
-}
+     
+    };
+  },
+};
 </script>

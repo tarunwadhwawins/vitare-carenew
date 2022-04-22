@@ -1,5 +1,5 @@
 <template>
-<a-modal width="1000px" title="Patient Search" :maskClosable="false">
+<a-modal width="1000px" title="Patient Search" :maskClosable="false" @cancel="closeModal()" :footer="null">
     <a-form ref="formRef" autocomplete="off" :model="patientSearch" @finish="submitForm">
         <a-row :gutter="24">
             <a-col :sm="20" :xs="24">
@@ -55,11 +55,20 @@ export default {
         setTimeout(()=>{
         if(store.state.patients.fetchFromBitrixStatus!=null){
         emit('closeSearchPatient',false)
+        emit('clearValidtion')
+        closeModal()
         }
         },2000)
         
     }
+    function closeModal(){
+        patientSearch.search ='',
+        store.state.patients.patientSearchWithBitrixCols =null,
+        store.state.patients.patientSearchWithBitrix =null
+
+    }
     return {
+    closeModal,
     fetchFromBitrix,
     patientsData,
       submitForm,

@@ -1,5 +1,5 @@
 <template>
-<a-form :model="provider" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addProvider" @finishFailed="roleDataFailed">
+<a-form :model="provider" scrollToFirstError=true name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addProvider" @finishFailed="roleDataFailed">
     <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
             <div class="form-group">
@@ -17,7 +17,7 @@
 <a-row :gutter="24">
     <a-col :span="24">
         <a-table  rowKey="id" :pagination="false" :columns="columns4" :data-source="data4" :scroll="{ x: 900 }">
-            <template #action="text">
+            <template #action="text" v-if="arrayToObjact(screensPermissions,24)">
                 <a-tooltip placement="bottom" @click="deleteProvider(text.record.id)">
                     <template #title>
                         <span>{{$t('global.delete')}}</span>
@@ -79,6 +79,8 @@ export default defineComponent({
       store.dispatch("providers");
     });
     return {
+      arrayToObjact,
+      screensPermissions: store.getters.screensPermissions,
       staffs,
       deleteProvider,
       addProvider,

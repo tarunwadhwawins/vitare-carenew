@@ -1,5 +1,5 @@
 <template>
-<a-modal max-width="900px" width="90%" title="Create New Role" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal max-width="900px" width="90%" :title="editRole ? 'Edit Role' : 'Create New Role'" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <a-col :span="24">
 
@@ -15,8 +15,8 @@
                                 <template v-for="role in rolesList" :key="role.id">
 
                                     <div class="radioInput" v-if="roleId">
-                                        <a-radio v-if="roleId === role.udid" v-model:checked="role.udid">{{ role.name }}</a-radio>
-                                        <a-radio :value="role.udid" v-else>{{ role.name }}</a-radio>
+                                        <a-radio v-if="roleId === role.udid" v-model:checked="role.udid" @change="checkChangeInput()">{{ role.name }}</a-radio>
+                                        <a-radio :value="role.udid" v-else @change="checkChangeInput()">{{ role.name }}</a-radio>
                                     </div>
                                     <div class="radioInput" v-else>
 
@@ -42,14 +42,14 @@
                         <a-col :sm="24" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('roles.name')" name="name" :rules="[{ required: true, message: $t('roles.name')+' '+$t('global.validation')  }]">
-                                    <a-input v-model:value="addRoleForm.name" size="large" />
+                                    <a-input v-model:value="addRoleForm.name" size="large" @change="checkChangeInput()" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="24" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('roles.description')" name="description" :rules="[{ required: true, message: $t('roles.description')+' '+$t('global.validation')  }]">
-                                    <a-textarea v-model:value="addRoleForm.description" placeholder="Description" allow-clear />
+                                    <a-textarea v-model:value="addRoleForm.description" placeholder="Description" allow-clear @change="checkChangeInput()" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -71,17 +71,22 @@
                 <a-form ref="formRef" :model="addPermissionsForm" @finish="addPermissions" v-if="rolesAndPermissions.rolePermissions.modules">
                     <a-row>
                         <a-col :span="24" v-for="module in rolesAndPermissions.rolePermissions.modules" :key="module.id">
-                            <a-card :title="module.name">
+                            <div v-if="module.id==18">
+                            </div>
+
+                            <a-card v-else :title="module.name">
                                 <div class="screens" v-for="screen in module.screens" :key="screen.moduleId">
-                                    <a-checkbox v-model:checked="addPermissionsForm.screen[screen.moduleId]" @change="checkAll(screen.actions,screen.moduleId)"><strong>{{ screen.name }}</strong></a-checkbox>
+                                    <a-checkbox v-model:checked="addPermissionsForm.screen[screen.id]" @change="checkAll(screen.actions,screen.id); checkChangeInput()"><strong>{{ screen.name }}</strong></a-checkbox>
                                     <a-divider class="transparent" />
-                                    <a-checkbox class="actions" v-for="action in screen.actions" :key="action.id" v-model:checked="addPermissionsForm.action[action.id]" @change="checkStatus(action.id,screen.moduleId)">{{ action.name }}</a-checkbox>
+                                    <a-checkbox class="actions" v-for="action in screen.actions" :key="action.id" v-model:checked="addPermissionsForm.action[action.id]" @change="checkStatus(screen.id,screen.actions); checkChangeInput()">{{ action.name }}</a-checkbox>
                                     <a-divider class="transparent" />
                                 </div>
                             </a-card>
                             <a-divider class="transparent" />
+
                         </a-col>
                     </a-row>
+
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">Previous</a-button>
                         <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">Next</a-button>
@@ -89,20 +94,18 @@
                     </div>
                 </a-form>
             </div>
-             <div class="steps-content" v-if="steps[current].title == 'Dashboard Widgets'">
+            <div class="steps-content" v-if="steps[current].title == 'Dashboard Widgets'">
                 <h4><strong>Select Widgets</strong></h4>
 
                 <a-form ref="formRef2" :model="dashboardPermission" @finish="dashboardForm" v-if="rolesAndPermissions.dashboardWidget">
                     <a-row>
-                        <a-col :span="24" >
-                            
-                                <div class="screens" v-for="widget in rolesAndPermissions.dashboardWidget" :key="widget.id">
-                                    <a-checkbox v-model:checked="dashboardPermission.widget[widget.id]" ><strong>{{ widget.widgetName }}</strong></a-checkbox>
-                                    
-                                    
-                                   
-                                </div>
-                         
+                        <a-col :span="24">
+
+                            <div class="screens" v-for="widget in rolesAndPermissions.dashboardWidget" :key="widget.id">
+                                <a-checkbox v-model:checked="dashboardPermission.widget[widget.id]"><strong>{{ widget.widgetName }}</strong></a-checkbox>
+
+                            </div>
+
                             <a-divider class="transparent" />
                         </a-col>
                     </a-row>
@@ -123,7 +126,9 @@
 import {
     reactive,
     ref,
-    watchEffect
+    watchEffect,
+    onMounted,
+    computed
 } from "vue";
 import {
     useStore
@@ -133,7 +138,8 @@ import RolePermissionsList from "@/components/administration/rolesAndPermissions
 // import StepperButtons from "@/components/common/button/StepperButtons"
 import Loader from "./../loader/Loader"
 import {
-    warningSwal
+    warningSwal,
+    arrayToObjact,
 } from "./../../commonMethods/commonMethod"
 import {
     messages
@@ -167,6 +173,7 @@ export default {
         const rolesAndPermissions = store.getters.rolesAndPermissionsRecord.value
         const formRef = ref()
         const formRef2 = ref()
+
         const addRoleForm = reactive({
             name: '',
             description: ''
@@ -176,9 +183,9 @@ export default {
             action: [],
             screen: []
         })
-      const dashboardPermission = reactive({
-          widget:[]
-      })
+        const dashboardPermission = reactive({
+            widget: []
+        })
         const rolesList = rolesAndPermissions.rolesList
 
         const onRoleChange = (event) => {
@@ -191,9 +198,9 @@ export default {
         }
         getId.value = props.editRole ? reactive(props.editRole) : reactive(props.roleId)
         getId.value ? current.value++ : ''
+
         watchEffect(() => {
-            store.dispatch('rolePermissions')
-            store.dispatch('dashboardWidget')
+
             if (props.editRole) {
 
                 Object.assign(addRoleForm, rolesAndPermissions.roleDetails ? rolesAndPermissions.roleDetails : '')
@@ -203,6 +210,7 @@ export default {
                 }
 
             } else if (props.roleId) {
+
                 store.dispatch('editdWidget', props.roleId)
                 store.dispatch('editPermissions', props.roleId).then(() => {
                     copyPermission()
@@ -210,6 +218,11 @@ export default {
                 })
 
             }
+
+        })
+        onMounted(() => {
+            store.dispatch('rolePermissions')
+            store.dispatch('dashboardWidget')
         })
         ///role submit
         const submitForm = () => {
@@ -222,12 +235,13 @@ export default {
                     data: {
                         ...addRoleForm
                     },
-                    id: getRoleId
+                    id: getRoleId,
+                    show: false
                 })
             } else {
                 store.dispatch('addRole', addRoleForm)
             }
-            store.state.rolesAndPermissions.rolesList=""
+            store.state.rolesAndPermissions.rolesList = ""
             store.dispatch('rolesList')
             current.value++;
         }
@@ -259,15 +273,15 @@ export default {
                     check: check
                 })
             }
-current.value++;
-           
+            current.value++;
+
         }
         //dasboard widgets
- const dashboardForm = () =>{
-     let widget = []
-     let check = ''
-    
- dashboardPermission.widget.forEach(function (Element, i) {
+        const dashboardForm = () => {
+            let widget = []
+            let check = ''
+
+            dashboardPermission.widget.forEach(function (Element, i) {
                 if (Element) {
                     widget.push(i);
                     check = Element
@@ -290,40 +304,61 @@ current.value++;
                     id: udid,
                     check: check
                 })
- }
-  reset();
+                store.commit('checkChangeInput', false)
+            }
+            reset();
             rolesAndPermissions.addRole = ''
             emit('on-submit')
-             emit("is-visible", false);
- }
+            emit("is-visible", false);
+        }
+
         function copyPermission() {
             rolesAndPermissions.editRolesAndPermissions.forEach((Element) => {
+
                 Element.screen.forEach((screenElement) => {
+
                     screenElement.forEach((getData) => {
-                        getData.action.forEach((action) => {
+
+                        rolesAndPermissions.rolePermissions ? rolesAndPermissions.rolePermissions.modules.forEach((formModule) => {
+                            let screens = arrayToObjact(formModule.screens, getData.id)
+
+                            if (screens) {
+
+                                getData.action ? getData.action.length === screens.actions.length ? addPermissionsForm.screen[getData.id] = true : '' : ''
+                            }
+
+                        }) : ''
+
+                        getData.action ? getData.action.forEach((action) => {
                             action.forEach((getAction) => {
                                 addPermissionsForm.action[getAction.id] = true
                             })
-                        })
+                        }) : ""
                     })
                 })
 
             })
-          rolesAndPermissions.editWidget?  rolesAndPermissions.editWidget.forEach((Element) =>{
-               dashboardPermission.widget[Element.id]= true
-           }) : '' 
+            rolesAndPermissions.editWidget ? rolesAndPermissions.editWidget.forEach((Element) => {
+                dashboardPermission.widget[Element.id] = true
+            }) : ''
 
         }
 
         function checkAll(actions, value) {
+
             actions.map((item) => {
+
                 addPermissionsForm.screen[value] == true ? addPermissionsForm.action[item.id] = true : addPermissionsForm.action[item.id] = false
             })
         }
 
-        function checkStatus(actions, value) {
-
-            addPermissionsForm.action[actions] == true ? "" : addPermissionsForm.screen[value] = false
+        function checkStatus(value, check) {
+            let checkBox = true
+            check.forEach((item) => {
+                addPermissionsForm.action[item.id] == true ? '' : checkBox = false
+            })
+            checkBox ? addPermissionsForm.screen[value] = true : addPermissionsForm.screen[value] = false
+            //addPermissionsForm.action[actions] == true ? "" : addPermissionsForm.screen[value] = false
         }
         const form = reactive({
             ...addRoleForm,
@@ -335,27 +370,39 @@ current.value++;
             ...dashboardPermission,
         });
 
+        function checkChangeInput() {
+            store.commit('checkChangeInput', true)
+        }
+
+        const checkFieldsData = computed(() => {
+            return store.state.common.checkChangeInput;
+        })
+
         function closeModal() {
-            if (addRoleForm.name != "" || addRoleForm.description != "" || addPermissionsForm.action != "" || addPermissionsForm.screen != "") {
+            if (checkFieldsData.value) {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
                         reset()
+                        emit("is-visible", false);
+                        store.commit('checkChangeInput', false)
                     } else {
                         emit("is-visible", true);
                     }
                 });
+            } else {
+                reset()
             }
         }
 
         function reset() {
             //formRef.value.resetFields();
-            formRef2.value.resetFields()
+            //formRef2.value.resetFields()
             Object.assign(addRoleForm, form)
             Object.assign(addPermissionsForm, formSecond)
             Object.assign(dashboardPermission, formThird)
             // props.editRole = null
             //props.roleId = null
-            emit("is-visible", false);
+
         }
         const next = () => {
             current.value++;
@@ -366,6 +413,8 @@ current.value++;
         }
 
         return {
+            checkFieldsData,
+            checkChangeInput,
             rolesAndPermissions,
             addRoleForm,
             addPermissionsForm,
@@ -384,8 +433,8 @@ current.value++;
             formRef2,
             checkAll,
             checkStatus,
-        dashboardForm,
-        dashboardPermission,
+            dashboardForm,
+            dashboardPermission,
             steps: [{
                     title: "Select Role",
                     content: "First-content",

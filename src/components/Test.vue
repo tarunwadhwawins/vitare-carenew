@@ -1,73 +1,57 @@
- 
- <template>
-  <div>
-    <span>{{ errorMessageRef }}</span>
-    {{itemsRef}}
-    <!-- <ul>
-      <li v-for="item in itemsRef" :key="item.id">{{ item }}</li>
-      <div ref="intersectionTrigger"></div>
-    </ul> -->
+<template>
+   <div id="box-droppable1" @drop="drop" @dragover="allowDrop">
+    <h3>Draggaable area 1:</h3>
+    <hr>
+    
+    <div class="" draggable="true" @dragstart="onDragging" id="123">
+      <h2>Drag mee</h2>
+      <p>this is a text</p>
+    </div>
+     
+    <img id="img-draggable" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" draggable="true" @dragstart="drag" width="336">
   </div>
-  <a-table  rowKey="id" v-if="itemsRef" :columns="columns" :data-source="itemsRef" :scroll="{ x: 900 }" ></a-table>
+  
+  <div id="box-droppable2" @drop="drop" @dragover="allowDrop">
+    <h3>Droppable area 2:</h3>
+    <hr>
+  </div>
 </template>
 
 <script>
-import { ref, watch } from 'vue'
-import { makeUseInfiniteScroll } from 'vue-use-infinite-scroll'
+import { defineComponent } from 'vue';
 
-export default {
-  setup() {
-    const useInfiniteScroll = makeUseInfiniteScroll({})
-    const intersectionTrigger = ref(null)
-    const pageRef = useInfiniteScroll(intersectionTrigger)
-
-    watch(
-      pageRef,
-      (page) => {
-        console.log(page)
-        fetchItems(page)
-      },
-      { immediate: true }
-    )
-
-    const itemsRef = ref([])
-    const errorMessageRef = ref('')
-
-    async function fetchItems(page) {
-      
-      fetch(`https://jsonplaceholder.typicode.com/comments?_page=${page}&_limit=10`)
-        .then((res) => res.json())
-        .then((data) =>  itemsRef.value.push(...data))
-        .catch((error) => (errorMessageRef.value = error.message))
-
-    }
-   // itemsRef.value = computed(() =>{return itemsRef.value})
-    const columns = [
-        {
-          title: "General",
-          dataIndex: "postId",
-
-        },
-        {
-          title: "Device Type",
-          dataIndex: "name",
-         
-        },
-        {
-          title: "email",
-          dataIndex: "email",
-        },
-        {
-          title: "id",
-          dataIndex: "id",
-        },
-      ];
-    return {
-      columns,
-			intersectionTrigger,
-			itemsRef,
-			errorMessageRef
-		}
+export default defineComponent({
+  components: {
+    
   },
+setup() {
+    const onDragging = (ev) => {
+        console.log(ev);
+        ev.dataTransfer.setData("text", ev.target.id);
+    };
+    const allowDrop = (ev) => {
+        ev.preventDefault();
+    };
+    const drag = (ev) => {
+        ev.dataTransfer.setData("text", ev.target.id);
+    };
+    const drop = (ev) => {
+        ev.preventDefault();
+        let data = ev.dataTransfer.getData("text");
+        console.log(data);
+        ev.target.appendChild(document.getElementById(data));
+    }
+    return {
+        onDragging,
+        allowDrop,
+        drag,
+        drop,
+    }
 }
+  
+
+});
 </script>
+<style>
+
+</style>

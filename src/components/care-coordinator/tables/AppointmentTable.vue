@@ -1,8 +1,8 @@
 <template>
   <a-table  rowKey="id" :columns="appointments.staffSummaryAppointmentCols" :data-source="appointments.staffSummaryAppointment" :pagination="false">
-    <!-- <template #patientName="text">
-      <router-link :to="linkTo">{{ text }}</router-link>
-    </template> -->
+    <template #patient="{ record }">
+      <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientUdid } }">{{ record.patient }}</router-link>
+    </template> 
     <template #appt="text">
       <span >{{ text.text }}</span>
     </template>

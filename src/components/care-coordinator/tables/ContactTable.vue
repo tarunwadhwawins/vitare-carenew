@@ -1,31 +1,44 @@
 <template>
-<a-table  rowKey="id" :pagination="false" :columns="staffs.staffContactColms" :data-source="staffs.staffContactList" :scroll="{ x: 900 }">
-    <template #action="text">
-        <a-tooltip placement="bottom" @click="deleteContact(text.record.id)">
-            <template #title>
-                <span>{{$t('global.delete')}}</span>
-            </template>
-            <a class="icons">
-                <DeleteOutlined /></a>
-        </a-tooltip>
+  <a-table  rowKey="id" :pagination="false" :columns="staffs.staffContactColms" :data-source="staffs.staffContactList" >
+    <template #action="text" >
+      <a-tooltip placement="bottom" @click="editContact(text.record.id)" v-if="arrayToObjact(screensPermissions,48)">
+        <template #title>
+          <span>{{$t('global.edit')}}</span>
+        </template>
+        <a class="icons">
+          <EditOutlined />
+        </a>
+      </a-tooltip>
+      <a-tooltip placement="bottom" @click="deleteContact(text.record.id)" v-if="arrayToObjact(screensPermissions,49)">
+        <template #title>
+          <span>{{$t('global.delete')}}</span>
+        </template>
+        <a class="icons">
+          <DeleteOutlined />
+        </a>
+      </a-tooltip>
     </template>
-</a-table>
+  </a-table>
+  <EditContactModal v-if="contactFormVisible" v-model:visible="contactFormVisible" :paramId="paramId" :isContactEdit="isEditContact" @closeModal="handleOk" />
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import {
   DeleteOutlined,
-  // EditOutlined,
+  EditOutlined,
   //   PlusOutlined,
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { warningSwal } from "@/commonMethods/commonMethod";
+import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
+import EditContactModal from "@/components/modals/EditContactModal";
 export default {
   components: {
     DeleteOutlined,
+    EditOutlined,
+    EditContactModal,
   },
   props: {
     Id: String,
@@ -33,7 +46,10 @@ export default {
   setup(props) {
     const store = useStore();
     const router = useRoute();
-    console.log("==", router.params.udid);
+    const route = useRoute()
+    const contactFormVisible = ref(false)
+    const isEditContact = ref(false)
+    const paramId = route.params.udid
 
     function deleteContact(id) {
       warningSwal(messages.deleteWarning).then((response) => {
@@ -51,12 +67,35 @@ export default {
         }
       });
     }
+
+    const editContact = (contactId) => {
+      store.dispatch("contactDetails", {
+        id: props.Id ? props.Id : router.params.udid,
+        contactId: contactId,
+      });
+      contactFormVisible.value = true
+      isEditContact.value = true
+    }
+
     const staffs = computed(() => {
       return store.state.careCoordinator;
     });
+
+    const handleOk = () => {
+      contactFormVisible.value = false
+      isEditContact.value = false
+    }
+    
     return {
+      screensPermissions:store.getters.screensPermissions,
+      arrayToObjact,
       staffs,
       deleteContact,
+      editContact,
+      contactFormVisible,
+      isEditContact,
+      paramId,
+      handleOk,
     };
   },
 };

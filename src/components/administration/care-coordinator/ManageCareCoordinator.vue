@@ -77,7 +77,6 @@
                   placeholder="Search . . ."
                   enter-button="Search"
                   size="large"
-                  @search="onSearch"
                   class="mb-24"
                 />
               </a-col>
@@ -139,7 +138,7 @@
       title="Add New Coordinator"
       centered
       @ok="handleOk"
-      :footer="null"
+      :footer="false"
     >
       <a-row :gutter="24">
         <a-col :span="24">
@@ -606,7 +605,7 @@
 </template>
 
 <script>
-import Header from "@/components/administration/layout/header/Header";
+import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import { ref, computed } from "vue";
 import {

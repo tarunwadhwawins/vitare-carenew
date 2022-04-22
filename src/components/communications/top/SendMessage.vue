@@ -1,34 +1,33 @@
 <template>
-  <a-button class="btn primaryBtn" @click="showModal">
-    {{ $t('communications.sendMessage') }}
+  <a-button class="btn primaryBtn" @click="showModal(true)">
+    {{ $t('communications.conversation') }}
   </a-button>
 
   <!-- Modal -->
-  <CommunicationsModal v-model:visible="visible" @ok="handleOk" @is-visible="handleOk" />
+  <CommunicationsModal v-model:visible="visible"  @is-visible="showModal($event)" />
 </template>
 
 <script>
-import CommunicationsModal from "@/components/modals/CommunicationsModal";
-import { ref } from "vue";
-export default {
+// import CommunicationsModal from "@/components/modals/CommunicationsModal";
+import { defineComponent, ref,defineAsyncComponent } from "vue";
+export default defineComponent({
   components: {
-    CommunicationsModal,
+    CommunicationsModal:defineAsyncComponent(()=>import("@/components/modals/CommunicationsModal")),
   },
   setup() {
     const visible = ref(false);
-    const showModal = () => {
-      visible.value = true;
+    const showModal = (e) => {
+      visible.value = e;
     };
 
-    const handleOk = () => {
-      visible.value = false;
-    };
+    
+   
 
     return {
       visible,
       showModal,
-      handleOk
+      
     }
   }
-}
+})
 </script>

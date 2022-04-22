@@ -1,72 +1,104 @@
-import { timerFromTimestamp, timeFormatSimple } from '../../commonMethods/commonMethod';
+import { secondsToTime,dateAndTimeFormate } from '../../commonMethods/commonMethod';
 
 
 export const timeLogReportList = async (state, data) => {
   state.timeLogeMeta = data.meta.pagination
+  state.timeLogReportColumns = [
+    {
+      title: "Care Coodinator",
+      dataIndex: "performedBy",
+      sorter: true,
+      slots: {
+        customRender: "staff",
+      },
+    },
+    {
+      title: "Patient",
+      dataIndex: "patient",
+      sorter: true,
+      slots: {
+        customRender: "patient",
+      },
+    },
+
+    {
+      title: "Date",
+      dataIndex: "date",
+      sorter:true
+    },
+    {
+      title: "Time (MM:SS)",
+      dataIndex: "timeAmount",
+      sorter:true
+    },
+    {
+      title: "Category", 
+      dataIndex: "category",
+      ellipsis: true,
+    },
+
+    {
+      title: "CPT Codes ",
+      dataIndex: "cptCode",
+    },
+    {
+      title: "Flag",
+      dataIndex: "flagColor",
+      slots: {
+        customRender: "flags",
+      },
+    },
+    
+    {
+      title: "Notes", 
+      dataIndex: "note",
+    },
+    
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      slots: {
+        customRender: "actions",
+      },
+    },
+  ];
   state.timeLogReportList = data.data.map(item => {
-    item.timeAmount = timerFromTimestamp(item.timeAmount)
+    item.timeAmount = secondsToTime(item.timeAmount)
+    item.date = dateAndTimeFormate(item.date,'MMM DD, yyyy')
     return item
-  }),
-    state.timeLogReportColumns = [
-      {
-        title: "Staff",
-        dataIndex: "performedBy",
-        sorter: {
-          compare: (a, b) => a.template - b.template,
-          multiple: 3,
-        },
-        slots: {
-          customRender: "staff",
-        },
-      },
-      {
-        title: "Patient",
-        dataIndex: "patient",
-        sorter: {
-          compare: (a, b) => a.template - b.template,
-          multiple: 3,
-        },
-        slots: {
-          customRender: "patient",
-        },
-      },
-      {
-        title: "Time (MM:SS)",
-        dataIndex: "timeAmount",
-        sorter: {
-          compare: (a, b) => a.template - b.template,
-          multiple: 3,
-        },
-      },
-      {
-        title: "Flag ",
-        dataIndex: "flag",
-        slots: {
-          customRender: "flag",
-        },
-      },
-      {
-        title: "Notes ", 
-        dataIndex: "note",
-      },
-
-      {
-        title: "Actions",
-        dataIndex: "actions",
-        slots: {
-          customRender: "actions",
-        },
-      },
-    ];
+  })
+    
 }
-
-
+export const timeLogView = async (state, data) => {
+  //state.auditMetaLog= data.meta.pagination
+  state.viuewTimeReportModal = [ 
+    {
+      title: "Change By",
+      dataIndex: "createdBy",
+    },  
+    {
+    title: "Time (MM:SS)",
+    dataIndex: "timeAmount",
+    
+  },
+  {
+    title: "Notes ", 
+    dataIndex: "note",
+  },]
+  state.timeLogView = data.data.map(item => {
+    item.timeAmount = secondsToTime(item.timeAmount)
+    return item
+  })
+ 
+    
+}
+export const reportExport = (state, data) => {
+  state.reportExport = data
+}
 export const editAuditTimeLog = async (state, data) => {
+  data.flag = data.flagId
+  data.timeAmount = secondsToTime(data.timeAmount)
   state.editAuditTimeLog = data
-    data.staff = data.staffId,
-    data.patient = data.patientId
-    data.timeAmount = timeFormatSimple(data.timeAmount)
-    return data
 }
 
 export const auditTimePermissions = (state, auth) => {
@@ -92,4 +124,7 @@ export const auditTimePermissions = (state, auth) => {
     state.auditTimePermissions =[]
   }
 
+}
+export const auditTimeLogFilterDates = (state, date) => {
+state.auditTimeLogFilterDates = date
 }

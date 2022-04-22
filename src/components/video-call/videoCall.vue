@@ -18,11 +18,11 @@
                     </a-row>
                     <a-row :gutter="24">
                         <a-col :xl="16" :lg="14">
-                            <Loader />
                             <!-- video call  -->
-                            <div class="videoCall">
-                                <video ref="videoCall"></video>
+                            <div class="videoCall" >
+                                <video id="videoCallLoader" ref="videoCall"></video>
                             </div>
+                            <Loader />
                         </a-col>
                         <a-col :xl="8" :lg="10">
                             <div class="callRightWrapper">
@@ -31,7 +31,7 @@
                                     <img src="@/assets/images/userAvatar.png" />
                                     <div class="name">
                                         <h4>{{acceptVideoCallDetails.name}}</h4>
-                                        <router-link v-if="acceptVideoCallDetails" :to="{ name: 'PatientSummary', params: { udid:acceptVideoCallDetails?acceptVideoCallDetails.patient.id:'' }}">View Profile</router-link>
+                                        <router-link v-if="acceptVideoCallDetails" :to="{ name: 'PatientSummary', params: { udid:acceptVideoCallDetails?acceptVideoCallDetails.patient.id:'' }}" target="_blank">View Profile</router-link>
                                     </div>
                                     <!-- <span class="callTime">7:20</span> -->
                                 </div>
@@ -40,21 +40,13 @@
                                     <img src="@/assets/images/userAvatar.png" />
                                     <div class="name">
                                         <h4>{{getVideoDetails?getVideoDetails.patient:''}}</h4>
-                                        <router-link v-if="getVideoDetails" :to="{ name: 'PatientSummary', params: { udid:getVideoDetails?getVideoDetails.patientDetailed.id:'' }}">View Profile</router-link>
+                                        <router-link v-if="getVideoDetails" :to="{ name: 'PatientSummary', params: { udid:getVideoDetails?getVideoDetails.patientDetailed.id:'' }}" target="_blank">View Profile</router-link>
                                     </div>
                                     <!-- <span class="callTime">7:20</span> -->
                                 </div>
                                 
                                 <div class="body">
                                     <a-row>
-                                        <!-- <a-col :span="6">
-                                            <div class="moreAction">
-                                                <div class="moreActionImg three">
-                                                    <img src="../../assets/images/user.svg" />
-                                                </div>
-                                                <p>Profile</p>
-                                            </div>
-                                        </a-col> -->
                                         <a-col :span="6">
                                             <div class="moreAction" @click="showNotesModal">
                                                 <div class="moreActionImg four">
@@ -63,14 +55,6 @@
                                                 <p>Notes</p>
                                             </div>
                                         </a-col>
-                                        <!-- <a-col :span="6">
-                                            <div class="moreAction">
-                                                <div class="moreActionImg five">
-                                                    <img src="../../assets/images/chat-2.svg" />
-                                                </div>
-                                                <p>Chat</p>
-                                            </div>
-                                        </a-col> -->
                                         <a-col :span="6">
                                             <div class="moreAction"  @click="showDocumentsModal">
                                                 <div class="moreActionImg green">
@@ -79,14 +63,7 @@
                                                 <p>Document</p>
                                             </div>
                                         </a-col>
-                                        <!-- <a-col :span="6">
-                                            <div class="moreAction">
-                                                <div class="moreActionImg yellowBgColor">
-                                                    <img src="../../assets/images/schedule.svg" />
-                                                </div>
-                                                <p>Appointment</p>
-                                            </div>
-                                        </a-col> -->
+                                        
                                         <a-col :span="6" @click="showVitalssModal">
                                             <div class="moreAction">
                                                 <div class="moreActionImg redBgColor">
@@ -125,10 +102,10 @@
 <script>
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
-import { ref, onMounted, computed, reactive, watchEffect } from "vue";
+import { ref, onMounted, computed, reactive, watchEffect, onUnmounted } from "vue";
 import { useRoute,useRouter } from "vue-router";
 import { useStore } from "vuex";
-import Loader from "@/components/loader/Loader";
+import Loader from "@/components/loader/VideoLoader";
 import { Web } from "@/assets/js/sip-0.20.0";
 import { notification } from "ant-design-vue";
 import { successSwal,deCodeString } from "@/commonMethods/commonMethod";
@@ -151,11 +128,13 @@ export default {
 
   setup() {
     // the DOM element(video) will be assigned to the ref after initial render
+    const sipDomain = process.env.VUE_APP_SIP_DOMAIN
     const store = useStore();
     const videoCall = ref();
     const notesDetailVisible =ref(false)
     const documentDetailVisible=ref(false)
     const patientVitalsVisible = ref(false)
+    const decodedUrl =ref()
     const route = useRoute()
     const router = useRouter()
     //copy url
@@ -182,12 +161,13 @@ export default {
     const authentication = computed(() => {
       return store.state.authentication;
     });
-    console.log("sipSession", session.value);
-
+   
     onMounted(() => {
-      store.commit("loadingStatus", true);
-      console.log(videoCall.value); // this is your $el
+      store.dispatch("getVideoDetails",deCodeString(route.params.id))
+      store.commit("videoLoadingStatus", true);
+      //accept videoCall code
       if (session.value) {
+        //  store.commit("loadingStatus", false);
         session.value.options.media.remote = {
           video: videoCall.value ? videoCall.value : <video></video>,
         };
@@ -195,25 +175,19 @@ export default {
         upcomingCallDetails.user=session.value.session.incomingInviteRequest.message.from.uri.raw.user;
         store.dispatch("acceptVideoCallDetails",upcomingCallDetails.user.substring(2))
         session.value.answer();
-        
-        setTimeout(() => {
-          store.commit("loadingStatus", false);
-        }, 5000);
-      } else {
-        setTimeout(() => {
-            store.commit("loadingStatus", false);
-          }, 5000);
-        if (conferenceId.value) {
+      } //end accept video call 
+      
+      //Start conference video call code
+      else {
+        if (route.params.id) {
+          // store.commit("loadingStatus", false);
           currentUrl.value= window.location.href
-          console.log('checkDecodingUrl',deCodeString(route.params.id))
+          decodedUrl.value = deCodeString(route.params.id)
+          console.log('video deCodeString',decodedUrl.value);
           let callNotification = 0;
           const key = `open${Date.now()}`;
-          console.log(
-            "loginDetails=>",
-            authentication.value.loggedInUser.user.sipId
-          );
           authentication.value.options = Web.SimpleUserOptions = {
-            aor: `sip:${authentication.value.loggedInUser.user.sipId}@dev.icc-heaalth.com`,
+            aor: `sip:${authentication.value.loggedInUser.user.sipId}@${sipDomain}`,
             media: {
               constraints: {
                 audio: true,
@@ -228,13 +202,16 @@ export default {
                 if (callNotification == 1) {
                   notification.close(key);
                 } else {
+                  store.state.videoCall.getVideoDetails=null;
+                  store.state.videoCall.acceptVideoCallDetails=null;
+                  //call end api
+                  store.dispatch("callNotification",{id:conferenceId.value,status:'end'})
                   successSwal("Call Ended! Thank You");
                   router.push("/dashboard");
                 }
               },
             },
             userAgentOptions: {
-              // logLevel: "debug",
               displayName: authentication.value.loggedInUser.user.sipId,
               authorizationPassword: "123456",
               authorizationUsername:
@@ -267,10 +244,11 @@ export default {
           simpleUser
             .connect()
             .then(() => {
-              // console.log("hello");
               simpleUser.register().then(() => {
+                //call start api/
+                store.dispatch("callNotification",{id:decodedUrl.value,status:'start'})
                 simpleUser.call(
-                  `sip:${conferenceId.value}@dev.icc-heaalth.com`
+                  `sip:${decodedUrl.value}@${sipDomain}`
                 );
                 simpleUserHangup.value = simpleUser;
               });
@@ -282,13 +260,17 @@ export default {
         } else {
           router.push("/dashboard");
         }
-      }
+      }//end conference video call
     });
     // Answer call
     function hangUp() {
-      if (conferenceId.value) {
+      if (decodedUrl.value) {
         simpleUserHangup.value.hangup().then(() => {
-          router.push("/dashboard");
+          //call end api
+          // store.dispatch("callNotification",{id:decodedUrl.value,status:'end'})
+          store.state.videoCall.getVideoDetails=null;
+          store.state.videoCall.acceptVideoCallDetails=null;
+          // router.push("/dashboard");
         });
       } else {
         session.value.hangup().then(() => {
@@ -315,27 +297,48 @@ export default {
     const showDocumentsModal = () => {
       documentDetailVisible.value = true;
     }
-
     const showVitalssModal = () => {
       patientVitalsVisible.value = true;
     }
 
+    // used for patient vital
     watchEffect(()=>{
-      if(getVideoDetails.value){
+      if(getVideoDetails.value!=null){
+        videoLoader();
         store.dispatch('patientVitals', {patientId: getVideoDetails.value.patientDetailed.id, deviceType: 99})
         store.dispatch('patientVitals', {patientId: getVideoDetails.value.patientDetailed.id, deviceType: 100})
         store.dispatch('patientVitals', {patientId: getVideoDetails.value.patientDetailed.id, deviceType: 101})
         store.dispatch('devices', getVideoDetails.value.patientDetailed.id)
-      }else if(acceptVideoCallDetails.value){
+      }else if(acceptVideoCallDetails.value !=null){
+        videoLoader();
+        console.log('acceptVideoCallDetails');
         store.dispatch('patientVitals', {patientId: acceptVideoCallDetails.value.patient.id, deviceType: 99})
         store.dispatch('patientVitals', {patientId: acceptVideoCallDetails.value.patient.id, deviceType: 100})
         store.dispatch('patientVitals', {patientId: acceptVideoCallDetails.value.patient.id, deviceType: 101})
         store.dispatch('devices', acceptVideoCallDetails.value.patient.id)
       }
-     
+    })//end 
+
+    function videoLoader(){
+         // start loader untill load video element
+      let MuteInterval = setInterval(function () {
+        //start loader
+        store.commit("videoLoadingStatus", true)
+        if(!document.querySelector('#videoCallLoader').paused){
+          //remove loder
+          store.commit("videoLoadingStatus", false)
+            clearInterval(MuteInterval);
+        }
+      }, 3000);
+    }
+
+    onUnmounted(()=>{
+      store.commit("videoLoadingStatus", false)
     })
 
     return {
+      videoLoader,
+      decodedUrl,
       copyURL,
       currentUrl,
       deCodeString,

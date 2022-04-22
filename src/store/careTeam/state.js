@@ -1,6 +1,9 @@
 export default {
-  addCareTeam:null,
-  careTeamList:null,
+  patientCareCoordinatorsList:null,
   latestCareTeam:null,
-  deleteStaff:null,
+  deletePatientCareCoordinator:null,
+  physiciansList:null,
+  latestPhysician:null,
+  patientCareCoordinatorDetails:null,
+  updatePatientCareCoordinator:null,
 }

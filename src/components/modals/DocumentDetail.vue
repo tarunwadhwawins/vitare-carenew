@@ -13,28 +13,37 @@
               <span class="tags">{{ tag.tag }}</span>
             </div>
           </template>
-          <template #action="{record}">
-            <!-- <a class="icons"><EditOutlined /></a> -->
+          <template #action="{record}" v-if="arrayToObjact(screensPermissions,318)">
             <a class="icons"><DeleteOutlined @click="deleteDocument(record.id)" /></a>
           </template>
+          <template #document="{record}">
+            <a :href="record.document" target="_blank">
+              <FileOutlined />
+            </a>
+          </template>
         </a-table>
+        <Loader />
       </a-col>
     </a-row>
   </a-modal>
 </template>
 <script>
 import { computed, defineComponent, watchEffect, reactive } from "vue";
+import Loader from "@/components/loader/Loader";
 import {
+  FileOutlined,
   DeleteOutlined,
   // EditOutlined
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
-import {warningSwal} from "@/commonMethods/commonMethod"
+import {warningSwal,arrayToObjact} from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
-import { useRoute } from "vue-router";
+// import { useRoute } from "vue-router";
 
 export default defineComponent({
   components: {
+    Loader,
+    FileOutlined,
     DeleteOutlined,
     // EditOutlined,
   },
@@ -43,9 +52,9 @@ export default defineComponent({
       type: Array
     }
   },
-  setup(props) {
+  setup(props, {emit}) {
     const store = useStore();
-    const route = useRoute();
+    // const route = useRoute();
     const patientId = reactive(props.patientDetails.id);
     const documentsColumns = [
       {
@@ -63,6 +72,9 @@ export default defineComponent({
         dataIndex: "document",
         key: "document",
         className: "patient-document",
+        slots: {
+          customRender: "document"
+        },
       },
       {
         title: "Type",
@@ -109,13 +121,25 @@ export default defineComponent({
           console.log('data', data);
           store.dispatch('deleteDocument', data).then(() => {
             store.dispatch('patientDocuments', patientId)
-            store.dispatch('latestDocument', route.params.udid)
+            if(patientDocuments.value.length <= 1) {
+              emit('closeModal', {
+                modal: 'documentDetails',
+                value: false
+              });
+            }
+            store.dispatch('latestDocument', patientId)
+            store.dispatch('patientTimeline', {
+              id: patientId,
+              type: ''
+            });
           })
         }
       })
     }
 
     return {
+      screensPermissions: store.getters.screensPermissions,
+      arrayToObjact,
       documentsColumns,
       patientDocuments,
       deleteDocument,

@@ -1,59 +1,102 @@
 <template>
-<a-table  rowKey="id" :pagination="false" :columns="staffs.availabilityListColms" :data-source="staffs.availabilityList" :scroll="{ x: 900 }">
-    <template #action="text">
-        <a-tooltip placement="bottom" @click="deleteAvailability(text.record.id)">
-            <template #title>
-                <span>{{$t('global.delete')}}</span>
-            </template>
-            <a class="icons">
-                <DeleteOutlined /></a>
-        </a-tooltip>
+  <a-table rowKey="id" :pagination="false" :columns="staffs.availabilityListColms" :data-source="staffs.availabilityList" >
+    <template #action="text" >
+      <a-tooltip placement="bottom" @click="editAvailability(text.record.id)" v-if="arrayToObjact(screensPermissions,52)">
+        <template #title>
+          <span>{{$t('global.edit')}}</span>
+        </template>
+        <a class="icons">
+          <EditOutlined />
+        </a>
+      </a-tooltip>
+      <a-tooltip placement="bottom" @click="deleteAvailability(text.record.id)" v-if="arrayToObjact(screensPermissions,53)">
+        <template #title>
+          <span>{{$t('global.delete')}}</span>
+        </template>
+        <a class="icons">
+          <DeleteOutlined />
+        </a>
+      </a-tooltip>
     </template>
-</a-table>
+  </a-table>
+  <EditAvailabilityModal v-if="availabilityFormvisible" v-model:visible="availabilityFormvisible" :paramId="paramId" :isAvailabilityEdit="isEditAvailability" @closeModal="handleOk" />
 </template>
+
 <script>
-import { computed} from "vue";
+import { computed, ref } from "vue";
 import {
   DeleteOutlined,
-  // EditOutlined,
-//   PlusOutlined,
+  EditOutlined,
+  //   PlusOutlined,
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { warningSwal } from "@/commonMethods/commonMethod";
+import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
+import EditAvailabilityModal from "@/components/modals/EditAvailabilityModal";
 export default {
-    components:{
-        DeleteOutlined
-    },
-    props:{
-        Id:String
-    },
+  components: {
+    DeleteOutlined,
+    EditOutlined,
+    EditAvailabilityModal,
+  },
+  props: {
+    Id: String,
+  },
   setup(props) {
-const store =useStore()
-const router = useRoute()
-console.log('==',router.params.udid);
-function deleteAvailability(id) {
-            warningSwal(messages.deleteWarning).then((response) => {
-                if (response == true) {
-                    store.dispatch("deleteAvailability", {
-                        id: props.Id?props.Id:router.params.udid,
-                        availabilityID: id,
-                    });
-                    setTimeout(() => {
-                        store.dispatch("availabilityList",  props.Id?props.Id:router.params.udid);
-                    }, 2000);
-                }
-            });
+    const store = useStore();
+    const router = useRoute();
+    const route = useRoute()
+    const paramId = route.params.udid
+    const availabilityFormvisible = ref(false)
+    const isEditAvailability = ref(false)
+
+    function deleteAvailability(id) {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          store.dispatch("deleteAvailability", {
+            id: props.Id ? props.Id : router.params.udid,
+            availabilityID: id,
+          });
+          setTimeout(() => {
+            store.dispatch(
+              "availabilityList",
+              props.Id ? props.Id : router.params.udid
+            );
+          }, 2000);
         }
-const staffs = computed(() => {
+      });
+    }
+
+    const editAvailability = (availabilityId) => {
+      store.dispatch("availabilityDetails", {
+        id: router.params.udid ? router.params.udid : props.Id,
+        availabilityId: availabilityId,
+      });
+      availabilityFormvisible.value = true
+      isEditAvailability.value = true
+    }
+
+    const staffs = computed(() => {
       return store.state.careCoordinator;
     });
-      return{
-          staffs,
-          deleteAvailability,
 
-      }
+    const handleOk = () => {
+      availabilityFormvisible.value = false
+      isEditAvailability.value = false
+    }
+   
+    return {
+    screensPermissions:store.getters.screensPermissions,
+     arrayToObjact,
+      staffs,
+      deleteAvailability,
+      editAvailability,
+      paramId,
+      availabilityFormvisible,
+      isEditAvailability,
+      handleOk,
+    };
   },
 };
 </script>

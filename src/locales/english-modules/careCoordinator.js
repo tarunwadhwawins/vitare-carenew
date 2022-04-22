@@ -3,7 +3,8 @@ const careCoordinator = {
 
     coordinatorsModal:{
         careCoordinator:'Care Coordinator',
-        addNewCoordinator:'Add New Coordinator',
+        addNewCoordinator:'Add New Care Coordinator',
+        updateCoordinator:'Update Care Coordinator',
         personalInformation:'Personal Information'
 
     },
