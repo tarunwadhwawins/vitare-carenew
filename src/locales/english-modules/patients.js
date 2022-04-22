@@ -10,20 +10,20 @@ const patient = {
 
 
   demographics:{
-    language:'Language',
-    otherLanguage:'Other Language',
-    nickName:'Nick Name',
+    language:'Primary Language',
+    otherLanguage:'Secondary Language',
+    nickName:'NickName',
     weight:'Weight',
     height:'Height',
-    preferredMethodofContact:'Preferred Method of Contact',
-    preferredTimeofDayforContact:'Preferred time of day for contact',
+    preferredMethodofContact:'Contact Method in Order of Preference',
+    preferredTimeofDayforContact:'Time of Day to Contact in Order of Preference',
     MRN:'MRN( Medical Record Number) ',
     suiteorApartment:'Suite or Apartment',
-    primaryFamilyMember:'Primary Family Member',
+    primaryFamilyMember:'Responsible Party',
     fullName:'Full Name',
     emailAddress:'Email Address',
     emergencyContact:'Emergency Contact',
-    sameAsPrimaryFamilyMemberInfo:'Same as primary family member info'
+    sameAsPrimaryFamilyMemberInfo:'Same as Responsible Party info'
   },
 
   conditions:{

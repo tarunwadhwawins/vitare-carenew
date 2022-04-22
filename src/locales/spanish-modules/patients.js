@@ -10,8 +10,8 @@ const patient = {
 
 
 demographics:{
-  language:'Idioma',
-  otherLanguage:'Otro idioma',
+  language:'Lenguaje Primario',
+  otherLanguage:'Idioma Secundario',
   nickName:'Apodo',
   weight:'Peso',
   height:'Altura',

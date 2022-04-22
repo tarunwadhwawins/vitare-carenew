@@ -67,9 +67,12 @@ export default {
     function deleteProgram(id) {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
-          store.dispatch("deleteManageProgram", id.udid);
-          store.state.programs.programList = "";
-          store.dispatch("manageProgramList");
+          store.commit('loadingTableStatus', true)
+          store.dispatch("deleteManageProgram", id.udid).then(()=>{
+            store.dispatch("manageProgramList")
+          })
+          
+          
         }
       });
     }
