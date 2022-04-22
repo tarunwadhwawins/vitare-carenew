@@ -1,5 +1,5 @@
 <template>
-<a-modal max-width="1140px" width="100%" :title="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal max-width="1140px" width="100%" :title="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <a-col :span="24">
             <a-steps v-model:current="current">

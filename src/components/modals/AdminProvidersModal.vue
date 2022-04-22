@@ -1,5 +1,5 @@
 <template>
-<a-modal :title="title" max-width="1040px" width="100%" v-model:visible="visible" :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal :title="title" max-width="1040px" width="100%" v-model:visible="visible" :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <a-col :span="24">
             <a-steps :current="current">

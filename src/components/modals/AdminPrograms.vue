@@ -1,5 +1,5 @@
 <template>
-<a-modal width="800px" :title="programId ? 'Edit Program' :'Add New Program'" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal width="800px" :title="programId ? 'Edit Program' :'Add New Program'" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-form ref="formRef" :model="program" name="basic" autocomplete="off" layout="vertical" @finish="programs" @finishFailed="programFailed">
         <a-row :gutter="24">
             <a-col :sm="24" :xs="24">

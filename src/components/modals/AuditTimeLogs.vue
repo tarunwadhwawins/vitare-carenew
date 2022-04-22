@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" title="Edit Audit Time Log" :footer="null" :maskClosable="false" @cancel="closeModal()" centered>
+  <a-modal width="1000px" title="Edit Audit Time Log" :footer="false" :maskClosable="false" @cancel="closeModal()" centered>
     <a-form :model="auditTimeLog" name="auditTimeLog" autocomplete="off" layout="vertical" @finish="updateAuditTime" @finishFailed="auditTimeLogFailed">
         <a-row :gutter="24">
           <a-col :sm="24" :md="12" :xs="24">
