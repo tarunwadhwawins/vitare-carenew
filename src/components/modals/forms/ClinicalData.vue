@@ -302,6 +302,8 @@ export default defineComponent({
 
       warningSwal(messages.deleteWarning).then((response) => {
         if(response == true) {
+          formRef.value.resetFields()
+          Object.assign(clinicalMedication, medicationForm)
           store.commit('loadingStatus', true)
           if(patientId != null) {
             if(name == "deleteClinicalData") {

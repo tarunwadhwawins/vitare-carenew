@@ -1,5 +1,5 @@
 <template>
-<a-modal width="1000px" :title="threshodId ? 'Edit General Parameters': $t('thresholds.thresholdModal.generalParameters')" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal width="1000px" :title="threshodId ? 'Edit General Parameters': $t('thresholds.thresholdModal.generalParameters')" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
 
     <Loader v-if="threshodId" />
 

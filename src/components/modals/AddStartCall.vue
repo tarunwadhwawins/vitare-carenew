@@ -1,5 +1,5 @@
 <template>
-<a-modal width="1000px" title="Start Call" centered :footer="null" :maskClosable="false" @cancel="onCloseModal()">
+<a-modal width="1000px" title="Start Call" centered :footer="false" :maskClosable="false" @cancel="onCloseModal()">
     <a-form :model="startCall" ref="formRef" name="basic" autocomplete="off" layout="vertical" @finish="videoCall" @finishFailed="videoCallFailed">
       
         <a-row :gutter="24">

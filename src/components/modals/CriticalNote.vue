@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" :title="title" centered :footer="null"  :maskClosable="false" @cancel="closeModal()">
+  <a-modal width="1000px" :title="title" centered :footer="false"  :maskClosable="false" @cancel="closeModal()">
     <a-form :model="notes" name="basic" autocomplete="off" layout="vertical" @finish="addCriticalNote" @finishFailed="notesFailed">
       <a-row :gutter="24">
         <a-col :sm="24" :xs="24">
