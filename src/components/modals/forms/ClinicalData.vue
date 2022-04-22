@@ -218,6 +218,8 @@ export default defineComponent({
           store.dispatch("clinicalHistoryList", route.params.udid ? route.params.udid:patients.value.addDemographic.id);
           formRef.value.resetFields();
           Object.assign(clinicals, clinicalsForm)
+          isEditMedicalHistory.value=false
+          isEditMedicalRoutine.value=false
         });
       }
       else {
@@ -252,6 +254,8 @@ export default defineComponent({
           store.dispatch("clinicalMedicatList", route.params.udid ? route.params.udid:patients.value.addDemographic.id);
           formRef.value.resetFields()
           Object.assign(clinicalMedication, medicationForm)
+          isEditMedicalHistory.value = false;
+          isEditMedicalRoutine.value=false
         });
       }
       else {
@@ -302,10 +306,13 @@ export default defineComponent({
 
       warningSwal(messages.deleteWarning).then((response) => {
         if(response == true) {
+          isEditMedicalHistory.value=false
+          isEditMedicalRoutine.value=false
           formRef.value.resetFields()
           Object.assign(clinicalMedication, medicationForm)
           store.commit('loadingStatus', true)
           if(patientId != null) {
+            isEditMedicalHistory.value = false;
             if(name == "deleteClinicalData") {
               store.dispatch("deleteClinicalData", {
                 id: patientId,
