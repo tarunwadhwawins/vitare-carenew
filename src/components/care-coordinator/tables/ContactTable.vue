@@ -43,7 +43,7 @@ export default {
   props: {
     Id: String,
   },
-  setup(props) {
+  setup(props,{emit}) {
     const store = useStore();
     const router = useRoute();
     const route = useRoute()
@@ -69,6 +69,7 @@ export default {
     }
 
     const editContact = (contactId) => {
+      emit("editFormOpen")
       store.dispatch("contactDetails", {
         id: props.Id ? props.Id : router.params.udid,
         contactId: contactId,

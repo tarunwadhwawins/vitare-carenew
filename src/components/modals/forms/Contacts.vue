@@ -47,7 +47,7 @@
     </a-row>
     <a-row :gutter="24" v-show="!paramId">
         <a-col :span="24">
-            <ContactTable :Id="Id"/>
+            <ContactTable :Id="Id" @editFormOpen="editFormOpen" />
             <Loader />
         </a-col>
     </a-row>
@@ -127,6 +127,10 @@ export default defineComponent({
       formRest.value.resetFields();
     }
     })
+    function editFormOpen(){
+      Object.assign(contact,form)
+      formRest.value.resetFields();
+    }
     function checkChangeInput(){
       store.commit('checkChangeInput',true)
     }
@@ -138,6 +142,7 @@ export default defineComponent({
         errorMsg.value.email?errorMsg.value.email[0]=null:''
     }
     return {
+      editFormOpen,
       setPhoneNumber,
       formRest,
       checkChangeInput,
