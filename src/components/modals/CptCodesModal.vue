@@ -114,6 +114,7 @@ export default {
     const formButton = ref(false);
     const durationList = store.getters.commonRecords.value;
     watchEffect(() => {
+      console.log('check',props.cptId)
       if (props.cptId) {
         store.commit("loadingStatus", true);
         if (cptCodesGetters.value.cptCodeDetails) {
@@ -124,7 +125,8 @@ export default {
       }
     });
     const submitForm = () => {
-      if (props.cptId != null) {
+      
+      if (props.cptId) {
         store.dispatch("updateCptCode", {
           data: cptCodeForm,
           id: props.cptId,

@@ -135,6 +135,9 @@ export default {
         if(careCoordinators.value.closeModal==true){
           store.dispatch("staffSummary", route.params.udid);
           emit("saveModal", false)
+          store.commit("resetCounter")
+          store.commit('checkChangeInput',false)
+
       }
       },2000)
       
