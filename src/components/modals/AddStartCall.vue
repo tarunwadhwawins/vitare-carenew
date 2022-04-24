@@ -1,5 +1,5 @@
 <template>
-<a-modal width="1000px" title="Start Call" centered :footer="null" :maskClosable="false" @cancel="onCloseModal()">
+<a-modal width="1000px" title="Start Call" centered :footer="false" :maskClosable="false" @cancel="onCloseModal()">
     <a-form :model="startCall" ref="formRef" name="basic" autocomplete="off" layout="vertical" @finish="videoCall" @finishFailed="videoCallFailed">
       
         <a-row :gutter="24">
@@ -7,7 +7,7 @@
                 <div class="form-group">
                     <a-form-item label="Patient List" name="patientId" :rules="[{ required: true, message: 'Patient'+' '+$t('global.validation') }]">
                         <PatientDropDown v-model:value="startCall.patientId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" />
-                        <ErrorMessage v-if="errorMsg" :name="errorMsg.patientId ? errorMsg.patientId[0] : ''" />
+                        <!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.patientId ? errorMsg.patientId[0] : ''" /> -->
                       </a-form-item>
                 </div>
             </a-col>
@@ -15,7 +15,7 @@
                 <div class="form-group">
                     <a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation')  }]">
                         <GlobalCodeDropDown v-model:value="startCall.flag" :globalCode="flagsList" @change="checkChangeInput()" />
-                        <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
+                        <!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" /> -->
                     </a-form-item>
                 </div>
             </a-col>
@@ -23,7 +23,7 @@
 					<div class="form-group">
 						<a-form-item :label="$t('appointmentCalendar.addAppointment.note')" name="note" :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.note')+' '+$t('global.validation') }]">
 							<a-textarea v-model:value="startCall.note" allow-clear @change="checkChangeInput()" />
-							<ErrorMessage v-if="errorMsg" :name="errorMsg.note?errorMsg.note[0]:''" />
+							<!-- <ErrorMessage v-if="errorMsg" :name="errorMsg.note?errorMsg.note[0]:''" /> -->
 						</a-form-item>
 					</div>
 				</a-col>

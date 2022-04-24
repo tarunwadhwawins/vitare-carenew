@@ -63,9 +63,7 @@ const permission = async ({ commit }) => {
 			localStorage.setItem('widgetsPermission', JSON.stringify(response.data.widgetId))
 			localStorage.setItem('permission', JSON.stringify(response.data))
 			commit('permissions',response.data)
-			router.push({
-				path: "/dashboard"
-			});
+			router.push(router.currentRoute.value.query.redirect || '/dashboard')
 		}
 
 	})

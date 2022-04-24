@@ -1,5 +1,5 @@
 <template>
-<a-modal width="800px" title="Reply" centered @cancel="closeModal()" class="chatModal">
+<a-modal width="800px" title="Reply" centered :maskClosable="false"  @cancel="closeModal()" class="chatModal">
     <a-row :gutter="24">
         <a-col :span="24" class="chatBox2">
             <div class="chatBox" ref="scroll" id="chatBox">
@@ -118,7 +118,7 @@ export default {
         watchEffect(() => {
             store.state.communications.conversationList = ""
             store.dispatch("conversation", props.communication.id)
-            store.dispatch("communicationsList");
+           
 
              tableContent.value = document.getElementsByClassName('chatBox')
             getScroll()
@@ -160,16 +160,12 @@ function getScroll(){
         }
 
         function closeModal() {
+            
             store.state.communications.conversationList = ""
             clearInterval(interval);
         }
         onUnmounted(() => {
             clearInterval(interval)
-                // tableContent.addEventListener('scroll', (event) => {
-                // let maxScroll = event.target.scrollHeight - event.target.clientHeight
-                // let currentScroll = event.target.scrollTop + 2
-                // console.log("data",currentScroll,maxScroll)  
-                // }) 
         })
         return {
             list,

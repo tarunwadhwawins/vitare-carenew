@@ -1,5 +1,7 @@
 export default {
     getVideoDetails:null,
     acceptVideoCallDetails:null,
-    conferenceId:null
+    conferenceId:null,
+    videoLoadingStatus:false,
+    guestUser:null
 }

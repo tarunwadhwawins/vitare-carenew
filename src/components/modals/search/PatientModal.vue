@@ -1,5 +1,5 @@
 <template>
-<a-modal width="1000px" title="Patient Search" :maskClosable="false" @cancel="closeModal()">
+<a-modal width="1000px" title="Patient Search" :maskClosable="false" @cancel="closeModal()" :footer="null">
     <a-form ref="formRef" autocomplete="off" :model="patientSearch" @finish="submitForm">
         <a-row :gutter="24">
             <a-col :sm="20" :xs="24">

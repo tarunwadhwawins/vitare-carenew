@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="60%" title="Add Device" centered @cancel="onCloseModal()">
+  <a-modal width="60%" title="Add Device" centered @cancel="onCloseModal()" :maskClosable="false"  :footer="false">
     <a-form ref="formRef" :model="inventoryForm" name="basic" layout="vertical" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :md="12" :sm="12" :xs="24">
@@ -120,6 +120,7 @@ export default defineComponent({
           store.dispatch('latestDevice', route.params.udid)
           store.dispatch('patientTimeline', {id:route.params.udid,type:''});
           store.dispatch('devices', route.params.udid)
+          isValueChanged.value = false;
         }
         emit("closeModal", {
           modal: 'addInventory',
@@ -216,7 +217,10 @@ export default defineComponent({
 						});
 					}
 				})
-			}
+			}else{
+        isValueChanged.value = false;
+        formRef.value.resetFields();
+      }
     }
 
     onUnmounted(() => {

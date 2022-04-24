@@ -42,12 +42,12 @@
         <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
         </a-col>
         <a-col :span="24" v-else>
-            <a-button class="btn primaryBtn" html-type="submit">{{$t('global.add')}}</a-button>
+            <a-button class="btn primaryBtn" html-type="submit" :disabled="formButton">{{$t('global.add')}}</a-button>
         </a-col>
     </a-row>
     <a-row :gutter="24" v-show="!paramId">
         <a-col :span="24">
-            <ContactTable :Id="Id"/>
+            <ContactTable :Id="Id" @editFormOpen="editFormOpen" />
             <Loader />
         </a-col>
     </a-row>
@@ -84,23 +84,26 @@ export default defineComponent({
       email: "",
       phoneNumber: "",
     });
-
+    const formButton = ref(false);
     const setPhoneNumber = (value) => {
       contact.phoneNumber = value;
     };
    
     function addContacts() {
+      formButton.value = true;
       store.dispatch("addContacts", {
         id: props.paramId?props.paramId:staffs.value.addStaff.id,
         data: contact,
       });
       setTimeout(() => {
         if(staffs.value.closeModal==true){
+          
           store.dispatch("staffContactList", props.paramId?props.paramId:staffs.value.addStaff.id);
           reset()
           store.state.careCoordinator.errorMsg=''
           emit("saveModal", false)
       }
+      formButton.value = false;
       }, 2000);
     }
     const staffs = computed(() => {
@@ -124,6 +127,10 @@ export default defineComponent({
       formRest.value.resetFields();
     }
     })
+    function editFormOpen(){
+      Object.assign(contact,form)
+      formRest.value.resetFields();
+    }
     function checkChangeInput(){
       store.commit('checkChangeInput',true)
     }
@@ -135,6 +142,7 @@ export default defineComponent({
         errorMsg.value.email?errorMsg.value.email[0]=null:''
     }
     return {
+      editFormOpen,
       setPhoneNumber,
       formRest,
       checkChangeInput,
@@ -148,6 +156,7 @@ export default defineComponent({
       errorMsg,
       emailChange,
       bindProps: store.state.common.bindProps,
+      formButton
     };
   },
 });

@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="40%" title="Reject Reason" :footer="null"  :maskClosable="false" centered @cancel="onCloseModal()" zIndex="1080">
+  <a-modal width="40%" title="Reject Reason" :footer="false"  :maskClosable="false" centered @cancel="onCloseModal()" zIndex="1080">
     <a-form ref="formRef" :model="reasons" layout="vertical" @finish="submitRejectAppt">
 			<a-row :gutter="24">
 				<a-col :span="24">

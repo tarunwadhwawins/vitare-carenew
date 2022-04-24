@@ -18,7 +18,7 @@ export const staffSummaryAppointment= async (state, data) => {
           },
         },
         {
-          title: "Date Time ",
+          title: "Date & Time ",
           dataIndex: "date",
         },
         {

@@ -1,4 +1,4 @@
-import { meridiemFormatFromTimestamp } from '../../commonMethods/commonMethod';
+import {dateAndTimeFormate} from '@/commonMethods/commonMethod';
 export const counterPlus = (state, data) => {
 	if (data) {
 		state.counter = data;
@@ -122,8 +122,8 @@ export const addAvailability = (state, data) => {
 
 export const availabilityList = (state, data) => {
 	(state.availabilityList = data.map((item) => {
-		item.startTime = meridiemFormatFromTimestamp(item.startTime);
-		item.endTime = meridiemFormatFromTimestamp(item.endTime);
+		item.startTime = dateAndTimeFormate(item.startTime,'hh:mm A');
+		item.endTime = dateAndTimeFormate(item.endTime,'hh:mm A');
 		return item;
 	})),
 		(state.availabilityListColms = [
@@ -245,11 +245,28 @@ export const closeModal = (state, data) => {
 };
 
 export const availabilityDetails = (state, data) => {
-	data.startTime = meridiemFormatFromTimestamp(data.startTime)
-	data.endTime = meridiemFormatFromTimestamp(data.endTime)
+	data.startTime = dateAndTimeFormate(data.startTime,'HH:mm')
+	data.endTime = dateAndTimeFormate(data.endTime,'HH:mm')
 	state.availabilityDetails = data;
 };
 
 export const contactDetails = (state, data) => {
 	state.contactDetails = data;
+};
+
+
+export const clearStaffFormValidation = (state, data) => {
+	state.clearStaffFormValidation = data;
+};
+
+
+export const documentStaffDetails = (state, data) => {
+ const tags = []
+  data.tag.map(tag => {
+    tags.push(tag.tagId)
+  })
+  data.tags = tags
+  data.document = data.path
+  data.type = data.typeId
+  state.documentStaffDetails = data
 };

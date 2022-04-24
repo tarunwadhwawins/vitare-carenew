@@ -1,6 +1,6 @@
 
 <template>
-<a-modal width="1000px" :title="taskId?'Edit Task':$t('tasks.tasksModal.addTask')" :footer="null" :maskClosable="false" @cancel="closeModal()" centered>
+<a-modal width="1000px" :title="taskId?'Edit Task':$t('tasks.tasksModal.addTask')" :footer="false" :maskClosable="false" @cancel="closeModal()" centered>
     <a-form :model="taskForm" ref="formRef" autocomplete="off" layout="vertical" @finish="submitForm" @finishFailed="taskFormFailed">
         <a-row :gutter="24">
             <a-col :span="24">
@@ -73,14 +73,14 @@
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.startDate')" name="startDate" :rules="[{ required: true, message: $t('tasks.tasksModal.startDate')+' '+$t('global.validation')  }]">
-                        <a-date-picker :disabled="taskId?true:false" v-model:value="taskForm.startDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()" />
+                        <a-date-picker :disabled="taskId?true:false" :disabledDate="d => !d || d.isBefore(moment().subtract(1,'days'))" v-model:value="taskForm.startDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput(); changeDate()" />
                     </a-form-item>
                 </div>
             </a-col>
             <a-col :span="12">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.dueDate')" name="dueDate" :rules="[{ required: true, message: $t('tasks.tasksModal.dueDate')+' '+$t('global.validation')  }]">
-                        <a-date-picker :disabled="taskId?true:false" v-model:value="taskForm.dueDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()" />
+                        <a-date-picker :disabled="taskId?true:false" :disabledDate="d => !d || d.isSameOrBefore(taskForm.startDate)" v-model:value="taskForm.dueDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" :size="size" style="width: 100%" @change="checkChangeInput()" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -309,8 +309,14 @@ export default defineComponent({
     const handlePatientChange = (val) => {
       taskForm.assignedTo = val;
     };
-
+function changeDate(){
+  if(moment(taskForm.startDate)>moment(taskForm.dueDate)){
+    taskForm.dueDate =''
+  }
+  
+}
     return {
+      changeDate,
       taskFormFailed,
       loadingStatus: store.getters.loadingStatus,
       handlePatientChange,
@@ -336,6 +342,7 @@ export default defineComponent({
       handleCancel,
       isPatientTask,
       closeValue,
+      moment
     };
   },
 });

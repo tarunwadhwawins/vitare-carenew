@@ -1,5 +1,5 @@
 <template>
-<a-modal width="1000px" title="Communications" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal width="1000px" title="Communications" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-form ref="formRef" :model="messageForm" layout="vertical" @finish="sendMessage" @finishFailed="sendMessageFailed">
         <a-row :gutter="24">
             <a-col :sm="12" :xs="24">
@@ -223,6 +223,8 @@ export default defineComponent({
                         emit("is-visible", true);
                     }
                 });
+            }else{
+                formRef.value.resetFields();
             }
         }
         const patientChange = (value) => {

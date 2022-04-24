@@ -1,5 +1,5 @@
 <template>
-<a-modal width="45%" title="Appointment Details" centered :footer="null" :maskClosable="false" zIndex="1060">
+<a-modal width="45%" title="Appointment Details" centered :footer="false" :maskClosable="false" zIndex="1060">
     <a-row :gutter="24">
         <a-col :sm="24" :xs="24">
             <div class="form-group">

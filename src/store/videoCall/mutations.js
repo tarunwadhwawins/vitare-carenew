@@ -16,3 +16,13 @@ export const getVideoDetails = (state, data) => {
    state.conferenceId = data
    // router.push({ name: 'videoCall', params: { id: enCodeString(state.conferenceId) } })
 }
+
+
+
+export const videoLoadingStatus = (state, data) => {
+   state.videoLoadingStatus = data
+}
+
+export const guestUser = (state, data) => {
+   state.guestUser = data
+}

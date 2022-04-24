@@ -1,5 +1,5 @@
 <template>
-<a-modal :title="title" max-width="1040px" width="100%" v-model:visible="visible" :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal :title="title" max-width="1040px" width="100%" v-model:visible="visible" :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <a-col :span="24">
             <a-steps :current="current">
@@ -405,6 +405,7 @@ export default {
     }
 
     function editProviderLocation(id) {
+      store.commit("loadingStatus", true);
       if (providerId != null) {
             store
               .dispatch("editProviderLocation", {
@@ -420,9 +421,13 @@ export default {
     }
 
     function deleteProviderLocation(id) {
+      
       if (providerId != null) {
         warningSwal(messages.deleteWarning).then((response) => {
           if (response == true) {
+            store.state.provider.editProviderLocation=''
+            Object.assign(providerLocationForm, form)
+            store.commit("loadingStatus", true);
             store
               .dispatch("deleteProviderLocation", {
                 id: providerId,
@@ -430,12 +435,15 @@ export default {
               })
               .then(() => {
                 store.dispatch("providerLocationList", providerId);
-              }, 2000);
+              });
           }
         });
       } else {
         warningSwal(messages.deleteWarning).then((response) => {
           if (response == true) {
+            store.state.provider.editProviderLocation=''
+            Object.assign(providerLocationForm, form)
+            store.commit("loadingStatus", true);
             store.dispatch("deleteProviderLocation", {
               id: providersData.value.provider.id,
               locationId: id,

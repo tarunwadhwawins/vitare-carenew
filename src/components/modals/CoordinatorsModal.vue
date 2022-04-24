@@ -1,5 +1,5 @@
 <template>
-<a-modal max-width="1140px" width="100%" :title="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal max-width="1140px" width="100%" :title="$t('careCoordinator.coordinatorsModal.addNewCoordinator')" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <a-col :span="24">
             <a-steps v-model:current="current">
@@ -131,7 +131,8 @@ import {
     computed,
     onUnmounted,
     watchEffect,
-    ref
+    ref,
+    onMounted
 } from "vue";
 import Contacts from "@/components/modals/forms/Contacts";
 import Availability from "@/components/modals/forms/Availability";
@@ -293,6 +294,7 @@ export default {
                     if (response == true) {
                         emit("saveModal", false)
                         Object.assign(personalInfoData, form);
+                        info.value.resetFields()
                         store.dispatch("staffs")
                         store.dispatch('specializationStaff')
                         store.dispatch('networkStaff')
@@ -304,10 +306,16 @@ export default {
                         emit("saveModal", true);
                     }
                 });
+            }else{
+                info.value.resetFields()
             }
         }
+        onMounted(()=>{
+            store.state.careCoordinator.documentStaffDetails=null
+        })
         onUnmounted(() => {
             store.commit('errorMsg', null)
+            store.state.careCoordinator.addStaff =null
         })
         watchEffect(() => {
             if (addStaff.value) {

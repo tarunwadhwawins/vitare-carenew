@@ -11,7 +11,7 @@ export function dateAndTimeFormate(timeStamp, format) {
 	var date = moment.unix(new Date(timeStamp));
 	return date.format(format);
 }
-
+export const globalDateFormat = "MMM DD,YYYY"
 export function errorLogWithDeviceInfo(errorMessage) {
 	let deviceInfo = Bowser.parse(window.navigator.userAgent)
 	store.dispatch('errorLogWithDeviceInfo', { deviceInfo: JSON.stringify(deviceInfo), errorMessage: JSON.stringify(errorMessage) })
@@ -262,23 +262,17 @@ export function findOcc(arr, key) {
 	let arr2 = [];
 
 	arr.forEach((x) => {
-
-		// Checking if there is any object in arr2
-		// which contains the key value
-		if (arr2.some((val) => { return val[key] == x[key] })) {
-
-			// If yes! then increase the occurrence by 1
-			arr2.forEach((k) => {
+		let isFound = 0;
+			arr2.forEach((k,index) => {
+			
 				if (k[key] === x[key]) {
-
-					k["total"] = x.total++
+					arr2[index]["total"] = x.total+arr2[index]["total"];
+					isFound = 1;
 				}
 			})
 
-		} else {
-			// If not! Then create a new object initialize 
-			// it with the present iteration key's value and 
-			// set the occurrence to 1
+		if(isFound==0) {
+			
 			let a = {}
 			a[key] = x[key]
 			a['duration'] = x.duration
@@ -296,8 +290,9 @@ export function chartTimeCount(timeLine, count) {
 			item.time = moment(dateFormat(item.duration)).format('hh:00 A')
 			return item
 		})
-
+		
 		let getTotal = findOcc(array, 'time')
+		
 		const time = [
 			'08:00 AM',
 			'09:00 AM',

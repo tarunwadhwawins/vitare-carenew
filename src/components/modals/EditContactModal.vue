@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="50%" title="Edit Contact" centered >
+  <a-modal width="50%" title="Edit Contact" :footer="false" centered >
     <a-form :model="editContactForm" ref="formRest" autocomplete="off" layout="vertical" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :md="12" :sm="12" :xs="24">
@@ -62,12 +62,15 @@ export default {
     const store = useStore()
     const route = useRoute()
     const paramId = route.params.udid
-    const formRef = ref()
+    const formRest = ref()
     var isEdit = reactive(props.isContactEdit)
 
     const contactDetails = computed(() => {
       return store.state.careCoordinator.contactDetails
     })
+     const staffs = computed(() => {
+      return store.state.careCoordinator.addStaff;
+    });
 
     const editContactForm = reactive({
       firstName: "",
@@ -87,18 +90,20 @@ export default {
     const submitForm = () => {
       isEdit = false
       store.dispatch('updateContact', {
-        id: route.params.udid,
+        id: staffs.value?staffs.value.id:route.params.udid,
         contactId: contactDetails.value.id,
         data: editContactForm,
       }).then(() => {
         emit('closeModal')
+        formRest.value.resetFields();
         Object.assign(editContactForm, form)
-        store.dispatch("staffContactList", route.params.udid);
+        store.dispatch("staffContactList", staffs.value?staffs.value.id:route.params.udid);
       })
     }
 
     return {
-      formRef,
+      staffs,
+      formRest,
       editContactForm,
       paramId,
       submitForm,

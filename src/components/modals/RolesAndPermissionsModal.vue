@@ -1,5 +1,5 @@
 <template>
-<a-modal max-width="900px" width="90%" :title="editRole ? 'Edit Role' : 'Create New Role'" centered :footer="null" :maskClosable="false" @cancel="closeModal()">
+<a-modal max-width="900px" width="90%" :title="editRole ? 'Edit Role' : 'Create New Role'" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <a-col :span="24">
 
@@ -304,6 +304,7 @@ export default {
                     id: udid,
                     check: check
                 })
+                store.commit('checkChangeInput', false)
             }
             reset();
             rolesAndPermissions.addRole = ''

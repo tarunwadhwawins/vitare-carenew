@@ -157,6 +157,7 @@ export const addCondition = async ({commit}, request) => {
 }
 
 export const updateCondition = async ({commit}, request) => {
+ 
   const data = request.data;
   const patientId = request.id;
   const primaryPhysicianId = request.primaryPhysicianId;
@@ -215,10 +216,17 @@ export const updateCondition = async ({commit}, request) => {
 
   try {
     if(data.staff) {
-      await serviceMethod.common("put", `patient/${patientId}/staff/${primaryPhysicianId}?type=1`, null, data).then(response => {
-        commit('addPatientPhysician', response.data.data);
-        errorMessage.push(false)
-      })
+      if(primaryPhysicianId){
+        await serviceMethod.common("put", `patient/${patientId}/staff/${primaryPhysicianId}?type=1`, null, data).then(response => {
+          commit('addPatientPhysician', response.data.data);
+          errorMessage.push(false)
+        })
+      }else{
+        await serviceMethod.common("post", `patient/${patientId}/staff?type=1`, null, data).then(response => {
+          commit('addPatientPhysician', response.data.data);
+          errorMessage.push(false)
+        })
+      }
     }
   }
   catch (error) {
@@ -684,12 +692,15 @@ export const addDocument = async ({commit}, data) => {
 export const deleteDocument = async ({
   commit
 }, data) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("delete", `patient/${data.id}/document/${data.documentId}`, null, null).then((response) => {
     commit('deleteDocument', response.data.data);
     successSwal(response.data.message)
+    commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
   })
 }
 
@@ -731,16 +742,16 @@ export const uploadFile = async ({ commit }, data) => {
 }
 
 export const patientDetails = async ({commit}, id) => {
-  commit('loadingStatus', true)
+  // commit('loadingStatus', true)
   await serviceMethod.common("get", API_ENDPOINTS['patient'], id, null).then((response) => {
     commit('patientDetails', response.data.data);
-    commit('loadingStatus', false)
+    // commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     // errorSwal(error.response.data.message)
     console.log('Error', error)
     // errorSwal(error.response.data.message)
-    commit('loadingStatus', false)
+    // commit('loadingStatus', false)
   })
 }
 
@@ -1235,7 +1246,7 @@ export const timeLineType = async ({commit}) => {
 }
 
 export const updateProfileImage = async ({commit}, data) => {
-  commit('loadingStatus', true)
+  commit('isPicuteLoading', true)
   await serviceMethod.common("post", `file`, null, data.formData).then((response) => {
     console.log('imagePath', response.data.data.path)
     const imagepath = {
@@ -1243,28 +1254,27 @@ export const updateProfileImage = async ({commit}, data) => {
     }
     serviceMethod.common("put", API_ENDPOINTS['patientProfile'], data.patientUdid, imagepath).then((result) => {
       successSwal(result.data.message)
-      commit('loadingStatus', false)
     }).catch((error) => {
       errorLogWithDeviceInfo(error.response)
       if (error.response.status === 422) {
-        commit('errorMsg', error.response.data)
+        errorSwal(error.response.data.file[0])
       } else if (error.response.status === 500) {
         errorSwal(error.response.data.message)
       } else if (error.response.status === 401) {
         errorSwal(error.response.data.message)
       }
-      commit('loadingStatus', false)
+      commit('isPicuteLoading', false)
     })
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
-    if (error.response.status === 422) {
-      commit('errorMsg', error.response.data)
+    if (error.response.status == 422) {
+      errorSwal(error.response.data.file[0])
     } else if (error.response.status === 500) {
       errorSwal(error.response.data.message)
     } else if (error.response.status === 401) {
       errorSwal(error.response.data.message)
     }
-    commit('loadingStatus', false)
+    errorLogWithDeviceInfo(error.response)
+    commit('isPicuteLoading', false)
   })
 }
 

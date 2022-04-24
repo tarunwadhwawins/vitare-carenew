@@ -173,6 +173,7 @@ export default defineComponent({
     });
 
     const editClinicalData = (id) => {
+
       isEditMedicalHistory.value = true;
       medicalHistoryUdid.value = id;
       store.dispatch('medicalHistoryDetails', {
@@ -206,34 +207,38 @@ export default defineComponent({
           Object.assign(clinicals, clinicalsForm)
         });
       } */
+     
       if(isEditMedicalHistory.value) {
         store.dispatch("updateClinicalHistory", {
           data: clinicals,
-          patientUdid: route.params.udid,
+          patientUdid: route.params.udid ? route.params.udid:patients.value.addDemographic.id,
           medicalHistoryUdid: medicalHistoryUdid.value,
         }).then(() => {
           emit('onChange', false)
-          store.dispatch("clinicalHistoryList", patientId);
+          store.dispatch("clinicalHistoryList", route.params.udid ? route.params.udid:patients.value.addDemographic.id);
           formRef.value.resetFields();
           Object.assign(clinicals, clinicalsForm)
+          isEditMedicalHistory.value=false
+          isEditMedicalRoutine.value=false
         });
       }
       else {
         store.dispatch("addClinicalHistory", {
           data: clinicals,
-          id: patients.value.addDemographic.id,
+          id: patientId ==null? patients.value.addDemographic.id : patientId,
         }).then(() => {
           emit('onChange', false)
           formRef.value.resetFields();
           Object.assign(clinicals, clinicalsForm)
         }).then(() => {
           emit('onChange', false)
-          store.dispatch("clinicalHistoryList", patients.value.addDemographic.id);
+          store.dispatch("clinicalHistoryList", patientId ==null? patients.value.addDemographic.id : patientId);
         });
       }
     };
 
     const clinicalMedicat = () => {
+      
       if(isEditMedicalRoutine.value) {
         store.dispatch("updateMedicalRoutine", {
           data: {
@@ -242,13 +247,15 @@ export default defineComponent({
             startDate: timeStamp(clinicalMedication.startDate ),
             endDate: timeStamp(clinicalMedication.endDate )
           },
-          patientUdid: route.params.udid,
+          patientUdid: route.params.udid ? route.params.udid:patients.value.addDemographic.id,
           medicalRoutineUdid: medicalRoutineUdid.value,
         }).then(() => {
           emit('onChange', false)
-          store.dispatch("clinicalMedicatList", route.params.udid);
+          store.dispatch("clinicalMedicatList", route.params.udid ? route.params.udid:patients.value.addDemographic.id);
           formRef.value.resetFields()
           Object.assign(clinicalMedication, medicationForm)
+          isEditMedicalHistory.value = false;
+          isEditMedicalRoutine.value=false
         });
       }
       else {
@@ -257,10 +264,10 @@ export default defineComponent({
           frequency: clinicalMedication.frequency,
           startDate: timeStamp(clinicalMedication.startDate ),
           endDate: timeStamp(clinicalMedication.endDate )},
-          id: patients.value.addDemographic.id,
+          id: patientId ==null? patients.value.addDemographic.id : patientId,
         }).then(() => {
           emit('onChange', false)
-          store.dispatch("clinicalMedicatList", patients.value.addDemographic.id);
+          store.dispatch("clinicalMedicatList", patientId ==null? patients.value.addDemographic.id : patientId);
           formRef.value.resetFields()
           Object.assign(clinicalMedication, medicationForm)
         });
@@ -296,9 +303,16 @@ export default defineComponent({
     })
 
     function deleteClinicalData(id, name) {
+
       warningSwal(messages.deleteWarning).then((response) => {
         if(response == true) {
+          isEditMedicalHistory.value=false
+          isEditMedicalRoutine.value=false
+          formRef.value.resetFields()
+          Object.assign(clinicalMedication, medicationForm)
+          store.commit('loadingStatus', true)
           if(patientId != null) {
+            isEditMedicalHistory.value = false;
             if(name == "deleteClinicalData") {
               store.dispatch("deleteClinicalData", {
                 id: patientId,

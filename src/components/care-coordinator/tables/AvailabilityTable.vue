@@ -70,7 +70,7 @@ export default {
 
     const editAvailability = (availabilityId) => {
       store.dispatch("availabilityDetails", {
-        id: router.params.udid,
+        id: router.params.udid ? router.params.udid : props.Id,
         availabilityId: availabilityId,
       });
       availabilityFormvisible.value = true

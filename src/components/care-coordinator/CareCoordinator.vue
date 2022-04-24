@@ -91,6 +91,7 @@ export default {
         }
 
         const showModal = (value) => {
+            store.state.careCoordinator.documentStaffDetails=null
             visible.value = value;
         };
 
