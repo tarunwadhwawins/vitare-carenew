@@ -230,7 +230,7 @@
     <AddAppointment
       v-model:visible="appointmentModal"
       @is-visible="showModal($event)"
-      @ok="apptOk"
+     
     />
     <TasksModal
       v-model:visible="tasksModal"
@@ -241,7 +241,7 @@
       @saveModal="closeAppointModal($event)"
     />
     <!-- <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" /> -->
-    <AddStartCall  v-if="AddStartCall" v-model:visible="AddStartCall" @ok="closeStartCallModal"  @is-visibale="showStartCallModal($event)"/>
+    <AddStartCall    v-model:visible="AddStartCall" @ok="closeStartCallModal"  @is-visibale="showStartCallModal($event)"/>
     <SendMessage v-model:visible="SendMessage" @ok="startOk" />
     <!---->
     <AppointmentDetails v-if="isAppointment"  v-model:visible="isAppointment"  @closeModal="closeModal(event)" />
@@ -288,7 +288,7 @@ export default defineComponent({
     SearchOutlined,
     MoreOutlined,
     AddAppointment:defineAsyncComponent(() =>import("@/components/modals/AddAppointment")),
-    TasksModal: defineAsyncComponent(() =>import("@/components/modals/AddAppointment")),
+    TasksModal: defineAsyncComponent(() =>import("@/components/modals/TasksModal")),
     PatientsModal: defineAsyncComponent(() =>import("@/components/modals/PatientsModal")),
     //CoordinatorsModal:defineAsyncComponent(() =>import("@/components/modals/CoordinatorsModal")),
     AddStartCall:defineAsyncComponent(() =>import("@/components/modals/AddStartCall")),
@@ -350,6 +350,7 @@ export default defineComponent({
     };
 
     function showModal(event) {
+      
       if (event.date) {
         appointmentModal.value = event.check;
         emit("is-heardeVisible", event);
@@ -357,11 +358,10 @@ export default defineComponent({
         appointmentModal.value = event;
       }
     }
-    const apptOk = () => {
-      appointmentModal.value = false;
-    };
+
 
     const addTask = () => {
+      
       tasksModal.value = true;
     };
 
@@ -382,8 +382,9 @@ export default defineComponent({
       CoordinatorsModal.value = false;
     };
 
-    const handleTaskOk = (status) => {
-      tasksModal.value = status;
+    const handleTaskOk = (e) => {
+      
+      tasksModal.value = e;
     };
 
     const AddStartCall = ref(false);
@@ -461,7 +462,7 @@ export default defineComponent({
       SendMessage,
       addsendMessage,
       appointmentModal,
-      apptOk,
+    
       addAppt,
       tasksModal,
       addTask,
