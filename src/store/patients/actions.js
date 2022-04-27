@@ -68,7 +68,22 @@ export const patients = async ({
 
 }
 
+export const patientsDelete = async ({
+  commit
+},id) => {
+  
+  
+ 
+  await serviceMethod.common("delete", "patient", id, null).then((response) => {
+    successSwal(response.data.message)
+   
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    errorSwal(error.response.data.message)
+    commit('loadingTableStatus', false)
+  })
 
+}
 export const addCondition = async ({commit}, request) => {
   const data = request.data;
   const patientId = request.id;
