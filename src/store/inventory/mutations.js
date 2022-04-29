@@ -7,7 +7,7 @@ export const addInventorySuccess = async (state, inventory) => {
 export const inventory = async (state, inventories) => {
   state.inventoriesList = inventories.data.map(data => {
     ///data.isActive = data.isActive
-    data.isAvailable = data.isAvailable == 1 ? '' : 'Assigned'
+    data.isAvailable = data.isAvailable == 1 ? 'Unassigned' : 'Assigned'
     return data
   });
   state.inventoryMeta = inventories.meta.pagination
