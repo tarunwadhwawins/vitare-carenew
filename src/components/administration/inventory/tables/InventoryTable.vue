@@ -8,12 +8,19 @@
             <span class="icons">
                 <EditOutlined @click="editInventory(record.id, record.deviceTypeId)" /></span>
         </a-tooltip>
-        <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,339)">
-            <template #title>
-                <span>Delete</span>
+        <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,339)" >
+            <template #title v-if="record.isAvailable=='Assigned'" disabled>
+                
+                <span disabled>Assigned Inventory Can`t Delete</span>
             </template>
-            <span class="icons">
-                <DeleteOutlined @click="deleteInventory(record.id)" /></span>
+            <template #title v-else>
+              
+              <span >Delete</span>
+          </template>
+            <span class="icons" v-if="record.isAvailable=='Assigned'" disabled>
+                <DeleteOutlined /></span>
+                <span class="icons" v-else>
+                  <DeleteOutlined @click="deleteInventory(record.id)" /></span>
         </a-tooltip>
     </template>
     <template #isActive="{record}" >
