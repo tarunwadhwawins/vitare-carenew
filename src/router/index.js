@@ -227,7 +227,14 @@ const routes = [
     component: () => import('@/components/administration/inventory/Inventory'),
     meta: { authAdmin: true }
   },
+  {
+    path: '/staff-groups',
+    name: 'StaffGroups',
+    component: () => import('@/components/administration/staffGroups/StaffGroups'),
+    meta: { authAdmin: true }
+  },
 
+  // testing Links
   {
     path: '/test',
     name: 'Test',

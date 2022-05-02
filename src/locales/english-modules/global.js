@@ -81,6 +81,8 @@ const global = {
   careCoodinator:'Care Coordinator',
   staff:'Staff',
   startCall:'Start Call',
+  groups:'Groups',
+  search:'Search',
 
 }
 
