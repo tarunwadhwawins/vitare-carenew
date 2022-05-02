@@ -1467,3 +1467,91 @@
         }
     }
 }
+.singleChoice {
+    margin: 10px 0 0 0;
+}
+.singleChoiceEdit {
+    margin: 38px 0 0 0;
+}
+.questionOutput {
+    display: flex;
+    align-items: self-start;
+    margin: 0 0 10px;
+    &.last {
+        margin: 0;
+    }
+    .ant-checkbox {
+        margin: 3px 5px 0 0;
+    }
+    h3 {
+        padding: 0 0 5px;
+    }
+}
+.questionCard {
+    .ant-card-head {
+        min-height: auto;
+    }
+    .ant-card-head-title {
+        font-size: 22px;
+        font-family: $font-family-semi-bold;
+        padding: 10px 0;
+    }
+}
+.questionnaireMain {
+    position: relative;
+    &.checkBoxCollapse {
+        .ant-collapse-item {
+            .ant-collapse-header {
+                padding-left: 50px;
+                .ant-collapse-extra {
+                    position: absolute;
+                    left: 20px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+            }
+        }
+    }
+    h3 {
+        font-size: 18px;
+        margin: 25px 0 5px;
+    }
+    .scoring {
+        position: absolute;
+        right: 140px;
+        top: 5px;
+        font-size: 18px;
+        color: #444;
+        span {
+            color: #999;
+        }
+    }
+    .ant-collapse {
+        border: none;
+        background-color: #fff;
+        .ant-collapse-item {
+            margin: 0 0 20px;
+            border: none;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
+            .ant-collapse-header {
+                background-color: #f9f9f9;
+                font-size: 15px;
+                font-family: $font-family-semi-bold;
+                .ant-collapse-extra {
+                    .anticon.anticon-edit {
+                        color: #198754;
+                        font-size: 20px;
+                    }
+                    .anticon.anticon-delete {
+                        color: #dc3545;
+                        font-size: 20px;
+                        margin: 0 0 0 10px;
+                    }
+                }
+            }
+            .ant-collapse-content {
+                border: none;
+            }
+        }
+    }
+}

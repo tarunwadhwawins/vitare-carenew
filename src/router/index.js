@@ -264,6 +264,43 @@ const routes = [
     component: () => import('@/components/TestCountdown.vue'),
     meta: { authAdmin: true }
   },
+  {
+    path: '/questionnaire',
+    name: 'Questionnaire',
+    component: () => import( '../components/administration/questionnaire/Questionnaire'),
+    meta: { authAdmin: true }
+  },
+  {
+    path: '/questionnaire-bank',
+    name: 'QuestionnaireBank',
+    component: () => import( '@/views/questionnaire-bank/QuestionnaireBank'),
+    meta: { authAdmin: true }
+  },
+  {
+    path: '/questionnaire-detail',
+    name: 'QuestionnaireDetail',
+    component: () => import( '../components/administration/questionnaire-detail/QuestionnaireDetail'),
+    meta: { authAdmin: true }
+  },
+  {
+    path: '/questionnaire-template',
+    name: 'QuestionnaireTemplate',
+    component: () => import( '@/views/questionnaire-template/QuestionnaireTemplate'),
+    meta: { authAdmin: true }
+  },
+
+  {
+    path: '/question-template-detail',
+    name: 'QuestionTemplateDetail',
+    component: () => import( '../components/administration/questionnaire-template/QuestionTemplateDetail'),
+    meta: { authAdmin: true }
+  },
+  {
+    path: '/resources',
+    name: 'Resources',
+    component: () => import( '@/views/resources/Resources'),
+    meta: { authAdmin: true }
+  },
  
 
 
