@@ -31,6 +31,12 @@
                     <span class="menuItem">{{$t('sidebar.inventory')}}</span>
                 </a-menu-item>
             </router-link>
+            <router-link to="/work-flow" >
+                <a-menu-item>
+                    <ApartmentOutlined />
+                    <span class="menuItem">{{'WorkFlow Setup'}}</span>
+                </a-menu-item>
+            </router-link>
             <router-link to="/dashboard" >
                 <a-menu-item>
                     <HomeOutlined /><span class="menuItem">Home</span></a-menu-item>
@@ -48,6 +54,7 @@ import {
   HomeOutlined,
   SafetyOutlined,
   GlobalOutlined,
+  ApartmentOutlined
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { arrayToObjact } from "@/commonMethods/commonMethod";
@@ -59,6 +66,7 @@ export default defineComponent({
     HomeOutlined,
     SafetyOutlined,
     GlobalOutlined,
+    ApartmentOutlined
   },
 
   setup() {

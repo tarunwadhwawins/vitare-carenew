@@ -264,6 +264,13 @@ const routes = [
     component: () => import('@/components/TestCountdown.vue'),
     meta: { authAdmin: true }
   },
+
+  {
+    path: '/work-flow',
+    name: 'WorkFlow',
+    component: () => import('@/views/workflow-setup/WorkFlowSetup.vue'),
+    meta: { authAdmin: true }
+  },
  
 
 
