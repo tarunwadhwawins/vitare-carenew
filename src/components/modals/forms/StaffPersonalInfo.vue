@@ -49,7 +49,7 @@
                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
                     <!-- <vue-tel-input  v-model.trim:value="personalInfoData.phoneNumber" v-bind="bindProps" @change="checkChangeInput()"/> -->
                     <!-- <PhoneNumber @change="checkChangeInput()"  v-model.trim:value="personalInfoData.phoneNumber" @setPhoneNumber="setPhoneNumber"/> -->
-                      <a-input-number @change="checkChangeInput()" v-model:value.trim="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" size="large" style="width: 100%"   maxlength="10" />
+                     <a-input v-maska="'(###) ###-####'"  @change="checkChangeInput()"  v-model:value="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="14" style="width: 100%" />
 
                     <ErrorMessage v-if="errorMsg && !personalInfoData.phoneNumber" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                 </a-form-item>
@@ -127,6 +127,7 @@ export default {
     })
 
     const personalInfo = () => {
+      // personalInfoData.phoneNumber = personalInfoData.phoneNumber.replace(/[() -]/g, '') 
       store.dispatch("updateStaff", {
       id:route.params.udid,
       data:personalInfoData
