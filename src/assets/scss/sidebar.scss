@@ -64,3 +64,25 @@ body.test {
         }
     }
 }
+.subMenu {
+    .questionnaireMenu {
+        position: relative;
+        color: #000;
+        margin: 0;
+        height: 40px;
+        line-height: 40px;
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        .menuItem {
+            margin: 0 0 0 10px;
+        }
+        .anticon.anticon-down {
+            margin: 0 0 0 10px;
+        }
+    }
+    .dropDown {
+        padding-left: 10px;
+    }
+}
