@@ -1,5 +1,5 @@
 <template>
-<a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
+  <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
     <div class="menuList">
         <a-menu>
             <router-link to="/cpt-codes" v-if="arrayToObjact(screensPermissions, 9)">
@@ -31,6 +31,12 @@
                     <span class="menuItem">{{$t('sidebar.inventory')}}</span>
                 </a-menu-item>
             </router-link>
+            <router-link to="/staff-groups">
+              <a-menu-item>
+                <TeamOutlined />
+                <span class="menuItem">{{$t('global.groups')}}</span>
+              </a-menu-item>
+            </router-link>
             <div class="subMenu">
                 <div class="questionnaireMenu" @click="toggle = !toggle">
                     <FileTextOutlined /><span class="menuItem">Questionnaire</span>
@@ -61,7 +67,7 @@
             </router-link>
         </a-menu>
     </div>
-</a-layout-sider>
+  </a-layout-sider>
 </template>
 
 <script>
@@ -86,6 +92,7 @@ import {
     FileTextOutlined,
     DownOutlined,
     PlusOutlined,
+    TeamOutlined,
    
 } from "@ant-design/icons-vue";
 import {
@@ -105,6 +112,7 @@ export default defineComponent({
         FileTextOutlined,
         DownOutlined,
         PlusOutlined,
+        TeamOutlined,
        
         MailOutlined,
         CreditCardOutlined,

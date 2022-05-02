@@ -19,6 +19,8 @@ export const rolesList = async ({ commit },page) => {
 export const rolePermissions = async ({ commit }) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['rolePermissions'], null, null).then((response) => {
 		
+		console.log('rolesAndPermissions', response.data.modules);
+		commit('rolesAndPermissions', response.data.modules);
 		commit('rolePermissionsSuccess', response.data);
 	})
 	.catch((error) => {

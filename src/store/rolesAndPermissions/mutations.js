@@ -10,6 +10,10 @@ export const rolePermissionsSuccess = async (state, roles) => {
   state.rolePermissions = roles;
 }
 
+export const rolesAndPermissions = async (state, roles) => {
+  state.rolesAndPermissions = roles;
+}
+
 export const addRoleSuccess = async (state, role) => {
   state.addRole = role
 }
