@@ -306,6 +306,12 @@ const routes = [
     path: '/resources',
     name: 'Resources',
     component: () => import( '@/views/resources/Resources'),
+  },
+
+  {
+    path: '/work-flow',
+    name: 'WorkFlow',
+    component: () => import('@/views/workflow-setup/WorkFlowSetup.vue'),
     meta: { authAdmin: true }
   },
  

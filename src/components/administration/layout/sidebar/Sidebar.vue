@@ -61,6 +61,12 @@
                     </router-link>
                 </div>
             </div>
+            <router-link to="/work-flow" >
+                <a-menu-item>
+                    <ApartmentOutlined />
+                    <span class="menuItem">{{'WorkFlow Setup'}}</span>
+                </a-menu-item>
+            </router-link>
             <router-link to="/dashboard">
                 <a-menu-item>
                     <HomeOutlined /><span class="menuItem">Home</span></a-menu-item>
@@ -84,7 +90,7 @@ import {
     FileDoneOutlined,
   
     GlobalOutlined,
-  
+    ApartmentOutlined,
     HomeOutlined,
     SafetyOutlined,
     ReconciliationOutlined,
@@ -106,7 +112,7 @@ export default defineComponent({
         
         FileDoneOutlined,
         HomeOutlined,
-        
+        ApartmentOutlined,
         ReconciliationOutlined,
        
         FileTextOutlined,
