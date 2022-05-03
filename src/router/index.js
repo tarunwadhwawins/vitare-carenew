@@ -312,7 +312,14 @@ const routes = [
   {
     path: '/work-flow',
     name: 'WorkFlow',
-    component: () => import('@/views/workflow-setup/WorkFlowSetup.vue'),
+    component: () => import('@/views/workflow-setup/WorkFlowSetup'),
+    meta: { authAdmin: true }
+  }, 
+
+  {
+    path: '/workflow-details',
+    name: 'workflowDetails', 
+    component: () => import('@/views/workflow-details/WorkFlowDetails'),
     meta: { authAdmin: true }
   },
  

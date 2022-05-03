@@ -1,25 +1,15 @@
 <template>
 <a-table rowKey="id"  :columns="columns" :data-source="data" :scroll="{ x: 900 }" :pagination="false">
-    <template #workflowDescription="text">
-        <span>{{ text.text }}</span>
+   <template #actionGroupDescription="text">
+        <a @click="groupEditModal()">{{ text.text }}</a>
     </template>
-     <template #configureWorkflow="text">
-        <router-link to="workflow-details" >{{ text.text }}</router-link>
-    </template>
-    <template #actions="text">
+    <template #actions>
         <a-tooltip placement="bottom" @click="showModal()" >
             <template #title>
                 <span>Edit</span>
             </template>
             <a class="icons">
                 <EditOutlined /></a>
-        </a-tooltip>
-        <a-tooltip placement="bottom" @click="cloneData(text.record)">
-            <template #title>
-                <span>Clone</span>
-            </template>
-            <a class="icons">
-                <CopyOutlined /></a>
         </a-tooltip>
         <a-tooltip placement="bottom" @click="deleteData()">
             <template #title>
@@ -34,38 +24,32 @@
 </template>
 <script>
 import {  defineComponent, } from "vue";
-import {DeleteOutlined,EditOutlined,CopyOutlined} from "@ant-design/icons-vue";
+import {EditOutlined,DeleteOutlined} from "@ant-design/icons-vue";
 import { warningSwal} from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 export default defineComponent({
   name:"WorkFlowTable",
   components: {
-    DeleteOutlined,
     EditOutlined,
-    CopyOutlined,
+    DeleteOutlined
   },
   props:{
     columns:Array,
     data:Array
   },
   setup(props,{emit}) {
-
     const showModal = () => {
       emit("showEditModal",true)
     }
+    const groupEditModal = () => {
+      emit("groupEditModal",true)
+    }
+    
      const handleOk = () => {
       // 
     }
 
-    function cloneData(id){
-      let cloneData=[];
-      warningSwal("Clone the data!").then((response) => {
-        if (response == true) {
-         cloneData = id;
-         console.log('object',cloneData);
-        }
-      })
-    }
+   
 
     function deleteData(){
       warningSwal(messages.deleteWarning).then((response) => {
@@ -75,7 +59,7 @@ export default defineComponent({
       })
     }
     return {
-      cloneData,
+      groupEditModal,
       deleteData,
       showModal,
       handleOk

@@ -1,20 +1,10 @@
 <template>
-<a-table rowKey="id"  :columns="columns" :data-source="data" :scroll="{ x: 900 }" :pagination="false">
-    <template #workflowDescription="text">
-        <span>{{ text.text }}</span>
-    </template>
-     <template #configureWorkflow="text">
+<a-table rowKey="id"  :columns="columns" :data-source="data" :scroll="{ x: 800 }" :pagination="false">
+     <template #configureAction="text">
         <router-link to="workflow-details" >{{ text.text }}</router-link>
     </template>
-    <template #actions="text">
-        <a-tooltip placement="bottom" @click="showModal()" >
-            <template #title>
-                <span>Edit</span>
-            </template>
-            <a class="icons">
-                <EditOutlined /></a>
-        </a-tooltip>
-        <a-tooltip placement="bottom" @click="cloneData(text.record)">
+    <template #actions>
+        <a-tooltip placement="bottom" @click="cloneData()" >
             <template #title>
                 <span>Clone</span>
             </template>
@@ -34,15 +24,14 @@
 </template>
 <script>
 import {  defineComponent, } from "vue";
-import {DeleteOutlined,EditOutlined,CopyOutlined} from "@ant-design/icons-vue";
+import {CopyOutlined,DeleteOutlined} from "@ant-design/icons-vue";
 import { warningSwal} from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 export default defineComponent({
   name:"WorkFlowTable",
   components: {
-    DeleteOutlined,
-    EditOutlined,
     CopyOutlined,
+    DeleteOutlined
   },
   props:{
     columns:Array,
@@ -57,7 +46,7 @@ export default defineComponent({
       // 
     }
 
-    function cloneData(id){
+   function cloneData(id){
       let cloneData=[];
       warningSwal("Clone the data!").then((response) => {
         if (response == true) {
