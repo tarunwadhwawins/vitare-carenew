@@ -33,6 +33,7 @@ export const API_ENDPOINTS = {
 
     // Care Coordinator
     staffList:"staff",
+    staff:"staff",
     specialization:"staff/specialization",
     network:"staff/network",
 
@@ -92,6 +93,7 @@ export const API_ENDPOINTS = {
 
     //Programs
     programsList:"program",
+    program:"program",
 
     // CPT Codes
     cptCodes: 'cptCode',
@@ -118,6 +120,10 @@ export const API_ENDPOINTS = {
     forgotPassword:'forgot/password',
     validateCode:'forgotPassword/verify',
     setupPassword:'generate/newPassword',
+    
+    // Staff Groups
+    group:'group',
+    staffGroup:'staffGroup',
 };
 
 // export const getApiUrl = key => {

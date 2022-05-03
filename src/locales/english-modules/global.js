@@ -83,7 +83,10 @@ const global = {
   startCall:'Start Call',
   groups:'Groups',
   search:'Search',
-
+  providers:'Providers',
+  programs:'Programs',
+  program:'Program',
+  isActive:'Active / Inactive',
 }
 
 

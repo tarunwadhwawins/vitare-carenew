@@ -25,6 +25,7 @@ import {provider} from "./provider/index"
 import { videoCall } from "./videoCall/index"
 import { flags } from "./flags/index"
 import { password } from "./password/index"
+import { staffGroups } from "./staffGroups/index"
 import createPersistedState from "vuex-persistedstate";
 import { errorLogWithDeviceInfo} from "./errorLogWithDeviceInfo"
 
@@ -55,6 +56,7 @@ export default createStore({
     provider,
     flags,
     password,
+    staffGroups,
     screenPermissions,
     errorLogWithDeviceInfo
   },
