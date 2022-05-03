@@ -75,6 +75,13 @@ const columns = [
     },
   },
   {
+    title: "Configure Workflow",
+    dataIndex: "configureWorkflow",
+    slots: {
+      customRender: "configureWorkflow",
+    },
+  },
+  {
     title: "Actions",
     dataIndex: "actions",
     slots: {
@@ -88,7 +95,8 @@ const data = [
         "eventDescription":"Client Diet",
         "comments":"Fitness Issues",
         "startDate":"05/15/20222",
-        "endDate":""
+        "endDate":"",
+        "configureWorkflow":"Configration"
     },
 ];
 export default {
