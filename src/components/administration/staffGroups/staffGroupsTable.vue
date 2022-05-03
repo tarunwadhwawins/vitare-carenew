@@ -1,43 +1,57 @@
 <template>
-  <a-table :columns="columns" :data-source="data" :scroll="{ x: 900 }" >
+  <a-table :columns="columns" :data-source="groupsList" :scroll="{ x: 900 }" >
     
-    <template #actions>
+    <template #actions="{record}">
       <a-tooltip placement="bottom">
         <template #title>
           <span>{{ $t('staffGroups.manageStaff') }}</span>
         </template>
-        <a class="icons" @click="showAddGroupStaffModal"><PlusOutlined /></a>
+        <a class="icons" @click="manageGroupStaff(record.udid)"><UserAddOutlined /></a>
       </a-tooltip>
       <a-tooltip placement="bottom">
         <template #title>
-          <span>{{ $t('staffGroups.permissions') }}</span>
+          <span>{{ $t('staffGroups.manageProviders') }}</span>
         </template>
-        <a class="icons" @click="showGroupPermissionsModal"><ToolOutlined /></a>
+        <a class="icons" @click="manageProviders(record.udid)"><MedicineBoxOutlined /></a>
+      </a-tooltip>
+      <a-tooltip placement="bottom">
+        <template #title>
+          <span>{{ $t('staffGroups.managePrograms') }}</span>
+        </template>
+        <a class="icons" @click="managePrograms(record.udid)"><AuditOutlined /></a>
+      </a-tooltip>
+      <a-tooltip placement="bottom">
+        <template #title>
+          <span>{{ $t('staffGroups.managePermissions') }}</span>
+        </template>
+        <a class="icons" @click="manageGroupPermissions(record.udid)"><ToolOutlined /></a>
       </a-tooltip>
       <a-tooltip placement="bottom">
         <template #title>
           <span>{{ $t('staffGroups.editGroup') }}</span>
         </template>
-        <a class="icons" @click="showCreateGroupModal"><EditOutlined /></a>
+        <a class="icons" @click="editGroup(record.udid)"><EditOutlined /></a>
       </a-tooltip>
       <a-tooltip placement="bottom">
         <template #title>
           <span>{{ $t('staffGroups.deleteGroup') }}</span>
         </template>
-        <a class="icons"> <DeleteOutlined /></a>
+        <a class="icons" @click="deleteGroup(record.udid)"> <DeleteOutlined /></a>
       </a-tooltip>
     </template>
 
-    <template #active>
-      <a-switch v-model:checked="checked" @change="updateStatus(record.id, $event)" />
+    <template #isActive="{record}">
+      <a-switch v-model:checked="record.isActive" @change="updateStatus(record.udid, $event)" />
     </template>
     
   </a-table>
 
   <!-- Modal -->
   <GroupPermissionsModal v-model:visible="visibleGroupPermissionsModal" @closeModal="closeModal" />
-  <AddGroupStaffModal v-model:visible="visibleAddGroupStaffModal" @closeModal="closeModal" />
-  <CreateGroupModal v-model:visible="visibleCreateGroupModal" @closeModal="closeModal" :isEdit="true" />
+  <ManageGroupStaffModal v-model:visible="visibleAddGroupStaffModal" @closeModal="closeModal" :groupId="idGroup" />
+  <ManageGroupProvidersModal v-model:visible="visibleManageProvidersModal" @closeModal="closeModal" />
+  <ManageGroupProgramsModal v-model:visible="visibleManageProgramsModal" @closeModal="closeModal" />
+  <CreateGroupModal v-if="visibleCreateGroupModal" v-model:visible="visibleCreateGroupModal" @closeModal="closeModal" :isEdit="true" :groupId="idGroup" />
   <!---->
 </template>
 
@@ -45,41 +59,104 @@
 import {
   DeleteOutlined,
   EditOutlined,
-  PlusOutlined,
-  ToolOutlined
+  UserAddOutlined,
+  ToolOutlined,
+  MedicineBoxOutlined,
+  AuditOutlined,
 } from "@ant-design/icons-vue";
-import { ref } from "vue";
-import CreateGroupModal from "@/components/modals/CreateGroupModal";
-import AddGroupStaffModal from "@/components/modals/AddGroupStaffModal";
-import GroupPermissionsModal from "@/components/modals/GroupPermissionsModal";
+import { computed, ref, watchEffect, defineAsyncComponent } from "vue";
+// import CreateGroupModal from "@/components/modals/CreateGroupModal";
+// import ManageGroupStaffModal from "@/components/modals/ManageGroupStaffModal";
+// import ManageGroupProvidersModal from "@/components/modals/ManageGroupProvidersModal";
+// import ManageGroupProgramsModal from "@/components/modals/ManageGroupProgramsModal";
+// import GroupPermissionsModal from "@/components/modals/GroupPermissionsModal";
+import { useStore } from 'vuex';
+import {
+  warningSwal,
+} from "@/commonMethods/commonMethod";
+import { messages } from "@/config/messages";
 
 export default {
   components: {
     DeleteOutlined,
     EditOutlined,
-    PlusOutlined,
+    UserAddOutlined,
     ToolOutlined,
-    CreateGroupModal,
-    AddGroupStaffModal,
-    GroupPermissionsModal,
+    MedicineBoxOutlined,
+    AuditOutlined,
+    CreateGroupModal: defineAsyncComponent(()=>import("@/components/modals/CreateGroupModal")),
+    ManageGroupStaffModal: defineAsyncComponent(()=>import("@/components/modals/ManageGroupStaffModal")),
+    ManageGroupProvidersModal: defineAsyncComponent(()=>import("@/components/modals/ManageGroupProvidersModal")),
+    ManageGroupProgramsModal: defineAsyncComponent(()=>import("@/components/modals/ManageGroupProgramsModal")),
+    GroupPermissionsModal: defineAsyncComponent(()=>import("@/components/modals/GroupPermissionsModal")),
   },
   setup() {
+    const store = useStore()
     const checked = true;
+    const idGroup = ref(null);
     const visibleCreateGroupModal = ref(false);
     const visibleAddGroupStaffModal = ref(false);
     const visibleGroupPermissionsModal = ref(false);
+    const visibleManageProvidersModal = ref(false);
+    const visibleManageProgramsModal = ref(false);
     
-    const showGroupPermissionsModal = () => {
+    const manageGroupPermissions = () => {
       visibleGroupPermissionsModal.value = true;
     };
     
-    const showCreateGroupModal = () => {
-      visibleCreateGroupModal.value = true;
-    };
-    
-    const showAddGroupStaffModal = () => {
+    const manageGroupStaff = (id) => {
+      idGroup.value = id
+      console.log('groupId', id)
+      store.dispatch('groupStaffList', id)
       visibleAddGroupStaffModal.value = true;
     };
+    
+    const manageProviders = (id) => {
+      console.log('groupId', id)
+      visibleManageProvidersModal.value = true;
+    };
+    
+    const managePrograms = (id) => {
+      console.log('groupId', id)
+      visibleManageProgramsModal.value = true;
+    };
+    
+    const editGroup = (id) => {
+      idGroup.value = id
+      store.commit('createGroup', null)
+      store.dispatch('groupDetails', id).then(() => {
+        visibleCreateGroupModal.value = true;
+      })
+    };
+    
+    const updateStatus = (id, value) => {
+      store.dispatch('updateGroup', {
+        id: id,
+        data: {
+          isActive: value
+        }
+      }).then(() => {
+        store.dispatch('groupsList')
+      })
+    };
+
+    const deleteGroup = (id) => {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          store.dispatch('deleteGroup', id).then(() => {
+            store.dispatch('groupsList')
+          })
+        }
+      })
+    }
+
+    watchEffect(() => {
+      store.dispatch('groupsList')
+    })
+
+    const groupsList = computed(() => {
+      return store.state.staffGroups.groupsList
+    })
     
     const closeModal = () => {
       visibleCreateGroupModal.value = false;
@@ -91,24 +168,20 @@ export default {
       {
         title: "Group",
         dataIndex: "group",
-        sorter: {
-          compare: (a, b) => a.template - b.template,
-          multiple: 3,
-        },
       },
       {
         title: "Created Date",
-        dataIndex: "created",
+        dataIndex: "createdAt",
       },
       {
-        title: "Total Member",
-        dataIndex: "total",
+        title: "Total Member(s)",
+        dataIndex: "totalMembers",
       },
       {
         title: "Status",
-        dataIndex: "status",
+        dataIndex: "isActive",
         slots: {
-          customRender: "active",
+          customRender: "isActive",
         },
       },
       {
@@ -119,61 +192,41 @@ export default {
         },
       },
     ];
-    const data = [
-      {
-        key: "1",
-        group: "Group One",
-        created: "Feb 20, 2022",
-        total: "5",
-        status: "",
-        action: "",
-      },
-      {
-        key: "2",
-        group: "Group Two",
-        staff: "Steve Smith, Robert Henry",
-        created: "Feb 23, 2022",
-        total: "4",
-        status: "",
-        action: "",
-      },
-      {
-        key: "3",
-        group: "Group Three",
-        created: "Feb 25, 2022",
-        total: "8",
-        status: "",
-        action: "",
-      },
-      {
-        key: "4",
-        group: "Group Four",
-        created: "Feb 20, 2022",
-        total: "5",
-        status: "",
-        action: "",
-      },
-    ];
 
     return {
       closeModal,
-      showGroupPermissionsModal,
+      deleteGroup,
+      manageGroupPermissions,
       visibleGroupPermissionsModal,
-      showAddGroupStaffModal,
+      manageGroupStaff,
       visibleAddGroupStaffModal,
+      manageProviders,
+      visibleManageProvidersModal,
+      managePrograms,
+      visibleManageProgramsModal,
       visibleCreateGroupModal,
-      showCreateGroupModal,
+      editGroup,
       checked,
       columns,
-      data
+      groupsList,
+      idGroup,
+      updateStatus,
     }
   }
 }
 </script>
 
 <style>
-.icons .anticon-plus svg {
+.icons .anticon-user-add svg {
   fill: #0d6efd;
+  font-size: 18px;
+}
+.icons .anticon-medicine-box svg {
+  fill: #fd0d0d;
+  font-size: 18px;
+}
+.icons .anticon-audit svg {
+  fill: #080b97;
   font-size: 18px;
 }
 .icons .anticon-tool svg {

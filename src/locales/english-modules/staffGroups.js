@@ -1,6 +1,8 @@
 const staffGroups = {
   manageStaff: "Manage Staff",
-  permissions: "Permissions",
+  manageProviders: "Manage Providers",
+  managePrograms: "Manage Programs",
+  managePermissions: "Manage Permissions",
   createGroup: "Create Group",
   editGroup: "Edit Group",
   deleteGroup: "Delete Group",
@@ -10,7 +12,9 @@ const staffGroups = {
   groups: "Groups",
   groupPermissions: "Group Permissions",
   groupStaff: "Group Staff",
-  searchPlaceholder: "Search by Name, Department and Tags",
+  searchStaffPlaceholder: "Search by Name, Department or Tags",
+  searchProvidersPlaceholder: "Search by Name or State",
+  searchProgramPlaceholder: "Search by Name",
   search: "Search . . .",
 }
 

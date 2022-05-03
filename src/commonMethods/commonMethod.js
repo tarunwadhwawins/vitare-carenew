@@ -222,6 +222,10 @@ export function startimeAdd(value) {
 	return moment(value.format('MM/DD/YYYY') + ' ' + timeStart).format();
 }
 
+export function createdAtDateFormat(dateTime) {
+	return moment(dateTime).format('MMM DD, YYYY hh:mm A');
+}
+
 export function timestampToDate(timestamp, format) {
 	var day = moment.unix(timestamp);
 	console.log('dayday', day.format(format))
