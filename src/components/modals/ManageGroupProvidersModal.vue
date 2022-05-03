@@ -6,7 +6,7 @@
         <a-col :span="21">
           <div class="form-group">
             <a-form-item :label="$t('global.provider')" name="provider" :rules="[{required: true, message:$t('global.provider')+' '+$t('global.validation')}]">
-              <a-input v-model:value="searchProviderForm.provider" size="large" :placeholder="$t('staffGroups.searchProviderPlaceholder')" />
+              <a-input v-model:value="searchProviderForm.provider" size="large" :placeholder="$t('staffGroups.searchProvidersPlaceholder')" />
             </a-form-item>
           </div>
         </a-col>

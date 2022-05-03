@@ -13,7 +13,7 @@ const staffGroups = {
   groupPermissions: "Group Permissions",
   groupStaff: "Group Staff",
   searchStaffPlaceholder: "Search by Name, Department or Tags",
-  searchProvidersPlaceholder: "Search by Name or State",
+  searchProvidersPlaceholder: "Search by Name",
   searchProgramPlaceholder: "Search by Name",
   search: "Search . . .",
 }

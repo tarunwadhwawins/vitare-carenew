@@ -33,7 +33,7 @@
           </a-table>
         </a-col>
         
-        <a-col :span="24" v-if="searchGroupPrograms && searchGroupPrograms.length > 0">
+        <a-col :span="24">
           <div class="steps-action">
             <ModalButtons />
           </div>
