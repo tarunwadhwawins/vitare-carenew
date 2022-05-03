@@ -27,7 +27,11 @@
 </template>
 
 <script>
-import { computed, onMounted, reactive } from 'vue-demi'
+import {
+  computed,
+  onMounted,
+  reactive
+} from 'vue-demi'
 import { useStore } from 'vuex'
 import ModalButtons from "@/components/common/button/ModalButtons";
 export default {
@@ -41,10 +45,39 @@ export default {
       action: [],
       screen: []
     })
+    
+    /* const rolesAndPermissions = [{
+      "name": "Reports",
+      "screens": [{
+        "name": "Download Report",
+        "actions": [{
+          "name": "Search Report",
+        }, {
+          "name": "Download Report",
+        }]
+      }]
+    }, {
+      "name": "Communications",
+      "screens": [{
+        "name": "Communications Dashboard View",
+        "actions": [{
+          "name": "Start Call",
+        }, {
+          "name": "End Call",
+        }, {
+          "name": "Send Message",
+        }, {
+          "name": "Export Communications",
+        }, {
+          "name": "Add Notes",
+        }]
+      }]
+    }] */
+
     const rolesAndPermissions = computed(() => {
       return store.state.rolesAndPermissions.rolesAndPermissions
     })
-    console.log('rolesAndPermissions', rolesAndPermissions.value)
+    // console.log('rolesAndPermissions', rolesAndPermissions.value)
 
     onMounted(() => {
       store.dispatch('rolePermissions')

@@ -25,7 +25,7 @@
                 </div>
           </div>
     <!--modals-->
-    <CreateTemplate v-model:visible="visible2" :update="update"/>
+    <CreateTemplate v-model:visible="visible2" :update="update" @is-visible="showModal($event)"/>
     <!---->
 
 </template>
@@ -59,8 +59,8 @@ export default {
         const templatEdit = (e) =>{
             update.value = true
             visible2.value = e;
-
         }
+
         const handleChange2 = (value) => {
             console.log(`selected ${value}`);
         };

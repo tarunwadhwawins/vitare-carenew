@@ -306,6 +306,7 @@ const routes = [
     path: '/resources',
     name: 'Resources',
     component: () => import( '@/views/resources/Resources'),
+    meta: { authAdmin: true }
   },
 
   {
