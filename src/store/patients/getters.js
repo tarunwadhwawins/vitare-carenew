@@ -10,3 +10,8 @@ export const patientsRecord = (state)=>{
         return state.timeLineType
     })
   }
+  export const errorMsg = (state)=>{
+    return computed(()=>{
+        return state.errorMsg
+    })
+  }
