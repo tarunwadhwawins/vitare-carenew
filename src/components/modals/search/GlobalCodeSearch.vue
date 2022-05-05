@@ -8,6 +8,7 @@
     size="large"
     :options="globalCode.map((item) => ({label: item.name, value: item.id?item.id:item.udid }))"
     :filter-option="filterOption"
+    :max-tag-text-length="maxTagTextLength"
   ></a-select>
   <a-select v-else>
      <a-select-option value="" hidden>{{'Please Select'}}</a-select-option>
@@ -18,7 +19,8 @@ import { defineComponent, ref } from 'vue';
 export default defineComponent({
   props:{
     globalCode:Array,
-    mode:String
+    mode:String,
+    maxTagTextLength:Number
   },
   setup() {
  

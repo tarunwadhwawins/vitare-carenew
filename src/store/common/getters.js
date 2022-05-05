@@ -49,3 +49,8 @@ export const loadingStatus = (state)=>{
         return state.notificationList
     })
   }
+  export const questionDataType = (state)=>{
+    return computed(()=>{
+        return state.questionDataType
+    })
+  }

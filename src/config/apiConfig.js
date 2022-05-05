@@ -124,6 +124,9 @@ export const API_ENDPOINTS = {
     // Staff Groups
     group:'group',
     staffGroup:'staffGroup',
+
+    //Questionnaire
+    addQuestionnaire:'question',
 };
 
 // export const getApiUrl = key => {

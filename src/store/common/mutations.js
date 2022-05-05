@@ -97,6 +97,9 @@ export const globalCodes = (state, data) => {
         if (element.name === 'Modules') {
             state.modules = element.globalCode;
         }
+        if (element.name === 'Question dataType') {
+            state.questionDataType = element.globalCode;
+        }
         
     });
 

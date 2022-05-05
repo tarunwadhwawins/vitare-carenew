@@ -10,3 +10,8 @@ export const patientsRecord = (state)=>{
         return state.timeLineType
     })
   }
+  export const programList = (state)=>{
+    return computed(()=>{
+        return state.programList
+    })
+  }

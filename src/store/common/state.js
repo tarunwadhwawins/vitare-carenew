@@ -58,7 +58,8 @@ export default {
         autocomplete: "off", 
         onlyCountries:['US'],
         
-    }
+    },
+    questionDataType:null,
 
 
 }
