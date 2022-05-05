@@ -48,11 +48,11 @@
 
   <!-- Modal -->
   <GroupPermissionsModal v-model:visible="visibleGroupPermissionsModal" @closeModal="closeModal" />
-  <ManageGroupStaffModal v-model:visible="visibleAddGroupStaffModal" @closeModal="closeModal" :groupId="idGroup" />
-  <ManageGroupProvidersModal v-model:visible="visibleManageProvidersModal" @closeModal="closeModal" />
-  <ManageGroupProgramsModal v-model:visible="visibleManageProgramsModal" @closeModal="closeModal" />
+  <ManageGroupStaffModal v-if="visibleAddGroupStaffModal" v-model:visible="visibleAddGroupStaffModal" @closeModal="closeModal" :groupId="idGroup" />
+  <ManageGroupProvidersModal v-if="visibleManageProvidersModal" v-model:visible="visibleManageProvidersModal" @closeModal="closeModal" :groupId="idGroup" />
+  <ManageGroupProgramsModal v-if="visibleManageProgramsModal" v-model:visible="visibleManageProgramsModal" @closeModal="closeModal" :groupId="idGroup" />
   <CreateGroupModal v-if="visibleCreateGroupModal" v-model:visible="visibleCreateGroupModal" @closeModal="closeModal" :isEdit="true" :groupId="idGroup" />
-  <!---->
+  
 </template>
 
 <script>
@@ -65,11 +65,6 @@ import {
   AuditOutlined,
 } from "@ant-design/icons-vue";
 import { computed, ref, watchEffect, defineAsyncComponent } from "vue";
-// import CreateGroupModal from "@/components/modals/CreateGroupModal";
-// import ManageGroupStaffModal from "@/components/modals/ManageGroupStaffModal";
-// import ManageGroupProvidersModal from "@/components/modals/ManageGroupProvidersModal";
-// import ManageGroupProgramsModal from "@/components/modals/ManageGroupProgramsModal";
-// import GroupPermissionsModal from "@/components/modals/GroupPermissionsModal";
 import { useStore } from 'vuex';
 import {
   warningSwal,
@@ -84,11 +79,11 @@ export default {
     ToolOutlined,
     MedicineBoxOutlined,
     AuditOutlined,
-    CreateGroupModal: defineAsyncComponent(()=>import("@/components/modals/CreateGroupModal")),
-    ManageGroupStaffModal: defineAsyncComponent(()=>import("@/components/modals/ManageGroupStaffModal")),
-    ManageGroupProvidersModal: defineAsyncComponent(()=>import("@/components/modals/ManageGroupProvidersModal")),
-    ManageGroupProgramsModal: defineAsyncComponent(()=>import("@/components/modals/ManageGroupProgramsModal")),
-    GroupPermissionsModal: defineAsyncComponent(()=>import("@/components/modals/GroupPermissionsModal")),
+    CreateGroupModal: defineAsyncComponent(()=>import("@/components/administration/staffGroups/modals/CreateGroupModal")),
+    ManageGroupStaffModal: defineAsyncComponent(()=>import("@/components/administration/staffGroups/modals/ManageGroupStaffModal")),
+    ManageGroupProvidersModal: defineAsyncComponent(()=>import("@/components/administration/staffGroups/modals/ManageGroupProvidersModal")),
+    ManageGroupProgramsModal: defineAsyncComponent(()=>import("@/components/administration/staffGroups/modals/ManageGroupProgramsModal")),
+    GroupPermissionsModal: defineAsyncComponent(()=>import("@/components/administration/staffGroups/modals/GroupPermissionsModal")),
   },
   setup() {
     const store = useStore()
@@ -105,20 +100,19 @@ export default {
     };
     
     const manageGroupStaff = (id) => {
-      idGroup.value = id
-      console.log('groupId', id)
-      store.dispatch('groupStaffList', id)
       visibleAddGroupStaffModal.value = true;
+      idGroup.value = id
     };
     
     const manageProviders = (id) => {
-      console.log('groupId', id)
+      idGroup.value = id
       visibleManageProvidersModal.value = true;
     };
     
     const managePrograms = (id) => {
-      console.log('groupId', id)
+      idGroup.value = id
       visibleManageProgramsModal.value = true;
+      idGroup.value = id
     };
     
     const editGroup = (id) => {
