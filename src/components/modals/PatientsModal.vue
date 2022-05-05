@@ -508,6 +508,9 @@
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary" @click="next();scrollToTop(current)">{{$t('global.next')}}</a-button>
+                    <a-button v-if="current == steps.length - 1" type="primary" @click="saveModal()">
+                        {{$t('global.save')}}
+                    </a-button>
                 </div>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Insurance'">
@@ -558,7 +561,7 @@
 
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                    <a-button v-if="current < steps.length - 1" @click="scrollToTop(current)" type="primary">{{$t('global.next')}}</a-button>
+                    <a-button v-if="current < steps.length - 1" @click="next(); scrollToTop(current)" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
                     <a-button v-if="current == steps.length - 1" type="primary" @click="saveModal()">
                         {{$t('global.save')}}
                     </a-button>
@@ -581,7 +584,7 @@ import { useStore } from "vuex";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import { regex } from "@/RegularExpressions/regex";
 import Loader from "@/components/loader/Loader";
-import {successSwal,warningSwal,globalDateFormat } from "@/commonMethods/commonMethod";
+import {successSwal,warningSwal,globalDateFormat,errorSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 import { useRoute } from 'vue-router';
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
@@ -665,14 +668,8 @@ export default defineComponent( {
 			
 		]
     
-    const current= computed({
-      get: () =>
-        store.state.patients.counter,
-      set: (value) => {
-        store.state.patients.counter = value;
-      },
-    })
-
+    
+    
     const changedValue = () => {
 			
 			store.commit('isEditPatient', false)
@@ -782,7 +779,23 @@ export default defineComponent( {
     });
 
     
-
+    const current= computed({
+      get: () =>
+        store.state.patients.counter,
+      set: (value) => {
+          if(idPatient){
+            store.state.patients.counter = value;
+          }else{
+            if (demographics.firstName && demographics.lastName && demographics.dob && demographics.email && demographics.phoneNumber) {
+                demographic();
+                    } else {
+                        errorSwal('All(*) fields are required!')
+                        store.state.patients.counter = 0;
+                    }
+          }
+        
+      },
+    })
      const form = reactive({ ...demographics, });
 
     onMounted(() => {
@@ -1192,12 +1205,14 @@ export default defineComponent( {
 
     function saveModal() {
       emit("saveModal", false);
+      store.commit("resetCounter");
       successSwal(messages.formSuccess);
-      Object.assign(demographics, form);
+      
       store.dispatch("patients");
       store.commit("resetCounter");
       emit("closeModal");
 			current.value = 0
+            Object.assign(demographics, form);
     }
 
     const bitrixFormCheck = computed(()=>{
