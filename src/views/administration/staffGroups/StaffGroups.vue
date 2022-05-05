@@ -32,7 +32,7 @@
     </a-layout>
 
     <!-- Modal -->
-    <CreateGroupModal v-model:visible="visibleCreateGroupModal" @closeModal="closeModal" />
+    <CreateGroupModal v-model:visible="visibleCreateGroupModal" @closeModal="closeModal" :isEdit="false" />
     <!---->
   </div>
 </template>
@@ -40,22 +40,18 @@
 <script>
 import Header from "@/components/administration/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
-import CreateGroupModal from "@/components/modals/CreateGroupModal";
-import StaffGroupTable from "@/components/administration/staffGroups/staffGroupsTable";
-import { ref } from "vue";
+import { defineAsyncComponent,ref } from "vue";
 
 export default {
   components: {
     Header,
     Sidebar,
-    CreateGroupModal,
-    StaffGroupTable
+    StaffGroupTable: defineAsyncComponent(()=>import("@/components/administration/staffGroups/tables/staffGroupsTable")),
+    CreateGroupModal: defineAsyncComponent(()=>import("@/components/administration/staffGroups/modals/CreateGroupModal")),
   },
 
   setup() {
-
     const visibleCreateGroupModal = ref(false);
-    
     const showCreateGroupModal = () => {
       visibleCreateGroupModal.value = true;
     };

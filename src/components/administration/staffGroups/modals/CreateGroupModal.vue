@@ -2,6 +2,7 @@
   <a-modal width="60%" :title="title">
     <a-form :model="createGroupForm" layout="vertical" @finish="submitForm">
       <a-row>
+
         <a-col :span="24">
           <div class="form-group">
             <a-form-item :label="$t('staffGroups.groupName')" name="group" :rules="[{required: true, message:$t('staffGroups.groupName')+' '+$t('global.validation')}]">
@@ -9,6 +10,7 @@
             </a-form-item>
           </div>
         </a-col>
+
         <a-col :span="24">
           <div class="form-group">
             <a-form-item :label="$t('global.isActive')" name="isActive">
@@ -22,23 +24,23 @@
             <ModalButtons />
           </div>
         </a-col>
+        
       </a-row>
     </a-form>
-    <ManageGroupStaffModal v-model:visible="visibleManageGroupStaffModal" @closeModal="closeModal" />
+    <ManageGroupStaffModal v-if="visibleManageGroupStaffModal" v-model:visible="visibleManageGroupStaffModal" @closeModal="closeModal" :groupId="createGroup.udid" />
   </a-modal>
 
 </template>
 
 <script>
-
-import ManageGroupStaffModal from "@/components/modals/ManageGroupStaffModal";
-import { computed, reactive, ref, watchEffect } from 'vue-demi';
+import { computed, reactive, ref, watchEffect, defineAsyncComponent } from 'vue-demi';
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { useStore } from 'vuex';
+
 export default {
   components: {
     ModalButtons,
-    ManageGroupStaffModal,
+    ManageGroupStaffModal: defineAsyncComponent(()=>import("@/components/administration/staffGroups/modals/ManageGroupStaffModal")),
   },
   props: {
     isEdit: {
@@ -54,14 +56,13 @@ export default {
     const groupDetails = computed(() => {
       return store.state.staffGroups.groupDetails
     })
-    console.log('groupDetails', groupDetails)
 
     const visibleManageGroupStaffModal = ref(false)
     const title = props.isEdit ? 'Edit Group' : 'Create Group'
 
     const createGroupForm = reactive({
       group: "",
-      isActive: "",
+      isActive: true,
     })
 
     watchEffect(() => {
@@ -91,6 +92,10 @@ export default {
       }
     }
 
+    const createGroup = computed(() => {
+      return store.state.staffGroups.createGroup
+    })
+
     const closeModal = () => {
       visibleManageGroupStaffModal.value = false
       emit('closeModal')
@@ -101,7 +106,8 @@ export default {
       closeModal,
       createGroupForm,
       visibleManageGroupStaffModal,
-      submitForm
+      submitForm,
+      createGroup,
     };
   },
 };

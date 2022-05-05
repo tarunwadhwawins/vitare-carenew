@@ -230,7 +230,7 @@ const routes = [
   {
     path: '/staff-groups',
     name: 'StaffGroups',
-    component: () => import('@/components/administration/staffGroups/StaffGroups'),
+    component: () => import('@/views/administration/staffGroups/StaffGroups'),
     meta: { authAdmin: true }
   },
 

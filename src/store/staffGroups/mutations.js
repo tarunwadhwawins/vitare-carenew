@@ -40,6 +40,25 @@ export const addStaffToGroup = async(state, data) => {
   state.addStaffToGroup = data;
 }
 
+export const addProgramToGroup = async(state, data) => {
+  state.addProgramToGroup = data;
+}
+
+export const addProviderToGroup = async(state, data) => {
+  state.addProviderToGroup = data;
+}
+
 export const groupStaffList = async(state, data) => {
-  state.groupStaffList = data;
+  state.groupStaffList = data.map(item => {
+    item.fullName = item.firstName+' '+item.lastName
+    return item
+  });
+}
+
+export const groupProgramsList = async(state, data) => {
+  state.groupProgramsList = data
+}
+
+export const groupProvidersList = async(state, data) => {
+  state.groupProvidersList = data
 }

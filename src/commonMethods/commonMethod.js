@@ -12,6 +12,7 @@ export function dateAndTimeFormate(timeStamp, format) {
 	return date.format(format);
 }
 export const globalDateFormat = "MMM DD,YYYY"
+export const globalDateTimeFormat = 'MMM DD, YYYY hh:mm A'
 export function errorLogWithDeviceInfo(errorMessage) {
 	let deviceInfo = Bowser.parse(window.navigator.userAgent)
 	store.dispatch('errorLogWithDeviceInfo', { deviceInfo: JSON.stringify(deviceInfo), errorMessage: JSON.stringify(errorMessage) })
@@ -223,7 +224,7 @@ export function startimeAdd(value) {
 }
 
 export function createdAtDateFormat(dateTime) {
-	return moment(dateTime).format('MMM DD, YYYY hh:mm A');
+	return moment(dateTime).format(globalDateTimeFormat);
 }
 
 export function timestampToDate(timestamp, format) {

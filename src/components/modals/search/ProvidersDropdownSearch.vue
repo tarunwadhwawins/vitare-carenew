@@ -10,9 +10,9 @@
     :show-arrow="true"
     :filter-option="false"
     :not-found-content="loadingStatus ? undefined : null"
-    :options="staffData"
-    @search="handleStaffSearch"
-    @change="handleStaffChange"
+    :options="providerData"
+    @search="handleProviderSearch"
+    @change="handleProviderChange"
     size="large"
   >
     <template v-if="loadingStatus" #notFoundContent>
@@ -30,7 +30,7 @@ export default defineComponent({
   components: {},
   props: {
     value: String,
-    checkSameAsStaff: Boolean,
+    checkSameAsProvider: Boolean,
     mode: String,
     close: Boolean,
     placeholder: String,
@@ -38,43 +38,43 @@ export default defineComponent({
 
   setup(props, context) {
     const store = useStore();
-    const staffData = ref([]);
+    const providerData = ref([]);
 
     const updateValue = (event) => {
       context.emit("update:modelValue", event.target.value);
     };
     onMounted(() => {
-      Services.singleDropdownSearch("", (d) => (staffData.value = d), "staff");
+      Services.singleDropdownSearch("", (d) => (providerData.value = d), "provider");
     });
     watchEffect(() => {
       if (props.close) {
         Services.singleDropdownSearch(
           "",
-          (d) => (staffData.value = d),
-          "staff"
+          (d) => (providerData.value = d),
+          "provider"
         );
       }
     });
 
-    const handleStaffSearch = (val) => {
+    const handleProviderSearch = (val) => {
       store.commit("dropdownLoadingStatus", true);
-      staffData.value = [];
-      Services.singleDropdownSearch(val, (d) => (staffData.value = d), "staff");
+      providerData.value = [];
+      Services.singleDropdownSearch(val, (d) => (providerData.value = d), "provider");
     };
 
-    const handleStaffChange = (val) => {
-      if (props.checkSameAsStaff) {
+    const handleProviderChange = (val) => {
+      if (props.checkSameAsProvider) {
         context.emit("handlePatientChange", val);
       } else {
-        context.emit("handleStaffChange", val);
+        context.emit("handleProviderChange", val);
       }
     };
 
     return {
       loadingStatus: store.getters.dropdownLoadingStatus,
-      handleStaffChange,
-      handleStaffSearch,
-      staffData,
+      handleProviderChange,
+      handleProviderSearch,
+      providerData,
       updateValue,
     };
   },

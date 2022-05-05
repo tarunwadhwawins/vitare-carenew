@@ -7,5 +7,9 @@ export default {
   groupsList: null,
   groupDetails: null,
   addStaffToGroup: null,
+  addProgramToGroup: null,
+  addProviderToGroup: null,
   groupStaffList: null,
+  groupProgramsList: null,
+  groupProvidersList: null,
 }
