@@ -33,6 +33,7 @@
 
     <!-- Modal -->
     <CreateGroupModal v-model:visible="visibleCreateGroupModal" @closeModal="closeModal" :isEdit="false" />
+    <!-- <StaffGroupModal v-model:visible="visibleCreateGroupModal" @closeModal="closeModal" :isEdit="false" /> -->
     <!---->
   </div>
 </template>
@@ -48,6 +49,7 @@ export default {
     Sidebar,
     StaffGroupTable: defineAsyncComponent(()=>import("@/components/administration/staffGroups/tables/staffGroupsTable")),
     CreateGroupModal: defineAsyncComponent(()=>import("@/components/administration/staffGroups/modals/CreateGroupModal")),
+    // StaffGroupModal: defineAsyncComponent(()=>import("@/components/administration/staffGroups/modals/staffGroupsModal")),
   },
 
   setup() {

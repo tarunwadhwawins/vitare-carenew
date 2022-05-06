@@ -47,7 +47,7 @@
   </a-table>
 
   <!-- Modal -->
-  <GroupPermissionsModal v-model:visible="visibleGroupPermissionsModal" @closeModal="closeModal" />
+  <ManageGroupPermissionsModal v-if="visibleManageGroupPermissionsModal" v-model:visible="visibleManageGroupPermissionsModal" @closeModal="closeModal" :groupId="idGroup" />
   <ManageGroupStaffModal v-if="visibleAddGroupStaffModal" v-model:visible="visibleAddGroupStaffModal" @closeModal="closeModal" :groupId="idGroup" />
   <ManageGroupProvidersModal v-if="visibleManageProvidersModal" v-model:visible="visibleManageProvidersModal" @closeModal="closeModal" :groupId="idGroup" />
   <ManageGroupProgramsModal v-if="visibleManageProgramsModal" v-model:visible="visibleManageProgramsModal" @closeModal="closeModal" :groupId="idGroup" />
@@ -83,7 +83,7 @@ export default {
     ManageGroupStaffModal: defineAsyncComponent(()=>import("@/components/administration/staffGroups/modals/ManageGroupStaffModal")),
     ManageGroupProvidersModal: defineAsyncComponent(()=>import("@/components/administration/staffGroups/modals/ManageGroupProvidersModal")),
     ManageGroupProgramsModal: defineAsyncComponent(()=>import("@/components/administration/staffGroups/modals/ManageGroupProgramsModal")),
-    GroupPermissionsModal: defineAsyncComponent(()=>import("@/components/administration/staffGroups/modals/GroupPermissionsModal")),
+    ManageGroupPermissionsModal: defineAsyncComponent(()=>import("@/components/administration/staffGroups/modals/ManageGroupPermissionsModal")),
   },
   setup() {
     const store = useStore()
@@ -91,12 +91,16 @@ export default {
     const idGroup = ref(null);
     const visibleCreateGroupModal = ref(false);
     const visibleAddGroupStaffModal = ref(false);
-    const visibleGroupPermissionsModal = ref(false);
+    const visibleManageGroupPermissionsModal = ref(false);
     const visibleManageProvidersModal = ref(false);
     const visibleManageProgramsModal = ref(false);
     
-    const manageGroupPermissions = () => {
-      visibleGroupPermissionsModal.value = true;
+    const manageGroupPermissions = (id) => {
+      store.dispatch('rolePermissions')
+      store.dispatch('groupPermissions', id).then(() => {
+        visibleManageGroupPermissionsModal.value = true;
+        idGroup.value = id
+      })
     };
     
     const manageGroupStaff = (id) => {
@@ -155,7 +159,7 @@ export default {
     const closeModal = () => {
       visibleCreateGroupModal.value = false;
       visibleAddGroupStaffModal.value = false;
-      visibleGroupPermissionsModal.value = false;
+      visibleManageGroupPermissionsModal.value = false;
     };
 
     const columns = [
@@ -191,7 +195,7 @@ export default {
       closeModal,
       deleteGroup,
       manageGroupPermissions,
-      visibleGroupPermissionsModal,
+      visibleManageGroupPermissionsModal,
       manageGroupStaff,
       visibleAddGroupStaffModal,
       manageProviders,

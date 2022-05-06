@@ -29,62 +29,85 @@
 <script>
 import {
   computed,
-  onMounted,
-  reactive
+  reactive,
+  ref,
+  watchEffect
 } from 'vue-demi'
+import {
+  arrayToObjact,
+} from "@/commonMethods/commonMethod"
 import { useStore } from 'vuex'
-import ModalButtons from "@/components/common/button/ModalButtons";
+import ModalButtons from "@/components/common/button/ModalButtons"
+
 export default {
   components: {
     ModalButtons,
   },
+  props: {
+    groupId: {
+      type: Number
+    },
+  },
   setup(props, { emit }) {
+    const formRef = ref()
     const store = useStore()
-    // const rolesAndPermissions = store.getters.rolesAndPermissionsRecord.value
+    
+    const rolesAndPermissions = computed(() => {
+      return store.state.rolesAndPermissions.rolesAndPermissions
+    })
+
+    const groupPermissionsModules = computed(() => {
+      return store.state.staffGroups.groupPermissionsModules
+    })
+
     const groupPermissionsForm = reactive({
       action: [],
       screen: []
     })
-    
-    /* const rolesAndPermissions = [{
-      "name": "Reports",
-      "screens": [{
-        "name": "Download Report",
-        "actions": [{
-          "name": "Search Report",
-        }, {
-          "name": "Download Report",
-        }]
-      }]
-    }, {
-      "name": "Communications",
-      "screens": [{
-        "name": "Communications Dashboard View",
-        "actions": [{
-          "name": "Start Call",
-        }, {
-          "name": "End Call",
-        }, {
-          "name": "Send Message",
-        }, {
-          "name": "Export Communications",
-        }, {
-          "name": "Add Notes",
-        }]
-      }]
-    }] */
 
-    const rolesAndPermissions = computed(() => {
-      return store.state.rolesAndPermissions.rolesAndPermissions
-    })
-    // console.log('rolesAndPermissions', rolesAndPermissions.value)
-
-    onMounted(() => {
-      store.dispatch('rolePermissions')
+    watchEffect(() => {
+      if (props.groupId) {
+        copyPermission()
+      }
     })
 
+    function copyPermission() {
+      groupPermissionsModules.value.forEach((groupPermissions) => {
+        groupPermissions.screens.forEach((screenElement) => {
+          screenElement.actions.forEach((getData) => {
+            rolesAndPermissions.value ? rolesAndPermissions.value.forEach((formModule) => {
+              let screens = arrayToObjact(formModule.screens, screenElement.id)
+              if(screens) {
+                screenElement.actions.length == screens.actions.length ? groupPermissionsForm.screen[screenElement.id] = true : groupPermissionsForm.screen[screenElement.id] = false
+              }
+            }) : ''
+            groupPermissionsForm.action[getData.id] = true
+          })
+        })
+      })
+    }
+
+    const actionsIds = []
     const submitForm = () => {
-      emit('closeModal')
+      var permissionsArray = groupPermissionsForm.action
+      permissionsArray.forEach(function (value, index) {
+        if(value) {
+          actionsIds.push(index)
+        }
+      });
+      store.dispatch('addGroupPermissions', {
+        groupId: props.groupId,
+        actions: {
+          action: actionsIds
+        },
+      }).then(() => {
+        formRef.value.resetFields();
+        Object.assign(groupPermissionsForm, {
+          action: [],
+          screen: []
+        })
+        emit('closeModal')
+      })
     }
 
     function checkAll(actions, value) {
@@ -99,7 +122,6 @@ export default {
         groupPermissionsForm.action[item.id] == true ? '' : checkBox = false
       })
       checkBox ? groupPermissionsForm.screen[value] = true : groupPermissionsForm.screen[value] = false
-      //groupPermissionsForm.action[actions] == true ? "" : groupPermissionsForm.screen[value] = false
     }
 
     function checkChangeInput() {
@@ -107,12 +129,14 @@ export default {
     }
 
     return {
+      formRef,
       checkAll,
       checkStatus,
       checkChangeInput,
       submitForm,
       groupPermissionsForm,
       rolesAndPermissions,
+      groupPermissionsModules,
     }
   }
 }
