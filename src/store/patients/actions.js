@@ -298,9 +298,9 @@ export const patientConditions = async ({ commit }, id) => {
 
 export const programList = async ({
   commit
-}, data) => {
+}) => {
   //commit('loadingStatus', true)
-  await serviceMethod.common("get", `program?all=all`, null, data).then((response) => {
+  await serviceMethod.common("get", `program?all=all`, null, null).then((response) => {
     commit('programList', response.data.data);
    // commit('loadingStatus', false)
   }).catch((error) => {

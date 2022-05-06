@@ -126,6 +126,9 @@ export const API_ENDPOINTS = {
     staffGroup:'staffGroup',
     //Questionnaire Template
     questionnaireTemplate:'questionnaire',
+
+    //Questionnaire
+    addQuestionnaire:'question',
 };
 
 // export const getApiUrl = key => {

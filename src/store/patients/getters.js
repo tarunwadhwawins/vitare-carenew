@@ -15,3 +15,8 @@ export const patientsRecord = (state)=>{
         return state.errorMsg
     })
   }
+  export const programList = (state)=>{
+    return computed(()=>{
+        return state.programList
+    })
+  }

@@ -54,3 +54,8 @@ export const loadingStatus = (state)=>{
         return state.questionnaireTemplateType
     })
   }
+  export const questionDataType = (state)=>{
+    return computed(()=>{
+        return state.questionDataType
+    })
+  }
