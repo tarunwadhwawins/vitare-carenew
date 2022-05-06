@@ -1,5 +1,5 @@
 <template>
-<a-modal width="100%" :title="update ? 'Edit Template' : 'Create Template'" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
+<a-modal width="90%" :title="update ? 'Edit Template' : 'Create Template'" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
     <a-form ref="formRef" :model="questionnaireTemplate" layout="vertical" @finish="update ? updateTemplate() : addTemplate()" @finishFailed="onFinishFailed">
         <a-row :gutter="16">
             <a-col :span="12">
@@ -32,11 +32,12 @@
 
                 </a-col>
             <a-col :span="24">
-                <div class="text-right mt-28">
-                  
-                    <a-button class="btn primaryBtn" type="primary" html-type="submit" v-if="!update">Save</a-button>
-                    <a-button class="btn primaryBtn" type="primary" html-type="submit" v-else >Update</a-button>
-                </div>
+              
+                <div class="steps-action">
+                   <a-button style="margin-right: 8px" html-type="reset" v-if="!update" @click="reset()">{{$t('global.clear')}}</a-button>
+                    <a-button  type="primary" html-type="submit" :disabled="disabled" v-if="!update">Save</a-button>
+                    <a-button  type="primary" html-type="submit" v-else >Update</a-button>
+              </div>
             </a-col>
         </a-row>
         <TableLoader/>
@@ -70,6 +71,7 @@ export default defineComponent({
       templateTypeId: "",
       tags:[],
     });
+    const disabled= ref(false)
     const form = reactive({...questionnaireTemplate})
     watchEffect(()=>{
       
@@ -77,7 +79,7 @@ export default defineComponent({
         console.log("check",props.update)
         if(store.getters.detailsQuestionnaireTemplate){
         
-        Object.assign(questionnaireTemplate,store.getters.detailsQuestionnaireTemplate.value[0])
+        Object.assign(questionnaireTemplate,store.getters.detailsQuestionnaireTemplate.value)
 
         }else{
           Object.assign(questionnaireTemplate,form)
@@ -85,11 +87,13 @@ export default defineComponent({
       }
     })
     const addTemplate = () => {
+      disabled.value= true
       store.dispatch("addQuestionnaireTemplate", questionnaireTemplate).then(()=>{
         if(store.state.common.successMsg){
           emit("is-visible", {show:false,id:props.update})
           reset()
           store.dispatch("questionnaireTemplateList")
+          disabled.value= false
         }
       })
     }
@@ -106,6 +110,7 @@ function reset(){
    store.state.patients.errorMsg = ""
     store.commit("checkChangeInput", false)
     Object.assign(questionnaireTemplate,form)
+    disabled.value= false
 }
     function closeModal() {
       if (checkFieldsData.value) {
@@ -113,12 +118,14 @@ function reset(){
           if (response == true) {
             emit("is-visible", {show:false,id:props.update})
             reset()
+            disabled.value= false
           } else {
             emit("is-visible", {show:true,id:props.update})
           }
         });
       } else {
-        formRef.value.resetFields();
+        formRef.value.resetFields()
+        disabled.value= false
       }
     }
 
@@ -138,7 +145,9 @@ const errorMsg = store.getters.errorMsg.value
       errorMsg,
       formRef,
       updateTemplate,
-      questionnaireTemplateType:store.getters.questionnaireTemplateType
+      disabled,
+      questionnaireTemplateType:store.getters.questionnaireTemplateType,
+      reset,
     };
   },
 });

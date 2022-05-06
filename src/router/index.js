@@ -295,7 +295,12 @@ const routes = [
     component: () => import( '@/views/questionnaire-template/QuestionnaireTemplate'),
     meta: { authAdmin: true }
   },
-
+  {
+    path: '/template-section',
+    name: 'QuestionnaireTemplateSection',
+    component: () => import( '@/views/template-section/QuestionnaireTemplateSection'),
+    meta: { authAdmin: true }
+  },
   {
     path: '/question-template-detail',
     name: 'QuestionTemplateDetail',

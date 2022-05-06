@@ -47,6 +47,10 @@
                         <a-menu-item>
                             <ReconciliationOutlined /><span class="menuItem">Template</span></a-menu-item>
                     </router-link>
+                    <router-link to="/template-section">
+                        <a-menu-item>
+                            <FileTextOutlined /><span class="menuItem">Section</span></a-menu-item>
+                    </router-link>
                     <router-link to="/questionnaire-bank">
                         <a-menu-item>
                             <FileTextOutlined /><span class="menuItem">Question Bank</span></a-menu-item>
