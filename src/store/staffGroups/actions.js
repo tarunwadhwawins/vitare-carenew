@@ -417,3 +417,44 @@ export const deleteGroupProvider = async ({ commit }, data) => {
 		}
 	});
 };
+
+/**
+ * Groups Permissions
+*/
+
+export const addGroupPermissions = async ({ commit }, data) => {
+	console.log('addGroupPermissions', data)
+	await ServiceMethodService.common('post', API_ENDPOINTS['groupPermissions'], data.groupId, data.actions).then((response) => {
+		successSwal(response.data.message);
+		commit('addGroupPermissions', response.data.data);
+	})
+	.catch((error) => {
+		errorLogWithDeviceInfo(error)
+		if(error.response) {
+			if(error.response.status === 422) {
+				commit('errorMsg', error.response.data);
+				commit('loadingStatus', false);
+			}
+			else if (error.response.status === 500) {
+				errorSwal(error.response.data.message);
+				commit('loadingStatus', false);
+			}
+			else if (error.response.status === 401) {
+				// commit('errorMsg', error.response.data.message)
+				commit('loadingStatus', false);
+			}
+		}
+	});
+};
+
+export const groupPermissions = async ({ commit }, id) => {
+	await ServiceMethodService.common("get", API_ENDPOINTS['groupPermissions'], id, null).then((response) => {
+		commit('groupPermissionsModules', response.data.data);
+		commit('groupPermissions', response.data);
+	})
+	.catch((error) => {
+		errorLogWithDeviceInfo(error.response)
+		errorSwal(error.response.data.message)
+		commit('failure', error.response.data);
+	})
+}

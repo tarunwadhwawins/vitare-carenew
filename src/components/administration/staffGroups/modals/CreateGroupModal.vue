@@ -83,8 +83,8 @@ export default {
       }
       else {
         store.dispatch('createGroup', createGroupForm).then(() => {
+          store.dispatch('groupsList')
           if(props.isEdit != true) {
-            store.dispatch('groupsList')
             visibleManageGroupStaffModal.value = true
           }
           emit('closeModal')

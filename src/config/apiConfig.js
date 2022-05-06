@@ -124,6 +124,8 @@ export const API_ENDPOINTS = {
     // Staff Groups
     group:'group',
     staffGroup:'staffGroup',
+    groupPermissions:'groupPermission',
+    
     //Questionnaire Template
     questionnaireTemplate:'questionnaire',
 

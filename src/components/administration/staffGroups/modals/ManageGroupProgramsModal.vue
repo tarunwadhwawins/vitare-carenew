@@ -55,7 +55,9 @@ export default {
     const store = useStore()
 
     watchEffect(() => {
-      store.dispatch('groupProgramsList', props.groupId)
+      if(props.groupId) {
+        store.dispatch('groupProgramsList', props.groupId)
+      }
     })
 
     const addProgramToGroupForm = reactive({
@@ -73,9 +75,9 @@ export default {
         data: addProgramToGroupForm
       }
       store.dispatch('addProgramToGroup', data).then(() => {
+        store.dispatch('groupProgramsList', props.groupId)
         formRef.value.resetFields();
         Object.assign(addProgramToGroupForm, form)
-        store.dispatch('groupProgramsList', props.groupId)
       })
     }
 
