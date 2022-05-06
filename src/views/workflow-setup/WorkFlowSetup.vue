@@ -23,6 +23,7 @@
                         </a-col>
                         <a-col :span="24" class="mt-25 ">
                             <WorkFlowTable :columns="columns" :data-source="data" @showEditModal="showEditModal($event)"/>
+                             <Loader />
                         </a-col>
                     </a-row>
                 </div>
@@ -30,18 +31,20 @@
         </a-layout>
     </a-layout>
     <!--modals-->
-    <CreateWorkFlow v-model:visible="showWorkFlowModal" @ok="handleOk" :update="update"/>
+    <CreateWorkFlow v-model:visible="showWorkFlowModal" @saveModal="handleOk($event)" :update="update"/>
 </div>
 </template>
 <script>
-import Header from "@/components/layout/header/Header";
-import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
-import WorkFlowTable from "@/components/work-flow/WorkFlowTable.vue"
-import { defineAsyncComponent,ref } from "vue";
+import Header from "@/components/layout/header/Header"
+import Sidebar from "@/components/administration/layout/sidebar/Sidebar"
+import WorkFlowTable from "@/components/work-flow/tables/WorkFlowTable.vue"
+import { defineAsyncComponent,ref } from "vue"
+import Loader from "@/components/loader/Loader"
+import {useStore} from "vuex"
 const columns = [
   {
     title: "Workflow Description",
-    dataIndex: "workflowDescription",
+    dataIndex: "title",
     sorter: {
       compare: (a, b) => a.template - b.template,
       multiple: 3,
@@ -52,11 +55,11 @@ const columns = [
   },
   {
     title: "Event Description",
-    dataIndex: "eventDescription",
+    dataIndex: "eventTitle",
   },
   {
-    title: "Comments",
-    dataIndex: "comments",
+    title: "Description",
+    dataIndex: "description",
   },
   {
     title: "Start Date",
@@ -68,7 +71,7 @@ const columns = [
   },
   {
     title: "End Date",
-    dataIndex: "End Date",
+    dataIndex: "endDate",
     sorter: {
       compare: (a, b) => a.template - b.template,
       multiple: 3,
@@ -89,28 +92,30 @@ const columns = [
     },
   },
 ];
-const data = [
-    {
-        "workflowDescription":"Health Care",
-        "eventDescription":"Client Diet",
-        "comments":"Fitness Issues",
-        "startDate":"05/15/20222",
-        "endDate":"",
-        "configureWorkflow":"Configration"
-    },
-];
+// const data = [
+//     {
+//         "workflowDescription":"Health Care",
+//         "eventDescription":"Client Diet",
+//         "comments":"Fitness Issues",
+//         "startDate":"05/15/20222",
+//         "endDate":"",
+//         "configureWorkflow":"Configration"
+//     },
+// ];
 export default {
     name:"WorkFlowSetup",
     components: {
     Header,
     Sidebar,
-    CreateWorkFlow:defineAsyncComponent(()=>import("@/components/modals/CreateWorkFlow")),
-    WorkFlowTable
+    CreateWorkFlow:defineAsyncComponent(()=>import("@/components/work-flow/modals/CreateWorkFlow")),
+    WorkFlowTable,
+    Loader
   },
 
   setup() {
-    const search = ref();
-    const update = ref();
+    const search = ref()
+    const update = ref()
+    const store = useStore()
     const showWorkFlowModal = ref(false);
     const showModal = () => {
       update.value=false;
@@ -122,9 +127,9 @@ export default {
       showWorkFlowModal.value = value;
     };
 
-    const handleOk = (e) => {
-      console.log(e);
-      showWorkFlowModal.value = false;
+    const handleOk = (value) => {
+      console.log(value);
+      showWorkFlowModal.value = value;
     };
     const handleChange2 = (value) => {
       console.log(`selected ${value}`);
@@ -134,7 +139,7 @@ export default {
     return {
       update,
       columns,
-      data,
+      data:store.getters.workflowList,
       search,
       showWorkFlowModal,
       showModal,

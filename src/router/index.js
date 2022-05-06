@@ -317,7 +317,7 @@ const routes = [
   }, 
 
   {
-    path: '/workflow-details',
+    path: '/workflow-details/:udid',
     name: 'workflowDetails', 
     component: () => import('@/views/workflow-details/WorkFlowDetails'),
     meta: { authAdmin: true }
