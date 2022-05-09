@@ -8,16 +8,15 @@ import {
 */
 
 export const createGroup = async(state, data) => {
+  if(data) {
+    data.isActive = data.isActive == 1 ? true : false
+  }
   state.createGroup = data;
 }
 
 export const groupDetails = async(state, group) => {
-  group.isActive = group.isActive ? true : false
+  group.isActive = group.isActive == 1 ? true : false
   state.groupDetails = group;
-}
-
-export const updateGroup = async(state, data) => {
-  state.updateGroup = data;
 }
 
 export const groupsList = async(state, data) => {
@@ -93,4 +92,24 @@ export const groupPermissionsModules = async (state, data) => {
 
 export const groupPermissions = async (state, data) => {
   state.groupPermissions = data;
+}
+
+/**
+ * Stepper Counter
+*/
+
+export const counterPlus = (state) => {
+  state.counter++
+}
+
+export const counterMinus = (state) => {
+  state.counter--
+}
+
+export const resetCounter = (state) => {
+  state.counter = 0
+}
+
+export const errorMsg = (state, data) => {
+  state.errorMsg = data
 }
