@@ -113,5 +113,53 @@ export const deleteQuestionnaireTemplate = async ({
 
 
 }
+export const templateDetailsList = async ({
+  commit
+},id) => {
+  commit('loadingTableStatus', true)
+ 
+  await serviceMethod.common("get", API_ENDPOINTS['questionnaireTemplate']+'/'+id+'/assign', null, null).then((response) => {
+
+    commit('templateDetailsList', response.data.data);
+    commit('loadingTableStatus', false)
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      errorSwal(error.response.data.message)
+    }
+    commit('loadingTableStatus', false)
+    
+    
+  })
+}
+export const addAssiignquestionnaire = async ({
+  commit
+},data) => {
+ 
+ 
+  await serviceMethod.common("post", API_ENDPOINTS['templateDetailsList'], data.id, data).then((response) => {
+
+    successSwal(response.data.message)
+    commit('successMsg',response.data.message)
+    
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      errorSwal(error.response.data.message)
+    }
+    
+    
+    
+  })
+}
+
 
 

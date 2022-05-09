@@ -128,6 +128,8 @@ export const API_ENDPOINTS = {
     
     //Questionnaire Template
     questionnaireTemplate:'questionnaire',
+    
+    
 
     //Questionnaire
     questionnaire:'question',

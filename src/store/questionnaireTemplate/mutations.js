@@ -8,4 +8,7 @@ export const addQuestionnaireTemplate = async (state, data) => {
  export const detailsQuestionnaireTemplate = async (state, data) => {
   state.detailsQuestionnaireTemplate =data
  }
+ export const templateDetailsList = async (state, data) => {
+  state.templateDetailsList =data
+ }
  

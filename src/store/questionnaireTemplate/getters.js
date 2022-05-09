@@ -19,3 +19,8 @@ export const questionnaireTemplateMeta = (state) => {
     return state.questionnaireTemplateMeta
   })
 }
+export const templateDetailsList = (state) => {
+  return computed(() => {
+    return state.templateDetailsList
+  })
+}

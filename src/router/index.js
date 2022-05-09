@@ -302,9 +302,9 @@ const routes = [
     meta: { authAdmin: true }
   },
   {
-    path: '/question-template-detail',
+    path: '/question-template-detail/:udid',
     name: 'QuestionTemplateDetail',
-    component: () => import( '../components/administration/questionnaire-template/QuestionTemplateDetail'),
+    component: () => import( '@/views/questionnaire-template/QuestionTemplateDetail'),
     meta: { authAdmin: true }
   },
   {

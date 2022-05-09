@@ -8,19 +8,19 @@
             <Sidebar />
         </a-layout-sider>
         <a-layout-content>
-            <QuestionnaireTemplate />
+            <QuestionTemplateDetail />
         </a-layout-content>
     </a-layout>
 </a-layout>
 </template>
 <script>
-import QuestionnaireTemplate from "@/components/administration/questionnaire-template/QuestionnaireTemplate";
+import QuestionTemplateDetail from "@/components/administration/questionnaire-template/QuestionTemplateDetail";
 import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 export default {
-    name: "Questionnaire Template",
+    name: "Questionnaire Template Detail",
     components: {
-        QuestionnaireTemplate,
+        QuestionTemplateDetail,
         Header,
         Sidebar,
     },
