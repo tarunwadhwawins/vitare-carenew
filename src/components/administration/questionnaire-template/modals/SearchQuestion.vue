@@ -57,7 +57,7 @@
                 </a-collapse>
             </div>
         </a-col>
-        <a-col :span="24" v-show="toggle" class="text-right">
+        <a-col :span="24"  class="text-right">
            
                 <a-button class="btn primaryBtn" type="primary" html-type="submit">Assign Questions</a-button>
        
