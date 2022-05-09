@@ -7,7 +7,11 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import {
+  computed,
+  watchEffect,
+  ref,
+} from "vue";
 import {
   DeleteOutlined,
 } from "@ant-design/icons-vue";
@@ -22,12 +26,16 @@ export default {
     DeleteOutlined,
   },
   props: {
-    groupId: {
+    isEdit: {
+      type: Boolean
+    },
+    groupID: {
       type: Number
     }
   },
   setup(props, { emit }) {
     const store = useStore()
+    const groupId = ref(null)
     const groupProgramsList = computed(() => {
       return store.state.staffGroups.groupProgramsList
     })
@@ -46,14 +54,31 @@ export default {
       },
     ];
 
+    const createGroup = computed(() => {
+      return store.state.staffGroups.createGroup
+    })
+
+    const groupDetails = computed(() => {
+      return store.state.staffGroups.groupDetails
+    })
+
+    watchEffect(() => {
+      if(createGroup.value != null) {
+        groupId.value = props.groupID ? props.groupID : createGroup.value.udid;
+      }
+      else if(groupDetails.value != null) {
+        groupId.value = props.groupID ? props.groupID : groupDetails.value.udid;
+      }
+    })
+
     const deleteGroupProgram = (id) => {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
           store.dispatch('deleteGroupProgram', {
-            groupUdid: props.groupId,
+            groupUdid: groupId.value,
             programUdid: id,
           }).then(() => {
-            store.dispatch('groupProgramsList', props.groupId)
+            store.dispatch('groupProgramsList', groupId.value)
             if(groupProgramsList.value.length <= 1) {
               emit('closeModal')
             }

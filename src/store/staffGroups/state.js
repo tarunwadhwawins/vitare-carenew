@@ -1,7 +1,6 @@
 export default {
   createGroup: null,
   groupDetails: null,
-  updateGroup: null,
   groupsList: null,
   searchStaff: null,
   addStaffToGroup: null,
@@ -15,4 +14,6 @@ export default {
   addGroupPermissions: null,
   groupPermissionsModules: null,
   groupPermissions: null,
+  counter:0,
+  errorMsg:null,
 }

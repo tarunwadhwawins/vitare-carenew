@@ -13,7 +13,9 @@ import { API_ENDPOINTS } from '@/config/apiConfig';
 export const createGroup = async ({ commit }, data) => {
 	await ServiceMethodService.common('post', API_ENDPOINTS['group'], null, data).then((response) => {
 		commit('createGroup', response.data.data);
+		commit('groupDetails', response.data.data);
 		successSwal(response.data.message);
+		commit("counterPlus");
 	})
 	.catch((error) => {
 		errorLogWithDeviceInfo(error)
@@ -36,8 +38,10 @@ export const createGroup = async ({ commit }, data) => {
 
 export const updateGroup = async ({ commit }, data) => {
 	await ServiceMethodService.common('put', API_ENDPOINTS['group'], data.id, data.data).then((response) => {
-		commit('updateGroup', response.data.data);
+		commit('createGroup', response.data.data);
+		commit('groupDetails', response.data.data);
 		successSwal(response.data.message);
+		commit("counterPlus");
 	})
 	.catch((error) => {
 		errorLogWithDeviceInfo(error)

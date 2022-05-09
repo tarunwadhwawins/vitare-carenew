@@ -1,72 +1,87 @@
 <template>
-  <div>
-    <!---->
+  <a-layout>
+    <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
+      <Header />
+    </a-layout-header>
     <a-layout>
-      <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
-        <Header />
-      </a-layout-header>
-      <a-layout>
-        <Sidebar />
-        <a-layout-content>
-          <div class="common-bg">
-            <a-row>
-              <a-col :span="24">
-                <h2 class="pageTittle">
-                  {{ $t('staffGroups.groups') }}
-                  <div class="commonBtn">
-                    <a-button @click="showCreateGroupModal" class="btn primaryBtn">{{ $t('staffGroups.createGroup') }}</a-button>
-                  </div>
-                </h2>
-              </a-col>
-              <a-col :span="12">
-                <a-select v-model:value="value2" size="large" mode="tags" style="width: 100%" :placeholder="$t('staffGroups.search')" >
-                </a-select>
-              </a-col>
-              <a-col :span="24" class="mt-25">
-                <StaffGroupTable />
-              </a-col>
-            </a-row>
-          </div>
-        </a-layout-content>
-      </a-layout>
+      <Sidebar />
+      <a-layout-content>
+        <div class="common-bg">
+          <a-row>
+            <a-col :span="24">
+              <h2 class="pageTittle">
+                {{ $t('staffGroups.groups') }}
+                <div class="commonBtn">
+                  <Button :name="$t('staffGroups.createGroup')" @click="showGroupModal"/>
+                </div>
+              </h2>
+            </a-col>
+            <a-col :span="12" >
+              <a-input class="searchField" placeholder="Search..." style="width: 100%" size="large" />
+              <!-- <SearchField endPoint="staffGroup" /> -->
+            </a-col>
+            <a-col :span="12" >
+              <div class="text-right mb-24">
+                <!-- <ExportToExcel /> -->
+                <!-- <ExportToExcel @click="exportExcel('staffGroup','?fromDate=&toDate='+search)" /> -->
+              </div>
+            </a-col>
+            <a-col :span="24">
+              <StaffGroupTable />
+            </a-col>
+          </a-row>
+        </div>
+      </a-layout-content>
     </a-layout>
+  </a-layout>
 
-    <!-- Modal -->
-    <CreateGroupModal v-model:visible="visibleCreateGroupModal" @closeModal="closeModal" :isEdit="false" />
-    <!-- <StaffGroupModal v-model:visible="visibleCreateGroupModal" @closeModal="closeModal" :isEdit="false" /> -->
-    <!---->
-  </div>
+  <!-- Modal -->
+  <StaffGroupModal v-if="visibleGroupModal" v-model:visible="visibleGroupModal" @closeModal="closeModal" :isEdit="false" />
+  
 </template>
 
 <script>
 import Header from "@/components/administration/layout/header/Header";
 import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
 import { defineAsyncComponent,ref } from "vue";
+import { useStore } from 'vuex';
+// import { exportExcel } from "@/commonMethods/commonMethod";
 
 export default {
   components: {
     Header,
     Sidebar,
-    StaffGroupTable: defineAsyncComponent(()=>import("@/components/administration/staffGroups/tables/staffGroupsTable")),
-    CreateGroupModal: defineAsyncComponent(()=>import("@/components/administration/staffGroups/modals/CreateGroupModal")),
-    // StaffGroupModal: defineAsyncComponent(()=>import("@/components/administration/staffGroups/modals/staffGroupsModal")),
+    StaffGroupTable: defineAsyncComponent(()=>import("@/components/administration/staffGroups/tables/StaffGroupsTable")),
+    StaffGroupModal: defineAsyncComponent(()=>import("@/components/administration/staffGroups/modals/StaffGroupsModal")),
+    // SearchField: defineAsyncComponent(()=>import("@/components/common/input/SearchField")),
+    Button: defineAsyncComponent(()=>import("@/components/common/button/Button")),
+    // ExportToExcel: defineAsyncComponent(()=>import("@/components/common/export-excel/ExportExcel")),
   },
 
   setup() {
-    const visibleCreateGroupModal = ref(false);
-    const showCreateGroupModal = () => {
-      visibleCreateGroupModal.value = true;
+    const store = useStore()
+    const visibleGroupModal = ref(false);
+
+    const showGroupModal = () => {
+      store.dispatch('rolePermissions').then(() => {
+        visibleGroupModal.value = true;
+      })
     };
     
     const closeModal = () => {
-      visibleCreateGroupModal.value = false;
+      visibleGroupModal.value = false;
     };
 
     return {
-      visibleCreateGroupModal,
-      showCreateGroupModal,
+      visibleGroupModal,
+      showGroupModal,
       closeModal,
+      // exportExcel,
     };
   },
 };
 </script>
+
+<style scoped>
+.searchField { margin-bottom: 20px;}
+</style>

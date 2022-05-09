@@ -1,5 +1,4 @@
 <template>
-  <a-modal width="60%" :title="$t('staffGroups.groupPermissions')">
     <a-form ref="formRef" :model="groupPermissionsForm" layout="vertical" @finish="submitForm">
       <a-row>
         <a-col :span="24" v-for="permission in rolesAndPermissions" :key="permission.id">
@@ -13,17 +12,17 @@
             </div>
           </a-card>
           <a-divider class="transparent" />
-
         </a-col>
-        
         <a-col :span="24">
-          <div class="steps-action">
-            <ModalButtons />
+          <div class="form-group">
+            <div class="steps-action">
+              <a-button style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
+              <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
+            </div>
           </div>
         </a-col>
       </a-row>
     </a-form>
-  </a-modal>
 </template>
 
 <script>
@@ -33,24 +32,23 @@ import {
   ref,
   watchEffect
 } from 'vue-demi'
+import { successSwal } from "@/commonMethods/commonMethod";
+import { messages } from "@/config/messages";
 import {
   arrayToObjact,
 } from "@/commonMethods/commonMethod"
 import { useStore } from 'vuex'
-import ModalButtons from "@/components/common/button/ModalButtons"
 
 export default {
-  components: {
-    ModalButtons,
-  },
   props: {
-    groupId: {
+    groupID: {
       type: Number
     },
   },
   setup(props, { emit }) {
     const formRef = ref()
     const store = useStore()
+    const groupId = ref(null)
     
     const rolesAndPermissions = computed(() => {
       return store.state.rolesAndPermissions.rolesAndPermissions
@@ -64,11 +62,17 @@ export default {
       action: [],
       screen: []
     })
+    const form = reactive({ ...groupPermissionsForm })
+
+    const createGroup = computed(() => {
+      return store.state.staffGroups.createGroup
+    })
 
     watchEffect(() => {
-      if (props.groupId) {
+      if (props.groupID) {
         copyPermission()
       }
+      groupId.value = props.groupID ? props.groupID : createGroup.value.udid;
     })
 
     function copyPermission() {
@@ -96,7 +100,7 @@ export default {
         }
       });
       store.dispatch('addGroupPermissions', {
-        groupId: props.groupId,
+        groupId: groupId.value,
         actions: {
           action: actionsIds
         },
@@ -128,6 +132,13 @@ export default {
       store.commit('checkChangeInput', true)
     }
 
+    function saveModal() {
+      successSwal(messages.formSuccess);
+      Object.assign(groupPermissionsForm, form);
+      store.commit("resetCounter");
+      emit("closeModal");
+    }
+
     return {
       formRef,
       checkAll,
@@ -137,6 +148,7 @@ export default {
       groupPermissionsForm,
       rolesAndPermissions,
       groupPermissionsModules,
+      saveModal,
     }
   }
 }
