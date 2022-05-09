@@ -231,6 +231,7 @@ export default {
           score: questionnaire.textScore,
         };
       }
+      console.log("check",data)
       store.dispatch("addQuestionnaire", data).then(() => {
         reset()
         store.dispatch("questionnaireList")

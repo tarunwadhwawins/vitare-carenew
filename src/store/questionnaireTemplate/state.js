@@ -3,5 +3,7 @@ export default{
     addQuestionnaireTemplate:null,
     detailsQuestionnaireTemplate:null,
     questionnaireTemplateMeta:null,
+    templateDetailsList:null,
+   
 
 }

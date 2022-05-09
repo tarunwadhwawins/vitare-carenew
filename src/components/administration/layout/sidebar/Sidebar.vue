@@ -55,13 +55,10 @@
                         <a-menu-item>
                             <FileTextOutlined /><span class="menuItem">Question Bank</span></a-menu-item>
                     </router-link>
-                    <router-link to="/questionnaire">
-                        <a-menu-item>
-                            <PlusOutlined /><span class="menuItem">Add Question</span></a-menu-item>
-                    </router-link>
+                    
                     <router-link to="/resources">
                         <a-menu-item>
-                            <PlusOutlined /><span class="menuItem">Resources</span></a-menu-item>
+                            <FileTextOutlined /><span class="menuItem">Resources</span></a-menu-item>
                     </router-link>
                 </div>
             </div>
@@ -101,7 +98,7 @@ import {
    
     FileTextOutlined,
     DownOutlined,
-    PlusOutlined,
+    
     TeamOutlined,
    
 } from "@ant-design/icons-vue";
@@ -121,7 +118,7 @@ export default defineComponent({
        
         FileTextOutlined,
         DownOutlined,
-        PlusOutlined,
+       
         TeamOutlined,
        
         MailOutlined,

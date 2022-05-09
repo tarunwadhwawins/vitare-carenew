@@ -1,11 +1,20 @@
 <template>
 <a-table rowKey="id" :columns="columns" :data-source="data" :scroll="{ x: 900 }" @change="handleTableChange" :pagination=false>
-    <template #question="text">
-        <router-link to="question-template-detail">{{
+    <template #templateName="text">
+        <router-link :to="{ name: 'QuestionTemplateDetail', params: { udid:text.record.id?text.record.id:'eyrer8758458958495'  }}">
+            {{
                             text.text
                           }}</router-link>
     </template>
     <template #actions="{record}">
+        <a-tooltip placement="bottom">
+            <template #title>
+                <span>Setting</span>
+            </template>
+            <router-link :to="{ name: 'QuestionTemplateDetail', params: { udid:record.id?record.id:'eyrer8758458958495'  }}">
+                <a class="icons">
+                    <SettingTwoTone /></a></router-link>
+        </a-tooltip>
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Edit</span>
@@ -13,6 +22,7 @@
             <a class="icons" @click="editModal(record.id)">
                 <EditOutlined /></a>
         </a-tooltip>
+
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Clone</span>
@@ -32,10 +42,10 @@
         <a-switch v-model:checked="checked[key.record.key]" />
     </template>
 </a-table>
-<Loader/>
+<Loader />
 </template>
 <script>
-import {DeleteOutlined,EditOutlined,CopyOutlined,} from "@ant-design/icons-vue"
+import {DeleteOutlined,EditOutlined,CopyOutlined,SettingTwoTone} from "@ant-design/icons-vue"
 import {useStore} from "vuex"
 import Loader from "@/components/loader/Loader"
 import {messages} from "@/config/messages";
@@ -68,6 +78,7 @@ export default {
         EditOutlined,
         CopyOutlined,
         Loader,
+        SettingTwoTone
     },
     props: {},
     setup(props, {
