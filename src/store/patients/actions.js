@@ -5,10 +5,12 @@ import { ref } from 'vue';
 const errorMessage = []
 export const addDemographic = async ({commit}, data) => {
   commit('loadingStatus', true)
+  
   await serviceMethod.common("post", "patient", null, data).then((response) => {
+    
     commit('addDemographic', response.data.data);
     commit('status', true)
-    commit('counterPlus')
+    //commit('counterPlus')
     // successSwal(response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
@@ -30,9 +32,10 @@ export const updateDemographic = async ({commit}, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("put", `patient/${data.id}`, null, data.data).then((response) => {
     commit('updateDemographic', response.data.data);
+    commit('addDemographic', response.data.data);
     // successSwal(response.data.message)
     commit('loadingStatus', false)
-    commit('counterPlus')
+    
     
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)

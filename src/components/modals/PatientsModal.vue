@@ -8,11 +8,11 @@
         </div>
         <a-col :span="24" >
             <a-steps v-model:current="current" @change="scrollToTop($event)" >
-                <a-step v-for="item in steps" :key="item.title" :title="item.title" ><span :id="item"></span></a-step>
+                <a-step v-for="item in steps" :key="item.title" :title="item.title?item.title:''" ><span :id="item"></span></a-step>
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Demographics'">
                 <!-- <Demographics /> -->
-                <a-form :model="demographics" name="basic"  ref="formRef" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="demographic" @finishFailed="demographicsFailed">
+                <a-form :model="demographics" name="basic"  ref="formRef" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="demographic(); next();" @finishFailed="demographicsFailed">
                     <Loader />
                     <a-row :gutter="24">
                         <a-col :md="8" :sm="12" :xs="24">
@@ -371,7 +371,7 @@
                      <PatientSearch v-model:visible="patientSearch" @closeSearchPatient="closeSearchPatient($event)" @clearValidtion="clearValidtion"/>
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                        <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current)" html-type="submit">{{$t('global.next')}}</a-button>
+                        <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current);" html-type="submit">{{$t('global.next')}}</a-button>
                         <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
                             {{$t('global.done')}}
                         </a-button>
@@ -783,11 +783,17 @@ export default defineComponent( {
       get: () =>
         store.state.patients.counter,
       set: (value) => {
-          if(idPatient){
-            store.state.patients.counter = value;
+          
+          if(patients.value.addDemographic){
+             
+            store.state.patients.counter = value
           }else{
             if (demographics.firstName && demographics.lastName && demographics.dob && demographics.email && demographics.phoneNumber) {
-                demographic();
+                if(store.state.patients.counter<1){
+                
+                 demographic()
+                 store.state.patients.counter = value
+                }
                     } else {
                         errorSwal('All(*) fields are required!')
                         store.state.patients.counter = 0;
@@ -1220,7 +1226,7 @@ export default defineComponent( {
     })
 
     function closeModal() {
-			current.value = 0
+			//current.value = 0
         if(isValueChanged.value || bitrixFormCheck.value) {
             warningSwal(messages.modalWarning).then((response) => {
                 if (response == true) {
@@ -1230,13 +1236,14 @@ export default defineComponent( {
                         modal: 'editPatient',
                         value: false
                     });
-                    Object.assign(demographics, form);
+                    
                     store.dispatch("patients");
                     store.commit("resetCounter");
                     store.state.patients.addDemographic = null
                     store.state.patients.fetchFromBitrix = null
 										store.state.patients.uploadFile = null
                                         isValueChanged.value = false
+                                        Object.assign(demographics, form);
                 }
                 else {
                     emit("saveModal", true);
@@ -1247,7 +1254,7 @@ export default defineComponent( {
                 }
             })
         }else{
-            
+            store.commit("resetCounter");
             formRef.value.resetFields()
         }
         
