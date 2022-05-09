@@ -201,11 +201,12 @@
     </a-layout>
   </template>
   <script>
+    
   import { defineComponent, ref } from "vue";
   import Header from "@/components/administration/layout/header/Header";
   import Sidebar from "@/components/administration/layout/sidebar/Sidebar";
   import { DeleteOutlined, EditOutlined,PlusOutlined } from "@ant-design/icons-vue";
-  import AddQuestionnaire from "@/components/modals/AddQuestionnaire";
+  import AddQuestionnaire from "@/components/administration/questionnaire-bank/modals/AddQuestionnaire"
   import EditQuestionnaire from "@/components/modals/EditQuestionnaire";
   import SearchQuestion from "@/components/modals/SearchQuestion";
   export default defineComponent({
