@@ -1,5 +1,5 @@
 <template>
-<a-modal width="90%" :title="update ? 'Edit Template' : 'Create Template'" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
+<a-modal width="100%" :title="update ? 'Edit Template' : 'Create Template'" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
     <a-form ref="formRef" :model="questionnaireTemplate" layout="vertical" @finish="update ? updateTemplate() : addTemplate()" @finishFailed="onFinishFailed">
         <a-row :gutter="16">
             <a-col :span="12">

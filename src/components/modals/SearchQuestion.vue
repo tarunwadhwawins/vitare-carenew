@@ -177,7 +177,7 @@
   export default defineComponent({
     components: {
       AddQuestionnaire: defineAsyncComponent(() =>
-        import("@/components/modals/AddQuestionnaire")
+        import("@/components/administration/questionnaire-bank/modals/AddQuestionnaire")
       ),
       EditQuestionnaire: defineAsyncComponent(() =>
         import("@/components/modals/EditQuestionnaire")

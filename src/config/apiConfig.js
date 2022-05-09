@@ -128,7 +128,7 @@ export const API_ENDPOINTS = {
     questionnaireTemplate:'questionnaire',
 
     //Questionnaire
-    addQuestionnaire:'question',
+    questionnaire:'question',
 };
 
 // export const getApiUrl = key => {
