@@ -61,6 +61,8 @@ export default {
         
     },
     questionDataType:null,
+    workflowEventType:null,
+    workFlowAction:null
 
 
 }
