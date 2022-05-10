@@ -21,6 +21,7 @@
             </a-col>
         </a-row>
     </a-form>
+    <Loader/>
 </a-modal>
 </template>
 <script>
@@ -31,9 +32,10 @@ import {
   warningSwal
 } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
+import Loader from "@/components/loader/Loader.vue";
 export default {
   name: "WorkFlowGroupAction",
-  components: {},
+  components: { Loader },
   props: {
     update: Boolean,
   },

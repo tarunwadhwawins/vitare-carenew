@@ -4,7 +4,7 @@
         <a @click="groupEditModal(text.record.id)">{{ text.text }}</a>
     </template>
     <template #actions="{record}">
-        <a-tooltip placement="bottom" @click="showModal()" >
+        <a-tooltip placement="bottom" @click="showModal(record.id)" >
             <template #title>
                 <span>Edit</span>
             </template>
@@ -42,12 +42,13 @@ export default defineComponent({
   setup(props,{emit}) {
     const store = useStore()
     const route = useRoute()
-    const showModal = () => {
-      emit("showEditModal",true)
+
+    const showModal = (id) => {
+      emit("showEditModal",{type:true,id:id})
+      store.dispatch("actionsOffset",route.params.udid)//workflowID(route.params.udid)
     }
     const groupEditModal = (id) => {
       emit("groupEditModal",true)
-      console.log('id',id);
       store.dispatch("editGroupAction",{eventId:route.params.udid,id:id})
     }
     

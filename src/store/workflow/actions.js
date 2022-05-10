@@ -310,3 +310,126 @@ export const deleteGroupAction = async ({ commit }, data) => {
   })
   return status
 }
+
+
+
+export const actionsOffset = async ({ commit }, id) => {
+  commit('loadingStatus', true)
+  let status=false;
+  await serviceMethod.common('get', `workflow/${id}/offset`, null, null).then((response) => {
+    commit('actionsOffset', response.data.data);
+    commit('loadingStatus', false)
+    status = true
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 401) {
+      commit('loadingStatus', false)
+    }
+  })
+  return status
+}
+
+
+
+export const actionsField = async ({ commit }, data) => {
+  commit('loadingStatus', true)
+  let status=false;
+  await serviceMethod.common('get', `workflow/${data.eventId}/alert/${data.actionId}/field`, null, null).then((response) => {
+    commit('actionsField', response.data.data);
+    commit('loadingStatus', false)
+    status = true
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 401) {
+      commit('loadingStatus', false)
+    }
+  })
+  return status
+}
+
+
+export const addActions = async ({ commit }, data) => {
+  commit('loadingStatus', true)
+  let status=false;
+  await serviceMethod.common('post', `workflow/${data.eventId}/step/${data.actionId}/action`, null, data.data).then((response) => {
+    commit('addActions', response.data.data);
+    commit('loadingStatus', false)
+    successSwal(response.data.message)
+    status = true
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 401) {
+      commit('loadingStatus', false)
+    }
+  })
+  return status
+}
+
+export const actionsList = async ({ commit }, data) => {
+  commit('loadingStatus', true)
+  let status=false;
+  try{
+    if(data.eventId && data.actionId){
+      let response = await serviceMethod.common('get', `workflow/${data.eventId}/step/${data.actionId}/action`, null, null)
+         commit('actionsList', response.data.data);
+         commit('loadingStatus', false)
+         successSwal(response.data.message)
+         status = true
+    }
+  }
+  catch(error){
+    errorLogWithDeviceInfo(error)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 401) {
+      commit('loadingStatus', false)
+    }
+  }
+  return status
+}
+
+export const deleteActions = async ({ commit }, data) => {
+  commit('loadingStatus', true)
+  let status=false;
+  await serviceMethod.common('delete', `workflow/${data.eventId}/step/${data.actionId}/action/${data.id}`, null, null).then((response) => {
+    commit('deleteActions', response.data.data);
+    commit('loadingStatus', false)
+    successSwal(response.data.message)
+    status = true
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 401) {
+      commit('loadingStatus', false)
+    }
+  })
+  return status
+}
+

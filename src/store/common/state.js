@@ -59,7 +59,8 @@ export default {
         onlyCountries:['US'],
         
     },
-    workflowEventType:null
+    workflowEventType:null,
+    workFlowAction:null
 
 
 }

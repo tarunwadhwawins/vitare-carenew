@@ -13,7 +13,7 @@
                             <h2 class="pageTittle">
                                 WorkFlow Setup
                                 <div class="commonBtn">
-                                    <a-button class="btn primaryBtn" @click="showModal">Create New</a-button>
+                                  <a-button class="btn primaryBtn" @click="showModal">Create New</a-button>
                                 </div>
                             </h2>
                         </a-col>
@@ -92,16 +92,7 @@ const columns = [
     },
   },
 ];
-// const data = [
-//     {
-//         "workflowDescription":"Health Care",
-//         "eventDescription":"Client Diet",
-//         "comments":"Fitness Issues",
-//         "startDate":"05/15/20222",
-//         "endDate":"",
-//         "configureWorkflow":"Configration"
-//     },
-// ];
+
 export default {
     name:"WorkFlowSetup",
     components: {

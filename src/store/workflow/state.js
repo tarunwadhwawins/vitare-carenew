@@ -10,5 +10,8 @@ export default {
     editWorkflowCriteria:null,
     addGroupAction:null,
     groupActionList:null,
-    editGroupAction:null
+    editGroupAction:null,
+    actionsOffset:null,
+    actionsField:null,
+    actionsList:null
 }

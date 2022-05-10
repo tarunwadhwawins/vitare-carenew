@@ -85,7 +85,24 @@ export const eventType = (state, data) => {
     })
  }
 
- 
  export const editGroupAction = (state, data) => {
     state.editGroupAction = data
  }
+
+ 
+ export const actionsOffset = (state, data) => {
+   state.actionsOffset = data.map(item=>{
+      item.name = item.title
+      return item
+   })
+}
+
+
+export const actionsField = (state, data) => {
+   state.actionsField = data
+}
+
+
+export const actionsList = (state, data) => {
+   state.actionsList = data
+}
