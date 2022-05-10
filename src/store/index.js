@@ -28,6 +28,8 @@ import { password } from "./password/index"
 import { staffGroups } from "./staffGroups/index"
 import createPersistedState from "vuex-persistedstate";
 import { errorLogWithDeviceInfo} from "./errorLogWithDeviceInfo"
+import { questionnaireTemplate } from "./questionnaireTemplate/index"
+import { questionnaire } from "./questionnaire/index"
 
 export default createStore({
   modules: {
@@ -58,7 +60,9 @@ export default createStore({
     password,
     staffGroups,
     screenPermissions,
-    errorLogWithDeviceInfo
+    errorLogWithDeviceInfo,
+    questionnaireTemplate,
+    questionnaire
   },
   plugins: [ createPersistedState({
     reducer(state) {

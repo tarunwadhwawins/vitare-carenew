@@ -12,9 +12,9 @@ const staffGroups = {
   groups: "Groups",
   groupPermissions: "Group Permissions",
   groupStaff: "Group Staff",
-  searchStaffPlaceholder: "Search by Name, Department or Tags",
+  searchStaffPlaceholder: "Search by Name",
   searchProvidersPlaceholder: "Search by Name",
-  searchProgramPlaceholder: "Search by Name",
+  searchProgramsPlaceholder: "Search by Name",
   search: "Search . . .",
 }
 

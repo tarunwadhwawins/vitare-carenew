@@ -49,3 +49,13 @@ export const loadingStatus = (state)=>{
         return state.notificationList
     })
   }
+  export const questionnaireTemplateType = (state)=>{
+    return computed(()=>{
+        return state.questionnaireTemplateType
+    })
+  }
+  export const questionDataType = (state)=>{
+    return computed(()=>{
+        return state.questionDataType
+    })
+  }

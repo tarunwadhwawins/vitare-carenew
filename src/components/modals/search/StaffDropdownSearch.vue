@@ -6,7 +6,7 @@
     @input="updateValue"
     style="width: 100%"
     :show-search="true"
-    placeholder="input search text"
+    :placeholder="placeholder ? placeholder : 'Input Search Text'"
     :show-arrow="true"
     :filter-option="false"
     :not-found-content="loadingStatus ? undefined : null"
@@ -33,6 +33,7 @@ export default defineComponent({
     checkSameAsStaff: Boolean,
     mode: String,
     close: Boolean,
+    placeholder: String,
   },
 
   setup(props, context) {

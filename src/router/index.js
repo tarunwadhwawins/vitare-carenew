@@ -230,7 +230,7 @@ const routes = [
   {
     path: '/staff-groups',
     name: 'StaffGroups',
-    component: () => import('@/components/administration/staffGroups/StaffGroups'),
+    component: () => import('@/views/administration/staffGroups/StaffGroups'),
     meta: { authAdmin: true }
   },
 
@@ -295,11 +295,16 @@ const routes = [
     component: () => import( '@/views/questionnaire-template/QuestionnaireTemplate'),
     meta: { authAdmin: true }
   },
-
   {
-    path: '/question-template-detail',
+    path: '/template-section',
+    name: 'QuestionnaireTemplateSection',
+    component: () => import( '@/views/template-section/QuestionnaireTemplateSection'),
+    meta: { authAdmin: true }
+  },
+  {
+    path: '/question-template-detail/:udid',
     name: 'QuestionTemplateDetail',
-    component: () => import( '../components/administration/questionnaire-template/QuestionTemplateDetail'),
+    component: () => import( '@/views/questionnaire-template/QuestionTemplateDetail'),
     meta: { authAdmin: true }
   },
   {

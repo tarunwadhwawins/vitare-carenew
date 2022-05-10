@@ -44,6 +44,7 @@ export default {
     actionTrack:null,
     orderTable:null,
     getNotificationsList:null,
+    questionnaireTemplateType:null,
     // phone msaking objects
     bindProps:{
         mode:"national",
@@ -58,7 +59,8 @@ export default {
         autocomplete: "off", 
         onlyCountries:['US'],
         
-    }
+    },
+    questionDataType:null,
 
 
 }

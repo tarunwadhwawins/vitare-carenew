@@ -1,0 +1,330 @@
+<template>
+<a-modal width="100%" title="Add Questionnaire" centered :maskClosable="false" @cancel="closeModal()" :footer="false">
+    <a-form ref="formRef" :model="questionnaire" layout="vertical" @finish="addQuestionnaire" @finishFailed="onFinishFailed">
+
+        <div class="questionnaireMain">
+            <a-row :gutter="24">
+                <a-col :sm="12" :xs="24">
+                    <div class="form-group">
+                        <a-form-item label="Question" name="question" :rules="[{ required: true, message: 'question' +' '+$t('global.validation') }]">
+                            <a-input v-model:value="questionnaire.question" placeholder="Enter Question" style="width: 100%" size="large" @change="checkChangeInput()" />
+                            <ErrorMessage v-if="errorMsg" :name="errorMsg.question?errorMsg.question[0]:''" />
+                        </a-form-item>
+
+                    </div>
+                </a-col>
+                <a-col :sm="12" :xs="24">
+                    <div class="form-group">
+                        <a-form-item label="Type" name="dataTypeId" :rules="[{ required: true, message: dataTypeId +' '+$t('global.validation') }]">
+                            <GlobalCodeDropDown v-if="questionDataType" v-model:value="questionnaire.dataTypeId" :globalCode="questionDataType" @change="checkChangeInput(); questionType()" />
+
+                        </a-form-item>
+                    </div>
+                </a-col>
+                <a-col :span="24">
+                    <div class="form-group">
+                        <label> Tags</label>
+                        <a-select ref="select" v-model:value="questionnaire.tags" style="width: 100%" @focus="focus" @change="handleChange" mode="tags" size="large" placeholder="Select Tags">
+                        </a-select>
+                    </div>
+
+                </a-col>
+
+                <a-col :sm="24" class="mt-25" v-if="questionnaire.dataTypeId==243 || questionnaire.dataTypeId==244">
+                    <a-row>
+
+                    </a-row>
+                    <a-row :gutter="16" v-for="(lable,index) in questionnaire.lable" :key="lable.key">
+
+                        <a-col :span="1">
+                            <Label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">Correct</Label>
+                            <a-checkbox :class="index==0 ? 'mt-20':'mt-40'" v-model:chacked="questionnaire.correct[lable.key]" v-model:value="lable.key" v-if="questionnaire.dataTypeId==244" name="default" @change="checkboxChange($event);checkChangeInput();" />
+
+                            <a-radio-group v-else v-model:value="value">
+                                <a-radio :class="index==0 ? 'mt-20':'mt-40'" :value="lable.key" @change="radioChange($event)"></a-radio>
+                            </a-radio-group>
+                        </a-col>
+                        <a-col :span="1">
+                            <Label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">Default</Label>
+                            <a-checkbox :class="index==0 ? 'mt-20':'mt-40'" v-model:chacked="questionnaire.default[lable.key]" v-model:value="lable.key" name="default" @change="checkboxChangeDefault($event);checkChangeInput();" />
+
+                        </a-col>
+                        <a-col :span="5">
+                            <div class="form-group">
+                                <a-form-item label="Label">
+                                    <a-input v-model:value="lable.value" placeholder="Label" style="width: 100%" size="large" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :span="2">
+                            <div class="form-group">
+                                <a-form-item label="Score">
+                                    <a-input v-model:value="questionnaire.score[lable.key]" placeholder="Score" style="width: 100%" size="large" @change="checkChangeInput()" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :sm="4" :xs="24">
+                            <div class="form-group">
+                                <a-form-item label="Programs">
+
+                                    <GlobalCodeDropDown v-if="programList" v-model:value="questionnaire.programId[lable.key]" :globalCode="programList" @change="checkChangeInput(); programChange($event,lable.key);" mode="multiple" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :span="2" v-for="(programScores,i) in questionnaire.programId[lable.key]" :key="i">
+                            <div class="form-group">
+                                <a-form-item :title="(arrayToObjact(programList, programScores)).name" :label="(arrayToObjact(programList, programScores)).name.length>5 ?(arrayToObjact(programList, programScores)).name.substring(0,20)+'...' : (arrayToObjact(programList, programScores)).name">
+                                    <a-input v-model:value="questionnaire.programScore[(lable.key+''+programScores)]" :placeholder="(arrayToObjact(programList, programScores)).name +' Score'" style="width: 100%" size="large" @change="checkChangeInput()" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-button v-if="questionnaire.lable.length > 1" class="mt-30" danger :size="size" :disabled="questionnaire.lable.length === 1" @click="removeLable(lable)">
+                            <template #icon>
+                                <DeleteOutlined />
+                            </template>
+                        </a-button>
+
+                        <a-col :span="1" class="text-right" v-if="index==(questionnaire.lable.length-1)">
+                            <a-button class="mt-30" type="primary" size="large" @click="addLable">
+                                <template #icon>
+                                    <PlusOutlined />
+                                </template>
+                            </a-button>
+                        </a-col>
+                    </a-row>
+
+                </a-col>
+                <a-col :span="3" v-else>
+                    <div class="form-group">
+
+                        <label>Score</label>
+                        <a-input v-model:value="questionnaire.textScore" placeholder="Score" style="width: 100%" size="large" />
+
+                    </div>
+                </a-col>
+
+                <a-col :span="24">
+
+                    <div class="steps-action">
+                        <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+                            <a-button class="modal-button" style="margin-right: 8px" @click="handleClear()" html-type="reset">{{$t('global.clear')}}</a-button>
+                            <a-button class="modal-button" type="primary" html-type="submit">{{$t('global.save')}}</a-button>
+                            <a-button v-if="Id" class="modal-button" type="primary" html-type="submit">{{$t('global.update')}}</a-button>
+                        </a-form-item>
+                    </div>
+                </a-col>
+            </a-row>
+        </div>
+    </a-form>
+</a-modal>
+</template>
+<script>
+import { ref, reactive, onMounted, computed } from "vue";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons-vue";
+import { warningSwal, arrayToObjact } from "@/commonMethods/commonMethod";
+import { messages } from "@/config/messages";
+import { useStore } from "vuex";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
+export default {
+  components: {
+    PlusOutlined,
+    DeleteOutlined,
+    GlobalCodeDropDown,
+  },
+  props: {
+    id: String,
+  },
+  setup(props, { emit }) {
+    const store = useStore();
+    const formRef = ref();
+    const value = ref("1");
+    const questionnaire = reactive({
+      default: [],
+      correct: [],
+      question: "",
+      dataTypeId: "",
+      lable: [],
+      score: [],
+      programId: [],
+      programScore: [],
+      tags: [],
+      textScore: "",
+    });
+    const form = reactive({
+      ...questionnaire,
+    });
+
+    onMounted(() => {
+      store.dispatch("programList");
+    });
+
+    function programChange(val, index) {
+      console.log(val, questionnaire.programScore, index);
+
+      questionnaire.programId[index] = val;
+    }
+
+    function addLable() {
+      questionnaire.lable.push({
+        value: "",
+        key: Date.now(),
+      });
+    }
+
+    function questionType() {
+      questionnaire.lable = [];
+      questionnaire.score = [];
+      questionnaire.programId = [];
+      questionnaire.programScore = [];
+      questionnaire.textScore = "";
+      if (questionnaire.dataTypeId == 243 || questionnaire.dataTypeId == 244) {
+        questionnaire.lable.push({
+          value: "",
+          key: Date.now(),
+        });
+      }
+    }
+    const addQuestionnaire = () => {
+      let data = "";
+      if (questionnaire.dataTypeId == 243 || questionnaire.dataTypeId == 244) {
+        let lable = [];
+        questionnaire.lable.forEach((element) => {
+          let programScores = [];
+          questionnaire.programId[element.key]
+            ? questionnaire.programId[element.key].forEach((items) => {
+                programScores.push({
+                  programId: items,
+                  programScores: questionnaire.programScore[
+                    element.key + "" + items
+                  ]
+                    ? questionnaire.programScore[element.key + "" + items]
+                    : null,
+                });
+              })
+            : "";
+          let defaultChacked = questionnaire.default.indexOf(element.key);
+          let correct = questionnaire.correct.indexOf(element.key);
+          let objact = {
+            labelName: element.value,
+            program: programScores,
+            score: questionnaire.score[element.key]
+              ? questionnaire.score[element.key]
+              : null,
+            defaultOption: defaultChacked == -1 ? 0 : 1,
+            correct: correct == -1 ? 0 : 1,
+          };
+          lable.push(objact);
+        });
+        data = {
+          question: questionnaire.question,
+          dataTypeId: questionnaire.dataTypeId,
+          tags: questionnaire.tags,
+          duration: null,
+          option: lable,
+        };
+      } else {
+        data = {
+          question: questionnaire.question,
+          dataTypeId: questionnaire.dataTypeId,
+          tags: questionnaire.tags,
+          duration: null,
+          score: questionnaire.textScore,
+        };
+      }
+      console.log("check",data)
+      store.dispatch("addQuestionnaire", data).then(() => {
+        reset()
+        store.dispatch("questionnaireList")
+        emit("is-visible", { show: false, id: props.id })
+        
+      });
+
+      // formRef.value.validate().then(() => {
+      //     console.log('values', questionnaire.lable);
+      // }).catch(error => {
+      //     console.log('error', error);
+      // });
+    };
+
+    const removeLable = (item) => {
+      let index = questionnaire.lable.indexOf(item);
+
+      if (index !== -1) {
+        questionnaire.lable.splice(index, 1);
+      }
+    };
+
+    function checkChangeInput() {
+      store.commit("checkChangeInput", true);
+    }
+
+    function checkboxChangeDefault(event) {
+      if (event.target.checked) {
+        questionnaire.default.push(event.target.value);
+      } else {
+        let index = questionnaire.default.indexOf(event.target.value);
+        questionnaire.default.splice(index, 1);
+      }
+    }
+
+    function radioChange(event) {
+      questionnaire.correct = [];
+      questionnaire.correct.push(event.target.value);
+    }
+    function checkboxChange(event) {
+      if (event.target.checked) {
+        questionnaire.correct.push(event.target.value);
+      } else {
+        let index = questionnaire.correct.indexOf(event.target.value);
+        questionnaire.correct.splice(index, 1);
+      }
+    }
+
+    const checkFieldsData = computed(() => {
+      return store.state.common.checkChangeInput;
+    });
+    function reset() {
+      Object.assign(questionnaire, form);
+    }
+    function closeModal() {
+      if (checkFieldsData.value) {
+        warningSwal(messages.modalWarning).then((response) => {
+          if (response == true) {
+            emit("is-visible", { show: false, id: props.id });
+            reset();
+            // disabled.value= false
+          } else {
+            emit("is-visible", { show: true, id: props.id });
+          }
+        });
+      } else {
+        formRef.value.resetFields();
+        //disabled.value= false
+      }
+    }
+    return {
+      questionnaire,
+      programChange,
+      size: ref("large"),
+
+      addLable,
+      questionType,
+      addQuestionnaire,
+      removeLable,
+      questionDataType: store.getters.questionDataType,
+      formRef,
+      value,
+      closeModal,
+      programList: store.getters.programList,
+      checkChangeInput,
+      arrayToObjact,
+      checkboxChange,
+      checkboxChangeDefault,
+      radioChange,
+
+      reset,
+    };
+  },
+};
+</script>
+
