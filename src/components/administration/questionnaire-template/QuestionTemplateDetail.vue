@@ -8,7 +8,7 @@
                     {{ detailsQuestionnaireTemplate ? detailsQuestionnaireTemplate.templateName : ''}}
                     <div class="commonBtn">
                         <a-button class="btn secondaryBtn" @click="showModal2">Search Question</a-button>
-                        <a-button class="btn secondaryBtn ml-10 buttonWtIcon" @click="showModal">Add Question
+                        <a-button class="btn secondaryBtn ml-10 buttonWtIcon" @click="showModal({show:true,id:''})">Add Question
                             <PlusOutlined />
                         </a-button>
                         <router-link to="/questionnaire-template" class="b-inline ml-10">
@@ -60,7 +60,7 @@
         </a-row>
     </div>
     <!--modals-->
-    <AddQuestionnaire v-model:visible="visible2" @ok="handleOk" />
+    <AddQuestionnaire v-model:visible="visible2" @ok="handleOk" @is-visible="showModal($event)" :templateId="udid"/>
     <EditQuestionnaire v-model:visible="visible3" @ok="handleOk" />
     <SearchQuestion v-if="detailsQuestionnaireTemplate" v-model:visible="visible1" @ok="handleOk" :templaterecord="detailsQuestionnaireTemplate" />
     <!---->
@@ -91,9 +91,12 @@
     const udid = route.params.udid
       const activeKey = ref(["1"])
       const visible2 = ref(false)
-      const showModal = () => {
-        visible2.value = true;
-      };
+      const id = ref("");
+    const showModal = (e) => {
+      visible2.value = e.show;
+      id.value = e.id;
+
+    }
       const visible3 = ref(false)
       const showModal1 = () => {
         visible3.value = true
@@ -109,18 +112,6 @@
       })
 
       return {
-        checked1: ref(false),
-        checked2: ref(false),
-        checked3: ref(false),
-        checked4: ref(false),
-        checked5: ref(false),
-        checked6: ref(false),
-        checked7: ref(false),
-        checked8: ref(false),
-        checked9: ref(false),
-        checked10: ref(false),
-        checked11: ref(false),
-        checked12: ref(false),
         activeKey,
         visible2,
         showModal,

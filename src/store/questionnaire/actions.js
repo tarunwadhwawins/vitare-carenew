@@ -5,7 +5,7 @@ import { API_ENDPOINTS } from '@/config/apiConfig';
 export const addQuestionnaire = async ({ commit }, data) => {
 	await ServiceMethodService.common('post', API_ENDPOINTS['questionnaire'], null, data)
 		.then((response) => {
-			commit('addQuestionnaire', response.data);
+			commit('addQuestionnaire', response.data.data);
 
 			successSwal(response.data.message);
 

@@ -12,7 +12,7 @@
         <a-col :span="8">
             <div class="text-right mt-28">
                 <a-button class="btn primaryBtn" >Search Existing</a-button>
-                <a-button @click="showModal1" class="btn secondaryBtn ml-10">Add New Question</a-button>
+                <a-button @click="showModal({show:true,id:''})" class="btn secondaryBtn ml-10">Add New Question</a-button>
             </div>
         </a-col>
 
@@ -65,7 +65,7 @@
 
     </a-row>
      </a-form>
-    <AddQuestionnaire v-model:visible="visible1" />
+    <AddQuestionnaire v-model:visible="visible1" @is-visible="showModal($event)" :templateId="templaterecord.id"/>
     <EditQuestionnaire v-model:visible="visible2" />
 </a-modal>
 
@@ -146,17 +146,22 @@
         return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
       };
       const visible1 = ref(false);
-      const showModal1 = () => {
-        visible1.value = true;
-      };
+       const id = ref("");
+    const showModal = (e) => {
+      visible1.value = e.show;
+      id.value = e.id;
+
+    }
       const visible2 = ref(false);
       const showModal2 = () => {
         visible2.value = true;
       };
      
       const addAssignQuestion =()=>{
-          console.log("check",assignQuestion)
-          store.dispatch("addAssiignquestionnaire",{data:assignQuestion.questionId,id:props.templaterecord.id})
+          
+          store.dispatch("addAssiignquestionnaire",{data:assignQuestion.questionId,id:props.templaterecord.id}).then(()=>{
+            store.dispatch("templateDetailsList",props.templaterecord.id)
+          })
       }
       return {
           addAssignQuestion,
@@ -169,10 +174,11 @@
         handleFocus,
         handleChange,
         options,
-        showModal1,
+        showModal,
         visible1,
         showModal2,
         visible2,
+        id,
        questionnaireList:store.getters.questionnaireList,
        
       };

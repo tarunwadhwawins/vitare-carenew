@@ -135,6 +135,7 @@ export default {
   },
   props: {
     id: String,
+    templateId:String,
   },
   setup(props, { emit }) {
     const store = useStore();
@@ -234,13 +235,17 @@ export default {
           score: questionnaire.textScore,
         };
       }
-      console.log("check", data);
       store.dispatch("addQuestionnaire", data).then(() => {
-        reset();
-        store.dispatch("questionnaireList");
-        emit("is-visible", { show: false, id: props.id });
-      });
+        if(props.templateId){
+          store.dispatch("addAssiignquestionnaire",{data:[store.getters.addQuestionnaire.value.id],id:props.templateId})
+          store.dispatch("templateDetailsList",props.templateId)
 
+        }
+        
+        store.dispatch("questionnaireList")
+        emit("is-visible", { show: false, id: props.id })
+        reset()
+      })
       // formRef.value.validate().then(() => {
       //     console.log('values', questionnaire.lable);
       // }).catch(error => {
