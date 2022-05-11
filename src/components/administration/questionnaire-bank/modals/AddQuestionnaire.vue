@@ -46,8 +46,10 @@
                         </a-col>
                         <a-col :span="1">
                             <Label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">Default</Label>
-                            <a-checkbox :class="index==0 ? 'mt-20':'mt-40'" v-model:chacked="questionnaire.default[lable.key]" v-model:value="lable.key" name="default" @change="checkboxChangeDefault($event);checkChangeInput();" />
-
+                            <a-checkbox :class="index==0 ? 'mt-20':'mt-40'" v-model:chacked="questionnaire.default[lable.key]" v-model:value="lable.key" name="default" v-if="questionnaire.dataTypeId==244" @change="checkboxChangeDefault($event);checkChangeInput();" />
+                            <a-radio-group v-else v-model:value="value2">
+                                <a-radio :class="index==0 ? 'mt-20':'mt-40'" :value="lable.key" @change="radioChangeDefault($event)"></a-radio>
+                            </a-radio-group>
                         </a-col>
                         <a-col :span="5">
                             <div class="form-group">
@@ -138,6 +140,7 @@ export default {
     const store = useStore();
     const formRef = ref();
     const value = ref("1");
+    const value2 = ref("1");
     const questionnaire = reactive({
       default: [],
       correct: [],
@@ -231,12 +234,11 @@ export default {
           score: questionnaire.textScore,
         };
       }
-      console.log("check",data)
+      console.log("check", data);
       store.dispatch("addQuestionnaire", data).then(() => {
-        reset()
-        store.dispatch("questionnaireList")
-        emit("is-visible", { show: false, id: props.id })
-        
+        reset();
+        store.dispatch("questionnaireList");
+        emit("is-visible", { show: false, id: props.id });
       });
 
       // formRef.value.validate().then(() => {
@@ -270,6 +272,10 @@ export default {
     function radioChange(event) {
       questionnaire.correct = [];
       questionnaire.correct.push(event.target.value);
+    }
+    function radioChangeDefault(event) {
+      questionnaire.default = [];
+      questionnaire.default.push(event.target.value);
     }
     function checkboxChange(event) {
       if (event.target.checked) {
@@ -314,6 +320,7 @@ export default {
       questionDataType: store.getters.questionDataType,
       formRef,
       value,
+      value2,
       closeModal,
       programList: store.getters.programList,
       checkChangeInput,
@@ -321,10 +328,9 @@ export default {
       checkboxChange,
       checkboxChangeDefault,
       radioChange,
-
+      radioChangeDefault,
       reset,
     };
   },
 };
 </script>
-

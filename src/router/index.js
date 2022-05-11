@@ -308,6 +308,13 @@ const routes = [
     meta: { authAdmin: true }
   },
   {
+    path: '/template-response/:udid',
+    name: 'TemplateResponse',
+    component: () => import( '@/views/template-response/TemplateResponse'),
+    meta: { authAdmin: true }
+  },
+  
+  {
     path: '/resources',
     name: 'Resources',
     component: () => import( '@/views/resources/Resources'),
