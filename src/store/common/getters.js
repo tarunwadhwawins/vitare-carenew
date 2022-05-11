@@ -59,3 +59,8 @@ export const loadingStatus = (state)=>{
         return state.questionDataType
     })
   }
+  export const staffLevels = (state)=>{
+    return computed(()=>{
+      return state.staffLevels
+    })
+  }

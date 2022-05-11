@@ -71,6 +71,14 @@
                 </a-form-item>
             </div>
         </a-col>
+        <a-col :sm="12" :xs="24">
+            <div class="form-group">
+                <a-form-item :label="$t('global.level')" name="level" :rules="[{ required: true, message: $t('global.level')+' '+$t('global.validation') }]">
+                    <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="personalInfoData.level" :globalCode="careCordinator.staffLevels" />
+                    <ErrorMessage v-if="errorMsg && !personalInfoData.level" :name="errorMsg.level?errorMsg.level[0]:''" />
+                </a-form-item>
+            </div>
+        </a-col>
     </a-row>
 
     <div class="steps-action">
@@ -110,7 +118,7 @@ export default {
       specializationId: "",
       networkId: "",
       roleId: '',
-      
+      level: '',
     });
 
      const setPhoneNumber = (value) => {

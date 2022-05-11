@@ -32,6 +32,10 @@
                             </div>
                             <div class="pat-profile">
                                 <div class="pat-profile-inner">
+                                    <div class="thumb-head">Level</div>
+                                    <div class="thumb-desc">{{getstaffSummary?getstaffSummary.level:''}}</div>
+                                </div>
+                                <div class="pat-profile-inner">
                                     <div class="thumb-head">Gender</div>
                                     <div class="thumb-desc">{{getstaffSummary?getstaffSummary.gender:''}}</div>
                                 </div>

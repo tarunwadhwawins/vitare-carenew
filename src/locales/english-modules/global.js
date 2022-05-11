@@ -87,6 +87,7 @@ const global = {
   programs:'Programs',
   program:'Program',
   isActive:'Active / Inactive',
+  level:'Level',
 }
 
 

@@ -45,6 +45,7 @@ export default {
     orderTable:null,
     getNotificationsList:null,
     questionnaireTemplateType:null,
+    staffLevels:null,
     // phone msaking objects
     bindProps:{
         mode:"national",
