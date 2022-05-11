@@ -11,10 +11,11 @@
         <a-timeline-item color="blue">
           <template #dot>
             <BellOutlined class="yellowIcon" v-if="timeline.type==1"/>
-            <HeatMapOutlined class="redIcon" v-if="timeline.type==3"/>
-            <FilePdfOutlined class="yellowIcon" v-if="timeline.type==5"/>
-            <FolderOpenOutlined class="yellowIcon" v-if="timeline.type==4"/>
-            <ClockCircleOutlined class="orangeIcon" v-if="timeline.type==2"/>
+            <HeatMapOutlined class="redIcon" v-else-if="timeline.type==3"/>
+            <FilePdfOutlined class="yellowIcon" v-else-if="timeline.type==5"/>
+            <FolderOpenOutlined class="yellowIcon" v-else-if="timeline.type==4"/>
+            <ClockCircleOutlined class="orangeIcon" v-else-if="timeline.type==2"/>
+            <ClockCircleOutlined class="orangeIcon" v-else/>
           </template>
           <div class="timelineInner">
             <div class="timelineHeader">
