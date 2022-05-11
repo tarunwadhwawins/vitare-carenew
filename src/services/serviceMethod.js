@@ -83,7 +83,7 @@ class ServiceMethodService {
     }
 
     //search method for dropdown
-    singleDropdownSearch(value, callback, endpoint) {
+    singleDropdownSearch(value, callback, targetRecords = null, endpoint) {
         if (timeout && value!='') {
             clearTimeout(timeout);
             timeout = null;
@@ -103,13 +103,35 @@ class ServiceMethodService {
                         // console.log("rewwa", result);
                         const data = [];
                         result.forEach((item) => {
-                            data.push({
-                                value: item.udid?item.udid:item.id,
-                                label: item.fullName?item.fullName:item.name,
-                            });
+                            if(targetRecords != null) {
+                                const isFound = targetRecords.some(element => {
+                                    if(item.id && (element.targetUdid === item.id)) {
+                                        return true
+                                    }
+                                    else if(item.udid && (element.targetUdid === item.udid)) {
+                                        return true
+                                    }
+                                    else {
+                                        return false
+                                    }
+                                });
+                                if(!isFound) {
+                                    data.push({
+                                        value: item.udid?item.udid:item.id,
+                                        label: item.fullName?item.fullName:item.name,
+                                    });
+                                }
+                            }
+                            else {
+                                data.push({
+                                    value: item.udid?item.udid:item.id,
+                                    label: item.fullName?item.fullName:item.name,
+                                });
+                            }
                         });
                         // console.log('object', data);
-                       
+                        store.commit('dropdownList', data);
+
                         callback(data);
 
                     }

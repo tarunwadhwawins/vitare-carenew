@@ -16,4 +16,5 @@ export default {
   groupPermissions: null,
   counter:0,
   errorMsg:null,
+  dropdownList:null,
 }
