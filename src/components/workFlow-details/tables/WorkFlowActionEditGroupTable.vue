@@ -1,9 +1,16 @@
 <template>
 <a-table rowKey="id"  :columns="columns" :data-source="data" :scroll="{ x: 800 }" :pagination="false">
-     <template #configureAction="text">
-        <router-link to="workflow-details" >{{ text.text }}</router-link>
+     <template #executionOffsetDays="{record}">
+        <span >{{ record.executionOffsetDays+' '}}{{record.executionOffsetType=='+'?'Days After':'Days Before'}}</span>
     </template>
-    <template #actions>
+    <template #actions="{record}">
+      <a-tooltip placement="bottom" @click="showModal(record.id)" >
+            <template #title>
+                <span>Edit</span>
+            </template>
+            <a class="icons">
+                <EditOutlined /></a>
+        </a-tooltip>
         <a-tooltip placement="bottom" @click="cloneData()" >
             <template #title>
                 <span>Clone</span>
@@ -11,7 +18,7 @@
             <a class="icons">
                 <CopyOutlined /></a>
         </a-tooltip>
-        <a-tooltip placement="bottom" @click="deleteData()">
+        <a-tooltip placement="bottom" @click="deleteData(record.id)">
             <template #title>
                 <span>Delete</span>
             </template>
@@ -24,21 +31,26 @@
 </template>
 <script>
 import {  defineComponent, } from "vue";
-import {CopyOutlined,DeleteOutlined} from "@ant-design/icons-vue";
+import {CopyOutlined,DeleteOutlined,EditOutlined} from "@ant-design/icons-vue";
 import { warningSwal} from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
+import { useRoute } from "vue-router"
+import {useStore} from "vuex"
 export default defineComponent({
   name:"WorkFlowTable",
   components: {
     CopyOutlined,
-    DeleteOutlined
+    DeleteOutlined,
+    EditOutlined
   },
   props:{
     columns:Array,
-    data:Array
+    data:Array,
+    actionId:String
   },
   setup(props,{emit}) {
-
+    const store = useStore()
+    const route = useRoute()
     const showModal = () => {
       emit("showEditModal",true)
     }
@@ -56,10 +68,14 @@ export default defineComponent({
       })
     }
 
-    function deleteData(){
+    function deleteData(id){
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
-          // 
+           store.dispatch('deleteActions',{eventId:route.params.udid,actionId:props.actionId,id:id}).then((response)=>{
+            if (response == true) {
+            store.dispatch("actionsList",{eventId:route.params.udid,actionId:props.actionId});
+          }
+          })
         }
       })
     }

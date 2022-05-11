@@ -4,10 +4,10 @@
         <span>{{ text.text }}</span>
     </template>
      <template #configureWorkflow="text">
-        <router-link to="workflow-details" >{{ text.text }}</router-link>
+        <router-link :to="{ name: 'workflowDetails', params: { udid: text.record.id } }">{{ text.text }}</router-link>
     </template>
-    <template #actions="text">
-        <a-tooltip placement="bottom" @click="showModal()" >
+    <template #actions="{record}">
+        <a-tooltip placement="bottom" @click="showModal(record.id)" >
             <template #title>
                 <span>Edit</span>
             </template>
@@ -37,6 +37,7 @@ import {  defineComponent, } from "vue";
 import {DeleteOutlined,EditOutlined,CopyOutlined} from "@ant-design/icons-vue";
 import { warningSwal} from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
+import {useStore} from "vuex"
 export default defineComponent({
   name:"WorkFlowTable",
   components: {
@@ -49,9 +50,10 @@ export default defineComponent({
     data:Array
   },
   setup(props,{emit}) {
-
-    const showModal = () => {
+    const store = useStore()
+    const showModal = (id) => {
       emit("showEditModal",true)
+      store.dispatch('editWorkflow',id)
     }
      const handleOk = () => {
       // 

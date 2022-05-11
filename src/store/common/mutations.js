@@ -106,6 +106,13 @@ export const globalCodes = (state, data) => {
         if (element.name === 'Staff Level') {
             state.staffLevels = element.globalCode;
         }
+        if (element.name === 'WorkFlow Event Type') {
+            state.workflowEventType = element.globalCode;
+        }
+        if (element.name === 'WorkFlow Action') {
+            state.workFlowAction = element.globalCode;
+        }
+
         
     });
 
