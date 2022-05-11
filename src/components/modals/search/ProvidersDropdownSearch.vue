@@ -12,6 +12,7 @@
     :not-found-content="loadingStatus ? undefined : null"
     :options="providerData"
     @search="handleProviderSearch"
+    @focus="handleProviderSearch"
     @change="handleProviderChange"
     size="large"
   >
@@ -23,7 +24,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted, watchEffect } from "vue";
+import { defineComponent, ref, onMounted, watchEffect, reactive } from "vue";
 import { useStore } from "vuex";
 import Services from "@/services/serviceMethod";
 export default defineComponent({
@@ -34,32 +35,33 @@ export default defineComponent({
     mode: String,
     close: Boolean,
     placeholder: String,
+    targetRecords: Array,
+    dropdownList: Array,
   },
 
   setup(props, context) {
     const store = useStore();
-    const providerData = ref([]);
+    const provider = reactive(props.dropdownList);
+    const providerData = provider ? ref(provider) : ref([]);
 
     const updateValue = (event) => {
       context.emit("update:modelValue", event.target.value);
     };
+
     onMounted(() => {
-      Services.singleDropdownSearch("", (d) => (providerData.value = d), "provider");
+      Services.singleDropdownSearch("", (d) => (providerData.value = d), props.targetRecords, "provider");
     });
+
     watchEffect(() => {
       if (props.close) {
-        Services.singleDropdownSearch(
-          "",
-          (d) => (providerData.value = d),
-          "provider"
-        );
+        Services.singleDropdownSearch("", (d) => (providerData.value = d), props.targetRecords, "provider");
       }
     });
 
     const handleProviderSearch = (val) => {
       store.commit("dropdownLoadingStatus", true);
       providerData.value = [];
-      Services.singleDropdownSearch(val, (d) => (providerData.value = d), "provider");
+      Services.singleDropdownSearch(val, (d) => (providerData.value = d), props.targetRecords, "provider");
     };
 
     const handleProviderChange = (val) => {

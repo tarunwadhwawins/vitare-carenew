@@ -56,6 +56,11 @@ export const staff = async (state, data) => {
 			sorter: true
 		},
 		{
+			title: 'Level',
+			dataIndex: 'level',
+			sorter: true
+		},
+		{
 			title: 'Specialization',
 			dataIndex: 'specialization',
 			sorter: true

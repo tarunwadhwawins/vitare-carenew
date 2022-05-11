@@ -85,23 +85,32 @@ export default {
           id: groupId.value,
           data: createGroupForm,
         }).then(() => {
-          store.dispatch('groupDetails', createGroup.value.udid)
           store.dispatch('groupsList')
+          store.dispatch('groupDetails', createGroup.value.udid)
         })
       }
       else {
-        if(groupDetails.value != null || createGroup.value != null) {
+        if(groupDetails.value != null) {
           store.dispatch('updateGroup', {
-            id: createGroup.value ? createGroup.value.udid : groupDetails.value.udid,
+            id: groupDetails.value.udid,
             data: createGroupForm,
           }).then(() => {
-            store.dispatch('groupDetails', createGroup.value.udid)
             store.dispatch('groupsList')
+            store.dispatch('groupDetails', groupDetails.value.udid)
+          })
+        }
+        else if(createGroup.value != null) {
+          store.dispatch('updateGroup', {
+            id: createGroup.value.udid,
+            data: createGroupForm,
+          }).then(() => {
+            store.dispatch('groupsList')
+            store.dispatch('groupDetails', createGroup.value.udid)
           })
         }
         else {
+          store.dispatch('groupsList')
           store.dispatch('createGroup', createGroupForm).then(() => {
-            store.dispatch('groupsList')
           })
         }
       }

@@ -113,3 +113,7 @@ export const resetCounter = (state) => {
 export const errorMsg = (state, data) => {
   state.errorMsg = data
 }
+
+export const dropdownList = (state, data) => {
+  state.dropdownList = data
+}

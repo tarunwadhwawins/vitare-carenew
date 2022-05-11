@@ -12,6 +12,7 @@
     :not-found-content="loadingStatus ? undefined : null"
     :options="staffData"
     @search="handleStaffSearch"
+    @focus="handleStaffSearch"
     @change="handleStaffChange"
     size="large"
   >
@@ -23,7 +24,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted, watchEffect } from "vue";
+import { defineComponent, ref, onMounted, watchEffect, reactive } from "vue";
 import { useStore } from "vuex";
 import Services from "@/services/serviceMethod";
 export default defineComponent({
@@ -34,32 +35,34 @@ export default defineComponent({
     mode: String,
     close: Boolean,
     placeholder: String,
+    targetRecords: Array,
+    dropdownList: Array,
   },
 
   setup(props, context) {
     const store = useStore();
-    const staffData = ref([]);
+    const staff = reactive(props.dropdownList);
+    const staffData = staff ? ref(staff) : ref([]);
 
     const updateValue = (event) => {
       context.emit("update:modelValue", event.target.value);
     };
+
     onMounted(() => {
-      Services.singleDropdownSearch("", (d) => (staffData.value = d), "staff");
+      Services.singleDropdownSearch("", (d) => (staffData.value = d), props.targetRecords, "staff");
     });
+    
     watchEffect(() => {
       if (props.close) {
-        Services.singleDropdownSearch(
-          "",
-          (d) => (staffData.value = d),
-          "staff"
-        );
+        Services.singleDropdownSearch("", (d) => (staffData.value = d), props.targetRecords, "staff");
       }
     });
 
     const handleStaffSearch = (val) => {
       store.commit("dropdownLoadingStatus", true);
       staffData.value = [];
-      Services.singleDropdownSearch(val, (d) => (staffData.value = d), "staff");
+      const value = val.target ? val.target.value : val
+      Services.singleDropdownSearch(value, (d) => (staffData.value = d), props.targetRecords, "staff");
     };
 
     const handleStaffChange = (val) => {

@@ -5,7 +5,7 @@
       <a-col :span="21">
         <div class="form-group">
           <a-form-item :label="$t('global.program')" name="program" :rules="[{ required: true, message: $t('global.program')+' '+$t('global.validation') }]">
-            <ProgramsDropdownSearch mode="multiple" v-model:value="addProgramToGroupForm.program" @handleProgramChange="handleProgramChange($event)" :placeholder="$t('staffGroups.searchProgramsPlaceholder')" />
+            <ProgramsDropdownSearch mode="multiple" v-model:value="addProgramToGroupForm.program" @handleProgramChange="handleProgramChange($event)" :placeholder="$t('staffGroups.searchProgramsPlaceholder')" :targetRecords="groupProgramsList" :dropdownList="dropdownList" />
           </a-form-item>
         </div>
       </a-col>
@@ -32,6 +32,7 @@ import {
   watchEffect
 } from "vue";
 import { useStore } from 'vuex';
+import Services from "@/services/serviceMethod";
 
 export default {
   components: {
@@ -67,6 +68,14 @@ export default {
       return store.state.staffGroups.groupDetails
     })
 
+    const groupProgramsList = computed(() => {
+      return store.state.staffGroups.groupProgramsList
+    })
+
+    const dropdownList = computed(() => {
+      return store.state.staffGroups.dropdownList
+    })
+
     watchEffect(() => {
       if(createGroup.value != null) {
         groupId.value = props.groupID ? props.groupID : createGroup.value.udid;
@@ -75,6 +84,7 @@ export default {
         groupId.value = props.groupID ? props.groupID : groupDetails.value.udid;
       }
     })
+    const programData = ref([]);
 
     const submitForm = () => {
       const data = {
@@ -84,7 +94,9 @@ export default {
       store.dispatch('addProgramToGroup', data).then(() => {
         formRef.value.resetFields();
         Object.assign(addProgramToGroupForm, form)
-        store.dispatch('groupProgramsList', groupId.value)
+        store.dispatch('groupProgramsList', groupId.value).then(() => {
+          Services.singleDropdownSearch("", (d) => (programData.value = d), groupProgramsList.value, "program");
+        })
       })
     }
 
@@ -100,6 +112,8 @@ export default {
       addProgramToGroupForm,
       handleProgramChange,
       closeModal,
+      groupProgramsList,
+      dropdownList,
     };
   },
 };

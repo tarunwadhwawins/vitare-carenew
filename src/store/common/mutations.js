@@ -103,6 +103,9 @@ export const globalCodes = (state, data) => {
         if (element.name === 'Question dataType') {
             state.questionDataType = element.globalCode;
         }
+        if (element.name === 'Staff Level') {
+            state.staffLevels = element.globalCode;
+        }
         if (element.name === 'WorkFlow Event Type') {
             state.workflowEventType = element.globalCode;
         }

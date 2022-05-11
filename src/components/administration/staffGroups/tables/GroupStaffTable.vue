@@ -1,5 +1,8 @@
 <template>
   <a-table :columns="columns" :data-source="groupStaffList" >
+    <template #fullName="{record}">
+      <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid ? record.uuid : 'eyrer8758458958495'  }}" target="_blank">{{ record.fullName }}</router-link>
+    </template>
     <template #actions="{record}">
       <a class="icons" @click="deleteGroupStaff(record.udid)"> <DeleteOutlined /></a>
     </template>
@@ -44,6 +47,9 @@ export default {
       {
         title: "Name",
         dataIndex: "fullName",
+        slots: {
+          customRender: 'fullName'
+        }
       },
       {
         title: "Department",

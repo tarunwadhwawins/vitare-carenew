@@ -1,5 +1,8 @@
 <template>
   <a-table :columns="columns" :data-source="groupProvidersList" >
+    <template #name="{record}">
+      <router-link :to="{ name: 'providerSummary', params: { id: record.id ? record.udid : 16  }}" target="_blank">{{ record.name }}</router-link>
+    </template>
     <template #actions="{record}">
       <a class="icons" @click="deleteGroupProvider(record.udid)"> <DeleteOutlined /></a>
     </template>
@@ -44,6 +47,9 @@ export default {
       {
         title: "Name",
         dataIndex: "name",
+        slots: {
+          customRender: 'name'
+        }
       },
       {
         title: "Actions",

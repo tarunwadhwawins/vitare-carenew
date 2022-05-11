@@ -5,7 +5,7 @@
       <a-col :span="21">
         <div class="form-group">
           <a-form-item :label="$t('global.provider')" name="provider" :rules="[{ required: true, message: $t('global.provider')+' '+$t('global.validation') }]">
-            <ProvidersDropdownSearch mode="multiple" v-model:value="addProviderToGroupForm.provider" @handleProviderChange="handleProviderChange($event)" :placeholder="$t('staffGroups.searchProvidersPlaceholder')" />
+            <ProvidersDropdownSearch mode="multiple" v-model:value="addProviderToGroupForm.provider" @handleProviderChange="handleProviderChange($event)" :placeholder="$t('staffGroups.searchProvidersPlaceholder')" :targetRecords="groupProvidersList" :dropdownList="dropdownList" />
           </a-form-item>
         </div>
       </a-col>
@@ -32,6 +32,7 @@ import {
   watchEffect
 } from "vue";
 import { useStore } from 'vuex';
+import Services from "@/services/serviceMethod";
 
 export default {
   components: {
@@ -67,6 +68,14 @@ export default {
       return store.state.staffGroups.groupDetails
     })
 
+    const groupProvidersList = computed(() => {
+      return store.state.staffGroups.groupProvidersList
+    })
+
+    const dropdownList = computed(() => {
+      return store.state.staffGroups.dropdownList
+    })
+
     watchEffect(() => {
       if(createGroup.value != null) {
         groupId.value = props.groupID ? props.groupID : createGroup.value.udid;
@@ -75,6 +84,7 @@ export default {
         groupId.value = props.groupID ? props.groupID : groupDetails.value.udid;
       }
     })
+    const providerData = ref([]);
 
     const submitForm = () => {
       const data = {
@@ -84,7 +94,9 @@ export default {
       store.dispatch('addProviderToGroup', data).then(() => {
         formRef.value.resetFields();
         Object.assign(addProviderToGroupForm, form)
-        store.dispatch('groupProvidersList', groupId.value)
+        store.dispatch('groupProvidersList', groupId.value).then(() => {
+          Services.singleDropdownSearch("", (d) => (providerData.value = d), groupProvidersList.value, "provider");
+        })
       })
     }
 
@@ -100,6 +112,8 @@ export default {
       addProviderToGroupForm,
       handleProviderChange,
       closeModal,
+      groupProvidersList,
+      dropdownList,
     };
   },
 };

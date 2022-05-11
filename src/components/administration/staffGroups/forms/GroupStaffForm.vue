@@ -5,7 +5,7 @@
       <a-col :span="21">
         <div class="form-group">
           <a-form-item :label="$t('global.staff')" name="staff" :rules="[{ required: true, message: $t('global.staff')+' '+$t('global.validation') }]">
-            <StaffDropDown mode="multiple" v-model:value="addStaffToGroupForm.staff" @handleStaffChange="handleStaffChange($event)" :placeholder="$t('staffGroups.searchStaffPlaceholder')" />
+            <StaffDropDown mode="multiple" v-model:value="addStaffToGroupForm.staff" @handleStaffChange="handleStaffChange($event)" :placeholder="$t('staffGroups.searchStaffPlaceholder')" :targetRecords="groupStaffList" :dropdownList="dropdownList" />
           </a-form-item>
         </div>
       </a-col>
@@ -32,6 +32,7 @@ import {
   watchEffect
 } from "vue";
 import { useStore } from 'vuex';
+import Services from "@/services/serviceMethod";
 
 export default {
   components: {
@@ -58,6 +59,14 @@ export default {
       return store.state.staffGroups.groupDetails
     })
 
+    const groupStaffList = computed(() => {
+      return store.state.staffGroups.groupStaffList
+    })
+
+    const dropdownList = computed(() => {
+      return store.state.staffGroups.dropdownList
+    })
+
     watchEffect(() => {
       if(createGroup.value != null) {
         groupId.value = props.groupID ? props.groupID : createGroup.value.udid;
@@ -75,6 +84,7 @@ export default {
 		const handleStaffChange = (val) => {
 			addStaffToGroupForm.staff = val;
 		};
+    const staffData = ref([]);
 
     const submitForm = () => {
       const data = {
@@ -84,7 +94,9 @@ export default {
       store.dispatch('addStaffToGroup', data).then(() => {
         formRef.value.resetFields();
         Object.assign(addStaffToGroupForm, form)
-        store.dispatch('groupStaffList', groupId.value)
+        store.dispatch('groupStaffList', groupId.value).then(() => {
+          Services.singleDropdownSearch("", (d) => (staffData.value = d), groupStaffList.value, "staff");
+        })
       })
     }
 
@@ -101,6 +113,8 @@ export default {
       handleStaffChange,
       closeModal,
       groupId,
+      groupStaffList,
+      dropdownList,
     };
   },
 };
