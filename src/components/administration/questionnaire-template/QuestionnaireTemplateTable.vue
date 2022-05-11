@@ -22,7 +22,14 @@
             <a class="icons" @click="editModal(record.id)">
                 <EditOutlined /></a>
         </a-tooltip>
-
+<a-tooltip placement="bottom">
+            <template #title>
+                <span>View</span>
+            </template>
+            <router-link :to="{ name: 'TemplateResponse', params: { udid:record.id?record.id:'eyrer8758458958495'  }}">
+            <a class="icons">
+                <EyeTwoTone /></a></router-link>
+        </a-tooltip>
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Clone</span>
@@ -45,7 +52,7 @@
 <Loader />
 </template>
 <script>
-import {DeleteOutlined,EditOutlined,CopyOutlined,SettingTwoTone} from "@ant-design/icons-vue"
+import {DeleteOutlined,EditOutlined,CopyOutlined,SettingTwoTone,EyeTwoTone} from "@ant-design/icons-vue"
 import {useStore} from "vuex"
 import Loader from "@/components/loader/Loader"
 import {messages} from "@/config/messages";
@@ -78,7 +85,8 @@ export default {
         EditOutlined,
         CopyOutlined,
         Loader,
-        SettingTwoTone
+        SettingTwoTone,
+        EyeTwoTone
     },
     props: {},
     setup(props, {

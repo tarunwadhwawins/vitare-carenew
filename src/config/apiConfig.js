@@ -127,7 +127,7 @@ export const API_ENDPOINTS = {
     groupPermissions:'groupPermission',
     
     //Questionnaire Template
-    questionnaireTemplate:'questionnaire',
+    questionnaireTemplate:'questionnaireTemplate',
     
     
 

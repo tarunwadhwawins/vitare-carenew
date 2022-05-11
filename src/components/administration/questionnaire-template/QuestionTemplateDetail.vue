@@ -75,6 +75,7 @@
   import { useStore  } from "vuex"
   import { useRoute  } from 'vue-router';
   export default defineComponent({
+      name:"Question Template Details",
     components: {
     
       DeleteOutlined,
