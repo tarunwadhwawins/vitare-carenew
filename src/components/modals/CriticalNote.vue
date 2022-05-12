@@ -39,6 +39,7 @@ export default defineComponent({
       store.state.patients.patientCriticalNotes= ''
       store.dispatch("addCriticalNote", {udid:route.params.udid,criticalNote:notes}).then(() => {
         store.dispatch('patientCriticalNotes', route.params.udid);
+        store.dispatch('patientTimeline', {id:route.params.udid, type:''});
       })
       setTimeout(() => {
         if(patient.value){
