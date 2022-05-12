@@ -1,11 +1,11 @@
 <template>
-  <a-modal width="90%" :title="$t('global.familyMembers')" centered>
+  <a-modal width="90%" :title="$t('global.responsiblePersons')" centered>
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <a-table
           rowKey="id"
-          :columns="familyMembersColumns"
-          :data-source="familyMembersList"
+          :columns="responsiblePersonsColumns"
+          :data-source="responsiblePersonsList"
           :scroll="{ x: 2100 }"
           :pagination="false"
         >
@@ -33,10 +33,10 @@
 
           <template #action="{ record }">
             <a class="icons" v-if="arrayToObjact(screensPermissions,303)"
-              ><EditOutlined @click="editFamilyMember(record.id);actionTrack(paramsId,303,'patient')"
+              ><EditOutlined @click="editResponsiblePerson(record.id);actionTrack(paramsId,303,'patient')"
             /></a>
             <a class="icons" v-if="arrayToObjact(screensPermissions,304)"
-              ><DeleteOutlined @click="deleteFamilyMember(record.id);actionTrack(paramsId,304,'patient')"
+              ><DeleteOutlined @click="deleteResponsiblePerson(record.id);actionTrack(paramsId,304,'patient')"
             /></a>
           </template>
         </a-table>
@@ -64,7 +64,7 @@ export default {
     patientId: {
       type: Number,
     },
-    /* familyMembersList: {
+    /* responsiblePersonsList: {
       type: Array,
     }, */
   },
@@ -72,7 +72,7 @@ export default {
     const store = useStore();
     const route = useRoute();
     const patientUdid = reactive(props.patientId);
-    const familyMembersColumns = [
+    const responsiblePersonsColumns = [
       {
         title: "Name",
         dataIndex: "fullName",
@@ -132,34 +132,34 @@ export default {
       },
     ];
     
-    const familyMembersList = computed(() => {
-      return store.state.patients.familyMembersList
+    const responsiblePersonsList = computed(() => {
+      return store.state.patients.responsiblePersonsList
     })
 
-    const editFamilyMember = (value) => {
-      store.dispatch("familyMemberDetails", {
+    const editResponsiblePerson = (value) => {
+      store.dispatch("responsiblePersonDetails", {
           patientUdid: patientUdid,
           familyUdid: value,
         })
         .then(() => {
-          emit("isFamilyMemberEdit");
+          emit("isResponsiblePersonEdit");
         });
     };
 
-    const deleteFamilyMember = (value) => {
+    const deleteResponsiblePerson = (value) => {
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
-          store.dispatch("deleteFamilyMember", {
+          store.dispatch("deleteResponsiblePerson", {
               patientUdid: patientUdid,
               familyUdid: value,
             })
             .then(() => {
               if (route.name == "PatientSummary") {
                 store.dispatch('patientDetails', patientUdid)
-                store.dispatch("familyMembersList", patientUdid);
-                if(familyMembersList.value.length <= 1) {
+                store.dispatch("responsiblePersonsList", patientUdid);
+                if(responsiblePersonsList.value.length <= 1) {
                   emit('closeModal', {
-                    modal: 'familyMembersList',
+                    modal: 'responsiblePersonsList',
                     value: false
                   })
                 }
@@ -174,10 +174,10 @@ export default {
       screensPermissions: store.getters.screensPermissions,
       actionTrack,
       paramsId:route.params.udid,
-      familyMembersColumns,
-      familyMembersList,
-      editFamilyMember,
-      deleteFamilyMember,
+      responsiblePersonsColumns,
+      responsiblePersonsList,
+      editResponsiblePerson,
+      deleteResponsiblePerson,
     };
   },
 };

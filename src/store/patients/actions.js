@@ -10,23 +10,25 @@ export const addDemographic = async ({commit}, data) => {
     commit('addDemographic', response.data.data);
     commit('patientDetails', response.data.data);
     commit('status', true)
-    // commit('counterPlus')
-    if(data.familyMember.fullName || data.familyMember.familyEmail || data.familyMember.familyPhoneNumber  || data.familyMember.familyContactType.length >0  || data.familyMember.familyContactTime.length >0 || data.familyMember.familyGender || data.familyMember.relation ){
-    serviceMethod.common("post", API_ENDPOINTS['patient']+`/${response.data.data.id}/familyAdd`, null, data.familyMember).then((response) => {
-      commit("familyMemberDetails",response.data.data)
-    })
-  }
-  if(data.emergencyContactForm.fullName || data.emergencyContactForm.emergencyEmail || data.emergencyContactForm.phoneNumber || data.emergencyContactForm.contactType.length>0 || data.emergencyContactForm.contactTime.length>0 || data.emergencyContactForm.gender){
-    serviceMethod.common("post", API_ENDPOINTS['patient']+`/${response.data.data.id}/emergency`, null, data.emergencyContactForm).then((response) => {
-      commit('emergencyContactDetails', response.data.data);
-    })
-  }
+    
+    if(data.responsiblePerson.firstName || data.responsiblePerson.middleName || data.responsiblePerson.lastName || data.responsiblePerson.email || data.responsiblePerson.phoneNumber  || data.responsiblePerson.contactType.length > 0  || data.responsiblePerson.contactTime.length >0 || data.responsiblePerson.gender || data.responsiblePerson.relation ) {
+      serviceMethod.common("post", API_ENDPOINTS['patient']+`/${response.data.data.id}/responsible`, null, data.responsiblePerson).then((response) => {
+        commit("responsiblePersonDetails",response.data.data)
+      })
+    }
+
+    if(data.emergencyContactForm.firstName || data.emergencyContactForm.middleName || data.emergencyContactForm.lastName || data.emergencyContactForm.email || data.emergencyContactForm.phoneNumber || data.emergencyContactForm.contactType.length > 0 || data.emergencyContactForm.contactTime.length>0 || data.emergencyContactForm.gender) {
+      serviceMethod.common("post", API_ENDPOINTS['patient']+`/${response.data.data.id}/emergency`, null, data.emergencyContactForm).then((response) => {
+        commit('emergencyContactDetails', response.data.data);
+      })
+    }
+
     if((data.referal.referralDesignation != null || data.referal.referralEmail != null || data.referal.referralFax != null || data.referal.referralName != null || data.referal.referralPhoneNumber != null) && (data.referal.referralDesignation != "" || data.referal.referralEmail != "" || data.referal.referralFax != "" || data.referal.referralName != "" || data.referal.referralPhoneNumber != "")) {
-    serviceMethod.common("post", `patient/${response.data.data.id}/referals`, null, data.referal).then(response => {
-      commit('addPatientReferals', response.data.data);
-      errorMessage.push(false)
-    })
-  }
+      serviceMethod.common("post", `patient/${response.data.data.id}/referals`, null, data.referal).then(response => {
+        commit('addPatientReferals', response.data.data);
+        errorMessage.push(false)
+      })
+    }
     // successSwal(response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
@@ -1010,10 +1012,10 @@ export const criticalNotesDelete = async ({commit}, data) => {
  * Patient Family Members
  */
 
-export const familyMembersList = async ({commit}, patientUdid) => {
+export const responsiblePersonsList = async ({commit}, patientUdid) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", API_ENDPOINTS['patient']+`/${patientUdid}/family`, null, null).then((response) => {
-    commit('familyMembersList', response.data.data);
+    commit('responsiblePersonsList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
@@ -1025,7 +1027,7 @@ export const familyMembersList = async ({commit}, patientUdid) => {
   })
 }
 
-export const addFamilyMember = async ({commit}, data) => {
+export const addResponsiblePerson = async ({commit}, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("post", API_ENDPOINTS['patient']+`/${data.patientUdid}/familyAdd`, null, data.data).then((response) => {
     successSwal(response.data.message)
@@ -1044,7 +1046,7 @@ export const addFamilyMember = async ({commit}, data) => {
   })
 }
 
-export const updateFamilyMember = async ({commit}, data) => {
+export const updateResponsiblePerson = async ({commit}, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("put", API_ENDPOINTS['patient']+`/${data.patientUdid}/familyUpdate/${data.familyUdid}`, null, data.data).then((response) => {
     successSwal(response.data.message)
@@ -1063,7 +1065,7 @@ export const updateFamilyMember = async ({commit}, data) => {
   })
 }
 
-export const deleteFamilyMember = async ({commit}, data) => {
+export const deleteResponsiblePerson = async ({commit}, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("delete", API_ENDPOINTS['patient']+`/${data.patientUdid}/family/${data.familyUdid}`, null, data.data).then((response) => {
     successSwal(response.data.message)
@@ -1079,10 +1081,10 @@ export const deleteFamilyMember = async ({commit}, data) => {
   })
 }
 
-export const familyMemberDetails = async ({commit}, data) => {
+export const responsiblePersonDetails = async ({commit}, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", API_ENDPOINTS['patient']+`/${data.patientUdid}/family/${data.familyUdid}`, null, data.data).then((response) => {
-    commit('familyMemberDetails', response.data.data)
+    commit('responsiblePersonDetails', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)

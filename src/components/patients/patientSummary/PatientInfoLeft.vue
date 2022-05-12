@@ -49,10 +49,10 @@
       </div>
       <div class="pat-profile-inner" >
         <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 290)">
-          {{ $t('global.familyMembers') }} <PlusOutlined @click="showAddFamilyMemberModal();actionTrack(paramsId,290,'patient')"/><br />
+          {{ $t('global.responsiblePersons') }} <PlusOutlined @click="showAddResponsiblePersonModal();actionTrack(paramsId,290,'patient')"/><br />
         </div>
-        <div v-if="familyMembersList && familyMembersList.length > 0 && arrayToObjact(screensPermissions, 302)" class="thumb-desc">
-          <a href="javascript:void(0)" @click="showFamilyMembersModal();actionTrack(paramsId,302,'patient')" >{{familyMembersList[0].fullName}}</a>
+        <div v-if="responsiblePersonsList && responsiblePersonsList.length > 0 && arrayToObjact(screensPermissions, 302)" class="thumb-desc">
+          <a href="javascript:void(0)" @click="showResponsiblePersonsModal();actionTrack(paramsId,302,'patient')" >{{responsiblePersonsList[0].fullName}}</a>
         </div>
       </div>
       <div class="pat-profile-inner">
@@ -138,7 +138,7 @@
       </div>
     </div>
   
-    <AddFamilyMemberModal v-model:visible="addFamilyMembersModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" :isFamilyMemberEdit="isFamilyMemberEdit" />
+    <AddResponsiblePersonModal v-model:visible="addResponsiblePersonsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" :isResponsiblePersonEdit="isResponsiblePersonEdit" />
     <!-- <AddPhysicianModal v-if="addPhysicianModalVisible" v-model:visible="addPhysicianModalVisible" @closeModal="handleOk" :isPhysicianEdit="isPhysicianEdit" :staffType="1" /> -->
     <AddEmergencyContacts v-model:visible="addEmergencyContactModalVisible" @closeModal="handleOk" :isEmergencyContactEdit="isEmergencyContactEdit" />
     <AddCriticalNote v-model:visible="criticalModalVisible" @closeModal="handleOk" @saveModal="handleCriticalNote($event)"/>
@@ -154,7 +154,7 @@
     <PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
     <PatientsModal v-model:visible="patientsModalVisible" :isEdit="true" @closeModal="handleOk" @saveModal="handleOk($event)" />
 
-    <FamilyMembersDetailsModal v-model:visible="familyMembersModalVisible" :patientId="patientDetails.id" @isFamilyMemberEdit="editFamilyMember" @closeModal="handleOk" />
+    <ResponsiblePersonsDetailsModal v-model:visible="responsiblePersonsModalVisible" :patientId="patientDetails.id" @isResponsiblePersonEdit="editResponsiblePerson" @closeModal="handleOk" />
     <!-- <PhysiciansDetailsModal v-if="physiciansModalVisible" v-model:visible="physiciansModalVisible" @isPhysicianEdit="editPhysician" @closeModal="handleOk" :staffType="staffType" /> -->
     <EmergencyContactsDetailsModal v-model:visible="emergencyContactsModalVisible" @isEmergencyContactEdit="editEmergencyContact" @closeModal="handleOk" />
     <CoordinatorsListingModal v-if="coordinatorsListingModalVisible" v-model:visible="coordinatorsListingModalVisible" :staffType="staffType" :title="title" @closeModal="handleOk" />
@@ -213,8 +213,8 @@ export default defineComponent({
     Flags: defineAsyncComponent(()=>import("@/components/common/flags/Flags")),
     AddCriticalNote: defineAsyncComponent(()=>import("@/components/modals/CriticalNote")),
     CriticalNotesDetailModal: defineAsyncComponent(()=>import("@/components/modals/CriticalNotesDetail")),
-    AddFamilyMemberModal: defineAsyncComponent(()=>import("@/components/modals/AddFamilyMemberModal")),
-    FamilyMembersDetailsModal: defineAsyncComponent(()=>import("@/components/modals/FamilyMembersDetailsModal")),
+    AddResponsiblePersonModal: defineAsyncComponent(()=>import("@/components/modals/AddFamilyMemberModal")),
+    ResponsiblePersonsDetailsModal: defineAsyncComponent(()=>import("@/components/modals/FamilyMembersDetailsModal")),
     // AddPhysicianModal: defineAsyncComponent(()=>import("@/components/modals/AddPhysicianModal")),
     // // PhysiciansDetailsModal: defineAsyncComponent(()=>import("@/components/modals/PhysiciansDetailsModal")),
     AddEmergencyContacts: defineAsyncComponent(()=>import("@/components/modals/AddEmergencyContacts")),
@@ -227,12 +227,12 @@ export default defineComponent({
     const route = useRoute();
     const custom = ref(false);
     const isEditTimeLog = ref(false);
-    const isFamilyMemberEdit = ref(false);
+    const isResponsiblePersonEdit = ref(false);
     const isPhysicianEdit = ref(false);
     const criticalNotesDetailVisible =ref(false)
     const flagsModalVisible = ref(false);
-    const addFamilyMembersModalVisible =ref(false)
-    const familyMembersModalVisible =ref(false)
+    const addResponsiblePersonsModalVisible =ref(false)
+    const responsiblePersonsModalVisible =ref(false)
     const criticalModalVisible =ref(false)
     const patientsModalVisible = ref(false);
     const addAppointmentVisible = ref(false);
@@ -285,8 +285,8 @@ export default defineComponent({
       return store.state.patients.criticalNotesList
     })
 
-    const familyMembersList = computed(() => {
-      return store.state.patients.familyMembersList
+    const responsiblePersonsList = computed(() => {
+      return store.state.patients.responsiblePersonsList
     })
 
     const physiciansList = computed(() => {
@@ -334,15 +334,15 @@ export default defineComponent({
     const latestDevice = computed(() => {
       return store.state.patients.latestDevice
     })
-    const getFamilyMemberDetails = computed(() => {
-      return store.state.patients.getFamilyMemberDetails
+    const getResponsiblePersonDetails = computed(() => {
+      return store.state.patients.getResponsiblePersonDetails
     })
     
     const handleOk = ({modal, value}) => {
       if(value) {
         addEmergencyContactModalVisible.value = modal == 'addEmergencyContact' ? value : false;
         // addPhysicianModalVisible.value = modal == 'addPhysician' ? value : false;
-        addFamilyMembersModalVisible.value = modal == 'addFamilyMember' ? value : false;
+        addResponsiblePersonsModalVisible.value = modal == 'addResponsiblePerson' ? value : false;
         patientsModalVisible.value = modal == 'editPatient' ? value : false;
         //addDocumentVisible.value = modal == 'addDocument' ? value : false;
         documentDetailVisible.value = modal == 'documentDetails' ? value : false;
@@ -354,7 +354,7 @@ export default defineComponent({
         addNoteVisible.value = modal == 'addNote' ? value : false;
         careCoordinatorsVisible.value = modal == 'addCareTeam' ? value : false;
         addDeviceVisible.value = modal == 'addInventory' ? value : false;
-        familyMembersModalVisible.value = modal == 'familyMembersList' ? value : false;
+        responsiblePersonsModalVisible.value = modal == 'responsiblePersonsList' ? value : false;
         // physiciansModalVisible.value = modal == 'physiciansList' ? value : false;
         emergencyContactsModalVisible.value = modal == 'emergencyContactsList' ? value : false;
         deviceDetailVisible.value = modal == 'devicesListing' ? value : false;
@@ -374,13 +374,13 @@ export default defineComponent({
         deviceDetailVisible.value = false;
         addEmergencyContactModalVisible.value = false;
         // addPhysicianModalVisible.value = false;
-        addFamilyMembersModalVisible.value = false;
+        addResponsiblePersonsModalVisible.value = false;
         patientsModalVisible.value = false;
         addDocumentVisible.value = false;
         documentDetailVisible.value = false;
         addTimeLogsVisible.value = false;
         criticalNotesDetailVisible.value = false;
-        familyMembersModalVisible.value = false;
+        responsiblePersonsModalVisible.value = false;
         // physiciansModalVisible.value = false;
         emergencyContactsModalVisible.value = false;
         coordinatorsListingModalVisible.value = false;
@@ -396,18 +396,18 @@ export default defineComponent({
       emergencyContactsModalVisible.value = true
     }
 
-    const showAddFamilyMemberModal = () => {
-      addFamilyMembersModalVisible.value = true
-      isFamilyMemberEdit.value = false
+    const showAddResponsiblePersonModal = () => {
+      addResponsiblePersonsModalVisible.value = true
+      isResponsiblePersonEdit.value = false
     }
 
-    const showFamilyMembersModal = ()=>{
-      familyMembersModalVisible.value=true
+    const showResponsiblePersonsModal = ()=>{
+      responsiblePersonsModalVisible.value=true
     }
 
-    const editFamilyMember = () => {
-      isFamilyMemberEdit.value=true
-      addFamilyMembersModalVisible.value=true
+    const editResponsiblePerson = () => {
+      isResponsiblePersonEdit.value=true
+      addResponsiblePersonsModalVisible.value=true
     }
 
     const editEmergencyContact = () => {
@@ -588,11 +588,11 @@ const checkFieldsData = computed(()=>{
       criticalNotesDetailVisible,
       flagsModalVisible,
       editPhysician,
-      editFamilyMember,
-      showAddFamilyMemberModal,
-      showFamilyMembersModal,
-      addFamilyMembersModalVisible,
-      familyMembersModalVisible,
+      editResponsiblePerson,
+      showAddResponsiblePersonModal,
+      showResponsiblePersonsModal,
+      addResponsiblePersonsModalVisible,
+      responsiblePersonsModalVisible,
       showCriticalModal,
       criticalModalVisible,
       patientsModalVisible,
@@ -625,13 +625,13 @@ const checkFieldsData = computed(()=>{
       showDeviceModal,
       showCoordinatorsListingModal,
 
-      getFamilyMemberDetails,
-      familyMembersList,
+      getResponsiblePersonDetails,
+      responsiblePersonsList,
       physiciansList,
       patientDetails,
       timeLogDetails,
       isPhysicianEdit,
-      isFamilyMemberEdit,
+      isResponsiblePersonEdit,
       isEditTimeLog,
 
       latestFlag,

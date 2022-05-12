@@ -19,11 +19,14 @@ const patient = {
     preferredTimeofDayforContact:'Time of Day to Contact in Order of Preference',
     MRN:'MRN( Medical Record Number) ',
     suiteorApartment:'Suite or Apartment',
-    primaryFamilyMember:'Responsible Party',
+    primaryFamilyMember:'Responsible Person',
+    responsiblePerson:'Responsible Person',
+    self:'Self',
     fullName:'Full Name',
     emailAddress:'Email Address',
     emergencyContact:'Emergency Contact',
-    sameAsPrimaryFamilyMemberInfo:'Same as Responsible Party info'
+    sameAsPrimaryFamilyMemberInfo:'Same as Responsible Person info',
+    sameAsResponsiblePersonInfo:'Same as Responsible Person info',
   },
 
   conditions:{
