@@ -59,7 +59,17 @@ commit('loadingTableStatus', true)
     commit('loadingTableStatus', false)
   })
 }
+export const staffDelete = async ({commit}, id) => {
 
+  await serviceMethod.common("get", "staff", id, null).then((response) => {
+    successSwal(response.data.message)
+ 
+  }).catch((error) => { 
+    errorLogWithDeviceInfo(error.response)
+    commit('errorMsg', error);
+
+  })
+}
 export const specializationStaff = async ({commit}) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", "staff/specialization/count", null, null).then((response) => {

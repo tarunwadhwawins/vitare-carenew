@@ -16,11 +16,20 @@
     <template #lastReadingDate>
         <WarningOutlined />
     </template>
+    <template #action="{record}" v-if="arrayToObjact(screensPermissions,38)">
+      <a-tooltip placement="bottom" >
+          <template #title>
+              <span>{{$t('global.delete')}}</span>
+          </template>
+          <a class="icons">
+              <DeleteOutlined @click="deletestaff(record.uuid)"/></a>
+      </a-tooltip>
+  </template>
 </a-table>
 </template>
 
 <script>
-import { WarningOutlined } from "@ant-design/icons-vue";
+import { WarningOutlined,DeleteOutlined } from "@ant-design/icons-vue";
 import {
   dateFormat,
   tableYScrollerCounterPage,
@@ -28,11 +37,19 @@ import {
 } from "@/commonMethods/commonMethod";
 import { onMounted } from "vue";
 import { useStore } from "vuex";
+import {
+    messages
+} from "@/config/messages";
+import {
+    warningSwal,
+
+} from "@/commonMethods/commonMethod";
 //import InfiniteLoader from "@/components/loader/InfiniteLoader";
 export default {
   name: "DataTable",
   components: {
     WarningOutlined,
+    DeleteOutlined
     //  InfiniteLoader
   },
   props: {},
@@ -121,6 +138,19 @@ export default {
         data,
       });
     };
+    function deletestaff(id) {
+            warningSwal(messages.deleteWarning).then((response) => {
+                if (response == true) {
+
+                    var index = meta.staffs.findIndex(function (o) {
+                        return o.uuid === id;
+                    })
+
+                    store.dispatch("staffDelete", id)
+                    meta.staffs.splice(index, 1)
+                }
+            })
+        }
     return {
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
@@ -129,6 +159,7 @@ export default {
       dateFormat,
       handleTableChange,
       tableYScrollerCounterPage,
+      deletestaff
     };
   },
 };

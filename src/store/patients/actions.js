@@ -10,7 +10,7 @@ export const addDemographic = async ({commit}, data) => {
     commit('addDemographic', response.data.data);
     commit('patientDetails', response.data.data);
     commit('status', true)
-    commit('counterPlus')
+    // commit('counterPlus')
     if(data.familyMember.fullName || data.familyMember.familyEmail || data.familyMember.familyPhoneNumber  || data.familyMember.familyContactType.length >0  || data.familyMember.familyContactTime.length >0 || data.familyMember.familyGender || data.familyMember.relation ){
     serviceMethod.common("post", API_ENDPOINTS['patient']+`/${response.data.data.id}/familyAdd`, null, data.familyMember).then((response) => {
       commit("familyMemberDetails",response.data.data)
@@ -48,9 +48,10 @@ export const updateDemographic = async ({commit}, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("put", `patient/${data.id}`, null, data.data).then((response) => {
     commit('updateDemographic', response.data.data);
+    commit('addDemographic', response.data.data);
     // successSwal(response.data.message)
     commit('loadingStatus', false)
-    commit('counterPlus')
+    
     
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
@@ -86,7 +87,22 @@ export const patients = async ({
 
 }
 
+export const patientsDelete = async ({
+  commit
+},id) => {
+  
+  
+ 
+  await serviceMethod.common("delete", "patient", id, null).then((response) => {
+    successSwal(response.data.message)
+   
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    errorSwal(error.response.data.message)
+    commit('loadingTableStatus', false)
+  })
 
+}
 export const addCondition = async ({commit}, request) => {
   const data = request.data;
   const patientId = request.id;

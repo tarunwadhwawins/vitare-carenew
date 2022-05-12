@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" title="Add Time Logs " centered @cancel="onCloseModal()">
+  <a-modal width="1000px" title="Add Time Logs " centered @cancel="onCloseModal()" :maskClosable="false"  :footer="false">
     <a-form layout="vertical" ref="formRef" :model="addTimeLogForm" @finish="submitForm">
       <a-row :gutter="24">
 
@@ -179,7 +179,10 @@ export default defineComponent({
 						isValueChanged.value = false;
 					}
 				})
-			}
+			}else{
+        formRef.value.resetFields();
+        isValueChanged.value = false;
+      }
     }
 
     const loggedInUserId = ref(null);

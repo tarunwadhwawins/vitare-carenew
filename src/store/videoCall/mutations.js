@@ -22,3 +22,7 @@ export const getVideoDetails = (state, data) => {
 export const videoLoadingStatus = (state, data) => {
    state.videoLoadingStatus = data
 }
+
+export const guestUser = (state, data) => {
+   state.guestUser = data
+}

@@ -8,11 +8,11 @@
         </div>
         <a-col :span="24" >
             <a-steps v-model:current="current" @change="scrollToTop($event)" >
-                <a-step v-for="item in steps" :key="item.title" :title="item.title" ><span :id="item"></span></a-step>
+                <a-step v-for="item in steps" :key="item.title" :title="item.title?item.title:''" ><span :id="item"></span></a-step>
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Demographics'">
                 <!-- <Demographics /> -->
-                <a-form :model="demographics" name="basic"  ref="formRef" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="demographic" @finishFailed="demographicsFailed">
+                <a-form :model="demographics" name="basic"  ref="formRef" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="demographic(); next();" @finishFailed="demographicsFailed">
                     <Loader />
                     <a-row :gutter="24">
                         <a-col :md="8" :sm="12" :xs="24">
@@ -424,7 +424,7 @@
                      <PatientSearch v-model:visible="patientSearch" @closeSearchPatient="closeSearchPatient($event)" @clearValidtion="clearValidtion"/>
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                        <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current)" html-type="submit">{{$t('global.next')}}</a-button>
+                        <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current);" html-type="submit">{{$t('global.next')}}</a-button>
                         <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
                             {{$t('global.done')}}
                         </a-button>
@@ -569,7 +569,7 @@
                 <div class="steps-action">
                     
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                    <a-button v-if="current < steps.length - 1" @click="scrollToTop(current)" type="primary">{{$t('global.next')}}</a-button>
+                    <a-button v-if="current < steps.length - 1" @click="next(); scrollToTop(current)" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
                     <a-button v-if="current == steps.length - 1" type="primary" @click="saveModal()">
                         {{$t('global.save')}}
                     </a-button>
@@ -592,7 +592,7 @@ import { useStore } from "vuex";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import { regex } from "@/RegularExpressions/regex";
 import Loader from "@/components/loader/Loader";
-import {successSwal,warningSwal,globalDateFormat } from "@/commonMethods/commonMethod";
+import {successSwal,warningSwal,globalDateFormat,errorSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 import { useRoute } from 'vue-router';
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
@@ -676,15 +676,11 @@ export default defineComponent( {
 			
 		]
     
-    const current= computed({
-      get: () =>
-        store.state.patients.counter,
-      set: (value) => {
-        store.state.patients.counter = value;
-      },
-    })
-
-    
+    const changedValue = () => {
+			
+			store.commit('isEditPatient', false)
+			isValueChanged.value = true
+    }
     const changedPhoneNumber = () => {
 			store.commit('isEditPatient', false)
 			isValueChanged.value = true
@@ -838,6 +834,30 @@ emergencyContactForm.gender=familyMember.familyGender
                 Object.assign(emergencyContactForm,emergencyForm)
             }
     }
+    
+    const current= computed({
+      get: () =>
+        store.state.patients.counter,
+      set: (value) => {
+          
+          if(patients.value.addDemographic){
+             
+            store.state.patients.counter = value
+          }else{
+            if (demographics.firstName && demographics.lastName && demographics.dob && demographics.email && demographics.phoneNumber) {
+                if(store.state.patients.counter<1){
+                
+                 demographic()
+                 store.state.patients.counter = value
+                }
+                    } else {
+                        errorSwal('All(*) fields are required!')
+                        store.state.patients.counter = 0;
+                    }
+          }
+        
+      },
+    })
      const form = reactive({ ...demographics, });
 
     onMounted(() => {
@@ -1160,15 +1180,18 @@ emergencyContactForm.gender=familyMember.familyGender
 
     function saveModal() {
       emit("saveModal", false);
+      store.commit("resetCounter");
       successSwal(messages.formSuccess);
       Object.assign(demographics, form);
       Object.assign(familyMember,familyMemberForm)
       Object.assign(referal,referalForm)
       Object.assign(emergencyContactForm,emergencyForm)
+      
       store.dispatch("patients");
       store.commit("resetCounter");
       emit("closeModal");
 			current.value = 0
+            Object.assign(demographics, form);
     }
 
     const bitrixFormCheck = computed(()=>{
@@ -1176,7 +1199,7 @@ emergencyContactForm.gender=familyMember.familyGender
     })
 
     function closeModal() {
-			current.value = 0
+			//current.value = 0
         if(isValueChanged.value || bitrixFormCheck.value) {
             warningSwal(messages.modalWarning).then((response) => {
                 if (response == true) {
@@ -1190,11 +1213,14 @@ emergencyContactForm.gender=familyMember.familyGender
       Object.assign(familyMember,familyMemberForm)
       Object.assign(referal,referalForm)
       Object.assign(emergencyContactForm,emergencyForm)
+                    
                     store.dispatch("patients");
                     store.commit("resetCounter");
                     store.state.patients.addDemographic = null
                     store.state.patients.fetchFromBitrix = null
 										store.state.patients.uploadFile = null
+                                        isValueChanged.value = false
+                                        Object.assign(demographics, form);
                 }
                 else {
                     emit("saveModal", true);
@@ -1205,7 +1231,7 @@ emergencyContactForm.gender=familyMember.familyGender
                 }
             })
         }else{
-            
+            store.commit("resetCounter");
             formRef.value.resetFields()
         }
         
