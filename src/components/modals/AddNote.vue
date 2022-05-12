@@ -5,7 +5,7 @@
         <a-col :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('notes.date')" name="date" :rules="[{ required: true, message: $t('notes.date')+' '+$t('global.validation')  }]">
-              <a-date-picker @change="changedValue" v-model:value="addNoteForm.date" :size="size" style="width: 100%" format="MM/DD/YYYY" />
+              <a-date-picker @change="changedValue" v-model:value="addNoteForm.date" :size="size" style="width: 100%" :format="globalDateFormat" disabled/>
             </a-form-item>
           </div>
         </a-col>
@@ -59,8 +59,9 @@ import { useStore } from "vuex";
 import { timeStamp } from '@/commonMethods/commonMethod';
 import { useRoute } from "vue-router";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
-import { warningSwal } from "@/commonMethods/commonMethod";
+import { warningSwal,globalDateFormat} from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
+import moment from "moment"
 
 export default defineComponent({
   components: {
@@ -89,7 +90,7 @@ export default defineComponent({
     })
 
     const addNoteForm = reactive({
-      date: "",
+      date: moment().format(globalDateFormat),
       category: "",
       type: "",
       flag: "",
@@ -161,6 +162,7 @@ export default defineComponent({
       changedValue,
       onCloseModal,
       flagsList,
+      globalDateFormat
     };
   },
 });
