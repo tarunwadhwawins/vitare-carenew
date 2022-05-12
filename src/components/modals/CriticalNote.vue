@@ -17,6 +17,7 @@
         </a-col>
       </a-row>
     </a-form>
+		<Loader />
   </a-modal>
 </template>
 
@@ -26,8 +27,11 @@ import { useStore } from "vuex";
 import {warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import {useRoute} from "vue-router"
+import Loader from "@/components/loader/Loader";
 export default defineComponent({
-
+	components: {
+		Loader,
+	},
   setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
@@ -40,6 +44,7 @@ export default defineComponent({
       store.dispatch("addCriticalNote", {udid:route.params.udid,criticalNote:notes}).then(() => {
         store.dispatch('patientCriticalNotes', route.params.udid);
         store.dispatch('patientTimeline', {id:route.params.udid, type:''});
+        emit("closeModal");
       })
       setTimeout(() => {
         if(patient.value){

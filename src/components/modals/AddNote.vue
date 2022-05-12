@@ -49,6 +49,7 @@
 
       </a-row>
     </a-form>
+		<Loader />
   </a-modal>
 </template>
 
@@ -62,10 +63,12 @@ import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 import { warningSwal,globalDateFormat} from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 import moment from "moment"
+import Loader from "@/components/loader/Loader";
 
 export default defineComponent({
   components: {
     ModalButtons,
+    Loader,
     GlobalCodeDropDown
   },
   setup(props, {emit}) {

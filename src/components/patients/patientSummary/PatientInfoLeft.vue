@@ -111,7 +111,7 @@
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 298)">
-          {{ $t('global.careTeam') }} <PlusOutlined @click="showAddPhysicianModal(0);actionTrack(paramsId,298,'patient')" />
+          Health Team <PlusOutlined @click="showAddPhysicianModal(0);actionTrack(paramsId,298,'patient')" />
         </div>
         <div v-if="latestCareTeam != null && arrayToObjact(screensPermissions, 305)" class="thumb-desc">
           <a href="javascript:void(0)" @click="showCoordinatorsListingModal(0);actionTrack(paramsId,305,'patient')" >{{ latestCareTeam.staff }}</a>

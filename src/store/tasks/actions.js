@@ -27,11 +27,13 @@ export const tasksList = async ({ commit }, page) => {
 };
 
 export const addTask = async ({ commit }, data) => {
+	commit('loadingStatus', true)
 	await ServiceMethodService.common('post', API_ENDPOINTS['addTask'], null, data)
 		.then((response) => {
 			// console.log('addTaskSuccess', response.data.data);
 			successSwal(response.data.message);
 			commit('addTask', response.data.data);
+			commit('loadingStatus', false)
 		})
 		.catch((error) => {
 			errorLogWithDeviceInfo(error.response)
@@ -45,6 +47,7 @@ export const addTask = async ({ commit }, data) => {
 				// commit('errorMsg', error.response.data.message)
 				commit('loadingStatus', false);
 			}
+			commit('loadingStatus', false)
 		});
 };
 
