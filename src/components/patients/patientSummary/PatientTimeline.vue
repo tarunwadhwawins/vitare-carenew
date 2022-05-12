@@ -32,7 +32,8 @@
             </div>
             <div class="timelineBody">
               <div class="content">
-                <p class="timeline-float timeline-title">{{ timeline.title }}</p>
+                <p class="timeline-float timeline-title"><span v-html="timeline.title"></span></p>
+                <!-- <p class="timeline-float timeline-title">{{ timeline.title }}</p> -->
                 <!-- <a class="timeline-float more-link" href="javascript:void(0)">more</a> -->
               </div>
               <!-- <MailOutlined /> -->
