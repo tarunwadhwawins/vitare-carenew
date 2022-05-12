@@ -141,6 +141,7 @@ export default defineComponent({
       const patientId = route.params.udid;
       store.dispatch('addNote', {id: patientId, data: data}).then(() => {
         store.dispatch('latestNotes', patientId)
+        store.dispatch('patientTimeline', {id:route.params.udid, type:''});
         formRef.value.resetFields();
         Object.assign(addNoteForm, form)
         emit('closeModal', {

@@ -50,6 +50,7 @@ export default {
       const submitForm = () => {
         store.dispatch('addPatientFlag', { patientUdid: patientUdid, data: addFlagForm }).then(() => {
           store.dispatch('patientFlagsList', patientUdid);
+          store.dispatch('patientTimeline', {id:route.params.udid, type:''});
           formRef.value.resetFields();
           Object.assign(addFlagForm, form);
           emit("closeModal", {

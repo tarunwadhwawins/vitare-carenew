@@ -93,14 +93,14 @@
         </div>
       </div>
       
-      <div class="pat-profile-inner">
+      <!-- <div class="pat-profile-inner">
         <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 296)">
           Notes <PlusOutlined @click="addNotesModal();actionTrack(paramsId,296,'patient')" />
         </div>
         <div v-if="latestNotes != null && arrayToObjact(screensPermissions, 324)" class="thumb-desc" >
           <a href="javascript:void(0)" @click="showNotesModal();actionTrack(paramsId,324,'patient')" >{{ latestNotes[0].note }}</a>
         </div>
-      </div>
+      </div> -->
       <div class="pat-profile-inner">
         <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 297)">
           Documents <PlusOutlined @click="addDocumentsModal('true');actionTrack(paramsId,297,'patient')" />
