@@ -11,24 +11,25 @@
             <template #title>
                 <span>Setting</span>
             </template>
+            <a class="icons">
             <router-link :to="{ name: 'QuestionTemplateDetail', params: { udid:record.id?record.id:'eyrer8758458958495'  }}">
-                <a class="icons">
-                    <SettingTwoTone /></a></router-link>
+                    <SettingTwoTone /></router-link></a>
         </a-tooltip>
         <a-tooltip placement="bottom">
             <template #title>
                 <span>Edit</span>
             </template>
-            <a class="icons" @click="editModal(record.id)">
-                <EditOutlined /></a>
+            <a class="icons" >
+                <EditOutlined @click="editModal(record.id)"/></a>
         </a-tooltip>
-<a-tooltip placement="bottom">
+        <a-tooltip placement="bottom">
             <template #title>
                 <span>View</span>
             </template>
-            <router-link :to="{ name: 'TemplateResponse', params: { udid:record.id?record.id:'eyrer8758458958495'  }}">
             <a class="icons">
-                <EyeTwoTone /></a></router-link>
+            <router-link :to="{ name: 'TemplateResponse', params: { udid:record.id?record.id:'eyrer8758458958495'  }}" target="_blank">
+                
+                    <EyeTwoTone /></router-link></a>
         </a-tooltip>
         <a-tooltip placement="bottom">
             <template #title>
@@ -51,6 +52,7 @@
 </a-table>
 <Loader />
 </template>
+
 <script>
 import {DeleteOutlined,EditOutlined,CopyOutlined,SettingTwoTone,EyeTwoTone} from "@ant-design/icons-vue"
 import {useStore} from "vuex"
@@ -94,11 +96,14 @@ export default {
     }) {
         const store = useStore();
         const editModal = (id) => {
-            store.dispatch('detailsQuestionnaireTemplate',id)
-            emit("edit",{show:true,id:id});
+            store.dispatch('detailsQuestionnaireTemplate', id)
+            emit("edit", {
+                show: true,
+                id: id
+            });
         };
         const data = store.getters.questionnaireTemplateList
-        const meta = store.getters.questionnaireTemplateMeta 
+        const meta = store.getters.questionnaireTemplateMeta
         let record = []
         let scroller = ""
         onMounted(() => {
@@ -134,19 +139,19 @@ export default {
             }, 50)
         }
 
-        function deleteModal(id){
-              warningSwal(messages.deleteWarning).then((response) => {
+        function deleteModal(id) {
+            warningSwal(messages.deleteWarning).then((response) => {
                 if (response == true) {
                     var index = data.value.findIndex(function (o) {
                         return o.id === id;
                     })
-                   store.dispatch('deleteQuestionnaireTemplate',id)
+                    store.dispatch('deleteQuestionnaireTemplate', id)
                     data.value.splice(index, 1)
                 }
             })
-            
+
         }
-         const handleTableChange = (pag, filters, sorter) => {
+        const handleTableChange = (pag, filters, sorter) => {
             if (sorter.order) {
                 let order = sorter.order == "ascend" ? "ASC" : "DESC";
                 let orderParam = "&orderField=" + sorter.field + "&orderBy=" + order;

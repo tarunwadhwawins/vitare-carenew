@@ -120,6 +120,7 @@
     </a-form>
 </a-modal>
 </template>
+
 <script>
 import { ref, reactive, onMounted, computed } from "vue";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons-vue";
@@ -128,214 +129,235 @@ import { messages } from "@/config/messages";
 import { useStore } from "vuex";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 export default {
-  components: {
-    PlusOutlined,
-    DeleteOutlined,
-    GlobalCodeDropDown,
-  },
-  props: {
-    id: String,
-    templateId:String,
-  },
-  setup(props, { emit }) {
-    const store = useStore();
-    const formRef = ref();
-    const value = ref("1");
-    const value2 = ref("1");
-    const questionnaire = reactive({
-      default: [],
-      correct: [],
-      question: "",
-      dataTypeId: "",
-      lable: [],
-      score: [],
-      programId: [],
-      programScore: [],
-      tags: [],
-      textScore: "",
-    });
-    const form = reactive({
-      ...questionnaire,
-    });
-
-    onMounted(() => {
-      store.dispatch("programList");
-    });
-
-    function programChange(val, index) {
-      console.log(val, questionnaire.programScore, index);
-
-      questionnaire.programId[index] = val;
-    }
-
-    function addLable() {
-      questionnaire.lable.push({
-        value: "",
-        key: Date.now(),
-      });
-    }
-
-    function questionType() {
-      questionnaire.lable = [];
-      questionnaire.score = [];
-      questionnaire.programId = [];
-      questionnaire.programScore = [];
-      questionnaire.textScore = "";
-      if (questionnaire.dataTypeId == 243 || questionnaire.dataTypeId == 244) {
-        questionnaire.lable.push({
-          value: "",
-          key: Date.now(),
+    components: {
+        PlusOutlined,
+        DeleteOutlined,
+        GlobalCodeDropDown,
+    },
+    props: {
+        id: String,
+        templateId: String,
+    },
+    setup(props, {
+        emit
+    }) {
+        const store = useStore();
+        const formRef = ref();
+        const value = ref("1");
+        const value2 = ref("1");
+        const questionnaire = reactive({
+            default: [],
+            correct: [],
+            question: "",
+            dataTypeId: "",
+            lable: [],
+            score: [],
+            programId: [],
+            programScore: [],
+            tags: [],
+            textScore: "",
         });
-      }
-    }
-    const addQuestionnaire = () => {
-      let data = "";
-      if (questionnaire.dataTypeId == 243 || questionnaire.dataTypeId == 244) {
-        let lable = [];
-        questionnaire.lable.forEach((element) => {
-          let programScores = [];
-          questionnaire.programId[element.key]
-            ? questionnaire.programId[element.key].forEach((items) => {
-                programScores.push({
-                  programId: items,
-                  programScores: questionnaire.programScore[
-                    element.key + "" + items
-                  ]
-                    ? questionnaire.programScore[element.key + "" + items]
-                    : null,
-                });
-              })
-            : "";
-          let defaultChacked = questionnaire.default.indexOf(element.key);
-          let correct = questionnaire.correct.indexOf(element.key);
-          let objact = {
-            labelName: element.value,
-            program: programScores,
-            score: questionnaire.score[element.key]
-              ? questionnaire.score[element.key]
-              : null,
-            defaultOption: defaultChacked == -1 ? 0 : 1,
-            correct: correct == -1 ? 0 : 1,
-          };
-          lable.push(objact);
+        const form = reactive({
+            ...questionnaire,
         });
-        data = {
-          question: questionnaire.question,
-          dataTypeId: questionnaire.dataTypeId,
-          tags: questionnaire.tags,
-          duration: null,
-          option: lable,
-        };
-      } else {
-        data = {
-          question: questionnaire.question,
-          dataTypeId: questionnaire.dataTypeId,
-          tags: questionnaire.tags,
-          duration: null,
-          score: questionnaire.textScore,
-        };
-      }
-      store.dispatch("addQuestionnaire", data).then(() => {
-        if(props.templateId){
-          store.dispatch("addAssiignquestionnaire",{data:[store.getters.addQuestionnaire.value.id],id:props.templateId})
-          store.dispatch("templateDetailsList",props.templateId)
 
+        onMounted(() => {
+            store.dispatch("programList");
+        });
+
+        function programChange(val, index) {
+            console.log(val, questionnaire.programScore, index);
+
+            questionnaire.programId[index] = val;
         }
-        
-        store.dispatch("questionnaireList")
-        emit("is-visible", { show: false, id: props.id })
-        reset()
-      })
-      // formRef.value.validate().then(() => {
-      //     console.log('values', questionnaire.lable);
-      // }).catch(error => {
-      //     console.log('error', error);
-      // });
-    };
 
-    const removeLable = (item) => {
-      let index = questionnaire.lable.indexOf(item);
+        function addLable() {
+            questionnaire.lable.push({
+                value: "",
+                key: Date.now(),
+            });
+        }
 
-      if (index !== -1) {
-        questionnaire.lable.splice(index, 1);
-      }
-    };
+        function questionType() {
+            questionnaire.lable = [];
+            questionnaire.score = [];
+            questionnaire.programId = [];
+            questionnaire.programScore = [];
+            questionnaire.textScore = "";
+            if (questionnaire.dataTypeId == 243 || questionnaire.dataTypeId == 244) {
+                questionnaire.lable.push({
+                    value: "",
+                    key: Date.now(),
+                });
+            }
+        }
+        const addQuestionnaire = () => {
+            let data = "";
+            if (questionnaire.dataTypeId == 243 || questionnaire.dataTypeId == 244) {
+                let lable = [];
+                questionnaire.lable.forEach((element) => {
+                    let programScores = [];
+                    questionnaire.programId[element.key] ?
+                        questionnaire.programId[element.key].forEach((items) => {
+                            programScores.push({
+                                programId: items,
+                                programScores: questionnaire.programScore[
+                                        element.key + "" + items
+                                    ] ?
+                                    questionnaire.programScore[element.key + "" + items] :
+                                    null,
+                            });
+                        }) :
+                        "";
+                    let defaultChacked = questionnaire.default.indexOf(element.key);
+                    let correct = questionnaire.correct.indexOf(element.key);
+                    let objact = {
+                        labelName: element.value,
+                        program: programScores,
+                        score: questionnaire.score[element.key] ?
+                            questionnaire.score[element.key] :
+                            null,
+                        defaultOption: defaultChacked == -1 ? 0 : 1,
+                        correct: correct == -1 ? 0 : 1,
+                    };
+                    lable.push(objact);
+                });
+                data = {
+                    question: questionnaire.question,
+                    dataTypeId: questionnaire.dataTypeId,
+                    tags: questionnaire.tags,
+                    duration: null,
+                    option: lable,
+                };
+            } else {
+                data = {
+                    question: questionnaire.question,
+                    dataTypeId: questionnaire.dataTypeId,
+                    tags: questionnaire.tags,
+                    duration: null,
+                    score: questionnaire.textScore,
+                };
+            }
+            store.dispatch("addQuestionnaire", data).then(() => {
+                if (props.templateId) {
+                    store.dispatch("addAssiignquestionnaire", {
+                        data: [store.getters.addQuestionnaire.value.id],
+                        id: props.templateId
+                    }).then(()=>{
+store.dispatch("templateDetailsList", props.templateId)
+                    })
+                    
 
-    function checkChangeInput() {
-      store.commit("checkChangeInput", true);
-    }
+                }
 
-    function checkboxChangeDefault(event) {
-      if (event.target.checked) {
-        questionnaire.default.push(event.target.value);
-      } else {
-        let index = questionnaire.default.indexOf(event.target.value);
-        questionnaire.default.splice(index, 1);
-      }
-    }
+                store.dispatch("questionnaireList")
+                emit("is-visible", {
+                    show: false,
+                    id: props.id
+                })
+                reset()
+            })
+            // formRef.value.validate().then(() => {
+            //     console.log('values', questionnaire.lable);
+            // }).catch(error => {
+            //     console.log('error', error);
+            // });
+        };
 
-    function radioChange(event) {
-      questionnaire.correct = [];
-      questionnaire.correct.push(event.target.value);
-    }
-    function radioChangeDefault(event) {
-      questionnaire.default = [];
-      questionnaire.default.push(event.target.value);
-    }
-    function checkboxChange(event) {
-      if (event.target.checked) {
-        questionnaire.correct.push(event.target.value);
-      } else {
-        let index = questionnaire.correct.indexOf(event.target.value);
-        questionnaire.correct.splice(index, 1);
-      }
-    }
+        const removeLable = (item) => {
+            console.log("test", item)
+            let index = questionnaire.lable.indexOf(item);
+            console.log("lable", index, questionnaire.lable)
+            if (index !== -1) {
+                questionnaire.lable.splice(index, 1);
+            }
+        };
 
-    const checkFieldsData = computed(() => {
-      return store.state.common.checkChangeInput;
-    });
-    function reset() {
-      Object.assign(questionnaire, form);
-    }
-    function closeModal() {
-      if (checkFieldsData.value) {
-        warningSwal(messages.modalWarning).then((response) => {
-          if (response == true) {
-            emit("is-visible", { show: false, id: props.id });
-            reset();
-            // disabled.value= false
-          } else {
-            emit("is-visible", { show: true, id: props.id });
-          }
+        function checkChangeInput() {
+            store.commit("checkChangeInput", true);
+        }
+
+        function checkboxChangeDefault(event) {
+            if (event.target.checked) {
+                questionnaire.default.push(event.target.value);
+            } else {
+                let index = questionnaire.default.indexOf(event.target.value);
+                questionnaire.default.splice(index, 1);
+            }
+        }
+
+        function radioChange(event) {
+            questionnaire.correct = [];
+            questionnaire.correct.push(event.target.value);
+        }
+
+        function radioChangeDefault(event) {
+            questionnaire.default = [];
+            questionnaire.default.push(event.target.value);
+        }
+
+        function checkboxChange(event) {
+            if (event.target.checked) {
+                questionnaire.correct.push(event.target.value);
+            } else {
+                let index = questionnaire.correct.indexOf(event.target.value);
+                questionnaire.correct.splice(index, 1);
+            }
+        }
+
+        const checkFieldsData = computed(() => {
+            return store.state.common.checkChangeInput;
         });
-      } else {
-        formRef.value.resetFields();
-        //disabled.value= false
-      }
-    }
-    return {
-      questionnaire,
-      programChange,
-      size: ref("large"),
 
-      addLable,
-      questionType,
-      addQuestionnaire,
-      removeLable,
-      questionDataType: store.getters.questionDataType,
-      formRef,
-      value,
-      value2,
-      closeModal,
-      programList: store.getters.programList,
-      checkChangeInput,
-      arrayToObjact,
-      checkboxChange,
-      checkboxChangeDefault,
-      radioChange,
-      radioChangeDefault,
-      reset,
-    };
-  },
+        function reset() {
+            Object.assign(questionnaire, form);
+        }
+
+        function closeModal() {
+            if (checkFieldsData.value) {
+                warningSwal(messages.modalWarning).then((response) => {
+                    if (response == true) {
+                        emit("is-visible", {
+                            show: false,
+                            id: props.id
+                        })
+                        reset();
+                        store.commit("checkChangeInput", false)
+                    } else {
+                        emit("is-visible", {
+                            show: true,
+                            id: props.id
+                        })
+                    }
+                });
+            } else {
+                formRef.value.resetFields();
+                //disabled.value= false
+            }
+        }
+        return {
+            questionnaire,
+            programChange,
+            size: ref("large"),
+
+            addLable,
+            questionType,
+            addQuestionnaire,
+            removeLable,
+            questionDataType: store.getters.questionDataType,
+            formRef,
+            value,
+            value2,
+            closeModal,
+            programList: store.getters.programList,
+            checkChangeInput,
+            arrayToObjact,
+            checkboxChange,
+            checkboxChangeDefault,
+            radioChange,
+            radioChangeDefault,
+            reset,
+        };
+    },
 };
 </script>

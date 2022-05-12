@@ -10,7 +10,7 @@ export const questionnaireTemplateList = async ({
   await serviceMethod.common("get", link, null, null).then((response) => {
 
     commit('questionnaire', response.data)
-    //commit('loadingStatus', false)
+    commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error)
     if (error.response.status === 422) {
@@ -163,12 +163,32 @@ export const addAssiignquestionnaire = async ({
 export const addAssiignquestionnaireResponse = async ({
   commit
 },data) => {
- 
- 
-  await serviceMethod.common("post", API_ENDPOINTS['addAssiignquestionnaireResponse']+'/'+data.id+'/question', null, data).then((response) => {
+  await serviceMethod.common("post", API_ENDPOINTS['questionnaireTemplate']+'/'+data.id+'/client', null, data.data).then((response) => {
 
     successSwal(response.data.message)
     commit('successMsg',response.data.message)
+    
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      errorSwal(error.response.data.message)
+    }
+    
+    
+    
+  })
+}
+export const scoreCount = async ({
+  commit
+},id) => {
+  await serviceMethod.common("post", 'questionnaire/response/score'+id, null, null).then((response) => {
+
+    
+    commit('scoreCount',response.data.data)
     
   }).catch((error) => {
     errorLogWithDeviceInfo(error)

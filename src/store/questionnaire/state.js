@@ -1,6 +1,6 @@
 export default {
   addQuestionnaire:null,
-  questionnaireList:null,
+  questionnaireList:[],
   detailsQuestionnaire:null,
  
 }

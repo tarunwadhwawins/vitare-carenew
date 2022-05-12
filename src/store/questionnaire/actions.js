@@ -18,14 +18,17 @@ export const addQuestionnaire = async ({ commit }, data) => {
 		});
 };
 export const questionnaireList = async ({ commit }, data) => {
+	commit('loadingStatus', true)
 	await ServiceMethodService.common('get', API_ENDPOINTS['questionnaire'], null, data)
 		.then((response) => {
-			commit('questionnaireList', response.data);
+			commit('questionnaireList', response.data)
+			commit('loadingStatus', false)
 		})
 		.catch((error) => {
 			commit('errorMsg', error.response.data.message);
 
-			errorSwal(error.response.data.message);
+			errorSwal(error.response.data.message)
+			commit('loadingStatus', false)
 		});
 };
 export const detailsQuestionnaire = async ({ commit }, id) => {

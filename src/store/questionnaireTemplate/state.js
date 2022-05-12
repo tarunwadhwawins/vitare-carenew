@@ -4,6 +4,7 @@ export default{
     detailsQuestionnaireTemplate:null,
     questionnaireTemplateMeta:null,
     templateDetailsList:[],
+    scoreCount:null,
    
 
 }

@@ -37,7 +37,7 @@
                         <div class="questionOutput">
                             <div class="form-group">
                                 <a-form-item name="templateName">
-                                    <a-textarea v-model:value="questionnaireTemplate.templateText[questionList.id]" placeholder="Enter Text..." :rows="4" @change="checkChangeInput()" width="100%" />
+                                    <a-textarea v-model:value="questionnaireTemplate.templateText[questionList.id]" placeholder="Enter Text..." :rows="4"  width="100%" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.question?errorMsg.templateName[0]:''" />
                                 </a-form-item>
 
@@ -60,6 +60,8 @@
             </div>
         </a-col>
     </a-form>
+    <a-table v-if="show" rowKey="id" :columns="columns" :data-source="data" :scroll="{ x: 900 }" @change="handleTableChange" :pagination=false>
+</a-table>
     <TableLoader />
 </div>
 </template>
@@ -68,6 +70,24 @@ import { defineComponent, ref, onMounted, reactive, watchEffect } from "vue";
 import TableLoader from "@/components/loader/TableLoader";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+const columns = [{
+        title: "Programs",
+        dataIndex: "program",
+
+        
+    },
+    {
+        title: "Score",
+        dataIndex: "score",
+    },
+    {
+        title: "Actions",
+        dataIndex: "actions",
+        slots: {
+            customRender: "actions",
+        },
+    },
+];
 export default defineComponent({
   name: "Question Template Details",
   components: {
@@ -82,7 +102,7 @@ export default defineComponent({
       checkBoxOption: [],
     });
     const udid = route.params.udid;
-
+const show = ref(false)
     onMounted(() => {
       store.dispatch("detailsQuestionnaireTemplate", udid);
       store.dispatch("templateDetailsList", udid);
@@ -114,7 +134,12 @@ export default defineComponent({
             data.push(newRescord);
           })
         : "";
-      console.log("check", data);
+      store.dispatch("addAssiignquestionnaireResponse",{data:data,id:udid}).then(()=>{
+        store.dispatch("scoreCount",udid).then(()=>{
+show.value = true
+        })
+
+      })
     };
     const templateDetailsList = store.getters.templateDetailsList;
     watchEffect(() => {
@@ -137,7 +162,7 @@ export default defineComponent({
           })
         : "";
     });
-
+    
     return {
       udid,
       questionnaireTemplate,
@@ -145,6 +170,9 @@ export default defineComponent({
       templateDetailsList,
       ansTemplate,
       value: ref("1"),
+      show,
+      columns,
+      data:store.getters.scoreCount
     };
   },
 });

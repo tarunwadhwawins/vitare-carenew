@@ -24,3 +24,8 @@ export const templateDetailsList = (state) => {
     return state.templateDetailsList
   })
 }
+export const scoreCount = (state) => {
+  return computed(() => {
+    return state.scoreCount
+  })
+}
