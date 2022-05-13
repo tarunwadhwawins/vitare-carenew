@@ -38,8 +38,7 @@
 
                         <a-col :span="1">
                             <Label v-if="index==0" :class="index==0 ? 'mt-20':'mt-40'">Correct</Label>
-                            <a-checkbox :class="index==0 ? 'mt-20':'mt-40'" v-model:chacked="questionnaire.correct[lable.key]" v-model:value="lable.key" v-if="questionnaire.dataTypeId==244" name="default" @change="checkboxChange($event);checkChangeInput();" />
-
+                            <a-checkbox :class="index==0 ? 'mt-20':'mt-40'" v-model:chacked="questionnaire.answer[lable.key]" v-model:value="lable.key" v-if="questionnaire.dataTypeId==244" name="default" @change="checkboxChange($event);checkChangeInput();" />
                             <a-radio-group v-else v-model:value="value">
                                 <a-radio :class="index==0 ? 'mt-20':'mt-40'" :value="lable.key" @change="radioChange($event)"></a-radio>
                             </a-radio-group>
@@ -61,7 +60,7 @@
                         <a-col :span="2">
                             <div class="form-group">
                                 <a-form-item label="Score">
-                                    <a-input v-model:value="questionnaire.score[lable.key]" placeholder="Score" style="width: 100%" size="large" @change="checkChangeInput()" />
+                                    <a-input v-model:value="questionnaire.labelScore[lable.key]" placeholder="Score" style="width: 100%" size="large" @change="checkChangeInput()" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -69,7 +68,7 @@
                             <div class="form-group">
                                 <a-form-item label="Programs">
 
-                                    <GlobalCodeDropDown v-if="programList" v-model:value="questionnaire.programId[lable.key]" :globalCode="programList" @change="checkChangeInput(); programChange($event,lable.key);" mode="multiple" />
+                                    <GlobalCodeDropDown v-if="programList" v-model:value="questionnaire.programId[lable.key]" :globalCode="programList" @change="checkChangeInput(); programChange($event,lable.key,programList);" mode="multiple" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -147,11 +146,11 @@ export default {
         const value2 = ref("1");
         const questionnaire = reactive({
             default: [],
-            correct: [],
+            answer: [],
             question: "",
             dataTypeId: "",
             lable: [],
-            score: [],
+            labelScore: [],
             programId: [],
             programScore: [],
             tags: [],
@@ -165,10 +164,30 @@ export default {
             store.dispatch("programList");
         });
 
-        function programChange(val, index) {
-            console.log(val, questionnaire.programScore, index);
+        function programChange(val, index,programList) {
+            
 
             questionnaire.programId[index] = val;
+programList.forEach((data)=>{
+    var test =questionnaire.programId[index].find(item => data.id==item)
+    if(test=="undefined"){
+    questionnaire.programScore[index+''+data.id] ? questionnaire.programScore[index+''+data.id] = '' : ''
+    console.log("test",questionnaire.programScore)
+    }
+})
+            //  questionnaire.programId[index].forEach((item)=>{
+            //      var test =programList.find(data => data.id==item)
+
+
+//programList.forEach((data)=>{
+    
+// if(item!==data.id){
+//     console.log(data.id,item)
+//     questionnaire.programScore[index+''+data.id] ? questionnaire.programScore[index+''+data.id] : ''
+// }
+//})
+//console.log(val, questionnaire.programId[index],questionnaire.programScore,programList)
+             //})
         }
 
         function addLable() {
@@ -180,7 +199,7 @@ export default {
 
         function questionType() {
             questionnaire.lable = [];
-            questionnaire.score = [];
+            questionnaire.programScore = [];
             questionnaire.programId = [];
             questionnaire.programScore = [];
             questionnaire.textScore = "";
@@ -201,24 +220,22 @@ export default {
                         questionnaire.programId[element.key].forEach((items) => {
                             programScores.push({
                                 programId: items,
-                                programScores: questionnaire.programScore[
+                                programScore: questionnaire.programScore[
                                         element.key + "" + items
                                     ] ?
-                                    questionnaire.programScore[element.key + "" + items] :
-                                    null,
+                                    questionnaire.programScore[element.key + "" + items] : null,
                             });
                         }) :
                         "";
                     let defaultChacked = questionnaire.default.indexOf(element.key);
-                    let correct = questionnaire.correct.indexOf(element.key);
+                    let answer = questionnaire.answer.indexOf(element.key);
                     let objact = {
                         labelName: element.value,
                         program: programScores,
-                        score: questionnaire.score[element.key] ?
-                            questionnaire.score[element.key] :
-                            null,
+                        labelScore: questionnaire.labelScore[element.key] ?
+                            questionnaire.labelScore[element.key] : null,
                         defaultOption: defaultChacked == -1 ? 0 : 1,
-                        correct: correct == -1 ? 0 : 1,
+                        answer: answer == -1 ? 0 : 1,
                     };
                     lable.push(objact);
                 });
@@ -243,10 +260,9 @@ export default {
                     store.dispatch("addAssiignquestionnaire", {
                         data: [store.getters.addQuestionnaire.value.id],
                         id: props.templateId
-                    }).then(()=>{
-store.dispatch("templateDetailsList", props.templateId)
+                    }).then(() => {
+                        store.dispatch("templateDetailsList", props.templateId)
                     })
-                    
 
                 }
 
@@ -265,9 +281,9 @@ store.dispatch("templateDetailsList", props.templateId)
         };
 
         const removeLable = (item) => {
-            console.log("test", item)
+            
             let index = questionnaire.lable.indexOf(item);
-            console.log("lable", index, questionnaire.lable)
+           
             if (index !== -1) {
                 questionnaire.lable.splice(index, 1);
             }
@@ -287,8 +303,8 @@ store.dispatch("templateDetailsList", props.templateId)
         }
 
         function radioChange(event) {
-            questionnaire.correct = [];
-            questionnaire.correct.push(event.target.value);
+            questionnaire.answer = [];
+            questionnaire.answer.push(event.target.value);
         }
 
         function radioChangeDefault(event) {
@@ -298,10 +314,10 @@ store.dispatch("templateDetailsList", props.templateId)
 
         function checkboxChange(event) {
             if (event.target.checked) {
-                questionnaire.correct.push(event.target.value);
+                questionnaire.answer.push(event.target.value);
             } else {
-                let index = questionnaire.correct.indexOf(event.target.value);
-                questionnaire.correct.splice(index, 1);
+                let index = questionnaire.answer.indexOf(event.target.value);
+                questionnaire.answer.splice(index, 1);
             }
         }
 

@@ -34,14 +34,14 @@
                 </div>
                 <div v-else>
                     <a-col :span="24">
-                        <div class="questionOutput">
+                        
                             <div class="form-group">
                                 <a-form-item name="templateName">
-                                    <a-textarea v-model:value="questionnaireTemplate.templateText[questionList.id]" placeholder="Enter Text..." :rows="4"  width="100%" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.question?errorMsg.templateName[0]:''" />
+                                    <a-textarea v-model:value="questionnaireTemplate.templateText[questionList.id]" placeholder="Enter Text..." :bordered="false" :rows="2"  width="100%" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.templateText?errorMsg.templateText[0]:''" />
                                 </a-form-item>
 
-                            </div>
+                           
 
                         </div>
                     </a-col>
