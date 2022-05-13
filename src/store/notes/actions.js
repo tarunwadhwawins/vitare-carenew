@@ -29,8 +29,10 @@ export const addNote = async ({ commit }, { id, data }) => {
 }
 
 export const notesList = async ({ commit }, id) => {
+	commit('loadingStatus', true)
 	await ServiceMethodService.common("get", API_ENDPOINTS['patient'] + '/' + id + '/notes', null, null).then((response) => {
 		commit('notesListSuccess', response.data.data);
+		commit('loadingStatus', false)
 	})
 		.catch((error) => {
 			errorLogWithDeviceInfo(error.response)
@@ -38,6 +40,7 @@ export const notesList = async ({ commit }, id) => {
 				//AuthService.logout();
 			}
 			commit('failure', error.response.data);
+			commit('loadingStatus', false)
 		})
 }
 

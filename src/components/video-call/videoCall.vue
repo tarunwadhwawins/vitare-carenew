@@ -16,19 +16,20 @@
                             </div>
                         </a-col>
                     </a-row>
-                    <a-row :gutter="24">
-                        <a-col :xl="16" :lg="14">
-                            <!-- video call  -->
-                            <div class="videoCall" >
-                                <video id="videoCallLoader" ref="videoCall"></video>
+                    <div class="videoWrapper">
+                            <!-- video call  -->'
+                            <div class="leftWrapper" id="videoDiv">
+                                
+                              <div class="videoCall" >
+                                  <video id="videoCallLoader" ref="videoCall"></video>
+                              </div>
+                              <Loader />
                             </div>
-                            <Loader />
-                        </a-col>
-                        <a-col :xl="8" :lg="10">
-                            <div class="callRightWrapper">
+                            <div class="callRightWrapper" id="detailDiv">
+                              <span class="dragImg" @mousedown="resize($event)"><img src="@/assets/images/drag.png" alt="" ></span>
                               <div class="header" v-if="acceptVideoCallDetails">
                                     <!-- <img :src="acceptVideoCallDetails?acceptVideoCallDetails.patient.profilePhoto:defaultImage" /> -->
-                                    <img src="@/assets/images/userAvatar.png" />
+                                    <img src="@/assets/images/userAvatar.png"  />
                                     <div class="name">
                                         <h4>{{acceptVideoCallDetails.name}}</h4>
                                         <router-link v-if="acceptVideoCallDetails" :to="{ name: 'PatientSummary', params: { udid:acceptVideoCallDetails?acceptVideoCallDetails.patient.id:'' }}" target="_blank">View Profile</router-link>
@@ -47,15 +48,15 @@
                                 
                                 <div class="body">
                                     <a-row>
-                                        <a-col :span="6">
-                                            <div class="moreAction" @click="showNotesModal">
+                                        <a-col :span="6" :class="notesDetailVisible==true?'bold':''">
+                                            <div class="moreAction" @click="showNotesModal" >
                                                 <div class="moreActionImg four">
                                                     <img src="../../assets/images/edit.svg" />
                                                 </div>
                                                 <p>Notes</p>
                                             </div>
                                         </a-col>
-                                        <a-col :span="6">
+                                        <a-col :span="6" :class="documentDetailVisible==true?'bold':''">
                                             <div class="moreAction"  @click="showDocumentsModal">
                                                 <div class="moreActionImg green">
                                                     <img src="../../assets/images/report.svg" />
@@ -64,7 +65,7 @@
                                             </div>
                                         </a-col>
                                         
-                                        <a-col :span="6" @click="showVitalssModal">
+                                        <a-col :span="6" @click="showVitalssModal" :class="patientVitalsVisible==true?'bold':''">
                                             <div class="moreAction">
                                                 <div class="moreActionImg redBgColor">
                                                     <img src="../../assets/images/wave.svg" />
@@ -72,7 +73,7 @@
                                                 <p>Vital</p>
                                             </div>
                                         </a-col>
-                                        <a-col :span="6" v-if="currentUrl">
+                                        <a-col :span="6" v-if="currentUrl" >
                                             <div class="moreAction"  @click="copyURL(currentUrl)">
                                                 <div class="moreActionImg purpleBgColor">
                                                     <!-- <img src="../../assets/images/edit.svg" /> -->
@@ -82,18 +83,20 @@
                                             </div>
                                         </a-col>
                                     </a-row>
-                                    
+                                    <a-row class="overFlow">
+                                     
+                                     <NotesDetail v-if="notesDetailVisible==true"   :Id="getVideoDetails?getVideoDetails.patientDetailed.id:acceptVideoCallDetails.patient.id" />
+                <DocumentDetail v-if="documentDetailVisible==true"    :patientDetails="getVideoDetails?getVideoDetails.patientDetailed:acceptVideoCallDetails.patient"  />
+                <PatientVitalsDetails v-if="patientVitalsVisible == true"  :patientId="getVideoDetails?getVideoDetails.patientDetailed.id:acceptVideoCallDetails.patient.id"  />
+                                    </a-row>
                                 </div>
                                 <div class="footer">
                                     <a-button class="endCall" :size="size" block @click="hangUp()">End Call</a-button>
                                 </div>
                             </div>
-                        </a-col>
-                    </a-row>
+                    </div>
                 </div>
-                <NotesDetailModal v-if="notesDetailVisible==true"  v-model:visible="notesDetailVisible" :Id="getVideoDetails?getVideoDetails.patientDetailed.id:acceptVideoCallDetails.patient.id" @closeModal="handleOk" />
-                <DocumentDetailModal v-if="documentDetailVisible==true"   v-model:visible="documentDetailVisible" :patientDetails="getVideoDetails?getVideoDetails.patientDetailed:acceptVideoCallDetails.patient"  @closeModal="handleOk"/>
-                <PatientVitalsDetailsModal v-if="patientVitalsVisible == true" v-model:visible="patientVitalsVisible" :patientId="getVideoDetails?getVideoDetails.patientDetailed.id:acceptVideoCallDetails.patient.id" @closeModal="handleOk" />
+                 
             </a-layout-content>
         </a-layout>
     </a-layout>
@@ -116,9 +119,9 @@ import Loader from "@/components/loader/VideoLoader";
 import { Web } from "@/assets/js/sip-0.20.0";
 import { notification } from "ant-design-vue";
 import { successSwal, deCodeString } from "@/commonMethods/commonMethod";
-import NotesDetailModal from "@/components/modals/NotesDetail";
-import DocumentDetailModal from "@/components/modals/DocumentDetail";
-import PatientVitalsDetailsModal from "@/components/modals/PatientVitalsDetailsModal";
+import NotesDetail from "@/components/video-call/table/NotesDetail";
+import DocumentDetail from "@/components/video-call/table/DocumentDetail";
+import PatientVitalsDetails from "@/components/video-call/table/PatientVitalsDetails";
 import { CopyFilled } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
 
@@ -128,9 +131,9 @@ export default {
     Header,
     Sidebar,
     Loader,
-    NotesDetailModal,
-    DocumentDetailModal,
-    PatientVitalsDetailsModal,
+    NotesDetail,
+    DocumentDetail,
+    PatientVitalsDetails,
   },
 
   setup() {
@@ -287,6 +290,18 @@ export default {
       })
       }
     });
+    function resize(){
+    window.addEventListener('mousemove', resizeDiv);
+  }
+  function resizeDiv(e){
+    let video_width = (e.clientX/document.body.clientWidth)*100;
+
+    document.getElementById('videoDiv').style.width = video_width+"%";
+  }
+  window.addEventListener('mouseup', e => {
+    console.log(e)
+    window.removeEventListener("mousemove", resizeDiv);
+  });
     // Answer call
     function hangUp() {
       if (decodedUrl.value) {
@@ -319,13 +334,23 @@ export default {
     });
 
     const showNotesModal = () => {
-      notesDetailVisible.value = true;
+       notesDetailVisible.value = true
+       documentDetailVisible.value = false
+       patientVitalsVisible.value = false
+     
     };
+   
     const showDocumentsModal = () => {
       documentDetailVisible.value = true;
+      notesDetailVisible.value = false
+     
+     patientVitalsVisible.value = false
     };
     const showVitalssModal = () => {
       patientVitalsVisible.value = true;
+      notesDetailVisible.value = false
+     documentDetailVisible.value = false
+    
     };
 
     // used for patient vital
@@ -385,6 +410,7 @@ export default {
     });
 
     return {
+      
       guestUser,
       videoLoader,
       decodedUrl,
@@ -405,9 +431,17 @@ export default {
       hangUp,
       videoCall,
       size: ref("large"),
+      resize
     };
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scope>
+.overFlow{
+  height: 500px;
+  overflow: auto;
+}
+.bold{
+  font-weight: bold;
+}
 </style>
