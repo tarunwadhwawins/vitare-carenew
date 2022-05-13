@@ -11,6 +11,42 @@
           <Flags :data="latestFlag.flags.data" :flag="latestFlag.color" />
         </div>
       </div>
+      <div class="pat-profile-inner">
+        <div class="thumb-head">
+          Vital Summary
+          <!-- <PlusOutlined @click="addVitalsModel" /> -->
+        </div>
+        <div v-if="bloodPressure != null || bloodGlucose != null || bloodOxygen != null || latestVital != null" class="thumb-desc">
+          <a href="javascript:void(0)" v-if="arrayToObjact(screensPermissions, 287)">
+            <span @click="showVitalsModal();actionTrack(paramsId,287,'patient')">{{ latestVital.deviceType }} {{ latestVital.value }} {{ latestVital.takeTime }}</span>
+          </a>
+        </div>
+      </div>
+      <div class="pat-profile-inner">
+        <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 296)">
+          Notes <PlusOutlined @click="addNotesModal();actionTrack(paramsId,296,'patient')" />
+        </div>
+        <div v-if="latestNotes != null && arrayToObjact(screensPermissions, 324)" class="thumb-desc" >
+          <a href="javascript:void(0)" @click="showNotesModal();actionTrack(paramsId,324,'patient')" >{{ latestNotes[0].note }}</a>
+        </div>
+      </div>
+      <div class="pat-profile-inner">
+        <div class="thumb-head">Non Compliance</div>
+        <div class="thumb-desc">
+          <WarningOutlined />
+        </div>
+      </div>
+      <div class="pat-profile-inner">
+        <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 294)">
+          Appointments
+          <PlusOutlined @click="showAddAppointmentModal();actionTrack(paramsId,294,'patient')"/><br />
+        </div>
+        <div v-if="latestAppointment != null" class="thumb-desc">
+          <router-link target="_blank" :to="'/appointment-calendar/'+patientDetails.id">
+          {{ latestAppointment[0].staff.fullName+' '+latestAppointment[0].date }}
+          </router-link>
+        </div>
+      </div>
       <div class="pat-profile-inner" >
         <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 290)">
           {{ $t('global.familyMembers') }} <PlusOutlined @click="showAddFamilyMemberModal();actionTrack(paramsId,290,'patient')"/><br />
@@ -36,7 +72,7 @@
         </div>
       </div>
       <div class="pat-profile-inner">
-        <div class="thumb-head" @click="showCriticalModal(); actionTrack(paramsId,293,'patient')" v-if="arrayToObjact(screensPermissions, 293)">Critical Note
+        <div class="thumb-head" @click="showCriticalModal(); actionTrack(paramsId,293,'patient')" v-if="arrayToObjact(screensPermissions, 293)">Pin
           <PlusOutlined />
         </div>
         <div v-if="criticalNotesList != null && arrayToObjact(screensPermissions, 311)" class="thumb-desc">
@@ -46,23 +82,7 @@
           <a href="javascript:void(0)" @click="showCriticalNotesDetails();actionTrack(paramsId,311,'patient')" >{{ criticalNotesList[0]?criticalNotesList[0].criticalNote.substring(0,20):'' }}</a>
         </div> -->
       </div>
-      <div class="pat-profile-inner">
-        <div class="thumb-head">Non Compliance</div>
-        <div class="thumb-desc">
-          <WarningOutlined />
-        </div>
-      </div>
-      <div class="pat-profile-inner">
-        <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 294)">
-          Appointments
-          <PlusOutlined @click="showAddAppointmentModal();actionTrack(paramsId,294,'patient')"/><br />
-        </div>
-        <div v-if="latestAppointment != null" class="thumb-desc">
-          <router-link target="_blank" :to="'/appointment-calendar/'+patientDetails.id">
-          {{ latestAppointment[0].staff.fullName+' '+latestAppointment[0].date }}
-          </router-link>
-        </div>
-      </div>
+      
 
       <div class="pat-profile-inner">
         <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 295)">
@@ -72,25 +92,15 @@
           <router-link target="_blank" :to="{ name: 'Tasks', query: {view: 'dashboard'} }" @click="actionTrack(paramsId,314,'patient')">{{ latestTask[0].title }}</router-link>
         </div>
       </div>
-      <div class="pat-profile-inner">
-        <div class="thumb-head">
-          Vital Summary
-          <!-- <PlusOutlined @click="addVitalsModel" /> -->
-        </div>
-        <div v-if="bloodPressure != null || bloodGlucose != null || bloodOxygen != null || latestVital != null" class="thumb-desc">
-          <a href="javascript:void(0)" v-if="arrayToObjact(screensPermissions, 287)">
-            <span @click="showVitalsModal();actionTrack(paramsId,287,'patient')">{{ latestVital.deviceType }} {{ latestVital.value }} {{ latestVital.takeTime }}</span>
-          </a>
-        </div>
-      </div>
-      <div class="pat-profile-inner">
+      
+      <!-- <div class="pat-profile-inner">
         <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 296)">
           Notes <PlusOutlined @click="addNotesModal();actionTrack(paramsId,296,'patient')" />
         </div>
         <div v-if="latestNotes != null && arrayToObjact(screensPermissions, 324)" class="thumb-desc" >
           <a href="javascript:void(0)" @click="showNotesModal();actionTrack(paramsId,324,'patient')" >{{ latestNotes[0].note }}</a>
         </div>
-      </div>
+      </div> -->
       <div class="pat-profile-inner">
         <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 297)">
           Documents <PlusOutlined @click="addDocumentsModal('true');actionTrack(paramsId,297,'patient')" />
@@ -101,7 +111,7 @@
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 298)">
-          {{ $t('global.careTeam') }} <PlusOutlined @click="showAddPhysicianModal(0);actionTrack(paramsId,298,'patient')" />
+          Health Team <PlusOutlined @click="showAddPhysicianModal(0);actionTrack(paramsId,298,'patient')" />
         </div>
         <div v-if="latestCareTeam != null && arrayToObjact(screensPermissions, 305)" class="thumb-desc">
           <a href="javascript:void(0)" @click="showCoordinatorsListingModal(0);actionTrack(paramsId,305,'patient')" >{{ latestCareTeam.staff }}</a>

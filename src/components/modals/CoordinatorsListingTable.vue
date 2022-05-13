@@ -24,6 +24,7 @@
           <a-checkbox v-model:checked="checked"></a-checkbox>
         </template>
       </a-table>
+      <Loader />
     </a-col>
   </a-row>
   <AddCoordinatorsModal v-if="careCoordinatorsVisible" v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" :staffType="staffType" :title="title" :isEditCareCoordinator="true"/>
@@ -40,6 +41,7 @@ import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { warningSwal, actionTrack,arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from '@/config/messages';
+import Loader from "@/components/loader/Loader";
 
   export default defineComponent({
     props: {
@@ -48,6 +50,7 @@ import { messages } from '@/config/messages';
       },
     },
     components: {
+      Loader,
       DeleteOutlined,
       EditOutlined,
       AddCoordinatorsModal: defineAsyncComponent(()=>import("@/components/modals/AddCoordinatorsModal")),

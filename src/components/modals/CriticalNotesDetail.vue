@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" title="Critical Note Details" centered :maskClosable="false">
+  <a-modal width="1000px" title="Pin Details" centered :maskClosable="false">
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <a-table  rowKey="id"  :columns="notesColumns" :data-source="criticalNotesList" :pagination="false">

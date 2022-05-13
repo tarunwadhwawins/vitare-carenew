@@ -8,11 +8,11 @@
         </div>
         <a-col :span="24" >
             <a-steps v-model:current="current" @change="scrollToTop($event)" >
-                <a-step v-for="item in steps" :key="item.title" :title="item.title" ><span :id="item"></span></a-step>
+                <a-step v-for="item in steps" :key="item.title" :title="item.title?item.title:''" ><span :id="item"></span></a-step>
             </a-steps>
             <div class="steps-content" v-if="steps[current].title == 'Demographics'">
                 <!-- <Demographics /> -->
-                <a-form :model="demographics" name="basic"  ref="formRef" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="demographic" @finishFailed="demographicsFailed">
+                <a-form :model="demographics" name="basic"  ref="formRef" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="demographic(); next();" @finishFailed="demographicsFailed">
                     <Loader />
                     <a-row :gutter="24">
                         <a-col :md="8" :sm="12" :xs="24">
@@ -100,14 +100,14 @@
 
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('patient.demographics.weight')" name="weight" :rules="[{ required: false, message: $t('patient.demographics.weight')+' '+$t('global.validation'), pattern: regex.digitWithdecimal }]">
+                                <a-form-item :label="$t('patient.demographics.weight') + '(Pounds)'" name="weight" :rules="[{ required: false, message: $t('patient.demographics.weight')+' '+$t('global.validation'), pattern: regex.digitWithdecimal }]">
                                     <a-input-number @change="changedValue" style="width: 100%" v-model:value="demographics.weight" placeholder="Please enter weight in lbs" size="large" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('patient.demographics.height')" name="height" :rules="[{ required: false, message: $t('patient.demographics.height')+' '+$t('global.validation'), pattern: regex.digitWithdecimal }]">
+                                <a-form-item :label="$t('patient.demographics.height')+'(CM)'" name="height" :rules="[{ required: false, message: $t('patient.demographics.height')+' '+$t('global.validation'), pattern: regex.digitWithdecimal }]">
                                     <a-input-number @change="changedValue" style="width: 100%" v-model:value="demographics.height" placeholder="Please enter height in cm " size="large" />
                                 </a-form-item>
                             </div>
@@ -129,19 +129,21 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
+                    </a-row>
+                    <a-row :gutter="24">
+                        <a-col :md="8" :sm="12" :span="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.country')" name="country" :rules="[{ required: false, message: $t('global.country')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.country" :globalCode="globalCode.country"/>
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.country?errorMsg.country[0]:''" />
+                                <a-form-item :label="$t('global.address')" name="address" :rules="[{ required: false, message: $t('global.address')+' '+$t('global.validation') }]">
+                                    <a-textarea size="large" @change="changedValue" v-model:value="demographics.address" allow-clear />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.address?errorMsg.address[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.state')" name="state" :rules="[{ required: false, message: $t('global.state')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.state" :globalCode="globalCode.state"/>
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.state?errorMsg.state[0]:''" />
+                                <a-form-item :label="$t('global.address')+' 2'" name="appartment" :rules="[{ required: false, message: $t('global.address')+' '+$t('global.validation') }]">
+                                    <a-textarea size="large" @change="changedValue" v-model:value="demographics.appartment" allow-clear />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.appartment?errorMsg.appartment[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -155,6 +157,15 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
+                                <a-form-item :label="$t('global.state')" name="state" :rules="[{ required: false, message: $t('global.state')+' '+$t('global.validation') }]">
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.state" :globalCode="globalCode.state"/>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.state?errorMsg.state[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
                                 <a-form-item :label="$t('global.zipcode')" name="zipCode" :rules="[{ required: false, message:$t('global.validValidation')+' '+ $t('global.zipcode').toLowerCase(),pattern: regex.zipCode }]">
                                     <a-input-number @change="changedValue" style="width:100%" v-model:value="demographics.zipCode" placeholder="Please enter 5 digit number" size="large" maxlength="5" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.zipCode?errorMsg.zipCode[0]:''" />
@@ -163,20 +174,13 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('patient.demographics.suiteorApartment')" name="appartment" :rules="[{ required: false, message: $t('patient.demographics.suiteorApartment')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue" v-model:value="demographics.appartment" size="large" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.appartment?errorMsg.appartment[0]:''" />
+                                <a-form-item :label="$t('global.country')" name="country" :rules="[{ required: false, message: $t('global.country')+' '+$t('global.validation') }]">
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.country" :globalCode="globalCode.country"/>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.country?errorMsg.country[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :md="8" :sm="12" :span="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.address')" name="address" :rules="[{ required: false, message: $t('global.address')+' '+$t('global.validation') }]">
-                                    <a-textarea size="large" @change="changedValue" v-model:value="demographics.address" allow-clear />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.address?errorMsg.address[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
+                        
                     </a-row>
                     <a-row :gutter="24">
                         <a-col :span="24">
@@ -187,6 +191,14 @@
                     </a-row>
 
                     <a-row :gutter="24">
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.relation')" name="relation" :rules="[{ required: false, message: $t('global.relation')+' '+$t('global.validation') }]">
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.relation" :globalCode="globalCode.relation"/>
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.relation?errorMsg.relation[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.fullName')" name="fullName" :rules="[{ required: false, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
@@ -237,14 +249,7 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.relation')" name="relation" :rules="[{ required: false, message: $t('global.relation')+' '+$t('global.validation') }]">
-                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.relation" :globalCode="globalCode.relation"/>
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.relation?errorMsg.relation[0]:''" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
+                        
                     </a-row>
                     <a-row :gutter="24">
                         <a-col :span="24">
@@ -366,13 +371,29 @@
                      <PatientSearch v-model:visible="patientSearch" @closeSearchPatient="closeSearchPatient($event)" @clearValidtion="clearValidtion"/>
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                        <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current)" html-type="submit">{{$t('global.next')}}</a-button>
+                        <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current);" html-type="submit">{{$t('global.next')}}</a-button>
                         <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
                             {{$t('global.done')}}
                         </a-button>
                     </div> 
                 </a-form>
                 <!--  -->
+            </div>
+            <div class="steps-content" v-if="steps[current].title == 'Devices'">
+                <Devices :idPatient="idPatient" @onChange="changedValue" />
+                <div class="steps-action">
+                    <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
+                    <a-button v-if="current < steps.length - 1" type="primary" @click="next();scrollToTop(current)">{{$t('global.next')}}</a-button>
+                </div>
+            </div>
+            <div class="steps-content" v-if="steps[current].title == 'Programs'">
+                <Programs :idPatient="idPatient" @onChange="changedValue" />
+
+                <div class="steps-action">
+                    <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
+                    <a-button v-if="current < steps.length - 1" type="primary" @click="next();scrollToTop(current)">{{$t('global.next')}}</a-button>
+                </div>
+                <!-- end  -->
             </div>
             <div  class="steps-content" v-if="steps[current].title == 'Conditions'" >
                 <!-- <Conditions /> -->
@@ -479,28 +500,17 @@
                 <Loader />
                 <!--  -->
             </div>
-            <div class="steps-content" v-if="steps[current].title == 'Programs'">
-                <Programs :idPatient="idPatient" @onChange="changedValue" />
-
-                <div class="steps-action">
-                    <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                    <a-button v-if="current < steps.length - 1" type="primary" @click="next();scrollToTop(current)">{{$t('global.next')}}</a-button>
-                </div>
-                <!-- end  -->
-            </div>
-            <div class="steps-content" v-if="steps[current].title == 'Devices'">
-                <Devices :idPatient="idPatient" @onChange="changedValue" />
-                <div class="steps-action">
-                    <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                    <a-button v-if="current < steps.length - 1" type="primary" @click="next();scrollToTop(current)">{{$t('global.next')}}</a-button>
-                </div>
-            </div>
+            
+            
             <div class="steps-content" v-if="steps[current].title == 'Clinical Data'">
                 <ClinicalData :idPatient="idPatient" @onChange="changedValue" />
 
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary" @click="next();scrollToTop(current)">{{$t('global.next')}}</a-button>
+                    <a-button v-if="current == steps.length - 1" type="primary" @click="saveModal()">
+                        {{$t('global.save')}}
+                    </a-button>
                 </div>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Insurance'">
@@ -551,7 +561,7 @@
 
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                    <a-button v-if="current < steps.length - 1" @click="scrollToTop(current)" type="primary">{{$t('global.next')}}</a-button>
+                    <a-button v-if="current < steps.length - 1" @click="next(); scrollToTop(current)" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
                     <a-button v-if="current == steps.length - 1" type="primary" @click="saveModal()">
                         {{$t('global.save')}}
                     </a-button>
@@ -574,7 +584,7 @@ import { useStore } from "vuex";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import { regex } from "@/RegularExpressions/regex";
 import Loader from "@/components/loader/Loader";
-import {successSwal,warningSwal,globalDateFormat } from "@/commonMethods/commonMethod";
+import {successSwal,warningSwal,globalDateFormat,errorSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 import { useRoute } from 'vue-router';
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
@@ -622,28 +632,17 @@ export default defineComponent( {
 				key: "demographics",
 				content: "First-content",
 			},
-			{
-				title: "Conditions",
-				key: "conditions",
-				content: "Second-content",
-			},
-			{
-				title: "Programs",
-				key: "programs",
-				content: "Second-content",
-			},
-			{
+            {
 				title: "Devices",
 				key: "devices",
 				content: "Second-content",
 			},
-			
-			{
-				title: "Clinical Data",
-				key: "clinicalData",
+            {
+				title: "Programs",
+				key: "programs",
 				content: "Second-content",
 			},
-			{
+            {
 				title: "Insurance",
 				key: "insurance",
 				content: "Second-content",
@@ -653,20 +652,28 @@ export default defineComponent( {
 				key: "documents",
 				content: "Last-content",
 			},
+			{
+				title: "Conditions",
+				key: "conditions",
+				content: "Second-content",
+			},
+			
+			
+			
+			{
+				title: "Clinical Data",
+				key: "clinicalData",
+				content: "Second-content",
+			},
+			
 		]
     
-    const current= computed({
-      get: () =>
-        store.state.patients.counter,
-      set: (value) => {
-        store.state.patients.counter = value;
-      },
-    })
-
+    
+    
     const changedValue = () => {
 			
 			store.commit('isEditPatient', false)
-			
+			isValueChanged.value = true
     }
     const changedPhoneNumber = () => {
 			store.commit('isEditPatient', false)
@@ -772,7 +779,29 @@ export default defineComponent( {
     });
 
     
-
+    const current= computed({
+      get: () =>
+        store.state.patients.counter,
+      set: (value) => {
+          
+          if(patients.value.addDemographic){
+             
+            store.state.patients.counter = value
+          }else{
+            if (demographics.firstName && demographics.lastName && demographics.dob && demographics.email && demographics.phoneNumber) {
+                if(store.state.patients.counter<1){
+                
+                 demographic()
+                 store.state.patients.counter = value
+                }
+                    } else {
+                        errorSwal('All(*) fields are required!')
+                        store.state.patients.counter = 0;
+                    }
+          }
+        
+      },
+    })
      const form = reactive({ ...demographics, });
 
     onMounted(() => {
@@ -1182,12 +1211,14 @@ export default defineComponent( {
 
     function saveModal() {
       emit("saveModal", false);
+      store.commit("resetCounter");
       successSwal(messages.formSuccess);
-      Object.assign(demographics, form);
+      
       store.dispatch("patients");
       store.commit("resetCounter");
       emit("closeModal");
 			current.value = 0
+            Object.assign(demographics, form);
     }
 
     const bitrixFormCheck = computed(()=>{
@@ -1195,7 +1226,7 @@ export default defineComponent( {
     })
 
     function closeModal() {
-			current.value = 0
+			//current.value = 0
         if(isValueChanged.value || bitrixFormCheck.value) {
             warningSwal(messages.modalWarning).then((response) => {
                 if (response == true) {
@@ -1205,12 +1236,14 @@ export default defineComponent( {
                         modal: 'editPatient',
                         value: false
                     });
-                    Object.assign(demographics, form);
+                    
                     store.dispatch("patients");
                     store.commit("resetCounter");
                     store.state.patients.addDemographic = null
                     store.state.patients.fetchFromBitrix = null
 										store.state.patients.uploadFile = null
+                                        isValueChanged.value = false
+                                        Object.assign(demographics, form);
                 }
                 else {
                     emit("saveModal", true);
@@ -1221,7 +1254,7 @@ export default defineComponent( {
                 }
             })
         }else{
-            
+            store.commit("resetCounter");
             formRef.value.resetFields()
         }
         

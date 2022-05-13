@@ -917,7 +917,7 @@
         padding: 40px 20px 0;
         overflow: auto;
         &.defaultTimeline {
-            height: 480px;
+            height: 520px;
         }
         &.fullTimeline {
             height: calc(100vh - 450px);
@@ -940,17 +940,29 @@
             height: 40px;
             .anticon {
                 font-size: 20px;
-                &.redIcon {
+                &.brownIcon {
                     color: #880808;
                 }
+                &.redIcon {
+                    color: #FF0000;
+                }
                 &.orangeIcon {
-                    color: #ff4500;
+                    color: #f2811f;
                 }
                 &.greenIcon {
                     color: #008000;
                 }
                 &.yellowIcon {
-                    color: #fdda0d;
+                    color: #f1f439;
+                }
+                &.blueIcon {
+                    color: #287CFB;
+                }
+                &.tealIcon {
+                    color: #3C9B8E;
+                }
+                &.mustardIcon {
+                    color: #DA8822;
                 }
             }
         }

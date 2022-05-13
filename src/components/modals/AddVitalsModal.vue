@@ -112,6 +112,7 @@ export default {
         store.dispatch('patientVitals', {patientId: patientId, deviceType: 99});
         store.dispatch('patientVitals', {patientId: patientId, deviceType: 100});
         store.dispatch('patientVitals', {patientId: patientId, deviceType: 101});
+          store.dispatch('patientTimeline', {id:route.params.udid, type:''});
         formRef.value.resetFields()
         Object.assign(addVitalForm, form)
         emit('closeModal')

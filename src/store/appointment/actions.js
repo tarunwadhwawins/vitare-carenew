@@ -5,9 +5,11 @@ import { successSwal, errorSwal, startimeAdd, endTimeAdd, timeStamp,errorLogWith
 export const addAppointment = async ({
   commit
 }, data) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("post", API_ENDPOINTS['addAppointment'], null, data).then((response) => {
     successSwal(response.data.message)
     commit('successMsg', response.data.message);
+    commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if(error.response.status === 422){
@@ -17,6 +19,7 @@ export const addAppointment = async ({
     }else if(error.response.status === 401){
       errorSwal(error.response.data.message)
     }
+    commit('loadingStatus', false)
   })
 }
 export const searchAppointment = async ({

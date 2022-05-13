@@ -237,12 +237,15 @@ export default {
                     },
                     id: getRoleId,
                     show: false
+                }).then(()=>{
+                    store.dispatch('rolesList')
                 })
             } else {
-                store.dispatch('addRole', addRoleForm)
+                store.dispatch('addRole', addRoleForm).then(()=>{
+                    store.dispatch('rolesList')
+                })
             }
-            store.state.rolesAndPermissions.rolesList = ""
-            store.dispatch('rolesList')
+           
             current.value++;
         }
         //permission submit
