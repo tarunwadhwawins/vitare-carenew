@@ -2,6 +2,7 @@
 <div :class="showRecord==true? 'notesDetailBg show':'notesDetailBg'">
    <div class="notesDetail 23">
           <div class="notesHeader">
+            
             <h4>Notes Detail</h4>
             <CloseOutlined @click="closeModal"/>
           </div>
@@ -39,7 +40,7 @@
                     
                     <div class="itemWrapper">
                         <div class="leftWrapper">Note</div>
-                        <div class="rightWrapper">{{ detailsNotes.notes }}</div>
+                        <div class="rightWrapper">{{ detailsNotes.note }}</div>
                     </div>
 
                 </div>

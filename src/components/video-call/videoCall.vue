@@ -177,6 +177,7 @@ export default {
     });
 
     onMounted(() => {
+       localStorage.setItem('barmenu', JSON.stringify(true));
       if(route.params.id){
         store.dispatch("guestUser",{
           conference:deCodeString(route.params.id),
@@ -354,6 +355,10 @@ export default {
 
     // used for patient vital
     watchEffect(() => {
+       if(JSON.parse(localStorage.getItem('barmenu'))==true){
+  
+      document.body.classList.add("show");
+    }
       if (getVideoDetails.value != null) {
         videoLoader();
         store.dispatch("patientVitals", {
@@ -402,6 +407,11 @@ export default {
 
     onUnmounted(() => {
       store.commit("videoLoadingStatus", false);
+      
+        localStorage.setItem('barmenu', JSON.stringify(false));
+     
+       
+      
        store.state.videoCall.getVideoDetails = null;
           store.state.videoCall.acceptVideoCallDetails = null;
           store.state.videoCall.conferenceId = null;
