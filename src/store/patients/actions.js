@@ -405,12 +405,12 @@ export const program = async ({
 
 }
 
-export const addDevice = async ({
-  commit
-}, data) => {
+export const addDevice = async ({ commit }, data) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("post", `patient/${data.id}/inventory`, null, data.data).then((response) => {
     commit('addDevice', response.data.data);
     successSwal(response.data.message)
+    commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
@@ -424,6 +424,7 @@ export const addDevice = async ({
       // commit('errorMsg', error.response.data.message)
       errorSwal(error.response.data.message)
     }
+    commit('loadingStatus', false)
   })
 }
 
@@ -708,10 +709,12 @@ export const patientInsurance = async ({ commit }, id) => {
 }
 
 export const addDocument = async ({commit}, data) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("post", `patient/${data.id}/document`, null, data.data).then((response) => {
     commit('addDocument', response.data.data);
-   
-    commit('counterPlus')
+    successSwal(response.data.message)
+    commit('loadingStatus', false)
+   // commit('counterPlus')
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
@@ -722,6 +725,7 @@ export const addDocument = async ({commit}, data) => {
       // commit('errorMsg', error.response.data.message)
       errorSwal(error.response.data.message)
     }
+    commit('loadingStatus', false)
   })
 }
 
@@ -805,11 +809,14 @@ export const patientTimeline = async ({commit}, data) => {
 }
 
 export const patientDocuments = async ({commit}, id) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/document', null, null).then((response) => {
     commit('patientDocumentsSuccess', response.data.data);
+    commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
   })
 }
 

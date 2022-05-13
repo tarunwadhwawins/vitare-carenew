@@ -17,7 +17,7 @@
         </a-col>
       </a-row>
     </a-form>
-		<!-- <Loader /> -->
+		<Loader />
   </a-modal>
 </template>
 
@@ -25,11 +25,11 @@
 import { computed, ref, reactive } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-// // import Loader from "@/components/loader/Loader";
+import Loader from "@/components/loader/Loader";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 export default {
 	components: {
-		// Loader,
+		Loader,
     GlobalCodeDropDown
 	},
     setup(props, {emit}) {
@@ -50,6 +50,7 @@ export default {
       const submitForm = () => {
         store.dispatch('addPatientFlag', { patientUdid: patientUdid, data: addFlagForm }).then(() => {
           store.dispatch('patientFlagsList', patientUdid);
+          store.dispatch('patientTimeline', {id:route.params.udid, type:''});
           formRef.value.resetFields();
           Object.assign(addFlagForm, form);
           emit("closeModal", {

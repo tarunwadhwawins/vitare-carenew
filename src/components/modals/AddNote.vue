@@ -49,6 +49,7 @@
 
       </a-row>
     </a-form>
+		<Loader />
   </a-modal>
 </template>
 
@@ -62,10 +63,12 @@ import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 import { warningSwal,globalDateFormat} from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 import moment from "moment"
+import Loader from "@/components/loader/Loader";
 
 export default defineComponent({
   components: {
     ModalButtons,
+    Loader,
     GlobalCodeDropDown
   },
   setup(props, {emit}) {
@@ -141,6 +144,7 @@ export default defineComponent({
       const patientId = route.params.udid;
       store.dispatch('addNote', {id: patientId, data: data}).then(() => {
         store.dispatch('latestNotes', patientId)
+        store.dispatch('patientTimeline', {id:route.params.udid, type:''});
         formRef.value.resetFields();
         Object.assign(addNoteForm, form)
         emit('closeModal', {
