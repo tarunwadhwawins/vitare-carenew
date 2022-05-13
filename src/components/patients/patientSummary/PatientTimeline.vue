@@ -88,12 +88,16 @@ export default {
   props: {
     className: {
       type: String
+    },
+    profileId:{
+      type:String
     }
   },
-  setup() {
+  setup(props) {
     const custom = ref(false);
     const store = useStore();
     const route = useRoute();
+    const pId = ref(props.profileId)
     const tabvalue = reactive({
       tab:[]
     });
@@ -101,6 +105,9 @@ export default {
       if(route.name == 'PatientSummary') {
         store.dispatch('timeLineType')
         store.dispatch('patientTimeline', {id:route.params.udid,type:''});
+      }else if(route.name == 'videoCall'){
+        store.dispatch('timeLineType')
+        store.dispatch('patientTimeline', {id:pId.value,type:''});
       }
     })
     const patientTimeline = computed(() => {
@@ -119,6 +126,7 @@ function chnageTab(){
 }
 
     return {
+      pId,
       showModalCustom,
       custom,
       patientTimeline,

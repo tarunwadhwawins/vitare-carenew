@@ -75,6 +75,7 @@
 				</a-col>
 			</a-row>
     </a-form>
+		<Loader />
 	</a-modal>
 </template>
 
@@ -109,7 +110,7 @@ import {
 	messages
 } from "../../config/messages";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
-
+import Loader from "@/components/loader/Loader";
 
 export default {
 	components: {
@@ -117,6 +118,7 @@ export default {
 		ModalButtons,
 		PatientDropDown,
 		StaffDropDown,
+		Loader,
 		GlobalCodeDropDown
 	},
 	props: {

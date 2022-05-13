@@ -16,22 +16,24 @@
                             </div>
                         </a-col>
                     </a-row>
-                    <a-row :gutter="24">
-                        <a-col :xl="16" :lg="14">
-                            <!-- video call  -->
-                            <div class="videoCall" >
-                                <video id="videoCallLoader" ref="videoCall"></video>
+                    <div class="videoWrapper">
+                            <!-- video call  -->'
+                            <div class="leftWrapper" id="videoDiv">
+                                
+                              <div class="videoCall" >
+                                  <video id="videoCallLoader" ref="videoCall"></video>
+                              </div>
+                              <Loader />
                             </div>
-                            <Loader />
-                        </a-col>
-                        <a-col :xl="8" :lg="10">
-                            <div class="callRightWrapper">
+                            <div class="callRightWrapper" id="detailDiv">
+                              <span class="dragImg" @mousedown="resize($event)"><img src="@/assets/images/drag.png" alt="" ></span>
                               <div class="header" v-if="acceptVideoCallDetails">
                                     <!-- <img :src="acceptVideoCallDetails?acceptVideoCallDetails.patient.profilePhoto:defaultImage" /> -->
-                                    <img src="@/assets/images/userAvatar.png" />
+                                    <img src="@/assets/images/userAvatar.png"  />
                                     <div class="name">
                                         <h4>{{acceptVideoCallDetails.name}}</h4>
-                                        <router-link v-if="acceptVideoCallDetails" :to="{ name: 'PatientSummary', params: { udid:acceptVideoCallDetails?acceptVideoCallDetails.patient.id:'' }}" target="_blank">View Profile</router-link>
+                                        <!-- <router-link v-if="acceptVideoCallDetails" :to="{ name: 'PatientSummary', params: { udid:acceptVideoCallDetails?acceptVideoCallDetails.patient.id:'' }}" target="_blank">View Profile</router-link> -->
+                                        <a @click="openDrawer">View Profile</a>
                                     </div>
                                     <!-- <span class="callTime">7:20</span> -->
                                 </div>
@@ -40,22 +42,23 @@
                                     <img src="@/assets/images/userAvatar.png" />
                                     <div class="name">
                                         <h4>{{getVideoDetails?getVideoDetails.patient:''}}</h4>
-                                        <router-link v-if="getVideoDetails" :to="{ name: 'PatientSummary', params: { udid:getVideoDetails?getVideoDetails.patientDetailed.id:'' }}" target="_blank">View Profile</router-link>
+                                        <!-- <router-link v-if="getVideoDetails" :to="{ name: 'PatientSummary', params: { udid:getVideoDetails?getVideoDetails.patientDetailed.id:'' }}" target="_blank">View Profile</router-link> -->
+                                        <a @click="openDrawer">View Profile</a>
                                     </div>
                                     <!-- <span class="callTime">7:20</span> -->
                                 </div>
                                 
                                 <div class="body">
                                     <a-row>
-                                        <a-col :span="6">
-                                            <div class="moreAction" @click="showNotesModal">
+                                        <a-col :span="6" :class="notesDetailVisible==true?'bold':''">
+                                            <div class="moreAction" @click="showNotesModal" >
                                                 <div class="moreActionImg four">
                                                     <img src="../../assets/images/edit.svg" />
                                                 </div>
                                                 <p>Notes</p>
                                             </div>
                                         </a-col>
-                                        <a-col :span="6">
+                                        <a-col :span="6" :class="documentDetailVisible==true?'bold':''">
                                             <div class="moreAction"  @click="showDocumentsModal">
                                                 <div class="moreActionImg green">
                                                     <img src="../../assets/images/report.svg" />
@@ -64,7 +67,7 @@
                                             </div>
                                         </a-col>
                                         
-                                        <a-col :span="6" @click="showVitalssModal">
+                                        <a-col :span="6" @click="showVitalssModal" :class="patientVitalsVisible==true?'bold':''">
                                             <div class="moreAction">
                                                 <div class="moreActionImg redBgColor">
                                                     <img src="../../assets/images/wave.svg" />
@@ -72,7 +75,7 @@
                                                 <p>Vital</p>
                                             </div>
                                         </a-col>
-                                        <a-col :span="6" v-if="currentUrl">
+                                        <a-col :span="6" v-if="currentUrl" >
                                             <div class="moreAction"  @click="copyURL(currentUrl)">
                                                 <div class="moreActionImg purpleBgColor">
                                                     <!-- <img src="../../assets/images/edit.svg" /> -->
@@ -82,21 +85,86 @@
                                             </div>
                                         </a-col>
                                     </a-row>
-                                    
+                                    <a-row class="overFlow">
+                                     
+                                     <NotesDetail v-if="notesDetailVisible==true"   :Id="getVideoDetails?getVideoDetails.patientDetailed.id:acceptVideoCallDetails.patient.id" />
+                <DocumentDetail v-if="documentDetailVisible==true"    :patientDetails="getVideoDetails?getVideoDetails.patientDetailed:acceptVideoCallDetails.patient"  />
+                <PatientVitalsDetails v-if="patientVitalsVisible == true"  :patientId="getVideoDetails?getVideoDetails.patientDetailed.id:acceptVideoCallDetails.patient.id"  />
+                                    </a-row>
                                 </div>
                                 <div class="footer">
                                     <a-button class="endCall" :size="size" block @click="hangUp()">End Call</a-button>
                                 </div>
                             </div>
-                        </a-col>
-                    </a-row>
+                    </div>
                 </div>
-                <NotesDetailModal v-if="notesDetailVisible==true"  v-model:visible="notesDetailVisible" :Id="getVideoDetails?getVideoDetails.patientDetailed.id:acceptVideoCallDetails.patient.id" @closeModal="handleOk" />
-                <DocumentDetailModal v-if="documentDetailVisible==true"   v-model:visible="documentDetailVisible" :patientDetails="getVideoDetails?getVideoDetails.patientDetailed:acceptVideoCallDetails.patient"  @closeModal="handleOk"/>
-                <PatientVitalsDetailsModal v-if="patientVitalsVisible == true" v-model:visible="patientVitalsVisible" :patientId="getVideoDetails?getVideoDetails.patientDetailed.id:acceptVideoCallDetails.patient.id" @closeModal="handleOk" />
+                 
             </a-layout-content>
         </a-layout>
     </a-layout>
+    <a-drawer
+    :width="800"
+    title="Profile"
+    :placement="placement"
+    :visible="visibleDrawer"
+    @close="onClose"
+  >
+<a-row :gutter="24">
+      <a-col :sm="24" :xs="24">
+        <PatientInfoTop :patientDetails="patientDetails" :drawer="visibleDrawer"/>
+      </a-col>
+      <a-col :sm="24" :xs="24">
+<div class="thumbDesc patientTimeline mt-28">
+    <a-checkbox-group v-model:value="tab" @change="chnageTab()">
+      <a-checkbox v-for="timeline in timeLineType" :key="timeline.id"  :value="timeline.id" >{{timeline.name}}</a-checkbox>
+    
+    </a-checkbox-group>
+     
+    <a-timeline class="defaultTimeline">
+      <TableLoader/>
+      <template v-for="timeline in patientTimeline" :key="timeline.id">
+        <a-timeline-item color="blue">
+          <template #dot>
+            <BellOutlined class="yellowIcon" v-if="timeline.type==1"/>
+            <ClockCircleOutlined class="orangeIcon" v-if="timeline.type==2"/>
+            <HeatMapOutlined class="brownIcon" v-if="timeline.type==3"/>
+            <FolderOpenOutlined class="mustardIcon" v-if="timeline.type==4"/>
+            <FilePdfOutlined class="tealIcon" v-if="timeline.type==5"/>
+            <FileTextOutlined class="blueIcon" v-if="timeline.type==6"/>
+            <FlagOutlined class="redIcon" v-if="timeline.type==7"/>
+            <PushpinOutlined class="greenIcon" v-if="timeline.type==8"/>
+          </template>
+          <div class="timelineInner">
+            <div class="timelineHeader">
+              <div class="title">
+                <h4>{{ timeline.heading }}</h4>
+                <span class="time">{{ moment(dateFormat(timeline.createdAt)).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY') ? moment(dateFormat(timeline.createdAt)).format('hh:mm A') : moment(dateFormat(timeline.createdAt)).format('MMM DD,yyyy hh:mm A')}}</span>
+              </div>
+              <div class="userImg">
+                <img v-if="timeline.profileImage" :src="timeline.profileImage" alt="image"/>
+                <!-- <img v-else src="@/assets/images/userAvatar.png" alt="image"/> -->
+              </div>
+            </div>
+            <div class="timelineBody">
+              <div class="content">
+                <p class="timeline-float timeline-title"><span v-html="timeline.title"></span></p>
+                <!-- <p class="timeline-float timeline-title">{{ timeline.title }}</p> -->
+                <!-- <a class="timeline-float more-link" href="javascript:void(0)">more</a> -->
+              </div>
+              <!-- <MailOutlined /> -->
+            </div>
+          </div>
+        </a-timeline-item>
+        
+      </template>
+    </a-timeline>
+  </div>
+  </a-col>
+  </a-row>
+   
+
+
+  </a-drawer>
 </div>
 </template>
 <script>
@@ -104,23 +172,42 @@ import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
 import {
   ref,
+  toRefs,
   onMounted,
   computed,
   reactive,
   watchEffect,
   onUnmounted,
+  // defineAsyncComponent
 } from "vue";
+import {
+  FolderOpenOutlined,
+  FilePdfOutlined,
+  BellOutlined,
+  HeatMapOutlined,
+  ClockCircleOutlined,
+  FileTextOutlined,
+  PushpinOutlined,
+  FlagOutlined,
+  //MailOutlined,
+} from "@ant-design/icons-vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import Loader from "@/components/loader/VideoLoader";
 import { Web } from "@/assets/js/sip-0.20.0";
 import { notification } from "ant-design-vue";
-import { successSwal, deCodeString } from "@/commonMethods/commonMethod";
-import NotesDetailModal from "@/components/modals/NotesDetail";
-import DocumentDetailModal from "@/components/modals/DocumentDetail";
-import PatientVitalsDetailsModal from "@/components/modals/PatientVitalsDetailsModal";
+import NotesDetail from "@/components/video-call/table/NotesDetail";
+import DocumentDetail from "@/components/video-call/table/DocumentDetail";
+import PatientVitalsDetails from "@/components/video-call/table/PatientVitalsDetails";
+import { successSwal, deCodeString,dateFormat } from "@/commonMethods/commonMethod";
+// import NotesDetailModal from "@/components/modals/NotesDetail";
+// import DocumentDetailModal from "@/components/modals/DocumentDetail";
+// import PatientVitalsDetailsModal from "@/components/modals/PatientVitalsDetailsModal";
+// import TimelineView from "@/components/patients/patientSummary/views/TimelineView";
+import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
 import { CopyFilled } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
+import moment from "moment"
 
 export default {
   components: {
@@ -128,9 +215,22 @@ export default {
     Header,
     Sidebar,
     Loader,
-    NotesDetailModal,
-    DocumentDetailModal,
-    PatientVitalsDetailsModal,
+    NotesDetail,
+    DocumentDetail,
+    PatientVitalsDetails,
+    // NotesDetailModal,
+    // DocumentDetailModal,
+    // PatientVitalsDetailsModal,
+     FolderOpenOutlined,
+  FilePdfOutlined,
+  BellOutlined,
+  HeatMapOutlined,
+  ClockCircleOutlined,
+  FileTextOutlined,
+  PushpinOutlined,
+  FlagOutlined,
+  PatientInfoTop
+    //TimelineView//:defineAsyncComponent(() =>import("@/components/patients/patientSummary/views/TimelineView"))
   },
 
   setup() {
@@ -142,8 +242,12 @@ export default {
     const documentDetailVisible = ref(false);
     const patientVitalsVisible = ref(false);
     const decodedUrl = ref();
+    const visibleDrawer =ref(false)
     const route = useRoute();
     const router = useRouter();
+    const tabvalue = reactive({
+      tab:[]
+    });
     //copy url
     const currentUrl = ref();
     async function copyURL(url) {
@@ -174,6 +278,7 @@ export default {
     });
 
     onMounted(() => {
+       localStorage.setItem('barmenu', JSON.stringify(true));
       if(route.params.id){
         store.dispatch("guestUser",{
           conference:deCodeString(route.params.id),
@@ -287,6 +392,17 @@ export default {
       })
       }
     });
+    function resize(){
+    window.addEventListener('mousemove', resizeDiv);
+  }
+  function resizeDiv(e){
+    let video_width = ((e.clientX-50)/document.body.clientWidth)*100;
+    document.getElementById('videoDiv').style.width = video_width+"%";
+  }
+  window.addEventListener('mouseup', e => {
+    console.log(e)
+    window.removeEventListener("mousemove", resizeDiv);
+  });
     // Answer call
     function hangUp() {
       if (decodedUrl.value) {
@@ -314,22 +430,41 @@ export default {
       return store.state.videoCall.getVideoDetails;
     });
 
+    
+    const patientUdid = computed(() => {
+      return store.state.videoCall.getVideoDetails.patientUdid;
+    });
+
     const acceptVideoCallDetails = computed(() => {
       return store.state.videoCall.acceptVideoCallDetails;
     });
 
     const showNotesModal = () => {
-      notesDetailVisible.value = true;
+       notesDetailVisible.value = true
+       documentDetailVisible.value = false
+       patientVitalsVisible.value = false
+     
     };
+   
     const showDocumentsModal = () => {
       documentDetailVisible.value = true;
+      notesDetailVisible.value = false
+     
+     patientVitalsVisible.value = false
     };
     const showVitalssModal = () => {
       patientVitalsVisible.value = true;
+      notesDetailVisible.value = false
+     documentDetailVisible.value = false
+    
     };
 
     // used for patient vital
     watchEffect(() => {
+       if(JSON.parse(localStorage.getItem('barmenu'))==true){
+  
+      document.body.classList.add("show");
+    }
       if (getVideoDetails.value != null) {
         videoLoader();
         store.dispatch("patientVitals", {
@@ -361,6 +496,11 @@ export default {
         });
         store.dispatch("devices", acceptVideoCallDetails.value.patient.id);
       }
+
+      if(getVideoDetails.value){
+        store.dispatch('timeLineType')
+        store.dispatch('patientTimeline', {id:getVideoDetails.value.patientUdid,type:''});
+      }
     }); //end
 
     function videoLoader() {
@@ -378,13 +518,50 @@ export default {
 
     onUnmounted(() => {
       store.commit("videoLoadingStatus", false);
+      
+        localStorage.setItem('barmenu', JSON.stringify(false));
+     
+       
+      
        store.state.videoCall.getVideoDetails = null;
           store.state.videoCall.acceptVideoCallDetails = null;
           store.state.videoCall.conferenceId = null;
           store.state.videoCall.guestUser = null;
     });
 
+    const openDrawer = () =>{
+      store.dispatch("patientDetails", getVideoDetails.value.patientUdid)
+      visibleDrawer.value =true
+    }
+    const onClose = () => {
+      visibleDrawer.value = false;
+    };
+
+    const patientTimeline = computed(() => {
+      return store.state.patients.patientTimeline;
+    })
+  function chnageTab(){
+  store.commit('loadingTableStatus', true)
+  store.dispatch('patientTimeline', {id:getVideoDetails.value.patientUdid,type:tabvalue.tab.length == 0 ? '' :tabvalue.tab.join(",")}).then(()=>{
+    store.commit('loadingTableStatus', false)
+  })
+}
+const patientDetails = computed(() => {
+      return store.state.patients.patientDetails
+    })
     return {
+      
+      patientDetails,
+      chnageTab,
+      ...toRefs(tabvalue),
+      timeLineType:store.getters.timeLineType,
+      patientUdid,
+      moment,
+      dateFormat,
+      patientTimeline,
+      onClose,
+      openDrawer,
+      visibleDrawer,
       guestUser,
       videoLoader,
       decodedUrl,
@@ -405,9 +582,17 @@ export default {
       hangUp,
       videoCall,
       size: ref("large"),
+      resize
     };
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scope>
+.overFlow{
+  height: 500px;
+  overflow: auto;
+}
+.bold{
+  font-weight: bold;
+}
 </style>
