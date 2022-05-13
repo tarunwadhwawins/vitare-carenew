@@ -1,6 +1,6 @@
 <template>
   <div class="patientInfo" v-if="patientDetails">
-    <ProfileImage :patientDetails="patientDetails" :isLeft="false" />
+    <ProfileImage :patientDetails="patientDetails" :isLeft="false" :drawer="drawer" />
   </div>
   <PatientsModal v-model:visible="PatientsModal" @ok="handleOk" />
 </template>
@@ -13,6 +13,9 @@ export default {
   components: {
     PatientsModal,
     ProfileImage: defineAsyncComponent(()=>import("@/components/common/ProfileImage")),
+  },
+  props:{
+    drawer:Boolean
   },
   setup() {
     const store = useStore();

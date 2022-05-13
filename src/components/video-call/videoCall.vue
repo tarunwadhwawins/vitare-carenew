@@ -31,7 +31,8 @@
                                     <img src="@/assets/images/userAvatar.png" />
                                     <div class="name">
                                         <h4>{{acceptVideoCallDetails.name}}</h4>
-                                        <router-link v-if="acceptVideoCallDetails" :to="{ name: 'PatientSummary', params: { udid:acceptVideoCallDetails?acceptVideoCallDetails.patient.id:'' }}" target="_blank">View Profile</router-link>
+                                        <!-- <router-link v-if="acceptVideoCallDetails" :to="{ name: 'PatientSummary', params: { udid:acceptVideoCallDetails?acceptVideoCallDetails.patient.id:'' }}" target="_blank">View Profile</router-link> -->
+                                        <a @click="openDrawer">View Profile</a>
                                     </div>
                                     <!-- <span class="callTime">7:20</span> -->
                                 </div>
@@ -40,7 +41,8 @@
                                     <img src="@/assets/images/userAvatar.png" />
                                     <div class="name">
                                         <h4>{{getVideoDetails?getVideoDetails.patient:''}}</h4>
-                                        <router-link v-if="getVideoDetails" :to="{ name: 'PatientSummary', params: { udid:getVideoDetails?getVideoDetails.patientDetailed.id:'' }}" target="_blank">View Profile</router-link>
+                                        <!-- <router-link v-if="getVideoDetails" :to="{ name: 'PatientSummary', params: { udid:getVideoDetails?getVideoDetails.patientDetailed.id:'' }}" target="_blank">View Profile</router-link> -->
+                                        <a @click="openDrawer">View Profile</a>
                                     </div>
                                     <!-- <span class="callTime">7:20</span> -->
                                 </div>
@@ -97,6 +99,69 @@
             </a-layout-content>
         </a-layout>
     </a-layout>
+    <a-drawer
+    :width="800"
+    title="Profile"
+    :placement="placement"
+    :visible="visibleDrawer"
+    @close="onClose"
+  >
+<a-row :gutter="24">
+      <a-col :sm="24" :xs="24">
+        <PatientInfoTop :patientDetails="patientDetails" :drawer="visibleDrawer"/>
+      </a-col>
+      <a-col :sm="24" :xs="24">
+<div class="thumbDesc patientTimeline mt-28">
+    <a-checkbox-group v-model:value="tab" @change="chnageTab()">
+      <a-checkbox v-for="timeline in timeLineType" :key="timeline.id"  :value="timeline.id" >{{timeline.name}}</a-checkbox>
+    
+    </a-checkbox-group>
+     
+    <a-timeline class="defaultTimeline">
+      <TableLoader/>
+      <template v-for="timeline in patientTimeline" :key="timeline.id">
+        <a-timeline-item color="blue">
+          <template #dot>
+            <BellOutlined class="yellowIcon" v-if="timeline.type==1"/>
+            <ClockCircleOutlined class="orangeIcon" v-if="timeline.type==2"/>
+            <HeatMapOutlined class="brownIcon" v-if="timeline.type==3"/>
+            <FolderOpenOutlined class="mustardIcon" v-if="timeline.type==4"/>
+            <FilePdfOutlined class="tealIcon" v-if="timeline.type==5"/>
+            <FileTextOutlined class="blueIcon" v-if="timeline.type==6"/>
+            <FlagOutlined class="redIcon" v-if="timeline.type==7"/>
+            <PushpinOutlined class="greenIcon" v-if="timeline.type==8"/>
+          </template>
+          <div class="timelineInner">
+            <div class="timelineHeader">
+              <div class="title">
+                <h4>{{ timeline.heading }}</h4>
+                <span class="time">{{ moment(dateFormat(timeline.createdAt)).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY') ? moment(dateFormat(timeline.createdAt)).format('hh:mm A') : moment(dateFormat(timeline.createdAt)).format('MMM DD,yyyy hh:mm A')}}</span>
+              </div>
+              <div class="userImg">
+                <img v-if="timeline.profileImage" :src="timeline.profileImage" alt="image"/>
+                <!-- <img v-else src="@/assets/images/userAvatar.png" alt="image"/> -->
+              </div>
+            </div>
+            <div class="timelineBody">
+              <div class="content">
+                <p class="timeline-float timeline-title"><span v-html="timeline.title"></span></p>
+                <!-- <p class="timeline-float timeline-title">{{ timeline.title }}</p> -->
+                <!-- <a class="timeline-float more-link" href="javascript:void(0)">more</a> -->
+              </div>
+              <!-- <MailOutlined /> -->
+            </div>
+          </div>
+        </a-timeline-item>
+        
+      </template>
+    </a-timeline>
+  </div>
+  </a-col>
+  </a-row>
+   
+
+
+  </a-drawer>
 </div>
 </template>
 <script>
@@ -104,23 +169,39 @@ import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
 import {
   ref,
+  toRefs,
   onMounted,
   computed,
   reactive,
   watchEffect,
   onUnmounted,
+  // defineAsyncComponent
 } from "vue";
+import {
+  FolderOpenOutlined,
+  FilePdfOutlined,
+  BellOutlined,
+  HeatMapOutlined,
+  ClockCircleOutlined,
+  FileTextOutlined,
+  PushpinOutlined,
+  FlagOutlined,
+  //MailOutlined,
+} from "@ant-design/icons-vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import Loader from "@/components/loader/VideoLoader";
 import { Web } from "@/assets/js/sip-0.20.0";
 import { notification } from "ant-design-vue";
-import { successSwal, deCodeString } from "@/commonMethods/commonMethod";
+import { successSwal, deCodeString,dateFormat } from "@/commonMethods/commonMethod";
 import NotesDetailModal from "@/components/modals/NotesDetail";
 import DocumentDetailModal from "@/components/modals/DocumentDetail";
 import PatientVitalsDetailsModal from "@/components/modals/PatientVitalsDetailsModal";
+// import TimelineView from "@/components/patients/patientSummary/views/TimelineView";
+import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
 import { CopyFilled } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
+import moment from "moment"
 
 export default {
   components: {
@@ -131,6 +212,16 @@ export default {
     NotesDetailModal,
     DocumentDetailModal,
     PatientVitalsDetailsModal,
+     FolderOpenOutlined,
+  FilePdfOutlined,
+  BellOutlined,
+  HeatMapOutlined,
+  ClockCircleOutlined,
+  FileTextOutlined,
+  PushpinOutlined,
+  FlagOutlined,
+  PatientInfoTop
+    //TimelineView//:defineAsyncComponent(() =>import("@/components/patients/patientSummary/views/TimelineView"))
   },
 
   setup() {
@@ -142,8 +233,12 @@ export default {
     const documentDetailVisible = ref(false);
     const patientVitalsVisible = ref(false);
     const decodedUrl = ref();
+    const visibleDrawer =ref(false)
     const route = useRoute();
     const router = useRouter();
+    const tabvalue = reactive({
+      tab:[]
+    });
     //copy url
     const currentUrl = ref();
     async function copyURL(url) {
@@ -314,6 +409,11 @@ export default {
       return store.state.videoCall.getVideoDetails;
     });
 
+    
+    const patientUdid = computed(() => {
+      return store.state.videoCall.getVideoDetails.patientUdid;
+    });
+
     const acceptVideoCallDetails = computed(() => {
       return store.state.videoCall.acceptVideoCallDetails;
     });
@@ -361,6 +461,11 @@ export default {
         });
         store.dispatch("devices", acceptVideoCallDetails.value.patient.id);
       }
+
+      if(getVideoDetails.value){
+        store.dispatch('timeLineType')
+        store.dispatch('patientTimeline', {id:getVideoDetails.value.patientUdid,type:''});
+      }
     }); //end
 
     function videoLoader() {
@@ -384,7 +489,38 @@ export default {
           store.state.videoCall.guestUser = null;
     });
 
+    const openDrawer = () =>{
+      store.dispatch("patientDetails", getVideoDetails.value.patientUdid)
+      visibleDrawer.value =true
+    }
+    const onClose = () => {
+      visibleDrawer.value = false;
+    };
+
+    const patientTimeline = computed(() => {
+      return store.state.patients.patientTimeline;
+    })
+  function chnageTab(){
+  store.commit('loadingTableStatus', true)
+  store.dispatch('patientTimeline', {id:getVideoDetails.value.patientUdid,type:tabvalue.tab.length == 0 ? '' :tabvalue.tab.join(",")}).then(()=>{
+    store.commit('loadingTableStatus', false)
+  })
+}
+const patientDetails = computed(() => {
+      return store.state.patients.patientDetails
+    })
     return {
+      patientDetails,
+      chnageTab,
+      ...toRefs(tabvalue),
+      timeLineType:store.getters.timeLineType,
+      patientUdid,
+      moment,
+      dateFormat,
+      patientTimeline,
+      onClose,
+      openDrawer,
+      visibleDrawer,
       guestUser,
       videoLoader,
       decodedUrl,
