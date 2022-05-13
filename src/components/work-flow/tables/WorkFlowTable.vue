@@ -3,8 +3,10 @@
     <template #workflowDescription="text">
         <span>{{ text.text }}</span>
     </template>
-     <template #configureWorkflow="text">
-        <router-link :to="{ name: 'workflowDetails', params: { udid: text.record.id } }">{{ text.text }}</router-link>
+     <template #settings="text">
+        <router-link :to="{ name: 'workflowDetails', params: { udid: text.record.id } }">
+        <SettingOutlined />
+        </router-link>
     </template>
     <template #actions="{record}">
         <a-tooltip placement="bottom" @click="showModal(record.id)" >
@@ -14,7 +16,7 @@
             <a class="icons">
                 <EditOutlined /></a>
         </a-tooltip>
-        <a-tooltip placement="bottom" @click="cloneData(text.record)">
+        <a-tooltip placement="bottom" @click="cloneData(record.id)">
             <template #title>
                 <span>Clone</span>
             </template>
@@ -34,7 +36,7 @@
 </template>
 <script>
 import {  defineComponent, } from "vue";
-import {DeleteOutlined,EditOutlined,CopyOutlined} from "@ant-design/icons-vue";
+import {DeleteOutlined,EditOutlined,CopyOutlined,SettingOutlined} from "@ant-design/icons-vue";
 import { warningSwal} from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import {useStore} from "vuex"
@@ -44,6 +46,7 @@ export default defineComponent({
     DeleteOutlined,
     EditOutlined,
     CopyOutlined,
+    SettingOutlined
   },
   props:{
     columns:Array,
@@ -51,8 +54,11 @@ export default defineComponent({
   },
   setup(props,{emit}) {
     const store = useStore()
+
     const showModal = (id) => {
       emit("showEditModal",true)
+      emit("cloneData",false)
+      emit("updateData",true)
       store.dispatch('editWorkflow',id)
     }
      const handleOk = () => {
@@ -60,11 +66,12 @@ export default defineComponent({
     }
 
     function cloneData(id){
-      let cloneData=[];
       warningSwal("Clone the data!").then((response) => {
         if (response == true) {
-         cloneData = id;
-         console.log('object',cloneData);
+         store.dispatch('editWorkflow',id)
+          emit("showEditModal",true)
+         emit("cloneData",true)
+         emit("updateData",false)
         }
       })
     }

@@ -229,15 +229,15 @@ export const groupActionList = async ({ commit }, id) => {
     status = true
   }).catch((error) => {
     errorLogWithDeviceInfo(error)
-    if (error.response.status === 422) {
-      commit('errorMsg', error.response.data)
-      commit('loadingStatus', false)
-    } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
-      commit('loadingStatus', false)
-    } else if (error.response.status === 401) {
-      commit('loadingStatus', false)
-    }
+    // if (error.response.status === 422) {
+    //   commit('errorMsg', error.response.data)
+    //   commit('loadingStatus', false)
+    // } else if (error.response.status === 500) {
+    //   errorSwal(error.response.data.message)
+    //   commit('loadingStatus', false)
+    // } else if (error.response.status === 401) {
+    //   commit('loadingStatus', false)
+    // }
   })
   return status
 }
@@ -252,15 +252,15 @@ export const editGroupAction = async ({ commit }, data) => {
     status = true
   }).catch((error) => {
     errorLogWithDeviceInfo(error)
-    if (error.response.status === 422) {
-      commit('errorMsg', error.response.data)
-      commit('loadingStatus', false)
-    } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
-      commit('loadingStatus', false)
-    } else if (error.response.status === 401) {
-      commit('loadingStatus', false)
-    }
+    // if (error.response.status === 422) {
+    //   commit('errorMsg', error.response.data)
+    //   commit('loadingStatus', false)
+    // } else if (error.response.status === 500) {
+    //   errorSwal(error.response.data.message)
+    //   commit('loadingStatus', false)
+    // } else if (error.response.status === 401) {
+    //   commit('loadingStatus', false)
+    // }
   })
   return status
 }
@@ -397,15 +397,40 @@ export const actionsList = async ({ commit }, data) => {
   }
   catch(error){
     errorLogWithDeviceInfo(error)
-    if (error.response.status === 422) {
-      commit('errorMsg', error.response.data)
+    // if (error.response.status === 422) {
+    //   commit('errorMsg', error.response.data)
+    //   commit('loadingStatus', false)
+    // } else if (error.response.status === 500) {
+    //   errorSwal(error.response.data.message)
+    //   commit('loadingStatus', false)
+    // } else if (error.response.status === 401) {
+    //   commit('loadingStatus', false)
+    // }
+  }
+  return status
+}
+
+export const eventActions = async ({ commit }, id) => {
+  commit('loadingStatus', true)
+  let status=false;
+  try{
+      let response = await serviceMethod.common('get', `workflow/event/${id}/action`, null, null)
+      commit('eventActions', response.data.data);
       commit('loadingStatus', false)
-    } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
-      commit('loadingStatus', false)
-    } else if (error.response.status === 401) {
-      commit('loadingStatus', false)
-    }
+      successSwal(response.data.message)
+      status = true
+  }
+  catch(error){
+    errorLogWithDeviceInfo(error)
+    // if (error.response.status === 422) {
+    //   commit('errorMsg', error.response.data)
+    //   commit('loadingStatus', false)
+    // } else if (error.response.status === 500) {
+    //   errorSwal(error.response.data.message)
+    //   commit('loadingStatus', false)
+    // } else if (error.response.status === 401) {
+    //   commit('loadingStatus', false)
+    // }
   }
   return status
 }
@@ -433,3 +458,66 @@ export const deleteActions = async ({ commit }, data) => {
   return status
 }
 
+
+
+export const editActions = async ({ commit }, data) => {
+  commit('loadingStatus', true)
+  let status=false;
+  try{
+    let response = await serviceMethod.common('get', `workflow/${data.eventId}/step/${data.actionId}/action/${data.id}`, null, null)
+      commit('editActions', response.data.data);
+      console.log('editActions',response.data.data);
+      commit('loadingStatus', false)
+      status = true
+      if(response.data.data){
+        let field = await serviceMethod.common('get', `workflow/${data.eventId}/alert/${response.data.data.workFlowActionId}/field`, null, null)
+        commit('actionsField', field.data.data);
+        commit('loadingStatus', true)
+      }
+  }
+  catch(error){
+    errorLogWithDeviceInfo(error)
+    console.log('editActionsError',error);
+    // if (error.response.status === 422) {
+    //   commit('errorMsg', error.response.data)
+    //   commit('loadingStatus', false)
+    // } else if (error.response.status === 500) {
+    //   errorSwal(error.response.data.message)
+    //   commit('loadingStatus', false)
+    // } else if (error.response.status === 401) {
+    //   commit('loadingStatus', false)
+    // }
+  }
+  return status
+}
+
+
+export const updateActions = async ({ commit }, data) => {
+  commit('loadingStatus', true)
+  let status=false;
+  try{
+    let response = await serviceMethod.common('put', `workflow/${data.eventId}/step/${data.actionId}/action/${data.id}`, null, data.data)
+      commit('updateActions', response.data.data);
+      commit('loadingStatus', false)
+      status = true
+      if(response.data.data){
+        let field = await serviceMethod.common('get', `workflow/${data.eventId}/alert/${response.data.data.workFlowActionId}/field`, null, null)
+        commit('actionsField', field.data.data);
+        commit('loadingStatus', true)
+      }
+  }
+  catch(error){
+    errorLogWithDeviceInfo(error)
+    console.log('editActionsError',error);
+    // if (error.response.status === 422) {
+    //   commit('errorMsg', error.response.data)
+    //   commit('loadingStatus', false)
+    // } else if (error.response.status === 500) {
+    //   errorSwal(error.response.data.message)
+    //   commit('loadingStatus', false)
+    // } else if (error.response.status === 401) {
+    //   commit('loadingStatus', false)
+    // }
+  }
+  return status
+}

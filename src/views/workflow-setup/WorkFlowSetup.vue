@@ -22,7 +22,7 @@
                             </a-select>
                         </a-col>
                         <a-col :span="24" class="mt-25 ">
-                            <WorkFlowTable :columns="columns" :data-source="data" @showEditModal="showEditModal($event)"/>
+                            <WorkFlowTable :columns="columns" :data-source="data" @showEditModal="showEditModal($event)" @cloneData="cloneData($event)"  @updateData="updateData($event)"/>
                              <Loader />
                         </a-col>
                     </a-row>
@@ -31,7 +31,7 @@
         </a-layout>
     </a-layout>
     <!--modals-->
-    <CreateWorkFlow v-model:visible="showWorkFlowModal" @saveModal="handleOk($event)" :update="update"/>
+    <CreateWorkFlow v-model:visible="showWorkFlowModal" @saveModal="handleOk($event)" :update="update" :cloneButton="cloneButton"/>
 </div>
 </template>
 <script>
@@ -78,10 +78,10 @@ const columns = [
     },
   },
   {
-    title: "Configure Workflow",
-    dataIndex: "configureWorkflow",
+    title: "Settings",
+    dataIndex: "settings",
     slots: {
-      customRender: "configureWorkflow",
+      customRender: "settings",
     },
   },
   {
@@ -106,17 +106,26 @@ export default {
   setup() {
     const search = ref()
     const update = ref()
+    const cloneButton =ref()
     const store = useStore()
     const showWorkFlowModal = ref(false);
     const showModal = () => {
-      update.value=false;
-      showWorkFlowModal.value = true;
+      update.value=false
+      cloneButton.value = false
+      showWorkFlowModal.value = true
     };
 
     const showEditModal = (value) => {
-      update.value=true;
       showWorkFlowModal.value = value;
     };
+
+     function cloneData(value){
+      cloneButton.value = value
+    }
+
+    function updateData(value){
+      update.value = value
+    }
 
     const handleOk = (value) => {
       console.log(value);
@@ -128,6 +137,9 @@ export default {
 
     const searchoptions = ref([]);
     return {
+      updateData,
+      cloneData,
+      cloneButton,
       update,
       columns,
       data:store.getters.workflowList,

@@ -20,6 +20,7 @@
                             </a-steps>
                             <div class="steps-content" v-if="steps[current].title == 'Workflow Criteria'">
                                 <WorkFlowCriteria />
+                                
                             </div>
                             <div class="steps-content" v-if="steps[current].title == 'Action Groups'">
                                 <a-col :span="24">
@@ -35,7 +36,7 @@
                                 </div>
                             </div>
                         </a-col>
-                        <Loader />
+                        
                     </a-row>
                 </div>
                 <!-- <div class="common-bg">
@@ -61,6 +62,7 @@
     <WorkFlowEditGroupAction v-model:visible="visibleEditGroupAction" @saveModal="handleOk($event)" :actionId="actionId" />
 
 </div>
+<Loader />
 </template>
 
 <script>
@@ -88,6 +90,14 @@ const columns = [
     sorter: {
       compare: (a, b) => a.template - b.template,
       multiple: 3,
+    },
+  },
+
+  {
+    title: "Settings",
+    dataIndex: "settings",
+    slots: {
+      customRender: "settings",
     },
   },
 
@@ -158,6 +168,7 @@ export default {
     onMounted(() => {
       store.dispatch("workflowColumn", router.params.udid);
       store.dispatch("groupActionList", router.params.udid);
+       store.commit("resetCounter")
     });
     return {
       actionId,

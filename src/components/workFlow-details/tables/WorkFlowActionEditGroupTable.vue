@@ -11,7 +11,7 @@
             <a class="icons">
                 <EditOutlined /></a>
         </a-tooltip>
-        <a-tooltip placement="bottom" @click="cloneData()" >
+        <a-tooltip placement="bottom" @click="cloneData(record.id)" >
             <template #title>
                 <span>Clone</span>
             </template>
@@ -51,19 +51,21 @@ export default defineComponent({
   setup(props,{emit}) {
     const store = useStore()
     const route = useRoute()
-    const showModal = () => {
-      emit("showEditModal",true)
+    const showModal = (id) => {
+      store.dispatch('editActions',{eventId:route.params.udid,actionId:props.actionId,id:id})
+      emit("cloneData",false)
+      emit("updateData",true)
     }
      const handleOk = () => {
       // 
     }
 
    function cloneData(id){
-      let cloneData=[];
       warningSwal("Clone the data!").then((response) => {
         if (response == true) {
-         cloneData = id;
-         console.log('object',cloneData);
+         store.dispatch('editActions',{eventId:route.params.udid,actionId:props.actionId,id:id})
+         emit("cloneData",true)
+         emit("updateData",false)
         }
       })
     }
@@ -74,6 +76,8 @@ export default defineComponent({
            store.dispatch('deleteActions',{eventId:route.params.udid,actionId:props.actionId,id:id}).then((response)=>{
             if (response == true) {
             store.dispatch("actionsList",{eventId:route.params.udid,actionId:props.actionId});
+            store.state.workflow.actionsField =null,
+            store.state.workflow.editActions =null
           }
           })
         }

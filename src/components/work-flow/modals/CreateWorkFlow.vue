@@ -4,7 +4,7 @@
         <a-row :gutter="24">
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
-                    <a-form-item label="Event For" name="eventTypeId" :rules="[{ required: true, message: 'Event For' +' '+$t('global.validation')  }]">
+                    <a-form-item label="Event For" name="eventTypeId" :rules="[{ required: true, message: 'Event for' +' '+$t('global.validation')  }]">
                         <GlobalCodeDropDown @change="checkChangeInput();eventType(eventDetails.eventTypeId)" v-model:value="eventDetails.eventTypeId" :globalCode="globalCode.workflowEventType" disabled/>
                     </a-form-item>
                 </div>
@@ -19,7 +19,7 @@
             </a-col>
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
-                    <a-form-item label="WorkFlow Name" name="title" :rules="[{required: true,message:'Title ' +$t('global.validation'),},]">
+                    <a-form-item label="WorkFlow Name" name="title" :rules="[{required: true,message:'WorkFlow name ' +$t('global.validation'),},]">
                         <a-input v-model:value="eventDetails.title" size="large" style="width: 100%"/>
                     </a-form-item>
                 </div>
@@ -53,13 +53,18 @@
                 <div class="steps-action" v-if="update==true">
                     <a-button type="primary" html-type="submit">{{$t('global.update')}}</a-button>
                 </div>
+                <div class="steps-action" v-else-if="cloneButton==true">
+                  <a-button  type="primary" html-type="submit">{{'Clone'}}</a-button>
+                </div>
                 <div class="steps-action" v-else>
                    <a-button html-type="reset"  style="margin-right: 8px" @click="reset()">{{$t('global.clear')}}</a-button>
                     <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
+
                 </div>
             </a-col>
         </a-row>
     </a-form>
+    <Loader/>
 </a-modal>
 </template>
 <script>
@@ -71,19 +76,22 @@ import {
   endTimeAdd,
   warningSwal,
   globalDateFormat,
-} from "@/commonMethods/commonMethod";
-import { messages } from "@/config/messages";
-import moment from "moment";
+} from "@/commonMethods/commonMethod"
+import { messages } from "@/config/messages"
+import moment from "moment"
+import Loader from '@/components/loader/Loader.vue'
 export default {
   name: "CreateWorkFlow",
   components: {
     GlobalCodeDropDown,
+    Loader,
   },
   props: {
     update: Boolean,
+    cloneButton:Boolean
   },
   setup(props, { emit }) {
-    const store = useStore();
+    const store = useStore()
     const eventDetails = reactive({
       eventTypeId: 225,
       eventId: "",
@@ -92,38 +100,38 @@ export default {
       startDate: "",
       endDate: "",
     });
-    const formRef = ref();
+    const formRef = ref()
 
     function eventType(id) {
       console.log(id);
-      store.dispatch("eventType", id);
+      store.dispatch("eventType", id)
     }
-
     const editWorkflow = computed(() => {
-      return store.state.workflow.editWorkflow;
-    });
-
+      return store.state.workflow.editWorkflow
+    })
     function submitForm() {
       eventDetails.startDate = timeStamp(
         endTimeAdd(moment(eventDetails.startDate))
-      );
+      )
       eventDetails.endDate = timeStamp(
         endTimeAdd(moment(eventDetails.endDate))
-      );
+      )
       store.dispatch("addWorkFlow", eventDetails).then((response) => {
         if (response == true) {
           store.dispatch("workflowList");
           emit("saveModal", false);
+          formRef.value.resetFields();
+          store.state.workflow.editWorkflow=null
         }
-      });
+      })
     }
     function updateForm() {
       eventDetails.startDate = timeStamp(
         endTimeAdd(moment(eventDetails.startDate))
-      );
+      )
       eventDetails.endDate = timeStamp(
         endTimeAdd(moment(eventDetails.endDate))
-      );
+      )
       store
         .dispatch("updateWorkFlow", {
           data: eventDetails,
@@ -131,8 +139,10 @@ export default {
         })
         .then((response) => {
           if (response == true) {
-            store.dispatch("workflowList");
-            emit("saveModal", false);
+            store.dispatch("workflowList")
+            emit("saveModal", false)
+            formRef.value.resetFields()
+            store.state.workflow.editWorkflow=null
           }
         });
     }
@@ -180,6 +190,8 @@ export default {
       if (editWorkflow.value) {
         Object.assign(eventDetails, editWorkflow.value);
       } else if(props.update==false) {
+        Object.assign(eventDetails, form);
+      }else if(props.cloneButton==false) {
         Object.assign(eventDetails, form);
       }
       store.dispatch("eventType", 225);

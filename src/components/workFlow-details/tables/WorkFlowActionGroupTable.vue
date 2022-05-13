@@ -1,10 +1,12 @@
 <template>
 <a-table rowKey="id"  :columns="columns" :data-source="data" :scroll="{ x: 900 }" :pagination="false">
-   <template #title="text">
-        <a @click="groupEditModal(text.record.id)">{{ text.text }}</a>
+    <template #settings="{record}">
+        <a @click="showModal(record.id)">
+        <SettingOutlined />
+        </a>
     </template>
     <template #actions="{record}">
-        <a-tooltip placement="bottom" @click="showModal(record.id)" >
+        <a-tooltip placement="bottom" @click="groupEditModal(record.id)" >
             <template #title>
                 <span>Edit</span>
             </template>
@@ -24,7 +26,7 @@
 </template>
 <script>
 import {  defineComponent, } from "vue";
-import {EditOutlined,DeleteOutlined} from "@ant-design/icons-vue"
+import {EditOutlined,DeleteOutlined,SettingOutlined} from "@ant-design/icons-vue"
 import { warningSwal} from "@/commonMethods/commonMethod"
 import { messages } from "@/config/messages"
 import {useStore} from "vuex"
@@ -33,7 +35,8 @@ export default defineComponent({
   name:"WorkFlowTable",
   components: {
     EditOutlined,
-    DeleteOutlined
+    DeleteOutlined,
+    SettingOutlined
   },
   props:{
     columns:Array,
@@ -46,6 +49,9 @@ export default defineComponent({
     const showModal = (id) => {
       emit("showEditModal",{type:true,id:id})
       store.dispatch("actionsOffset",route.params.udid)//workflowID(route.params.udid)
+      // store.dispatch("eventActions",route.params.udid)
+      store.state.workflow.editActions =null
+      store.state.workflow.actionsField =null
     }
     const groupEditModal = (id) => {
       emit("groupEditModal",true)

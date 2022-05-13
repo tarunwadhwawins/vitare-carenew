@@ -4,7 +4,7 @@
         <a-row :gutter="24">
             <a-col :sm="18" :xs="24">
                 <div class="form-group">
-                    <a-form-item label="Action Group Name" name="title" :rules="[{ required: true, message: 'Action Group Name'+' '+$t('global.validation')  }]">
+                    <a-form-item label="Action Group Name" name="title" :rules="[{ required: true, message: 'Action group name'+' '+$t('global.validation')  }]">
                          <a-input v-model:value="groupActions.title" size="large" style="width: 100%"/>
                     </a-form-item>
                 </div>

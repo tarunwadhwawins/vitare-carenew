@@ -1,6 +1,6 @@
 <template>
 <a-modal max-width="1000px" width="50%" title="Actions" centered :footer="false" :maskClosable="false">
-    <a-form :model="groupEditActions" layout="vertical" ref="formRef"  autocomplete="off" name="groupEditActions" scrollToFirstError=true @finish="submitForm" @finishFailed="onFinishFailed">
+    <a-form :model="groupEditActions" layout="vertical" ref="formRef"  autocomplete="off" name="groupEditActions" scrollToFirstError=true @finish="update?updateForm():submitForm()" @finishFailed="onFinishFailed">
         <a-row :gutter="24">
             <a-col :sm="19" :xs="24">
                 <div class="form-group">
@@ -10,16 +10,16 @@
                 </div>
             </a-col>
 
-            <a-col :sm="24" :xs="24" v-if="workflow.actionsField">
+            <a-col :sm="24" :xs="24" v-if="workflow.actionsField || workflow.editActions">
                 <div class="form-group">
                     <a-row :gutter="24">
                         <a-col :sm="7" :xs="24">
-                            <a-form-item label="Action Type" name="workFlowEventOffsetFieldId" :rules="[{ required: true, message: 'Action Type'+' '+$t('global.validation')  }]" style="width:100%">
+                            <a-form-item label="Action Type" name="workFlowEventOffsetFieldId" :rules="[{ required: true, message: 'Action type'+' '+$t('global.validation')  }]" style="width:100%">
                                 <GlobalCodeDropDown @change="checkChangeInput();" v-model:value="groupEditActions.workFlowEventOffsetFieldId" :globalCode="workflow.actionsOffset" />   
                             </a-form-item>
                         </a-col>
                         <a-col :sm="7" :xs="24" >
-                            <a-form-item label="Start" name="executionOffsetType" :rules="[{ required: true, message: 'Start Action'+' '+$t('global.validation')  }]">
+                            <a-form-item label="Start" name="executionOffsetType" :rules="[{ required: true, message: 'Start action'+' '+$t('global.validation')  }]">
                                 <!-- <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="groupEditActions.workFlowEventOffsetFieldId" :globalCode="dayTypeAction" /> -->
                                 <a-select ref="select"  style="width: 100%" size="large" v-model:value="groupEditActions.executionOffsetType">
                                     <a-select-option value="+">After</a-select-option>
@@ -50,7 +50,9 @@
             <a-col :span="24">
                 <div class="steps-action">
                     <a-button html-type="reset" style="margin-right: 8px" @click="reset()">{{$t('global.clear')}}</a-button>
-                    <a-button type="primary" html-type="submit">{{$t('global.save')}}</a-button>
+                    <a-button v-if="cloneButton" type="primary" html-type="submit">{{'Clone'}}</a-button>
+                    <a-button v-else-if="update" type="primary" html-type="submit">{{$t('global.update')}}</a-button>
+                    <a-button v-else type="primary" html-type="submit">{{$t('global.save')}}</a-button>
                 </div>
             </a-col>
         </a-row>
@@ -59,7 +61,7 @@
 
     <!-- Table -->
     <div class="table">
-        <WorkFlowEditActionTable :columns="columns" :data-source="workflow.actionsList" @showEditModal="showEditModal($event)" :actionId="actionId"/>
+        <WorkFlowEditActionTable :columns="columns" :data-source="workflow.actionsList" @cloneData="cloneData($event)"  @updateData="updateData($event)" :actionId="actionId"/>
     </div>
 
 </a-modal>
@@ -139,6 +141,8 @@ export default {
       actionsField: [],
     })
     const formRef = ref()
+    const cloneButton =ref(false)
+    const update = ref(false)
 
     function reset() {
       formRef.value.resetFields()
@@ -159,6 +163,14 @@ export default {
         eventId: route.params.udid,
         actionId: id,
       })
+    }
+
+    function cloneData(value){
+      cloneButton.value = value
+    }
+
+    function updateData(value){
+      update.value = value
     }
 
     function submitForm() {
@@ -192,11 +204,53 @@ export default {
           eventId: route.params.udid,
           actionId:props.actionId
         })
-        //  emit("saveModal", false)
         formRef.value.resetFields();
+        store.state.workflow.actionsField =null
+        store.state.workflow.editActions =null
         }
       })
     }
+
+    
+    function updateForm() {
+      let data = [];
+      groupEditActions.actionsField.map((item, i) => {
+        let valueSelected = null;
+        if (workflow.value.actionsField[i].type == "Date") {
+          valueSelected = timeStamp(item);
+        } else {
+          valueSelected = item;
+        }
+        data.push({
+          id: workflow.value.actionsField[i].id,
+          value: valueSelected,
+        })
+      })
+
+      store.dispatch("updateActions",{
+        data:{
+          workFlowActionId: groupEditActions.workFlowActionId,
+          executionOffsetDays: groupEditActions.executionOffsetDays,
+          workFlowEventOffsetFieldId: groupEditActions.workFlowEventOffsetFieldId,
+          executionOffsetType: groupEditActions.executionOffsetType,
+          actionsField: data,
+        },
+        eventId: route.params.udid,
+        actionId:props.actionId,
+        id:workflow.value.editActions.id
+      }).then((response)=>{
+        if(response==true){
+          store.dispatch("actionsList",{
+          eventId: route.params.udid,
+          actionId:props.actionId
+        })
+        formRef.value.resetFields();
+        store.state.workflow.editActions =null
+        store.state.workflow.actionsField =null
+        }
+      })
+    }
+
 
     function onFinishFailed(value) {
       console.log("editGroupAction", value);
@@ -209,8 +263,16 @@ export default {
           actionId:props.actionId
         })
       }
+      if(workflow.value.editActions){
+        Object.assign(groupEditActions,workflow.value.editActions)
+      }
     })
     return {
+      updateForm,
+      updateData,
+      update,
+      cloneData,
+      cloneButton,
       moment,
       timeStamp,
       submitForm,

@@ -13,5 +13,7 @@ export default {
     editGroupAction:null,
     actionsOffset:null,
     actionsField:null,
-    actionsList:null
+    actionsList:null,
+    editActions:null,
+    eventAction:null
 }
