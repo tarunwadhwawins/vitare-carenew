@@ -23,7 +23,7 @@
   </a-table>
 
   <!-- Modal -->
-  <StaffGroupModal v-if="visibleGroupModal" v-model:visible="visibleGroupModal" @closeModal="closeModal" :isEdit="true" :groupId="idGroup" />
+  <StaffGroupModal v-if="visibleGroupModal" v-model:visible="visibleGroupModal" @closeModal="closeModal" :isEdit="true" :groupID="idGroup" />
   
 </template>
 

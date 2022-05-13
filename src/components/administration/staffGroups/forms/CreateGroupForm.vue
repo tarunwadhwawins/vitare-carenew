@@ -1,5 +1,5 @@
 <template>
-  <a-form :model="createGroupForm" layout="vertical" @finish="submitForm">
+  <a-form :model="createGroupForm" layout="vertical" @finish="submitForm" autocomplete="off">
     <a-row>
       <a-col :span="24">
         <div class="form-group">

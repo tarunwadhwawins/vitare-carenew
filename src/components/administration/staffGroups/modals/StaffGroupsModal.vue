@@ -64,7 +64,8 @@
 import {
   computed,
   defineAsyncComponent,
-  ref
+  ref,
+  watchEffect
 } from 'vue-demi';
 import { useStore } from 'vuex';
 export default {
@@ -82,14 +83,15 @@ export default {
     isEdit: {
       type: Boolean
     },
-    groupId: {
-      type: Number
-    },
+    // groupId: {
+    //   type: Number
+    // },
   },
   setup(props, { emit }) {
     const store = useStore()
     const customScrollTop = ref()
     const modalTitle = props.isEdit ? 'Edit Group' : 'Create New Group'
+    const groupId = ref(null)
 
     const createGroup = computed(() => {
       return store.state.staffGroups.createGroup
@@ -97,6 +99,18 @@ export default {
 
     const groupDetails = computed(() => {
       return store.state.staffGroups.groupDetails
+    })
+
+    watchEffect(() => {
+      if(groupDetails.value) {
+        groupId.value = groupDetails.value.udid 
+      }
+      else if(createGroup.value) {
+        groupId.value = createGroup.value.udid 
+      }
+      else {
+        groupId.value = null  
+      }
     })
     
     const current = computed({
@@ -176,6 +190,7 @@ export default {
       next,
       prev,
       closeModal,
+      groupId,
     }
   }
 }

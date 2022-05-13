@@ -68,11 +68,11 @@ export default {
     })
 
     watchEffect(() => {
-      if(createGroup.value != null) {
-        groupId.value = props.groupID ? props.groupID : createGroup.value.udid;
+      if(props.isEdit) {
+        groupId.value = groupDetails.value.udid
       }
-      else if(groupDetails.value != null) {
-        groupId.value = props.groupID ? props.groupID : groupDetails.value.udid;
+      else {
+        groupId.value = createGroup.value ? createGroup.value.udid : null
       }
     })
 
@@ -94,6 +94,7 @@ export default {
       store.dispatch('addStaffToGroup', data).then(() => {
         formRef.value.resetFields();
         Object.assign(addStaffToGroupForm, form)
+        store.dispatch('groupsList')
         store.dispatch('groupStaffList', groupId.value).then(() => {
           Services.singleDropdownSearch("", (d) => (staffData.value = d), groupStaffList.value, "staff");
         })

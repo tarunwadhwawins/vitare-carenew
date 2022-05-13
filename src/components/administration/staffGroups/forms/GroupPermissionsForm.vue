@@ -41,6 +41,9 @@ import { useStore } from 'vuex'
 
 export default {
   props: {
+    isEdit: {
+      type: Boolean
+    },
     groupID: {
       type: Number
     },
@@ -68,27 +71,36 @@ export default {
       return store.state.staffGroups.createGroup
     })
 
+    const groupDetails = computed(() => {
+      return store.state.staffGroups.groupDetails
+    })
+
     watchEffect(() => {
-      if (props.groupID) {
+      if(props.isEdit) {
         copyPermission()
+        groupId.value = groupDetails.value.udid
       }
-      groupId.value = props.groupID ? props.groupID : createGroup.value.udid;
+      else {
+        groupId.value = createGroup.value ? createGroup.value.udid : null
+      }
     })
 
     function copyPermission() {
-      groupPermissionsModules.value.forEach((groupPermissions) => {
-        groupPermissions.screens.forEach((screenElement) => {
-          screenElement.actions.forEach((getData) => {
-            rolesAndPermissions.value ? rolesAndPermissions.value.forEach((formModule) => {
-              let screens = arrayToObjact(formModule.screens, screenElement.id)
-              if(screens) {
-                screenElement.actions.length == screens.actions.length ? groupPermissionsForm.screen[screenElement.id] = true : groupPermissionsForm.screen[screenElement.id] = false
-              }
-            }) : ''
-            groupPermissionsForm.action[getData.id] = true
+      if(groupPermissionsModules.value) {
+        groupPermissionsModules.value.forEach((groupPermissions) => {
+          groupPermissions.screens.forEach((screenElement) => {
+            screenElement.actions.forEach((getData) => {
+              rolesAndPermissions.value ? rolesAndPermissions.value.forEach((formModule) => {
+                let screens = arrayToObjact(formModule.screens, screenElement.id)
+                if(screens) {
+                  screenElement.actions.length == screens.actions.length ? groupPermissionsForm.screen[screenElement.id] = true : groupPermissionsForm.screen[screenElement.id] = false
+                }
+              }) : ''
+              groupPermissionsForm.action[getData.id] = true
+            })
           })
         })
-      })
+      }
     }
 
     const actionsIds = []
@@ -110,6 +122,7 @@ export default {
           action: [],
           screen: []
         })
+        store.dispatch('groupsList')
         emit('closeModal')
       })
     }
@@ -132,13 +145,6 @@ export default {
       store.commit('checkChangeInput', true)
     }
 
-    function saveModal() {
-      successSwal(messages.formSuccess);
-      Object.assign(groupPermissionsForm, form);
-      store.commit("resetCounter");
-      emit("closeModal");
-    }
-
     return {
       formRef,
       checkAll,
@@ -148,7 +154,6 @@ export default {
       groupPermissionsForm,
       rolesAndPermissions,
       groupPermissionsModules,
-      saveModal,
     }
   }
 }

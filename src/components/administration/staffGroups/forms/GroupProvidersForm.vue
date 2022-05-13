@@ -77,11 +77,11 @@ export default {
     })
 
     watchEffect(() => {
-      if(createGroup.value != null) {
-        groupId.value = props.groupID ? props.groupID : createGroup.value.udid;
+      if(props.isEdit) {
+        groupId.value = groupDetails.value.udid
       }
-      else if(groupDetails.value != null) {
-        groupId.value = props.groupID ? props.groupID : groupDetails.value.udid;
+      else {
+        groupId.value = createGroup.value ? createGroup.value.udid : null
       }
     })
     const providerData = ref([]);
@@ -94,6 +94,7 @@ export default {
       store.dispatch('addProviderToGroup', data).then(() => {
         formRef.value.resetFields();
         Object.assign(addProviderToGroupForm, form)
+        store.dispatch('groupsList')
         store.dispatch('groupProvidersList', groupId.value).then(() => {
           Services.singleDropdownSearch("", (d) => (providerData.value = d), groupProvidersList.value, "provider");
         })

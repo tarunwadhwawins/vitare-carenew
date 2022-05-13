@@ -77,11 +77,11 @@ export default {
     })
 
     watchEffect(() => {
-      if(createGroup.value != null) {
-        groupId.value = props.groupID ? props.groupID : createGroup.value.udid;
+      if(props.isEdit) {
+        groupId.value = groupDetails.value.udid
       }
-      else if(groupDetails.value != null) {
-        groupId.value = props.groupID ? props.groupID : groupDetails.value.udid;
+      else {
+        groupId.value = createGroup.value ? createGroup.value.udid : null
       }
     })
     const programData = ref([]);
@@ -94,6 +94,7 @@ export default {
       store.dispatch('addProgramToGroup', data).then(() => {
         formRef.value.resetFields();
         Object.assign(addProgramToGroupForm, form)
+        store.dispatch('groupsList')
         store.dispatch('groupProgramsList', groupId.value).then(() => {
           Services.singleDropdownSearch("", (d) => (programData.value = d), groupProgramsList.value, "program");
         })
