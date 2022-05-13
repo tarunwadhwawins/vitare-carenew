@@ -294,8 +294,7 @@ export default {
     window.addEventListener('mousemove', resizeDiv);
   }
   function resizeDiv(e){
-    let video_width = (e.clientX/document.body.clientWidth)*100;
-
+    let video_width = ((e.clientX-50)/document.body.clientWidth)*100;
     document.getElementById('videoDiv').style.width = video_width+"%";
   }
   window.addEventListener('mouseup', e => {
