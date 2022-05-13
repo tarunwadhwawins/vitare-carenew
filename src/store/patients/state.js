@@ -63,8 +63,8 @@ export default {
     closeModal:null,
     patientCriticalNotes:null,
     criticalNotesList:null,
-    responsiblePersonsList:null,
-    responsiblePersonDetails:null,
+    familyMembersList:null,
+    familyMemberDetails:null,
     physiciansList:null,
     physicianDetails:null,
     emergencyContactsList:null,
@@ -83,5 +83,8 @@ export default {
     medicationDetails:null,
     documentDetails:null,
     isPicuteLoading:false,
+
+    responsiblePerson:null,
+    emergencyContact:null,
 
 }
