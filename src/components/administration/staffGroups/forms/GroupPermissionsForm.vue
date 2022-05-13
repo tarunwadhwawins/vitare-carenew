@@ -32,8 +32,8 @@ import {
   ref,
   watchEffect
 } from 'vue-demi'
-import { successSwal } from "@/commonMethods/commonMethod";
-import { messages } from "@/config/messages";
+// import { successSwal } from "@/commonMethods/commonMethod";
+// import { messages } from "@/config/messages";
 import {
   arrayToObjact,
 } from "@/commonMethods/commonMethod"
@@ -65,7 +65,7 @@ export default {
       action: [],
       screen: []
     })
-    const form = reactive({ ...groupPermissionsForm })
+    // const form = reactive({ ...groupPermissionsForm })
 
     const createGroup = computed(() => {
       return store.state.staffGroups.createGroup
