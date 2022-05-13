@@ -79,6 +79,7 @@
         </a-col>
       </a-row>
     </a-form>
+    <Loader />
   </a-modal>
 </template>
 <script>
@@ -101,10 +102,13 @@ import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 
 import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
+import Loader from "@/components/loader/Loader";
+
 export default defineComponent({
   components: {
     ModalButtons,
     GlobalCodeDropDown,
+    Loader,
   },
   props: {
     isEditForm: {

@@ -11,10 +11,13 @@
         <a-timeline-item color="blue">
           <template #dot>
             <BellOutlined class="yellowIcon" v-if="timeline.type==1"/>
-            <HeatMapOutlined class="redIcon" v-if="timeline.type==3"/>
-            <FilePdfOutlined class="yellowIcon" v-if="timeline.type==5"/>
-            <FolderOpenOutlined class="yellowIcon" v-if="timeline.type==4"/>
             <ClockCircleOutlined class="orangeIcon" v-if="timeline.type==2"/>
+            <HeatMapOutlined class="brownIcon" v-if="timeline.type==3"/>
+            <FolderOpenOutlined class="mustardIcon" v-if="timeline.type==4"/>
+            <FilePdfOutlined class="tealIcon" v-if="timeline.type==5"/>
+            <FileTextOutlined class="blueIcon" v-if="timeline.type==6"/>
+            <FlagOutlined class="redIcon" v-if="timeline.type==7"/>
+            <PushpinOutlined class="greenIcon" v-if="timeline.type==8"/>
           </template>
           <div class="timelineInner">
             <div class="timelineHeader">
@@ -29,7 +32,8 @@
             </div>
             <div class="timelineBody">
               <div class="content">
-                <p class="timeline-float timeline-title">{{ timeline.title }}</p>
+                <p class="timeline-float timeline-title"><span v-html="timeline.title"></span></p>
+                <!-- <p class="timeline-float timeline-title">{{ timeline.title }}</p> -->
                 <!-- <a class="timeline-float more-link" href="javascript:void(0)">more</a> -->
               </div>
               <!-- <MailOutlined /> -->
@@ -49,6 +53,9 @@ import {
   BellOutlined,
   HeatMapOutlined,
   ClockCircleOutlined,
+  FileTextOutlined,
+  PushpinOutlined,
+  FlagOutlined,
   //MailOutlined,
 } from "@ant-design/icons-vue";
 import {
@@ -67,11 +74,14 @@ import TableLoader from "@/components/loader/TableLoader";
 import moment from "moment"
 export default {
   components: {
-    FolderOpenOutlined,
-    FilePdfOutlined,
-    BellOutlined,
-    HeatMapOutlined,
-    ClockCircleOutlined,
+  FolderOpenOutlined,
+  FilePdfOutlined,
+  BellOutlined,
+  HeatMapOutlined,
+  ClockCircleOutlined,
+  FileTextOutlined,
+  PushpinOutlined,
+  FlagOutlined,
     //MailOutlined,
     TableLoader
   },

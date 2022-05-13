@@ -78,6 +78,13 @@ export const staff = async (state, data) => {
 			slots: {
 				customRender: 'status'
 			}
+		},
+		{
+			title: 'Action',
+			dataIndex: 'actions',
+			slots: {
+				customRender: 'action'
+			}
 		}
 	];
 	state.staffMeta = data.meta.pagination;

@@ -103,7 +103,14 @@ export const patient = (state, data) => {
     title: "Sex ",
     dataIndex: "gender",
    
-  }
+  },
+{
+  title:"Action ",
+  dataIndex: "actions",
+  slots: {
+    customRender: "action",
+  },
+}
   ];
   state.patientMeta = data.meta.pagination;
   state.patientList = data.data

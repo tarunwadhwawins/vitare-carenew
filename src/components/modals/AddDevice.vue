@@ -54,6 +54,7 @@
         </a-col>
       </a-row>
     </a-form>
+    <Loader />
   </a-modal>
 </template>
 
@@ -67,11 +68,14 @@ import ModalButtons from "@/components/common/button/ModalButtons";
 import { useRoute } from "vue-router";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 import InventoryGlobalCodeDropDown from "@/components/modals/search/InventoryGlobalCodeSearch.vue"
+import Loader from "@/components/loader/Loader";
+
 export default defineComponent({
   components: {
     ErrorMessage,
     ModalButtons,
     GlobalCodeDropDown,
+    Loader,
     InventoryGlobalCodeDropDown
   },
   props: {

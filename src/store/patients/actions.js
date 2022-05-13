@@ -5,10 +5,12 @@ import { ref } from 'vue';
 const errorMessage = []
 export const addDemographic = async ({commit}, data) => {
   commit('loadingStatus', true)
+  
   await serviceMethod.common("post", "patient", null, data).then((response) => {
+    
     commit('addDemographic', response.data.data);
     commit('status', true)
-    commit('counterPlus')
+    //commit('counterPlus')
     // successSwal(response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
@@ -30,9 +32,10 @@ export const updateDemographic = async ({commit}, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("put", `patient/${data.id}`, null, data.data).then((response) => {
     commit('updateDemographic', response.data.data);
+    commit('addDemographic', response.data.data);
     // successSwal(response.data.message)
     commit('loadingStatus', false)
-    commit('counterPlus')
+    
     
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
@@ -68,7 +71,22 @@ export const patients = async ({
 
 }
 
+export const patientsDelete = async ({
+  commit
+},id) => {
+  
+  
+ 
+  await serviceMethod.common("delete", "patient", id, null).then((response) => {
+    successSwal(response.data.message)
+   
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    errorSwal(error.response.data.message)
+    commit('loadingTableStatus', false)
+  })
 
+}
 export const addCondition = async ({commit}, request) => {
   const data = request.data;
   const patientId = request.id;
@@ -369,12 +387,12 @@ export const program = async ({
 
 }
 
-export const addDevice = async ({
-  commit
-}, data) => {
+export const addDevice = async ({ commit }, data) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("post", `patient/${data.id}/inventory`, null, data.data).then((response) => {
     commit('addDevice', response.data.data);
     successSwal(response.data.message)
+    commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
@@ -388,6 +406,7 @@ export const addDevice = async ({
       // commit('errorMsg', error.response.data.message)
       errorSwal(error.response.data.message)
     }
+    commit('loadingStatus', false)
   })
 }
 
@@ -672,9 +691,12 @@ export const patientInsurance = async ({ commit }, id) => {
 }
 
 export const addDocument = async ({commit}, data) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("post", `patient/${data.id}/document`, null, data.data).then((response) => {
     commit('addDocument', response.data.data);
     successSwal(response.data.message)
+    commit('loadingStatus', false)
+   // commit('counterPlus')
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
@@ -685,6 +707,7 @@ export const addDocument = async ({commit}, data) => {
       // commit('errorMsg', error.response.data.message)
       errorSwal(error.response.data.message)
     }
+    commit('loadingStatus', false)
   })
 }
 
@@ -768,11 +791,14 @@ export const patientTimeline = async ({commit}, data) => {
 }
 
 export const patientDocuments = async ({commit}, id) => {
+  commit('loadingStatus', true)
   await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/document', null, null).then((response) => {
     commit('patientDocumentsSuccess', response.data.data);
+    commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
+    commit('loadingStatus', false)
   })
 }
 
