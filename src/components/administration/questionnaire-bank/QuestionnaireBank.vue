@@ -19,43 +19,7 @@
 
                 <a-col :span="24">
 
-                    <a-collapse v-model:activeKey="activeKey" expand-icon-position="left">
-                        <a-collapse-panel v-for="questionList in questionnaireList" :key="questionList.questionId" :header="questionList.question">
-                            <div v-if="questionList.dataTypeId==244 || questionList.dataTypeId==243">
-                                <a-col :span="24" v-for="(options,index) in questionList.options" :key="index">
-                                    <div class="questionOutput">
-                                        <a-checkbox v-model:checked="options.defaultOption" disabled>
-                                            Default
-                                        </a-checkbox>
-                                        <a-checkbox v-model:checked="options.correct" disabled>
-                                            Correct
-                                        </a-checkbox>
-                                        <div class="ml-10 ">
-                                            <p>{{ options.option }}</p>
-                                            <p v-if="options.score">Score - {{options.score}}</p>
-                                            <div v-if="options.program.length>0">
-                                                <a-tag v-for="(program,i) in options.program" :key="i">{{program.program}} - {{program.score? program.score : 0}}</a-tag>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </a-col>
-                            </div>
-                            <a-col :span="24" v-else>
-                                <div class="questionOutput">
-
-                                    <p>Score : {{questionList.score?questionList.score : 0}}</p>
-
-                                </div>
-                            </a-col>
-
-                            <template #extra>
-                                <EditOutlined @click="showModal2" />
-                                <DeleteOutlined />
-                            </template>
-                        </a-collapse-panel>
-
-                    </a-collapse>
+                   <Question :question="questionnaireList" v-if="questionnaireList" :edit="true" />
                 </a-col>
             </a-row>
         </div>
@@ -68,18 +32,20 @@
 
 <script>
 import { ref, defineAsyncComponent, onMounted,onUnmounted } from "vue"
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue"
+
 import { useStore } from "vuex"
 import Loader from "@/components/loader/Loader"
 import SearchField from "@/components/common/input/SearchField"
+import Question from "@/components/administration/questionnaire-bank/common/Question"
 export default {
   components: {
-    EditOutlined,
-    DeleteOutlined,
+ 
+    
     AddQuestionnaire: defineAsyncComponent(() =>import("@/components/administration/questionnaire-bank/modals/AddQuestionnaire")),
     EditQuestionnaire: defineAsyncComponent(() =>import("@/components/modals/EditQuestionnaire")),
     Loader,
-    SearchField
+    SearchField,
+    Question,
   },
 setup() {
     const activeKey = ref(["2"])

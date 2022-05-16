@@ -8,7 +8,7 @@
 
             <a-col :span="8">
                 <div class="text-right mt-28">
-                    <a-button class="btn primaryBtn">Search Existing</a-button>
+                  
                     <a-button @click="showModal({show:true,id:''})" class="btn primaryBtn ml-10">Add New Question</a-button>
                 </div>
             </a-col>
@@ -18,31 +18,7 @@
 
                     <a-collapse v-model:activeKey="activeKey" expand-icon-position="right">
                         <a-collapse-panel v-for="questionList in questionnaireList" :key="questionList.questionId" :header="questionList.question">
-                            <div v-if="questionList.dataTypeId==244 || questionList.dataTypeId==243">
-                                <a-col :span="24" v-for="(options,index) in questionList.options" :key="index">
-                                    <div class="questionOutput">
-                                        <a-checkbox v-if="questionList.dataTypeId==244" v-model:checked="options.defaultOption" disabled>
-                                            Default
-                                        </a-checkbox>
-                                        <a-checkbox v-if="questionList.dataTypeId==244" v-model:checked="options.correct" disabled>
-                                            Correct
-                                        </a-checkbox>
-                                        <p>Options : </p>
-                                        <p>{{ options.option }}</p>
-                                        <p v-if="options.score">Score - {{options.score}}</p>
-                                        <div v-if="options.program.length>0">
-                                            <a-tag v-for="(program,i) in options.program" :key="i">{{program.program}} - {{program.score? program.score : 0}}</a-tag>
-                                        </div>
-                                    </div>
-                                </a-col>
-                            </div>
-                            <a-col :span="24" v-else>
-                                <div class="questionOutput">
-
-                                    <p>Score : {{questionList.score?questionList.score : 0}}</p>
-
-                                </div>
-                            </a-col>
+                        <Option :optionList="questionList" />
 
                             <template class="checkBox" #extra>
                                 <a-checkbox v-model:checked="assignQuestion.checkBox[questionList.id]" name="checkbox" :value="questionList.id" @change="checkboxChange($event);checkChangeInput();"></a-checkbox>
@@ -58,7 +34,7 @@
 
         </a-row>
     </a-form>
-    <AddQuestionnaire v-model:visible="visible1" @is-visible="showModal($event)" :templateId="templaterecord.id" />
+    <AddQuestionnaire v-model:visible="visible1" @is-visible="showModal($event)" />
 
     <Loader />
 </a-modal>
@@ -71,11 +47,13 @@ import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import Loader from "@/components/loader/Loader";
 import SearchField from "@/components/common/input/SearchField"
+import Option from "@/components/administration/questionnaire-bank/common/Options"
 export default defineComponent({
     components: {
         Loader,
         AddQuestionnaire: defineAsyncComponent(() => import("@/components/administration/questionnaire-bank/modals/AddQuestionnaire")),
-        SearchField
+        SearchField,
+        Option
 
     },
     props: {

@@ -12,17 +12,8 @@
                 </div>
 
             </a-col>
-            <a-col :span="12">
-                <div class="form-group">
-                 
-                    <a-form-item label="Template Type" name="templateTypeId" :rules="[{ required: true, message: 'template Type' +' '+$t('global.validation') }]">
-                      <GlobalCodeDropDown v-if="questionnaireSectionType" v-model:value="questionnaireSection.templateTypeId" :globalCode="questionnaireSectionType" @change="checkChangeInput()"/>
-                       
-                         <ErrorMessage v-if="errorMsg" :name="errorMsg.question?errorMsg.templateTypeId[0]:''" />
-                    </a-form-item>
-                </div>
-            </a-col>
-             <a-col :span="24">
+            
+             <a-col :span="12">
                     <div class="form-group">
                         <a-form-item label="Tags" name="tags" >
                         <a-select ref="select" v-model:value="questionnaireSection.tags" style="width: 100%" @focus="focus" @change="handleChange" mode="tags" size="large" placeholder="Select Tags">
@@ -51,12 +42,11 @@ import { ref, reactive, defineComponent, computed,watchEffect } from "vue";
 import { useStore } from "vuex";
 import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
-import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+
 import TableLoader from "@/components/loader/TableLoader"
 export default defineComponent({
   components:{
     TableLoader,
-    GlobalCodeDropDown
   },
   props: {
     update: String,
@@ -68,7 +58,7 @@ export default defineComponent({
     const disabled= ref(false)
     const questionnaireSection = reactive({
       templateName: "",
-      templateTypeId: "",
+      
       tags:[],
     });
     const form = reactive({...questionnaireSection})
