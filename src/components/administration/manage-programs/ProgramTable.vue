@@ -71,6 +71,8 @@ export default {
           store.dispatch("deleteManageProgram", id.udid).then(()=>{
             store.dispatch("manageProgramList")
           })
+          
+          
         }
       });
     }

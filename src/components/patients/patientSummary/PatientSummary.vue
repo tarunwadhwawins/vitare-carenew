@@ -256,7 +256,7 @@ export default {
         store.dispatch('flagsList')
         store.dispatch('patientFlagsList', patientUdid);
         store.dispatch('patientCriticalNotes', patientUdid);
-        store.dispatch('familyMembersList', patientUdid);
+        store.dispatch('responsiblePerson', patientUdid);
         store.dispatch('physiciansList', patientUdid);
         store.dispatch('emergencyContactsList', patientUdid).then(()=>{
           store.commit("loadingTableStatus",false)
