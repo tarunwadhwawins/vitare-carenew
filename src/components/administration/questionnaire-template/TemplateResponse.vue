@@ -172,7 +172,7 @@ show.value = true
       value: ref("1"),
       show,
       columns,
-      data:store.getters.scoreCount
+      data:[{"program":"TCM Transitional","score":23},{"program":"Metal Wellness","score":10}]
     };
   },
 });

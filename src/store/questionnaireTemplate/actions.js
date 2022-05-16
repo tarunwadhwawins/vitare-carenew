@@ -185,7 +185,7 @@ export const addAssiignquestionnaireResponse = async ({
 export const scoreCount = async ({
   commit
 },id) => {
-  await serviceMethod.common("post", 'questionnaire/response/score'+id, null, null).then((response) => {
+  await serviceMethod.common("post", 'questionnaire/response/score/'+id, null, null).then((response) => {
 
     
     commit('scoreCount',response.data.data)

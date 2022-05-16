@@ -257,6 +257,7 @@ programList.forEach((data)=>{
             }
             store.dispatch("addQuestionnaire", data).then(() => {
                 if (props.templateId) {
+                    store.commit("checkChangeInput", false)
                     store.dispatch("addAssiignquestionnaire", {
                         data: [store.getters.addQuestionnaire.value.id],
                         id: props.templateId

@@ -11,7 +11,7 @@
                                         </a-checkbox>
                                         <div class="ml-10 ">
                                             <p>{{ options.option}}</p>
-                                            <p v-if="options.score">Score - {{options.score}}</p>
+                                            <p v-if="options.score">Score - {{options.score.score}}</p>
                                             <div v-if="options.program.length>0">
                                                 <a-tag v-for="(program,i) in options.program" :key="i">{{program.program}} - {{program.score? program.score : 0}}</a-tag>
                                             </div>
@@ -33,7 +33,7 @@
 
                                         <div class="ml-10 ">
                                             <p>{{ options.option }}</p>
-                                            <p v-if="options.score">Score - {{options.score}}</p>
+                                            <p v-if="options.score">Score - {{options.score.score}}</p>
                                             <div v-if="options.program.length>0">
                                                 <a-tag v-for="(program,i) in options.program" :key="i">{{program.program}} - {{program.score? program.score : 0}}</a-tag>
                                             </div>
