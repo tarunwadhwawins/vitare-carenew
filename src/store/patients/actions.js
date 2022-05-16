@@ -18,8 +18,8 @@ export const addDemographic = async ({commit}, data) => {
       data.responsiblePerson.lastName ||
       data.responsiblePerson.email ||
       data.responsiblePerson.phoneNumber ||
-      data.responsiblePerson.contactType ||
-      data.responsiblePerson.contactTime ||
+      data.responsiblePerson.contactType.length>0 ||
+      data.responsiblePerson.contactTime.length>0 ||
       data.responsiblePerson.gender) {
       serviceMethod.common("post", API_ENDPOINTS['patient']+`/${response.data.data.id}/responsible`, null, data.responsiblePerson).then((response) => {
         commit("responsiblePerson",response.data.data)
@@ -32,8 +32,8 @@ export const addDemographic = async ({commit}, data) => {
       data.emergencyContactForm.lastName ||
       data.emergencyContactForm.emergencyEmail ||
       data.emergencyContactForm.phoneNumber ||
-      data.emergencyContactForm.contactType ||
-      data.emergencyContactForm.contactTime ||
+      data.emergencyContactForm.contactType.length>0 ||
+      data.emergencyContactForm.contactTime.length>0 ||
       data.emergencyContactForm.gender ) {
       serviceMethod.common("post", API_ENDPOINTS['patient']+`/${response.data.data.id}/emergency`, null, data.emergencyContactForm).then((response) => {
         commit('emergencyContact', response.data.data);
@@ -49,6 +49,7 @@ export const addDemographic = async ({commit}, data) => {
     }
     // successSwal(response.data.message)
     commit('loadingStatus', false)
+    commit('counterPlus')
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
@@ -76,12 +77,6 @@ export const updateDemographic = async ({commit}, request) => {
   const responsiblePersonId = request.responsiblePersonId
   const emergencyContactId = request.emergencyContactId
   const referalId = request.referalId
-
-  // console.log('updatePatientData request', data)
-  // console.log('updatePatientData demographics', data.demographics)
-  // console.log('updatePatientData responsiblePerson', data.responsiblePerson)
-  // console.log('updatePatientData emergencyContactForm', data.emergencyContactForm)
-  // console.log('updatePatientData referal', data.referal)
   commit('loadingStatus', true)
   
   await serviceMethod.common("put", API_ENDPOINTS['patient']+`/${patientUdid}`, null, data.demographics).then((response) => {
@@ -89,6 +84,110 @@ export const updateDemographic = async ({commit}, request) => {
     commit('patientDetails', response.data.data);
     commit('status', true)
     commit('loadingStatus', false)
+    if(responsiblePersonId){
+     serviceMethod.common("put", API_ENDPOINTS['patient']+`/${patientUdid}/responsible/${responsiblePersonId}`, null, data.responsiblePerson).then((response) => {
+        commit("responsiblePerson",response.data.data)
+      })
+    }
+    else if(!responsiblePersonId && (data.responsiblePerson.self ||
+      data.responsiblePerson.relation ||
+      data.responsiblePerson.firstName ||
+      data.responsiblePerson.middleName ||
+      data.responsiblePerson.lastName ||
+      data.responsiblePerson.email ||
+      data.responsiblePerson.phoneNumber ||
+      data.responsiblePerson.contactType.length>0 ||
+      data.responsiblePerson.contactTime.length>0 ||
+      data.responsiblePerson.gender)) {
+       serviceMethod.common("post", API_ENDPOINTS['patient']+`/${patientUdid}/responsible`, null, data.responsiblePerson).then((response) => {
+        commit("responsiblePerson",response.data.data)
+      }).catch((error) => {
+        errorLogWithDeviceInfo(error.response)
+        // if (error.response.status === 422) {
+        //   commit('errorMsg', error.response.data)
+        //   commit('loadingStatus', false)
+        // } else if (error.response.status === 500) {
+        //   errorSwal(error.response.data.message)
+        //   commit('loadingStatus', false)
+        // } else if (error.response.status === 401) {
+        //   // commit('errorMsg', error.response.data.message)
+          commit('loadingStatus', false)
+        // }
+      })
+    }
+    if(emergencyContactId) {
+      
+      
+      serviceMethod.common("put", API_ENDPOINTS['patient']+`/${patientUdid}/emergency/${emergencyContactId}`, null, data.emergencyContactForm).then((response) => {
+        commit('emergencyContact', response.data.data);
+      }).catch((error) => {
+        errorLogWithDeviceInfo(error.response)
+        if (error.response.status === 422) {
+          commit('errorMsg', error.response.data)
+          commit('loadingStatus', false)
+        } else if (error.response.status === 500) {
+          errorSwal(error.response.data.message)
+          commit('loadingStatus', false)
+        } else if (error.response.status === 401) {
+          // commit('errorMsg', error.response.data.message)
+          commit('loadingStatus', false)
+        }
+      })
+    }
+    else if(!emergencyContactId && (data.emergencyContactForm.firstName ||
+      data.emergencyContactForm.middleName ||
+      data.emergencyContactForm.lastName ||
+      data.emergencyContactForm.emergencyEmail ||
+      data.emergencyContactForm.phoneNumber ||
+      data.emergencyContactForm.contactType.length>0 ||
+      data.emergencyContactForm.contactTime.length>0 ||
+      data.emergencyContactForm.gender) ) {
+     
+     
+      serviceMethod.common("post", API_ENDPOINTS['patient']+`/${patientUdid}/emergency`, null, data.emergencyContactForm).then((response) => {
+        commit('emergencyContact', response.data.data);
+      }).catch((error) => {
+        errorLogWithDeviceInfo(error.response)
+        if (error.response.status === 422) {
+          commit('errorMsg', error.response.data)
+          commit('loadingStatus', false)
+        } else if (error.response.status === 500) {
+          errorSwal(error.response.data.message)
+          commit('loadingStatus', false)
+        } else if (error.response.status === 401) {
+          // commit('errorMsg', error.response.data.message)
+          commit('loadingStatus', false)
+        }
+      })
+    }
+  if(referalId){
+    
+    serviceMethod.common("put", API_ENDPOINTS['patient']+`/${patientUdid}/referals/${referalId}`, null, data.referal).then(response => {
+      commit('addPatientReferals', response.data.data);
+      commit('patientReferralSource', response.data.data);
+      errorMessage.push(false)
+    })
+  }
+    else if(!referalId && (data.referal.referralDesignation != null || data.referal.referralEmail != null || data.referal.referralFax != null || data.referal.referralName != null || data.referal.referralPhoneNumber != null) && (data.referal.referralDesignation != "" || data.referal.referralEmail != "" || data.referal.referralFax != "" || data.referal.referralName != "" || data.referal.referralPhoneNumber != "")) {
+      serviceMethod.common("post", API_ENDPOINTS['patient']+`/${patientUdid}/referals`, null, data.referal).then(response => {
+        commit('addPatientReferals', response.data.data);
+        commit('patientReferralSource', response.data.data);
+        errorMessage.push(false)
+      }).catch((error) => {
+        errorLogWithDeviceInfo(error.response)
+        // if (error.response.status === 422) {
+        //   commit('errorMsg', error.response.data)
+        //   commit('loadingStatus', false)
+        // } else if (error.response.status === 500) {
+        //   errorSwal(error.response.data.message)
+        //   commit('loadingStatus', false)
+        // } else if (error.response.status === 401) {
+        //   // commit('errorMsg', error.response.data.message)
+          commit('loadingStatus', false)
+        // }
+      })
+    }
+  
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     // if (error.response.status === 422) {
@@ -103,119 +202,9 @@ export const updateDemographic = async ({commit}, request) => {
     // }
   })
 
-  if(responsiblePersonId && (data.responsiblePerson.self ||
-    data.responsiblePerson.relation ||
-    data.responsiblePerson.firstName ||
-    data.responsiblePerson.middleName ||
-    data.responsiblePerson.lastName ||
-    data.responsiblePerson.email ||
-    data.responsiblePerson.phoneNumber ||
-    data.responsiblePerson.contactType ||
-    data.responsiblePerson.contactTime ||
-    data.responsiblePerson.gender)) {
-    await serviceMethod.common("put", API_ENDPOINTS['patient']+`/${patientUdid}/responsible/${responsiblePersonId}`, null, data.responsiblePerson).then((response) => {
-      commit("responsiblePerson",response.data.data)
-    }).catch((error) => {
-      errorLogWithDeviceInfo(error.response)
-      // if (error.response.status === 422) {
-      //   commit('errorMsg', error.response.data)
-      //   commit('loadingStatus', false)
-      // } else if (error.response.status === 500) {
-      //   errorSwal(error.response.data.message)
-      //   commit('loadingStatus', false)
-      // } else if (error.response.status === 401) {
-      //   // commit('errorMsg', error.response.data.message)
-        commit('loadingStatus', false)
-      // }
-    })
-  }
-  
-  if(emergencyContactId) {
-    const dataToSave = {
-      firstName: data.emergencyContactForm.firstName,
-      middleName: data.emergencyContactForm.middleName,
-      lastName: data.emergencyContactForm.lastName,
-      emergencyEmail: data.emergencyContactForm.emergencyEmail,
-      phoneNumber: data.emergencyContactForm.phoneNumber,
-      contactType: data.emergencyContactForm.contactType,
-      contactTime: data.emergencyContactForm.contactTime,
-      gender: data.emergencyContactForm.gender,
-      sameAsPrimary: data.emergencyContactForm.sameAsPrimary,
-    }
-    console.log('updatePatientData emergencyContactForm Y', data.emergencyContactForm)
-    await serviceMethod.common("put", API_ENDPOINTS['patient']+`/${patientUdid}/emergency/${emergencyContactId}`, null, dataToSave).then((response) => {
-      commit('emergencyContact', response.data.data);
-    }).catch((error) => {
-      errorLogWithDeviceInfo(error.response)
-      if (error.response.status === 422) {
-        commit('errorMsg', error.response.data)
-        commit('loadingStatus', false)
-      } else if (error.response.status === 500) {
-        errorSwal(error.response.data.message)
-        commit('loadingStatus', false)
-      } else if (error.response.status === 401) {
-        // commit('errorMsg', error.response.data.message)
-        commit('loadingStatus', false)
-      }
-    })
-  }
-  else if(!emergencyContactId && (data.emergencyContactForm.firstName ||
-    data.emergencyContactForm.middleName ||
-    data.emergencyContactForm.lastName ||
-    data.emergencyContactForm.emergencyEmail ||
-    data.emergencyContactForm.phoneNumber ||
-    data.emergencyContactForm.contactType ||
-    data.emergencyContactForm.contactTime ||
-    data.emergencyContactForm.gender) ) {
-    const dataToSave = {
-      firstName: data.emergencyContactForm.firstName,
-      middleName: data.emergencyContactForm.middleName,
-      lastName: data.emergencyContactForm.lastName,
-      emergencyEmail: data.emergencyContactForm.emergencyEmail,
-      phoneNumber: data.emergencyContactForm.phoneNumber,
-      contactType: data.emergencyContactForm.contactType,
-      contactTime: data.emergencyContactForm.contactTime,
-      gender: data.emergencyContactForm.gender,
-      sameAsPrimary: data.emergencyContactForm.sameAsPrimary,
-    }
-    console.log('updatePatientData emergencyContactForm N', data.emergencyContactForm)
-    await serviceMethod.common("post", API_ENDPOINTS['patient']+`/${patientUdid}/emergency`, null, dataToSave).then((response) => {
-      commit('emergencyContact', response.data.data);
-    }).catch((error) => {
-      errorLogWithDeviceInfo(error.response)
-      if (error.response.status === 422) {
-        commit('errorMsg', error.response.data)
-        commit('loadingStatus', false)
-      } else if (error.response.status === 500) {
-        errorSwal(error.response.data.message)
-        commit('loadingStatus', false)
-      } else if (error.response.status === 401) {
-        // commit('errorMsg', error.response.data.message)
-        commit('loadingStatus', false)
-      }
-    })
-  }
-
-  if(referalId && (data.referal.referralDesignation != null || data.referal.referralEmail != null || data.referal.referralFax != null || data.referal.referralName != null || data.referal.referralPhoneNumber != null) && (data.referal.referralDesignation != "" || data.referal.referralEmail != "" || data.referal.referralFax != "" || data.referal.referralName != "" || data.referal.referralPhoneNumber != "")) {
-    await serviceMethod.common("put", API_ENDPOINTS['patient']+`/${patientUdid}/referals/${referalId}`, null, data.referal).then(response => {
-      commit('addPatientReferals', response.data.data);
-      commit('patientReferralSource', response.data.data);
-      errorMessage.push(false)
-    }).catch((error) => {
-      errorLogWithDeviceInfo(error.response)
-      // if (error.response.status === 422) {
-      //   commit('errorMsg', error.response.data)
-      //   commit('loadingStatus', false)
-      // } else if (error.response.status === 500) {
-      //   errorSwal(error.response.data.message)
-      //   commit('loadingStatus', false)
-      // } else if (error.response.status === 401) {
-      //   // commit('errorMsg', error.response.data.message)
-        commit('loadingStatus', false)
-      // }
-    })
-  }
 }
+  
+  
 
 /* export const updateDemographic = async ({commit}, data) => {
   commit('loadingStatus', true)
@@ -464,23 +453,7 @@ export const patientConditions = async ({ commit }, id) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/condition', null, null).then((condition) => {
     commit('patientConditions', condition.data.data);
-    serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/referals', null, null).then((referal) => {
-      if(referal.data.data.length > 0) {
-        commit('patientReferralSource', referal.data.data[0]);
-      }
-      else {
-        commit('patientReferralSource', null);
-      }
-      serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/staff?isPrimary=1&type=1', null, null).then((physician) => {
-        if(physician.data.data.length > 0) {
-          commit('patientPrimaryPhysician', physician.data.data[0]);
-        }
-        else {
-          commit('patientPrimaryPhysician', null);
-        }
-        commit('loadingStatus', false)
-      });
-    });
+   
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     commit('loadingStatus', false)
