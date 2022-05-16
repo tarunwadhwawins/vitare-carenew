@@ -7,6 +7,10 @@
                 <a-menu-item>
                     <HomeOutlined /><span class="menuItem">{{$t('global.dashboard')}}</span></a-menu-item>
             </router-link>
+             <router-link to="/clinicDashboard">
+                <a-menu-item>
+                    <HomeOutlined /><span class="menuItem">Clinic Dashboard</span></a-menu-item>
+            </router-link>
             <router-link :to="{ name: 'Communications', query: {view: 'dashboard'} }" v-if="arrayToObjact(screensPermissions, 109)">
                 <a-menu-item>
                     <MailOutlined /><span class="menuItem">{{$t('sidebar.communications')}}</span></a-menu-item>

@@ -264,6 +264,13 @@ const routes = [
     component: () => import('@/components/TestCountdown.vue'),
     meta: { authAdmin: true }
   },
+  ///clinic
+  {
+    path: '/clinicDashboard',
+    name: 'Clinic Dashboard',
+    component: () => import('@/views/clinic/dashboard/Dashboard'),
+    meta: { authAdmin: true }
+  },
  
 
 

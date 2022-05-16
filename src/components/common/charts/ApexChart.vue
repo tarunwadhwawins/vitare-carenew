@@ -1,9 +1,9 @@
 <template>
   <a-card v-if="title" :title="title" class="common-card">
-    <apexchart :type="type" :height="height" :options="options" :series="series">
+    <apexchart :type="type" :height="height" :options="options" :series="series" @click="clickHandler4">
     </apexchart>
   </a-card>
-  <apexchart v-else :type="type" :height="height" :options="options" :series="series" @click="clickHandler(linkTo)">
+  <apexchart v-else :type="type" :height="height" :options="options" :series="series" @click="clickHandler4">
   </apexchart>
 </template>
 
@@ -35,7 +35,14 @@
     },
 
     setup() {
+      function clickHandler4(event, chartContext, config) {
+    console.log(event, chartContext, config)
+      // emit('listView',false)
+      //provide("listView", false);
+      //router.push({ path: "communications" });
+    }
       return {
+        clickHandler4
       }
     },
   }
