@@ -69,7 +69,6 @@ export default {
     const form = reactive({ ...startCallForm })
 
     const submitForm = () => {
-      console.log('startCallForm', startCallForm)
       store.dispatch("appointmentCalls", startCallForm)
       let redirect = router.resolve({name: 'videoCall', params: {id: enCodeString(conferenceId.value)}});
       window.open(redirect.href, '_blank');

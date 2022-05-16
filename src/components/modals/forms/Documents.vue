@@ -261,6 +261,7 @@
                 });
                 if(props.paramId){
                 emit('document', false)
+                emit('closeModal', false)
               }else{
                 emit('onChange', false)
               }

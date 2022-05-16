@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" title="Add Note" centered @cancel="onCloseModal()">
+  <a-modal width="50%" title="Add Note" centered @cancel="onCloseModal()">
     <a-form layout="vertical" ref="formRef" :model="addNoteForm" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
@@ -71,6 +71,9 @@ export default defineComponent({
     Loader,
     GlobalCodeDropDown
   },
+  props:{
+    pId:String
+  },
   setup(props, {emit}) {
     const store = useStore();
     const route = useRoute()
@@ -78,6 +81,9 @@ export default defineComponent({
     const isValueChanged = ref(false);
 
     watchEffect(() => {
+       if (props.pId) {
+        store.dispatch("notesList", props.pId);
+      }
       store.dispatch('globalCodes')
     })
 
@@ -141,16 +147,19 @@ export default defineComponent({
         note: addNoteForm.note,
         entityType: addNoteForm.entityType,
       }
-      const patientId = route.params.udid;
+      const patientId = route.params.udid?route.params.udid:props.pId;
       store.dispatch('addNote', {id: patientId, data: data}).then(() => {
         store.dispatch('latestNotes', patientId)
-        store.dispatch('patientTimeline', {id:route.params.udid, type:''});
+        store.dispatch('patientTimeline', {id:route.params.udid?route.params.udid:props.pId, type:''});
         formRef.value.resetFields();
         Object.assign(addNoteForm, form)
         emit('closeModal', {
           modal: 'addNote',
           value: false
         });
+        if (props.pId) {
+          store.dispatch("notesList", props.pId);
+        }
       });
     }
 
