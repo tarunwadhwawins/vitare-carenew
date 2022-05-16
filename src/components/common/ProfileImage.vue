@@ -20,21 +20,6 @@
       </div>
     </a-upload>
   </div>
-  <div class="button-section" v-else>
-    <a-upload  >
-      <div class="button-details">{{hideEditIcon}}
-        <a class="edit-button">
-          <span class="edit-icon">
-            
-          </span>
-          <span class="edit-text" style="margin-right: 120px;">
-           
-          </span>
-          </a>
-      </div>
-    </a-upload>
-  </div>
-
     <div class="info">
       <span v-if="patientDetails.patientFullName">
         <p v-if="isLeft == true">Name: {{ patientDetails.patientFullName }}</p>
