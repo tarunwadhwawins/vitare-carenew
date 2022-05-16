@@ -523,7 +523,7 @@ export default {
       if (getVideoDetails.value || acceptVideoCallDetails.value) {
         store.dispatch(
           "patientDetails",
-          getVideoDetails.value.patientUdid
+          getVideoDetails.value
             ? getVideoDetails.value.patientUdid
             : acceptVideoCallDetails.value.patient.id
         );
