@@ -176,7 +176,7 @@
   <a-row :gutter="24">
     <a-col :span="24">
       <div class="formHeading">
-        <h2>{{$t('patient.demographics.primaryFamilyMember')}}</h2>
+        <h2>{{$t('patient.demographics.primaryResponsiblePerson')}}</h2>
       </div>
     </a-col>
   </a-row>
@@ -263,7 +263,7 @@
   <a-row :gutter="24">
     <a-col :md="24" :sm="24" :xs="24" class="mb-24">
       <a-checkbox v-model:checked="checked">
-        {{$t('patient.demographics.sameAsPrimaryFamilyMemberInfo')}}
+        {{$t('patient.demographics.sameAsPrimaryResponsiblePersonInfo')}}
       </a-checkbox>
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">

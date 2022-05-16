@@ -10,8 +10,8 @@ const patient = {
 
 
 demographics:{
-  language:'Idioma',
-  otherLanguage:'Otro idioma',
+  language:'Lenguaje Primario',
+  otherLanguage:'Idioma Secundario',
   nickName:'Apodo',
   weight:'Peso',
   height:'Altura',
@@ -20,10 +20,12 @@ demographics:{
   MRN:'MRN( Numero de historia CLINICA) ',
   suiteorApartment:'Suite o Apartamento',
   primaryFamilyMember:'Miembro principal de la familia',
+  responsiblePerson:'Responsible Person',
   fullName:'Nombre completo',
   emailAddress:'Dirección de correo electrónico',
   emergencyContact:'Contacto de emergencia',
-  sameAsPrimaryFamilyMemberInfo:'Igual que la información del miembro principal de la familia'
+  sameAsPrimaryFamilyMemberInfo:'Igual que la información del miembro principal de la familia',
+  sameAsResponsiblePersonInfo:'Same as Responsible Person info',
 },
 
 conditions:{
