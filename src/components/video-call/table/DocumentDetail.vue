@@ -1,12 +1,10 @@
 <template>
- 
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
+      <a-button @click="showDocumentModal">{{'Add Document'}}</a-button>
         <a-table  rowKey="id"
-          
           :columns="documentsColumns"
           :data-source="patientDocuments"
-          
           :pagination="false">
           <template #tags="{record}">
             <div v-for="tag in record.tags.data" :key="tag.id">
@@ -25,10 +23,12 @@
         <Loader />
       </a-col>
     </a-row>
-
+   <a-modal width="50%" v-model:visible="addDocument" title="Add Documents" :maskClosable="false" centered  @cancel="closeModal()" :footer="false">
+    <Documents  :paramId="paramsId" :idPatient="patientDetails.id"  entity="patient" @document="addDocumentsModal($event)" />
+    </a-modal>
 </template>
 <script>
-import { computed, defineComponent, watchEffect, reactive } from "vue";
+import { computed, defineComponent, watchEffect, reactive,defineAsyncComponent,ref } from "vue";
 import Loader from "@/components/loader/Loader";
 import {
   FileOutlined,
@@ -40,12 +40,14 @@ import {warningSwal,arrayToObjact} from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
 // import { useRoute } from "vue-router";
 
+
 export default defineComponent({
   components: {
     Loader,
     FileOutlined,
     DeleteOutlined,
     // EditOutlined,
+    Documents: defineAsyncComponent(()=>import("@/components/modals/forms/Documents")),
   },
   props: {
     patientDetails: {
@@ -56,6 +58,8 @@ export default defineComponent({
     const store = useStore();
     // const route = useRoute();
     const patientId = reactive(props.patientDetails.id);
+    const addDocument = ref()
+    const paramsId = ref()
     const documentsColumns = [
       {
         title: "Name",
@@ -130,7 +134,25 @@ export default defineComponent({
       })
     }
 
+    const showDocumentModal = () => {
+      addDocument.value = true,
+      paramsId.value =true
+    }
+    function closeModal() {
+      addDocument.value = false
+      paramsId.value =false
+    }
+    
+    function addDocumentsModal(value) {
+      addDocument.value = value
+      paramsId.value =value
+    }
     return {
+      addDocumentsModal,
+      paramsId,
+      closeModal,
+      showDocumentModal,
+      addDocument,
       screensPermissions: store.getters.screensPermissions,
       arrayToObjact,
       documentsColumns,

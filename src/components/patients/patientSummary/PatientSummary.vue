@@ -30,6 +30,7 @@
                   <a-button @click="showButton2() ; actionTrack(paramsId,285,'patient')" :class="button == 2 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 285)">Timeline</a-button>
                   <a-button @click="showButton3() ; actionTrack(paramsId,286,'patient')" :class="button == 3 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 286)">Care Plan</a-button>
                   <a-button @click="showButton4() ; actionTrack(paramsId,287,'patient')" :class="button == 4 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Patient Vitals</a-button>
+                  <a-button @click="showButton5() ; actionTrack(paramsId,287,'patient')" :class="button == 5 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Escalation</a-button>
                 </div>
               </div>
             </a-col>
@@ -57,6 +58,9 @@
               <div v-if="button == 4">
                 <PatientVitalsView/>
               </div>
+              <div v-if="button == 5">
+                <Escalation/>
+              </div>
             </a-col>
           </a-row>
         </a-layout-content>
@@ -75,7 +79,7 @@ import TimelineView from "@/components/patients/patientSummary/views/TimelineVie
 import CarePlanView from "@/components/patients/patientSummary/views/CarePlanView";
 import PatientVitalsView from "@/components/patients/patientSummary/views/PatientVitalsView";
 import CriticalNotes from "@/components/patients/patientSummary/common/CriticalNotes";
-
+import Escalation from "@/components/patients/patientSummary/views/Escalation";
 import TableLoader from "@/components/loader/TableLoader";
 import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 import StartCallModal from "@/components/modals/StartCallModal";
@@ -103,7 +107,7 @@ export default {
     CarePlanView,
     PatientVitalsView,
     TableLoader,
-    
+    Escalation,
     AddTimeLogModal,
     CriticalNotes,
     StartCallModal,
@@ -115,12 +119,6 @@ export default {
     const patientUdid = route.params.udid
     const authUser =  JSON.parse(localStorage.getItem('auth'))
     const loggedInUserId =  authUser.user.staffUdid
-    
-    const visible1 = ref(false);
-    const visible2 = ref(false);
-    const visible7 = ref(false);
-    const visible8 = ref(false);
-    const visible9 = ref(false);
     const notevisible = ref(false);
     const devicevisible = ref(false);
     const documentvisible = ref(false);
@@ -182,6 +180,9 @@ export default {
     }
     function showButton4() {
       button.value = 4;
+    }
+    function showButton5() {
+      button.value = 5;
     }
 
     // Countdown Timer
@@ -256,7 +257,7 @@ export default {
         store.dispatch('flagsList')
         store.dispatch('patientFlagsList', patientUdid);
         store.dispatch('patientCriticalNotes', patientUdid);
-        store.dispatch('familyMembersList', patientUdid);
+        store.dispatch('responsiblePerson', patientUdid);
         store.dispatch('physiciansList', patientUdid);
         store.dispatch('emergencyContactsList', patientUdid).then(()=>{
           store.commit("loadingTableStatus",false)
@@ -402,6 +403,7 @@ export default {
 
 
     return {
+      showButton5,
       clearEvent,
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
@@ -422,11 +424,6 @@ export default {
       next,
       prev,
       handleChange,
-      visible1,
-      visible2,
-      visible7,
-      visible8,
-      visible9,
       notevisible,
       devicevisible,
       documentvisible,
@@ -441,11 +438,7 @@ export default {
       onChange: (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
       },
-      activeKey: ref("2"),
-      activeKey1: ref("8"),
-      activeKey2: ref("10"),
-      activeKey3: ref("12"),
-      activeKey4: ref("14"),
+    
       value1: ref(),
       size: ref("large"),
       value3: ref([]),
@@ -457,7 +450,6 @@ export default {
       showButton2,
       showButton3,
       showButton4,
-      value10: ref([]),
       startOn,
       loader
     };

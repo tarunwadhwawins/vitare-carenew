@@ -6,7 +6,7 @@
     <img v-else-if="imageUrl && !isPicuteLoading" :src="imageUrl" alt="avatar" class="ant-upload-text" />
     <img v-else-if="!isPicuteLoading" src="@/assets/images/userAvatar.png" alt="image"/>
   </div>
-  <div class="button-section" v-if="drawer==false">
+  <div class="button-section" v-if="hideEditIcon==false">
     <a-upload :show-upload-list="false" @change="handleChange" >
       <div class="button-details">
         <a class="edit-button">
@@ -20,21 +20,6 @@
       </div>
     </a-upload>
   </div>
-  <div class="button-section" v-else>
-    <a-upload  >
-      <div class="button-details">
-        <a class="edit-button">
-          <span class="edit-icon">
-            
-          </span>
-          <span class="edit-text" style="margin-right: 120px;">
-           
-          </span>
-          </a>
-      </div>
-    </a-upload>
-  </div>
-
     <div class="info">
       <span v-if="patientDetails.patientFullName">
         <p v-if="isLeft == true">Name: {{ patientDetails.patientFullName }}</p>
@@ -76,7 +61,7 @@ export default {
     isLeft: {
       type: Boolean
     },
-    drawer:Boolean
+    hideEditIcon:Boolean
   },
   components: {
     MailOutlined,
