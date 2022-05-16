@@ -1115,6 +1115,16 @@
         margin: 0 0 0 5px;
     }
 }
+.videoWrapper {
+    display: flex;
+    gap: 15px;
+    
+    .leftWrapper {
+        position: relative;
+        min-width: 320px;
+        width: 50%;
+    }
+}
 .videoCall {
     position: relative;
     border-radius: 15px;
@@ -1191,6 +1201,29 @@
     border-radius: 15px;
     height: 100%;
     position: relative;
+    flex: 1;
+    min-width: 320px;
+    .dragImg {
+        position: absolute;
+        left: -33px;
+        top:50%;
+        transform: translateY(-50%);
+        background-color: #fff;
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 9px;
+        cursor: pointer;
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+        }
+    }
     .header {
         display: flex;
         align-items: center;
@@ -1476,6 +1509,46 @@
     .ant-table-thead {
         th {
             vertical-align: bottom !important;
+        }
+    }
+}
+.notesDetailBg {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0,0,0,.5);
+    z-index: 1;
+    display: none;
+    &.show {
+        display: block;
+    }
+}
+.notesDetail {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    z-index: 99;
+    border-radius: 5px;
+    .notesHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 15px;
+        border-bottom: 1px solid #e3e3e3;
+        .anticon {
+            cursor: pointer;
+        }
+    }
+    .notesBody {
+        padding: 10px;
+        .calendarDropdown {
+            width: 100%;
+            .leftWrapper {
+                min-width: auto;
+            }
         }
     }
 }
