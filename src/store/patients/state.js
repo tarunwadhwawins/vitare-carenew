@@ -84,4 +84,7 @@ export default {
     documentDetails:null,
     isPicuteLoading:false,
 
+    responsiblePerson:null,
+    emergencyContact:null,
+
 }

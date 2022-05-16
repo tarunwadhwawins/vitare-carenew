@@ -430,7 +430,7 @@ export const uploadFile = (state, data) => {
 // }
 
 export const patientDetails = (state, patient) => {
-  patient.email = patient.user.data.email ? patient.user.data.email : null;
+  patient.email = patient.user.data ? patient.user.data.email : null;
   patient.country = patient.countryId ? patient.countryId : null;
   patient.state = patient.stateId ? patient.stateId : null;
   patient.language = patient.languageId ? patient.languageId : null;
@@ -439,49 +439,26 @@ export const patientDetails = (state, patient) => {
   patient.contactType = patient.contactType.length > 0 ? JSON.parse(patient.contactType) : [];
   patient.otherLanguage = patient.otherLanguage.length > 0 ? JSON.parse(patient.otherLanguage) : [];
   patient.patientDob = patient.dob ? dobFormat(patient.dob) : null;
-  // patient.phoneNumber = patient.phoneNumber ? formatPhoneNumber(patient.phoneNumber) : null;
-  patient.phoneNumber = patient.phoneNumber ? patient.phoneNumber : null;
-  
-  if(patient.patientFamilyMember && patient.patientFamilyMember.data) {
-    patient.fullName = patient.patientFamilyMember.data.fullName ? patient.patientFamilyMember.data.fullName : null;
-    patient.familyEmail = patient.patientFamilyMember.data.email ? patient.patientFamilyMember.data.email : null;
-    patient.familyPhoneNumber = patient.patientFamilyMember.data.phoneNumber ? patient.patientFamilyMember.data.phoneNumber : null;
-    patient.familyContactType = patient.patientFamilyMember.data.contactType.length > 0 ? JSON.parse(patient.patientFamilyMember.data.contactType) : [];
-    patient.familyContactTime = patient.patientFamilyMember.data.contactTimeId.length > 0 ? JSON.parse(patient.patientFamilyMember.data.contactTimeId) : [];
-    patient.familyGender = patient.patientFamilyMember.data.genderId;
-    patient.relation = patient.patientFamilyMember.data.relationId;
-    patient.isPrimary = patient.patientFamilyMember.data.isPrimary ? true : false;
-  }
-  else {
-    patient.fullName = null;
-    patient.familyEmail = null;
-    patient.familyPhoneNumber = null;
-    patient.familyContactType = [];
-    patient.familyContactTime = [];
-    patient.familyGender = null;
-    patient.relation = null;
-  }
-  
-  if(patient.emergencyContact && patient.emergencyContact.data) {
-    patient.emergencyFullName = patient.emergencyContact.data.fullName ? patient.emergencyContact.data.fullName : null;
-    patient.emergencyEmail = patient.emergencyContact.data.email ? patient.emergencyContact.data.email : null;
-    patient.emergencyPhoneNumber = patient.emergencyContact.data.phoneNumber ? patient.emergencyContact.data.phoneNumber : null;
-    patient.emergencyContactType = patient.emergencyContact.data.contactType.length > 0 ? JSON.parse(patient.emergencyContact.data.contactType) : [];
-    patient.emergencyContactTime = patient.emergencyContact.data.contactTimeId.length > 0 ? JSON.parse(patient.emergencyContact.data.contactTimeId) : [];
-    patient.emergencyGender = patient.emergencyContact.data.genderId;
-    patient.sameAsPrimary = patient.emergencyContact.data.sameAsPrimary;
-  }
-  else {
-    patient.emergencyFullName = null;
-    patient.emergencyEmail = null;
-    patient.emergencyPhoneNumber = null;
-    patient.emergencyContactType = [];
-    patient.emergencyContactTime = [];
-    patient.isPrimary = null;
-    patient.emergencyGender = null;
-  }
 
   state.patientDetails = patient
+}
+
+export const responsiblePerson = (state, data) => {
+  data[0].contactType = data[0].contactType.length > 0 ? JSON.parse(data[0].contactType) : [];
+  data[0].contactTime = data[0].contactTime.length > 0 ? JSON.parse(data[0].contactTime) : [];
+  data[0].gender = data[0].genderId;
+  data[0].relation = data[0].relationId;
+  data[0].self = data[0].self ? true : false;
+
+  state.responsiblePerson = data[0]
+}
+
+export const emergencyContact = (state, data) => {
+  data[0].contactType = data[0].contactType.length > 0 ? JSON.parse(data[0].contactType) : [];
+  data[0].contactTime = data[0].contactTimeId.length > 0 ? JSON.parse(data[0].contactTimeId) : [];
+  data[0].gender = data[0].genderId;
+  data[0].sameAsPrimary = data[0].sameAsPrimary ? true : false;
+  state.emergencyContact = data[0]
 }
 
 export const patientTimelineSuccess = (state, timeline) => {
@@ -656,7 +633,7 @@ export const fetchFromBitrix = (state, data) => {
     emergencyGender: "",
     sameAsPrimary: false,
     isPrimary: true,
-    familyMemberId: '',
+    responsiblePersonId: '',
     emergencyId: '',
   }
   state.getBitrixFieldsName.map(item => {
@@ -766,8 +743,8 @@ export const fetchFromBitrix = (state, data) => {
     if (item.patientId == "isPrimary") {
       state.fetchFromBitrix.isPrimary = data[item.bitrixId]
     }
-    if (item.patientId == "familyMemberId") {
-      state.fetchFromBitrix.familyMemberId = data[item.bitrixId]
+    if (item.patientId == "responsiblePersonId") {
+      state.fetchFromBitrix.responsiblePersonId = data[item.bitrixId]
     }
     if (item.patientId == "emergencyId") {
       state.fetchFromBitrix.emergencyId = data[item.bitrixId]
@@ -989,8 +966,8 @@ export const criticalNotesList = (state, data) => {
   state.criticalNotesList = data
 }
 
-export const familyMembersList = (state, familyMembers) => {
-  state.familyMembersList = familyMembers.map(member => {
+export const familyMembersList = (state, responsiblePersons) => {
+  state.familyMembersList = responsiblePersons.map(member => {
     member.isPrimary = member.isPrimary ? 'Yes' : 'No'
     member.contactType = member.contactType ? JSON.parse(member.contactType) : []
     member.contactTime = member.contactTimeId ? JSON.parse(member.contactTimeId) : []
@@ -998,17 +975,17 @@ export const familyMembersList = (state, familyMembers) => {
   })
 }
 
-export const familyMemberDetails = (state, familyMember) => {
-  if(familyMember) {
-    familyMember.familyEmail = familyMember.email
-    familyMember.familyPhoneNumber = familyMember.phoneNumber
-    familyMember.familyContactType = familyMember.contactType ? JSON.parse(familyMember.contactType) : []
-    familyMember.familyContactTime = familyMember.contactTimeId ? JSON.parse(familyMember.contactTimeId) : []
-    familyMember.familyGender = familyMember.genderId
-    familyMember.relation = familyMember.relationId
-    familyMember.isPrimary = familyMember.isPrimary ? true : false
+export const familyMemberDetails = (state, responsiblePerson) => {
+  if(responsiblePerson) {
+    responsiblePerson.familyEmail = responsiblePerson.email
+    responsiblePerson.familyPhoneNumber = responsiblePerson.phoneNumber
+    responsiblePerson.familyContactType = responsiblePerson.contactType ? JSON.parse(responsiblePerson.contactType) : []
+    responsiblePerson.familyContactTime = responsiblePerson.contactTimeId ? JSON.parse(responsiblePerson.contactTimeId) : []
+    responsiblePerson.familyGender = responsiblePerson.genderId
+    responsiblePerson.relation = responsiblePerson.relationId
+    responsiblePerson.isPrimary = responsiblePerson.isPrimary ? true : false
   }
-  state.familyMemberDetails = familyMember
+  state.familyMemberDetails = responsiblePerson
 }
 
 export const physiciansList = (state, physicians) => {
@@ -1022,6 +999,7 @@ export const physicianDetails = (state, physician) => {
 
 export const emergencyContactsList = (state, emergencyContacts) => {
   state.emergencyContactsList = emergencyContacts.map(contact => {
+    contact.fullName = contact.firstName+' '+contact.middleName+' '+contact.lastName
     contact.isPrimary = contact.isPrimary ? 'Yes' : 'No'
     contact.email = contact.emergencyEmail
     contact.contactType = contact.contactType ? JSON.parse(contact.contactType) : []
