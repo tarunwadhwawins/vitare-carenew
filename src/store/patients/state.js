@@ -1,5 +1,6 @@
 export default {
     counter:0,
+    escalationCounter:0,
     addDemographic:null,
     addPatientProgram:null,
     program:null,

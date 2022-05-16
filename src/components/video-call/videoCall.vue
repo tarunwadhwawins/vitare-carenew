@@ -527,6 +527,12 @@ export default {
             ? getVideoDetails.value.patientUdid
             : acceptVideoCallDetails.value.patient.id
         );
+        store.dispatch("timeLineType");
+        store.dispatch("patientTimeline", {
+          id: getVideoDetails.value? getVideoDetails.value.patientUdid
+            : acceptVideoCallDetails.value.patient.id,
+          type: "",
+        });
       }
       if (JSON.parse(localStorage.getItem("barmenu")) == true) {
         document.body.classList.add("show");
@@ -563,13 +569,13 @@ export default {
         store.dispatch("devices", acceptVideoCallDetails.value.patient.id);
       }
 
-      if (getVideoDetails.value) {
-        store.dispatch("timeLineType");
-        store.dispatch("patientTimeline", {
-          id: getVideoDetails.value.patientUdid,
-          type: "",
-        });
-      }
+      // if (getVideoDetails.value) {
+      //   store.dispatch("timeLineType");
+      //   store.dispatch("patientTimeline", {
+      //     id: getVideoDetails.value.patientUdid,
+      //     type: "",
+      //   });
+      // }
     }); //end
 
     function videoLoader() {
