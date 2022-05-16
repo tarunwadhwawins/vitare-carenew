@@ -21,7 +21,6 @@
     </a-upload>
   </div>
   <div class="button-section" v-else>
-    <a-upload  >
       <div class="button-details">{{hideEditIcon}}
         <a class="edit-button">
           <span class="edit-icon">
@@ -32,7 +31,6 @@
           </span>
           </a>
       </div>
-    </a-upload>
   </div>
 
     <div class="info">
