@@ -3,9 +3,13 @@
 <a-layout-sider  :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
     <div class="menuList">
         <a-menu>
-            <router-link to="/dashboard">
+            <!-- <router-link to="/dashboard">
                 <a-menu-item>
                     <HomeOutlined /><span class="menuItem">{{$t('global.dashboard')}}</span></a-menu-item>
+            </router-link> -->
+             <router-link to="/clinicDashboard">
+                <a-menu-item>
+                    <HomeOutlined /><span class="menuItem">Clinic Dashboard</span></a-menu-item>
             </router-link>
             <router-link :to="{ name: 'Communications', query: {view: 'dashboard'} }" v-if="arrayToObjact(screensPermissions, 109)">
                 <a-menu-item>
