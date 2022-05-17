@@ -6,6 +6,25 @@ export const globalCodes = (state, data) => {
             state.gender = element.globalCode;
         }
         if (element.name === 'Task Priority') {
+            element.globalCode.map(item => {
+                switch (item.name) {
+                    case 'Medium':
+                    item.color = '#ffa800'
+                    item.style = 'background: #ffa800'
+                    break;
+                    case 'Normal':
+                    item.color = '#008000'
+                    item.style = 'background: #008000'
+                    break;
+                    case 'Urgent':
+                    item.color = '#ff6061'
+                    item.style = 'background: #ff6061'
+                    break;
+                    default:
+                    break;
+                }
+                return item
+            })
             state.taskPriority = element.globalCode;
         }
         if (element.name === 'Message Category') {
