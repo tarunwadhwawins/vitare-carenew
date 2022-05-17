@@ -98,7 +98,7 @@ export default {
     },
     props: {
         communication: {
-            type: String
+            type: Object
         }
     },
     setup(props) {
