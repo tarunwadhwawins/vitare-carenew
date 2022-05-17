@@ -13,13 +13,14 @@
   <TableLoader />
 </template>
 <script>
-import { ref, watchEffect, onUnmounted } from "vue";
+import { ref, onUnmounted, onMounted } from "vue";
 import { useStore } from "vuex";
 import SearchField from "@/components/common/input/SearchField";
 import TaskTable from "./TaskTable";
 import TableLoader from "@/components/loader/TableLoader";
 import { arrayToObjact,exportExcel } from "@/commonMethods/commonMethod";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
+import { useRouter } from 'vue-router';
 
 export default {
   components: {
@@ -30,9 +31,14 @@ export default {
   },
   setup(props, { emit }) {
     const store = useStore();
-    watchEffect(() => {
-      
-      store.dispatch("tasksList");
+    const router = useRouter()
+    onMounted(() => {
+      if(store.getters.filter.value){
+        router.replace({query: {view: 'list'}});
+      store.dispatch("tasksList","?filter="+store.getters.filter.value);
+      }else{
+store.dispatch("tasksList")
+      }
       store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
@@ -61,6 +67,8 @@ export default {
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
             })
+            store.commit("filter",'')
+           //store.state.common.filter=''
     });
     return {
       search:store.getters.searchTable,

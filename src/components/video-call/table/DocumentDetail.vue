@@ -2,7 +2,7 @@
   <a-row :gutter="24">
     <a-col :sm="24" :xs="24">
       <div class="documentsTab">
-      <a-button @click="showDocumentModal">{{ "Add Document" }}</a-button>
+      <a-button @click="showDocumentModal" type="primary">{{ "Add Document" }}</a-button>
       <a-table
         rowKey="id"
         :columns="documentsColumns"
