@@ -11,6 +11,10 @@
                 <a-menu-item>
                     <HomeOutlined /><span class="menuItem">Clinic Dashboard</span></a-menu-item>
             </router-link>
+             <router-link to="/businessDashboard">
+                <a-menu-item>
+                    <HomeOutlined /><span class="menuItem">Business Dashboard</span></a-menu-item>
+            </router-link>
             <router-link :to="{ name: 'Communications', query: {view: 'dashboard'} }" v-if="arrayToObjact(screensPermissions, 109)">
                 <a-menu-item>
                     <MailOutlined /><span class="menuItem">{{$t('sidebar.communications')}}</span></a-menu-item>

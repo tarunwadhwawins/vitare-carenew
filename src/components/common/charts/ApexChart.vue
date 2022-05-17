@@ -12,6 +12,7 @@ import { useRouter } from "vue-router";
 import { useStore } from 'vuex';
   export default {
     props: {
+
       linkTo: {
         type: String,
       },
@@ -44,11 +45,15 @@ import { useStore } from 'vuex';
     
       // emit('listView',false)
       //provide("listView", false);
+      if(props.linkTo){
       if(props.type=="bar" && config.globals.labels[config.dataPointIndex]!=undefined){
 store.commit("filter",config.globals.labels[config.dataPointIndex])
       router.push({ path: props.linkTo });
+      }else{
+        router.push({ path: props.linkTo })
       }
     }
+      }
       return {
         clickHandler4
       }

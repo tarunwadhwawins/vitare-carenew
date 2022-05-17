@@ -21,16 +21,16 @@ export const callStatus = (state) => {
       return state.network
     })
   }
-  export const cptCodeValue = (state) => {
-    return computed(() => {
-      return state.cptCodeValue
-    })
-  }
-  export const financialValue = (state) => {
-    return computed(() => {
-      return state.financialValue
-    })
-  }
+  // export const cptCodeValue = (state) => {
+  //   return computed(() => {
+  //     return state.cptCodeValue
+  //   })
+  // }
+  // export const financialValue = (state) => {
+  //   return computed(() => {
+  //     return state.financialValue
+  //   })
+  // }
   export const totalPatientsChartValue = (state) => {
     return computed(() => {
       return state.totalPatientsChartValue

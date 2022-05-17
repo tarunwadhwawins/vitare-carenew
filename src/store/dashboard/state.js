@@ -5,10 +5,10 @@ export default {
     specialization: null,
     wellness: null,
     network:null,
-    cptCodeValue:null,
+   // cptCodeValue:null,
     totalPatientsChartValue:null,
     appointmentChartValue:null,
     timeLineButton:null,
     permissions:null,
-    financialValue:null,
+    //financialValue:null,
 }
