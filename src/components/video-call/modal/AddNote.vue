@@ -128,10 +128,7 @@ export default defineComponent({
       });
     };
     function closeModal(){
-      emit("closeModal", {
-          modal: "addNote",
-          value: false,
-        });
+      emit("closeModal", false);
     }
     return {
       closeModal,
