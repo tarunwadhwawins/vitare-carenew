@@ -1,302 +1,169 @@
 <template>
-  <div>
+<div>
     <a-layout>
-      <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
-        <Header />
-      </a-layout-header>
-      <a-layout>
-        <Sidebar />
-        <a-layout-content>
-          <div class="common-bg">
-            <a-row>
-              <a-col :span="24">
-                <div class="videoCallHeading">
-                  <h2 class="pageTittle">Video Call</h2>
-                  <span></span
-                  ><img width="30" src="../../assets/images/flag-orange.svg" />
-                </div>
-              </a-col>
-            </a-row>
-            <div class="videoWrapper">
-              <!-- video call  -->'
-              <div class="leftWrapper" id="videoDiv">
-                <div class="videoCall">
-                  <video id="videoCallLoader" ref="videoCall"></video>
-                </div>
-              </div>
-              <div class="callRightWrapper" id="detailDiv">
-                <span class="dragImg" @mousedown="resize($event)"
-                  ><img src="@/assets/images/drag.png" alt=""
-                /></span>
-                <a-row>
-                  <a-col :span="12">
-                    <div class="header" v-if="acceptVideoCallDetails">
-                      <!-- <img src="@/assets/images/userAvatar.png" />
-                                <div class="name">
-                                    <h4>{{acceptVideoCallDetails.name}}</h4>
-                                    <a @click="openDrawer">View Profile</a>
-                                </div> -->
-                      <PatientInfoTop
-                        :patientDetails="patientDetails"
-                        :hideEditIcon="profile"
-                      />
-                    </div>
-                    <div class="header" v-else-if="getVideoDetails">
-                      <!-- <img src="@/assets/images/userAvatar.png" />
-                                <div class="name">
-                                    <h4>{{getVideoDetails?getVideoDetails.patient:''}}</h4>
-                                    <a @click="openDrawer">View Profile</a>
-                                </div> -->
-                      <PatientInfoTop
-                        :patientDetails="patientDetails"
-                        :hideEditIcon="profile"
-                      />
-                    </div>
-                  </a-col>
-                  <a-col :span="12">
+        <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
+            <Header />
+        </a-layout-header>
+        <a-layout>
+            <Sidebar />
+            <a-layout-content>
+                <div class="common-bg">
                     <a-row>
-                      <a-col
-                        :span="8"
-                        :class="timelineDetailVisible == true ? 'bold' : ''"
-                      >
-                        <div class="moreAction" @click="showTimelineModal">
-                          <div class="moreActionImg four">
-                            <img src="../../assets/images/edit.svg" />
-                          </div>
-                          <p>Timeline View</p>
-                        </div>
-                      </a-col>
-                      <a-col
-                        :span="8"
-                        :class="notesDetailVisible == true ? 'bold' : ''"
-                      >
-                        <div class="moreAction" @click="showNotesModal">
-                          <div class="moreActionImg four">
-                            <img src="../../assets/images/edit.svg" />
-                          </div>
-                          <p>Notes</p>
-                        </div>
-                      </a-col>
-                      <a-col
-                        :span="8"
-                        :class="documentDetailVisible == true ? 'bold' : ''"
-                      >
-                        <div class="moreAction" @click="showDocumentsModal">
-                          <div class="moreActionImg green">
-                            <img src="../../assets/images/report.svg" />
-                          </div>
-                          <p>Document</p>
-                        </div>
-                      </a-col>
-
-                      <a-col
-                        :span="8"
-                        @click="showVitalssModal"
-                        :class="patientVitalsVisible == true ? 'bold' : ''"
-                      >
-                        <div class="moreAction">
-                          <div class="moreActionImg redBgColor">
-                            <img src="../../assets/images/wave.svg" />
-                          </div>
-                          <p>Vital</p>
-                        </div>
-                      </a-col>
-                      <a-col :span="8" v-if="currentUrl">
-                        <div class="moreAction" @click="copyURL(currentUrl)">
-                          <div class="moreActionImg purpleBgColor">
-                            <CopyFilled />
-                          </div>
-                          <p>Copy Url</p>
-                        </div>
-                      </a-col>
+                        <a-col :span="24">
+                            <div class="videoCallHeading">
+                                <h2 class="pageTittle">Video Call</h2>
+                                <span></span><img width="30" src="../../assets/images/flag-orange.svg" />
+                            </div>
+                        </a-col>
                     </a-row>
-                  </a-col>
-                </a-row>
-                <div class="body">
-                  <a-row>
-                    <a-col
-                      :sm="24"
-                      :xs="24"
-                      v-if="timelineDetailVisible == true"
-                    >
-                      <div class="thumbDesc patientTimeline">
-                        <a-checkbox-group
-                          v-model:value="tab"
-                          @change="chnageTab()"
-                        >
-                          <a-checkbox
-                            v-for="timeline in timeLineType"
-                            :key="timeline.id"
-                            :value="timeline.id"
-                            >{{ timeline.name }}</a-checkbox
-                          >
-                        </a-checkbox-group>
-                        <a-timeline class="defaultTimeline">
-                          <TableLoader />
-                          <template
-                            v-for="timeline in patientTimeline"
-                            :key="timeline.id"
-                          >
-                            <a-timeline-item color="blue">
-                              <template #dot>
-                                <BellOutlined
-                                  class="yellowIcon"
-                                  v-if="timeline.type == 1"
-                                />
-                                <ClockCircleOutlined
-                                  class="orangeIcon"
-                                  v-if="timeline.type == 2"
-                                />
-                                <HeatMapOutlined
-                                  class="brownIcon"
-                                  v-if="timeline.type == 3"
-                                />
-                                <FolderOpenOutlined
-                                  class="mustardIcon"
-                                  v-if="timeline.type == 4"
-                                />
-                                <FilePdfOutlined
-                                  class="tealIcon"
-                                  v-if="timeline.type == 5"
-                                />
-                                <FileTextOutlined
-                                  class="blueIcon"
-                                  v-if="timeline.type == 6"
-                                />
-                                <FlagOutlined
-                                  class="redIcon"
-                                  v-if="timeline.type == 7"
-                                />
-                                <PushpinOutlined
-                                  class="greenIcon"
-                                  v-if="timeline.type == 8"
-                                />
-                              </template>
-                              <div class="timelineInner">
-                                <div class="timelineHeader">
-                                  <div class="title">
-                                    <h4>{{ timeline.heading }}</h4>
-                                    <span class="time">{{
-                                      moment(
-                                        dateFormat(timeline.createdAt)
-                                      ).format("DD-MM-YYYY") ===
-                                      moment().format("DD-MM-YYYY")
-                                        ? moment(
-                                            dateFormat(timeline.createdAt)
-                                          ).format("hh:mm A")
-                                        : moment(
-                                            dateFormat(timeline.createdAt)
-                                          ).format("MMM DD,yyyy hh:mm A")
-                                    }}</span>
-                                  </div>
-                                  <div class="userImg">
-                                    <img
-                                      v-if="timeline.profileImage"
-                                      :src="timeline.profileImage"
-                                      alt="image"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="timelineBody">
-                                  <div class="content">
-                                    <p class="timeline-float timeline-title">
-                                      <span v-html="timeline.title"></span>
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </a-timeline-item>
-                          </template>
-                        </a-timeline>
-                      </div>
-                    </a-col>
+                    <div class="videoWrapper">
+                        <!-- video call  -->'
+                        <div class="leftWrapper" id="videoDiv">
+                            <div class="videoCall">
+                                <video id="videoCallLoader" ref="videoCall"></video>
+                            </div>
+                        </div>
+                        <div class="callRightWrapper" id="detailDiv">
+                            <span class="dragImg" @mousedown="resize($event)"><img src="@/assets/images/drag.png" alt="" /></span>
+                            <a-row>
+                                <a-col :span="12">
+                                    <div class="header" v-if="acceptVideoCallDetails">
+                                        <PatientInfoTop :patientDetails="patientDetails" :hideEditIcon="profile" />
+                                    </div>
+                                    <div class="header" v-else-if="getVideoDetails">
+                                        <PatientInfoTop :patientDetails="patientDetails" :hideEditIcon="profile" />
+                                    </div>
+                                </a-col>
+                                <a-col :span="12">
+                                    <a-row>
+                                        <a-col :span="8" :class="timelineDetailVisible == true ? 'bold' : ''">
+                                            <div class="moreAction" @click="showTimelineModal">
+                                                <div class="moreActionImg four">
+                                                    <img src="../../assets/images/edit.svg" />
+                                                </div>
+                                                <p>Timeline View</p>
+                                            </div>
+                                        </a-col>
+                                        <a-col :span="8" :class="notesDetailVisible == true ? 'bold' : ''">
+                                            <div class="moreAction" @click="showNotesModal">
+                                                <div class="moreActionImg four">
+                                                    <img src="../../assets/images/edit.svg" />
+                                                </div>
+                                                <p>Notes</p>
+                                            </div>
+                                        </a-col>
+                                        <a-col :span="8" :class="documentDetailVisible == true ? 'bold' : ''">
+                                            <div class="moreAction" @click="showDocumentsModal">
+                                                <div class="moreActionImg green">
+                                                    <img src="../../assets/images/report.svg" />
+                                                </div>
+                                                <p>Document</p>
+                                            </div>
+                                        </a-col>
 
-                    <NotesDetail
-                      v-if="notesDetailVisible == true"
-                      :pId="
-                        getVideoDetails
-                          ? getVideoDetails.patientDetailed.id
-                          : acceptVideoCallDetails.patient.id
-                      "
-                    />
-                    <DocumentDetail
-                      v-if="documentDetailVisible == true"
-                      :patientDetails="
-                        getVideoDetails
-                          ? getVideoDetails.patientDetailed
-                          : acceptVideoCallDetails.patient
-                      "
-                    />
-                    <PatientVitalsDetails
-                      v-if="patientVitalsVisible == true"
-                      :patientId="
-                        getVideoDetails
-                          ? getVideoDetails.patientDetailed.id
-                          : acceptVideoCallDetails.patient.id
-                      "
-                    />
-                  </a-row>
+                                        <a-col :span="8" @click="showVitalssModal" :class="patientVitalsVisible == true ? 'bold' : ''">
+                                            <div class="moreAction">
+                                                <div class="moreActionImg redBgColor">
+                                                    <img src="../../assets/images/wave.svg" />
+                                                </div>
+                                                <p>Vital</p>
+                                            </div>
+                                        </a-col>
+                                        <a-col :span="8" v-if="currentUrl">
+                                            <div class="moreAction" @click="copyURL(currentUrl)">
+                                                <div class="moreActionImg purpleBgColor">
+                                                    <CopyFilled />
+                                                </div>
+                                                <p>Copy Url</p>
+                                            </div>
+                                        </a-col>
+                                    </a-row>
+                                </a-col>
+                            </a-row>
+                            <div class="body">
+                                <a-row>
+                                    <a-col :sm="24" :xs="24" v-if="timelineDetailVisible == true">
+                                        <div class="thumbDesc patientTimeline">
+                                            <a-checkbox-group v-model:value="tab" @change="chnageTab()">
+                                                <a-checkbox v-for="timeline in timeLineType" :key="timeline.id" :value="timeline.id">{{ timeline.name }}</a-checkbox>
+                                            </a-checkbox-group>
+                                            <a-timeline class="defaultTimeline">
+                                                <TableLoader />
+                                                <template v-for="timeline in patientTimeline" :key="timeline.id">
+                                                    <a-timeline-item color="blue">
+                                                        <template #dot>
+                                                            <BellOutlined class="yellowIcon" v-if="timeline.type == 1" />
+                                                            <ClockCircleOutlined class="orangeIcon" v-if="timeline.type == 2" />
+                                                            <HeatMapOutlined class="brownIcon" v-if="timeline.type == 3" />
+                                                            <FolderOpenOutlined class="mustardIcon" v-if="timeline.type == 4" />
+                                                            <FilePdfOutlined class="tealIcon" v-if="timeline.type == 5" />
+                                                            <FileTextOutlined class="blueIcon" v-if="timeline.type == 6" />
+                                                            <FlagOutlined class="redIcon" v-if="timeline.type == 7" />
+                                                            <PushpinOutlined class="greenIcon" v-if="timeline.type == 8" />
+                                                        </template>
+                                                        <div class="timelineInner">
+                                                            <div class="timelineHeader">
+                                                                <div class="title">
+                                                                    <h4>{{ timeline.heading }}</h4>
+                                                                    <span class="time">{{
+                                                                    moment(
+                                                                      dateFormat(timeline.createdAt)
+                                                                    ).format("DD-MM-YYYY") ===
+                                                                    moment().format("DD-MM-YYYY")
+                                                                      ? moment(
+                                                                          dateFormat(timeline.createdAt)
+                                                                        ).format("hh:mm A")
+                                                                      : moment(
+                                                                          dateFormat(timeline.createdAt)
+                                                                        ).format("MMM DD,yyyy hh:mm A")
+                                                                  }}</span>
+                                                                </div>
+                                                                <div class="userImg">
+                                                                    <img v-if="timeline.profileImage" :src="timeline.profileImage" alt="image" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="timelineBody">
+                                                                <div class="content">
+                                                                    <p class="timeline-float timeline-title">
+                                                                        <span v-html="timeline.title"></span>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </a-timeline-item>
+                                                </template>
+                                            </a-timeline>
+                                        </div>
+                                    </a-col>
+
+                                    <NotesDetail v-if="notesDetailVisible == true" :pId="
+                                      getVideoDetails
+                                        ? getVideoDetails.patientDetailed.id
+                                        : acceptVideoCallDetails.patient.id
+                                    " />
+                                                  <DocumentDetail v-if="documentDetailVisible == true" :patientDetails="
+                                      getVideoDetails
+                                        ? getVideoDetails.patientDetailed
+                                        : acceptVideoCallDetails.patient
+                                    " />
+                                                  <PatientVitalsDetails v-if="patientVitalsVisible == true" :patientId="
+                                      getVideoDetails
+                                        ? getVideoDetails.patientDetailed.id
+                                        : acceptVideoCallDetails.patient.id
+                                    " />
+                                </a-row>
+                            </div>
+                            <div class="footer">
+                                <a-button class="endCall" :size="size" block @click="hangUp()">End Call</a-button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="footer">
-                  <a-button class="endCall" :size="size" block @click="hangUp()"
-                    >End Call</a-button
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <Loader />
-        </a-layout-content>
-      </a-layout>
+                <Loader />
+            </a-layout-content>
+        </a-layout>
     </a-layout>
-    <!-- <a-drawer :width="800" title="Profile" :placement="placement" :visible="visibleDrawer" @close="onClose">
-        <a-row :gutter="24">
-            <a-col :sm="24" :xs="24">
-                <PatientInfoTop :patientDetails="patientDetails" :drawer="visibleDrawer" />
-            </a-col>
-            <a-col :sm="24" :xs="24">
-                <div class="thumbDesc patientTimeline mt-28">
-                    <a-checkbox-group v-model:value="tab" @change="chnageTab()">
-                        <a-checkbox v-for="timeline in timeLineType" :key="timeline.id" :value="timeline.id">{{timeline.name}}</a-checkbox>
-                    </a-checkbox-group>
-                    <a-timeline class="defaultTimeline">
-                        <TableLoader />
-                        <template v-for="timeline in patientTimeline" :key="timeline.id">
-                            <a-timeline-item color="blue">
-                                <template #dot>
-                                    <BellOutlined class="yellowIcon" v-if="timeline.type==1" />
-                                    <ClockCircleOutlined class="orangeIcon" v-if="timeline.type==2" />
-                                    <HeatMapOutlined class="brownIcon" v-if="timeline.type==3" />
-                                    <FolderOpenOutlined class="mustardIcon" v-if="timeline.type==4" />
-                                    <FilePdfOutlined class="tealIcon" v-if="timeline.type==5" />
-                                    <FileTextOutlined class="blueIcon" v-if="timeline.type==6" />
-                                    <FlagOutlined class="redIcon" v-if="timeline.type==7" />
-                                    <PushpinOutlined class="greenIcon" v-if="timeline.type==8" />
-                                </template>
-                                <div class="timelineInner">
-                                    <div class="timelineHeader">
-                                        <div class="title">
-                                            <h4>{{ timeline.heading }}</h4>
-                                            <span class="time">{{ moment(dateFormat(timeline.createdAt)).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY') ? moment(dateFormat(timeline.createdAt)).format('hh:mm A') : moment(dateFormat(timeline.createdAt)).format('MMM DD,yyyy hh:mm A')}}</span>
-                                        </div>
-                                        <div class="userImg">
-                                            <img v-if="timeline.profileImage" :src="timeline.profileImage" alt="image" />
-                                        </div>
-                                    </div>
-                                    <div class="timelineBody">
-                                        <div class="content">
-                                            <p class="timeline-float timeline-title"><span v-html="timeline.title"></span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a-timeline-item>
-                        </template>
-                    </a-timeline>
-                </div>
-            </a-col>
-        </a-row>
-    </a-drawer> -->
-  </div>
+</div>
 </template>
 <script>
 import Sidebar from "../layout/sidebar/Sidebar";
@@ -309,7 +176,6 @@ import {
   reactive,
   watchEffect,
   onUnmounted,
-  // defineAsyncComponent
 } from "vue";
 import {
   FolderOpenOutlined,
@@ -320,7 +186,6 @@ import {
   FileTextOutlined,
   PushpinOutlined,
   FlagOutlined,
-  //MailOutlined,
 } from "@ant-design/icons-vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -335,10 +200,6 @@ import {
   deCodeString,
   dateFormat,
 } from "@/commonMethods/commonMethod";
-// import NotesDetailModal from "@/components/modals/NotesDetail";
-// import DocumentDetailModal from "@/components/modals/DocumentDetail";
-// import PatientVitalsDetailsModal from "@/components/modals/PatientVitalsDetailsModal";
-// import TimelineView from "@/components/patients/patientSummary/views/TimelineView";
 import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
 import { CopyFilled } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
@@ -353,9 +214,6 @@ export default {
     NotesDetail,
     DocumentDetail,
     PatientVitalsDetails,
-    // NotesDetailModal,
-    // DocumentDetailModal,
-    // PatientVitalsDetailsModal,
     FolderOpenOutlined,
     FilePdfOutlined,
     BellOutlined,
@@ -365,7 +223,6 @@ export default {
     PushpinOutlined,
     FlagOutlined,
     PatientInfoTop,
-    //TimelineView//:defineAsyncComponent(() =>import("@/components/patients/patientSummary/views/TimelineView"))
   },
 
   setup() {
@@ -673,14 +530,6 @@ export default {
         });
         store.dispatch("devices", acceptVideoCallDetails.value.patient.id);
       }
-
-      // if (getVideoDetails.value) {
-      //   store.dispatch("timeLineType");
-      //   store.dispatch("patientTimeline", {
-      //     id: getVideoDetails.value.patientUdid,
-      //     type: "",
-      //   });
-      // }
     }); //end
 
     function videoLoader() {
