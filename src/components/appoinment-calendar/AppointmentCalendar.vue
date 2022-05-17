@@ -47,19 +47,11 @@ import Physicians from "./Physicians"
 import DayAppointment from "./DayAppointment"
 import MonthAppointment from "./MonthAppointment"
 import WeekAppointment from "./WeekAppointment"
-import {
-    ref,
-    watchEffect,
-    computed
-} from "vue";
-import {
-    useStore
-} from "vuex"
+import {ref,watchEffect,computed,onUnmounted} from "vue";
+import { useStore} from "vuex"
 import moment from "moment"
 import Loader from "@/components/loader/Loader"
-import {
-    arrayToObjact
-} from "@/commonMethods/commonMethod"
+import {arrayToObjact} from "@/commonMethods/commonMethod"
 export default {
     components: {
         AddAppointment,
@@ -221,7 +213,13 @@ export default {
             showLoaderMain.value = false
         }
 
-       
+        onUnmounted(() => {
+            store.dispatch("searchTable", '&search=')
+            store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+            store.commit("filter", '')
+        })
         return {
             screensPermissions:store.getters.screensPermissions,
             arrayToObjact,
