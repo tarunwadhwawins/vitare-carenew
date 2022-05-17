@@ -21,6 +21,7 @@ export default defineComponent({
         let timeout = ''
         let endPoints= ref(props.endPoint)
         const search = ref(null)
+        let filter = store.getters.filter.value  ? store.getters.filter.value : ''
         const handleChange = value => {
             if (timeout && value.target.value != '') {
                 clearTimeout(timeout);
@@ -34,6 +35,7 @@ export default defineComponent({
                   data:search.value,
                   endPoint:endPoints.value,
                   field:ordring.data,
+                  filter:filter
                   
                 })
                 store.dispatch("searchTable",'&search='+search.value)

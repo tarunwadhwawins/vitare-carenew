@@ -2,12 +2,18 @@
   <a-alert class="mb-24" message="Patients are highlighted" type="error" />
 
   <a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900, y: tableYScroller }" :pagination="false" :rowClassName="(record) => auth.user.id!=record.messageSender && record.isRead==0 ? 'bold':''" @change="handleTableChange">
+
     <template #expandedRowRender="{ record }">
-      <p>
-        {{ record.message }}
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-      </p>
+      <p>{{ record.message }}</p>
     </template>
+    
+    <!-- <template #expandable="{ record }">
+      <v-slot v-if="record.type == 'Email'">
+        <template #expandedRowRender>
+          <p>{{ record.message }}</p>
+        </template>
+      </v-slot>
+    </template> -->
 
     <template #from="{ record }" class="custom" >
       <div v-if="record.is_sender_patient" class="customTd">
@@ -168,6 +174,11 @@ export default {
   props: {},
   setup() {
     const communicationColumns = [
+      {
+        slots: {
+          customRender: "expandable",
+        },
+      },
       {
         title: "From",
         dataIndex: "from",
@@ -368,5 +379,9 @@ export default {
 
 .highLight {
   color: red;
+}
+
+.ant-table-wrapper .ant-table .ant-table-content .ant-table-body .ant-table-tbody tr td {
+  white-space: normal !important;
 }
 </style>
