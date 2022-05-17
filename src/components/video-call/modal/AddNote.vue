@@ -5,8 +5,7 @@
       <CloseOutlined @click="closeModal" />
     </div>
     <div class="notesBody">
-     
-      <addNoteForm />
+      <addNoteForm :pId="pId" @closeModal="closeModal"/>
       <Loader />
     </div>
   </div>

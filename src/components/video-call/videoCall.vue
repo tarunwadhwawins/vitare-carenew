@@ -24,7 +24,7 @@
                 </div>
               </div>
               <div class="callRightWrapper" id="detailDiv">
-                <span class="dragImg" @mousedown="resize($event)"><img src="@/assets/images/drag.png" alt="" /></span>
+                <span class="dragImg" @mousedown="resize($event)"  @touchstart="resize($event)"><img src="@/assets/images/drag.png" alt="" /></span>
                 <a-row>
                   <a-col :span="12">
                     <div class="header" v-if="acceptVideoCallDetails">
@@ -409,6 +409,7 @@
       });
       function resize() {
         window.addEventListener("mousemove", resizeDiv);
+        window.addEventListener("touchmove", resizeDiv);
       }
       function resizeDiv(e) {
         let video_width = ((e.clientX - 50) / document.body.clientWidth) * 100;
@@ -417,6 +418,10 @@
       window.addEventListener("mouseup", (e) => {
         console.log(e);
         window.removeEventListener("mousemove", resizeDiv);
+      });
+       window.addEventListener("touchend", (e) => {
+        console.log(e);
+        window.addEventListener("touchmove", resizeDiv);
       });
       // Answer call
       function hangUp() {
