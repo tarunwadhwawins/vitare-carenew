@@ -152,9 +152,9 @@ export default defineComponent({
       addNoteVisible.value = true;
     };
 
-    function closeModal(data) {
+    function closeModal(value) {
       showRecord.value = false;
-      addNoteVisible.value = data.value;
+      addNoteVisible.value = value;
     }
 
     return {

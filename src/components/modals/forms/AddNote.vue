@@ -1,5 +1,5 @@
 <template>
-<a-form layout="vertical" ref="formRef" :model="addNoteForm" @finish="submitForm">
+<a-form layout="vertical" ref="formRef" autocomplete="off" :model="addNoteForm" @finish="submitForm">
     <a-row :gutter="24">
         <a-col :sm="12" :xs="24">
             <div class="form-group">
@@ -186,10 +186,7 @@ export default defineComponent({
           });
           formRef.value.resetFields();
           Object.assign(addNoteForm, form);
-          emit("closeModal", {
-            modal: "addNote",
-            value: false,
-          });
+           emit("closeModal", false);
           if (props.pId) {
             store.dispatch("notesList", props.pId);
           }
