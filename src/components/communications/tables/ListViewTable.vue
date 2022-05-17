@@ -139,7 +139,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watchEffect } from "vue";
 import { useStore } from "vuex";
 import Chat from "@/components/modals/Chat";
 import { tableYScroller, arrayToObjact, } from "@/commonMethods/commonMethod";
@@ -153,6 +153,7 @@ import {
   MailOutlined,
   AlertOutlined,
 } from "@ant-design/icons-vue";
+import { useRoute } from 'vue-router';
 export default {
   components: {
     EyeOutlined,
@@ -229,13 +230,27 @@ export default {
       },
     ];
     const store = useStore();
+    const route = useRoute()
     const visibleGmail = ref(false)
     const communicationId = ref(null);
     const auth = JSON.parse(localStorage.getItem("auth"));
     const meta = store.getters.communicationRecord.value;
+    const visible = ref(false);
 
     let scroller = "";
     let data = [];
+
+    watchEffect(() => {
+      if(meta.communicationsList && (route.params.from && route.params.from == 'push')) {
+        visible.value = true;
+        meta.communicationsList.forEach(element => {
+          if(route.params.typeId == element.id) {
+            communicationId.value = element
+          }
+        });
+      }
+    })
+
     onMounted(() => {
       var tableContent = document.querySelector(".ant-table-body");
 
@@ -308,7 +323,6 @@ export default {
         );
       }
     };
-    const visible = ref(false);
     const showModal = (e,event) => {
       event.target.parentElement.parentElement.parentElement.parentElement.classList.remove('bold')
       communicationId.value = e;
