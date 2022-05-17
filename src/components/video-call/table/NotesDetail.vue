@@ -61,7 +61,7 @@
 </a-row>
 <div :class="addNoteVisible==true? 'notesDetailBg addNotes show':'notesDetailBg addNotes'">
   <!-- <AddNotesModal v-model:visible="addNoteVisible" @closeModal="closeModal($event)" :pId="pId" /> -->
-  <AddNotesModal  @closeModal="closeModal($event)"/>
+  <AddNotesModal  @closeModal="closeModal($event)" :pId="pId"/>
 </div>
 </template>
 

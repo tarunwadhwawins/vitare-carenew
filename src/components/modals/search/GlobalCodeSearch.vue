@@ -11,9 +11,10 @@
     size="large"
     :filter-option="filterOption">
     <a-select-option class="priority" v-for="item in globalCode" :key="item.id">
-      <span class="circleBox" :style="item.style">
+      <span v-if="isColor" class="circleBox" :style="item.style">
         <span class="circleBoxName">{{ item.name }}</span>
       </span>
+      <span v-else>{{ item.name }}</span>
     </a-select-option>
   </a-select>
   <a-select v-else>
