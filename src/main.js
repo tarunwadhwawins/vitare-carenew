@@ -72,13 +72,13 @@ onMessage(messaging, (payload) => {
                 router.push('/appointment-calendar'),
                 notification.close(key)
             }else{
-                router.push('/communications'),
+                router.push('/communications?view=list'),
                 notification.close(key)
             }
               
             }
         },
-            "ok"
+            "View"
         ),
 
     ],

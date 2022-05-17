@@ -1,6 +1,7 @@
 <template>
 <a-form :model="program" scrollToFirstError=true name="basic" autocomplete="off" layout="vertical" @finish="programs" @finishFailed="programFailed">
     <a-row :gutter="24">
+      
         <a-col :md="8" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('patient.programs.program')" name="program" :rules="[{ required: true, message: $t('patient.programs.program')+' '+$t('global.validation') }]">
@@ -89,7 +90,7 @@ export default defineComponent({
   },
   props: {
     idPatient: {
-      type: Number
+      type: String
     }
   },
   setup(props, {emit}) {
@@ -114,7 +115,9 @@ export default defineComponent({
     });
     
     watchEffect(() => {
-      if(patientId != null) {
+       
+      if(props.idPatient) {
+       
         store.dispatch("program", patientId);
       }
     })

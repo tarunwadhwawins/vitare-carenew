@@ -6,9 +6,27 @@
 
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
-						<a-form-item :label="$t('patient.demographics.fullName')" name="fullName" :rules="[{ required: true, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
-							<a-input @change="changedValue" v-model:value="emergencyContactForm.fullName" size="large" />
-							<ErrorMessage v-if="errorMsg" :name="errorMsg.fullName?errorMsg.fullName[0]:''" />
+						<a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation') }]">
+							<a-input @change="changedValue" v-model:value="emergencyContactForm.firstName" size="large" />
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.firstName?errorMsg.firstName[0]:''" />
+						</a-form-item>
+					</div>
+				</a-col>
+
+				<a-col :md="12" :sm="12" :xs="24">
+					<div class="form-group">
+						<a-form-item :label="$t('global.middleName')" name="middleName" :rules="[{ required: true, message: $t('global.middleName')+' '+$t('global.validation') }]">
+							<a-input @change="changedValue" v-model:value="emergencyContactForm.middleName" size="large" />
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.middleName?errorMsg.middleName[0]:''" />
+						</a-form-item>
+					</div>
+				</a-col>
+
+				<a-col :md="12" :sm="12" :xs="24">
+					<div class="form-group">
+						<a-form-item :label="$t('global.lastName')" name="lastName" :rules="[{ required: true, message: $t('global.lastName')+' '+$t('global.validation') }]">
+							<a-input @change="changedValue" v-model:value="emergencyContactForm.lastName" size="large" />
+							<ErrorMessage v-if="errorMsg" :name="errorMsg.lastName?errorMsg.lastName[0]:''" />
 						</a-form-item>
 					</div>
 				</a-col>
@@ -125,12 +143,15 @@ export default {
     });
 
     const emergencyContactForm = reactive({
-      fullName: "",
+      firstName: "",
+      middleName: "",
+      lastName: "",
       emergencyEmail: "",
       phoneNumber: "",
       contactType: [],
       contactTime: [],
       gender: "",
+      sameAsPrimary: "",
       // isPrimary: patients.value.emergencyContactDetails && patients.value.emergencyContactDetails.isPrimary ? patients.value.emergencyContactDetails.isPrimary : false,
     });
 

@@ -1,7 +1,7 @@
 
 import ServiceMethodService from '@/services/serviceMethod'
 import { API_ENDPOINTS } from "@/config/apiConfig"
-import { errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
+import { errorSwal,errorLogWithDeviceInfo,successSwal } from '@/commonMethods/commonMethod'
 import router from "@/router";
 
 let date = new Date();
@@ -73,6 +73,7 @@ const permission = async ({ commit }) => {
 		})
 }
 export const logoutUser = async () => {	
+	successSwal('Logout Successfully ')
 	localStorage.removeItem('user');
 	localStorage.removeItem('barmenu');
 	localStorage.removeItem('staff');
@@ -87,7 +88,9 @@ export const logoutUser = async () => {
 	localStorage.removeItem('fireBaseToken')
 	localStorage.removeItem('expiresIn')
 	// router.push("/") 
+	setTimeout(() => {	
 	router.go();
+	}, 1000);
 }
 
 export const refreshToken = async ({ commit }) => {
