@@ -5,130 +5,7 @@
       <CloseOutlined @click="closeModal" />
     </div>
     <div class="notesBody">
-      <!-- <a-form
-        layout="vertical"
-        ref="formRef"
-        :model="addNoteForm"
-        @finish="submitForm"
-      >
-        <a-row :gutter="24">
-          <a-col :sm="12" :xs="24">
-            <div class="form-group">
-              <a-form-item
-                :label="$t('notes.date')"
-                name="date"
-                :rules="[
-                  {
-                    required: true,
-                    message: $t('notes.date') + ' ' + $t('global.validation'),
-                  },
-                ]"
-              >
-                <a-date-picker
-                  @change="changedValue"
-                  v-model:value="addNoteForm.date"
-                  :size="size"
-                  style="width: 100%"
-                  :format="globalDateFormat"
-                  disabled
-                />
-              </a-form-item>
-            </div>
-          </a-col>
-
-          <a-col :sm="12" :xs="24">
-            <div class="form-group">
-              <a-form-item
-                :label="$t('notes.category')"
-                name="category"
-                :rules="[
-                  {
-                    required: true,
-                    message:
-                      $t('notes.category') + ' ' + $t('global.validation'),
-                  },
-                ]"
-              >
-                <GlobalCodeDropDown
-                  @change="changedValue"
-                  v-model:value="addNoteForm.category"
-                  :globalCode="noteCategories"
-                />
-              </a-form-item>
-            </div>
-          </a-col>
-
-          <a-col :sm="12" :xs="24">
-            <div class="form-group">
-              <a-form-item
-                :label="$t('notes.type')"
-                name="type"
-                :rules="[
-                  {
-                    required: true,
-                    message: $t('notes.type') + ' ' + $t('global.validation'),
-                  },
-                ]"
-              >
-                <GlobalCodeDropDown
-                  @change="changedValue"
-                  v-model:value="addNoteForm.type"
-                  :globalCode="noteTypes"
-                />
-              </a-form-item>
-            </div>
-          </a-col>
-
-          <a-col :sm="12" :xs="24">
-            <div class="form-group">
-              <a-form-item
-                :label="$t('common.flag')"
-                name="flag"
-                :rules="[
-                  {
-                    required: true,
-                    message: $t('common.flag') + ' ' + $t('global.validation'),
-                  },
-                ]"
-              >
-                <GlobalCodeDropDown
-                  v-model:value="addNoteForm.flag"
-                  :globalCode="flagsList"
-                />
-                <ErrorMessage
-                  v-if="errorMsg"
-                  :name="errorMsg.flag ? errorMsg.flag[0] : ''"
-                />
-              </a-form-item>
-            </div>
-          </a-col>
-
-          <a-col :sm="24" :xs="24">
-            <div class="form-group">
-              <a-form-item
-                :label="$t('notes.note')"
-                name="note"
-                :rules="[
-                  {
-                    required: true,
-                    message: $t('notes.note') + ' ' + $t('global.validation'),
-                  },
-                ]"
-              >
-                <a-input
-                  @change="changedValue"
-                  v-model:value="addNoteForm.note"
-                  size="large"
-                />
-              </a-form-item>
-            </div>
-          </a-col>
-
-          <a-col :sm="24" :span="24">
-            <ModalButtons @is_click="handleClear" />
-          </a-col>
-        </a-row>
-      </a-form> -->
+     
       <addNoteForm />
       <Loader />
     </div>
@@ -251,8 +128,14 @@ export default defineComponent({
         }
       });
     };
-
+    function closeModal(){
+      emit("closeModal", {
+          modal: "addNote",
+          value: false,
+        });
+    }
     return {
+      closeModal,
       size: ref("large"),
       handleClear,
       formRef,
