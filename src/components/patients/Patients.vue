@@ -49,26 +49,17 @@
 </template>
 
 <script>
-import {
-    ref,
-    watchEffect,
-    computed,
-    onUnmounted
-} from "vue";
-import {
-    useStore
-} from "vuex";
+import {  ref,  watchEffect,  computed,  onUnmounted} from "vue";
+import { useStore} from "vuex";
 import PatientsModal from "@/components/modals/PatientsModal";
 import CounterCard from "./counter-card/CounterCard";
 import ShowModalButton from "@/components/common/show-modal-button/ShowModalButton";
 import TableLoader from "@/components/loader/TableLoader"
-import {
-    arrayToObjact,
-    exportExcel
-} from "@/commonMethods/commonMethod";
+import {arrayToObjact,exportExcel} from "@/commonMethods/commonMethod";
 import DataTable from "./data-table/DataTable"
 import SearchField from "@/components/common/input/SearchField";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
+
 export default {
     name: "Patients",
     components: {
@@ -96,7 +87,12 @@ export default {
         watchEffect(() => {
             store.getters.patientsRecord.patientList = ""
             store.dispatch("programList");
-            store.dispatch("patients");
+            if (store.getters.filter.value) {
+                store.dispatch("patients", "?filter=" + store.getters.filter.value)
+            } else {
+                store.dispatch("patients");
+            }
+
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
@@ -111,6 +107,7 @@ export default {
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
             })
+            store.commit("filter", '')
         })
         return {
             exportExcel,

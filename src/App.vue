@@ -51,6 +51,10 @@ export default {
         store.dispatch("permissions");
         store.dispatch("appointmentConference");
         store.dispatch("notificationList");
+        let loginCheck = localStorage.getItem('checkLogin');
+        if(!loginCheck){
+          store.dispatch("logoutUser")
+        }
         if (refreshToken.value > date.getTime()) {
           let differenceDate = refreshToken.value - date.getTime();
           setTimeout(() => {

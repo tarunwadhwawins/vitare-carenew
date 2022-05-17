@@ -10,6 +10,7 @@ export const login = async ({ commit }, user) => {
 		localStorage.setItem('user', response.data.user);
 		localStorage.setItem('token', response.data.token);
 		localStorage.setItem('auth', JSON.stringify(response.data));
+		localStorage.setItem('checkLogin',true);
 		localStorage.setItem('expiresIn', date.setSeconds(date.getSeconds() + ((response.data.expiresIn/100)-10)));
 		commit('loginSuccess', response.data);
 		roleAccess({ commit })

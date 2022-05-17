@@ -64,6 +64,7 @@ export default {
         const meta = store.getters.patientsRecord.value;
         let data = [];
         let scroller = "";
+         let filter = store.getters.filter.value  ? store.getters.filter.value : ''
         onMounted(() => {
             var tableContent = document.querySelector(".ant-table-body");
             tableContent.addEventListener("scroll", (event) => {
@@ -78,7 +79,7 @@ export default {
                         data = meta.patientList
                         //store.state.patients.patientList = ""
 
-                        store.dispatch("patients", "?page=" + current_page + store.getters.searchTable.value +
+                        store.dispatch("patients", "?page=" + current_page +'&filter='+filter+ store.getters.searchTable.value +
                             store.getters.orderTable.value.data).then(() => {
                             loadMoredata();
                         });
@@ -112,7 +113,7 @@ export default {
                 });
                 store.dispatch(
                     "patients",
-                    "?page=" + store.getters.searchTable.value + orderParam
+                    "?page=" + '&filter='+filter+store.getters.searchTable.value + orderParam
                 );
             } else {
                 store.dispatch("orderTable", {
@@ -120,7 +121,7 @@ export default {
                 });
                 store.dispatch(
                     "patients",
-                    "?page=" +
+                    "?page=" +'&filter='+filter+
                     store.getters.searchTable.value +
                     store.getters.orderTable.value.data
                 )
