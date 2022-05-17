@@ -56,38 +56,38 @@ export const network = async ({ commit }, from) => {
     })
 }
 
-export const cptCode = async ({ commit }, from) => {
+// export const cptCode = async ({ commit }, from) => {
 
-    await ServiceMethodService.common("get", API_ENDPOINTS['cptCodeGraph'] + "?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {
+//     await ServiceMethodService.common("get", API_ENDPOINTS['cptCodeGraph'] + "?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {
 
-        commit('cptCodeSuccess', response.data.data);
+//         commit('cptCodeSuccess', response.data.data);
 
-        //commit('cptCodeSuccess', response.data.data);
+//         //commit('cptCodeSuccess', response.data.data);
 
-    }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
-        if (error.response.status == 401) {
-            //AuthService.logout();
-        }
-        commit('failure', error.response.data);
-    })
-}
-export const financial = async ({ commit }, from) => {
+//     }).catch((error) => {
+//         errorLogWithDeviceInfo(error.response)
+//         if (error.response.status == 401) {
+//             //AuthService.logout();
+//         }
+//         commit('failure', error.response.data);
+//     })
+// }
+// export const financial = async ({ commit }, from) => {
 
-    await ServiceMethodService.common("get", API_ENDPOINTS['financial'] + "?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {
-        commit('financialSuccess', response.data.data);
+//     await ServiceMethodService.common("get", API_ENDPOINTS['financial'] + "?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {
+//         commit('financialSuccess', response.data.data);
 
 
-        //commit('cptCodeSuccess', response.data.data);
+//         //commit('cptCodeSuccess', response.data.data);
 
-    }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
-        if (error.response.status == 401) {
-            //AuthService.logout();
-        }
-        commit('failure', error.response.data);
-    })
-}
+//     }).catch((error) => {
+//         errorLogWithDeviceInfo(error.response)
+//         if (error.response.status == 401) {
+//             //AuthService.logout();
+//         }
+//         commit('failure', error.response.data);
+//     })
+// }
 
 export const totalPatientsChart = async ({ commit }, from) => {
 

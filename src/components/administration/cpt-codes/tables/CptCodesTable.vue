@@ -82,6 +82,7 @@ export default {
 
     const meta = store.getters.cptRecords.value;
     const loader = ref(false);
+    let filter = store.getters.filter.value  ? store.getters.filter.value : ''
     onMounted(() => {
       var tableContent = document.querySelector(".ant-table-body");
       tableContent.addEventListener("scroll", (event) => {
@@ -103,6 +104,7 @@ export default {
                 store.getters.searchTable.value +
                   "&page=" +
                   current_page +
+                   '&filter='+filter+
                   store.getters.orderTable.value.data
               )
               .then(() => {
@@ -140,7 +142,7 @@ export default {
         });
         store.dispatch(
           "cptCodesList",
-          store.getters.searchTable.value + orderParam
+          store.getters.searchTable.value + '&filter='+filter+ orderParam
         );
       } else {
         store.dispatch("orderTable", {
@@ -148,7 +150,7 @@ export default {
         });
         store.dispatch(
           "cptCodesList",
-          store.getters.searchTable.value + store.getters.orderTable.value.data
+          store.getters.searchTable.value +  '&filter='+filter+store.getters.orderTable.value.data
         );
       }
     };
