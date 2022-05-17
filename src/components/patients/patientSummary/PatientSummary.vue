@@ -67,7 +67,7 @@
       </a-layout>
     </a-layout>
     <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isAutomatic="isAutomatic" :isEditTimeLog="isEditTimeLog" :timerValue="formattedElapsedTime" @closeModal="handleClose" @cancel="handleClose" />
-    <StartCallModal v-model:visible="startCallModalVisible" @closeModal="handleClose" @cancel="handleClose" />
+    <!-- <StartCallModal v-model:visible="startCallModalVisible" @closeModal="handleClose" @cancel="handleClose" /> -->
   </div>
 </template>
 
@@ -82,12 +82,12 @@ import CriticalNotes from "@/components/patients/patientSummary/common/CriticalN
 import Escalation from "@/components/patients/patientSummary/views/Escalation";
 import TableLoader from "@/components/loader/TableLoader";
 import AddTimeLogModal from "@/components/modals/AddTimeLogs";
-import StartCallModal from "@/components/modals/StartCallModal";
+// import StartCallModal from "@/components/modals/StartCallModal";
 
 import dayjs from "dayjs";
-import { ref, computed, watchEffect,onBeforeMount, onUnmounted} from "vue";
+import { ref, computed, watchEffect,onBeforeMount, onUnmounted,reactive} from "vue";
 import { useStore } from 'vuex';
-import { useRoute  } from 'vue-router';
+import { useRoute,useRouter  } from 'vue-router';
 import {
   timeStamp,
   getSeconds,
@@ -110,12 +110,13 @@ export default {
     Escalation,
     AddTimeLogModal,
     CriticalNotes,
-    StartCallModal,
+    // StartCallModal,
   },
   setup() {
     localStorage.removeItem('timeLogId')
     const store = useStore();
     const route = useRoute();
+    const router = useRouter();
     const patientUdid = route.params.udid
     const authUser =  JSON.parse(localStorage.getItem('auth'))
     const loggedInUserId =  authUser.user.staffUdid
@@ -128,7 +129,7 @@ export default {
     const bloodglucosevisible = ref(false);
     const stoptimervisible = ref(false);
     const isEditTimeLog = ref(false);
-    const startCallModalVisible = ref(false);
+    // const startCallModalVisible = ref(false);
     const loader= ref(true)
     const startOn = ref(false);
 
@@ -136,9 +137,9 @@ export default {
       console.log(e, "I was closed.");
     };
 
-    const startCall = () => {
-      startCallModalVisible.value = true
-    }
+    // const startCall = () => {
+    //   startCallModalVisible.value = true
+    // }
 
      function videoCall() {
       store.dispatch("appointmentCalls",{patientId:patientUdid})
@@ -346,7 +347,7 @@ export default {
         clearInterval(timer.value);
       }
       else {
-        startCallModalVisible.value = modal == "startCall" ? value : false;
+        // startCallModalVisible.value = modal == "startCall" ? value : false;
       }
       if(value == undefined) {
         timer.value = setInterval(() => {
@@ -401,17 +402,40 @@ export default {
       window.addEventListener('beforeunload',clearEvent);
     })
 
+    const conferenceId = computed(() => {
+			return store.state.videoCall.conferenceId
+		})
+
+    const startCallForm = reactive({
+      flag: "d76ad323-cd1b-4bcf-ae3d-2300daa1ea17",
+      note: "Call",
+      patientId: route.params.udid,
+    })
+    const form = reactive({ ...startCallForm })
+
+    const startCall = () => {
+      store.commit('loadingStatus', true)
+      store.dispatch("appointmentCalls", startCallForm).then((response)=>{
+        if(response==true && conferenceId.value){
+          store.commit('loadingStatus', false)
+          let redirect = router.resolve({name: 'videoCall', params: {id: enCodeString(conferenceId.value)}});
+          window.open(redirect.href, '_blank');
+        }
+      })
+     
+    }
 
     return {
+      form,
+      startCallForm,
       showButton5,
       clearEvent,
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       enCodeString,
-      conferenceId:store.getters.conferenceId,
+      conferenceId,
       videoCall,
       startCall,
-      startCallModalVisible,
       paramsId:route.params.udid,
       actionTrack,
       stopTimer,

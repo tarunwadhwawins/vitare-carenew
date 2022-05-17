@@ -167,7 +167,7 @@
                             <br />
                             <strong class="" v-if="notification.time">{{
                               dateOnlyFormat(date) === dateOnlyFormat(notification.time)
-                                ? ""
+                                ? 'Today'
                                 : dateOnlyFormat(notification.time)
                             }}</strong
                             >&nbsp;
@@ -338,6 +338,7 @@ export default defineComponent({
 
     });
     onMounted(()=>{
+      store.dispatch("newRequests")
       if(JSON.parse(localStorage.getItem('barmenu'))==true){
   
   document.body.classList.add("show");
