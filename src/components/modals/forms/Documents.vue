@@ -1,19 +1,17 @@
 <template>
-  <a-form ref="formRef" scrollToFirstError=true :model="documents" name="basic" :label-col="{ span: 8 }"
-    :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="addDocument"
+  <a-form ref="formRef" scrollToFirstError=true :model="documents" name="basic"  autocomplete="off" layout="vertical" @finish="addDocument"
     @finishFailed="onFinishFailed">
     <a-row :gutter="24">
       <a-col :sm="12" :xs="24">
         <div class="form-group">
           <a-form-item :label="$t('global.name')" name="name"
             :rules="[{ required: true, message: $t('global.name')+' '+$t('global.validation') }]">
-            <a-input @change="changedValue" v-model:value="documents.name" size="large" />
+            <a-input @change="changedValue" v-model:value="documents.name" size="large" style="width:100%"/>
             <ErrorMessage v-if="errorMsg" :name="errorMsg.name?errorMsg.name[0]:''" />
           </a-form-item>
         </div>
       </a-col>
       <a-col :sm="12" :xs="24">
-
         <div class="form-group">
           <a-form-item :label="$t('global.document')" name="document"
             :rules="[{ required: isDocumentrequired, message: $t('global.document')+' '+$t('global.validation') }]">

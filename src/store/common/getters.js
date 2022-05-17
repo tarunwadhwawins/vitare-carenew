@@ -49,3 +49,8 @@ export const loadingStatus = (state)=>{
         return state.notificationList
     })
   }
+  export const filter = (state)=>{
+    return computed(()=>{
+        return state.filter
+    })
+  }

@@ -43,10 +43,11 @@
         </div>
     </div>
 </div>
+
 <a-row :gutter="24">
     <a-col :sm="24" :xs="24">
-        <a-button @click="showNoteModal">{{'Add Note'}}</a-button>
-        <a-table rowKey="id" :columns="notesColumns" :data-source="notesList" :pagination="false">
+        <a-button @click="showNoteModal" type="primary">{{'Add Note'}}</a-button>
+        <a-table :scroll="{ y: 250 }" rowKey="id" :columns="notesColumns" :data-source="notesList" :pagination="false">
             <template #flags="{ record }">
                 <Flags :flag="record.color" />
             </template>
@@ -58,13 +59,14 @@
         <Loader />
     </a-col>
 </a-row>
-<div :class="addNoteVisible==true? 'notesDetailBg show':'notesDetailBg'">
-  <AddNotesModal v-model:visible="addNoteVisible" @closeModal="closeModal($event)" :pId="pId" />
+<div :class="addNoteVisible==true? 'notesDetailBg addNotes show':'notesDetailBg addNotes'">
+  <!-- <AddNotesModal v-model:visible="addNoteVisible" @closeModal="closeModal($event)" :pId="pId" /> -->
+  <AddNotesModal  @closeModal="closeModal($event)"/>
 </div>
 </template>
 
 <script>
-import {
+import { 
   computed,
   defineComponent,
   watchEffect,
@@ -85,7 +87,7 @@ export default defineComponent({
     CloseOutlined,
     Loader,
     AddNotesModal: defineAsyncComponent(() =>
-      import("@/components/modals/AddNote")
+      import("@/components/video-call/modal/AddNote")
     ),
   },
   props: {

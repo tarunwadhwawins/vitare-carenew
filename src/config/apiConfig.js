@@ -118,6 +118,12 @@ export const API_ENDPOINTS = {
     forgotPassword:'forgot/password',
     validateCode:'forgotPassword/verify',
     setupPassword:'generate/newPassword',
+
+    //clinical dashboard
+    clinicalTask:'taskCount',
+    patientsFlag:'patientFlagCount',
+    appointmentCount:'appointmentCount',
+    escalationCount:'escalationCount'
 };
 
 // export const getApiUrl = key => {

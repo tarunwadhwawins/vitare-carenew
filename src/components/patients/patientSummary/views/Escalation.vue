@@ -32,7 +32,7 @@
                                 <a-col :sm="12" :xs="24">
                                     <div class="form-group">
                                         <a-form-item label="Description" name="type" :rules="[{ required: true, message: 'Description'+' '+$t('global.validation')  }]">
-                                           <a-textarea v-model:value="escalationDetails.description" />
+                                            <a-textarea v-model:value="escalationDetails.description" />
                                         </a-form-item>
                                     </div>
                                 </a-col>
@@ -47,14 +47,25 @@
 
                                 <a-col :sm="12" :xs="24">
                                     <div class="form-group">
+                                        <a-form-item label="Staff" name="staffId" :rules="[{ required: true, message: 'Staff'+' '+$t('global.validation')  }]">
+                                            <StaffDropDown mode="multiple" v-model:value="escalationDetails.staffId" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
+                                        </a-form-item>
+                                    </div>
+                                </a-col>
+
+                                <a-col :sm="12" :xs="24">
+                                    <div class="form-group">
                                         <a-form-item label="Due Date" name="startDate" :rules="[{ required: true, message: 'Due Date'+' '+$t('global.validation')  }]">
-                                          <a-date-picker  :disabledDate="d => !d || d.isBefore(moment().subtract(1,'days'))" v-model:value="escalationDetails.dueDate" :format="globalDateFormat" :value-format="globalDateFormat" :size="size" style="width: 100%" @change="checkChangeInput(); changeDate()" />
+                                            <a-date-picker :disabledDate="d => !d || d.isBefore(moment().subtract(1,'days'))" v-model:value="escalationDetails.dueDate" :format="globalDateFormat" :value-format="globalDateFormat" :size="size" style="width: 100%" @change="checkChangeInput(); changeDate()" />
                                         </a-form-item>
                                     </div>
                                 </a-col>
 
                                 <a-col :sm="24" :span="24">
-
+                                    <div class="steps-action">
+                                        <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
+                                        <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
+                                    </div>
                                 </a-col>
 
                             </a-row>
@@ -63,54 +74,45 @@
                     <div class="steps-content" v-if="steps[current].title == 'Notes'">
                         <a-form layout="vertical" ref="formRef" :model="addNoteForm" @finish="submitForm">
                             <a-row :gutter="24">
-                                <a-col :sm="12" :xs="24">
-                                    <div class="form-group">
-                                        <a-form-item :label="$t('notes.date')" name="date" :rules="[{ required: true, message: $t('notes.date')+' '+$t('global.validation')  }]">
-                                            <a-date-picker @change="changedValue" v-model:value="addNoteForm.date" :size="size" style="width: 100%" :format="globalDateFormat" disabled />
+                                <a-col :md="24" :sm="24" :xs="24">
+                                    <div class="form-group conditionsCheckboxs">
+                                        <a-form-item name="notes" :rules="[{ required: true, message:'Notes'+' '+$t('global.validation') }]">
+                                        <a-checkbox-group @change="changedValue" v-model:value="addNoteForm.notes">
+                                            <a-table rowKey="id" :columns="notesColumns" :data-source="notesList" :pagination="false">
+                                                <template #select="{ record }">
+                                                <a-checkbox  :value="record.id" name="notes"></a-checkbox>
+                                                </template>
+                                            </a-table>
+                                            </a-checkbox-group>
                                         </a-form-item>
                                     </div>
                                 </a-col>
-
-                                <a-col :sm="12" :xs="24">
-                                    <div class="form-group">
-                                        <a-form-item :label="$t('notes.category')" name="category" :rules="[{ required: true, message: $t('notes.category')+' '+$t('global.validation')  }]">
-                                            <GlobalCodeDropDown @change="changedValue" v-model:value="addNoteForm.category" :globalCode="noteCategories" />
-                                        </a-form-item>
-                                    </div>
-                                </a-col>
-
-                                <a-col :sm="12" :xs="24">
-                                    <div class="form-group">
-                                        <a-form-item :label="$t('notes.type')" name="type" :rules="[{ required: true, message: $t('notes.type')+' '+$t('global.validation')  }]">
-                                            <GlobalCodeDropDown @change="changedValue" v-model:value="addNoteForm.type" :globalCode="noteTypes" />
-                                        </a-form-item>
-                                    </div>
-                                </a-col>
-
-                                <a-col :sm="12" :xs="24">
-                                    <div class="form-group">
-                                        <a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation')  }]">
-                                            <GlobalCodeDropDown v-model:value="addNoteForm.flag" :globalCode="flagsList" />
-                                        </a-form-item>
-                                    </div>
-                                </a-col>
-
-                                <a-col :sm="12" :xs="24">
-                                    <div class="form-group">
-                                        <a-form-item :label="$t('notes.note')" name="note" :rules="[{ required: true, message: $t('notes.note')+' '+$t('global.validation')  }]">
-                                            <a-input @change="changedValue" v-model:value="addNoteForm.note" size="large" />
-                                        </a-form-item>
-                                    </div>
-                                </a-col>
-
                                 <a-col :sm="24" :span="24">
+                                    <div class="steps-action">
+                                        <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
+                                        <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
+                                    </div>
                                 </a-col>
 
                             </a-row>
                         </a-form>
                     </div>
                     <div class="steps-content" v-if="steps[current].title == 'Vitals'">
-                        <h3>Vitals</h3>
+                        <a-form layout="vertical" ref="formRef" :model="addNoteForm" @finish="submitForm">
+                            <a-row :gutter="24">
+
+                                <a-col :sm="24" :span="24">
+                                    <div class="steps-action">
+                                        <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
+                                        <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
+                                        <a-button v-if="current == steps.length - 1" type="primary" @click="saveModal()">
+                                            {{$t('global.save')}}
+                                        </a-button>
+                                    </div>
+                                </a-col>
+
+                            </a-row>
+                        </a-form>
                     </div>
                 </a-col>
             </a-row>
@@ -118,42 +120,84 @@
     </a-layout-content>
 </div>
 </template>
+
 <script>
 import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch";
 import {
-    computed, reactive,ref
+    computed,
+    reactive,
+    ref
 } from 'vue';
 import {
     useStore
 } from 'vuex';
 import moment from "moment"
 import {
-  globalDateFormat,
+    globalDateFormat,
 } from "@/commonMethods/commonMethod"
+import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue";
+ const notesColumns = [
+      {
+        title: "Select",
+        dataIndex: "select",
+        key: "select",
+        slots: {
+          customRender: "select",
+        },
+        className: "note-select",
+      },
+      {
+        title: "Date",
+        dataIndex: "date",
+        key: "date",
+        className: "note-date",
+      },
+      {
+        title: "Category",
+        dataIndex: "category",
+        key: "category",
+        className: "note-category",
+      },
+      {
+        title: "Type",
+        dataIndex: "type",
+        key: "type",
+        className: "note-type",
+      },
+      {
+        title: "Note",
+        dataIndex: "note",
+        key: "note",
+        className: "note-text",
+        ellipsis: true,
+      },
+      {
+        title: "Added By",
+        dataIndex: "addedBy",
+        key: "addedBy",
+      },
+      
+    ];
 export default {
     components: {
         PatientInfoTop,
-        GlobalCodeDropDown
+        GlobalCodeDropDown,
+        StaffDropDown
     },
     setup() {
         const store = useStore();
         const escalationDetails = reactive({
-          scalationType:'',
-          description:'',
-          flag:'',
-          dueDate:'',
-          staffId:''
+            scalationType: '',
+            description: '',
+            flag: '',
+            dueDate: '',
+            staffId: []
         })
 
-         const addNoteForm = reactive({
-      date: moment().format(globalDateFormat),
-      category: "",
-      type: "",
-      flag: "",
-      note: "",
-      entityType: "patient",
-    })
+        const addNoteForm = reactive({
+            notes: []
+        })
         const patientDetails = computed(() => {
             return store.state.patients.patientDetails;
         })
@@ -161,7 +205,7 @@ export default {
             return store.state.common;
         })
         const flagsList = computed(() => {
-          return store.state.flags.flagsList
+            return store.state.flags.flagsList
         })
         const current = computed({
             get: () => store.state.patients.escalationCounter,
@@ -175,7 +219,16 @@ export default {
         const prev = () => {
             store.commit("counterMinus");
         };
+        const handleStaffChange = (val) => {
+            escalationDetails.staffId = val;
+        };
+        const notesList = computed(() => {
+            return store.state.notes.notesList
+        })
         return {
+          notesColumns,
+            notesList,
+            handleStaffChange,
             addNoteForm,
             globalDateFormat,
             moment,
