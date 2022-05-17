@@ -271,6 +271,12 @@ const routes = [
     component: () => import('@/views/clinic/dashboard/Dashboard'),
     meta: { authAdmin: true }
   },
+  {
+    path: '/businessDashboard',
+    name: 'Business Dashboard',
+    component: () => import('@/views/business/dashboard/Dashboard'),
+    meta: { authAdmin: true }
+  },
  
 
 
