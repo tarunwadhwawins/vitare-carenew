@@ -49,7 +49,7 @@
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.priority')" name="priorityId" :rules="[{ required: true, message: $t('communications.communicationsModal.priority')+' '+$t('global.validation')  }]">
 
-                        <GlobalCodeDropDown v-model:value="messageForm.priorityId" :globalCode="taskPriority" @change="checkChangeInput()" />
+                        <GlobalCodeDropDown v-model:value="messageForm.priorityId" :globalCode="taskPriority" @change="checkChangeInput()" :isColor="true" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -164,6 +164,8 @@ export default defineComponent({
         const taskPriority = computed(() => {
             return store.state.common.taskPriority;
         });
+        const taskPriorityWithColor = taskPriority.value
+        console.log('taskPriorityWithColor', taskPriorityWithColor)
         const messageCategories = computed(() => {
             return store.state.common.messageCategories;
         });

@@ -18,38 +18,11 @@
         </a-col> -->
     </a-row>
     <a-row :gutter="24">
-        <!-- <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,2) && todayAppointment">
-          <a-card :title="$t('dashboard.todayAppointment')" class="common-card">
-            <div class="apptNumber">
-              <h3>Total Appointments</h3>
-              <h2>{{todayAppointment.length}}</h2>
-            </div>
-          </a-card>
-      </a-col> -->
-        <!-- <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,3) && callStatus">
-            <ApexChart :title="$t('global.callQueue')" type="bar" :height="250" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="communications" />
-        </a-col>
-        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,4) &&  patientsCondition">
-            <ApexChart title="Patients Stats" type="bar" :height="412" :options="patientsCondition.option1" :series="patientsCondition.series1" linkTo="manage-patients">
-            </ApexChart>
-        </a-col> -->
-        <!-- <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,5) &&  specialization">
-            <a-card :title="$t('dashboard.careCoordinatorStats') " class="common-card">
-                <a-tabs default-active-key="activeKey1">
-                    <a-tab-pane key="1" tab="Specialization" v-if="specialization">
-                        <ApexChart type="bar" :height="350" :options="specialization.wellness" :series="specialization.behavior" linkTo="manage-care-coordinator"></ApexChart>
-                    </a-tab-pane>
-                    <a-tab-pane key="2" tab="Network " force-render v-if="network">
-                        <ApexChart type="bar" :height="350" v-if="network" :options="network.In" :series="network.Out" linkTo="manage-care-coordinator">
-                        </ApexChart>
-                    </a-tab-pane>
-                </a-tabs>
-            </a-card>
-        </a-col> -->
+        
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  clicalTask">
             <ApexChart title="My Task " type="bar" :height="350" :options="clicalTask.code" :series="clicalTask.value" linkTo="tasks?view=list"></ApexChart>
         </a-col>
-         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  escalationCount">
+         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,13) &&  escalationCount">
             <ApexChart title="Escalation" type="bar" :height="350" :options="escalationCount.code" :series="escalationCount.value" linkTo="tasks"></ApexChart>
         </a-col>
          
@@ -60,12 +33,7 @@
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  appointmentCount">
             <ApexChart title="My Appointmnets" type="bar" :height="350" :options="appointmentCount.chartOptions" :series="appointmentCount.value" linkTo="appointment-calendar"></ApexChart>
         </a-col>
-        <!-- <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,8) && totalPatientsChartValue">
-            <ApexChart :title="$t('dashboard.newPatientsChart')" type="area" :height="350" :options="totalPatientsChartValue.chartOptions" :series="totalPatientsChartValue.series" linkTo="manage-patients"></ApexChart>
-        </a-col> -->
-        <!-- <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,9) && appointmentChartValue">
-            <ApexChart :title="$t('dashboard.appointmentSummary')" type="area" :height="350" :options="appointmentChartValue.chartOptions" :series="appointmentChartValue.series" linkTo="appointment-calendar"></ApexChart>
-        </a-col> -->
+        
     </a-row>
     <Loader />
 </a-layout-content>
