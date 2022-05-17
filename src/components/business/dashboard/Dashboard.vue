@@ -3,37 +3,25 @@
     <a-row>
         <a-col :span="24">
             <h2 class="pageTittle">
-                Clinical Dashboard
+                Business Dashboard
                 <div class="filter" v-if="timeline && Buttons">
                     <a-button v-for="item in timeline" :key="item.id" @click="showButton(item.id)" :class="Buttons.globalCodeId== item.id ? 'active' : ''"> {{item.name}}</a-button>
                 </div>
             </h2>
         </a-col>
-        <!-- <a-col :span="24">
-            <a-row :gutter="24" v-if="arrayToObjact(widgetsPermissions,1) && grid">
-                <Card v-for="item in totalPatients" :key="item.count" :count="item.total" :text='item.text' link="manage-patients" :xl="grid.xlGrid" :color="item.color" :sm="grid.smGrid" :textColor="item.textColor">
-                </Card>
-
-            </a-row>
-        </a-col> -->
+        
     </a-row>
     <a-row :gutter="24">
-        
-        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  clicalTask">
-            <ApexChart title="My Task " type="bar" :height="350" :options="clicalTask.code" :series="clicalTask.value" linkTo="tasks?view=list"></ApexChart>
+    
+       
+      
+        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  cptCodeValue">
+            <ApexChart :title="$t('dashboard.cPTCodeBillingSummary')" type="bar" :height="386" :options="cptCodeValue.code" :series="cptCodeValue.value" linkTo="cpt-codes"></ApexChart>
         </a-col>
-         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,13) &&  escalationCount">
-            <ApexChart title="Escalation" type="bar" :height="350" :options="escalationCount.code" :series="escalationCount.value" linkTo="tasks"></ApexChart>
+        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && financialValue">
+            <ApexChart :title="$t('dashboard.financialStats')" type="pie" :height="385" :options="financialValue.billed" :series="financialValue.due" linkTo="time-log-report"></ApexChart>
         </a-col>
-         
-        
-        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && patientsFlag">
-            <ApexChart title="Patients Flags" type="bar" :height="350" :options="patientsFlag.code" :series="patientsFlag.value" linkTo="manage-patients"></ApexChart>
-        </a-col>
-        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  appointmentCount">
-            <ApexChart title="My Appointmnets" type="bar" :height="350" :options="appointmentCount.chartOptions" :series="appointmentCount.value" linkTo="appointment-calendar"></ApexChart>
-        </a-col>
-        
+     
     </a-row>
     <Loader />
 </a-layout-content>
@@ -41,7 +29,7 @@
 
 <script>
   import { watchEffect } from 'vue'
-  //import Card from "@/components/common/cards/Card"
+ 
   import ApexChart from "@/components/common/charts/ApexChart"
   import { startimeAdd, endTimeAdd, timeStamp ,arrayToObjact} from '@/commonMethods/commonMethod'
   import { useStore } from 'vuex'
@@ -50,16 +38,14 @@
   
 export default {
     components: {
-       // Card,
+
         ApexChart,
         Loader
     },
 
     setup() {
         const store = useStore()
-        //const fromDate = ref(moment())
-        //const toDate = ref(moment())
-        
+       
         const timeLineButton = store.getters.dashboardTimeLineButton
 
         function apiCall(data) {
@@ -81,28 +67,31 @@ export default {
                 to = moment().subtract(data.number, data.intervalType);
             }
             let dateFormate = ''
-            
+            let cptDateFormate = ''
            
             if (data.globalCodeId == 122) {
                 dateFormate = {
                     fromDate: from ? timeStamp(startimeAdd(from)) : '',
                     toDate: to ? timeStamp(endTimeAdd(to)) : ''
                 }
-                
+                cptDateFormate = {
+                    fromDate: from.format("YYYY-MM-DD"),
+                    toDate: to.format("YYYY-MM-DD")
+                }
             } else {
                 dateFormate = {
                     fromDate: timeStamp(startimeAdd(to)),
                     toDate: timeStamp(endTimeAdd(from))
                 }
-                
+                cptDateFormate = {
+                    fromDate: to.format("YYYY-MM-DD"),
+                    toDate: from.format("YYYY-MM-DD")
+                }
             }
             store.dispatch("permissions")
-            store.dispatch("clicalTask", dateFormate)
-            
-             store.dispatch("callStatus", dateFormate)
-             store.dispatch("patientsFlag", dateFormate)
-             store.dispatch("appointmentCount", dateFormate)
-           store.dispatch("escalationCount", dateFormate)
+            store.dispatch("cptCode", cptDateFormate)
+            store.dispatch("financial", dateFormate)
+
 
         }
         
@@ -131,18 +120,20 @@ export default {
         }
 
         return {
-           clicalTask:store.getters.clicalTask,
             grid:store.getters.grid,
-            escalationCount:store.getters.escalationCount,
-             patientsFlag:store.getters.patientsFlag,
+            
+            cptCodeValue:store.getters.cptCodeValue,
+            financialValue:store.getters.financialValue,
+           
             logout,
-            appointmentCount:store.getters.appointmentCount,
+            
             Buttons:store.getters.dashboardTimeLineButton,
             showButton,
             timeline:store.getters.timeline,
             widgetsPermissions:store.getters.widgetsPermissions,
 
             arrayToObjact,
+         
         };
     },
 };

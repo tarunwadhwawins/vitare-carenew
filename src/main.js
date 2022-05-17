@@ -72,7 +72,17 @@ onMessage(messaging, (payload) => {
                 router.push('/appointment-calendar'),
                 notification.close(key)
             }else{
-                router.push('/communications?view=list'),
+                // router.push('/communications?view=list'),
+                router.push({
+                    name: 'Communications',
+                    query: {
+                        view: 'list'
+                    },
+                    params: {
+                        from: 'push',
+                        typeId: payload.data.typeId,
+                    }
+                }),
                 notification.close(key)
             }
               
