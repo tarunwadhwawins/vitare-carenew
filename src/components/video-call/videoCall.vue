@@ -286,23 +286,23 @@
               store.dispatch("getVideoDetails", deCodeString(route.params.id));
               store.commit("videoLoadingStatus", true);
               //accept videoCall code
-              if (session.value) {
-                //  store.commit("loadingStatus", false);
-                session.value.options.media.remote = {
-                  video: videoCall.value ? videoCall.value : <video></video>,
-                };
-                //getting upcoming call user details
-                upcomingCallDetails.user =
-                  session.value.session.incomingInviteRequest.message.from.uri.raw.user;
-                store.dispatch(
-                  "acceptVideoCallDetails",
-                  upcomingCallDetails.user.substring(2)
-                );
-                session.value.answer();
-              } //end accept video call
+              // if (session.value) {
+              //   //  store.commit("loadingStatus", false);
+              //   session.value.options.media.remote = {
+              //     video: videoCall.value ? videoCall.value : <video></video>,
+              //   };
+              //   //getting upcoming call user details
+              //   upcomingCallDetails.user =
+              //     session.value.session.incomingInviteRequest.message.from.uri.raw.user;
+              //   store.dispatch(
+              //     "acceptVideoCallDetails",
+              //     upcomingCallDetails.user.substring(2)
+              //   );
+              //   session.value.answer();
+              // } //end accept video call
 
-              //Start conference video call code
-              else {
+              // //Start conference video call code
+              // else {
                 if (route.params.id) {
                   // store.commit("loadingStatus", false);
                   currentUrl.value = window.location.href;
@@ -390,7 +390,7 @@
                 } else {
                   router.push("/dashboard");
                 }
-              } //end conference video call
+              //} //end conference video call
             });
         } else if (session.value) {
           //  store.commit("loadingStatus", false);
