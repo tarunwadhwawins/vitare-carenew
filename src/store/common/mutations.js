@@ -179,4 +179,8 @@ export const checkChangeInput = (state, data) => {
   export const orderTable = (state, data) => {
     state.orderTable = data
   }
+  export const filter = (state, data) => {
+    state.filter = data
+  }
+  
   

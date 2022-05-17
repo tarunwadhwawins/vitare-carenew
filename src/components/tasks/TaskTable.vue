@@ -71,7 +71,9 @@ export default {
     const meta = store.getters.taskRecords.value;
 
     let scroller = "";
+    let filter = store.getters.filter.value  ? store.getters.filter.value : ''
     onMounted(() => {
+
       var tableContent = document.querySelector(".ant-table-body");
       tableContent.addEventListener("scroll", (event) => {
         let maxScroll = event.target.scrollHeight - event.target.clientHeight;
@@ -89,6 +91,7 @@ export default {
                 "tasksList",
                 "?page=" +
                   current_page +
+                  '&filter='+filter+
                   store.getters.searchTable.value +
                   store.getters.orderTable.value.data
               )
@@ -148,7 +151,7 @@ export default {
         });
         store.dispatch(
           "tasksList",
-          "?page=" + store.getters.searchTable.value + orderParam
+          "?page=" + store.getters.searchTable.value + orderParam+'&filter='+filter
         );
       } else {
         store.dispatch("orderTable", {
@@ -158,7 +161,7 @@ export default {
           "tasksList",
           "?page=" +
             store.getters.searchTable.value +
-            store.getters.orderTable.value.data
+            store.getters.orderTable.value.data+'&filter='+filter
         );
       }
     };

@@ -19,7 +19,7 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import('@/views/dashboard/Dashboard'),
+    component: () => import('@/views/clinic/dashboard/Dashboard'),
     meta: { authAdmin: true }
   },
 
@@ -44,7 +44,7 @@ const routes = [
     component: () => import('../components/tasks/tasks'),
     meta: { authAdmin: true }
   },
-
+  
   {
     path: '/manage-patients',
     name: 'Patients',
