@@ -249,7 +249,14 @@ export default defineComponent({
       });
     };
 
+    function closeModal() {
+     emit("closeModal", {
+          modal: "addNote",
+          value: false,
+        });
+    }
     return {
+      closeModal,
       size: ref("large"),
       handleClear,
       formRef,

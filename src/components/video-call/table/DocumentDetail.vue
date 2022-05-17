@@ -32,7 +32,7 @@
       </div>
     </a-col>
   </a-row>
-  <div class="notesDetailBg addNotes" >
+  <div :class="addDocument==true? 'notesDetailBg addNotes show':'notesDetailBg addNotes'">
     <div class="notesDetail 23">
       <div class="notesHeader">
         <h4>Add Documents</h4>

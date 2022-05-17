@@ -61,12 +61,12 @@
 </a-row>
 <div :class="addNoteVisible==true? 'notesDetailBg addNotes show':'notesDetailBg addNotes'">
   <!-- <AddNotesModal v-model:visible="addNoteVisible" @closeModal="closeModal($event)" :pId="pId" /> -->
-  <AddNotesModal />
+  <AddNotesModal  @closeModal="closeModal($event)"/>
 </div>
 </template>
 
 <script>
-import {
+import { 
   computed,
   defineComponent,
   watchEffect,
