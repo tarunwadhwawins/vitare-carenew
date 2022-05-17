@@ -27,6 +27,8 @@ import { flags } from "./flags/index"
 import { password } from "./password/index"
 import createPersistedState from "vuex-persistedstate";
 import { errorLogWithDeviceInfo} from "./errorLogWithDeviceInfo"
+import { businessDashboard } from "./businessDashboard/index"
+import { clinicalDashboard } from "./clinicalDashboard/index"
 
 export default createStore({
   modules: {
@@ -56,7 +58,9 @@ export default createStore({
     flags,
     password,
     screenPermissions,
-    errorLogWithDeviceInfo
+    errorLogWithDeviceInfo,
+    businessDashboard,
+    clinicalDashboard
   },
   plugins: [ createPersistedState({
     reducer(state) {

@@ -19,7 +19,7 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import('@/views/dashboard/Dashboard'),
+    component: () => import('@/views/clinic/dashboard/Dashboard'),
     meta: { authAdmin: true }
   },
 
@@ -44,7 +44,7 @@ const routes = [
     component: () => import('../components/tasks/tasks'),
     meta: { authAdmin: true }
   },
-
+  
   {
     path: '/manage-patients',
     name: 'Patients',
@@ -262,6 +262,19 @@ const routes = [
     path: '/test-countdown',
     name: 'TestCountdown',
     component: () => import('@/components/TestCountdown.vue'),
+    meta: { authAdmin: true }
+  },
+  ///clinic
+  {
+    path: '/clinicDashboard',
+    name: 'Clinic Dashboard',
+    component: () => import('@/views/clinic/dashboard/Dashboard'),
+    meta: { authAdmin: true }
+  },
+  {
+    path: '/businessDashboard',
+    name: 'Business Dashboard',
+    component: () => import('@/views/business/dashboard/Dashboard'),
     meta: { authAdmin: true }
   },
  

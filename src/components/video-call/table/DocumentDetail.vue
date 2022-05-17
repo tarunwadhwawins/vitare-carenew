@@ -2,7 +2,7 @@
   <a-row :gutter="24">
     <a-col :sm="24" :xs="24">
       <div class="documentsTab">
-      <a-button @click="showDocumentModal">{{ "Add Document" }}</a-button>
+      <a-button @click="showDocumentModal" type="primary">{{ "Add Document" }}</a-button>
       <a-table
         rowKey="id"
         :columns="documentsColumns"
@@ -32,7 +32,7 @@
       </div>
     </a-col>
   </a-row>
-  <div class="notesDetailBg addNotes" >
+  <div :class="addDocument==true? 'notesDetailBg addNotes show':'notesDetailBg addNotes'">
     <div class="notesDetail 23">
       <div class="notesHeader">
         <h4>Add Documents</h4>
