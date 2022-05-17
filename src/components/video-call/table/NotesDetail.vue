@@ -87,7 +87,7 @@ export default defineComponent({
     CloseOutlined,
     Loader,
     AddNotesModal: defineAsyncComponent(() =>
-      import("@/components/modals/AddNote")
+      import("@/components/video-call/modal/AddNote")
     ),
   },
   props: {
