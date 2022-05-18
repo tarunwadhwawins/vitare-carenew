@@ -127,7 +127,7 @@
         <template #title>
           <span>{{ $t("common.reply") }}</span>
         </template>
-        <a class="icons" @click="showModal(record,$event)">
+        <a class="icons" @click="showModal(record, $event)">
           <MessageOutlined />
         </a>
       </a-tooltip>
@@ -144,12 +144,14 @@
   </a-table>
   <CommunicationGmailView v-model:visible="visibleGmail" />
   <Chat v-model:visible="visible" v-if="communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
+  <ChatWithPatientInformation v-model:visible="chatWithPatientInfoVisible" v-if="communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
 </template>
 
 <script>
 import { ref, onMounted, watchEffect } from "vue";
 import { useStore } from "vuex";
 import Chat from "@/components/modals/Chat";
+import ChatWithPatientInformation from "@/components/modals/ChatWithPatientInformation";
 import { tableYScroller, arrayToObjact, } from "@/commonMethods/commonMethod";
 
 import CommunicationGmailView from '@/components/modals/CommunicationGmailView'
@@ -172,6 +174,7 @@ export default {
     AlertOutlined,
     CommunicationGmailView,
     Chat,
+    ChatWithPatientInformation,
   },
   props: {},
   setup() {
@@ -249,6 +252,7 @@ export default {
     const auth = JSON.parse(localStorage.getItem("auth"));
     const meta = store.getters.communicationRecord.value;
     const visible = ref(false);
+    const chatWithPatientInfoVisible = ref(false);
     /* const isExpand = ref(false)
     const recordId = ref(null) */
 
@@ -353,11 +357,15 @@ export default {
         );
       }
     };
-    const showModal = (e,event) => {
-      event.target.parentElement.parentElement.parentElement.parentElement.classList.remove('bold')
+    const showModal = (e, event) => {
+      if(e.is_receiver_patient || e.is_sender_patient) {
+        chatWithPatientInfoVisible.value = true;
+      }
+      else {
+        visible.value = true;
+      }
       communicationId.value = e;
-
-      visible.value = true;
+      event.target.parentElement.parentElement.parentElement.parentElement.classList.remove('bold')
     }
     const showGmail = (e) => {
       store.dispatch('communicationsView',e.id)
@@ -382,6 +390,7 @@ export default {
       handleTableChange,
       showGmail,
       visibleGmail,
+      chatWithPatientInfoVisible,
       /* clickExpandable,
       isExpand,
       recordId, */

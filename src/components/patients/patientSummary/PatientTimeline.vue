@@ -105,7 +105,12 @@ export default {
       if(route.name == 'PatientSummary') {
         store.dispatch('timeLineType')
         store.dispatch('patientTimeline', {id:route.params.udid,type:''});
-      }else if(route.name == 'videoCall'){
+      }
+      else if(route.name == 'videoCall'){
+        store.dispatch('timeLineType')
+        store.dispatch('patientTimeline', {id:pId.value,type:''});
+      }
+      else {
         store.dispatch('timeLineType')
         store.dispatch('patientTimeline', {id:pId.value,type:''});
       }
@@ -119,8 +124,10 @@ export default {
     };
 function chnageTab(){
   store.commit('loadingTableStatus', true)
-  
-  store.dispatch('patientTimeline', {id:route.params.udid,type:tabvalue.tab.length == 0 ? '' :tabvalue.tab.join(",")}).then(()=>{
+  store.dispatch('patientTimeline', {
+    id:route.params.udid ? route.params.udid : pId.value,
+    type:tabvalue.tab.length == 0 ? '' :tabvalue.tab.join(",")
+  }).then(()=>{
     store.commit('loadingTableStatus', false)
   })
 }
