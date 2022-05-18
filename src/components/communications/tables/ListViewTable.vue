@@ -8,11 +8,13 @@
     </template>
     
     <!-- <template #expandable="{ record }">
-      <v-slot v-if="record.type == 'Email'">
-        <template #expandedRowRender>
+      <div v-if="record.type == 'SMS'">
+        <div v-if="!isExpand && (recordId == record.id)" @click="clickExpandable(record.id, record.message)" role="button" tabindex="0" class="ant-table-row-expand-icon ant-table-row-expanded" aria-label="Expand row"></div>
+        <div v-else-if="isExpand && (recordId == record.id)" @click="clickExpandable(record.id, record.message)" role="button" tabindex="0" class="ant-table-row-expand-icon ant-table-row-collapsed" aria-label="Collapse row"></div>
+        <tr v-if="isExpand && (recordId == record.id)" class="ant-table-expanded-row ant-table-expanded-row-level-1" data-row-key="37-extra-row">
           <p>{{ record.message }}</p>
-        </template>
-      </v-slot>
+        </tr>
+      </div>
     </template> -->
 
     <template #from="{ record }" class="custom" >
@@ -247,9 +249,26 @@ export default {
     const auth = JSON.parse(localStorage.getItem("auth"));
     const meta = store.getters.communicationRecord.value;
     const visible = ref(false);
+    /* const isExpand = ref(false)
+    const recordId = ref(null) */
 
     let scroller = "";
     let data = [];
+
+    /* const clickExpandable = (id, message) => {
+      recordId.value = id
+      if(isExpand.value == true) {
+        document.getElementsByClassName('ant-table-tbody').insertAdjacentHTML(`
+        <tr class="ant-table-expanded-row ant-table-expanded-row-level-1" data-row-key="37-extra-row">
+          <p>`+message+`</p>
+        </tr>
+        `)
+        isExpand.value = false
+      }
+      else {
+        isExpand.value = true
+      }
+    } */
 
     watchEffect(() => {
       if(meta.communicationsList && (route.params.from && route.params.from == 'push')) {
@@ -363,6 +382,9 @@ export default {
       handleTableChange,
       showGmail,
       visibleGmail,
+      /* clickExpandable,
+      isExpand,
+      recordId, */
     };
   },
 };
