@@ -1,5 +1,5 @@
 <template>
-<a-modal width="50%" title="Reply" centered :maskClosable="false"  @cancel="closeModal()" class="chatModal">
+<a-modal width="50%" title="Communication" centered :maskClosable="false"  @cancel="closeModal()" class="chatModal">
     <a-row :gutter="24">
         <a-col :span="24" class="chatBox2">
             <div class="chatBox" ref="scroll" id="chatBox">
@@ -25,20 +25,22 @@
                     </a-list-item>
                 </a-list>
 
-                <div class="chatBoxInner" v-for="msg,index in list.conversationList" :key="index">
-                    <div class="chatWrapper left" v-if="auth.user.id!=msg.senderId">
+                <div class="chatBoxInner">
+                    <div v-for="msg,index in list.conversationList" :key="index">
+                        <div class="chatWrapper left" v-if="auth.user.id!=msg.senderId">
 
-                        <div class="message">
-                            {{msg.message}}
+                            <div class="message">
+                                {{msg.message}}
+                            </div>
+                            <div class="time">{{ msg.createdAt }}</div>
                         </div>
-                        <div class="time">{{ dateFormat(msg.createdAt)}}</div>
-                    </div>
-                    <div class="chatWrapper right" v-if="auth.user.id==msg.senderId">
-                        <div class="message">
-                            {{msg.message}}
+                        <div class="chatWrapper right" v-if="auth.user.id==msg.senderId">
+                            <div class="message">
+                                {{msg.message}}
+                            </div>
+                        
+                            <div class="time" >{{ msg.createdAt }}</div>
                         </div>
-                       
-                        <div class="time" >{{ dateFormat(msg.createdAt)}}</div>
                     </div>
 
                 </div>
@@ -180,3 +182,9 @@ function getScroll(){
     },
 };
 </script>
+
+<style scoped>
+.chatBox .chatBoxInner {
+    min-height: 435px !important;
+}
+</style>

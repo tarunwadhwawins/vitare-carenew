@@ -28,7 +28,7 @@
           </a>
         </template>
       </a-table>
-      <Loader />
+      <Loader v-if="!isCommunication" />
       </div>
     </a-col>
   </a-row>
@@ -87,6 +87,9 @@ export default defineComponent({
   props: {
     patientDetails: {
       type: Array,
+    },
+    isCommunication: {
+      type: Boolean,
     },
   },
   setup(props, { emit }) {
