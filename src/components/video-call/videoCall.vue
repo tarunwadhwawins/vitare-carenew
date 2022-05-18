@@ -24,7 +24,7 @@
                 </div>
               </div>
               <div class="callRightWrapper" id="detailDiv">
-                <span class="dragImg" @mousedown="resize($event)"><img src="@/assets/images/drag.png" alt="" /></span>
+                <span class="dragImg" @mousedown="resize($event)"  @touchstart="resize($event)"><img src="@/assets/images/drag.png" alt="" /></span>
                 <a-row>
                   <a-col :span="12">
                     <div class="header" v-if="acceptVideoCallDetails">
@@ -286,23 +286,23 @@
               store.dispatch("getVideoDetails", deCodeString(route.params.id));
               store.commit("videoLoadingStatus", true);
               //accept videoCall code
-              if (session.value) {
-                //  store.commit("loadingStatus", false);
-                session.value.options.media.remote = {
-                  video: videoCall.value ? videoCall.value : <video></video>,
-                };
-                //getting upcoming call user details
-                upcomingCallDetails.user =
-                  session.value.session.incomingInviteRequest.message.from.uri.raw.user;
-                store.dispatch(
-                  "acceptVideoCallDetails",
-                  upcomingCallDetails.user.substring(2)
-                );
-                session.value.answer();
-              } //end accept video call
+              // if (session.value) {
+              //   //  store.commit("loadingStatus", false);
+              //   session.value.options.media.remote = {
+              //     video: videoCall.value ? videoCall.value : <video></video>,
+              //   };
+              //   //getting upcoming call user details
+              //   upcomingCallDetails.user =
+              //     session.value.session.incomingInviteRequest.message.from.uri.raw.user;
+              //   store.dispatch(
+              //     "acceptVideoCallDetails",
+              //     upcomingCallDetails.user.substring(2)
+              //   );
+              //   session.value.answer();
+              // } //end accept video call
 
-              //Start conference video call code
-              else {
+              // //Start conference video call code
+              // else {
                 if (route.params.id) {
                   // store.commit("loadingStatus", false);
                   currentUrl.value = window.location.href;
@@ -390,7 +390,7 @@
                 } else {
                   router.push("/dashboard");
                 }
-              } //end conference video call
+              //} //end conference video call
             });
         } else if (session.value) {
           //  store.commit("loadingStatus", false);
@@ -409,6 +409,7 @@
       });
       function resize() {
         window.addEventListener("mousemove", resizeDiv);
+        window.addEventListener("touchmove", resizeDiv);
       }
       function resizeDiv(e) {
         let video_width = ((e.clientX - 50) / document.body.clientWidth) * 100;
@@ -417,6 +418,10 @@
       window.addEventListener("mouseup", (e) => {
         console.log(e);
         window.removeEventListener("mousemove", resizeDiv);
+      });
+       window.addEventListener("touchend", (e) => {
+        console.log(e);
+        window.addEventListener("touchmove", resizeDiv);
       });
       // Answer call
       function hangUp() {

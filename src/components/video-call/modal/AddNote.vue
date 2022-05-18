@@ -5,8 +5,7 @@
       <CloseOutlined @click="closeModal" />
     </div>
     <div class="notesBody">
-     
-      <addNoteForm />
+      <addNoteForm :pId="pId" @closeModal="closeModal"/>
       <Loader />
     </div>
   </div>
@@ -129,10 +128,7 @@ export default defineComponent({
       });
     };
     function closeModal(){
-      emit("closeModal", {
-          modal: "addNote",
-          value: false,
-        });
+      emit("closeModal", false);
     }
     return {
       closeModal,

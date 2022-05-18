@@ -51,10 +51,8 @@ export default {
                     router.push({
                         path: props.linkTo
                     });
-                } else if (props.type == "pai") {
-                    router.push({
-                        path: props.linkTo
-                    })
+                } else if (props.type == "pie") {
+                    router.push({path: props.linkTo})
                 }
             }else{
               console.log(event, chartContext, config.globals.labels[config.dataPointIndex])

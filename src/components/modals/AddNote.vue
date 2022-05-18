@@ -1,6 +1,6 @@
 <template>
  <a-modal width="50%" title="Add Note" centered @cancel="onCloseModal()">
-    <addNoteForm />
+    <addNoteForm @closeModal="closeModal"/>
     <Loader />
  </a-modal>
 </template>
@@ -144,7 +144,12 @@ export default defineComponent({
             });
         };
 
+        function closeModal(){
+            emit("closeModal", false);
+        }
+
         return {
+            closeModal,
             size: ref("large"),
             handleClear,
             formRef,

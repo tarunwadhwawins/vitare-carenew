@@ -61,7 +61,7 @@
 </a-row>
 <div :class="addNoteVisible==true? 'notesDetailBg addNotes show':'notesDetailBg addNotes'">
   <!-- <AddNotesModal v-model:visible="addNoteVisible" @closeModal="closeModal($event)" :pId="pId" /> -->
-  <AddNotesModal  @closeModal="closeModal($event)"/>
+  <AddNotesModal  @closeModal="closeModal($event)" :pId="pId"/>
 </div>
 </template>
 
@@ -152,9 +152,9 @@ export default defineComponent({
       addNoteVisible.value = true;
     };
 
-    function closeModal(data) {
+    function closeModal(value) {
       showRecord.value = false;
-      addNoteVisible.value = data.value;
+      addNoteVisible.value = value;
     }
 
     return {
