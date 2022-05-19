@@ -91,7 +91,7 @@
 		ref,
 		onUnmounted,
 		onMounted,
-		computed
+		// computed
 	} from "vue"
 	import {
 		useStore
@@ -118,18 +118,18 @@
 			const formValue = reactive({
 				msgSend: ''
 			})
-			const toScroll = computed(() => {
-				return store.state.common.toScroll
-			})
+			// const toScroll = computed(() => {
+			// 	return store.state.common.toScroll
+			// })
 
 			const scroll = ref()
 			const auth = JSON.parse(localStorage.getItem("auth"))
 			let interval = setInterval(() => {
 				store.dispatch("conversation", props.communication.id)
-				if(toScroll.value) {
+				// if(toScroll.value) {
 					getScroll()
 					store.commit('toScroll', false)
-				}
+				// }
 			}, 5000);
 
 			const list = store.getters.communicationRecord.value
@@ -140,10 +140,10 @@
 				store.dispatch("conversation", props.communication.id)
 				tableContent.value = document.getElementsByClassName('chatBoxInner')
 				// console.log('conversationListsss', (list.conversationList).slice(-1))
-				if(toScroll.value) {
+				// if(toScroll.value) {
 					getScroll()
 					store.commit('toScroll', false)
-				}
+				// }
 			})
 
 			function getScroll() {
