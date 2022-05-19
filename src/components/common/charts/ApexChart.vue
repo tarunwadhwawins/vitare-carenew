@@ -12,7 +12,9 @@ import { useRouter } from "vue-router";
 import { useStore } from 'vuex';
 export default {
     props: {
-
+        data:{
+type:Array
+        },
         linkTo: {
             type: String,
         },
@@ -39,15 +41,22 @@ export default {
 
     setup(props) {
         const router = useRouter()
-        const store = useStore()
+       const store = useStore()
 
         function clickHandler4(event, chartContext, config) {
             
 
-           
+           //console.log(event, chartContext, config.globals.labels[config.dataPointIndex])
             if (props.linkTo) {
                 if (props.type == "bar" && config.globals.labels[config.dataPointIndex] != undefined) {
-                    store.commit("filter", config.globals.labels[config.dataPointIndex])
+                    if(props.data.length>0){
+                       // console.log("check",props.data[config.dataPointIndex].referralId)
+store.commit("filter", props.data[config.dataPointIndex].referralId)
+                    }else{
+                        
+                       store.commit("filter", config.globals.labels[config.dataPointIndex]) 
+                    }
+                   
                     router.push({
                         path: props.linkTo
                     });

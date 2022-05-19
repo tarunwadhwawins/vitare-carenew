@@ -41,6 +41,13 @@ export const cptCodeSuccess = (state, data) => {
 	};
 };
 export const referalCount = (state, data) => {
+	const topFive = []
+	data.map((item,index)=>{
+		if(index<4){
+			topFive.push(item)
+		}
+	})
+	state.referalCountRecord=data
 	state.referalCount = {
 		code: {
 			annotations: annotations('In', 0, '#775DD0', 0, '#fff', '#775DD0'),
@@ -64,16 +71,16 @@ export const referalCount = (state, data) => {
 				labels: {
 					rotate: -45
 				},
-				categories: data.map((item) => {
+				categories: topFive.map((item) => {
 					return item.text;
 				})
 			},
-			yaxis: yaxis('Amount')
+			yaxis: yaxis('Referral Count')
 		},
 		value: [
 			{
-				name: 'Amount',
-				data: data.map((item) => {
+				name: 'Name',
+				data: topFive.map((item) => {
 					return item.total;
 				})
 			}

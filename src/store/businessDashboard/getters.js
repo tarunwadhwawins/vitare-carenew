@@ -16,3 +16,8 @@
       return state.referalCount
     })
   }
+  export const referalCountRecord = (state) => {
+    return computed(() => {
+      return state.referalCountRecord
+    })
+  }

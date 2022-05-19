@@ -37,7 +37,7 @@ export const financial = async ({ commit }, from) => {
 export const referalCount = async ({ commit }, from) => {
 
     await ServiceMethodService.common("get", API_ENDPOINTS['referalCount'] + "?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {
-        commit('referalCount', response.data.data);
+        commit('referalCount', response.data);
 
 
         //commit('cptCodeSuccess', response.data.data);

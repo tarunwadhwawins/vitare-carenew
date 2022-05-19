@@ -20,6 +20,7 @@ export const API_ENDPOINTS = {
     timeLine:"patient/new",
     timeLineType:"timeLineType",
     patientProfile:"patientProfile",
+    referral:"referral",
     
     // Appointments
     appointment:"appointment",
