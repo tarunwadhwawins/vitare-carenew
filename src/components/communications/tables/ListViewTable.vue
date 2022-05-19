@@ -143,8 +143,8 @@
 
   </a-table>
   <CommunicationGmailView v-model:visible="visibleGmail" />
-  <Chat v-model:visible="visible" v-if="communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
-  <ChatWithPatientInformation v-model:visible="chatWithPatientInfoVisible" v-if="communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
+  <Chat v-model:visible="visible" v-if="visible && communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
+  <ChatWithPatientInformation v-model:visible="chatWithPatientInfoVisible" v-if="chatWithPatientInfoVisible && communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
 </template>
 
 <script>

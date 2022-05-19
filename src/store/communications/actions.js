@@ -153,6 +153,7 @@ export const conversation = async ({ commit }, id) => {
 export const conversationSend = async ({ commit },data) => {
 	await ServiceMethodService.common("post", API_ENDPOINTS['conversationSend'], null, data).then((response) => {
 		commit('conversationSend', response.data.data);
+		commit('toScroll', true)
 	})
 	.catch((error) => {
 		errorLogWithDeviceInfo(error.response)

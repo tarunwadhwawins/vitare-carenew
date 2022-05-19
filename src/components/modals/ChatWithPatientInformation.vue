@@ -115,6 +115,7 @@ import {
   onUnmounted,
   computed,
   toRefs,
+	onMounted,
 } from "vue"
 import {
   useStore
@@ -157,6 +158,7 @@ export default {
     const patientUdid =  ref(null)
     const patientId =  ref(null)
     const communications = reactive(props.communication)
+    const isCommunicationWithPatient = ref(false)
     const tabvalue = reactive({
       tab: [],
     });
@@ -228,7 +230,7 @@ export default {
     let interval = setInterval(() => {
       store.dispatch("conversation", props.communication.id)
       getScroll()
-    }, 5000);
+    }, 2000);
     
     const tableContent = ref(null)
     
@@ -236,30 +238,38 @@ export default {
       if(communications.is_sender_patient) {
         patientUdid.value = communications.fromId
         patientId.value = communications.senderId
+        isCommunicationWithPatient.value = true
       }
       else if(communications.is_receiver_patient) {
         patientUdid.value = communications.toId
         patientId.value = communications.receiverId
+        isCommunicationWithPatient.value = true
+      }
+      else {
+        isCommunicationWithPatient.value = false
       }
 
-      store.dispatch("timeLineType");
-      store.dispatch("patientTimeline", {
-        id: patientUdid.value,
-        type: "",
-      });
-      store.dispatch("patientVitals", {
-        patientId: patientUdid.value,
-        deviceType: 99,
-      });
-      store.dispatch("patientVitals", {
-        patientId: patientUdid.value,
-        deviceType: 100,
-      });
-      store.dispatch("patientVitals", {
-        patientId: patientUdid.value,
-        deviceType: 101,
-      });
-      store.dispatch("patientDetails", patientUdid.value)
+      if(isCommunicationWithPatient.value) {
+        store.dispatch("timeLineType");
+        store.dispatch("patientTimeline", {
+          id: patientUdid.value,
+          type: "",
+        });
+        store.dispatch("patientVitals", {
+          patientId: patientUdid.value,
+          deviceType: 99,
+        });
+        store.dispatch("patientVitals", {
+          patientId: patientUdid.value,
+          deviceType: 100,
+        });
+        store.dispatch("patientVitals", {
+          patientId: patientUdid.value,
+          deviceType: 101,
+        });
+        store.dispatch("patientDetails", patientUdid.value)
+      }
+
       store.state.communications.conversationList = ""
       store.dispatch("conversation", props.communication.id)
       tableContent.value = document.getElementsByClassName('chatBox')
@@ -270,9 +280,9 @@ export default {
       return store.state.patients.patientDetails;
     });
 
-    function getScroll(){
+    function getScroll() {
       setTimeout(() => {
-        tableContent.value[0].scrollTop=tableContent.value[0].scrollHeight+10
+        tableContent.value[0].scrollTop = tableContent.value[0].scrollHeight+10
       }, 2000)
     }
     const list = store.getters.communicationRecord.value
@@ -301,6 +311,10 @@ export default {
       store.state.communications.conversationList = ""
       clearInterval(interval);
     }
+    
+    onMounted(() => {
+      // getScroll()
+    })
 
     onUnmounted(() => {
       clearInterval(interval)

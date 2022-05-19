@@ -13,7 +13,8 @@
 									</a-avatar>
 								</template>
 								<template #title>
-									<a href="#">{{communication.patientName}}</a>
+									<a v-if="auth.user.id != communication.senderId" href="#">{{ communication.from }}</a>
+									<a v-else href="#">{{ communication.to }}</a>
 								</template>
 								<template #description>
 									<span>Active</span>
@@ -22,19 +23,34 @@
 						</a-list-item>
 					</a-list>
 					<div class="chatBoxInner">
-						{{communication}}
-						<div v-for="msg,index in list.conversationList" :key="index">
-							<div class="chatWrapper left" v-if="auth.user.id!=msg.senderId">
-								<div class="message">
-									{{msg.message}}
+						<div class="innerChatBox" v-for="msg,index in list.conversationList" :key="index">
+							<div v-if="auth.user.id == 1">
+								<div class="chatWrapper left" v-if="auth.user.id != msg.senderId && msg.senderId == list.conversationList[0].senderId">
+									<div class="message">
+										{{msg.message}}
+									</div>
+									<div class="time">{{ msg.createdAt }}</div>
 								</div>
-								<div class="time">{{ msg.createdAt }}</div>
+								<div class="chatWrapper right" v-else-if="auth.user.id == msg.senderId || msg.senderId != list.conversationList[0].senderId">
+									<div class="message">
+										{{msg.message}}
+									</div>
+									<div class="time" >{{ msg.createdAt }}</div>
+								</div>
 							</div>
-							<div class="chatWrapper right" v-if="auth.user.id==msg.senderId">
-								<div class="message">
-									{{msg.message}}
+							<div v-else>
+								<div class="chatWrapper left" v-if="auth.user.id != msg.senderId">
+									<div class="message">
+										{{msg.message}}
+									</div>
+									<div class="time">{{ msg.createdAt }}</div>
 								</div>
-								<div class="time" >{{ msg.createdAt }}</div>
+								<div class="chatWrapper right" v-else-if="auth.user.id == msg.senderId">
+									<div class="message">
+										{{msg.message}}
+									</div>
+									<div class="time" >{{ msg.createdAt }}</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -73,7 +89,9 @@
 		watchEffect,
 		reactive,
 		ref,
-		onUnmounted
+		onUnmounted,
+		onMounted,
+		computed
 	} from "vue"
 	import {
 		useStore
@@ -100,29 +118,43 @@
 			const formValue = reactive({
 				msgSend: ''
 			})
+			const toScroll = computed(() => {
+				return store.state.common.toScroll
+			})
 
 			const scroll = ref()
 			const auth = JSON.parse(localStorage.getItem("auth"))
 			let interval = setInterval(() => {
 				store.dispatch("conversation", props.communication.id)
-				getScroll()
+				if(toScroll.value) {
+					getScroll()
+					store.commit('toScroll', false)
+				}
 			}, 5000);
+
+			const list = store.getters.communicationRecord.value
 			
 			const tableContent = ref(null)
 			watchEffect(() => {
 				store.state.communications.conversationList = ""
 				store.dispatch("conversation", props.communication.id)
-				tableContent.value = document.getElementsByClassName('chatBox')
-				getScroll()
+				tableContent.value = document.getElementsByClassName('chatBoxInner')
+				// console.log('conversationListsss', (list.conversationList).slice(-1))
+				if(toScroll.value) {
+					getScroll()
+					store.commit('toScroll', false)
+				}
 			})
 
-			function getScroll(){
-				setTimeout(() => {    
-					tableContent.value[0].scrollTop=tableContent.value[0].scrollHeight+10
+			function getScroll() {
+				setTimeout(() => {
+					console.log('tableContent', tableContent.value[0].scrollTop)
+					console.log('tableContent', tableContent.value[0].scrollHeight+10)
+					if(tableContent.value[0].scrollTop < tableContent.value[0].scrollHeight+10) {
+						tableContent.value[0].scrollTop = tableContent.value[0].scrollHeight+10
+					}
 				},2000)
 			}
-
-			const list = store.getters.communicationRecord.value
 
 			function sendMsg() {
 				if (formValue.msgSend) {
@@ -138,6 +170,7 @@
 						conversationId: props.communication.id,
 						message: formValue.msgSend,
 						type: "text",
+					}).then(() => {
 					})
 
 					formValue.msgSend = ''
@@ -151,6 +184,10 @@
 				store.state.communications.conversationList = ""
 				clearInterval(interval);
 			}
+
+			onMounted(() => {
+				getScroll()
+			})
 
 			onUnmounted(() => {
 				clearInterval(interval)
@@ -173,5 +210,6 @@
 <style scoped>
 	.chatBox .chatBoxInner {
 		min-height: 435px !important;
+		overflow: scroll !important;
 	}
 </style>
