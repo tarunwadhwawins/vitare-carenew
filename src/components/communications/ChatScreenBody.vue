@@ -1,33 +1,50 @@
 <template>
-  <div class="chatBoxInner">
-    <div class="innerChatBox" v-for="message, index in conversationList" :key="index">
+  <div class="chatBoxInner" v-if="screen == 'withoutPatient'">
+    <div class="innerChatBox" v-for="msg,index in conversationList" :key="index">
       <div v-if="auth.user.id == 1">
-        <div class="chatWrapper left" v-if="auth.user.id != message.senderId && message.senderId == conversationList[0].senderId">
+        <div class="chatWrapper left" v-if="auth.user.id != msg.senderId && msg.senderId == conversationList[0].senderId">
           <div class="message">
-            {{ message.message }}
+            {{msg.message}}
           </div>
-          <div class="time">{{ message.createdAt }}</div>
+          <div class="time">{{ msg.createdAt }}</div>
         </div>
-        <div class="chatWrapper right" v-else-if="auth.user.id == message.senderId || message.senderId != conversationList[0].senderId">
+        <div class="chatWrapper right" v-else-if="auth.user.id == msg.senderId || msg.senderId != conversationList[0].senderId">
           <div class="message">
-            {{ message.message }}
+            {{msg.message}}
           </div>
-          <div class="time" >{{ message.createdAt }}</div>
+          <div class="time" >{{ msg.createdAt }}</div>
         </div>
       </div>
       <div v-else>
-        <div class="chatWrapper left" v-if="auth.user.id != message.senderId">
+        <div class="chatWrapper left" v-if="auth.user.id != msg.senderId">
           <div class="message">
-            {{ message.message }}
+            {{msg.message}}
           </div>
-          <div class="time">{{ message.createdAt }}</div>
+          <div class="time">{{ msg.createdAt }}</div>
         </div>
-        <div class="chatWrapper right" v-else-if="auth.user.id == message.senderId">
+        <div class="chatWrapper right" v-else-if="auth.user.id == msg.senderId">
           <div class="message">
-            {{ message.message }}
+            {{msg.message}}
           </div>
-          <div class="time" >{{ message.createdAt }}</div>
+          <div class="time" >{{ msg.createdAt }}</div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chatBoxInner" v-else>
+    <div v-for="msg,index in conversationList" :key="index">
+      <div class="chatWrapper left" v-if="msg.senderId == patientId">
+        <div class="message">
+          {{msg.message}}
+        </div>
+        <div class="time">{{ msg.createdAt }}</div>
+      </div>
+      <div class="chatWrapper right" v-if="msg.senderId != patientId">
+        <div class="message">
+          {{msg.message}}
+        </div>
+        <div class="time" >{{ msg.createdAt }}</div>
       </div>
     </div>
   </div>
@@ -43,6 +60,9 @@ export default {
     },
     communication: {
       type: Object
+    },
+    screen: {
+      type: String
     }
   },
   setup(props) {
