@@ -148,8 +148,6 @@
 
 			function getScroll() {
 				setTimeout(() => {
-					console.log('tableContent', tableContent.value[0].scrollTop)
-					console.log('tableContent', tableContent.value[0].scrollHeight+10)
 					if(tableContent.value[0].scrollTop < tableContent.value[0].scrollHeight+10) {
 						tableContent.value[0].scrollTop = tableContent.value[0].scrollHeight+10
 					}
