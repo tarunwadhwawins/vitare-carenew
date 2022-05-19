@@ -204,5 +204,8 @@ export const checkChangeInput = (state, data) => {
   export const filter = (state, data) => {
     state.filter = data
   }
+  export const toScroll = (state, data) => {
+    state.toScroll = data
+  }
   
   
