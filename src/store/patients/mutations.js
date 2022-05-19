@@ -149,6 +149,19 @@ export const resetCounter = (state) => {
   state.counter = 0
 }
 
+
+export const escalationCounterPlus = (state) => {
+  state.escalationCounter++
+}
+
+export const escalationCounterMinus = (state) => {
+  state.escalationCounter--
+}
+
+export const resetEscalationCounter = (state) => {
+  state.escalationCounter = 0
+}
+
 export const addPatientProgram = (state, data) => {
   state.addPatientProgram = data
 }
@@ -1054,6 +1067,26 @@ export const documentDetails = (state, data) => {
 
 export const isPicuteLoading = (state, data) => {
   state.isPicuteLoading = data
+}
+
+
+export const patientVitalList = (state, data) => {
+  state.patientVitalList = data
+}
+
+
+export const addBasicEscalation = (state, data) => {
+  state.addBasicEscalation = data
+}
+
+
+export const escalationList = (state, data) => {
+  state.escalationList = data
+}
+
+
+export const patientFlagList = (state, data) => {
+  state.patientFlagList = data
 }
 export const referral = (state, data) => {
   state.referral = data
