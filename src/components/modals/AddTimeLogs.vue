@@ -75,7 +75,12 @@
         </a-col>
 
         <a-col :sm="24" :span="24">
-          <ModalButtons :isTimeLog="true" @is_click="handleClear"/>
+           <div class="steps-action">
+  
+      <a-button  @click="cancelButton()" class="modal-button">Cancel</a-button>
+    <a-button  class="modal-button" type="primary" html-type="submit"  click="handleClear">{{$t('global.save')}}</a-button>
+          
+           </div>
         </a-col>
       </a-row>
     </a-form>
@@ -90,7 +95,7 @@ import {
   ref,
   watchEffect,
 } from "vue";
-import ModalButtons from "@/components/common/button/ModalButtons";
+//import ModalButtons from "@/components/common/button/ModalButtons";
 import { useStore } from "vuex";
 import {
   timeStamp,
@@ -106,7 +111,7 @@ import Loader from "@/components/loader/Loader";
 
 export default defineComponent({
   components: {
-    ModalButtons,
+    //ModalButtons,
     GlobalCodeDropDown,
     Loader,
   },
@@ -221,7 +226,13 @@ export default defineComponent({
       formRef.value.resetFields();
       Object.assign(addTimeLogForm, form)
     }
-
+function cancelButton(){
+emit('closeModal', {
+              link:true,
+              modal: "addTimeLog",
+              value: false
+            });
+}
     const submitForm = () => {
       // if(props.isEditForm) {
       //   // store.dispatch('updateTimeLog', {timeLogId, addTimeLogForm});
@@ -295,7 +306,8 @@ export default defineComponent({
       changedValue,
       onCloseModal,
       flagsList,
-      dateSelect
+      dateSelect,
+      cancelButton,
     };
   },
 });

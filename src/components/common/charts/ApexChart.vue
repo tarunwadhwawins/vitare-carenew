@@ -49,7 +49,7 @@ type:Array
            //console.log(event, chartContext, config.globals.labels[config.dataPointIndex])
             if (props.linkTo) {
                 if (props.type == "bar" && config.globals.labels[config.dataPointIndex] != undefined) {
-                    if(props.data.length>0){
+                    if(props.data){
                        // console.log("check",props.data[config.dataPointIndex].referralId)
 store.commit("filter", props.data[config.dataPointIndex].referralId)
                     }else{
