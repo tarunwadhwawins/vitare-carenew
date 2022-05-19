@@ -10,7 +10,8 @@
             <a-steps v-model:current="current" @change="scrollToTop($event)">
                 <a-step v-for="item in steps" :key="item.title" :title="item.title?item.title:''"><span :id="item"></span></a-step>
             </a-steps>
-            <div class="steps-content" v-if="steps[current].title == 'Demographics'">
+            
+            <div class="steps-content" v-if="steps[current].title === 'Demographics'">
                 <!-- <Demographics /> -->
                 <a-form :model="demographics" name="basic" ref="formRef" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="demographic()" @finishFailed="demographicsFailed">
                     <Loader />
@@ -619,14 +620,14 @@
                 </a-form>
                 <!--  -->
             </div>
-            <div class="steps-content" v-if="steps[current].title == 'Devices'">
+            <div class="steps-content" v-if="steps[current].title === 'Devices'">
                 <Devices :idPatient="idPatient" @onChange="changedValue" />
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                     <a-button v-if="current < steps.length - 1" type="primary" @click="next();scrollToTop(current);">{{$t('global.next')}}</a-button>
                 </div>
             </div>
-            <div class="steps-content" v-if="steps[current].title == 'Programs'">
+            <div class="steps-content" v-if="steps[current].title === 'Programs'">
 
                 <Programs :idPatient="idPatient" @onChange="changedValue" />
 
@@ -636,7 +637,7 @@
                 </div>
                 <!-- end  -->
             </div>
-            <div class="steps-content" v-if="steps[current].title == 'Conditions'">
+            <div class="steps-content" v-if="steps[current].title === 'Conditions'">
                 <!-- <Conditions /> -->
                 <a-form :model="conditions" name="basic" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="condition" @finishFailed="conditionsFailed">
                     <a-row :gutter="24">
@@ -780,10 +781,8 @@
 
 <script>
 import { ref, computed, reactive, watchEffect, defineComponent, defineAsyncComponent,onUnmounted, onMounted } from "vue";
-import Programs from "@/components/modals/forms/Programs";
-import Devices from "@/components/modals/forms/Devices";
-import ClinicalData from "@/components/modals/forms/ClinicalData";
-import Documents from "@/components/modals/forms/Documents";
+
+
 import { useStore } from "vuex";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import { regex } from "@/RegularExpressions/regex";
@@ -803,10 +802,10 @@ export default defineComponent({
         // PhoneNumber,
         //StaffDropDown,
         GlobalCodeDropDown,
-        Programs,
-        Devices,
-        ClinicalData,
-        Documents,
+        Programs:defineAsyncComponent(() => import("@/components/modals/forms/Programs")),
+        Devices:defineAsyncComponent(() => import("@/components/modals/forms/Devices")),
+        ClinicalData:defineAsyncComponent(() => import("@/components/modals/forms/ClinicalData")),
+        Documents:defineAsyncComponent(() => import("@/components/modals/forms/Documents")),
         ErrorMessage,
         Loader,
         PatientSearch: defineAsyncComponent(() => import("../modals/search/PatientModal")),

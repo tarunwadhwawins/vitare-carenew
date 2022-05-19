@@ -47,7 +47,7 @@ export default {
       
         onMounted(() => { 
              if (store.getters.filter.value) {
-                 store.dispatch("referralList","&filter=" + store.getters.filter.value)
+                 store.dispatch("referralList","?filter=" + store.getters.filter.value)
                
             } else {
                 store.dispatch("referralList")

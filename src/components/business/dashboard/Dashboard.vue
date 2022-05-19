@@ -19,7 +19,7 @@
             <ApexChart title="Timelog Summary" type="bar" :height="386" :options="cptCodeValue.code" :series="cptCodeValue.value" linkTo="cpt-codes"></ApexChart>
         </a-col>
         
-        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,13) &&  referalCount">
+        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  referalCount">
             <ApexChart title="Referral Patients" type="bar" :height="386" :options="referalCount.code" :series="referalCount.value" linkTo="referral" :data="referalCountRecord"></ApexChart>
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && financialValue">
