@@ -275,13 +275,23 @@ export default {
     } */
 
     watchEffect(() => {
-      if(meta.communicationsList && (route.params.from && route.params.from == 'push')) {
-        visible.value = true;
+      if(meta.communicationsList) {
         meta.communicationsList.forEach(element => {
           if(route.params.typeId == element.id) {
             communicationId.value = element
           }
         });
+      }
+      if(route.params.from == 'push' && communicationId.value != null) {
+        console.log('communicationId.value.is_receiver_patient', communicationId.value.is_receiver_patient)
+        if(communicationId.value.is_receiver_patient || communicationId.value.is_sender_patient) {
+          chatWithPatientInfoVisible.value = true;
+          visible.value = false;
+        }
+        else if(!communicationId.value.is_receiver_patient && !communicationId.value.is_sender_patient) {
+          visible.value = true;
+          chatWithPatientInfoVisible.value = false;
+        }
       }
     })
 

@@ -138,6 +138,13 @@ export default defineComponent({
         className: "note-text",
         ellipsis: true,
       },
+      {
+        title: "Type",
+        dataIndex: "type",
+        key: "type",
+        className: "type-text",
+        ellipsis: true,
+      },
 
       {
         title: "Detail",
