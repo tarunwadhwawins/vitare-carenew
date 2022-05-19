@@ -26,11 +26,11 @@
             <a-col :xl="8" :lg="12">
               <div class="pageTittle">
                 <div class="filter">
-                  <a-button @click="showButton1() ; actionTrack(paramsId,323,'patient')" :class="button == 1 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 323)">Default</a-button>
-                  <a-button @click="showButton2() ; actionTrack(paramsId,285,'patient')" :class="button == 2 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 285)">Timeline</a-button>
-                  <a-button @click="showButton3() ; actionTrack(paramsId,286,'patient')" :class="button == 3 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 286)">Care Plan</a-button>
-                  <a-button @click="showButton4() ; actionTrack(paramsId,287,'patient')" :class="button == 4 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Patient Vitals</a-button>
-                  <a-button @click="showButton5() ; actionTrack(paramsId,287,'patient')" :class="button == 5 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Escalation</a-button>
+                  <a-button @click="showButton(1) ; actionTrack(paramsId,323,'patient')" :class="button == 1 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 323)">Default</a-button>
+                  <a-button @click="showButton(2) ; actionTrack(paramsId,285,'patient')" :class="button == 2 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 285)">Timeline</a-button>
+                  <a-button @click="showButton(3) ; actionTrack(paramsId,286,'patient')" :class="button == 3 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 286)">Care Plan</a-button>
+                  <a-button @click="showButton(4) ; actionTrack(paramsId,287,'patient')" :class="button == 4 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Patient Vitals</a-button>
+                  <a-button @click="showButton(5) ; actionTrack(paramsId,287,'patient')" :class="button == 5 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 287)">Escalation</a-button>
                 </div>
               </div>
             </a-col>
@@ -59,7 +59,7 @@
                 <PatientVitalsView/>
               </div>
               <div v-if="button == 5">
-                <Escalation/>
+                <Escalation :patientId="paramsId"/>
               </div>
             </a-col>
           </a-row>
@@ -79,12 +79,12 @@ import TimelineView from "@/components/patients/patientSummary/views/TimelineVie
 import CarePlanView from "@/components/patients/patientSummary/views/CarePlanView";
 import PatientVitalsView from "@/components/patients/patientSummary/views/PatientVitalsView";
 import CriticalNotes from "@/components/patients/patientSummary/common/CriticalNotes";
-import Escalation from "@/components/patients/patientSummary/views/Escalation";
-import TableLoader from "@/components/loader/TableLoader";
+import Escalation from "@/components/patients/patientSummary/escalations/Escalation"
+import TableLoader from "@/components/loader/TableLoader"; 
 import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 // import StartCallModal from "@/components/modals/StartCallModal";
 
-import dayjs from "dayjs";
+import dayjs from "dayjs"; 
 import { ref, computed, watchEffect,onBeforeMount, onUnmounted,reactive} from "vue";
 import { useStore } from 'vuex';
 import { useRoute,useRouter  } from 'vue-router';
@@ -170,21 +170,10 @@ export default {
 
     const button = ref(1);
 
-    function showButton1() {
-      button.value = 1;
+    function showButton(value) {
+      button.value = value;
     }
-    function showButton2() {
-      button.value = 2;
-    }
-    function showButton3() {
-      button.value = 3;
-    }
-    function showButton4() {
-      button.value = 4;
-    }
-    function showButton5() {
-      button.value = 5;
-    }
+    
 
     // Countdown Timer
     const elapsedTime = ref(0)
@@ -428,7 +417,6 @@ export default {
     return {
       form,
       startCallForm,
-      showButton5,
       clearEvent,
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
@@ -470,10 +458,7 @@ export default {
       dayjs,
       onClose,
       button,
-      showButton1,
-      showButton2,
-      showButton3,
-      showButton4,
+      showButton,
       startOn,
       loader
     };

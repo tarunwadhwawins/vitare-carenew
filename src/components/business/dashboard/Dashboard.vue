@@ -16,7 +16,11 @@
        
       
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  cptCodeValue">
-            <ApexChart :title="$t('dashboard.cPTCodeBillingSummary')" type="bar" :height="386" :options="cptCodeValue.code" :series="cptCodeValue.value" linkTo="cpt-codes"></ApexChart>
+            <ApexChart title="Timelog Summary" type="bar" :height="386" :options="cptCodeValue.code" :series="cptCodeValue.value" linkTo="cpt-codes"></ApexChart>
+        </a-col>
+        
+        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,13) &&  referalCount">
+            <ApexChart title="Referral Patients" type="bar" :height="386" :options="referalCount.code" :series="referalCount.value" linkTo="referral" :data="referalCountRecord"></ApexChart>
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && financialValue">
             <ApexChart :title="$t('dashboard.financialStats')" type="pie" :height="385" :options="financialValue.billed" :series="financialValue.due" linkTo="time-log-report"></ApexChart>
@@ -90,9 +94,8 @@ export default {
             }
             store.dispatch("permissions")
             store.dispatch("cptCode", cptDateFormate)
+            store.dispatch("referalCount", dateFormate)
             store.dispatch("financial", dateFormate)
-
-
         }
         
 
@@ -124,14 +127,14 @@ export default {
             
             cptCodeValue:store.getters.cptCodeValue,
             financialValue:store.getters.financialValue,
-           
+           referalCount:store.getters.referalCount,
             logout,
             
             Buttons:store.getters.dashboardTimeLineButton,
             showButton,
             timeline:store.getters.timeline,
             widgetsPermissions:store.getters.widgetsPermissions,
-
+referalCountRecord:store.getters.referalCountRecord,
             arrayToObjact,
          
         };

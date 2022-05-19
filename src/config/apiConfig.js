@@ -20,6 +20,7 @@ export const API_ENDPOINTS = {
     timeLine:"patient/new",
     timeLineType:"timeLineType",
     patientProfile:"patientProfile",
+    referral:"referral",
     
     // Appointments
     appointment:"appointment",
@@ -123,7 +124,9 @@ export const API_ENDPOINTS = {
     clinicalTask:'taskCount',
     patientsFlag:'patientFlagCount',
     appointmentCount:'appointmentCount',
-    escalationCount:'escalationCount'
+    escalationCount:'escalationCount',
+    referalCount:"referalCount",
+    referralList:'referral'
 };
 
 // export const getApiUrl = key => {

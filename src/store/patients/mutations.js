@@ -115,14 +115,14 @@ export const patient = (state, data) => {
   state.patientMeta = data.meta.pagination;
   state.patientList = data.data
     .map(element => {
-      element.flags = element.patientFlags.data[0] ? element.patientFlags.data[0].flags.data.color : '',
+      element.flags = element.flagColor,
         element.lastName = element.lastName ? element.lastName : '',
         element.firstName = element.name ? element.name : '',
         element.lastReadingDate = element.lastReadingDate ? element.lastReadingDate : '',
         element.weight = element.weight ? element.weight : '',
-        element.bp = element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'Systolic') { return JSON.parse(vitalData.value) } if (vitalData.vitalField == 'Diastolic') { return '/' + JSON.parse(vitalData.value) } }),
-        element.spo2 = element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'SPO2') { return JSON.parse(vitalData.value) } }),
-        element.glucose = element.patientVitals.data.map(vitalData => { if (vitalData.deviceType == 'Glucose') { return JSON.parse(vitalData.value) } }),
+        element.bp = element.patientVitals.length>0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'Systolic') { return JSON.parse(vitalData.value) } if (vitalData.vitalField == 'Diastolic') { return '/' + JSON.parse(vitalData.value) } }):'',
+        element.spo2 = element.patientVitals.length>0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'SPO2') { return JSON.parse(vitalData.value) } }):'',
+        element.glucose = element.patientVitals.length>0 ? element.patientVitals.data.map(vitalData => { if (vitalData.deviceType == 'Glucose') { return JSON.parse(vitalData.value) } }) : '',
         element.dob = Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10) > 0 ? Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10) : 1
       return element
     })
@@ -147,6 +147,19 @@ export const counterMinus = (state) => {
 
 export const resetCounter = (state) => {
   state.counter = 0
+}
+
+
+export const escalationCounterPlus = (state) => {
+  state.escalationCounter++
+}
+
+export const escalationCounterMinus = (state) => {
+  state.escalationCounter--
+}
+
+export const resetEscalationCounter = (state) => {
+  state.escalationCounter = 0
 }
 
 export const addPatientProgram = (state, data) => {
@@ -454,11 +467,11 @@ export const responsiblePerson = (state, data) => {
 }
 
 export const emergencyContact = (state, data) => {
-  data[0].contactType = data[0].contactType.length > 0 ? JSON.parse(data[0].contactType) : [];
-  data[0].contactTime = data[0].contactTimeId.length > 0 ? JSON.parse(data[0].contactTimeId) : [];
-  data[0].gender = data[0].genderId;
-  data[0].sameAsPrimary = data[0].sameAsPrimary ? true : false;
-  state.emergencyContact = data[0]
+  data.contactType = data.contactType.length > 0 ? JSON.parse(data.contactType) : [];
+  data.contactTime = data.contactTimeId.length > 0 ? JSON.parse(data.contactTimeId) : [];
+  data.gender = data.genderId;
+  data.sameAsPrimary = data.sameAsPrimary ? true : false;
+  state.emergencyContact = data
 }
 
 export const patientTimelineSuccess = (state, timeline) => {
@@ -1054,4 +1067,30 @@ export const documentDetails = (state, data) => {
 
 export const isPicuteLoading = (state, data) => {
   state.isPicuteLoading = data
+}
+
+
+export const patientVitalList = (state, data) => {
+  state.patientVitalList = data
+}
+
+
+export const addBasicEscalation = (state, data) => {
+  state.addBasicEscalation = data
+}
+
+
+export const escalationList = (state, data) => {
+  state.escalationList = data
+}
+
+
+export const patientFlagList = (state, data) => {
+  state.patientFlagList = data
+}
+export const referral = (state, data) => {
+  state.referral = data
+}
+export const referralDetail = (state, data) => {
+  state.referralDetail = data
 }

@@ -60,7 +60,8 @@ export default {
         onlyCountries:['US'],
         
     },
-    escalationType:null
+    escalationType:null,
+    toScroll:false,
 
 
 }

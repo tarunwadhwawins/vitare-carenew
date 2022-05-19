@@ -47,7 +47,7 @@
   </template>
 
   
-  <Loader />
+  <Loader v-if="!isCommunication" />
   <AddVitalsModal v-if="visibleAddVitalsModal" v-model:visible="visibleAddVitalsModal" :title="title" :deviceId="deviceId" @closeModal="handleOk" @ok="handleOk" />
 </template>
 
@@ -65,6 +65,11 @@ export default {
     AddVitalsModal,
     VitalsGrid,
     Loader
+  },
+  props: {
+    isCommunication: {
+      type: Boolean,
+    },
   },
   setup() {
     const store = useStore();
@@ -100,7 +105,7 @@ export default {
     const bloodOxygen = computed(() => {
       return store.state.patients.bloodOxygen
     })
-    if(bloodPressure.value.length > 0 || bloodGlucose.value.length > 0 || bloodOxygen.value.length > 0) {
+    if((bloodPressure.value && bloodPressure.value.length > 0) || (bloodGlucose.value && bloodGlucose.value.length > 0) || (bloodOxygen.value && bloodOxygen.value.length > 0)) {
       showVitals.value = true;
     }
     const bloodPressureGraph = patients.value.bloodPressureGraph

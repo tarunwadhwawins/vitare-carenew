@@ -2,7 +2,7 @@
 <a-modal max-width="1140px" width="100%" :title="isEdit == true ? 'Edit Patient' : 'Add New Patient'" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <div class="common-btn mb-24" ref="customScrollTop">
-            <a-button type="primary" @click="showSearchPatient" v-if="!isEdit">
+            <a-button type="primary" @click="showSearchPatient" v-if="!isEdit && current==0">
                 Bitrix Lookup
             </a-button>
         </div>
@@ -75,9 +75,9 @@
                         </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.gender')" name="gender" :rules="[{ required: false, message: $t('global.gender')+' '+$t('global.validation') }]">
+                                <a-form-item :label="$t('global.gender')" name="gender" :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
                                     <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.gender" :globalCode="globalCode.gender" />
-                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.gender?errorMsg.gender[0]:''" />
+                                    <ErrorMessage v-if="errorMsg && !demographics.gender" :name="errorMsg.gender?errorMsg.gender[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -354,8 +354,9 @@
                         </a-col>
 
                     </a-row>
-
-                    <a-row :gutter="24">
+<div v-if="emergencyContactShow">
+    
+                    <a-row :gutter="24" >
                         <a-col :span="24">
                             <div class="formHeading">
                                 <h2>{{$t('patient.demographics.emergencyContact')}}</h2>
@@ -363,7 +364,7 @@
                         </a-col>
                     </a-row>
 
-                    <a-row>
+                    <a-row >
                         <a-col :md="24" :sm="24" :xs="24" class="mb-24">
                             <a-checkbox @change="changeResponsible" v-model:checked="emergencyContactForm.sameAsPrimary">
                                 {{$t('patient.demographics.sameAsResponsiblePersonInfo')}}
@@ -524,7 +525,8 @@
                             </div>
                         </a-col>
                     </a-row>
-
+</div>
+<div v-if="referalFormShow">
                     <a-row :gutter="24">
                         <a-col :span="24">
                             <div class="formHeading">
@@ -534,11 +536,40 @@
                     </a-row>
 
                     <a-row :gutter="24">
+                        <a-col :md="16" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item label="Select Referral User" name="referral" :rules="[{ required: false, message: 'User  '+$t('global.validation') }]">
+                                    <GlobalCodeDropDown v-if="referralData" @change="changedValue" v-model:value="referal.referral" :globalCode="referralData"  />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.referral?errorMsg.referral[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+<a-col :md="8" :sm="12" :xs="24">
+                       <a-button  type="primary" style="margin-right: 8px" @click="newReferral">Add New Referral</a-button>
+</a-col>
+                    </a-row>
+                    <a-row v-if="ShowReferral">
+                       <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: false, message: $t('global.firstName')+' '+$t('global.validation')}]">
+                                    <a-input @change="changedValue" v-model:value="referal.firstName" size="large" />
+                                    <ErrorMessage class="error" v-if="errorMsg" :name="errorMsg.firstName?errorMsg.firstName[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('global.name')" name="referralName" :rules="[{ required: false, message: $t('global.name')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue" @keyup="onKeyUp('referralName')" v-model:value="referal.referralName" size="large" />
-                                    <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralName?referralErrorMsg.referralName[0]:''" />
+                                <a-form-item :label="$t('global.middleName')" name="middleName" :rules="[{ required: false, message: $t('global.middleName')+' '+$t('global.validation') }]">
+                                    <a-input @change="changedValue" v-model:value="referal.middleName" size="large" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.middleName?errorMsg.middleName[0]:''" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.lastName')" name="lastName" :rules="[{ required: false, message: $t('global.lastName')+' '+$t('global.validation') }]">
+                                    <a-input @change="changedValue" v-model:value="referal.lastName" size="large" />
+                                    <ErrorMessage v-if="errorMsg" :name="errorMsg.lastName?errorMsg.lastName[0]:''" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -576,7 +607,7 @@
                             </div>
                         </a-col>
                     </a-row>
-
+</div>
                     <PatientSearch v-model:visible="patientSearch" @closeSearchPatient="closeSearchPatient($event)" @clearValidtion="clearValidtion" />
                     <div class="steps-action">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
@@ -592,7 +623,7 @@
                 <Devices :idPatient="idPatient" @onChange="changedValue" />
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                    <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current)">{{$t('global.next')}}</a-button>
+                    <a-button v-if="current < steps.length - 1" type="primary" @click="next();scrollToTop(current);">{{$t('global.next')}}</a-button>
                 </div>
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Programs'">
@@ -780,6 +811,7 @@ export default defineComponent({
         Loader,
         PatientSearch: defineAsyncComponent(() => import("../modals/search/PatientModal")),
     },
+
     setup(props, {
         emit
     }) {
@@ -791,7 +823,12 @@ export default defineComponent({
         const customScrollTop = ref()
         const disableResponsiblePerson = ref(false);
         const disableEmergencyContact = ref(false);
-
+        const emergencyContactShow = ref(true)
+        const referalFormShow = ref(true)
+const ShowReferral = ref(false)
+function newReferral(){
+    ShowReferral.value = true
+}
         const errorMsg = computed(() => {
             return store.state.patients.errorMsg;
         });
@@ -844,6 +881,7 @@ export default defineComponent({
         ]
 
         const changedValue = () => {
+          
             store.commit('isEditPatient', false)
             isValueChanged.value = true
         }
@@ -934,13 +972,17 @@ export default defineComponent({
             gender: "",
         });
 
-        const referal = reactive({
+        const referal = reactive({ 
+             firstName: "",
+            middleName: "",
+            lastName: "",
             id: '',
             referralName: "",
             referralDesignation: "",
             referralEmail: "",
             referralPhoneNumber: "",
             referralFax: "",
+            referral:'',
         })
 
         const conditions = reactive({
@@ -1001,12 +1043,17 @@ export default defineComponent({
 
         onMounted(() => {
             Object.assign(demographics, form)
+            store.dispatch("referral")
         })
 
         watchEffect(() => {
             idPatient.value = patients.value.addDemographic ? patients.value.addDemographic.id : route.name == "PatientSummary" ? route.params.udid : null;
             //console.log("test",idPatient.value)
             // Bitrix data assign 
+            if(props.isEdit){
+                referalFormShow.value = false
+                emergencyContactShow.value= false
+            }
             if (patients.value.fetchFromBitrix) {
                 Object.assign(demographics, patients.value.fetchFromBitrix);
             } else if (!patients.value.fetchFromBitrix) {
@@ -1016,9 +1063,11 @@ export default defineComponent({
             //responsiblePerson.value && responsiblePerson.value.self ? disableResponsiblePerson.value = true : disableResponsiblePerson.value = false
             //emergencyContact.value && emergencyContact.value.sameAsPrimary ? disableEmergencyContact.value = true : disableEmergencyContact.value = false
 
-            if (emergencyContact.value) {
-                Object.assign(emergencyContactForm, emergencyContact.value)
-                emergencyContactForm.sameAsPrimary = false
+            if (emergencyContact.value ) {
+                emergencyContactShow.value= false
+               
+                //Object.assign(emergencyContactForm, emergencyContact.value)
+                //emergencyContactForm.sameAsPrimary = false
             }
             if (responsiblePerson.value) {
                 Object.assign(responsiblePersonForm, responsiblePerson.value)
@@ -1026,14 +1075,18 @@ export default defineComponent({
             }
 
             if (patients.value.patientDetails) {
+                
+                
                 Object.assign(demographics, patients.value.patientDetails)
             }
 
             if (patients.value.patientConditions != null) {
                 Object.assign(conditions.condition, patients.value.patientConditions)
             }
-            if (patients.value.patientReferralSource != null) {
-                Object.assign(referal, patients.value.patientReferralSource)
+            if (patients.value.patientReferralSource != null ) {
+                 
+                referalFormShow.value = false
+               // Object.assign(referal, patients.value.patientReferralSource)
             }
             if (patients.value.patientInsurance != null) {
                 Object.assign(insuranceData, patients.value.patientInsurance)
@@ -1402,7 +1455,12 @@ export default defineComponent({
             responsiblePersonForm,
             emergencyContactForm,
             referal,
-            changeResponsible
+            changeResponsible,
+            emergencyContactShow,
+                referalFormShow,
+                ShowReferral,
+                newReferral,
+                referralData:store.getters.referral
         };
     },
 });

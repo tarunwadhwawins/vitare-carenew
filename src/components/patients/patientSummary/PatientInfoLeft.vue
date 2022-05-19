@@ -139,8 +139,20 @@
           <a href="javascript:void(0)" @click="showDeviceModal();actionTrack(paramsId,326,'patient')" >{{ latestDevice[0].deviceType+'('+latestDevice[0].modelNumber+')' }}</a>
         </div>
       </div>
+    
+    <div class="pat-profile-inner">
+        <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 300)">
+          Referral 
+        </div>
+        <div v-if="referralDetail != null && arrayToObjact(screensPermissions, 326)" class="thumb-desc">
+          <a href="javascript:void(0)" @click="referral" v-if="referralDetail">{{ referralDetail.name }}</a>
+        </div>
+        <div v-else class="thumb-desc">
+          <a href="javascript:void(0)" >N/A</a>
+        </div>
+      </div>
     </div>
-  
+  <ReferralViewModal v-if="referralDetail" v-model:visible="referralView" :referralDetail="referralDetail"/>
     <AddFamilyMemberModal v-model:visible="addfamilyMembersVisible" :patientId="patientDetails.id" @closeModal="handleOk" :isResponsiblePersonEdit="isResponsiblePersonEdit" />
     <!-- <AddPhysicianModal v-if="addPhysicianModalVisible" v-model:visible="addPhysicianModalVisible" @closeModal="handleOk" :isPhysicianEdit="isPhysicianEdit" :staffType="1" /> -->
     <AddEmergencyContacts v-model:visible="addEmergencyContactModalVisible" @closeModal="handleOk" :isEmergencyContactEdit="isEmergencyContactEdit" />
@@ -194,7 +206,7 @@ import {
   arrayToObjact
 } from '@/commonMethods/commonMethod';
 
-
+import ReferralViewModal from "@/components/patients/patientSummary/modals/ReferralViewModal"
 export default defineComponent({
   components: {
     WarningOutlined,
@@ -224,6 +236,7 @@ export default defineComponent({
     EmergencyContactsDetailsModal: defineAsyncComponent(()=>import("@/components/modals/EmergencyContactsDetailsModal")),
     CoordinatorsListingModal: defineAsyncComponent(()=>import("@/components/modals/CoordinatorsListingModal")),
     ProfileImage: defineAsyncComponent(()=>import("@/components/common/ProfileImage")),
+    ReferralViewModal,
   },
   setup() {
     const store = useStore();
@@ -260,8 +273,10 @@ export default defineComponent({
     const isAutomatic = ref(false);
     const staffType = ref(0);
     const title = ref(null);
-   
-
+   const referralView = ref(false)
+ function referral(){
+   referralView.value=true
+ }
     watchEffect(() => {
       if(route.name == 'PatientSummary') {
         store.dispatch('patientDetails', route.params.udid)
@@ -284,6 +299,7 @@ export default defineComponent({
         store.dispatch('latestTimeLog', route.params.udid)
         store.dispatch('latestDevice', route.params.udid)
         store.dispatch('criticalNotesList', route.params.udid)
+        store.dispatch("referralDetail", route.params.udid)
       }
     })
 
@@ -669,7 +685,10 @@ const checkFieldsData = computed(()=>{
       staffType,
       title,
       closeModal,
-      addTimeLogsClose
+      addTimeLogsClose,
+      referralView,
+      referral,
+      referralDetail:store.getters.referralDetail
       
     }
   }

@@ -18,7 +18,7 @@ const routes = [
   },
   {
     path: '/dashboard',
-    name: 'Dashboard',
+    name: 'Clinical Dashboard',
     component: () => import('@/views/clinic/dashboard/Dashboard'),
     meta: { authAdmin: true }
   },
@@ -265,19 +265,24 @@ const routes = [
     meta: { authAdmin: true }
   },
   ///clinic
-  {
-    path: '/clinicDashboard',
-    name: 'Clinic Dashboard',
-    component: () => import('@/views/clinic/dashboard/Dashboard'),
-    meta: { authAdmin: true }
-  },
+  // {
+  //   path: '/clinicDashboard',
+  //   name: 'Clinic Dashboard',
+  //   component: () => import('@/views/clinic/dashboard/Dashboard'),
+  //   meta: { authAdmin: true }
+  // },
   {
     path: '/businessDashboard',
     name: 'Business Dashboard',
     component: () => import('@/views/business/dashboard/Dashboard'),
     meta: { authAdmin: true }
   },
- 
+  {
+    path: '/referral',
+    name: 'Referral',
+    component: () => import('@/views/referral/Referral'),
+    meta: { authAdmin: true }
+  },
 
 
 ]

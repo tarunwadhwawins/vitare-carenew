@@ -8,11 +8,13 @@
     </template>
     
     <!-- <template #expandable="{ record }">
-      <v-slot v-if="record.type == 'Email'">
-        <template #expandedRowRender>
+      <div v-if="record.type == 'SMS'">
+        <div v-if="!isExpand && (recordId == record.id)" @click="clickExpandable(record.id, record.message)" role="button" tabindex="0" class="ant-table-row-expand-icon ant-table-row-expanded" aria-label="Expand row"></div>
+        <div v-else-if="isExpand && (recordId == record.id)" @click="clickExpandable(record.id, record.message)" role="button" tabindex="0" class="ant-table-row-expand-icon ant-table-row-collapsed" aria-label="Collapse row"></div>
+        <tr v-if="isExpand && (recordId == record.id)" class="ant-table-expanded-row ant-table-expanded-row-level-1" data-row-key="37-extra-row">
           <p>{{ record.message }}</p>
-        </template>
-      </v-slot>
+        </tr>
+      </div>
     </template> -->
 
     <template #from="{ record }" class="custom" >
@@ -125,7 +127,7 @@
         <template #title>
           <span>{{ $t("common.reply") }}</span>
         </template>
-        <a class="icons" @click="showModal(record,$event)">
+        <a class="icons" @click="showModal(record, $event)">
           <MessageOutlined />
         </a>
       </a-tooltip>
@@ -141,13 +143,15 @@
 
   </a-table>
   <CommunicationGmailView v-model:visible="visibleGmail" />
-  <Chat v-model:visible="visible" v-if="communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
+  <Chat v-model:visible="visible" v-if="visible && communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
+  <ChatWithPatientInformation v-model:visible="chatWithPatientInfoVisible" v-if="chatWithPatientInfoVisible && communicationId" @ok="handleOk" @is-visible="handleOk" :communication="communicationId" />
 </template>
 
 <script>
 import { ref, onMounted, watchEffect } from "vue";
 import { useStore } from "vuex";
 import Chat from "@/components/modals/Chat";
+import ChatWithPatientInformation from "@/components/modals/ChatWithPatientInformation";
 import { tableYScroller, arrayToObjact, } from "@/commonMethods/commonMethod";
 
 import CommunicationGmailView from '@/components/modals/CommunicationGmailView'
@@ -170,6 +174,7 @@ export default {
     AlertOutlined,
     CommunicationGmailView,
     Chat,
+    ChatWithPatientInformation,
   },
   props: {},
   setup() {
@@ -247,9 +252,27 @@ export default {
     const auth = JSON.parse(localStorage.getItem("auth"));
     const meta = store.getters.communicationRecord.value;
     const visible = ref(false);
+    const chatWithPatientInfoVisible = ref(false);
+    /* const isExpand = ref(false)
+    const recordId = ref(null) */
 
     let scroller = "";
     let data = [];
+
+    /* const clickExpandable = (id, message) => {
+      recordId.value = id
+      if(isExpand.value == true) {
+        document.getElementsByClassName('ant-table-tbody').insertAdjacentHTML(`
+        <tr class="ant-table-expanded-row ant-table-expanded-row-level-1" data-row-key="37-extra-row">
+          <p>`+message+`</p>
+        </tr>
+        `)
+        isExpand.value = false
+      }
+      else {
+        isExpand.value = true
+      }
+    } */
 
     watchEffect(() => {
       if(meta.communicationsList && (route.params.from && route.params.from == 'push')) {
@@ -334,11 +357,15 @@ export default {
         );
       }
     };
-    const showModal = (e,event) => {
-      event.target.parentElement.parentElement.parentElement.parentElement.classList.remove('bold')
+    const showModal = (e, event) => {
+      if(e.is_receiver_patient || e.is_sender_patient) {
+        chatWithPatientInfoVisible.value = true;
+      }
+      else {
+        visible.value = true;
+      }
       communicationId.value = e;
-
-      visible.value = true;
+      event.target.parentElement.parentElement.parentElement.parentElement.classList.remove('bold')
     }
     const showGmail = (e) => {
       store.dispatch('communicationsView',e.id)
@@ -363,6 +390,10 @@ export default {
       handleTableChange,
       showGmail,
       visibleGmail,
+      chatWithPatientInfoVisible,
+      /* clickExpandable,
+      isExpand,
+      recordId, */
     };
   },
 };

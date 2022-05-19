@@ -7,9 +7,9 @@
                 <a-menu-item>
                     <HomeOutlined /><span class="menuItem">{{$t('global.dashboard')}}</span></a-menu-item>
             </router-link> -->
-             <router-link to="/clinicDashboard">
+             <router-link to="/dashboard">
                 <a-menu-item>
-                    <HomeOutlined /><span class="menuItem">Clinic Dashboard</span></a-menu-item>
+                    <HomeOutlined /><span class="menuItem">Clinical Dashboard</span></a-menu-item>
             </router-link>
              <router-link to="/businessDashboard">
                 <a-menu-item>
