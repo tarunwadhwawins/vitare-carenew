@@ -5,7 +5,7 @@ import {
   annotations,
   dateFormat,
   meridiemFormatFromTimestamp,
-  // timeStampToTime
+  timeStampToTime
 } from '../../commonMethods/commonMethod'
 import moment from "moment"
 export const callPlannedSuccess = (state, count) => {
@@ -187,19 +187,19 @@ export const conferenceId = async (state, data) => {
 }
 export const conversation = async (state, data) => {
   data.map(item => {
-    /* const todayDate = moment().format('MM/DD/YYYY');
-    const yesterdayDate = moment().subtract(1, 'days').format('MM/DD/YYYY');
+    const todayDate = moment().format('MM/DD/YYYY');
+    // const yesterdayDate = moment().subtract(1, 'days').format('MM/DD/YYYY');
     const createdAt = timeStampToTime(item.createdAt, 'MM/DD/YYYY');
     if(todayDate == createdAt) {
       item.createdAt = 'Today, '+meridiemFormatFromTimestamp(item.createdAt)
     }
-    else if(yesterdayDate == createdAt) {
-      item.createdAt = 'Yesterday, '+meridiemFormatFromTimestamp(item.createdAt)
-    }
+    // else if(yesterdayDate == createdAt) {
+    //   item.createdAt = 'Yesterday, '+meridiemFormatFromTimestamp(item.createdAt)
+    // }
     else {
       item.createdAt = dateFormat(item.createdAt)
-    } */
-    item.createdAt = dateFormat(item.createdAt)
+    }
+    // item.createdAt = dateFormat(item.createdAt)
   })
   state.conversationList = data;
 }
