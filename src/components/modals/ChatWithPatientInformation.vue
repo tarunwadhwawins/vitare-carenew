@@ -282,7 +282,9 @@ export default {
 
     function getScroll() {
       setTimeout(() => {
-        tableContent.value[0].scrollTop = tableContent.value[0].scrollHeight+10
+        if(tableContent.value[0].scrollTop < tableContent.value[0].scrollHeight+10) {
+          tableContent.value[0].scrollTop = tableContent.value[0].scrollHeight+10
+        }
       }, 2000)
     }
     const list = store.getters.communicationRecord.value
@@ -366,6 +368,7 @@ export default {
 }
 .chatBox .chatBoxInner {
   max-height: none !important;
+  min-height: 435px !important;
   overflow: scroll !important;
 }
 </style>
