@@ -96,7 +96,7 @@ export default {
     const bloodOxygen = computed(() => {
       return store.state.patients.bloodOxygen
     })
-    if(bloodPressure.value.length > 0 || bloodGlucose.value.length > 0 || bloodOxygen.value.length > 0) {
+    if((bloodPressure.value != null && bloodPressure.value.length > 0) || (bloodGlucose.value != null && bloodGlucose.value.length > 0) || (bloodOxygen.value != null && bloodOxygen.value.length > 0)) {
       showVitals.value = true;
     }
     const bloodPressureGraph = patients.value.bloodPressureGraph

@@ -128,6 +128,7 @@ export const searchTableData = async ({ commit }, search) => {
   await serviceMethod.common("get", search.endPoint + '?active=1&search=' + search.data+search.field+'&filter='+search.filter, null, null,true).then((response) => {
     commit(search.endPoint, response.data);
     commit('loadingStatus', false)
+   
   }).catch((error) => {
     if(!error.__CANCEL__){
 

@@ -40,6 +40,7 @@ export default {
     latestVital:null,
     patientConditions:null,
     patientReferralSource:null,
+    referral:null,
     patientPrimaryPhysician:null,
     programList:null,
     patientMeta:null,
@@ -90,6 +91,7 @@ export default {
     patientVitalList:null,
     addBasicEscalation:null,
     escalationList:null,
-    patientFlagList:null
+    patientFlagList:null,
+    referralDetail:null
 
 }

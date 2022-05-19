@@ -1,26 +1,30 @@
 <template>
   <div class="patientImg" >
     <div class="image-section" v-if="hideEditIcon==false">
-    <img v-if="isPicuteLoading" class="picture-loader" src="@/assets/images/loader.gif" />
-    <img v-if="patientDetails.profilePhoto && !isPicuteLoading" class="ant-upload-text" :src="patientDetails.profilePhoto" alt="image"/>
-    <img v-else-if="imageUrl && !isPicuteLoading" :src="imageUrl" alt="avatar" class="ant-upload-text" />
-    <img v-else-if="!isPicuteLoading" src="@/assets/images/userAvatar.png" alt="image"/>
-  </div>
+      <img v-if="isPicuteLoading" class="picture-loader" src="@/assets/images/loader.gif" />
+      <img v-if="patientDetails.profilePhoto && !isPicuteLoading" class="ant-upload-text" :src="patientDetails.profilePhoto" alt="image"/>
+      <img v-else-if="imageUrl && !isPicuteLoading" :src="imageUrl" alt="avatar" class="ant-upload-text" />
+      <img v-else-if="!isPicuteLoading" src="@/assets/images/userAvatar.png" alt="image"/>
+    </div>
 
-  <div class="button-section" v-if="hideEditIcon==false">
-    <a-upload :show-upload-list="false" @change="handleChange" >
-      <div class="button-details">
-        <a class="edit-button">
-          <span class="edit-icon">
-            <EditOutlined />
-          </span>
-          <span class="edit-text">
-            Change Image
-          </span>
-          </a>
-      </div>
-    </a-upload>
-  </div>
+    <div class="button-section" v-if="hideEditIcon==false">
+      <a-upload :show-upload-list="false" @change="handleChange" >
+        <div class="button-details">
+          <a class="edit-button">
+            <span class="edit-icon">
+              <EditOutlined />
+            </span>
+            <span class="edit-text">
+              Change Image
+            </span>
+            </a>
+        </div>
+      </a-upload>
+    </div>
+
+    <div class="image-section" v-if="hideEditIcon==true">
+      <img v-if="patientDetails.profilePhoto" class="ant-upload-text" :src="patientDetails.profilePhoto" alt="image"/>
+    </div>
 
     <div class="info">
       <span v-if="patientDetails.patientFullName">

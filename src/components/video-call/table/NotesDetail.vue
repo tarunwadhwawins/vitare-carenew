@@ -56,7 +56,7 @@
                     <EyeTwoTone @click="edit(record.id)" /></a>
             </template>
         </a-table>
-        <Loader />
+        <Loader v-if="!isCommunication" />
     </a-col>
 </a-row>
 <div :class="addNoteVisible==true? 'notesDetailBg addNotes show':'notesDetailBg addNotes'">
@@ -92,6 +92,7 @@ export default defineComponent({
   },
   props: {
     pId: String,
+    isCommunication: Boolean,
   },
   setup(props) {
     const store = useStore();

@@ -11,3 +11,13 @@
       return state.financialValue
     })
   }
+  export const referalCount = (state) => {
+    return computed(() => {
+      return state.referalCount
+    })
+  }
+  export const referalCountRecord = (state) => {
+    return computed(() => {
+      return state.referalCountRecord
+    })
+  }
