@@ -1,67 +1,68 @@
 <template>
-    <a-modal width="50%" title="Communication" centered :maskClosable="false"  @cancel="closeModal()" class="chatModal">
-        <a-row :gutter="24">
-            <a-col :span="24" class="chatBox2">
-                <div class="chatBox" ref="scroll" id="chatBox">
-                    <a-list item-layout="horizontal">
-                        <a-list-item>
-                            <a-list-item-meta>
-                                <template #avatar>
-                                    <a-avatar >
-                                    <img v-if="patientPic" src="patientPic" alt="" />
-                                    <img v-else src="@/assets/images/userAvatar.png" alt="" />
-                                </a-avatar> 
-                                </template>
-                                <template #title>
-                                    <a href="#">{{communication.patientName}}</a>
-                                </template>
-                                <template #description>
-                                    <span>Active</span>
-                                </template>
-                            </a-list-item-meta>
-                        </a-list-item>
-                    </a-list>
-                    <div class="chatBoxInner">
-                        <div v-for="msg,index in list.conversationList" :key="index">
-                            <div class="chatWrapper left" v-if="auth.user.id!=msg.senderId">
-                                <div class="message">
-                                    {{msg.message}}
-                                </div>
-                                <div class="time">{{ msg.createdAt }}</div>
-                            </div>
-                            <div class="chatWrapper right" v-if="auth.user.id==msg.senderId">
-                                <div class="message">
-                                    {{msg.message}}
-                                </div>
-                                <div class="time" >{{ msg.createdAt }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a-col>
-        </a-row>        
-        <Loader />
-        <template #footer>
-            <a-form ref="formRef" :model="formValue" layout="vertical" @finish="sendMsg" @finishFailed="taskFormFailed">
-                <div class="sendMessage" v-if="auth.user.id==communication.receiverId || auth.user.id==communication.senderId">
-                    <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message">
-                        <template #addonAfter>
-                            <!-- <a-button v-show="name=='communication' && !Id" class="modal-button" type="primary" html-type="submit">{{$t('global.send')}}</a-button> -->
-                            <SendOutlined @click="sendMsg" />
-                        </template>
-                    </a-input>
-                </div>
-                <div class="sendMessage" v-else>
-                    <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message" disabled>
-                        <template #addonAfter disabled>
-                            <!-- <a-button v-show="name=='communication' && !Id" class="modal-button" type="primary" html-type="submit">{{$t('global.send')}}</a-button> -->
-                            <SendOutlined @click="sendMsg" />
-                        </template>
-                    </a-input>
-                </div>
-            </a-form>
-            </template>
-    </a-modal>
+	<a-modal width="50%" title="Communication" centered :maskClosable="false"  @cancel="closeModal()" class="chatModal">
+		<a-row :gutter="24">
+			<a-col :span="24" class="chatBox2">
+				<div class="chatBox" ref="scroll" id="chatBox">
+					<a-list item-layout="horizontal">
+						<a-list-item>
+							<a-list-item-meta>
+								<template #avatar>
+									<a-avatar>
+										<img v-if="patientPic" src="patientPic" alt="" />
+										<img v-else src="@/assets/images/userAvatar.png" alt="" />
+									</a-avatar>
+								</template>
+								<template #title>
+									<a href="#">{{communication.patientName}}</a>
+								</template>
+								<template #description>
+									<span>Active</span>
+								</template>
+							</a-list-item-meta>
+						</a-list-item>
+					</a-list>
+					<div class="chatBoxInner">
+						{{communication}}
+						<div v-for="msg,index in list.conversationList" :key="index">
+							<div class="chatWrapper left" v-if="auth.user.id!=msg.senderId">
+								<div class="message">
+									{{msg.message}}
+								</div>
+								<div class="time">{{ msg.createdAt }}</div>
+							</div>
+							<div class="chatWrapper right" v-if="auth.user.id==msg.senderId">
+								<div class="message">
+									{{msg.message}}
+								</div>
+								<div class="time" >{{ msg.createdAt }}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</a-col>
+		</a-row>
+		<Loader />
+		<template #footer>
+			<a-form ref="formRef" :model="formValue" layout="vertical" @finish="sendMsg" @finishFailed="taskFormFailed">
+				<div class="sendMessage" v-if="auth.user.id==communication.receiverId || auth.user.id==communication.senderId">
+					<a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message">
+						<template #addonAfter>
+							<!-- <a-button v-show="name=='communication' && !Id" class="modal-button" type="primary" html-type="submit">{{$t('global.send')}}</a-button> -->
+							<SendOutlined @click="sendMsg" />
+						</template>
+					</a-input>
+				</div>
+				<div class="sendMessage" v-else>
+					<a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message" disabled>
+						<template #addonAfter disabled>
+							<!-- <a-button v-show="name=='communication' && !Id" class="modal-button" type="primary" html-type="submit">{{$t('global.send')}}</a-button> -->
+							<SendOutlined @click="sendMsg" />
+						</template>
+					</a-input>
+				</div>
+			</a-form>
+		</template>
+	</a-modal>
 </template>
 
 <script>
