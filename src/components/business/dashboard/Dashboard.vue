@@ -20,7 +20,7 @@
         </a-col>
         
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,13) &&  referalCount">
-            <ApexChart title="Referral Patients" type="bar" :height="386" :options="referalCount.code" :series="referalCount.value" linkTo="manage-patients" :data="referalCountRecord"></ApexChart>
+            <ApexChart title="Referral Patients" type="bar" :height="386" :options="referalCount.code" :series="referalCount.value" linkTo="referral" :data="referalCountRecord"></ApexChart>
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && financialValue">
             <ApexChart :title="$t('dashboard.financialStats')" type="pie" :height="385" :options="financialValue.billed" :series="financialValue.due" linkTo="time-log-report"></ApexChart>

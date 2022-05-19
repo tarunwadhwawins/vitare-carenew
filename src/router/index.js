@@ -277,7 +277,12 @@ const routes = [
     component: () => import('@/views/business/dashboard/Dashboard'),
     meta: { authAdmin: true }
   },
- 
+  {
+    path: '/referral',
+    name: 'Referral',
+    component: () => import('@/views/referral/Referral'),
+    meta: { authAdmin: true }
+  },
 
 
 ]
