@@ -66,7 +66,7 @@
         </a-layout-content>
       </a-layout>
     </a-layout>
-    <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isAutomatic="isAutomatic" :isEditTimeLog="isEditTimeLog" :timerValue="formattedElapsedTime" @closeModal="handleClose" @cancel="handleClose" />
+    <AddTimeLogModal v-if="stoptimervisible" v-model:visible="stoptimervisible" :isAutomatic="isAutomatic" :isEditTimeLog="isEditTimeLog" :timerValue="formattedElapsedTime" @closeModal="handleClose" @cancel="handleClose"  />
     <!-- <StartCallModal v-model:visible="startCallModalVisible" @closeModal="handleClose" @cancel="handleClose" /> -->
   </div>
 </template>
@@ -85,7 +85,7 @@ import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 // import StartCallModal from "@/components/modals/StartCallModal";
 
 import dayjs from "dayjs"; 
-import { ref, computed, watchEffect,onBeforeMount, onUnmounted,reactive} from "vue";
+import { ref, computed, watchEffect,onBeforeMount, onUnmounted,reactive, onMounted} from "vue";
 import { useStore } from 'vuex';
 import { useRoute,useRouter  } from 'vue-router';
 import {
@@ -96,7 +96,7 @@ import {
   arrayToObjact
 } from '@/commonMethods/commonMethod';
 const value = ref(dayjs("12:08", "HH:mm"));
-
+const cancelButton = ref('')
 export default {
   components: {
     Header,
@@ -166,7 +166,10 @@ export default {
     const patientCriticalNotes = computed(() => {
       return store.state.patients.patientCriticalNotes
     })
-
+onMounted(()=>{
+  cancelButton.value = ''
+ 
+})
 
     const button = ref(1);
 
@@ -324,7 +327,17 @@ export default {
       isEditTimeLog.value = true;
     };
   
-    const handleClose = ({modal, value}) => {
+    const handleClose = ({link=null,modal, value}) => {
+      console.log("dgfd",link,cancelButton.value)
+      if(link==true&& cancelButton.value){
+       clearInterval(timer.value);
+       stoptimervisible.value = false;
+       router.push({
+                        path: cancelButton.value
+                    });
+                    
+      }
+      
       if(modal == 'addTimeLog') {
         elapsedTime.value = 0;
         startOn.value = true;
@@ -447,6 +460,7 @@ export default {
       patientCriticalNotes,
 
       handleClose,
+      cancelButton,
       onChange: (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
       },
@@ -466,6 +480,8 @@ export default {
     
   },
   beforeRouteLeave (to, from, next) {
+    cancelButton.value = to.fullPath
+    //console.log()
    var button= document.getElementById("timer")
    if(button){
      button.click()
