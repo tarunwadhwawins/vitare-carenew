@@ -366,5 +366,6 @@ export default {
 }
 .chatBox .chatBoxInner {
   max-height: none !important;
+  overflow: scroll !important;
 }
 </style>
