@@ -3,7 +3,7 @@
     <a-row :gutter="24">
       <a-col :span="12" class="chatBox2">
         <div class="chatBox" ref="scroll" id="chatBox">
-          <div class="chatBoxInner">
+          <!-- <div class="chatBoxInner">
             <div v-for="msg,index in list.conversationList" :key="index">
               <div class="chatWrapper left" v-if="msg.senderId == patientId">
                 <div class="message">
@@ -18,8 +18,8 @@
                 <div class="time" >{{ msg.createdAt }}</div>
               </div>
             </div>
-          </div>
-          <!-- <ChatScreenBody :conversationList="list.conversationList" :communication="communication" screen="withPatient" /> -->
+          </div> -->
+          <ChatScreenBody :conversationList="list.conversationList" :communication="communication" screen="withPatient" :patientId="patientId" />
         </div>
         <a-form ref="formRef" :model="formValue" layout="vertical" @finish="sendMsg" @finishFailed="taskFormFailed">
           <div class="sendMessage" v-if="auth.user.id==communication.receiverId || auth.user.id==communication.senderId">
@@ -108,7 +108,7 @@ import {
 } from "@ant-design/icons-vue";
 import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
 import PatientTimeline from "@/components/patients/patientSummary/PatientTimeline";
-// // import ChatScreenBody from "@/components/communications/ChatScreenBody";
+import ChatScreenBody from "@/components/communications/ChatScreenBody";
 import {
   watchEffect,
   reactive,
@@ -141,7 +141,7 @@ export default {
     NotesDetail,
     DocumentDetail,
     PatientVitalsDetails,
-    // ChatScreenBody,
+    ChatScreenBody,
   },
   props: {
     communication: {
