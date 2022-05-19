@@ -22,7 +22,39 @@
 							</a-list-item-meta>
 						</a-list-item>
 					</a-list>
-					<ChatScreenBody :conversationList="list.conversationList" :communication="communication" />
+					<!-- <div class="chatBoxInner">
+						<div class="innerChatBox" v-for="msg,index in list.conversationList" :key="index">
+							<div v-if="auth.user.id == 1">
+								<div class="chatWrapper left" v-if="auth.user.id != msg.senderId && msg.senderId == list.conversationList[0].senderId">
+									<div class="message">
+										{{msg.message}}
+									</div>
+									<div class="time">{{ msg.createdAt }}</div>
+								</div>
+								<div class="chatWrapper right" v-else-if="auth.user.id == msg.senderId || msg.senderId != list.conversationList[0].senderId">
+									<div class="message">
+										{{msg.message}}
+									</div>
+									<div class="time" >{{ msg.createdAt }}</div>
+								</div>
+							</div>
+							<div v-else>
+								<div class="chatWrapper left" v-if="auth.user.id != msg.senderId">
+									<div class="message">
+										{{msg.message}}
+									</div>
+									<div class="time">{{ msg.createdAt }}</div>
+								</div>
+								<div class="chatWrapper right" v-else-if="auth.user.id == msg.senderId">
+									<div class="message">
+										{{msg.message}}
+									</div>
+									<div class="time" >{{ msg.createdAt }}</div>
+								</div>
+							</div>
+						</div>
+					</div> -->
+					<ChatScreenBody :conversationList="list.conversationList" :communication="communication" screen="withoutPatient" />
 				</div>
 			</a-col>
 		</a-row>
