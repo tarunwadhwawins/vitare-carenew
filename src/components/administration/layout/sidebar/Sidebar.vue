@@ -31,6 +31,12 @@
                     <span class="menuItem">{{$t('sidebar.inventory')}}</span>
                 </a-menu-item>
             </router-link>
+            <router-link to="/referral" v-if="arrayToObjact(screensPermissions, 336)">
+                <a-menu-item>
+                    <FileDoneOutlined />
+                    <span class="menuItem">Referral</span>
+                </a-menu-item>
+            </router-link>
             <router-link to="/dashboard" >
                 <a-menu-item>
                     <HomeOutlined /><span class="menuItem">Home</span></a-menu-item>

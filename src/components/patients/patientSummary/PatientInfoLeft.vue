@@ -147,6 +147,9 @@
         <div v-if="referralDetail != null && arrayToObjact(screensPermissions, 326)" class="thumb-desc">
           <a href="javascript:void(0)" @click="referral" v-if="referralDetail">{{ referralDetail.name }}</a>
         </div>
+        <div v-else class="thumb-desc">
+          <a href="javascript:void(0)" >N/A</a>
+        </div>
       </div>
     </div>
   <ReferralViewModal v-if="referralDetail" v-model:visible="referralView" :referralDetail="referralDetail"/>

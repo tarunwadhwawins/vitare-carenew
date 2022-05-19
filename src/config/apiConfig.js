@@ -125,7 +125,8 @@ export const API_ENDPOINTS = {
     patientsFlag:'patientFlagCount',
     appointmentCount:'appointmentCount',
     escalationCount:'escalationCount',
-    referalCount:"referalCount"
+    referalCount:"referalCount",
+    referralList:'referral'
 };
 
 // export const getApiUrl = key => {
