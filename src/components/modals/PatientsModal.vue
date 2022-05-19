@@ -2,7 +2,7 @@
 <a-modal max-width="1140px" width="100%" :title="isEdit == true ? 'Edit Patient' : 'Add New Patient'" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
         <div class="common-btn mb-24" ref="customScrollTop">
-            <a-button type="primary" @click="showSearchPatient" v-if="!isEdit">
+            <a-button type="primary" @click="showSearchPatient" v-if="!isEdit && current==0">
                 Bitrix Lookup
             </a-button>
         </div>

@@ -29,7 +29,7 @@ import createPersistedState from "vuex-persistedstate";
 import { errorLogWithDeviceInfo} from "./errorLogWithDeviceInfo"
 import { businessDashboard } from "./businessDashboard/index"
 import { clinicalDashboard } from "./clinicalDashboard/index"
-
+import { referral } from "./referral/index"
 export default createStore({
   modules: {
     dashBoard,
@@ -60,7 +60,8 @@ export default createStore({
     screenPermissions,
     errorLogWithDeviceInfo,
     businessDashboard,
-    clinicalDashboard
+    clinicalDashboard,
+    referral
   },
   plugins: [ createPersistedState({
     reducer(state) {
