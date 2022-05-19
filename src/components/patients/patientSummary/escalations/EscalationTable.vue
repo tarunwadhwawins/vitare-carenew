@@ -1,6 +1,11 @@
 <template>
 <div class="patientTable">
-    <a-table rowKey="id" :columns="columnData" :data-source="escalationList" :scroll="{ y: tableYScrollerCounterPage, x: 1500 }" :pagination="false" @change="handleTableChange"> 
+    <a-table rowKey="id" :columns="columnData" :data-source="escalationList" :scroll="{ y: tableYScrollerCounterPage, x: 1500 }" :pagination="false" @change="handleTableChange">
+        <template #escalationType="{ record }">
+            <span v-for="esc,i in record.escalationType.data" :key="esc.id" >
+                {{i==0?' ':','}} {{ esc.escalationType }}
+            </span>
+        </template>
         <template #action >
             <a-tooltip placement="bottom" >
                 <template #title>
@@ -10,6 +15,9 @@
                     <EyeOutlined /></a>
             </a-tooltip>
         </template>
+         <template #flag="{ record }">
+            <Flags :flag="record.flagColor" />
+        </template>
     </a-table>
 </div>
 </template>
@@ -17,10 +25,14 @@
 import { EyeOutlined } from "@ant-design/icons-vue";
 import { onMounted,computed } from "vue";
 import { useStore } from "vuex";
+import Flags from "@/components/common/flags/Flags";
 const columnData = [
     {
-    title: "Name",
+    title: "Escalation Type",
     dataIndex: "escalationType",
+    slots:{
+        customRender: "escalationType",
+    },
   },
   { 
     title: "Description",
@@ -48,7 +60,8 @@ const columnData = [
 export default {
   name: "EscalationTable",
   components: {
-    EyeOutlined
+    EyeOutlined,
+    Flags
   },
   props: {},
   setup() {
