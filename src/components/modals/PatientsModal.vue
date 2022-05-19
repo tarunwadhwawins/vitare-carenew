@@ -1123,7 +1123,7 @@ function newReferral(){
                     "responsiblePerson": responsiblePersonForm,
                     "emergencyContactForm": emergencyContactForm
                 }).then(() => {
-                    if(patients.value.addDemographic){
+                    if(counteValue){
                          store.state.patients.counter = counteValue
                     }
                     
