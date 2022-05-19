@@ -272,7 +272,7 @@ export default {
 
       store.state.communications.conversationList = ""
       store.dispatch("conversation", props.communication.id)
-      tableContent.value = document.getElementsByClassName('chatBox')
+      tableContent.value = document.getElementsByClassName('chatBoxInner')
       getScroll()
     })
 
