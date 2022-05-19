@@ -101,7 +101,7 @@ export default {
         });
         store.dispatch(
           "referralList",
-          store.getters.searchTable.value + '&filter='+filter+ orderParam
+          '?filter='+filter+store.getters.searchTable.value +  orderParam
         );
       } else {
         store.dispatch("orderTable", {
@@ -109,7 +109,7 @@ export default {
         });
         store.dispatch(
           "referralList",
-          store.getters.searchTable.value +  '&filter='+filter+store.getters.orderTable.value.data
+          '?filter='+filter+store.getters.searchTable.value +  store.getters.orderTable.value.data
         );
       }
     };
