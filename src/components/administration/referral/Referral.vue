@@ -57,7 +57,7 @@ export default {
                 data: '&orderField=&orderBy='
             })
             store.commit("referralColumns")
-            store.dispatch("referralList")
+           
 
         })
         onUnmounted(() => {
