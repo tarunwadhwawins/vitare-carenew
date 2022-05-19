@@ -93,8 +93,8 @@
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="notesId" :rules="[{ required: false, message:'Notes'+' '+$t('global.validation') }]">
-                                            <a-checkbox-group v-model:value="escalationDetails.notesId" style="width:95%">
-                                                <a-table :scroll="{ y: 300 }" rowKey="id" :columns="notesColumns" :data-source="notesList" :pagination="false">
+                                            <a-checkbox-group v-model:value="escalationDetails.notesId" style="width:100%">
+                                                <a-table  rowKey="id" :columns="notesColumns" :data-source="notesList" :pagination="false">
                                                     <template #select="{ record }">
                                                         <a-checkbox :value="record.id" name="notes"></a-checkbox>
                                                     </template>
@@ -108,8 +108,8 @@
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="vitalId" :rules="[{ required: false, message:'Vital'+' '+$t('global.validation') }]">
-                                            <a-checkbox-group v-model:value="escalationDetails.vitalId" style="width:95%">
-                                                <a-table :scroll="{ y: 300 }" rowKey="id" :columns="vitalColumns" :data-source="patientVitalList" :pagination="false">
+                                            <a-checkbox-group v-model:value="escalationDetails.vitalId" style="width:100%">
+                                                <a-table  rowKey="id" :columns="vitalColumns" :data-source="patientVitalList" :pagination="false">
                                                     <template #select="{ record }">
                                                         <a-checkbox :value="record.id" name="vital"></a-checkbox>
                                                     </template>
@@ -126,8 +126,8 @@
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="carePlan" :rules="[{ required: false, message:'Care Plan'+' '+$t('global.validation') }]">
-                                            <a-checkbox-group v-model:value="escalationDetails.carePlan" style="width:95%">
-                                                <a-table :scroll="{ y: 300 }" rowKey="id" :columns="carePlanColumns" :data-source="carePlanList" :pagination="false">
+                                            <a-checkbox-group v-model:value="escalationDetails.carePlan" style="width:100%">
+                                                <a-table  rowKey="id" :columns="carePlanColumns" :data-source="carePlanList" :pagination="false">
                                                     <template #select="{ record }">
                                                         <a-checkbox :value="record.id" name="carePlan"></a-checkbox>
                                                     </template>
@@ -141,8 +141,8 @@
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="flagIds" :rules="[{ required: false, message:'Flag'+' '+$t('global.validation') }]">
-                                            <a-checkbox-group v-model:value="escalationDetails.flagIds" style="width:95%">
-                                                <a-table :scroll="{ y: 300 }" rowKey="id" :columns="flagColumns" :data-source="patientFlagList" :pagination="false">
+                                            <a-checkbox-group v-model:value="escalationDetails.flagIds" style="width:100%">
+                                                <a-table  rowKey="id" :columns="flagColumns" :data-source="patientFlagList" :pagination="false">
                                                     <template #select="{ record }">
                                                         <a-checkbox :value="record.id" name="flag"></a-checkbox>
                                                     </template>
