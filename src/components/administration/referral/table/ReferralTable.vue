@@ -2,11 +2,9 @@
 <template>
 
 <a-table rowKey="id"  :columns="referralColumns" :data-source="record" :scroll="{ y: tableYScroller}" :pagination="false" @change="handleTableChange">
-
-        <!-- <template #patientName="{ text, record }" >
-            <router-link :to="{ name: 'PatientSummary', params: { udid: record.udid } }">{{ text }}</router-link>
-        </template>  -->
- 
+        <template #patientName="{ text, record }" >
+            <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
+        </template> 
     
 </a-table>
 <TableLoader />
