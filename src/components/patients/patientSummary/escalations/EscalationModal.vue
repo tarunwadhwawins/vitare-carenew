@@ -435,8 +435,15 @@ export default {
     });
 
     function submitEscalationForm() {
-      escalation.dueBy = timeStamp(endTimeAdd(moment(escalation.dueBy)));
-      store.dispatch("addBasicEscalation", escalation);
+      store.dispatch("addBasicEscalation", {
+      escalationType: escalation.escalationType,
+      escalationDescription: escalation.escalationDescription,
+      flagId: escalation.flagId,
+      dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
+      staffIds: escalation.staffIds,
+      referenceId: route.params.udid,
+      entityType: "patient",
+          });
     }
 
     function submitDetailsForm() {
@@ -500,7 +507,7 @@ export default {
             status.value =false
             store.dispatch('escalationList', {referenceId:route.params.udid,entityType:'patient'})
         }
-    }, 5000);
+    }, 4000);
     }
 
     function checkChangeInput() {

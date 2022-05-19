@@ -1,6 +1,6 @@
 <template>
 <div class="patientTable">
-    <a-table rowKey="id" :columns="columnData" :data-source="escalationList" :scroll="{ y: tableYScrollerCounterPage, x: 1500 }" :pagination="false" @change="handleTableChange">
+    <a-table rowKey="id" :columns="columnData" :data-source="escalationList"  :pagination="false" @change="handleTableChange" style="width:100%">
         <template #escalationType="{ record }">
             <span v-for="esc,i in record.escalationType.data" :key="esc.id" >
                 {{i==0?' ':','}} {{ esc.escalationType }}

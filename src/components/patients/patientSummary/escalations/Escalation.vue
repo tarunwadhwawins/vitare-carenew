@@ -79,7 +79,8 @@ export default {
         }
     })
     const showEscalationModal=()=>{
-        store.commit('resetEscalationCounter')
+        // store.commit('resetEscalationCounter')
+        store.state.patients.escalationCounter=0
         store.state.patients.addBasicEscalation=null
         escaltionModal.value =true
     }
