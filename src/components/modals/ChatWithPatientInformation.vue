@@ -1,25 +1,9 @@
 <template>
-  <a-modal width="100%" title="Communication" centered :maskClosable="false"  @cancel="closeModal()" class="chatModal" :footer="false">
-    <a-row :gutter="24" class="chatBoxDiv">
-      <a-col :span="12">
+  <a-modal width="100%" title="Messages" centered :maskClosable="false"  @cancel="closeModal()" class="chatModal" :footer="false">
+    <a-row :gutter="24">
+      <a-col :span="12" class="chatBox2">
         <div class="chatBox" ref="scroll" id="chatBox">
-
-          <div class="chatBoxInner">
-            <div v-for="msg,index in list.conversationList" :key="index">
-              <div class="chatWrapper left" v-if="msg.senderId == patientId">
-                <div class="message">
-                  {{msg.message}}
-                </div>
-                <div class="time">{{ msg.createdAt }}</div>
-              </div>
-              <div class="chatWrapper right" v-if="msg.senderId != patientId">
-                <div class="message">
-                  {{msg.message}}
-                </div>
-                <div class="time" >{{ msg.createdAt }}</div>
-              </div>
-            </div>
-          </div>
+          <ChatScreenBody :conversationList="list.conversationList" :communication="communication" />
         </div>
         <a-form ref="formRef" :model="formValue" layout="vertical" @finish="sendMsg" @finishFailed="taskFormFailed">
           <div class="sendMessage" v-if="auth.user.id==communication.receiverId || auth.user.id==communication.senderId">
@@ -108,6 +92,7 @@ import {
 } from "@ant-design/icons-vue";
 import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
 import PatientTimeline from "@/components/patients/patientSummary/PatientTimeline";
+import ChatScreenBody from "@/components/communications/ChatScreenBody";
 import {
   watchEffect,
   reactive,
@@ -140,6 +125,7 @@ export default {
     NotesDetail,
     DocumentDetail,
     PatientVitalsDetails,
+    ChatScreenBody,
   },
   props: {
     communication: {
@@ -282,7 +268,7 @@ export default {
 
     function getScroll() {
       setTimeout(() => {
-        if(tableContent.value[0].scrollTop < tableContent.value[0].scrollHeight+10) {
+        if((tableContent.value[0].scrollTop < tableContent.value[0].scrollHeight+10) == true) {
           tableContent.value[0].scrollTop = tableContent.value[0].scrollHeight+10
         }
       }, 2000)
@@ -352,23 +338,17 @@ export default {
 </script>
 
 <style scoped>
-.chatBoxDiv {
+/* .chatBoxDiv {
   height: 680px !important;
-}
+} */
 .chatBox {
-  position: relative;
-  height: 650px !important;
+  height: 640px !important;
 }
 .patientTimeline {
   width: 100% !important;
 }
-.body {
-  overflow: scroll;
-  height: 520px;
-}
 .chatBox .chatBoxInner {
-  max-height: none !important;
-  min-height: 435px !important;
+  min-height: 640px !important;
   overflow: scroll !important;
 }
 </style>

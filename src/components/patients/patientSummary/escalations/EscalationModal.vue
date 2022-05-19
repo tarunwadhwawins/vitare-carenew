@@ -12,31 +12,22 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">{{globalCode.ecalationType}}
                                 <a-form-item label="Escalation Type" name="escalationType" :rules="[{ required: true, message: 'Escalation Type'+' '+$t('global.validation')  }]">
-                                    <GlobalCodeDropDown @change="escalationType" mode="multiple" v-model:value="escalation.escalationType" :globalCode="globalCode.escalationType" />
+                                    <GlobalCodeDropDown @change="checkChangeInput()" mode="multiple" v-model:value="escalation.escalationType" :globalCode="globalCode.escalationType" />
                                 </a-form-item>
                             </div>
                         </a-col>
-
-                        <a-col :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item label="Description" name="escalationDescription" :rules="[{ required: true, message: 'Description'+' '+$t('global.validation')  }]">
-                                    <a-textarea v-model:value="escalation.escalationDescription" />
-                                </a-form-item>
-                            </div>
-                        </a-col>
-
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item label="Flag" name="flagId" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation')  }]">
-                                    <GlobalCodeDropDown v-model:value="escalation.flagId" :globalCode="flagsList" />
+                                    <GlobalCodeDropDown @change="checkChangeInput()" v-model:value="escalation.flagId" :globalCode="flagsList" />
                                 </a-form-item>
                             </div>
                         </a-col>
 
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item label="Staff" name="staffIds" :rules="[{ required: true, message: 'Staff'+' '+$t('global.validation')  }]">
-                                    <StaffDropDown mode="multiple" v-model:value="escalation.staffIds" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
+                                <a-form-item label="Assign To" name="staffIds" :rules="[{ required: true, message: 'Staff'+' '+$t('global.validation')  }]">
+                                    <StaffDropDown @change="checkChangeInput()" mode="multiple" v-model:value="escalation.staffIds" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -44,7 +35,14 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item label="Due Date" name="dueBy" :rules="[{ required: true, message: 'Due Date'+' '+$t('global.validation')  }]">
-                                    <a-date-picker :disabledDate="d => !d || d.isBefore(moment().subtract(1,'days'))" v-model:value="escalation.dueBy" :format="globalDateFormat" :value-format="globalDateFormat" :size="size" style="width: 100%" @change="checkChangeInput(); changeDate()" />
+                                    <a-date-picker  :disabledDate="d => !d || d.isBefore(moment().subtract(1,'days'))" v-model:value="escalation.dueBy" :format="globalDateFormat" :value-format="globalDateFormat" :size="size" style="width: 100%" @change="checkChangeInput();" />
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                         <a-col :sm="24" :xs="24">
+                            <div class="form-group">
+                                <a-form-item label="Description" name="escalationDescription" :rules="[{ required: true, message: 'Description'+' '+$t('global.validation')  }]">
+                                    <a-textarea @change="checkChangeInput()" v-model:value="escalation.escalationDescription" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -96,7 +94,7 @@
                                             <a-checkbox-group v-model:value="escalationDetails.notesId" style="width:100%">
                                                 <a-table  rowKey="id" :columns="notesColumns" :data-source="notesList" :pagination="false">
                                                     <template #select="{ record }">
-                                                        <a-checkbox :value="record.id" name="notes"></a-checkbox>
+                                                        <a-checkbox @change="checkChangeInput()" :value="record.id" name="notes"></a-checkbox>
                                                     </template>
                                                 </a-table>
                                             </a-checkbox-group>
@@ -111,7 +109,7 @@
                                             <a-checkbox-group v-model:value="escalationDetails.vitalId" style="width:100%">
                                                 <a-table  rowKey="id" :columns="vitalColumns" :data-source="patientVitalList" :pagination="false">
                                                     <template #select="{ record }">
-                                                        <a-checkbox :value="record.id" name="vital"></a-checkbox>
+                                                        <a-checkbox @change="checkChangeInput()" :value="record.id" name="vital"></a-checkbox>
                                                     </template>
                                                     <template #color="{ record }">
                                                         <Flags :flag="record.color" />
@@ -129,7 +127,7 @@
                                             <a-checkbox-group v-model:value="escalationDetails.carePlan" style="width:100%">
                                                 <a-table  rowKey="id" :columns="carePlanColumns" :data-source="carePlanList" :pagination="false">
                                                     <template #select="{ record }">
-                                                        <a-checkbox :value="record.id" name="carePlan"></a-checkbox>
+                                                        <a-checkbox @change="checkChangeInput()" :value="record.id" name="carePlan"></a-checkbox>
                                                     </template>
                                                 </a-table>
                                             </a-checkbox-group>
@@ -144,7 +142,7 @@
                                             <a-checkbox-group v-model:value="escalationDetails.flagIds" style="width:100%">
                                                 <a-table  rowKey="id" :columns="flagColumns" :data-source="patientFlagList" :pagination="false">
                                                     <template #select="{ record }">
-                                                        <a-checkbox :value="record.id" name="flag"></a-checkbox>
+                                                        <a-checkbox @change="checkChangeInput()" :value="record.id" name="flag"></a-checkbox>
                                                     </template>
                                                     <template #name="{ record }">
                                                         <span>{{record.flagName}}</span>
@@ -163,7 +161,7 @@
                             <div class="steps-action">
                                 <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                                 <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
-                                <a-button v-if="current == steps.length - 1" type="primary" html-type="submit" @click="saveModal()">
+                                <a-button v-if="current == steps.length - 1" type="primary" html-type="submit" >
                                     {{$t('global.save')}}
                                 </a-button>
                             </div>
@@ -184,7 +182,13 @@ import {
   globalDateFormat,
   timeStamp,
   endTimeAdd,
+  warningSwal,
+  errorSwal,
+  successSwal
 } from "@/commonMethods/commonMethod";
+import {
+    messages
+} from "@/config/messages";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch";
 import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue";
 import Flags from "@/components/common/flags/Flags";
@@ -260,6 +264,10 @@ const vitalColumns = [
     className: "vital-value",
   },
   {
+    title: "Date",
+    dataIndex: "startDate",
+  },
+  {
     title: "Color",
     dataIndex: "color",
     key: "color",
@@ -332,6 +340,10 @@ const flagColumns = [
     },
   },
   {
+    title: "Date",
+    dataIndex: "startDate",
+  },
+  {
     title: "Color",
     dataIndex: "color",
     slots: {
@@ -345,11 +357,12 @@ export default {
     StaffDropDown,
     Flags,
   },
-  setup() {
+  setup(props,{emit}) {
     const store = useStore();
     const route = useRoute();
     const activeKey = ref([]);
     const button = ref(2);
+    const status = ref(false)
     const escalation = reactive({
       escalationType: [],
       escalationDescription: "",
@@ -378,12 +391,29 @@ export default {
     const flagsList = computed(() => {
       return store.state.flags.flagsList;
     });
+    // const current = computed({
+    //   get: () => store.state.patients.escalationCounter,
+    //   set: (value) => {
+    //     store.state.patients.escalationCounter = value;
+    //   },
+    // });
     const current = computed({
-      get: () => store.state.patients.escalationCounter,
-      set: (value) => {
-        store.state.patients.escalationCounter = value;
-      },
-    });
+            get: () =>
+                store.state.patients.escalationCounter,
+            set: (value) => {
+                if (addEscalation.value) {
+                    store.state.patients.escalationCounter = value;
+                } else {
+                    if (Object.values(escalation).filter(item => item != '').length >= 7) {
+                        submitEscalationForm();
+                    } else {
+                        errorSwal('All fields(*) are required!')
+                        store.state.patients.escalationCounter  = 0;
+                    }
+                }
+
+            },
+        })
     const next = () => {
       store.commit("escalationCounterPlus");
     };
@@ -404,10 +434,9 @@ export default {
       return store.state.patients.addBasicEscalation;
     });
 
-    function submitEscalationForm(value) {
+    function submitEscalationForm() {
       escalation.dueBy = timeStamp(endTimeAdd(moment(escalation.dueBy)));
       store.dispatch("addBasicEscalation", escalation);
-      console.log("value", value);
     }
 
     function submitDetailsForm() {
@@ -418,7 +447,11 @@ export default {
             escalationType: 259,
           },
           escalationId: addEscalation.value.id,
-        });
+        }).then((response)=>{
+            if(response==true){
+                status.value=true
+            }
+        })
       }
       if (escalationDetails.vitalId.length > 0 && addEscalation.value.id) {
         store.dispatch("addEscalationVital", {
@@ -427,7 +460,11 @@ export default {
             escalationType: 260,
           },
           escalationId: addEscalation.value.id,
-        });
+        }).then((response)=>{
+            if(response==true){
+                status.value=true
+            }
+        })
       }
       if (escalationDetails.carePlan.length > 0 && addEscalation.value.id) {
         store.dispatch("addEscalationCarePlan", {
@@ -436,7 +473,11 @@ export default {
             escalationType: 262,
           },
           escalationId: addEscalation.value.id,
-        });
+        }).then((response)=>{
+            if(response==true){
+                status.value=true
+            }
+        })
       }
       if (escalationDetails.flagIds.length > 0 && addEscalation.value.id) {
         store.dispatch("addEscalationFlag", {
@@ -445,12 +486,50 @@ export default {
             escalationType: 261,
           },
           escalationId: addEscalation.value.id,
-        });
+        }).then((response)=>{
+            if(response==true){
+                status.value=true
+            }
+        })
       }
+
+    setTimeout(() => { 
+        if(status.value==true){
+            successSwal('Data saved Successfully!')
+            emit("saveModal", false)
+            status.value =false
+            store.dispatch('escalationList', {referenceId:route.params.udid,entityType:'patient'})
+        }
+    }, 5000);
     }
 
+    function checkChangeInput() {
+        store.commit('checkChangeInput', true)
+    }
+    const checkFieldsData = computed(() => {
+        return store.state.common.checkChangeInput;
+    })
+
+    const form = reactive({
+        ...escalation,
+        });
+
     const closeModal = () => {
-      //
+      if (checkFieldsData.value) {
+                warningSwal(messages.modalWarning).then((response) => {
+                    if (response == true) {
+                        emit("saveModal", false)
+                        Object.assign(escalation, form);
+                        store.commit("resetCounter")
+                        store.commit('checkChangeInput', false)
+                        store.state.patients.addBasicEscalation = null
+                    } else {
+                        emit("saveModal", true);
+                    }
+                });
+            }else{
+                // 
+            }
     };
 
     function escalationType(e) {
@@ -467,6 +546,10 @@ export default {
       button.value = value;
     }
     return {
+      status,
+      form,
+      checkFieldsData,
+      checkChangeInput,
       button,
       showButton,
       addEscalation,

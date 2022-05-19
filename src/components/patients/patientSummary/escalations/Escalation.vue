@@ -23,7 +23,7 @@
                 </a-col>
                 <!-- stepper -->
                 <a-col :span="24">
-                   <EscaltionModal v-model:visible="escaltionModal"/>
+                   <EscaltionModal v-model:visible="escaltionModal" @saveModal="saveModal($event)"/>
                 </a-col>
             </a-row>
         </div>
@@ -80,14 +80,20 @@ export default {
     })
     const showEscalationModal=()=>{
         store.commit('resetEscalationCounter')
+        store.state.patients.addBasicEscalation=null
         escaltionModal.value =true
     }
     
     const handleStaffChange = (val) => {
       escalationDetails.staffId = val;
     };
+
+    const saveModal = (value) =>{
+      escaltionModal.value = value
+    }
   
     return {
+      saveModal,
       escaltionModal,
       showEscalationModal,
       handleStaffChange,

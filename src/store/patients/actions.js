@@ -1638,12 +1638,14 @@ export const escalationList = async ({commit}, data) => {
 }
 
 export const addBasicEscalation = async ({commit}, data) => {
+  let status = false
   commit('loadingStatus', true)
   await serviceMethod.common("post", `escalation`, null, data).then((response) => {
     commit('addBasicEscalation', response.data.data)
     // successSwal(response.data.message)
     commit('escalationCounterPlus')
     commit('loadingStatus', false)
+    status = true
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
@@ -1655,15 +1657,18 @@ export const addBasicEscalation = async ({commit}, data) => {
     }
     commit('loadingStatus', false)
   })
+  return status
 }
 
 
 export const addEscalationNote = async ({commit}, data) => {
+  let status = false
   commit('loadingStatus', true)
   await serviceMethod.common("post", `escalation/notes/${data.escalationId}`, null, data.data).then((response) => {
-    commit('addEscalationNote', response.data.data)
-    commit('escalationCounterPlus')
+    // commit('addEscalationNote', response.data.data)
+    console.log(response);
     commit('loadingStatus', false)
+    status = true
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
@@ -1675,16 +1680,19 @@ export const addEscalationNote = async ({commit}, data) => {
     }
     commit('loadingStatus', false)
   })
+  return status
 }
 
 
 export const addEscalationVital = async ({commit}, data) => {
+  let status = false
   commit('loadingStatus', true)
   console.log('object',data);
   await serviceMethod.common("post", `escalation/vital/${data.escalationId}`, null, data.data).then((response) => {
-    commit('addEscalationVital', response.data.data)
-    commit('resetEscalationCounter')
+    // commit('addEscalationVital', response.data.data)
+    console.log(response);
     commit('loadingStatus', false)
+    status = true
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
@@ -1696,14 +1704,18 @@ export const addEscalationVital = async ({commit}, data) => {
     }
     commit('loadingStatus', false)
   })
+
+  return status
 }
 
 export const addEscalationCarePlan = async ({commit}, data) => {
+  let status = false
   commit('loadingStatus', true)
   await serviceMethod.common("post", `escalation/carePlan/${data.escalationId}`, null, data.data).then((response) => {
-    commit('addEscalationCarePlan', response.data.data)
-    commit('escalationCounterPlus')
+    // commit('addEscalationCarePlan', response.data.data)
+    console.log(response);
     commit('loadingStatus', false)
+    status = true
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
@@ -1715,14 +1727,17 @@ export const addEscalationCarePlan = async ({commit}, data) => {
     }
     commit('loadingStatus', false)
   })
+  return status
 }
 
 export const addEscalationFlag = async ({commit}, data) => {
+  let status = false
   commit('loadingStatus', true)
   await serviceMethod.common("post", `escalation/flag/${data.escalationId}`, null, data.data).then((response) => {
-    commit('addEscalationFlag', response.data.data)
-    commit('escalationCounterPlus')
+    // commit('addEscalationFlag', response.data.data)
+    console.log(response);
     commit('loadingStatus', false)
+    status = true
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 422) {
@@ -1734,6 +1749,8 @@ export const addEscalationFlag = async ({commit}, data) => {
     }
     commit('loadingStatus', false)
   })
+
+  return status
 }
 
 
@@ -1741,7 +1758,7 @@ export const patientFlagList = async ({commit}, id) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", `patient/${id}/flag`, null, null).then((response) => {
     commit('patientFlagList', response.data.data)
-    commit('resetEscalationCounter')
+    // commit('resetEscalationCounter')
     commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)

@@ -204,17 +204,17 @@ export default defineComponent({
   width: 200px;
 }
 .patient-document {
-  width: 400px;
+  width: 200px;
 }
 th.doc-type,
 td.doc-type {
   width: 200px;
-  text-align: center !important;
+  /* text-align: center !important; */
 }
 th.doc-tags,
 td.doc-tags {
-  width: 200px;
-  text-align: center !important;
+  width: 400px;
+  /* text-align: center !important; */
 }
 .doc-actions {
   width: 80px;
