@@ -59,7 +59,7 @@
                 <PatientVitalsView/>
               </div>
               <div v-if="button == 5">
-                <Escalation/>
+                <Escalation :patientId="paramsId"/>
               </div>
             </a-col>
           </a-row>
@@ -79,12 +79,12 @@ import TimelineView from "@/components/patients/patientSummary/views/TimelineVie
 import CarePlanView from "@/components/patients/patientSummary/views/CarePlanView";
 import PatientVitalsView from "@/components/patients/patientSummary/views/PatientVitalsView";
 import CriticalNotes from "@/components/patients/patientSummary/common/CriticalNotes";
-import Escalation from "@/components/patients/patientSummary/views/Escalation";
-import TableLoader from "@/components/loader/TableLoader";
+import Escalation from "@/components/patients/patientSummary/escalations/Escalation"
+import TableLoader from "@/components/loader/TableLoader"; 
 import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 // import StartCallModal from "@/components/modals/StartCallModal";
 
-import dayjs from "dayjs";
+import dayjs from "dayjs"; 
 import { ref, computed, watchEffect,onBeforeMount, onUnmounted,reactive} from "vue";
 import { useStore } from 'vuex';
 import { useRoute,useRouter  } from 'vue-router';

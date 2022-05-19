@@ -87,5 +87,9 @@ export default {
 
     responsiblePerson:null,
     emergencyContact:null,
+    patientVitalList:null,
+    addBasicEscalation:null,
+    escalationList:null,
+    patientFlagList:null
 
 }
