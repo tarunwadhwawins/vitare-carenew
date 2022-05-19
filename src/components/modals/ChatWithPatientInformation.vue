@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="100%" title="Communication" centered :maskClosable="false"  @cancel="closeModal()" class="chatModal" :footer="false">
+  <a-modal width="100%" title="Messages" centered :maskClosable="false"  @cancel="closeModal()" class="chatModal" :footer="false">
     <a-row :gutter="24">
       <a-col :span="12" class="chatBox2">
         <div class="chatBox" ref="scroll" id="chatBox">
