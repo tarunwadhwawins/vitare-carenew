@@ -40,8 +40,10 @@ export const addDemographic = async ({commit}, data) => {
       })
     }
 
-    if((data.referal.referralDesignation != null || data.referal.referralEmail != null || data.referal.referralFax != null || data.referal.referralName != null || data.referal.referralPhoneNumber != null) && (data.referal.referralDesignation != "" || data.referal.referralEmail != "" || data.referal.referralFax != "" || data.referal.referralName != "" || data.referal.referralPhoneNumber != "")) {
-      serviceMethod.common("post", `patient/${response.data.data.id}/referals`, null, data.referal).then(response => {
+    if((data.referal.referral != null || data.referal.referralDesignation != null || data.referal.referralEmail != null || data.referal.referralFax != null ||  data.referal.firstName ||
+      data.referal.middleName ||
+      data.referal.lastName || data.referal.referralPhoneNumber != null) && (data.referal.middleName || data.referal.lastName ||data.referal.firstName ||data.referal.referral != ""||  data.referal.referralDesignation != ""  || data.referal.referralEmail != "" || data.referal.referralFax != "" || data.referal.referralName != "" || data.referal.referralPhoneNumber != "")) {
+      serviceMethod.common("post", `patient/${response.data.data.id}/referral`, null, data.referal).then(response => {
         commit('addPatientReferals', response.data.data);
         commit('patientReferralSource', response.data.data);
         errorMessage.push(false)
@@ -75,6 +77,7 @@ export const updateDemographic = async ({commit}, request) => {
   const data = request.data
   const patientUdid = request.patientUdid
   const responsiblePersonId = request.responsiblePersonId
+  console.log("chechh",responsiblePersonId)
   const emergencyContactId = request.emergencyContactId
   const referalId = request.referalId
   commit('loadingStatus', true)
@@ -162,14 +165,15 @@ export const updateDemographic = async ({commit}, request) => {
     }
   if(referalId){
     
-    serviceMethod.common("put", API_ENDPOINTS['patient']+`/${patientUdid}/referals/${referalId}`, null, data.referal).then(response => {
+    serviceMethod.common("put", API_ENDPOINTS['patient']+`/${patientUdid}/referral/${referalId}`, null, data.referal).then(response => {
       commit('addPatientReferals', response.data.data);
       commit('patientReferralSource', response.data.data);
       errorMessage.push(false)
     })
   }
-    else if(!referalId && (data.referal.referralDesignation != null || data.referal.referralEmail != null || data.referal.referralFax != null || data.referal.referralName != null || data.referal.referralPhoneNumber != null) && (data.referal.referralDesignation != "" || data.referal.referralEmail != "" || data.referal.referralFax != "" || data.referal.referralName != "" || data.referal.referralPhoneNumber != "")) {
-      serviceMethod.common("post", API_ENDPOINTS['patient']+`/${patientUdid}/referals`, null, data.referal).then(response => {
+   else if(!referalId && (data.referal.middleName!= null || data.referal.lastName != null||data.referal.firstName != null||data.referal.referral != null|| data.referal.referralDesignation != null || data.referal.referralEmail != null || data.referal.referralFax != null || 
+       data.referal.referralPhoneNumber != null) && (data.referal.middleName != ""|| data.referal.lastName != ""||data.referal.firstName!= "" ||data.referal.referral != ""|| data.referal.referralDesignation != "" || data.referal.referralEmail != "" || data.referal.referralFax != "" || data.referal.referralName != "" || data.referal.referralPhoneNumber != "")) {
+      serviceMethod.common("post", API_ENDPOINTS['patient']+`/${patientUdid}/referral`, null, data.referal).then(response => {
         commit('addPatientReferals', response.data.data);
         commit('patientReferralSource', response.data.data);
         errorMessage.push(false)
@@ -187,7 +191,7 @@ export const updateDemographic = async ({commit}, request) => {
         // }
       })
     }
-  
+    commit('counterPlus')
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     // if (error.response.status === 422) {
@@ -239,8 +243,10 @@ export const patients = async ({
   let link = page? "patient"+page : "patient"
  
   await serviceMethod.common("get", link, null, null).then((response) => {
-    commit('patient', response.data);
+   
+    commit('patient', response.data)
     commit('loadingTableStatus', false)
+    
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     errorSwal(error.response.data.message)
@@ -1594,4 +1600,36 @@ export const updateDocument = async ({commit}, data) => {
     }
     commit('loadingStatus', false)
   })
+}
+export const referral = async ({
+  commit
+}) => {
+  
+ 
+ 
+  await serviceMethod.common("get", API_ENDPOINTS['referral'], null, null).then((response) => {
+    commit('referral', response.data.data);
+    
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    errorSwal(error.response.data.message)
+   
+  })
+
+}
+export const referralDetail = async ({
+  commit
+},id) => {
+  
+ 
+ 
+  await serviceMethod.common("get",'patient/'+id+'/referral', null, null).then((response) => {
+    commit('referralDetail', response.data.data);
+    
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    errorSwal(error.response.data.message)
+   
+  })
+
 }

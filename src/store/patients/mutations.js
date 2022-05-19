@@ -454,11 +454,11 @@ export const responsiblePerson = (state, data) => {
 }
 
 export const emergencyContact = (state, data) => {
-  data[0].contactType = data[0].contactType.length > 0 ? JSON.parse(data[0].contactType) : [];
-  data[0].contactTime = data[0].contactTimeId.length > 0 ? JSON.parse(data[0].contactTimeId) : [];
-  data[0].gender = data[0].genderId;
-  data[0].sameAsPrimary = data[0].sameAsPrimary ? true : false;
-  state.emergencyContact = data[0]
+  data.contactType = data.contactType.length > 0 ? JSON.parse(data.contactType) : [];
+  data.contactTime = data.contactTimeId.length > 0 ? JSON.parse(data.contactTimeId) : [];
+  data.gender = data.genderId;
+  data.sameAsPrimary = data.sameAsPrimary ? true : false;
+  state.emergencyContact = data
 }
 
 export const patientTimelineSuccess = (state, timeline) => {
@@ -1054,4 +1054,10 @@ export const documentDetails = (state, data) => {
 
 export const isPicuteLoading = (state, data) => {
   state.isPicuteLoading = data
+}
+export const referral = (state, data) => {
+  state.referral = data
+}
+export const referralDetail = (state, data) => {
+  state.referralDetail = data
 }
