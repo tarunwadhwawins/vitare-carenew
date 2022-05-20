@@ -1622,7 +1622,7 @@ export const escalationList = async ({commit}, data) => {
   await serviceMethod.common("get", `escalation?referenceId=${data.referenceId}&entityType=${data.entityType}`, null, null).then((response) => {
     commit('escalationList', response.data.data)
     // successSwal(response.data.message)
-    commit('escalationCounterPlus')
+    // commit('escalationCounterPlus')
     commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
