@@ -36,7 +36,7 @@
 
 <script>
 import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
-import { computed, reactive, ref } from "vue";
+import { computed, reactive, ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 import { globalDateFormat } from "@/commonMethods/commonMethod";
 import EscaltionTable from "@/components/common/tables/EscalationTable"
@@ -81,10 +81,10 @@ export default {
     Loader,
     EscaltionViewModal
   },
-  // props:{
-  //     patientId:String
-  // },
-  setup() {
+  props:{
+      patientId:String
+  },
+  setup(props) {
     const store = useStore();
     const escaltionViewModal = ref(false)
     const escalationDetails = reactive({
@@ -103,7 +103,11 @@ export default {
       return store.state.patients.patientDetails;
     });
 
-   
+    watchEffect(()=>{
+        if(props.patientId){      
+            store.dispatch('escalationList', {referenceId:props.patientId,entityType:'patient'})
+        }
+    })
     const showEscalationModal=()=>{
         // store.commit('resetEscalationCounter')
         store.state.patients.escalationCounter=0
