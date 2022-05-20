@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref  } from "vue";
+import { computed, onMounted, onUnmounted, ref  } from "vue";
 import { useStore } from "vuex";
 import { globalDateFormat } from "@/commonMethods/commonMethod";
 import EscaltionTable from "@/components/common/tables/EscalationTable";
@@ -97,7 +97,13 @@ export default {
     });
 
     onMounted(() => {
-        store.dispatch("staffEscalation")
+        // store.dispatch("staffEscalation")
+        if (store.getters.filter.value) {
+                 store.dispatch("staffEscalation","?filter="+store.getters.filter.value  +"&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate)
+               
+            } else {
+                store.dispatch("staffEscalation")
+            }
     });
     const showEscalationModal = () => {
       store.commit("resetEscalationCounter");
@@ -117,7 +123,10 @@ export default {
     const escalationList = computed(() => {
       return store.state.careCoordinator.staffEscalation;
     });
-
+onUnmounted(()=>{
+    store.commit("filter",'')
+    store.commit("dataFilter",'')
+})
     
     return {
       button,

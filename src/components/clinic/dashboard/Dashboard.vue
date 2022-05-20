@@ -23,7 +23,7 @@
             <ApexChart title="My Tasks " type="bar" :height="350" :options="clicalTask.code" :series="clicalTask.value" linkTo="tasks?view=list"></ApexChart>
         </a-col>
          <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  escalationCount">
-            <ApexChart title="Escalation" type="bar" :height="350" :options="escalationCount.code" :series="escalationCount.value" ></ApexChart>
+            <ApexChart title="Escalation" type="bar" :height="350" :options="escalationCount.code" :series="escalationCount.value" linkTo="escalation" ></ApexChart>
         </a-col>
          
         

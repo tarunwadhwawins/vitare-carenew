@@ -39,6 +39,7 @@ export default {
   setup(props,{emit}) {
     const store = useStore();
     onMounted(() => {
+      
     })
     const showEscalationData = (value) =>{
       console.log(value)
