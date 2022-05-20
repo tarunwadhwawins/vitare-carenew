@@ -1661,6 +1661,29 @@ export const addBasicEscalation = async ({commit}, data) => {
 }
 
 
+export const updateBasicEscalation = async ({commit}, data) => {
+  let status = false
+  commit('loadingStatus', true)
+  await serviceMethod.common("put", `escalation/${data.escalationId}`, null, data).then((response) => {
+    commit('updateBasicEscalation', response.data.data)
+    // successSwal(response.data.message)
+    commit('escalationCounterPlus')
+    commit('loadingStatus', false)
+    status = true
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      errorSwal(error.response.data.message)
+    }
+    commit('loadingStatus', false)
+  })
+  return status
+}
+
 export const addEscalationNote = async ({commit}, data) => {
   let status = false
   commit('loadingStatus', true)

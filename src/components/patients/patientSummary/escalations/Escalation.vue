@@ -104,10 +104,16 @@ export default {
     });
 
     watchEffect(()=>{
-        if(props.patientId){      
+        if(props.patientId){    
+            store.dispatch('escalationNotesList', {id:props.patientId,date:null})
+           store.dispatch('escalationVitalList', {id:props.patientId,date:null})
+           store.dispatch('esacalationCarePlansList', {id:props.patientId,date:null})
+           store.dispatch('esacalationFlagList', {id:props.patientId,date:null})  
             store.dispatch('escalationList', {referenceId:props.patientId,entityType:'patient'})
         }
     })
+
+    
     const showEscalationModal=()=>{
         store.commit('resetEscalationCounter')
         store.state.patients.addBasicEscalation=null

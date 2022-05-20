@@ -420,15 +420,29 @@ export default {
     });
 
     function submitEscalationForm() {
-      store.dispatch("addBasicEscalation", {
-      escalationType: escalation.escalationType,
-      escalationDescription: escalation.escalationDescription,
-      flagId: escalation.flagId,
-      dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
-      staffIds: escalation.staffIds,
-      referenceId: route.params.udid,
-      entityType: "patient",
-          });
+      if(addEscalation.value==null){
+
+        store.dispatch("addBasicEscalation", {
+        escalationType: escalation.escalationType,
+        escalationDescription: escalation.escalationDescription,
+        flagId: escalation.flagId,
+        dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
+        staffIds: escalation.staffIds,
+        referenceId: route.params.udid,
+        entityType: "patient",
+            })
+      }else{
+        store.dispatch("updateBasicEscalation", {
+        escalationType: escalation.escalationType,
+        escalationDescription: escalation.escalationDescription,
+        flagId: escalation.flagId,
+        dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
+        staffIds: escalation.staffIds,
+        referenceId: route.params.udid,
+        entityType: "patient",
+        escalationId:addEscalation.value.id
+            })
+      }
     }
 
     
