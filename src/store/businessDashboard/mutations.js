@@ -1,6 +1,8 @@
 import { yaxis, dataLabels, plotOptions, annotations } from '../../commonMethods/commonMethod';
 
 export const cptCodeSuccess = (state, data) => {
+	console.log("check",data)
+	data.length > 0 ? data : data.push({total:0,text:9005})
 	state.cptCodeValue = {
 		code: {
 			annotations: annotations('In', 0, '#775DD0', 0, '#fff', '#775DD0'),
@@ -88,15 +90,16 @@ export const referalCount = (state, data) => {
 	};
 };
 export const financialSuccess = (state, data) => {
+	
 	state.financialValue = {
-		due: [ data.Due != null ? Math.round(data.Due) : 0, data.Billed != null ? Math.round(data.Billed) : 0 ],
+		due: [ data.Due != null ? Math.round(data.Due) : 100, data.Billed != null ? Math.round(data.Billed) : 0 ],
 		billed: {
 			chart: {
 				type: 'pie',
 				height: '400px'
 			},
-			labels: [ 'Billed', 'Due' ],
-			colors: [ '#267dff', '#E30D2A' ],
+			labels: [ 'Due','Billed',  ],
+			colors: [ '#E30D2A','#267dff'  ],
 			responsive: [
 				{
 					breakpoint: 480,
