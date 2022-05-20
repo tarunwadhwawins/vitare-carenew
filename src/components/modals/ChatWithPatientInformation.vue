@@ -70,7 +70,7 @@
                     <div class="moreActionImg green">
                       <img src="@/assets/images/report.svg" />
                     </div>
-                    <p>Document</p>
+                    <p>Documents</p>
                   </div>
                 </a-col>
 
@@ -79,7 +79,7 @@
                     <div class="moreActionImg redBgColor">
                       <img src="@/assets/images/wave.svg" />
                     </div>
-                    <p>Vital</p>
+                    <p>Vitals</p>
                   </div>
                 </a-col>
 
@@ -88,7 +88,7 @@
                     <div class="moreActionImg purpleBgColor">
                       <CalendarOutlined />
                     </div>
-                    <p>Appointment</p>
+                    <p>Appointments</p>
                   </div>
                 </a-col>
 
@@ -97,7 +97,7 @@
                     <div class="moreActionImg brightRedBgColor">
                       <PushpinOutlined />
                     </div>
-                    <p>Pin</p>
+                    <p>Pins</p>
                   </div>
                 </a-col>
 
@@ -106,7 +106,7 @@
                     <div class="moreActionImg darkGreenBgColor">
                       <PhoneOutlined />
                     </div>
-                    <p>Call</p>
+                    <p>Start Call</p>
                   </div>
                 </a-col>
               </a-row>
