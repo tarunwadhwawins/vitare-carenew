@@ -50,6 +50,7 @@ export default {
                  store.dispatch("referralList","?filter=" +store.getters.filter.value +"&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate)
                
             } else {
+                store.commit("dateFilter",'')
                 store.dispatch("referralList")
             }
             store.dispatch("searchTable", '&search=')

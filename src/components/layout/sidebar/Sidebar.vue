@@ -19,11 +19,9 @@
                 <a-menu-item>
                     <DashboardOutlined /><span class="menuItem">{{'Escalation'}}</span></a-menu-item>
             </router-link>
-             <router-link to="/referral" >
+             <router-link to="/referral">
                 <a-menu-item>
-                    <FileDoneOutlined />
-                    <span class="menuItem">Referral</span>
-                </a-menu-item>
+                    <FileDoneOutlined /><span class="menuItem">Referral</span></a-menu-item>
             </router-link>
             <router-link :to="{ name: 'Communications', query: {view: 'dashboard'} }" v-if="arrayToObjact(screensPermissions, 109)">
                 <a-menu-item>
