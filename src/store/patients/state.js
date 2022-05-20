@@ -95,6 +95,7 @@ export default {
     referralDetail:null,
     escalationNotesList:null,
     esacalationCarePlansList:null,
-    escalationVitalList:null
+    escalationVitalList:null,
+    singleEscalationRecord:null
 
 }
