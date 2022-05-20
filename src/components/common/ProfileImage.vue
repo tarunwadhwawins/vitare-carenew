@@ -205,11 +205,13 @@ span.edit-icon {
   top: -1px;
   font-size: 18px;
 }
-.header .button-details {
+
+/* .header .button-details { */
   /* position: relative !important; */
   /* top: 70px !important; */
   /* left: -91px !important; */
-}
+/* } */
+
 .header .button-section {
   position: relative !important;
   top: 50px !important;
