@@ -1,7 +1,7 @@
 
 <template>
 
-<a-table rowKey="id"  :columns="referralColumns" :data-source="record" :scroll="{ y: tableYScroller}" :pagination="false" @change="handleTableChange">
+<a-table rowKey="id"  :columns="referralColumns" :data-source="record" :scroll="{ y: tableYScroller}" :pagination="false" >
         <template #patientName="{ text, record }" >
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
         </template> 
@@ -55,8 +55,9 @@ export default {
             data = record.value
             loader.value = true;
             meta.value = "";
-            store.state.referral.referralList = "";
-
+            //record.value=''
+            //store.state.referral.referralList = "";
+console.log("tedfdfst",data)
             store
               .dispatch(
                 "referralList",
@@ -77,12 +78,15 @@ export default {
     });
 
     function loadMoredata() {
-      const newData = record.value;
+      const newData = record.value
 
       newData.forEach((element) => {
         data.push(element);
       });
-      record.value = data;
+      console.log('total',data)
+      store.state.referral.referralList = data
+      
+      // = data;
       var tableContent = document.querySelector(".ant-table-body");
 
       setTimeout(() => {

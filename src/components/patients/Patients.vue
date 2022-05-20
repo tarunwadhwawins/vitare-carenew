@@ -90,6 +90,7 @@ export default {
             if (store.getters.filter.value) {
                 store.dispatch("patients", "?filter=" +store.getters.filter.value+ "&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate)
             } else {
+                 store.commit("dateFilter",'')
                 store.dispatch("patients");
             }
 
