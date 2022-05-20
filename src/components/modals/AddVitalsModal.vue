@@ -73,12 +73,17 @@ export default {
     deviceId: {
       type: Number
     },
+    patientId: {
+      type: Number
+    },
   },
   setup(props, {emit}) {
     const store = useStore()
     const route = useRoute()
     const formRef = ref()
     const idDevice = reactive(props.deviceId)
+    const patient = localStorage.getItem('patientUdid')
+    const patientId = patient ? patient : route.params.udid
 
     watchEffect(() => {
       store.dispatch('vitalFieldsByDeviceId', idDevice)
@@ -97,7 +102,7 @@ export default {
     const form = reactive({ ...addVitalForm })
 
     const submitForm = () => {
-      const patientId = route.params.udid;
+      // const patientId = route.params.udid;
       addVitalForm.takeTime = timeStamp(addVitalForm.takeTime)
       const data = {
         'vital': [{
@@ -108,11 +113,12 @@ export default {
           'comment': addVitalForm.comment
         }]
       }
+      
       store.dispatch('addVital', { patientId, data }).then(() => {
         store.dispatch('patientVitals', {patientId: patientId, deviceType: 99});
         store.dispatch('patientVitals', {patientId: patientId, deviceType: 100});
         store.dispatch('patientVitals', {patientId: patientId, deviceType: 101});
-          store.dispatch('patientTimeline', {id:route.params.udid, type:''});
+        store.dispatch('patientTimeline', {id:patientId, type:''});
         formRef.value.resetFields()
         Object.assign(addVitalForm, form)
         emit('closeModal')

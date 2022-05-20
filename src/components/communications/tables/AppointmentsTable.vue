@@ -2,7 +2,7 @@
   <a-row :gutter="24">
     <a-col :sm="24" :xs="24">
       <div class="documentsTab">
-      <a-button @click="showAddAppointmentModal();actionTrack(paramsId,294,'patient')" type="primary">{{ "Add Appointment" }}</a-button>
+      <a-button @click="showAddAppointmentModal()" type="primary">{{ "Add Appointment" }}</a-button>
       <a-table rowKey="id" :columns="appointmentColumns" :data-source="patientAppointmentsList" :pagination="false">
         <template #flag="{ record }">
           <Flags :flag="record.flagColor" />

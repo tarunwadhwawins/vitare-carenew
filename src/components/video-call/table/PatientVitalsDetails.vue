@@ -48,7 +48,7 @@
 
   
   <Loader v-if="!isCommunication" />
-  <AddVitalsModal v-if="visibleAddVitalsModal" v-model:visible="visibleAddVitalsModal" :title="title" :deviceId="deviceId" @closeModal="handleOk" @ok="handleOk" />
+  <AddVitalsModal v-if="visibleAddVitalsModal" v-model:visible="visibleAddVitalsModal" :title="title" :deviceId="deviceId" @closeModal="handleOk" @ok="handleOk" :patientId="patientUdid" />
 </template>
 
 <script>
@@ -69,6 +69,9 @@ export default {
   props: {
     isCommunication: {
       type: Boolean,
+    },
+    patientUdid: {
+      type: Number
     },
   },
   setup() {
