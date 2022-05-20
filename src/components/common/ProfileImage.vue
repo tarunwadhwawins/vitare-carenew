@@ -206,14 +206,25 @@ span.edit-icon {
   font-size: 18px;
 }
 .header .button-details {
+  /* position: relative !important; */
+  /* top: 70px !important; */
+  /* left: -91px !important; */
+}
+.header .button-section {
   position: relative !important;
-  top: -22px !important;
+  top: 50px !important;
   left: -91px !important;
 }
 .header .image-section {
   left: 20px !important;
   position: relative !important;
   top: -10px !important;
+}
+.callRightWrapper .header .patientInfo .patientImg .info {
+  margin-left: -50px !important;
+}
+.callRightWrapper .header .patientInfo .patientImg {
+  padding: 30px !important;
 }
 
 /* .container {
