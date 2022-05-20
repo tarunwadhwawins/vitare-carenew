@@ -91,7 +91,10 @@ export default {
     patientVitalList:null,
     addBasicEscalation:null,
     escalationList:null,
-    patientFlagList:null,
-    referralDetail:null
+    esacalationFlagList:null,
+    referralDetail:null,
+    escalationNotesList:null,
+    esacalationCarePlansList:null,
+    escalationVitalList:null
 
 }

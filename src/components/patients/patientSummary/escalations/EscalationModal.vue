@@ -62,12 +62,15 @@
                     <a-row :gutter="24">
                         <a-col :xl="24" :xs="24" style="padding:20px;">
                             <div class="pageTittle">
-                                <div class="filter">
+                                <!-- <div class="filter">
                                     <a-button @click="showButton(1) " :class="button == 1 ? 'active' : ''">Day</a-button>
                                     <a-button @click="showButton(2) " :class="button == 2 ? 'active' : ''">Week</a-button>
                                     <a-button @click="showButton(3) " :class="button == 3 ? 'active' : ''">Month</a-button>
                                     <a-button @click="showButton(4) " :class="button == 4 ? 'active' : ''">Custom</a-button>
-                                </div>
+                                </div> -->
+                            <div class="filter" v-if="timeline && Buttons">
+                              <a-button v-for="item in timeline" :key="item.id" @click="showButton(item.id)" :class="Buttons.globalCodeId== item.id ? 'active' : ''"> {{item.name}}</a-button>
+                            </div>
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24" v-if="button ==4">
@@ -155,7 +158,7 @@
 </a-modal>
 </template>
 <script>
-import { computed, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { useStore } from "vuex";
 import moment from "moment";
 import {
@@ -164,7 +167,8 @@ import {
   endTimeAdd,
   warningSwal,
   errorSwal,
-  successSwal
+  successSwal,
+  startimeAdd
 } from "@/commonMethods/commonMethod";
 import {
     messages
@@ -405,10 +409,10 @@ export default {
       console.log(val);
     };
     const notesList = computed(() => {
-      return store.state.notes.notesList;
+      return store.state.patients.escalationNotesList;
     });
     const patientVitalList = computed(() => {
-      return store.state.patients.patientVitalList;
+      return store.state.patients.escalationVitalList;
     });
 
     const addEscalation = computed(() => {
@@ -426,6 +430,8 @@ export default {
       entityType: "patient",
           });
     }
+
+    
 
      const form = reactive({
         ...escalation,
@@ -526,15 +532,68 @@ export default {
       console.log("value", e);
     }
     const carePlanList = computed(() => {
-      return store.state.carePlan.carePlansList;
+      return store.state.patients.esacalationCarePlansList;
     });
     const patientFlagList = computed(() => {
-      return store.state.patients.patientFlagList;
+      return store.state.patients.esacalationFlagList;
     });
 
-    function showButton(value) {
-      button.value = value;
+    // function showButton(value) {
+    //   button.value = value;
+    // }
+    onMounted(()=>{
+      store.dispatch("timeLine", 123).then(() => {
+        apiCall(timeLineButton.value)
+      })
+    })
+     const timeLineButton = store.getters.dashboardTimeLineButton
+
+    function showButton(id=123) {
+      store.dispatch("timeLine", id).then(() => {
+        apiCall(timeLineButton.value)
+      })
+
     }
+    let from = moment()
+    let to = moment()
+  
+    function apiCall(data) {
+             let dateFormate = ''
+            if (data.globalCodeId == 122) {
+                from = moment()
+                to = moment().subtract(data.number, data.intervalType);
+            } else if (data.globalCodeId == 123) {
+                from = moment();
+
+                to = moment().subtract(data.number, data.intervalType);
+            } else if (data.globalCodeId == 124) {
+                from = moment();
+                to = moment().subtract(data.number, data.intervalType);
+            } else {
+                from = moment();
+                to = moment().subtract(data.number, data.intervalType);
+            }
+            
+            if (data.globalCodeId == 122) {
+                dateFormate = {
+                    fromDate: from ? timeStamp(startimeAdd(from)) : '',
+                    toDate: to ? timeStamp(endTimeAdd(to)) : ''
+                }
+            } else {
+                dateFormate = {
+                    fromDate: timeStamp(startimeAdd(to)),
+                    toDate: timeStamp(endTimeAdd(from))
+                }
+            }
+            
+           store.dispatch('escalationNotesList', {id:route.params.udid,date:dateFormate})
+           store.dispatch('escalationVitalList', {id:route.params.udid,date:dateFormate})
+           store.dispatch('esacalationCarePlansList', {id:route.params.udid,date:dateFormate})
+           store.dispatch('esacalationFlagList', {id:route.params.udid,date:dateFormate})
+          // console.log(from, to,dateFormate);
+          
+            
+        }
 
     const noteSelection = {
       onChange: (selectedRowKeys) => {
@@ -559,6 +618,8 @@ export default {
       }
     };
     return {
+      timeline:store.getters.timeline,
+      Buttons:store.getters.dashboardTimeLineButton,
       flagSelection,
       carePlanSelection,
       vitalSelection,
