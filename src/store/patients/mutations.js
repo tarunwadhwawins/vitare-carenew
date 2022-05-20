@@ -1130,3 +1130,8 @@ export const escalationVitalList = (state, data) => {
 		return item;
 	})
 }
+
+
+export const singleEscalationRecord = (state, data) => {
+  state.singleEscalationRecord = data
+}

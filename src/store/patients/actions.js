@@ -1900,7 +1900,7 @@ export const referralDetail = async ({commit},id) => {
 
 
 
-export const singleEscalationRecord = async ({commit}, id) => {
+export const singleEscalationRecord = async ({commit}, id) => { 
   try{
     commit('loadingStatus', true)
       let response = await serviceMethod.common("get", `escalation/${id}`, null, null)
