@@ -5,8 +5,8 @@
 				<a-col :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('appointmentCalendar.addAppointment.patient')" name="patientId" :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.patient')+' '+$t('global.validation')  }]">
-							<a-input v-if="isPatientSummary" :value="patientName" :disabled="isPatientSummary" size="large" />
-							<PatientDropDown v-else :disabled="isPatientSummary" v-model:value="appointmentForm.patientId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" :close="closeValue" />
+							<a-input v-if="isPatientSummary || isChat" :value="patientName" :disabled="isPatientSummary || isChat" size="large" />
+							<PatientDropDown v-else :disabled="isPatientSummary || isChat" v-model:value="appointmentForm.patientId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" :close="closeValue" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.patientId?errorMsg.patientId[0]:''" />
 						</a-form-item>
 					</div>
@@ -137,6 +137,9 @@ export default {
 		patientName: {
 			type: Number
 		},
+		isChat: {
+			type: Boolean
+		},
 	},
 	setup(props, { emit }) {
 		const formRef = ref();
@@ -250,6 +253,9 @@ export default {
 						date: moment(date)
 					});
 					handleCancel()
+				}
+				if(props.isChat) {
+					store.dispatch('patientAppointmentsList', idPatient)
 				}
 				emit("closeModal", {
 					modal: 'addAppointment',

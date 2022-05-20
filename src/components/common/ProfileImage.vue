@@ -67,7 +67,8 @@ export default {
     isLeft: {
       type: Boolean
     },
-    hideEditIcon:Boolean
+    hideEditIcon:Boolean,
+    patientUdid:Number
   },
   components: {
     MailOutlined,
@@ -80,6 +81,7 @@ export default {
     const store = useStore();
     const route = useRoute();
     const modalVisible = ref(false);
+    const patientId = props.patientUdid ? props.patientUdid : route.params.udid
 
     const isPicuteLoading = computed(() => {
       return store.state.patients.isPicuteLoading
@@ -92,7 +94,6 @@ export default {
     const patientDetails = computed(() => {
       return store.state.patients.patientDetails
     })
-    console.log('profilePhoto 1', patientDetails.value.profilePhoto)
 
     const imageinCropper = ref('');
     const imageUrl = ref('');
@@ -121,9 +122,9 @@ export default {
 
       store.dispatch("updateProfileImage", {
         formData: formData,
-        patientUdid: route.params.udid,
+        patientUdid: patientId,
       }).then(() => {
-        store.dispatch("patientDetails", route.params.udid).then(() => {
+        store.dispatch("patientDetails", patientId).then(() => {
           imageUrl.value = patientDetails.value.profilePhoto
           console.log('profilePhoto 2', patientDetails.value.profilePhoto)
           store.commit('uploadFile', null)
@@ -155,7 +156,7 @@ export default {
 
     return {
       screensPermissions:store.getters.screensPermissions,
-      paramsId:route.params.udid,
+      paramsId:patientId,
       imageinCropper,
       imageUrl,
       handleChange,
@@ -203,6 +204,29 @@ span.edit-icon {
   position: relative;
   top: -1px;
   font-size: 18px;
+}
+
+/* .header .button-details { */
+  /* position: relative !important; */
+  /* top: 70px !important; */
+  /* left: -91px !important; */
+/* } */
+
+.header .button-section {
+  position: relative !important;
+  top: 50px !important;
+  left: -91px !important;
+}
+.header .image-section {
+  left: 20px !important;
+  position: relative !important;
+  top: -10px !important;
+}
+.callRightWrapper .header .patientInfo .patientImg .info {
+  margin-left: -50px !important;
+}
+.callRightWrapper .header .patientInfo .patientImg {
+  padding: 30px !important;
 }
 
 /* .container {

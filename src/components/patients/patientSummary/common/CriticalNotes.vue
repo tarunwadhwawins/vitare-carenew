@@ -5,7 +5,7 @@
 		<template #renderItem="{item}">
 			
 			<a-list-item class="critcal-note">
-				<Alert v-if="item.criticalNote" :itemId="item.id" :text="item.criticalNote" type="error" :closable="true" />
+				<Alert v-if="item.criticalNote" :itemId="item.id" :text="item.criticalNote" type="error" :closable="true" :patientUdid="patientUdid" />
 			</a-list-item>
 		</template>
 	</a-list>
@@ -20,16 +20,27 @@ export default {
 	components: {
     Alert,
 	},
-	setup() {
+	props: {
+    patientUdid: {
+			type: Number
+		},
+    patientPins: {
+			type: Array
+		},
+	},
+	setup(props) {
 		const store = useStore()
 		const route = useRoute();
-    const patientCriticalNotes = computed(() => {
+		const patientId = props.patientUdid ? props.patientUdid : route.params.udid
+
+    const patientCriticalNotes = props.patientPins ? props.patientPins :
+		computed(() => {
       return store.state.patients.patientCriticalNotes
     })
-	watchEffect(()=>{
-	
-		store.dispatch('patientCriticalNotes', route.params.udid)
-	})
+
+		watchEffect(() => {
+			store.dispatch('patientCriticalNotes', patientId)
+		})
 
 		return {
 			patientCriticalNotes,

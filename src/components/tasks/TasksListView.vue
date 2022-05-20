@@ -43,6 +43,7 @@ export default {
                 });
                 store.dispatch("tasksList", "?filter=" +store.getters.filter.value+"&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate);
             } else {
+                 store.commit("dateFilter",'')
                 store.dispatch("tasksList")
             }
             store.dispatch("searchTable", '&search=')

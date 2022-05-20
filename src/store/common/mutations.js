@@ -208,7 +208,11 @@ export const checkChangeInput = (state, data) => {
     state.filter = data
   }
   export const dateFilter = (state, data) => {
+      if(data){
     state.dateFilter = data
+      }else{
+        state.dateFilter = {fromDate:'',toDate:''}
+      }
   }
   export const toScroll = (state, data) => {
     state.toScroll = data

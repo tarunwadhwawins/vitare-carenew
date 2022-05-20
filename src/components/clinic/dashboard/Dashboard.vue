@@ -40,7 +40,7 @@
 </template>
 
 <script>
-  import { watchEffect } from 'vue'
+  import { watchEffect,ref } from 'vue'
   //import Card from "@/components/common/cards/Card"
   import ApexChart from "@/components/common/charts/ApexChart"
   import { startimeAdd, endTimeAdd, timeStamp ,arrayToObjact} from '@/commonMethods/commonMethod'
@@ -59,7 +59,7 @@ export default {
         const store = useStore()
         //const fromDate = ref(moment())
         //const toDate = ref(moment())
-        
+        const dateFilter = ref('')
         const timeLineButton = store.getters.dashboardTimeLineButton
 
         function apiCall(data) {
@@ -96,7 +96,8 @@ export default {
                 }
                 
             }
-            store.commit("dateFilter",dateFormate)
+            dateFilter.value = dateFormate
+            store.commit("dateFilter",dateFilter.value)
             store.dispatch("permissions")
             store.dispatch("clicalTask", dateFormate)
             
