@@ -16,7 +16,7 @@
        
       
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  cptCodeValue">
-            <ApexChart title="Timelog Summary" type="bar" :height="386" :options="cptCodeValue.code" :series="cptCodeValue.value" linkTo="cpt-codes"></ApexChart>
+            <ApexChart title="Timelog Summary" type="bar" :height="386" :options="cptCodeValue.code" :series="cptCodeValue.value" linkTo="time-log-report"></ApexChart>
         </a-col>
         
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  referalCount">
