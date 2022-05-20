@@ -497,4 +497,7 @@ export default {
   height: 445px;
   overflow-x: hidden;
 }
+.callRightWrapper .header .patientInfo .patientImg .info {
+  margin-left: -50px !important;
+}
 </style>
