@@ -96,6 +96,7 @@ export default {
                 }
                 
             }
+            store.commit("dateFilter",dateFormate)
             store.dispatch("permissions")
             store.dispatch("clicalTask", dateFormate)
             

@@ -92,6 +92,7 @@ export default {
                 "?page=" +
                   current_page +
                   '&filter='+filter+
+                  "&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+
                   store.getters.searchTable.value +
                   store.getters.orderTable.value.data
               )
@@ -151,7 +152,7 @@ export default {
         });
         store.dispatch(
           "tasksList",
-          "?page=" + store.getters.searchTable.value + orderParam+'&filter='+filter
+          "?page=" +"&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+ store.getters.searchTable.value + orderParam+'&filter='+filter
         );
       } else {
         store.dispatch("orderTable", {
@@ -161,6 +162,7 @@ export default {
           "tasksList",
           "?page=" +
             store.getters.searchTable.value +
+            "&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+
             store.getters.orderTable.value.data+'&filter='+filter
         );
       }
