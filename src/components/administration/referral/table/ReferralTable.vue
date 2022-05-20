@@ -60,9 +60,10 @@ export default {
             store
               .dispatch(
                 "referralList",
-                store.getters.searchTable.value +
-                  "&page=" +
+                
+                  "?page=" +
                   current_page +
+                  store.getters.searchTable.value +
                   "&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+
                    '&filter='+filter+
                   store.getters.orderTable.value.data
