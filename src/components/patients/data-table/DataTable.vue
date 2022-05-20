@@ -79,7 +79,7 @@ export default {
                         data = meta.patientList
                         //store.state.patients.patientList = ""
 
-                        store.dispatch("patients", "?page=" + current_page +'&filter='+filter+ store.getters.searchTable.value +
+                        store.dispatch("patients", "?page=" + current_page +"&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+'&filter='+filter+ store.getters.searchTable.value +
                             store.getters.orderTable.value.data).then(() => {
                             loadMoredata();
                         });
@@ -113,7 +113,7 @@ export default {
                 });
                 store.dispatch(
                     "patients",
-                    "?page=" + '&filter='+filter+store.getters.searchTable.value + orderParam
+                    "?page=" + "&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+'&filter='+filter+store.getters.searchTable.value + orderParam
                 );
             } else {
                 store.dispatch("orderTable", {
@@ -122,6 +122,7 @@ export default {
                 store.dispatch(
                     "patients",
                     "?page=" +'&filter='+filter+
+                    "&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+
                     store.getters.searchTable.value +
                     store.getters.orderTable.value.data
                 )

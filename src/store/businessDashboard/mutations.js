@@ -1,6 +1,17 @@
 import { yaxis, dataLabels, plotOptions, annotations } from '../../commonMethods/commonMethod';
 
 export const cptCodeSuccess = (state, data) => {
+	let cptResult = []
+	data.data.forEach(element => {
+		let object = data.cpt.find(e=>e.text==element.name)
+		console.log(object)
+		if(object==undefined){
+			cptResult.push({total:0,text:element.name})
+		}else{
+			cptResult.push(object)
+		}
+	});
+	
 	state.cptCodeValue = {
 		code: {
 			annotations: annotations('In', 0, '#775DD0', 0, '#fff', '#775DD0'),
@@ -24,7 +35,7 @@ export const cptCodeSuccess = (state, data) => {
 				labels: {
 					rotate: -45
 				},
-				categories: data.map((item) => {
+				categories: cptResult.map((item) => {
 					return item.text;
 				})
 			},
@@ -33,7 +44,7 @@ export const cptCodeSuccess = (state, data) => {
 		value: [
 			{
 				name: 'Amount',
-				data: data.map((item) => {
+				data: cptResult.map((item) => {
 					return item.total;
 				})
 			}
@@ -88,15 +99,16 @@ export const referalCount = (state, data) => {
 	};
 };
 export const financialSuccess = (state, data) => {
+	
 	state.financialValue = {
-		due: [ data.Due != null ? Math.round(data.Due) : 0, data.Billed != null ? Math.round(data.Billed) : 0 ],
+		due: [ data.Due != null ? Math.round(data.Due) : 100, data.Billed != null ? Math.round(data.Billed) : 0 ],
 		billed: {
 			chart: {
 				type: 'pie',
 				height: '400px'
 			},
-			labels: [ 'Billed', 'Due' ],
-			colors: [ '#267dff', '#E30D2A' ],
+			labels: [ 'Due','Billed',  ],
+			colors: [ '#E30D2A','#267dff'  ],
 			responsive: [
 				{
 					breakpoint: 480,

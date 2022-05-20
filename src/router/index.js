@@ -284,6 +284,13 @@ const routes = [
     meta: { authAdmin: true }
   },
 
+  {
+    path: '/escalation',
+    name: 'Escalation',
+    component: () => import('@/views/manage-care-coordinator/StaffEscalation'),
+    meta: { authAdmin: true }
+  },
+
 
 ]
 

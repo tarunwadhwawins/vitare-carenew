@@ -33,6 +33,7 @@ import {
   warningSwal,
   arrayToObjact,
   tableYScroller,
+  timeStampFormate,
 } from "@/commonMethods/commonMethod";
 export default {
   components: {
@@ -104,6 +105,7 @@ export default {
                 store.getters.searchTable.value +
                   "&page=" +
                   current_page +
+                  "&fromDate=" + timeStampFormate(store.getters.dateFilter.value.toDate,"YYYY-MM-DD") + "&toDate=" + timeStampFormate(store.getters.dateFilter.value.fromDate,"YYYY-MM-DD")+
                    '&filter='+filter+
                   store.getters.orderTable.value.data
               )
@@ -142,7 +144,7 @@ export default {
         });
         store.dispatch(
           "cptCodesList",
-          store.getters.searchTable.value + '&filter='+filter+ orderParam
+          store.getters.searchTable.value +"&fromDate=" + timeStampFormate(store.getters.dateFilter.value.toDate,"YYYY-MM-DD") + "&toDate=" + timeStampFormate(store.getters.dateFilter.value.fromDate,"YYYY-MM-DD")+ '&filter='+filter+ orderParam
         );
       } else {
         store.dispatch("orderTable", {
@@ -150,7 +152,9 @@ export default {
         });
         store.dispatch(
           "cptCodesList",
-          store.getters.searchTable.value +  '&filter='+filter+store.getters.orderTable.value.data
+          store.getters.searchTable.value + 
+          "&fromDate=" + timeStampFormate(store.getters.dateFilter.value.toDate,"YYYY-MM-DD") + "&toDate=" + timeStampFormate(store.getters.dateFilter.value.fromDate,"YYYY-MM-DD")+
+          '&filter='+filter+store.getters.orderTable.value.data
         );
       }
     };

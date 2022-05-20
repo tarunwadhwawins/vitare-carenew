@@ -47,7 +47,7 @@ import CptCodesTable from "@/components/administration/cpt-codes/tables/CptCodes
 import { ref,onUnmounted, onMounted} from "vue";
 import SearchField from "@/components/common/input/SearchField";
 import Button from "@/components/common/button/Button";
-import { arrayToObjact,exportExcel } from "@/commonMethods/commonMethod";
+import { arrayToObjact,exportExcel,timeStampFormate } from "@/commonMethods/commonMethod";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 import {
     useStore
@@ -89,7 +89,8 @@ export default {
         };
         onMounted(() => {
             if (store.getters.filter.value) {
-                store.dispatch('cptCodesList', "&filter=" + store.getters.filter.value)
+                
+                store.dispatch('cptCodesList', "&fromDate=" + timeStampFormate(store.getters.dateFilter.value.toDate,"YYYY-MM-DD") + "&toDate=" + timeStampFormate(store.getters.dateFilter.value.fromDate,"YYYY-MM-DD")+"&filter=" + store.getters.filter.value)
             } else {
                 store.dispatch('cptCodesList')
             }
@@ -100,6 +101,7 @@ export default {
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
             })
+            store.commit("dataFilter")
 
         })
 

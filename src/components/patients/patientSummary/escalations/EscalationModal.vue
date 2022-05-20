@@ -91,13 +91,13 @@
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="notesId" :rules="[{ required: false, message:'Notes'+' '+$t('global.validation') }]">
-                                            <a-checkbox-group v-model:value="escalationDetails.notesId" style="width:100%">
-                                                <a-table  rowKey="id" :columns="notesColumns" :data-source="notesList" :pagination="false">
+                                            <!-- <a-checkbox-group v-model:value="escalationDetails.notesId" style="width:100%"> -->
+                                                <a-table  rowKey="id" :row-selection="noteSelection" :columns="notesColumns" :data-source="notesList" :pagination="false">
                                                     <template #select="{ record }">
                                                         <a-checkbox @change="checkChangeInput()" :value="record.id" name="notes"></a-checkbox>
                                                     </template>
                                                 </a-table>
-                                            </a-checkbox-group>
+                                            <!-- </a-checkbox-group> -->
                                         </a-form-item>
                                     </div>
                                 </a-col>
@@ -422,6 +422,7 @@ export default {
     };
     const handleStaffChange = (val) => {
       escalation.staffIds = val;
+      console.log(val);
     };
     const notesList = computed(() => {
       return store.state.notes.notesList;
@@ -552,7 +553,14 @@ export default {
     function showButton(value) {
       button.value = value;
     }
+
+    const noteSelection = {
+      onChange: (selectedRowKeys, selectedRows) => {
+        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      }
+    };
     return {
+      noteSelection,
       status,
       form,
       checkFieldsData,
