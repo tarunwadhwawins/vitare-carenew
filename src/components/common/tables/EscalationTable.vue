@@ -41,9 +41,10 @@ export default {
     onMounted(() => {
       
     })
-    const showEscalationData = (value) =>{
-      console.log(value)
+    const showEscalationData = (id) =>{
+      console.log(id)
       emit("showEscalationData",true)
+      store.dispatch("singleEscalationRecord",id)
     }
     return {
       showEscalationData,

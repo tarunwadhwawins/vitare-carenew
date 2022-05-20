@@ -1091,15 +1091,42 @@ export const escalationList = (state, data) => {
 }
 
 
-export const patientFlagList = (state, data) => {
-  state.patientFlagList = data.map((item) => {
-		item.createdAt = dateAndTimeFormate(item.createdAt,globalDateFormat);
-		return item;
-	})
-}
+
 export const referral = (state, data) => {
   state.referral = data
 }
 export const referralDetail = (state, data) => {
   state.referralDetail = data
+}
+
+export const esacalationFlagList = (state, data) => {
+  state.esacalationFlagList = data.map((item) => {
+		item.createdAt = dateAndTimeFormate(item.createdAt,globalDateFormat);
+		return item;
+	})
+}
+
+export const escalationNotesList = (state, data) => {
+  state.escalationNotesList = data.map(note => {
+    note.date = dateOnlyFormat(note.date);
+    return note;
+  });
+}
+
+
+export const esacalationCarePlansList = (state, data) => {
+  state.esacalationCarePlansList = data.map(carePlan => {
+    carePlan.startDate = dateOnlyFormat(carePlan.startDate)
+    carePlan.endDate = dateOnlyFormat(carePlan.endDate)
+    return carePlan
+  })
+}
+
+
+export const escalationVitalList = (state, data) => {
+  state.escalationVitalList = data.map((item) => {
+		item.startTime = item.startTime?dateAndTimeFormate(item.startTime,globalDateFormat):'';
+    item.endTime = item.endTime?dateAndTimeFormate(item.endTime,globalDateFormat):'';
+		return item;
+	})
 }
