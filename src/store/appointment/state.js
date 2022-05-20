@@ -10,5 +10,6 @@ export default{
     showMoreRecords:null,
     appointmentConference:null,
     getStaff:null,
-    appointmentDetails:null
+    appointmentDetails:null,
+    patientAppointmentsList:null,
 }

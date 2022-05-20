@@ -1,5 +1,5 @@
 <template>
-  <a-table :scroll="{ x:1350 }" rowKey="id" :columns="columns" :data-source="data" :pagination="false" >
+  <a-table rowKey="id" :columns="columns" :data-source="data" :pagination="false" >
     <template #blood_pressure_systolic="{record}">
       <span v-if="record.blood_pressure_systolic" :class="className">{{ record.blood_pressure_systolic }}</span>
     </template>
@@ -61,4 +61,10 @@ export default {
 <style scoped>
   .dangerValue { margin: 0px 3px; }
   th, td { text-align: center; }
+  .chatBoxRight .ant-table-fixed {
+    width: 800px !important
+  }
+  .ant-table-fixed {
+    width: 1350px !important
+  }
 </style>

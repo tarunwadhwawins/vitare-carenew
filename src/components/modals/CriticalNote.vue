@@ -32,26 +32,40 @@ export default defineComponent({
 	components: {
 		Loader,
 	},
+	props: {
+		patientUdid: {
+      type: Number
+    },
+	},
   setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
+    const patientId = props.patientUdid ? props.patientUdid : route.params.udid
     const notes = reactive({
       criticalNote:"",
     });
 
     function addCriticalNote() {
       store.state.patients.patientCriticalNotes= ''
-      store.dispatch("addCriticalNote", {udid:route.params.udid,criticalNote:notes}).then(() => {
-        store.dispatch('patientCriticalNotes', route.params.udid);
-        store.dispatch('patientTimeline', {id:route.params.udid, type:''});
+      store.dispatch("addCriticalNote", {
+        udid:patientId,
+        criticalNote:notes
+      }).then(() => {
+        store.dispatch('patientCriticalNotes', patientId);
+        if(patientId == null) {
+          store.dispatch('patientTimeline', {
+            id:patientId,
+            type:''
+          });
+        }
         emit("closeModal");
       })
       setTimeout(() => {
-        if(patient.value){
-        reset();
-        store.dispatch('criticalNotesList', route.params.udid);
-        emit("saveModal", false);
-      }
+        if(patient.value && patientId != null) {
+          reset();
+          store.dispatch('criticalNotesList', patientId);
+          emit("saveModal", false);
+        }
       }, 2000);
       
     }
