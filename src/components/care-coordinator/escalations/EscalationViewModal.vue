@@ -10,6 +10,18 @@
             <a-collapse-panel key="2" header="Escalation Description">
                 <p>{{ record.escalationDescription }}</p>
             </a-collapse-panel>
+            <!-- <a-collapse-panel key="3" header="Notes" v-if="record.escalationNotes.data.length>0">
+                <p>{{ record.escalationNotes.data }}</p>
+            </a-collapse-panel>
+            <a-collapse-panel key="4" header="Vitals" v-if="record.escalationVital.data.length>0">
+                <p>{{ record.escalationVital.data }}</p>
+            </a-collapse-panel>
+            <a-collapse-panel key="5" header="Care Plans" v-if="record.escalationCarePlan.data.length>0">
+                <p>{{ record.escalationCarePlan.data }}</p>
+            </a-collapse-panel>
+            <a-collapse-panel key="6" header="Flags" v-if="record.escalationFlag.data.length>0">
+                <p>{{ record.escalationFlag.data }}</p>
+            </a-collapse-panel> -->
             
         </a-collapse>
         </a-col>
