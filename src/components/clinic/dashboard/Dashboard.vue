@@ -40,7 +40,7 @@
 </template>
 
 <script>
-  import { watchEffect,ref } from 'vue'
+  import { ref, onMounted } from 'vue'
   //import Card from "@/components/common/cards/Card"
   import ApexChart from "@/components/common/charts/ApexChart"
   import { startimeAdd, endTimeAdd, timeStamp ,arrayToObjact} from '@/commonMethods/commonMethod'
@@ -97,6 +97,7 @@ export default {
                 
             }
             dateFilter.value = dateFormate
+            console.log("check",dateFilter.value)
             store.commit("dateFilter",dateFilter.value)
             store.dispatch("permissions")
             store.dispatch("clicalTask", dateFormate)
@@ -109,7 +110,7 @@ export default {
         }
         
 
-        watchEffect(() => {
+        onMounted(() => {
           
           if(!timeLineButton.value){
             store.dispatch("timeLine", 122)

@@ -84,7 +84,7 @@ export default {
   // props:{
   //     patientId:String
   // },
-  setup(props) {
+  setup() {
     const store = useStore();
     const escaltionViewModal = ref(false)
     const escalationDetails = reactive({
