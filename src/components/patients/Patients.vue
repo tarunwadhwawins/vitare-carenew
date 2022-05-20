@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import {  ref,  watchEffect,  computed,  onUnmounted} from "vue";
+import {  ref,  onMounted,  computed,  onUnmounted} from "vue";
 import { useStore} from "vuex";
 import PatientsModal from "@/components/modals/PatientsModal";
 import CounterCard from "./counter-card/CounterCard";
@@ -84,7 +84,7 @@ export default {
         };
         const handleChange = () => {};
 
-        watchEffect(() => {
+        onMounted(() => {
             store.getters.patientsRecord.patientList = ""
             store.dispatch("programList");
             if (store.getters.filter.value) {
