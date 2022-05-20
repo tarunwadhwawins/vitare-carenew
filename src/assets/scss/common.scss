@@ -167,6 +167,12 @@ img.reportFlag {
 .greenBgColor {
 	background-color: #0fb5c2;
 }
+.darkGreenBgColor {
+	background-color: #008000;
+}
+.brightRedBgColor {
+	background-color: #ff0000;
+}
 
 .red-color {
 	color: $red-color;
@@ -430,4 +436,19 @@ span.address-text {
 	position: relative;
 	top: 4px;
 	left: 3px;
+}
+
+.callRightWrapper .ant-row {
+	overflow: unset !important;
+}
+.callRightWrapper .ant-table-body {
+	overflow: unset !important;
+}
+.callRightWrapper .ant-table-scroll {
+	overflow: unset !important;
+	overflow-x: unset !important;
+	height: 450px !important;
+}
+.chatModal .ant-modal-content .ant-modal-body {
+	overflow: hidden !important;
 }

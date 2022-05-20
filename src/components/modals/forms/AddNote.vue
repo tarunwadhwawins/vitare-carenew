@@ -63,7 +63,8 @@
                     message: $t('notes.note') + ' ' + $t('global.validation'),
                   },
                 ]">
-                    <a-input @change="changedValue" v-model:value="addNoteForm.note" size="large" />
+                <a-textarea v-model:value="addNoteForm.note" @change="changedValue" size="large" allow-clear />
+                    <!-- <a-input @change="changedValue" v-model:value="addNoteForm.note" size="large" /> -->
                 </a-form-item>
             </div>
         </a-col>
