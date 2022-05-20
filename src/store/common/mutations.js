@@ -119,6 +119,9 @@ export const globalCodes = (state, data) => {
         if (element.name === 'Escalation Type') {
             state.escalationType = element.globalCode;
         }
+        if (element.name === 'Task Type') {
+            state.taskType = element.globalCode;
+        }
         
     });
 
