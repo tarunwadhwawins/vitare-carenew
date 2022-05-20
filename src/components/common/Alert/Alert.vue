@@ -20,24 +20,27 @@ export default {
 		itemId: {
 			type: Number
 		},
+		patientUdid: {
+			type: Number
+		},
 	},
-	setup() {
+	setup(props) {
 		const store = useStore()
 		const route = useRoute()
+		const patientId = props.patientUdid ? props.patientUdid : route.params.udid
 		
 		const onCloseAlert = (value) => {
 
 			const data = {
-				patientUdid: route.params.udid,
+				patientUdid: patientId,
 				criticalNoteUdid: value,
 			}
 			
 			store.dispatch('readCriticalNote', data).then(() => {
 				document.querySelectorAll('.critical-notes ul li')[0].remove();
-				//;
 			});
 			store.state.patients.patientCriticalNotes=''
-			store.dispatch('patientCriticalNotes', route.params.udid)
+			store.dispatch('patientCriticalNotes', patientId)
 		}
 
 		return {

@@ -1,4 +1,9 @@
-import { responseConvert, dateFormat, dateOnlyFormat } from '../../commonMethods/commonMethod';
+import {
+	responseConvert,
+	dateFormat,
+	dateOnlyFormat,
+	meridiemFormatFromTimestamp
+} from '../../commonMethods/commonMethod';
 import moment from 'moment';
 
 export const addStaff = async (state, data) => {
@@ -89,4 +94,15 @@ export const getStaffs = async (state, data) => {
 
 export const appointmentDetails = (state, data) => {
 	state.appointmentDetails = data;
+};
+
+export const patientAppointmentsList = (state, appointments) => {
+	console.log('patientAppointmentsList Mutation', appointments)
+	state.patientAppointmentsList = appointments.map(data => {
+		data.staff = data.staff.fullName
+		data.date = dateOnlyFormat(data.date)
+		data.time = meridiemFormatFromTimestamp(data.time)
+		data.dateTime = data.date+' '+data.time
+		return data
+	});
 };
