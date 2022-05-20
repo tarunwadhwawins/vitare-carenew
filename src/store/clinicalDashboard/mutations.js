@@ -4,7 +4,7 @@ import { common } from ".././common/index"
 
 export const clicalTask = (state, record) => {
 let data = []
-	common.state.taskType.forEach(element => {
+	common.state.taskCategory.forEach(element => {
 		let object = record.find(e=> e.text==element.name)
 		if(object==undefined){
 			data.push({total:0,text:element.name})
