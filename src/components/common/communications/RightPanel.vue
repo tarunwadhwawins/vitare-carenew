@@ -1,62 +1,110 @@
 <template>
-  <a-modal width="95%" title="Messages" centered :maskClosable="false"  @cancel="closeModal()" class="chatModal" :footer="false">
-    <a-row :gutter="24">
-      <a-col :span="12" class="chatBox2">
-        <div class="chatBox" ref="scroll" id="chatBox">
-          <!-- <div class="chatBoxInner">
-            <div v-for="msg,index in list.conversationList" :key="index">
-              <div class="chatWrapper left" v-if="msg.senderId == patientId">
-                <div class="message">
-                  {{msg.message}}
-                </div>
-                <div class="time">{{ msg.createdAt }}</div>
-              </div>
-              <div class="chatWrapper right" v-if="msg.senderId != patientId">
-                <div class="message">
-                  {{msg.message}}
-                </div>
-                <div class="time" >{{ msg.createdAt }}</div>
-              </div>
-            </div>
-          </div> -->
-          <ChatScreenBody :conversationList="list.conversationList" :communication="communication" screen="withPatient" :patientId="patientId" />
-        </div>
-        <a-form ref="formRef" :model="formValue" layout="vertical" @finish="sendMsg" @finishFailed="taskFormFailed">
-          <div class="sendMessage" v-if="auth.user.id==communication.receiverId || auth.user.id==communication.senderId">
-            <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message">
-              <template #addonAfter>
-                <SendOutlined @click="sendMsg" />
-              </template>
-            </a-input>
+  <a-col :span="12">
+    <div class="callRightWrapper chatBoxRight">
+      <a-row>
+        <a-col :span="12">
+          <div class="header">
+            <PatientInfoTop :patientDetail="patientDetails" :patientUdid="patientUdid" :hideEditIcon="false" />
           </div>
-          <div class="sendMessage" v-else>
-            <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message" disabled>
-              <template #addonAfter disabled>
-                <SendOutlined @click="sendMsg" />
-              </template>
-            </a-input>
-          </div>
-        </a-form>
-      </a-col>
+        </a-col>
+        <a-col :span="12">
+          <a-row>
+            <a-col :span="8" :class="timelineDetailVisible == true ? 'bold' : ''">
+              <div class="moreAction" @click="showTimelineModal">
+                <div class="moreActionImg four">
+                  <img src="@/assets/images/edit.svg" />
+                </div>
+                <p>Timeline View</p>
+              </div>
+            </a-col>
+            <a-col :span="8" :class="notesDetailVisible == true ? 'bold' : ''">
+              <div class="moreAction" @click="showNotesModal">
+                <div class="moreActionImg four">
+                  <img src="@/assets/images/edit.svg" />
+                </div>
+                <p>Notes</p>
+              </div>
+            </a-col>
+            <a-col :span="8" :class="documentDetailVisible == true ? 'bold' : ''">
+              <div class="moreAction" @click="showDocumentsModal">
+                <div class="moreActionImg green">
+                  <img src="@/assets/images/report.svg" />
+                </div>
+                <p>Documents</p>
+              </div>
+            </a-col>
 
-      <RightPanel :patientDetail="patientDetail" :patientUdid="patientUdid" :communication="communication" />
+            <a-col :span="8" @click="showVitalsModal" :class="patientVitalsVisible == true ? 'bold' : ''">
+              <div class="moreAction">
+                <div class="moreActionImg redBgColor">
+                  <img src="@/assets/images/wave.svg" />
+                </div>
+                <p>Vitals</p>
+              </div>
+            </a-col>
 
-      <Loader />
-    </a-row>
-  </a-modal>
+            <a-col :span="8" @click="showAppointments" :class="patientAppointmentsVisible == true ? 'bold' : ''">
+              <div class="moreAction">
+                <div class="moreActionImg purpleBgColor">
+                  <CalendarOutlined />
+                </div>
+                <p>Appointments</p>
+              </div>
+            </a-col>
+
+            <a-col :span="8" @click="addPin">
+              <div class="moreAction">
+                <div class="moreActionImg brightRedBgColor">
+                  <PushpinOutlined />
+                </div>
+                <p>Pins</p>
+              </div>
+            </a-col>
+
+            <a-col :span="8" @click="startCall">
+              <div class="moreAction">
+                <div class="moreActionImg darkGreenBgColor">
+                  <PhoneOutlined />
+                </div>
+                <p>Start Call</p>
+              </div>
+            </a-col>
+          </a-row>
+        </a-col>
+      </a-row>
+
+      <div class="body">
+
+        <!-- Pin Note -->
+        <a-col :sm="24">
+          <Pins v-if="patientPins && patientPins.length > 0" :patientPins="patientPins" :patientUdid="patientUdid" />
+        </a-col>
+
+        <a-row>
+          <PatientTimeline v-if="timelineDetailVisible == true" :isCommunication="true" :profileId="patientUdid" className="thumbDesc patientTimeline"/>
+          <NotesDetail v-if="notesDetailVisible == true" :isCommunication="true" :pId="patientUdid" />
+          <DocumentDetail v-if="documentDetailVisible == true" :isCommunication="true" :patientDetails="patientDetails" />
+          <PatientVitalsDetails v-if="patientVitalsVisible == true" :isCommunication="true" :patientUdid="patientUdid" />
+          <AppointmentsTable v-if="patientAppointmentsVisible == true" :patientUdid="patientUdid" />
+          <AddPin v-model:visible="addPinModalVisible" :patientUdid="patientUdid" @closeModal="closeModal"/>
+        </a-row>
+      </div>
+
+    </div>
+  </a-col>
 </template>
 
 <script>
 import {
-  SendOutlined,
-  // PhoneOutlined,
-  // CalendarOutlined,
-  // PushpinOutlined,
+  // SendOutlined,
+  PhoneOutlined,
+  CalendarOutlined,
+  PushpinOutlined,
 } from "@ant-design/icons-vue";
-// import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
-// import PatientTimeline from "@/components/patients/patientSummary/PatientTimeline";
-import ChatScreenBody from "@/components/communications/ChatScreenBody";
-// import Pins from "@/components/patients/patientSummary/common/CriticalNotes";
+import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
+import PatientTimeline from "@/components/patients/patientSummary/PatientTimeline";
+// import ChatScreenBody from "@/components/communications/ChatScreenBody";
+import Pins from "@/components/patients/patientSummary/common/CriticalNotes";
 import {
   watchEffect,
   reactive,
@@ -74,34 +122,32 @@ import {
   timeStamp,
   enCodeString,
 } from "@/commonMethods/commonMethod"
-import Loader from "@/components/loader/Loader";
+// import Loader from "@/components/loader/Loader";
 import moment from "moment"
-// import NotesDetail from "@/components/video-call/table/NotesDetail";
-// import DocumentDetail from "@/components/video-call/table/DocumentDetail";
-// import AppointmentsTable from "@/components/communications/tables/AppointmentsTable";
+import NotesDetail from "@/components/video-call/table/NotesDetail";
+import DocumentDetail from "@/components/video-call/table/DocumentDetail";
+import AppointmentsTable from "@/components/communications/tables/AppointmentsTable";
 // import PatientVitalsDetails from "@/components/video-call/table/PatientVitalsDetails";
-// import PatientVitalsDetails from "@/components/patients/patientSummary/views/PatientVitalsGrid";
-// import AddPin from "@/components/modals/CriticalNote";
-import RightPanel from "@/components/common/communications/RightPanel";
+import PatientVitalsDetails from "@/components/patients/patientSummary/views/PatientVitalsGrid";
+import AddPin from "@/components/modals/CriticalNote";
 import { useRouter } from 'vue-router';
 
 export default {
   components: {
-    RightPanel,
-    // PatientInfoTop,
-    // PatientTimeline,
-    SendOutlined,
-    Loader,
-    // NotesDetail,
-    // DocumentDetail,
-    // AppointmentsTable,
-    // PatientVitalsDetails,
-    ChatScreenBody,
-    // PhoneOutlined,
-    // CalendarOutlined,
-    // PushpinOutlined,
-    // Pins,
-    // AddPin,
+    PatientInfoTop,
+    PatientTimeline,
+    // SendOutlined,
+    // Loader,
+    NotesDetail,
+    DocumentDetail,
+    AppointmentsTable,
+    PatientVitalsDetails,
+    // ChatScreenBody,
+    PhoneOutlined,
+    CalendarOutlined,
+    PushpinOutlined,
+    Pins,
+    AddPin,
   },
   props: {
     communication: {
@@ -257,6 +303,7 @@ export default {
       store.dispatch("conversation", props.communication.id)
       tableContent.value = document.getElementsByClassName('chatBoxInner')
       getScroll()
+      localStorage.setItem('patientUdid', patientUdid.value)
     })
 
     const patientDetails = computed(() => {
@@ -296,7 +343,6 @@ export default {
       store.state.communications.conversationList = ""
       clearInterval(interval);
       addPinModalVisible.value = false
-      localStorage.removeItem('patientUdid')
     }
     
     onMounted(() => {
