@@ -3,4 +3,5 @@ export default {
     patientsFlag:null,
     appointmentCount:null,
     escalationCount:null,
+    escalationRecord:null,
 }

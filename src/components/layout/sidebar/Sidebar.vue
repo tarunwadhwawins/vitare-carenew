@@ -13,7 +13,7 @@
             </router-link>
              <router-link to="/businessDashboard">
                 <a-menu-item>
-                    <HomeOutlined /><span class="menuItem">Business Dashboard</span></a-menu-item>
+                    <CreditCardOutlined /><span class="menuItem">Business Dashboard</span></a-menu-item>
             </router-link>
             <router-link :to="{ name: 'Communications', query: {view: 'dashboard'} }" v-if="arrayToObjact(screensPermissions, 109)">
                 <a-menu-item>
@@ -66,6 +66,7 @@ import {
   CalendarOutlined,
   FileTextOutlined,
   DashboardOutlined,
+  CreditCardOutlined,
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { arrayToObjact } from "@/commonMethods/commonMethod";
@@ -76,7 +77,8 @@ export default defineComponent({
     UserOutlined,
     CalendarOutlined,
     FileTextOutlined,
-    DashboardOutlined
+    DashboardOutlined,
+    CreditCardOutlined
   },
 
   setup() {

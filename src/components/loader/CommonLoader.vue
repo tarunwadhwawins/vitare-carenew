@@ -9,7 +9,7 @@
     <script>
     
     export default {
-        name: 'InfiniteLoader',
+        name: 'CommonLoader',
        
     }
     </script>

@@ -1,6 +1,17 @@
 import { yaxis, dataLabels, plotOptions, annotations, chartTimeCount } from '@/commonMethods/commonMethod';
 import { dashBoard } from '.././dashboard/index';
-export const clicalTask = (state, data) => {
+import { common } from ".././common/index"
+
+export const clicalTask = (state, record) => {
+let data = []
+	common.state.taskType.forEach(element => {
+		let object = record.find(e=> e.text==element.name)
+		if(object==undefined){
+			data.push({total:0,text:element.name})
+		}else{
+			data.push(object)
+		}
+	});
 	state.clicalTask = {
 		code: {
 			annotations: annotations('In', 0, '#775DD0', 0, '#fff', '#775DD0'),
@@ -40,7 +51,17 @@ export const clicalTask = (state, data) => {
 		]
 	};
 };
-export const patientsFlag = (state, data) => {
+export const patientsFlag = (state, record) => {
+	let data = []
+	record.flags.forEach(element => {
+		let object = record.data.find(e=> e.text==element.name)
+		if(object==undefined){
+			data.push({total:0,text:element.name,color:element.color})
+		}else{
+			data.push(object)
+		}
+	});
+	
 	state.patientsFlag = {
 		code: {
 			annotations: annotations('In', 0, '#775DD0', 0, '#fff', '#775DD0'),
@@ -82,7 +103,18 @@ export const patientsFlag = (state, data) => {
 		]
 	};
 };
-export const escalationCount = (state, data) => {
+export const escalationCount = (state, record) => {
+	let data = []
+	common.state.escalationType.forEach(element => {
+		let object = record.find(e=> e.text==element.name)
+		if(object==undefined){
+			data.push({total:0,text:element.name})
+		}else{
+			data.push(object)
+		}
+	});
+	state.escalationRecord = data
+
 	state.escalationCount = {
 		code: {
 			annotations: annotations('In', 0, '#775DD0', 0, '#fff', '#775DD0'),
