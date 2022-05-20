@@ -11,7 +11,9 @@ import {
   convertChartResponse,
   timestampToDate,
   // createDynamicColumns,
-} from '../../commonMethods/commonMethod';
+  globalDateFormat,
+  dateAndTimeFormate
+} from '@/commonMethods/commonMethod';
 
 export const addDemographic = (state, data) => {
   state.addDemographic = data
@@ -1071,7 +1073,11 @@ export const isPicuteLoading = (state, data) => {
 
 
 export const patientVitalList = (state, data) => {
-  state.patientVitalList = data
+  state.patientVitalList = data.map((item) => {
+		item.startTime = item.startTime?dateAndTimeFormate(item.startTime,globalDateFormat):'';
+    item.endTime = item.endTime?dateAndTimeFormate(item.endTime,globalDateFormat):'';
+		return item;
+	})
 }
 
 
@@ -1086,7 +1092,10 @@ export const escalationList = (state, data) => {
 
 
 export const patientFlagList = (state, data) => {
-  state.patientFlagList = data
+  state.patientFlagList = data.map((item) => {
+		item.createdAt = dateAndTimeFormate(item.createdAt,globalDateFormat);
+		return item;
+	})
 }
 export const referral = (state, data) => {
   state.referral = data

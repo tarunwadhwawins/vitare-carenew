@@ -12,7 +12,7 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">{{globalCode.ecalationType}}
                                 <a-form-item label="Escalation Type" name="escalationType" :rules="[{ required: true, message: 'Escalation Type'+' '+$t('global.validation')  }]">
-                                    <GlobalCodeDropDown @change="checkChangeInput()" mode="multiple" v-model:value="escalation.escalationType" :globalCode="globalCode.escalationType" />
+                                    <GlobalCodeDropDown @change="checkChangeInput($event)" mode="multiple" v-model:value="escalation.escalationType" :globalCode="globalCode.escalationType" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -87,35 +87,25 @@
                     </a-row>
                     <a-row :gutter="24">
                         <a-collapse v-model:activeKey="activeKey" accordion style="width:100%">
-                            <a-collapse-panel key="1" header="Notes" v-if="escalation.escalationType.includes(259)">
+                            <a-collapse-panel key="1" header="Notes" v-if="escalation.escalationType.includes(260)">
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="notesId" :rules="[{ required: false, message:'Notes'+' '+$t('global.validation') }]">
-                                            <!-- <a-checkbox-group v-model:value="escalationDetails.notesId" style="width:100%"> -->
                                                 <a-table  rowKey="id" :row-selection="noteSelection" :columns="notesColumns" :data-source="notesList" :pagination="false">
-                                                    <template #select="{ record }">
-                                                        <a-checkbox @change="checkChangeInput()" :value="record.id" name="notes"></a-checkbox>
-                                                    </template>
                                                 </a-table>
-                                            <!-- </a-checkbox-group> -->
                                         </a-form-item>
                                     </div>
                                 </a-col>
                             </a-collapse-panel>
-                            <a-collapse-panel key="2" header="Vitals" v-if="escalation.escalationType.includes(260)">
+                            <a-collapse-panel key="2" header="Vitals" v-if="escalation.escalationType.includes(259)">
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="vitalId" :rules="[{ required: false, message:'Vital'+' '+$t('global.validation') }]">
-                                            <a-checkbox-group v-model:value="escalationDetails.vitalId" style="width:100%">
-                                                <a-table  rowKey="id" :columns="vitalColumns" :data-source="patientVitalList" :pagination="false">
-                                                    <template #select="{ record }">
-                                                        <a-checkbox @change="checkChangeInput()" :value="record.id" name="vital"></a-checkbox>
-                                                    </template>
+                                                <a-table  rowKey="id" :row-selection="vitalSelection" :columns="vitalColumns" :data-source="patientVitalList" :pagination="false">
                                                     <template #color="{ record }">
                                                         <Flags :flag="record.color" />
                                                     </template>
                                                 </a-table>
-                                            </a-checkbox-group>
                                         </a-form-item>
                                     </div>
                                 </a-col>
@@ -124,13 +114,8 @@
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="carePlan" :rules="[{ required: false, message:'Care Plan'+' '+$t('global.validation') }]">
-                                            <a-checkbox-group v-model:value="escalationDetails.carePlan" style="width:100%">
-                                                <a-table  rowKey="id" :columns="carePlanColumns" :data-source="carePlanList" :pagination="false">
-                                                    <template #select="{ record }">
-                                                        <a-checkbox @change="checkChangeInput()" :value="record.id" name="carePlan"></a-checkbox>
-                                                    </template>
+                                                <a-table  rowKey="id" :row-selection="carePlanSelection" :columns="carePlanColumns" :data-source="carePlanList" :pagination="false">
                                                 </a-table>
-                                            </a-checkbox-group>
                                         </a-form-item>
                                     </div>
                                 </a-col>
@@ -139,11 +124,7 @@
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="flagIds" :rules="[{ required: false, message:'Flag'+' '+$t('global.validation') }]">
-                                            <a-checkbox-group v-model:value="escalationDetails.flagIds" style="width:100%">
-                                                <a-table  rowKey="id" :columns="flagColumns" :data-source="patientFlagList" :pagination="false">
-                                                    <template #select="{ record }">
-                                                        <a-checkbox @change="checkChangeInput()" :value="record.id" name="flag"></a-checkbox>
-                                                    </template>
+                                                <a-table  rowKey="id" :row-selection="flagSelection" :columns="flagColumns" :data-source="patientFlagList" :pagination="false">
                                                     <template #name="{ record }">
                                                         <span>{{record.flagName}}</span>
                                                     </template>
@@ -151,7 +132,6 @@
                                                         <Flags :flag="record.color" />
                                                     </template>
                                                 </a-table>
-                                            </a-checkbox-group>
                                         </a-form-item>
                                     </div>
                                 </a-col>
@@ -195,7 +175,7 @@ import Flags from "@/components/common/flags/Flags";
 import { useRoute } from "vue-router";
 const notesColumns = [
   {
-    title: "Select",
+    title: "Select All",
     dataIndex: "select",
     key: "select",
     slots: {
@@ -237,7 +217,7 @@ const notesColumns = [
 
 const vitalColumns = [
   {
-    title: "Select",
+    title: "Select All",
     dataIndex: "select",
     key: "select",
     slots: {
@@ -265,7 +245,7 @@ const vitalColumns = [
   },
   {
     title: "Date",
-    dataIndex: "startDate",
+    dataIndex: "startTime",
   },
   {
     title: "Color",
@@ -280,7 +260,7 @@ const vitalColumns = [
 
 const carePlanColumns = [
   {
-    title: "Select",
+    title: "Select All",
     dataIndex: "select",
     key: "select",
     slots: {
@@ -325,7 +305,7 @@ const carePlanColumns = [
 ];
 const flagColumns = [
   {
-    title: "Select",
+    title: "Select All",
     dataIndex: "select",
     key: "select",
     slots: {
@@ -341,7 +321,7 @@ const flagColumns = [
   },
   {
     title: "Date",
-    dataIndex: "startDate",
+    dataIndex: "createdAt",
   },
   {
     title: "Color",
@@ -396,7 +376,7 @@ export default {
     //   set: (value) => {
     //     store.state.patients.escalationCounter = value;
     //   },
-    // });
+    // })
     const current = computed({
             get: () =>
                 store.state.patients.escalationCounter,
@@ -446,6 +426,10 @@ export default {
       entityType: "patient",
           });
     }
+
+     const form = reactive({
+        ...escalation,
+        });
 
     function submitDetailsForm() {
       if (escalationDetails.notesId.length > 0 && addEscalation.value.id) {
@@ -507,20 +491,20 @@ export default {
             emit("saveModal", false)
             status.value =false
             store.dispatch('escalationList', {referenceId:route.params.udid,entityType:'patient'})
+            Object.assign(escalation, form)
         }
-    }, 4000);
+
+    }, 3000)
+
     }
 
-    function checkChangeInput() {
+    function checkChangeInput(value) {
         store.commit('checkChangeInput', true)
+        console.log(value)
     }
     const checkFieldsData = computed(() => {
         return store.state.common.checkChangeInput;
     })
-
-    const form = reactive({
-        ...escalation,
-        });
 
     const closeModal = () => {
       if (checkFieldsData.value) {
@@ -555,11 +539,31 @@ export default {
     }
 
     const noteSelection = {
-      onChange: (selectedRowKeys, selectedRows) => {
-        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      onChange: (selectedRowKeys) => {
+        escalationDetails.notesId = selectedRowKeys
+      }
+    };
+    const vitalSelection = {
+      onChange: (selectedRowKeys) => {
+        escalationDetails.vitalId = selectedRowKeys
+      }
+    };
+
+    const carePlanSelection = {
+      onChange: (selectedRowKeys) => {
+        escalationDetails.carePlan = selectedRowKeys
+      }
+    };
+
+    const flagSelection = {
+      onChange: (selectedRowKeys) => {
+        escalationDetails.flagIds = selectedRowKeys
       }
     };
     return {
+      flagSelection,
+      carePlanSelection,
+      vitalSelection,
       noteSelection,
       status,
       form,

@@ -4,7 +4,7 @@ export const cptCodeSuccess = (state, data) => {
 	let cptResult = []
 	data.data.forEach(element => {
 		let object = data.cpt.find(e=>e.text==element.name)
-		console.log(object)
+	
 		if(object==undefined){
 			cptResult.push({total:0,text:element.name})
 		}else{
