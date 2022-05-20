@@ -32,7 +32,7 @@
 </template>
 
 <script>
-  import { watchEffect } from 'vue'
+  import { onMounted } from 'vue'
  
   import ApexChart from "@/components/common/charts/ApexChart"
   import { startimeAdd, endTimeAdd, timeStamp ,arrayToObjact} from '@/commonMethods/commonMethod'
@@ -100,7 +100,7 @@ export default {
         }
         
 
-        watchEffect(() => {
+        onMounted(() => {
           
           if(!timeLineButton.value){
             store.dispatch("timeLine", 122)

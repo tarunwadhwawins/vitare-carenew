@@ -102,6 +102,7 @@ export default {
                  store.dispatch("staffEscalation","?filter="+store.getters.filter.value  +"&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate)
                
             } else {
+               store.commit("dateFilter",'')
                 store.dispatch("staffEscalation")
             }
     });
