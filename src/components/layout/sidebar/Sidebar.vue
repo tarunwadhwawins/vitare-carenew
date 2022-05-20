@@ -13,7 +13,17 @@
             </router-link>
              <router-link to="/businessDashboard">
                 <a-menu-item>
-                    <HomeOutlined /><span class="menuItem">Business Dashboard</span></a-menu-item>
+                    <CreditCardOutlined /><span class="menuItem">Business Dashboard</span></a-menu-item>
+            </router-link>
+            <router-link to="/escalation">
+                <a-menu-item>
+                    <DashboardOutlined /><span class="menuItem">{{'Escalation'}}</span></a-menu-item>
+            </router-link>
+             <router-link to="/referral" >
+                <a-menu-item>
+                    <FileDoneOutlined />
+                    <span class="menuItem">Referral</span>
+                </a-menu-item>
             </router-link>
             <router-link :to="{ name: 'Communications', query: {view: 'dashboard'} }" v-if="arrayToObjact(screensPermissions, 109)">
                 <a-menu-item>
@@ -49,6 +59,7 @@
                     <CalendarOutlined /><span class="menuItem">{{$t('sidebar.administration')}}
                     </span></a-menu-item>
             </router-link>
+            
         </a-menu>
     </div>
 </a-layout-sider>
@@ -61,6 +72,9 @@ import {
   UserOutlined,
   CalendarOutlined,
   FileTextOutlined,
+  DashboardOutlined,
+  CreditCardOutlined,
+  FileDoneOutlined,
 } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { arrayToObjact } from "@/commonMethods/commonMethod";
@@ -71,6 +85,9 @@ export default defineComponent({
     UserOutlined,
     CalendarOutlined,
     FileTextOutlined,
+    DashboardOutlined,
+    CreditCardOutlined,
+    FileDoneOutlined
   },
 
   setup() {

@@ -23,7 +23,7 @@
             <ApexChart title="My Tasks " type="bar" :height="350" :options="clicalTask.code" :series="clicalTask.value" linkTo="tasks?view=list"></ApexChart>
         </a-col>
          <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  escalationCount">
-            <ApexChart title="Escalation" type="bar" :height="350" :options="escalationCount.code" :series="escalationCount.value" ></ApexChart>
+            <ApexChart title="Escalation" type="bar" :height="350" :options="escalationCount.code" :series="escalationCount.value" linkTo="escalation" :data="escalationRecord"></ApexChart>
         </a-col>
          
         
@@ -96,6 +96,7 @@ export default {
                 }
                 
             }
+            store.commit("dateFilter",dateFormate)
             store.dispatch("permissions")
             store.dispatch("clicalTask", dateFormate)
             
@@ -141,7 +142,7 @@ export default {
             showButton,
             timeline:store.getters.timeline,
             widgetsPermissions:store.getters.widgetsPermissions,
-
+            escalationRecord:store.getters.escalationRecord,
             arrayToObjact,
         };
     },

@@ -517,3 +517,19 @@ export const updateStaffStatus = async ({commit}, data) => {
     }
   })
 }
+
+
+export const staffEscalation = async ({
+  commit
+},page) => {
+  let link = page ? `escalation` + page : `escalation`
+  commit('loadingStatus', true)
+  await serviceMethod.common("get", link, null, null).then((response) => {
+    commit('staffEscalation', response.data.data);
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    commit('loadingStatus', false)
+    errorSwal(error.response.data.message)
+  })
+}

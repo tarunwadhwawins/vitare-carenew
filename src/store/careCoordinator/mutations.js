@@ -1,4 +1,4 @@
-import {dateAndTimeFormate} from '@/commonMethods/commonMethod';
+import {dateAndTimeFormate,globalDateFormat} from '@/commonMethods/commonMethod';
 export const counterPlus = (state, data) => {
 	if (data) {
 		state.counter = data;
@@ -276,4 +276,12 @@ export const documentStaffDetails = (state, data) => {
   data.document = data.path
   data.type = data.typeId
   state.documentStaffDetails = data
+};
+
+
+export const staffEscalation = (state, data) => {
+	state.staffEscalation = data.map((item) => {
+		item.dueBy = dateAndTimeFormate(item.dueBy,globalDateFormat);
+		return item;
+	})
 };

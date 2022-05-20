@@ -60,9 +60,11 @@ export default {
             store
               .dispatch(
                 "referralList",
-                store.getters.searchTable.value +
-                  "&page=" +
+                
+                  "?page=" +
                   current_page +
+                  store.getters.searchTable.value +
+                  "&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+
                    '&filter='+filter+
                   store.getters.orderTable.value.data
               )
@@ -101,7 +103,7 @@ export default {
         });
         store.dispatch(
           "referralList",
-          '?filter='+filter+store.getters.searchTable.value +  orderParam
+          '?filter='+filter+store.getters.searchTable.value + "&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+ orderParam
         );
       } else {
         store.dispatch("orderTable", {
@@ -109,7 +111,7 @@ export default {
         });
         store.dispatch(
           "referralList",
-          '?filter='+filter+store.getters.searchTable.value +  store.getters.orderTable.value.data
+          '?filter='+filter+store.getters.searchTable.value +"&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+  store.getters.orderTable.value.data
         );
       }
     };

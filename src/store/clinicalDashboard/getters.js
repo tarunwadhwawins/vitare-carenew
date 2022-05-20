@@ -20,3 +20,8 @@ export const escalationCount = (state) => {
     return state.escalationCount
   })
 }
+export const escalationRecord = (state) => {
+  return computed(() => {
+    return state.escalationRecord
+  })
+}

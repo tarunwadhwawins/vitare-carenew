@@ -5,10 +5,12 @@ import { errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
 export const cptCode = async ({ commit }, from) => {
 
     await ServiceMethodService.common("get", API_ENDPOINTS['cptCodeGraph'] + "?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {
-
-        commit('cptCodeSuccess', response.data.data);
-
-        //commit('cptCodeSuccess', response.data.data);
+       
+      ServiceMethodService.common("get", API_ENDPOINTS['cptCodes']+"?active=1", null, null).then((cptCodes) => {
+         
+            commit('cptCodeSuccess', {cpt:response.data.data,data:cptCodes.data.data})
+        })
+       
 
     }).catch((error) => {
         errorLogWithDeviceInfo(error.response)
@@ -23,9 +25,6 @@ export const financial = async ({ commit }, from) => {
     await ServiceMethodService.common("get", API_ENDPOINTS['financial'] + "?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {
         commit('financialSuccess', response.data.data);
 
-
-        //commit('cptCodeSuccess', response.data.data);
-
     }).catch((error) => {
         errorLogWithDeviceInfo(error.response)
         if (error.response.status == 401) {
@@ -38,9 +37,6 @@ export const referalCount = async ({ commit }, from) => {
 
     await ServiceMethodService.common("get", API_ENDPOINTS['referalCount'] + "?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {
         commit('referalCount', response.data);
-
-
-        //commit('cptCodeSuccess', response.data.data);
 
     }).catch((error) => {
         errorLogWithDeviceInfo(error.response)

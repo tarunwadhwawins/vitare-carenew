@@ -119,6 +119,9 @@ export const globalCodes = (state, data) => {
         if (element.name === 'Escalation Type') {
             state.escalationType = element.globalCode;
         }
+        if (element.name === 'Task Type') {
+            state.taskType = element.globalCode;
+        }
         
     });
 
@@ -203,6 +206,9 @@ export const checkChangeInput = (state, data) => {
   }
   export const filter = (state, data) => {
     state.filter = data
+  }
+  export const dateFilter = (state, data) => {
+    state.dateFilter = data
   }
   export const toScroll = (state, data) => {
     state.toScroll = data

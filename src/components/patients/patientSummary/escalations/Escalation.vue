@@ -19,15 +19,17 @@
                     </div>
                 </a-col>
                 <a-col :span="24">
-                    <EscaltionTable />
+                    <EscaltionTable  :columnData="columnData" :escalationList="escalationList"  @showEscalationData="showEscalationData($event)"/>
                 </a-col>
                 <!-- stepper -->
                 <a-col :span="24">
                    <EscaltionModal v-model:visible="escaltionModal" @saveModal="saveModal($event)"/>
                 </a-col>
             </a-row>
+             <EscaltionViewModal v-model:visible="escaltionViewModal"/>
         </div>
        <Loader/>
+     
     </a-layout-content>
 </div>
 </template>
@@ -37,22 +39,54 @@ import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop"
 import { computed, reactive, ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 import { globalDateFormat } from "@/commonMethods/commonMethod";
-import EscaltionTable from "../escalations/EscalationTable"
+import EscaltionTable from "@/components/common/tables/EscalationTable"
+import EscaltionViewModal from "../escalations/EscalationViewModal"
 import EscaltionModal from "../escalations/EscalationModal"
 import Loader from "@/components/loader/Loader";
+const columnData = [
+    {
+    title: "Escalation Type",
+    dataIndex: "escalationType",
+    slots:{
+        customRender: "escalationType",
+    },
+  },
+  { 
+    title: "Description",
+    dataIndex: "escalationDescription",
+  },
+  {
+    title: "Flag",
+    dataIndex: "flag",
+    slots:{
+        customRender: "flag",
+    },
+  },
+  {
+    title: "Action",
+    dataIndex: "action",
+    slots:{
+        customRender: "action",
+    },
+    
+  },
+  
+]
 
 export default {
   components: {
     PatientInfoTop,
     EscaltionTable,
     EscaltionModal,
-    Loader
+    Loader,
+    EscaltionViewModal
   },
   props:{
       patientId:String
   },
   setup(props) {
     const store = useStore();
+    const escaltionViewModal = ref(false)
     const escalationDetails = reactive({
       scalationType: "",
       description: "",
@@ -91,8 +125,20 @@ export default {
     const saveModal = (value) =>{
       escaltionModal.value = value
     }
-  
+
+    const showEscalationData =(value)=>{
+      console.log('testValue',value)
+      escaltionViewModal.value = value
+    }
+
+    const escalationList = computed(() => {
+      return store.state.patients.escalationList;
+    });
     return {
+       escalationList,
+      columnData,
+      escaltionViewModal,
+      showEscalationData,
       saveModal,
       escaltionModal,
       showEscalationModal,

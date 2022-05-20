@@ -219,6 +219,7 @@ export default {
                 data: '&orderField=&orderBy='
             })
             store.commit("filter", '')
+            store.commit("dataFilter",'')
         })
         return {
             screensPermissions:store.getters.screensPermissions,

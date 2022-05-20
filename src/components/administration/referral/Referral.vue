@@ -47,7 +47,7 @@ export default {
       
         onMounted(() => { 
              if (store.getters.filter.value) {
-                 store.dispatch("referralList","?filter=" + store.getters.filter.value)
+                 store.dispatch("referralList","?filter=" +store.getters.filter.value +"&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate)
                
             } else {
                 store.dispatch("referralList")
@@ -66,6 +66,7 @@ export default {
                 data: '&orderField=&orderBy='
             })
             store.commit("filter", '')
+            store.commit("dateFilter",'')
         })
         return {
             exportExcel,

@@ -62,6 +62,7 @@ export default {
     },
     escalationType:null,
     toScroll:false,
-
+    dateFilter:null,
+    taskType:null,
 
 }
