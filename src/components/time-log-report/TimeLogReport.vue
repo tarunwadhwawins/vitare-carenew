@@ -100,7 +100,14 @@ export default {
         }
 
         onMounted(() => {
-            store.dispatch("timeLogReportList")
+             if (store.getters.filter.value) {
+                 store.dispatch('auditTimeLogFilterDates', "?fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate)
+                store.dispatch("timeLogReportList", "?filter=" +store.getters.filter.value+"&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate);
+            } else {
+                 store.commit("dateFilter",'')
+                store.dispatch("timeLogReportList")
+            }
+          
             store.dispatch('auditTimeLogFilterDates', "?fromDate=&toDate=")
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
@@ -136,6 +143,8 @@ export default {
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
             })
+             store.commit("filter", '')
+            store.commit("dateFilter",'')
         })
 
         return {
