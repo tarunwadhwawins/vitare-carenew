@@ -92,6 +92,7 @@ export default {
                     toDate: from.format("YYYY-MM-DD")
                 }
             }
+            store.commit("dateFilter",dateFormate)
             store.dispatch("permissions")
             store.dispatch("cptCode", cptDateFormate)
             store.dispatch("referalCount", dateFormate)

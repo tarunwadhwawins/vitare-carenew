@@ -54,3 +54,8 @@ export const loadingStatus = (state)=>{
         return state.filter
     })
   }
+  export const dateFilter = (state)=>{
+    return computed(()=>{
+        return state.dateFilter
+    })
+  }

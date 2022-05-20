@@ -41,7 +41,7 @@ export default {
                         view: 'list'
                     }
                 });
-                store.dispatch("tasksList", "?filter=" + store.getters.filter.value);
+                store.dispatch("tasksList", "?filter=" +store.getters.filter.value+"&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate);
             } else {
                 store.dispatch("tasksList")
             }
@@ -76,6 +76,7 @@ export default {
                 data: '&orderField=&orderBy='
             })
             store.commit("filter", '')
+            store.commit("dateFilter",'')
             //store.state.common.filter=''
         });
         return {
