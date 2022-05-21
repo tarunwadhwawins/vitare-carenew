@@ -33,7 +33,7 @@ import {
   warningSwal,
   arrayToObjact,
   tableYScroller,
-  timeStampFormate,
+ 
 } from "@/commonMethods/commonMethod";
 export default {
   components: {
@@ -83,7 +83,7 @@ export default {
 
     const meta = store.getters.cptRecords.value;
     const loader = ref(false);
-    let filter = store.getters.filter.value  ? store.getters.filter.value : ''
+ 
     onMounted(() => {
       var tableContent = document.querySelector(".ant-table-body");
       tableContent.addEventListener("scroll", (event) => {
@@ -105,8 +105,7 @@ export default {
                 store.getters.searchTable.value +
                   "&page=" +
                   current_page +
-                  "&fromDate=" + timeStampFormate(store.getters.dateFilter.value.toDate,"YYYY-MM-DD") + "&toDate=" + timeStampFormate(store.getters.dateFilter.value.fromDate,"YYYY-MM-DD")+
-                   '&filter='+filter+
+               
                   store.getters.orderTable.value.data
               )
               .then(() => {
@@ -144,7 +143,7 @@ export default {
         });
         store.dispatch(
           "cptCodesList",
-          store.getters.searchTable.value +"&fromDate=" + timeStampFormate(store.getters.dateFilter.value.toDate,"YYYY-MM-DD") + "&toDate=" + timeStampFormate(store.getters.dateFilter.value.fromDate,"YYYY-MM-DD")+ '&filter='+filter+ orderParam
+          store.getters.searchTable.value + orderParam
         );
       } else {
         store.dispatch("orderTable", {
@@ -153,8 +152,7 @@ export default {
         store.dispatch(
           "cptCodesList",
           store.getters.searchTable.value + 
-          "&fromDate=" + timeStampFormate(store.getters.dateFilter.value.toDate,"YYYY-MM-DD") + "&toDate=" + timeStampFormate(store.getters.dateFilter.value.fromDate,"YYYY-MM-DD")+
-          '&filter='+filter+store.getters.orderTable.value.data
+          store.getters.orderTable.value.data
         );
       }
     };
