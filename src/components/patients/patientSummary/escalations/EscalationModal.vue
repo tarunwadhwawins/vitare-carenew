@@ -9,6 +9,13 @@
             <div class="steps-content" v-if="steps[current].title == 'Escalation Info'">
                 <a-form layout="vertical" ref="formRef" :model="escalation" @finish="submitEscalationForm">
                     <a-row :gutter="24">
+                      <a-col :sm="24" :xs="24" v-show="!paramId" >
+                            <div class="form-group">
+                                <a-form-item label="Patient" name="referenceId" :rules="[{ required: true, message: 'Patient'+' '+$t('global.validation')  }]">
+                                     <PatientDropDown @change="checkChangeInput()"  v-model:value="escalation.referenceId" @handlePatientChange="handlePatientChange($event)" :close="closeValue"/>
+                                </a-form-item>
+                            </div>
+                        </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">{{globalCode.ecalationType}}
                                 <a-form-item label="Escalation Type" name="escalationType" :rules="[{ required: true, message: 'Escalation Type'+' '+$t('global.validation')  }]">
@@ -151,7 +158,6 @@
                         </a-col>
                     </a-row>
                 </a-form>
-
             </div>
         </a-col>
     </a-row>
@@ -175,6 +181,7 @@ import {
 } from "@/config/messages";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch";
 import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue";
+import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue";
 import Flags from "@/components/common/flags/Flags";
 import { useRoute } from "vue-router";
 const notesColumns = [
@@ -340,6 +347,7 @@ export default {
     GlobalCodeDropDown,
     StaffDropDown,
     Flags,
+    PatientDropDown,
   },
   setup(props,{emit}) {
     const store = useStore();
@@ -347,6 +355,7 @@ export default {
     const activeKey = ref([]);
     const button = ref(2);
     const status = ref(false)
+    const paramId = ref(route.params.udid)
     const escalation = reactive({
       escalationType: [],
       escalationDescription: "",
@@ -408,6 +417,7 @@ export default {
       escalation.staffIds = val;
       console.log(val);
     };
+    
     const notesList = computed(() => {
       return store.state.patients.escalationNotesList;
     });
@@ -421,14 +431,13 @@ export default {
 
     function submitEscalationForm() {
       if(addEscalation.value==null){
-
         store.dispatch("addBasicEscalation", {
         escalationType: escalation.escalationType,
         escalationDescription: escalation.escalationDescription,
         flagId: escalation.flagId,
         dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
         staffIds: escalation.staffIds,
-        referenceId: route.params.udid,
+        referenceId: escalation.referenceId?escalation.referenceId:route.params.udid,
         entityType: "patient",
             })
       }else{
@@ -438,7 +447,7 @@ export default {
         flagId: escalation.flagId,
         dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
         staffIds: escalation.staffIds,
-        referenceId: route.params.udid,
+        referenceId: escalation.referenceId?escalation.referenceId:route.params.udid,
         entityType: "patient",
         escalationId:addEscalation.value.id
             })
@@ -456,7 +465,7 @@ export default {
         store.dispatch("addEscalationNote", {
           data: {
             notesId: escalationDetails.notesId,
-            escalationType: 259,
+            escalationType: 260,
           },
           escalationId: addEscalation.value.id,
         }).then((response)=>{
@@ -469,7 +478,7 @@ export default {
         store.dispatch("addEscalationVital", {
           data: {
             vitalId: escalationDetails.vitalId,
-            escalationType: 260,
+            escalationType: 259,
           },
           escalationId: addEscalation.value.id,
         }).then((response)=>{
@@ -510,15 +519,15 @@ export default {
             successSwal('Data saved Successfully!')
             emit("saveModal", false)
             status.value =false
-            store.dispatch('escalationList', {referenceId:route.params.udid,entityType:'patient'})
+            store.dispatch('escalationList', {referenceId:escalation.referenceId?escalation.referenceId:route.params.udid,entityType:'patient'})
             Object.assign(escalation, form)
+            store.dispatch("staffEscalation")
         }
     }, 3000)
     }
 
-    function checkChangeInput(value) {
+    function checkChangeInput() {
         store.commit('checkChangeInput', true)
-        console.log(value)
     }
     const checkFieldsData = computed(() => {
         return store.state.common.checkChangeInput;
@@ -568,9 +577,16 @@ export default {
       })
 
     }
+
+    const handlePatientChange = (val) =>{
+       escalation.referenceId = val;
+       store.dispatch("timeLine", 123).then(() => {
+        apiCall(timeLineButton.value)
+      })
+    }
+
     let from = moment()
     let to = moment()
-  
     function apiCall(data) {
              let dateFormate = ''
             if (data.globalCodeId == 122) {
@@ -599,11 +615,18 @@ export default {
                     toDate: timeStamp(endTimeAdd(from))
                 }
             }
-            
-           store.dispatch('escalationNotesList', {id:route.params.udid,date:dateFormate})
-           store.dispatch('escalationVitalList', {id:route.params.udid,date:dateFormate})
-           store.dispatch('esacalationCarePlansList', {id:route.params.udid,date:dateFormate})
-           store.dispatch('esacalationFlagList', {id:route.params.udid,date:dateFormate})
+            if(route.params.udid){
+              store.dispatch('escalationNotesList', {id:route.params.udid,date:dateFormate})
+              store.dispatch('escalationVitalList', {id:route.params.udid,date:dateFormate})
+              store.dispatch('esacalationCarePlansList', {id:route.params.udid,date:dateFormate})
+              store.dispatch('esacalationFlagList', {id:route.params.udid,date:dateFormate})
+            }else if(escalation.referenceId){
+              store.dispatch('escalationNotesList', {id:escalation.referenceId,date:dateFormate})
+              store.dispatch('escalationVitalList', {id:escalation.referenceId,date:dateFormate})
+              store.dispatch('esacalationCarePlansList', {id:escalation.referenceId,date:dateFormate})
+              store.dispatch('esacalationFlagList', {id:escalation.referenceId,date:dateFormate})
+            }
+
           // console.log(from, to,dateFormate);
           
             
@@ -631,7 +654,11 @@ export default {
         escalationDetails.flagIds = selectedRowKeys
       }
     };
+
+    
     return {
+      paramId,
+      handlePatientChange,
       timeline:store.getters.timeline,
       Buttons:store.getters.dashboardTimeLineButton,
       flagSelection,
