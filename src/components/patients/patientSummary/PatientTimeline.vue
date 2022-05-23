@@ -91,7 +91,7 @@ export default {
     },
     profileId:{
       type:String
-    }
+    },
   },
   setup(props) {
     const custom = ref(false);
@@ -101,20 +101,24 @@ export default {
     const tabvalue = reactive({
       tab:[]
     });
+
     onMounted(() => {
       if(route.name == 'PatientSummary') {
         store.dispatch('timeLineType')
-        store.dispatch('patientTimeline', {id:route.params.udid,type:''});
+        store.dispatch('patientTimeline', {
+          id: route.params.udid,
+          type: ''
+        });
       }
-      else if(route.name == 'videoCall'){
+      else if(route.name == 'videoCall') {
         store.dispatch('timeLineType')
-        store.dispatch('patientTimeline', {id:pId.value,type:''});
-      }
-      else {
-        store.dispatch('timeLineType')
-        store.dispatch('patientTimeline', {id:pId.value,type:''});
+        store.dispatch('patientTimeline', {
+          id: pId.value,
+          type: ''
+        });
       }
     })
+    
     const patientTimeline = computed(() => {
       return store.state.patients.patientTimeline;
     })
@@ -122,15 +126,16 @@ export default {
     const showModalCustom = () => {
       custom.value = true;
     };
-function chnageTab(){
-  store.commit('loadingTableStatus', true)
-  store.dispatch('patientTimeline', {
-    id:route.params.udid ? route.params.udid : pId.value,
-    type:tabvalue.tab.length == 0 ? '' :tabvalue.tab.join(",")
-  }).then(()=>{
-    store.commit('loadingTableStatus', false)
-  })
-}
+
+    function chnageTab(){
+      store.commit('loadingTableStatus', true)
+      store.dispatch('patientTimeline', {
+        id:route.params.udid ? route.params.udid : pId.value,
+        type:tabvalue.tab.length == 0 ? '' :tabvalue.tab.join(",")
+      }).then(()=>{
+        store.commit('loadingTableStatus', false)
+      })
+    }
 
     return {
       pId,
