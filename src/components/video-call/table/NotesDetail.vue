@@ -61,7 +61,7 @@
 </a-row>
 <div :class="addNoteVisible==true? 'notesDetailBg addNotes show':'notesDetailBg addNotes'">
   <!-- <AddNotesModal v-model:visible="addNoteVisible" @closeModal="closeModal($event)" :pId="pId" /> -->
-  <AddNotesModal  @closeModal="closeModal($event)" :pId="pId"/>
+  <AddNotesModal  @closeModal="closeModal($event)" :pId="patientId ? patientId : pId"/>
 </div>
 </template>
 
@@ -93,6 +93,7 @@ export default defineComponent({
   props: {
     pId: String,
     isCommunication: Boolean,
+    patientId: Number,
   },
   setup(props) {
     const store = useStore();
@@ -100,10 +101,12 @@ export default defineComponent({
     const showRecord = ref("false");
     const detailsNotes = ref("");
     const addNoteVisible = ref();
+
     watchEffect(() => {
       if (props.pId) {
         store.dispatch("notesList", props.pId);
-      } else if (route.name == "PatientSummary") {
+      }
+      else if (route.name == "PatientSummary") {
         store.dispatch("notesList", route.params.udid);
       }
     });
