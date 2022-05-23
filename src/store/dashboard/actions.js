@@ -14,18 +14,7 @@ export const timeLine = async ({ commit }, id) => {
 
 }
 
-export const callStatus = async ({ commit }, from) => {
-    await ServiceMethodService.common("get", API_ENDPOINTS['callStatus'] + "?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {
-        commit('callStatusSuccess', response.data.data)
 
-    }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
-        if (error.response.status == 401) {
-            //AuthService.logout();
-        }
-        commit('failure', error.response.data);
-    })
-}
 
 export const specialization = async ({ commit }, from) => {
 
