@@ -55,9 +55,6 @@ export default defineComponent({
         const isValueChanged = ref(false);
 
         watchEffect(() => {
-            if (props.pId) {
-                store.dispatch("notesList", props.pId);
-            }
             store.dispatch("globalCodes");
         });
 
@@ -129,7 +126,7 @@ export default defineComponent({
             }).then(() => {
                 store.dispatch("latestNotes", patientId);
                 store.dispatch("patientTimeline", {
-                    id: route.params.udid ? route.params.udid : props.pId,
+                    id: patientId,
                     type: "",
                 });
                 formRef.value.resetFields();

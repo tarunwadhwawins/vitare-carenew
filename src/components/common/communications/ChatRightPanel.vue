@@ -1,0 +1,312 @@
+<template>
+  <div class="callRightWrapper chatBoxRight">
+    <span v-if="!isChat" class="dragImg" @mousedown="resize($event)"  @touchstart="resize($event)"><img src="@/assets/images/drag.png" alt="" /></span>
+    <div class="header">
+      <a-row>
+        <a-col :span="12">
+            <PatientInfoTop :patientUdid="patientUdid" />
+        </a-col>
+        <a-col :span="12">
+          <a-row>
+            <PatientTimelineIcon :isBold="timelineDetailVisible" @onClick="showTimelineModal" :patientId="patientUdid" />
+            <PatientNotesIcon :isBold="notesDetailVisible" @onClick="showNotesModal" :patientId="patientUdid" />
+            <PatientDocumentsIcon :isBold="documentDetailVisible" @onClick="showDocumentsModal" :patientId="patientUdid" />
+            <PatientVitalsIcon :isBold="patientVitalsVisible" @onClick="showVitalsModal" :patientId="patientUdid" />
+            <PatientAppointmentsIcon :isBold="patientAppointmentsVisible" @onClick="showAppointments" :patientId="patientUdid" />
+            <PinIcon @onClick="addPin" />
+            <StartCall :patientId="patientUdid" />
+          </a-row>
+        </a-col>
+      </a-row>
+    </div>
+
+    <div class="body">
+      <a-row :gutter="24">
+        <a-col :span="24">
+          <Pins v-if="patientPins && patientPins.length > 0" :patientPins="patientPins" :patientUdid="patientUdid" />
+        </a-col>
+      </a-row>
+      <a-row>
+        <PatientTimeline v-if="timelineDetailVisible == true" :isCommunication="true" :profileId="patientUdid" className="thumbDesc patientTimeline"/>
+        <NotesDetail v-if="notesDetailVisible == true" :isCommunication="true" :patientId="patientUdid" />
+        <DocumentDetail v-if="documentDetailVisible == true" :isCommunication="true" :patientId="patientUdid" />
+        <PatientVitalsGrid v-if="patientVitalsVisible == true" :isCommunication="true" :patientId="patientUdid" />
+        <AppointmentsTable v-if="patientAppointmentsVisible == true" :patientId="patientUdid" />
+        <AddPin v-model:visible="addPinModalVisible" :patientUdid="patientUdid" @closeModal="closeModal"/>
+      </a-row>
+    </div>
+
+  </div>
+</template>
+
+<script>
+import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop"
+import PatientTimeline from "@/components/patients/patientSummary/PatientTimeline"
+import Pins from "@/components/patients/patientSummary/common/CriticalNotes"
+import {
+  watchEffect,
+  reactive,
+  ref,
+  onUnmounted,
+  computed,
+  toRefs,
+} from "vue"
+import {
+  useStore
+} from "vuex"
+import {
+  dateFormat,
+  timeStamp,
+} from "@/commonMethods/commonMethod"
+import moment from "moment"
+import NotesDetail from "@/components/video-call/table/NotesDetail"
+import DocumentDetail from "@/components/video-call/table/DocumentDetail"
+import AppointmentsTable from "@/components/communications/tables/AppointmentsTable"
+import PatientVitalsGrid from "@/components/patients/patientSummary/views/PatientVitalsGrid"
+import AddPin from "@/components/modals/CriticalNote"
+import PatientTimelineIcon from "@/components/common/PatientTimelineIcon"
+import PatientNotesIcon from "@/components/common/PatientNotesIcon"
+import PatientDocumentsIcon from "@/components/common/PatientDocumentsIcon"
+import PatientVitalsIcon from "@/components/common/PatientVitalsIcon"
+import PatientAppointmentsIcon from "@/components/common/PatientAppointmentsIcon"
+import PinIcon from "@/components/common/PinIcon"
+import StartCall from "@/components/common/StartCall"
+
+export default {
+  components: {
+    PatientTimelineIcon,
+    PatientNotesIcon,
+    PatientDocumentsIcon,
+    PatientVitalsIcon,
+    PatientAppointmentsIcon,
+    PinIcon,
+    StartCall,
+    PatientInfoTop,
+    PatientTimeline,
+    NotesDetail,
+    DocumentDetail,
+    AppointmentsTable,
+    PatientVitalsGrid,
+    Pins,
+    AddPin,
+  },
+  props: {
+    communication: {
+      type: Object
+    },
+    idPatient: {
+      type: Number
+    },
+    isChat: {
+      type: Boolean
+    },
+  },
+  setup(props) {
+    const store = useStore()
+    const formValue = reactive({
+      msgSend: ''
+    })
+    const notesDetailVisible = ref(false)
+    const documentDetailVisible = ref(false)
+    const patientVitalsVisible = ref(false)
+    const patientAppointmentsVisible = ref(false)
+    const timelineDetailVisible = ref(true)
+    const addPinModalVisible = ref(false)
+    var patientUdid =  reactive(props.idPatient)
+    const patientId =  ref(null)
+    const communications = reactive(props.communication)
+    const isCommunicationWithPatient = ref(false)
+    const tabvalue = reactive({
+      tab: [],
+    })
+
+    const showTimelineModal = () => {
+      patientVitalsVisible.value = false
+      notesDetailVisible.value = false
+      documentDetailVisible.value = false
+      timelineDetailVisible.value = true
+    }
+
+    const showNotesModal = () => {
+      notesDetailVisible.value = true
+      documentDetailVisible.value = false
+      patientVitalsVisible.value = false
+      patientAppointmentsVisible.value = false
+      timelineDetailVisible.value = false
+    }
+
+    const showDocumentsModal = () => {
+      documentDetailVisible.value = true
+      notesDetailVisible.value = false
+      patientVitalsVisible.value = false
+      patientAppointmentsVisible.value = false
+      timelineDetailVisible.value = false
+
+    }
+    const showVitalsModal = () => {
+      patientVitalsVisible.value = true
+      patientAppointmentsVisible.value = false
+      notesDetailVisible.value = false
+      documentDetailVisible.value = false
+      timelineDetailVisible.value = false
+
+    }
+    
+    const showAppointments = () => {
+      patientVitalsVisible.value = false
+      patientAppointmentsVisible.value = true
+      notesDetailVisible.value = false
+      documentDetailVisible.value = false
+      timelineDetailVisible.value = false
+
+    }
+
+    const addPin = () => {
+      addPinModalVisible.value=true
+    }
+
+    const scroll = ref()
+    const auth = JSON.parse(localStorage.getItem("auth"))
+    let interval = setInterval(() => {
+      store.dispatch("conversation", props.communication.id)
+      getScroll()
+    }, 2000)
+    
+    const tableContent = ref(null)
+    
+    watchEffect(() => {
+      store.state.communications.conversationList = ""
+      store.commit('loadingStatus', false)
+      setTimeout(() => {
+        store.commit('loadingStatus', false)
+      }, 3000)
+      if(communications.is_sender_patient) {
+        patientUdid = communications.fromId
+        patientId.value = communications.senderId
+        isCommunicationWithPatient.value = true
+      }
+      else if(communications.is_receiver_patient) {
+        patientUdid = communications.toId
+        patientId.value = communications.receiverId
+        isCommunicationWithPatient.value = true
+      }
+      else {
+        isCommunicationWithPatient.value = false
+      }
+
+      if(isCommunicationWithPatient.value) {
+        store.dispatch("timeLineType")
+      }
+
+      store.dispatch("conversation", props.communication.id)
+      tableContent.value = document.getElementsByClassName('chatBoxInner')
+      getScroll()
+      localStorage.setItem('patientUdid', patientUdid)
+    })
+
+    function getScroll() {
+      setTimeout(() => {
+        if((tableContent.value[0].scrollTop < tableContent.value[0].scrollHeight+10) == true) {
+          tableContent.value[0].scrollTop = tableContent.value[0].scrollHeight+10
+        }
+      }, 2000)
+    }
+    const list = store.getters.communicationRecord.value
+
+    function sendMsg() {
+      if (formValue.msgSend) {
+        list.conversationList.push({
+          conversationId: props.communication.id,
+          senderId: auth.user.id,
+          message: formValue.msgSend,
+          type: "text",
+          isRead: 0,
+          createdAt: timeStamp(moment())
+        })
+        store.dispatch("conversationSend", {
+          conversationId: props.communication.id,
+          message: formValue.msgSend,
+          type: "text",
+        })
+        formValue.msgSend = ''
+      }
+      getScroll()
+    }
+
+    function closeModal() {
+      store.state.communications.conversationList = ""
+      clearInterval(interval)
+      addPinModalVisible.value = false
+    }
+
+    onUnmounted(() => {
+      clearInterval(interval)
+    })
+
+    const patientPins = computed(() => {
+      return store.state.patients.patientCriticalNotes
+    })
+
+    return {
+      list,
+      sendMsg,
+      formValue,
+      dateFormat,
+      closeModal,
+      auth,
+      scroll,
+      showNotesModal,
+      showDocumentsModal,
+      showVitalsModal,
+      showAppointments,
+      addPin,
+      showTimelineModal,
+      addPinModalVisible,
+      patientUdid,
+      patientId,
+      notesDetailVisible,
+      documentDetailVisible,
+      patientVitalsVisible,
+      timelineDetailVisible,
+      ...toRefs(tabvalue),
+      timeLineType: store.getters.timeLineType,
+      patientPins,
+      patientAppointmentsVisible,
+
+    }
+  },
+}
+</script>
+
+<style scoped>
+/* .chatBoxDiv {
+  height: 680px !important;
+} */
+.chatBox {
+  height: 640px !important;
+}
+.patientTimeline {
+  width: 100% !important;
+}
+.chatBox .chatBoxInner {
+  min-height: 640px !important;
+  overflow: scroll !important;
+}
+.callButton {
+  margin-bottom: 20px;
+}
+.anticon-calendar, .anticon-pushpin, .anticon-phone {
+  color: #ffffff;
+  font-size: 16px !important;
+  position: relative !important;
+  top: -2px !important;
+}
+.callRightWrapper .body {
+  overflow-y: scroll;
+  height: 445px;
+  overflow-x: hidden;
+}
+.callRightWrapper .header .patientInfo .patientImg .info {
+  margin-left: -50px !important;
+}
+</style>

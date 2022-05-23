@@ -3,22 +3,6 @@
     <a-row :gutter="24">
       <a-col :span="12" class="chatBox2">
         <div class="chatBox" ref="scroll" id="chatBox">
-          <!-- <div class="chatBoxInner">
-            <div v-for="msg,index in list.conversationList" :key="index">
-              <div class="chatWrapper left" v-if="msg.senderId == patientId">
-                <div class="message">
-                  {{msg.message}}
-                </div>
-                <div class="time">{{ msg.createdAt }}</div>
-              </div>
-              <div class="chatWrapper right" v-if="msg.senderId != patientId">
-                <div class="message">
-                  {{msg.message}}
-                </div>
-                <div class="time" >{{ msg.createdAt }}</div>
-              </div>
-            </div>
-          </div> -->
           <ChatScreenBody :conversationList="list.conversationList" :communication="communication" screen="withPatient" :patientId="patientId" />
         </div>
         <a-form ref="formRef" :model="formValue" layout="vertical" @finish="sendMsg" @finishFailed="taskFormFailed">
@@ -39,7 +23,9 @@
         </a-form>
       </a-col>
 
-      <RightPanel :patientDetail="patientDetail" :patientUdid="patientUdid" :communication="communication" />
+      <a-col :span="12">
+        <ChatRightPanel :idPatient="patientUdid" :communication="communication" :isChat="true" />
+      </a-col>
 
       <Loader />
     </a-row>
@@ -49,14 +35,8 @@
 <script>
 import {
   SendOutlined,
-  // PhoneOutlined,
-  // CalendarOutlined,
-  // PushpinOutlined,
-} from "@ant-design/icons-vue";
-// import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
-// import PatientTimeline from "@/components/patients/patientSummary/PatientTimeline";
-import ChatScreenBody from "@/components/communications/ChatScreenBody";
-// import Pins from "@/components/patients/patientSummary/common/CriticalNotes";
+} from "@ant-design/icons-vue"
+import ChatScreenBody from "@/components/communications/ChatScreenBody"
 import {
   watchEffect,
   reactive,
@@ -74,34 +54,16 @@ import {
   timeStamp,
   enCodeString,
 } from "@/commonMethods/commonMethod"
-import Loader from "@/components/loader/Loader";
+import Loader from "@/components/loader/Loader"
 import moment from "moment"
-// import NotesDetail from "@/components/video-call/table/NotesDetail";
-// import DocumentDetail from "@/components/video-call/table/DocumentDetail";
-// import AppointmentsTable from "@/components/communications/tables/AppointmentsTable";
-// import PatientVitalsDetails from "@/components/video-call/table/PatientVitalsDetails";
-// import PatientVitalsDetails from "@/components/patients/patientSummary/views/PatientVitalsGrid";
-// import AddPin from "@/components/modals/CriticalNote";
-import RightPanel from "@/components/common/communications/RightPanel";
-import { useRouter } from 'vue-router';
+import ChatRightPanel from "@/components/common/communications/ChatRightPanel"
 
 export default {
   components: {
-    RightPanel,
-    // PatientInfoTop,
-    // PatientTimeline,
+    ChatRightPanel,
     SendOutlined,
     Loader,
-    // NotesDetail,
-    // DocumentDetail,
-    // AppointmentsTable,
-    // PatientVitalsDetails,
     ChatScreenBody,
-    // PhoneOutlined,
-    // CalendarOutlined,
-    // PushpinOutlined,
-    // Pins,
-    // AddPin,
   },
   props: {
     communication: {
@@ -110,7 +72,6 @@ export default {
   },
   setup(props) {
     const store = useStore()
-    const router = useRouter()
     const formValue = reactive({
       msgSend: ''
     })
@@ -144,18 +105,6 @@ export default {
       console.log(e);
       window.addEventListener("touchmove", resizeDiv);
     });
-  
-    function chnageTab() {
-      store.commit("loadingTableStatus", true);
-      store
-        .dispatch("patientTimeline", {
-          id: patientUdid.value,
-          type: tabvalue.tab.length == 0 ? "" : tabvalue.tab.join(","),
-        })
-        .then(() => {
-          store.commit("loadingTableStatus", false);
-        });
-    }
 
     const showNotesModal = () => {
       store.commit('loadingStatus', true)
@@ -232,25 +181,11 @@ export default {
       }
 
       if(isCommunicationWithPatient.value) {
-        store.dispatch("timeLineType");
-        store.dispatch("patientTimeline", {
-          id: patientUdid.value,
-          type: "",
-        });
-        store.dispatch("patientVitals", {
-          patientId: patientUdid.value,
-          deviceType: 99,
-        });
-        store.dispatch("patientVitals", {
-          patientId: patientUdid.value,
-          deviceType: 100,
-        });
-        store.dispatch("patientVitals", {
-          patientId: patientUdid.value,
-          deviceType: 101,
-        });
         store.dispatch("patientDetails", patientUdid.value)
-        store.dispatch('patientCriticalNotes', patientUdid.value)
+					store.dispatch('patientTimeline', {
+						id: patientUdid.value,
+						type: ''
+					});
       }
 
       store.state.communications.conversationList = ""
@@ -258,10 +193,6 @@ export default {
       tableContent.value = document.getElementsByClassName('chatBoxInner')
       getScroll()
     })
-
-    const patientDetails = computed(() => {
-      return store.state.patients.patientDetails;
-    });
 
     function getScroll() {
       setTimeout(() => {
@@ -326,24 +257,6 @@ export default {
       }
     });
 
-    const startCallForm = reactive({
-      flag: patientFlag,
-      note: "Call",
-      patientId: patientUdid.value,
-    })
-
-    const startCall = () => {
-      store.commit('loadingStatus', true)
-      store.dispatch("appointmentCalls", startCallForm).then((response)=>{
-        if(response == true && conferenceId.value) {
-          store.commit('loadingStatus', false)
-          let redirect = router.resolve({name: 'videoCall', params: {id: enCodeString(conferenceId.value)}});
-          window.open(redirect.href, '_blank');
-        }
-      })
-     
-    }
-
     return {
       conferenceId,
       enCodeString,
@@ -365,15 +278,11 @@ export default {
       addPinModalVisible,
       patientUdid,
       patientId,
-      patientDetails,
       notesDetailVisible,
       documentDetailVisible,
       patientVitalsVisible,
       timelineDetailVisible,
-      chnageTab,
       ...toRefs(tabvalue),
-      timeLineType: store.getters.timeLineType,
-      startCall,
       patientPins,
       patientAppointmentsVisible,
     };
@@ -414,5 +323,8 @@ export default {
 }
 .callRightWrapper .header .patientInfo .patientImg .info {
   margin-left: -50px !important;
+}
+span.dragImg {
+  display: none !important;
 }
 </style>
