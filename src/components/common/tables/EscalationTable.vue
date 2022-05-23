@@ -29,6 +29,7 @@ import { EyeOutlined } from "@ant-design/icons-vue";
 import { onMounted} from "vue";
 import { useStore } from "vuex";
 import Flags from "@/components/common/flags/Flags";
+import { useRoute } from 'vue-router';
 export default {
   name: "EscalationTable",
   components: {
@@ -44,6 +45,9 @@ export default {
     onMounted(() => {
       
     })
+    const route = useRoute()
+    let filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
+        let dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
     const showEscalationData = (id) =>{
       console.log(id)
       emit("showEscalationData",true)
@@ -61,7 +65,7 @@ export default {
         // });
         store.dispatch(
           "staffEscalation",
-          "?page=" + store.getters.searchTable.value + orderParam
+          "?page=" + store.getters.searchTable.value +dateFilter + filter + orderParam
         );
       } else {
         store.dispatch("staffEscalation", {
@@ -71,6 +75,7 @@ export default {
           "staffEscalation",
           "?page=" +
             store.getters.searchTable.value +
+            dateFilter + filter +
             store.getters.orderTable.value.data
         );
       }
