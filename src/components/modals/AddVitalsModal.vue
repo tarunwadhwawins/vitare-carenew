@@ -73,17 +73,17 @@ export default {
     deviceId: {
       type: Number
     },
-    patientId: {
-      type: Number
-    },
+		patientId: {
+			type: Number
+		},
   },
   setup(props, {emit}) {
+    alert(props.patientId)
     const store = useStore()
     const route = useRoute()
     const formRef = ref()
     const idDevice = reactive(props.deviceId)
-    const patient = localStorage.getItem('patientUdid')
-    const patientId = patient ? patient : route.params.udid
+    const patientId = props.patientId ? reactive(props.patientId) : route.params.udid
 
     watchEffect(() => {
       store.dispatch('vitalFieldsByDeviceId', idDevice)

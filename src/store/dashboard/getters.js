@@ -5,11 +5,7 @@ export const dashboardTimeLineButton = (state) => {
     return state.timeLineButton
   })
 }
-export const callStatus = (state) => {
-    return computed(() => {
-      return state.callStatus
-    })
-  }
+
  
   export const specialization = (state) => {
     return computed(() => {

@@ -3,17 +3,17 @@ export const referralColumns = async (state) => {
     {
       title: "Name",
       dataIndex: "name",
-      //sorter:true
+      sorter:true
     },
     {
       title: "Email",
       dataIndex: "email",
-      //sorter:true
+      sorter:true
     },
     {
       title: "Patients Name",
       dataIndex: "patientName",
-      //sorter:true
+      sorter:true,
       slots: {
         customRender: "patientName",
       },
@@ -21,7 +21,7 @@ export const referralColumns = async (state) => {
     {
       title: "Designation",
       dataIndex: "designation",
-      //sorter:true
+      sorter:true
     },
   
     // {

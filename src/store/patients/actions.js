@@ -1710,7 +1710,6 @@ export const addEscalationNote = async ({commit}, data) => {
 export const addEscalationVital = async ({commit}, data) => {
   let status = false
   commit('loadingStatus', true)
-  console.log('object',data);
   await serviceMethod.common("post", `escalation/vital/${data.escalationId}`, null, data.data).then((response) => {
     // commit('addEscalationVital', response.data.data)
     console.log(response);
@@ -1893,9 +1892,6 @@ export const escalationVitalList = async ({commit}, data) => {
 export const referral = async ({
   commit
 }) => {
-  
- 
- 
   await serviceMethod.common("get", API_ENDPOINTS['referral'], null, null).then((response) => {
     commit('referral', response.data.data);
     
@@ -1907,9 +1903,6 @@ export const referral = async ({
 
 }
 export const referralDetail = async ({commit},id) => {
-  
- 
- 
   await serviceMethod.common("get",'patient/'+id+'/referral', null, null).then((response) => {
     commit('referralDetail', response.data.data);
     

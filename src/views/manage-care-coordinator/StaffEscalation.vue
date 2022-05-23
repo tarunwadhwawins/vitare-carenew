@@ -15,12 +15,20 @@
                             Escalation Details
                         </h2>
                     </a-col>
-                     
-                    <a-col :span="24">
+                    <a-col :span="12">
+                        <div class="text-right">
+                            <a-button @click="showEscalationModal" type="primary">{{'Add Escalation'}}</a-button>
+                        </div>
+                    </a-col>
+                    <a-col :span="12">
+                        <SearchField endPoint="escalation" />
+                    </a-col>
+                    <a-col :span="24" style="padding-top:20px">
                         <EscaltionTable :columnData="columnData" :escalationList="escalationList" @showEscalationData="showEscalationData($event)" />
                     </a-col>
                 </a-row>
                 <EscaltionViewModal v-model:visible="escaltionViewModal" />
+                <EscaltionModal v-model:visible="escaltionModal" @saveModal="saveModal($event)" />
             </div>
             <Loader />
         </a-layout-content>
@@ -30,19 +38,21 @@
 </template>
 
 <script>
-import { computed, onMounted, onUnmounted, ref  } from "vue";
+import { computed, onMounted, onUnmounted, ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 import { globalDateFormat } from "@/commonMethods/commonMethod";
 import EscaltionTable from "@/components/common/tables/EscalationTable";
-import EscaltionViewModal from "@/components/care-coordinator/escalations/EscalationViewModal"
-// import EscaltionModal from "../escalations/EscalationModal"
+import EscaltionViewModal from "@/components/care-coordinator/escalations/EscalationViewModal";
 import Loader from "@/components/loader/Loader";
 import Header from "@/components/layout/header/Header";
 import Sidebar from "@/components/layout/sidebar/Sidebar";
+import EscaltionModal from "@/components/patients/patientSummary/escalations/EscalationModal";
+import SearchField from "@/components/common/input/SearchField";
 const columnData = [
-    {
+  {
     title: "Patient Name",
     dataIndex: "patientName",
+    sorter: true,
     slots: {
       customRender: "patientName",
     },
@@ -50,6 +60,7 @@ const columnData = [
   {
     title: "Escalation Type",
     dataIndex: "escalationType",
+    sorter: true,
     slots: {
       customRender: "escalationType",
     },
@@ -57,6 +68,7 @@ const columnData = [
   {
     title: "Due Date",
     dataIndex: "dueBy",
+    sorter: true,
   },
   {
     title: "Flag",
@@ -77,34 +89,46 @@ const columnData = [
 export default {
   components: {
     EscaltionTable,
-    // EscaltionModal,
+    EscaltionModal,
     Loader,
     EscaltionViewModal,
     Header,
     Sidebar,
+    SearchField,
   },
 
   setup() {
     const store = useStore();
     const escaltionViewModal = ref(false);
-    const button = ref(2)
-  
-    const escaltionModal = ref(false);
+    const button = ref(2);
 
+    const escaltionModal = ref(false);
 
     const patientDetails = computed(() => {
       return store.state.patients.patientDetails;
     });
 
     onMounted(() => {
-        // store.dispatch("staffEscalation")
-        if (store.getters.filter.value) {
-                 store.dispatch("staffEscalation","?filter="+store.getters.filter.value  +"&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate)
-               
-            } else {
-               store.commit("dateFilter",'')
-                store.dispatch("staffEscalation")
-            }
+      // store.dispatch("staffEscalation")
+      if (store.getters.filter.value) {
+        store.dispatch(
+          "staffEscalation",
+          "?filter=" +
+            store.getters.filter.value +
+            "&fromDate=" +
+            store.getters.dateFilter.value.fromDate +
+            "&toDate=" +
+            store.getters.dateFilter.value.toDate
+        );
+      } else {
+        store.commit("dateFilter", "");
+        store.dispatch("staffEscalation");
+      }
+
+      store.dispatch("searchTable", "&search=");
+      store.dispatch("orderTable", {
+        data: "&orderField=&orderBy=",
+      });
     });
     const showEscalationModal = () => {
       store.commit("resetEscalationCounter");
@@ -124,11 +148,18 @@ export default {
     const escalationList = computed(() => {
       return store.state.careCoordinator.staffEscalation;
     });
-onUnmounted(()=>{
-    store.commit("filter",'')
-    store.commit("dataFilter",'')
-})
-    
+    onUnmounted(() => {
+      store.commit("filter", "");
+      store.commit("dataFilter", "");
+    });
+
+    watchEffect(() => {
+      store.dispatch("searchTable", "&search=");
+      store.dispatch("orderTable", {
+        data: "&orderField=&orderBy=",
+      });
+    });
+
     return {
       button,
       escalationList,

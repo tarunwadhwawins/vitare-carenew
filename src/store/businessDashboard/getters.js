@@ -21,3 +21,8 @@
       return state.referalCountRecord
     })
   }
+  export const callStatus = (state) => {
+    return computed(() => {
+      return state.callStatus
+    })
+  }

@@ -20,6 +20,7 @@ import {
   arrayToObjact,
   tableYScroller,
 } from "@/commonMethods/commonMethod";
+import { useRoute } from 'vue-router';
 export default {
   components: {
   
@@ -29,11 +30,7 @@ export default {
   props: {},
   setup() {
     const store = useStore();
-
-   
-   
-  
-
+    const route = useRoute()
     //infinite scroll
     let data = [];
     let scroller = "";
@@ -41,7 +38,8 @@ export default {
     const meta = store.getters.referrareferralMetalList;
     const record = store.getters.referralList
     const loader = ref(false);
-    let filter = store.getters.filter.value  ? store.getters.filter.value : ''
+     let filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
+        let dateFilter = route.query.fromDate && route.query.toDate ? "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
     onMounted(() => {
       var tableContent = document.querySelector(".ant-table-body");
       tableContent.addEventListener("scroll", (event) => {
@@ -61,12 +59,11 @@ console.log("tedfdfst",data)
             store
               .dispatch(
                 "referralList",
-                
-                  "?page=" +
+                 dateFilter + filter +
+                  "&page=" +
                   current_page +
                   store.getters.searchTable.value +
-                  "&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+
-                   '&filter='+filter+
+                 
                   store.getters.orderTable.value.data
               )
               .then(() => {
@@ -107,7 +104,9 @@ console.log("tedfdfst",data)
         });
         store.dispatch(
           "referralList",
-          '?filter='+filter+store.getters.searchTable.value + "&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+ orderParam
+          dateFilter + filter +
+          store.getters.searchTable.value+
+           orderParam
         );
       } else {
         store.dispatch("orderTable", {
@@ -115,7 +114,7 @@ console.log("tedfdfst",data)
         });
         store.dispatch(
           "referralList",
-          '?filter='+filter+store.getters.searchTable.value +"&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+  store.getters.orderTable.value.data
+          dateFilter + filter + store.getters.searchTable.value+ store.getters.orderTable.value.data
         );
       }
     };

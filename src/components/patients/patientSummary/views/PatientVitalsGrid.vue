@@ -46,7 +46,7 @@
   </template>
 
   </a-row>
-  <AddVitalsModal v-if="visibleAddVitalsModal" v-model:visible="visibleAddVitalsModal" :title="title" :deviceId="deviceId" @closeModal="handleOk" @ok="handleOk" />
+  <AddVitalsModal v-if="visibleAddVitalsModal" v-model:visible="visibleAddVitalsModal" :title="title" :deviceId="deviceId" @closeModal="handleOk" :patientId="patientId" @ok="handleOk" />
 </template>
 
 <script>
@@ -61,6 +61,11 @@ export default {
   components: {
     AddVitalsModal,
     VitalsGrid,
+  },
+  props: {
+		patientId: {
+			type: Number
+		},
   },
   setup() {
     const store = useStore();

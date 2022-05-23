@@ -1,7 +1,18 @@
 import ServiceMethodService from '../../services/serviceMethod';
 import { API_ENDPOINTS } from "../../config/apiConfig"
 import { errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
+export const callStatus = async ({ commit }, from) => {
+    await ServiceMethodService.common("get", API_ENDPOINTS['callStatus'] + "?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {
+        commit('callStatusSuccess', response.data.data)
 
+    }).catch((error) => {
+        errorLogWithDeviceInfo(error.response)
+        if (error.response.status == 401) {
+            //AuthService.logout();
+        }
+        commit('failure', error.response.data);
+    })
+}
 export const cptCode = async ({ commit }, from) => {
 
     await ServiceMethodService.common("get", API_ENDPOINTS['cptCodeGraph'] + "?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {

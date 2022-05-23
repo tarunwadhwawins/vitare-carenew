@@ -41,7 +41,7 @@
       <div class="notesBody">
         <Documents
           :paramId="paramsId"
-          :idPatient="patientDetails.id"
+          :idPatient="pId"
           entity="patient"
           @document="addDocumentsModal($event)"
         />
@@ -85,7 +85,10 @@ export default defineComponent({
     ),
   },
   props: {
-    patientDetails: {
+    patientId: {
+      type: Array,
+    },
+    patientUdid: {
       type: Array,
     },
     isCommunication: {
@@ -95,7 +98,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const store = useStore();
     // const route = useRoute();
-    const patientId = reactive(props.patientDetails.id);
+    const pId = props.patientId ? reactive(props.patientId) : reactive(props.patientUdid);
     const addDocument = ref();
     const paramsId = ref();
     const documentsColumns = [
@@ -139,7 +142,9 @@ export default defineComponent({
       },
     ];
     watchEffect(() => {
-      store.dispatch("patientDocuments", patientId);
+      if(pId) {
+        store.dispatch("patientDocuments", pId);
+      }
     });
     const patientDocuments = computed(() => {
       return store.state.patients.patientDocuments;
@@ -149,21 +154,21 @@ export default defineComponent({
       warningSwal(messages.deleteWarning).then((response) => {
         if (response == true) {
           const data = {
-            id: patientId,
+            id: pId,
             documentId: id,
           };
           console.log("data", data);
           store.dispatch("deleteDocument", data).then(() => {
-            store.dispatch("patientDocuments", patientId);
+            store.dispatch("patientDocuments", pId);
             if (patientDocuments.value.length <= 1) {
               emit("closeModal", {
                 modal: "documentDetails",
                 value: false,
               });
             }
-            store.dispatch("latestDocument", patientId);
+            store.dispatch("latestDocument", pId);
             store.dispatch("patientTimeline", {
-              id: patientId,
+              id: pId,
               type: "",
             });
           });
@@ -194,6 +199,7 @@ export default defineComponent({
       documentsColumns,
       patientDocuments,
       deleteDocument,
+      pId,
     };
   },
 });

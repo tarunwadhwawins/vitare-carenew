@@ -31,27 +31,13 @@
 </template>
 
 <script>
-import {
-    WarningOutlined,
-    DeleteOutlined
-} from "@ant-design/icons-vue";
-import {
-    messages
-} from "@/config/messages";
-import {
-    warningSwal,
-
-} from "@/commonMethods/commonMethod";
-import {
-    onMounted
-} from "vue";
-import {
-    useStore
-} from "vuex";
-import {
-    tableYScrollerCounterPage,
-    arrayToObjact
-} from "@/commonMethods/commonMethod";
+import {WarningOutlined,DeleteOutlined} from "@ant-design/icons-vue";
+import {  messages} from "@/config/messages";
+import {  warningSwal} from "@/commonMethods/commonMethod";
+import {  onMounted} from "vue";
+import {   useStore} from "vuex";
+import {   tableYScrollerCounterPage,   arrayToObjact} from "@/commonMethods/commonMethod";
+import {   useRoute} from 'vue-router';
 export default {
     name: "DataTable",
     components: {
@@ -64,7 +50,12 @@ export default {
         const meta = store.getters.patientsRecord.value;
         let data = [];
         let scroller = "";
-         let filter = store.getters.filter.value  ? store.getters.filter.value : ''
+        const route = useRoute()
+        if (route.query) {
+            store.dispatch("patients", "?filter=" + route.query.filter + "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
+        }
+        let filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
+        let dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
         onMounted(() => {
             var tableContent = document.querySelector(".ant-table-body");
             tableContent.addEventListener("scroll", (event) => {
@@ -79,7 +70,7 @@ export default {
                         data = meta.patientList
                         //store.state.patients.patientList = ""
 
-                        store.dispatch("patients", "?page=" + current_page +"&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+'&filter='+filter+ store.getters.searchTable.value +
+                        store.dispatch("patients", "?page=" + current_page + dateFilter + filter + store.getters.searchTable.value +
                             store.getters.orderTable.value.data).then(() => {
                             loadMoredata();
                         });
@@ -113,7 +104,7 @@ export default {
                 });
                 store.dispatch(
                     "patients",
-                    "?page=" + "&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+'&filter='+filter+store.getters.searchTable.value + orderParam
+                    "?page=" + dateFilter + filter + store.getters.searchTable.value + orderParam
                 );
             } else {
                 store.dispatch("orderTable", {
@@ -121,8 +112,7 @@ export default {
                 });
                 store.dispatch(
                     "patients",
-                    "?page=" +'&filter='+filter+
-                    "&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+
+                    "?page=" + dateFilter + filter +
                     store.getters.searchTable.value +
                     store.getters.orderTable.value.data
                 )

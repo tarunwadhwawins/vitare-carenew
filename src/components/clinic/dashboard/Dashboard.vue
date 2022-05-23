@@ -9,26 +9,29 @@
                 </div>
             </h2>
         </a-col>
-        <!-- <a-col :span="24">
+        <a-col :span="24">
             <a-row :gutter="24" v-if="arrayToObjact(widgetsPermissions,1) && grid">
-                <Card v-for="item in totalPatients" :key="item.count" :count="item.total" :text='item.text' link="manage-patients" :xl="grid.xlGrid" :color="item.color" :sm="grid.smGrid" :textColor="item.textColor">
+                <Card v-for="item in totalPatients" :key="item.count" :count="item.total" :text='item.text' link="Patients with filter" :xl="grid.xlGrid" :color="item.color" :sm="grid.smGrid" :textColor="item.textColor">
                 </Card>
-
             </a-row>
-        </a-col> -->
+        </a-col>
     </a-row>
     <a-row :gutter="24">
         
-        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  clicalTask">
-            <ApexChart title="My Tasks " type="bar" :height="350" :options="clicalTask.code" :series="clicalTask.value" linkTo="tasks?view=list"></ApexChart>
-        </a-col>
-         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  escalationCount">
-            <ApexChart title="Escalation" type="bar" :height="350" :options="escalationCount.code" :series="escalationCount.value" linkTo="escalation" :data="escalationRecord"></ApexChart>
-        </a-col>
-         
         
+         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  escalationCount">
+            <ApexChart title="Escalations" type="bar" :height="400" :options="escalationCount.code" :series="escalationCount.value" linkTo="Escalation" :data="escalationRecord"></ApexChart>
+        </a-col>
+         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && escalationList">
+             <a-card  title="Escalations List" class="common-card">
+            <EscaltionTable :columnData="columnData" :escalationList="escalationList"  @showEscalationData="showEscalationData($event)" />
+             </a-card>
+        </a-col>
+        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  clicalTask">
+            <ApexChart title="My Tasks " type="bar" :height="350" :options="clicalTask.code" :series="clicalTask.value" linkTo="Tasks" listView="list"></ApexChart>
+        </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && patientsFlag">
-            <ApexChart title="Patient Flags" type="bar" :height="350" :options="patientsFlag.code" :series="patientsFlag.value" linkTo="manage-patients"></ApexChart>
+            <ApexChart title="Patient Flags" type="bar" :height="350" :options="patientsFlag.code" :series="patientsFlag.value" linkTo="Patients with filter"></ApexChart>
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  appointmentCount">
             <ApexChart title="My Appointments" type="bar" :height="350" :options="appointmentCount.chartOptions" :series="appointmentCount.value" linkTo="appointment-calendar"></ApexChart>
@@ -37,22 +40,62 @@
     </a-row>
     <Loader />
 </a-layout-content>
+<EscaltionViewModal v-model:visible="escaltionViewModal" />
 </template>
 
 <script>
-  import { ref, onMounted } from 'vue'
-  //import Card from "@/components/common/cards/Card"
+  import { ref, onMounted ,computed} from 'vue'
+  import Card from "@/components/common/cards/Card"
   import ApexChart from "@/components/common/charts/ApexChart"
   import { startimeAdd, endTimeAdd, timeStamp ,arrayToObjact} from '@/commonMethods/commonMethod'
   import { useStore } from 'vuex'
   import Loader from "@/components/loader/Loader";
   import moment from "moment"
-  
+  import EscaltionTable from "@/components/common/tables/EscalationTable"
+  import EscaltionViewModal from "@/components/care-coordinator/escalations/EscalationViewModal"
+  const columnData = [
+    {
+    title: "Patient Name",
+    dataIndex: "patientName",
+    slots: {
+      customRender: "patientName",
+    },
+  },
+  {
+    title: "Escalation Type",
+    dataIndex: "escalationType",
+    slots: {
+      customRender: "escalationType",
+    },
+  },
+  {
+    title: "Due Date",
+    dataIndex: "dueBy",
+  },
+  {
+    title: "Flag",
+    dataIndex: "flag",
+    slots: {
+      customRender: "flag",
+    },
+  },
+  {
+    title: "Action",
+    dataIndex: "action",
+    slots: {
+      customRender: "action",
+    },
+  },
+ 
+];
+
 export default {
     components: {
-       // Card,
+        Card,
         ApexChart,
-        Loader
+        Loader,
+        EscaltionTable,
+        EscaltionViewModal,
     },
 
     setup() {
@@ -61,7 +104,13 @@ export default {
         //const toDate = ref(moment())
         const dateFilter = ref('')
         const timeLineButton = store.getters.dashboardTimeLineButton
-
+ const escaltionViewModal = ref(false);
+ const escaltionModal = ref(false);
+   const showEscalationModal = () => {
+      store.commit("resetEscalationCounter");
+      store.state.patients.addBasicEscalation = null;
+      escaltionModal.value = true;
+    };
         function apiCall(data) {
             let from = moment()
             let to = moment()
@@ -97,23 +146,28 @@ export default {
                 
             }
             dateFilter.value = dateFormate
-            console.log("check",dateFilter.value)
+            store.dispatch("counterCard", dateFormate)
             store.commit("dateFilter",dateFilter.value)
             store.dispatch("permissions")
             store.dispatch("clicalTask", dateFormate)
-            
-             store.dispatch("callStatus", dateFormate)
-             store.dispatch("patientsFlag", dateFormate)
-             store.dispatch("appointmentCount", dateFormate)
-           store.dispatch("escalationCount", dateFormate)
+            store.dispatch("callStatus", dateFormate)
+            store.dispatch("patientsFlag", dateFormate)
+            store.dispatch("appointmentCount", dateFormate)
+            store.dispatch("escalationCount", dateFormate)
+            store.dispatch("staffEscalation")
 
         }
-        
+         const escalationList = computed(() => {
+      return store.state.careCoordinator.staffEscalation;
+    });
 
         onMounted(() => {
           
-          if(!timeLineButton.value){
-            store.dispatch("timeLine", 122)
+         if(timeLineButton.value==null){
+              
+            store.dispatch("timeLine", 122).then(()=>{
+                apiCall(timeLineButton.value)
+            })
                 
           }else{
             apiCall(timeLineButton.value)
@@ -145,7 +199,13 @@ export default {
             timeline:store.getters.timeline,
             widgetsPermissions:store.getters.widgetsPermissions,
             escalationRecord:store.getters.escalationRecord,
+            totalPatients:store.getters.totalPatientcount,
             arrayToObjact,
+            columnData,
+            escalationList,
+            showEscalationModal,
+            escaltionViewModal,
+            escaltionModal
         };
     },
 };

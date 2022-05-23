@@ -70,6 +70,7 @@ import {
 } from "@/commonMethods/commonMethod";
 
 import Flags from "@/components/common/flags/Flags";
+import { useRoute } from 'vue-router';
 
 export default {
     components: {
@@ -96,7 +97,7 @@ props:{
             emit('scrolller')
 
         };
-
+        const route = useRoute()
         const editTimeLog = (id) => {
             store.commit('errorMsg', null)
             store.dispatch("editAuditTimeLog", id);
@@ -129,7 +130,8 @@ props:{
         const loader = ref(false);
         let data = []
         let scroller = ''
-        let filter = store.getters.filter.value  ? store.getters.filter.value : ''
+        let filter = route.query.filter ?   route.query.filter : ''
+     
         onMounted(() => {
             var tableContent = document.querySelector(".ant-table-body");
 

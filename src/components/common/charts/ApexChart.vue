@@ -13,7 +13,7 @@ import { useStore } from 'vuex';
 export default {
     props: {
         data:{
-type:Array
+            type:Array
         },
         linkTo: {
             type: String,
@@ -37,6 +37,9 @@ type:Array
             type: Array,
             required: true
         },
+        listView:{
+            type:String
+        }
     },
 
     setup(props) {
@@ -47,19 +50,32 @@ type:Array
             
 
            //console.log(event, chartContext, config.globals.labels[config.dataPointIndex])
+           let filter = ''
             if (props.linkTo) {
                 if (props.type == "bar" && config.globals.labels[config.dataPointIndex] != undefined) {
                     if(props.data){
                        // console.log("check",props.data[config.dataPointIndex].referralId)
-store.commit("filter", props.data[config.dataPointIndex].id)
+                       filter = props.data[config.dataPointIndex].id
+    //store.commit("filter", props.data[config.dataPointIndex].id)
                     }else{
-                        
-                       store.commit("filter", config.globals.labels[config.dataPointIndex]) 
+                        filter = config.globals.labels[config.dataPointIndex]
+                       //store.commit("filter", config.globals.labels[config.dataPointIndex]) 
                     }
-                   
+                   if(props.listView){
                     router.push({
-                        path: props.linkTo
-                    });
+                        name: props.linkTo,
+                       
+                        query:{fromDate:store.getters.dateFilter.value.fromDate,toDate:store.getters.dateFilter.value.toDate,filter:filter,view:props.listView}
+
+                    })
+                    }else{
+                             router.push({
+                        name: props.linkTo,
+                       
+                        query:{fromDate:store.getters.dateFilter.value.fromDate,toDate:store.getters.dateFilter.value.toDate,filter:filter}
+
+                    })
+                    }
                 } else if (props.type == "pie") {
                     router.push({path: props.linkTo})
                 }

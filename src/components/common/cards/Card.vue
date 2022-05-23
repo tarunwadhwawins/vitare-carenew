@@ -1,16 +1,18 @@
 <template>
   <a-col :xl="xl" :sm="sm" :xs="12">
-    <router-link :to="link">
+    <div @click="handler(link,text)">
       <div class="topBox" :style="{'background-color': color}">
         <i class="fa fa-user-circle-o" aria-hidden="true"></i>
         <h5 :style="{'color': textColor}">{{ count }}</h5>
         <p :style="{'color': textColor}">{{$t(('dashboard')+'.'+text)}}</p>
       </div>
-    </router-link>
+    </div>
   </a-col>
 </template>
 
 <script>
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
   export default {
     props: {
       count: {
@@ -39,6 +41,25 @@
       type:String
       }
     },
+    setup(){
+       const router = useRouter()
+       const store = useStore()
+
+        function handler(event,text) {
+            
+
+                    router.push({
+                        name: event,
+                       
+                        query:{fromDate:store.getters.dateFilter.value.fromDate,toDate:store.getters.dateFilter.value.toDate,filter:text}
+
+                    })
+                 
+        }
+      return{
+handler,
+      }
+    }
   }
 </script>
 

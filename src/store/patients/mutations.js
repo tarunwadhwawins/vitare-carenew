@@ -1134,4 +1134,10 @@ export const escalationVitalList = (state, data) => {
 
 export const singleEscalationRecord = (state, data) => {
   state.singleEscalationRecord = data
+  state.singleEscalationDataArray = [{
+    patientName :data.patientName,
+    flagColor: data.flagColor,
+    dueBy:dateAndTimeFormate(data.dueBy,globalDateFormat),
+    escalationType:data.escalationType
+  }]
 }

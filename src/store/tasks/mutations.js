@@ -63,11 +63,7 @@ export const task = async (state, tasks) => {
 				customRender: 'category'
 			}
 		},
-		{
-			title: 'Task Type',
-			dataIndex: 'taskType',
-			sorter: true
-		},
+		
 		{
 			title: 'Due Date ',
 			dataIndex: 'dueDate',

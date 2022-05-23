@@ -3,6 +3,10 @@
 
     <a-table rowKey="id" :columns="columnData" :data-source="escalationList" style="width:100%" :pagination="false" @change="handleTableChange">
 
+        <template #patientName="{ text, record }" >
+            <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
+        </template>
+
         <template #escalationType="{ record }">
             <span v-for="esc,i in record.escalationType.data" :key="esc.id" >
                 {{i==0?' ':','}} {{ esc.escalationType }}
@@ -48,7 +52,34 @@ export default {
       emit("showEscalationData",true)
       store.dispatch("singleEscalationRecord",id)
     }
+      const handleTableChange = (pag, filters, sorter) => {
+      if (sorter.order) {
+        let order = sorter.order == "ascend" ? "ASC" : "DESC";
+        let orderParam = "&orderField=" + sorter.field + "&orderBy=" + order;
+        // store.dispatch("staffEscalation", {
+        //   data: orderParam,
+        //   orderBy: order,
+        //   page: pag,
+        //   filters: filters,
+        // });
+        store.dispatch(
+          "staffEscalation",
+          "?page=" + store.getters.searchTable.value + orderParam
+        );
+      } else {
+        store.dispatch("staffEscalation", {
+          data: "&orderField=&orderBy=",
+        });
+        store.dispatch(
+          "staffEscalation",
+          "?page=" +
+            store.getters.searchTable.value +
+            store.getters.orderTable.value.data
+        );
+      }
+    };
     return {
+      handleTableChange,
       showEscalationData,
       screensPermissions: store.getters.screensPermissions,
     };
