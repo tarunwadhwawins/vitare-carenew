@@ -456,3 +456,18 @@ span.address-text {
 .callRightWrapper {
 	padding: 15px 15px 0 !important;
 }
+.commonTags {
+	margin: 0 0 10px;
+	.ant-tag {
+		display: inline-flex;
+    	align-items: center;
+		font-size: 15px;
+		height: 40px;
+		padding: 0 15px;
+		font-family: $font-family-semi-bold;
+		.anticon[tabindex] {
+			font-size: 15px;
+			margin: -4px 0 0 10px;
+		}
+	}
+}

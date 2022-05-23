@@ -20,11 +20,11 @@
         
         
          <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  escalationCount">
-            <ApexChart title="Escalations" type="bar" :height="350" :options="escalationCount.code" :series="escalationCount.value" linkTo="Escalation" :data="escalationRecord"></ApexChart>
+            <ApexChart title="Escalations" type="bar" :height="400" :options="escalationCount.code" :series="escalationCount.value" linkTo="Escalation" :data="escalationRecord"></ApexChart>
         </a-col>
          <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && escalationList">
              <a-card  title="Escalations List" class="common-card">
-            <EscaltionTable :columnData="columnData" :escalationList="escalationList"  :height="350"/>
+            <EscaltionTable :columnData="columnData" :escalationList="escalationList"  @showEscalationData="showEscalationData($event)" />
              </a-card>
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  clicalTask">
@@ -40,6 +40,7 @@
     </a-row>
     <Loader />
 </a-layout-content>
+<EscaltionViewModal v-model:visible="escaltionViewModal" />
 </template>
 
 <script>
@@ -50,7 +51,8 @@
   import { useStore } from 'vuex'
   import Loader from "@/components/loader/Loader";
   import moment from "moment"
-  import EscaltionTable from "@/components/common/tables/EscalationTable";
+  import EscaltionTable from "@/components/common/tables/EscalationTable"
+  import EscaltionViewModal from "@/components/care-coordinator/escalations/EscalationViewModal"
   const columnData = [
     {
     title: "Patient Name",
@@ -77,6 +79,13 @@
       customRender: "flag",
     },
   },
+  {
+    title: "Action",
+    dataIndex: "action",
+    slots: {
+      customRender: "action",
+    },
+  },
  
 ];
 
@@ -85,7 +94,8 @@ export default {
         Card,
         ApexChart,
         Loader,
-        EscaltionTable
+        EscaltionTable,
+        EscaltionViewModal,
     },
 
     setup() {
@@ -94,7 +104,13 @@ export default {
         //const toDate = ref(moment())
         const dateFilter = ref('')
         const timeLineButton = store.getters.dashboardTimeLineButton
-
+ const escaltionViewModal = ref(false);
+ const escaltionModal = ref(false);
+   const showEscalationModal = () => {
+      store.commit("resetEscalationCounter");
+      store.state.patients.addBasicEscalation = null;
+      escaltionModal.value = true;
+    };
         function apiCall(data) {
             let from = moment()
             let to = moment()
@@ -186,7 +202,10 @@ export default {
             totalPatients:store.getters.totalPatientcount,
             arrayToObjact,
             columnData,
-            escalationList
+            escalationList,
+            showEscalationModal,
+            escaltionViewModal,
+            escaltionModal
         };
     },
 };
