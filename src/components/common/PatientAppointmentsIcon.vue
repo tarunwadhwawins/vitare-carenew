@@ -4,7 +4,7 @@
       <div class="moreActionImg purpleBgColor">
         <ScheduleOutlined />
       </div>
-      <p>Appointments</p>
+      <p>Appointment(s)</p>
     </div>
   </a-col>
 </template>

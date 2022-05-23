@@ -4,7 +4,7 @@
       <div class="moreActionImg brightRedBgColor">
         <PushpinOutlined/>
       </div>
-      <p>Pin</p>
+      <p>Add Pin</p>
     </div>
   </a-col>
 </template>
