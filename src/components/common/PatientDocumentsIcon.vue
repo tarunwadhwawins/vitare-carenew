@@ -4,7 +4,7 @@
       <div class="moreActionImg green">
         <FilePdfOutlined />
       </div>
-      <p>Documents</p>
+      <p>Document(s)</p>
     </div>
   </a-col>
 </template>
