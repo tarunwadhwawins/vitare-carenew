@@ -15,6 +15,7 @@ const dashboard = {
   High: 'High',
   Critical: 'Critical',
   newPatientsChart:'New Patients Chart',
+  Other:'Other',
   
 }
 
