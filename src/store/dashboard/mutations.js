@@ -18,45 +18,6 @@ export const todayAppointmentSuccess = (state, count) => {
 export const failure = (state, error) => {
   state.errorMsg = error;
 }
-export const callStatusSuccess = (state, count) => {
-  let categories= count.length > 0 ? count.map((item) => { return item.text }) : ['Completed','In Queue']
-  let data = count.length > 0 ? count.map((item) => { return item.total }) : [0,0]
-  state.callStatus = {
-    calloption: {
-      annotations: annotations("In", 0, "#775DD0", 0, "#fff", "#775DD0"),
-      chart: {
-        type: "bar",
-      },
-      plotOptions: plotOptions(10, "20%", "100%", true, false, "bottom"),
-      dataLabels: dataLabels(false),
-      colors: ["#121258", "#218421", "#ffb526"],
-      stroke: {
-        width: 1,
-        colors: ["#fff"],
-      },
-
-      grid: {
-        row: {
-          colors: ["#fff", "#f2f2f2"],
-        },
-      },
-
-      xaxis: {
-        labels: {
-          rotate: -45,
-        },
-        categories: categories,
-      },
-      yaxis: yaxis("Number of Count")
-    },
-    callseries: [
-      {
-        name: "Call Queue",
-        data: data,
-      },
-    ],
-  };
-}
 
 
 export const specializationSuccess = (state, count) => {

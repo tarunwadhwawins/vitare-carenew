@@ -8,7 +8,7 @@
     <a-col :span="24" v-if="arrayToObjact(screensPermissions,65)">
         <a-row :gutter="24">
             <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox red" :count="5" :text="$t('patient.critical')" />
+                <CounterCard colorBox="colorBox red" :count="5" :text="$t('patient.critical')" @click="filter('Critical')" />
             </a-col>
             <a-col :xl="4" :sm="8" :xs="24">
                 <CounterCard colorBox="colorBox orangeBg" :count="10" :text="$t('patient.trending')" />
@@ -29,6 +29,15 @@
     </a-col>
 </a-row>
 <a-row>
+    <div>
+        <a-tag v-if="route.query.filter" closable @close="remove('filter')">{{route.query.filter}}</a-tag>
+        <a-tag v-if="route.query.toDate && route.query.fromDate" closable @close="remove('date')">
+            {{timeStampFormate(route.query.fromDate,globalDateFormat) }} To {{timeStampFormate(route.query.toDate,globalDateFormat)}}
+        </a-tag>
+    </div>
+</a-row>
+<a-row>
+    
     <a-col :span="12">
         <SearchField endPoint="patient" v-if="arrayToObjact(screensPermissions, 65)" />
     </a-col>
@@ -55,11 +64,11 @@ import PatientsModal from "@/components/modals/PatientsModal";
 import CounterCard from "./counter-card/CounterCard";
 import ShowModalButton from "@/components/common/show-modal-button/ShowModalButton";
 import TableLoader from "@/components/loader/TableLoader"
-import {arrayToObjact,exportExcel} from "@/commonMethods/commonMethod";
+import {arrayToObjact,exportExcel,timeStampFormate,globalDateFormat} from "@/commonMethods/commonMethod";
 import DataTable from "./data-table/DataTable"
 import SearchField from "@/components/common/input/SearchField";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
-
+import { useRoute, useRouter } from 'vue-router';
 export default {
     name: "Patients",
     components: {
@@ -74,6 +83,8 @@ export default {
 
     setup() {
         const store = useStore();
+        const route = useRoute();
+        const router = useRouter()
         const searchoptions = ref([]);
         const PatientsModal = ref(false);
         const showModal = (value) => {
@@ -87,10 +98,9 @@ export default {
         onMounted(() => {
             store.getters.patientsRecord.patientList = ""
             store.dispatch("programList");
-            if (store.getters.filter.value) {
-                store.dispatch("patients", "?filter=" +store.getters.filter.value+ "&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate)
+            if (route.query.filter || route.query.fromDate) {
+                store.dispatch("patients", "?filter=" + route.query.filter + "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
             } else {
-                 store.commit("dateFilter",'')
                 store.dispatch("patients");
             }
 
@@ -109,8 +119,54 @@ export default {
                 data: '&orderField=&orderBy='
             })
             store.commit("filter", '')
-            store.commit("dateFilter",'')
+            store.commit("dateFilter", '')
         })
+
+        function filter(event) {
+            store.dispatch("patients", "?filter=" + event)
+        }
+
+        function remove(event) {
+            if (event == "filter") {
+                if (route.query.fromDate && route.query.toDate) {
+                    
+                    store.dispatch("patients", "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
+             setTimeout(()=>{
+router.replace({    
+                        query: {
+                           
+                            fromDate: route.query.fromDate,
+                            toDate: route.query.toDate,
+                           
+                        }
+                    })
+                   },1000)
+                } else {
+                    router.replace({
+                        query: {}
+                    })
+                    store.dispatch("patients")
+                }
+                       
+
+            } else {
+
+                if (route.query.filter) {
+                    router.replace({
+                        query: {
+                            filter: route.query.filter
+                        }
+                    })
+                    store.dispatch("patients", "?filter=" + route.query.filter)
+                } else {
+                    router.replace({
+                        query: {}
+                    })
+                    store.dispatch("patients")
+                }
+            }
+
+        }
         return {
             exportExcel,
             totalPatients,
@@ -122,6 +178,11 @@ export default {
             handleChange,
             searchoptions,
             search: store.getters.searchTable,
+            filter,
+            route,
+            remove,
+            timeStampFormate,
+            globalDateFormat
 
         };
     },
