@@ -30,5 +30,14 @@ export const patientsRecord = (state)=>{
         return state.referralDetail
     })
   }
+
+  
+  export const singleEscalationDataArray = (state)=>{
+    return computed(()=>{
+        return state.singleEscalationDataArray
+    })
+  }
+
+  
   
   

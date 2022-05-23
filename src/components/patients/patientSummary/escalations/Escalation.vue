@@ -18,7 +18,10 @@
                         <a-button @click="showEscalationModal" type="primary">{{'Add Escalation'}}</a-button>
                     </div>
                 </a-col>
-                <a-col :span="24">
+                <a-col :span="12" >
+                        <SearchField endPoint="escalation" />
+                </a-col>
+                <a-col :span="24" style="padding-top:20px">
                     <EscaltionTable  :columnData="columnData" :escalationList="escalationList"  @showEscalationData="showEscalationData($event)"/>
                 </a-col>
                 <!-- stepper -->
@@ -36,17 +39,20 @@
 
 <script>
 import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
-import { computed, reactive, ref, watchEffect } from "vue";
+import { computed, onMounted, reactive, ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 import { globalDateFormat } from "@/commonMethods/commonMethod";
 import EscaltionTable from "@/components/common/tables/EscalationTable"
-import EscaltionViewModal from "../escalations/EscalationViewModal"
-import EscaltionModal from "../escalations/EscalationModal"
+// import EscaltionViewModal from "../escalations/EscalationViewModal"
+import EscaltionViewModal from "@/components/care-coordinator/escalations/EscalationViewModal";
+import EscaltionModal from "@/components/patients/patientSummary/escalations/EscalationModal"
 import Loader from "@/components/loader/Loader";
+import SearchField from "@/components/common/input/SearchField";
 const columnData = [
     {
     title: "Escalation Type",
     dataIndex: "escalationType",
+    sorter: true,
     slots:{
         customRender: "escalationType",
     },
@@ -54,6 +60,7 @@ const columnData = [
   { 
     title: "Description",
     dataIndex: "escalationDescription",
+    sorter: true,
   },
   {
     title: "Flag",
@@ -79,7 +86,8 @@ export default {
     EscaltionTable,
     EscaltionModal,
     Loader,
-    EscaltionViewModal
+    EscaltionViewModal,
+    SearchField
   },
   props:{
       patientId:String
@@ -105,14 +113,35 @@ export default {
 
     watchEffect(()=>{
         if(props.patientId){    
-            store.dispatch('escalationNotesList', {id:props.patientId,date:null})
-           store.dispatch('escalationVitalList', {id:props.patientId,date:null})
-           store.dispatch('esacalationCarePlansList', {id:props.patientId,date:null})
-           store.dispatch('esacalationFlagList', {id:props.patientId,date:null})  
             store.dispatch('escalationList', {referenceId:props.patientId,entityType:'patient'})
         }
+        store.dispatch("searchTable", "&search=");
+      store.dispatch("orderTable", {
+        data: "&orderField=&orderBy=",
+      });
     })
 
+  onMounted(()=>{
+     if (store.getters.filter.value) {
+        store.dispatch(
+          "escalationList",
+          "?filter=" +
+            store.getters.filter.value +
+            "&fromDate=" +
+            store.getters.dateFilter.value.fromDate +
+            "&toDate=" +
+            store.getters.dateFilter.value.toDate,{referenceId:props.patientId,entityType:'patient'}
+        );
+      } else {
+        store.commit("dateFilter", "");
+        store.dispatch("escalationList",{referenceId:props.patientId,entityType:'patient'});
+      }
+
+      store.dispatch("searchTable", "&search=");
+      store.dispatch("orderTable", {
+        data: "&orderField=&orderBy=",
+      });
+  })
     
     const showEscalationModal=()=>{
         store.commit('resetEscalationCounter')

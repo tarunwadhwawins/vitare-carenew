@@ -1,6 +1,6 @@
 <template>
 <a-row>
-    <div>
+    <div class="commonTags">
         <a-tag v-if="route.query.filter" closable @close="remove('filter')">{{route.query.filter}}</a-tag>
         <a-tag v-if="route.query.toDate && route.query.fromDate" closable @close="remove('date')">{{timeStampFormate(route.query.fromDate,globalDateFormat) }} To {{timeStampFormate(route.query.toDate,globalDateFormat)}}</a-tag>
     </div>
