@@ -6,7 +6,7 @@
       <a-table rowKey="id" :columns="appointmentColumns" :data-source="patientAppointmentsList" :pagination="false">
         <template #flag="{ record }">
           <Flags :flag="record.flagColor" />
-          <AddAppointmentModal v-model:visible="addAppointmentVisible" :patientId="patientUdid" :patientName="record.patient" @closeModal="closeModal" :isChat="true" />
+          <AddAppointmentModal v-model:visible="addAppointmentVisible" :patientId="patientId" :patientName="record.patient" @closeModal="closeModal" :isChat="true" />
         </template>
       </a-table>
       </div>
@@ -21,7 +21,6 @@ import {
 import {
   computed,
   ref,
-  watchEffect,
   defineAsyncComponent
 } from 'vue-demi';
 import { useStore } from 'vuex';
@@ -33,11 +32,11 @@ export default {
     AddAppointmentModal: defineAsyncComponent(()=>import("@/components/modals/AddAppointment")),
   },
   props: {
-    patientUdid: {
+    patientId: {
       type: Number
     },
   },
-  setup(props) {
+  setup() {
     const store = useStore()
     const addAppointmentVisible = ref(false)
     
@@ -99,10 +98,6 @@ export default {
       },
     ];
 
-    watchEffect(() => {
-      store.dispatch('patientAppointmentsList', props.patientUdid)
-    })
-
     const patientAppointmentsList = computed(() => {
       return store.state.appointment.patientAppointmentsList
     })
@@ -110,8 +105,6 @@ export default {
     const closeModal = () => {
       addAppointmentVisible.value = false
     }
-
-    console.log('patientAppointmentsList', patientAppointmentsList.value)
 
     return {
       showAddAppointmentModal,

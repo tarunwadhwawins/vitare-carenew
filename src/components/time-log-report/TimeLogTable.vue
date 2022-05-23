@@ -70,6 +70,7 @@ import {
 } from "@/commonMethods/commonMethod";
 
 import Flags from "@/components/common/flags/Flags";
+import { useRoute } from 'vue-router';
 
 export default {
     components: {
@@ -96,7 +97,7 @@ props:{
             emit('scrolller')
 
         };
-
+        const route = useRoute()
         const editTimeLog = (id) => {
             store.commit('errorMsg', null)
             store.dispatch("editAuditTimeLog", id);
@@ -129,6 +130,8 @@ props:{
         const loader = ref(false);
         let data = []
         let scroller = ''
+        let filter = route.query.filter ?   route.query.filter : ''
+     
         onMounted(() => {
             var tableContent = document.querySelector(".ant-table-body");
 
@@ -145,7 +148,8 @@ props:{
                         meta.timeLogeMeta = "";
                         console.log("fsfs", current_page)
 
-                        store.dispatch("timeLogReportList", store.getters.auditTimeLogFilterDates.value + "&page=" + current_page + store.getters.orderTable.value.data).then(() => {
+                        store.dispatch("timeLogReportList", store.getters.auditTimeLogFilterDates.value + '&filter='+filter+
+                        "&page=" + current_page + store.getters.orderTable.value.data).then(() => {
                             loadMoredata();
                         })
 
@@ -185,13 +189,13 @@ props:{
                     page: pag,
                     filters: filters
                 })
-                store.dispatch("timeLogReportList", store.getters.auditTimeLogFilterDates.value + '&search=' + orderParam)
+                store.dispatch("timeLogReportList", store.getters.auditTimeLogFilterDates.value +'&filter='+filter+ '&search=' + orderParam)
 
             } else {
                 store.dispatch('orderTable', {
                     data: '&orderField=&orderBy='
                 })
-                store.dispatch("timeLogReportList", store.getters.auditTimeLogFilterDates.value + '&search=' + store.getters.orderTable.value.data)
+                store.dispatch("timeLogReportList", store.getters.auditTimeLogFilterDates.value +'&filter='+filter+ '&search=' + store.getters.orderTable.value.data)
             }
         }
 

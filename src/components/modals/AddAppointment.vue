@@ -1,11 +1,11 @@
 <template>
 	<a-modal width="1000px" :title="$t('appointmentCalendar.addAppointment.addAppointment')" centered :maskClosable="maskebale" @cancel="closeModal()" :footer="false">
-    <a-form ref="formRef" :model="appointmentForm" layout="vertical" @finish="sendMessage" @finishFailed="onFinishFailed">
+    <a-form ref="formRef" :model="appointmentForm" layout="vertical" @finish="submitForm" @finishFailed="onFinishFailed">
 			<a-row :gutter="24">
 				<a-col :sm="12" :xs="24">
 					<div class="form-group">
-						<a-form-item :label="$t('appointmentCalendar.addAppointment.patient')" name="patientId" :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.patient')+' '+$t('global.validation')  }]">
-							<a-input v-if="isPatientSummary || isChat" :value="patientName" :disabled="isPatientSummary || isChat" size="large" />
+						<a-form-item :label="$t('appointmentCalendar.addAppointment.patient')" name="patientId" :rules="[{ required: isPatientSummary || isChat ? false : true, message: $t('appointmentCalendar.addAppointment.patient')+' '+$t('global.validation')  }]">
+							<a-input v-if="isPatientSummary || isChat" v-bind:value="patientName" :disabled="true" size="large" />
 							<PatientDropDown v-else :disabled="isPatientSummary || isChat" v-model:value="appointmentForm.patientId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" :close="closeValue" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.patientId?errorMsg.patientId[0]:''" />
 						</a-form-item>
@@ -135,7 +135,7 @@ export default {
 			type: Number
 		},
 		patientName: {
-			type: Number
+			type: String
 		},
 		isChat: {
 			type: Boolean
@@ -148,7 +148,6 @@ export default {
 		const staffData = ref([]);
 		const patientData = ref([]);
 		const patientUdid = route.params.udid;
-		const idPatient = props.patientId ? reactive(props.patientId) : ''
 		const disabled = ref(false)
 		const isPatientSummary = ref(false)
 		const closeValue = ref(false)
@@ -178,9 +177,9 @@ export default {
 
 		watchEffect(() => {
 		
-			if (idPatient != null) {
+			if (props.patientId != null) {
 				Object.assign(appointmentForm, {
-					patientId: idPatient
+					patientId: props.patientId
 				})
 				disabled.value = true
 				if(route.name == "PatientSummary") {
@@ -219,12 +218,12 @@ export default {
 			return store.state.common.allStaffList
 		})
 
-		const sendMessage = () => {
+		const submitForm = () => {
 			const date = appointmentForm.startDate
 			closeValue.value = true
 			const timeFormat = (moment(appointmentForm.startTime)).format('HH:mm');
 			store.dispatch('addAppointment', {
-				patientId: idPatient ? idPatient : appointmentForm.patientId,
+				patientId: props.patientId ? props.patientId : appointmentForm.patientId,
 				staffId: appointmentForm.staffId,
 				startDate: timeStamp(date + " " + timeFormat),
 				startTime: timeFormat,
@@ -233,7 +232,7 @@ export default {
 				note: appointmentForm.note,
 				flag: appointmentForm.flag,
 			}).then(() => {
-				if (idPatient != null && route.name == 'PatientSummary') {
+				if (props.patientId != null && route.name == 'PatientSummary') {
 					store.dispatch('latestAppointment', patientUdid)
 					store.dispatch('patientTimeline', {
 						id: patientUdid,
@@ -255,7 +254,7 @@ export default {
 					handleCancel()
 				}
 				if(props.isChat) {
-					store.dispatch('patientAppointmentsList', idPatient)
+					store.dispatch('patientAppointmentsList', props.patientId)
 				}
 				emit("closeModal", {
 					modal: 'addAppointment',
@@ -338,7 +337,7 @@ export default {
 			errorMsg,
 			staffList,
 			appointmentForm,
-			sendMessage,
+			submitForm,
 			durationList,
 			typeOfVisitList,
 			size: ref("large"),

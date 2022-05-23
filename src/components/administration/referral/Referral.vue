@@ -1,54 +1,61 @@
 <template>
+<div class="common-bg">
+    <a-row>
+        <div class="commonTags">
+            <a-tag v-if="route.query.filter" closable @close="remove('filter')">{{route.query.filter}}</a-tag>
+            <a-tag v-if="route.query.toDate && route.query.fromDate" closable @close="remove('date')">
+                {{timeStampFormate(route.query.fromDate,globalDateFormat) }} To {{timeStampFormate(route.query.toDate,globalDateFormat)}}
+            </a-tag>
+        </div>
+    </a-row>
 
-            <div class="common-bg">
-                <a-row>
-                    
-                    <a-col :span="12">
-                        <SearchField endPoint="cptCode" v-if="arrayToObjact(screensPermissions,14)" />
-                    </a-col>
-                    <a-col :span="12">
-                        <div class="text-right mb-24">
-                            <ExportToExcel @click="exportExcel('cptCode_report','?fromDate=&toDate='+search)" />
-                        </div>
-                    </a-col>
-                    <a-col :span="24">
-                        <ReferralTable />
-                    </a-col>
-                </a-row>
+    <a-row>
+
+        <a-col :span="12">
+            <SearchField endPoint="cptCode" v-if="arrayToObjact(screensPermissions,14)" />
+        </a-col>
+        <a-col :span="12">
+            <div class="text-right mb-24">
+                <ExportToExcel @click="exportExcel('cptCode_report','?fromDate=&toDate='+search)" />
             </div>
-
-
+        </a-col>
+        <a-col :span="24">
+            <ReferralTable />
+        </a-col>
+    </a-row>
+</div>
 </template>
 
 <script>
-
 import ReferralTable from "@/components/administration/referral/table/ReferralTable";
 import { onUnmounted, onMounted} from "vue";
 import SearchField from "@/components/common/input/SearchField";
 
-import { arrayToObjact,exportExcel } from "@/commonMethods/commonMethod";
+import { arrayToObjact,exportExcel ,timeStampFormate,globalDateFormat} from "@/commonMethods/commonMethod";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 import {
     useStore
 } from "vuex"
-
+import { useRoute, useRouter } from 'vue-router';
 export default {
+    
     components: {
-        
+
         ReferralTable,
         SearchField,
-       
+
         ExportToExcel,
     },
     setup() {
-       
+
         const store = useStore()
-       
-      
-        onMounted(() => { 
-             if (store.getters.filter.value) {
-                 store.dispatch("referralList","?filter=" +store.getters.filter.value +"&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate)
-               
+        const route = useRoute()
+        const router = useRouter()
+
+        onMounted(() => {
+            if (route.query.filter || route.query.fromDate) {
+                store.dispatch("referralList", "?filter=" + route.query.filter + "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
+
             } else {
                 //store.commit("dateFilter",'')
                 store.dispatch("referralList")
@@ -58,7 +65,6 @@ export default {
                 data: '&orderField=&orderBy='
             })
             store.commit("referralColumns")
-           
 
         })
         onUnmounted(() => {
@@ -67,14 +73,61 @@ export default {
                 data: '&orderField=&orderBy='
             })
             store.commit("filter", '')
-            store.commit("dateFilter",'')
+            store.commit("dateFilter", '')
         })
+
+        function remove(event) {
+            console.log("check", event)
+            if (event == "filter") {
+                let from = route.query.fromDate
+                if (route.query.fromDate && route.query.toDate) {
+
+                    store.dispatch("referralList", "?fromDate=" + from + "&toDate=" + route.query.toDate)
+                    setTimeout(() => {
+                        router.replace({
+                            query: {
+
+                                fromDate: from,
+                                toDate: route.query.toDate,
+
+                            }
+                        })
+                    }, 1000)
+                } else {
+                    router.replace({
+                        query: {}
+                    })
+                    store.dispatch("referralList")
+                }
+
+            } else {
+
+                if (route.query.filter) {
+                    router.replace({
+                        query: {
+                            filter: route.query.filter
+                        }
+                    })
+                    store.dispatch("referralList", "?filter=" + route.query.filter)
+                } else {
+                    router.replace({
+                        query: {}
+                    })
+                    store.dispatch("referralList")
+                }
+            }
+
+        }
         return {
+            remove,
             exportExcel,
             screensPermissions: store.getters.screensPermissions,
             arrayToObjact,
-       
+
             search: store.getters.searchTable,
+            timeStampFormate,
+            globalDateFormat,
+            route,
         };
     },
 };

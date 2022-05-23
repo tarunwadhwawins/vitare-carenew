@@ -55,6 +55,7 @@ import {
   tableYScroller,
   arrayToObjact,
 } from "@/commonMethods/commonMethod";
+import { useRoute } from 'vue-router';
 
 export default {
   name: "TaskTable",
@@ -66,12 +67,13 @@ export default {
   props: {},
   setup(props, { emit }) {
     const store = useStore();
-
+ const route = useRoute()
     let data = [];
     const meta = store.getters.taskRecords.value;
 
     let scroller = "";
-    let filter = store.getters.filter.value  ? store.getters.filter.value : ''
+    let filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
+        let dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
     onMounted(() => {
 
       var tableContent = document.querySelector(".ant-table-body");
@@ -91,8 +93,7 @@ export default {
                 "tasksList",
                 "?page=" +
                   current_page +
-                  '&filter='+filter+
-                  "&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+
+                  dateFilter + filter +
                   store.getters.searchTable.value +
                   store.getters.orderTable.value.data
               )
@@ -152,7 +153,10 @@ export default {
         });
         store.dispatch(
           "tasksList",
-          "?page=" +"&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+ store.getters.searchTable.value + orderParam+'&filter='+filter
+          "?page=" +
+          dateFilter + filter +
+           orderParam
+           
         );
       } else {
         store.dispatch("orderTable", {
@@ -162,8 +166,8 @@ export default {
           "tasksList",
           "?page=" +
             store.getters.searchTable.value +
-            "&fromDate=" + store.getters.dateFilter.value.fromDate + "&toDate=" + store.getters.dateFilter.value.toDate+
-            store.getters.orderTable.value.data+'&filter='+filter
+            dateFilter + filter +
+            store.getters.orderTable.value.data
         );
       }
     };

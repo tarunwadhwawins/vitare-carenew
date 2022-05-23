@@ -47,6 +47,12 @@ const routes = [
   
   {
     path: '/manage-patients',
+    name: 'Patients with filter',
+    component: () => import('@/views/patients/Patients'),
+    meta: { authAdmin: true }
+  },
+  {
+    path: '/manage-patients',
     name: 'Patients',
     component: () => import('@/views/patients/Patients'),
     meta: { authAdmin: true }

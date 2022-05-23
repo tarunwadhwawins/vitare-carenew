@@ -95,7 +95,7 @@ export default {
     };
     
     watchEffect(() => {
-      console.log('route.query.view', route.query.view)
+     
       if(route.query.view == 'list') {
         dashboardView.value = false
         listView.value = true

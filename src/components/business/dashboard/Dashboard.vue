@@ -14,13 +14,15 @@
     <a-row :gutter="24">
     
        
-      
+      <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,3) && callStatus">
+            <ApexChart :title="$t('global.callQueue')" type="bar" :height="386" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="Communications" />
+        </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  cptCodeValue">
-            <ApexChart title="Timelog Summary" type="bar" :height="386" :options="cptCodeValue.code" :series="cptCodeValue.value" linkTo="cpt-codes"></ApexChart>
+            <ApexChart title="Timelog Summary" type="bar" :height="386" :options="cptCodeValue.code" :series="cptCodeValue.value" linkTo="TimeLogReport"></ApexChart>
         </a-col>
         
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  referalCount">
-            <ApexChart title="Referral" type="bar" :height="386" :options="referalCount.code" :series="referalCount.value" linkTo="referral" :data="referalCountRecord"></ApexChart>
+            <ApexChart title="Referrals" type="bar" :height="386" :options="referalCount.code" :series="referalCount.value" linkTo="Referral" :data="referalCountRecord"></ApexChart>
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && financialValue">
             <ApexChart :title="$t('dashboard.financialStats')" type="pie" :height="385" :options="financialValue.billed" :series="financialValue.due" linkTo="time-log-report"></ApexChart>
@@ -94,16 +96,21 @@ export default {
             }
             store.commit("dateFilter",dateFormate)
             store.dispatch("permissions")
+            store.dispatch("callStatus", dateFormate)
             store.dispatch("cptCode", cptDateFormate)
             store.dispatch("referalCount", dateFormate)
             store.dispatch("financial", dateFormate)
+            store.dispatch("staffEscalation")
         }
         
 
         onMounted(() => {
           
-          if(!timeLineButton.value){
-            store.dispatch("timeLine", 122)
+          if(timeLineButton.value==null){
+              
+            store.dispatch("timeLine", 122).then(()=>{
+                apiCall(timeLineButton.value)
+            })
                 
           }else{
             apiCall(timeLineButton.value)
@@ -136,6 +143,7 @@ export default {
             timeline:store.getters.timeline,
             widgetsPermissions:store.getters.widgetsPermissions,
 referalCountRecord:store.getters.referalCountRecord,
+callStatus:store.getters.callStatus,
             arrayToObjact,
          
         };

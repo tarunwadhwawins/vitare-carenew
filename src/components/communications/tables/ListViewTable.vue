@@ -368,15 +368,20 @@ export default {
       }
     };
     const showModal = (e, event) => {
-      if(e.is_receiver_patient || e.is_sender_patient) {
-        chatWithPatientInfoVisible.value = true;
-      }
-      else {
-        visible.value = true;
-      }
-      communicationId.value = e;
-      event.target.parentElement.parentElement.parentElement.parentElement.classList.remove('bold')
+      store.commit('loadingStatus', true)
+      setTimeout(() => {
+        if(e.is_receiver_patient || e.is_sender_patient) {
+          chatWithPatientInfoVisible.value = true;
+        }
+        else {
+          visible.value = true;
+        }
+        store.commit('loadingStatus', false)
+        communicationId.value = e;
+        event.target.parentElement.parentElement.parentElement.parentElement.classList.remove('bold')
+      }, 3000)
     }
+
     const showGmail = (e) => {
       store.dispatch('communicationsView',e.id)
       visibleGmail.value = true;

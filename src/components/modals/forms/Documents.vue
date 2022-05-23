@@ -86,6 +86,9 @@
       TableLoader
     },
     props: {
+      patientId: {
+        type: Number
+      },
       idPatient: {
         type: String
       },
@@ -97,7 +100,7 @@
 
       const store = useStore();
       const route = useRoute();
-      const patientId = reactive(props.idPatient);
+      const patientId = props.patientId ? reactive(props.patientId) : reactive(props.idPatient);
       const patientUdid = route.params.udid;
       const docValidationError = ref(false)
       const formRef = ref()
