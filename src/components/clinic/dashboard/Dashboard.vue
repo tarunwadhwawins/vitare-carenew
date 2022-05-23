@@ -111,6 +111,10 @@ export default {
       store.state.patients.addBasicEscalation = null;
       escaltionModal.value = true;
     };
+     const showEscalationData = (value) => {
+      console.log("testValue", value);
+      escaltionViewModal.value = value;
+    };
         function apiCall(data) {
             let from = moment()
             let to = moment()
@@ -205,7 +209,8 @@ export default {
             escalationList,
             showEscalationModal,
             escaltionViewModal,
-            escaltionModal
+            escaltionModal,
+            showEscalationData
         };
     },
 };
