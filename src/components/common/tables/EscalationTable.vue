@@ -12,14 +12,21 @@
         <template #action="{record}" >
             <a-tooltip placement="bottom"  @click="showEscalationData(record.id)">
                 <template #title>
-                    <span>{{ $t('global.edit') }}</span>
+                    <span>{{ 'View' }}</span>
                 </template>
                 <a class="icons">
                     <EyeOutlined /></a>
             </a-tooltip>
         </template>
          <template #flag="{ record }">
-            <Flags :flag="record.flagColor"/>
+         <a-tooltip placement="bottom">
+                <template #title>
+                    <span>{{ record.flagName }}</span>
+                </template>
+                <a class="icons">
+                    <Flags :flag="record.flagColor"/></a>
+            </a-tooltip>
+          
         </template>
     </a-table>
 </div>
@@ -37,7 +44,9 @@ export default {
   },
   props: {
     columnData:Array,
-    escalationList:Array
+    escalationList:Array,
+    otherParam:String
+
   },
   setup(props,{emit}) {
     const store = useStore();
@@ -50,28 +59,29 @@ export default {
       store.dispatch("singleEscalationRecord",id)
     }
       const handleTableChange = (pag, filters, sorter) => {
+        let otherParam = props.otherParam?props.otherParam:''
       if (sorter.order) {
         let order = sorter.order == "ascend" ? "ASC" : "DESC";
         let orderParam = "&orderField=" + sorter.field + "&orderBy=" + order;
-        // store.dispatch("staffEscalation", {
-        //   data: orderParam,
-        //   orderBy: order,
-        //   page: pag,
-        //   filters: filters,
-        // });
+        store.dispatch("orderTable", {
+          data: orderParam,
+          orderBy: order,
+          page: pag,
+          filters: filters,
+        });
         store.dispatch(
-          "staffEscalation",
-          "?page=" + store.getters.searchTable.value + orderParam
+          "escalation",
+          "?page=" + store.getters.searchTable.value + orderParam +otherParam
         );
       } else {
-        store.dispatch("staffEscalation", {
+        store.dispatch("orderTable", {
           data: "&orderField=&orderBy=",
         });
         store.dispatch(
-          "staffEscalation",
+          "escalation",
           "?page=" +
             store.getters.searchTable.value +
-            store.getters.orderTable.value.data
+            store.getters.orderTable.value.data+otherParam
         );
       }
     };

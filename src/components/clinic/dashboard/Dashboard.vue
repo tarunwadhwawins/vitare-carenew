@@ -154,11 +154,11 @@ export default {
             store.dispatch("patientsFlag", dateFormate)
             store.dispatch("appointmentCount", dateFormate)
             store.dispatch("escalationCount", dateFormate)
-            store.dispatch("staffEscalation")
+            store.dispatch("escalation")
 
         }
          const escalationList = computed(() => {
-      return store.state.careCoordinator.staffEscalation;
+      return store.state.careCoordinator.escalation;
     });
 
         onMounted(() => {

@@ -49,6 +49,7 @@ export default {
         store.dispatch("globalCodes");
         store.dispatch("timeLine", 122);
         store.dispatch("permissions");
+        store.dispatch("escalationStaus")
         store.dispatch("appointmentConference");
         store.dispatch("notificationList");
         let loginCheck = localStorage.getItem('checkLogin');

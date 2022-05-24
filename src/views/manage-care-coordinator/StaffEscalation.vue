@@ -21,7 +21,7 @@
                         </div>
                     </a-col>
                     <a-col :span="12">
-                        <SearchField endPoint="escalation" />
+                        <SearchField endPoint="escalation" placeholder="Search by patient name"/>
                     </a-col>
                     <a-col :span="24" style="padding-top:20px">
                         <EscaltionTable :columnData="columnData" :escalationList="escalationList" @showEscalationData="showEscalationData($event)" />
@@ -60,7 +60,6 @@ const columnData = [
   {
     title: "Escalation Type",
     dataIndex: "escalationType",
-    sorter: true,
     slots: {
       customRender: "escalationType",
     },
@@ -112,7 +111,7 @@ export default {
       // store.dispatch("staffEscalation")
       if (store.getters.filter.value) {
         store.dispatch(
-          "staffEscalation",
+          "escalation",
           "?filter=" +
             store.getters.filter.value +
             "&fromDate=" +
@@ -122,7 +121,7 @@ export default {
         );
       } else {
         store.commit("dateFilter", "");
-        store.dispatch("staffEscalation");
+        store.dispatch("escalation");
       }
 
       store.dispatch("searchTable", "&search=");
@@ -146,7 +145,7 @@ export default {
     };
 
     const escalationList = computed(() => {
-      return store.state.careCoordinator.staffEscalation;
+      return store.state.careCoordinator.escalation;
     });
     onUnmounted(() => {
       store.commit("filter", "");

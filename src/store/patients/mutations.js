@@ -1086,8 +1086,8 @@ export const addBasicEscalation = (state, data) => {
 }
 
 
-export const escalationList = (state, data) => {
-  state.escalationList = data
+export const escalation = (state, data) => {
+  state.escalation = data
 }
 
 
@@ -1134,6 +1134,7 @@ export const escalationVitalList = (state, data) => {
 
 export const singleEscalationRecord = (state, data) => {
   state.singleEscalationRecord = data
+
   state.singleEscalationDataArray = [{
     patientName :data.patientName,
     flagColor: data.flagColor,
