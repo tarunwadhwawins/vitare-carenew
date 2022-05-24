@@ -10,9 +10,9 @@ export const patientsRecord = (state)=>{
         return state.timeLineType
     })
   }
-  export const referral = (state)=>{
+  export const referralList = (state)=>{
     return computed(()=>{
-        return state.referral
+        return state.referralList
     })
   }
   export const addPatientReferals = (state)=>{

@@ -1092,8 +1092,8 @@ export const escalationList = (state, data) => {
 
 
 
-export const referral = (state, data) => {
-  state.referral = data
+export const referralList = (state, data) => {
+  state.referralList = data
 }
 export const referralDetail = (state, data) => {
   state.referralDetail = data

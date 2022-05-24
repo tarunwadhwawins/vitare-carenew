@@ -107,12 +107,13 @@ export default {
         onMounted(() => {
           
           if(timeLineButton.value==null){
-              
-            store.dispatch("timeLine", 122).then(()=>{
+             
+            store.dispatch("timeLine", 123).then(()=>{
                 apiCall(timeLineButton.value)
             })
                 
           }else{
+              
             apiCall(timeLineButton.value)
           }
          

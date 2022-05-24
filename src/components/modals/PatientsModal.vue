@@ -1042,7 +1042,7 @@ function newReferral(){
 
         onMounted(() => {
             Object.assign(demographics, form)
-            store.dispatch("referral")
+            store.dispatch("referralList")
         })
 
         watchEffect(() => {
@@ -1463,10 +1463,10 @@ function newReferral(){
             referal,
             changeResponsible,
             emergencyContactShow,
-                referalFormShow,
-                ShowReferral,
-                newReferral,
-                referralData:store.getters.referral
+            referalFormShow,
+            ShowReferral,
+            newReferral,
+            referralData:store.getters.referralList
         };
     },
 });
