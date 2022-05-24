@@ -519,13 +519,39 @@ export const updateStaffStatus = async ({commit}, data) => {
 }
 
 
-export const staffEscalation = async ({
+export const escalation = async ({
   commit
-},page) => {
-  let link = page ? `escalation` + page : `escalation`
+},data) => {
+  console.log("check",data)
+ let link =null
+ if(data){
+   if(data.entityType){
+     link= data.entityType?`escalation?referenceId=${data.referenceId}&entityType=${data.entityType}`:`escalation?referenceId=${data.referenceId}&entityType=${data.entityType}`
+   }
+    else{
+      link = data ? `escalation` + data : `escalation`
+    }
+   
+ }else{
+   link = 'escalation'
+ }
   commit('loadingStatus', true)
   await serviceMethod.common("get", link, null, null).then((response) => {
-    commit('staffEscalation', response.data.data);
+    commit('escalation', response.data);
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    commit('loadingStatus', false)
+    errorSwal(error.response.data.message)
+  })
+}
+
+export const escalationStaus = async ({
+  commit
+}) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("get", `escalation/Assign/status`, null, null).then((response) => {
+    commit('escalationStaus', response.data);
     commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)

@@ -1,5 +1,5 @@
 <template>
-<a-input-search v-model:value="value" placeholder="Search..." style="width: 100%"  @input="handleChange" size="large" />
+<a-input-search v-model:value="value" :placeholder="palcholder?palcholder:'Search...'" style="width: 100%"  @input="handleChange" size="large" />
 </template>
 
 <script>
@@ -15,7 +15,9 @@ export default defineComponent({
         endPoint: {
             required: true,
             type: String
-        }
+        },
+        palcholder:String,
+        otherParam:String
     },
     setup(props) {
       const store = useStore()
@@ -38,7 +40,7 @@ export default defineComponent({
                 store.dispatch("searchTableData", {
                   data:search.value,
                   endPoint:endPoints.value,
-                  field:ordring.data,
+                  field:props.otherParam?props.otherParam:''+ordring.data,
                   filter:filter+date
                   
                 })
