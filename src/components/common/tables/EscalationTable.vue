@@ -1,6 +1,6 @@
 <template>
 <div class="patientTable">
-    <a-table rowKey="id" :columns="columnData" :data-source="escalationList" style="width:100%" :pagination="false" @change="handleTableChange">
+    <a-table rowKey="id" :columns="columnData" :data-source="escalationList" style="width:100%" :pagination="false" @change="handleTableChange" :scroll="{y: height }">
         <template #patientName="{ text, record }" >
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
         </template>
@@ -38,7 +38,8 @@ export default {
   },
   props: {
     columnData:Array,
-    escalationList:Array
+    escalationList:Array,
+    height:String
   },
   setup(props,{emit}) {
     const store = useStore();

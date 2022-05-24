@@ -54,7 +54,10 @@ export default {
 
         onMounted(() => {
             if (route.query.filter || route.query.fromDate) {
-                store.dispatch("referralList", "?filter=" + route.query.filter + "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
+                 let filter= route.query.filter ? route.query.filter : ''
+                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate=" 
+                
+                store.dispatch("referralList", "?filter=" +  filter + date)
 
             } else {
                 //store.commit("dateFilter",'')
