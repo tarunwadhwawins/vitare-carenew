@@ -5,7 +5,7 @@ export const timeLogReportList = async (state, data) => {
   state.timeLogeMeta = data.meta.pagination
   state.timeLogReportColumns = [
     {
-      title: "Care Coodinator",
+      title: "Care Coordinator",
       dataIndex: "performedBy",
       sorter: true,
       slots: {
