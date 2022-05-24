@@ -288,10 +288,6 @@ export default {
 .patientTimeline {
   width: 100% !important;
 }
-.chatBox .chatBoxInner {
-  min-height: 640px !important;
-  overflow: scroll !important;
-}
 .callButton {
   margin-bottom: 20px;
 }
