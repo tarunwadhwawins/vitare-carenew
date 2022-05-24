@@ -100,7 +100,7 @@ export default {
 
                             }
                         })
-                    }, 3000)
+                    }, 10000)
                 } else {
                     router.replace({
                         query: {view: 'list',}
