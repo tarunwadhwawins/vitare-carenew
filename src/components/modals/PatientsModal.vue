@@ -1096,7 +1096,7 @@ function newReferral(){
         const parameters = reactive([]);
 
         const demographic = (counteValue=null) => {
-            if (patients.value.patientDetails != null) {
+            if (props.isEdit && (patients.value.addDemographic != null || patients.value.patientDetails != null)) {
                 store.dispatch("updateDemographic", {
                     data: {
                         "demographics": demographics,
@@ -1107,7 +1107,7 @@ function newReferral(){
                     referalId: patientReferralSource.value ? patientReferralSource.value.id : null,
                     responsiblePersonId: responsiblePerson.value ? responsiblePerson.value.id : null,
                     emergencyContactId: emergencyContact.value ? emergencyContact.value.id : null,
-                    patientUdid: patients.value.patientDetails.id,
+                    patientUdid: patients.value.addDemographic ? patients.value.addDemographic.id : patients.value.patientDetails.id,
                 }).then(() => {
                     if (route.name == 'PatientSummary') {
                         store.dispatch('patientDetails', route.params.udid)
@@ -1138,11 +1138,23 @@ function newReferral(){
         }
 
         const condition = () => {
-            if (patients.value.patientConditions) {
+            const patientId = patients.value.patientDetails ? patients.value.patientDetails.id : idPatient.value
+            store.dispatch("addCondition", {
+                data: conditions,
+                id: patientId,
 
+            }).then(() => {
+                isValueChanged.value = false;
+            })
+            store.dispatch('checkForErrors')
+            const checkForErrors = computed(() => {
+                return store.state.patients.checkForErrors
+            })
+            console.log('checkForErrors 222', checkForErrors)
+            /* if (patients.value.patientDetails) {
                 store.dispatch("updateCondition", {
                     data: conditions,
-                    id: patients.value.patientConditions.id,
+                    id: patients.value.patientDetails.id,
 
                 }).then(() => {
                     isValueChanged.value = false;
@@ -1157,12 +1169,7 @@ function newReferral(){
                     isValueChanged.value = false;
                     // store.commit('errorMsg',null)
                 })
-            }
-            store.dispatch('checkForErrors')
-            const checkForErrors = computed(() => {
-                return store.state.patients.checkForErrors
-            })
-            console.log('checkForErrors 222', checkForErrors)
+            } */
         }
 
         const parameter = () => {
