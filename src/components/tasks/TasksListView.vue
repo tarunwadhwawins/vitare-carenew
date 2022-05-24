@@ -23,7 +23,7 @@
 import { ref, onUnmounted, onMounted } from "vue";
 import { useStore } from "vuex";
 import SearchField from "@/components/common/input/SearchField";
-import TaskTable from "./TaskTable";
+import TaskTable from "@/components/tasks/TaskTable";
 import TableLoader from "@/components/loader/TableLoader";
 import { arrayToObjact,exportExcel,timeStampFormate,globalDateFormat } from "@/commonMethods/commonMethod";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
@@ -42,10 +42,12 @@ export default {
         const router = useRouter()
         const route = useRoute()
         onMounted(() => {
-            if (route.query.filter) {
-                store.dispatch("tasksList", "?filter=" + route.query.filter + "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate);
+            if (route.query.filter || route.query.fromDate) {
+                let filter= route.query.filter ? route.query.filter : ''
+                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate=" 
+                store.dispatch("tasksList", "?filter=" + filter + date);
             } else {
-                 store.commit("dateFilter",'')
+                 
                 store.dispatch("tasksList")
             }
             store.dispatch("searchTable", '&search=')
@@ -78,8 +80,8 @@ export default {
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
             })
-            store.commit("filter", '')
-            store.commit("dateFilter",'')
+           
+            
             //store.state.common.filter=''
         })
          function remove(event) {

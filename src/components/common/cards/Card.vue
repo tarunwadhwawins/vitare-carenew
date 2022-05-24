@@ -47,6 +47,15 @@ import { useStore } from 'vuex'
 
         function handler(event,text) {
             
+if(text=="activePatients" || text=="inactivePatients" || text=="totalPatients"){
+router.push({
+                        name: event,
+                       
+                        query:{filter:text}
+
+                    })
+}else{
+
 
                     router.push({
                         name: event,
@@ -54,6 +63,7 @@ import { useStore } from 'vuex'
                         query:{fromDate:store.getters.dateFilter.value.fromDate,toDate:store.getters.dateFilter.value.toDate,filter:text}
 
                     })
+}
                  
         }
       return{
