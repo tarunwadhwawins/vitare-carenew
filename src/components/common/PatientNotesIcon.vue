@@ -4,7 +4,7 @@
       <div class="moreActionImg blueBgColor">
         <EditOutlined />
       </div>
-      <p>Notes</p>
+      <p>Note(s)</p>
     </div>
   </a-col>
 </template>

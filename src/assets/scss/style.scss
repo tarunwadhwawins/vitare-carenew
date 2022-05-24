@@ -1601,3 +1601,7 @@
 .callRightWrapper .patientTimeline .ant-timeline {
     overflow: unset !important;
 }
+.steps-action button.ant-btn.modal-button {
+    margin: 0 10px 0 0 !important;
+    width: 80px;
+}

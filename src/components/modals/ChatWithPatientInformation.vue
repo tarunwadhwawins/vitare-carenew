@@ -4,23 +4,23 @@
       <a-col :span="12" class="chatBox2">
         <div class="chatBox" ref="scroll" id="chatBox">
           <ChatScreenBody :conversationList="list.conversationList" :communication="communication" screen="withPatient" :patientId="patientId" />
+          <a-form ref="formRef" class="messageBox" :model="formValue" layout="vertical" @finish="sendMsg" @finishFailed="taskFormFailed">
+            <div class="sendMessage" v-if="auth.user.id==communication.receiverId || auth.user.id==communication.senderId">
+              <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message">
+                <template #addonAfter>
+                  <SendOutlined @click="sendMsg" />
+                </template>
+              </a-input>
+            </div>
+            <div class="sendMessage" v-else>
+              <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message" disabled>
+                <template #addonAfter disabled>
+                  <SendOutlined @click="sendMsg" />
+                </template>
+              </a-input>
+            </div>
+          </a-form>
         </div>
-        <a-form ref="formRef" :model="formValue" layout="vertical" @finish="sendMsg" @finishFailed="taskFormFailed">
-          <div class="sendMessage" v-if="auth.user.id==communication.receiverId || auth.user.id==communication.senderId">
-            <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message">
-              <template #addonAfter>
-                <SendOutlined @click="sendMsg" />
-              </template>
-            </a-input>
-          </div>
-          <div class="sendMessage" v-else>
-            <a-input v-model:value="formValue.msgSend" size="large" placeholder="Type Message" disabled>
-              <template #addonAfter disabled>
-                <SendOutlined @click="sendMsg" />
-              </template>
-            </a-input>
-          </div>
-        </a-form>
       </a-col>
 
       <a-col :span="12">
@@ -295,13 +295,15 @@ export default {
   height: 680px !important;
 } */
 .chatBox {
-  height: 630px !important;
+  height: 560px !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
 }
 .patientTimeline {
   width: 100% !important;
 }
 .chatBox .chatBoxInner {
-  min-height: 640px !important;
+  min-height: 520px !important;
   overflow: scroll !important;
 }
 .callButton {
@@ -313,11 +315,6 @@ export default {
   position: relative !important;
   top: -2px !important;
 }
-.callRightWrapper .body {
-  overflow-y: scroll;
-  height: 445px;
-  overflow-x: hidden;
-}
 .callRightWrapper .patientTimeline .ant-timeline {
   overflow: unset !important;
 }
@@ -326,5 +323,8 @@ export default {
 }
 span.dragImg {
   display: none !important;
+}
+.messageBox {
+  position: sticky;
 }
 </style>

@@ -1,5 +1,5 @@
 export default {
-  referralList: null,
+  referral: [],
   referralColumns:null,
   referralMeta:null,
 }

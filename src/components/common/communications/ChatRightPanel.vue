@@ -288,10 +288,6 @@ export default {
 .patientTimeline {
   width: 100% !important;
 }
-.chatBox .chatBoxInner {
-  min-height: 640px !important;
-  overflow: scroll !important;
-}
 .callButton {
   margin-bottom: 20px;
 }
@@ -303,7 +299,7 @@ export default {
 }
 .callRightWrapper .body {
   overflow-y: scroll;
-  height: 445px;
+  height: 345px;
   overflow-x: hidden;
 }
 .callRightWrapper .header .patientInfo .patientImg .info {

@@ -15,7 +15,7 @@
     
        
       <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,3) && callStatus">
-            <ApexChart :title="$t('global.callQueue')" type="bar" :height="386" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="Communications" />
+            <ApexChart title="Call Stats" type="bar" :height="386" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="Communications" />
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  cptCodeValue">
             <ApexChart title="Timelog Summary" type="bar" :height="386" :options="cptCodeValue.code" :series="cptCodeValue.value" linkTo="TimeLogReport"></ApexChart>
@@ -107,12 +107,13 @@ export default {
         onMounted(() => {
           
           if(timeLineButton.value==null){
-              
-            store.dispatch("timeLine", 122).then(()=>{
+             
+            store.dispatch("timeLine", 123).then(()=>{
                 apiCall(timeLineButton.value)
             })
                 
           }else{
+              
             apiCall(timeLineButton.value)
           }
          

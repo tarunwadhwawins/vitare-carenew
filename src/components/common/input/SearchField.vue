@@ -8,6 +8,7 @@ import {
     ref,
 
 } from 'vue';
+import { useRoute } from 'vue-router';
 import { useStore } from "vuex"
 export default defineComponent({
     props: {
@@ -23,7 +24,7 @@ export default defineComponent({
         let timeout = ''
         let endPoints= ref(props.endPoint)
         const search = ref(null)
-        let filter = store.getters.filter.value  ? store.getters.filter.value : ''
+       const route = useRoute()
         const handleChange = value => {
             if (timeout && value.target.value != '') {
                 clearTimeout(timeout);
@@ -33,11 +34,14 @@ export default defineComponent({
 
             function fake() {
                 let ordring = store.getters.orderTable.value
+               
+                let filter= route.query.filter ? '&filter='+route.query.filter : '&filter='
+                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate=" 
                 store.dispatch("searchTableData", {
                   data:search.value,
                   endPoint:endPoints.value,
                   field:props.otherParam?props.otherParam:''+ordring.data,
-                  filter:filter
+                  filter:filter+date
                   
                 })
                 store.dispatch("searchTable",'&search='+search.value)
