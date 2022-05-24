@@ -56,7 +56,7 @@
                         </template>
                     </a-table> -->
                     <div v-for=" flag in record.escalationFlag.data" :key="flag.id">
-                      <ul><li>{{flag.flag.data.flags.data.name}} <Flags :flag="flag.flag.data.flags.data.color" /> </li></ul>
+                      <ul><li>{{flag.flag.data.flags.data.name}} - Color( <Flags :flag="flag.flag.data.flags.data.color" /> ) </li></ul>
                     </div>
                 </a-collapse-panel>
 

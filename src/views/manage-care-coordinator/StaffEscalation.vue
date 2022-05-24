@@ -30,7 +30,7 @@
                         </div>
                     </a-col>
                     <a-col :span="12">
-                        <SearchField endPoint="escalation" placeholder="Search by patient name"/>
+                        <SearchField endPoint="escalation" />
                     </a-col>
                     <a-col :span="24" style="padding-top:20px">
                         <EscaltionTable :columnData="columnData" :escalationList="escalationList" @showEscalationData="showEscalationData($event)" />
