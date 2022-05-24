@@ -1,8 +1,13 @@
 <template>
   <div :class="className">
-    <a-checkbox-group v-model:value="tab" @change="chnageTab()">
+    <a-checkbox-group v-model:value="tab" @change="chnageTab('change')">
       <a-checkbox v-for="timeline in timeLineType" :key="timeline.id"  :value="timeline.id" >{{timeline.name}}</a-checkbox>
-    
+      <a-tooltip v-if="visibleRemoveAll" placement="bottom">
+        <template #title>
+          <span>Unselect All</span>
+        </template>
+        <a class="icons close" @click="chnageTab('remove')"><CloseCircleOutlined /></a>
+      </a-tooltip>
     </a-checkbox-group>
      
     <a-timeline class="defaultTimeline">
@@ -56,6 +61,7 @@ import {
   FileTextOutlined,
   PushpinOutlined,
   FlagOutlined,
+  CloseCircleOutlined,
   //MailOutlined,
 } from "@ant-design/icons-vue";
 import {
@@ -82,6 +88,7 @@ export default {
   FileTextOutlined,
   PushpinOutlined,
   FlagOutlined,
+  CloseCircleOutlined,
     //MailOutlined,
     TableLoader
   },
@@ -95,6 +102,7 @@ export default {
   },
   setup(props) {
     const custom = ref(false);
+    const visibleRemoveAll = ref(false);
     const store = useStore();
     const route = useRoute();
     const pId = ref(props.profileId)
@@ -127,12 +135,24 @@ export default {
       custom.value = true;
     };
 
-    function chnageTab(){
+    function chnageTab(value) {
       store.commit('loadingTableStatus', true)
+      var type = ''
+      if(value == 'change') {
+        type = tabvalue.tab.length == 0 ? '' :tabvalue.tab.join(",")
+      }
+      else {
+        tabvalue.tab.length = 0
+      }
+      getTimeline(type)
+    }
+
+    function getTimeline(type) {
       store.dispatch('patientTimeline', {
         id:route.params.udid ? route.params.udid : pId.value,
-        type:tabvalue.tab.length == 0 ? '' :tabvalue.tab.join(",")
-      }).then(()=>{
+        type:type
+      }).then(() => {
+        visibleRemoveAll.value = tabvalue.tab.length > 0 ? true : false
         store.commit('loadingTableStatus', false)
       })
     }
@@ -144,10 +164,10 @@ export default {
       patientTimeline,
       timeLineType:store.getters.timeLineType,
       chnageTab,
-      //tabvalue,
      ...toRefs(tabvalue),
       moment,
-      dateFormat
+      dateFormat,
+      visibleRemoveAll,
     }
   }
 }
@@ -162,5 +182,12 @@ p.timeline-float {
 }
 p.timeline-float.timeline-title {
   width: 90%;
+}
+.close {
+  position: relative;
+  float: right;
+  top: -4px;
+  left: -20px;
+  font-size: 25px;
 }
 </style>
