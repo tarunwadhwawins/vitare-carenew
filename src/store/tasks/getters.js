@@ -5,3 +5,8 @@ export const taskRecords = (state)=>{
         return state
     })
   }
+  export const tasksList = (state)=>{
+    return computed(()=>{
+        return state.tasksList
+    })
+  }

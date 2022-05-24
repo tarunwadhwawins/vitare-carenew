@@ -1887,11 +1887,11 @@ export const escalationVitalList = async ({commit}, data) => {
 
 
 
-export const referral = async ({
+export const referralList = async ({
   commit
 }) => {
   await serviceMethod.common("get", API_ENDPOINTS['referral'], null, null).then((response) => {
-    commit('referral', response.data.data);
+    commit('referralList', response.data.data);
     
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
