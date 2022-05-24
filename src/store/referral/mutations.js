@@ -33,9 +33,9 @@ export const referralColumns = async (state) => {
     // },
   ];
 }
-export const referralList = async (state, referral) => {
+export const referral = async (state, referral) => {
  
-  state.referralList = referral.data
+  state.referral = referral.data
   state.referralMeta=referral.meta ? referral.meta.pagination : ''
 }
 

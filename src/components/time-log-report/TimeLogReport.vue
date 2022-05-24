@@ -111,8 +111,10 @@ export default {
 
         onMounted(() => {
             if (route.query.filter || route.query.fromDate) {
-                store.dispatch('auditTimeLogFilterDates', "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
-                store.dispatch("timeLogReportList", "?filter=" + route.query.filter + "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate);
+                let filter = route.query.filter ? route.query.filter : ''
+                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "?toDate=" + route.query.toDate : "&fromDate=&toDate="
+                //store.dispatch('auditTimeLogFilterDates', "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
+                store.dispatch("timeLogReportList", "?filter=" +filter+date);
             } else {
                 store.commit("dateFilter", '')
                 store.dispatch("timeLogReportList")

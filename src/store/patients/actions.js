@@ -1618,9 +1618,7 @@ export const updateDocument = async ({commit}, data) => {
 export const escalationList = async ({commit}, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", `escalation?referenceId=${data.referenceId}&entityType=${data.entityType}`, null, null).then((response) => {
-    commit('escalationList', response.data.data)
-    // successSwal(response.data.message)
-    // commit('escalationCounterPlus')
+    commit('escalation', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
@@ -1887,11 +1885,11 @@ export const escalationVitalList = async ({commit}, data) => {
 
 
 
-export const referral = async ({
+export const referralList = async ({
   commit
 }) => {
   await serviceMethod.common("get", API_ENDPOINTS['referral'], null, null).then((response) => {
-    commit('referral', response.data.data);
+    commit('referralList', response.data.data);
     
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)

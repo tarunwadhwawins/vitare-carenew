@@ -279,9 +279,14 @@ export const documentStaffDetails = (state, data) => {
 };
 
 
-export const staffEscalation = (state, data) => {
-	state.staffEscalation = data.map((item) => {
+export const escalation = (state, data) => {
+	state.escalation = data.data.map((item) => {
 		item.dueBy = dateAndTimeFormate(item.dueBy,globalDateFormat);
 		return item;
 	})
+};
+
+
+export const escalationStaus = (state, data) => {
+	state.escalationStaus = data;
 };

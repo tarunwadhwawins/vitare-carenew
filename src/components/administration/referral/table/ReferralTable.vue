@@ -1,7 +1,7 @@
 
 <template>
 
-<a-table rowKey="id"  :columns="referralColumns" :data-source="record" :scroll="{ y: tableYScroller}" :pagination="false" >
+<a-table rowKey="id"  :columns="referralColumns" :data-source="referralList" :scroll="{ y: tableYScroller}" :pagination="false" @change="handleTableChange">
         <template #patientName="{ text, record }" >
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
         </template> 
@@ -10,7 +10,7 @@
 <TableLoader />
 </template>
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted ,} from "vue";
 //import { EditOutlined } from "@ant-design/icons-vue";
 
 import TableLoader from "@/components/loader/TableLoader";
@@ -34,13 +34,20 @@ export default {
     //infinite scroll
     let data = [];
     let scroller = "";
-
+const  dateFilter = ref('')
     const meta = store.getters.referrareferralMetalList;
-    const record = store.getters.referralList
+    const referralList = store.getters.referral
     const loader = ref(false);
-     let filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
-        let dateFilter = route.query.fromDate && route.query.toDate ? "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
+    let filter = ''
+    function checkDate(){
+      dateFilter.value = route.query.fromDate && route.query.toDate ? "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "?fromDate=&toDate="
+  filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
+    }
+     
+        //dateFilter.value = route.query.fromDate && route.query.toDate ? "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "?fromDate=&toDate="
     onMounted(() => {
+      console.log("check")
+      checkDate()
       var tableContent = document.querySelector(".ant-table-body");
       tableContent.addEventListener("scroll", (event) => {
         let maxScroll = event.target.scrollHeight - event.target.clientHeight;
@@ -50,16 +57,16 @@ export default {
 
           if (current_page <= meta.value.total_pages) {
             scroller = maxScroll;
-            data = record.value
+            data = referralList.value
             loader.value = true;
             meta.value = "";
-            //record.value=''
-            //store.state.referral.referralList = "";
-console.log("tedfdfst",data)
+            //referralList.value=''
+            store.state.referral.referralMeta = "";
+
             store
               .dispatch(
-                "referralList",
-                 dateFilter + filter +
+                "referral",
+                 dateFilter.value + filter +
                   "&page=" +
                   current_page +
                   store.getters.searchTable.value +
@@ -75,13 +82,13 @@ console.log("tedfdfst",data)
     });
 
     function loadMoredata() {
-      const newData = record.value
+      const newData = referralList.value
 
       newData.forEach((element) => {
         data.push(element);
       });
-      console.log('total',data)
-      store.state.referral.referralList = data
+    
+      store.state.referral.referral = data
       
       // = data;
       var tableContent = document.querySelector(".ant-table-body");
@@ -93,6 +100,8 @@ console.log("tedfdfst",data)
     }
 
     const handleTableChange = (pag, filters, sorter) => {
+      
+      checkDate()
       if (sorter.order) {
         let order = sorter.order == "ascend" ? "ASC" : "DESC";
         let orderParam = "&orderField=" + sorter.field + "&orderBy=" + order;
@@ -103,8 +112,9 @@ console.log("tedfdfst",data)
           filters: filters,
         });
         store.dispatch(
-          "referralList",
-          dateFilter + filter +
+          "referral",
+          
+          dateFilter.value + filter +
           store.getters.searchTable.value+
            orderParam
         );
@@ -113,20 +123,20 @@ console.log("tedfdfst",data)
           data: "&orderField=&orderBy=",
         });
         store.dispatch(
-          "referralList",
-          dateFilter + filter + store.getters.searchTable.value+ store.getters.orderTable.value.data
+          "referral",
+          dateFilter.value + filter + store.getters.searchTable.value+ store.getters.orderTable.value.data
         );
       }
     };
-
+   
     return {
       screensPermissions: store.getters.screensPermissions,
       arrayToObjact,
       loader,
       handleTableChange,
       referralColumns:store.getters.referralColumns,
-record,
-tableYScroller
+      referralList,
+      tableYScroller
     };
   },
 };

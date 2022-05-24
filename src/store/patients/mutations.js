@@ -1086,14 +1086,14 @@ export const addBasicEscalation = (state, data) => {
 }
 
 
-export const escalationList = (state, data) => {
-  state.escalationList = data
+export const escalation = (state, data) => {
+  state.escalation = data
 }
 
 
 
-export const referral = (state, data) => {
-  state.referral = data
+export const referralList = (state, data) => {
+  state.referralList = data
 }
 export const referralDetail = (state, data) => {
   state.referralDetail = data
@@ -1134,6 +1134,7 @@ export const escalationVitalList = (state, data) => {
 
 export const singleEscalationRecord = (state, data) => {
   state.singleEscalationRecord = data
+
   state.singleEscalationDataArray = [{
     patientName :data.patientName,
     flagColor: data.flagColor,

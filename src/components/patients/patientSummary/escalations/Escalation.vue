@@ -19,10 +19,10 @@
                     </div>
                 </a-col>
                 <a-col :span="12" >
-                        <SearchField endPoint="escalation" />
+                        <SearchField :endPoint="'escalation'" :otherParam="'&referenceId='+patientId+'&entityType=patient'" />
                 </a-col>
                 <a-col :span="24" style="padding-top:20px">
-                    <EscaltionTable  :columnData="columnData" :escalationList="escalationList"  @showEscalationData="showEscalationData($event)"/>
+                    <EscaltionTable :otherParam="'&referenceId='+patientId+'&entityType=patient'" :columnData="columnData" :escalationList="escalationList"  @showEscalationData="showEscalationData($event)"/>
                 </a-col>
                 <!-- stepper -->
                 <a-col :span="24">
@@ -52,7 +52,6 @@ const columnData = [
     {
     title: "Escalation Type",
     dataIndex: "escalationType",
-    sorter: true,
     slots:{
         customRender: "escalationType",
     },
@@ -113,10 +112,10 @@ export default {
 
     watchEffect(()=>{
         if(props.patientId){    
-            store.dispatch('escalationList', {referenceId:props.patientId,entityType:'patient'})
+            store.dispatch('escalation', {referenceId:props.patientId,entityType:'patient'})
         }
         store.dispatch("searchTable", "&search=");
-      store.dispatch("orderTable", {
+        store.dispatch("orderTable", {
         data: "&orderField=&orderBy=",
       });
     })
@@ -124,7 +123,7 @@ export default {
   onMounted(()=>{
      if (store.getters.filter.value) {
         store.dispatch(
-          "escalationList",
+          "escalation",
           "?filter=" +
             store.getters.filter.value +
             "&fromDate=" +
@@ -134,7 +133,7 @@ export default {
         );
       } else {
         store.commit("dateFilter", "");
-        store.dispatch("escalationList",{referenceId:props.patientId,entityType:'patient'});
+        store.dispatch("escalation",{referenceId:props.patientId,entityType:'patient'});
       }
 
       store.dispatch("searchTable", "&search=");
@@ -163,7 +162,7 @@ export default {
     }
 
     const escalationList = computed(() => {
-      return store.state.patients.escalationList;
+      return store.state.careCoordinator.escalation;
     });
     return {
        escalationList,

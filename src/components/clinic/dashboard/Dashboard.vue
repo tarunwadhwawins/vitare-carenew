@@ -31,9 +31,9 @@
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  clicalTask">
             <ApexChart title="My Tasks " type="bar" :height="350" :options="clicalTask.code" :series="clicalTask.value" linkTo="Tasks" listView="list"></ApexChart>
         </a-col>
-         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  clicalTask">
+         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) && tasksList">
              <a-card  title="My Tasks List" class="common-card" style="height:436px">
-                 <template #extra><router-link :to="{name:'TimeLogReport'}">View All</router-link></template>
+                 <template #extra v-if="tasksList.length > 6"><router-link :to="{name:'TimeLogReport'}">View All</router-link></template>
             <TaskTable @is-Edit="editTask($event)" :height="285"></TaskTable>
              </a-card>
         </a-col>
@@ -41,7 +41,7 @@
             <ApexChart title="Patient Flags" type="bar" :height="350" :options="patientsFlag.code" :series="patientsFlag.value" linkTo="Patients with filter"></ApexChart>
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  appointmentCount">
-            <ApexChart title="My Appointments" type="bar" :height="350" :options="appointmentCount.chartOptions" :series="appointmentCount.value" linkTo="appointment-calendar"></ApexChart>
+            <ApexChart title="My Appointments" type="bar" :height="350" :options="appointmentCount.chartOptions" :series="appointmentCount.value" linkTo="AppointmnetCalendar"></ApexChart>
         </a-col>
         
     </a-row>
@@ -177,18 +177,18 @@ export default {
                 store.dispatch("tasksList", "?fromDate=" + dateFormate.fromDate + "&toDate=" + dateFormate.toDate);
             store.dispatch("appointmentCount", dateFormate)
             store.dispatch("escalationCount", dateFormate)
-            store.dispatch("staffEscalation")
+            store.dispatch("escalation")
 
         }
          const escalationList = computed(() => {
-      return store.state.careCoordinator.staffEscalation;
+      return store.state.careCoordinator.escalation;
     });
 
         onMounted(() => {
           
          if(timeLineButton.value==null){
               
-            store.dispatch("timeLine", 122).then(()=>{
+            store.dispatch("timeLine", 123).then(()=>{
                 apiCall(timeLineButton.value)
             })
                 
@@ -241,7 +241,8 @@ const editTask = (id) => {
             showEscalationModal,
             escaltionViewModal,
             escaltionModal,
-            showEscalationData
+            showEscalationData,
+            tasksList:store.getters.tasksList,
         };
     },
 };

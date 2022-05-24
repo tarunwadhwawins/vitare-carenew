@@ -51,12 +51,16 @@ export default {
         let data = [];
         let scroller = "";
         const route = useRoute()
-        if (route.query) {
-            store.dispatch("patients", "?filter=" + route.query.filter + "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
-        }
-        let filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
-        let dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
+       
+         let filter = ''
+         let date = ''
+       function checkDate(){
+       filter= route.query.filter ? route.query.filter : ''
+       date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "?toDate=" + route.query.toDate : "&fromDate=&toDate="
+       }
+
         onMounted(() => {
+            checkDate()
             var tableContent = document.querySelector(".ant-table-body");
             tableContent.addEventListener("scroll", (event) => {
                 let maxScroll = event.target.scrollHeight - event.target.clientHeight;
@@ -70,7 +74,7 @@ export default {
                         data = meta.patientList
                         //store.state.patients.patientList = ""
 
-                        store.dispatch("patients", "?page=" + current_page + dateFilter + filter + store.getters.searchTable.value +
+                        store.dispatch("patients", "?page=" + current_page + date + filter + store.getters.searchTable.value +
                             store.getters.orderTable.value.data).then(() => {
                             loadMoredata();
                         });
@@ -93,6 +97,7 @@ export default {
         }
 
         const handleTableChange = (pag, filters, sorter) => {
+            checkDate()
             if (sorter.order) {
                 let order = sorter.order == "ascend" ? "ASC" : "DESC";
                 let orderParam = "&orderField=" + sorter.field + "&orderBy=" + order;
@@ -104,7 +109,7 @@ export default {
                 });
                 store.dispatch(
                     "patients",
-                    "?page=" + dateFilter + filter + store.getters.searchTable.value + orderParam
+                    "?page=" + date + filter + store.getters.searchTable.value + orderParam
                 );
             } else {
                 store.dispatch("orderTable", {
@@ -112,7 +117,7 @@ export default {
                 });
                 store.dispatch(
                     "patients",
-                    "?page=" + dateFilter + filter +
+                    "?page=" + date + filter +
                     store.getters.searchTable.value +
                     store.getters.orderTable.value.data
                 )

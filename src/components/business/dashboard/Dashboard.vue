@@ -100,19 +100,20 @@ export default {
             store.dispatch("cptCode", cptDateFormate)
             store.dispatch("referalCount", dateFormate)
             store.dispatch("financial", dateFormate)
-            store.dispatch("staffEscalation")
+            store.dispatch("escalation")
         }
         
 
         onMounted(() => {
           
           if(timeLineButton.value==null){
-              
-            store.dispatch("timeLine", 122).then(()=>{
+             
+            store.dispatch("timeLine", 123).then(()=>{
                 apiCall(timeLineButton.value)
             })
                 
           }else{
+              
             apiCall(timeLineButton.value)
           }
          

@@ -2,7 +2,7 @@
 <div class="common-bg">
     <a-row>
         <div class="commonTags">
-            <a-tag v-if="route.query.filter" closable @close="remove('filter')">{{route.query.filter}}</a-tag>
+            <a-tag v-if="route.query.filter" closable @close="remove('filter')">{{referral.length > 0 ? getName(route.query.filter) :route.query.filter}}</a-tag>
             <a-tag v-if="route.query.toDate && route.query.fromDate" closable @close="remove('date')">
                 {{timeStampFormate(route.query.fromDate,globalDateFormat) }} To {{timeStampFormate(route.query.toDate,globalDateFormat)}}
             </a-tag>
@@ -12,11 +12,11 @@
     <a-row>
 
         <a-col :span="12">
-            <SearchField endPoint="cptCode" v-if="arrayToObjact(screensPermissions,14)" />
+            <SearchField endPoint="referral" v-if="arrayToObjact(screensPermissions,14)" />
         </a-col>
         <a-col :span="12">
             <div class="text-right mb-24">
-                <ExportToExcel @click="exportExcel('cptCode_report','?fromDate=&toDate='+search)" />
+                <ExportToExcel @click="exportExcel('referral','?fromDate=&toDate='+search)" />
             </div>
         </a-col>
         <a-col :span="24">
@@ -38,7 +38,7 @@ import {
 } from "vuex"
 import { useRoute, useRouter } from 'vue-router';
 export default {
-    
+
     components: {
 
         ReferralTable,
@@ -54,14 +54,14 @@ export default {
 
         onMounted(() => {
             if (route.query.filter || route.query.fromDate) {
-                 let filter= route.query.filter ? route.query.filter : ''
-                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate=" 
-                
-                store.dispatch("referralList", "?filter=" +  filter + date)
+                let filter = route.query.filter ? route.query.filter : ''
+                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
+
+                store.dispatch("referral", "?filter=" + filter + date)
 
             } else {
                 //store.commit("dateFilter",'')
-                store.dispatch("referralList")
+                store.dispatch("referral")
             }
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
@@ -78,14 +78,21 @@ export default {
             store.commit("filter", '')
             store.commit("dateFilter", '')
         })
+        const referral = store.getters.referral
+
+        function getName(name) {
+
+            let idToName = arrayToObjact(referral.value, name)
+            return idToName ? idToName.name : ''
+        }
 
         function remove(event) {
-            console.log("check", event)
+
             if (event == "filter") {
                 let from = route.query.fromDate
                 if (route.query.fromDate && route.query.toDate) {
 
-                    store.dispatch("referralList", "?fromDate=" + from + "&toDate=" + route.query.toDate)
+                    store.dispatch("referral", "?fromDate=" + from + "&toDate=" + route.query.toDate)
                     setTimeout(() => {
                         router.replace({
                             query: {
@@ -100,7 +107,7 @@ export default {
                     router.replace({
                         query: {}
                     })
-                    store.dispatch("referralList")
+                    store.dispatch("referral")
                 }
 
             } else {
@@ -111,12 +118,12 @@ export default {
                             filter: route.query.filter
                         }
                     })
-                    store.dispatch("referralList", "?filter=" + route.query.filter)
+                    store.dispatch("referral", "?filter=" + route.query.filter)
                 } else {
                     router.replace({
                         query: {}
                     })
-                    store.dispatch("referralList")
+                    store.dispatch("referral")
                 }
             }
 
@@ -131,6 +138,9 @@ export default {
             timeStampFormate,
             globalDateFormat,
             route,
+            getName,
+            referral
+
         };
     },
 };

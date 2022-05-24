@@ -70,7 +70,6 @@ const columnData = [
   {
     title: "Escalation Type",
     dataIndex: "escalationType",
-    sorter: true,
     slots: {
       customRender: "escalationType",
     },
@@ -120,13 +119,13 @@ const route = useRoute();
     });
 
     onMounted(() => {
-      // store.dispatch("staffEscalation")
+      // store.dispatch("escalation")
        if (route.query.filter || route.query.fromDate) {
           let filter= route.query.filter ? route.query.filter : ''
                 let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate=" 
-                store.dispatch("staffEscalation", "?filter=" +filter +date)
+                store.dispatch("escalation", "?filter=" +filter +date)
             } else {
-                store.dispatch("staffEscalation");
+                store.dispatch("escalation");
             }
        
         
@@ -153,7 +152,7 @@ const route = useRoute();
     };
 
     const escalationList = computed(() => {
-      return store.state.careCoordinator.staffEscalation;
+      return store.state.careCoordinator.escalation;
     });
     onUnmounted(() => {
       store.commit("filter", "");
@@ -170,7 +169,7 @@ function remove(event) {
             if (event == "filter") {
                 if (route.query.fromDate && route.query.toDate) {
                     
-                    store.dispatch("staffEscalation", "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
+                    store.dispatch("escalation", "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
              setTimeout(()=>{
 router.replace({    
                         query: {
@@ -185,7 +184,7 @@ router.replace({
                     router.replace({
                         query: {}
                     })
-                    store.dispatch("staffEscalation")
+                    store.dispatch("escalation")
                 }
                        
 
@@ -197,12 +196,12 @@ router.replace({
                             filter: route.query.filter
                         }
                     })
-                    store.dispatch("staffEscalation", "?filter=" + route.query.filter)
+                    store.dispatch("escalation", "?filter=" + route.query.filter)
                 } else {
                     router.replace({
                         query: {}
                     })
-                    store.dispatch("staffEscalation")
+                    store.dispatch("escalation")
                 }
             }
 

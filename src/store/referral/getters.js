@@ -1,8 +1,8 @@
 import { computed } from "vue"
 
-export const referralList = (state) => {
+export const referral = (state) => {
   return computed(() => {
-    return state.referralList
+    return state.referral
   })
 }
 export const referralColumns = (state) => {
