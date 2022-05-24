@@ -138,7 +138,7 @@ export const appintmentStatus = async ({commit},data) => {
 
 export const patientAppointmentsList = async ({commit}, patientUdid) => {
   commit('loadingStatus', true)
-  await serviceMethod.common("get", API_ENDPOINTS['patient']+`/${patientUdid}/appointment?chat=chat`, null, null).then((response) => { 
+  await serviceMethod.common("get", API_ENDPOINTS['patient']+`/${patientUdid}/appointment?all=all`, null, null).then((response) => { 
     commit('patientAppointmentsList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {

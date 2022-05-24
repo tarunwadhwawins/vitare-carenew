@@ -238,10 +238,6 @@ export default {
       clearInterval(interval)
     })
 
-    const conferenceId = computed(() => {
-			return store.state.videoCall.conferenceId
-		})
-
 		const flagsList = computed(() => {
 			return store.state.flags.flagsList
 		})
@@ -258,7 +254,6 @@ export default {
     });
 
     return {
-      conferenceId,
       enCodeString,
       list,
       sendMsg,
