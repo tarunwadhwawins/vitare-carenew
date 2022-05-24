@@ -303,7 +303,7 @@ export default {
 }
 .callRightWrapper .body {
   overflow-y: scroll;
-  height: 445px;
+  height: 345px;
   overflow-x: hidden;
 }
 .callRightWrapper .header .patientInfo .patientImg .info {

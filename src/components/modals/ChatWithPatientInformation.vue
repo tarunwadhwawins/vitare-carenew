@@ -295,7 +295,9 @@ export default {
   height: 680px !important;
 } */
 .chatBox {
-  height: 630px !important;
+  height: 560px !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
 }
 .patientTimeline {
   width: 100% !important;
@@ -312,11 +314,6 @@ export default {
   font-size: 16px !important;
   position: relative !important;
   top: -2px !important;
-}
-.callRightWrapper .body {
-  overflow-y: scroll;
-  height: 445px;
-  overflow-x: hidden;
 }
 .callRightWrapper .patientTimeline .ant-timeline {
   overflow: unset !important;
