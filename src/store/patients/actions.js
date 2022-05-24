@@ -525,11 +525,11 @@ export const updatePatientProgram = async ({ commit }, data) => {
 
 export const deleteProgram = async ({commit}, data) => {
   await serviceMethod.common("delete", `patient/${data.id}/program/${data.programID}`, null, null).then((response) => {
-    commit('deleteProgram', response.data.data);
+    commit('programDetails', null);
     successSwal(response.data.message)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
-    errorSwal(error.response.data.message)
+    // errorSwal(error.response.data.message)
   })
 
 }
