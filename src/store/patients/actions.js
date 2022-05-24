@@ -8,7 +8,6 @@ export const addDemographic = async ({commit}, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("post", "patient", null, data.demographics).then((response) => {
     commit('addDemographic', response.data.data);
-    commit('patientDetails', response.data.data);
     commit('status', true)
     
     if(data.responsiblePerson.self ||
@@ -82,9 +81,7 @@ export const updateDemographic = async ({commit}, request) => {
   const referalId = request.referalId
   commit('loadingStatus', true)
   
-  await serviceMethod.common("put", API_ENDPOINTS['patient']+`/${patientUdid}`, null, data.demographics).then((response) => {
-    commit('addDemographic', response.data.data);
-    commit('patientDetails', response.data.data);
+  await serviceMethod.common("put", API_ENDPOINTS['patient']+`/${patientUdid}`, null, data.demographics).then(() => {
     commit('status', true)
     commit('loadingStatus', false)
     if(responsiblePersonId){
@@ -528,11 +525,11 @@ export const updatePatientProgram = async ({ commit }, data) => {
 
 export const deleteProgram = async ({commit}, data) => {
   await serviceMethod.common("delete", `patient/${data.id}/program/${data.programID}`, null, null).then((response) => {
-    commit('deleteProgram', response.data.data);
+    commit('programDetails', null);
     successSwal(response.data.message)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
-    errorSwal(error.response.data.message)
+    // errorSwal(error.response.data.message)
   })
 
 }
@@ -948,6 +945,7 @@ export const uploadFile = async ({ commit }, data) => {
 export const patientDetails = async ({commit}, id) => {
   await serviceMethod.common("get", API_ENDPOINTS['patient'], id, null).then((response) => {
     commit('patientDetails', response.data.data);
+    commit('addDemographic', null);
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 500) {
@@ -1889,11 +1887,11 @@ export const escalationVitalList = async ({commit}, data) => {
 
 
 
-export const referral = async ({
+export const referralList = async ({
   commit
 }) => {
   await serviceMethod.common("get", API_ENDPOINTS['referral'], null, null).then((response) => {
-    commit('referral', response.data.data);
+    commit('referralList', response.data.data);
     
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)

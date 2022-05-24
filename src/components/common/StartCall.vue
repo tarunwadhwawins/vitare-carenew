@@ -4,7 +4,7 @@
       <div class="moreActionImg darkGreenBgColor">
         <PhoneOutlined/>
       </div>
-      <p>Call</p>
+      <p>Start Call</p>
     </div>
   </a-col>
 </template>

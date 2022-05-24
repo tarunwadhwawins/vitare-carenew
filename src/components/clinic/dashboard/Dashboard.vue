@@ -20,27 +20,35 @@
         
         
          <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  escalationCount">
-            <ApexChart title="Escalations" type="bar" :height="400" :options="escalationCount.code" :series="escalationCount.value" linkTo="Escalation" :data="escalationRecord"></ApexChart>
+            <ApexChart title="Escalations" type="bar" :height="350" :options="escalationCount.code" :series="escalationCount.value" linkTo="Escalation" :data="escalationRecord"></ApexChart>
         </a-col>
          <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && escalationList">
-             <a-card  title="Escalations List" class="common-card">
-            <EscaltionTable :columnData="columnData" :escalationList="escalationList"  @showEscalationData="showEscalationData($event)" />
+             <a-card  title="Escalations List" class="common-card" style="height:436px">
+                 <template #extra><router-link :to="{name:'Escalation'}">View All</router-link></template>
+            <EscaltionTable :columnData="columnData" :escalationList="escalationList"  @showEscalationData="showEscalationData($event)" :height="310"/>
              </a-card>
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  clicalTask">
             <ApexChart title="My Tasks " type="bar" :height="350" :options="clicalTask.code" :series="clicalTask.value" linkTo="Tasks" listView="list"></ApexChart>
         </a-col>
+         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) && tasksList">
+             <a-card  title="My Tasks List" class="common-card" style="height:436px">
+                 <template #extra v-if="tasksList.length > 6"><router-link :to="{name:'TimeLogReport'}">View All</router-link></template>
+            <TaskTable @is-Edit="editTask($event)" :height="285"></TaskTable>
+             </a-card>
+        </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && patientsFlag">
             <ApexChart title="Patient Flags" type="bar" :height="350" :options="patientsFlag.code" :series="patientsFlag.value" linkTo="Patients with filter"></ApexChart>
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  appointmentCount">
-            <ApexChart title="My Appointments" type="bar" :height="350" :options="appointmentCount.chartOptions" :series="appointmentCount.value" linkTo="appointment-calendar"></ApexChart>
+            <ApexChart title="My Appointments" type="bar" :height="350" :options="appointmentCount.chartOptions" :series="appointmentCount.value" linkTo="AppointmnetCalendar"></ApexChart>
         </a-col>
         
     </a-row>
     <Loader />
 </a-layout-content>
 <EscaltionViewModal v-model:visible="escaltionViewModal" />
+<TasksModal   v-model:visible="visible" @saveTaskModal="handleOk($event)"  :taskId="taskID" />
 </template>
 
 <script>
@@ -53,10 +61,13 @@
   import moment from "moment"
   import EscaltionTable from "@/components/common/tables/EscalationTable"
   import EscaltionViewModal from "@/components/care-coordinator/escalations/EscalationViewModal"
+  import TaskTable from "@/components/tasks/TaskTable";
+  import TasksModal from "@/components/modals/TasksModal";
   const columnData = [
-    {
+  {
     title: "Patient Name",
     dataIndex: "patientName",
+    sorter: true,
     slots: {
       customRender: "patientName",
     },
@@ -64,6 +75,7 @@
   {
     title: "Escalation Type",
     dataIndex: "escalationType",
+    sorter: true,
     slots: {
       customRender: "escalationType",
     },
@@ -71,6 +83,7 @@
   {
     title: "Due Date",
     dataIndex: "dueBy",
+    sorter: true,
   },
   {
     title: "Flag",
@@ -86,7 +99,6 @@
       customRender: "action",
     },
   },
- 
 ];
 
 export default {
@@ -96,6 +108,8 @@ export default {
         Loader,
         EscaltionTable,
         EscaltionViewModal,
+        TaskTable,
+        TasksModal
     },
 
     setup() {
@@ -110,6 +124,10 @@ export default {
       store.commit("resetEscalationCounter");
       store.state.patients.addBasicEscalation = null;
       escaltionModal.value = true;
+    };
+     const showEscalationData = (value) => {
+      console.log("testValue", value);
+      escaltionViewModal.value = value;
     };
         function apiCall(data) {
             let from = moment()
@@ -129,7 +147,10 @@ export default {
                 from = moment();
                 to = moment().subtract(data.number, data.intervalType);
             }
-            let dateFormate = ''
+            let dateFormate = {
+                fromDate: '',
+                    toDate: ''
+            }
             
            
             if (data.globalCodeId == 122) {
@@ -152,6 +173,8 @@ export default {
             store.dispatch("clicalTask", dateFormate)
             store.dispatch("callStatus", dateFormate)
             store.dispatch("patientsFlag", dateFormate)
+             
+                store.dispatch("tasksList", "?fromDate=" + dateFormate.fromDate + "&toDate=" + dateFormate.toDate);
             store.dispatch("appointmentCount", dateFormate)
             store.dispatch("escalationCount", dateFormate)
             store.dispatch("staffEscalation")
@@ -165,7 +188,7 @@ export default {
           
          if(timeLineButton.value==null){
               
-            store.dispatch("timeLine", 122).then(()=>{
+            store.dispatch("timeLine", 123).then(()=>{
                 apiCall(timeLineButton.value)
             })
                 
@@ -186,8 +209,20 @@ export default {
             })
 
         }
-
+///task list
+const visible = ref(false);
+   
+    const taskID =ref();
+const editTask = (id) => {
+                visible.value = id.check,
+                taskID.value =  id.id
+                store.dispatch('editTask',id.id)
+            
+        };
         return {
+            editTask,
+            visible,
+            taskID,
            clicalTask:store.getters.clicalTask,
             grid:store.getters.grid,
             escalationCount:store.getters.escalationCount,
@@ -205,7 +240,9 @@ export default {
             escalationList,
             showEscalationModal,
             escaltionViewModal,
-            escaltionModal
+            escaltionModal,
+            showEscalationData,
+            tasksList:store.getters.tasksList,
         };
     },
 };

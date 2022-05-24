@@ -1,6 +1,7 @@
 <template>
 <a-col :sm="24">
-    <a-table rowKey="id" :columns="meta.tasksListColumns" :data-source="meta.tasksList" :scroll="{ x: 900 ,y:tableYScroller }" :pagination="false" @change="handleTableChange">
+    <a-table  rowKey="id" :columns="meta.tasksListColumns" :data-source="meta.tasksList" :scroll="height ? { x: 900 , y:height } :{ x: 900 ,y:tableYScroller }" :pagination="false" @change="handleTableChange">
+      
         <template #taskName="text">
             <span>{{ text.text }}</span>
         </template>
@@ -64,7 +65,9 @@ export default {
     EditOutlined,
     CalendarOutlined,
   },
-  props: {},
+  props: {
+    height:Number
+  },
   setup(props, { emit }) {
     const store = useStore();
  const route = useRoute()

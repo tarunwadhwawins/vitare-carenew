@@ -130,9 +130,14 @@ props:{
         const loader = ref(false);
         let data = []
         let scroller = ''
-        let filter = route.query.filter ?   route.query.filter : ''
-     
-        onMounted(() => {
+         let filter = ''
+         let date = ''
+       function checkDate(){
+       filter= route.query.filter ? route.query.filter : ''
+       date = route.query.fromDate && route.query.toDate ? "?fromDate=" + route.query.fromDate + "?toDate=" + route.query.toDate : store.getters.auditTimeLogFilterDates.value
+       }
+       onMounted(() => {
+           checkDate()
             var tableContent = document.querySelector(".ant-table-body");
 
             tableContent ? tableContent.addEventListener("scroll", (event) => {
@@ -148,7 +153,7 @@ props:{
                         meta.timeLogeMeta = "";
                         console.log("fsfs", current_page)
 
-                        store.dispatch("timeLogReportList", store.getters.auditTimeLogFilterDates.value + '&filter='+filter+
+                        store.dispatch("timeLogReportList", date + '&filter='+filter+
                         "&page=" + current_page + store.getters.orderTable.value.data).then(() => {
                             loadMoredata();
                         })
@@ -180,6 +185,7 @@ props:{
             return store.state.timeLogReport
         })
         const handleTableChange = (pag, filters, sorter) => {
+            checkDate()
             if (sorter.order) {
                 let order = sorter.order == 'ascend' ? 'ASC' : 'DESC'
                 let orderParam = '&orderField=' + sorter.field + '&orderBy=' + order
@@ -189,13 +195,13 @@ props:{
                     page: pag,
                     filters: filters
                 })
-                store.dispatch("timeLogReportList", store.getters.auditTimeLogFilterDates.value +'&filter='+filter+ '&search=' + orderParam)
+                store.dispatch("timeLogReportList", date +'&filter='+filter+ '&search=' + orderParam)
 
             } else {
                 store.dispatch('orderTable', {
                     data: '&orderField=&orderBy='
                 })
-                store.dispatch("timeLogReportList", store.getters.auditTimeLogFilterDates.value +'&filter='+filter+ '&search=' + store.getters.orderTable.value.data)
+                store.dispatch("timeLogReportList", date +'&filter='+filter+ '&search=' + store.getters.orderTable.value.data)
             }
         }
 

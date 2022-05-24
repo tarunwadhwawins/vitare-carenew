@@ -1,5 +1,5 @@
 <template>
-<a-form :model="program" scrollToFirstError=true name="basic" autocomplete="off" layout="vertical" @finish="programs" @finishFailed="programFailed">
+<a-form ref="formRef" :model="program" scrollToFirstError=true name="basic" autocomplete="off" layout="vertical" @finish="programs" @finishFailed="programFailed">
     <a-row :gutter="24">
       
         <a-col :md="8" :sm="12" :xs="24">
@@ -94,6 +94,7 @@ export default defineComponent({
     }
   },
   setup(props, {emit}) {
+    const formRef = ref()
     const store = useStore();
     const route = useRoute();
     const patientId = reactive(props.idPatient);
@@ -193,7 +194,8 @@ export default defineComponent({
     const form = reactive({
       ...program,
     });
-    function reset(){
+    function reset() {
+      formRef.value.resetFields();
       Object.assign(program,form)
     }
 
@@ -210,7 +212,8 @@ export default defineComponent({
               programID: id
             }).then(() => {
               store.dispatch("program", patientId);
-            }, 2000);
+              reset()
+            });
           }
         })
       }
@@ -223,7 +226,8 @@ export default defineComponent({
             })
             setTimeout(() => {
               store.dispatch("program",patients.value.addDemographic.id);
-            }, 2000);
+              reset()
+            });
           }
         })
       }
@@ -247,6 +251,7 @@ export default defineComponent({
       programs,
       errorMsg:patients.value.errorMsg,
       reset,
+      formRef,
     };
   },
 });

@@ -4,7 +4,7 @@
       <div class="moreActionImg redBgColor">
         <img src="@/assets/images/wave.svg" />
       </div>
-      <p>Vitals</p>
+      <p>Vital(s)</p>
     </div>
   </a-col>
 </template>
