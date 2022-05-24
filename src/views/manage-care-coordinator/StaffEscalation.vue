@@ -122,7 +122,9 @@ const route = useRoute();
     onMounted(() => {
       // store.dispatch("staffEscalation")
        if (route.query.filter || route.query.fromDate) {
-                store.dispatch("staffEscalation", "?filter=" + route.query.filter + "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
+          let filter= route.query.filter ? route.query.filter : ''
+                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate=" 
+                store.dispatch("staffEscalation", "?filter=" +filter +date)
             } else {
                 store.dispatch("staffEscalation");
             }
