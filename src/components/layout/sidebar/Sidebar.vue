@@ -15,7 +15,7 @@
                 <a-menu-item>
                     <CreditCardOutlined /><span class="menuItem">Business Dashboard</span></a-menu-item>
             </router-link>
-            <router-link to="/escalation">
+            <router-link to="/escalation" v-show="escalationStatus?escalationStatus.status:false">
                 <a-menu-item>
                     <DashboardOutlined /><span class="menuItem">{{'Escalation'}}</span></a-menu-item>
             </router-link>
@@ -99,6 +99,10 @@ export default defineComponent({
     const roles = computed(() => {
       return localStorage.getItem("roleAuth");
     });
+
+    const escalationStatus = computed(() => {
+      return store.state.careCoordinator.escalationStaus
+    });
     onUnmounted(() => {
       document.body.classList.remove("show");
     });
@@ -131,6 +135,7 @@ export default defineComponent({
     
     
     return { 
+      escalationStatus,
       linkTo,
       screensPermissions,
       arrayToObjact,

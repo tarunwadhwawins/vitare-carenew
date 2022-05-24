@@ -100,7 +100,7 @@ export default {
             store.dispatch("cptCode", cptDateFormate)
             store.dispatch("referalCount", dateFormate)
             store.dispatch("financial", dateFormate)
-            store.dispatch("staffEscalation")
+            store.dispatch("escalation")
         }
         
 

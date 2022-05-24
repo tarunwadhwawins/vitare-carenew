@@ -521,7 +521,7 @@ export default {
             status.value =false
             store.dispatch('escalationList', {referenceId:escalation.referenceId?escalation.referenceId:route.params.udid,entityType:'patient'})
             Object.assign(escalation, form)
-            store.dispatch("staffEscalation")
+            store.dispatch("escalation")
         }
 
     }, 3000)

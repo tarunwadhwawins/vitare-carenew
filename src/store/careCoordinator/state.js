@@ -28,6 +28,7 @@ export default{
     availabilityDetails:false,
     contactDetails:false,
     documentStaffDetails:null,
-    staffEscalation:null
+    escalation:null,
+    escalationStaus:null
     
 }
