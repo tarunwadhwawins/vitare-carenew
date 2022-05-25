@@ -179,11 +179,11 @@ export default {
   props: {},
   setup() {
     const communicationColumns = [
-      {
+      /* {
         slots: {
           customRender: "expandable",
         },
-      },
+      }, */
       {
         title: "From",
         dataIndex: "from",
