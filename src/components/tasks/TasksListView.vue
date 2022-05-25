@@ -92,15 +92,14 @@ export default {
                  
                      setTimeout(() => {
                         router.replace({
-                            query: {
-
-                                 view: 'list',
+                            query: {  
                             fromDate: route.query.fromDate,
-                            toDate: route.query.todate
+                            toDate: route.query.todate,
+                            view: 'list',
 
                             }
                         })
-                    }, 10000)
+                    }, 1000)
                 } else {
                     router.replace({
                         query: {view: 'list',}
@@ -116,8 +115,9 @@ export default {
                     setTimeout(()=>{
                         router.replace({
                         query: {
+                            
+                            filter: route.query.filter,
                             view: 'list',
-                            filter: route.query.filter
                         }
                     },5000)
                     })

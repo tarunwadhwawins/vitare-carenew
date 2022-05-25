@@ -52,6 +52,7 @@ export const addTask = async ({ commit }, data) => {
 };
 
 export const editTask = async ({ commit }, id) => {
+
 	commit('loadingStatus', true);
 
 	await ServiceMethodService.common('get', `task/` + id.id, null, null)
