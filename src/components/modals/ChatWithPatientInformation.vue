@@ -196,7 +196,7 @@ export default {
 
     function getScroll() {
       setTimeout(() => {
-        if((tableContent.value[0].scrollTop < tableContent.value[0].scrollHeight+10) == true) {
+        if((tableContent.value) && (tableContent.value[0].scrollTop < tableContent.value[0].scrollHeight+10) == true) {
           tableContent.value[0].scrollTop = tableContent.value[0].scrollHeight+10
         }
       }, 2000)
@@ -303,12 +303,6 @@ export default {
 }
 .callButton {
   margin-bottom: 20px;
-}
-.anticon-calendar, .anticon-pushpin, .anticon-phone {
-  color: #ffffff;
-  font-size: 16px !important;
-  position: relative !important;
-  top: -2px !important;
 }
 .callRightWrapper .patientTimeline .ant-timeline {
   overflow: unset !important;

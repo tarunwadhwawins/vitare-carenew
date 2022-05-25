@@ -23,9 +23,10 @@
           /></a>
         </template>
         <template #document="{ record }">
-          <a :href="record.document" target="_blank">
-            <FileOutlined />
-          </a>
+          <a-tooltip placement="right">
+            <template #title>View</template>
+          <a :href="record.document" target="_blank"><FileOutlined /></a>
+          </a-tooltip>
         </template>
       </a-table>
       <Loader v-if="!isCommunication" />
