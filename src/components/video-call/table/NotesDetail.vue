@@ -49,11 +49,13 @@
         <a-button @click="showNoteModal" type="primary">{{'Add Note'}}</a-button>
         <a-table :scroll="{ y: 250 }" rowKey="id" :columns="notesColumns" :data-source="notesList" :pagination="false">
             <template #flags="{ record }">
-                <Flags :flag="record.color" />
+              <Flags :flag="record.color" :data="record" />
             </template>
             <template #action="{record}">
-                <a class="icons">
-                    <EyeTwoTone @click="edit(record.id)" /></a>
+              <a-tooltip placement="right">
+                <template #title>View</template>
+                <a class="icons"><EyeTwoTone @click="edit(record.id)" /></a>
+              </a-tooltip>
             </template>
         </a-table>
         <Loader v-if="!isCommunication" />

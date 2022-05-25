@@ -196,7 +196,7 @@ export default {
 
     function getScroll() {
       setTimeout(() => {
-        if((tableContent.value[0].scrollTop < tableContent.value[0].scrollHeight+10) == true) {
+        if((tableContent.value) && (tableContent.value[0].scrollTop < tableContent.value[0].scrollHeight+10) == true) {
           tableContent.value[0].scrollTop = tableContent.value[0].scrollHeight+10
         }
       }, 2000)
