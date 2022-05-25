@@ -2,7 +2,7 @@
 <template>
 
 <a-modal width="1000px" :title="taskId?'Edit Task':$t('tasks.tasksModal.addTask')" :footer="false" :maskClosable="false" @cancel="closeModal()" centered>
- {{taskId}}
+ 
     <a-form :model="taskForm" ref="formRef" autocomplete="off" layout="vertical" @finish="submitForm" @finishFailed="taskFormFailed">
         <a-row :gutter="24">
             <a-col :span="24">
