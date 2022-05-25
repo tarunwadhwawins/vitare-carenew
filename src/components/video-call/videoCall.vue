@@ -24,7 +24,7 @@
                 </div>
               </div>
               
-            <ChatRightPanel v-if="patientId" :idPatient="patientId" />
+            <ChatRightPanel v-if="patientId" :idPatient="patientId" :currentUrl="currentUrl" />
             </div>
           </div>
           <Loader />
