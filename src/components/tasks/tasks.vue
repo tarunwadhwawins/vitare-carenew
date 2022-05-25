@@ -80,7 +80,7 @@ export default {
     const visible = ref(false);
     const dashboardView = ref(true)
     const listView = ref(false)
-    const taskID =ref('');
+    const taskID =ref(false);
 
     const showModal = (task) => {
        console.log('=>',task)
@@ -89,7 +89,7 @@ export default {
       taskID.value=task.id.id
       visible.value = task.check;
       }else{
-      taskID.value=''
+      taskID.value=false
       visible.value = true;
       }
     };

@@ -56,6 +56,13 @@ const columnData = [
         customRender: "escalationType",
     },
   },
+  {
+    title: "Staff",
+    dataIndex: "escalationStaff",
+    slots:{
+        customRender: "escalationStaff",
+    },
+  },
   { 
     title: "Description",
     dataIndex: "escalationDescription",

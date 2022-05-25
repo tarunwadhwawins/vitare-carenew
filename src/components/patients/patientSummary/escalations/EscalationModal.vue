@@ -366,7 +366,7 @@ export default {
       flagId: "",
       dueBy: "",
       staffIds: [],
-      referenceId: route.params.udid,
+      referenceId: '',
       entityType: "patient",
     });
 
@@ -615,7 +615,7 @@ export default {
           toDate: timeStamp(endTimeAdd(from)),
         };
       }
-      if (route.params.udid) {
+      if (route.params.udid && route.name == 'PatientSummary') {
         store.dispatch("escalationNotesList", {
           id: route.params.udid,
           date: dateFormate,

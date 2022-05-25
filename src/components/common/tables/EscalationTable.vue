@@ -1,12 +1,15 @@
 <template>
 <div class="patientTable">
 
-    <a-table rowKey="id" :columns="columnData" :data-source="escalationList" style="width:100%" :pagination="false" @change="handleTableChange" :scroll="{y: height }">
-
+    <a-table rowKey="id" :columns="columnData" :data-source="escalationMainList" style="width:100%" :pagination="false" @change="handleTableChange" :scroll="height? {y: height } : {y: 400 }">
         <template #patientName="{ text, record }" >
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
         </template>
-
+         <template #escalationStaff="{ record }">
+            <span v-for="esc,i in record.escalationStaff.data" :key="esc.id" >
+                {{i==0?' ':','}} <router-link :to="{ name: 'CoordinatorSummary', params: { udid: esc.staffUdid } }">{{ esc.staffName }}</router-link>
+            </span>
+        </template>
         <template #escalationType="{ record }">
             <span v-for="esc,i in record.escalationType.data" :key="esc.id" >
                 {{i==0?' ':','}} {{ esc.escalationType }}
@@ -48,25 +51,85 @@ export default {
   },
   props: {
     columnData:Array,
-    escalationList:Array,
+    
     otherParam:String,
 
     height:String
   },
   setup(props,{emit}) {
     const store = useStore();
-    onMounted(() => {
-      
-    })
+    let data = [];
+    let scroller = "";
+    const meta = store.getters.escalationMeta;
+    const escalationMainList = store.getters.escalation
     const route = useRoute()
-    let filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
-        let dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
+    let  dateFilter= ''
+    let filter= ''
+  function checkDate(){
+     filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
+     dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
+    }
+    onMounted(() => {
+      checkDate()
+      var tableContent = document.querySelector(".ant-table-body");
+      tableContent.addEventListener("scroll", (event) => {
+        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+        let currentScroll = event.target.scrollTop + 2;
+        if (currentScroll >= maxScroll) {
+          let current_page = meta.value.current_page + 1;
+
+          if (current_page <= meta.value.total_pages) {
+            scroller = maxScroll;
+            data = escalationMainList.value
+            
+            store.state.careCoordinator.escalationMeta = "";
+
+            store
+              .dispatch(
+                "escalation",
+                "?page=" +
+                  current_page +
+                 dateFilter + filter +
+                  
+                  store.getters.searchTable.value +
+                 
+                  store.getters.orderTable.value.data
+              )
+              .then(() => {
+                loadMoredata();
+              });
+          }
+        }
+      });
+    })
+
+    function loadMoredata() {
+      const newData = escalationMainList.value
+
+      newData.forEach((element) => {
+        data.push(element);
+      });
+    
+      store.state.careCoordinator.escalation = data
+      
+      // = data;
+      var tableContent = document.querySelector(".ant-table-body");
+
+      setTimeout(() => {
+        tableContent.scrollTo(0, scroller);
+      }, 50);
+ 
+    }
+
+    
+    
     const showEscalationData = (id) =>{
       console.log(id)
       emit("showEscalationData",true)
       store.dispatch("singleEscalationRecord",id)
     }
       const handleTableChange = (pag, filters, sorter) => {
+        checkDate()
         let otherParam = props.otherParam?props.otherParam:''
       if (sorter.order) {
         let order = sorter.order == "ascend" ? "ASC" : "DESC";
@@ -79,7 +142,7 @@ export default {
         });
         store.dispatch(
           "escalation",
-          "?page=" + store.getters.searchTable.value +dateFilter + filter + orderParam
+          "?page=" + store.getters.searchTable.value +dateFilter + filter + orderParam+otherParam
         );
       } else {
         store.dispatch("orderTable", {
@@ -96,6 +159,8 @@ export default {
       }
     };
     return {
+      escalationMainList,
+      loadMoredata,
       handleTableChange,
       showEscalationData,
       screensPermissions: store.getters.screensPermissions,

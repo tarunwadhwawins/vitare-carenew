@@ -29,6 +29,7 @@ export default{
     contactDetails:false,
     documentStaffDetails:null,
     escalation:null,
-    escalationStaus:null
+    escalationStaus:null,
+    escalationMeta:null
     
 }

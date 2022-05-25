@@ -23,6 +23,15 @@
             </a-table>
         </a-col>
     </a-row>
+    <a-row :gutter="24" class="row" v-show="record?record.escalationStaff.data.length>0:false">
+        <a-col :sm="24" :xs="24">
+            <strong>Assigned Staff : </strong>
+           <span v-for="esc,i in record.escalationStaff.data" :key="esc.id" >
+                {{i==0?' ':','}} <router-link :to="{ name: 'CoordinatorSummary', params: { udid: esc.staffUdid } }">{{ esc.staffName }}</router-link>
+            </span>
+        </a-col>
+
+    </a-row>
     <a-row :gutter="24" class="row">
         <a-col :sm="24" :xs="24">
             <strong>Escalation Description : </strong>
@@ -30,6 +39,7 @@
         </a-col>
 
     </a-row>
+    
     <a-row :gutter="24" class="row">
         <a-col :sm="24" :xs="24">
             <strong>Escalation Type </strong>
@@ -114,6 +124,7 @@ const columnData = [{
             customRender: "patientName",
         },
     },
+    
     {
         title: "Escalation Type",
         dataIndex: "escalationType",
