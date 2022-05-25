@@ -280,6 +280,7 @@ export const documentStaffDetails = (state, data) => {
 
 
 export const escalation = (state, data) => {
+	state.escalationMeta = data.meta ? data.meta.pagination : ''
 	state.escalation = data.data.map((item) => {
 		item.dueBy = dateAndTimeFormate(item.dueBy,globalDateFormat);
 		return item;
