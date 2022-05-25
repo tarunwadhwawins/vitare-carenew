@@ -134,7 +134,7 @@ props:{
          let date = ''
        function checkDate(){
        filter= route.query.filter ? route.query.filter : ''
-       date = route.query.fromDate && route.query.toDate ? "?fromDate=" + route.query.fromDate + "?toDate=" + route.query.toDate : store.getters.auditTimeLogFilterDates.value
+       date = route.query.fromDate && route.query.toDate ? "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : store.getters.auditTimeLogFilterDates.value ? store.getters.auditTimeLogFilterDates.value :'?fromDate=&toDate='
        }
        onMounted(() => {
            checkDate()
@@ -150,7 +150,8 @@ props:{
                         data = meta.timeLogReportList
 
                         loader.value = true;
-                        meta.timeLogeMeta = "";
+                       
+                        store.state.timeLogReport.timeLogeMeta = ''
                         console.log("fsfs", current_page)
 
                         store.dispatch("timeLogReportList", date + '&filter='+filter+
