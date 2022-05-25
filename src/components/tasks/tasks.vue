@@ -15,7 +15,7 @@
                 <h2 class="pageTittle">
                   {{$t('tasks.tasks')}}
                   <div class="addtaskButton"  v-if="arrayToObjact(screensPermissions,113)">
-                    <Button :name="buttonName" @click="showModal" />
+                    <Button :name="buttonName" @click="showModal({id:'',value:true})" />
                   </div>
                   <div class="filter">
                     <button class="btn dashboardView" :class="toggle ? 'active' : ''" @click="toggleButton('dashboard')"  >
@@ -80,18 +80,22 @@ export default {
     const visible = ref(false);
     const dashboardView = ref(true)
     const listView = ref(false)
-    const taskID =ref();
+    const taskID =ref('');
 
     const showModal = (task) => {
-      // console.log('=>',task)
+       console.log('=>',task)
       if(task.id){
       store.dispatch('editTask',task.id)
-      }
-      taskID.value=task.id
+      taskID.value=task.id.id
+      visible.value = task.check;
+      }else{
+      taskID.value=''
       visible.value = true;
+      }
     };
     const handleOk = (value) => {
       visible.value = value;
+
     };
     
     watchEffect(() => {
