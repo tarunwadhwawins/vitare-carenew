@@ -1,6 +1,8 @@
 
 <template>
+
 <a-modal width="1000px" :title="taskId?'Edit Task':$t('tasks.tasksModal.addTask')" :footer="false" :maskClosable="false" @cancel="closeModal()" centered>
+  {{taskId}}
     <a-form :model="taskForm" ref="formRef" autocomplete="off" layout="vertical" @finish="submitForm" @finishFailed="taskFormFailed">
         <a-row :gutter="24">
             <a-col :span="24">
@@ -147,7 +149,9 @@ export default defineComponent({
       dueDate: "",
       entityType: "",
     });
-
+const form = reactive({
+      ...taskForm,
+    });
     const tasks = computed(() => {
       return store.state.tasks;
     });
@@ -171,11 +175,15 @@ export default defineComponent({
             id: props.taskId,
           })
           .then(() => {
+
             closeValue.value = false;
             emit("closeModal", {
               modal: "addTask",
               value: false,
             });
+            handleCancel()
+            emit("saveTaskModal", false);
+            Object.assign(taskForm, form);
           });
       } else {
         store
@@ -195,10 +203,13 @@ export default defineComponent({
             if (route.name == "PatientSummary") {
               store.dispatch("latestTask", route.params.udid);
             }
+            handleCancel()
+            Object.assign(taskForm, form);
             emit("closeModal", {
               modal: "addTask",
               value: false,
             });
+            emit("saveTaskModal", false);
           });
       }
 
@@ -227,17 +238,29 @@ export default defineComponent({
       emit("closeModal");
     };
 
-    const form = reactive({
-      ...taskForm,
-    });
+    
     const handleCancel = () => {
+      store.state.tasks.editTask=''
       formRef.value.resetFields();
       Object.assign(taskForm, form);
+      
+      // taskForm.title= ""
+      // taskForm.description= ""
+      // taskForm.taskStatus= ""
+      // taskForm.priority= ""
+      // taskForm.assignedTo= []
+      // taskForm.assignedName= []
+      // taskForm.taskCategory=[]
+      // taskForm.startDate= ""
+      // taskForm.dueDate= ""
+      // taskForm.entityType= ""
+      // console.log("check",taskForm)
     };
 
     watchEffect(() => {
       store.dispatch("allStaffList");
-      if (props.taskId != null) {
+      if (tasks.value.editTask) {
+        console.log("dsfs")
         Object.assign(taskForm, tasks.value.editTask);
         toggleTo.value = taskForm.entityType == "staff" ? false : true;
       }
@@ -273,6 +296,7 @@ export default defineComponent({
       if (checkFieldsData.value) {
         warningSwal(messages.modalWarning).then((response) => {
           if (response == true) {
+            store.state.tasks.editTask=''
             closeValue.value = true;
             setTimeout(() => {
               closeValue.value = false;
@@ -294,7 +318,9 @@ export default defineComponent({
           }
         });
       } else {
-        formRef.value.resetFields();
+        
+       handleCancel()
+        
       }
     }
 

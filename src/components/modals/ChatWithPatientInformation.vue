@@ -1,8 +1,9 @@
 <template>
   <a-modal width="95%" title="Messages" centered :maskClosable="false"  @cancel="closeModal()" class="chatModal" :footer="false">
-    <a-row :gutter="24">
-      <a-col :span="12" class="chatBox2">
-        <div class="chatBox" ref="scroll" id="chatBox">
+    <div class="common-bg">
+      <div class="videoWrapper chatBox2">
+        <div class="leftWrapper" id="videoDiv">
+          <div class="chatBox" ref="scroll" id="chatBox">
           <ChatScreenBody :conversationList="list.conversationList" :communication="communication" screen="withPatient" :patientId="patientId" />
           <a-form ref="formRef" class="messageBox" :model="formValue" layout="vertical" @finish="sendMsg" @finishFailed="taskFormFailed">
             <div class="sendMessage" v-if="auth.user.id==communication.receiverId || auth.user.id==communication.senderId">
@@ -21,14 +22,12 @@
             </div>
           </a-form>
         </div>
-      </a-col>
-
-      <a-col :span="12">
+        </div>
+        
         <ChatRightPanel :idPatient="patientUdid" :communication="communication" :isChat="true" />
-      </a-col>
-
-      <Loader />
-    </a-row>
+      </div>
+    </div>
+    <Loader />
   </a-modal>
 </template>
 
@@ -87,23 +86,6 @@ export default {
     const isCommunicationWithPatient = ref(false)
     const tabvalue = reactive({
       tab: [],
-    });
-
-    function resize() {
-      window.addEventListener("mousemove", resizeDiv);
-      window.addEventListener("touchmove", resizeDiv);
-    }
-    function resizeDiv(e) {
-      let video_width = ((e.clientX - 50) / document.body.clientWidth) * 100;
-      document.getElementById("videoDiv").style.width = video_width + "%";
-    }
-    window.addEventListener("mouseup", (e) => {
-      console.log(e);
-      window.removeEventListener("mousemove", resizeDiv);
-    });
-      window.addEventListener("touchend", (e) => {
-      console.log(e);
-      window.addEventListener("touchmove", resizeDiv);
     });
 
     const showNotesModal = () => {
@@ -262,8 +244,6 @@ export default {
       closeModal,
       auth,
       scroll,
-      resize,
-      resizeDiv,
       showNotesModal,
       showDocumentsModal,
       showVitalsModal,

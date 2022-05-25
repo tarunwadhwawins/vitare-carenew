@@ -1,6 +1,6 @@
 <template>
   <div class="callRightWrapper chatBoxRight">
-    <span v-if="!isChat" class="dragImg" @mousedown="resize($event)"  @touchstart="resize($event)"><img src="@/assets/images/drag.png" alt="" /></span>
+    <span class="dragImg" @mousedown="resize($event)"  @touchstart="resize($event)"><img src="@/assets/images/drag.png" alt="" /></span>
     <div class="header">
       <a-row>
         <a-col :span="12">
@@ -224,7 +224,26 @@ export default {
       }
     }
 
+    function resize() {
+      window.addEventListener("mousemove", resizeDiv);
+      window.addEventListener("touchmove", resizeDiv);
+    }
+    function resizeDiv(e) {
+      let video_width = ((e.clientX - 50) / document.body.clientWidth) * 100;
+      document.getElementById("videoDiv").style.width = video_width + "%";
+    }
+    window.addEventListener("mouseup", (e) => {
+      console.log(e);
+      window.removeEventListener("mousemove", resizeDiv);
+    });
+      window.addEventListener("touchend", (e) => {
+      console.log(e);
+      window.addEventListener("touchmove", resizeDiv);
+    });
+
     return {
+      resize,
+      resizeDiv,
       copyURL,
       list,
       formValue,

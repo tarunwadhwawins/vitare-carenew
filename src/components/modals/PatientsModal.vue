@@ -102,7 +102,7 @@
 
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('patient.demographics.weight') + '(Pounds)'" name="weight" :rules="[{ required: false, message: $t('patient.demographics.weight')+' '+$t('global.validation'), pattern: regex.digitWithdecimal }]">
+                                <a-form-item :label="$t('patient.demographics.weight') + '(lbs)'" name="weight" :rules="[{ required: false, message: $t('patient.demographics.weight')+' '+$t('global.validation'), pattern: regex.digitWithdecimal }]">
                                     <a-input-number @change="changedValue" style="width: 100%" v-model:value="demographics.weight" placeholder="Please enter weight in lbs" size="large" />
                                 </a-form-item>
                             </div>
@@ -355,7 +355,7 @@
                         </a-col>
 
                     </a-row>
-<div v-if="emergencyContactShow">
+									<div>
     
                     <a-row :gutter="24" >
                         <a-col :span="24">
@@ -526,8 +526,8 @@
                             </div>
                         </a-col>
                     </a-row>
-</div>
-<div v-if="referalFormShow">
+									</div>
+									<div v-if="referalFormShow">
                     <a-row :gutter="24">
                         <a-col :span="24">
                             <div class="formHeading">
@@ -853,28 +853,28 @@ function newReferral(){
             {
                 title: "Programs",
                 key: "programs",
-                content: "Second-content",
+                content: "Third-content",
             },
             {
                 title: "Insurance",
                 key: "insurance",
-                content: "Second-content",
+                content: "Fourth-content",
             },
             {
                 title: "Documents",
                 key: "documents",
-                content: "Last-content",
+                content: "Fifth-content",
             },
             {
                 title: "Conditions",
                 key: "conditions",
-                content: "Second-content",
+                content: "Sixth-content",
             },
 
             {
                 title: "Clinical Data",
                 key: "clinicalData",
-                content: "Second-content",
+                content: "Last-content",
             },
 
         ]
@@ -986,13 +986,6 @@ function newReferral(){
 
         const conditions = reactive({
             condition: [],
-            referralName: "",
-            referralDesignation: "",
-            referralEmail: "",
-            referralPhoneNumber: "",
-            referralFax: "",
-            staff: "",
-            isPrimary: 1,
         });
 
         const insuranceData = reactive({
@@ -1012,15 +1005,28 @@ function newReferral(){
             ...referal
         });
 
+        const patientConditions = computed(() => {
+            return store.state.patients.patientConditions
+        })
+
         const current = computed({
             get: () =>
                 store.state.patients.counter,
             set: (value) => {
+                if (value == 5) {
+                    store.dispatch('patientConditions', idPatient.value).then(() => {
+                        console.log('patientConditions.value', patientConditions.value)
+                        if (patientConditions.value != null) {
+                            Object.assign(conditions.condition, patientConditions.value)
+                        }
+                    })
+                }
 
-                if (patients.value.addDemographic) {
+                if (props.isEdit || patients.value.addDemographic) {
 
                     store.state.patients.counter = value
-                } else {
+                }
+                else {
                     if (demographics.firstName && demographics.lastName && demographics.dob && demographics.email && demographics.phoneNumber) {
                         if (store.state.patients.counter < 1) {
 
@@ -1047,7 +1053,6 @@ function newReferral(){
 
         watchEffect(() => {
             idPatient.value = patients.value.addDemographic ? patients.value.addDemographic.id : route.name == "PatientSummary" ? route.params.udid : null;
-            //console.log("test",idPatient.value)
             // Bitrix data assign 
             if(props.isEdit){
                 referalFormShow.value = false
@@ -1072,15 +1077,10 @@ function newReferral(){
                 Object.assign(responsiblePersonForm, responsiblePerson.value)
                 responsiblePersonForm.self = false
             }
-
             if (patients.value.patientDetails) {
                 
                 
                 Object.assign(demographics, patients.value.patientDetails)
-            }
-
-            if (patients.value.patientConditions != null) {
-                Object.assign(conditions.condition, patients.value.patientConditions)
             }
             if (patients.value.patientReferralSource != null ) {
                  
@@ -1116,7 +1116,29 @@ function newReferral(){
                         isValueChanged.value = false;
                     }
                 })
-            } else {
+            }
+            else if (!props.isEdit && (patients.value.addDemographic != null || patients.value.patientDetails != null)) {
+                store.dispatch("updateDemographic", {
+                    data: {
+                        "demographics": demographics,
+                        "referal": referal,
+                        "responsiblePerson": responsiblePersonForm,
+                        "emergencyContactForm": emergencyContactForm
+                    },
+                    referalId: patientReferralSource.value ? patientReferralSource.value.id : null,
+                    responsiblePersonId: responsiblePerson.value ? responsiblePerson.value.id : null,
+                    emergencyContactId: emergencyContact.value ? emergencyContact.value.id : null,
+                    patientUdid: patients.value.addDemographic ? patients.value.addDemographic.id : patients.value.patientDetails.id,
+                }).then(() => {
+                    if (route.name == 'PatientSummary') {
+                        store.dispatch('patientDetails', route.params.udid)
+                        store.dispatch('responsiblePerson', route.params.udid)
+                        store.dispatch('emergencyContact', route.params.udid)
+                        isValueChanged.value = false;
+                    }
+                })
+            }
+						else {
                 store.dispatch("addDemographic", {
                     "demographics": demographics,
                     "referal": referal,
@@ -1207,6 +1229,10 @@ function newReferral(){
             store.commit("counterPlus");
         };
         const prev = () => {
+						alert(current.value)
+						if(patients.value.addDemographic && current.value == 1) {
+							Object.assign(demographics, patients.value.addDemographic);
+						}
             store.commit("counterMinus");
             customScrollTop.value.scrollIntoView({
                 behavior: 'smooth'
@@ -1262,6 +1288,7 @@ function newReferral(){
             if (isValueChanged.value || bitrixFormCheck.value) {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
+											store.commit('addDemographic', null);
                         store.commit('bitrixFormCheck', false)
                         emit("saveModal", false);
                         emit("closeModal", {
@@ -1361,6 +1388,7 @@ function newReferral(){
         function changeResponsible(e) {
             isValueChanged.value = true
             disableEmergencyContact.value = true
+						alert(e.target.checked)
             if (e.target.checked) {
                 store.commit('isEditPatient', true)
 

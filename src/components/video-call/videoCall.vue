@@ -27,7 +27,7 @@
                 </div>
               </div>
               
-            <ChatRightPanel v-if="patientId" :idPatient="patientId" :currentUrl="currentUrl" />
+              <ChatRightPanel v-if="patientId" :idPatient="patientId" :currentUrl="currentUrl" />
             </div>
           </div>
           <Loader />
@@ -58,7 +58,10 @@
   //   PushpinOutlined,
   //   FlagOutlined,
   // } from "@ant-design/icons-vue";
-  import { useRoute, useRouter } from "vue-router";
+  import {
+    useRoute,
+    // useRouter
+  } from "vue-router";
   import { useStore } from "vuex";
   import Loader from "@/components/loader/VideoLoader";
   import { Web } from "@/assets/js/sip-0.20.0";
@@ -110,7 +113,7 @@
       const decodedUrl = ref();
       const visibleDrawer = ref(false);
       const route = useRoute();
-      const router = useRouter();
+      // const router = useRouter();
       const profile = ref(false);
       const tabvalue = reactive({
         tab: [],
@@ -184,11 +187,11 @@
                       store.state.videoCall.acceptVideoCallDetails = null;
                       //call end api
                       store.dispatch("callNotification", {
-                        id: conferenceId.value,
+                        id: decodedUrl.value,
                         status: "end",
                       });
                       successSwal("Call Ended! Thank You");
-                      router.push("/dashboard");
+                      // router.push("/dashboard");
                     }
                   },
                 },
@@ -239,7 +242,7 @@
                 });
             }
             else {
-              router.push("/dashboard");
+              // router.push("/dashboard");
             }
           //} //end conference video call
           });
@@ -258,23 +261,7 @@
           session.value.answer();
         }
       });
-
-      function resize() {
-        window.addEventListener("mousemove", resizeDiv);
-        window.addEventListener("touchmove", resizeDiv);
-      }
-      function resizeDiv(e) {
-        let video_width = ((e.clientX - 50) / document.body.clientWidth) * 100;
-        document.getElementById("videoDiv").style.width = video_width + "%";
-      }
-      window.addEventListener("mouseup", (e) => {
-        console.log(e);
-        window.removeEventListener("mousemove", resizeDiv);
-      });
-       window.addEventListener("touchend", (e) => {
-        console.log(e);
-        window.addEventListener("touchmove", resizeDiv);
-      });
+      
       // Answer call
       function hangUp() {
         if (decodedUrl.value) {
@@ -285,11 +272,10 @@
             store.state.videoCall.acceptVideoCallDetails = null;
             store.state.videoCall.conferenceId = null;
             store.state.videoCall.guestUser = null;
-            // router.push("/dashboard");
           });
         } else {
           session.value.hangup().then(() => {
-            router.push("/dashboard");
+            // router.push("/dashboard");
           });
         }
       }
@@ -482,7 +468,6 @@
         hangUp,
         videoCall,
         size: ref("large"),
-        resize,
         patientId,
       };
     },

@@ -81,9 +81,10 @@ export const updateDemographic = async ({commit}, request) => {
   const referalId = request.referalId
   commit('loadingStatus', true)
   
-  await serviceMethod.common("put", API_ENDPOINTS['patient']+`/${patientUdid}`, null, data.demographics).then(() => {
+  await serviceMethod.common("put", API_ENDPOINTS['patient']+`/${patientUdid}`, null, data.demographics).then((response) => {
     commit('status', true)
     commit('loadingStatus', false)
+    commit('addDemographic', response.data.data);
     if(responsiblePersonId){
      serviceMethod.common("put", API_ENDPOINTS['patient']+`/${patientUdid}/responsible/${responsiblePersonId}`, null, data.responsiblePerson).then((response) => {
         commit("responsiblePerson",response.data.data)
@@ -455,7 +456,7 @@ export const patientConditions = async ({ commit }, id) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/condition', null, null).then((condition) => {
     commit('patientConditions', condition.data.data);
-   
+    commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     commit('loadingStatus', false)
@@ -1615,23 +1616,23 @@ export const updateDocument = async ({commit}, data) => {
 
 
 
-export const escalationList = async ({commit}, data) => {
-  commit('loadingStatus', true)
-  await serviceMethod.common("get", `escalation?referenceId=${data.referenceId}&entityType=${data.entityType}`, null, null).then((response) => {
-    commit('escalation', response.data.data)
-    commit('loadingStatus', false)
-  }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
-    if (error.response.status === 422) {
-      commit('errorMsg', error.response.data)
-    } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
-    } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
-    }
-    commit('loadingStatus', false)
-  })
-}
+// export const escalationList = async ({commit}, data) => {
+//   commit('loadingStatus', true)
+//   await serviceMethod.common("get", `escalation?referenceId=${data.referenceId}&entityType=${data.entityType}`, null, null).then((response) => {
+//     commit('escalation', response.data.data)
+//     commit('loadingStatus', false)
+//   }).catch((error) => {
+//     errorLogWithDeviceInfo(error.response)
+//     if (error.response.status === 422) {
+//       commit('errorMsg', error.response.data)
+//     } else if (error.response.status === 500) {
+//       errorSwal(error.response.data.message)
+//     } else if (error.response.status === 401) {
+//       errorSwal(error.response.data.message)
+//     }
+//     commit('loadingStatus', false)
+//   })
+// }
 
 export const addBasicEscalation = async ({commit}, data) => {
   let status = false
@@ -1677,97 +1678,6 @@ export const updateBasicEscalation = async ({commit}, data) => {
     }
     commit('loadingStatus', false)
   })
-  return status
-}
-
-export const addEscalationNote = async ({commit}, data) => {
-  let status = false
-  commit('loadingStatus', true)
-  await serviceMethod.common("post", `escalation/notes/${data.escalationId}`, null, data.data).then((response) => {
-    // commit('addEscalationNote', response.data.data)
-    console.log(response);
-    commit('loadingStatus', false)
-    status = true
-  }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
-    if (error.response.status === 422) {
-      commit('errorMsg', error.response.data)
-    } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
-    } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
-    }
-    commit('loadingStatus', false)
-  })
-  return status
-}
-
-
-export const addEscalationVital = async ({commit}, data) => {
-  let status = false
-  commit('loadingStatus', true)
-  await serviceMethod.common("post", `escalation/vital/${data.escalationId}`, null, data.data).then((response) => {
-    // commit('addEscalationVital', response.data.data)
-    console.log(response);
-    commit('loadingStatus', false)
-    status = true
-  }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
-    if (error.response.status === 422) {
-      commit('errorMsg', error.response.data)
-    } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
-    } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
-    }
-    commit('loadingStatus', false)
-  })
-
-  return status
-}
-
-export const addEscalationCarePlan = async ({commit}, data) => {
-  let status = false
-  commit('loadingStatus', true)
-  await serviceMethod.common("post", `escalation/carePlan/${data.escalationId}`, null, data.data).then((response) => {
-    // commit('addEscalationCarePlan', response.data.data)
-    console.log(response);
-    commit('loadingStatus', false)
-    status = true
-  }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
-    if (error.response.status === 422) {
-      commit('errorMsg', error.response.data)
-    } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
-    } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
-    }
-    commit('loadingStatus', false)
-  })
-  return status
-}
-
-export const addEscalationFlag = async ({commit}, data) => {
-  let status = false
-  commit('loadingStatus', true)
-  await serviceMethod.common("post", `escalation/flag/${data.escalationId}`, null, data.data).then((response) => {
-    // commit('addEscalationFlag', response.data.data)
-    console.log(response);
-    commit('loadingStatus', false)
-    status = true
-  }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
-    if (error.response.status === 422) {
-      commit('errorMsg', error.response.data)
-    } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
-    } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
-    }
-    commit('loadingStatus', false)
-  })
-
   return status
 }
 
@@ -1930,4 +1840,53 @@ export const singleEscalationRecord = async ({commit}, id) => {
     }
     commit('loadingStatus', false)
   }
+}
+
+
+
+export const addEscalationDetails = async ({commit}, data) => {
+  let status = false
+  try{
+    commit('loadingStatus', true)
+    if(data.escalationDetails.notesId.length > 0 && data.escalationId){
+      let response = await serviceMethod.common("post", `escalation/notes/${data.escalationId}`, null,{
+        notesId: data.escalationDetails.notesId,escalationType: 260
+      })
+      response?status=true:status=false
+    }
+
+    if(data.escalationDetails.vitalId.length > 0 && data.escalationId){
+      let response = await serviceMethod.common("post", `escalation/vital/${data.escalationId}`, null,{
+        vitalId: data.escalationDetails.vitalId,escalationType: 259
+      })
+      response?status=true:status=false
+    }
+
+    if(data.escalationDetails.carePlan.length > 0 && data.escalationId){
+      let response = await serviceMethod.common("post", `escalation/carePlan/${data.escalationId}`, null,{
+        carePlan: data.escalationDetails.carePlan,escalationType: 262
+      })
+      response?status=true:status=false
+    }
+
+    if(data.escalationDetails.flagIds.length > 0 && data.escalationId){
+      let response = await serviceMethod.common("post", `escalation/flag/${data.escalationId}`, null,{
+        flagIds: data.escalationDetails.flagIds,escalationType: 261
+      })
+      response?status=true:status=false
+    }
+  }
+  catch(error){
+    errorLogWithDeviceInfo(error.response)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      errorSwal(error.response.data.message)
+    }
+    commit('loadingStatus', false)
+  }
+
+  return status
 }

@@ -14,7 +14,7 @@
             <ExportToExcel @click="exportExcel('task_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions, 118)" />
         </div>
     </a-col>
-    <TaskTable @is-Edit="editTask($event)"></TaskTable>
+    <TaskTable @is-Edit="editTask($event)" :tasksListColumns="tasksListColumns"></TaskTable>
 </a-row>
 <TableLoader />
 </template>
@@ -28,6 +28,105 @@ import TableLoader from "@/components/loader/TableLoader";
 import { arrayToObjact,exportExcel,timeStampFormate,globalDateFormat } from "@/commonMethods/commonMethod";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 import { useRoute, useRouter } from 'vue-router';
+const tasksListColumns=[
+		{
+			title: 'Task Name',
+			dataIndex: 'title',
+			sorter: true,
+			slots: {
+				customRender: 'taskName'
+			}
+			// filters: [
+			//   {
+			//     text: "Task 1",
+			//     value: "task 1",
+			//   },
+			//   {
+			//     text: "Task 2",
+			//     value: "task 2",
+			//   },
+			// ],
+			// onFilter: (value, record) => record.taskName.indexOf(value) === 0,
+		},
+		{
+			title: 'Task Status ',
+			dataIndex: 'taskStatus',
+			sorter: true,
+			slots: {
+				customRender: 'status'
+			}
+		},
+		{
+			title: 'Priority ',
+			dataIndex: 'priority',
+			sorter: true
+			//   filters: [
+			//     {
+			//       text: "High",
+			//       value: "high",
+			//     },
+			//     {
+			//       text: "Normal",
+			//       value: "normal",
+			//     },
+			//     {
+			//       text: "Urgent",
+			//       value: "urgent",
+			//     },
+			//   ],
+			//   onFilter: (value, record) => record.status.indexOf(value) === 0,
+		},
+		{
+			title: 'Category',
+			dataIndex: 'category',
+			sorter: true,
+			slots: {
+				customRender: 'category'
+			}
+		},
+		
+		{
+			title: 'Due Date ',
+			dataIndex: 'dueDate',
+			sorter: true
+			//   filters: [
+			//     {
+			//       text: "Dec 24, 2021",
+			//       value: "Dec 24, 2021",
+			//     },
+			//     {
+			//       text: "Dec 28, 2021",
+			//       value: "Dec 28, 2021",
+			//     },
+			//   ],
+			//   onFilter: (value, record) => record.dueDate.indexOf(value) === 0,
+		},
+		{
+			title: 'Assigned By',
+			dataIndex: 'assignedBy',
+			// filters: [
+			//   {
+			//     text: "John",
+			//     value: "John",
+			//   },
+			//   {
+			//     text: "	Devin",
+			//     value: "	Devin",
+			//   },
+			// ],
+			slots: {
+				customRender: 'assigned'
+			}
+			// onFilter: (value, record) => record.assignedBy.indexOf(value) === 0,
+		},
+		{
+			title: 'Actions',
+			dataIndex: 'actions',
+			slots: {
+				customRender: 'action'
+			}
+		}
+	];
 export default {
     components: {
         SearchField,
@@ -41,8 +140,10 @@ export default {
         const store = useStore();
         const router = useRouter()
         const route = useRoute()
+        const toDate = ref('')
         onMounted(() => {
             if (route.query.filter || route.query.fromDate) {
+                toDate.value = route.query.toDate
                 let filter= route.query.filter ? route.query.filter : ''
                 let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate=" 
                 store.dispatch("tasksList", "?filter=" + filter + date);
@@ -93,13 +194,14 @@ export default {
                      setTimeout(() => {
                         router.replace({
                             query: {  
-                            fromDate: route.query.fromDate,
-                            toDate: route.query.todate,
                             view: 'list',
+                            toDate: toDate.value,
+                            fromDate: route.query.fromDate,
+                            
 
                             }
                         })
-                    }, 1000)
+                    }, 2000)
                 } else {
                     router.replace({
                         query: {view: 'list',}
@@ -115,9 +217,9 @@ export default {
                     setTimeout(()=>{
                         router.replace({
                         query: {
-                            
-                            filter: route.query.filter,
                             view: 'list',
+                            filter: route.query.filter,
+                            
                         }
                     },5000)
                     })
@@ -144,7 +246,8 @@ export default {
             remove,
             route,
             timeStampFormate,
-            globalDateFormat
+            globalDateFormat,
+            tasksListColumns
 
         };
     },

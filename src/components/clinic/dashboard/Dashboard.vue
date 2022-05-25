@@ -23,9 +23,9 @@
             <ApexChart title="Escalations" type="bar" :height="350" :options="escalationCount.code" :series="escalationCount.value" linkTo="Escalation" :data="escalationRecord"></ApexChart>
         </a-col>
          <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && escalationList">
-             <a-card  title="Escalations List" class="common-card" style="height:436px">
+             <a-card  title="Escalations List" class="common-card" >
                  <template #extra><router-link :to="{name:'Escalation'}">View All</router-link></template>
-            <EscaltionTable :columnData="columnData" :escalationList="escalationList"  @showEscalationData="showEscalationData($event)" :height="310"/>
+            <EscaltionTable :columnData="columnData" :escalationList="escalationList"  @showEscalationData="showEscalationData($event)" :height="286"/>
              </a-card>
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  clicalTask">
@@ -34,7 +34,7 @@
          <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) && tasksList">
              <a-card  title="My Tasks List" class="common-card" style="height:436px">
                  <template #extra v-if="tasksList.length > 6"><router-link :to="{name:'TimeLogReport'}">View All</router-link></template>
-            <TaskTable @is-Edit="editTask($event)" :height="285"></TaskTable>
+            <TaskTable @is-Edit="editTask($event)" :height="285" :tasksListColumns="tasksListColumns"></TaskTable>
              </a-card>
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && patientsFlag">
@@ -65,7 +65,7 @@
   import TasksModal from "@/components/modals/TasksModal";
   const columnData = [
   {
-    title: "Patient Name",
+    title: "Name",
     dataIndex: "patientName",
     sorter: true,
     slots: {
@@ -76,6 +76,7 @@
     title: "Escalation Type",
     dataIndex: "escalationType",
     sorter: true,
+    
     slots: {
       customRender: "escalationType",
     },
@@ -83,11 +84,13 @@
   {
     title: "Due Date",
     dataIndex: "dueBy",
+    width: '17%',
     sorter: true,
   },
   {
     title: "Flag",
     dataIndex: "flag",
+    width: '12%',
     slots: {
       customRender: "flag",
     },
@@ -95,12 +98,97 @@
   {
     title: "Action",
     dataIndex: "action",
+    width: '12%',
     slots: {
+        
       customRender: "action",
     },
   },
 ];
-
+const tasksListColumns=[
+		{
+			title: 'Task Name',
+			dataIndex: 'title',
+			sorter: true,
+			slots: {
+				customRender: 'taskName'
+			}
+			// filters: [
+			//   {
+			//     text: "Task 1",
+			//     value: "task 1",
+			//   },
+			//   {
+			//     text: "Task 2",
+			//     value: "task 2",
+			//   },
+			// ],
+			// onFilter: (value, record) => record.taskName.indexOf(value) === 0,
+		},
+		// {
+		// 	title: 'Task Status ',
+		// 	dataIndex: 'taskStatus',
+		// 	sorter: true,
+		// 	slots: {
+		// 		customRender: 'status'
+		// 	}
+		// },
+		{
+			title: 'Priority ',
+			dataIndex: 'priority',
+			sorter: true
+			//   filters: [
+			//     {
+			//       text: "High",
+			//       value: "high",
+			//     },
+			//     {
+			//       text: "Normal",
+			//       value: "normal",
+			//     },
+			//     {
+			//       text: "Urgent",
+			//       value: "urgent",
+			//     },
+			//   ],
+			//   onFilter: (value, record) => record.status.indexOf(value) === 0,
+		},
+		{
+			title: 'Category',
+			dataIndex: 'category',
+			sorter: true,
+			slots: {
+				customRender: 'category'
+			}
+		},
+		
+		{
+			title: 'Due Date ',
+			dataIndex: 'dueDate',
+			sorter: true
+			//   filters: [
+			//     {
+			//       text: "Dec 24, 2021",
+			//       value: "Dec 24, 2021",
+			//     },
+			//     {
+			//       text: "Dec 28, 2021",
+			//       value: "Dec 28, 2021",
+			//     },
+			//   ],
+			//   onFilter: (value, record) => record.dueDate.indexOf(value) === 0,
+		},
+		// {
+		// 	title: 'Assigned By',
+		// 	dataIndex: 'assignedBy',
+			
+		// 	slots: {
+		// 		customRender: 'assigned'
+		// 	}
+	
+		// },
+		
+	];
 export default {
     components: {
         Card,
@@ -126,7 +214,7 @@ export default {
       escaltionModal.value = true;
     };
      const showEscalationData = (value) => {
-      console.log("testValue", value);
+      
       escaltionViewModal.value = value;
     };
         function apiCall(data) {
@@ -174,7 +262,7 @@ export default {
             store.dispatch("callStatus", dateFormate)
             store.dispatch("patientsFlag", dateFormate)
              
-                store.dispatch("tasksList", "?fromDate=" + dateFormate.fromDate + "&toDate=" + dateFormate.toDate);
+                store.dispatch("tasksList", "?fromDate=" + dateFormate.fromDate + "&toDate=" + dateFormate.toDate+'&status=notIn');
             store.dispatch("appointmentCount", dateFormate)
             store.dispatch("escalationCount", dateFormate)
             store.dispatch("escalation")
@@ -244,6 +332,7 @@ const editTask = (id) => {
             escaltionModal,
             showEscalationData,
             tasksList:store.getters.tasksList,
+            tasksListColumns
         };
     },
 };
