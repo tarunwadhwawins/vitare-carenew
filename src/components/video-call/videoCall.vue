@@ -22,6 +22,9 @@
                 <div class="videoCall">
                   <video id="videoCallLoader" ref="videoCall"></video>
                 </div>
+                <div class="footer">
+                  <a-button class="endCall" :size="size" block @click="hangUp()">End Call</a-button>
+                </div>
               </div>
               
             <ChatRightPanel v-if="patientId" :idPatient="patientId" :currentUrl="currentUrl" />
