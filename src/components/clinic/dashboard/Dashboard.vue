@@ -262,7 +262,7 @@ export default {
             store.dispatch("callStatus", dateFormate)
             store.dispatch("patientsFlag", dateFormate)
              
-                store.dispatch("tasksList", "?fromDate=" + dateFormate.fromDate + "&toDate=" + dateFormate.toDate);
+                store.dispatch("tasksList", "?fromDate=" + dateFormate.fromDate + "&toDate=" + dateFormate.toDate+'&status=notIn');
             store.dispatch("appointmentCount", dateFormate)
             store.dispatch("escalationCount", dateFormate)
             store.dispatch("escalation")
