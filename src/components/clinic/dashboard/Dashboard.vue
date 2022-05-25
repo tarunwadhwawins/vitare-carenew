@@ -24,7 +24,7 @@
         </a-col>
          <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && escalationList">
              <a-card  title="Escalations List" class="common-card" >
-                 <template #extra><router-link :to="{name:'Escalation'}">View All</router-link></template>
+                 <template #extra v-if="escalationList.length > 0"><router-link :to="{name:'Escalation'}">View All</router-link></template>
             <EscaltionTable :columnData="columnData" :escalationList="escalationList"  @showEscalationData="showEscalationData($event)" :height="286"/>
              </a-card>
         </a-col>
@@ -33,7 +33,7 @@
         </a-col>
          <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) && tasksList">
              <a-card  title="My Tasks List" class="common-card" style="height:436px">
-                 <template #extra v-if="tasksList.length > 6"><router-link :to="{name:'TimeLogReport'}">View All</router-link></template>
+                 <template #extra v-if="tasksList.length > 0"><router-link :to="{name:'TimeLogReport'}">View All</router-link></template>
             <TaskTable @is-Edit="editTask($event)" :height="285" :tasksListColumns="tasksListColumns"></TaskTable>
              </a-card>
         </a-col>
