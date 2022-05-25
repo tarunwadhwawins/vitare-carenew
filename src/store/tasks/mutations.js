@@ -3,6 +3,7 @@ import moment from 'moment';
 export const task = async (state, tasks) => {
 	state.tasksList = tasks.data.map((element) => {
 		element.dueDate = dateOnlyFormat(element.dueDate);
+		element.startDate = dateOnlyFormat(element.startDate);
 		element.category = element.category.map((item) => item.taskCategory);
 		return element;
 	});

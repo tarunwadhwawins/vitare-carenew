@@ -2,7 +2,7 @@
 <template>
 
 <a-modal width="1000px" :title="taskId?'Edit Task':$t('tasks.tasksModal.addTask')" :footer="false" :maskClosable="false" @cancel="closeModal()" centered>
-  {{taskId}}
+ {{taskId}}
     <a-form :model="taskForm" ref="formRef" autocomplete="off" layout="vertical" @finish="submitForm" @finishFailed="taskFormFailed">
         <a-row :gutter="24">
             <a-col :span="24">
@@ -33,7 +33,8 @@
                     </a-form-item>
                 </div>
             </a-col>
-            <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="taskId==null">
+           
+            <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="!taskId">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.to')" name="to">
                         <div class="btn toggleButton" :class="toggleTo ? 'active' : ''" @click="buttonToggle()">
@@ -135,7 +136,7 @@ export default defineComponent({
     const staffData = ref([]);
     const patientData = ref([]);
     const idPatient = reactive(props.patientId);
-    const isPatientTask = idPatient != null ? true : false;
+    const isPatientTask = props.patientId  ? true : false;
     const closeValue = ref(false);
     const taskForm = reactive({
       title: "",
@@ -158,7 +159,7 @@ const form = reactive({
 
     const submitForm = () => {
       closeValue.value = true;
-      if (props.taskId != null) {
+      if (props.taskId) {
         store
           .dispatch("updateTask", {
             data: {
@@ -259,8 +260,8 @@ const form = reactive({
 
     watchEffect(() => {
       store.dispatch("allStaffList");
-      if (tasks.value.editTask) {
-        console.log("dsfs")
+      if (tasks.value.editTask&&props.taskId) {
+      
         Object.assign(taskForm, tasks.value.editTask);
         toggleTo.value = taskForm.entityType == "staff" ? false : true;
       }
