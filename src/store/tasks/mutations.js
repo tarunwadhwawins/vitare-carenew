@@ -63,7 +63,7 @@ export const task = async (state, tasks) => {
 				customRender: 'category'
 			}
 		},
-		
+
 		{
 			title: 'Due Date ',
 			dataIndex: 'dueDate',
@@ -390,17 +390,21 @@ export const addTask = async (state, result) => {
 
 export const editTask = async (state, result) => {
 	state.editTask = result;
+	state.editTask.taskStatusName = result.taskStatus;
+	state.editTask.priorityName = result.priority;
 	state.editTask.assignedTo.forEach((item) => {
 		state.editTask.entityType = item.entityType;
 	});
 	state.editTask.assignedName = state.editTask.assignedTo.map((item) => item.name);
 	state.editTask.assignedTo = state.editTask.assignedTo.map((item) => item.id);
-
+	state.editTask.dateDue = dateOnlyFormat(result.dueDate);
+	state.editTask.dateStart = dateOnlyFormat(result.startDate);
 	state.editTask.taskCategory = state.editTask.category.map((item) => item.id);
 	state.editTask.dueDate = dateOnlyFormatSImple(state.editTask.dueDate);
 	state.editTask.startDate = dateOnlyFormatSImple(state.editTask.startDate);
-	(state.editTask.priority = state.editTask.priorityId), (state.editTask.taskStatus = state.editTask.taskStatusId);
+	(state.editTask.priority = result.priorityId), (state.editTask.taskStatus = state.editTask.taskStatusId);
 
+	state.editTask.categories = result.category.map((item) => item.taskCategory);
 	// state.editTask.taskCategory = JSON.parse(state.editTask.taskCategory)
 	state.editTask;
 };
