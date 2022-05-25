@@ -37,7 +37,7 @@
     </div>
 </a-row>
 <a-row>
-    
+
     <a-col :span="12">
         <SearchField endPoint="patient" v-if="arrayToObjact(screensPermissions, 65)" />
     </a-col>
@@ -99,9 +99,9 @@ export default {
             store.getters.patientsRecord.patientList = ""
             store.dispatch("programList");
             if (route.query.filter || route.query.fromDate) {
-                let filter= route.query.filter ? route.query.filter : ''
-                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate=" 
-                store.dispatch("patients", "?filter=" + filter + date )
+                let filter = route.query.filter ? route.query.filter : ''
+                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
+                store.dispatch("patients", "?filter=" + filter + date)
             } else {
                 store.dispatch("patients");
             }
@@ -131,25 +131,24 @@ export default {
         function remove(event) {
             if (event == "filter") {
                 if (route.query.fromDate && route.query.toDate) {
-                    
+
                     store.dispatch("patients", "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
-             setTimeout(()=>{
-router.replace({    
-                        query: {
-                           
-                            fromDate: route.query.fromDate,
-                            toDate: route.query.toDate,
-                           
-                        }
-                    })
-                   },1000)
+                    setTimeout(() => {
+                        router.replace({
+                            query: {
+
+                                fromDate: route.query.fromDate,
+                                toDate: route.query.toDate,
+
+                            }
+                        })
+                    }, 1000)
                 } else {
                     router.replace({
                         query: {}
                     })
                     store.dispatch("patients")
                 }
-                       
 
             } else {
 

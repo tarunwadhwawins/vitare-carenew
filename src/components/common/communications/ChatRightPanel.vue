@@ -1,6 +1,6 @@
 <template>
   <div class="callRightWrapper chatBoxRight">
-    <span v-if="!isChat" class="dragImg" @mousedown="resize($event)"  @touchstart="resize($event)"><img src="@/assets/images/drag.png" alt="" /></span>
+    <span class="dragImg" @mousedown="resize($event)"  @touchstart="resize($event)"><img src="@/assets/images/drag.png" alt="" /></span>
     <div class="header">
       <a-row>
         <a-col :span="12">
@@ -14,7 +14,15 @@
             <PatientVitalsIcon :isBold="patientVitalsVisible" @onClick="showVitalsModal" :patientId="patientUdid" />
             <PatientAppointmentsIcon :isBold="patientAppointmentsVisible" @onClick="showAppointments" :patientId="patientUdid" />
             <PinIcon @onClick="addPin" />
-            <StartCall :patientId="patientUdid" />
+            <StartCall v-if="isChat" :patientId="patientUdid" />
+            <a-col :span="8" v-if="currentUrl && !isChat">
+              <div class="moreAction" @click="copyURL(currentUrl)">
+                <div class="moreActionImg purpleBgColor">
+                  <CopyFilled />
+                </div>
+                <p>Copy Url</p>
+              </div>
+            </a-col>
           </a-row>
         </a-col>
       </a-row>
@@ -47,7 +55,6 @@ import {
   watchEffect,
   reactive,
   ref,
-  onUnmounted,
   computed,
   toRefs,
 } from "vue"
@@ -56,9 +63,7 @@ import {
 } from "vuex"
 import {
   dateFormat,
-  timeStamp,
 } from "@/commonMethods/commonMethod"
-import moment from "moment"
 import NotesDetail from "@/components/video-call/table/NotesDetail"
 import DocumentDetail from "@/components/video-call/table/DocumentDetail"
 import AppointmentsTable from "@/components/communications/tables/AppointmentsTable"
@@ -71,6 +76,8 @@ import PatientVitalsIcon from "@/components/common/PatientVitalsIcon"
 import PatientAppointmentsIcon from "@/components/common/PatientAppointmentsIcon"
 import PinIcon from "@/components/common/PinIcon"
 import StartCall from "@/components/common/StartCall"
+import { message } from "ant-design-vue";
+import { CopyFilled } from "@ant-design/icons-vue";
 
 export default {
   components: {
@@ -89,6 +96,7 @@ export default {
     PatientVitalsGrid,
     Pins,
     AddPin,
+    CopyFilled,
   },
   props: {
     communication: {
@@ -99,6 +107,9 @@ export default {
     },
     isChat: {
       type: Boolean
+    },
+    currentUrl: {
+      type: String
     },
   },
   setup(props) {
@@ -114,7 +125,7 @@ export default {
     const addPinModalVisible = ref(false)
     var patientUdid =  reactive(props.idPatient)
     const patientId =  ref(null)
-    const communications = reactive(props.communication)
+    const communications = props.communication ? reactive(props.communication) : null
     const isCommunicationWithPatient = ref(false)
     const tabvalue = reactive({
       tab: [],
@@ -167,12 +178,6 @@ export default {
 
     const scroll = ref()
     const auth = JSON.parse(localStorage.getItem("auth"))
-    let interval = setInterval(() => {
-      store.dispatch("conversation", props.communication.id)
-      getScroll()
-    }, 2000)
-    
-    const tableContent = ref(null)
     
     watchEffect(() => {
       store.state.communications.conversationList = ""
@@ -180,12 +185,12 @@ export default {
       setTimeout(() => {
         store.commit('loadingStatus', false)
       }, 3000)
-      if(communications.is_sender_patient) {
+      if(communications && communications.is_sender_patient) {
         patientUdid = communications.fromId
         patientId.value = communications.senderId
         isCommunicationWithPatient.value = true
       }
-      else if(communications.is_receiver_patient) {
+      else if(communications && communications.is_receiver_patient) {
         patientUdid = communications.toId
         patientId.value = communications.receiverId
         isCommunicationWithPatient.value = true
@@ -197,59 +202,50 @@ export default {
       if(isCommunicationWithPatient.value) {
         store.dispatch("timeLineType")
       }
-
-      store.dispatch("conversation", props.communication.id)
-      tableContent.value = document.getElementsByClassName('chatBoxInner')
-      getScroll()
-      localStorage.setItem('patientUdid', patientUdid)
     })
 
-    function getScroll() {
-      setTimeout(() => {
-        if((tableContent.value[0].scrollTop < tableContent.value[0].scrollHeight+10) == true) {
-          tableContent.value[0].scrollTop = tableContent.value[0].scrollHeight+10
-        }
-      }, 2000)
-    }
     const list = store.getters.communicationRecord.value
-
-    function sendMsg() {
-      if (formValue.msgSend) {
-        list.conversationList.push({
-          conversationId: props.communication.id,
-          senderId: auth.user.id,
-          message: formValue.msgSend,
-          type: "text",
-          isRead: 0,
-          createdAt: timeStamp(moment())
-        })
-        store.dispatch("conversationSend", {
-          conversationId: props.communication.id,
-          message: formValue.msgSend,
-          type: "text",
-        })
-        formValue.msgSend = ''
-      }
-      getScroll()
-    }
 
     function closeModal() {
       store.state.communications.conversationList = ""
-      clearInterval(interval)
       addPinModalVisible.value = false
     }
-
-    onUnmounted(() => {
-      clearInterval(interval)
-    })
 
     const patientPins = computed(() => {
       return store.state.patients.patientCriticalNotes
     })
 
+    async function copyURL(url) {
+      try {
+        await navigator.clipboard.writeText(url);
+        message.success("Copied");
+      } catch ($e) {
+        message.error("Cannot copy");
+      }
+    }
+
+    function resize() {
+      window.addEventListener("mousemove", resizeDiv);
+      window.addEventListener("touchmove", resizeDiv);
+    }
+    function resizeDiv(e) {
+      let video_width = ((e.clientX - 50) / document.body.clientWidth) * 100;
+      document.getElementById("videoDiv").style.width = video_width + "%";
+    }
+    window.addEventListener("mouseup", (e) => {
+      console.log(e);
+      window.removeEventListener("mousemove", resizeDiv);
+    });
+      window.addEventListener("touchend", (e) => {
+      console.log(e);
+      window.addEventListener("touchmove", resizeDiv);
+    });
+
     return {
+      resize,
+      resizeDiv,
+      copyURL,
       list,
-      sendMsg,
       formValue,
       dateFormat,
       closeModal,
@@ -291,7 +287,7 @@ export default {
 .callButton {
   margin-bottom: 20px;
 }
-.anticon-calendar, .anticon-pushpin, .anticon-phone {
+.anticon {
   color: #ffffff;
   font-size: 16px !important;
   position: relative !important;

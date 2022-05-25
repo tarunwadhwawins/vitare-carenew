@@ -97,6 +97,11 @@ export default {
       flag: "d76ad323-cd1b-4bcf-ae3d-2300daa1ea17",
       note: "Call",
     });
+
+    const conferenceId = computed(() => {
+      return store.state.videoCall.conferenceId;
+    });
+    
     const dropdownData = computed(() => {
       return store.state.appointment;
     });
@@ -161,10 +166,6 @@ export default {
     const handlePatientChange = (val) => {
       startCall.patientId = val;
     };
-
-    const conferenceId = computed(() => {
-      return store.state.videoCall.conferenceId;
-    });
     const checkChangeInput = () => {
       isChangeInput.value = true;
     };

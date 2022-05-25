@@ -65,7 +65,7 @@ export default {
                     router.push({
                         name: props.linkTo,
                        
-                        query:{fromDate:store.getters.dateFilter.value.fromDate,toDate:store.getters.dateFilter.value.toDate,filter:filter,view:props.listView}
+                        query:{view:props.listView,fromDate:store.getters.dateFilter.value.fromDate,toDate:store.getters.dateFilter.value.toDate,filter:filter}
 
                     })
                     }else{

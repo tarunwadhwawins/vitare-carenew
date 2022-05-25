@@ -22,142 +22,12 @@
                 <div class="videoCall">
                   <video id="videoCallLoader" ref="videoCall"></video>
                 </div>
-              </div>
-              <div class="callRightWrapper" id="detailDiv">
-                <span class="dragImg" @mousedown="resize($event)"  @touchstart="resize($event)"><img src="@/assets/images/drag.png" alt="" /></span>
-                <a-row>
-                  <a-col :span="12">
-                    <div class="header" v-if="acceptVideoCallDetails">
-                      <PatientInfoTop :patientDetails="patientDetails" :hideEditIcon="profile" />
-                    </div>
-                    <div class="header" v-else-if="getVideoDetails">
-                      <PatientInfoTop :patientDetails="patientDetails" :hideEditIcon="profile" />
-                    </div>
-                  </a-col>
-                  <a-col :span="12">
-                    <a-row>
-                      <a-col :span="8" :class="timelineDetailVisible == true ? 'bold' : ''">
-                        <div class="moreAction" @click="showTimelineModal">
-                          <div class="moreActionImg four">
-                            <img src="../../assets/images/edit.svg" />
-                          </div>
-                          <p>Timeline View</p>
-                        </div>
-                      </a-col>
-                      <a-col :span="8" :class="notesDetailVisible == true ? 'bold' : ''">
-                        <div class="moreAction" @click="showNotesModal">
-                          <div class="moreActionImg four">
-                            <img src="../../assets/images/edit.svg" />
-                          </div>
-                          <p>Notes</p>
-                        </div>
-                      </a-col>
-                      <a-col :span="8" :class="documentDetailVisible == true ? 'bold' : ''">
-                        <div class="moreAction" @click="showDocumentsModal">
-                          <div class="moreActionImg green">
-                            <img src="../../assets/images/report.svg" />
-                          </div>
-                          <p>Document</p>
-                        </div>
-                      </a-col>
-
-                      <a-col :span="8" @click="showVitalssModal" :class="patientVitalsVisible == true ? 'bold' : ''">
-                        <div class="moreAction">
-                          <div class="moreActionImg redBgColor">
-                            <img src="../../assets/images/wave.svg" />
-                          </div>
-                          <p>Vital</p>
-                        </div>
-                      </a-col>
-                      <a-col :span="8" v-if="currentUrl">
-                        <div class="moreAction" @click="copyURL(currentUrl)">
-                          <div class="moreActionImg purpleBgColor">
-                            <CopyFilled />
-                          </div>
-                          <p>Copy Url</p>
-                        </div>
-                      </a-col>
-                    </a-row>
-                  </a-col>
-                </a-row>
-                <div class="body">
-                  <a-row>
-                    <a-col :sm="24" :xs="24" v-if="timelineDetailVisible == true">
-                      <div class="thumbDesc patientTimeline">
-                        <a-checkbox-group v-model:value="tab" @change="chnageTab()">
-                          <a-checkbox v-for="timeline in timeLineType" :key="timeline.id" :value="timeline.id">{{
-                            timeline.name }}</a-checkbox>
-                        </a-checkbox-group>
-                        <a-timeline class="defaultTimeline">
-                          <TableLoader />
-                          <template v-for="timeline in patientTimeline" :key="timeline.id">
-                            <a-timeline-item color="blue">
-                              <template #dot>
-                                <BellOutlined class="yellowIcon" v-if="timeline.type == 1" />
-                                <ClockCircleOutlined class="orangeIcon" v-if="timeline.type == 2" />
-                                <HeatMapOutlined class="brownIcon" v-if="timeline.type == 3" />
-                                <FolderOpenOutlined class="mustardIcon" v-if="timeline.type == 4" />
-                                <FilePdfOutlined class="tealIcon" v-if="timeline.type == 5" />
-                                <FileTextOutlined class="blueIcon" v-if="timeline.type == 6" />
-                                <FlagOutlined class="redIcon" v-if="timeline.type == 7" />
-                                <PushpinOutlined class="greenIcon" v-if="timeline.type == 8" />
-                              </template>
-                              <div class="timelineInner">
-                                <div class="timelineHeader">
-                                  <div class="title">
-                                    <h4>{{ timeline.heading }}</h4>
-                                    <span class="time">{{
-                                      moment(
-                                      dateFormat(timeline.createdAt)
-                                      ).format("DD-MM-YYYY") ===
-                                      moment().format("DD-MM-YYYY")
-                                      ? moment(
-                                      dateFormat(timeline.createdAt)
-                                      ).format("hh:mm A")
-                                      : moment(
-                                      dateFormat(timeline.createdAt)
-                                      ).format("MMM DD,yyyy hh:mm A")
-                                      }}</span>
-                                  </div>
-                                  <div class="userImg">
-                                    <img v-if="timeline.profileImage" :src="timeline.profileImage" alt="image" />
-                                  </div>
-                                </div>
-                                <div class="timelineBody">
-                                  <div class="content">
-                                    <p class="timeline-float timeline-title">
-                                      <span v-html="timeline.title"></span>
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </a-timeline-item>
-                          </template>
-                        </a-timeline>
-                      </div>
-                    </a-col>
-
-                    <NotesDetail v-if="notesDetailVisible == true" :pId="
-                        getVideoDetails
-                          ? getVideoDetails.patientDetailed.id
-                          : acceptVideoCallDetails.patient.id
-                      " />
-                    <DocumentDetail v-if="documentDetailVisible == true" :patientDetails="
-                        getVideoDetails
-                          ? getVideoDetails.patientDetailed
-                          : acceptVideoCallDetails.patient
-                      " />
-                    <PatientVitalsDetails v-if="patientVitalsVisible == true" :patientId="
-                        getVideoDetails
-                          ? getVideoDetails.patientDetailed.id
-                          : acceptVideoCallDetails.patient.id
-                      " />
-                  </a-row>
-                </div>
                 <div class="footer">
                   <a-button class="endCall" :size="size" block @click="hangUp()">End Call</a-button>
                 </div>
               </div>
+              
+              <ChatRightPanel v-if="patientId" :idPatient="patientId" :currentUrl="currentUrl" />
             </div>
           </div>
           <Loader />
@@ -178,52 +48,57 @@
     watchEffect,
     onUnmounted,
   } from "vue";
+  // import {
+  //   FolderOpenOutlined,
+  //   FilePdfOutlined,
+  //   BellOutlined,
+  //   HeatMapOutlined,
+  //   ClockCircleOutlined,
+  //   FileTextOutlined,
+  //   PushpinOutlined,
+  //   FlagOutlined,
+  // } from "@ant-design/icons-vue";
   import {
-    FolderOpenOutlined,
-    FilePdfOutlined,
-    BellOutlined,
-    HeatMapOutlined,
-    ClockCircleOutlined,
-    FileTextOutlined,
-    PushpinOutlined,
-    FlagOutlined,
-  } from "@ant-design/icons-vue";
-  import { useRoute, useRouter } from "vue-router";
+    useRoute,
+    // useRouter
+  } from "vue-router";
   import { useStore } from "vuex";
   import Loader from "@/components/loader/VideoLoader";
   import { Web } from "@/assets/js/sip-0.20.0";
   import { notification } from "ant-design-vue";
-  import NotesDetail from "@/components/video-call/table/NotesDetail";
-  import DocumentDetail from "@/components/video-call/table/DocumentDetail";
-  import PatientVitalsDetails from "@/components/video-call/table/PatientVitalsDetails";
+  // import NotesDetail from "@/components/video-call/table/NotesDetail";
+  // import DocumentDetail from "@/components/video-call/table/DocumentDetail";
+  // import PatientVitalsDetails from "@/components/video-call/table/PatientVitalsDetails";
   import {
     successSwal,
     deCodeString,
     dateFormat,
   } from "@/commonMethods/commonMethod";
-  import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
-  import { CopyFilled } from "@ant-design/icons-vue";
+  // import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
+  // import { CopyFilled } from "@ant-design/icons-vue";
   import { message } from "ant-design-vue";
   import moment from "moment";
+  import ChatRightPanel from "@/components/common/communications/ChatRightPanel"
 
   export default {
     components: {
-      CopyFilled,
+      // CopyFilled,
       Header,
       Sidebar,
       Loader,
-      NotesDetail,
-      DocumentDetail,
-      PatientVitalsDetails,
-      FolderOpenOutlined,
-      FilePdfOutlined,
-      BellOutlined,
-      HeatMapOutlined,
-      ClockCircleOutlined,
-      FileTextOutlined,
-      PushpinOutlined,
-      FlagOutlined,
-      PatientInfoTop,
+      // NotesDetail,
+      // DocumentDetail,
+      // PatientVitalsDetails,
+      // FolderOpenOutlined,
+      // FilePdfOutlined,
+      // BellOutlined,
+      // HeatMapOutlined,
+      // ClockCircleOutlined,
+      // FileTextOutlined,
+      // PushpinOutlined,
+      // FlagOutlined,
+      // PatientInfoTop,
+      ChatRightPanel,
     },
 
     setup() {
@@ -238,7 +113,7 @@
       const decodedUrl = ref();
       const visibleDrawer = ref(false);
       const route = useRoute();
-      const router = useRouter();
+      // const router = useRouter();
       const profile = ref(false);
       const tabvalue = reactive({
         tab: [],
@@ -276,122 +151,101 @@
         profile.value = true;
         localStorage.setItem("barmenu", JSON.stringify(true));
         if (route.params.id) {
-          store
-            .dispatch("guestUser", {
-              conference: deCodeString(route.params.id),
-              name: authentication.value.loggedInUser.user.name,
-              email: authentication.value.loggedInUser.user.email,
-            })
-            .then(() => {
-              store.dispatch("getVideoDetails", deCodeString(route.params.id));
-              store.commit("videoLoadingStatus", true);
-              //accept videoCall code
-              // if (session.value) {
-              //   //  store.commit("loadingStatus", false);
-              //   session.value.options.media.remote = {
-              //     video: videoCall.value ? videoCall.value : <video></video>,
-              //   };
-              //   //getting upcoming call user details
-              //   upcomingCallDetails.user =
-              //     session.value.session.incomingInviteRequest.message.from.uri.raw.user;
-              //   store.dispatch(
-              //     "acceptVideoCallDetails",
-              //     upcomingCallDetails.user.substring(2)
-              //   );
-              //   session.value.answer();
-              // } //end accept video call
-
-              // //Start conference video call code
-              // else {
-                if (route.params.id) {
-                  // store.commit("loadingStatus", false);
-                  currentUrl.value = window.location.href;
-                  decodedUrl.value = deCodeString(route.params.id);
-                  let callNotification = 0;
-                  const key = `open${Date.now()}`;
-                  authentication.value.options = Web.SimpleUserOptions = {
-                    aor: `sip:${guestUser.value.guestUser.sipId}@${sipDomain}`,
-                    media: {
-                      constraints: {
-                        audio: true,
-                        video: true,
-                      },
-                      remote: {
-                        video: videoCall.value ? (
-                          videoCall.value
-                        ) : (
-                          <video></video>
-                        ),
-                      },
-                    },
-                    delegate: {
-                      onCallHangup: async () => {
-                        if (callNotification == 1) {
-                          notification.close(key);
-                        } else {
-                          store.state.videoCall.getVideoDetails = null;
-                          store.state.videoCall.acceptVideoCallDetails = null;
-                          //call end api
-                          store.dispatch("callNotification", {
-                            id: conferenceId.value,
-                            status: "end",
-                          });
-                          successSwal("Call Ended! Thank You");
-                          router.push("/dashboard");
-                        }
-                      },
-                    },
-                    userAgentOptions: {
-                      displayName: guestUser.value.guestUser.sipId,
-                      authorizationPassword: "123456",
-                      authorizationUsername: guestUser.value.guestUser.sipId,
-                      sessionDescriptionHandlerFactoryOptions: {
-                        peerConnectionOptions: {
-                          rtcConfiguration: {
-                            iceServers: [
-                              {
-                                urls: "stun:stun.xten.com",
-                              },
-                              {
-                                urls: "turn:numb.viagenie.ca",
-                                username: "mailto:webrtc@live.com",
-                                credential: "muazkh",
-                              },
-                            ],
-                          },
-                        },
-                      },
-                    },
-                  };
-
-                  // Construct a SimpleUser instance
-                  const simpleUser = new Web.SimpleUser(
-                    authentication.value.server,
-                    authentication.value.options
-                  );
-                  // Connect to server and place call
-                  simpleUser
-                    .connect()
-                    .then(() => {
-                      simpleUser.register().then(() => {
-                        //call start api/
-                        store.dispatch("callNotification", {
-                          id: decodedUrl.value,
-                          status: "start",
-                        });
-                        simpleUser.call(`sip:${decodedUrl.value}@${sipDomain}`);
-                        simpleUserHangup.value = simpleUser;
+          store.dispatch("guestUser", {
+            conference: deCodeString(route.params.id),
+            name: authentication.value.loggedInUser.user.name,
+            email: authentication.value.loggedInUser.user.email,
+          }).then(() => {
+            store.dispatch("getVideoDetails", deCodeString(route.params.id));
+            store.commit("videoLoadingStatus", true);
+            if (route.params.id) {
+              currentUrl.value = window.location.href;
+              decodedUrl.value = deCodeString(route.params.id);
+              let callNotification = 0;
+              const key = `open${Date.now()}`;
+              authentication.value.options = Web.SimpleUserOptions = {
+                aor: `sip:${guestUser.value.guestUser.sipId}@${sipDomain}`,
+                media: {
+                  constraints: {
+                    audio: true,
+                    video: true,
+                  },
+                  remote: {
+                    video: videoCall.value ? (
+                      videoCall.value
+                    ) : (
+                      <video></video>
+                    ),
+                  },
+                },
+                delegate: {
+                  onCallHangup: async () => {
+                    if (callNotification == 1) {
+                      notification.close(key);
+                    } else {
+                      store.state.videoCall.getVideoDetails = null;
+                      store.state.videoCall.acceptVideoCallDetails = null;
+                      //call end api
+                      store.dispatch("callNotification", {
+                        id: decodedUrl.value,
+                        status: "end",
                       });
-                    })
-                    .catch((error) => {
-                      console.log(error);
+                      successSwal("Call Ended! Thank You");
+                      // router.push("/dashboard");
+                    }
+                  },
+                },
+                userAgentOptions: {
+                  displayName: guestUser.value.guestUser.sipId,
+                  authorizationPassword: "123456",
+                  authorizationUsername: guestUser.value.guestUser.sipId,
+                  sessionDescriptionHandlerFactoryOptions: {
+                    peerConnectionOptions: {
+                      rtcConfiguration: {
+                        iceServers: [
+                          {
+                            urls: "stun:stun.xten.com",
+                          },
+                          {
+                            urls: "turn:numb.viagenie.ca",
+                            username: "mailto:webrtc@live.com",
+                            credential: "muazkh",
+                          },
+                        ],
+                      },
+                    },
+                  },
+                },
+              };
+
+              // Construct a SimpleUser instance
+              const simpleUser = new Web.SimpleUser(
+                authentication.value.server,
+                authentication.value.options
+              );
+              // Connect to server and place call
+              simpleUser
+                .connect()
+                .then(() => {
+                  simpleUser.register().then(() => {
+                    //call start api/
+                    store.dispatch("callNotification", {
+                      id: decodedUrl.value,
+                      status: "start",
                     });
-                  // }
-                } else {
-                  router.push("/dashboard");
-                }
-              //} //end conference video call
-            });
+                    simpleUser.call(`sip:${decodedUrl.value}@${sipDomain}`);
+                    simpleUserHangup.value = simpleUser;
+                  });
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }
+            else {
+              // router.push("/dashboard");
+            }
+          //} //end conference video call
+          });
         } else if (session.value) {
           //  store.commit("loadingStatus", false);
           session.value.options.media.remote = {
@@ -407,22 +261,7 @@
           session.value.answer();
         }
       });
-      function resize() {
-        window.addEventListener("mousemove", resizeDiv);
-        window.addEventListener("touchmove", resizeDiv);
-      }
-      function resizeDiv(e) {
-        let video_width = ((e.clientX - 50) / document.body.clientWidth) * 100;
-        document.getElementById("videoDiv").style.width = video_width + "%";
-      }
-      window.addEventListener("mouseup", (e) => {
-        console.log(e);
-        window.removeEventListener("mousemove", resizeDiv);
-      });
-       window.addEventListener("touchend", (e) => {
-        console.log(e);
-        window.addEventListener("touchmove", resizeDiv);
-      });
+      
       // Answer call
       function hangUp() {
         if (decodedUrl.value) {
@@ -433,11 +272,10 @@
             store.state.videoCall.acceptVideoCallDetails = null;
             store.state.videoCall.conferenceId = null;
             store.state.videoCall.guestUser = null;
-            // router.push("/dashboard");
           });
         } else {
           session.value.hangup().then(() => {
-            router.push("/dashboard");
+            // router.push("/dashboard");
           });
         }
       }
@@ -457,6 +295,8 @@
       const acceptVideoCallDetails = computed(() => {
         return store.state.videoCall.acceptVideoCallDetails;
       });
+
+      const patientId = ref(null)
 
       const showNotesModal = () => {
         notesDetailVisible.value = true;
@@ -488,6 +328,9 @@
       // used for patient vital
       watchEffect(() => {
         if (getVideoDetails.value || acceptVideoCallDetails.value) {
+          patientId.value = getVideoDetails.value
+              ? getVideoDetails.value.patientUdid
+              : acceptVideoCallDetails.value.patient.id
           store.dispatch(
             "patientDetails",
             getVideoDetails.value
@@ -625,7 +468,7 @@
         hangUp,
         videoCall,
         size: ref("large"),
-        resize,
+        patientId,
       };
     },
   };

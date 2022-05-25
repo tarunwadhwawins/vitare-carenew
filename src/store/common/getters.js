@@ -59,3 +59,8 @@ export const loadingStatus = (state)=>{
         return state.dateFilter
     })
   }
+  export const escalationType = (state)=>{
+    return computed(()=>{
+        return state.escalationType
+    })
+  }

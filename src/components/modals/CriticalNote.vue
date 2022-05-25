@@ -40,8 +40,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
-    const patientUdid = localStorage.getItem('patientUdid')
-    const patientId = patientUdid ? patientUdid : route.params.udid
+    const patientId = props.patientUdid ? reactive(props.patientUdid) : route.params.udid
     const notes = reactive({
       criticalNote:"",
     });
@@ -53,12 +52,10 @@ export default defineComponent({
         criticalNote:notes
       }).then(() => {
         store.dispatch('patientCriticalNotes', patientId);
-        if(patientId == null || props.patientUdid) {
-          store.dispatch('patientTimeline', {
-            id:patientId,
-            type:''
-          });
-        }
+        store.dispatch('patientTimeline', {
+          id:patientId,
+          type:''
+        });
         emit("closeModal");
       })
       setTimeout(() => {

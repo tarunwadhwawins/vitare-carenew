@@ -8,7 +8,7 @@
             <span>{{record.patient}}</span>
         </template>
         <template #flags="{ record }">
-            <Flags :flag="record.flagColor" />
+            <Flags :flag="record.flagColor" :data="record" />
         </template>
         <template #flag="{ text }">
             <span>

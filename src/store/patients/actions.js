@@ -455,7 +455,7 @@ export const patientConditions = async ({ commit }, id) => {
   commit('loadingStatus', true)
   await serviceMethod.common("get", API_ENDPOINTS['patient']+'/'+id+'/condition', null, null).then((condition) => {
     commit('patientConditions', condition.data.data);
-   
+    commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     commit('loadingStatus', false)

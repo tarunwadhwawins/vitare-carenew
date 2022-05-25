@@ -1,9 +1,10 @@
 <template>
 <a-col :sm="24">
-    <a-table  rowKey="id" :columns="meta.tasksListColumns" :data-source="meta.tasksList" :scroll="height ? { x: 900 , y:height } :{ x: 900 ,y:tableYScroller }" :pagination="false" @change="handleTableChange">
-      
-        <template #taskName="text">
-            <span>{{ text.text }}</span>
+
+    <a-table rowKey="id" :columns="tasksListColumns" :data-source="meta.tasksList" :scroll="height ? {  y:height } :{ x: 900 ,y:tableYScroller }" :pagination="false" @change="handleTableChange">
+
+        <template #taskName="{text,record}">
+            <a @click="taskDetails(record.id)"><span>{{ text }}</span></a>
         </template>
         <!-- <template #assignedBy="text">
             <router-link to="coordinator-summary">{{ text.text }}</router-link>
@@ -14,7 +15,7 @@
                 {{i==0?' ':','}} {{ category }}
             </span>
         </template>
-        <template #action="{ record }" >
+        <template #action="{ record }">
             <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,115)">
                 <template #title>
                     <span>{{ $t('global.edit') }}</span>
@@ -40,150 +41,160 @@
         </template>
     </a-table>
 </a-col>
+<TaskDetails v-model:visible="visible" @saveTaskModal="handleOk($event)" :taskId="taskID" />
 </template>
 
 <script>
-import { onMounted, computed } from "vue";
-import { useStore } from "vuex";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  CalendarOutlined,
-} from "@ant-design/icons-vue";
-import { messages } from "@/config/messages";
-import {
-  warningSwal,
-  tableYScroller,
-  arrayToObjact,
-} from "@/commonMethods/commonMethod";
-import { useRoute } from 'vue-router';
-
+import { onMounted, computed,defineAsyncComponent , ref} from "vue"
+import { useStore } from "vuex"
+import {  DeleteOutlined, EditOutlined, CalendarOutlined} from "@ant-design/icons-vue"
+import { messages } from "@/config/messages"
+import { warningSwal, tableYScroller, arrayToObjact} from "@/commonMethods/commonMethod"
+import { useRoute } from 'vue-router'
 export default {
-  name: "TaskTable",
-  components: {
-    DeleteOutlined,
-    EditOutlined,
-    CalendarOutlined,
-  },
-  props: {
-    height:Number
-  },
-  setup(props, { emit }) {
-    const store = useStore();
- const route = useRoute()
-    let data = [];
-    const meta = store.getters.taskRecords.value;
+    name: "TaskTable",
+    components: {
+        DeleteOutlined,
+        EditOutlined,
+        CalendarOutlined,
+        TaskDetails: defineAsyncComponent(() => import("@/components/tasks/modals/TaskDetails.vue"))
+    },
+    props: {
+        height: Number,
+        tasksListColumns: Array
+    },
+    setup(props, {
+        emit
+    }) {
+        const store = useStore();
+        const route = useRoute()
+        const visible = ref(false)
+        let data = [];
+        const meta = store.getters.taskRecords.value;
 
-    let scroller = "";
-    let filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
-        let dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
-    onMounted(() => {
+        let scroller = "";
+        let dateFilter = ''
+        let filter = ''
 
-      var tableContent = document.querySelector(".ant-table-body");
-      tableContent.addEventListener("scroll", (event) => {
-        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-        let currentScroll = event.target.scrollTop + 2;
-        if (currentScroll >= maxScroll) {
-          let current_page = meta.taskMeta.current_page + 1;
-          if (current_page <= meta.taskMeta.total_pages) {
-            scroller = maxScroll;
-            data = meta.tasksList;
-
-            meta.taskMeta = "";
-
-            store
-              .dispatch(
-                "tasksList",
-                "?page=" +
-                  current_page +
-                  dateFilter + filter +
-                  store.getters.searchTable.value +
-                  store.getters.orderTable.value.data
-              )
-              .then(() => {
-                loadMoredata();
-              });
-          }
+        function checkDate() {
+            dateFilter = route.query.fromDate && route.query.toDate ? "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "?fromDate=&toDate="
+            filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
         }
-      });
-    });
+        onMounted(() => {
+            checkDate()
+            var tableContent = document.querySelector(".ant-table-body");
+            tableContent.addEventListener("scroll", (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+                let currentScroll = event.target.scrollTop + 2;
+                if (currentScroll >= maxScroll) {
+                    let current_page = meta.taskMeta.current_page + 1;
+                    if (current_page <= meta.taskMeta.total_pages) {
+                        scroller = maxScroll;
+                        data = meta.tasksList;
+                        store.state.tasks.taskMeta = ''
 
-    function loadMoredata() {
-      const newData = meta.tasksList;
+                        store
+                            .dispatch(
+                                "tasksList",
+                                "?page=" +
+                                current_page +
+                                dateFilter + filter +
+                                store.getters.searchTable.value +
+                                store.getters.orderTable.value.data
+                            )
+                            .then(() => {
+                                loadMoredata();
+                            });
+                    }
+                }
+            });
+        });
 
-      newData.forEach((element) => {
-        data.push(element);
-      });
+        function loadMoredata() {
+            const newData = meta.tasksList;
 
-      meta.tasksList = data;
-      var tableContent = document.querySelector(".ant-table-body");
+            newData.forEach((element) => {
+                data.push(element);
+            });
 
-      setTimeout(() => {
-        tableContent.scrollTo(0, scroller);
-      }, 50);
-    }
-    const editTask = (id) => {
-      emit("is-Edit", {
-        check: true,
-        id: id,
-      });
-    };
+            meta.tasksList = data;
+            var tableContent = document.querySelector(".ant-table-body");
 
-    function deleteTask(id) {
-      warningSwal(messages.deleteWarning).then((response) => {
-        if (response == true) {
-          store.dispatch("tasksDelete", id);
-          setTimeout(() => {
-            store.state.tasks.tasksList = null;
-            store.dispatch("tasksList");
-          }, 2000);
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller);
+            }, 50);
         }
-      });
-    }
-    const tasks = computed(() => {
-      return store.state.tasks;
-    });
+        const editTask = (id) => {
+            emit("is-Edit", {
+                check: true,
+                id: id,
+            });
+        };
+        const taskDetails = (id) => {
+            store.dispatch('editTask', {
+                id: id
+            })
+            visible.value= true
+        };
 
-    const handleTableChange = (pag, filters, sorter) => {
-      if (sorter.order) {
-        let order = sorter.order == "ascend" ? "ASC" : "DESC";
-        let orderParam = "&orderField=" + sorter.field + "&orderBy=" + order;
-        store.dispatch("orderTable", {
-          data: orderParam,
-          orderBy: order,
-          page: pag,
-          filters: filters,
+        function deleteTask(id) {
+            warningSwal(messages.deleteWarning).then((response) => {
+                if (response == true) {
+                    store.dispatch("tasksDelete", id);
+                    setTimeout(() => {
+                        store.state.tasks.tasksList = null;
+                        store.dispatch("tasksList");
+                    }, 2000);
+                }
+            });
+        }
+        const tasks = computed(() => {
+            return store.state.tasks;
         });
-        store.dispatch(
-          "tasksList",
-          "?page=" +
-          dateFilter + filter +
-           orderParam
-           
-        );
-      } else {
-        store.dispatch("orderTable", {
-          data: "&orderField=&orderBy=",
-        });
-        store.dispatch(
-          "tasksList",
-          "?page=" +
-            store.getters.searchTable.value +
-            dateFilter + filter +
-            store.getters.orderTable.value.data
-        );
-      }
-    };
-    return {
-      screensPermissions: store.getters.screensPermissions,
-      tasks,
-      arrayToObjact,
-      editTask,
-      deleteTask,
-      meta,
-      tableYScroller,
-      handleTableChange,
-    };
-  },
+
+        const handleTableChange = (pag, filters, sorter) => {
+            checkDate()
+            if (sorter.order) {
+                let order = sorter.order == "ascend" ? "ASC" : "DESC";
+                let orderParam = "&orderField=" + sorter.field + "&orderBy=" + order;
+                store.dispatch("orderTable", {
+                    data: orderParam,
+                    orderBy: order,
+                    page: pag,
+                    filters: filters,
+                });
+                store.dispatch(
+                    "tasksList",
+                    "?page=" +
+                    dateFilter + filter +
+                    orderParam
+
+                );
+            } else {
+                store.dispatch("orderTable", {
+                    data: "&orderField=&orderBy=",
+                });
+                store.dispatch(
+                    "tasksList",
+                    "?page=" +
+                    store.getters.searchTable.value +
+                    dateFilter + filter +
+                    store.getters.orderTable.value.data
+                );
+            }
+        };
+        return {
+            screensPermissions: store.getters.screensPermissions,
+            tasks,
+            arrayToObjact,
+            editTask,
+            deleteTask,
+            meta,
+            tableYScroller,
+            handleTableChange,
+            visible,
+            taskDetails,
+        };
+    },
 };
 </script>

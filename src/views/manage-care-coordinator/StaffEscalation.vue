@@ -12,7 +12,7 @@
               <a-row>
     <div class="commonTags">
       
-        <a-tag v-if="route.query.filter" closable @close="remove('filter')">{{route.query.filter}}</a-tag>
+        <a-tag v-if="route.query.filter" closable @close="remove('filter')">{{getName(route.query.filter)}}</a-tag>
         <a-tag v-if="route.query.toDate && route.query.fromDate" closable @close="remove('date')">
             {{timeStampFormate(route.query.fromDate,globalDateFormat) }} To {{timeStampFormate(route.query.toDate,globalDateFormat)}}
         </a-tag>
@@ -49,7 +49,7 @@
 <script>
 import { computed, onMounted, onUnmounted, ref, watchEffect } from "vue";
 import { useStore } from "vuex";
-import { globalDateFormat ,timeStampFormate} from "@/commonMethods/commonMethod";
+import { globalDateFormat ,timeStampFormate,arrayToObjact} from "@/commonMethods/commonMethod";
 import EscaltionTable from "@/components/common/tables/EscalationTable";
 import EscaltionViewModal from "@/components/care-coordinator/escalations/EscalationViewModal";
 import Loader from "@/components/loader/Loader";
@@ -206,6 +206,14 @@ router.replace({
             }
 
         }
+        const escalationType = store.getters.escalationType
+        function getName(name) {
+
+            let idToName = escalationType.value.find(data=>data.id==name)
+            console.log(idToName)
+            return idToName ? idToName.name : ''
+        }
+       
     return {
       button,
       escalationList,
@@ -221,6 +229,8 @@ router.replace({
       route,
       remove,
       timeStampFormate,
+      getName,
+      arrayToObjact
       
     };
   },

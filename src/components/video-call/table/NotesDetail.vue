@@ -9,7 +9,7 @@
             <div class="form-group">
                 <div class="calendarDropdown notificationModal">
                     <div class="itemWrapper">
-                        <div class="leftWrapper">Added By {{showRecord}}</div>
+                        <div class="leftWrapper">Added By</div>
                         <div class="rightWrapper">{{detailsNotes.addedBy}}</div>
                     </div>
                     <div class="itemWrapper">
@@ -18,10 +18,16 @@
                             {{ detailsNotes.date}}
                         </div>
                     </div>
-                    <div class="itemWrapper">
+                    <!-- <div class="itemWrapper">
                         <div class="leftWrapper">Specialization</div>
                         <div class="rightWrapper">
                             {{detailsNotes.specialization}}
+                        </div>
+                    </div> -->
+                    <div class="itemWrapper">
+                        <div class="leftWrapper">Category</div>
+                        <div class="rightWrapper">
+                            {{detailsNotes.category}}
                         </div>
                     </div>
                     <div class="itemWrapper">
@@ -49,11 +55,13 @@
         <a-button @click="showNoteModal" type="primary">{{'Add Note'}}</a-button>
         <a-table :scroll="{ y: 250 }" rowKey="id" :columns="notesColumns" :data-source="notesList" :pagination="false">
             <template #flags="{ record }">
-                <Flags :flag="record.color" />
+              <Flags :flag="record.color" :data="record" />
             </template>
             <template #action="{record}">
-                <a class="icons">
-                    <EyeTwoTone @click="edit(record.id)" /></a>
+              <a-tooltip placement="right">
+                <template #title>View</template>
+                <a class="icons"><EyeTwoTone @click="edit(record.id)" /></a>
+              </a-tooltip>
             </template>
         </a-table>
         <Loader v-if="!isCommunication" />
