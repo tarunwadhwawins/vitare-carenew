@@ -18,10 +18,16 @@
                             {{ detailsNotes.date}}
                         </div>
                     </div>
-                    <div class="itemWrapper">
+                    <!-- <div class="itemWrapper">
                         <div class="leftWrapper">Specialization</div>
                         <div class="rightWrapper">
                             {{detailsNotes.specialization}}
+                        </div>
+                    </div> -->
+                    <div class="itemWrapper">
+                        <div class="leftWrapper">Category</div>
+                        <div class="rightWrapper">
+                            {{detailsNotes.category}}
                         </div>
                     </div>
                     <div class="itemWrapper">
