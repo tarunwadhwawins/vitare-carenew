@@ -41,7 +41,11 @@ export default {
     const addAppointmentVisible = ref(false)
     
     const showAddAppointmentModal = () => {
-      addAppointmentVisible.value = true;
+      store.commit('loadingStatus', true)
+      setTimeout(() => {
+        addAppointmentVisible.value = true;
+        store.commit('loadingStatus', false)
+      }, 1000);
     };
     
     const appointmentColumns = [
