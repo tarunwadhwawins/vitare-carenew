@@ -14,7 +14,7 @@
             <PatientVitalsIcon :isBold="patientVitalsVisible" @onClick="showVitalsModal" :patientId="patientUdid" />
             <PatientAppointmentsIcon :isBold="patientAppointmentsVisible" @onClick="showAppointments" :patientId="patientUdid" />
             <PinIcon @onClick="addPin" />
-            <StartCall :patientId="patientUdid" />
+            <StartCall v-if="isChat" :patientId="patientUdid" />
           </a-row>
         </a-col>
       </a-row>
@@ -47,7 +47,6 @@ import {
   watchEffect,
   reactive,
   ref,
-  onUnmounted,
   computed,
   toRefs,
 } from "vue"
@@ -56,9 +55,7 @@ import {
 } from "vuex"
 import {
   dateFormat,
-  timeStamp,
 } from "@/commonMethods/commonMethod"
-import moment from "moment"
 import NotesDetail from "@/components/video-call/table/NotesDetail"
 import DocumentDetail from "@/components/video-call/table/DocumentDetail"
 import AppointmentsTable from "@/components/communications/tables/AppointmentsTable"
@@ -114,7 +111,7 @@ export default {
     const addPinModalVisible = ref(false)
     var patientUdid =  reactive(props.idPatient)
     const patientId =  ref(null)
-    const communications = reactive(props.communication)
+    const communications = props.communication ? reactive(props.communication) : null
     const isCommunicationWithPatient = ref(false)
     const tabvalue = reactive({
       tab: [],
@@ -167,12 +164,6 @@ export default {
 
     const scroll = ref()
     const auth = JSON.parse(localStorage.getItem("auth"))
-    let interval = setInterval(() => {
-      store.dispatch("conversation", props.communication.id)
-      getScroll()
-    }, 2000)
-    
-    const tableContent = ref(null)
     
     watchEffect(() => {
       store.state.communications.conversationList = ""
@@ -180,12 +171,12 @@ export default {
       setTimeout(() => {
         store.commit('loadingStatus', false)
       }, 3000)
-      if(communications.is_sender_patient) {
+      if(communications && communications.is_sender_patient) {
         patientUdid = communications.fromId
         patientId.value = communications.senderId
         isCommunicationWithPatient.value = true
       }
-      else if(communications.is_receiver_patient) {
+      else if(communications && communications.is_receiver_patient) {
         patientUdid = communications.toId
         patientId.value = communications.receiverId
         isCommunicationWithPatient.value = true
@@ -197,51 +188,14 @@ export default {
       if(isCommunicationWithPatient.value) {
         store.dispatch("timeLineType")
       }
-
-      store.dispatch("conversation", props.communication.id)
-      tableContent.value = document.getElementsByClassName('chatBoxInner')
-      getScroll()
-      localStorage.setItem('patientUdid', patientUdid)
     })
 
-    function getScroll() {
-      setTimeout(() => {
-        if((tableContent.value[0].scrollTop < tableContent.value[0].scrollHeight+10) == true) {
-          tableContent.value[0].scrollTop = tableContent.value[0].scrollHeight+10
-        }
-      }, 2000)
-    }
     const list = store.getters.communicationRecord.value
-
-    function sendMsg() {
-      if (formValue.msgSend) {
-        list.conversationList.push({
-          conversationId: props.communication.id,
-          senderId: auth.user.id,
-          message: formValue.msgSend,
-          type: "text",
-          isRead: 0,
-          createdAt: timeStamp(moment())
-        })
-        store.dispatch("conversationSend", {
-          conversationId: props.communication.id,
-          message: formValue.msgSend,
-          type: "text",
-        })
-        formValue.msgSend = ''
-      }
-      getScroll()
-    }
 
     function closeModal() {
       store.state.communications.conversationList = ""
-      clearInterval(interval)
       addPinModalVisible.value = false
     }
-
-    onUnmounted(() => {
-      clearInterval(interval)
-    })
 
     const patientPins = computed(() => {
       return store.state.patients.patientCriticalNotes
@@ -249,7 +203,6 @@ export default {
 
     return {
       list,
-      sendMsg,
       formValue,
       dateFormat,
       closeModal,

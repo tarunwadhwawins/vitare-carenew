@@ -102,7 +102,7 @@ const columns = [
     key: "appointmentType",
   },
   {
-    title: "Care Coodinator",
+    title: "Care Coordinator",
     dataIndex: "staff",
     key: "staff",
   },

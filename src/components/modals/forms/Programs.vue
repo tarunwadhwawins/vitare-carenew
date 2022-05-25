@@ -1,66 +1,66 @@
 <template>
-<a-form ref="formRef" :model="program" scrollToFirstError=true name="basic" autocomplete="off" layout="vertical" @finish="programs" @finishFailed="programFailed">
-    <a-row :gutter="24">
-      
-        <a-col :md="8" :sm="12" :xs="24">
-            <div class="form-group">
-                <a-form-item :label="$t('patient.programs.program')" name="program" :rules="[{ required: true, message: $t('patient.programs.program')+' '+$t('global.validation') }]">
-                    <GlobalCodeDropDown v-model:value="program.program" :globalCode="patients.programList" @change="changedValue"/>
-                    <ErrorMessage v-if="errorMsg" :name="errorMsg.program?errorMsg.program[0]:''" />
-                </a-form-item>
-            </div>
-        </a-col>
-        <a-col :md="8" :sm="6" :xs="24">
-            <div class="form-group">
-                <a-form-item :label="$t('patient.programs.onboardinScheduledDate')" name="onboardingScheduleDate" :rules="[{ required: true, message: $t('patient.programs.onboardinScheduledDate')+' '+$t('global.validation') }]">
-                    <a-date-picker @change="changedValue" v-model:value="program.onboardingScheduleDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
-                    <ErrorMessage v-if="errorMsg" :name="errorMsg.onboardingScheduleDate?errorMsg.onboardingScheduleDate[0]:''" />
-                </a-form-item>
-            </div>
-        </a-col>
-        <a-col :md="8" :sm="6" :xs="24">
-            <div class="form-group">
-                <a-form-item :label="$t('patient.programs.dischargeDate')" name="dischargeDate" :rules="[{ required: true, message: $t('patient.programs.dischargeDate')+' '+$t('global.validation') }]">
-                    <a-date-picker @change="changedValue" v-model:value="program.dischargeDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
-                    <ErrorMessage v-if="errorMsg" :name="errorMsg.dischargeDate?errorMsg.dischargeDate[0]:''" />
-                </a-form-item>
-            </div>
-        </a-col>
-        <a-col :md="8" :sm="12" :xs="24">
-            <div class="form-group">
-                <label>{{$t('global.status')}}</label>
-                <a-radio-group v-model:value="program.status">
-                    <a-radio :value="1">{{$t('global.active')}}</a-radio>
-                    <a-radio :value="0">{{$t('global.inactive')}}</a-radio>
-                </a-radio-group>
-            </div>
-        </a-col>
-    </a-row>
-    <a-row :gutter="24" class="mb-24">
-        <a-col :span="24">
-            <a-button class="btn primaryBtn" html-type="submit">{{$t('global.save')}}</a-button>
-        </a-col>
-    </a-row>
-    <a-row :gutter="24" class="mb-24">
-        <a-col :span="24">
-            <a-table  rowKey="id" :columns="columns" :data-source="programsData" :pagination="false" :scroll="{ x: 900 }">
-                <template #action="text" v-if="arrayToObjact(screensPermissions,70)">
-                    <a-tooltip placement="bottom">
-                        <a class="icons" @click="editProgram(text.record.id)">
-                          <EditOutlined />
-                        </a>
-                    </a-tooltip>
-                    <a-tooltip placement="bottom">
-                        <a class="icons" @click="deleteProgram(text.record.id)">
-                          <DeleteOutlined />
-                        </a>
-                    </a-tooltip>
-                </template>
-            </a-table>
-            <Loader />
-        </a-col>
-    </a-row>
-</a-form>
+  <a-form ref="formRef" :model="program" scrollToFirstError=true name="basic" autocomplete="off" layout="vertical" @finish="programs" @finishFailed="programFailed">
+      <a-row :gutter="24">
+        
+          <a-col :md="8" :sm="12" :xs="24">
+              <div class="form-group">
+                  <a-form-item :label="$t('patient.programs.program')" name="program" :rules="[{ required: true, message: $t('patient.programs.program')+' '+$t('global.validation') }]">
+                      <GlobalCodeDropDown v-model:value="program.program" :globalCode="patients.programList" @change="changedValue"/>
+                      <ErrorMessage v-if="errorMsg" :name="errorMsg.program?errorMsg.program[0]:''" />
+                  </a-form-item>
+              </div>
+          </a-col>
+          <a-col :md="8" :sm="6" :xs="24">
+              <div class="form-group">
+                  <a-form-item :label="$t('patient.programs.onboardinScheduledDate')" name="onboardingScheduleDate" :rules="[{ required: true, message: $t('patient.programs.onboardinScheduledDate')+' '+$t('global.validation') }]">
+                      <a-date-picker @change="changedValue" v-model:value="program.onboardingScheduleDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
+                      <ErrorMessage v-if="errorMsg" :name="errorMsg.onboardingScheduleDate?errorMsg.onboardingScheduleDate[0]:''" />
+                  </a-form-item>
+              </div>
+          </a-col>
+          <a-col :md="8" :sm="6" :xs="24">
+              <div class="form-group">
+                  <a-form-item :label="$t('patient.programs.dischargeDate')" name="dischargeDate" :rules="[{ required: true, message: $t('patient.programs.dischargeDate')+' '+$t('global.validation') }]">
+                      <a-date-picker @change="changedValue" v-model:value="program.dischargeDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
+                      <ErrorMessage v-if="errorMsg" :name="errorMsg.dischargeDate?errorMsg.dischargeDate[0]:''" />
+                  </a-form-item>
+              </div>
+          </a-col>
+          <a-col :md="8" :sm="12" :xs="24">
+              <div class="form-group">
+                  <label>{{$t('global.status')}}</label>
+                  <a-radio-group v-model:value="program.status">
+                      <a-radio :value="1">{{$t('global.active')}}</a-radio>
+                      <a-radio :value="0">{{$t('global.inactive')}}</a-radio>
+                  </a-radio-group>
+              </div>
+          </a-col>
+      </a-row>
+      <a-row :gutter="24" class="mb-24">
+          <a-col :span="24">
+              <a-button class="btn primaryBtn" html-type="submit">{{$t('global.save')}}</a-button>
+          </a-col>
+      </a-row>
+      <a-row :gutter="24" class="mb-24">
+          <a-col :span="24">
+              <a-table  rowKey="id" :columns="columns" :data-source="programsData" :pagination="false" :scroll="{ x: 900 }">
+                  <template #action="text" v-if="arrayToObjact(screensPermissions,70)">
+                      <a-tooltip placement="bottom">
+                          <a class="icons" @click="editProgram(text.record.id)">
+                            <EditOutlined />
+                          </a>
+                      </a-tooltip>
+                      <a-tooltip placement="bottom">
+                          <a class="icons" @click="deleteProgram(text.record.id)">
+                            <DeleteOutlined />
+                          </a>
+                      </a-tooltip>
+                  </template>
+              </a-table>
+          </a-col>
+      </a-row>
+  </a-form>
+  <Loader />
 </template>
 
 <script>
@@ -204,6 +204,7 @@ export default defineComponent({
     })
 
     function deleteProgram(id) {
+      store.commit('loadingStatus', true)
       if(patientId != null) {
         warningSwal(messages.deleteWarning).then((response) => {
           if(response==true) {
