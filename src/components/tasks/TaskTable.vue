@@ -75,10 +75,14 @@ export default {
     const meta = store.getters.taskRecords.value;
 
     let scroller = "";
-    let filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
-        let dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
+    let dateFilter= ''
+    let filter = ''
+     function checkDate(){
+      dateFilter = route.query.fromDate && route.query.toDate ? "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "?fromDate=&toDate="
+  filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
+    }
     onMounted(() => {
-
+checkDate()
       var tableContent = document.querySelector(".ant-table-body");
       tableContent.addEventListener("scroll", (event) => {
         let maxScroll = event.target.scrollHeight - event.target.clientHeight;
@@ -145,6 +149,7 @@ export default {
     });
 
     const handleTableChange = (pag, filters, sorter) => {
+      checkDate()
       if (sorter.order) {
         let order = sorter.order == "ascend" ? "ASC" : "DESC";
         let orderParam = "&orderField=" + sorter.field + "&orderBy=" + order;

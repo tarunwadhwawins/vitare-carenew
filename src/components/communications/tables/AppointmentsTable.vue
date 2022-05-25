@@ -51,7 +51,7 @@ export default {
         key: "appointmentType",
       },
       {
-        title: "Care Coodinator",
+        title: "Care Coordinator",
         dataIndex: "staff",
         key: "staff",
       },

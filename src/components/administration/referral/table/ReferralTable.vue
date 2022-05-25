@@ -46,6 +46,7 @@ const  dateFilter = ref('')
      
         //dateFilter.value = route.query.fromDate && route.query.toDate ? "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "?fromDate=&toDate="
     onMounted(() => {
+      console.log("check")
       checkDate()
       var tableContent = document.querySelector(".ant-table-body");
       tableContent.addEventListener("scroll", (event) => {
@@ -60,8 +61,8 @@ const  dateFilter = ref('')
             loader.value = true;
             meta.value = "";
             //referralList.value=''
-            //store.state.referral.referral = "";
-console.log("tedfdfst",data)
+            store.state.referral.referralMeta = "";
+
             store
               .dispatch(
                 "referral",

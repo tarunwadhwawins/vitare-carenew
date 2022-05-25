@@ -87,15 +87,19 @@ export default {
          function remove(event) {
             if (event == "filter") {
                 if (route.query.fromDate && route.query.toDate) {
-                    router.replace({
-                        query: {
-                            view: 'list',
-                            fromDate: route.query.fromDate,
-                            toDate: route.query.todate
-                        }
-                    })
+                    
                     store.dispatch("tasksList", "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
-                    store.dispatch("tasksList")
+                 
+                     setTimeout(() => {
+                        router.replace({
+                            query: {  
+                            fromDate: route.query.fromDate,
+                            toDate: route.query.todate,
+                            view: 'list',
+
+                            }
+                        })
+                    }, 1000)
                 } else {
                     router.replace({
                         query: {view: 'list',}
@@ -106,13 +110,17 @@ export default {
             } else {
 
                 if (route.query.filter) {
-                    router.replace({
-                        query: {
-                            view: 'list',
-                            filter: route.query.filter
-                        }
-                    })
+                    
                     store.dispatch("tasksList", "?filter=" + route.query.filter)
+                    setTimeout(()=>{
+                        router.replace({
+                        query: {
+                            
+                            filter: route.query.filter,
+                            view: 'list',
+                        }
+                    },5000)
+                    })
                 } else {
                     router.replace({
                         query: {view: 'list',}

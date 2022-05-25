@@ -78,7 +78,6 @@ export default {
 		},
   },
   setup(props, {emit}) {
-    alert(props.patientId)
     const store = useStore()
     const route = useRoute()
     const formRef = ref()

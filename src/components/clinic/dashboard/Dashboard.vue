@@ -214,9 +214,10 @@ const visible = ref(false);
    
     const taskID =ref();
 const editTask = (id) => {
+    console.log("check",id.id)
                 visible.value = id.check,
                 taskID.value =  id.id
-                store.dispatch('editTask',id.id)
+                store.dispatch('editTask',{id:id.id})
             
         };
         return {
