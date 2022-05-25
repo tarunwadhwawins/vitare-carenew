@@ -5,13 +5,13 @@
       <a-button @click="showAddAppointmentModal()" type="primary">{{ "Add Appointment" }}</a-button>
       <a-table rowKey="id" :columns="appointmentColumns" :data-source="patientAppointmentsList" :pagination="false">
         <template #flag="{ record }">
-          <Flags :flag="record.flagColor" />
-          <AddAppointmentModal v-model:visible="addAppointmentVisible" :patientId="patientId" :patientName="record.patient" @closeModal="closeModal" :isChat="true" />
+          <Flags :flag="record.flagColor" :data="record" />
         </template>
       </a-table>
       </div>
     </a-col>
   </a-row>
+  <AddAppointmentModal v-model:visible="addAppointmentVisible" :patientId="patientId" :patientName="patientName" @closeModal="closeModal" :isChat="true" />
 </template>
 
 <script>
@@ -39,6 +39,10 @@ export default {
   setup() {
     const store = useStore()
     const addAppointmentVisible = ref(false)
+
+    const patientAppointmentsList = computed(() => {
+      return store.state.appointment.patientAppointmentsList
+    })
     
     const showAddAppointmentModal = () => {
       addAppointmentVisible.value = true;
@@ -98,13 +102,14 @@ export default {
       },
     ];
 
-    const patientAppointmentsList = computed(() => {
-      return store.state.appointment.patientAppointmentsList
+    const patientDetails = computed(() => {
+      return store.state.patients.patientDetails
     })
 
     const closeModal = () => {
       addAppointmentVisible.value = false
     }
+    const patientName = patientDetails.value != null ? patientDetails.value.fullName : ''
 
     return {
       showAddAppointmentModal,
@@ -113,6 +118,7 @@ export default {
       patientAppointmentsList,
       closeModal,
       actionTrack,
+      patientName,
     }
   }
 }

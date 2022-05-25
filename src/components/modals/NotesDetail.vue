@@ -6,7 +6,7 @@
         </div>
         <a-table  rowKey="id"  :columns="notesColumns" :data-source="notesList" :pagination="false">
           <template #flags="{ record }">
-            <Flags :flag="record.color" />
+            <Flags :flag="record.color" :data="record" />
           </template>
         </a-table>
       </a-col>
