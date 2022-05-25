@@ -853,28 +853,28 @@ function newReferral(){
             {
                 title: "Programs",
                 key: "programs",
-                content: "Second-content",
+                content: "Third-content",
             },
             {
                 title: "Insurance",
                 key: "insurance",
-                content: "Second-content",
+                content: "Fourth-content",
             },
             {
                 title: "Documents",
                 key: "documents",
-                content: "Last-content",
+                content: "Fifth-content",
             },
             {
                 title: "Conditions",
                 key: "conditions",
-                content: "Second-content",
+                content: "Sixth-content",
             },
 
             {
                 title: "Clinical Data",
                 key: "clinicalData",
-                content: "Second-content",
+                content: "Last-content",
             },
 
         ]
@@ -986,13 +986,6 @@ function newReferral(){
 
         const conditions = reactive({
             condition: [],
-            referralName: "",
-            referralDesignation: "",
-            referralEmail: "",
-            referralPhoneNumber: "",
-            referralFax: "",
-            staff: "",
-            isPrimary: 1,
         });
 
         const insuranceData = reactive({
@@ -1012,15 +1005,28 @@ function newReferral(){
             ...referal
         });
 
+        const patientConditions = computed(() => {
+            return store.state.patients.patientConditions
+        })
+
         const current = computed({
             get: () =>
                 store.state.patients.counter,
             set: (value) => {
+                if (value == 5) {
+                    store.dispatch('patientConditions', idPatient.value).then(() => {
+                        console.log('patientConditions.value', patientConditions.value)
+                        if (patientConditions.value != null) {
+                            Object.assign(conditions.condition, patientConditions.value)
+                        }
+                    })
+                }
 
-                if (patients.value.addDemographic) {
+                if (props.isEdit || patients.value.addDemographic) {
 
                     store.state.patients.counter = value
-                } else {
+                }
+                else {
                     if (demographics.firstName && demographics.lastName && demographics.dob && demographics.email && demographics.phoneNumber) {
                         if (store.state.patients.counter < 1) {
 
@@ -1077,10 +1083,6 @@ function newReferral(){
                 
                 
                 Object.assign(demographics, patients.value.patientDetails)
-            }
-
-            if (patients.value.patientConditions != null) {
-                Object.assign(conditions.condition, patients.value.patientConditions)
             }
             if (patients.value.patientReferralSource != null ) {
                  
