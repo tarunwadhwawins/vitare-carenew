@@ -15,6 +15,14 @@
             <PatientAppointmentsIcon :isBold="patientAppointmentsVisible" @onClick="showAppointments" :patientId="patientUdid" />
             <PinIcon @onClick="addPin" />
             <StartCall v-if="isChat" :patientId="patientUdid" />
+            <a-col :span="8" v-if="currentUrl && !isChat">
+              <div class="moreAction" @click="copyURL(currentUrl)">
+                <div class="moreActionImg purpleBgColor">
+                  <CopyFilled />
+                </div>
+                <p>Copy Url</p>
+              </div>
+            </a-col>
           </a-row>
         </a-col>
       </a-row>
@@ -68,6 +76,8 @@ import PatientVitalsIcon from "@/components/common/PatientVitalsIcon"
 import PatientAppointmentsIcon from "@/components/common/PatientAppointmentsIcon"
 import PinIcon from "@/components/common/PinIcon"
 import StartCall from "@/components/common/StartCall"
+import { message } from "ant-design-vue";
+import { CopyFilled } from "@ant-design/icons-vue";
 
 export default {
   components: {
@@ -86,6 +96,7 @@ export default {
     PatientVitalsGrid,
     Pins,
     AddPin,
+    CopyFilled,
   },
   props: {
     communication: {
@@ -96,6 +107,9 @@ export default {
     },
     isChat: {
       type: Boolean
+    },
+    currentUrl: {
+      type: String
     },
   },
   setup(props) {
@@ -201,7 +215,17 @@ export default {
       return store.state.patients.patientCriticalNotes
     })
 
+    async function copyURL(url) {
+      try {
+        await navigator.clipboard.writeText(url);
+        message.success("Copied");
+      } catch ($e) {
+        message.error("Cannot copy");
+      }
+    }
+
     return {
+      copyURL,
       list,
       formValue,
       dateFormat,
@@ -244,7 +268,7 @@ export default {
 .callButton {
   margin-bottom: 20px;
 }
-.anticon-calendar, .anticon-pushpin, .anticon-phone {
+.anticon {
   color: #ffffff;
   font-size: 16px !important;
   position: relative !important;

@@ -304,12 +304,6 @@ export default {
 .callButton {
   margin-bottom: 20px;
 }
-.anticon-calendar, .anticon-pushpin, .anticon-phone {
-  color: #ffffff;
-  font-size: 16px !important;
-  position: relative !important;
-  top: -2px !important;
-}
 .callRightWrapper .patientTimeline .ant-timeline {
   overflow: unset !important;
 }
