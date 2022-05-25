@@ -355,7 +355,7 @@
                         </a-col>
 
                     </a-row>
-<div v-if="emergencyContactShow">
+									<div>
     
                     <a-row :gutter="24" >
                         <a-col :span="24">
@@ -526,8 +526,8 @@
                             </div>
                         </a-col>
                     </a-row>
-</div>
-<div v-if="referalFormShow">
+									</div>
+									<div v-if="referalFormShow">
                     <a-row :gutter="24">
                         <a-col :span="24">
                             <div class="formHeading">
@@ -1053,7 +1053,6 @@ function newReferral(){
 
         watchEffect(() => {
             idPatient.value = patients.value.addDemographic ? patients.value.addDemographic.id : route.name == "PatientSummary" ? route.params.udid : null;
-            //console.log("test",idPatient.value)
             // Bitrix data assign 
             if(props.isEdit){
                 referalFormShow.value = false
@@ -1078,7 +1077,6 @@ function newReferral(){
                 Object.assign(responsiblePersonForm, responsiblePerson.value)
                 responsiblePersonForm.self = false
             }
-
             if (patients.value.patientDetails) {
                 
                 
@@ -1118,7 +1116,29 @@ function newReferral(){
                         isValueChanged.value = false;
                     }
                 })
-            } else {
+            }
+            else if (!props.isEdit && (patients.value.addDemographic != null || patients.value.patientDetails != null)) {
+                store.dispatch("updateDemographic", {
+                    data: {
+                        "demographics": demographics,
+                        "referal": referal,
+                        "responsiblePerson": responsiblePersonForm,
+                        "emergencyContactForm": emergencyContactForm
+                    },
+                    referalId: patientReferralSource.value ? patientReferralSource.value.id : null,
+                    responsiblePersonId: responsiblePerson.value ? responsiblePerson.value.id : null,
+                    emergencyContactId: emergencyContact.value ? emergencyContact.value.id : null,
+                    patientUdid: patients.value.addDemographic ? patients.value.addDemographic.id : patients.value.patientDetails.id,
+                }).then(() => {
+                    if (route.name == 'PatientSummary') {
+                        store.dispatch('patientDetails', route.params.udid)
+                        store.dispatch('responsiblePerson', route.params.udid)
+                        store.dispatch('emergencyContact', route.params.udid)
+                        isValueChanged.value = false;
+                    }
+                })
+            }
+						else {
                 store.dispatch("addDemographic", {
                     "demographics": demographics,
                     "referal": referal,
@@ -1209,6 +1229,10 @@ function newReferral(){
             store.commit("counterPlus");
         };
         const prev = () => {
+						alert(current.value)
+						if(patients.value.addDemographic && current.value == 1) {
+							Object.assign(demographics, patients.value.addDemographic);
+						}
             store.commit("counterMinus");
             customScrollTop.value.scrollIntoView({
                 behavior: 'smooth'
@@ -1264,6 +1288,7 @@ function newReferral(){
             if (isValueChanged.value || bitrixFormCheck.value) {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
+											store.commit('addDemographic', null);
                         store.commit('bitrixFormCheck', false)
                         emit("saveModal", false);
                         emit("closeModal", {
@@ -1363,6 +1388,7 @@ function newReferral(){
         function changeResponsible(e) {
             isValueChanged.value = true
             disableEmergencyContact.value = true
+						alert(e.target.checked)
             if (e.target.checked) {
                 store.commit('isEditPatient', true)
 

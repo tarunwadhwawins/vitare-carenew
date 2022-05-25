@@ -81,9 +81,10 @@ export const updateDemographic = async ({commit}, request) => {
   const referalId = request.referalId
   commit('loadingStatus', true)
   
-  await serviceMethod.common("put", API_ENDPOINTS['patient']+`/${patientUdid}`, null, data.demographics).then(() => {
+  await serviceMethod.common("put", API_ENDPOINTS['patient']+`/${patientUdid}`, null, data.demographics).then((response) => {
     commit('status', true)
     commit('loadingStatus', false)
+    commit('addDemographic', response.data.data);
     if(responsiblePersonId){
      serviceMethod.common("put", API_ENDPOINTS['patient']+`/${patientUdid}/responsible/${responsiblePersonId}`, null, data.responsiblePerson).then((response) => {
         commit("responsiblePerson",response.data.data)
