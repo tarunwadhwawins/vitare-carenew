@@ -9,7 +9,7 @@
             <div class="form-group">
                 <div class="calendarDropdown notificationModal">
                     <div class="itemWrapper">
-                        <div class="leftWrapper">Added By {{showRecord}}</div>
+                        <div class="leftWrapper">Added By</div>
                         <div class="rightWrapper">{{detailsNotes.addedBy}}</div>
                     </div>
                     <div class="itemWrapper">
