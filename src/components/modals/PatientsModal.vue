@@ -102,7 +102,7 @@
 
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
-                                <a-form-item :label="$t('patient.demographics.weight') + '(Pounds)'" name="weight" :rules="[{ required: false, message: $t('patient.demographics.weight')+' '+$t('global.validation'), pattern: regex.digitWithdecimal }]">
+                                <a-form-item :label="$t('patient.demographics.weight') + '(lbs)'" name="weight" :rules="[{ required: false, message: $t('patient.demographics.weight')+' '+$t('global.validation'), pattern: regex.digitWithdecimal }]">
                                     <a-input-number @change="changedValue" style="width: 100%" v-model:value="demographics.weight" placeholder="Please enter weight in lbs" size="large" />
                                 </a-form-item>
                             </div>
