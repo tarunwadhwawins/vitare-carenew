@@ -70,7 +70,7 @@ export async function errorSwal(message) {
 	const result = await Swal.fire({
 		icon: 'error',
 		title: 'Oops...',
-		text: message.split(' ').map(capitalize).join(' ')
+		text: message//.split(' ').map(capitalize).join(' ')
 	});
 	if (result.isConfirmed) {
 		return true;
