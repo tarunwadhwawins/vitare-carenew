@@ -187,7 +187,7 @@
                       store.state.videoCall.acceptVideoCallDetails = null;
                       //call end api
                       store.dispatch("callNotification", {
-                        id: conferenceId.value,
+                        id: decodedUrl.value,
                         status: "end",
                       });
                       successSwal("Call Ended! Thank You");
