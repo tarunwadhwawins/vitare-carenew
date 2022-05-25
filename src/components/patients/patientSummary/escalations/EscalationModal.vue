@@ -1,4 +1,3 @@
-
 <template>
 <a-modal max-width="1140px" width="90%" title="Escalation Details" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
@@ -12,7 +11,7 @@
                       <a-col :sm="24" :xs="24" v-show="!paramId" >
                             <div class="form-group">
                                 <a-form-item label="Patient" name="referenceId" :rules="[{ required: true, message: 'Patient'+' '+$t('global.validation')  }]">
-                                     <PatientDropDown @change="checkChangeInput()"  v-model:value="escalation.referenceId" @handlePatientChange="handlePatientChange($event)" :close="closeValue"/>
+                                     <PatientDropDown @change="checkChangeInput($event)"  v-model:value="escalation.referenceId" @handlePatientChange="handlePatientChange($event)" :close="closeValue"/>
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -96,6 +95,11 @@
                         </a-col>
                     </a-row>
                     <a-row :gutter="24">
+                      <a-col :md="24" :sm="24" :xs="24" v-for="errMsg in errorMsg" :key="errMsg.id">
+                      <ul><li class="errorMsg">{{errMsg}}</li></ul>
+                      </a-col>
+                    </a-row>
+                    <a-row :gutter="24">
                         <a-collapse v-model:activeKey="activeKey" accordion style="width:100%">
                             <a-collapse-panel key="1" header="Notes" v-if="escalation.escalationType.includes(260)">
                                 <a-col :md="24" :sm="24" :xs="24">
@@ -163,6 +167,7 @@
     </a-row>
 </a-modal>
 </template>
+
 <script>
 import { computed, onMounted, reactive, ref } from "vue";
 import { useStore } from "vuex";
@@ -174,11 +179,9 @@ import {
   warningSwal,
   errorSwal,
   successSwal,
-  startimeAdd
+  startimeAdd,
 } from "@/commonMethods/commonMethod";
-import {
-    messages
-} from "@/config/messages";
+import { messages } from "@/config/messages";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch";
 import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue";
 import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue";
@@ -349,13 +352,14 @@ export default {
     Flags,
     PatientDropDown,
   },
-  setup(props,{emit}) {
+  setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
     const activeKey = ref([]);
+    const errorMsg = ref([]);
     const button = ref(2);
-    const status = ref(false)
-    const paramId = ref(route.params.udid)
+    const status = ref(false);
+    const paramId = ref(route.params.udid);
     const escalation = reactive({
       escalationType: [],
       escalationDescription: "",
@@ -391,22 +395,22 @@ export default {
     //   },
     // })
     const current = computed({
-            get: () =>
-                store.state.patients.escalationCounter,
-            set: (value) => {
-                if (addEscalation.value) {
-                    store.state.patients.escalationCounter = value;
-                } else {
-                    if (Object.values(escalation).filter(item => item != '').length >= 7) {
-                        submitEscalationForm();
-                    } else {
-                        errorSwal('All fields(*) are required!')
-                        store.state.patients.escalationCounter  = 0;
-                    }
-                }
-
-            },
-        })
+      get: () => store.state.patients.escalationCounter,
+      set: (value) => {
+        if (addEscalation.value) {
+          store.state.patients.escalationCounter = value;
+        } else {
+          if (
+            Object.values(escalation).filter((item) => item != "").length >= 7
+          ) {
+            submitEscalationForm();
+          } else {
+            errorSwal("All fields(*) are required!");
+            store.state.patients.escalationCounter = 0;
+          }
+        }
+      },
+    });
     const next = () => {
       store.commit("escalationCounterPlus");
     };
@@ -417,7 +421,7 @@ export default {
       escalation.staffIds = val;
       console.log(val);
     };
-    
+
     const notesList = computed(() => {
       return store.state.patients.escalationNotesList;
     });
@@ -429,126 +433,125 @@ export default {
       return store.state.patients.addBasicEscalation;
     });
 
+    const formEscalationDetails = reactive({
+      ...escalationDetails,
+    });
+
     function submitEscalationForm() {
-      if(addEscalation.value==null){
+      if (addEscalation.value == null) {
         store.dispatch("addBasicEscalation", {
-        escalationType: escalation.escalationType,
-        escalationDescription: escalation.escalationDescription,
-        flagId: escalation.flagId,
-        dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
-        staffIds: escalation.staffIds,
-        referenceId: escalation.referenceId?escalation.referenceId:route.params.udid,
-        entityType: "patient",
-            })
-      }else{
+          escalationType: escalation.escalationType,
+          escalationDescription: escalation.escalationDescription,
+          flagId: escalation.flagId,
+          dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
+          staffIds: escalation.staffIds,
+          referenceId: escalation.referenceId
+            ? escalation.referenceId
+            : route.params.udid,
+          entityType: "patient",
+        });
+      } else {
         store.dispatch("updateBasicEscalation", {
-        escalationType: escalation.escalationType,
-        escalationDescription: escalation.escalationDescription,
-        flagId: escalation.flagId,
-        dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
-        staffIds: escalation.staffIds,
-        referenceId: escalation.referenceId?escalation.referenceId:route.params.udid,
-        entityType: "patient",
-        escalationId:addEscalation.value.id
-            })
+          escalationType: escalation.escalationType,
+          escalationDescription: escalation.escalationDescription,
+          flagId: escalation.flagId,
+          dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
+          staffIds: escalation.staffIds,
+          referenceId: escalation.referenceId
+            ? escalation.referenceId
+            : route.params.udid,
+          entityType: "patient",
+          escalationId: addEscalation.value.id,
+        });
+        Object.assign(escalationDetails, formEscalationDetails);
       }
     }
 
-    
-
-     const form = reactive({
-        ...escalation,
-        });
+    const form = reactive({
+      ...escalation,
+    });
 
     function submitDetailsForm() {
-      if (escalationDetails.notesId.length > 0 && addEscalation.value.id) {
-        store.dispatch("addEscalationNote", {
-          data: {
-            notesId: escalationDetails.notesId,
-            escalationType: 260,
-          },
-          escalationId: addEscalation.value.id,
-        }).then((response)=>{
-            if(response==true){
-                status.value=true
-            }
-        })
+      errorMsg.value = [];
+      let check = true;
+      if (
+        escalationDetails.notesId.length == 0 &&
+        escalation.escalationType.includes(260)
+      ) {
+        check = false;
+        errorMsg.value.push("Notes Required.");
       }
-      if (escalationDetails.vitalId.length > 0 && addEscalation.value.id) {
-        store.dispatch("addEscalationVital", {
-          data: {
-            vitalId: escalationDetails.vitalId,
-            escalationType: 259,
-          },
-          escalationId: addEscalation.value.id,
-        }).then((response)=>{
-            if(response==true){
-                status.value=true
-            }
-        })
+      if (
+        escalationDetails.vitalId.length == 0 &&
+        escalation.escalationType.includes(259)
+      ) {
+        check = false;
+        errorMsg.value.push("Vitals Required.");
       }
-      if (escalationDetails.carePlan.length > 0 && addEscalation.value.id) {
-        store.dispatch("addEscalationCarePlan", {
-          data: {
-            carePlan: escalationDetails.carePlan,
-            escalationType: 262,
-          },
-          escalationId: addEscalation.value.id,
-        }).then((response)=>{
-            if(response==true){
-                status.value=true
-            }
-        })
+      if (
+        escalationDetails.carePlan.length == 0 &&
+        escalation.escalationType.includes(262)
+      ) {
+        check = false;
+        errorMsg.value.push("Care plan Required.");
       }
-      if (escalationDetails.flagIds.length > 0 && addEscalation.value.id) {
-        store.dispatch("addEscalationFlag", {
-          data: {
-            flagIds: escalationDetails.flagIds,
-            escalationType: 261,
-          },
-          escalationId: addEscalation.value.id,
-        }).then((response)=>{
-            if(response==true){
-                status.value=true
+      if (
+        escalationDetails.flagIds.length == 0 &&
+        escalation.escalationType.includes(261)
+      ) {
+        check = false;
+        errorMsg.value.push("Flags Required.");
+      } else if (check) {
+        store
+          .dispatch("addEscalationDetails", {
+            escalationDetails: escalationDetails,
+            escalationId: addEscalation.value.id,
+          })
+          .then((response) => {
+            if (response == true) {
+              successSwal("Data saved Successfully!");
+              emit("saveModal", false);
+              status.value = false;
+              store.dispatch("escalationList", {
+                referenceId: escalation.referenceId
+                  ? escalation.referenceId
+                  : route.params.udid,
+                entityType: "patient",
+              });
+              Object.assign(escalation, form);
+              store.dispatch("escalation");
+              store.state.patients.addBasicEscalation = null;
+              Object.assign(escalationDetails, formEscalationDetails);
             }
-        })
+          });
       }
-
-    setTimeout(() => { 
-        if(status.value==true){
-            successSwal('Data saved Successfully!')
-            emit("saveModal", false)
-            status.value =false
-            store.dispatch('escalationList', {referenceId:escalation.referenceId?escalation.referenceId:route.params.udid,entityType:'patient'})
-            Object.assign(escalation, form)
-            store.dispatch("escalation")
-        }
-    }, 3000)
     }
 
-    function checkChangeInput() {
-        store.commit('checkChangeInput', true)
+    function checkChangeInput(val) {
+      store.commit("checkChangeInput", true);
+      console.log(val)
     }
     const checkFieldsData = computed(() => {
-        return store.state.common.checkChangeInput;
-    })
+      return store.state.common.checkChangeInput;
+    });
 
     const closeModal = () => {
       if (checkFieldsData.value) {
-                warningSwal(messages.modalWarning).then((response) => {
-                    if (response == true) {
-                        emit("saveModal", false)
-                        Object.assign(escalation, form);
-                        store.commit("resetCounter")
-                        store.commit('checkChangeInput', false)
-                        store.state.patients.addBasicEscalation = null
-                    } else {
-                        emit("saveModal", true);
-                    }
-                });
-            }else{
-                // 
-            }
+        warningSwal(messages.modalWarning).then((response) => {
+          if (response == true) {
+            emit("saveModal", false);
+            Object.assign(escalation, form);
+            Object.assign(escalationDetails, formEscalationDetails);
+            store.commit("resetCounter");
+            store.commit("checkChangeInput", false);
+            store.state.patients.addBasicEscalation = null;
+          } else {
+            emit("saveModal", true);
+          }
+        });
+      } else {
+        //
+      }
     };
 
     function escalationType(e) {
@@ -561,106 +564,125 @@ export default {
       return store.state.patients.esacalationFlagList;
     });
 
-    // function showButton(value) {
-    //   button.value = value;
-    // }
-    onMounted(()=>{
+    onMounted(() => {
       store.dispatch("timeLine", 123).then(() => {
-        apiCall(timeLineButton.value)
-      })
-    })
-     const timeLineButton = store.getters.dashboardTimeLineButton
+        apiCall(timeLineButton.value);
+      });
+    });
+    const timeLineButton = store.getters.dashboardTimeLineButton;
 
-    function showButton(id=123) {
+    function showButton(id = 123) {
       store.dispatch("timeLine", id).then(() => {
-        apiCall(timeLineButton.value)
-      })
-
+        apiCall(timeLineButton.value);
+      });
     }
 
-    const handlePatientChange = (val) =>{
-       escalation.referenceId = val;
-       store.dispatch("timeLine", 123).then(() => {
-        apiCall(timeLineButton.value)
-      })
-    }
+    const handlePatientChange = (val) => {
+      escalation.referenceId = val;
+      store.dispatch("timeLine", 123).then(() => {
+        apiCall(timeLineButton.value);
+      });
+    };
 
-    let from = moment()
-    let to = moment()
+    let from = moment();
+    let to = moment();
     function apiCall(data) {
-             let dateFormate = ''
-            if (data.globalCodeId == 122) {
-                from = moment()
-                to = moment().subtract(data.number, data.intervalType);
-            } else if (data.globalCodeId == 123) {
-                from = moment();
+      let dateFormate = "";
+      if (data.globalCodeId == 122) {
+        from = moment();
+        to = moment().subtract(data.number, data.intervalType);
+      } else if (data.globalCodeId == 123) {
+        from = moment();
 
-                to = moment().subtract(data.number, data.intervalType);
-            } else if (data.globalCodeId == 124) {
-                from = moment();
-                to = moment().subtract(data.number, data.intervalType);
-            } else {
-                from = moment();
-                to = moment().subtract(data.number, data.intervalType);
-            }
-            
-            if (data.globalCodeId == 122) {
-                dateFormate = {
-                    fromDate: from ? timeStamp(startimeAdd(from)) : '',
-                    toDate: to ? timeStamp(endTimeAdd(to)) : ''
-                }
-            } else {
-                dateFormate = {
-                    fromDate: timeStamp(startimeAdd(to)),
-                    toDate: timeStamp(endTimeAdd(from))
-                }
-            }
-            if(route.params.udid){
-              store.dispatch('escalationNotesList', {id:route.params.udid,date:dateFormate})
-              store.dispatch('escalationVitalList', {id:route.params.udid,date:dateFormate})
-              store.dispatch('esacalationCarePlansList', {id:route.params.udid,date:dateFormate})
-              store.dispatch('esacalationFlagList', {id:route.params.udid,date:dateFormate})
-            }else if(escalation.referenceId){
-              store.dispatch('escalationNotesList', {id:escalation.referenceId,date:dateFormate})
-              store.dispatch('escalationVitalList', {id:escalation.referenceId,date:dateFormate})
-              store.dispatch('esacalationCarePlansList', {id:escalation.referenceId,date:dateFormate})
-              store.dispatch('esacalationFlagList', {id:escalation.referenceId,date:dateFormate})
-            }
+        to = moment().subtract(data.number, data.intervalType);
+      } else if (data.globalCodeId == 124) {
+        from = moment();
+        to = moment().subtract(data.number, data.intervalType);
+      } else {
+        from = moment();
+        to = moment().subtract(data.number, data.intervalType);
+      }
 
-          // console.log(from, to,dateFormate);
-          
-            
-        }
+      if (data.globalCodeId == 122) {
+        dateFormate = {
+          fromDate: from ? timeStamp(startimeAdd(from)) : "",
+          toDate: to ? timeStamp(endTimeAdd(to)) : "",
+        };
+      } else {
+        dateFormate = {
+          fromDate: timeStamp(startimeAdd(to)),
+          toDate: timeStamp(endTimeAdd(from)),
+        };
+      }
+      if (route.params.udid) {
+        store.dispatch("escalationNotesList", {
+          id: route.params.udid,
+          date: dateFormate,
+        });
+        store.dispatch("escalationVitalList", {
+          id: route.params.udid,
+          date: dateFormate,
+        });
+        store.dispatch("esacalationCarePlansList", {
+          id: route.params.udid,
+          date: dateFormate,
+        });
+        store.dispatch("esacalationFlagList", {
+          id: route.params.udid,
+          date: dateFormate,
+        });
+      } else if (escalation.referenceId) {
+        store.dispatch("escalationNotesList", {
+          id: escalation.referenceId,
+          date: dateFormate,
+        });
+        store.dispatch("escalationVitalList", {
+          id: escalation.referenceId,
+          date: dateFormate,
+        });
+        store.dispatch("esacalationCarePlansList", {
+          id: escalation.referenceId,
+          date: dateFormate,
+        });
+        store.dispatch("esacalationFlagList", {
+          id: escalation.referenceId,
+          date: dateFormate,
+        });
+      }
+
+      // console.log(from, to,dateFormate);
+    }
 
     const noteSelection = {
       onChange: (selectedRowKeys) => {
-        escalationDetails.notesId = selectedRowKeys
-      }
+        escalationDetails.notesId = selectedRowKeys;
+      },
     };
     const vitalSelection = {
       onChange: (selectedRowKeys) => {
-        escalationDetails.vitalId = selectedRowKeys
-      }
+        escalationDetails.vitalId = selectedRowKeys;
+      },
     };
 
     const carePlanSelection = {
       onChange: (selectedRowKeys) => {
-        escalationDetails.carePlan = selectedRowKeys
-      }
+        escalationDetails.carePlan = selectedRowKeys;
+      },
     };
 
     const flagSelection = {
       onChange: (selectedRowKeys) => {
-        escalationDetails.flagIds = selectedRowKeys
-      }
+        escalationDetails.flagIds = selectedRowKeys;
+      },
     };
 
-    
     return {
+      errorMsg,
+      formEscalationDetails,
       paramId,
       handlePatientChange,
-      timeline:store.getters.timeline,
-      Buttons:store.getters.dashboardTimeLineButton,
+      timeline: store.getters.timeline,
+      Buttons: store.getters.dashboardTimeLineButton,
       flagSelection,
       carePlanSelection,
       vitalSelection,
@@ -717,5 +739,8 @@ export default {
   padding: 5px;
   background-color: #f03131f3;
   color: #fff;
+}
+.errorMsg {
+  color: #f03131f3;
 }
 </style>

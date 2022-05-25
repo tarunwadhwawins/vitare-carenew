@@ -60,7 +60,7 @@ import SearchField from "@/components/common/input/SearchField";
 import { useRoute, useRouter } from 'vue-router';
 const columnData = [
   {
-    title: "Patient Name",
+    title: "Patient",
     dataIndex: "patientName",
     sorter: true,
     slots: {
