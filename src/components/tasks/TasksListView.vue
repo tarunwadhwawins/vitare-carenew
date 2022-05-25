@@ -84,7 +84,11 @@ const tasksListColumns=[
 				customRender: 'category'
 			}
 		},
-		
+        {
+			title: 'Start Date ',
+			dataIndex: 'startDate',
+			sorter: true
+        },
 		{
 			title: 'Due Date ',
 			dataIndex: 'dueDate',

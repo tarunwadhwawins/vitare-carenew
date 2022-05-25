@@ -101,7 +101,7 @@ export const tasksDelete = async ({ commit }, id) => {
 export const updateTask = async ({ commit }, data) => {
 	commit('loadingTableStatus', true);
 
-	await ServiceMethodService.common('put', `task/${data.id.id}`, null, data.data)
+	await ServiceMethodService.common('put', `task/${data.id}`, null, data.data)
 		.then((response) => {
 			commit('updateTask', response.data.data);
 			successSwal(response.data.message);
