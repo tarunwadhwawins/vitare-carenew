@@ -23,7 +23,7 @@ export const login = async ({ commit }, user) => {
 				.catch((error) => {
 					errorLogWithDeviceInfo(error.response)
 				})
-		}, ((response.data.expiresIn/100)-(10*1000)));
+		}, (((response.data.expiresIn/100-10)*1000)));
 		// end setInterval
 		commit('loginSuccess', response.data);
 		roleAccess({ commit })
@@ -124,7 +124,7 @@ export const refreshToken = async ({ commit }) => {
 				.catch((error) => {
 					errorLogWithDeviceInfo(error.response)
 				})
-		}, ((response.data.expiresIn/100)-(10*1000)));
+		}, (((response.data.expiresIn/100-10)*1000)));
 		// end setInterval
 	})
 		.catch((error) => {
