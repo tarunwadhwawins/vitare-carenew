@@ -30,14 +30,14 @@
 				</a-col>-->
           <a-col :sm="24" :xs="24">
               <div class="text-right mt-28">
-                  <a-button class="blueBtn" html-type="submit">Start Call</a-button>
+                  <a-button class="blueBtn" html-type="submit" >Start Call</a-button>
               </div>
           </a-col>
         </a-row>
     </a-form>
   </a-tab-pane>
-  
 </a-tabs>
+ <Loader/>
 </a-modal>
 </template>
 
@@ -56,6 +56,7 @@ import { useRouter } from "vue-router";
 import { warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "../../config/messages";
 import PopulateWaitingRoomTable from "@/components/communications/tables/PopulateWaitingRoomTable";
+import Loader from "../loader/Loader.vue";
 const columns =[
         {
           title: "Patient Name",
@@ -84,8 +85,9 @@ export default {
   components: {
     PatientDropDown,
     // GlobalCodeDropDown,
-    PopulateWaitingRoomTable
-  },
+    PopulateWaitingRoomTable,
+    Loader
+},
   setup(props, { emit }) {
     const store = useStore();
     const router = useRouter();
@@ -173,6 +175,7 @@ export default {
     const newRequestsData = computed(() => {
       return store.state.communications.newRequests
     })
+    
     return {
       newRequestsData,
       columns,
