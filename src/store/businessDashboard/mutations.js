@@ -86,8 +86,22 @@ export const referalCount = (state, data) => {
 					return item.text;
 				})
 			},
-			yaxis: yaxis('Referral Count')
+			yaxis: yaxis('Referral Count'),
+			noData: {
+				text: "No data",
+				align: 'center',
+				verticalAlign: 'middle',
+				offsetX: 0,
+				offsetY: 0,
+				style: {
+					color: undefined,
+					fontSize: '24px',
+					fontWeight: 'bold'
+					//fontFamily: undefined
+				}
+			}
 		},
+
 		value: [
 			{
 				name: 'Name',
