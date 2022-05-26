@@ -108,7 +108,7 @@ export default {
           
           if(timeLineButton.value==null){
              
-            store.dispatch("timeLine", 123).then(()=>{
+            store.dispatch("timeLine", 122).then(()=>{
                 apiCall(timeLineButton.value)
             })
                 

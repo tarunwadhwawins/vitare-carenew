@@ -22,8 +22,8 @@
          <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  escalationCount">
             <ApexChart title="Escalations" type="bar" :height="350" :options="escalationCount.code" :series="escalationCount.value" linkTo="Escalation" :data="escalationRecord"></ApexChart>
         </a-col>
-         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && escalationList">
-             <a-card  title="Escalations List" class="common-card" >
+         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && escalationList" >
+             <a-card  title="Escalations List" class="common-card" style="height:436px">
                  <template #extra v-if="escalationList.length > 0"><router-link :to="{name:'Escalation'}">View All</router-link></template>
             <EscaltionTable :columnData="columnData" :escalationList="escalationList"  @showEscalationData="showEscalationData($event)" :height="286"/>
              </a-card>
@@ -33,8 +33,8 @@
         </a-col>
          <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) && tasksList">
              <a-card  title="My Tasks List" class="common-card" style="height:436px">
-                 <template #extra v-if="tasksList.length > 0"><router-link :to="{name:'TimeLogReport'}">View All</router-link></template>
-            <TaskTable @is-Edit="editTask($event)" :height="285" :tasksListColumns="tasksListColumns"></TaskTable>
+                 <template #extra v-if="tasksList.length > 0"><router-link :to="{name:'Tasks'}">View All</router-link></template>
+            <TaskTable @is-Edit="editTask($event)" :height="285" :tasksListColumns="tasksListColumns" @dashboard="taskApiCall"></TaskTable>
              </a-card>
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && patientsFlag">
@@ -75,7 +75,7 @@
   {
     title: "Escalation Type",
     dataIndex: "escalationType",
-    sorter: true,
+    //sorter: true,
     
     slots: {
       customRender: "escalationType",
@@ -202,8 +202,8 @@ export default {
 
     setup() {
         const store = useStore()
-        //const fromDate = ref(moment())
-        //const toDate = ref(moment())
+        const fromDate = ref()
+        const toDate = ref()
         const dateFilter = ref('')
         const timeLineButton = store.getters.dashboardTimeLineButton
  const escaltionViewModal = ref(false);
@@ -254,6 +254,8 @@ export default {
                 }
                 
             }
+             fromDate.value = dateFormate.fromDate
+             toDate.value = dateFormate.toDate
             dateFilter.value = dateFormate
             store.dispatch("counterCard", dateFormate)
             store.commit("dateFilter",dateFilter.value)
@@ -265,7 +267,7 @@ export default {
                 store.dispatch("tasksList", "?fromDate=" + dateFormate.fromDate + "&toDate=" + dateFormate.toDate+'&status=notIn');
             store.dispatch("appointmentCount", dateFormate)
             store.dispatch("escalationCount", dateFormate)
-            store.dispatch("escalation")
+            store.dispatch("escalation","?fromDate=" + dateFormate.fromDate + "&toDate=" + dateFormate.toDate+"&islimit=5")
 
         }
          const escalationList = computed(() => {
@@ -276,7 +278,7 @@ export default {
           
          if(timeLineButton.value==null){
               
-            store.dispatch("timeLine", 123).then(()=>{
+            store.dispatch("timeLine", 122).then(()=>{
                 apiCall(timeLineButton.value)
             })
                 
@@ -308,6 +310,9 @@ const editTask = (id) => {
                 store.dispatch('editTask',{id:id.id})
             
         };
+        function taskApiCall(){
+             store.dispatch("tasksList", "?fromDate=" + fromDate.value + "&toDate=" + toDate.value+'&status=notIn');
+        }
         return {
             editTask,
             visible,
@@ -332,7 +337,8 @@ const editTask = (id) => {
             escaltionModal,
             showEscalationData,
             tasksList:store.getters.tasksList,
-            tasksListColumns
+            tasksListColumns,
+            taskApiCall
         };
     },
 };
