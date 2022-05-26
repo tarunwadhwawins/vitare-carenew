@@ -467,13 +467,12 @@ export const patientDetails = (state, patient) => {
 }
 
 export const responsiblePerson = (state, data) => {
-  data[0].contactType = data[0].contactType.length > 0 ? JSON.parse(data[0].contactType) : [];
-  data[0].contactTime = data[0].contactTime.length > 0 ? JSON.parse(data[0].contactTime) : [];
-  data[0].gender = data[0].genderId;
-  data[0].relation = data[0].relationId;
-  data[0].self = data[0].self ? true : false;
 
-  state.responsiblePerson = data[0]
+  data.gender = data.genderId;
+  data.relation = data.relationId;
+  data.self = data.self ? true : false;
+
+  state.responsiblePerson = data
 }
 
 export const emergencyContact = (state, data) => {

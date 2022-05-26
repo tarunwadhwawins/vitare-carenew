@@ -88,6 +88,8 @@ export default {
         const searchoptions = ref([]);
         const PatientsModal = ref(false);
         const showModal = (value) => {
+            store.state.patients.addDemographic = null
+            store.state.patients.patientDetails = null
             PatientsModal.value = value;
         };
         const handleOk = (status) => {
