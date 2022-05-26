@@ -26,7 +26,6 @@
                   <a-button class="endCall" :size="size" block @click="hangUp()">End Call</a-button>
                 </div>
               </div>
-              
               <ChatRightPanel v-if="patientId" :idPatient="patientId" :currentUrl="currentUrl" />
             </div>
           </div>
@@ -37,8 +36,8 @@
   </div>
 </template>
 <script>
-  import Sidebar from "../layout/sidebar/Sidebar";
-  import Header from "../layout/header/Header";
+  import Sidebar from "../layout/sidebar/Sidebar"
+  import Header from "../layout/header/Header"
   import {
     ref,
     toRefs,
@@ -47,22 +46,21 @@
     reactive,
     watchEffect,
     onUnmounted,
-  } from "vue";
+  } from "vue"
   import {
     useRoute,
     useRouter
   } from "vue-router";
-  import { useStore } from "vuex";
-  import Loader from "@/components/loader/VideoLoader";
-  import { Web } from "@/assets/js/sip-0.20.0";
-  import { notification } from "ant-design-vue";
+  import { useStore } from "vuex"
+  import Loader from "@/components/loader/VideoLoader"
+  import { Web } from "@/assets/js/sip-0.20.0"
+  import { notification } from "ant-design-vue"
   import {
     successSwal,
     deCodeString,
-    dateFormat,
-  } from "@/commonMethods/commonMethod";
-  import { message } from "ant-design-vue";
-  import moment from "moment";
+  } from "@/commonMethods/commonMethod"
+  import { message } from "ant-design-vue"
+  import moment from "moment"
   import ChatRightPanel from "@/components/common/communications/ChatRightPanel"
 
   export default {
@@ -76,28 +74,24 @@
     setup() {
       // the DOM element(video) will be assigned to the ref after initial render
       const sipDomain = process.env.VUE_APP_SIP_DOMAIN;
-      const store = useStore();
-      const videoCall = ref();
-      const notesDetailVisible = ref(false);
-      const documentDetailVisible = ref(false);
-      const patientVitalsVisible = ref(false);
-      const timelineDetailVisible = ref(true);
-      const decodedUrl = ref();
-      const visibleDrawer = ref(false);
-      const route = useRoute();
-      const router = useRouter();
-      const profile = ref(false);
+      const store = useStore()
+      const videoCall = ref()
+      const decodedUrl = ref()
+      const visibleDrawer = ref(false)
+      const route = useRoute()
+      const router = useRouter()
+      const profile = ref(false)
       const tabvalue = reactive({
         tab: [],
       });
       //copy url
-      const currentUrl = ref();
+      const currentUrl = ref()
       async function copyURL(url) {
         try {
           await navigator.clipboard.writeText(url);
-          message.success("Copied");
+          message.success("Copied")
         } catch ($e) {
-          message.error("Cannot copy");
+          message.error("Cannot copy")
         }
       }
       //end url
@@ -268,33 +262,6 @@
 
       const patientId = ref(null)
 
-      const showNotesModal = () => {
-        notesDetailVisible.value = true;
-        documentDetailVisible.value = false;
-        patientVitalsVisible.value = false;
-        timelineDetailVisible.value = false;
-      };
-
-      const showDocumentsModal = () => {
-        documentDetailVisible.value = true;
-        notesDetailVisible.value = false;
-        patientVitalsVisible.value = false;
-        timelineDetailVisible.value = false;
-      };
-      const showVitalssModal = () => {
-        patientVitalsVisible.value = true;
-        notesDetailVisible.value = false;
-        documentDetailVisible.value = false;
-        timelineDetailVisible.value = false;
-      };
-
-      const showTimelineModal = () => {
-        patientVitalsVisible.value = false;
-        notesDetailVisible.value = false;
-        documentDetailVisible.value = false;
-        timelineDetailVisible.value = true;
-      };
-
       // used for patient vital
       watchEffect(() => {
         if (getVideoDetails.value || acceptVideoCallDetails.value) {
@@ -383,9 +350,7 @@
         );
         visibleDrawer.value = true;
       };
-      const onClose = () => {
-        visibleDrawer.value = false;
-      };
+      
 
       const patientTimeline = computed(() => {
         return store.state.patients.patientTimeline;
@@ -405,17 +370,13 @@
         return store.state.patients.patientDetails;
       });
       return {
-        showTimelineModal,
-        timelineDetailVisible,
         patientDetails,
         chnageTab,
         ...toRefs(tabvalue),
         timeLineType: store.getters.timeLineType,
         patientUdid,
         moment,
-        dateFormat,
         patientTimeline,
-        onClose,
         openDrawer,
         visibleDrawer,
         guestUser,
@@ -424,12 +385,6 @@
         copyURL,
         currentUrl,
         deCodeString,
-        showVitalssModal,
-        patientVitalsVisible,
-        showDocumentsModal,
-        documentDetailVisible,
-        showNotesModal,
-        notesDetailVisible,
         acceptVideoCallDetails,
         upcomingCallDetails,
         getVideoDetails,

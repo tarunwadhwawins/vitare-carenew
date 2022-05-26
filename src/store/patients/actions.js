@@ -1,7 +1,7 @@
 import serviceMethod from '@/services/serviceMethod';
 import { 
   successSwal, 
-  // errorSwal,
+  errorSwal,
   errorLogWithDeviceInfo 
 } from '@/commonMethods/commonMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
@@ -932,7 +932,7 @@ export const patientDetails = async ({commit}, id) => {
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 500) {
-      // errorSwal(error.response.data.message)
+      errorSwal('User Deleted/Deactivated')
       commit('loadingStatus', false)
     }
   })
