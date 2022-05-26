@@ -165,6 +165,7 @@
             </div>
         </a-col>
     </a-row>
+    <Loader/>
 </a-modal>
 </template>
 
@@ -187,6 +188,7 @@ import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue";
 import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue";
 import Flags from "@/components/common/flags/Flags";
 import { useRoute } from "vue-router";
+import Loader from "@/components/loader/Loader.vue";
 const notesColumns = [
   {
     title: "Select All",
@@ -351,7 +353,8 @@ export default {
     StaffDropDown,
     Flags,
     PatientDropDown,
-  },
+    Loader
+},
   setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
@@ -359,6 +362,7 @@ export default {
     const errorMsg = ref([]);
     const button = ref(2);
     const status = ref(false);
+    const formRef = ref()
     const paramId = ref(route.params.udid);
     const escalation = reactive({
       escalationType: [],
@@ -366,7 +370,7 @@ export default {
       flagId: "",
       dueBy: "",
       staffIds: [],
-      referenceId: '',
+      referenceId: route.params.udid,
       entityType: "patient",
     });
 
@@ -438,6 +442,7 @@ export default {
     });
 
     function submitEscalationForm() {
+      console.log("referenceId",escalation.referenceId)
       if (addEscalation.value == null) {
         store.dispatch("addBasicEscalation", {
           escalationType: escalation.escalationType,
@@ -449,7 +454,13 @@ export default {
             ? escalation.referenceId
             : route.params.udid,
           entityType: "patient",
-        });
+        }).then((response)=>{
+          if(response==true){
+            store.dispatch("timeLine", 123).then(() => {
+              apiCall(timeLineButton.value);
+            });
+          }
+        })
       } else {
         store.dispatch("updateBasicEscalation", {
           escalationType: escalation.escalationType,
@@ -520,8 +531,12 @@ export default {
               });
               Object.assign(escalation, form);
               store.dispatch("escalation");
+              store.commit("resetEscalationCounter")
               store.state.patients.addBasicEscalation = null;
               Object.assign(escalationDetails, formEscalationDetails);
+              store.dispatch("timeLine", 122).then(() => {
+                apiCall(timeLineButton.value);
+              });
             }
           });
       }
@@ -531,6 +546,7 @@ export default {
     function checkChangeInput(val) {
       store.commit("checkChangeInput", true);
       console.log(val)
+      
     }
     const checkFieldsData = computed(() => {
       return store.state.common.checkChangeInput;
@@ -543,7 +559,7 @@ export default {
             emit("saveModal", false);
             Object.assign(escalation, form);
             Object.assign(escalationDetails, formEscalationDetails);
-            store.commit("resetCounter");
+            store.commit("resetEscalationCounter");
             store.commit("checkChangeInput", false);
             store.state.patients.addBasicEscalation = null;
           } else {
@@ -551,7 +567,7 @@ export default {
           }
         });
       } else {
-        //
+         formRef.value.resetFields()
       }
     };
 
@@ -566,9 +582,9 @@ export default {
     });
 
     onMounted(() => {
-      store.dispatch("timeLine", 123).then(() => {
-        apiCall(timeLineButton.value);
-      });
+      // store.dispatch("timeLine", 123).then(() => {
+      //   apiCall(timeLineButton.value);
+      // });
     });
     const timeLineButton = store.getters.dashboardTimeLineButton;
 
@@ -580,9 +596,6 @@ export default {
 
     const handlePatientChange = (val) => {
       escalation.referenceId = val;
-      store.dispatch("timeLine", 123).then(() => {
-        apiCall(timeLineButton.value);
-      });
     };
 
     let from = moment();
@@ -678,6 +691,7 @@ export default {
     };
 
     return {
+      formRef,
       errorMsg,
       formEscalationDetails,
       paramId,

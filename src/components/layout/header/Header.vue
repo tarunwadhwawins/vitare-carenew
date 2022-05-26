@@ -228,7 +228,7 @@ import {
   onMounted,
 } from "vue";
 
-import EscaltionModal from "@/components/patients/patientSummary/escalations/EscalationModal";
+// import EscaltionModal from "@/components/patients/patientSummary/escalations/EscalationModal";
 
 import SendMessage from "@/components/modals/SendMessage";
 import { useStore } from "vuex";
@@ -265,13 +265,12 @@ export default defineComponent({
     PatientsModal: defineAsyncComponent(() =>
       import("@/components/modals/PatientsModal")
     ),
-    //CoordinatorsModal:defineAsyncComponent(() =>import("@/components/modals/CoordinatorsModal")),
+    EscaltionModal:defineAsyncComponent(() =>import("@/components/patients/patientSummary/escalations/EscalationModal")),
     AddStartCall: defineAsyncComponent(() =>
       import("@/components/modals/AddStartCall")
     ),
     SendMessage,
     HeaderSearch,
-    EscaltionModal,
   },
   props: {},
   setup(props, { emit }) {
