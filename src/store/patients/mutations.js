@@ -106,6 +106,13 @@ export const patient = (state, data) => {
     dataIndex: "gender",
    
   },
+  {
+    title: 'Status',
+    dataIndex: 'isActive',
+    slots: {
+      customRender: 'status'
+    }
+  },
 {
   title:"Action ",
   dataIndex: "actions",
@@ -117,6 +124,7 @@ export const patient = (state, data) => {
   state.patientMeta = data.meta.pagination;
   state.patientList = data.data
     .map(element => {
+      element.isActive= element.isActive=='Active' ? true : false,
       element.flags = element.flagColor,
         element.lastName = element.lastName ? element.lastName : '',
         element.firstName = element.name ? element.name : '',
