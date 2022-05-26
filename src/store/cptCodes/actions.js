@@ -1,6 +1,6 @@
 import ServiceMethodService from '@/services/serviceMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
-import { successSwal, errorSwal,errorLogWithDeviceInfo} from '@/commonMethods/commonMethod'
+import { successSwal,errorLogWithDeviceInfo} from '@/commonMethods/commonMethod'
 export const cptCodesList = async ({ commit },page) => {
 	commit('loadingStatus', true)
 	let link = page? API_ENDPOINTS['cptCodes']+"?active=1"+page: API_ENDPOINTS['cptCodes']+"?active=1"
@@ -25,7 +25,7 @@ export const addCptCode = async ({ commit }, data) => {
 	})
 	.catch((error) => {
 		errorLogWithDeviceInfo(error.response)
-		errorSwal(error.response.data.message)
+		// errorSwal(error.response.data.message)
 		commit('errorMsg', error.response.data)
 	})
 }

@@ -192,7 +192,7 @@ export default {
         };
 
         function callApiFromModal() {
-            onlyView.value = false
+            taskVisibleView.value = false
             if (props.height) {
                 emit("dashboard")
 

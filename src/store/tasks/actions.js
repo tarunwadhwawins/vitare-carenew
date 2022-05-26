@@ -1,5 +1,5 @@
 import ServiceMethodService from '@/services/serviceMethod';
-import { successSwal, errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod';
+import { successSwal, errorLogWithDeviceInfo } from '@/commonMethods/commonMethod';
 import { API_ENDPOINTS } from '@/config/apiConfig';
 
 export const tasksList = async ({ commit }, page) => {
@@ -17,7 +17,7 @@ export const tasksList = async ({ commit }, page) => {
 				commit('errorMsg', error.response.data);
 				commit('loadingTableStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingTableStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -41,7 +41,7 @@ export const addTask = async ({ commit }, data) => {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -66,7 +66,7 @@ export const editTask = async ({ commit }, id) => {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -89,7 +89,7 @@ export const tasksDelete = async ({ commit }, id) => {
 				commit('errorMsg', error.response.data);
 				commit('loadingTableStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingTableStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -113,7 +113,7 @@ export const updateTask = async ({ commit }, data) => {
 				commit('errorMsg', error.response.data);
 				commit('loadingTableStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingTableStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -136,7 +136,7 @@ export const taskStatus = async ({ commit }) => {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -157,7 +157,7 @@ export const allTaskStatus = async ({ commit }) => {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -178,7 +178,7 @@ export const completeTaskRate = async ({ commit }) => {
 			if (error.response.status === 422) {
 				commit('errorMsg', error.response.data);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
 			}
@@ -198,7 +198,7 @@ export const taskPriority = async ({ commit }) => {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -220,7 +220,7 @@ export const taskTeamMember = async ({ commit }) => {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -242,7 +242,7 @@ export const taskCategory = async ({ commit }) => {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)
@@ -262,7 +262,7 @@ export const searchTasks = async ({ commit }, params) => {
 				commit('errorMsg', error.response.data);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 500) {
-				errorSwal(error.response.data.message);
+				// errorSwal(error.response.data.message);
 				commit('loadingStatus', false);
 			} else if (error.response.status === 401) {
 				// commit('errorMsg', error.response.data.message)

@@ -1,6 +1,6 @@
 import serviceMethod from '@/services/serviceMethod'
 import { API_ENDPOINTS } from "@/config/apiConfig"
-import { successSwal, errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
+import { successSwal, errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
 
 export const provider = async ({
   commit
@@ -12,9 +12,9 @@ export const provider = async ({
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
   })
 }
@@ -31,7 +31,7 @@ export const providerLocation = async ({commit}, data) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     } else if (error.response.status === 401) {
       commit('errorMsg', error.response.data.message)
     }
@@ -50,7 +50,7 @@ export const editProviderLocation = async ({commit}, data) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     } else if (error.response.status === 401) {
       commit('errorMsg', error.response.data.message)
     }
@@ -71,7 +71,7 @@ export const updateProviderLocation = async ({commit}, data) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     } else if (error.response.status === 401) {
       commit('errorMsg', error.response.data.message)
     }
@@ -90,7 +90,7 @@ export const providersListAll = async ({
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     commit('loadingStatus', false)
-    errorSwal(error.response.data.message)
+    // errorSwal(error.response.data.message)
   })
 }
 
@@ -105,7 +105,7 @@ export const editSingleProvider = async ({ commit }, id) => {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
     } else if (error.response.status === 401) {
       commit('loadingStatus', false)
@@ -120,7 +120,7 @@ export const providerLocationList = async ({
    commit('loadingStatus', false)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
-    errorSwal(error.response.data.message)
+    // errorSwal(error.response.data.message)
     
   })
 }
@@ -131,7 +131,7 @@ export const deleteSingleProvider = async ({ commit }, data) => {
     successSwal(response.data.message)
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
-    errorSwal(error.response.data.message)
+    // errorSwal(error.response.data.message)
   })
 }
 
@@ -142,7 +142,7 @@ export const deleteProviderLocation = async ({ commit }, data) => {
    
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
-    errorSwal(error.response.data.message)
+    // errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
 
@@ -160,9 +160,9 @@ export const updateSingleProvider = async ({ commit }, data) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     } else if (error.response.status === 401) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
   })
 }

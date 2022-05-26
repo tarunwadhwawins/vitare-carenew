@@ -1,6 +1,13 @@
 import serviceMethod from '@/services/serviceMethod'
 import { API_ENDPOINTS } from "@/config/apiConfig"
-import { successSwal, errorSwal, startimeAdd, endTimeAdd, timeStamp,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
+import { 
+  successSwal,
+  //  errorSwal, 
+   startimeAdd, 
+   endTimeAdd, 
+   timeStamp,
+   errorLogWithDeviceInfo
+   } from '@/commonMethods/commonMethod'
 
 export const addAppointment = async ({
   commit
@@ -15,9 +22,9 @@ export const addAppointment = async ({
     if(error.response.status === 422){
       commit('errorMsg', error.response.data)
     }else if(error.response.status === 500){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }else if(error.response.status === 401){
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
     commit('loadingStatus', false)
   })
@@ -36,7 +43,7 @@ export const searchAppointment = async ({
   }).catch((error) => {
       errorLogWithDeviceInfo(error.response)
       commit('loadingStatus', false)
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     
   })
 }
@@ -113,7 +120,7 @@ export const appointmentDetails = async ({commit},id) => {
   }).catch((error) => {
       errorLogWithDeviceInfo(error.response)
       commit('loadingStatus', false)
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     
   })
 }
@@ -129,7 +136,7 @@ export const appintmentStatus = async ({commit},data) => {
   }).catch((error) => {
       errorLogWithDeviceInfo(error.response)
       commit('loadingStatus', false)
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     
   })
 

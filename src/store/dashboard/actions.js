@@ -1,5 +1,5 @@
-import ServiceMethodService from '../../services/serviceMethod';
-import { API_ENDPOINTS } from "../../config/apiConfig"
+import ServiceMethodService from '@/services/serviceMethod';
+import { API_ENDPOINTS } from "@/config/apiConfig"
 import { errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
 export const timeLine = async ({ commit }, id) => {
     commit('loadingStatus', true)
