@@ -117,9 +117,9 @@ export default {
         patientId: startCall.patientId,
         flag: startCall.flag,
         note: startCall.note,
-      });
-      setTimeout(() => {
-        if (conferenceId.value) {
+      }).then((response)=>{
+        if(response==true){
+          if (conferenceId.value) {
           router.push({
             name: "videoCall",
             params: {
@@ -128,7 +128,8 @@ export default {
           });
         }
         emit("is-visibale", false);
-      }, 2000);
+        }
+      })
     }
 
     onUnmounted(() => {
