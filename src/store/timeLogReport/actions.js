@@ -1,5 +1,5 @@
 import ServiceMethodService from '@/services/serviceMethod'
-import { successSwal, errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
+import { successSwal, errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
 
 
 export const timeLogReportList = async ({ commit }, page) => {
@@ -14,7 +14,7 @@ export const timeLogReportList = async ({ commit }, page) => {
 			commit('errorMsg', error.response.data)
 			commit('loadingTableStatus', false)
 		} else if (error.response.status === 500) {
-			errorSwal(error.response.data.message)
+			// errorSwal(error.response.data.message)
 			commit('loadingTableStatus', false)
 		} else if (error.response.status === 401) {
 			commit('loadingTableStatus', false)
@@ -41,7 +41,7 @@ export const reportExport = async ({ commit }, data) => {
 		if (error.response.status === 422) {
 			commit('errorMsg', error.response.data)
 		} else if (error.response.status === 500) {
-			errorSwal(error.response.data.message)
+			// errorSwal(error.response.data.message)
 		} else if (error.response.status === 401) {
 			commit('errorMsg', error.response.data.message)
 		}
@@ -57,7 +57,7 @@ export const editAuditTimeLog = async ({ commit }, id) => {
 			commit('errorMsg', error.response.data)
 			commit('loadingStatus', false)
 		} else if (error.response.status === 500) {
-			errorSwal(error.response.data.message)
+			// errorSwal(error.response.data.message)
 			commit('loadingStatus', false)
 		} else if (error.response.status === 401) {
 			commit('loadingStatus', false)
@@ -75,7 +75,7 @@ export const updateAuditTimeLog = async ({ commit }, data) => {
 			commit('errorMsg', error.response.data)
 			commit('loadingStatus', false)
 		} else if (error.response.status === 500) {
-			errorSwal(error.response.data.message)
+			// errorSwal(error.response.data.message)
 			commit('loadingStatus', false)
 		} else if (error.response.status === 401) {
 			commit('loadingStatus', false)
@@ -96,7 +96,7 @@ export const deleteTimeLog = async ({ commit }, uuid) => {
 			commit('errorMsg', error.response.data)
 			commit('loadingStatus', false)
 		} else if (error.response.status === 500) {
-			errorSwal(error.response.data.message)
+			// errorSwal(error.response.data.message)
 			commit('loadingStatus', false)
 		} else if (error.response.status === 401) {
 			commit('loadingStatus', false)

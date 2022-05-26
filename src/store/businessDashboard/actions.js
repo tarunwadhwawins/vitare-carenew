@@ -1,5 +1,5 @@
-import ServiceMethodService from '../../services/serviceMethod';
-import { API_ENDPOINTS } from "../../config/apiConfig"
+import ServiceMethodService from '@/services/serviceMethod';
+import { API_ENDPOINTS } from "@/config/apiConfig"
 import { errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
 export const callStatus = async ({ commit }, from) => {
     await ServiceMethodService.common("get", API_ENDPOINTS['callStatus'] + "?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {
