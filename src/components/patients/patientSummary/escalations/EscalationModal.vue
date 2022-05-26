@@ -442,7 +442,6 @@ export default {
     });
 
     function submitEscalationForm() {
-      console.log("referenceId",escalation.referenceId)
       if (addEscalation.value == null) {
         store.dispatch("addBasicEscalation", {
           escalationType: escalation.escalationType,
@@ -473,7 +472,13 @@ export default {
             : route.params.udid,
           entityType: "patient",
           escalationId: addEscalation.value.id,
-        });
+        }).then((response)=>{
+          if(response==true){
+            store.dispatch("timeLine", 123).then(() => {
+              apiCall(timeLineButton.value);
+            });
+          }
+        })
         Object.assign(escalationDetails, formEscalationDetails);
       }
     }
