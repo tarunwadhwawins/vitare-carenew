@@ -60,7 +60,7 @@
   // } from "@ant-design/icons-vue";
   import {
     useRoute,
-    // useRouter
+    useRouter
   } from "vue-router";
   import { useStore } from "vuex";
   import Loader from "@/components/loader/VideoLoader";
@@ -113,7 +113,7 @@
       const decodedUrl = ref();
       const visibleDrawer = ref(false);
       const route = useRoute();
-      // const router = useRouter();
+      const router = useRouter();
       const profile = ref(false);
       const tabvalue = reactive({
         tab: [],
@@ -191,7 +191,7 @@
                         status: "end",
                       });
                       successSwal("Call Ended! Thank You");
-                      // router.push("/dashboard");
+                      router.push("/dashboard");
                     }
                   },
                 },
@@ -242,7 +242,7 @@
                 });
             }
             else {
-              // router.push("/dashboard");
+              router.push("/dashboard");
             }
           //} //end conference video call
           });
@@ -275,7 +275,7 @@
           });
         } else {
           session.value.hangup().then(() => {
-            // router.push("/dashboard");
+            router.push("/dashboard");
           });
         }
       }
