@@ -345,6 +345,8 @@ export default defineComponent({
     const PatientsModal = ref(false);
 
     const addPatient = () => {
+      store.state.patients.addDemographic = null
+            store.state.patients.patientDetails = null
       PatientsModal.value = true;
     };
     const closeAppointModal = (status) => {
