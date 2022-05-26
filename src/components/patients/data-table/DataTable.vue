@@ -18,13 +18,14 @@
         <template #lastReadingDate>
             <WarningOutlined />
         </template>
+        <template #status="{record}"> 
+        <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" :disabled="!arrayToObjact(screensPermissions,63)"/>
+    </template>
         <template #action="{ record }" v-if="arrayToObjact(screensPermissions,63)">
             <a-tooltip placement="bottom" v-if="record.isActive=='Inactive'">
                 <template #title>
                     <span></span>
-                </template>
-                
-                       
+                </template>         
             </a-tooltip>
             <a-tooltip placement="bottom" v-else>
                 <template #title>
@@ -145,13 +146,23 @@ export default {
                 }
             })
         }
+        const updateStatus = (id, status) => {
+      const data = {
+        isActive: status,
+      };
+      store.dispatch("updatePatientStatus", {
+        id,
+        data,
+      });
+    };
         return {
             screensPermissions: store.getters.screensPermissions,
             arrayToObjact,
             meta,
             tableYScrollerCounterPage,
             handleTableChange,
-            deletePatients
+            deletePatients,
+            updateStatus
         };
     },
 };

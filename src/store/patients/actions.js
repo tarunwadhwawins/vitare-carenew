@@ -505,6 +505,21 @@ export const updatePatientProgram = async ({ commit }, data) => {
   })
 
 }
+export const updatePatientStatus = async ({ commit }, data) => {
+  await serviceMethod.common("put", 'patientStatus/'+data.id, null, data.data).then((response) => {
+    successSwal(response.data.message)
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      // errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      // errorSwal(error.response.data.message)
+    }
+  })
+
+}
 
 export const deleteProgram = async ({commit}, data) => {
   await serviceMethod.common("delete", `patient/${data.id}/program/${data.programID}`, null, null).then((response) => {

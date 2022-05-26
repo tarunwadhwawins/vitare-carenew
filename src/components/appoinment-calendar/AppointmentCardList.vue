@@ -82,8 +82,15 @@
 <div v-else></div>
 <a-modal width="1100px" centered v-model:visible="visible" title="Appointment" @ok="handleOk" maskClosable="true" @cancel="closeModal()">
     <a-table rowKey="id" :columns="columns" :data-source="getMoreAppointment">
-      <template #flags="text">
-        <span class="box" :style="{ 'background-color': text.text }"></span>
+      <template #flags="{ record }">
+        
+         <a-tooltip placement="bottom">
+                <template #title>
+                    <span>{{ record.flagName }}</span>
+                </template>
+                <a class="icons">
+                    <Flags :flag="record.flags"/></a>
+            </a-tooltip>
         <!-- <span class="box" :class="(text = text.match(/yellowBgColor/g))" v-if="text.match(/yellowBgColor/g)"></span> -->
       </template>
     </a-table>
@@ -93,7 +100,7 @@
 import { ref, reactive, computed } from "vue";
 import { FileAddOutlined } from "@ant-design/icons-vue";
 import { dateAndTimeFormate,arrayToObjact } from "@/commonMethods/commonMethod";
-
+import Flags from "@/components/common/flags/Flags";
 import { useStore } from "vuex";
 const columns = [
   {
@@ -149,6 +156,7 @@ const columns = [
 export default {
   components: {
     FileAddOutlined,
+    Flags
   },
   props: {
     cardData: {
