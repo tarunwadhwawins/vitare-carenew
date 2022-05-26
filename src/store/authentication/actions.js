@@ -12,6 +12,19 @@ export const login = async ({ commit }, user) => {
 		localStorage.setItem('auth', JSON.stringify(response.data));
 		localStorage.setItem('checkLogin',true);
 		localStorage.setItem('expiresIn', date.setSeconds(date.getSeconds() + ((response.data.expiresIn/100)-10)));
+		// setInterval for refresh token api
+		setInterval(async() => {
+			await ServiceMethodService.common("post", API_ENDPOINTS['refreshToken'], null, true).then((response) => {
+				commit('refreshTokenSuccess', response.data);
+				localStorage.setItem('token', response.data.token);
+				commit('expiresIn', date.setSeconds(date.getSeconds() + ((response.data.expiresIn/100)-10)))
+				localStorage.setItem('expiresIn', date.setSeconds(date.getSeconds() + ((response.data.expiresIn/100)-10)));
+			})
+				.catch((error) => {
+					errorLogWithDeviceInfo(error.response)
+				})
+		}, ((response.data.expiresIn/100)-(10*1000)));
+		// end setInterval
 		commit('loginSuccess', response.data);
 		roleAccess({ commit })
 
@@ -100,6 +113,19 @@ export const refreshToken = async ({ commit }) => {
 		localStorage.setItem('token', response.data.token);
 		commit('expiresIn', date.setSeconds(date.getSeconds() + ((response.data.expiresIn/100)-10)))
 		localStorage.setItem('expiresIn', date.setSeconds(date.getSeconds() + ((response.data.expiresIn/100)-10)));
+		// setInterval for refresh token api
+		setInterval(async() => {
+			await ServiceMethodService.common("post", API_ENDPOINTS['refreshToken'], null, true).then((response) => {
+				commit('refreshTokenSuccess', response.data);
+				localStorage.setItem('token', response.data.token);
+				commit('expiresIn', date.setSeconds(date.getSeconds() + ((response.data.expiresIn/100)-10)))
+				localStorage.setItem('expiresIn', date.setSeconds(date.getSeconds() + ((response.data.expiresIn/100)-10)));
+			})
+				.catch((error) => {
+					errorLogWithDeviceInfo(error.response)
+				})
+		}, ((response.data.expiresIn/100)-(10*1000)));
+		// end setInterval
 	})
 		.catch((error) => {
 			errorLogWithDeviceInfo(error.response)
