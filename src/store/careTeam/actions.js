@@ -3,6 +3,7 @@ import { API_ENDPOINTS } from "@/config/apiConfig";
 import {
 	successSwal,
 	// errorSwal,
+	errorLogWithDeviceInfo
 } from '@/commonMethods/commonMethod'
 
 export const addPatientCareCoordinator = async ({ commit }, {patientUdid, data}) => {
@@ -34,10 +35,7 @@ export const patientCareCoordinatorsList = async ({ commit }, {patientUdid, type
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
-		if (error.response.status == 401) {
-    //   errorSwal(error.response.data.message)
-		}
-		commit('failure', error.response.data);
+		errorLogWithDeviceInfo(error)
 		commit('loadingStatus', false)
 	})
 }

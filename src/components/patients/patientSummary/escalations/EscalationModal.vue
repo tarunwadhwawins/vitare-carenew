@@ -537,6 +537,7 @@ export default {
               Object.assign(escalation, form);
               store.dispatch("escalation");
               store.commit("resetEscalationCounter")
+              store.commit("checkChangeInput", false);
               store.state.patients.addBasicEscalation = null;
               Object.assign(escalationDetails, formEscalationDetails);
               store.dispatch("timeLine", 122).then(() => {
