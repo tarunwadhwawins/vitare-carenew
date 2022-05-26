@@ -547,5 +547,5 @@ export function secondsToTime(secs) {
 	return hours + ':' + minutes + ':' + seconds;
 }
 export const tableYScroller = 700
-export const tableYScrollerCounterPage = 500
+export const tableYScrollerCounterPage = 450
 export const disableHours = [1, 2, 3, 4, 5, 6, 7, 21, 22, 23, 24]

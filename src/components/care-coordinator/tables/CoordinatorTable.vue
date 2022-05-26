@@ -1,7 +1,7 @@
 <template>
 <a-table rowKey="id" :data-source="meta.staffs" :scroll="{ y: tableYScrollerCounterPage ,x: 1020}" :pagination=false :columns="meta.columns" @change="handleTableChange">
     <template #name="{text,record}" v-if="arrayToObjact(screensPermissions,38)">
-        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}">{{ text }}</router-link>
+        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}" >{{ text }}</router-link>
     </template>
     <template #name="{text}" v-else>
         <span>{{ text }}</span>
@@ -24,6 +24,7 @@
           <a class="icons">
               <DeleteOutlined @click="deletestaff(record.uuid)"/></a>
       </a-tooltip>
+     
   </template>
 </a-table>
 </template>

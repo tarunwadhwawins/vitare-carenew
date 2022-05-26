@@ -1,11 +1,12 @@
 <template>
 <div class="patientTable">
     <a-table rowKey="id" :columns="meta.column" :data-source="meta.patientList" :scroll="{ y: tableYScrollerCounterPage, x: 1500 }" :pagination="false" @change="handleTableChange">
-        <template #firstName="{ text, record }" v-if="arrayToObjact(screensPermissions, 63)">
-            <router-link :to="{ name: 'PatientSummary', params: { udid: record.id } }">{{ text }}</router-link>
+        <template #firstName="{ text, record }" v-if="arrayToObjact(screensPermissions, 63)" >
+            <router-link :to="{ name: 'PatientSummary', params: { udid: record.id } }" v-if="record.isActive!='Inactive'">{{ text }}</router-link>
+            <a v-else><span title="Inactive Patient"  >{{ text }}</span></a>
         </template>
         <template #firstName="{ text }" v-else>
-            <span>{{ text }}</span>
+            <span >{{ text }}</span>
         </template>
         <template #flags="text">
             <span class="box" :style="{ 'background-color': text.text }"></span>
@@ -18,12 +19,19 @@
             <WarningOutlined />
         </template>
         <template #action="{ record }" v-if="arrayToObjact(screensPermissions,63)">
-            <a-tooltip placement="bottom">
+            <a-tooltip placement="bottom" v-if="record.isActive=='Inactive'">
+                <template #title>
+                    <span></span>
+                </template>
+                
+                       
+            </a-tooltip>
+            <a-tooltip placement="bottom" v-else>
                 <template #title>
                     <span>{{$t('global.delete')}}</span>
                 </template>
                 <a class="icons">
-                    <DeleteOutlined @click="deletePatients(record.id)" /></a>
+                    <DeleteOutlined @click="deletePatients(record.id)" /></a>   
             </a-tooltip>
         </template>
     </a-table>
