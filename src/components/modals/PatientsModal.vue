@@ -650,25 +650,22 @@
 
                     <a-row :gutter="24" class="mb-24">
                         <a-col :md="24" :sm="24" :xs="24" class="mb-24">
-                            <!-- <a-input-search @change="changedValue" v-model:value="search" placeholder="Search..." style="width: 100%" size="large" @search="onSearch" /> -->
-														<!-- <GlobalCodeDropDown @change="selectedDiseases" v-model:value="conditions.condition" :globalCode="globalCode.healthCondition" mode="multiple" /> -->
-														<a-input @change="selectedDiseases($event)" size="large" placeholder="Search..." id="conditionBox" />
+													<a-input @change="selectedDiseases($event)" size="large" placeholder="Search..." id="conditionBox" />
                         </a-col>
                         <a-col :md="24" :sm="24" :xs="24">
                             <div class="form-group conditionsCheckboxs">
                                 <a-form-item name="condition" :rules="[{ required: true, message: $t('patient.conditions.healthConditions')+' '+$t('global.validation') }]">
-                                    <!-- Selected -->
-																		<p v-if="selectedDiseasesList && selectedDiseasesList.length > 0">
-																			<a-checkbox-group v-model:value="conditions.condition">
-                                        <a-checkbox @change="chooseDiseases" v-for="condition in selectedDiseasesList" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
-																			</a-checkbox-group>
-																		</p><br />
-																		------------
-																		<!-- Unselected -->
-                                    <p v-if="unSelectedDiseasesList && unSelectedDiseasesList.length > 0">
-																			<a-checkbox-group v-model:value="conditions.condition">
-                                        <a-checkbox @change="chooseDiseases" v-for="condition in unSelectedDiseasesList" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
-                                    </a-checkbox-group></p>
+																	<!-- Selected -->
+																	<p v-if="selectedDiseasesList && selectedDiseasesList.length > 0">
+																		<a-checkbox-group v-model:value="conditions.condition">
+																			<a-checkbox @change="chooseDiseases" :checked="true" v-for="condition in selectedDiseasesList" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
+																		</a-checkbox-group>
+																	</p><br />
+																	<!-- Unselected -->
+																	<p v-if="unSelectedDiseasesList && unSelectedDiseasesList.length > 0">
+																		<a-checkbox-group v-model:value="conditions.condition">
+																			<a-checkbox @change="chooseDiseases" v-for="condition in unSelectedDiseasesList" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
+																	</a-checkbox-group></p>
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -903,10 +900,8 @@ export default defineComponent({
         const unSelectedDiseasesList = ref([])
         const selectedDiseasesList = ref([])
 				
-        const isSearch = ref(false)
         unSelectedDiseasesList.value = globalCode.value.healthCondition
         const selectedDiseases = (event) => {
-					isSearch.value = true;
 					isValueChanged.value = true;
 					const searchedValue = event.target.value
 					if(searchedValue && searchedValue != "" && searchedValue != null) {
@@ -954,69 +949,7 @@ export default defineComponent({
 							}
 						})
 					}
-					
-					// unSelectedDiseasesList.value.filter(function(healthCondition) {
-					// 	console.log('uuuuuuuuuu value', value)
-					// 	console.log('uuuuuuuuuu healthCondition', healthCondition.id)
-					// 	if(value == healthCondition.id) {
-					// 		// console.log('checked', checked)
-					// 		if(checked) {
-					// 			if(!selectedDiseasesList.value.includes(healthCondition)) {
-					// 				const indexOfObject = unSelectedDiseasesList.value.findIndex(object => {
-					// 					return object.id === healthCondition.id;
-					// 				});
-					// 				unSelectedDiseasesList.value.splice(indexOfObject, 1);
-					// 				selectedDiseasesList.value.push(healthCondition)
-					// 			}
-					// 		}
-					// 		else {
-					// 			// console.log('checked', checked)
-					// 			if(!unSelectedDiseasesList.value.includes(healthCondition)) {
-					// 				const indexOfObject = selectedDiseasesList.value.findIndex(object => {
-					// 					return object.id === healthCondition.id;
-					// 				});
-					// 				selectedDiseasesList.value.splice(indexOfObject, 1);
-					// 				unSelectedDiseasesList.value.push(healthCondition)
-					// 			}
-					// 		}
-					// 	}
-					// });
 				}
-
-        // const chooseDisease = (value) => {
-				// 	// console.log(value)
-				// 	// store.commit('isEditPatient', false)
-				// 	// isValueChanged.value = true
-				// 	// const choosenValue = value[0]
-				// 	/* globalCode.value.healthCondition.map(function(healthCondition, index) {
-				// 		if(choosenValue == healthCondition.id) {
-				// 		alert(choosenValue == healthCondition.id)
-				// 			if(!selectedDiseasesList.value.includes(healthCondition)) {
-				// 				unSelectedDiseasesList.value.splice(index, 1)
-				// 				selectedDiseasesList.value.push(healthCondition)
-				// 			}
-				// 		}
-				// 	}); */
-				// 	if(value.length > 0) {
-				// 		globalCode.value.healthCondition.map(function(healthCondition, index) {
-				// 			if(value.includes(healthCondition.id)) {
-				// 				if(!selectedDiseasesList.value.includes(healthCondition)) {
-				// 					unSelectedDiseasesList.value.splice(index, 1)
-				// 					selectedDiseasesList.value.push(healthCondition)
-				// 				}
-				// 			}
-				// 		});
-				// 	}
-				// 	else {
-				// 		selectedDiseasesList.value.filter(function(healthCondition, index) {
-				// 			// console.log('index', value)
-				// 			if(!unSelectedDiseasesList.value.includes(healthCondition)) {
-				// 				selectedDiseasesList.value.splice(index, 1)
-				// 				unSelectedDiseasesList.value.push(healthCondition)
-				// 			}
-				// 		})
-				// 	}
-        // }
 
         const changedPhoneNumber = () => {
             store.commit('isEditPatient', false)
@@ -1628,8 +1561,6 @@ export default defineComponent({
 						selectedDiseasesList,
 						unSelectedDiseasesList,
 						chooseDiseases,
-						// chooseDisease,
-						isSearch,
         };
     },
 });
