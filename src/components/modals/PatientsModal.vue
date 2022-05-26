@@ -650,14 +650,24 @@
 
                     <a-row :gutter="24" class="mb-24">
                         <a-col :md="24" :sm="24" :xs="24" class="mb-24">
-                            <a-input-search @change="changedValue" v-model:value="search" placeholder="Search..." style="width: 100%" size="large" @search="onSearch" />
+                            <!-- <a-input-search @change="changedValue" v-model:value="search" placeholder="Search..." style="width: 100%" size="large" @search="onSearch" /> -->
+														<!-- <GlobalCodeDropDown @change="selectedDiseases" v-model:value="conditions.condition" :globalCode="globalCode.healthCondition" mode="multiple" /> -->
+														<a-input @change="selectedDiseases($event)" size="large" placeholder="Search..." id="conditionBox" />
                         </a-col>
                         <a-col :md="24" :sm="24" :xs="24">
                             <div class="form-group conditionsCheckboxs">
                                 <a-form-item name="condition" :rules="[{ required: true, message: $t('patient.conditions.healthConditions')+' '+$t('global.validation') }]">
-                                    <a-checkbox-group @change="changedValue" v-model:value="conditions.condition">
-                                        <a-checkbox v-for="condition in globalCode.healthCondition" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
-                                    </a-checkbox-group>
+                                    <!-- Selected -->
+																		<p v-if="selectedDiseasesList && selectedDiseasesList.length > 0">
+																			<a-checkbox-group @change="changedValue" v-model:value="conditions.condition">
+                                        <a-checkbox v-for="condition in selectedDiseasesList" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
+																			</a-checkbox-group>
+																		</p><br />
+																		------------
+																		<!-- Unselected -->
+                                    <p v-if="unSelectedDiseasesList && unSelectedDiseasesList.length > 0"><a-checkbox-group @change="changedValue" v-model:value="conditions.condition">
+                                        <a-checkbox v-for="condition in unSelectedDiseasesList" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
+                                    </a-checkbox-group></p>
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -824,10 +834,14 @@ export default defineComponent({
         const disableEmergencyContact = ref(false);
         const emergencyContactShow = ref(true)
         const referalFormShow = ref(true)
-const ShowReferral = ref(false)
-function newReferral(){
-    ShowReferral.value = true
-}
+				const ShowReferral = ref(false)
+        const globalCode = computed(() => {
+            return store.state.common;
+        });
+
+				function newReferral(){
+						ShowReferral.value = true
+				}
         const errorMsg = computed(() => {
             return store.state.patients.errorMsg;
         });
@@ -884,6 +898,41 @@ function newReferral(){
             store.commit('isEditPatient', false)
             isValueChanged.value = true
         }
+
+        const selectedDiseasesList = ref([])
+        const unSelectedDiseasesList = ref([])
+        const isSearch = ref(false)
+        unSelectedDiseasesList.value = globalCode.value.healthCondition
+        const selectedDiseases = (event) => {
+					isSearch.value = true;
+					isValueChanged.value = true;
+					const searchedValue = event.target.value
+
+					if(searchedValue && searchedValue != "" && searchedValue != null) {
+						unSelectedDiseasesList.value = []
+						selectedDiseasesList.value = []
+						globalCode.value.healthCondition.filter(function(healthCondition) {
+							if(healthCondition.name.toLowerCase().includes(searchedValue.toLowerCase())) {
+								if(!unSelectedDiseasesList.value.includes(healthCondition)) {
+									unSelectedDiseasesList.value.push(healthCondition)
+								}
+								/* if(!selectedDiseasesList.value.includes(healthCondition)) {
+									selectedDiseasesList.value.push(healthCondition)
+								} */
+							}
+							/* else {
+								if(!unSelectedDiseasesList.value.includes(healthCondition)) {
+									unSelectedDiseasesList.value.push(healthCondition)
+								}
+							} */
+						});
+					}
+					// else {
+					// 	selectedDiseasesList.value = []
+					// 	unSelectedDiseasesList.value = globalCode.value.healthCondition
+					// }
+        }
+
         const changedPhoneNumber = () => {
             store.commit('isEditPatient', false)
             isValueChanged.value = true
@@ -896,9 +945,6 @@ function newReferral(){
         const closeSearchPatient = (value) => {
             patientSearch.value = value
         }
-        const globalCode = computed(() => {
-            return store.state.common;
-        });
         const idPatient = ref(null)
 
         const patients = computed(() => {
@@ -1013,7 +1059,7 @@ function newReferral(){
             get: () =>
                 store.state.patients.counter,
             set: (value) => {
-                if (value == 5) {
+                if (props.isEdit && value == 5) {
                     store.dispatch('patientConditions', idPatient.value).then(() => {
                         console.log('patientConditions.value', patientConditions.value)
                         if (patientConditions.value != null) {
@@ -1494,7 +1540,11 @@ function newReferral(){
             referalFormShow,
             ShowReferral,
             newReferral,
-            referralData:store.getters.referralList
+            referralData:store.getters.referralList,
+						selectedDiseases,
+						selectedDiseasesList,
+						unSelectedDiseasesList,
+						isSearch,
         };
     },
 });
