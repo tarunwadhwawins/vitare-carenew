@@ -1,3 +1,4 @@
+
 <template>
 <a-modal max-width="1140px" width="70%" title="Details" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24" class="row">
@@ -53,9 +54,10 @@
                 <a-collapse-panel key="3" header="Notes" v-show="record?record.escalationNotes.data.length>0:false">
                     <!-- <a-table rowKey="id" :columns="notesColumns" :data-source="record.escalationNotes.data" :pagination="false">
                     </a-table> -->
+                    <!-- <span>{{ note.note.data.date?', Date - '+dateAndTimeFormate(note.note.data.date,globalDateFormat):null}}</span> -->
                     <div v-for=" note in record.escalationNotes.data" :key="note.id">
                         <ul>
-                            <li>{{note.note.data.note}}</li>
+                            <li>{{note.note.data.note}} </li>
                         </ul>
                     </div>
                 </a-collapse-panel>
@@ -106,193 +108,196 @@
 
 </a-modal>
 </template>
-
 <script>
-import {
-    computed,
-    ref
-} from "vue";
-import {
-    useStore
-} from "vuex";
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
 import Flags from "@/components/common/flags/Flags";
 import Loader from "@/components/loader/Loader";
-const columnData = [{
-        title: "Patient",
-        dataIndex: "patientName",
-        slots: {
-            customRender: "patientName",
-        },
+import {
+  globalDateFormat,
+  dateAndTimeFormate
+} from "@/commonMethods/commonMethod";
+const columnData = [
+  {
+    title: "Patient",
+    dataIndex: "patientName",
+    slots: {
+      customRender: "patientName",
     },
-    
-    {
-        title: "Escalation Type",
-        dataIndex: "escalationType",
-        slots: {
-            customRender: "escalationType",
-        },
+  },
+
+  {
+    title: "Escalation Type",
+    dataIndex: "escalationType",
+    slots: {
+      customRender: "escalationType",
     },
-    {
-        title: "Due Date",
-        dataIndex: "dueBy",
+  },
+  {
+    title: "Due Date",
+    dataIndex: "dueBy",
+  },
+  {
+    title: "Flag",
+    dataIndex: "flag",
+    slots: {
+      customRender: "flag",
     },
-    {
-        title: "Flag",
-        dataIndex: "flag",
-        slots: {
-            customRender: "flag",
-        },
-    },
+  },
 ];
-const notesColumns = [{
-        title: "Date",
-        dataIndex: "date",
-        key: "date",
-        className: "note-date",
-    },
-    {
-        title: "Category",
-        dataIndex: "category",
-        key: "category",
-        className: "note-category",
-    },
-    {
-        title: "Type",
-        dataIndex: "type",
-        key: "type",
-        className: "note-type",
-    },
-    {
-        title: "Note",
-        dataIndex: "note",
-        key: "note",
-        className: "note-text",
-        ellipsis: true,
-    },
-    {
-        title: "Added By",
-        dataIndex: "addedBy",
-        key: "addedBy",
-    },
+const notesColumns = [
+  {
+    title: "Date",
+    dataIndex: "date",
+    key: "date",
+    className: "note-date",
+  },
+  {
+    title: "Category",
+    dataIndex: "category",
+    key: "category",
+    className: "note-category",
+  },
+  {
+    title: "Type",
+    dataIndex: "type",
+    key: "type",
+    className: "note-type",
+  },
+  {
+    title: "Note",
+    dataIndex: "note",
+    key: "note",
+    className: "note-text",
+    ellipsis: true,
+  },
+  {
+    title: "Added By",
+    dataIndex: "addedBy",
+    key: "addedBy",
+  },
 ];
-const vitalColumns = [{
-        title: "Vital",
-        dataIndex: "vitalField",
-        key: "vitalField",
-        className: "vital-vitalField",
+const vitalColumns = [
+  {
+    title: "Vital",
+    dataIndex: "vitalField",
+    key: "vitalField",
+    className: "vital-vitalField",
+  },
+  {
+    title: "Device Type",
+    dataIndex: "deviceType",
+    key: "deviceType",
+    className: "vital-deviceType",
+  },
+  {
+    title: "Value",
+    dataIndex: "value",
+    key: "value",
+    className: "vital-value",
+  },
+  {
+    title: "Date",
+    dataIndex: "startTime",
+  },
+  {
+    title: "Color",
+    dataIndex: "color",
+    key: "color",
+    className: "vital-color",
+    slots: {
+      customRender: "color",
     },
-    {
-        title: "Device Type",
-        dataIndex: "deviceType",
-        key: "deviceType",
-        className: "vital-deviceType",
-    },
-    {
-        title: "Value",
-        dataIndex: "value",
-        key: "value",
-        className: "vital-value",
-    },
-    {
-        title: "Date",
-        dataIndex: "startTime",
-    },
-    {
-        title: "Color",
-        dataIndex: "color",
-        key: "color",
-        className: "vital-color",
-        slots: {
-            customRender: "color",
-        },
-    },
+  },
 ];
-const carePlanColumns = [{
-        title: "Device",
-        dataIndex: "deviceType",
+const carePlanColumns = [
+  {
+    title: "Device",
+    dataIndex: "deviceType",
+  },
+  {
+    title: "Vital type",
+    dataIndex: "vitalField",
+  },
+  {
+    title: "Start date",
+    dataIndex: "startDate",
+  },
+  {
+    title: "End date",
+    dataIndex: "endDate",
+  },
+  {
+    title: "Frequency",
+    dataIndex: "frequency",
+    slots: {
+      customRender: "frequency",
     },
-    {
-        title: "Vital type",
-        dataIndex: "vitalField",
-    },
-    {
-        title: "Start date",
-        dataIndex: "startDate",
-    },
-    {
-        title: "End date",
-        dataIndex: "endDate",
-    },
-    {
-        title: "Frequency",
-        dataIndex: "frequency",
-        slots: {
-            customRender: "frequency",
-        },
-    },
-    {
-        title: "High Value",
-        dataIndex: "highValue",
-    },
-    {
-        title: "Low Value",
-        dataIndex: "lowValue",
-    },
-    {
-        title: "Note",
-        dataIndex: "note",
-    },
+  },
+  {
+    title: "High Value",
+    dataIndex: "highValue",
+  },
+  {
+    title: "Low Value",
+    dataIndex: "lowValue",
+  },
+  {
+    title: "Note",
+    dataIndex: "note",
+  },
 ];
 const flagColumns = [
-
-    {
-        title: "Name",
-        dataIndex: "name",
-        slots: {
-            customRender: "name",
-        },
+  {
+    title: "Name",
+    dataIndex: "name",
+    slots: {
+      customRender: "name",
     },
-    {
-        title: "Date",
-        dataIndex: "createdAt",
+  },
+  {
+    title: "Date",
+    dataIndex: "createdAt",
+  },
+  {
+    title: "Color",
+    dataIndex: "color",
+    slots: {
+      customRender: "color",
     },
-    {
-        title: "Color",
-        dataIndex: "color",
-        slots: {
-            customRender: "color",
-        },
-    },
+  },
 ];
 
 export default {
-    components: {
-        Flags,
-        Loader,
-    },
-    setup() {
-        const activeKey = ref([]);
-        const store = useStore();
-        const record = computed(() => {
-            return store.state.patients.singleEscalationRecord;
-        });
+  components: {
+    Flags,
+    Loader,
+  },
+  setup() {
+    const activeKey = ref([]);
+    const store = useStore();
+    const record = computed(() => {
+      return store.state.patients.singleEscalationRecord;
+    });
 
-        return {
-            flagColumns,
-            carePlanColumns,
-            vitalColumns,
-            notesColumns,
-            dataArray: store.getters.singleEscalationDataArray,
-            columnData,
-            activeKey,
-            record,
-        };
-    },
+    return {
+      globalDateFormat,
+      dateAndTimeFormate,
+      flagColumns,
+      carePlanColumns,
+      vitalColumns,
+      notesColumns,
+      dataArray: store.getters.singleEscalationDataArray,
+      columnData,
+      activeKey,
+      record,
+    };
+  },
 };
 </script>
 
 <style>
 .row {
-    padding-bottom: 15px;
+  padding-bottom: 15px;
 }
 </style>

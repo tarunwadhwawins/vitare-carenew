@@ -16,7 +16,7 @@
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24">
-                            <div class="form-group">{{globalCode.ecalationType}}
+                            <div class="form-group">
                                 <a-form-item label="Escalation Type" name="escalationType" :rules="[{ required: true, message: 'Escalation Type'+' '+$t('global.validation')  }]">
                                     <GlobalCodeDropDown @change="checkChangeInput($event)" mode="multiple" v-model:value="escalation.escalationType" :globalCode="globalCode.escalationType" />
                                 </a-form-item>
