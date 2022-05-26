@@ -48,56 +48,28 @@
     watchEffect,
     onUnmounted,
   } from "vue";
-  // import {
-  //   FolderOpenOutlined,
-  //   FilePdfOutlined,
-  //   BellOutlined,
-  //   HeatMapOutlined,
-  //   ClockCircleOutlined,
-  //   FileTextOutlined,
-  //   PushpinOutlined,
-  //   FlagOutlined,
-  // } from "@ant-design/icons-vue";
   import {
     useRoute,
-    // useRouter
+    useRouter
   } from "vue-router";
   import { useStore } from "vuex";
   import Loader from "@/components/loader/VideoLoader";
   import { Web } from "@/assets/js/sip-0.20.0";
   import { notification } from "ant-design-vue";
-  // import NotesDetail from "@/components/video-call/table/NotesDetail";
-  // import DocumentDetail from "@/components/video-call/table/DocumentDetail";
-  // import PatientVitalsDetails from "@/components/video-call/table/PatientVitalsDetails";
   import {
     successSwal,
     deCodeString,
     dateFormat,
   } from "@/commonMethods/commonMethod";
-  // import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
-  // import { CopyFilled } from "@ant-design/icons-vue";
   import { message } from "ant-design-vue";
   import moment from "moment";
   import ChatRightPanel from "@/components/common/communications/ChatRightPanel"
 
   export default {
     components: {
-      // CopyFilled,
       Header,
       Sidebar,
       Loader,
-      // NotesDetail,
-      // DocumentDetail,
-      // PatientVitalsDetails,
-      // FolderOpenOutlined,
-      // FilePdfOutlined,
-      // BellOutlined,
-      // HeatMapOutlined,
-      // ClockCircleOutlined,
-      // FileTextOutlined,
-      // PushpinOutlined,
-      // FlagOutlined,
-      // PatientInfoTop,
       ChatRightPanel,
     },
 
@@ -113,7 +85,7 @@
       const decodedUrl = ref();
       const visibleDrawer = ref(false);
       const route = useRoute();
-      // const router = useRouter();
+      const router = useRouter();
       const profile = ref(false);
       const tabvalue = reactive({
         tab: [],
@@ -191,7 +163,7 @@
                         status: "end",
                       });
                       successSwal("Call Ended! Thank You");
-                      // router.push("/dashboard");
+                      router.push("/dashboard");
                     }
                   },
                 },
@@ -242,12 +214,11 @@
                 });
             }
             else {
-              // router.push("/dashboard");
+              router.push("/dashboard");
             }
           //} //end conference video call
           });
         } else if (session.value) {
-          //  store.commit("loadingStatus", false);
           session.value.options.media.remote = {
             video: videoCall.value ? videoCall.value : <video></video>,
           };
@@ -267,7 +238,6 @@
         if (decodedUrl.value) {
           simpleUserHangup.value.hangup().then(() => {
             //call end api
-            // store.dispatch("callNotification",{id:decodedUrl.value,status:'end'})
             store.state.videoCall.getVideoDetails = null;
             store.state.videoCall.acceptVideoCallDetails = null;
             store.state.videoCall.conferenceId = null;
@@ -275,7 +245,7 @@
           });
         } else {
           session.value.hangup().then(() => {
-            // router.push("/dashboard");
+            router.push("/dashboard");
           });
         }
       }
