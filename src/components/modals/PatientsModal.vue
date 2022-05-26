@@ -909,17 +909,19 @@ export default defineComponent({
 					isSearch.value = true;
 					isValueChanged.value = true;
 					const searchedValue = event.target.value
-
 					if(searchedValue && searchedValue != "" && searchedValue != null) {
-						// unSelectedDiseasesList.value = []
-						unSelectedDiseasesList.value.filter(function(healthCondition) {
+						unSelectedDiseasesList.value = []
+						globalCode.value.healthCondition.filter(function(healthCondition) {
 							if(healthCondition.name.toLowerCase().includes(searchedValue.toLowerCase())) {
-								unSelectedDiseasesList.value = []
 								if(!unSelectedDiseasesList.value.includes(healthCondition)) {
 									unSelectedDiseasesList.value.push(healthCondition)
 								}
 							}
 						});
+					}
+					else {
+						unSelectedDiseasesList.value = globalCode.value.healthCondition
+						selectedDiseasesList.value = []
 					}
         }
 
