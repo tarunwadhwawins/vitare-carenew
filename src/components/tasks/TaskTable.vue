@@ -41,7 +41,8 @@
         </template>
     </a-table>
 </a-col>
-<TaskDetails v-model:visible="visible" @saveTaskModal="handleOk($event)" :taskId="taskID" />
+<TasksModal v-model:visible="taskVisibleView" @saveTaskModal="handleOk($event)" :taskId="taskID" :onlyView="onlyView" @clinicalDashboard="callApiFromModal" />
+<!-- <TaskDetails v-model:visible="taskVisibleView"  :taskId="taskID" :onlyView="onlyView"/> -->
 </template>
 
 <script>
@@ -57,7 +58,7 @@ export default {
         DeleteOutlined,
         EditOutlined,
         CalendarOutlined,
-        TaskDetails: defineAsyncComponent(() => import("@/components/tasks/modals/TaskDetails.vue"))
+        TasksModal: defineAsyncComponent(() => import("@/components/modals/TasksModal.vue"))
     },
     props: {
         height: Number,
@@ -68,16 +69,17 @@ export default {
     }) {
         const store = useStore();
         const route = useRoute()
-        const visible = ref(false)
+        const taskID = ref(false);
         let data = [];
         const meta = store.getters.taskRecords.value;
-
+        const taskVisibleView = ref(false)
+        const onlyView = ref(false)
         let scroller = "";
         let dateFilter = ''
         let filter = ''
 
         function checkDate() {
-            dateFilter = route.query.fromDate && route.query.toDate ? "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "?fromDate=&toDate="
+            dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
             filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
         }
         onMounted(() => {
@@ -134,7 +136,9 @@ export default {
             store.dispatch('editTask', {
                 id: id
             })
-            visible.value= true
+            onlyView.value = true
+            taskID.value = id
+            taskVisibleView.value = true
         };
 
         function deleteTask(id) {
@@ -152,6 +156,9 @@ export default {
             return store.state.tasks;
         });
 
+        function handleOk(event) {
+            onlyView.value = event
+        }
         const handleTableChange = (pag, filters, sorter) => {
             checkDate()
             if (sorter.order) {
@@ -183,7 +190,19 @@ export default {
                 );
             }
         };
+
+        function callApiFromModal() {
+            onlyView.value = false
+            if (props.height) {
+                emit("dashboard")
+
+            } else {
+                store.dispatch("tasksList");
+            }
+
+        }
         return {
+            callApiFromModal,
             screensPermissions: store.getters.screensPermissions,
             tasks,
             arrayToObjact,
@@ -192,8 +211,12 @@ export default {
             meta,
             tableYScroller,
             handleTableChange,
-            visible,
+            taskID,
             taskDetails,
+            taskVisibleView,
+            onlyView,
+            handleOk,
+
         };
     },
 };
