@@ -65,7 +65,7 @@ commit('loadingTableStatus', true)
 }
 export const staffDelete = async ({commit}, id) => {
 
-  await serviceMethod.common("get", "staff", id, null).then((response) => {
+  await serviceMethod.common("delete", "staff", id, null).then((response) => {
     successSwal(response.data.message)
  
   }).catch((error) => { 

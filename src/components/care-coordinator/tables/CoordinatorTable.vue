@@ -1,8 +1,8 @@
 <template>
 <a-table rowKey="id" :data-source="meta.staffs" :scroll="{ y: tableYScrollerCounterPage ,x: 1020}" :pagination=false :columns="meta.columns" @change="handleTableChange">
     <template #name="{text,record}" v-if="arrayToObjact(screensPermissions,38)">
-        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}" v-if="record.isActive!='true'">{{ text }}</router-link>
-    <a v-else><span title="Inactive Care Coordinator"  >{{ text }}</span></a></template>
+        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}" >{{ text }}</router-link>
+    </template>
     <template #name="{text}" v-else>
         <span>{{ text }}</span>
     </template>
@@ -17,19 +17,14 @@
         <WarningOutlined />
     </template>
     <template #action="{record}" v-if="arrayToObjact(screensPermissions,38)">
-      <a-tooltip placement="bottom" v-if="record.isActive!='true'">
+      <a-tooltip placement="bottom" >
           <template #title>
               <span>{{$t('global.delete')}}</span>
           </template>
           <a class="icons">
               <DeleteOutlined @click="deletestaff(record.uuid)"/></a>
       </a-tooltip>
-      <a-tooltip placement="bottom" v-else>
-          <template #title>
-              <span></span>
-          </template>
-         
-      </a-tooltip>
+     
   </template>
 </a-table>
 </template>
