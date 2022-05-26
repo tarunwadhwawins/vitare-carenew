@@ -28,109 +28,108 @@ import TableLoader from "@/components/loader/TableLoader";
 import { arrayToObjact,exportExcel,timeStampFormate,globalDateFormat } from "@/commonMethods/commonMethod";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 import { useRoute, useRouter } from 'vue-router';
-const tasksListColumns=[
-		{
-			title: 'Task Name',
-			dataIndex: 'title',
-			sorter: true,
-			slots: {
-				customRender: 'taskName'
-			}
-			// filters: [
-			//   {
-			//     text: "Task 1",
-			//     value: "task 1",
-			//   },
-			//   {
-			//     text: "Task 2",
-			//     value: "task 2",
-			//   },
-			// ],
-			// onFilter: (value, record) => record.taskName.indexOf(value) === 0,
-		},
-		{
-			title: 'Task Status ',
-			dataIndex: 'taskStatus',
-			sorter: true,
-			slots: {
-				customRender: 'status'
-			}
-		},
-		{
-			title: 'Priority ',
-			dataIndex: 'priority',
-			sorter: true
-			//   filters: [
-			//     {
-			//       text: "High",
-			//       value: "high",
-			//     },
-			//     {
-			//       text: "Normal",
-			//       value: "normal",
-			//     },
-			//     {
-			//       text: "Urgent",
-			//       value: "urgent",
-			//     },
-			//   ],
-			//   onFilter: (value, record) => record.status.indexOf(value) === 0,
-		},
-		{
-			title: 'Category',
-			dataIndex: 'category',
-			sorter: true,
-			slots: {
-				customRender: 'category'
-			}
-		},
-        {
-			title: 'Start Date ',
-			dataIndex: 'startDate',
-			sorter: true
-        },
-		{
-			title: 'Due Date ',
-			dataIndex: 'dueDate',
-			sorter: true
-			//   filters: [
-			//     {
-			//       text: "Dec 24, 2021",
-			//       value: "Dec 24, 2021",
-			//     },
-			//     {
-			//       text: "Dec 28, 2021",
-			//       value: "Dec 28, 2021",
-			//     },
-			//   ],
-			//   onFilter: (value, record) => record.dueDate.indexOf(value) === 0,
-		},
-		{
-			title: 'Assigned By',
-			dataIndex: 'assignedBy',
-			// filters: [
-			//   {
-			//     text: "John",
-			//     value: "John",
-			//   },
-			//   {
-			//     text: "	Devin",
-			//     value: "	Devin",
-			//   },
-			// ],
-			slots: {
-				customRender: 'assigned'
-			}
-			// onFilter: (value, record) => record.assignedBy.indexOf(value) === 0,
-		},
-		{
-			title: 'Actions',
-			dataIndex: 'actions',
-			slots: {
-				customRender: 'action'
-			}
-		}
-	];
+const tasksListColumns = [{
+        title: 'Task Name',
+        dataIndex: 'title',
+        sorter: true,
+        slots: {
+            customRender: 'taskName'
+        }
+        // filters: [
+        //   {
+        //     text: "Task 1",
+        //     value: "task 1",
+        //   },
+        //   {
+        //     text: "Task 2",
+        //     value: "task 2",
+        //   },
+        // ],
+        // onFilter: (value, record) => record.taskName.indexOf(value) === 0,
+    },
+    {
+        title: 'Task Status ',
+        dataIndex: 'taskStatus',
+        sorter: true,
+        slots: {
+            customRender: 'status'
+        }
+    },
+    {
+        title: 'Priority ',
+        dataIndex: 'priority',
+        sorter: true
+        //   filters: [
+        //     {
+        //       text: "High",
+        //       value: "high",
+        //     },
+        //     {
+        //       text: "Normal",
+        //       value: "normal",
+        //     },
+        //     {
+        //       text: "Urgent",
+        //       value: "urgent",
+        //     },
+        //   ],
+        //   onFilter: (value, record) => record.status.indexOf(value) === 0,
+    },
+    {
+        title: 'Category',
+        dataIndex: 'category',
+        sorter: true,
+        slots: {
+            customRender: 'category'
+        }
+    },
+    {
+        title: 'Start Date ',
+        dataIndex: 'startDate',
+        sorter: true
+    },
+    {
+        title: 'Due Date ',
+        dataIndex: 'dueDate',
+        sorter: true
+        //   filters: [
+        //     {
+        //       text: "Dec 24, 2021",
+        //       value: "Dec 24, 2021",
+        //     },
+        //     {
+        //       text: "Dec 28, 2021",
+        //       value: "Dec 28, 2021",
+        //     },
+        //   ],
+        //   onFilter: (value, record) => record.dueDate.indexOf(value) === 0,
+    },
+    {
+        title: 'Assigned By',
+        dataIndex: 'assignedBy',
+        // filters: [
+        //   {
+        //     text: "John",
+        //     value: "John",
+        //   },
+        //   {
+        //     text: "	Devin",
+        //     value: "	Devin",
+        //   },
+        // ],
+        slots: {
+            customRender: 'assigned'
+        }
+        // onFilter: (value, record) => record.assignedBy.indexOf(value) === 0,
+    },
+    {
+        title: 'Actions',
+        dataIndex: 'actions',
+        slots: {
+            customRender: 'action'
+        }
+    }
+];
 export default {
     components: {
         SearchField,
@@ -148,11 +147,11 @@ export default {
         onMounted(() => {
             if (route.query.filter || route.query.fromDate) {
                 toDate.value = route.query.toDate
-                let filter= route.query.filter ? route.query.filter : ''
-                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate=" 
+                let filter = route.query.filter ? route.query.filter : ''
+                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
                 store.dispatch("tasksList", "?filter=" + filter + date);
             } else {
-                 
+
                 store.dispatch("tasksList")
             }
             store.dispatch("searchTable", '&search=')
@@ -185,30 +184,31 @@ export default {
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
             })
-           
-            
+
             //store.state.common.filter=''
         })
-         function remove(event) {
+
+        function remove(event) {
             if (event == "filter") {
                 if (route.query.fromDate && route.query.toDate) {
-                    
+
                     store.dispatch("tasksList", "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
-                 
-                     setTimeout(() => {
+
+                    setTimeout(() => {
                         router.replace({
-                            query: {  
-                            view: 'list',
-                            toDate: toDate.value,
-                            fromDate: route.query.fromDate,
-                            
+                            query: {
+                                view: 'list',
+                                toDate: toDate.value,
+                                fromDate: route.query.fromDate,
 
                             }
                         })
                     }, 2000)
                 } else {
                     router.replace({
-                        query: {view: 'list',}
+                        query: {
+                            view: 'list',
+                        }
                     })
                     store.dispatch("tasksList")
                 }
@@ -216,20 +216,22 @@ export default {
             } else {
 
                 if (route.query.filter) {
-                    
+
                     store.dispatch("tasksList", "?filter=" + route.query.filter)
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         router.replace({
-                        query: {
-                            view: 'list',
-                            filter: route.query.filter,
-                            
-                        }
-                    },5000)
+                            query: {
+                                view: 'list',
+                                filter: route.query.filter,
+
+                            }
+                        }, 5000)
                     })
                 } else {
                     router.replace({
-                        query: {view: 'list',}
+                        query: {
+                            view: 'list',
+                        }
                     })
                     store.dispatch("tasksList")
                 }
