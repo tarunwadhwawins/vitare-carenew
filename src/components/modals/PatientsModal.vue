@@ -1274,17 +1274,20 @@ function newReferral(){
         });
 
         function saveModal() {
+             store.commit("resetCounter");
+             current.value = 0
             emit("saveModal", false);
-            store.commit("resetCounter");
+
+           // store.commit("resetCounter");
             successSwal(messages.formSuccess);
             Object.assign(responsiblePersonForm, responsiblePersonReactiveForm)
             Object.assign(referal, referalForm)
             Object.assign(emergencyContactForm, emergencyForm)
-
+            isValueChanged.value = false
             store.dispatch("patients");
-            store.commit("resetCounter");
+           // store.commit("resetCounter");
             emit("closeModal");
-            current.value = 0
+            
             store.state.patients.addDemographic = ''
                         store.state.patients.patientDetails = ''
                         store.state.patients.fetchFromBitrix = ''
@@ -1321,7 +1324,7 @@ function newReferral(){
                         store.state.patients.uploadFile = ''
                         isValueChanged.value = false
                         Object.assign(demographics, form);
-                        saveModal()
+                       // saveModal()
                     } else {
                         emit("saveModal", true);
                         emit("closeModal", {
@@ -1331,7 +1334,7 @@ function newReferral(){
                     }
                 })
             } else {
-                saveModal()
+                
                 store.commit("resetCounter");
                 formRef.value.resetFields()
             }
