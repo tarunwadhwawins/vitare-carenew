@@ -206,8 +206,8 @@ export function annotations(xname, seriesIndex, borderColor, offsetY, color, bac
 
 // Used for timeStamp for dateTime
 export function timeStamp(date) {
-	// return moment(date).format('X');
-	return moment.utc(date).local().format('X');
+	return moment(date).format('X');
+	// return moment.utc(date).local().format('X');
 }
 export function timeStampLocal(date) {
 	// return moment(date).format('X');
