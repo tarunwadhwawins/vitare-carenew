@@ -102,7 +102,7 @@ export const patient = (state, data) => {
     sorter: true,
   },
   {
-    title: "Sex ",
+    title: "Gender ",
     dataIndex: "gender",
    
   },

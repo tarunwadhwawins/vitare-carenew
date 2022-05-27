@@ -1807,7 +1807,7 @@ export const escalationVitalList = async ({commit}, data) => {
 export const referralList = async ({
   commit
 }) => {
-  await serviceMethod.common("get", API_ENDPOINTS['referral'], null, null).then((response) => {
+  await serviceMethod.common("get", 'referral?referral=referral', null, null).then((response) => {
     commit('referralList', response.data.data);
     
   }).catch((error) => {
