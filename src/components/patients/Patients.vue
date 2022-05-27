@@ -90,6 +90,9 @@ export default {
         const showModal = (value) => {
             store.state.patients.addDemographic = null
             store.state.patients.patientDetails = null
+            store.state.patients.emergencyContact = null
+            store.state.patients.patientReferralSource = null
+              store.state.patients.emergencyContact = null
             PatientsModal.value = value;
         };
         const handleOk = (status) => {

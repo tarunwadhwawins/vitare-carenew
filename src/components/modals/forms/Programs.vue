@@ -13,7 +13,7 @@
           <a-col :md="8" :sm="6" :xs="24">
               <div class="form-group">
                   <a-form-item :label="$t('patient.programs.onboardinScheduledDate')" name="onboardingScheduleDate" :rules="[{ required: true, message: $t('patient.programs.onboardinScheduledDate')+' '+$t('global.validation') }]">
-                      <a-date-picker @change="changedValue" v-model:value="program.onboardingScheduleDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
+                      <a-date-picker @change="changedValue" v-model:value="program.onboardingScheduleDate" :format="globalDateFormat" value-format="YYYY-MM-DD" :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" style="width: 100%" size="large" />
                       <ErrorMessage v-if="errorMsg" :name="errorMsg.onboardingScheduleDate?errorMsg.onboardingScheduleDate[0]:''" />
                   </a-form-item>
               </div>
@@ -21,7 +21,7 @@
           <a-col :md="8" :sm="6" :xs="24">
               <div class="form-group">
                   <a-form-item :label="$t('patient.programs.dischargeDate')" name="dischargeDate" :rules="[{ required: true, message: $t('patient.programs.dischargeDate')+' '+$t('global.validation') }]">
-                      <a-date-picker @change="changedValue" v-model:value="program.dischargeDate" format="MM/DD/YYYY" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
+                      <a-date-picker @change="changedValue();dateChange();" v-model:value="program.dischargeDate" :format="globalDateFormat" :disabledDate="d => !d || d.isSameOrBefore(program.onboardingScheduleDate)" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
                       <ErrorMessage v-if="errorMsg" :name="errorMsg.dischargeDate?errorMsg.dischargeDate[0]:''" />
                   </a-form-item>
               </div>
@@ -74,12 +74,14 @@ import Loader from "../../loader/Loader"
 import {
   warningSwal,
   timeStamp,
-  arrayToObjact
+  arrayToObjact,
+  globalDateFormat
 } from "@/commonMethods/commonMethod"
 import { messages } from "@/config/messages";
 import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 import { useRoute } from "vue-router";
+import moment from "moment"
 export default defineComponent({
   components: {
     EditOutlined,
@@ -108,13 +110,16 @@ export default defineComponent({
       emit('onChange')
     }
 
-    const isEdit = ref(false)
-    const programId = ref(null)
-
-    const patients = computed(() => {
+     const isEdit = ref(false)
+     const programId = ref(null)
+     const dateSelect = ref(null)
+     const patients = computed(() => {
       return store.state.patients;
     });
-    
+     function dateChange() {
+       
+            dateSelect.value = moment(program.dischargeDate).add(1, 'day')
+        }
     watchEffect(() => {
        
       if(props.idPatient) {
@@ -253,6 +258,10 @@ export default defineComponent({
       errorMsg:patients.value.errorMsg,
       reset,
       formRef,
+      dateChange,
+      dateSelect,
+      moment,
+      globalDateFormat
     };
   },
 });
