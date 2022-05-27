@@ -26,13 +26,13 @@
                             <a-col :sm="8" :xs="24">
                                 <div class="form-group" v-if="arrayToObjact(screensPermissions, 332)">
                                     <label>{{$t('global.startDate')}}</label>
-                                    <a-date-picker format="MM/DD/YYYY" value-format="YYYY-MM-DD" :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" v-model:value="auditTimeLog.startDate" :size="size" style="width: 100%" />
+                                    <a-date-picker :format="globalDateFormat" value-format="YYYY-MM-DD" :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" v-model:value="auditTimeLog.startDate" :size="size" style="width: 100%" />
                                 </div>
                             </a-col>
                             <a-col :sm="8" :xs="24">
                                 <div class="form-group" v-if="arrayToObjact(screensPermissions, 332)">
                                     <label>{{$t('global.endDate')}}</label>
-                                    <a-date-picker format="MM/DD/YYYY" :disabledDate="d => !d || d.isSameOrBefore(auditTimeLog.startDate)" value-format="YYYY-MM-DD" v-model:value="auditTimeLog.endDate" :size="size" style="width: 100%" @change="dateChange" />
+                                    <a-date-picker :format="globalDateFormat" :disabledDate="d => !d || d.isSameOrBefore(auditTimeLog.startDate)" value-format="YYYY-MM-DD" v-model:value="auditTimeLog.endDate" :size="size" style="width: 100%" @change="dateChange" />
                                 </div>
                             </a-col>
 

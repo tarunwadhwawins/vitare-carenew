@@ -2,6 +2,7 @@
   <a-select v-if="globalCode && !isColor"
     :value="value"
     show-search
+    showArrow
     :mode="mode"
     placeholder="Please Select"
     style="width: 100%"
