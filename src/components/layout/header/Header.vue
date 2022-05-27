@@ -240,7 +240,7 @@ import {
   dobFormat,
   dateOnlyFormat,
 } from "@/commonMethods/commonMethod";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import {
   NotificationOutlined,
   DownOutlined,
@@ -283,7 +283,7 @@ export default defineComponent({
     const isAppointment = ref();
     const date = Math.round(+new Date() / 1000);
     const userName = JSON.parse(localStorage.getItem("auth"));
-
+const route = useRoute()
     const logoutUser = () => {
       store.state.authentication.errorMsg = "";
       // store.dispatch("logoutUser");
@@ -345,8 +345,13 @@ export default defineComponent({
     const PatientsModal = ref(false);
 
     const addPatient = () => {
-      store.state.patients.addDemographic = null
+if(route.name != 'PatientSummary') {
+            store.state.patients.addDemographic = null
             store.state.patients.patientDetails = null
+            store.state.patients.emergencyContact = null
+            store.state.patients.patientReferralSource = null
+            store.state.patients.emergencyContact = null
+}
       PatientsModal.value = true;
     };
     const closeAppointModal = (status) => {

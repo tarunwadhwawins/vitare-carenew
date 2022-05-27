@@ -2,8 +2,8 @@
 <div class="patientTable">
     <a-table rowKey="id" :columns="meta.column" :data-source="meta.patientList" :scroll="{ y: tableYScrollerCounterPage, x: 1500 }" :pagination="false" @change="handleTableChange">
         <template #firstName="{ text, record }" v-if="arrayToObjact(screensPermissions, 63)" >
-            <router-link :to="{ name: 'PatientSummary', params: { udid: record.id } }" v-if="record.isActive!='Inactive'">{{ text }}</router-link>
-            <a v-else><span title="Inactive Patient"  >{{ text }}</span></a>
+            <router-link :to="{ name: 'PatientSummary', params: { udid: record.id } }" >{{ text }}</router-link>
+            
         </template>
         <template #firstName="{ text }" v-else>
             <span >{{ text }}</span>
@@ -22,12 +22,8 @@
         <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" :disabled="!arrayToObjact(screensPermissions,63)"/>
     </template>
         <template #action="{ record }" v-if="arrayToObjact(screensPermissions,63)">
-            <a-tooltip placement="bottom" v-if="record.isActive=='Inactive'">
-                <template #title>
-                    <span></span>
-                </template>         
-            </a-tooltip>
-            <a-tooltip placement="bottom" v-else>
+            
+            <a-tooltip placement="bottom" >
                 <template #title>
                     <span>{{$t('global.delete')}}</span>
                 </template>
