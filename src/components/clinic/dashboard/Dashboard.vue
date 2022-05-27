@@ -67,7 +67,7 @@
   {
     title: "Name",
     dataIndex: "patientName",
-    sorter: true,
+    //sorter: true,
     slots: {
       customRender: "patientName",
     },
@@ -85,7 +85,7 @@
     title: "Due Date",
     dataIndex: "dueBy",
     width: '17%',
-    sorter: true,
+    //sorter: true,
   },
   {
     title: "Flag",
@@ -109,7 +109,7 @@ const tasksListColumns=[
 		{
 			title: 'Task Name',
 			dataIndex: 'title',
-			sorter: true,
+			//sorter: true,
 			slots: {
 				customRender: 'taskName'
 			}
@@ -136,7 +136,7 @@ const tasksListColumns=[
 		{
 			title: 'Priority ',
 			dataIndex: 'priority',
-			sorter: true
+			//sorter: true
 			//   filters: [
 			//     {
 			//       text: "High",
@@ -156,7 +156,7 @@ const tasksListColumns=[
 		{
 			title: 'Category',
 			dataIndex: 'category',
-			sorter: true,
+			//sorter: true,
 			slots: {
 				customRender: 'category'
 			}
@@ -165,7 +165,7 @@ const tasksListColumns=[
 		{
 			title: 'Due Date ',
 			dataIndex: 'dueDate',
-			sorter: true
+			//sorter: true
 			//   filters: [
 			//     {
 			//       text: "Dec 24, 2021",
