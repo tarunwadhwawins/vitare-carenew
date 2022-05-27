@@ -21,7 +21,7 @@
                                     <span>Reset Password</span>
                                 </template>
                                 <a >
-                                    <KeyOutlined @click="resetPasseord()" />
+                                    <KeyOutlined  @click="resetPasseord()" />
                                 </a>
                             </a-tooltip>
                             <a-tooltip placement="top" class="editIcon">
@@ -29,7 +29,7 @@
                                     <span>Edit</span>
                                 </template>
                                 <a>
-                                    <EditOutlined  style="float:right;padding:10px" @click="editStaff()" v-if="arrayToObjact(screensPermissions,38)" />
+                                    <EditOutlined   @click="editStaff()" v-if="arrayToObjact(screensPermissions,38)" />
                                 </a>
                             </a-tooltip>
                             <div class="patientImg">
@@ -422,5 +422,12 @@ export default defineComponent({
     position: absolute;
     right: 40px;
     top: 13px;
+    z-index: 1;
+}
+.editIcon {
+    position: absolute;
+    right: 10px;
+    top: 13px;
+    z-index: 1;
 }
 </style>
