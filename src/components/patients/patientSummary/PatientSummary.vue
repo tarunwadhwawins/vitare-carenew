@@ -160,6 +160,10 @@ export default {
       current.value--;
     };
 
+    const patientDetails = computed(()=>{
+      return store.state.patients.patientDetails
+    })
+
     const handleChange = (value) => {
       console.log(`selected ${value}`);
     };
@@ -189,6 +193,7 @@ onMounted(()=>{
       return utc.substr(utc.indexOf(":") - 2, 8);
     })
     const timerValue = ref(30000)
+    
     
     watchEffect(() => {
       // store.dispatch("appointmentCalls",{patientId:patientUdid})
@@ -320,6 +325,7 @@ onMounted(()=>{
     })
 
     const isAutomatic = ref(false);
+
     const stopTimer = () => {
       clearInterval(timer.value);
       stoptimervisible.value = true;
@@ -428,6 +434,7 @@ onMounted(()=>{
     }
 
     return {
+      patientDetails,
       form,
       startCallForm,
       clearEvent,
@@ -483,6 +490,7 @@ onMounted(()=>{
     cancelButton.value = to.fullPath
     //console.log()
    var button= document.getElementById("timer")
+   
    if(button){
      button.click()
      console.log(to, from)

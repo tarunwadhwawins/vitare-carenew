@@ -1,11 +1,13 @@
 import serviceMethod from '@/services/serviceMethod';
 import { 
   successSwal, 
-  errorSwal,
-  errorLogWithDeviceInfo 
+  // errorSwal,
+  errorLogWithDeviceInfo,
 } from '@/commonMethods/commonMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
 import { ref } from 'vue';
+import Swal from 'sweetalert2';
+import router from '../../router/index'
 const errorMessage = []
 
 export const addDemographic = async ({commit}, data) => {
@@ -947,7 +949,17 @@ export const patientDetails = async ({commit}, id) => {
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 500) {
-      errorSwal('User Deleted/Deactivated')
+      // errorSwal('User Deleted/Deactivated')
+      Swal.fire({
+        text: 'User Deleted/Deactivated',
+        icon: 'warning',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then(()=>{
+        router.push('/manage-patients')
+      })
       commit('loadingStatus', false)
     }
   })
