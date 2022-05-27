@@ -17,6 +17,13 @@
         <WarningOutlined />
     </template>
     <template #action="{record}" v-if="arrayToObjact(screensPermissions,38)">
+     <a-tooltip placement="bottom">
+                <template #title>
+                    <span>{{'Reset Password'}}</span>
+                </template>
+                <a class="icons">
+                    <KeyOutlined @click="resetPasseord(record.id)" /></a>
+            </a-tooltip>
       <a-tooltip placement="bottom" >
           <template #title>
               <span>{{$t('global.delete')}}</span>
@@ -27,16 +34,17 @@
      
   </template>
 </a-table>
+<ResetPassword v-model:visible="resetPasswordVisible" @saveModal="saveModal($event)" endPoint="staff" :id="idData"/>
 </template>
 
 <script>
-import { WarningOutlined,DeleteOutlined } from "@ant-design/icons-vue";
+import { WarningOutlined,DeleteOutlined,KeyOutlined } from "@ant-design/icons-vue";
 import {
   dateFormat,
   tableYScrollerCounterPage,
   arrayToObjact
 } from "@/commonMethods/commonMethod";
-import { onMounted } from "vue";
+import { onMounted,ref } from "vue";
 import { useStore } from "vuex";
 import {
     messages
@@ -46,18 +54,22 @@ import {
 
 } from "@/commonMethods/commonMethod";
 //import InfiniteLoader from "@/components/loader/InfiniteLoader";
+import ResetPassword from "@/components/reset-password/modal/ResetPassword";
 export default {
   name: "DataTable",
   components: {
     WarningOutlined,
-    DeleteOutlined
+    DeleteOutlined,
+    ResetPassword,
+    KeyOutlined
     //  InfiniteLoader
   },
   props: {},
   setup() {
     const store = useStore();
     //const fields = reactive(props.staffRecords.columns)
-
+    const resetPasswordVisible =ref()
+    const idData = ref()
     const meta = store.getters.staffRecord.value;
     let data = [];
     let scroller = "";
@@ -152,7 +164,20 @@ export default {
                 }
             })
         }
+
+        const resetPasseord = (id) => {
+      resetPasswordVisible.value = true;
+      idData.value = id
+    };
+
+    const saveModal = (value) =>{
+      resetPasswordVisible.value = value
+    }
     return {
+      idData,
+      resetPasswordVisible,
+      resetPasseord,
+      saveModal,
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       updateStatus,

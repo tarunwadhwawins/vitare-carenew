@@ -1,8 +1,9 @@
 import serviceMethod from '@/services/serviceMethod';
 import {API_ENDPOINTS} from "@/config/apiConfig"
 import { 
-  // errorSwal,
-  errorLogWithDeviceInfo
+  errorSwal,
+  errorLogWithDeviceInfo,
+  successSwal
 } from '@/commonMethods/commonMethod'
 
 
@@ -182,3 +183,24 @@ export const exportReportRequest = async ({ commit }, data) => {
 }
 
 
+
+export const passwordReset = async ({commit}, data) => {
+  let status = false
+  await serviceMethod.common("put", `${data.endPoint}/${data.id}/resetPassword`, null, data.data).then((response) => {
+    // commit('isReadUpdateNotification', response.data.data);
+    successSwal(response.data.message)
+    console.log(response);
+    status = true
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    if (error.response.status === 422) {
+      // commit('errorMsg', error.response.data)
+      errorSwal(error.response.data.password[0])
+    } else if (error.response.status === 500) {
+      // errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      commit('errorMsg', error.response.data.message)
+    }
+  })
+  return status
+}
