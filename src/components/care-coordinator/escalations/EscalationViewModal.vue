@@ -274,14 +274,19 @@ export default {
     Flags,
     Loader,
   },
-  setup() {
+  setup(props,{emit}) {
     const activeKey = ref([]);
     const store = useStore();
+
+    const closeModal = () => {
+      emit("saveModal", false);     
+    };
     const record = computed(() => {
       return store.state.patients.singleEscalationRecord;
     });
 
     return {
+      closeModal,
       globalDateFormat,
       dateAndTimeFormate,
       flagColumns,
