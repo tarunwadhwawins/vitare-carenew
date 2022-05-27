@@ -5,5 +5,5 @@ export const regex = {
 	onlyNumber: new RegExp(/^[0-9]*$/),
 	zipCode: new RegExp(/^[0-9]{5}$/),
 	alphaNumeric: new RegExp('^[a-zA-Z0-9]{12}$'), // limit 12 digit
-	emailValidation: new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}')
+	emailValidation: new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
 };

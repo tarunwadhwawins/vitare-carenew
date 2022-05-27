@@ -350,7 +350,8 @@ if(route.name != 'PatientSummary') {
             store.state.patients.patientDetails = null
             store.state.patients.emergencyContact = null
             store.state.patients.patientReferralSource = null
-            store.state.patients.emergencyContact = null
+           store.state.patients.responsiblePerson = null
+            
 }
       PatientsModal.value = true;
     };

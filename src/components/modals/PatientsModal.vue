@@ -355,8 +355,8 @@
                         </a-col>
 
                     </a-row>
-									<div>
-    
+									
+    <div v-if="emergencyContactShow">
                     <a-row :gutter="24" >
                         <a-col :span="24">
                             <div class="formHeading">
@@ -546,7 +546,7 @@
                        <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: false, message: $t('global.firstName')+' '+$t('global.validation')}]">
-                                    <a-input @change="changedValue();onKeyUp('firstName');" v-model:value="referal.firstName" size="large" />
+                                    <a-input @change="changedValue" @input="onKeyUp('firstName')" v-model:value="referal.firstName" size="large" />
                                     <ErrorMessage class="error" v-if="errorMsg" :name="errorMsg.firstName?errorMsg.firstName[0]:''" />
                                 </a-form-item>
                             </div>
@@ -554,7 +554,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.middleName')" name="middleName" :rules="[{ required: false, message: $t('global.middleName')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue();onKeyUp('middleName');" v-model:value="referal.middleName" size="large" />
+                                    <a-input  @change="changedValue" @input="onKeyUp('middleName')"  v-model:value="referal.middleName" size="large" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.middleName?errorMsg.middleName[0]:''" />
                                 </a-form-item>
                             </div>
@@ -562,7 +562,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.lastName')" name="lastName" :rules="[{ required: false, message: $t('global.lastName')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue();onKeyUp('lastName');" v-model:value="referal.lastName" size="large" />
+                                    <a-input @change="changedValue" @input="onKeyUp('lastName')"  v-model:value="referal.lastName" size="large" />
                                    
                                 </a-form-item>
                             </div>
@@ -571,7 +571,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.designation')" name="referralDesignation" :rules="[{ required: false, message: $t('global.designation')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue();onKeyUp('referralDesignation');"  v-model:value="referal.referralDesignation" :globalCode="globalCode.designations" />
+                                    <GlobalCodeDropDown @change="changedValue" @input="onKeyUp('referralDesignation')"   v-model:value="referal.referralDesignation" :globalCode="globalCode.designations" />
                                     
                                 </a-form-item>
                             </div>
@@ -579,7 +579,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="referralEmail" :rules="[{ required: referalEmail, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                                    <a-input @change="changedValue(); onKeyUp('referralEmail');"  v-model:value="referal.referralEmail" placeholder="test@test.com" size="large"  />
+                                    <a-input @change="changedValue" @input="onKeyUp('referralEmail')"   v-model:value="referal.referralEmail" placeholder="test@test.com" size="large"  />
                                     <ErrorMessage v-if="errorMsg && referalEmail" :name="errorMsg.referralEmail?errorMsg.referralEmail[0]:''" />
                                 </a-form-item>
                                  
@@ -588,7 +588,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="referralPhoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase() }]">
-                                    <a-input-number @change="changedValue();onKeyUp('referralPhoneNumber');" v-model:value.trim="referal.referralPhoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
+                                    <a-input-number @change="changedValue" @input="onKeyUp('referralPhoneNumber')"  v-model:value.trim="referal.referralPhoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
                                     
                                 </a-form-item>
                             </div>
@@ -596,7 +596,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.conditions.fax')" name="referralFax" :rules="[{ required: false, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
-                                    <a-input @change="changedValue();onKeyUp('referralFax');" v-model:value="referal.referralFax" size="large" />
+                                    <a-input @change="changedValue" @input="onKeyUp('referralFax')" v-model:value="referal.referralFax" size="large" />
                                     <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralFax?referralErrorMsg.referralFax[0]:''" />
                                 </a-form-item>
                             </div>
@@ -1018,6 +1018,7 @@ function newReferral(){
         })
 const referalEmail = ref(false)
         watchEffect(() => {
+        
             idPatient.value = patients.value.addDemographic ? patients.value.addDemographic.id : route.name == "PatientSummary" ? route.params.udid : null;
             // Bitrix data assign 
            
@@ -1241,52 +1242,51 @@ Object.assign(emergencyContactForm, demographics)
 
            // store.commit("resetCounter");
             successSwal(messages.formSuccess);
-            Object.assign(responsiblePersonForm, responsiblePersonReactiveForm)
-            Object.assign(referal, referalForm)
-            Object.assign(emergencyContactForm, emergencyForm)
-            isValueChanged.value = false
-            disableEmergencyContact.value = false
+              common()
+            
             store.dispatch("patients");
            // store.commit("resetCounter");
             emit("closeModal");
-             disableResponsiblePerson.value = false
-            store.state.patients.addDemographic = ''
-                        store.state.patients.patientDetails = ''
-                        store.state.patients.fetchFromBitrix = ''
-                        store.state.patients.uploadFile = ''
-            Object.assign(demographics, form);
         }
 
         const bitrixFormCheck = computed(() => {
             return store.state.patients.bitrixFormCheck
         })
-
+ function common(){
+     store.commit('bitrixFormCheck', false)
+     store.state.patients.addDemographic = null
+            store.state.patients.patientDetails = null
+            store.state.patients.emergencyContact = null
+            store.state.patients.patientReferralSource = null
+           store.state.patients.responsiblePerson = null
+                        store.state.patients.fetchFromBitrix = ''
+                        store.state.patients.uploadFile = ''
+                        isValueChanged.value = false
+                        emergencyContactForm.sameAsPrimary = false
+                        responsiblePersonForm.self = false
+                        Object.assign(demographics, form)
+                        Object.assign(responsiblePersonForm, responsiblePersonReactiveForm)
+                        Object.assign(referal, referalForm)
+                        Object.assign(emergencyContactForm, emergencyForm)
+                         ShowReferral.value = false
+                        store.commit("resetCounter");
+                         disableResponsiblePerson.value = false
+                      
+            disableEmergencyContact.value = false
+ }
         function closeModal() {
             //current.value = 0
             if (isValueChanged.value || bitrixFormCheck.value) {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
 											store.commit('addDemographic', null);
-                        store.commit('bitrixFormCheck', false)
-                        emit("saveModal", false);
+                        
+                        common()
+                       emit("saveModal", false);
                         emit("closeModal", {
                             modal: 'editPatient',
                             value: false
                         });
-                       
-                        Object.assign(responsiblePersonForm, responsiblePersonReactiveForm)
-                        Object.assign(referal, referalForm)
-                        Object.assign(emergencyContactForm, emergencyForm)
-                        disableResponsiblePerson.value = false
-                        disableEmergencyContact.value = false
-                        store.dispatch("patients");
-                        store.commit("resetCounter");
-                        store.state.patients.addDemographic = ''
-                        store.state.patients.patientDetails = ''
-                        store.state.patients.fetchFromBitrix = ''
-                        store.state.patients.uploadFile = ''
-                        isValueChanged.value = false
-                        Object.assign(demographics, form);
                        // saveModal()
                     } else {
                         emit("saveModal", true);
@@ -1324,8 +1324,9 @@ Object.assign(emergencyContactForm, demographics)
         }
 
         const onKeyUp = (event) => {
-           if(referal.firstName || referal.middleName || referal.lastName || referal.referralDesignation || 
-            referal.referralFax  || referal.referralPhoneNumber || referal.referralEmail){
+           
+           if((referal.firstName || referal.middleName || referal.lastName || referal.referralDesignation || 
+            referal.referralFax  || referal.referralPhoneNumber || referal.referralEmail) && !referal.referralEmail.match(regex.emailValidation)){
                 referalEmail.value = true
                 
             }else{
@@ -1334,19 +1335,18 @@ Object.assign(emergencyContactForm, demographics)
             
     
              if(event=='referralEmail'){
-                      console.log('test') 
+                      
 if(referal.referralEmail.match(regex.emailValidation))
 {
-    console.log('test3') 
+   
 referalEmail.value = false
 }
-                 
-                 //errorMsg.value.referralEmail[0]
+
              }
         }
 
-        function scrollToTop(event) {
-            console.log('scroll', event);
+        function scrollToTop() {
+           
             customScrollTop.value.scrollIntoView({
                 behavior: 'smooth'
             });
