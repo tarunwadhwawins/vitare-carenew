@@ -44,7 +44,7 @@ import {
   tableYScrollerCounterPage,
   arrayToObjact
 } from "@/commonMethods/commonMethod";
-import { onMounted,ref } from "vue";
+import { defineComponent, onMounted,ref,defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
 import {
     messages
@@ -54,13 +54,13 @@ import {
 
 } from "@/commonMethods/commonMethod";
 //import InfiniteLoader from "@/components/loader/InfiniteLoader";
-import ResetPassword from "@/components/reset-password/modal/ResetPassword";
-export default {
+// import ResetPassword from "@/components/reset-password/modal/ResetPassword";
+export default defineComponent({
   name: "DataTable",
   components: {
     WarningOutlined,
     DeleteOutlined,
-    ResetPassword,
+    ResetPassword:defineAsyncComponent(()=>import("@/components/reset-password/modal/ResetPassword")),
     KeyOutlined
     //  InfiniteLoader
   },
@@ -188,5 +188,5 @@ export default {
       deletestaff
     };
   },
-};
+});
 </script>

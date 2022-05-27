@@ -51,21 +51,21 @@ import {
 } from "@ant-design/icons-vue";
 import { messages } from "@/config/messages";
 import { warningSwal } from "@/commonMethods/commonMethod";
-import { onMounted,ref } from "vue";
+import { onMounted,ref,defineAsyncComponent, defineComponent } from "vue";
 import { useStore } from "vuex";
 import {
   tableYScrollerCounterPage,
   arrayToObjact,
 } from "@/commonMethods/commonMethod";
 import { useRoute } from "vue-router";
-import ResetPassword from "@/components/reset-password/modal/ResetPassword";
-export default {
+// import ResetPassword from "@/components/reset-password/modal/ResetPassword";
+export default defineComponent({
   name: "DataTable",
   components: {
     WarningOutlined,
     DeleteOutlined,
     KeyOutlined,
-    ResetPassword,
+    ResetPassword:defineAsyncComponent(()=>import("@/components/reset-password/modal/ResetPassword")),
   },
   setup() {
     const store = useStore();
@@ -218,5 +218,5 @@ export default {
       updateStatus,
     };
   },
-};
+});
 </script>
