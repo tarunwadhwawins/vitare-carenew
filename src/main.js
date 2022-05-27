@@ -57,47 +57,49 @@ getToken(messaging, { vapidKey: 'BLuPXuT693CDqZoVL-uUKfn-VFDHGail1U9Dk6i8krkcyjv
 onMessage(messaging, (payload) => {
   store.dispatch('notificationList')
   const key = `open${Date.now()}`;
-  notification.open({
-    message: <div><h2>{`${payload.notification.title}`}</h2></div>,
-    description: <div> {`${payload.notification.body}`} </div>,
-    btn: [
-        h(Button, {
-            onClick: () => {   notification.close(key) },
-        },
-            "Cancel "
-        ),
-        h(Button, {
-            type: "primary",
-            onClick: () => { if(payload.data.type=="Appointment"){
-                router.push('/appointment-calendar'),
-                notification.close(key)
-            }else{
-                // router.push('/communications?view=list'),
-                router.push({
-                    name: 'Communications',
-                    query: {
-                        view: 'list'
-                    },
-                    params: {
-                        from: 'push',
-                        typeId: payload.data.typeId,
-                    }
-                }),
-                notification.close(key)
-            }
-              
-            }
-        },
-            "View"
-        ),
-
-    ],
-    key,
-    onClose: () => {   notification.close(key) },
-    duration: null,
-    placement: 'bottomRight'
-
-})
+ if(router.name!='Communications'){
+    notification.open({
+        message: <div><h2>{`${payload.notification.title}`}</h2></div>,
+        description: <div> {`${payload.notification.body}`} </div>,
+        btn: [
+            h(Button, {
+                onClick: () => {   notification.close(key) },
+            },
+                "Cancel "
+            ),
+            h(Button, {
+                type: "primary",
+                onClick: () => { if(payload.data.type=="Appointment"){
+                    router.push('/appointment-calendar'),
+                    notification.close(key)
+                }else{
+                    // router.push('/communications?view=list'),
+                    router.push({
+                        name: 'Communications',
+                        query: {
+                            view: 'list'
+                        },
+                        params: {
+                            from: 'push',
+                            typeId: payload.data.typeId,
+                        }
+                    }),
+                    notification.close(key)
+                }
+                  
+                }
+            },
+                "View"
+            ),
+    
+        ],
+        key,
+        onClose: () => {   notification.close(key) },
+        duration: null,
+        placement: 'bottomRight'
+    
+    })
+ }
   // ...
 });
 
