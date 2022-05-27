@@ -528,14 +528,17 @@ export default {
               successSwal("Data saved Successfully!");
               emit("saveModal", false);
               status.value = false;
-              store.dispatch("escalationList", {
-                referenceId: escalation.referenceId
-                  ? escalation.referenceId
-                  : route.params.udid,
-                entityType: "patient",
-              });
+              if(route.name == 'PatientSummary'){
+                store.dispatch("escalation", {
+                  referenceId: escalation.referenceId
+                    ? escalation.referenceId
+                    : route.params.udid,
+                  entityType: "patient",
+                });
+              }else{
+                store.dispatch("escalation");
+              }
               Object.assign(escalation, form);
-              store.dispatch("escalation");
               store.commit("resetEscalationCounter")
               store.commit("checkChangeInput", false);
               store.state.patients.addBasicEscalation = null;
