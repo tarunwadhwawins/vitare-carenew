@@ -2,7 +2,7 @@ import { createApp,h } from 'vue'
 import Antd from 'ant-design-vue'
 import App from './App'
 import 'ant-design-vue/dist/antd.css'
-import router from './router'
+import router from './router/index'
 import i18n from './locales/i18n'
 import store from './store'
 import './assets/scss/common.scss'
@@ -57,7 +57,7 @@ getToken(messaging, { vapidKey: 'BLuPXuT693CDqZoVL-uUKfn-VFDHGail1U9Dk6i8krkcyjv
 onMessage(messaging, (payload) => {
   store.dispatch('notificationList')
   const key = `open${Date.now()}`;
- if(router.name!='Communications'){
+ if(router.currentRoute.value.name!='Communications'){
     notification.open({
         message: <div><h2>{`${payload.notification.title}`}</h2></div>,
         description: <div> {`${payload.notification.body}`} </div>,
