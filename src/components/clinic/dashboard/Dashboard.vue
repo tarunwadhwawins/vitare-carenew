@@ -271,7 +271,7 @@ export default {
 
         }
          const escalationList = computed(() => {
-      return store.state.careCoordinator.escalation;
+      return store.state.escalations.escalation;
     });
 
         onMounted(() => {
