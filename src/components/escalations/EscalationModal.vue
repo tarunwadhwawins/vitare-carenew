@@ -399,10 +399,10 @@ export default {
     //   },
     // })
     const current = computed({
-      get: () => store.state.patients.escalationCounter,
+      get: () => store.state.escalations.escalationCounter,
       set: (value) => {
         if (addEscalation.value) {
-          store.state.patients.escalationCounter = value;
+          store.state.escalations.escalationCounter = value;
         } else {
           if (
             Object.values(escalation).filter((item) => item != "").length >= 7
@@ -410,7 +410,7 @@ export default {
             submitEscalationForm();
           } else {
             errorSwal("All fields(*) are required!");
-            store.state.patients.escalationCounter = 0;
+            store.state.escalations.escalationCounter = 0;
           }
         }
       },
@@ -427,14 +427,14 @@ export default {
     };
 
     const notesList = computed(() => {
-      return store.state.patients.escalationNotesList;
+      return store.state.escalations.escalationNotesList;
     });
     const patientVitalList = computed(() => {
-      return store.state.patients.escalationVitalList;
+      return store.state.escalations.escalationVitalList;
     });
 
     const addEscalation = computed(() => {
-      return store.state.patients.addBasicEscalation;
+      return store.state.escalations.addBasicEscalation;
     });
 
     const formEscalationDetails = reactive({
@@ -541,7 +541,7 @@ export default {
               Object.assign(escalation, form);
               store.commit("resetEscalationCounter")
               store.commit("checkChangeInput", false);
-              store.state.patients.addBasicEscalation = null;
+              store.state.escalations.addBasicEscalation = null;
               Object.assign(escalationDetails, formEscalationDetails);
               store.dispatch("timeLine", 122).then(() => {
                 apiCall(timeLineButton.value);
@@ -569,7 +569,7 @@ export default {
             Object.assign(escalationDetails, formEscalationDetails);
             store.commit("resetEscalationCounter");
             store.commit("checkChangeInput", false);
-            store.state.patients.addBasicEscalation = null;
+            store.state.escalations.addBasicEscalation = null;
           } else {
             emit("saveModal", true);
           }
@@ -583,10 +583,10 @@ export default {
       console.log("value", e);
     }
     const carePlanList = computed(() => {
-      return store.state.patients.esacalationCarePlansList;
+      return store.state.escalations.esacalationCarePlansList;
     });
     const patientFlagList = computed(() => {
-      return store.state.patients.esacalationFlagList;
+      return store.state.escalations.esacalationFlagList;
     });
 
     onMounted(() => {

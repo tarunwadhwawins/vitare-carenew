@@ -30,6 +30,7 @@ import { errorLogWithDeviceInfo} from "./errorLogWithDeviceInfo"
 import { businessDashboard } from "./businessDashboard/index"
 import { clinicalDashboard } from "./clinicalDashboard/index"
 import { referral } from "./referral/index"
+import {escalations} from "./escalations/index"
 export default createStore({
   modules: {
     dashBoard,
@@ -61,7 +62,8 @@ export default createStore({
     errorLogWithDeviceInfo,
     businessDashboard,
     clinicalDashboard,
-    referral
+    referral,
+    escalations
   },
   plugins: [ createPersistedState({
     reducer(state) {

@@ -160,18 +160,6 @@ export const resetCounter = (state) => {
 }
 
 
-export const escalationCounterPlus = (state) => {
-  state.escalationCounter++
-}
-
-export const escalationCounterMinus = (state) => {
-  state.escalationCounter--
-}
-
-export const resetEscalationCounter = (state) => {
-  state.escalationCounter = 0
-}
-
 export const addPatientProgram = (state, data) => {
   state.addPatientProgram = data
 }
@@ -1087,67 +1075,9 @@ export const patientVitalList = (state, data) => {
 	})
 }
 
-
-export const addBasicEscalation = (state, data) => {
-  state.addBasicEscalation = data
-}
-
-
-export const escalation = (state, data) => {
-  state.escalation = data
-}
-
-
-
 export const referralList = (state, data) => {
   state.referralList = data
 }
 export const referralDetail = (state, data) => {
   state.referralDetail = data
-}
-
-export const esacalationFlagList = (state, data) => {
-  state.esacalationFlagList = data.map((item) => {
-		item.createdAt = dateAndTimeFormate(item.createdAt,globalDateFormat);
-		return item;
-	})
-}
-
-export const escalationNotesList = (state, data) => {
-  state.escalationNotesList = data.map(note => {
-    note.date = dateOnlyFormat(note.date);
-    return note;
-  });
-}
-
-
-export const esacalationCarePlansList = (state, data) => {
-  state.esacalationCarePlansList = data.map(carePlan => {
-    carePlan.startDate = dateOnlyFormat(carePlan.startDate)
-    carePlan.endDate = dateOnlyFormat(carePlan.endDate)
-    return carePlan
-  })
-}
-
-
-export const escalationVitalList = (state, data) => {
-  state.escalationVitalList = data.map((item) => {
-		item.startTime = item.startTime?dateAndTimeFormate(item.startTime,globalDateFormat):'';
-    item.endTime = item.endTime?dateAndTimeFormate(item.endTime,globalDateFormat):'';
-		return item;
-	})
-}
-
-
-export const singleEscalationRecord = (state, data) => {
-  state.singleEscalationRecord = data
-
-  state.singleEscalationDataArray = [{
-    patientName :data.patientName,
-    patientId :data.patientId,
-    flagColor: data.flagColor,
-    flagName: data.flagName,
-    dueBy:dateAndTimeFormate(data.dueBy,globalDateFormat),
-    escalationType:data.escalationType
-  }]
 }

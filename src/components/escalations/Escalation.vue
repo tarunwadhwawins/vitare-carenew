@@ -44,8 +44,8 @@ import { useStore } from "vuex";
 import { globalDateFormat } from "@/commonMethods/commonMethod";
 import EscaltionTable from "@/components/common/tables/EscalationTable"
 // import EscaltionViewModal from "../escalations/EscalationViewModal"
-import EscaltionViewModal from "@/components/care-coordinator/escalations/EscalationViewModal";
-import EscaltionModal from "@/components/patients/patientSummary/escalations/EscalationModal"
+import EscaltionViewModal from "@/components/escalations/EscalationViewModal";
+import EscaltionModal from "@/components/escalations/EscalationModal"
 import Loader from "@/components/loader/Loader";
 import SearchField from "@/components/common/input/SearchField";
 const columnData = [
@@ -151,7 +151,7 @@ export default {
     
     const showEscalationModal=()=>{
         store.commit('resetEscalationCounter')
-        store.state.patients.addBasicEscalation=null
+        store.state.escalations.addBasicEscalation=null
         escaltionModal.value =true
     }
     
@@ -169,7 +169,7 @@ export default {
     }
 
     const escalationList = computed(() => {
-      return store.state.careCoordinator.escalation;
+      return store.state.escalations.escalation;
     });
     return {
        escalationList,

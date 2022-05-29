@@ -6,15 +6,4 @@ export const staffRecord = (state)=>{
     })
   }
   
-  export const escalationMeta = (state)=>{
-    return computed(()=>{
-        return state.escalationMeta
-    })
-  }
-
   
-  export const escalation = (state)=>{
-    return computed(()=>{
-        return state.escalation
-    })
-  }

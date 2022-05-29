@@ -60,7 +60,7 @@
   import Loader from "@/components/loader/Loader";
   import moment from "moment"
   import EscaltionTable from "@/components/common/tables/EscalationTable"
-  import EscaltionViewModal from "@/components/care-coordinator/escalations/EscalationViewModal"
+  import EscaltionViewModal from "@/components/escalations/EscalationViewModal"
   import TaskTable from "@/components/tasks/TaskTable";
   import TasksModal from "@/components/modals/TasksModal";
   const columnData = [

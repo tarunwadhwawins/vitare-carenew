@@ -1,4 +1,4 @@
-import {dateAndTimeFormate,globalDateFormat} from '@/commonMethods/commonMethod';
+import {dateAndTimeFormate} from '@/commonMethods/commonMethod';
 export const counterPlus = (state, data) => {
 	if (data) {
 		state.counter = data;
@@ -279,15 +279,3 @@ export const documentStaffDetails = (state, data) => {
 };
 
 
-export const escalation = (state, data) => {
-	state.escalationMeta = data.meta ? data.meta.pagination : ''
-	state.escalation = data.data.map((item) => {
-		item.dueBy = dateAndTimeFormate(item.dueBy,globalDateFormat);
-		return item;
-	})
-};
-
-
-export const escalationStaus = (state, data) => {
-	state.escalationStaus = data;
-};
