@@ -650,16 +650,19 @@
                             <div class="form-group conditionsCheckboxs">
                                 <a-form-item name="condition" :rules="[{ required: true, message: $t('patient.conditions.healthConditions')+' '+$t('global.validation') }]">
 																	<!-- Selected -->
+																	
 																	<p v-if="selectedDiseasesList && selectedDiseasesList.length > 0">
 																		<a-checkbox-group v-model:value="conditions.condition">
-																			<a-checkbox @change="chooseDiseases" :checked="true" v-for="condition in selectedDiseasesList" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
+																			<a-checkbox @change="chooseDiseases($event, false)" v-model:checked="checkboxChecked" v-for="disease in selectedDiseasesList" :key="disease.id" :value="disease.id" name="condition">{{disease.name}}</a-checkbox>
 																		</a-checkbox-group>
 																	</p><br />
 																	<!-- Unselected -->
+																	
 																	<p v-if="unSelectedDiseasesList && unSelectedDiseasesList.length > 0">
-																		<a-checkbox-group v-model:value="conditions.condition">
-																			<a-checkbox @change="chooseDiseases" v-for="condition in unSelectedDiseasesList" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
-																	</a-checkbox-group></p>
+																		<a-checkbox-group v-model:value="conditions.unselectedConditions">
+																			<a-checkbox @change="chooseDiseases($event, true)" v-model:checked="checkboxUnchecked" v-for="disease in unSelectedDiseasesList" :key="disease.id" :value="disease.id" name="unselectedConditions">{{disease.name}}</a-checkbox>
+																		</a-checkbox-group>
+																	</p>
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -864,8 +867,6 @@ export default defineComponent({
 
         const unSelectedDiseasesList = ref([])
         const selectedDiseasesList = ref([])
-				
-        unSelectedDiseasesList.value = globalCode.value.healthCondition
         const selectedDiseases = (event) => {
 					isValueChanged.value = true;
 					const searchedValue = event.target.value
@@ -873,44 +874,54 @@ export default defineComponent({
 						unSelectedDiseasesList.value = []
 						globalCode.value.healthCondition.filter(function(healthCondition) {
 							if(healthCondition.name.toLowerCase().includes(searchedValue.toLowerCase())) {
-								if(!unSelectedDiseasesList.value.includes(healthCondition)) {
+								if(!selectedDiseasesList.value.includes(healthCondition) && !unSelectedDiseasesList.value.includes(healthCondition)) {
 									unSelectedDiseasesList.value.push(healthCondition)
 								}
 							}
 						});
 					}
-					else {
-						unSelectedDiseasesList.value = globalCode.value.healthCondition
-						selectedDiseasesList.value = []
-					}
         }
 
-				const chooseDiseases = (event) => {
+				const chooseDiseases = (event, isTrue) => {
 					const value = event.target.value
 					const checked = event.target.checked
-					if(checked) {
+					if(isTrue && checked) {
+						conditions.unselectedConditions = conditions.unselectedConditions.filter(function(val) {
+							return value != val;
+						});
 						unSelectedDiseasesList.value.filter(function(healthCondition) {
 							if(value == healthCondition.id) {
+								const indexOfObject = unSelectedDiseasesList.value.findIndex(object => {
+									return object.id === healthCondition.id;
+								});
+								unSelectedDiseasesList.value.splice(indexOfObject, 1);
 								if(!selectedDiseasesList.value.includes(healthCondition)) {
-									const indexOfObject = unSelectedDiseasesList.value.findIndex(object => {
-										return object.id === healthCondition.id;
-									});
-									unSelectedDiseasesList.value.splice(indexOfObject, 1);
 									selectedDiseasesList.value.push(healthCondition)
+									if(!conditions.unselectedConditions.includes(healthCondition)) {
+										conditions.unselectedConditions.push(healthCondition.id)
+									}
 								}
+								conditions.condition.push(healthCondition.id)
 							}
 						})
 					}
-					else {
+					else if(!isTrue && !checked) {
+						conditions.condition = conditions.condition.filter(function(val) {
+							return value != val;
+						});
 						selectedDiseasesList.value.filter(function(healthCondition) {
 							if(value == healthCondition.id) {
+								const indexOfObject = selectedDiseasesList.value.findIndex(object => {
+									return object.id === healthCondition.id;
+								});
+								selectedDiseasesList.value.splice(indexOfObject, 1);
 								if(!unSelectedDiseasesList.value.includes(healthCondition)) {
-									const indexOfObject = selectedDiseasesList.value.findIndex(object => {
-										return object.id === healthCondition.id;
-									});
-									selectedDiseasesList.value.splice(indexOfObject, 1);
 									unSelectedDiseasesList.value.push(healthCondition)
+									if(!conditions.unselectedConditions.includes(healthCondition)) {
+										conditions.unselectedConditions.push(healthCondition.id)
+									}
 								}
+								conditions.unselectedConditions.push(healthCondition.id)
 							}
 						})
 					}
@@ -1015,6 +1026,7 @@ export default defineComponent({
 
         const conditions = reactive({
             condition: [],
+            unselectedConditions: [],
         });
 
         const insuranceData = reactive({
@@ -1042,14 +1054,63 @@ export default defineComponent({
             get: () =>
                 store.state.patients.counter,
             set: (value) => {
+								selectedDiseasesList.value = []
+								conditions.condition = []
+								unSelectedDiseasesList.value = []
+								conditions.unselectedConditions = []
                 if (props.isEdit && value == 5) {
-                    store.dispatch('patientConditions', idPatient.value).then(() => {
-                        console.log('patientConditions.value', patientConditions.value)
-                        if (patientConditions.value != null) {
-                            Object.assign(conditions.condition, patientConditions.value)
-                        }
-                    })
+									// Object.assign(conditions.condition, patientConditions.value)
+									store.dispatch('patientConditions', idPatient.value).then(() => {
+										globalCode.value.healthCondition.filter(function(healthCondition) {
+											if(patientConditions.value.includes(healthCondition.id)) {
+												if(!selectedDiseasesList.value.includes(healthCondition)) {
+													selectedDiseasesList.value.push(healthCondition)
+													if(!conditions.condition.includes(healthCondition)) {
+														conditions.condition.push(healthCondition.id)
+													}
+												}
+											}
+											else {
+												console.log('DiseasesList', selectedDiseasesList.value)
+												if(!selectedDiseasesList.value.includes(healthCondition)) {
+													unSelectedDiseasesList.value.push(healthCondition)
+													if(!conditions.unselectedConditions.includes(healthCondition)) {
+														conditions.unselectedConditions.push(healthCondition.id)
+													}
+												}
+											}
+										});
+									})
                 }
+                else if ((!props.isEdit) && (value == 5 && patients.value.addCondition)) {
+									Object.assign(conditions.condition, patients.value.addCondition)
+									store.dispatch('patientConditions', idPatient.value).then(() => {
+										globalCode.value.healthCondition.filter(function(healthCondition) {
+											if(patients.value.addCondition.includes(healthCondition.id)) {
+												if(!selectedDiseasesList.value.includes(healthCondition)) {
+													selectedDiseasesList.value.push(healthCondition)
+													if(!conditions.condition.includes(healthCondition)) {
+														conditions.condition.push(healthCondition.id)
+													}
+												}
+											}
+											else {
+												if(!unSelectedDiseasesList.value.includes(healthCondition)) {
+													unSelectedDiseasesList.value.push(healthCondition)
+													if(!conditions.unselectedConditions.includes(healthCondition)) {
+														conditions.unselectedConditions.push(healthCondition.id)
+													}
+												}
+											}
+										});
+									})
+                }
+								else {
+									unSelectedDiseasesList.value = globalCode.value.healthCondition
+									conditions.unselectedConditions = unSelectedDiseasesList.value
+									selectedDiseasesList.value = []
+									conditions.condition = []
+								}
 
                 if (props.isEdit || patients.value.addDemographic) {
 
@@ -1214,8 +1275,11 @@ Object.assign(emergencyContactForm, demographics)
 
         const condition = () => {
             const patientId = patients.value.patientDetails ? patients.value.patientDetails.id : idPatient.value
+						const patientConditions = {
+							condition: conditions.condition
+						};
             store.dispatch("addCondition", {
-                data: conditions,
+                data: patientConditions,
                 id: patientId,
 
             }).then(() => {
@@ -1542,7 +1606,9 @@ referalEmail.value = false
 						selectedDiseasesList,
 						unSelectedDiseasesList,
 						chooseDiseases,
-            referalEmail
+            referalEmail,
+            checkboxChecked:true,
+            checkboxUnchecked:false,
         };
     },
 });
