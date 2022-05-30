@@ -26,6 +26,7 @@
 import { watchEffect, ref, onMounted, computed } from "vue";
 import enUS from "ant-design-vue/es/locale/en_US";
 import esES from "ant-design-vue/es/locale/es_ES";
+import router from './router/index'
 // import 'moment/dist/locale/es';
 // import SelectLanguage from "./views/localization/SelectLanguage.vue";
 // moment.locale("en");
@@ -45,6 +46,7 @@ export default {
     });
 
     watchEffect(() => {
+
       if (refreshToken.value != null) {
         store.dispatch("globalCodes");
         //store.dispatch("timeLine", 122);
@@ -55,7 +57,12 @@ export default {
         let loginCheck = localStorage.getItem('checkLogin');
         if(!loginCheck){
           store.dispatch("logoutUser")
+        }else{
+          if(router.currentRoute.value.path=='/'){
+            router.push('/dashboard');
+          }
         }
+        
         if (refreshToken.value > date.getTime()) {
           let differenceDate = refreshToken.value - date.getTime();
           setTimeout(() => {
