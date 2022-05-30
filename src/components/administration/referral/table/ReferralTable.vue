@@ -1,7 +1,7 @@
 
 <template>
 
-<a-table rowKey="id"  :columns="referralColumns" :data-source="referralList" :scroll="{ y: tableYScroller}" :pagination="false" @change="handleTableChange">
+<a-table rowKey="id"  :columns="referralColumns" :data-source="referralList"  :pagination="false" @change="handleTableChange">
         <template #patientName="{ text, record }" >
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
         </template> 
@@ -18,7 +18,7 @@ import { useStore } from "vuex";
 import {
   
   arrayToObjact,
-  tableYScroller,
+  
 } from "@/commonMethods/commonMethod";
 import { useRoute } from 'vue-router';
 export default {
@@ -33,7 +33,7 @@ export default {
     const route = useRoute()
     //infinite scroll
     let data = [];
-    let scroller = "";
+   
 const  dateFilter = ref('')
     const meta = store.getters.referrareferralMetalList;
     const referralList = store.getters.referral
@@ -46,17 +46,14 @@ const  dateFilter = ref('')
      
         //dateFilter.value = route.query.fromDate && route.query.toDate ? "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "?fromDate=&toDate="
     onMounted(() => {
-      console.log("check")
+     
       checkDate()
-      var tableContent = document.querySelector(".ant-table-body");
-      tableContent.addEventListener("scroll", (event) => {
-        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-        let currentScroll = event.target.scrollTop + 2;
-        if (currentScroll >= maxScroll) {
+      window.addEventListener("scroll", () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
           let current_page = meta.value.current_page + 1;
 
           if (current_page <= meta.value.total_pages) {
-            scroller = maxScroll;
+            
             data = referralList.value
             loader.value = true;
             meta.value = "";
@@ -89,13 +86,6 @@ const  dateFilter = ref('')
       });
     
       store.state.referral.referral = data
-      
-      // = data;
-      var tableContent = document.querySelector(".ant-table-body");
-
-      setTimeout(() => {
-        tableContent.scrollTo(0, scroller);
-      }, 50);
       loader.value = false;
     }
 
@@ -136,7 +126,7 @@ const  dateFilter = ref('')
       handleTableChange,
       referralColumns:store.getters.referralColumns,
       referralList,
-      tableYScroller
+     
     };
   },
 };

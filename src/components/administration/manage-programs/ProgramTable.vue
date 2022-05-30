@@ -1,7 +1,7 @@
 
 <template>
 <a-col :span="24">
-    <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.manageProgramList" :scroll="{ x: 900 ,y : tableYScroller }" @change="handleTableChange" :pagination=false>
+    <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.manageProgramList" :scroll="{ x: 900  }" @change="handleTableChange" :pagination=false>
         <template #actions="text">
             <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,16)">
                 <template #title>
@@ -33,7 +33,7 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import {
   warningSwal,
   arrayToObjact,
-  tableYScroller,
+ 
 } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import { useStore } from "vuex";
@@ -85,18 +85,15 @@ export default {
     //ifinitescroller
     const meta = store.getters.programsRecord.value;
     const loader = ref(false);
-    let scroller = "";
+    
     let data = [];
     onMounted(() => {
-      var tableContent = document.querySelector(".ant-table-body");
-      tableContent.addEventListener("scroll", (event) => {
-        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-        let currentScroll = event.target.scrollTop + 2;
-        if (currentScroll >= maxScroll) {
+       window.addEventListener("scroll", () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
           let current_page = meta.programMeta.current_page + 1;
 
           if (current_page <= meta.programMeta.total_pages) {
-            scroller = maxScroll;
+            
             data = meta.manageProgramList;
             loader.value = true;
             store.state.program.programMeta = "";
@@ -124,11 +121,7 @@ export default {
         data.push(element);
       });
       meta.manageProgramList = data;
-      var tableContent = document.querySelector(".ant-table-body");
 
-      setTimeout(() => {
-        tableContent.scrollTo(0, scroller);
-      }, 5000);
       loader.value = false;
     }
 
@@ -165,7 +158,7 @@ export default {
       deleteProgram,
       editProgram,
       UpdateProgramStatus,
-      tableYScroller,
+     
       handleTableChange,
     };
   },

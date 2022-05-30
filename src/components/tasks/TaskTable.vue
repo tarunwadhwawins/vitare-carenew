@@ -1,7 +1,7 @@
 <template>
 <a-col :sm="24">
 
-    <a-table rowKey="id" :columns="tasksListColumns" :data-source="meta.tasksList" :scroll="height ? {  y:height } :{ x: 900 ,y:tableYScroller }" :pagination="false" @change="handleTableChange">
+    <a-table rowKey="id" :columns="tasksListColumns" :data-source="meta.tasksList" :scroll="height ? {  y:height } :{ x: 900  }" :pagination="false" @change="handleTableChange">
 
         <template #taskName="{text,record}">
             <a @click="taskDetails(record.id)"><span>{{ text }}</span></a>
@@ -50,7 +50,7 @@ import { onMounted, computed,defineAsyncComponent , ref} from "vue"
 import { useStore } from "vuex"
 import {  DeleteOutlined, EditOutlined, CalendarOutlined} from "@ant-design/icons-vue"
 import { messages } from "@/config/messages"
-import { warningSwal, tableYScroller, arrayToObjact} from "@/commonMethods/commonMethod"
+import { warningSwal,  arrayToObjact} from "@/commonMethods/commonMethod"
 import { useRoute } from 'vue-router'
 export default {
     name: "TaskTable",
@@ -74,7 +74,7 @@ export default {
         const meta = store.getters.taskRecords.value;
         const taskVisibleView = ref(false)
         const onlyView = ref(false)
-        let scroller = "";
+    
         let dateFilter = ''
         let filter = ''
 
@@ -84,14 +84,11 @@ export default {
         }
         onMounted(() => {
             checkDate()
-            var tableContent = document.querySelector(".ant-table-body");
-            tableContent.addEventListener("scroll", (event) => {
-                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-                let currentScroll = event.target.scrollTop + 2;
-                if (currentScroll >= maxScroll) {
+            window.addEventListener("scroll", () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
                     let current_page = meta.taskMeta.current_page + 1;
                     if (current_page <= meta.taskMeta.total_pages) {
-                        scroller = maxScroll;
+                       
                         data = meta.tasksList;
                         store.state.tasks.taskMeta = ''
 
@@ -120,11 +117,7 @@ export default {
             });
 
             meta.tasksList = data;
-            var tableContent = document.querySelector(".ant-table-body");
-
-            setTimeout(() => {
-                tableContent.scrollTo(0, scroller);
-            }, 50);
+            
         }
         const editTask = (id) => {
             emit("is-Edit", {
@@ -209,7 +202,7 @@ export default {
             editTask,
             deleteTask,
             meta,
-            tableYScroller,
+           
             handleTableChange,
             taskID,
             taskDetails,
