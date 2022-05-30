@@ -1,6 +1,6 @@
 
 <template>
-<a-table rowKey="id" :columns="meta.cptCodesColumns" :data-source="meta.cptCodesList"  :pagination="false" @change="handleTableChange">
+<a-table rowKey="id" :columns="meta.cptCodesColumns" :scroll="{ y:'calc(100vh - 470px)'}" :data-source="meta.cptCodesList"  :pagination="false" @change="handleTableChange">
     <template #actions="{record}">
         <a-tooltip placement="bottom" @click="editCpt(record.udid)" v-if="arrayToObjact(screensPermissions,10)">
             <template #title>
@@ -84,13 +84,17 @@ export default {
     const meta = store.getters.cptRecords.value;
     const loader = ref(false);
  
-    onMounted(() => {
-       window.addEventListener("scroll", () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+   let scroller = "";
+        onMounted(() => {
+            var tableContent = document.querySelector(".ant-table-body");
+            tableContent.addEventListener("scroll", (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+                let currentScroll = event.target.scrollTop + 2;
+                if (currentScroll >= maxScroll) {
           let current_page = meta.cptMeta.current_page + 1;
 
           if (current_page <= meta.cptMeta.total_pages) {
-            
+            scroller = maxScroll;
             data = meta.timeLogReportList;
             loader.value = true;
             meta.cptMeta = "";
@@ -121,6 +125,12 @@ export default {
       });
       meta.cptCodesList = data;
       loader.value = false;
+      var tableContent = document.querySelector(".ant-table-body");
+
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller);
+            }, 50);
+            
     }
 
     const handleTableChange = (pag, filters, sorter) => {

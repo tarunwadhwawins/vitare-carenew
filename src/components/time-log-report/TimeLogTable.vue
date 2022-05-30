@@ -1,6 +1,6 @@
 <template>
 <a-col :sm="24" :xs="24">
-    <a-table rowKey="id" :columns="meta.timeLogReportColumns" :pagination="false" :data-source="meta.timeLogReportList"  @change="handleTableChange">
+    <a-table rowKey="id" :columns="meta.timeLogReportColumns" :pagination="false" :scroll="{ y:'calc(100vh - 470px)'}" :data-source="meta.timeLogReportList"  @change="handleTableChange">
         <template #staff="{record}">
             <span>{{record.staff}}</span>
         </template>
@@ -136,13 +136,18 @@ props:{
        filter= route.query.filter ? route.query.filter : ''
        date = route.query.fromDate && route.query.toDate ? "?fromDate=" + timeStampFormate(route.query.fromDate,'YYYY-MM-DD') + "&toDate=" + timeStampFormate(route.query.toDate,'YYYY-MM-DD') : store.getters.auditTimeLogFilterDates.value ? store.getters.auditTimeLogFilterDates.value :'?fromDate=&toDate='
        }
-       onMounted(() => {
-           checkDate()
-            window.addEventListener("scroll", () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+   
+            let scroller = "";
+        onMounted(() => {
+             checkDate()
+            var tableContent = document.querySelector(".ant-table-body");
+            tableContent.addEventListener("scroll", (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+                let currentScroll = event.target.scrollTop + 2;
+                if (currentScroll >= maxScroll) {
                     let current_page = meta.timeLogeMeta.current_page + 1;
                     if (current_page <= meta.timeLogeMeta.total_pages) {
-                        
+                        scroller = maxScroll;
                         data = meta.timeLogReportList
 
                         loader.value = true;
@@ -168,6 +173,11 @@ props:{
                 data.push(element);
             });
             meta.timeLogReportList = data
+            var tableContent = document.querySelector(".ant-table-body");
+
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller);
+            }, 50);
             
             loader.value = false;
         }

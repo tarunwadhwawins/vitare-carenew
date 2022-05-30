@@ -127,6 +127,8 @@ export default {
             })
             store.commit("filter", '')
             store.commit("dateFilter", '')
+            store.state.patients.patientMeta = ''
+           
         })
 
         function filter(event) {

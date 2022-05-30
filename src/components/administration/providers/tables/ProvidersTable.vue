@@ -1,5 +1,5 @@
 <template>
-<a-table  rowKey="id" :columns="providerListColumns" :data-source="providersListAll"  :pagination=false @change="handleTableChange">
+<a-table  rowKey="id" :columns="providerListColumns" :data-source="providersListAll" :scroll="{ y:'calc(100vh - 470px)'}" :pagination=false @change="handleTableChange">
     <template #name="{text,record}" v-if="arrayToObjact(screensPermissions,23)">
         <router-link :to="{ name: 'providerSummary', params: { id:record.id  }}">{{text}}</router-link>
     </template>
@@ -52,13 +52,17 @@ export default {
     let url = store.getters.searchTable;
     let data = [];
     
-    onMounted(() => {
-      window.addEventListener("scroll", () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+   let scroller = "";
+        onMounted(() => {
+            var tableContent = document.querySelector(".ant-table-body");
+            tableContent.addEventListener("scroll", (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+                let currentScroll = event.target.scrollTop + 2;
+                if (currentScroll >= maxScroll) {
           let current_page = meta.current_page + 1;
 
           if (current_page <= meta.total_pages) {
-            
+            scroller = maxScroll;
             meta.value = "";
             data = providersListAll.value;
             store.state.provider.providersListAll = "";
@@ -83,7 +87,12 @@ export default {
         data.push(element);
       });
       providersListAll.value = data;
-      
+      var tableContent = document.querySelector(".ant-table-body");
+
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller);
+            }, 50);
+            
     }
 
     const providersData = computed(() => {
