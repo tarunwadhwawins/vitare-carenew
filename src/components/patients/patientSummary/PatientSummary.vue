@@ -245,7 +245,7 @@ onMounted(()=>{
       if(route.name == 'PatientSummary') {
         store.commit("loadingTableStatus",true)
         loader.value = true
-        store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 99});
+        store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 99})
         store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 100});
         store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 101});
         store.dispatch('devices', patientUdid)
