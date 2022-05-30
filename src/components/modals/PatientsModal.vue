@@ -530,7 +530,7 @@
                     </a-row>
 
                     <a-row :gutter="24">
-                        <a-col :md="16" :sm="12" :xs="24">
+                        <a-col :md="16" :sm="12" :xs="24" v-if="ShowReferralId">
                             <div class="form-group">
                                 <a-form-item label="Select Referral User" name="referral" :rules="[{ required: false, message: 'User  '+$t('global.validation') }]">
                                     <GlobalCodeDropDown v-if="referralData" @change="changedValue" v-model:value="referal.referral" :globalCode="referralData"  />
@@ -538,8 +538,8 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-<a-col :md="8" :sm="12" :xs="24">
-                       <a-button  type="primary" style="margin-right: 8px" @click="newReferral">Add New Referral</a-button>
+<a-col :md="8" :sm="12" :xs="24" >
+                       <a-button  type="primary" style="margin-right: 8px" @click="newReferral">{{ShowReferral == false ? 'Add New Referral' : 'Back'}}</a-button>
 </a-col>
                     </a-row>
                     <a-row v-if="ShowReferral">
@@ -790,9 +790,8 @@ export default defineComponent({
         const emergencyContactShow = ref(true)
         const referalFormShow = ref(true)
 const ShowReferral = ref(false)
-function newReferral(){
-    ShowReferral.value = true
-}
+const ShowReferralId= ref(true)
+
         const errorMsg = computed(() => {
             return store.state.patients.errorMsg;
         });
@@ -875,9 +874,9 @@ function newReferral(){
         const emergencyContact = computed(() => {
             return store.state.patients.emergencyContact;
         });
-        const patientReferralSource = computed(() => {
-            return store.state.patients.patientReferralSource;
-        });
+        // const patientReferralSource = computed(() => {
+        //     return store.state.patients.patientReferralSource;
+        // });
         const isEditPatient = computed(() => {
             return store.state.patients.isEditPatient
         })
@@ -973,7 +972,20 @@ function newReferral(){
         const patientConditions = computed(() => {
             return store.state.patients.patientConditions
         })
-
+function newReferral(){
+    if(ShowReferral.value==false){
+    ShowReferral.value = true
+    ShowReferralId.value = false
+    
+    }else{
+    ShowReferral.value = false
+    ShowReferralId.value = true
+    let referalData = referal.referral
+    Object.assign(referal,referalForm)
+    referal.referral = referalData
+    }
+    
+}
         const current = computed({
             get: () =>
                 store.state.patients.counter,
@@ -1049,7 +1061,11 @@ const referalEmail = ref(false)
             if (patients.value.patientReferralSource != null &&!props.isEdit) {
                  
                 //referalFormShow.value = false
-                Object.assign(referal, patients.value.patientReferralSource)
+                ShowReferral.value = false
+                ShowReferralId.value = true
+                Object.assign(referal,referalForm)
+                referal.referral = patients.value.patientReferralSource.id
+                
             }
             if (patients.value.patientInsurance != null) {
                 Object.assign(insuranceData, patients.value.patientInsurance)
@@ -1088,11 +1104,12 @@ Object.assign(emergencyContactForm, demographics)
                         "responsiblePerson": responsiblePersonForm,
                         "emergencyContactForm": emergencyContactForm
                     },
-                    referalId: patientReferralSource.value &&!props.isEdit? patientReferralSource.value.id : null,
+                    referalId: null,
                     responsiblePersonId: responsiblePerson.value ? responsiblePerson.value.id : null,
                     emergencyContactId: emergencyContact.value &&!props.isEdit ? emergencyContact.value.id : null,
                     patientUdid: patients.value.addDemographic ? patients.value.addDemographic.id : patients.value.patientDetails.id,
                 }).then(() => {
+                    store.dispatch("referralList")
                     if (route.name == 'PatientSummary') {
                         store.dispatch('patientDetails', route.params.udid)
                         store.dispatch('responsiblePerson', route.params.udid)
@@ -1110,7 +1127,7 @@ Object.assign(emergencyContactForm, demographics)
                         "responsiblePerson": responsiblePersonForm,
                         "emergencyContactForm": emergencyContactForm
                     },
-                    referalId: patientReferralSource.value &&!props.isEdit? patientReferralSource.value.id : null,
+                    referalId: null,
                     responsiblePersonId: responsiblePerson.value ? responsiblePerson.value.id : null,
                     emergencyContactId: emergencyContact.value &&!props.isEdit ? emergencyContact.value.id : null,
                     patientUdid: patients.value.addDemographic ? patients.value.addDemographic.id : patients.value.patientDetails.id,
@@ -1118,6 +1135,7 @@ Object.assign(emergencyContactForm, demographics)
                     if(counteValue){
                          store.state.patients.counter = counteValue
                     }
+                    store.dispatch("referralList")
                     if (route.name == 'PatientSummary') {
                         store.dispatch('patientDetails', route.params.udid)
                         store.dispatch('responsiblePerson', route.params.udid)
@@ -1133,6 +1151,7 @@ Object.assign(emergencyContactForm, demographics)
                     "responsiblePerson": responsiblePersonForm,
                     "emergencyContactForm": emergencyContactForm
                 }).then(() => {
+                    store.dispatch("referralList")
                     if(counteValue){
                          store.state.patients.counter = counteValue
                     }
@@ -1470,6 +1489,7 @@ referalEmail.value = false
             referalFormShow,
             ShowReferral,
             newReferral,
+            ShowReferralId,
             referalEmail,
             referralData:store.getters.referralList
         };
