@@ -1,7 +1,7 @@
 
 <template>
 <div class="patientTable">
-    <a-table rowKey="id" :columns="meta.column" :data-source="meta.patientList" :scroll="{ y: tableYScrollerCounterPage, x: 1500 }" :pagination="false" @change="handleTableChange">
+    <a-table rowKey="id" :columns="meta.column" :data-source="meta.patientList" :scroll="{ x: 1500 }" :pagination="false" @change="handleTableChange">
         <template #firstName="{ text, record }" v-if="arrayToObjact(screensPermissions, 63)" >
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.id } }" >{{ text }}</router-link>
             
@@ -9,8 +9,14 @@
         <template #firstName="{ text }" v-else>
             <span>{{ text }}</span>
         </template>
-        <template #flags="text">
-            <span class="box" :style="{ 'background-color': text.text }"></span>
+        <template #flags="{ record }">
+            <a-tooltip placement="bottom">
+                <template #title>
+                    <span>{{ record.flagName }}</span>
+                </template>
+                <a class="icons">
+                    <Flags :flag="record.flagColor"/></a>
+            </a-tooltip>
         </template>
         <template #patientVitals>
             <WarningOutlined />
@@ -53,8 +59,9 @@ import { messages } from "@/config/messages";
 import { warningSwal } from "@/commonMethods/commonMethod";
 import { onMounted,ref,defineAsyncComponent, defineComponent } from "vue";
 import { useStore } from "vuex";
+import Flags from "@/components/common/flags/Flags";
 import {
-  tableYScrollerCounterPage,
+ // tableYScrollerCounterPage,
   arrayToObjact,
 } from "@/commonMethods/commonMethod";
 import { useRoute } from "vue-router";
@@ -65,6 +72,7 @@ export default defineComponent({
     WarningOutlined,
     DeleteOutlined,
     KeyOutlined,
+    Flags,
     ResetPassword:defineAsyncComponent(()=>import("@/components/reset-password/modal/ResetPassword")),
   },
   setup() {
@@ -73,7 +81,6 @@ export default defineComponent({
     const resetPasswordVisible = ref();
     const meta = store.getters.patientsRecord.value;
     let data = [];
-    let scroller = "";
     const route = useRoute();
 
     let filter = "";
@@ -92,14 +99,13 @@ export default defineComponent({
 
     onMounted(() => {
       checkDate();
-      var tableContent = document.querySelector(".ant-table-body");
-      tableContent.addEventListener("scroll", (event) => {
-        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-        let currentScroll = event.target.scrollTop + 2;
-        if (currentScroll >= maxScroll) {
+      
+      window.addEventListener("scroll", () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+        // you're at the bottom of the page
           let current_page = meta.patientMeta.current_page + 1;
           if (current_page <= meta.patientMeta.total_pages) {
-            scroller = maxScroll;
+            
             meta.patientMeta = "";
 
             data = meta.patientList;
@@ -129,12 +135,7 @@ export default defineComponent({
       newData.forEach((element) => {
         data.push(element);
       });
-      meta.patientList = data;
-      var tableContent = document.querySelector(".ant-table-body");
-
-      setTimeout(() => {
-        tableContent.scrollTo(0, scroller);
-      }, 50);
+      meta.patientList = data;  
     }
 
     const handleTableChange = (pag, filters, sorter) => {
@@ -212,7 +213,7 @@ export default defineComponent({
       screensPermissions: store.getters.screensPermissions,
       arrayToObjact,
       meta,
-      tableYScrollerCounterPage,
+      //tableYScrollerCounterPage,
       handleTableChange,
       deletePatients,
       updateStatus,

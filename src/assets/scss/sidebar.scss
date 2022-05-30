@@ -54,7 +54,7 @@ body.test {
                             }
                             &.router-link-active {
                                 .ant-menu-item {
-                                    background-color: #f0f2f5;
+                                    background-color: #f0f2f5!important;
                                 }
                             }
                         }
@@ -63,4 +63,9 @@ body.test {
             }
         }
     }
+}
+
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: transparent!important;
 }

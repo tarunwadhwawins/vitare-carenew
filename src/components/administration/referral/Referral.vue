@@ -60,9 +60,12 @@ export default {
                 store.dispatch("referral", "?filter=" + filter + date)
 
             } else {
+
                 //store.commit("dateFilter",'')
                 store.dispatch("referral")
+
             }
+            store.dispatch("referralList")
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
@@ -82,7 +85,7 @@ export default {
 
         function getName(name) {
 
-            let idToName = arrayToObjact(referral.value, name)
+            let idToName = referral.value.find(data=>data.referralId==name)
             return idToName ? idToName.name : ''
         }
 

@@ -209,14 +209,17 @@ export default defineComponent({
     })
 
     function deleteProgram(id) {
-      store.commit('loadingStatus', true)
+     
       if(patientId != null) {
         warningSwal(messages.deleteWarning).then((response) => {
           if(response==true) {
+             store.commit('loadingStatus', true)
             store.dispatch('deleteProgram', {
               id: patientId,
               programID: id
             }).then(() => {
+              isEdit.value = false
+      programId.value = null
               store.dispatch("program", patientId);
               reset()
             });
@@ -226,11 +229,14 @@ export default defineComponent({
       else {
         warningSwal(messages.deleteWarning).then((response)=>{
           if(response==true) {
+             store.commit('loadingStatus', true)
             store.dispatch('deleteProgram',{
               id:patients.value.addDemographic.id,
               programID:id
             })
             setTimeout(() => {
+              isEdit.value = false
+      programId.value = null
               store.dispatch("program",patients.value.addDemographic.id);
               reset()
             });
