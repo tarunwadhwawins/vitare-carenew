@@ -1,6 +1,5 @@
 export default {
     counter:0,
-    escalationCounter:0,
     addDemographic:null,
     addPatientProgram:null,
     program:null,
@@ -85,18 +84,9 @@ export default {
     medicationDetails:null,
     documentDetails:null,
     isPicuteLoading:false,
-
     responsiblePerson:null,
     emergencyContact:null,
     patientVitalList:null,
-    addBasicEscalation:null,
-    escalation:null,
-    esacalationFlagList:null,
     referralDetail:null,
-    escalationNotesList:null,
-    esacalationCarePlansList:null,
-    escalationVitalList:null,
-    singleEscalationRecord:null,
-    singleEscalationDataArray:null,
 
 }

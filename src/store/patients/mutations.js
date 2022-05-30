@@ -30,6 +30,7 @@ export const patient = (state, data) => {
     slots: {
       customRender: "flags",
     },
+    width: '7%',
     
   },
   {
@@ -38,7 +39,8 @@ export const patient = (state, data) => {
     slots: {
       customRender: "lastName",
     },
-    sorter: true
+    sorter: true,
+    width: '8%',
   },
   {
     title: "First Name",
@@ -47,6 +49,7 @@ export const patient = (state, data) => {
       customRender: "firstName",
     },
     sorter: true,
+    width: '8%',
   },
 
   {
@@ -57,25 +60,29 @@ export const patient = (state, data) => {
       customRender: "patientVitals",
     },
     children: [{
-      title: "BP (mmHg)",
+      title: "BP(mmHg)",
       dataIndex: "bp",
       key: "bp",
+      width: '10%',
     },
     {
       title: "Spo2(%)",
       dataIndex: "spo2",
       key: "spo2",
+      width: '8%',
     },
     {
-      title: "Glucose (mg / dL)",
+      title: "Glucose(mg / dL)",
       dataIndex: "glucose",
       key: "glucose",
+      width: '15%',
     },
     {
-      title: "Weight (LBS)",
+      title: "Weight(LBS)",
       dataIndex: "weight",
       key: "weight",
       sorter:true,
+      width: '12%',
     },
     ],
   },
@@ -83,35 +90,36 @@ export const patient = (state, data) => {
   {
     title: "Non Compliant",
     dataIndex: "nonCompliance",
-   
     slots: {
       customRender: "compliance",
     },
+    width: '10%',
   },
   {
     title: "Last Message Sent",
     dataIndex: "lastMessageSent",
-    
     ellipsis: true,
-    
     onFilter: (value, record) => record.name.indexOf(value) === 0,
+    width: '10%',
   },
   {
     title: "Age ",
     dataIndex: "dob",
     sorter: true,
+    width: '8%',
   },
   {
     title: "Gender ",
     dataIndex: "gender",
-   
+    width: '8%',
   },
   {
     title: 'Status',
     dataIndex: 'isActive',
     slots: {
       customRender: 'status'
-    }
+    },
+    width: '8%',
   },
 {
   title:"Action ",
@@ -119,6 +127,7 @@ export const patient = (state, data) => {
   slots: {
     customRender: "action",
   },
+  width: '8%',
 }
   ];
   state.patientMeta = data.meta.pagination;
@@ -159,18 +168,6 @@ export const resetCounter = (state) => {
   state.counter = 0
 }
 
-
-export const escalationCounterPlus = (state) => {
-  state.escalationCounter++
-}
-
-export const escalationCounterMinus = (state) => {
-  state.escalationCounter--
-}
-
-export const resetEscalationCounter = (state) => {
-  state.escalationCounter = 0
-}
 
 export const addPatientProgram = (state, data) => {
   state.addPatientProgram = data
@@ -458,9 +455,9 @@ export const patientDetails = (state, patient) => {
   patient.state = patient.stateId ? patient.stateId : null;
   patient.language = patient.languageId ? patient.languageId : null;
   patient.gender = patient.genderId ? patient.genderId : null;
-  patient.contactTime = patient.contactTimeId.length > 0 ? JSON.parse(patient.contactTimeId) : [];
-  patient.contactType = patient.contactType.length > 0 ? JSON.parse(patient.contactType) : [];
-  patient.otherLanguage = patient.otherLanguage.length > 0 ? JSON.parse(patient.otherLanguage) : [];
+  patient.contactTime = patient.contactTimeId.length > 0 ? patient.contactTimeId : [];
+  patient.contactType = patient.contactType.length > 0 ? patient.contactType : [];
+  patient.otherLanguage = patient.otherLanguage.length > 0 ? patient.otherLanguage : [];
   patient.patientDob = patient.dob ? dobFormat(patient.dob) : null;
 
   state.patientDetails = patient
@@ -476,11 +473,16 @@ export const responsiblePerson = (state, data) => {
 }
 
 export const emergencyContact = (state, data) => {
-  data.contactType = data.contactType.length > 0 ? JSON.parse(data.contactType) : [];
-  data.contactTime = data.contactTimeId.length > 0 ? JSON.parse(data.contactTimeId) : [];
-  data.gender = data.genderId;
-  data.sameAsPrimary = data.sameAsPrimary ? true : false;
-  state.emergencyContact = data
+  if(data.length>0){
+    data[0].contactType = data[0].contactType.length > 0 ? data[0].contactType : [];
+  data[0].contactTime = data[0].contactTimeId.length > 0 ? data[0].contactTimeId : [];
+  data[0].gender = data[0].genderId;
+  data[0].sameAsPrimary = data[0].sameAsPrimary ? true : false;
+  state.emergencyContact = data[0]
+  }else{
+    state.emergencyContact = data
+  }
+  
 }
 
 export const patientTimelineSuccess = (state, timeline) => {
@@ -1087,67 +1089,9 @@ export const patientVitalList = (state, data) => {
 	})
 }
 
-
-export const addBasicEscalation = (state, data) => {
-  state.addBasicEscalation = data
-}
-
-
-export const escalation = (state, data) => {
-  state.escalation = data
-}
-
-
-
 export const referralList = (state, data) => {
   state.referralList = data
 }
 export const referralDetail = (state, data) => {
   state.referralDetail = data
-}
-
-export const esacalationFlagList = (state, data) => {
-  state.esacalationFlagList = data.map((item) => {
-		item.createdAt = dateAndTimeFormate(item.createdAt,globalDateFormat);
-		return item;
-	})
-}
-
-export const escalationNotesList = (state, data) => {
-  state.escalationNotesList = data.map(note => {
-    note.date = dateOnlyFormat(note.date);
-    return note;
-  });
-}
-
-
-export const esacalationCarePlansList = (state, data) => {
-  state.esacalationCarePlansList = data.map(carePlan => {
-    carePlan.startDate = dateOnlyFormat(carePlan.startDate)
-    carePlan.endDate = dateOnlyFormat(carePlan.endDate)
-    return carePlan
-  })
-}
-
-
-export const escalationVitalList = (state, data) => {
-  state.escalationVitalList = data.map((item) => {
-		item.startTime = item.startTime?dateAndTimeFormate(item.startTime,globalDateFormat):'';
-    item.endTime = item.endTime?dateAndTimeFormate(item.endTime,globalDateFormat):'';
-		return item;
-	})
-}
-
-
-export const singleEscalationRecord = (state, data) => {
-  state.singleEscalationRecord = data
-
-  state.singleEscalationDataArray = [{
-    patientName :data.patientName,
-    patientId :data.patientId,
-    flagColor: data.flagColor,
-    flagName: data.flagName,
-    dueBy:dateAndTimeFormate(data.dueBy,globalDateFormat),
-    escalationType:data.escalationType
-  }]
 }

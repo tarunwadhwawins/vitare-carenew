@@ -52,54 +52,53 @@
                 </a-collapse-panel> -->
 
                 <a-collapse-panel key="3" header="Notes" v-show="record?record.escalationNotes.data.length>0:false">
-                    <!-- <a-table rowKey="id" :columns="notesColumns" :data-source="record.escalationNotes.data" :pagination="false">
-                    </a-table> -->
+                    <a-table rowKey="id" :columns="notesColumns" :data-source="escalation.escalationNots" :pagination="false">
+                    </a-table>
                     <!-- <span>{{ note.note.data.date?'('+dateAndTimeFormate(note.note.data.date,globalDateFormat)+')':null}}</span> -->
-                    <div v-for=" note in record.escalationNotes.data" :key="note.id">
+                    <!-- <div v-for=" note in record.escalationNotes.data" :key="note.id">
                         <ul>
                             <li><b>{{ note.note.data.date?dateAndTimeFormate(note.note.data.date,globalDateFormat)+' ':null}} </b>{{note.note.data.note}} </li>
                         </ul>
-                    </div>
+                    </div> -->
                 </a-collapse-panel>
                 <a-collapse-panel key="4" header="Vitals" v-show="record?record.escalationVital.data.length>0:false">
-                    <!-- <a-table rowKey="id" :columns="vitalColumns" :data-source="record.escalationVital.data" :pagination="false">
+                    <a-table rowKey="id" :columns="vitalColumns" :data-source="escalation.escalationVitals" :pagination="false">
                         <template #color="{ record }">
                             <Flags :flag="record.color" />
                         </template>
-                    </a-table> -->
-                    <div v-for=" vital in record.escalationVital.data" :key="vital.id">
+                    </a-table>
+                    <!-- <div v-for=" vital in record.escalationVital.data" :key="vital.id">
                         <ul>
                             <li><b>{{vital.patientVital.takeTime?dateAndTimeFormate(vital.patientVital.takeTime,globalDateFormat)+' ':null}}</b>{{vital.patientVital.deviceType}} {{'('+vital.patientVital.vitalField+')'}} {{vital.patientVital.value}} </li>
                         </ul>
-                    </div>
+                    </div> -->
                 </a-collapse-panel>
                 <a-collapse-panel key="5" header="Care Plans" v-show="record?record.escalationCarePlan.data.length>0:false">
-                    <!-- <p>{{ record.escalationCarePlan.data }}</p> -->
-                    <!-- <a-table rowKey="id" :columns="carePlanColumns" :data-source="record.escalationCarePlan.data" :pagination="false">
-                    </a-table> -->
-                    <div v-for=" cp in record.escalationCarePlan.data" :key="cp.id">
+                    <a-table rowKey="id" :columns="carePlanColumns" :data-source="escalation.escalationCarePlan" :pagination="false">
+                    </a-table>
+                    <!-- <div v-for=" cp in record.escalationCarePlan.data" :key="cp.id">
                         <ul>
                             <li>{{cp.carePlan.data.deviceType}} {{' ('+cp.carePlan.data.vitalField+')'}} {{cp.carePlan.data.lowValue}} -  {{cp.carePlan.data.highValue}} </li>
                         </ul>
-                    </div>
+                    </div> -->
                 </a-collapse-panel>
                 <a-collapse-panel key="6" header="Flags" v-show="record?record.escalationFlag.data.length>0:false">
                     <!-- <p>{{ record.escalationFlag.data }}</p> -->
-                    <!-- <a-table rowKey="id" :columns="flagColumns" :data-source="record.escalationFlag.data" :pagination="false">
+                    <a-table rowKey="id" :columns="flagColumns" :data-source="escalation.escalationFlags" :pagination="false">
                         <template #name="{ record }">
                             <span>{{record.flagName}}</span>
                         </template>
                         <template #color="{ record }">
                             <Flags :flag="record.color" />
                         </template>
-                    </a-table> -->
-                    <div v-for=" flag in record.escalationFlag.data" :key="flag.id">
+                    </a-table>
+                    <!-- <div v-for=" flag in record.escalationFlag.data" :key="flag.id">
                         <ul>
                             <li><b>{{ flag.flag.data.createdAt?dateAndTimeFormate(flag.flag.data.createdAt,globalDateFormat)+' ':null}}</b>{{flag.flag.data.flags.data.name}}
                                 <Flags :flag="flag.flag.data.flags.data.color" />  
                             </li>
                         </ul>
-                    </div>
+                    </div> -->
                 </a-collapse-panel>
 
             </a-collapse>
@@ -199,7 +198,7 @@ const vitalColumns = [
   },
   {
     title: "Date",
-    dataIndex: "startTime",
+    dataIndex: "takeTime",
   },
   {
     title: "Color",
@@ -274,14 +273,23 @@ export default {
     Flags,
     Loader,
   },
-  setup() {
+  setup(props,{emit}) {
     const activeKey = ref([]);
     const store = useStore();
-    const record = computed(() => {
-      return store.state.patients.singleEscalationRecord;
-    });
 
+    const closeModal = () => {
+      emit("saveModal", false);     
+    };
+    const record = computed(() => {
+      return store.state.escalations.singleEscalationRecord;
+    });
+    
+    const escalation = computed(()=>{
+      return store.state.escalations
+    })
     return {
+      escalation,
+      closeModal,
       globalDateFormat,
       dateAndTimeFormate,
       flagColumns,

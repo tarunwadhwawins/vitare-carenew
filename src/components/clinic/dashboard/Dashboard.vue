@@ -60,7 +60,7 @@
   import Loader from "@/components/loader/Loader";
   import moment from "moment"
   import EscaltionTable from "@/components/common/tables/EscalationTable"
-  import EscaltionViewModal from "@/components/care-coordinator/escalations/EscalationViewModal"
+  import EscaltionViewModal from "@/components/escalations/EscalationViewModal"
   import TaskTable from "@/components/tasks/TaskTable";
   import TasksModal from "@/components/modals/TasksModal";
   const columnData = [
@@ -68,6 +68,7 @@
     title: "Name",
     dataIndex: "patientName",
     //sorter: true,
+    width: '17%',
     slots: {
       customRender: "patientName",
     },
@@ -75,12 +76,14 @@
   {
     title: "Escalation Type",
     dataIndex: "escalationType",
+    width: '20%',
     //sorter: true,
     
     slots: {
       customRender: "escalationType",
     },
   },
+  
   {
     title: "Due Date",
     dataIndex: "dueBy",
@@ -109,49 +112,17 @@ const tasksListColumns=[
 		{
 			title: 'Task Name',
 			dataIndex: 'title',
-			//sorter: true,
+			
 			slots: {
 				customRender: 'taskName'
 			}
-			// filters: [
-			//   {
-			//     text: "Task 1",
-			//     value: "task 1",
-			//   },
-			//   {
-			//     text: "Task 2",
-			//     value: "task 2",
-			//   },
-			// ],
-			// onFilter: (value, record) => record.taskName.indexOf(value) === 0,
+		
 		},
-		// {
-		// 	title: 'Task Status ',
-		// 	dataIndex: 'taskStatus',
-		// 	sorter: true,
-		// 	slots: {
-		// 		customRender: 'status'
-		// 	}
-		// },
+	
 		{
 			title: 'Priority ',
 			dataIndex: 'priority',
-			//sorter: true
-			//   filters: [
-			//     {
-			//       text: "High",
-			//       value: "high",
-			//     },
-			//     {
-			//       text: "Normal",
-			//       value: "normal",
-			//     },
-			//     {
-			//       text: "Urgent",
-			//       value: "urgent",
-			//     },
-			//   ],
-			//   onFilter: (value, record) => record.status.indexOf(value) === 0,
+			
 		},
 		{
 			title: 'Category',
@@ -161,32 +132,17 @@ const tasksListColumns=[
 				customRender: 'category'
 			}
 		},
+        {
+			title: 'Start Date ',
+			dataIndex: 'startDate',
+			
+		},
 		
 		{
 			title: 'Due Date ',
 			dataIndex: 'dueDate',
-			//sorter: true
-			//   filters: [
-			//     {
-			//       text: "Dec 24, 2021",
-			//       value: "Dec 24, 2021",
-			//     },
-			//     {
-			//       text: "Dec 28, 2021",
-			//       value: "Dec 28, 2021",
-			//     },
-			//   ],
-			//   onFilter: (value, record) => record.dueDate.indexOf(value) === 0,
-		},
-		// {
-		// 	title: 'Assigned By',
-		// 	dataIndex: 'assignedBy',
 			
-		// 	slots: {
-		// 		customRender: 'assigned'
-		// 	}
-	
-		// },
+		},
 		
 	];
 export default {
@@ -271,7 +227,7 @@ export default {
 
         }
          const escalationList = computed(() => {
-      return store.state.careCoordinator.escalation;
+      return store.state.escalations.escalation;
     });
 
         onMounted(() => {

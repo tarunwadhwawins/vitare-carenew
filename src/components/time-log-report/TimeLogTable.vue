@@ -1,6 +1,6 @@
 <template>
 <a-col :sm="24" :xs="24">
-    <a-table rowKey="id" :columns="meta.timeLogReportColumns" :pagination="false" :data-source="meta.timeLogReportList" :scroll="{ y: tableYScroller }" @change="handleTableChange">
+    <a-table rowKey="id" :columns="meta.timeLogReportColumns" :pagination="false" :data-source="meta.timeLogReportList"  @change="handleTableChange">
         <template #staff="{record}">
             <span>{{record.staff}}</span>
         </template>
@@ -66,7 +66,7 @@ import {
 import {
     warningSwal,
     arrayToObjact,
-    tableYScroller
+   
 } from "@/commonMethods/commonMethod";
 
 import Flags from "@/components/common/flags/Flags";
@@ -129,7 +129,7 @@ props:{
         const meta = store.getters.timeLogReports.value;
         const loader = ref(false);
         let data = []
-        let scroller = ''
+       
          let filter = ''
          let date = ''
        function checkDate(){
@@ -138,21 +138,17 @@ props:{
        }
        onMounted(() => {
            checkDate()
-            var tableContent = document.querySelector(".ant-table-body");
-
-            tableContent ? tableContent.addEventListener("scroll", (event) => {
-                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-                let currentScroll = event.target.scrollTop + 2;
-                if (currentScroll >= maxScroll) {
+            window.addEventListener("scroll", () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
                     let current_page = meta.timeLogeMeta.current_page + 1;
                     if (current_page <= meta.timeLogeMeta.total_pages) {
-                        scroller = maxScroll
+                        
                         data = meta.timeLogReportList
 
                         loader.value = true;
                        
                         store.state.timeLogReport.timeLogeMeta = ''
-                        console.log("fsfs", current_page)
+                   
 
                         store.dispatch("timeLogReportList", date + '&filter='+filter+
                         "&page=" + current_page + store.getters.orderTable.value.data).then(() => {
@@ -161,7 +157,7 @@ props:{
 
                     }
                 }
-            }) : ''
+            }) 
 
         })
 
@@ -172,12 +168,7 @@ props:{
                 data.push(element);
             });
             meta.timeLogReportList = data
-            var tableContent = document.querySelector('.ant-table-body')
-
-            setTimeout(() => {
-
-                tableContent.scrollTo(0, scroller)
-            }, 100)
+            
             loader.value = false;
         }
 
@@ -219,7 +210,7 @@ props:{
             loader,
             visible,
             meta,
-            tableYScroller,
+           
             viewTimeLog,
             modalData: store.getters.timeLogView,
             columns,

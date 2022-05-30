@@ -101,7 +101,7 @@ export default defineComponent({
     });
 
     const escalationStatus = computed(() => {
-      return store.state.careCoordinator.escalationStaus
+      return store.state.escalations.escalationStaus
     });
     onUnmounted(() => {
       document.body.classList.remove("show");

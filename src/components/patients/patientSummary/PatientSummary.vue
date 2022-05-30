@@ -79,7 +79,7 @@ import TimelineView from "@/components/patients/patientSummary/views/TimelineVie
 import CarePlanView from "@/components/patients/patientSummary/views/CarePlanView";
 import PatientVitalsView from "@/components/patients/patientSummary/views/PatientVitalsView";
 import CriticalNotes from "@/components/patients/patientSummary/common/CriticalNotes";
-import Escalation from "@/components/patients/patientSummary/escalations/Escalation"
+import Escalation from "@/components/escalations/Escalation"
 import TableLoader from "@/components/loader/TableLoader"; 
 import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 // import StartCallModal from "@/components/modals/StartCallModal";
@@ -245,7 +245,7 @@ onMounted(()=>{
       if(route.name == 'PatientSummary') {
         store.commit("loadingTableStatus",true)
         loader.value = true
-        store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 99});
+        store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 99})
         store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 100});
         store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 101});
         store.dispatch('devices', patientUdid)
