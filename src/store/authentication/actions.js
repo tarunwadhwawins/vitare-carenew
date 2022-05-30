@@ -89,9 +89,10 @@ const permission = async ({ commit }) => {
 			errorSwal(error.response.data.message);
 		});
 };
-export const logoutUser = async () => {
+export const logoutUser = async ({ commit }) => {
 	await ServiceMethodService.common('post', 'logout', null, [])
 		.then(() => {
+			console.log(commit)
 			//if(response){
 			successSwal('Logout Successfully ');
 			localStorage.removeItem('user');
@@ -107,7 +108,7 @@ export const logoutUser = async () => {
 			localStorage.removeItem('widgetsPermission');
 			localStorage.removeItem('fireBaseToken');
 			localStorage.removeItem('expiresIn');
-			router.push('/');
+			//router.push('/');
 			setTimeout(() => {
 				router.go();
 			}, 1000);
