@@ -285,8 +285,8 @@ export default defineComponent({
 const route = useRoute()
     const logoutUser = () => {
       store.state.authentication.errorMsg = "";
-       store.dispatch("logoutUser").push(()=>{
-//router.push("/logout");
+       store.dispatch("logoutUser").then(()=>{
+             router.push("/logout");
        })
       
     };
