@@ -32,6 +32,34 @@ export const escalationStaus = (state, data) => {
 
 export const addBasicEscalation = (state, data) => {
   state.addBasicEscalation = data
+  state.editEscalationStaff  = data.escalationStaff.data.map((item)=>{
+    item.fullName = item.staffName,
+    item.name = item.staffName,
+    item.label = item.staffName,
+    item.firstName = item.staffName,
+    item.value = item.staffUdid
+    return item
+  })
+
+  state.editEscalationPatient=[{
+    value:data.patientId,
+    label:data.patientName
+  }]
+}
+
+export const updateBasicEscalation = (state, data) => {
+  state.editEscalationStaff  = data.escalationStaff.data.map((item)=>{
+    item.fullName = item.staffName,
+    item.name = item.staffName,
+    item.label = item.staffName,
+    item.firstName = item.staffName,
+    item.value = item.staffUdid
+    return item
+  })
+  state.editEscalationPatient=[{
+    value:data.patientId,
+    label:data.patientName
+  }]
 }
 
 

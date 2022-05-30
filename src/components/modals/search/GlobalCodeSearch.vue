@@ -1,5 +1,6 @@
 <template>
   <a-select v-if="globalCode && !isColor"
+  :getPopupContainer="triggerNode => triggerNode.parentNode"
     :value="value"
     show-search
     showArrow
@@ -13,6 +14,7 @@
   ></a-select>
 
   <a-select v-else-if="globalCode && isColor"
+  :getPopupContainer="triggerNode => triggerNode.parentNode"
     :value="value"
     show-search
     :mode="mode"

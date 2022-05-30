@@ -12,5 +12,7 @@ export default {
   singleEscalationDataArray:null,
   escalationNots:null,
   escalationVitals:null,
-  escalationCarePlan:null
+  escalationCarePlan:null,
+  editEscalationStaff:null,
+  editEscalationPatient:null
 }

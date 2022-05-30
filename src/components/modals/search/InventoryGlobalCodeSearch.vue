@@ -1,5 +1,6 @@
 <template>
   <a-select
+  :getPopupContainer="triggerNode => triggerNode.parentNode"
     :value="value"
     show-search
     :mode="mode"

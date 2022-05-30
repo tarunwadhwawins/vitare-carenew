@@ -42,6 +42,10 @@ export const timeLogReportList = async (state, data) => {
       dataIndex: "cptCode",
     },
     {
+      title: "Amount ($)",
+      dataIndex: "billingAmount",
+    },
+    {
       title: "Flag",
       dataIndex: "flagColor",
       slots: {

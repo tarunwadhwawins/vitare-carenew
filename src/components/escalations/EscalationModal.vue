@@ -11,7 +11,7 @@
                       <a-col :sm="24" :xs="24" v-show="!paramId" >
                             <div class="form-group">
                                 <a-form-item label="Patient" name="referenceId" :rules="[{ required: true, message: 'Patient'+' '+$t('global.validation')  }]">
-                                     <PatientDropDown @change="checkChangeInput($event)"  v-model:value="escalation.referenceId" @handlePatientChange="handlePatientChange($event)" :close="closeValue"/>
+                                     <PatientDropDown @change="checkChangeInput($event)" :editDataPatient="editDataPatient"  v-model:value="escalation.referenceId" @handlePatientChange="handlePatientChange($event)" :close="closeValue"/>
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -33,7 +33,7 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item label="Assign To" name="staffIds" :rules="[{ required: true, message: 'Staff'+' '+$t('global.validation')  }]">
-                                    <StaffDropDown @change="checkChangeInput()" mode="multiple" v-model:value="escalation.staffIds" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
+                                    <StaffDropDown @change="checkChangeInput()" :editDataStaff="editDataStaff" mode="multiple" v-model:value="escalation.staffIds" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -699,7 +699,17 @@ export default {
       },
     };
 
+     const editDataStaff = computed(()=>{
+        return store.state.escalations.editEscalationStaff
+    });
+
+    const editDataPatient = computed(()=>{
+        return store.state.escalations.editEscalationPatient
+    });
+
     return {
+      editDataPatient,
+      editDataStaff,
       formRef,
       errorMsg,
       formEscalationDetails,
