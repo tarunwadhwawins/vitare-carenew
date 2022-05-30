@@ -885,10 +885,6 @@ const ShowReferralId= ref(true)
 					const value = event.target.value
 					const checked = event.target.checked
 					if(isTrue && checked) {
-						conditions.unselectedConditions = conditions.unselectedConditions.filter(function(val) {
-							return value != val;
-						});
-						console.log('DiseasesList 11', conditions.unselectedConditions)
 						unSelectedDiseasesList.value.filter(function(healthCondition) {
 							if(value == healthCondition.id) {
 								const indexOfObject = unSelectedDiseasesList.value.findIndex(object => {
@@ -906,7 +902,6 @@ const ShowReferralId= ref(true)
 						})
 					}
 					else if(!isTrue && !checked) {
-						console.log('DiseasesList', conditions.unselectedConditions.includes(value))
 						conditions.condition = conditions.condition.filter(function(val) {
 							return value != val;
 						});
@@ -918,9 +913,6 @@ const ShowReferralId= ref(true)
 								selectedDiseasesList.value.splice(indexOfObject, 1);
 								if(!unSelectedDiseasesList.value.includes(healthCondition)) {
 									unSelectedDiseasesList.value.push(healthCondition)
-									if(!conditions.unselectedConditions.includes(value)) {
-										conditions.unselectedConditions.push(healthCondition.id)
-									}
 								}
 							}
 						})
@@ -1070,58 +1062,90 @@ function newReferral(){
 								selectedDiseasesList.value = []
 								conditions.condition = []
 								conditions.unselectedConditions = []
-                if (props.isEdit && value == 5) {
-									unSelectedDiseasesList.value = []
-									// Object.assign(conditions.condition, patientConditions.value)
-									store.dispatch('patientConditions', idPatient.value).then(() => {
-										globalCode.value.healthCondition.filter(function(healthCondition) {
-											if(patientConditions.value.includes(healthCondition.id)) {
-												if(!selectedDiseasesList.value.includes(healthCondition)) {
-													selectedDiseasesList.value.push(healthCondition)
-													if(!conditions.condition.includes(healthCondition)) {
-														conditions.condition.push(healthCondition.id)
+								if(props.isEdit && value == 5) {
+									if(patients.value.addCondition == null && patientConditions.value == null) {
+										unSelectedDiseasesList.value = []
+										store.dispatch('patientConditions', idPatient.value).then(() => {
+											globalCode.value.healthCondition.filter(function(healthCondition) {
+												if(patientConditions.value.includes(healthCondition.id)) {
+													if(!selectedDiseasesList.value.includes(healthCondition)) {
+														selectedDiseasesList.value.push(healthCondition)
+														if(!conditions.condition.includes(healthCondition)) {
+															conditions.condition.push(healthCondition.id)
+														}
 													}
 												}
-											}
-											else {
-												unSelectedDiseasesList.value = globalCode.value.healthCondition
-												// if(!selectedDiseasesList.value.includes(healthCondition)) {
-												// 	console.log('DiseasesList', unSelectedDiseasesList.value)
-												// 		unSelectedDiseasesList.value.push(healthCondition)
-												// 		if(!conditions.unselectedConditions.includes(healthCondition)) {
-												// 			conditions.unselectedConditions.push(healthCondition.id)
-												// 		}
-												// }
-											}
-										});
-									})
-                }
-                else if ((!props.isEdit) && (value == 5 && patients.value.addCondition)) {
-									Object.assign(conditions.condition, patients.value.addCondition)
-									store.dispatch('patientConditions', idPatient.value).then(() => {
-										globalCode.value.healthCondition.filter(function(healthCondition) {
-											if(patients.value.addCondition.includes(healthCondition.id)) {
-												if(!selectedDiseasesList.value.includes(healthCondition)) {
-													selectedDiseasesList.value.push(healthCondition)
-													if(!conditions.condition.includes(healthCondition)) {
-														conditions.condition.push(healthCondition.id)
+												else {
+													unSelectedDiseasesList.value = globalCode.value.healthCondition
+												}
+											});
+										})
+									}
+									else if(patients.value.addCondition == null && patientConditions.value != null) {
+										unSelectedDiseasesList.value = []
+										store.dispatch('patientConditions', idPatient.value).then(() => {
+											globalCode.value.healthCondition.filter(function(healthCondition) {
+												if(patientConditions.value.includes(healthCondition.id)) {
+													if(!selectedDiseasesList.value.includes(healthCondition)) {
+														selectedDiseasesList.value.push(healthCondition)
+														if(!conditions.condition.includes(healthCondition)) {
+															conditions.condition.push(healthCondition.id)
+														}
 													}
 												}
-											}
-											else {
-												if(!unSelectedDiseasesList.value.includes(healthCondition)) {
-													unSelectedDiseasesList.value.push(healthCondition)
-													if(!conditions.unselectedConditions.includes(healthCondition)) {
-														conditions.unselectedConditions.push(healthCondition.id)
+												else {
+													if(!unSelectedDiseasesList.value.includes(healthCondition)) {
+														unSelectedDiseasesList.value.push(healthCondition)
 													}
 												}
-											}
-										});
-									})
-                }
+											});
+										})
+									}
+									else if(patients.value.addCondition != null && patientConditions.value != null) {
+										unSelectedDiseasesList.value = []
+										store.dispatch('patientConditions', idPatient.value).then(() => {
+											globalCode.value.healthCondition.filter(function(healthCondition) {
+												if(patientConditions.value.includes(healthCondition.id)) {
+													if(!selectedDiseasesList.value.includes(healthCondition)) {
+														selectedDiseasesList.value.push(healthCondition)
+														if(!conditions.condition.includes(healthCondition)) {
+															conditions.condition.push(healthCondition.id)
+														}
+													}
+												}
+												else {
+													if(!unSelectedDiseasesList.value.includes(healthCondition)) {
+														unSelectedDiseasesList.value.push(healthCondition)
+													}
+												}
+											});
+										})
+									}
+									else {
+										store.dispatch('patientConditions', idPatient.value).then(() => {
+											globalCode.value.healthCondition.filter(function(healthCondition) {
+												if(patients.value.addCondition.includes(healthCondition.id)) {
+													if(!selectedDiseasesList.value.includes(healthCondition)) {
+														selectedDiseasesList.value.push(healthCondition)
+														if(!conditions.condition.includes(healthCondition)) {
+															conditions.condition.push(healthCondition.id)
+														}
+													}
+												}
+												else {
+													if(!unSelectedDiseasesList.value.includes(healthCondition)) {
+														unSelectedDiseasesList.value.push(healthCondition)
+														if(!conditions.unselectedConditions.includes(healthCondition)) {
+															conditions.unselectedConditions.push(healthCondition.id)
+														}
+													}
+												}
+											});
+										})
+									}
+								}
 								else {
 									unSelectedDiseasesList.value = globalCode.value.healthCondition
-									conditions.unselectedConditions = unSelectedDiseasesList.value
 									selectedDiseasesList.value = []
 									conditions.condition = []
 								}
