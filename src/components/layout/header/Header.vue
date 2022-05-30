@@ -286,7 +286,7 @@ const route = useRoute()
     const logoutUser = () => {
       store.state.authentication.errorMsg = "";
        store.dispatch("logoutUser").then(()=>{
-router.push("/logout");
+             router.push("/logout");
        })
       
     };

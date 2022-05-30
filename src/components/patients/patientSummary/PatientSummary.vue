@@ -18,7 +18,7 @@
                   <h2 class="pageTittle">{{$t('patientSummary.patientSummary')}}</h2>
                 </a-col>
                 <a-col :xl="12" :lg="12">
-                  <a-button class="blueBtn" @click="startCall">Start Call</a-button>
+                  <a-button class="blueBtn" @click="startCall" :loading="iconLoading">Start Call</a-button>
                   <!-- <router-link class="blueBtn" :to="{ name: 'videoCall', params: { id: enCodeString(conferenceId) } }" target="_blank">Start Call</router-link> -->
                 </a-col>
               </a-row>
@@ -132,7 +132,7 @@ export default {
     // const startCallModalVisible = ref(false);
     const loader= ref(true)
     const startOn = ref(false);
-
+const iconLoading = ref(false)
     const onClose = (e) => {
       console.log(e, "I was closed.");
     };
@@ -422,8 +422,10 @@ onMounted(()=>{
     const form = reactive({ ...startCallForm })
 
     const startCall = () => {
+      iconLoading.value = true
       store.commit('loadingStatus', true)
       store.dispatch("appointmentCalls", startCallForm).then((response)=>{
+        iconLoading.value = false
         if(response==true && conferenceId.value){
           store.commit('loadingStatus', false)
           let redirect = router.resolve({name: 'videoCall', params: {id: enCodeString(conferenceId.value)}});
@@ -481,7 +483,8 @@ onMounted(()=>{
       button,
       showButton,
       startOn,
-      loader
+      loader,
+      iconLoading
     };
 
     
