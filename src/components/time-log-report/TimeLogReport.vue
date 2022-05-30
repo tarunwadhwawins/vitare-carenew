@@ -112,7 +112,7 @@ export default {
         onMounted(() => {
             if (route.query.filter || route.query.fromDate) {
                 let filter = route.query.filter ? route.query.filter : ''
-                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "?toDate=" + route.query.toDate : "&fromDate=&toDate="
+                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + timeStampFormate(route.query.fromDate,'YYYY-MM-DD') + "&toDate=" + timeStampFormate(route.query.toDate,'YYYY-MM-DD') : "&fromDate=&toDate="
                 //store.dispatch('auditTimeLogFilterDates', "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
                 store.dispatch("timeLogReportList", "?filter=" +filter+date);
             } else {
