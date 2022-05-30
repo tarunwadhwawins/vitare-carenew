@@ -1,4 +1,5 @@
 <template>
+<div>
   <a-select
     ref="select"
     :mode="mode"
@@ -20,7 +21,12 @@
       <p>Data not found!</p>
     </template>
   </a-select>
+</div>
+
+  
 </template>
+ 
+
 
 <script>
 import { defineComponent, ref, onMounted, watchEffect } from "vue";
@@ -33,11 +39,16 @@ export default defineComponent({
     checkSameAsStaff: Boolean,
     mode: String,
     close: Boolean,
+    editDataStaff:Array
   },
 
   setup(props, context) {
     const store = useStore();
     const staffData = ref([]);
+
+    // const editDataStaff = computed(()=>{
+    //     return store.state.escalations.editEscalationStaff
+    // });
 
     const updateValue = (event) => {
       context.emit("update:modelValue", event.target.value);
@@ -53,6 +64,9 @@ export default defineComponent({
           "staff"
         );
       }
+      
+        props.editDataStaff?staffData.value = props.editDataStaff:staffData.value
+        
     });
 
     const handleStaffSearch = (val) => {
@@ -70,6 +84,7 @@ export default defineComponent({
     };
 
     return {
+      // editDataStaff,
       loadingStatus: store.getters.dropdownLoadingStatus,
       handleStaffChange,
       handleStaffSearch,
