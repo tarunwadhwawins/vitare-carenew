@@ -285,8 +285,10 @@ export default defineComponent({
 const route = useRoute()
     const logoutUser = () => {
       store.state.authentication.errorMsg = "";
-      // store.dispatch("logoutUser");
-      router.push("/logout");
+       store.dispatch("logoutUser").then(()=>{
+             router.push("/logout");
+       })
+      
     };
     const value = ref();
 

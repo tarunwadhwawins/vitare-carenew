@@ -455,9 +455,9 @@ export const patientDetails = (state, patient) => {
   patient.state = patient.stateId ? patient.stateId : null;
   patient.language = patient.languageId ? patient.languageId : null;
   patient.gender = patient.genderId ? patient.genderId : null;
-  patient.contactTime = patient.contactTimeId.length > 0 ? JSON.parse(patient.contactTimeId) : [];
-  patient.contactType = patient.contactType.length > 0 ? JSON.parse(patient.contactType) : [];
-  patient.otherLanguage = patient.otherLanguage.length > 0 ? JSON.parse(patient.otherLanguage) : [];
+  patient.contactTime = patient.contactTimeId.length > 0 ? patient.contactTimeId : [];
+  patient.contactType = patient.contactType.length > 0 ? patient.contactType : [];
+  patient.otherLanguage = patient.otherLanguage.length > 0 ? patient.otherLanguage : [];
   patient.patientDob = patient.dob ? dobFormat(patient.dob) : null;
 
   state.patientDetails = patient
@@ -473,11 +473,16 @@ export const responsiblePerson = (state, data) => {
 }
 
 export const emergencyContact = (state, data) => {
-  data.contactType = data.contactType.length > 0 ? JSON.parse(data.contactType) : [];
-  data.contactTime = data.contactTimeId.length > 0 ? JSON.parse(data.contactTimeId) : [];
-  data.gender = data.genderId;
-  data.sameAsPrimary = data.sameAsPrimary ? true : false;
-  state.emergencyContact = data
+  if(data.length>0){
+    data[0].contactType = data[0].contactType.length > 0 ? data[0].contactType : [];
+  data[0].contactTime = data[0].contactTimeId.length > 0 ? data[0].contactTimeId : [];
+  data[0].gender = data[0].genderId;
+  data[0].sameAsPrimary = data[0].sameAsPrimary ? true : false;
+  state.emergencyContact = data[0]
+  }else{
+    state.emergencyContact = data
+  }
+  
 }
 
 export const patientTimelineSuccess = (state, timeline) => {

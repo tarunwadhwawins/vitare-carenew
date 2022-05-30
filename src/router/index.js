@@ -321,13 +321,24 @@ router.beforeEach((to, from, next) => {
       next();
     }
   } else {
-    if (isLoggedIn()) {
-      next({
-        name: "Dashboard",
-        query: { redirect: to.fullPath },
 
-      });
-    } else {
+    if (isLoggedIn()) {
+      if(to.name!="Login"){
+        console.log("logged dashboard");
+        next({
+          name: "ClinicalDashboard",
+          query: { redirect: to.fullPath },
+
+        });
+      }else{
+        console.log("loggedin dashboard");
+        next({
+          name: "ClinicalDashboard",
+
+        });
+      }
+    }else{
+
       next();
     }
   }

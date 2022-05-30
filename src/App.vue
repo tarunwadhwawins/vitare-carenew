@@ -45,6 +45,7 @@ export default {
     });
 
     watchEffect(() => {
+
       if (refreshToken.value != null) {
         store.dispatch("globalCodes");
         //store.dispatch("timeLine", 122);
@@ -56,6 +57,7 @@ export default {
         if(!loginCheck){
           store.dispatch("logoutUser")
         }
+        
         if (refreshToken.value > date.getTime()) {
           let differenceDate = refreshToken.value - date.getTime();
           setTimeout(() => {

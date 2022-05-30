@@ -66,7 +66,7 @@ import {
 import {
     warningSwal,
     arrayToObjact,
-   
+   timeStampFormate
 } from "@/commonMethods/commonMethod";
 
 import Flags from "@/components/common/flags/Flags";
@@ -134,7 +134,7 @@ props:{
          let date = ''
        function checkDate(){
        filter= route.query.filter ? route.query.filter : ''
-       date = route.query.fromDate && route.query.toDate ? "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : store.getters.auditTimeLogFilterDates.value ? store.getters.auditTimeLogFilterDates.value :'?fromDate=&toDate='
+       date = route.query.fromDate && route.query.toDate ? "?fromDate=" + timeStampFormate(route.query.fromDate,'YYYY-MM-DD') + "&toDate=" + timeStampFormate(route.query.toDate,'YYYY-MM-DD') : store.getters.auditTimeLogFilterDates.value ? store.getters.auditTimeLogFilterDates.value :'?fromDate=&toDate='
        }
        onMounted(() => {
            checkDate()
@@ -215,7 +215,7 @@ props:{
             modalData: store.getters.timeLogView,
             columns,
             viewReport,
-
+timeStampFormate,
             auditId
 
         };
