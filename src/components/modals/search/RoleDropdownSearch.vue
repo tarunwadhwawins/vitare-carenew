@@ -1,5 +1,6 @@
 <template>
 <a-select
+:getPopupContainer="triggerNode => triggerNode.parentNode"
   ref="select"
   :mode="mode"
   :value="value"
