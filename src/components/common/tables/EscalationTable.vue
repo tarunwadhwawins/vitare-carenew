@@ -1,6 +1,6 @@
 <template>
 <div class="patientTable">
-    <a-table rowKey="id" :columns="columnData" :data-source="escalationMainList" style="width:100%" :pagination="false" @change="handleTableChange" :scroll="height? {y: height } : {y: 400 }">
+    <a-table rowKey="id" :columns="columnData" :data-source="escalationMainList" style="width:100%" :pagination="false" @change="handleTableChange" :scroll="height? {y: height } : ''">
         <template #patientName="{ text, record }" >
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
         </template>
@@ -58,7 +58,7 @@ export default {
   setup(props,{emit}) {
     const store = useStore();
     let data = [];
-    let scroller = "";
+  
     const meta = store.getters.escalationMeta;
     const escalationMainList = store.getters.escalation
     const route = useRoute()
@@ -70,15 +70,12 @@ export default {
     }
     onMounted(() => {
       checkDate()
-      var tableContent = document.querySelector(".ant-table-body");
-      tableContent.addEventListener("scroll", (event) => {
-        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-        let currentScroll = event.target.scrollTop + 2;
-        if (currentScroll >= maxScroll) {
+     window.addEventListener("scroll", () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
           let current_page = meta.value.current_page + 1;
 
           if (current_page <= meta.value.total_pages) {
-            scroller = maxScroll;
+          
             data = escalationMainList.value
             
             store.state.escalations.escalationMeta = "";
@@ -110,13 +107,7 @@ export default {
       });
     
       store.state.escalations.escalation = data
-      
-      // = data;
-      var tableContent = document.querySelector(".ant-table-body");
-
-      setTimeout(() => {
-        tableContent.scrollTo(0, scroller);
-      }, 50);
+     
  
     }
 

@@ -1,7 +1,7 @@
 <template>
   <a-alert class="mb-24" message="Patients are highlighted" type="error" />
 
-  <a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900, y: tableYScroller }" :pagination="false" :rowClassName="(record) => auth.user.id!=record.messageSender && record.isRead==0 ? 'bold':''" @change="handleTableChange">
+  <a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900,  }" :pagination="false" :rowClassName="(record) => auth.user.id!=record.messageSender && record.isRead==0 ? 'bold':''" @change="handleTableChange">
 
     <template #expandedRowRender="{ record }">
       <p>{{ record.message }}</p>
@@ -152,7 +152,7 @@ import { ref, onMounted, watchEffect } from "vue";
 import { useStore } from "vuex";
 import Chat from "@/components/modals/Chat";
 import ChatWithPatientInformation from "@/components/modals/ChatWithPatientInformation";
-import { tableYScroller, arrayToObjact, } from "@/commonMethods/commonMethod";
+import {  arrayToObjact, } from "@/commonMethods/commonMethod";
 
 import CommunicationGmailView from '@/components/modals/CommunicationGmailView'
 import {
@@ -256,7 +256,7 @@ export default {
     /* const isExpand = ref(false)
     const recordId = ref(null) */
 
-    let scroller = "";
+   
     let data = [];
 
     /* const clickExpandable = (id, message) => {
@@ -296,17 +296,12 @@ export default {
     })
 
     onMounted(() => {
-      var tableContent = document.querySelector(".ant-table-body");
-
-      tableContent.addEventListener("scroll", (event) => {
-        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-        let currentScroll = event.target.scrollTop + 2;
-
-        if (currentScroll >= maxScroll) {
+      window.addEventListener("scroll", () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
           let current_page = meta.communicationMeta.current_page + 1;
 
           if (current_page <= meta.communicationMeta.total_pages) {
-            scroller = maxScroll;
+         
             data = meta.communicationsList;
             meta.communicationMeta = "";
             store.state.communications.communicationsList = "";
@@ -335,11 +330,7 @@ export default {
         data.push(element);
       });
       meta.communicationsList = data;
-      var tableContent = document.querySelector(".ant-table-body");
-
-      setTimeout(() => {
-        tableContent.scrollTo(0, scroller);
-      }, 5000);
+     
     }
     const handleTableChange = (pag, filters, sorter) => {
       if (sorter.order) {
@@ -401,7 +392,7 @@ export default {
       handleOk,
       communicationId,
       auth,
-      tableYScroller,
+     
       handleTableChange,
       showGmail,
       visibleGmail,

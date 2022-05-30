@@ -1,5 +1,5 @@
 <template>
-<a-table rowKey="id" :data-source="meta.staffs" :scroll="{ y: tableYScrollerCounterPage ,x: 1020}" :pagination=false :columns="meta.columns" @change="handleTableChange">
+<a-table rowKey="id" :data-source="meta.staffs" :scroll="{ x: 1020}" :pagination=false :columns="meta.columns" @change="handleTableChange">
     <template #name="{text,record}" v-if="arrayToObjact(screensPermissions,38)">
         <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}" >{{ text }}</router-link>
     </template>
@@ -41,7 +41,7 @@
 import { WarningOutlined,DeleteOutlined,KeyOutlined } from "@ant-design/icons-vue";
 import {
   dateFormat,
-  tableYScrollerCounterPage,
+  
   arrayToObjact
 } from "@/commonMethods/commonMethod";
 import { defineComponent, onMounted,ref,defineAsyncComponent } from "vue";
@@ -72,17 +72,14 @@ export default defineComponent({
     const idData = ref()
     const meta = store.getters.staffRecord.value;
     let data = [];
-    let scroller = "";
+  
     onMounted(() => {
-      var tableContent = document.querySelector(".ant-table-body");
-      tableContent.addEventListener("scroll", (event) => {
-        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-        let currentScroll = event.target.scrollTop + 2;
-        if (currentScroll >= maxScroll) {
+      window.addEventListener("scroll", () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
           let current_page = meta.staffMeta.current_page + 1;
 
           if (current_page <= meta.staffMeta.total_pages) {
-            scroller = maxScroll;
+         
             meta.staffMeta = "";
             data = meta.staffs;
             //store.state.careCoordinator.staffs = "";
@@ -110,10 +107,7 @@ export default defineComponent({
         data.push(element);
       });
       meta.staffs = data;
-      var tableContent = document.querySelector(".ant-table-body");
-      setTimeout(() => {
-        tableContent.scrollTo(0, scroller);
-      }, 50);
+    
     }
     const handleTableChange = (pag, filters, sorter) => {
       if (sorter.order) {
@@ -184,7 +178,7 @@ export default defineComponent({
       meta,
       dateFormat,
       handleTableChange,
-      tableYScrollerCounterPage,
+ 
       deletestaff
     };
   },

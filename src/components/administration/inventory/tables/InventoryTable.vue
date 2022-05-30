@@ -1,5 +1,5 @@
 <template>
-<a-table rowKey="id" :columns="inventoryColumns" :data-source="inventoriesList" :scroll="{ y: tableYScroller}" :pagination="false" @change="handleTableChange">
+<a-table rowKey="id" :columns="inventoryColumns" :data-source="inventoriesList"  :pagination="false" @change="handleTableChange">
     <template #actions="{record}">
         <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,338)">
             <template #title>
@@ -38,7 +38,7 @@ import { watchEffect, onMounted } from "vue";
 import { useStore } from "vuex";
 import {
   warningSwal,
-  tableYScroller,
+ 
   arrayToObjact,
 } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
@@ -62,17 +62,14 @@ export default {
     const inventoriesList = store.getters.inventoriesList;
     const meta = store.getters.inventoryMeta;
     let data = [];
-    let scroller = "";
+    
     onMounted(() => {
-      var tableContent = document.querySelector(".ant-table-body");
-      tableContent.addEventListener("scroll", (event) => {
-        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-        let currentScroll = event.target.scrollTop + 2;
-        if (currentScroll >= maxScroll) {
+      window.addEventListener("scroll", () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
           let current_page = meta.current_page + 1;
 
           if (current_page <= meta.total_pages) {
-            scroller = maxScroll;
+            
             meta.value = "";
             data = inventoriesList.value;
             store.state.inventory.inventoriesList = "";
@@ -100,11 +97,7 @@ export default {
         data.push(element);
       });
       inventoriesList.value = data;
-      var tableContent = document.querySelector(".ant-table-body");
-
-      setTimeout(() => {
-        tableContent.scrollTo(0, scroller);
-      }, 50);
+     
     }
     const editInventory = (id, deviceTypeId) => {
       store.state.inventory.deviceModalsList = null;
@@ -218,7 +211,7 @@ export default {
       updateStatus,
       inventoryColumns,
       inventoriesList,
-      tableYScroller,
+     
       handleTableChange,
     };
   },

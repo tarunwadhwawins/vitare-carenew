@@ -2,7 +2,7 @@
   <a-table  rowKey="id"
     :columns="globalCodesColumns"
     :data-source="globalCodesList"
-    :scroll="{ y: tableYScroller }" :pagination=false
+     :pagination=false
     @change="handleTableChange">
     <template #actions="{record}">
       <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,7)">
@@ -28,7 +28,7 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { watchEffect ,onMounted} from "vue";
 import { useStore } from "vuex";
-import {warningSwal,arrayToObjact,tableYScroller} from "@/commonMethods/commonMethod"
+import {warningSwal,arrayToObjact} from "@/commonMethods/commonMethod"
 import { messages } from '@/config/messages';
 export default {
   components: {
@@ -47,19 +47,16 @@ export default {
     
     const globalCodesList = store.getters.globalCodesList
     const meta = store.getters.globalMeta
-        let data = ''
-        let scroller = ''
+        let data = []
+        
         onMounted(() => {
-            var tableContent = document.querySelector('.ant-table-body')
-            tableContent.addEventListener('scroll', (event) => {
-                let maxScroll = event.target.scrollHeight - event.target.clientHeight
-                let currentScroll = event.target.scrollTop + 2
-                if (currentScroll >= maxScroll) {
+           window.addEventListener("scroll", () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
 
                     let current_page = meta.current_page + 1
 
                     if (current_page <= meta.total_pages) {
-                        scroller = maxScroll
+                       
                         meta.value = ""
                         data = globalCodesList.value
                         store.state.globalCodes.globalCodesList = ""
@@ -80,11 +77,9 @@ export default {
                 data.push(element)
             });
             globalCodesList.value = data
-            var tableContent = document.querySelector('.ant-table-body')
+            
 
-            setTimeout(() => {
-                tableContent.scrollTo(0, scroller)
-            }, 50)
+            
 
         }
     const editGlobalCode = (id) => {
@@ -177,7 +172,7 @@ export default {
       globalCodesList,
       updateStatus,
       warningSwal,
-      tableYScroller,
+      //tableYScroller,
       handleTableChange
     }
   }

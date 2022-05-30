@@ -1,6 +1,6 @@
 
 <template>
-<a-table rowKey="id" :columns="meta.cptCodesColumns" :data-source="meta.cptCodesList" :scroll="{ y: tableYScroller}" :pagination="false" @change="handleTableChange">
+<a-table rowKey="id" :columns="meta.cptCodesColumns" :data-source="meta.cptCodesList"  :pagination="false" @change="handleTableChange">
     <template #actions="{record}">
         <a-tooltip placement="bottom" @click="editCpt(record.udid)" v-if="arrayToObjact(screensPermissions,10)">
             <template #title>
@@ -32,7 +32,7 @@ import { useStore } from "vuex";
 import {
   warningSwal,
   arrayToObjact,
-  tableYScroller,
+ // tableYScroller,
  
 } from "@/commonMethods/commonMethod";
 export default {
@@ -79,21 +79,18 @@ export default {
 
     //infinite scroll
     let data = [];
-    let scroller = "";
+    
 
     const meta = store.getters.cptRecords.value;
     const loader = ref(false);
  
     onMounted(() => {
-      var tableContent = document.querySelector(".ant-table-body");
-      tableContent.addEventListener("scroll", (event) => {
-        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-        let currentScroll = event.target.scrollTop + 2;
-        if (currentScroll >= maxScroll) {
+       window.addEventListener("scroll", () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
           let current_page = meta.cptMeta.current_page + 1;
 
           if (current_page <= meta.cptMeta.total_pages) {
-            scroller = maxScroll;
+            
             data = meta.timeLogReportList;
             loader.value = true;
             meta.cptMeta = "";
@@ -123,11 +120,6 @@ export default {
         data.push(element);
       });
       meta.cptCodesList = data;
-      var tableContent = document.querySelector(".ant-table-body");
-
-      setTimeout(() => {
-        tableContent.scrollTo(0, scroller);
-      }, 50);
       loader.value = false;
     }
 
@@ -165,7 +157,7 @@ export default {
       editCpt,
       UpdateCptStatus,
       meta,
-      tableYScroller,
+      //tableYScroller,
       handleTableChange,
     };
   },
