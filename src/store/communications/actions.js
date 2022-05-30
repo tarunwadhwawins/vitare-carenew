@@ -1,6 +1,6 @@
 import ServiceMethodService from '@/services/serviceMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
-import { successSwal, errorSwal,startimeAdd, endTimeAdd, timeStamp,errorLogWithDeviceInfo} from '@/commonMethods/commonMethod'
+import { successSwal, startimeAdd, endTimeAdd, timeStamp,errorLogWithDeviceInfo} from '@/commonMethods/commonMethod'
 export const callPlanned = async ({ commit },from) => {
 	await ServiceMethodService.common("get", API_ENDPOINTS['CallPlanned']+"?fromDate=" + timeStamp(startimeAdd(from.fromDate)) + "&toDate=" + timeStamp(endTimeAdd(from.toDate)), null, null).then((response) => {
 		
@@ -26,7 +26,7 @@ export const addCommunication = async ({ commit }, data) => {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
-		errorSwal(error.response.data.message)
+		// errorSwal(error.response.data.message)
 	})
 }
 export const communicationsView = async ({ commit },id) => {

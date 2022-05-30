@@ -1,8 +1,10 @@
+
 <template>
 <div class="patientTable">
     <a-table rowKey="id" :columns="meta.column" :data-source="meta.patientList" :scroll="{ y: tableYScrollerCounterPage, x: 1500 }" :pagination="false" @change="handleTableChange">
-        <template #firstName="{ text, record }" v-if="arrayToObjact(screensPermissions, 63)">
-            <router-link :to="{ name: 'PatientSummary', params: { udid: record.id } }">{{ text }}</router-link>
+        <template #firstName="{ text, record }" v-if="arrayToObjact(screensPermissions, 63)" >
+            <router-link :to="{ name: 'PatientSummary', params: { udid: record.id } }" >{{ text }}</router-link>
+            
         </template>
         <template #firstName="{ text }" v-else>
             <span>{{ text }}</span>
@@ -17,7 +19,18 @@
         <template #lastReadingDate>
             <WarningOutlined />
         </template>
+        <template #status="{record}">
+            <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" :disabled="!arrayToObjact(screensPermissions,63)" />
+        </template>
         <template #action="{ record }" v-if="arrayToObjact(screensPermissions,63)">
+            <a-tooltip placement="bottom">
+                <template #title>
+                    <span>{{'Reset Password'}}</span>
+                </template>
+                <a class="icons">
+                    <KeyOutlined @click="resetPasseord(record.id)" /></a>
+            </a-tooltip>
+           
             <a-tooltip placement="bottom">
                 <template #title>
                     <span>{{$t('global.delete')}}</span>
@@ -27,124 +40,183 @@
             </a-tooltip>
         </template>
     </a-table>
+    <ResetPassword v-model:visible="resetPasswordVisible" @saveModal="saveModal($event)" endPoint="patient" :id="idData"/>
 </div>
 </template>
-
 <script>
-import {WarningOutlined,DeleteOutlined} from "@ant-design/icons-vue";
-import {  messages} from "@/config/messages";
-import {  warningSwal} from "@/commonMethods/commonMethod";
-import {  onMounted} from "vue";
-import {   useStore} from "vuex";
-import {   tableYScrollerCounterPage,   arrayToObjact} from "@/commonMethods/commonMethod";
-import {   useRoute} from 'vue-router';
-export default {
-    name: "DataTable",
-    components: {
-        WarningOutlined,
-        DeleteOutlined
-    },
-    props: {},
-    setup() {
-        const store = useStore();
-        const meta = store.getters.patientsRecord.value;
-        let data = [];
-        let scroller = "";
-        const route = useRoute()
-       
-         let filter = ''
-         let date = ''
-       function checkDate(){
-       filter= route.query.filter ? route.query.filter : ''
-       date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "?toDate=" + route.query.toDate : "&fromDate=&toDate="
-       }
+import {
+  WarningOutlined,
+  DeleteOutlined,
+  KeyOutlined,
+} from "@ant-design/icons-vue";
+import { messages } from "@/config/messages";
+import { warningSwal } from "@/commonMethods/commonMethod";
+import { onMounted,ref,defineAsyncComponent, defineComponent } from "vue";
+import { useStore } from "vuex";
+import {
+  tableYScrollerCounterPage,
+  arrayToObjact,
+} from "@/commonMethods/commonMethod";
+import { useRoute } from "vue-router";
+// import ResetPassword from "@/components/reset-password/modal/ResetPassword";
+export default defineComponent({
+  name: "DataTable",
+  components: {
+    WarningOutlined,
+    DeleteOutlined,
+    KeyOutlined,
+    ResetPassword:defineAsyncComponent(()=>import("@/components/reset-password/modal/ResetPassword")),
+  },
+  setup() {
+    const store = useStore();
+    const idData =ref();
+    const resetPasswordVisible = ref();
+    const meta = store.getters.patientsRecord.value;
+    let data = [];
+    let scroller = "";
+    const route = useRoute();
 
-        onMounted(() => {
-            checkDate()
-            var tableContent = document.querySelector(".ant-table-body");
-            tableContent.addEventListener("scroll", (event) => {
-                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-                let currentScroll = event.target.scrollTop + 2;
-                if (currentScroll >= maxScroll) {
-                    let current_page = meta.patientMeta.current_page + 1;
-                    if (current_page <= meta.patientMeta.total_pages) {
-                        scroller = maxScroll;
-                        meta.patientMeta = "";
+    let filter = "";
+    let date = "";
 
-                        data = meta.patientList
-                        //store.state.patients.patientList = ""
+    function checkDate() {
+      filter = route.query.filter ? route.query.filter : "";
+      date =
+        route.query.fromDate && route.query.toDate
+          ? "&fromDate=" +
+            route.query.fromDate +
+            "?toDate=" +
+            route.query.toDate
+          : "&fromDate=&toDate=";
+    }
 
-                        store.dispatch("patients", "?page=" + current_page + date + "&filter="+filter + store.getters.searchTable.value +
-                            store.getters.orderTable.value.data).then(() => {
-                            loadMoredata();
-                        });
-                    }
-                }
-            });
+    onMounted(() => {
+      checkDate();
+      var tableContent = document.querySelector(".ant-table-body");
+      tableContent.addEventListener("scroll", (event) => {
+        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+        let currentScroll = event.target.scrollTop + 2;
+        if (currentScroll >= maxScroll) {
+          let current_page = meta.patientMeta.current_page + 1;
+          if (current_page <= meta.patientMeta.total_pages) {
+            scroller = maxScroll;
+            meta.patientMeta = "";
+
+            data = meta.patientList;
+            //store.state.patients.patientList = ""
+
+            store
+              .dispatch(
+                "patients",
+                "?page=" +
+                  current_page +
+                  date +
+                  "&filter=" +
+                  filter +
+                  store.getters.searchTable.value +
+                  store.getters.orderTable.value.data
+              )
+              .then(() => {
+                loadMoredata();
+              });
+          }
+        }
+      });
+    });
+
+    function loadMoredata() {
+      const newData = meta.patientList;
+      newData.forEach((element) => {
+        data.push(element);
+      });
+      meta.patientList = data;
+      var tableContent = document.querySelector(".ant-table-body");
+
+      setTimeout(() => {
+        tableContent.scrollTo(0, scroller);
+      }, 50);
+    }
+
+    const handleTableChange = (pag, filters, sorter) => {
+      checkDate();
+      if (sorter.order) {
+        let order = sorter.order == "ascend" ? "ASC" : "DESC";
+        let orderParam = "&orderField=" + sorter.field + "&orderBy=" + order;
+        store.dispatch("orderTable", {
+          data: orderParam,
+          orderBy: order,
+          page: pag,
+          filters: filters,
         });
+        store.dispatch(
+          "patients",
+          "?page=" +
+            date +
+            "&filter=" +
+            filter +
+            store.getters.searchTable.value +
+            orderParam
+        );
+      } else {
+        store.dispatch("orderTable", {
+          data: "&orderField=&orderBy=",
+        });
+        store.dispatch(
+          "patients",
+          "?page=" +
+            date +
+            "&filter=" +
+            filter +
+            store.getters.searchTable.value +
+            store.getters.orderTable.value.data
+        );
+      }
+    };
 
-        function loadMoredata() {
-            const newData = meta.patientList;
-            newData.forEach((element) => {
-                data.push(element);
-            });
-            meta.patientList = data;
-            var tableContent = document.querySelector(".ant-table-body");
+    function deletePatients(id) {
+      warningSwal(messages.deleteWarning).then((response) => {
+        if (response == true) {
+          var index = meta.patientList.findIndex(function (o) {
+            return o.id === id;
+          });
 
-            setTimeout(() => {
-                tableContent.scrollTo(0, scroller);
-            }, 50);
+          store.dispatch("patientsDelete", id);
+          meta.patientList.splice(index, 1);
         }
+      });
+    }
+    const updateStatus = (id, status) => {
+      const data = {
+        isActive: status,
+      };
+      store.dispatch("updatePatientStatus", {
+        id,
+        data,
+      });
+    };
 
-        const handleTableChange = (pag, filters, sorter) => {
-            checkDate()
-            if (sorter.order) {
-                let order = sorter.order == "ascend" ? "ASC" : "DESC";
-                let orderParam = "&orderField=" + sorter.field + "&orderBy=" + order;
-                store.dispatch("orderTable", {
-                    data: orderParam,
-                    orderBy: order,
-                    page: pag,
-                    filters: filters,
-                });
-                store.dispatch(
-                    "patients",
-                    "?page=" + date + "&filter="+filter + store.getters.searchTable.value + orderParam
-                );
-            } else {
-                store.dispatch("orderTable", {
-                    data: "&orderField=&orderBy=",
-                });
-                store.dispatch(
-                    "patients",
-                    "?page=" + date + "&filter="+filter+
-                    store.getters.searchTable.value +
-                    store.getters.orderTable.value.data
-                )
-            }
-        }
+    const resetPasseord = (id) => {
+      resetPasswordVisible.value = true;
+      idData.value = id
+    };
 
-        function deletePatients(id) {
-            warningSwal(messages.deleteWarning).then((response) => {
-                if (response == true) {
+    const saveModal = (value) =>{
+      resetPasswordVisible.value = value
+    }
 
-                    var index = meta.patientList.findIndex(function (o) {
-                        return o.id === id;
-                    })
-
-                    store.dispatch("patientsDelete", id)
-                    meta.patientList.splice(index, 1)
-                }
-            })
-        }
-        return {
-            screensPermissions: store.getters.screensPermissions,
-            arrayToObjact,
-            meta,
-            tableYScrollerCounterPage,
-            handleTableChange,
-            deletePatients
-        };
-    },
-};
+    return {
+        idData,
+        saveModal,
+      resetPasswordVisible,
+      resetPasseord,
+      screensPermissions: store.getters.screensPermissions,
+      arrayToObjact,
+      meta,
+      tableYScrollerCounterPage,
+      handleTableChange,
+      deletePatients,
+      updateStatus,
+    };
+  },
+});
 </script>

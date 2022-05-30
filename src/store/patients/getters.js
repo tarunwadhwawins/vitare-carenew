@@ -32,11 +32,7 @@ export const patientsRecord = (state)=>{
   }
 
   
-  export const singleEscalationDataArray = (state)=>{
-    return computed(()=>{
-        return state.singleEscalationDataArray
-    })
-  }
+ 
 
   
   

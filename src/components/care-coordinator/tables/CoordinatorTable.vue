@@ -1,7 +1,7 @@
 <template>
 <a-table rowKey="id" :data-source="meta.staffs" :scroll="{ y: tableYScrollerCounterPage ,x: 1020}" :pagination=false :columns="meta.columns" @change="handleTableChange">
     <template #name="{text,record}" v-if="arrayToObjact(screensPermissions,38)">
-        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}">{{ text }}</router-link>
+        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}" >{{ text }}</router-link>
     </template>
     <template #name="{text}" v-else>
         <span>{{ text }}</span>
@@ -17,6 +17,13 @@
         <WarningOutlined />
     </template>
     <template #action="{record}" v-if="arrayToObjact(screensPermissions,38)">
+     <a-tooltip placement="bottom">
+                <template #title>
+                    <span>{{'Reset Password'}}</span>
+                </template>
+                <a class="icons">
+                    <KeyOutlined @click="resetPasseord(record.id)" /></a>
+            </a-tooltip>
       <a-tooltip placement="bottom" >
           <template #title>
               <span>{{$t('global.delete')}}</span>
@@ -24,18 +31,20 @@
           <a class="icons">
               <DeleteOutlined @click="deletestaff(record.uuid)"/></a>
       </a-tooltip>
+     
   </template>
 </a-table>
+<ResetPassword v-model:visible="resetPasswordVisible" @saveModal="saveModal($event)" endPoint="staff" :id="idData"/>
 </template>
 
 <script>
-import { WarningOutlined,DeleteOutlined } from "@ant-design/icons-vue";
+import { WarningOutlined,DeleteOutlined,KeyOutlined } from "@ant-design/icons-vue";
 import {
   dateFormat,
   tableYScrollerCounterPage,
   arrayToObjact
 } from "@/commonMethods/commonMethod";
-import { onMounted } from "vue";
+import { defineComponent, onMounted,ref,defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
 import {
     messages
@@ -45,18 +54,22 @@ import {
 
 } from "@/commonMethods/commonMethod";
 //import InfiniteLoader from "@/components/loader/InfiniteLoader";
-export default {
+// import ResetPassword from "@/components/reset-password/modal/ResetPassword";
+export default defineComponent({
   name: "DataTable",
   components: {
     WarningOutlined,
-    DeleteOutlined
+    DeleteOutlined,
+    ResetPassword:defineAsyncComponent(()=>import("@/components/reset-password/modal/ResetPassword")),
+    KeyOutlined
     //  InfiniteLoader
   },
   props: {},
   setup() {
     const store = useStore();
     //const fields = reactive(props.staffRecords.columns)
-
+    const resetPasswordVisible =ref()
+    const idData = ref()
     const meta = store.getters.staffRecord.value;
     let data = [];
     let scroller = "";
@@ -151,7 +164,20 @@ export default {
                 }
             })
         }
+
+        const resetPasseord = (id) => {
+      resetPasswordVisible.value = true;
+      idData.value = id
+    };
+
+    const saveModal = (value) =>{
+      resetPasswordVisible.value = value
+    }
     return {
+      idData,
+      resetPasswordVisible,
+      resetPasseord,
+      saveModal,
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
       updateStatus,
@@ -162,5 +188,5 @@ export default {
       deletestaff
     };
   },
-};
+});
 </script>

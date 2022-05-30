@@ -1,6 +1,6 @@
 import ServiceMethodService from '../../services/serviceMethod';
 import { API_ENDPOINTS } from "../../config/apiConfig"
-import { successSwal, errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod';
+import { successSwal, errorLogWithDeviceInfo } from '@/commonMethods/commonMethod';
 
 export const globalCodesList = async ({ commit },page) => {
 	commit('loadingTableStatus', true)
@@ -30,7 +30,7 @@ export const searchGlobalCodes = async ({ commit }, params) => {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
-		errorSwal(error.response.data.message)
+		// errorSwal(error.response.data.message)
 	})
 }
 
@@ -45,7 +45,7 @@ export const addGlobalCode = async ({ commit }, data) => {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
-		errorSwal(error.response.data.message)
+		// errorSwal(error.response.data.message)
 	})
 }
 
@@ -60,7 +60,7 @@ export const deleteGlobalCode = async ({ commit }, id) => {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
-		errorSwal(error.response.data.message)
+		// errorSwal(error.response.data.message)
 	})
 }
 
@@ -88,6 +88,6 @@ export const updateGlobalCode = async ({ commit }, {id, data}) => {
 			//AuthService.logout();
 		}
 		commit('failure', error.response.data);
-		errorSwal(error.response.data.message)
+		// errorSwal(error.response.data.message)
 	})
 }

@@ -37,9 +37,27 @@
       <p v-if="patientDetails.phoneNumber"><a @click="actionTrack(paramsId,322,'patient')" v-if="arrayToObjact(screensPermissions, 322)" href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
       <p v-if="patientDetails.address"><HomeOutlined/> <span class="address-text">{{ patientDetails.address }}</span></p>
     </div>
-    <EditOutlined class="editIcon" @click="editPatient({udid: patientDetails.id, id: patientDetails.id});actionTrack(paramsId,301,'patient')" v-if="isLeft == true && (arrayToObjact(screensPermissions, 301) || arrayToObjact(screensPermissions, 63))"/>
+    <a-tooltip placement="top">
+        <template #title>
+          <span>Reset Password</span>
+        </template>
+        <a class="resetPass">
+      <KeyOutlined @click="resetPasseord(patientDetails.id)" />
+    </a>
+    </a-tooltip>
+
+    <a-tooltip placement="top" class="editIcon">
+        <template #title>
+          <span>Edit</span>
+        </template>
+        <a>
+      <EditOutlined  @click="editPatient({udid: patientDetails.id, id: patientDetails.id});actionTrack(paramsId,301,'patient')" v-if="isLeft == true && (arrayToObjact(screensPermissions, 301) || arrayToObjact(screensPermissions, 63))"/>
+    </a>
+    </a-tooltip>
+    
+    
+   <ResetPassword v-model:visible="resetPasswordVisible" @saveModal="saveModal($event)" endPoint="patient" :id="patientDetails.id"/>
   </div>
-  
   <ImageCropper v-if="modalVisible" v-model:visible="modalVisible" :imageUrl="imageinCropper" @closeModal="closeImageModal" @crop="updateProfileImage" />
 </template>
 
@@ -47,7 +65,8 @@
 import {
   ref,
   defineAsyncComponent,
-  computed
+  computed,
+  defineComponent
 } from 'vue-demi';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
@@ -56,13 +75,15 @@ import {
   PhoneOutlined,
   HomeOutlined,
   EditOutlined,
+  KeyOutlined
 } from "@ant-design/icons-vue";
 import {
   actionTrack,
   arrayToObjact
 } from '@/commonMethods/commonMethod';
+// import ResetPassword from "@/components/reset-password/modal/ResetPassword";
 
-export default {
+export default defineComponent({
   props: {
     isLeft: {
       type: Boolean
@@ -71,6 +92,8 @@ export default {
     patientUdid:Number
   },
   components: {
+    ResetPassword:defineAsyncComponent(()=>import("@/components/reset-password/modal/ResetPassword")),
+    KeyOutlined,
     MailOutlined,
     EditOutlined,
     PhoneOutlined,
@@ -81,6 +104,7 @@ export default {
     const store = useStore();
     const route = useRoute();
     const modalVisible = ref(false);
+    const resetPasswordVisible = ref(false);
     const patientId = props.patientUdid ? props.patientUdid : route.params.udid
 
     const isPicuteLoading = computed(() => {
@@ -154,7 +178,18 @@ export default {
       modalVisible.value = false;
     }
 
+    const resetPasseord = () => {
+      resetPasswordVisible.value = true;
+    };
+
+    const saveModal = (value) =>{
+      resetPasswordVisible.value = value
+    }
+
     return {
+      saveModal,
+      resetPasseord,
+      resetPasswordVisible,
       screensPermissions:store.getters.screensPermissions,
       paramsId:patientId,
       imageinCropper,
@@ -170,10 +205,15 @@ export default {
       isPicuteLoading,
     }
   }
-}
+});
 </script>
 
 <style scoped>
+.resetPass{
+  position: absolute;
+    right: 40px;
+    top: 13px;
+}
 .info {
   margin-left: 40px;
 }

@@ -2,7 +2,8 @@ import serviceMethod from '@/services/serviceMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig";
 import {
 	successSwal,
-	errorSwal,
+	// errorSwal,
+	errorLogWithDeviceInfo
 } from '@/commonMethods/commonMethod'
 
 export const addPatientCareCoordinator = async ({ commit }, {patientUdid, data}) => {
@@ -14,7 +15,7 @@ export const addPatientCareCoordinator = async ({ commit }, {patientUdid, data})
 	.catch((error) => {
 		commit('loadingStatus', false)
 		if (error.response.status == 401) {
-      errorSwal(error.response.data.message)
+    //   errorSwal(error.response.data.message)
 		}
 		commit('failure', error.response.data);
 	})
@@ -34,10 +35,7 @@ export const patientCareCoordinatorsList = async ({ commit }, {patientUdid, type
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
-		if (error.response.status == 401) {
-      errorSwal(error.response.data.message)
-		}
-		commit('failure', error.response.data);
+		errorLogWithDeviceInfo(error)
 		commit('loadingStatus', false)
 	})
 }
@@ -51,7 +49,7 @@ export const deletePatientCareCoordinator = async ({ commit }, {patientUdid, pat
 	})
 	.catch((error) => {
 		if (error.response.status == 401) {
-      errorSwal(error.response.data.message)
+    //   errorSwal(error.response.data.message)
 		}
 		commit('failure', error.response.data);
 		commit('loadingStatus', false)
@@ -65,7 +63,7 @@ export const patientCareCoordinatorDetails = async ({commit}, data) => {
     commit('loadingStatus', false)
   }).catch((error) => {
     if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+    //   errorSwal(error.response.data.message)
     }
     commit('loadingStatus', false)
   })
@@ -78,7 +76,7 @@ export const updatePatientCareCoordinator = async ({commit}, data) => {
     commit('loadingStatus', false)
   }).catch((error) => {
     if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+    //   errorSwal(error.response.data.message)
     }
     commit('loadingStatus', false)
   })

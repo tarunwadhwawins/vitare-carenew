@@ -47,7 +47,7 @@ export default {
     watchEffect(() => {
       if (refreshToken.value != null) {
         store.dispatch("globalCodes");
-        store.dispatch("timeLine", 123);
+        //store.dispatch("timeLine", 122);
         store.dispatch("permissions");
         store.dispatch("escalationStaus")
         store.dispatch("appointmentConference");

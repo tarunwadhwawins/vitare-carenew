@@ -102,9 +102,16 @@ export const patient = (state, data) => {
     sorter: true,
   },
   {
-    title: "Sex ",
+    title: "Gender ",
     dataIndex: "gender",
    
+  },
+  {
+    title: 'Status',
+    dataIndex: 'isActive',
+    slots: {
+      customRender: 'status'
+    }
   },
 {
   title:"Action ",
@@ -117,6 +124,7 @@ export const patient = (state, data) => {
   state.patientMeta = data.meta.pagination;
   state.patientList = data.data
     .map(element => {
+      element.isActive= element.isActive=='Active' ? true : false,
       element.flags = element.flagColor,
         element.lastName = element.lastName ? element.lastName : '',
         element.firstName = element.name ? element.name : '',
@@ -151,18 +159,6 @@ export const resetCounter = (state) => {
   state.counter = 0
 }
 
-
-export const escalationCounterPlus = (state) => {
-  state.escalationCounter++
-}
-
-export const escalationCounterMinus = (state) => {
-  state.escalationCounter--
-}
-
-export const resetEscalationCounter = (state) => {
-  state.escalationCounter = 0
-}
 
 export const addPatientProgram = (state, data) => {
   state.addPatientProgram = data
@@ -459,13 +455,12 @@ export const patientDetails = (state, patient) => {
 }
 
 export const responsiblePerson = (state, data) => {
-  data[0].contactType = data[0].contactType.length > 0 ? JSON.parse(data[0].contactType) : [];
-  data[0].contactTime = data[0].contactTime.length > 0 ? JSON.parse(data[0].contactTime) : [];
-  data[0].gender = data[0].genderId;
-  data[0].relation = data[0].relationId;
-  data[0].self = data[0].self ? true : false;
 
-  state.responsiblePerson = data[0]
+  data.gender = data.genderId;
+  data.relation = data.relationId;
+  data.self = data.self ? true : false;
+
+  state.responsiblePerson = data
 }
 
 export const emergencyContact = (state, data) => {
@@ -1080,67 +1075,9 @@ export const patientVitalList = (state, data) => {
 	})
 }
 
-
-export const addBasicEscalation = (state, data) => {
-  state.addBasicEscalation = data
-}
-
-
-export const escalation = (state, data) => {
-  state.escalation = data
-}
-
-
-
 export const referralList = (state, data) => {
   state.referralList = data
 }
 export const referralDetail = (state, data) => {
   state.referralDetail = data
-}
-
-export const esacalationFlagList = (state, data) => {
-  state.esacalationFlagList = data.map((item) => {
-		item.createdAt = dateAndTimeFormate(item.createdAt,globalDateFormat);
-		return item;
-	})
-}
-
-export const escalationNotesList = (state, data) => {
-  state.escalationNotesList = data.map(note => {
-    note.date = dateOnlyFormat(note.date);
-    return note;
-  });
-}
-
-
-export const esacalationCarePlansList = (state, data) => {
-  state.esacalationCarePlansList = data.map(carePlan => {
-    carePlan.startDate = dateOnlyFormat(carePlan.startDate)
-    carePlan.endDate = dateOnlyFormat(carePlan.endDate)
-    return carePlan
-  })
-}
-
-
-export const escalationVitalList = (state, data) => {
-  state.escalationVitalList = data.map((item) => {
-		item.startTime = item.startTime?dateAndTimeFormate(item.startTime,globalDateFormat):'';
-    item.endTime = item.endTime?dateAndTimeFormate(item.endTime,globalDateFormat):'';
-		return item;
-	})
-}
-
-
-export const singleEscalationRecord = (state, data) => {
-  state.singleEscalationRecord = data
-
-  state.singleEscalationDataArray = [{
-    patientName :data.patientName,
-    patientId :data.patientId,
-    flagColor: data.flagColor,
-    flagName: data.flagName,
-    dueBy:dateAndTimeFormate(data.dueBy,globalDateFormat),
-    escalationType:data.escalationType
-  }]
 }

@@ -1,6 +1,10 @@
 import serviceMethod from '@/services/serviceMethod';
 import {API_ENDPOINTS} from "@/config/apiConfig"
-import { errorSwal,errorLogWithDeviceInfo} from '@/commonMethods/commonMethod'
+import { 
+  errorSwal,
+  errorLogWithDeviceInfo,
+  successSwal
+} from '@/commonMethods/commonMethod'
 
 
 export const globalCodes = async ({commit}) => {
@@ -90,7 +94,7 @@ export const notificationList = async ({ commit }) => {
     commit('notificationList', response.data.data.length);
   }).catch((error) => {
     errorLogWithDeviceInfo(error.response)
-    errorSwal(error.response.data.message)
+    // errorSwal(error.response.data.message)
   })
 }
 
@@ -107,7 +111,7 @@ export const isReadUpdateNotification = async ({
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     } else if (error.response.status === 401) {
       commit('errorMsg', error.response.data.message)
     }
@@ -136,7 +140,7 @@ export const searchTableData = async ({ commit }, search) => {
       errorLogWithDeviceInfo(error.response)
       commit('errorMsg', error);
       if (error.response.status === 500) {
-        errorSwal(error.response.data.message)
+        // errorSwal(error.response.data.message)
       }
       commit('loadingStatus', false)
       commit('loadingTableStatus', false)
@@ -155,13 +159,13 @@ export const actionTrack = async ({ commit }, data) => {
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     } else if (error.response.status === 401) {
       // commit('errorMsg', error.response.data.message)
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     } else if (error.response.status === 409) {
       // commit('errorMsg', error.response.data.message)
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
     }
   })
 }
@@ -179,3 +183,24 @@ export const exportReportRequest = async ({ commit }, data) => {
 }
 
 
+
+export const passwordReset = async ({commit}, data) => {
+  let status = false
+  await serviceMethod.common("put", `${data.endPoint}/${data.id}/resetPassword`, null, data.data).then((response) => {
+    // commit('isReadUpdateNotification', response.data.data);
+    successSwal(response.data.message)
+    console.log(response);
+    status = true
+  }).catch((error) => {
+    errorLogWithDeviceInfo(error.response)
+    if (error.response.status === 422) {
+      // commit('errorMsg', error.response.data)
+      errorSwal(error.response.data.password[0])
+    } else if (error.response.status === 500) {
+      // errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      commit('errorMsg', error.response.data.message)
+    }
+  })
+  return status
+}

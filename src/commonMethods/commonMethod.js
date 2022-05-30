@@ -206,8 +206,8 @@ export function annotations(xname, seriesIndex, borderColor, offsetY, color, bac
 
 // Used for timeStamp for dateTime
 export function timeStamp(date) {
-	// return moment(date).format('X');
-	return moment.utc(date).local().format('X');
+	return moment(date).format('X');
+	// return moment.utc(date).local().format('X');
 }
 export function timeStampLocal(date) {
 	// return moment(date).format('X');
@@ -547,5 +547,5 @@ export function secondsToTime(secs) {
 	return hours + ':' + minutes + ':' + seconds;
 }
 export const tableYScroller = 700
-export const tableYScrollerCounterPage = 500
+export const tableYScrollerCounterPage = 450
 export const disableHours = [1, 2, 3, 4, 5, 6, 7, 21, 22, 23, 24]

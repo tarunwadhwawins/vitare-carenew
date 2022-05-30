@@ -1,5 +1,8 @@
 import serviceMethod from '@/services/serviceMethod'
-import { errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
+import { 
+  // errorSwal,
+  errorLogWithDeviceInfo
+ } from '@/commonMethods/commonMethod'
 
 
 export const staffSummary = async ({commit}, id) => {
@@ -13,11 +16,11 @@ export const staffSummary = async ({commit}, id) => {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
     } else if (error.response.status === 401) {
       // commit('errorMsg', error.response.data.message)
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
     }
   })
@@ -36,11 +39,11 @@ export const staffSummaryAppointment = async ({commit}, id) => {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
     } else if (error.response.status === 401) {
       // commit('errorMsg', error.response.data.message)
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
     }
   })
@@ -58,11 +61,11 @@ export const staffSummaryPatient = async ({commit}, id) => {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
     } else if (error.response.status === 401) {
       // commit('errorMsg', error.response.data.message)
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
     }
   })

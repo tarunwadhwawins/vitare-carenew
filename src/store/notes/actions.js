@@ -2,7 +2,7 @@ import ServiceMethodService from '@/services/serviceMethod';
 import { API_ENDPOINTS } from "@/config/apiConfig"
 import {
 	successSwal,
-	errorSwal,
+	// errorSwal,
 	errorLogWithDeviceInfo
 } from '@/commonMethods/commonMethod'
 
@@ -19,7 +19,7 @@ export const addNote = async ({ commit }, { id, data }) => {
       commit('errorMsg', error.response.data)
 		}
 		else if(error.response.status == 500) {
-      errorSwal(error.response.data.message)
+    //   errorSwal(error.response.data.message)
 		}
 		else if (error.response.status == 401) {
 			//AuthService.logout()

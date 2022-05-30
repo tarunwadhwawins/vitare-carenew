@@ -81,7 +81,7 @@ export default {
             scroller = maxScroll;
             data = escalationMainList.value
             
-            store.state.careCoordinator.escalationMeta = "";
+            store.state.escalations.escalationMeta = "";
 
             store
               .dispatch(
@@ -109,7 +109,7 @@ export default {
         data.push(element);
       });
     
-      store.state.careCoordinator.escalation = data
+      store.state.escalations.escalation = data
       
       // = data;
       var tableContent = document.querySelector(".ant-table-body");

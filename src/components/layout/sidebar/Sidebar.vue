@@ -17,11 +17,11 @@
             </router-link>
             <router-link to="/escalation" v-show="escalationStatus?escalationStatus.status:false">
                 <a-menu-item>
-                    <DashboardOutlined /><span class="menuItem">{{'Escalation'}}</span></a-menu-item>
+                    <DashboardOutlined /><span class="menuItem">{{'Escalations'}}</span></a-menu-item>
             </router-link>
              <router-link to="/referral">
                 <a-menu-item>
-                    <FileDoneOutlined /><span class="menuItem">Referral</span></a-menu-item>
+                    <FileDoneOutlined /><span class="menuItem">Referrals</span></a-menu-item>
             </router-link>
             <router-link :to="{ name: 'Communications', query: {view: 'dashboard'} }" v-if="arrayToObjact(screensPermissions, 109)">
                 <a-menu-item>
@@ -29,7 +29,7 @@
             </router-link>
             <router-link to="/manage-care-coordinator" v-if="arrayToObjact(screensPermissions, 40)">
                 <a-menu-item>
-                    <UserOutlined /><span class="menuItem">{{$t('sidebar.careCoordinator')}}</span></a-menu-item>
+                    <UserOutlined /><span class="menuItem">Care Cordinators</span></a-menu-item>
             </router-link>
             <router-link to="/manage-patients" v-if="arrayToObjact(screensPermissions, 65)">
                 <a-menu-item>
@@ -37,7 +37,7 @@
             </router-link>
             <router-link to="/appointment-calendar"  v-if="arrayToObjact(screensPermissions, 112)">
                 <a-menu-item>
-                    <CalendarOutlined /><span class="menuItem">{{$t('sidebar.appointmentCalendar')}}</span></a-menu-item>
+                    <CalendarOutlined /><span class="menuItem">Appointments</span></a-menu-item>
             </router-link>
             <router-link :to="{ name: 'Tasks', query: {view: 'dashboard'} }" v-if="arrayToObjact(screensPermissions, 113)">
                 <a-menu-item>
@@ -101,7 +101,7 @@ export default defineComponent({
     });
 
     const escalationStatus = computed(() => {
-      return store.state.careCoordinator.escalationStaus
+      return store.state.escalations.escalationStaus
     });
     onUnmounted(() => {
       document.body.classList.remove("show");
