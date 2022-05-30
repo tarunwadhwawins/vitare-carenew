@@ -9,8 +9,14 @@
         <template #firstName="{ text }" v-else>
             <span>{{ text }}</span>
         </template>
-        <template #flags="text">
-            <span class="box" :style="{ 'background-color': text.text }"></span>
+        <template #flags="{ record }">
+            <a-tooltip placement="bottom">
+                <template #title>
+                    <span>{{ record.flagName }}</span>
+                </template>
+                <a class="icons">
+                    <Flags :flag="record.flagColor"/></a>
+            </a-tooltip>
         </template>
         <template #patientVitals>
             <WarningOutlined />
@@ -53,6 +59,7 @@ import { messages } from "@/config/messages";
 import { warningSwal } from "@/commonMethods/commonMethod";
 import { onMounted,ref,defineAsyncComponent, defineComponent } from "vue";
 import { useStore } from "vuex";
+import Flags from "@/components/common/flags/Flags";
 import {
  // tableYScrollerCounterPage,
   arrayToObjact,
@@ -65,6 +72,7 @@ export default defineComponent({
     WarningOutlined,
     DeleteOutlined,
     KeyOutlined,
+    Flags,
     ResetPassword:defineAsyncComponent(()=>import("@/components/reset-password/modal/ResetPassword")),
   },
   setup() {
