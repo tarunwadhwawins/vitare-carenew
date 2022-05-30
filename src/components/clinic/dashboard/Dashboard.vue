@@ -68,6 +68,7 @@
     title: "Name",
     dataIndex: "patientName",
     //sorter: true,
+    width: '17%',
     slots: {
       customRender: "patientName",
     },
@@ -75,6 +76,7 @@
   {
     title: "Escalation Type",
     dataIndex: "escalationType",
+    width: '20%',
     //sorter: true,
     
     slots: {

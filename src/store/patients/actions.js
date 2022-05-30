@@ -995,9 +995,11 @@ export const patientDetails = async ({
   commit
 }, id) => {
   await serviceMethod.common("get", API_ENDPOINTS['patient'], id, null).then((response) => {
+    console.log("check",response.data)
     commit('patientDetails', response.data.data);
-    commit('addDemographic', null);
+    //commit('addDemographic', null);
   }).catch((error) => {
+    console.log(error);
     errorLogWithDeviceInfo(error.response)
     if (error.response.status === 500) {
       // errorSwal('User Deleted/Deactivated')
