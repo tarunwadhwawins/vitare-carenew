@@ -653,14 +653,14 @@
 																	
 																	<p v-if="selectedDiseasesList && selectedDiseasesList.length > 0">
 																		<a-checkbox-group v-model:value="conditions.condition">
-																			<a-checkbox @change="chooseDiseases($event, false)" v-model:checked="checkboxChecked" v-for="disease in selectedDiseasesList" :key="disease.id" :value="disease.id" name="condition">{{disease.name}}</a-checkbox>
+																			<a-checkbox @change="chooseDiseases($event, false)" v-for="disease in selectedDiseasesList" :key="disease.id" :value="disease.id" name="condition">{{disease.name}}</a-checkbox>
 																		</a-checkbox-group>
 																	</p><br />
 																	<!-- Unselected -->
-																	
+																	<!-- {{conditions.unselectedConditions}} -->
 																	<p v-if="unSelectedDiseasesList && unSelectedDiseasesList.length > 0">
 																		<a-checkbox-group v-model:value="conditions.unselectedConditions">
-																			<a-checkbox @change="chooseDiseases($event, true)" v-model:checked="checkboxUnchecked" v-for="disease in unSelectedDiseasesList" :key="disease.id" :value="disease.id" name="unselectedConditions">{{disease.name}}</a-checkbox>
+																			<a-checkbox @change="chooseDiseases($event, true)" v-for="disease in unSelectedDiseasesList" :key="disease.id" :value="disease.id" name="unselectedConditions">{{disease.name}}</a-checkbox>
 																		</a-checkbox-group>
 																	</p>
                                 </a-form-item>
@@ -888,6 +888,7 @@ const ShowReferralId= ref(true)
 						conditions.unselectedConditions = conditions.unselectedConditions.filter(function(val) {
 							return value != val;
 						});
+						console.log('DiseasesList 11', conditions.unselectedConditions)
 						unSelectedDiseasesList.value.filter(function(healthCondition) {
 							if(value == healthCondition.id) {
 								const indexOfObject = unSelectedDiseasesList.value.findIndex(object => {
@@ -896,8 +897,8 @@ const ShowReferralId= ref(true)
 								unSelectedDiseasesList.value.splice(indexOfObject, 1);
 								if(!selectedDiseasesList.value.includes(healthCondition)) {
 									selectedDiseasesList.value.push(healthCondition)
-									if(!conditions.unselectedConditions.includes(healthCondition)) {
-										conditions.unselectedConditions.push(healthCondition.id)
+									if(!conditions.unselectedConditions.includes(value)) {
+										conditions.unselectedConditions.push(value)
 									}
 								}
 								conditions.condition.push(healthCondition.id)
@@ -905,6 +906,7 @@ const ShowReferralId= ref(true)
 						})
 					}
 					else if(!isTrue && !checked) {
+						console.log('DiseasesList', conditions.unselectedConditions.includes(value))
 						conditions.condition = conditions.condition.filter(function(val) {
 							return value != val;
 						});
@@ -916,11 +918,10 @@ const ShowReferralId= ref(true)
 								selectedDiseasesList.value.splice(indexOfObject, 1);
 								if(!unSelectedDiseasesList.value.includes(healthCondition)) {
 									unSelectedDiseasesList.value.push(healthCondition)
-									if(!conditions.unselectedConditions.includes(healthCondition)) {
+									if(!conditions.unselectedConditions.includes(value)) {
 										conditions.unselectedConditions.push(healthCondition.id)
 									}
 								}
-								conditions.unselectedConditions.push(healthCondition.id)
 							}
 						})
 					}
@@ -1068,9 +1069,9 @@ function newReferral(){
             set: (value) => {
 								selectedDiseasesList.value = []
 								conditions.condition = []
-								unSelectedDiseasesList.value = []
 								conditions.unselectedConditions = []
                 if (props.isEdit && value == 5) {
+									unSelectedDiseasesList.value = []
 									// Object.assign(conditions.condition, patientConditions.value)
 									store.dispatch('patientConditions', idPatient.value).then(() => {
 										globalCode.value.healthCondition.filter(function(healthCondition) {
@@ -1083,13 +1084,14 @@ function newReferral(){
 												}
 											}
 											else {
-												console.log('DiseasesList', selectedDiseasesList.value)
-												if(!selectedDiseasesList.value.includes(healthCondition)) {
-													unSelectedDiseasesList.value.push(healthCondition)
-													if(!conditions.unselectedConditions.includes(healthCondition)) {
-														conditions.unselectedConditions.push(healthCondition.id)
-													}
-												}
+												unSelectedDiseasesList.value = globalCode.value.healthCondition
+												// if(!selectedDiseasesList.value.includes(healthCondition)) {
+												// 	console.log('DiseasesList', unSelectedDiseasesList.value)
+												// 		unSelectedDiseasesList.value.push(healthCondition)
+												// 		if(!conditions.unselectedConditions.includes(healthCondition)) {
+												// 			conditions.unselectedConditions.push(healthCondition.id)
+												// 		}
+												// }
 											}
 										});
 									})
@@ -1627,8 +1629,6 @@ referalEmail.value = false
 						chooseDiseases,
             ShowReferralId,
             referalEmail,
-            checkboxChecked:true,
-            checkboxUnchecked:false,
         };
     },
 });
