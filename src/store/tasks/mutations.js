@@ -382,7 +382,11 @@ export const taskCategory = async (state, TeamMember) => {
 };
 
 export const searchTasks = async (state, result) => {
-	state.tasksList = result;
+	state.tasksList = result.map(item => {
+		item.dueDate = dateOnlyFormat(item.dueDate);
+		item.startDate = dateOnlyFormat(item.startDate);
+		return item
+	});
 };
 
 export const addTask = async (state, result) => {
