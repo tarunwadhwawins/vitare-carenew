@@ -47,7 +47,7 @@ import Physicians from "./Physicians"
 import DayAppointment from "./DayAppointment"
 import MonthAppointment from "./MonthAppointment"
 import WeekAppointment from "./WeekAppointment"
-import {ref,watchEffect,computed,onUnmounted} from "vue";
+import {ref,computed,onUnmounted, onMounted, watchEffect} from "vue";
 import { useStore} from "vuex"
 import moment from "moment"
 import Loader from "@/components/loader/Loader"
@@ -150,17 +150,18 @@ export default {
                 monthRecord.value = true
             })
         }
-
-        watchEffect(() => {
+watchEffect(()=>{
+      if (props.headerData) {
+                
+                selectDate(props.headerData)
+            }
+})
+        onMounted(() => {
             store.dispatch("getStaffs").then(() => {
 
             })
-            store.dispatch("allPatientsList")
-            store.dispatch("allStaffList")
-            if (props.headerData) {
-                console.log("check", props.headerData)
-                selectDate(props.headerData)
-            }
+           
+          
             searchApi()
         })
 

@@ -78,7 +78,23 @@ export async function errorSwal(message) {
 		return false;
 	}
 }
-
+// swal for  message
+export async function messageSwal(message) {
+	const result = await Swal.fire({
+		title: 'Warning',
+		text: message,
+		icon: 'warning',
+		
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Yes'
+	});
+	if (result.isConfirmed) {
+		return true;
+	} else {
+		return false;
+	}
+}
 // swal for warning message
 export async function warningSwal(message) {
 	const result = await Swal.fire({
