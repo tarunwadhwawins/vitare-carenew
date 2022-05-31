@@ -1,5 +1,5 @@
 import serviceMethod from '@/services/serviceMethod';
-import {  errorSwal,errorLogWithDeviceInfo } from '@/commonMethods/commonMethod';
+import {  errorLogWithDeviceInfo } from '@/commonMethods/commonMethod';
 
 
 export const getVideoDetails = async ({commit},id) => {
@@ -17,7 +17,7 @@ export const getVideoDetails = async ({commit},id) => {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
     } else if (error.response.status === 401) {
       // commit('errorMsg', error.response.data.message)
@@ -47,7 +47,7 @@ export const appointmentCalls = async ({commit},data) => {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
     } else if (error.response.status === 401) {
       // commit('errorMsg', error.response.data.message)
@@ -73,7 +73,7 @@ export const acceptVideoCallDetails = async ({commit},id) => {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
     } else if (error.response.status === 401) {
       // commit('errorMsg', error.response.data.message)
@@ -98,7 +98,7 @@ export const callNotification = async ({commit},data) => {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
     } else if (error.response.status === 401) {
       // commit('errorMsg', error.response.data.message)
@@ -119,7 +119,7 @@ export const guestUser = async ({commit},data) => {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
     } else if (error.response.status === 500) {
-      errorSwal(error.response.data.message)
+      // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
     } else if (error.response.status === 401) {
       // commit('errorMsg', error.response.data.message)
