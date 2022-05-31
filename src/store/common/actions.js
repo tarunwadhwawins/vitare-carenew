@@ -186,7 +186,7 @@ export const exportReportRequest = async ({ commit }, data) => {
 
 export const passwordReset = async ({commit}, data) => {
   let status = false
-  await serviceMethod.common("put", `${data.endPoint}/${data.id}/resetPassword`, null, data.data).then((response) => {
+  await serviceMethod.common("put", `${data.endPoint}/${data.id}/resetPassword`, null, true).then((response) => {
     // commit('isReadUpdateNotification', response.data.data);
     successSwal(response.data.message)
     console.log(response);

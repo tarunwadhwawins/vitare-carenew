@@ -21,7 +21,8 @@
                                     <span>Reset Password</span>
                                 </template>
                                 <a >
-                                    <KeyOutlined  @click="resetPasseord()" />
+                                    <!-- <KeyOutlined  @click="resetPasseord()" /> -->
+                                    <KeyIcon height="16" width="16" alt="Reset Password" @click="resetPasseord()"/>
                                 </a>
                             </a-tooltip>
                             <a-tooltip placement="top" class="editIcon">
@@ -188,7 +189,7 @@ import {
     PlusOutlined,
     MailOutlined,
     PhoneOutlined,
-    KeyOutlined
+    // KeyOutlined
 } from "@ant-design/icons-vue";
 import {
     useStore
@@ -218,11 +219,13 @@ import {
 import {
     messages
 } from "@/config/messages";
+import KeyIcon from "@/components/common/KeyIcon";
 // import ResetPassword from "@/components/reset-password/modal/ResetPassword";
 export default defineComponent({
     components: {
         ResetPassword:defineAsyncComponent(()=>import("@/components/reset-password/modal/ResetPassword")),
-        KeyOutlined,
+        // KeyOutlined,
+        KeyIcon,
         Header,
         Sidebar,
         // DeleteOutlined,
