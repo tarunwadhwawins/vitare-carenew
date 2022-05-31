@@ -2,7 +2,7 @@
 <h2 class="pageTittle">
     {{headingText}}
     <div class="commonBtn">
-        <a-button class="btn primaryBtn" @click="showModal">{{buttonText}}</a-button>
+        <a-button class="btn primaryBtn" @click="showModal" :isEdit="isEdit">{{buttonText}}</a-button>
     </div>
 </h2>
 </template>
@@ -19,6 +19,7 @@ export default {
             type: String,
             required: true,
         },
+        isEdit: Boolean,
         
     },
     setup(props, {

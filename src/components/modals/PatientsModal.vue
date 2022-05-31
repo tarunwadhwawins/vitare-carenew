@@ -644,14 +644,25 @@
 
                     <a-row :gutter="24" class="mb-24">
                         <a-col :md="24" :sm="24" :xs="24" class="mb-24">
-                            <a-input-search @change="changedValue" v-model:value="search" placeholder="Search..." style="width: 100%" size="large" @search="onSearch" />
+													<a-input @change="selectedDiseases($event)" size="large" placeholder="Search..." id="conditionBox" />
                         </a-col>
                         <a-col :md="24" :sm="24" :xs="24">
                             <div class="form-group conditionsCheckboxs">
                                 <a-form-item name="condition" :rules="[{ required: true, message: $t('patient.conditions.healthConditions')+' '+$t('global.validation') }]">
-                                    <a-checkbox-group @change="changedValue" v-model:value="conditions.condition">
-                                        <a-checkbox v-for="condition in globalCode.healthCondition" :key="condition.id" :value="condition.id" name="condition">{{condition.name}}</a-checkbox>
-                                    </a-checkbox-group>
+																	<!-- Selected -->
+																	
+																	<p v-if="selectedDiseasesList && selectedDiseasesList.length > 0">
+																		<a-checkbox-group v-model:value="conditions.condition">
+																			<a-checkbox @change="chooseDiseases($event, false)" v-for="disease in selectedDiseasesList" :key="disease.id" :value="disease.id" name="condition">{{disease.name}}</a-checkbox>
+																		</a-checkbox-group>
+																	</p><br />
+																	<!-- Unselected -->
+																	<!-- {{conditions.unselectedConditions}} -->
+																	<p v-if="unSelectedDiseasesList && unSelectedDiseasesList.length > 0">
+																		<a-checkbox-group v-model:value="conditions.unselectedConditions">
+																			<a-checkbox @change="chooseDiseases($event, true)" v-for="disease in unSelectedDiseasesList" :key="disease.id" :value="disease.id" name="unselectedConditions">{{disease.name}}</a-checkbox>
+																		</a-checkbox-group>
+																	</p>
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -789,7 +800,11 @@ export default defineComponent({
         const disableEmergencyContact = ref(false);
         const emergencyContactShow = ref(true)
         const referalFormShow = ref(true)
-const ShowReferral = ref(false)
+				const ShowReferral = ref(false)
+        const globalCode = computed(() => {
+            return store.state.common;
+        });
+
 const ShowReferralId= ref(true)
 
         const errorMsg = computed(() => {
@@ -848,6 +863,62 @@ const ShowReferralId= ref(true)
             store.commit('isEditPatient', false)
             isValueChanged.value = true
         }
+
+        const unSelectedDiseasesList = ref([])
+        const selectedDiseasesList = ref([])
+        const selectedDiseases = (event) => {
+					isValueChanged.value = true;
+					const searchedValue = event.target.value
+					if(searchedValue && searchedValue != "" && searchedValue != null) {
+						unSelectedDiseasesList.value = []
+						globalCode.value.healthCondition.map(function(healthCondition) {
+							if(healthCondition.name.toLowerCase().includes(searchedValue.toLowerCase())) {
+								if(!selectedDiseasesList.value.includes(healthCondition) && !unSelectedDiseasesList.value.includes(healthCondition)) {
+									unSelectedDiseasesList.value.push(healthCondition)
+								}
+							}
+						});
+					}
+        }
+
+				const chooseDiseases = (event, isTrue) => {
+					const value = event.target.value
+					const checked = event.target.checked
+					if(isTrue && checked) {
+						unSelectedDiseasesList.value.filter(function(healthCondition) {
+							if(value == healthCondition.id) {
+								const indexOfObject = unSelectedDiseasesList.value.findIndex(object => {
+									return object.id === healthCondition.id;
+								});
+								unSelectedDiseasesList.value.splice(indexOfObject, 1);
+								if(!selectedDiseasesList.value.includes(healthCondition)) {
+									selectedDiseasesList.value.push(healthCondition)
+									if(!conditions.unselectedConditions.includes(value)) {
+										conditions.unselectedConditions.push(value)
+									}
+								}
+								conditions.condition.push(healthCondition.id)
+							}
+						})
+					}
+					else if(!isTrue && !checked) {
+						conditions.condition = conditions.condition.filter(function(val) {
+							return value != val;
+						});
+						selectedDiseasesList.value.filter(function(healthCondition) {
+							if(value == healthCondition.id) {
+								const indexOfObject = selectedDiseasesList.value.findIndex(object => {
+									return object.id === healthCondition.id;
+								});
+								selectedDiseasesList.value.splice(indexOfObject, 1);
+								if(!unSelectedDiseasesList.value.includes(healthCondition)) {
+									unSelectedDiseasesList.value.push(healthCondition)
+								}
+							}
+						})
+					}
+				}
+
         const changedPhoneNumber = () => {
             store.commit('isEditPatient', false)
             isValueChanged.value = true
@@ -860,9 +931,6 @@ const ShowReferralId= ref(true)
         const closeSearchPatient = (value) => {
             patientSearch.value = value
         }
-        const globalCode = computed(() => {
-            return store.state.common;
-        });
         const idPatient = ref(null)
 
         const patients = computed(() => {
@@ -950,6 +1018,7 @@ const ShowReferralId= ref(true)
 
         const conditions = reactive({
             condition: [],
+            unselectedConditions: [],
         });
 
         const insuranceData = reactive({
@@ -990,14 +1059,98 @@ function newReferral(){
             get: () =>
                 store.state.patients.counter,
             set: (value) => {
-                if (value == 5) {
-                    store.dispatch('patientConditions', idPatient.value).then(() => {
-                        console.log('patientConditions.value', patientConditions.value)
-                        if (patientConditions.value != null) {
-                            Object.assign(conditions.condition, patientConditions.value)
-                        }
-                    })
-                }
+								selectedDiseasesList.value = []
+								conditions.condition = []
+								conditions.unselectedConditions = []
+								if(props.isEdit && value == 5) {
+									if(patients.value.addCondition == null && patientConditions.value == null) {
+										unSelectedDiseasesList.value = []
+										store.dispatch('patientConditions', idPatient.value).then(() => {
+											globalCode.value.healthCondition.map(function(healthCondition) {
+												if(patientConditions.value.includes(healthCondition.id)) {
+													if(!selectedDiseasesList.value.includes(healthCondition)) {
+														selectedDiseasesList.value.push(healthCondition)
+														if(!conditions.condition.includes(healthCondition)) {
+															conditions.condition.push(healthCondition.id)
+														}
+													}
+												}
+												else {
+													unSelectedDiseasesList.value = globalCode.value.healthCondition
+												}
+											});
+										})
+									}
+									else if(patients.value.addCondition == null && patientConditions.value != null) {
+										unSelectedDiseasesList.value = []
+										store.dispatch('patientConditions', idPatient.value).then(() => {
+											globalCode.value.healthCondition.map(function(healthCondition) {
+												if(patientConditions.value.includes(healthCondition.id)) {
+													if(!selectedDiseasesList.value.includes(healthCondition)) {
+														selectedDiseasesList.value.push(healthCondition)
+														if(!conditions.condition.includes(healthCondition)) {
+															conditions.condition.push(healthCondition.id)
+														}
+													}
+												}
+												else {
+													if(!unSelectedDiseasesList.value.includes(healthCondition)) {
+														unSelectedDiseasesList.value.push(healthCondition)
+													}
+												}
+											});
+										})
+									}
+									else if(patients.value.addCondition != null && patientConditions.value != null) {
+										unSelectedDiseasesList.value = []
+										store.dispatch('patientConditions', idPatient.value).then(() => {
+											globalCode.value.healthCondition.map(function(healthCondition) {
+												if(patientConditions.value.includes(healthCondition.id)) {
+													if(!selectedDiseasesList.value.includes(healthCondition)) {
+														selectedDiseasesList.value.push(healthCondition)
+														if(!conditions.condition.includes(healthCondition)) {
+															conditions.condition.push(healthCondition.id)
+														}
+													}
+												}
+												else {
+													if(!unSelectedDiseasesList.value.includes(healthCondition)) {
+														unSelectedDiseasesList.value.push(healthCondition)
+													}
+												}
+											});
+										})
+									}
+								}
+								else if(!props.isEdit && value == 5) {
+									store.dispatch("globalCodes")
+									unSelectedDiseasesList.value = globalCode.value.healthCondition
+									store.dispatch('patientConditions', idPatient.value).then(() => {
+										if(patientConditions.value != null) {
+											unSelectedDiseasesList.value = []
+											globalCode.value.healthCondition.map(function(disease) {
+												if(patientConditions.value.includes(disease.id)) {
+													if(!selectedDiseasesList.value.includes(disease)) {
+														selectedDiseasesList.value.push(disease)
+														if(!conditions.condition.includes(disease)) {
+															conditions.condition.push(disease.id)
+														}
+													}
+												}
+												else {
+													if(!unSelectedDiseasesList.value.includes(disease)) {
+														unSelectedDiseasesList.value.push(disease)
+													}
+												}
+											});
+										}
+										else {
+											unSelectedDiseasesList.value = globalCode.value.healthCondition
+											selectedDiseasesList.value = []
+										}
+									})
+									conditions.condition = []
+								}
 
                 if (props.isEdit || patients.value.addDemographic) {
 
@@ -1169,8 +1322,11 @@ Object.assign(emergencyContactForm, demographics)
 
         const condition = () => {
             const patientId = patients.value.patientDetails ? patients.value.patientDetails.id : idPatient.value
+						const patientConditions = {
+							condition: conditions.condition
+						};
             store.dispatch("addCondition", {
-                data: conditions,
+                data: patientConditions,
                 id: patientId,
 
             }).then(() => {
@@ -1219,6 +1375,9 @@ Object.assign(emergencyContactForm, demographics)
             store.commit("counterPlus");
         };
         const prev = () => {
+						if(patients.value.addDemographic && current.value == 1) {
+							Object.assign(demographics, patients.value.addDemographic);
+						}
 						
 						// if(patients.value.addDemographic && current.value == 1) {
 						// 	Object.assign(demographics, patients.value.addDemographic);
@@ -1369,7 +1528,6 @@ referalEmail.value = false
             customScrollTop.value.scrollIntoView({
                 behavior: 'smooth'
             });
-            console.log('customScrollTop', customScrollTop.value);
         }
 
         const handleStaffChange = (val) => {
@@ -1489,9 +1647,13 @@ referalEmail.value = false
             referalFormShow,
             ShowReferral,
             newReferral,
+            referralData:store.getters.referralList,
+						selectedDiseases,
+						selectedDiseasesList,
+						unSelectedDiseasesList,
+						chooseDiseases,
             ShowReferralId,
             referalEmail,
-            referralData:store.getters.referralList
         };
     },
 });

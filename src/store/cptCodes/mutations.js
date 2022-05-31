@@ -13,7 +13,8 @@ export const cptCode = async (state, cptCodes) => {
     {
       title: "Billing Amount",
       dataIndex: "billingAmout",
-      sorter:true
+      sorter:true,
+      align: 'right'
     },
     {
       title: "Active/Inactive",

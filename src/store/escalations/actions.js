@@ -291,3 +291,25 @@ export const addEscalationDetails = async ({
 
   return status
 }
+
+
+
+export const escalationDelete = async ({
+  commit
+}, id) => {
+  try {
+    commit('loadingStatus', true)
+    await serviceMethod.common("delete", `escalation/${id}`, null, null)
+    commit('loadingStatus', false)
+  } catch (error) {
+    errorLogWithDeviceInfo(error.response)
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+    } else if (error.response.status === 500) {
+      // errorSwal(error.response.data.message)
+    } else if (error.response.status === 401) {
+      // errorSwal(error.response.data.message)
+    }
+    commit('loadingStatus', false)
+  }
+}

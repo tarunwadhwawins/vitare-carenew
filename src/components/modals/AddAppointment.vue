@@ -95,7 +95,6 @@ import {
 	timeStamp,
 	disableHours,
 	timeStampFormate,
-	timeStampLocal
 } from "../../commonMethods/commonMethod"
 import moment from 'moment';
 import ModalButtons from "@/components/common/button/ModalButtons";
@@ -226,7 +225,7 @@ export default {
 			store.dispatch('addAppointment', {
 				patientId: props.patientId ? props.patientId : appointmentForm.patientId,
 				staffId: appointmentForm.staffId,
-				startDate: timeStampLocal(date + " " + timeFormat),
+				startDate: timeStamp(date + " " + timeFormat),
 				startTime: timeFormat,
 				durationId: appointmentForm.durationId,
 				appointmentTypeId: appointmentForm.typeOfVisit,

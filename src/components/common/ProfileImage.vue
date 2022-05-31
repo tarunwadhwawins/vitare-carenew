@@ -42,7 +42,9 @@
           <span>Reset Password</span>
         </template>
         <a class="resetPass">
-      <KeyOutlined @click="resetPasseord(patientDetails.id)" />
+          <KeyIcon height="16" width="16" alt="Reset Password" @click="resetPasseord(patientDetails.id)"/>
+      <!-- <KeyOutlined @click="resetPasseord(patientDetails.id)" /> -->
+       <!-- <img src="@/assets/images/key.svg" height="16" width="16" alt="Reset Password" @click="resetPasseord(record.id)"> -->
     </a>
     </a-tooltip>
 
@@ -56,7 +58,7 @@
     </a-tooltip>
     
     
-   <ResetPassword v-model:visible="resetPasswordVisible" @saveModal="saveModal($event)" endPoint="patient" :id="patientDetails.id"/>
+   <!-- <ResetPassword v-model:visible="resetPasswordVisible" @saveModal="saveModal($event)" endPoint="patient" :id="patientDetails.id"/> -->
   </div>
   <ImageCropper v-if="modalVisible" v-model:visible="modalVisible" :imageUrl="imageinCropper" @closeModal="closeImageModal" @crop="updateProfileImage" />
 </template>
@@ -75,14 +77,16 @@ import {
   PhoneOutlined,
   HomeOutlined,
   EditOutlined,
-  KeyOutlined
+  // KeyOutlined
 } from "@ant-design/icons-vue";
 import {
   actionTrack,
   arrayToObjact
 } from '@/commonMethods/commonMethod';
 // import ResetPassword from "@/components/reset-password/modal/ResetPassword";
-
+import { messages } from "@/config/messages";
+import { warningSwal } from "@/commonMethods/commonMethod";
+import KeyIcon from "@/components/common/KeyIcon";
 export default defineComponent({
   props: {
     isLeft: {
@@ -92,8 +96,9 @@ export default defineComponent({
     patientUdid:Number
   },
   components: {
-    ResetPassword:defineAsyncComponent(()=>import("@/components/reset-password/modal/ResetPassword")),
-    KeyOutlined,
+    // ResetPassword:defineAsyncComponent(()=>import("@/components/reset-password/modal/ResetPassword")),
+    // KeyOutlined,
+    KeyIcon,
     MailOutlined,
     EditOutlined,
     PhoneOutlined,
@@ -178,9 +183,17 @@ export default defineComponent({
       modalVisible.value = false;
     }
 
-    const resetPasseord = () => {
-      resetPasswordVisible.value = true;
-    };
+    const resetPasseord = (id) => {
+    warningSwal(messages.resetPassword).then((response) => {
+          if (response == true) {
+            store.dispatch("passwordReset", {endPoint:'patient',id:id})
+          } else {
+            // emit("saveModal", true);
+          }
+        });
+    
+};
+
 
     const saveModal = (value) =>{
       resetPasswordVisible.value = value
@@ -210,10 +223,18 @@ export default defineComponent({
 
 <style scoped>
 .resetPass{
-  position: absolute;
+  
+    position: absolute;
     right: 40px;
-    top: 13px;
+    top: 16px;
 }
+.resetPass img {
+    width: 13px!important;
+    height: auto!important;
+    margin: 0!important;
+    border-radius: 0!important;
+}
+
 .info {
   margin-left: 40px;
 }

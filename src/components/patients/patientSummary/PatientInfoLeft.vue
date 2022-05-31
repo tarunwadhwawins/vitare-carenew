@@ -279,7 +279,6 @@ export default defineComponent({
  }
     watchEffect(() => {
       if(route.name == 'PatientSummary') {
-        store.dispatch('patientDetails', route.params.udid)
         store.dispatch('responsiblePerson', route.params.udid)
         store.dispatch('emergencyContact', route.params.udid)
         store.dispatch('familyMembersList', route.params.udid)

@@ -22,7 +22,9 @@
                 <span>{{'Reset Password'}}</span>
             </template>
             <a class="icons">
-                <KeyOutlined @click="resetPasseord(record.id)" /></a>
+                <!-- <KeyOutlined @click="resetPasseord(record.id)" /> -->
+                <KeyIcon height="16" width="16" alt="Reset Password" @click="resetPasseord(record.id)"/>
+            </a>
         </a-tooltip>
         <a-tooltip placement="bottom">
             <template #title>
@@ -38,10 +40,9 @@
 </template>
 
 <script>
-import { WarningOutlined,DeleteOutlined,KeyOutlined } from "@ant-design/icons-vue";
+import { WarningOutlined,DeleteOutlined } from "@ant-design/icons-vue";
 import {
   dateFormat,
-  
   arrayToObjact
 } from "@/commonMethods/commonMethod";
 import { defineComponent, onMounted,ref,defineAsyncComponent } from "vue";
@@ -51,17 +52,18 @@ import {
 } from "@/config/messages";
 import {
     warningSwal,
-
 } from "@/commonMethods/commonMethod";
+import KeyIcon from "@/components/common/KeyIcon";
 //import InfiniteLoader from "@/components/loader/InfiniteLoader";
 // import ResetPassword from "@/components/reset-password/modal/ResetPassword";
 export default defineComponent({
     name: "DataTable",
     components: {
+        KeyIcon,
         WarningOutlined,
         DeleteOutlined,
         ResetPassword: defineAsyncComponent(() => import("@/components/reset-password/modal/ResetPassword")),
-        KeyOutlined
+        // KeyOutlined
         //  InfiniteLoader
     },
     props: {},

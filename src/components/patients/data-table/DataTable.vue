@@ -33,7 +33,10 @@
                     <span>{{'Reset Password'}}</span>
                 </template>
                 <a class="icons">
-                    <KeyOutlined @click="resetPasseord(record.id)" /></a>
+                    <KeyIcon height="16" width="16" alt="Reset Password" @click="resetPasseord(record.id)"/>
+                    <!-- <img src="@/assets/images/key.svg" > -->
+                    <!-- <KeyOutlined @click="resetPasseord(record.id)" /> -->
+                </a>
             </a-tooltip>
 
             <a-tooltip placement="bottom">
@@ -45,7 +48,7 @@
             </a-tooltip>
         </template>
     </a-table>
-    <ResetPassword v-model:visible="resetPasswordVisible" @saveModal="saveModal($event)" endPoint="patient" :id="idData" />
+    <!-- <ResetPassword v-model:visible="resetPasswordVisible" @saveModal="saveModal($event)" endPoint="patient" :id="idData" /> -->
 </div>
 </template>
 
@@ -53,13 +56,14 @@
 import {
   WarningOutlined,
   DeleteOutlined,
-  KeyOutlined,
+//   KeyOutlined,
 } from "@ant-design/icons-vue";
 import { messages } from "@/config/messages";
 import { warningSwal } from "@/commonMethods/commonMethod";
-import { onMounted,ref,defineAsyncComponent, defineComponent } from "vue";
+import { onMounted,ref, defineComponent } from "vue";
 import { useStore } from "vuex";
 import Flags from "@/components/common/flags/Flags";
+import KeyIcon from "@/components/common/KeyIcon";
 import {
  // tableYScrollerCounterPage,
   arrayToObjact,
@@ -71,9 +75,10 @@ export default defineComponent({
   components: {
     WarningOutlined,
     DeleteOutlined,
-    KeyOutlined,
+    // KeyOutlined,
+    KeyIcon,
     Flags,
-    ResetPassword:defineAsyncComponent(()=>import("@/components/reset-password/modal/ResetPassword")),
+    // ResetPassword:defineAsyncComponent(()=>import("@/components/reset-password/modal/ResetPassword")),
   },
 setup() {
 const store = useStore();
@@ -205,8 +210,14 @@ const updateStatus = (id, status) => {
 };
 
 const resetPasseord = (id) => {
-    resetPasswordVisible.value = true;
-    idData.value = id
+    warningSwal(messages.resetPassword).then((response) => {
+          if (response == true) {
+            store.dispatch("passwordReset", {endPoint:'patient',id:id})
+          } else {
+            // emit("saveModal", true);
+          }
+        });
+    
 };
 
 const saveModal = (value) => {

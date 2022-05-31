@@ -80,7 +80,7 @@
 import { computed, defineComponent, reactive, ref, watchEffect } from "vue";
 import ModalButtons from "@/components/common/button/ModalButtons";
 import { useStore } from "vuex";
-import { timeStamp } from "@/commonMethods/commonMethod";
+import { timeStampLocal } from "@/commonMethods/commonMethod";
 import { useRoute } from "vue-router";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
 import { warningSwal, globalDateFormat } from "@/commonMethods/commonMethod";
@@ -166,7 +166,7 @@ export default defineComponent({
 
     const submitForm = () => {
       const data = {
-        date: timeStamp(addNoteForm.date),
+        date: timeStampLocal(addNoteForm.date),
         category: addNoteForm.category,
         type: addNoteForm.type,
         flag: addNoteForm.flag,
