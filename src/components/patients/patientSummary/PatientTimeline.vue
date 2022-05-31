@@ -46,17 +46,10 @@
               </div>
             </div>
           </a-timeline-item>
-          
         </template>
       </div>
       <div v-else class="noData">
-        <a-timeline-item>
-          <div class="noTimeline">
-            <div class="noTimelineBody">
-              No Data
-            </div>
-          </div>
-        </a-timeline-item>
+        No Data
       </div>
     </a-timeline>
   </div>
@@ -200,5 +193,12 @@ p.timeline-float.timeline-title {
   top: -4px;
   left: -20px;
   font-size: 25px;
+}
+.noData.ant-timeline-item-last {
+  position: relative;
+  left: -20px !important;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 5px;
 }
 </style>
