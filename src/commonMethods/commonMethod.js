@@ -210,8 +210,7 @@ export function timeStamp(date) {
 	// return moment.utc(date).local().format('X');
 }
 export function timeStampLocal(date) {
-	// return moment(date).format('X');
-	return moment(date).format('X');
+	return moment.utc(date).local().format('X');
 }
 export function timeStampToTime(time, format) {
 	return moment.unix(time).format(format);
