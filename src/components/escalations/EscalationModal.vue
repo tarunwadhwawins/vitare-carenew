@@ -562,18 +562,36 @@ export default {
 
     const closeModal = () => {
       if (checkFieldsData.value) {
-        warningSwal(messages.modalWarning).then((response) => {
-          if (response == true) {
-            emit("saveModal", false);
-            Object.assign(escalation, form);
-            Object.assign(escalationDetails, formEscalationDetails);
-            store.commit("resetEscalationCounter");
-            store.commit("checkChangeInput", false);
-            store.state.escalations.addBasicEscalation = null;
-          } else {
-            emit("saveModal", true);
-          }
-        });
+        if(addEscalation.value){
+          warningSwal(messages.modalWarning).then((response) => {
+            if (response == true) {
+              emit("saveModal", false);
+              Object.assign(escalation, form);
+              Object.assign(escalationDetails, formEscalationDetails);
+              store.commit("resetEscalationCounter");
+              store.commit("checkChangeInput", false);
+              store.dispatch('escalationDelete',addEscalation.value.id)
+              store.state.escalations.addBasicEscalation = null;
+              errorMsg.value = []
+            } else {
+              emit("saveModal", true);
+            }
+          });
+        }else if(addEscalation.value == null){
+          warningSwal(messages.modalWarning).then((response) => {
+            if (response == true) {
+              emit("saveModal", false);
+              Object.assign(escalation, form);
+              Object.assign(escalationDetails, formEscalationDetails);
+              store.commit("resetEscalationCounter");
+              store.commit("checkChangeInput", false);
+              store.state.escalations.addBasicEscalation = null;
+              errorMsg.value = []
+            } else {
+              emit("saveModal", true);
+            }
+          });
+        }
       } else {
          formRef.value.resetFields()
       }
