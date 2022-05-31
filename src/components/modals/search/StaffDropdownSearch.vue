@@ -8,7 +8,7 @@
     @input="updateValue"
     style="width: 100%"
     :show-search="true"
-    placeholder="input search text"
+    :placeholder="placeholder ? placeholder : 'input search text'"
     :show-arrow="true"
     :filter-option="false"
     :not-found-content="loadingStatus ? undefined : null"
@@ -39,6 +39,7 @@ export default defineComponent({
     value: String,
     checkSameAsStaff: Boolean,
     mode: String,
+    placeholder: String,
     close: Boolean,
     editDataStaff:Array
   },
@@ -77,6 +78,7 @@ export default defineComponent({
     };
 
     const handleStaffChange = (val) => {
+      Services.singleDropdownSearch(val, (d) => (staffData.value = d), "staff");
       if (props.checkSameAsStaff) {
         context.emit("handlePatientChange", val);
       } else {

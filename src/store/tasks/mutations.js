@@ -381,7 +381,7 @@ export const taskCategory = async (state, TeamMember) => {
 	};
 };
 
-export const searchTasksSuccess = async (state, result) => {
+export const searchTasks = async (state, result) => {
 	state.tasksList = result;
 };
 

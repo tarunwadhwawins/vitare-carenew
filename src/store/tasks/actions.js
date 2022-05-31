@@ -3,7 +3,7 @@ import { successSwal, errorLogWithDeviceInfo } from '@/commonMethods/commonMetho
 import { API_ENDPOINTS } from '@/config/apiConfig';
 
 export const tasksList = async ({ commit }, page) => {
-	let link = page ? API_ENDPOINTS['tasksList'] + page : API_ENDPOINTS['tasksList'];
+	let link = page ? API_ENDPOINTS['task'] + page : API_ENDPOINTS['task'];
 	commit('loadingTableStatus', true)
 	await ServiceMethodService.common('get', link, null, null)
 		.then((response) => {
@@ -28,7 +28,7 @@ export const tasksList = async ({ commit }, page) => {
 
 export const addTask = async ({ commit }, data) => {
 	commit('loadingStatus', true)
-	await ServiceMethodService.common('post', API_ENDPOINTS['addTask'], null, data)
+	await ServiceMethodService.common('post', API_ENDPOINTS['task'], null, data)
 		.then((response) => {
 			// console.log('addTaskSuccess', response.data.data);
 			successSwal(response.data.message);
@@ -252,9 +252,9 @@ export const taskCategory = async ({ commit }) => {
 };
 
 export const searchTasks = async ({ commit }, params) => {
-	await ServiceMethodService.common('get', API_ENDPOINTS['searchTasks'] + '?search=' + params, null, null)
+	await ServiceMethodService.common('get', API_ENDPOINTS['task']+`?search=${params}`, null, null)
 		.then((response) => {
-			commit('searchTasksSuccess', response.data.data);
+			commit('searchTasks', response.data.data);
 		})
 		.catch((error) => {
 			errorLogWithDeviceInfo(error.response)

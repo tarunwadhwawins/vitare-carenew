@@ -1608,3 +1608,9 @@
     margin: 0 10px 0 0 !important;
     width: 80px;
 }
+.noData .ant-timeline-item-tail {
+  display: none;
+}
+.noData .ant-timeline-item-head.ant-timeline-item-head-blue {
+  display: none;
+}

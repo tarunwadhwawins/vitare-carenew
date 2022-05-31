@@ -12,41 +12,52 @@
      
     <a-timeline class="defaultTimeline">
       <TableLoader/>
-      <template v-for="timeline in patientTimeline" :key="timeline.id">
-        <a-timeline-item color="blue">
-          <template #dot>
-            <BellOutlined class="yellowIcon" v-if="timeline.type==1"/>
-            <ClockCircleOutlined class="orangeIcon" v-if="timeline.type==2"/>
-            <HeatMapOutlined class="brownIcon" v-if="timeline.type==3"/>
-            <FolderOpenOutlined class="mustardIcon" v-if="timeline.type==4"/>
-            <FilePdfOutlined class="tealIcon" v-if="timeline.type==5"/>
-            <FileTextOutlined class="blueIcon" v-if="timeline.type==6"/>
-            <FlagOutlined class="redIcon" v-if="timeline.type==7"/>
-            <PushpinOutlined class="greenIcon" v-if="timeline.type==8"/>
-          </template>
-          <div class="timelineInner">
-            <div class="timelineHeader">
-              <div class="title">
-                <h4>{{ timeline.heading }}</h4>
-                <span class="time">{{ moment(dateFormat(timeline.createdAt)).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY') ? moment(dateFormat(timeline.createdAt)).format('hh:mm A') : moment(dateFormat(timeline.createdAt)).format('MMM DD,yyyy hh:mm A')}}</span>
+      <div v-if="patientTimeline && (patientTimeline != null && patientTimeline.length > 0)">
+        <template v-for="timeline in patientTimeline" :key="timeline.id">
+          <a-timeline-item color="blue">
+            <template #dot>
+              <BellOutlined class="yellowIcon" v-if="timeline.type==1"/>
+              <ClockCircleOutlined class="orangeIcon" v-if="timeline.type==2"/>
+              <HeatMapOutlined class="brownIcon" v-if="timeline.type==3"/>
+              <FolderOpenOutlined class="mustardIcon" v-if="timeline.type==4"/>
+              <FilePdfOutlined class="tealIcon" v-if="timeline.type==5"/>
+              <FileTextOutlined class="blueIcon" v-if="timeline.type==6"/>
+              <FlagOutlined class="redIcon" v-if="timeline.type==7"/>
+              <PushpinOutlined class="greenIcon" v-if="timeline.type==8"/>
+            </template>
+            <div class="timelineInner">
+              <div class="timelineHeader">
+                <div class="title">
+                  <h4>{{ timeline.heading }}</h4>
+                  <span class="time">{{ moment(dateFormat(timeline.createdAt)).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY') ? moment(dateFormat(timeline.createdAt)).format('hh:mm A') : moment(dateFormat(timeline.createdAt)).format('MMM DD,yyyy hh:mm A')}}</span>
+                </div>
+                <div class="userImg">
+                  <img v-if="timeline.profileImage" :src="timeline.profileImage" alt="image"/>
+                  <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
+                </div>
               </div>
-              <div class="userImg">
-                <img v-if="timeline.profileImage" :src="timeline.profileImage" alt="image"/>
-                <img v-else src="@/assets/images/userAvatar.png" alt="image"/>
+              <div class="timelineBody">
+                <div class="content">
+                  <p class="timeline-float timeline-title"><span v-html="timeline.title"></span></p>
+                  <!-- <p class="timeline-float timeline-title">{{ timeline.title }}</p> -->
+                  <!-- <a class="timeline-float more-link" href="javascript:void(0)">more</a> -->
+                </div>
+                <!-- <MailOutlined /> -->
               </div>
             </div>
-            <div class="timelineBody">
-              <div class="content">
-                <p class="timeline-float timeline-title"><span v-html="timeline.title"></span></p>
-                <!-- <p class="timeline-float timeline-title">{{ timeline.title }}</p> -->
-                <!-- <a class="timeline-float more-link" href="javascript:void(0)">more</a> -->
-              </div>
-              <!-- <MailOutlined /> -->
+          </a-timeline-item>
+          
+        </template>
+      </div>
+      <div v-else class="noData">
+        <a-timeline-item>
+          <div class="noTimeline">
+            <div class="noTimelineBody">
+              No Data
             </div>
           </div>
         </a-timeline-item>
-        
-      </template>
+      </div>
     </a-timeline>
   </div>
 </template>
