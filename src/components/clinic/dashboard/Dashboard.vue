@@ -10,7 +10,7 @@
             </h2>
         </a-col>
         <a-col :span="24">
-            <a-row :gutter="24" v-if="arrayToObjact(widgetsPermissions,1) && grid">
+            <a-row :gutter="24" v-if="arrayToObjact(screensPermissions, 65) && grid">
                 <Card v-for="item in totalPatients" :key="item.count" :count="item.total" :text='item.text' link="Patients with filter" :xl="grid.xlGrid" :color="item.color" :sm="grid.smGrid" :textColor="item.textColor">
                 </Card>
             </a-row>
@@ -19,28 +19,30 @@
     <a-row :gutter="24">
         
         
-         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  escalationCount">
+         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,13) &&  escalationCount">
             <ApexChart title="Escalations" type="bar" :height="350" :options="escalationCount.code" :series="escalationCount.value" linkTo="Escalation" :data="escalationRecord"></ApexChart>
         </a-col>
-         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && escalationList" >
+         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,14) && escalationList" >
              <a-card  title="Escalations List" class="common-card" style="height:436px">
                  <template #extra v-if="escalationList.length > 0"><router-link :to="{name:'Escalation'}">View All</router-link></template>
             <EscaltionTable :columnData="columnData" :escalationList="escalationList"  @showEscalationData="showEscalationData($event)" :height="286"/>
              </a-card>
         </a-col>
-        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  clicalTask">
+        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,5) &&  clicalTask">
             <ApexChart title="My Tasks " type="bar" :height="350" :options="clicalTask.code" :series="clicalTask.value" linkTo="Tasks" listView="list"></ApexChart>
         </a-col>
          <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) && tasksList">
              <a-card  title="My Tasks List" class="common-card" style="height:436px">
-                 <template #extra v-if="tasksList.length > 0"><router-link :to="{name:'Tasks'}">View All</router-link></template>
+                 <template #extra v-if="tasksList.length > 0"><router-link :to="{name:'Tasks',query: {
+                        view: 'list'
+                    }}">View All</router-link></template>
             <TaskTable @is-Edit="editTask($event)" :height="285" :tasksListColumns="tasksListColumns" @dashboard="taskApiCall"></TaskTable>
              </a-card>
         </a-col>
-        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && patientsFlag">
+        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,1) && patientsFlag">
             <ApexChart title="Patient Flags" type="bar" :height="350" :options="patientsFlag.code" :series="patientsFlag.value" linkTo="Patients with filter"></ApexChart>
         </a-col>
-        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  appointmentCount">
+        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,2) &&  appointmentCount">
             <ApexChart title="My Appointments" type="bar" :height="350" :options="appointmentCount.chartOptions" :series="appointmentCount.value" linkTo="AppointmnetCalendar"></ApexChart>
         </a-col>
         
@@ -90,6 +92,14 @@
     width: '17%',
     //sorter: true,
   },
+  {
+    title: "AssignedBy",
+    dataIndex: "assignedBy",
+    slots: {
+        customRender: "escalationAssignedBy",
+    }
+    },
+  
   {
     title: "Flag",
     dataIndex: "flag",
@@ -294,7 +304,8 @@ const editTask = (id) => {
             showEscalationData,
             tasksList:store.getters.tasksList,
             tasksListColumns,
-            taskApiCall
+            taskApiCall,
+            screensPermissions:store.getters.screensPermissions
         };
     },
 };
