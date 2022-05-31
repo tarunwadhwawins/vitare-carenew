@@ -64,7 +64,7 @@ const columnData = [
     },
   },
   {
-    title: "AssignedBy",
+    title: "Assigned By",
     dataIndex: "assignedBy",
     sorter: true,
     slots:{

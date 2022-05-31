@@ -93,7 +93,7 @@
     //sorter: true,
   },
   {
-    title: "AssignedBy",
+    title: "Assigned By",
     dataIndex: "assignedBy",
     slots: {
         customRender: "escalationAssignedBy",
@@ -111,7 +111,7 @@
   {
     title: "Action",
     dataIndex: "action",
-    width: '12%',
+    width: '15%',
     slots: {
         
       customRender: "action",
