@@ -29,7 +29,8 @@ export const timeLogReportList = async (state, data) => {
     {
       title: "Time (MM:SS)",
       dataIndex: "timeAmount",
-      sorter:true
+      sorter:true,
+      align: 'right'
     },
     {
       title: "Category", 
@@ -42,8 +43,9 @@ export const timeLogReportList = async (state, data) => {
       dataIndex: "cptCode",
     },
     {
-      title: "Amount ($)",
+      title: "Amount ",
       dataIndex: "billingAmount",
+      align: 'right'
     },
     {
       title: "Flag",
@@ -66,8 +68,10 @@ export const timeLogReportList = async (state, data) => {
       },
     },
   ];
+  
   state.timeLogReportList = data.data.map(item => {
     item.timeAmount = secondsToTime(item.timeAmount)
+    item.billingAmount = item.billingAmount ?'$ ' + item.billingAmount :''
     item.date = dateAndTimeFormate(item.date,'MMM DD, yyyy')
     return item
   })
