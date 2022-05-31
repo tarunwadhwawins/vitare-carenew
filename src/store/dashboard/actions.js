@@ -3,8 +3,8 @@ import { API_ENDPOINTS } from "@/config/apiConfig"
 import { errorLogWithDeviceInfo } from '@/commonMethods/commonMethod'
 export const timeLine = async ({ commit }, id) => {
     commit('loadingStatus', true)
-    await ServiceMethodService.common("get", API_ENDPOINTS['interval'] + "?timelineId=" + id, null, null).then((response) => {
-        commit('timelineSuccess', response.data.data);
+    await ServiceMethodService.common("get", API_ENDPOINTS['interval'] + "?timelineId=" + id.id, null, null).then((response) => {
+        commit(id.commit, response.data.data);
         commit('loadingStatus', false)
     })
         .catch((error) => {
