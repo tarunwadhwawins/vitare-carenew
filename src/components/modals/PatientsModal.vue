@@ -1121,28 +1121,6 @@ function newReferral(){
 											});
 										})
 									}
-									else {
-										store.dispatch('patientConditions', idPatient.value).then(() => {
-											globalCode.value.healthCondition.map(function(healthCondition) {
-												if(patients.value.addCondition.includes(healthCondition.id)) {
-													if(!selectedDiseasesList.value.includes(healthCondition)) {
-														selectedDiseasesList.value.push(healthCondition)
-														if(!conditions.condition.includes(healthCondition)) {
-															conditions.condition.push(healthCondition.id)
-														}
-													}
-												}
-												else {
-													if(!unSelectedDiseasesList.value.includes(healthCondition)) {
-														unSelectedDiseasesList.value.push(healthCondition)
-														if(!conditions.unselectedConditions.includes(healthCondition)) {
-															conditions.unselectedConditions.push(healthCondition.id)
-														}
-													}
-												}
-											});
-										})
-									}
 								}
 								else if(!props.isEdit && value == 5) {
 									store.dispatch("globalCodes")
