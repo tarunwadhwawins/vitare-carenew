@@ -998,6 +998,7 @@ export const patientDetails = async ({
     console.log("check",response.data)
     commit('patientDetails', response.data.data);
     //commit('addDemographic', null);
+    commit('startOn', false)
   }).catch((error) => {
     console.log(error);
     errorLogWithDeviceInfo(error.response)
@@ -1011,6 +1012,7 @@ export const patientDetails = async ({
         cancelButtonColor: '#d33',
         confirmButtonText: 'Ok'
       }).then(() => {
+        commit('startOn', true)
         router.push('/manage-patients')
       })
       commit('loadingStatus', false)
