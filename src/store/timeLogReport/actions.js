@@ -3,6 +3,7 @@ import { successSwal, errorLogWithDeviceInfo } from '@/commonMethods/commonMetho
 
 
 export const timeLogReportList = async ({ commit }, page) => {
+	
 	commit('loadingTableStatus', true)
 	let link = page ? "timeLog" + page : "timeLog"
 	await ServiceMethodService.common("get", link, null, null).then((response) => {
