@@ -2,10 +2,14 @@
 <a-col :sm="24" :xs="24">
     <a-table rowKey="id" :columns="meta.timeLogReportColumns" :pagination="false" :scroll="{ y:'calc(100vh - 470px)'}" :data-source="meta.timeLogReportList"  @change="handleTableChange">
         <template #staff="{record}">
-            <span>{{record.staff}}</span>
+          
+        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.staffId:'eyrer8758458958495'  }}" v-if="arrayToObjact(screensPermissions,334)">{{record.staff}}</router-link>
+    
+            <span v-else>{{record.staff}}</span>
         </template>
         <template #patient="{record}">
-            <span>{{record.patient}}</span>
+             <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }" v-if="arrayToObjact(screensPermissions, 63)">{{record.patient}}</router-link>
+            <span v-else>{{record.patient}}</span>
         </template>
         <template #flags="{ record }">
             <Flags :flag="record.flagColor" :data="record" />
