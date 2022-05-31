@@ -11,10 +11,10 @@
 
     <a-row>
 
-        <a-col :span="12">
-            <SearchField endPoint="referral" v-if="arrayToObjact(screensPermissions,14)" />
+        <a-col :span="12"  v-if="arrayToObjact(screensPermissions,409)">
+            <SearchField endPoint="referral" />
         </a-col>
-        <a-col :span="12">
+        <a-col :span="12"  v-if="arrayToObjact(screensPermissions,406)">
             <div class="text-right mb-24">
                 <ExportToExcel @click="exportExcel('referral','?fromDate=&toDate='+search)" />
             </div>
@@ -136,13 +136,12 @@ export default {
             exportExcel,
             screensPermissions: store.getters.screensPermissions,
             arrayToObjact,
-
             search: store.getters.searchTable,
             timeStampFormate,
             globalDateFormat,
             route,
             getName,
-            referral
+            referral,
 
         };
     },
