@@ -1,6 +1,6 @@
 <template>
 <div class="patientTable">
-    <a-table rowKey="id" :columns="columnData" :data-source="escalationMainList" style="width:100%" :pagination="false" @change="handleTableChange" :scroll="height? {y: height } : {y: null }">
+    <a-table rowKey="id" :columns="columnData" :data-source="escalationMainList" style="width:100%" :pagination="false" @change="handleTableChange" :scroll="height? {y: height } : { x: 1020,y:'calc(100vh - 470px)'}">
         <template #patientName="{ text, record }" >
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
         </template>
@@ -68,14 +68,18 @@ export default {
      filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
      dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
     }
-    onMounted(() => {
-      checkDate()
-     window.addEventListener("scroll", () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+     let scroller = "";
+        onMounted(() => {
+             checkDate()
+            var tableContent = document.querySelector(".ant-table-body");
+            tableContent.addEventListener("scroll", (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+                let currentScroll = event.target.scrollTop + 2;
+                if (currentScroll >= maxScroll) {
           let current_page = meta.value.current_page + 1;
 
           if (current_page <= meta.value.total_pages) {
-          
+          scroller = maxScroll;
             data = escalationMainList.value
             
             store.state.escalations.escalationMeta = "";
@@ -107,7 +111,11 @@ export default {
       });
     
       store.state.escalations.escalation = data
-     
+     var tableContent = document.querySelector(".ant-table-body");
+
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller);
+            }, 50);
  
     }
 
