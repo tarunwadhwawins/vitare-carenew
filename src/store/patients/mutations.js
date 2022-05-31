@@ -110,7 +110,7 @@ export const patient = (state, data) => {
   },
   {
     title: "Gender ",
-    dataIndex: "gender",
+    dataIndex: "genderName",
     width: '8%',
   },
   {
