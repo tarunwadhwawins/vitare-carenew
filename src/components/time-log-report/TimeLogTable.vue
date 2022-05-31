@@ -3,13 +3,13 @@
     <a-table rowKey="id" :columns="meta.timeLogReportColumns" :pagination="false" :scroll="{ y:'calc(100vh - 470px)'}" :data-source="meta.timeLogReportList"  @change="handleTableChange">
         <template #staff="{record}">
           
-        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.staffId:'eyrer8758458958495'  }}" v-if="arrayToObjact(screensPermissions,334)">{{record.staff}}</router-link>
+        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.staffId:'eyrer8758458958495'  }}" v-if="arrayToObjact(screensPermissions,38)">{{record.staff}}</router-link>
     
-            <span v-else>{{record.staff}}</span>
+            <span v-else >{{record.staff}}</span>
         </template>
         <template #patient="{record}">
-             <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }" v-if="arrayToObjact(screensPermissions, 63)">{{record.patient}}</router-link>
-            <span v-else>{{record.patient}}</span>
+             <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }" v-if="arrayToObjact(screensPermissions, 63) || record.patientAccess==true">{{record.patient}}</router-link>
+            <span v-else title="You don't have access">{{record.patient}}</span>
         </template>
         <template #flags="{ record }">
             <Flags :flag="record.flagColor" :data="record" />

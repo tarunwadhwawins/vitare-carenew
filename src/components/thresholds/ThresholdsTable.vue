@@ -92,6 +92,7 @@ export default {
                 title: "General Parameters Group",
                 dataIndex: "generalParameterGroup",
                 sorter: true,
+                width: '30%',
                 customRender: ({
                     index
                 }) => {
@@ -109,6 +110,7 @@ export default {
                 title: "Device Type",
                 dataIndex: "deviceType",
                 sorter: true,
+                width: '25%',
                 customRender: ({
                     index
                 }) => {
@@ -131,13 +133,13 @@ export default {
             {
                 title: "High Limit ",
                 dataIndex: "highLimit",
-
+align: 'right',
                 customRender: renderContent,
             },
             {
                 title: "Low Limit ",
                 dataIndex: "lowLimit",
-
+align: 'right',
                 customRender: renderContent,
             },
 

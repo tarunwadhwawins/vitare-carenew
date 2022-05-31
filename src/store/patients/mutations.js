@@ -64,18 +64,21 @@ export const patient = (state, data) => {
       dataIndex: "bp",
       key: "bp",
       width: '10%',
+      align: 'right'
     },
     {
       title: "Spo2(%)",
       dataIndex: "spo2",
       key: "spo2",
       width: '8%',
+      align: 'right'
     },
     {
       title: "Glucose(mg / dL)",
       dataIndex: "glucose",
       key: "glucose",
       width: '15%',
+      align: 'right'
     },
     {
       title: "Weight(LBS)",
@@ -83,6 +86,7 @@ export const patient = (state, data) => {
       key: "weight",
       sorter:true,
       width: '12%',
+      align: 'right'
     },
     ],
   },
@@ -107,6 +111,7 @@ export const patient = (state, data) => {
     dataIndex: "dob",
     sorter: true,
     width: '8%',
+    align: 'right'
   },
   {
     title: "Gender ",

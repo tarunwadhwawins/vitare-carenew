@@ -59,21 +59,7 @@ const tasksListColumns = [{
         title: 'Priority ',
         dataIndex: 'priority',
         sorter: true
-        //   filters: [
-        //     {
-        //       text: "High",
-        //       value: "high",
-        //     },
-        //     {
-        //       text: "Normal",
-        //       value: "normal",
-        //     },
-        //     {
-        //       text: "Urgent",
-        //       value: "urgent",
-        //     },
-        //   ],
-        //   onFilter: (value, record) => record.status.indexOf(value) === 0,
+        
     },
     {
         title: 'Category',
@@ -92,35 +78,17 @@ const tasksListColumns = [{
         title: 'Due Date ',
         dataIndex: 'dueDate',
         sorter: true
-        //   filters: [
-        //     {
-        //       text: "Dec 24, 2021",
-        //       value: "Dec 24, 2021",
-        //     },
-        //     {
-        //       text: "Dec 28, 2021",
-        //       value: "Dec 28, 2021",
-        //     },
-        //   ],
-        //   onFilter: (value, record) => record.dueDate.indexOf(value) === 0,
+        
     },
     {
         title: 'Assigned By',
         dataIndex: 'assignedBy',
-        // filters: [
-        //   {
-        //     text: "John",
-        //     value: "John",
-        //   },
-        //   {
-        //     text: "	Devin",
-        //     value: "	Devin",
-        //   },
-        // ],
+        sorter: true,
+       
         slots: {
             customRender: 'assigned'
         }
-        // onFilter: (value, record) => record.assignedBy.indexOf(value) === 0,
+        
     },
     {
         title: 'Actions',
