@@ -1095,3 +1095,7 @@ export const referralList = (state, data) => {
 export const referralDetail = (state, data) => {
   state.referralDetail = data
 }
+
+export const startOn = (state, data) => {
+  state.startOn = data
+}
