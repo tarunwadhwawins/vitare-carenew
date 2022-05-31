@@ -39,10 +39,7 @@
               <div class="timelineBody">
                 <div class="content">
                   <p class="timeline-float timeline-title"><span v-html="timeline.title"></span></p>
-                  <!-- <p class="timeline-float timeline-title">{{ timeline.title }}</p> -->
-                  <!-- <a class="timeline-float more-link" href="javascript:void(0)">more</a> -->
                 </div>
-                <!-- <MailOutlined /> -->
               </div>
             </div>
           </a-timeline-item>
@@ -66,16 +63,9 @@ import {
   PushpinOutlined,
   FlagOutlined,
   CloseCircleOutlined,
-  //MailOutlined,
 } from "@ant-design/icons-vue";
 import {
   dateFormat,
-  // dateOnlyFormat,
-  // dateTimeFormat,
-  // dobFormat2,
-  // timeFormatSimple
-  
-  // createDynamicColumns,
 } from '@/commonMethods/commonMethod';
 import { computed, ref, onMounted, reactive, toRefs} from 'vue-demi';
 import { useStore } from 'vuex';
@@ -84,16 +74,15 @@ import TableLoader from "@/components/loader/TableLoader";
 import moment from "moment"
 export default {
   components: {
-  FolderOpenOutlined,
-  FilePdfOutlined,
-  BellOutlined,
-  HeatMapOutlined,
-  ClockCircleOutlined,
-  FileTextOutlined,
-  PushpinOutlined,
-  FlagOutlined,
-  CloseCircleOutlined,
-    //MailOutlined,
+    FolderOpenOutlined,
+    FilePdfOutlined,
+    BellOutlined,
+    HeatMapOutlined,
+    ClockCircleOutlined,
+    FileTextOutlined,
+    PushpinOutlined,
+    FlagOutlined,
+    CloseCircleOutlined,
     TableLoader
   },
   props: {
