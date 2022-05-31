@@ -43,7 +43,7 @@
             <ApexChart title="Patient Flags" type="bar" :height="350" :options="patientsFlag.code" :series="patientsFlag.value" linkTo="Patients with filter"></ApexChart>
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,2) &&  appointmentCount">
-            <ApexChart title="My Appointments" type="bar" :height="350" :options="appointmentCount.chartOptions" :series="appointmentCount.value" linkTo="AppointmnetCalendar"></ApexChart>
+            <ApexChart title="My Appointments" type="bar" :height="350" :options="appointmentCount.chartOptions" :series="appointmentCount.value" :linkTo="arrayToObjact(screensPermissions,112) ? 'AppointmnetCalendar':''"></ApexChart>
         </a-col>
         
     </a-row>
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-  import { ref, onMounted ,computed} from 'vue'
+  import { ref, onMounted ,computed, onUnmounted} from 'vue'
   import Card from "@/components/common/cards/Card"
   import ApexChart from "@/components/common/charts/ApexChart"
   import { startimeAdd, endTimeAdd, timeStamp ,arrayToObjact} from '@/commonMethods/commonMethod'
@@ -241,7 +241,8 @@ export default {
     });
 
         onMounted(() => {
-          
+          store.state.escalations.escalation = ''
+           store.state.tasks.task = ''
          if(timeLineButton.value==null){
               
             store.dispatch("timeLine", {id:122,commit:'timelineSuccess'}).then(()=>{
@@ -279,6 +280,10 @@ const editTask = (id) => {
         function taskApiCall(){
              store.dispatch("tasksList", "?fromDate=" + fromDate.value + "&toDate=" + toDate.value+'&status=notIn');
         }
+        onUnmounted(()=>{
+           store.state.escalations.escalation = ''
+           store.state.tasks.task = ''
+        })
         return {
             editTask,
             visible,
