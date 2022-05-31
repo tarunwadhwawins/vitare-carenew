@@ -1,25 +1,38 @@
 <template>
-<a-row>
-    <div class="commonTags">
-        <a-tag v-if="route.query.filter" closable @close="remove('filter')">{{route.query.filter}}</a-tag>
-        <a-tag v-if="route.query.toDate && route.query.fromDate" closable @close="remove('date')">{{timeStampFormate(route.query.fromDate,globalDateFormat) }} To {{timeStampFormate(route.query.toDate,globalDateFormat)}}</a-tag>
-    </div>
-</a-row>
-<a-row :gutter="24">
-    <a-col :span="12">
-        <SearchField endPoint="task" />
-    </a-col>
-    <a-col :span="12">
-        <div class="text-right mb-24">
-            <ExportToExcel @click="exportExcel('task_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions, 118)" />
-        </div>
-    </a-col>
-    <TaskTable @is-Edit="editTask($event)" :tasksListColumns="tasksListColumns"></TaskTable>
-</a-row>
-<TableLoader />
+	<a-row>
+		<div class="commonTags">
+			<a-tag v-if="route.query.filter" closable @close="remove('filter')">{{route.query.filter}}</a-tag>
+			<a-tag v-if="route.query.toDate && route.query.fromDate" closable @close="remove('date')">{{timeStampFormate(route.query.fromDate,globalDateFormat) }} To {{timeStampFormate(route.query.toDate,globalDateFormat)}}</a-tag>
+		</div>
+	</a-row>
+	<a-row :gutter="24">
+		<a-col :span="6">
+			<SearchField endPoint="task" />
+		</a-col>
+		<a-col :span="6">
+			<StaffDropDown mode="multiple" @handleStaffChange="handleStaffChange($event, 'assignedTo')" placeholder="Assigned To" />
+		</a-col>
+		<a-col :span="6">
+			<StaffDropDown mode="multiple" @handleStaffChange="handleStaffChange($event, 'assignedBy')" placeholder="Reported By" />
+		</a-col>
+		<a-col :span="6">
+			<!-- <a-range-picker @change="handleStaffChange($event, 'dateRange')" :format="globalDateFormat" value-format="YYYY-MM-DD" size="large" style="width: 100%" /> -->
+		</a-col>
+	</a-row>
+	
+	<a-row :gutter="24">
+		<a-col :span="24">
+			<div class="text-right mb-24">
+				<ExportToExcel @click="exportExcel('task_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions, 118)" />
+			</div>
+		</a-col>
+		<TaskTable @is-Edit="editTask($event)" :tasksListColumns="tasksListColumns"></TaskTable>
+	</a-row>
+	<TableLoader />
 </template>
 
 <script>
+import StaffDropDown from "@/components/modals/search/StaffDropdownSearch";
 import { ref, onUnmounted, onMounted } from "vue";
 import { useStore } from "vuex";
 import SearchField from "@/components/common/input/SearchField";
@@ -81,14 +94,21 @@ const tasksListColumns = [{
         
     },
     {
-        title: 'Assigned By',
-        dataIndex: 'assignedBy',
+        title: 'Assigned To',
+        dataIndex: 'assignedTo',
         sorter: true,
-       
         slots: {
-            customRender: 'assigned'
+            customRender: 'assignedTo'
         }
         
+    },
+    {
+        title: 'Reported By',
+        dataIndex: 'assignedBy',
+        sorter: true,
+        slots: {
+            customRender: 'assignedBy'
+        }        
     },
     {
         title: 'Actions',
@@ -104,11 +124,12 @@ export default {
         TaskTable,
         TableLoader,
         ExportToExcel,
+        StaffDropDown,
     },
     setup(props, {
         emit
     }) {
-        const store = useStore();
+        const store = useStore()
         const router = useRouter()
         const route = useRoute()
         const toDate = ref('')
@@ -128,8 +149,23 @@ export default {
             })
         });
 
-        const handleChange = (value) => {
-            store.dispatch("searchTasks", value);
+				const params = ref("")
+				const assignedByValue = ref("")
+				const assignedToValue = ref("")
+				const fromDateValue = ref("")
+        const handleStaffChange = (value, type) => {
+					if(type == 'dateRange') {
+						fromDateValue.value = value.length > 0 ? `dateRange=${value},` : ''
+					}
+					else if(type == 'assignedBy') {
+						assignedByValue.value = value.length > 0 ? `&assignedBy=${value},` : ''
+					}
+					else if(type == 'assignedTo') {
+						assignedToValue.value = value.length > 0 ? `&assignedTo=${value},` : ''
+					}
+
+					params.value = fromDateValue.value+assignedByValue.value+assignedToValue.value
+					store.dispatch('searchTasks', params.value)
         };
 
         const editTask = (id) => {
@@ -212,7 +248,6 @@ export default {
             screensPermissions: store.getters.screensPermissions,
             arrayToObjact,
             size: ref([]),
-            handleChange,
             // tasksColumns,
             editTask,
             updateTask,
@@ -221,8 +256,8 @@ export default {
             route,
             timeStampFormate,
             globalDateFormat,
-            tasksListColumns
-
+            tasksListColumns,
+						handleStaffChange,
         };
     },
 };
