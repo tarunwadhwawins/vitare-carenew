@@ -426,6 +426,7 @@ onMounted(()=>{
     const form = reactive({ ...startCallForm })
 
     const startCall = () => {
+      store.commit('startOn', true);
       iconLoading.value = true
       store.commit('loadingStatus', true)
       store.dispatch("appointmentCalls", startCallForm).then((response)=>{
@@ -433,7 +434,8 @@ onMounted(()=>{
         if(response==true && conferenceId.value){
           store.commit('loadingStatus', false)
           let redirect = router.resolve({name: 'videoCall', params: {id: enCodeString(conferenceId.value)}});
-          window.open(redirect.href);
+          // window.open(redirect.href, '_blank');
+          window.location.href = redirect.href;
         }
       })
      
