@@ -1,6 +1,6 @@
 export const messages={
     //alert messages
-    resetPassword:'Do you want to reset password.',
+    resetPassword:'You want to reset password.',
     warning:'Are you sure ?',
     deleteWarning:'Do you want to delete ?',
     modalWarning:'Your data may be loss!',
