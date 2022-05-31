@@ -871,7 +871,7 @@ const ShowReferralId= ref(true)
 					const searchedValue = event.target.value
 					if(searchedValue && searchedValue != "" && searchedValue != null) {
 						unSelectedDiseasesList.value = []
-						globalCode.value.healthCondition.filter(function(healthCondition) {
+						globalCode.value.healthCondition.map(function(healthCondition) {
 							if(healthCondition.name.toLowerCase().includes(searchedValue.toLowerCase())) {
 								if(!selectedDiseasesList.value.includes(healthCondition) && !unSelectedDiseasesList.value.includes(healthCondition)) {
 									unSelectedDiseasesList.value.push(healthCondition)
@@ -1066,7 +1066,7 @@ function newReferral(){
 									if(patients.value.addCondition == null && patientConditions.value == null) {
 										unSelectedDiseasesList.value = []
 										store.dispatch('patientConditions', idPatient.value).then(() => {
-											globalCode.value.healthCondition.filter(function(healthCondition) {
+											globalCode.value.healthCondition.map(function(healthCondition) {
 												if(patientConditions.value.includes(healthCondition.id)) {
 													if(!selectedDiseasesList.value.includes(healthCondition)) {
 														selectedDiseasesList.value.push(healthCondition)
@@ -1084,7 +1084,7 @@ function newReferral(){
 									else if(patients.value.addCondition == null && patientConditions.value != null) {
 										unSelectedDiseasesList.value = []
 										store.dispatch('patientConditions', idPatient.value).then(() => {
-											globalCode.value.healthCondition.filter(function(healthCondition) {
+											globalCode.value.healthCondition.map(function(healthCondition) {
 												if(patientConditions.value.includes(healthCondition.id)) {
 													if(!selectedDiseasesList.value.includes(healthCondition)) {
 														selectedDiseasesList.value.push(healthCondition)
@@ -1104,7 +1104,7 @@ function newReferral(){
 									else if(patients.value.addCondition != null && patientConditions.value != null) {
 										unSelectedDiseasesList.value = []
 										store.dispatch('patientConditions', idPatient.value).then(() => {
-											globalCode.value.healthCondition.filter(function(healthCondition) {
+											globalCode.value.healthCondition.map(function(healthCondition) {
 												if(patientConditions.value.includes(healthCondition.id)) {
 													if(!selectedDiseasesList.value.includes(healthCondition)) {
 														selectedDiseasesList.value.push(healthCondition)
@@ -1123,7 +1123,7 @@ function newReferral(){
 									}
 									else {
 										store.dispatch('patientConditions', idPatient.value).then(() => {
-											globalCode.value.healthCondition.filter(function(healthCondition) {
+											globalCode.value.healthCondition.map(function(healthCondition) {
 												if(patients.value.addCondition.includes(healthCondition.id)) {
 													if(!selectedDiseasesList.value.includes(healthCondition)) {
 														selectedDiseasesList.value.push(healthCondition)
@@ -1144,9 +1144,33 @@ function newReferral(){
 										})
 									}
 								}
-								else {
+								else if(!props.isEdit && value == 5) {
+									store.dispatch("globalCodes")
 									unSelectedDiseasesList.value = globalCode.value.healthCondition
-									selectedDiseasesList.value = []
+									store.dispatch('patientConditions', idPatient.value).then(() => {
+										if(patientConditions.value != null) {
+											unSelectedDiseasesList.value = []
+											globalCode.value.healthCondition.map(function(disease) {
+												if(patientConditions.value.includes(disease.id)) {
+													if(!selectedDiseasesList.value.includes(disease)) {
+														selectedDiseasesList.value.push(disease)
+														if(!conditions.condition.includes(disease)) {
+															conditions.condition.push(disease.id)
+														}
+													}
+												}
+												else {
+													if(!unSelectedDiseasesList.value.includes(disease)) {
+														unSelectedDiseasesList.value.push(disease)
+													}
+												}
+											});
+										}
+										else {
+											unSelectedDiseasesList.value = globalCode.value.healthCondition
+											selectedDiseasesList.value = []
+										}
+									})
 									conditions.condition = []
 								}
 
@@ -1526,7 +1550,6 @@ referalEmail.value = false
             customScrollTop.value.scrollIntoView({
                 behavior: 'smooth'
             });
-            console.log('customScrollTop', customScrollTop.value);
         }
 
         const handleStaffChange = (val) => {
