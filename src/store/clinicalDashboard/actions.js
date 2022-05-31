@@ -124,7 +124,11 @@ export const clicalTask = async ({ commit }, from) => {
         commit('clicalTask', response.data);
 
     }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
+        if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
         if (error.response.status == 401) {
             //AuthService.logout();
         }
@@ -138,7 +142,11 @@ export const appointmentCount = async ({ commit }, from) => {
         commit('appointmentCount', response.data.data);
 
     }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
+        if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
         if (error.response.status == 401) {
             //AuthService.logout();
         }
@@ -153,7 +161,11 @@ export const patientsFlag = async ({ commit }, from) => {
             
         })
     }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
+        if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
         if (error.response.status == 401) {
             //AuthService.logout();
         }
@@ -167,7 +179,11 @@ export const escalationCount = async ({ commit }, from) => {
         commit('escalationCount', response.data);
 
     }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
+        if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
         if (error.response.status == 401) {
             //AuthService.logout();
         }

@@ -2,8 +2,11 @@
 <template>
 
 <a-table rowKey="id"  :columns="referralColumns" :data-source="referralList"  :scroll="{ y:'calc(100vh - 470px)'}" :pagination="false" @change="handleTableChange">
-        <template #patientName="{ text, record }" >
+        <template #patientName="{ text, record }"  v-if="arrayToObjact(screensPermissions,407)">
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
+        </template> 
+        <template #patientName="{ text }" v-else>
+            <span>{{ text }}</span>
         </template> 
     
 </a-table>

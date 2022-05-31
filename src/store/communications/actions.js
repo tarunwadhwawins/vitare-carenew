@@ -7,7 +7,11 @@ export const callPlanned = async ({ commit },from) => {
 		commit('callPlannedSuccess', response.data.data);
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -21,7 +25,11 @@ export const addCommunication = async ({ commit }, data) => {
 		successSwal(response.data.message)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -38,7 +46,11 @@ export const communicationsView = async ({ commit },id) => {
 	})
 	.catch((error) => {
 		commit('loadingTableStatus', false)
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -51,7 +63,11 @@ export const communicationTypes = async ({ commit },from) => {
 		commit('communicationTypesSuccess', response.data.data);
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		commit('failure', error);
 	})
 }
@@ -64,7 +80,11 @@ export const communicationsList = async ({ commit }, page) => {
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -78,7 +98,11 @@ export const patientsList = async ({ commit }) => {
 		commit('patientsListSuccess', response.data.data);
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -91,7 +115,11 @@ export const futureAppointments = async ({ commit }) => {
 		commit('futureAppointmentsSuccess', response.data.data);
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -104,7 +132,11 @@ export const newRequests = async ({ commit }) => {
 		commit('newRequestsSuccess', response.data.data);
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -117,7 +149,11 @@ export const communicationsCount = async ({ commit }, from) => {
 		commit('communicationsCountSuccess', response.data.data);
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -130,7 +166,11 @@ export const searchCommunications = async ({ commit }, params) => {
 		commit('searchCommunicationsSuccess', response.data.data);
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -143,7 +183,11 @@ export const conversation = async ({ commit }, id) => {
 		commit('conversation', response.data.data);
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -156,7 +200,11 @@ export const conversationSend = async ({ commit },data) => {
 		commit('toScroll', true)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -168,7 +216,11 @@ export const status = async ({ commit },from) => {
         commit('callStatusSuccess', response.data.data)
 
     }).catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
         if (error.response.status == 401) {
             //AuthService.logout();
         }

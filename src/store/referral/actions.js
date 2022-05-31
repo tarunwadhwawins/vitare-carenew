@@ -9,7 +9,11 @@ export const referral = async ({ commit },page) => {
 			commit('loadingTableStatus', false)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+			errorLogWithDeviceInfo(error.response);
+		} else {
+			errorLogWithDeviceInfo(error);
+		}
 		commit('loadingTableStatus', false)
 		commit('errorMsg', error.response.data)
 

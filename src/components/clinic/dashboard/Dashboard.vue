@@ -244,7 +244,7 @@ export default {
           
          if(timeLineButton.value==null){
               
-            store.dispatch("timeLine", 122).then(()=>{
+            store.dispatch("timeLine", {id:122,commit:'timelineSuccess'}).then(()=>{
                 apiCall(timeLineButton.value)
             })
                 
@@ -260,7 +260,7 @@ export default {
         }
 
         function showButton(id) {
-            store.dispatch("timeLine", id).then(() => {
+            store.dispatch("timeLine", {id:id,commit:'timelineSuccess'}).then(() => {
                 apiCall(timeLineButton.value)
             })
 

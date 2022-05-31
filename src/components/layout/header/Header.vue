@@ -110,7 +110,7 @@
                                       $t("header.addAppointment")
                                     }}</a>
                                                   </a-menu-item>
-                                                  <a-menu-item key="1" v-if="arrayToObjact(screensPermissions, 62)">
+                                                  <a-menu-item key="1" v-if="arrayToObjact(screensPermissions, 62) && route.name != 'PatientSummary'">
                                                       <a href="javascript:void(0)" @click="addPatient">{{
                                       $t("header.addPatient")
                                     }}</a>
@@ -475,6 +475,7 @@ if(route.name != 'PatientSummary') {
       startOk,
       handleOk,
       showModal,
+      route,
     };
   },
 });

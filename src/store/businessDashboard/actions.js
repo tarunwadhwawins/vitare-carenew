@@ -6,7 +6,11 @@ export const callStatus = async ({ commit }, from) => {
         commit('callStatusSuccess', response.data.data)
 
     }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
+       if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
         if (error.response.status == 401) {
             //AuthService.logout();
         }
@@ -24,7 +28,11 @@ export const cptCode = async ({ commit }, from) => {
        
 
     }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
+       if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
         if (error.response.status == 401) {
             //AuthService.logout();
         }
@@ -37,7 +45,11 @@ export const financial = async ({ commit }, from) => {
         commit('financialSuccess', response.data.data);
 
     }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
+       if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
         if (error.response.status == 401) {
             //AuthService.logout();
         }
@@ -50,7 +62,11 @@ export const referalCount = async ({ commit }, from) => {
         commit('referalCount', response.data);
 
     }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
+       if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
         if (error.response.status == 401) {
             //AuthService.logout();
         }

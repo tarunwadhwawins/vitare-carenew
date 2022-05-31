@@ -10,7 +10,9 @@
                 <div class="common-bg">
                     <a-row>
                         <a-col :span="24">
-                            <h2 class="pageTittle">{{$t('timeLogReport.auditTimeLog')}}</h2>
+                            <h2 class="pageTittle">{{$t('timeLogReport.auditTimeLog')}}
+                            <DateFilter :Buttons="Buttons" :timeline="timeline" @clickButtons="showButton($event)"/>
+                            </h2>
                         </a-col>
                     </a-row>
                     <a-row>
@@ -67,6 +69,7 @@
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
+import DateFilter from "@/components/common/DateFilter.vue"
 import {
     exportExcel,
     arrayToObjact,timeStampFormate,globalDateFormat
@@ -89,7 +92,8 @@ export default {
         Header,
         Sidebar,
         TimeLogTable,
-        ExportToExcel
+        ExportToExcel,
+        DateFilter
     },
     setup() {
         const store = useStore();
@@ -104,7 +108,7 @@ export default {
         const endDate = ref(null)
         const route = useRoute()
         const router = useRouter()
-
+        const timeLineButton = store.getters.timelineReport
         function dateChange() {
             dateSelect.value = moment(auditTimeLog.endDate).add(1, 'day')
         }
@@ -117,13 +121,21 @@ export default {
                 store.dispatch("timeLogReportList", date+"&filter=" +filter);
             } else {
                 store.commit("dateFilter", '')
-                store.dispatch("timeLogReportList")
+                if(timeLineButton.value==null){
+            store.dispatch("timeLine", {id:123,commit:'timelineReport'}).then(()=>{
+                
+                apiCall(timeLineButton.value)
+            })
+            }else{
+                apiCall(timeLineButton.value)
+            }
             }
 
             store.dispatch('auditTimeLogFilterDates', "?fromDate=&toDate=")
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
             })
+            
         })
 
         function clearData() {
@@ -163,7 +175,7 @@ export default {
             if (event == "filter") {
                 if (route.query.fromDate && route.query.toDate) {
 
-                    store.dispatch("timeLogReportList", "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
+                    store.dispatch("timeLogReportList", "?fromDate=" + timeStampFormate(route.query.fromDate,'YYYY-MM-DD') + "&toDate=" + timeStampFormate(route.query.toDate,'YYYY-MM-DD'))
                     setTimeout(() => {
                         router.replace({
                             query: {
@@ -199,6 +211,34 @@ export default {
             }
 
         }
+         function showButton(id) {
+            store.dispatch("timeLine", {id:id,commit:'timelineReport'}).then(() => {
+                apiCall(timeLineButton.value)
+            })
+
+        }
+        function apiCall(data) {
+            let from = moment()
+            let to = moment()
+            if (data.globalCodeId == 122) {
+
+                from = moment()
+                to = moment().subtract(data.number, data.intervalType);
+            } else if (data.globalCodeId == 123) {
+                from = moment();
+
+                to = moment().subtract(data.number, data.intervalType);
+            } else if (data.globalCodeId == 124) {
+                from = moment();
+                to = moment().subtract(data.number, data.intervalType);
+            } else {
+                from = moment();
+                to = moment().subtract(data.number, data.intervalType);
+            }
+        
+             store.dispatch('auditTimeLogFilterDates', "?fromDate=" + to.format("YYYY-MM-DD") + "&toDate=" + from.format("YYYY-MM-DD"))
+                store.dispatch("timeLogReportList", "?fromDate=" + to.format("YYYY-MM-DD") + "&toDate=" + from.format("YYYY-MM-DD") + "&page=")
+        }
         return {
             arrayToObjact,
             screensPermissions: store.getters.screensPermissions,
@@ -218,7 +258,10 @@ export default {
             remove,
             timeStampFormate,
             globalDateFormat,
-            route
+            route,
+            Buttons:store.getters.timelineReport,
+            timeline:store.getters.timeline,
+            showButton
         };
     },
 };

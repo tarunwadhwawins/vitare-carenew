@@ -8,7 +8,11 @@ export const provider = async ({
   await serviceMethod.common("post", API_ENDPOINTS['provider'], null, data).then((response) => {
     commit('providerData', response.data.data);
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -27,7 +31,11 @@ export const providerLocation = async ({commit}, data) => {
     commit('providerLocation', response.data.data);
     status = true
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -46,7 +54,11 @@ export const editProviderLocation = async ({commit}, data) => {
     commit('editProviderLocation', response.data.data);
     commit("checkChangeInput", true)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -67,7 +79,11 @@ export const updateProviderLocation = async ({commit}, data) => {
     commit("checkChangeInput", false)
     status=true
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -88,7 +104,11 @@ export const providersListAll = async ({
     commit('provider', response.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('loadingStatus', false)
     // errorSwal(error.response.data.message)
   })
@@ -100,7 +120,11 @@ export const editSingleProvider = async ({ commit }, id) => {
     commit('editSingleProvider', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
@@ -119,7 +143,11 @@ export const providerLocationList = async ({
     commit('providerLocationList', response.data.data);
    commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     // errorSwal(error.response.data.message)
     
   })
@@ -130,7 +158,11 @@ export const deleteSingleProvider = async ({ commit }, data) => {
   await serviceMethod.common("delete", `provider/${data.id}`, null, null).then((response) => {
     successSwal(response.data.message)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     // errorSwal(error.response.data.message)
   })
 }
@@ -141,7 +173,11 @@ export const deleteProviderLocation = async ({ commit }, data) => {
     successSwal(response.data.message)
    
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     // errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
@@ -156,7 +192,11 @@ export const updateSingleProvider = async ({ commit }, data) => {
       successSwal(response.data.message)
     }
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {

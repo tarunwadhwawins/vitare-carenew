@@ -4,8 +4,11 @@
     <a-row :gutter="24" class="row">
         <a-col :span="24">
             <a-table :dataSource="dataArray" :columns="columnData" :pagination="false" rowKey="id">
-                <template #patientName="{ text, record }">
+                <template #patientName="{ text, record }" v-if="arrayToObjact(screensPermissions, 405)">
                     <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
+                </template>
+                <template #patientName="{ text }" v-else>
+                    <span>{{ text }}</span>
                 </template>
                 <template #escalationType="{ record }">
                     <span v-for="esc,i in record.escalationType.data" :key="esc.id">
@@ -24,20 +27,29 @@
             </a-table>
         </a-col>
     </a-row>
-    <a-row :gutter="24" class="row" v-show="record?record.escalationStaff.data.length>0:false">
+    <a-row :gutter="24" class="row" v-show="record?record.escalationStaff.data.length>0:false" >
         <a-col :sm="24" :xs="24">
             <strong>Assigned By : </strong>
-           <span>
+           <span v-if="arrayToObjact(screensPermissions, 408)">
                 <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.assignedById } }">{{ record.assignedBy }}</router-link>
             </span>
+            <div v-else>
+                <span>{{ record.assignedBy }}</span>
+            </div>
         </a-col>
-
     </a-row>
-    <a-row :gutter="24" class="row" v-show="record?record.escalationStaff.data.length>0:false">
-        <a-col :sm="24" :xs="24">
+    
+    <a-row :gutter="24" class="row" v-show="record?record.escalationStaff.data.length>0:false" >
+        <a-col :sm="24" :xs="24" v-if="arrayToObjact(screensPermissions, 408)">
             <strong>Assigned Staff : </strong>
            <span v-for="esc,i in record.escalationStaff.data" :key="esc.id" >
                 {{i==0?' ':','}} <router-link :to="{ name: 'CoordinatorSummary', params: { udid: esc.staffUdid } }">{{ esc.staffName }}</router-link>
+            </span>
+        </a-col>
+        <a-col :sm="24" :xs="24" v-else>
+            <strong>Assigned Staff : </strong>
+           <span v-for="esc,i in record.escalationStaff.data" :key="esc.id" >
+                {{i==0?' ':','}} <span>{{ esc.staffName }}</span>
             </span>
         </a-col>
 
@@ -124,7 +136,8 @@ import Flags from "@/components/common/flags/Flags";
 import Loader from "@/components/loader/Loader";
 import {
   globalDateFormat,
-  dateAndTimeFormate
+  dateAndTimeFormate,
+  arrayToObjact
 } from "@/commonMethods/commonMethod";
 const columnData = [
   {
@@ -296,7 +309,12 @@ export default {
     const escalation = computed(()=>{
       return store.state.escalations
     })
+    const screensPermissions = computed(()=>{
+      return store.state.screenPermissions.screensPermissions
+    })
     return {
+      arrayToObjact,
+      screensPermissions,
       escalation,
       closeModal,
       globalDateFormat,

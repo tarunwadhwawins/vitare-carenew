@@ -14,7 +14,11 @@ export const addNote = async ({ commit }, { id, data }) => {
     successSwal(response.data.message)
     commit('errorMsg', null)
 	}).catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if(error.response.status == 422) {
       commit('errorMsg', error.response.data)
 		}
@@ -35,7 +39,11 @@ export const notesList = async ({ commit }, id) => {
 		commit('loadingStatus', false)
 	})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 			if (error.response.status == 401) {
 				//AuthService.logout();
 			}
@@ -54,7 +62,11 @@ export const latestNotes = async ({ commit }, id) => {
 		}
 	})
 		.catch((error) => {
-			errorLogWithDeviceInfo(error.response)
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 			if (error.response.status == 401) {
 				//AuthService.logout();
 			}
