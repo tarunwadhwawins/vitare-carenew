@@ -54,7 +54,7 @@
 import Header from "../layout/header/Header";
 import Sidebar from "../layout/sidebar/Sidebar";
 import TasksModal from "@/components/modals/TasksModal";
-import { ref,computed, watchEffect } from "vue";
+import { ref,computed, watchEffect, onMounted, onUnmounted } from "vue";
 import Button from "@/components/common/button/Button";
 import TasksDashboardView from "@/components/tasks/TasksDashboardView";
 import TasksListView from "@/components/tasks/TasksListView";
@@ -97,7 +97,9 @@ export default {
             visible.value = value;
 
         };
-
+onMounted(()=>{
+    store.state.tasks.task = ''
+})
         watchEffect(() => {
 
             if (route.query.view == 'list') {
@@ -142,7 +144,9 @@ export default {
         const tasks = computed(() => {
             return store.state.tasks
         })
-
+ onUnmounted(()=>{
+     store.state.tasks.task = ''
+ })
         return {
             screensPermissions: store.getters.screensPermissions,
             tasks,

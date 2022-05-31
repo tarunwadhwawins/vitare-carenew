@@ -39,7 +39,7 @@
 
 <script>
 import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
-import { computed, onMounted, reactive, ref, watchEffect } from "vue";
+import { computed, onMounted, onUnmounted, reactive, ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 import { globalDateFormat,arrayToObjact } from "@/commonMethods/commonMethod";
 import EscaltionTable from "@/components/common/tables/EscalationTable"
@@ -136,6 +136,7 @@ export default {
     })
 
   onMounted(()=>{
+    store.state.escalations.escalation = ''
      if (store.getters.filter.value) {
         store.dispatch(
           "escalation",
@@ -182,6 +183,9 @@ export default {
 
     const screensPermissions = computed(()=>{
       return store.state.screenPermissions.screensPermissions
+    })
+    onUnmounted(()=>{
+       store.state.escalations.escalation = ''
     })
     return {
       arrayToObjact,

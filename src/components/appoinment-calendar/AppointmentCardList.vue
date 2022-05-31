@@ -82,6 +82,13 @@
 <div v-else></div>
 <a-modal width="1100px" centered v-model:visible="visible" title="Appointment" @ok="handleOk" maskClosable="true" @cancel="closeModal()">
     <a-table rowKey="id" :columns="columns" :data-source="getMoreAppointment">
+      <template #staff="{text,record}" >
+        <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.staff_id  }}">{{ text }}</router-link>
+    </template>
+    <template #patient="{ text, record }" v-if="arrayToObjact(screensPermissions, 63)">
+            <router-link :to="{ name: 'PatientSummary', params: { udid: record.patient_id } }">{{ text }}</router-link>
+
+        </template>
       <template #flags="{ record }">
         
          <a-tooltip placement="bottom">
@@ -112,11 +119,17 @@ const columns = [
     title: "Care Coordinator",
     dataIndex: "staff",
     key: "staff",
+    slots: {
+      customRender: "staff",
+    },
   },
   {
     title: "Patient",
     dataIndex: "patient",
     key: "patient",
+    slots: {
+      customRender: "patient",
+    },
   },
   {
     title: "Date",
