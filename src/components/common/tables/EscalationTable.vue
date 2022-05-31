@@ -1,6 +1,6 @@
 <template>
 <div class="patientTable">
-    <a-table rowKey="id" :columns="columnData" :data-source="escalationMainList" style="width:100%" :pagination="false" @change="handleTableChange" :scroll="height? {y: height } : { x: 1020,y:'calc(100vh - 470px)'}">
+    <a-table rowKey="id" :columns="columnData" :data-source="escalationMainList" style="width:100%" :pagination="false" @change="handleTableChange" :scroll="height? {y: height } : { x: 1020,y:'calc(100vh - 270px)'}">
         <template #patientName="{ text, record }"  v-if="arrayToObjact(screensPermissions, 405)">
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
         </template>
