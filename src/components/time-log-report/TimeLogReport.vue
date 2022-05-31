@@ -126,7 +126,11 @@ export default {
       watchEffect(()=>{
           if(store.getters.timeline.value){
                 timeLineCustomButton.value = store.getters.timeline.value
+                let findIndex = timeLineCustomButton.value.findIndex(a => a.id === 126)
+                
+                if(findIndex==-1){
               timeLineCustomButton.value.push({ "id": 126, "globalCodeCategoryId": 46, "globalCodeCategory": "Timeline", "name": "Custom", "description": "Timeline", "isActive": 1, "predefined": 1, "usedCount": 0 })
+                }
             }
       })
         onMounted(() => {
