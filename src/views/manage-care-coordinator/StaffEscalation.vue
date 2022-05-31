@@ -82,6 +82,14 @@ const columnData = [{
         },
     },
     {
+    title: "AssignedBy",
+    dataIndex: "assignedBy",
+    sorter: true,
+    slots:{
+        customRender: "escalationAssignedBy",
+    },
+  },
+    {
         title: "Escalation Type",
         dataIndex: "escalationType",
         slots: {

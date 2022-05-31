@@ -63,6 +63,14 @@ const columnData = [
         customRender: "escalationStaff",
     },
   },
+  {
+    title: "AssignedBy",
+    dataIndex: "assignedBy",
+    sorter: true,
+    slots:{
+        customRender: "escalationAssignedBy",
+    },
+  },
   { 
     title: "Description",
     dataIndex: "escalationDescription",

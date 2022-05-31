@@ -17,11 +17,11 @@
       <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,3) && callStatus">
             <ApexChart title="Call Stats" type="bar" :height="386" :options="callStatus.calloption" :series="callStatus.callseries" linkTo="Communications" />
         </a-col>
-        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  cptCodeValue">
+        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,8) &&  cptCodeValue">
             <ApexChart title="Timelog Summary" type="bar" :height="386" :options="cptCodeValue.code" :series="cptCodeValue.value" linkTo="TimeLogReport"></ApexChart>
         </a-col>
         
-        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,6) &&  referalCount">
+        <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,9) &&  referalCount">
             <ApexChart title="Referrals" type="bar" :height="386" :options="referalCount.code" :series="referalCount.value" linkTo="Referral" :data="referalCountRecord"></ApexChart>
         </a-col>
         <a-col :sm="12" :xs="24" v-if="arrayToObjact(widgetsPermissions,7) && financialValue">

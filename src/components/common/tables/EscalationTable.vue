@@ -9,6 +9,11 @@
                 {{i==0?' ':','}} <router-link :to="{ name: 'CoordinatorSummary', params: { udid: esc.staffUdid } }">{{ esc.staffName }}</router-link>
             </span>
         </template>
+        <template #escalationAssignedBy="{ record }">
+            <span>
+                <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.assignedById } }">{{ record.assignedBy }}</router-link>
+            </span>
+        </template>
         <template #escalationType="{ record }">
             <span v-for="esc,i in record.escalationType.data" :key="esc.id" >
                 {{i==0?' ':','}} {{ esc.escalationType }}
