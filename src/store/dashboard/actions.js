@@ -8,7 +8,11 @@ export const timeLine = async ({ commit }, id) => {
         commit('loadingStatus', false)
     })
         .catch((error) => {
-            errorLogWithDeviceInfo(error.response)
+            if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
             commit('failure', error.response.data);
         })
 
@@ -21,7 +25,11 @@ export const specialization = async ({ commit }, from) => {
     await ServiceMethodService.common("get", API_ENDPOINTS['specialization'] + "?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((response) => {
         commit('specializationSuccess', response.data.data);
     }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
+        if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
         if (error.response.status == 401) {
             //AuthService.logout();
         }
@@ -37,7 +45,11 @@ export const network = async ({ commit }, from) => {
         commit('networkSuccess', response.data.data);
 
     }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
+        if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
         if (error.response.status == 401) {
             //AuthService.logout();
         }
@@ -85,7 +97,11 @@ export const totalPatientsChart = async ({ commit }, from) => {
         commit('totalPatientsChartSuccess', response.data.data);
 
     }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
+        if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
         if (error.response.status == 401) {
             //AuthService.logout();
         }
@@ -99,7 +115,11 @@ export const appointmentChart = async ({ commit }, from) => {
         commit('appointmentChartSuccess', response.data.data);
 
     }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
+        if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
         if (error.response.status == 401) {
             //AuthService.logout();
         }

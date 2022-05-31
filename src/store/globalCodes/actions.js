@@ -11,7 +11,11 @@ export const globalCodesList = async ({ commit },page) => {
 		commit('loadingTableStatus', false)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -25,7 +29,11 @@ export const searchGlobalCodes = async ({ commit }, params) => {
 		commit('searchGlobalCodesSuccess', response.data.data);
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -40,7 +48,11 @@ export const addGlobalCode = async ({ commit }, data) => {
 		successSwal(response.data.message)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -55,7 +67,11 @@ export const deleteGlobalCode = async ({ commit }, id) => {
 		successSwal(response.data.message)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -69,7 +85,11 @@ export const globalCodeDetails = async ({ commit }, id) => {
 		commit('globalCodeDetailsSuccess', response.data.data);
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}
@@ -83,7 +103,11 @@ export const updateGlobalCode = async ({ commit }, {id, data}) => {
 		successSwal(response.data.message)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status == 401) {
 			//AuthService.logout();
 		}

@@ -10,7 +10,11 @@ export const timeLogReportList = async ({ commit }, page) => {
 		commit('timeLogReportList', response.data);
 		commit('loadingTableStatus', false)
 	}).catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status === 422) {
 			commit('errorMsg', error.response.data)
 			commit('loadingTableStatus', false)
@@ -29,7 +33,11 @@ export const timeLogView = async ({ commit }, data) => {
 		commit('loadingTableStatus', false)
 		
 	}).catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		commit('loadingTableStatus', false)
 		commit('errorMsg', error.response.data)
 	})
@@ -38,7 +46,11 @@ export const reportExport = async ({ commit }, data) => {
 	await ServiceMethodService.common("post", `export/report/request`, null, data).then((response) => {
 		commit('reportExport', response.data);
 	}).catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status === 422) {
 			commit('errorMsg', error.response.data)
 		} else if (error.response.status === 500) {
@@ -53,7 +65,11 @@ export const editAuditTimeLog = async ({ commit }, id) => {
 	await ServiceMethodService.common("get", `timeLog/${id}`, null, null).then((response) => {
 		commit('editAuditTimeLog', response.data.data);
 	}).catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status === 422) {
 			commit('errorMsg', error.response.data)
 			commit('loadingStatus', false)
@@ -71,7 +87,11 @@ export const updateAuditTimeLog = async ({ commit }, data) => {
 		// commit('updateTimeLog', response.data.data);
 		successSwal(response.data.message)
 	}).catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status === 422) {
 			commit('errorMsg', error.response.data)
 			commit('loadingStatus', false)
@@ -92,7 +112,11 @@ export const deleteTimeLog = async ({ commit }, uuid) => {
 		commit('loadingStatus', false)
 
 	}).catch((error) => {
-		errorLogWithDeviceInfo(error.response)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		if (error.response.status === 422) {
 			commit('errorMsg', error.response.data)
 			commit('loadingStatus', false)

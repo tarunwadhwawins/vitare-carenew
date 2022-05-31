@@ -11,7 +11,11 @@ export const staffSummary = async ({commit}, id) => {
     commit('staffSummary', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
@@ -34,7 +38,11 @@ export const staffSummaryAppointment = async ({commit}, id) => {
     commit('staffSummaryAppointment', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
@@ -56,7 +64,11 @@ export const staffSummaryPatient = async ({commit}, id) => {
     commit('staffSummaryPatient', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => { 
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)

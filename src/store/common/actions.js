@@ -11,7 +11,11 @@ export const globalCodes = async ({commit}) => {
   await serviceMethod.common("get", "globalCodeCategory?all=all", null, null).then((response) => {
     commit('globalCodes', response.data.data);
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status == 401) {
       //AuthService.logout();
     }
@@ -25,7 +29,11 @@ export const vitalFieldsList = async ({ commit }, deviceId) => {
     commit('vitalFieldsList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('failure', error);
     commit('loadingStatus', false)
   })
@@ -37,7 +45,11 @@ export const vitalFieldsByDeviceId = async ({ commit }, deviceId) => {
     commit('vitalFieldsByDeviceId', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('failure', error);
     commit('loadingStatus', false)
   })
@@ -49,7 +61,11 @@ export const allPatientsList = async ({ commit }) => {
     commit('allPatientsList', response.data.data);
     //commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('failure', error);
     commit('loadingStatus', false)
   })
@@ -61,7 +77,11 @@ export const allStaffList = async ({ commit }) => {
     commit('allStaffList', response.data.data);
     //commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('failure', error);
     commit('loadingStatus', false)
   })
@@ -73,7 +93,11 @@ export const activeCptCodes = async ({ commit }) => {
     commit('activeCptCodes', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('failure', error);
     commit('loadingStatus', false)
   })
@@ -93,7 +117,11 @@ export const notificationList = async ({ commit }) => {
     commit('getNotificationsList', response.data.data);
     commit('notificationList', response.data.data.length);
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     // errorSwal(error.response.data.message)
   })
 }
@@ -107,7 +135,11 @@ export const isReadUpdateNotification = async ({
     // commit('isReadUpdateNotification', response.data.data);
     console.log(response);
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -137,7 +169,11 @@ export const searchTableData = async ({ commit }, search) => {
   }).catch((error) => {
     if(!error.__CANCEL__){
 
-      errorLogWithDeviceInfo(error.response)
+     if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
       commit('errorMsg', error);
       if (error.response.status === 500) {
         // errorSwal(error.response.data.message)
@@ -155,7 +191,11 @@ export const actionTrack = async ({ commit }, data) => {
     commit('actionTrack', response.data.data);
     // successSwal(response.data.message)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -192,7 +232,11 @@ export const passwordReset = async ({commit}, data) => {
     console.log(response);
     status = true
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+   if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       // commit('errorMsg', error.response.data)
       errorSwal(error.response.data.password[0])

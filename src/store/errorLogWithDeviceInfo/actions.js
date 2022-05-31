@@ -8,6 +8,11 @@ export const errorLogWithDeviceInfo = async ({commit}, data) => {
     console.log('exportReportRequest', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if(error.response.status === 500) {
       // errorSwal(error.response.data.message)
     }
