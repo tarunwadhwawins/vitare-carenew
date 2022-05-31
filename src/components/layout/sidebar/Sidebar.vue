@@ -15,7 +15,7 @@
                 <a-menu-item>
                     <CreditCardOutlined /><span class="menuItem">Business Dashboard</span></a-menu-item>
             </router-link>
-            <router-link to="/escalation" v-if="arrayToObjact(screensPermissions, 404)" v-show="escalationStatus?escalationStatus.status:false">
+            <router-link to="/escalation" v-if="arrayToObjact(screensPermissions, 404)" >
                 <a-menu-item>
                     <DashboardOutlined /><span class="menuItem">{{'Escalations'}}</span>
                 </a-menu-item>

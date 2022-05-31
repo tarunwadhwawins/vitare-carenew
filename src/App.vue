@@ -53,6 +53,8 @@ export default {
         store.dispatch("escalationStaus")
         store.dispatch("appointmentConference");
         store.dispatch("notificationList");
+        store.dispatch("allPatientsList")
+        store.dispatch("allStaffList")
         let loginCheck = localStorage.getItem('checkLogin');
         if(!loginCheck){
           store.dispatch("logoutUser")

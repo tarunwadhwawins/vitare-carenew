@@ -90,9 +90,9 @@
     <template #type="{ record }">
       <a-tooltip placement="right">
         <template #title>
-          <span>{{ $t("communications.communicationsModal.sms") }}</span>
+          <span>{{ 'App Message' }}</span>
         </template>
-        <a class="icons" v-if="record.type == 'SMS'">
+        <a class="icons" v-if="record.type == 'App Message'">
           <CommentOutlined />
         </a>
       </a-tooltip>

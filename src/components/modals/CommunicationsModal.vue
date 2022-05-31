@@ -59,7 +59,7 @@
                         <a-select  v-model:value="messageForm.messageTypeId" style="width: 100%" size="large" @change="checkChangeInput()">
                             <a-select-option value="" disabled>{{'Select Message Type'}}</a-select-option>
                             <template v-for="type in messageType">
-                                <a-select-option v-if="type.name == 'SMS' || type.name == 'Email'" :key="type.id" :value="type.id">{{ type.name }}</a-select-option>
+                                <a-select-option v-if="type.name == 'App Message' || type.name == 'Email'" :key="type.id" :value="type.id">{{ type.name }}</a-select-option>
                             </template>
                         </a-select>
 
