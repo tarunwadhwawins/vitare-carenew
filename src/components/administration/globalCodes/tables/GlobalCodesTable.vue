@@ -3,6 +3,7 @@
     :columns="globalCodesColumns"
     :data-source="globalCodesList"
      :pagination=false
+     :scroll="{ y:'calc(100vh - 470px)'}"
     @change="handleTableChange">
     <template #actions="{record}">
       <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,7)">
@@ -49,14 +50,18 @@ export default {
     const meta = store.getters.globalMeta
         let data = []
         
+       let scroller = "";
         onMounted(() => {
-           window.addEventListener("scroll", () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+            var tableContent = document.querySelector(".ant-table-body");
+            tableContent.addEventListener("scroll", (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+                let currentScroll = event.target.scrollTop + 2;
+                if (currentScroll >= maxScroll) {
 
                     let current_page = meta.current_page + 1
 
                     if (current_page <= meta.total_pages) {
-                       
+                        scroller = maxScroll;
                         meta.value = ""
                         data = globalCodesList.value
                         store.state.globalCodes.globalCodesList = ""
@@ -78,7 +83,11 @@ export default {
             });
             globalCodesList.value = data
             
+var tableContent = document.querySelector(".ant-table-body");
 
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller);
+            }, 50);
             
 
         }

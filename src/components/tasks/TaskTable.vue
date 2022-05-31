@@ -1,7 +1,7 @@
 <template>
 <a-col :sm="24">
 
-    <a-table rowKey="id" :columns="tasksListColumns" :data-source="meta.tasksList" :scroll="height ? {  y:height } :{ x: 900  }" :pagination="false" @change="handleTableChange">
+    <a-table rowKey="id" :columns="tasksListColumns" :data-source="meta.tasksList"  :scroll="height ? {  y:height } :{ x: 900,y:'calc(100vh - 470px)'  }" :pagination="false" @change="handleTableChange">
 
         <template #taskName="{text,record}">
             <a @click="taskDetails(record.id)"><span>{{ text }}</span></a>
@@ -82,13 +82,18 @@ export default {
             dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
             filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
         }
+       
+            let scroller = "";
         onMounted(() => {
-            checkDate()
-            window.addEventListener("scroll", () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+             checkDate()
+            var tableContent = document.querySelector(".ant-table-body");
+            tableContent.addEventListener("scroll", (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+                let currentScroll = event.target.scrollTop + 2;
+                if (currentScroll >= maxScroll) {
                     let current_page = meta.taskMeta.current_page + 1;
                     if (current_page <= meta.taskMeta.total_pages) {
-                       
+                       scroller = maxScroll;
                         data = meta.tasksList;
                         store.state.tasks.taskMeta = ''
 
@@ -117,6 +122,11 @@ export default {
             });
 
             meta.tasksList = data;
+            var tableContent = document.querySelector(".ant-table-body");
+
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller);
+            }, 50);
             
         }
         const editTask = (id) => {

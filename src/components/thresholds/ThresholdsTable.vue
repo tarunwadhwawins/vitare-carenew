@@ -1,6 +1,6 @@
 <template>
 <a-col :sm="24" :xs="24">
-    <a-table rowKey="id" :columns="columns" :data-source="meta.vitalList" :pagination="false" @change="handleTableChange">
+    <a-table rowKey="id" :columns="columns" :data-source="meta.vitalList" :pagination="false" @change="handleTableChange" :scroll="{ y:'calc(100vh - 470px)'}">
         <template #actions="text">
             <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,330)">
                 <template #title>
@@ -153,13 +153,17 @@ export default {
         const meta = store.getters.vitalDataGetters.value;
         let data = [];
         
+        let scroller = "";
         onMounted(() => {
-            window.addEventListener("scroll", () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+            var tableContent = document.querySelector(".ant-table-body");
+            tableContent.addEventListener("scroll", (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+                let currentScroll = event.target.scrollTop + 2;
+                if (currentScroll >= maxScroll) {
                     let current_page = meta.generalParameterMeta.current_page + 1;
 
                     if (current_page <= meta.generalParameterMeta.total_pages) {
-                       
+                       scroller = maxScroll;
                         data = meta.vitalList;
                         store.state.thresholds.generalParameterMeta = "";
                         store.state.thresholds.vitalList = "";
@@ -183,6 +187,11 @@ export default {
                 data.push(element);
             });
             meta.vitalList = data;
+            var tableContent = document.querySelector(".ant-table-body");
+
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller);
+            }, 50);
             
         }
         const handleTableChange = (pag, filters, sorter) => {
