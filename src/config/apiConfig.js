@@ -51,8 +51,7 @@ export const API_ENDPOINTS = {
     conversationSend:'send-message',
 
     // Tasks
-    addTask:"task",
-    tasksList:"task",
+    task:"task",
     taskStatus:"task/status",
     allTaskStatus:"task/status/summery",
     taskPriority:"task/priority",
