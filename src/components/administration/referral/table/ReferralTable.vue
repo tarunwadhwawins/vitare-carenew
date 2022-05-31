@@ -1,7 +1,7 @@
 
 <template>
 
-<a-table rowKey="id"  :columns="referralColumns" :data-source="referralList"  :pagination="false" @change="handleTableChange">
+<a-table rowKey="id"  :columns="referralColumns" :data-source="referralList"  :scroll="{ y:'calc(100vh - 470px)'}" :pagination="false" @change="handleTableChange">
         <template #patientName="{ text, record }" >
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
         </template> 
@@ -45,15 +45,19 @@ const  dateFilter = ref('')
     }
      
         //dateFilter.value = route.query.fromDate && route.query.toDate ? "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "?fromDate=&toDate="
-    onMounted(() => {
-     
-      checkDate()
-      window.addEventListener("scroll", () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+   
+     let scroller = "";
+        onMounted(() => {
+           checkDate()
+            var tableContent = document.querySelector(".ant-table-body");
+            tableContent.addEventListener("scroll", (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+                let currentScroll = event.target.scrollTop + 2;
+                if (currentScroll >= maxScroll) {
           let current_page = meta.value.current_page + 1;
 
           if (current_page <= meta.value.total_pages) {
-            
+            scroller = maxScroll;
             data = referralList.value
             loader.value = true;
             meta.value = "";
@@ -87,6 +91,12 @@ const  dateFilter = ref('')
     
       store.state.referral.referral = data
       loader.value = false;
+      var tableContent = document.querySelector(".ant-table-body");
+
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller);
+            }, 50);
+            
     }
 
     const handleTableChange = (pag, filters, sorter) => {

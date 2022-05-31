@@ -1,7 +1,7 @@
 
 <template>
 <a-col :span="24">
-    <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.manageProgramList" :scroll="{ x: 900  }" @change="handleTableChange" :pagination=false>
+    <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.manageProgramList"  :scroll="{ x: 900,y:'calc(100vh - 470px)'}" @change="handleTableChange" :pagination=false>
         <template #actions="text">
             <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,16)">
                 <template #title>
@@ -87,13 +87,17 @@ export default {
     const loader = ref(false);
     
     let data = [];
-    onMounted(() => {
-       window.addEventListener("scroll", () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+    let scroller = "";
+        onMounted(() => {
+            var tableContent = document.querySelector(".ant-table-body");
+            tableContent.addEventListener("scroll", (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+                let currentScroll = event.target.scrollTop + 2;
+                if (currentScroll >= maxScroll) {
           let current_page = meta.programMeta.current_page + 1;
 
           if (current_page <= meta.programMeta.total_pages) {
-            
+            scroller = maxScroll;
             data = meta.manageProgramList;
             loader.value = true;
             store.state.program.programMeta = "";
@@ -121,7 +125,12 @@ export default {
         data.push(element);
       });
       meta.manageProgramList = data;
+var tableContent = document.querySelector(".ant-table-body");
 
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller);
+            }, 50);
+            
       loader.value = false;
     }
 
