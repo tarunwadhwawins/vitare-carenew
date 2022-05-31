@@ -131,7 +131,9 @@ export default {
     const isEditTimeLog = ref(false);
     // const startCallModalVisible = ref(false);
     const loader= ref(true)
-    const startOn = ref(false);
+    const startOn = computed(() => {
+      return store.state.patients.startOn
+    });
 const iconLoading = ref(false)
     const onClose = (e) => {
       console.log(e, "I was closed.");
@@ -194,54 +196,56 @@ onMounted(()=>{
     })
     const timerValue = ref(30000)
     
-    
     watchEffect(() => {
-      // store.dispatch("appointmentCalls",{patientId:patientUdid})
-      timer.value = setInterval(() => {
-        elapsedTime.value += 1000;
-        if((elapsedTime.value)%timerValue.value === 0) {
-          const newFormattedElapsedTime = getSeconds(formattedElapsedTime.value)
-          const timeLogId =  localStorage.getItem('timeLogId')
-          if((timeLogId && timeLogId != null)) {
-            const data = {
-              category: '',
-              loggedBy: loggedInUserId,
-              performedBy: loggedInUserId,
-              date: timeStamp(new Date()),
-              timeAmount: newFormattedElapsedTime,
-              cptCode: '',
-              note: '',
-              isAutomatic: true,
+      store.dispatch('patientDetails', route.params.udid).then(() => {
+        if(!startOn.value) {
+          timer.value = setInterval(() => {
+            elapsedTime.value += 1000;
+            if((elapsedTime.value)%timerValue.value === 0) {
+              const newFormattedElapsedTime = getSeconds(formattedElapsedTime.value)
+              const timeLogId =  localStorage.getItem('timeLogId')
+              if((timeLogId && timeLogId != null)) {
+                const data = {
+                  category: '',
+                  loggedBy: loggedInUserId,
+                  performedBy: loggedInUserId,
+                  date: timeStamp(new Date()),
+                  timeAmount: newFormattedElapsedTime,
+                  cptCode: '',
+                  note: '',
+                  isAutomatic: true,
+                }
+                store.dispatch('updatePatientTimeLog', {
+                  timeLogId: timeLogId,
+                  patientUdid: patientUdid,
+                  data: data
+                }).then(() => {
+                  store.dispatch('latestTimeLog', patientUdid)
+                });
+              }
+              else {
+                const data = {
+                  category: '',
+                  loggedBy: loggedInUserId,
+                  performedBy: loggedInUserId,
+                  date: timeStamp(new Date()),
+                  timeAmount: newFormattedElapsedTime,
+                  cptCode: '',
+                  note: '',
+                  isAutomatic: true,
+                }
+                store.dispatch('addTimeLog', {
+                  id: patientUdid,
+                  data: data
+                }).then(() => {
+                  store.dispatch('latestTimeLog', patientUdid)
+                });
+              }
             }
-            store.dispatch('updatePatientTimeLog', {
-              timeLogId: timeLogId,
-              patientUdid: patientUdid,
-              data: data
-            }).then(() => {
-              store.dispatch('latestTimeLog', patientUdid)
-            });
-          }
-          else {
-            const data = {
-              category: '',
-              loggedBy: loggedInUserId,
-              performedBy: loggedInUserId,
-              date: timeStamp(new Date()),
-              timeAmount: newFormattedElapsedTime,
-              cptCode: '',
-              note: '',
-              isAutomatic: true,
-            }
-            store.dispatch('addTimeLog', {
-              id: patientUdid,
-              data: data
-            }).then(() => {
-              store.dispatch('latestTimeLog', patientUdid)
-            });
-          }
+          }, 1000);
         }
-      }, 1000);
-
+      })
+      // store.dispatch("appointmentCalls",{patientId:patientUdid})
       if(route.name == 'PatientSummary') {
         store.commit("loadingTableStatus",true)
         loader.value = true
@@ -309,7 +313,7 @@ onMounted(()=>{
           }
         }
       }, 1000);
-      startOn.value = false;
+      store.commit('startOn', false);
     }
 
     function clearEvent(event){
@@ -346,7 +350,7 @@ onMounted(()=>{
       
       if(modal == 'addTimeLog') {
         elapsedTime.value = 0;
-        startOn.value = true;
+        store.commit('startOn', true);
         stoptimervisible.value = false;
         clearInterval(timer.value);
       }
@@ -402,7 +406,7 @@ onMounted(()=>{
             }
           }
         }, 1000);
-        startOn.value = false;
+        store.commit('startOn', false);
       }
     };
     
@@ -429,7 +433,7 @@ onMounted(()=>{
         if(response==true && conferenceId.value){
           store.commit('loadingStatus', false)
           let redirect = router.resolve({name: 'videoCall', params: {id: enCodeString(conferenceId.value)}});
-          window.open(redirect.href, '_blank');
+          window.open(redirect.href);
         }
       })
      

@@ -88,5 +88,6 @@ export default {
     emergencyContact:null,
     patientVitalList:null,
     referralDetail:null,
+    startOn:true,
 
 }
