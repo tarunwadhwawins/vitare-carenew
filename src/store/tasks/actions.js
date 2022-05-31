@@ -296,7 +296,7 @@ export const taskCategory = async ({ commit }) => {
 };
 
 export const searchTasks = async ({ commit }, params) => {
-	await ServiceMethodService.common('get', API_ENDPOINTS['task']+`?search=${params}`, null, null)
+	await ServiceMethodService.common('get', API_ENDPOINTS['task']+`?${params}`, null, null)
 		.then((response) => {
 			commit('searchTasks', response.data.data);
 		})

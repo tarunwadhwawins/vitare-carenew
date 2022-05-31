@@ -16,7 +16,7 @@
 			<StaffDropDown mode="multiple" @handleStaffChange="handleStaffChange($event, 'assignedBy')" placeholder="Reported By" />
 		</a-col>
 		<a-col :span="6">
-			<!-- <a-range-picker @change="handleStaffChange($event, 'dateRange')" :format="globalDateFormat" value-format="YYYY-MM-DD" size="large" style="width: 100%" /> -->
+			<a-range-picker @change="handleStaffChange($event, 'dateRange')" :format="globalDateFormat" value-format="YYYY-MM-DD" size="large" style="width: 100%" />
 		</a-col>
 	</a-row>
 	
@@ -41,6 +41,7 @@ import TableLoader from "@/components/loader/TableLoader";
 import { arrayToObjact,exportExcel,timeStampFormate,globalDateFormat } from "@/commonMethods/commonMethod";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 import { useRoute, useRouter } from 'vue-router';
+import { timeStamp } from '../../commonMethods/commonMethod';
 const tasksListColumns = [{
         title: 'Task Name',
         dataIndex: 'title',
@@ -90,8 +91,10 @@ const tasksListColumns = [{
     {
         title: 'Due Date ',
         dataIndex: 'dueDate',
-        sorter: true
-        
+        sorter: true,
+        slots: {
+            customRender: 'dueDate'
+        }
     },
     {
         title: 'Assigned To',
@@ -153,9 +156,12 @@ export default {
 				const assignedByValue = ref("")
 				const assignedToValue = ref("")
 				const fromDateValue = ref("")
+				const toDateValue = ref("")
         const handleStaffChange = (value, type) => {
 					if(type == 'dateRange') {
-						fromDateValue.value = value.length > 0 ? `dateRange=${value},` : ''
+						console.log('dateRange', value)
+						fromDateValue.value = value.length > 0 ? `fromDate=${timeStamp(value[0])}` : ''
+						toDateValue.value = value.length > 0 ? `&toDate=${timeStamp(value[1])}` : ''
 					}
 					else if(type == 'assignedBy') {
 						assignedByValue.value = value.length > 0 ? `&assignedBy=${value},` : ''
@@ -164,7 +170,7 @@ export default {
 						assignedToValue.value = value.length > 0 ? `&assignedTo=${value},` : ''
 					}
 
-					params.value = fromDateValue.value+assignedByValue.value+assignedToValue.value
+					params.value = fromDateValue.value+toDateValue.value+assignedByValue.value+assignedToValue.value
 					store.dispatch('searchTasks', params.value)
         };
 
