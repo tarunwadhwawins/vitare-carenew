@@ -64,7 +64,11 @@ export const addDemographic = async ({
     commit('loadingStatus', false)
     commit('counterPlus')
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     commit('loadingStatus', false)
     // if (error.response.status === 422) {
     //   commit('errorMsg', error.response.data)
@@ -116,7 +120,11 @@ export const updateDemographic = async ({
       serviceMethod.common("post", API_ENDPOINTS['patient'] + `/${patientUdid}/responsible`, null, data.responsiblePerson).then((response) => {
         commit("responsiblePerson", response.data.data)
       }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
+        if (error.response) {
+          errorLogWithDeviceInfo(error.response);
+        } else {
+          errorLogWithDeviceInfo(error);
+        }
         // if (error.response.status === 422) {
         //   commit('errorMsg', error.response.data)
         //   commit('loadingStatus', false)
@@ -135,7 +143,11 @@ export const updateDemographic = async ({
       serviceMethod.common("put", API_ENDPOINTS['patient'] + `/${patientUdid}/emergency/${emergencyContactId}`, null, data.emergencyContactForm).then((response) => {
         commit('emergencyContact', response.data.data);
       }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
+        if (error.response) {
+          errorLogWithDeviceInfo(error.response);
+        } else {
+          errorLogWithDeviceInfo(error);
+        }
         // if (error.response.status === 422) {
         //   commit('errorMsg', error.response.data)
         //   commit('loadingStatus', false)
@@ -160,7 +172,11 @@ export const updateDemographic = async ({
       serviceMethod.common("post", API_ENDPOINTS['patient'] + `/${patientUdid}/emergency`, null, data.emergencyContactForm).then((response) => {
         commit('emergencyContact', response.data.data);
       }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
+        if (error.response) {
+          errorLogWithDeviceInfo(error.response);
+        } else {
+          errorLogWithDeviceInfo(error);
+        }
         if (error.response.status === 422) {
           commit('errorMsg', error.response.data)
           commit('loadingStatus', false)
@@ -187,7 +203,11 @@ export const updateDemographic = async ({
         commit('patientReferralSource', response.data.data);
         errorMessage.push(false)
       }).catch((error) => {
-        errorLogWithDeviceInfo(error.response)
+        if (error.response) {
+          errorLogWithDeviceInfo(error.response);
+        } else {
+          errorLogWithDeviceInfo(error);
+        }
         // if (error.response.status === 422) {
         //   commit('errorMsg', error.response.data)
         //   commit('loadingStatus', false)
@@ -202,7 +222,11 @@ export const updateDemographic = async ({
     }
     commit('counterPlus')
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // if (error.response.status === 422) {
     //   commit('errorMsg', error.response.data)
     //   commit('loadingStatus', false)
@@ -234,7 +258,11 @@ export const patients = async ({
     commit('loadingTableStatus', false)
 
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
     commit('loadingTableStatus', false)
   })
@@ -251,7 +279,11 @@ export const patientsDelete = async ({
     successSwal(response.data.message)
 
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
     commit('loadingTableStatus', false)
   })
@@ -449,7 +481,11 @@ export const patientConditions = async ({
     commit('patientConditions', condition.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     commit('loadingStatus', false)
     // errorSwal(error.response.data.message)
   })
@@ -463,7 +499,11 @@ export const programList = async ({
     commit('programList', response.data.data);
     // commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     //commit('loadingStatus', false)
     // errorSwal(error.response.data.message)
   })
@@ -475,7 +515,11 @@ export const programDetails = async ({
   await serviceMethod.common("get", API_ENDPOINTS['patient'] + `/${data.patientUdid}/program/${data.programId}`, null, null).then((response) => {
     commit('programDetails', response.data.data);
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
   })
 }
@@ -488,7 +532,11 @@ export const addPatientProgram = async ({
     commit('addPatientProgram', response.data.data);
     // successSwal(response.data.message)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -507,7 +555,11 @@ export const updatePatientProgram = async ({
   await serviceMethod.common("put", API_ENDPOINTS['patient'] + `/${data.patientUdid}/program/${data.programId}`, null, data.data).then((response) => {
     commit('addPatientProgram', response.data.data);
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -524,7 +576,11 @@ export const updatePatientStatus = async ({
   await serviceMethod.common("put", 'patientStatus/' + data.id, null, data.data).then((response) => {
     successSwal(response.data.message)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -543,7 +599,11 @@ export const deleteProgram = async ({
     commit('programDetails', null);
     successSwal(response.data.message)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
   })
 
@@ -559,7 +619,11 @@ export const program = async ({
     commit('programPatients', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
@@ -575,7 +639,11 @@ export const addDevice = async ({
     successSwal(response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -603,7 +671,11 @@ export const changeStatus = async ({
     commit('changeStatus', response.data.data);
     successSwal(response.data.message)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -623,7 +695,11 @@ export const deleteDevice = async ({
     successSwal(response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
@@ -637,7 +713,11 @@ export const devices = async ({
     commit('devices', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     commit('loadingStatus', false)
     // errorSwal(error.response.data.message)
   })
@@ -653,7 +733,11 @@ export const inventoryList = async ({
   await serviceMethod.common("get", url, null, null).then((response) => {
     commit('inventoryList', response.data.data);
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 404) {
       commit('inventoryList', [])
       commit('errorMsg', error.response.data)
@@ -685,7 +769,11 @@ export const parameter = async ({
     commit('counterPlus')
     // successSwal(response.data.message)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -706,7 +794,11 @@ export const addClinicalHistory = async ({
     commit('addClinicalHistory', response.data.data);
     // successSwal(response.data.message)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -725,7 +817,11 @@ export const deleteClinicalData = async ({
     commit('deleteClinicalData', response.data.data);
     successSwal(response.data.message)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
   })
 }
@@ -739,7 +835,11 @@ export const clinicalHistoryList = async ({
     commit('clinicalHistoryList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
@@ -755,7 +855,11 @@ export const addClinicalMedicat = async ({
     commit('addClinicalMedicat', response.data.data);
     successSwal(response.data.message)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -774,7 +878,11 @@ export const deleteClinicalMedicat = async ({
     commit('deleteClinicalMedicat', response.data.data);
     successSwal(response.data.message)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
   })
 }
@@ -787,7 +895,11 @@ export const clinicalMedicatList = async ({
     commit('clinicalMedicatList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     commit('loadingStatus', false)
     // errorSwal(error.response.data.message)
   })
@@ -801,7 +913,11 @@ export const patientVitalList = async ({
     commit('patientVitalList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     commit('loadingStatus', false)
     // errorSwal(error.response.data.message)
   })
@@ -839,7 +955,11 @@ export const addInsurance = async ({
     // successSwal(response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
@@ -884,7 +1004,11 @@ export const updateInsurance = async ({
     // successSwal(response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
@@ -907,7 +1031,11 @@ export const patientInsurance = async ({
     commit('patientInsurance', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
@@ -923,7 +1051,11 @@ export const addDocument = async ({
     commit('loadingStatus', false)
     // commit('counterPlus')
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -946,7 +1078,11 @@ export const deleteDocument = async ({
     successSwal(response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
@@ -962,7 +1098,11 @@ export const documents = async ({
     commit('documents', response.data.data);
     commit('loadingTableStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     commit('loadingTableStatus', false)
     // errorSwal(error.response.data.message)
   })
@@ -978,7 +1118,11 @@ export const uploadFile = async ({
     commit('uploadFile', response.data.data.path);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -995,13 +1139,17 @@ export const patientDetails = async ({
   commit
 }, id) => {
   await serviceMethod.common("get", API_ENDPOINTS['patient'], id, null).then((response) => {
-    console.log("check",response.data)
+    console.log("check", response.data)
     commit('patientDetails', response.data.data);
     //commit('addDemographic', null);
     commit('startOn', false)
   }).catch((error) => {
     console.log(error);
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 500) {
       // errorSwal('User Deleted/Deactivated')
       Swal.fire({
@@ -1026,7 +1174,11 @@ export const responsiblePerson = async ({
   await serviceMethod.common("get", API_ENDPOINTS['patient'] + `/${id}/responsible`, null, null).then((response) => {
     commit('responsiblePerson', response.data.data);
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 500) {
       // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -1040,7 +1192,11 @@ export const emergencyContact = async ({
   await serviceMethod.common("get", API_ENDPOINTS['patient'] + `/${id}/emergency`, null, null).then((response) => {
     commit('emergencyContact', response.data.data)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 500) {
       // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -1056,7 +1212,11 @@ export const patientTimeline = async ({
     commit('patientTimelineSuccess', response.data.data);
 
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
 
   })
@@ -1070,7 +1230,11 @@ export const patientDocuments = async ({
     commit('patientDocumentsSuccess', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
@@ -1087,7 +1251,11 @@ export const latestDocument = async ({
       }
     })
     .catch((error) => {
-      errorLogWithDeviceInfo(error.response)
+      if (error.response) {
+        errorLogWithDeviceInfo(error.response);
+      } else {
+        errorLogWithDeviceInfo(error);
+      }
       /* if (error.response.status == 401) {
       	//AuthService.logout();
       } */
@@ -1106,7 +1274,11 @@ export const latestDevice = async ({
       }
     })
     .catch((error) => {
-      errorLogWithDeviceInfo(error.response)
+      if (error.response) {
+        errorLogWithDeviceInfo(error.response);
+      } else {
+        errorLogWithDeviceInfo(error);
+      }
       /* if (error.response.status == 401) {
       	//AuthService.logout();
       } */
@@ -1125,7 +1297,11 @@ export const latestVital = async ({
       }
     })
     .catch((error) => {
-      errorLogWithDeviceInfo(error.response)
+      if (error.response) {
+        errorLogWithDeviceInfo(error.response);
+      } else {
+        errorLogWithDeviceInfo(error);
+      }
       /* if (error.response.status == 401) {
       	//AuthService.logout();
       } */
@@ -1142,7 +1318,11 @@ export const patientSearchWithBitrix = async ({
       commit('patientSearchWithBitrix', response.data.result);
     })
     .catch((error) => {
-      errorLogWithDeviceInfo(error.response)
+      if (error.response) {
+        errorLogWithDeviceInfo(error.response);
+      } else {
+        errorLogWithDeviceInfo(error);
+      }
       // errorSwal(error.response.data.message)
       commit('failure', error.response.data);
     })
@@ -1156,7 +1336,11 @@ export const getBitrixFieldsName = async ({
       commit('getBitrixFieldsName', response.data.data);
     })
     .catch((error) => {
-      errorLogWithDeviceInfo(error.response)
+      if (error.response) {
+        errorLogWithDeviceInfo(error.response);
+      } else {
+        errorLogWithDeviceInfo(error);
+      }
       // errorSwal(error.response.data.message)
       commit('failure', error.response.data);
     })
@@ -1172,7 +1356,11 @@ export const fetchFromBitrix = async ({
       commit('bitrixFormCheck', true)
     })
     .catch((error) => {
-      errorLogWithDeviceInfo(error.response)
+      if (error.response) {
+        errorLogWithDeviceInfo(error.response);
+      } else {
+        errorLogWithDeviceInfo(error);
+      }
       // errorSwal(error.response.data.message)
       commit('failure', error.response.data);
     })
@@ -1195,7 +1383,11 @@ export const patientVitals = async ({
       commit('loadingStatus', false)
     })
     .catch((error) => {
-      errorLogWithDeviceInfo(error.response)
+      if (error.response) {
+        errorLogWithDeviceInfo(error.response);
+      } else {
+        errorLogWithDeviceInfo(error);
+      }
       commit('failure', error);
       commit('loadingStatus', false)
     })
@@ -1209,7 +1401,11 @@ export const addVital = async ({
       commit('loadingStatus', false)
     })
     .catch((error) => {
-      errorLogWithDeviceInfo(error.response)
+      if (error.response) {
+        errorLogWithDeviceInfo(error.response);
+      } else {
+        errorLogWithDeviceInfo(error);
+      }
       commit('failure', error);
       commit('loadingStatus', false)
     })
@@ -1225,7 +1421,11 @@ export const addCriticalNote = async ({
     successSwal(response.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
@@ -1245,7 +1445,11 @@ export const patientCriticalNotes = async ({
   await serviceMethod.common("get", API_ENDPOINTS['patient'] + '/' + patientUdid + '/' + API_ENDPOINTS['criticalNote'] + "?isRead=0", null).then((response) => {
     commit('patientCriticalNotes', response.data.data);
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
@@ -1257,7 +1461,11 @@ export const readCriticalNote = async ({
   await serviceMethod.common("put", API_ENDPOINTS['patient'] + '/' + data.patientUdid + '/' + API_ENDPOINTS['criticalNote'] + '/' + data.criticalNoteUdid, null, {
     isRead: 1
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
     commit('loadingStatus', false)
   })
@@ -1271,7 +1479,11 @@ export const criticalNotesList = async ({
     commit('criticalNotesList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
       commit('loadingStatus', false)
@@ -1294,7 +1506,11 @@ export const criticalNotesDelete = async ({
     successSwal(response.data.message)
     commit('closeModal', true)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
   })
 }
@@ -1311,7 +1527,11 @@ export const familyMembersList = async ({
     commit('familyMembersList', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 500) {
       // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -1329,7 +1549,11 @@ export const addFamilyMember = async ({
     commit('loadingStatus', false)
     commit('closeModal', true)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -1349,7 +1573,11 @@ export const updateFamilyMember = async ({
     commit('loadingStatus', false)
     commit('closeModal', true)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -1369,7 +1597,11 @@ export const deleteFamilyMember = async ({
     commit('loadingStatus', false)
     commit('closeModal', true)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 500) {
       // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -1386,7 +1618,11 @@ export const familyMemberDetails = async ({
     commit('familyMemberDetails', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 500) {
       // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -1407,7 +1643,11 @@ export const addPhysician = async ({
     successSwal(response.data.message)
     commit('closeModal', true)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -1427,7 +1667,11 @@ export const updatePhysician = async ({
     successSwal(response.data.message)
     commit('closeModal', true)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -1446,7 +1690,11 @@ export const physiciansList = async ({
     commit('physiciansList', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 500) {
       // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -1464,7 +1712,11 @@ export const deletePhysician = async ({
     commit('loadingStatus', false)
     commit('closeModal', true)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 500) {
       // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -1481,7 +1733,11 @@ export const physicianDetails = async ({
     commit('physicianDetails', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 500) {
       // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -1502,7 +1758,11 @@ export const emergencyContactsList = async ({
     commit('emergencyContactsList', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 500) {
       // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -1519,7 +1779,11 @@ export const emergencyContactDetails = async ({
     commit('emergencyContactDetails', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 500) {
       // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -1537,7 +1801,11 @@ export const addEmergencyContact = async ({
     commit('loadingStatus', false)
     commit('closeModal', true)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -1557,7 +1825,11 @@ export const updateEmergencyContact = async ({
     commit('loadingStatus', false)
     commit('closeModal', true)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -1577,7 +1849,11 @@ export const deleteEmergencyContact = async ({
     commit('loadingStatus', false)
     commit('closeModal', true)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 500) {
       // errorSwal(error.response.data.message)
       commit('loadingStatus', false)
@@ -1593,7 +1869,11 @@ export const timeLineType = async ({
     commit('timeLineType', response.data.data);
 
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
 
   })
@@ -1611,7 +1891,11 @@ export const updateProfileImage = async ({
     serviceMethod.common("put", API_ENDPOINTS['patientProfile'], data.patientUdid, imagepath).then((result) => {
       successSwal(result.data.message)
     }).catch((error) => {
-      errorLogWithDeviceInfo(error.response)
+      if (error.response) {
+        errorLogWithDeviceInfo(error.response);
+      } else {
+        errorLogWithDeviceInfo(error);
+      }
       if (error.response.status === 422) {
         // errorSwal(error.response.data.file[0])
       } else if (error.response.status === 500) {
@@ -1629,7 +1913,11 @@ export const updateProfileImage = async ({
     } else if (error.response.status === 401) {
       // errorSwal(error.response.data.message)
     }
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     commit('isPicuteLoading', false)
   })
 }
@@ -1642,7 +1930,11 @@ export const medicalHistoryDetails = async ({
     commit('medicalHistoryDetails', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -1662,7 +1954,11 @@ export const updateClinicalHistory = async ({
     successSwal(result.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -1682,7 +1978,11 @@ export const medicationDetails = async ({
     commit('medicationDetails', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -1702,7 +2002,11 @@ export const updateMedicalRoutine = async ({
     successSwal(result.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -1722,7 +2026,11 @@ export const documentDetails = async ({
     commit('documentDetails', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -1742,7 +2050,11 @@ export const updateDocument = async ({
     successSwal(result.data.message)
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -1763,7 +2075,11 @@ export const referralList = async ({
     commit('referralList', response.data.data);
 
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
 
   })
@@ -1776,7 +2092,11 @@ export const referralDetail = async ({
     commit('referralDetail', response.data.data);
 
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     // errorSwal(error.response.data.message)
 
   })

@@ -8,5 +8,6 @@ export default {
   viuewTimeReportModal:null,
   auditTimeLogFilterDates:null,
   auditMetaLog:null,
+  timelineReport:null
  
 }

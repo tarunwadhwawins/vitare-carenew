@@ -1,5 +1,6 @@
 <template>
   <div class="patientImg" >
+    <div class="patientImgInner">
     <div class="image-section" v-if="hideEditIcon==false">
       <img v-if="isPicuteLoading" class="picture-loader" src="@/assets/images/loader.gif" />
       <img v-if="patientDetails.profilePhoto && !isPicuteLoading" class="ant-upload-text" :src="patientDetails.profilePhoto" alt="image"/>
@@ -21,7 +22,7 @@
         </div>
       </a-upload>
     </div>
-
+    </div>
     <div class="image-section" v-if="hideEditIcon==true">
       <img v-if="patientDetails.profilePhoto" class="ant-upload-text" :src="patientDetails.profilePhoto" alt="image"/>
     </div>
@@ -235,26 +236,26 @@ export default defineComponent({
     border-radius: 0!important;
 }
 
-.info {
+/* .info {
   margin-left: 40px;
-}
-.patientInfo .patientImg {
+} */
+/* .patientInfo .patientImg {
   padding: 30px !important
-}
+} */
 span.anticon.anticon-plus {
   position: relative;
   top: -2px;
 }
 
-.image-section {
+/* .image-section {
   position: absolute;
   top: 25px;
-}
+} */
 
-.button-section {
+/* .button-section {
   position: relative;
   top: 70px;
-}
+} */
 
 .button-details {
   position: relative !important;
@@ -264,7 +265,7 @@ span.anticon.anticon-plus {
 span.edit-icon {
   position: relative;
   top: -1px;
-  font-size: 18px;
+  font-size: 12px;
 }
 
 /* .header .button-details { */
@@ -273,22 +274,22 @@ span.edit-icon {
   /* left: -91px !important; */
 /* } */
 
-.header .button-section {
+/* .header .button-section {
   position: relative !important;
   top: 50px !important;
   left: -91px !important;
-}
-.header .image-section {
+} */
+/* .header .image-section {
   left: 20px !important;
   position: relative !important;
   top: -10px !important;
-}
-.callRightWrapper .header .patientInfo .patientImg .info {
+} */
+/* .callRightWrapper .header .patientInfo .patientImg .info {
   margin-left: -50px !important;
-}
-.callRightWrapper .header .patientInfo .patientImg {
+} */
+/* .callRightWrapper .header .patientInfo .patientImg {
   padding: 30px !important;
-}
+} */
 
 /* .container {
   padding: 1em 0;

@@ -24,7 +24,11 @@ export const escalation = async ({
     commit('escalation', response.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('loadingStatus', false)
     // errorSwal(error.response.data.message)
   })
@@ -38,7 +42,11 @@ export const escalationStaus = async ({
     commit('escalationStaus', response.data);
     commit('loadingStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     commit('loadingStatus', false)
     // errorSwal(error.response.data.message)
   })
@@ -57,7 +65,11 @@ export const addBasicEscalation = async ({
     commit('loadingStatus', false)
     status = true
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -83,7 +95,11 @@ export const updateBasicEscalation = async ({
     commit('loadingStatus', false)
     status = true
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -112,7 +128,11 @@ export const esacalationFlagList = async ({
       commit('loadingStatus', false)
     }
   } catch (error) {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -140,7 +160,11 @@ export const escalationNotesList = async ({
       commit('loadingStatus', false)
     }
   } catch (error) {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -169,7 +193,11 @@ export const esacalationCarePlansList = async ({
       commit('loadingStatus', false)
     }
   } catch (error) {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -198,7 +226,11 @@ export const escalationVitalList = async ({
       commit('loadingStatus', false)
     }
   } catch (error) {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -226,7 +258,11 @@ export const singleEscalationRecord = async ({
     commit('singleEscalationRecord', response.data.data)
     commit('loadingStatus', false)
   } catch (error) {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -278,7 +314,11 @@ export const addEscalationDetails = async ({
       response ? status = true : status = false
     }
   } catch (error) {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {
@@ -302,7 +342,11 @@ export const escalationDelete = async ({
     await serviceMethod.common("delete", `escalation/${id}`, null, null)
     commit('loadingStatus', false)
   } catch (error) {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       commit('errorMsg', error.response.data)
     } else if (error.response.status === 500) {

@@ -12,7 +12,11 @@ export const manageProgramList = async ({
     commit('program', response.data);
     commit('loadingTableStatus', false)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
     if (error.response.status === 422) {
       // errorSwal(error.response.data)
     } else if (error.response.status === 500) {
@@ -34,7 +38,11 @@ export const addManageProgram = async ({
     commit('programMsg', response.data.message);
     successSwal(response.data.message)
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       // errorSwal(error.response.data)
     } else if (error.response.status === 500) {
@@ -56,7 +64,11 @@ export const editManageProgram = async ({
     commit('editProgram', response.data.data)
 
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       // errorSwal(error.response.data)
     } else if (error.response.status === 500) {
@@ -76,7 +88,11 @@ export const updateManageProgram = async ({
     successSwal(response.data.message)
 
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       // errorSwal(error.response.data)
     } else if (error.response.status === 500) {
@@ -96,7 +112,11 @@ export const deleteManageProgram = async ({
     successSwal(response.data.message)
 
   }).catch((error) => {
-    errorLogWithDeviceInfo(error.response)
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
     if (error.response.status === 422) {
       // errorSwal(error.response.data)
     } else if (error.response.status === 500) {

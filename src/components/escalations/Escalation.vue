@@ -13,15 +13,15 @@
                         Escalation Details
                     </h2>
                 </a-col>
-                <a-col :span="12">
+                <a-col :span="12" v-if="arrayToObjact(screensPermissions, 403)">
                     <div class="text-right">
                         <a-button @click="showEscalationModal" type="primary">{{'Add Escalation'}}</a-button>
                     </div>
                 </a-col>
-                <a-col :span="12" >
+                <a-col :span="12" v-if="arrayToObjact(screensPermissions, 404)">
                         <SearchField :endPoint="'escalation'" :otherParam="'&referenceId='+patientId+'&entityType=patient'" />
                 </a-col>
-                <a-col :span="24" style="padding-top:20px">
+                <a-col :span="24" style="padding-top:20px" v-if="arrayToObjact(screensPermissions, 404)">
                     <EscaltionTable :otherParam="'&referenceId='+patientId+'&entityType=patient'" :columnData="columnData" :escalationList="escalationList"  @showEscalationData="showEscalationData($event)"/>
                 </a-col>
                 <!-- stepper -->
@@ -41,7 +41,7 @@
 import PatientInfoTop from "@/components/patients/patientSummary/PatientInfoTop";
 import { computed, onMounted, reactive, ref, watchEffect } from "vue";
 import { useStore } from "vuex";
-import { globalDateFormat } from "@/commonMethods/commonMethod";
+import { globalDateFormat,arrayToObjact } from "@/commonMethods/commonMethod";
 import EscaltionTable from "@/components/common/tables/EscalationTable"
 // import EscaltionViewModal from "../escalations/EscalationViewModal"
 import EscaltionViewModal from "@/components/escalations/EscalationViewModal";
@@ -64,7 +64,7 @@ const columnData = [
     },
   },
   {
-    title: "AssignedBy",
+    title: "Assigned By",
     dataIndex: "assignedBy",
     sorter: true,
     slots:{
@@ -180,8 +180,13 @@ export default {
     const escalationList = computed(() => {
       return store.state.escalations.escalation;
     });
+
+    const screensPermissions = computed(()=>{
+      return store.state.screenPermissions.screensPermissions
+    })
     return {
-       escalationList,
+      arrayToObjact,
+      escalationList,
       columnData,
       escaltionViewModal,
       showEscalationData,
@@ -194,7 +199,7 @@ export default {
       escalationDetails,
       patientDetails,
       size: ref("large"),
-      
+      screensPermissions
     };
   },
 };

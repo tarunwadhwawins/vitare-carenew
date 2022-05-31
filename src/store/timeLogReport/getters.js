@@ -25,3 +25,8 @@ export const timeLogReports = (state)=>{
         return state.auditMetaLog
     })
   }
+  export const timelineReport = (state)=>{
+    return computed(()=>{
+        return state.timelineReport
+    })
+  }

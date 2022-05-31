@@ -12,7 +12,7 @@
                 <a-row>
                     <div class="commonTags">
 
-                        <a-tag v-if="route.query.filter" closable @close="remove('filter')">{{getName(route.query.filter)}}</a-tag>
+                        <a-tag v-if="route.query.filter" closable @close="remove('filter')">{{escalationType ? getName(route.query.filter):''}}</a-tag>
                         <a-tag v-if="route.query.toDate && route.query.fromDate" closable @close="remove('date')">
                             {{timeStampFormate(route.query.fromDate,globalDateFormat) }} To {{timeStampFormate(route.query.toDate,globalDateFormat)}}
                         </a-tag>
@@ -82,7 +82,7 @@ const columnData = [{
         },
     },
     {
-    title: "AssignedBy",
+    title: "Assigned By",
     dataIndex: "assignedBy",
     sorter: true,
     slots:{
@@ -114,6 +114,7 @@ const columnData = [{
         slots: {
             customRender: "action",
         },
+        
     },
 ];
 
@@ -230,7 +231,7 @@ export default {
         function getName(name) {
 
             let idToName = escalationType.value.find(data => data.id == name)
-            console.log(idToName)
+            
             return idToName ? idToName.name : ''
         }
 
@@ -250,7 +251,8 @@ export default {
             remove,
             timeStampFormate,
             getName,
-            arrayToObjact
+            arrayToObjact,
+            escalationType
 
         };
     },

@@ -13,6 +13,15 @@ export const addPatientCareCoordinator = async ({ commit }, {patientUdid, data})
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		if (error.response) {
+			errorLogWithDeviceInfo(error.response);
+		} else {
+			if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
+		}
 		commit('loadingStatus', false)
 		if (error.response.status == 401) {
     //   errorSwal(error.response.data.message)
@@ -35,7 +44,11 @@ export const patientCareCoordinatorsList = async ({ commit }, {patientUdid, type
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
-		errorLogWithDeviceInfo(error)
+		if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
 		commit('loadingStatus', false)
 	})
 }
@@ -48,6 +61,11 @@ export const deletePatientCareCoordinator = async ({ commit }, {patientUdid, pat
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {
+		if (error.response) {
+			errorLogWithDeviceInfo(error.response);
+		} else {
+			errorLogWithDeviceInfo(error);
+		}
 		if (error.response.status == 401) {
     //   errorSwal(error.response.data.message)
 		}
@@ -62,6 +80,11 @@ export const patientCareCoordinatorDetails = async ({commit}, data) => {
     commit('patientCareCoordinatorDetails', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {
+	if (error.response) {
+		errorLogWithDeviceInfo(error.response);
+	} else {
+		errorLogWithDeviceInfo(error);
+	}
     if (error.response.status === 500) {
     //   errorSwal(error.response.data.message)
     }
@@ -75,6 +98,11 @@ export const updatePatientCareCoordinator = async ({commit}, data) => {
     commit('updatePatientCareCoordinator', response.data.data)
     commit('loadingStatus', false)
   }).catch((error) => {
+	if (error.response) {
+		errorLogWithDeviceInfo(error.response);
+	} else {
+		errorLogWithDeviceInfo(error);
+	}
     if (error.response.status === 500) {
     //   errorSwal(error.response.data.message)
     }

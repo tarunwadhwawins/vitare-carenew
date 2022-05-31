@@ -3,18 +3,26 @@
 
     <a-table rowKey="id" :columns="columnData" :data-source="escalationMainList" style="width:100%" :pagination="false" @change="handleTableChange" :scroll="height? {y: height } : { x: 1020,y:'calc(100vh - 470px)'}">
 
-        <template #patientName="{ text, record }" >
+        <template #patientName="{ text, record }"  v-if="arrayToObjact(screensPermissions, 405)">
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ text }}</router-link>
         </template>
-         <template #escalationStaff="{ record }">
+         <template #escalationStaff="{ record }" v-if="arrayToObjact(screensPermissions, 408)">
             <span v-for="esc,i in record.escalationStaff.data" :key="esc.id" >
                 {{i==0?' ':','}} <router-link :to="{ name: 'CoordinatorSummary', params: { udid: esc.staffUdid } }">{{ esc.staffName }}</router-link>
             </span>
         </template>
-        <template #escalationAssignedBy="{ record }">
+        <template #escalationStaff="{ record }" v-else>
+            <span v-for="esc,i in record.escalationStaff.data" :key="esc.id" >
+                {{i==0?' ':','}} <span>{{ esc.staffName }}</span>
+            </span>
+        </template>
+        <template #escalationAssignedBy="{ record }" v-if="arrayToObjact(screensPermissions, 408)">
             <span>
                 <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.assignedById } }">{{ record.assignedBy }}</router-link>
             </span>
+        </template>
+        <template #escalationAssignedBy="{ record }" v-else>
+                <span>{{ record.assignedBy }}</span>
         </template>
         <template #escalationType="{ record }">
             <span v-for="esc,i in record.escalationType.data" :key="esc.id" >
@@ -49,6 +57,9 @@ import { onMounted} from "vue";
 import { useStore } from "vuex";
 import Flags from "@/components/common/flags/Flags";
 import { useRoute } from 'vue-router';
+import {
+  arrayToObjact
+} from "@/commonMethods/commonMethod";
 export default {
   name: "EscalationTable",
   components: {
@@ -163,7 +174,9 @@ export default {
         );
       }
     };
+  
     return {
+      arrayToObjact,
       escalationMainList,
       loadMoredata,
       handleTableChange,

@@ -455,7 +455,7 @@ export default {
           entityType: "patient",
         }).then((response)=>{
           if(response==true){
-            store.dispatch("timeLine", 123).then(() => {
+            store.dispatch("timeLine", {id:123,commit:'timelineSuccess'}).then(() => {
               apiCall(timeLineButton.value);
             });
           }
@@ -474,7 +474,7 @@ export default {
           escalationId: addEscalation.value.id,
         }).then((response)=>{
           if(response==true){
-            store.dispatch("timeLine", 123).then(() => {
+            store.dispatch("timeLine", {id:123,commit:'timelineSuccess'}).then(() => {
               apiCall(timeLineButton.value);
             });
           }
@@ -543,7 +543,7 @@ export default {
               store.commit("checkChangeInput", false);
               store.state.escalations.addBasicEscalation = null;
               Object.assign(escalationDetails, formEscalationDetails);
-              store.dispatch("timeLine", 122).then(() => {
+              store.dispatch("timeLine", {id:122,commit:'timelineSuccess'}).then(() => {
                 apiCall(timeLineButton.value);
               });
             }
@@ -616,7 +616,7 @@ export default {
     const timeLineButton = store.getters.dashboardTimeLineButton;
 
     function showButton(id = 123) {
-      store.dispatch("timeLine", id).then(() => {
+      store.dispatch("timeLine", {id:id,commit:'timelineSuccess'}).then(() => {
         apiCall(timeLineButton.value);
       });
     }

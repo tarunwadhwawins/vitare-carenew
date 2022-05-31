@@ -10,7 +10,10 @@
                 <div class="common-bg">
                     <a-row>
                         <a-col :span="24">
-                            <h2 class="pageTittle">{{$t('timeLogReport.auditTimeLog')}}</h2>
+                            <h2 class="pageTittle">{{$t('timeLogReport.auditTimeLog')}}
+                               
+                            <DateFilter :Buttons="Buttons" :timeline="timeLineCustomButton" @clickButtons="showButton($event)"/>
+                            </h2>
                         </a-col>
                     </a-row>
                     <a-row>
@@ -21,38 +24,45 @@
                             </a-tag>
                         </div>
                     </a-row>
-                    <a-form :model="auditTimeLog" name="auditTimeLog" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="updateAuditTime">
-                        <a-row :gutter="24">
-                            <a-col :sm="8" :xs="24">
-                                <div class="form-group" v-if="arrayToObjact(screensPermissions, 332)">
-                                    <label>{{$t('global.startDate')}}</label>
-                                    <a-date-picker :format="globalDateFormat" value-format="YYYY-MM-DD" :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" v-model:value="auditTimeLog.startDate" :size="size" style="width: 100%" />
-                                </div>
-                            </a-col>
-                            <a-col :sm="8" :xs="24">
-                                <div class="form-group" v-if="arrayToObjact(screensPermissions, 332)">
-                                    <label>{{$t('global.endDate')}}</label>
-                                    <a-date-picker :format="globalDateFormat" :disabledDate="d => !d || d.isSameOrBefore(auditTimeLog.startDate)" value-format="YYYY-MM-DD" v-model:value="auditTimeLog.endDate" :size="size" style="width: 100%" @change="dateChange" />
-                                </div>
-                            </a-col>
+                    <a-row>
+                        <a-col :sm="20" :xs="24">
+                            <a-form :model="auditTimeLog" name="auditTimeLog" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="updateAuditTime" v-if="customDateShow">
+                                                    <a-row :gutter="24">
+                                                        <a-col :sm="8" :xs="24">
+                                                            <div class="form-group" v-if="arrayToObjact(screensPermissions, 332)">
+                                                                <label>{{$t('global.startDate')}}</label>
+                                                                <a-date-picker :format="globalDateFormat" value-format="YYYY-MM-DD" :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" v-model:value="auditTimeLog.startDate" :size="size" style="width: 100%" />
+                                                            </div>
+                                                        </a-col>
+                                                        <a-col :sm="8" :xs="24">
+                                                            <div class="form-group" v-if="arrayToObjact(screensPermissions, 332)">
+                                                                <label>{{$t('global.endDate')}}</label>
+                                                                <a-date-picker :format="globalDateFormat" :disabledDate="d => !d || d.isSameOrBefore(auditTimeLog.startDate)" value-format="YYYY-MM-DD" v-model:value="auditTimeLog.endDate" :size="size" style="width: 100%" @change="dateChange" />
+                                                            </div>
+                                                        </a-col>
 
-                            <a-col :sm="2" :xs="24">
-                                <div class="text-right mt-28" v-if="arrayToObjact(screensPermissions, 332)">
-                                    <a-button class="btn primaryBtn" html-type="submit">{{$t('timeLogReport.view')}}</a-button>
-                                </div>
-                            </a-col>
-                            <a-col :sm="2" :xs="24">
-                                <div class="text-right mt-28">
-                                    <a-button class="btn primaryBtn" @click="clearData">{{$t('global.clear')}}</a-button>
-                                </div>
-                            </a-col>
-                            <a-col :sm="4" :xs="24">
-                                <div class="text-right mb-24">
-                                    <ExportToExcel @click="exportExcel('patientTimelog_report',filtterDates)" v-if="arrayToObjact(screensPermissions, 333)" />
-                                </div>
-                            </a-col>
-                        </a-row>
-                    </a-form>
+                                                        <a-col :sm="2" :xs="24">
+                                                            <div class="text-right mt-28" v-if="arrayToObjact(screensPermissions, 332)">
+                                                                <a-button class="btn primaryBtn" html-type="submit">{{$t('timeLogReport.view')}}</a-button>
+                                                            </div>
+                                                        </a-col>
+                                                        <!-- <a-col :sm="2" :xs="24">
+                                                            <div class="text-right mt-28">
+                                                                <a-button class="btn primaryBtn" @click="clearData">{{$t('global.clear')}}</a-button>
+                                                            </div>
+                                                        </a-col> -->
+                                                        
+                                                    </a-row>
+                                                </a-form>
+                        </a-col>
+                          <a-col :sm="4" :xs="24">
+                        <div class="text-right mt-28 mb-24">
+                            <ExportToExcel @click="exportExcel('patientTimelog_report',filtterDates)" v-if="arrayToObjact(screensPermissions, 333)" />
+                        </div>
+                    </a-col>
+                    </a-row>
+                    
+                  
                     <a-row>
                         <TimeLogTable @scrolller="scrolller" v-if="arrayToObjact(screensPermissions, 332)" />
                     </a-row>
@@ -67,6 +77,7 @@
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
+import DateFilter from "@/components/common/DateFilter.vue"
 import {
     exportExcel,
     arrayToObjact,timeStampFormate,globalDateFormat
@@ -77,6 +88,7 @@ import {
     reactive,
     onUnmounted,
     onMounted,
+    watchEffect,
 } from "vue";
 import {
     useStore
@@ -89,7 +101,8 @@ export default {
         Header,
         Sidebar,
         TimeLogTable,
-        ExportToExcel
+        ExportToExcel,
+        DateFilter
     },
     setup() {
         const store = useStore();
@@ -104,12 +117,21 @@ export default {
         const endDate = ref(null)
         const route = useRoute()
         const router = useRouter()
-
+        const timeLineButton = store.getters.timelineReport
+        const customDateShow = ref(false)
         function dateChange() {
             dateSelect.value = moment(auditTimeLog.endDate).add(1, 'day')
         }
-
+      const timeLineCustomButton = ref([])
+      watchEffect(()=>{
+          if(store.getters.timeline.value){
+                timeLineCustomButton.value = store.getters.timeline.value
+              timeLineCustomButton.value.push({ "id": 126, "globalCodeCategoryId": 46, "globalCodeCategory": "Timeline", "name": "Custom", "description": "Timeline", "isActive": 1, "predefined": 1, "usedCount": 0 })
+            }
+      })
         onMounted(() => {
+            
+
             if (route.query.filter || route.query.fromDate) {
                 let filter = route.query.filter ? route.query.filter : ''
                 let date = route.query.fromDate && route.query.toDate ? "?fromDate=" + timeStampFormate(route.query.fromDate,'YYYY-MM-DD') + "&toDate=" + timeStampFormate(route.query.toDate,'YYYY-MM-DD') : "?fromDate=&toDate="
@@ -117,13 +139,21 @@ export default {
                 store.dispatch("timeLogReportList", date+"&filter=" +filter);
             } else {
                 store.commit("dateFilter", '')
-                store.dispatch("timeLogReportList")
+                if(timeLineButton.value==null){
+            store.dispatch("timeLine", {id:123,commit:'timelineReport'}).then(()=>{
+                
+                apiCall(timeLineButton.value)
+            })
+            }else{
+                apiCall(timeLineButton.value)
+            }
             }
 
             store.dispatch('auditTimeLogFilterDates', "?fromDate=&toDate=")
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
             })
+            
         })
 
         function clearData() {
@@ -163,7 +193,7 @@ export default {
             if (event == "filter") {
                 if (route.query.fromDate && route.query.toDate) {
 
-                    store.dispatch("timeLogReportList", "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
+                    store.dispatch("timeLogReportList", "?fromDate=" + timeStampFormate(route.query.fromDate,'YYYY-MM-DD') + "&toDate=" + timeStampFormate(route.query.toDate,'YYYY-MM-DD'))
                     setTimeout(() => {
                         router.replace({
                             query: {
@@ -199,6 +229,41 @@ export default {
             }
 
         }
+         function showButton(id) {
+             if(id==126){
+                 customDateShow.value = true
+store.state.timeLogReport.timelineReport = { "globalCodeId": "126", "conditions": "-", "number": "6", "intervalType": "day", "startDate": "2022-05-31", "endDate": "2022-05-25" }
+             }else{
+                 customDateShow.value = false
+store.dispatch("timeLine", {id:id,commit:'timelineReport'}).then(() => {
+                apiCall(timeLineButton.value)
+            })
+             }
+            
+
+        }
+        function apiCall(data) {
+            let from = moment()
+            let to = moment()
+            if (data.globalCodeId == 122) {
+
+                from = moment()
+                to = moment().subtract(data.number, data.intervalType);
+            } else if (data.globalCodeId == 123) {
+                from = moment();
+
+                to = moment().subtract(data.number, data.intervalType);
+            } else if (data.globalCodeId == 124) {
+                from = moment();
+                to = moment().subtract(data.number, data.intervalType);
+            } else {
+                from = moment();
+                to = moment().subtract(data.number, data.intervalType);
+            }
+        
+             store.dispatch('auditTimeLogFilterDates', "?fromDate=" + to.format("YYYY-MM-DD") + "&toDate=" + from.format("YYYY-MM-DD"))
+                store.dispatch("timeLogReportList", "?fromDate=" + to.format("YYYY-MM-DD") + "&toDate=" + from.format("YYYY-MM-DD") + "&page=")
+        }
         return {
             arrayToObjact,
             screensPermissions: store.getters.screensPermissions,
@@ -218,7 +283,11 @@ export default {
             remove,
             timeStampFormate,
             globalDateFormat,
-            route
+            route,
+            Buttons:store.getters.timelineReport,
+            timeLineCustomButton,
+            showButton,
+            customDateShow,
         };
     },
 };

@@ -1432,14 +1432,16 @@ Object.assign(emergencyContactForm, demographics)
         })
  function common(){
      store.commit('bitrixFormCheck', false)
+     if(props.isEdit==false){
      store.state.patients.addDemographic = null
-            store.state.patients.patientDetails = null
-            store.state.patients.emergencyContact = null
-            store.state.patients.patientReferralSource = null
-           store.state.patients.responsiblePerson = null
-                        store.state.patients.fetchFromBitrix = ''
-                        store.state.patients.uploadFile = ''
-                        isValueChanged.value = false
+     store.state.patients.patientDetails = null
+     store.state.patients.emergencyContact = null
+     store.state.patients.patientReferralSource = null
+     store.state.patients.responsiblePerson = null
+     store.state.patients.fetchFromBitrix = ''
+     store.state.patients.uploadFile = ''                   
+     }
+     isValueChanged.value = false
                         emergencyContactForm.sameAsPrimary = false
                         responsiblePersonForm.self = false
                         Object.assign(demographics, form)
@@ -1448,9 +1450,8 @@ Object.assign(emergencyContactForm, demographics)
                         Object.assign(emergencyContactForm, emergencyForm)
                          ShowReferral.value = false
                         store.commit("resetCounter");
-                         disableResponsiblePerson.value = false
-                      
-            disableEmergencyContact.value = false
+                         disableResponsiblePerson.value = false   
+                        disableEmergencyContact.value = false
  }
         function closeModal() {
             //current.value = 0
