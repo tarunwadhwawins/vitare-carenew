@@ -1,5 +1,5 @@
 <template>
-	<a-modal width="500px" height="500px" title="Add Flag">
+	<a-modal width="500px" height="500px" :title="title">
     <a-form ref="formRef" :model="addFlagForm" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :sm="18" :xs="24">
@@ -37,6 +37,11 @@ export default {
       const route = useRoute();
       const patientUdid = route.params.udid;
       const formRef = ref();
+    
+      const latestFlag = computed(() => {
+        return store.state.flags.latestFlag
+      })
+      const title = latestFlag.value && latestFlag.value != null ? ref('Update Flag') : ref('Add Flag')
 
       const flagsList = computed(() => {
         return store.state.flags.flagsList
@@ -49,8 +54,10 @@ export default {
 
       const submitForm = () => {
         store.dispatch('addPatientFlag', { patientUdid: patientUdid, data: addFlagForm }).then(() => {
-          store.dispatch('patientFlagsList', patientUdid);
           store.dispatch('patientTimeline', {id:route.params.udid, type:''});
+          store.dispatch('patientFlagsList', patientUdid).then(() => {
+            title.value = latestFlag.value && latestFlag.value != null ? 'Update Flag' : 'Add Flag'
+          })
           formRef.value.resetFields();
           Object.assign(addFlagForm, form);
           emit("closeModal", {
@@ -65,6 +72,7 @@ export default {
 				flagsList,
 				addFlagForm,
 				submitForm,
+				title,
 			}
 		}
 }
