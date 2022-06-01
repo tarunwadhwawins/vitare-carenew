@@ -41,7 +41,7 @@
         <Loader/>
       </a-col>
     </a-row>
-    <AddCriticalNote v-model:visible="criticalModalVisible" :criticalNoteId="criticalNoteId" @closeModal="handleOk" />
+    <AddCriticalNote v-model:visible="criticalModalVisible" :criticalNoteId="criticalNoteId" @closeModal="handleOk" @saveModal="handleCriticalNote($event)" />
   </a-modal>
 </template>
 <script>
@@ -49,7 +49,6 @@ import {
   computed,
   defineComponent,
   watchEffect,
-  defineAsyncComponent,
 	ref
 } from "vue";
 import { useStore } from "vuex";
@@ -59,6 +58,7 @@ import {
   UndoOutlined,
 } from "@ant-design/icons-vue";
 import { warningSwal,actionTrack,arrayToObjact } from "@/commonMethods/commonMethod";
+import AddCriticalNote from "@/components/modals/CriticalNote";
 import { messages } from "@/config/messages";
 import {useRoute} from "vue-router"
 import Loader from "@/components/loader/Loader"
@@ -68,7 +68,7 @@ export default defineComponent({
    DeleteOutlined,
    UndoOutlined,
    Loader,
-   AddCriticalNote: defineAsyncComponent(()=>import("@/components/modals/CriticalNote")),
+   AddCriticalNote,
   },
   setup(props, {emit}) {
     const store = useStore();
@@ -139,12 +139,17 @@ export default defineComponent({
       })
     }
 
+    const handleCriticalNote = (value) => {
+      criticalModalVisible.value  =value
+    }
+
     function handleOk() {
       criticalModalVisible.value = false
     }
 
     return {
       closeModal,
+      handleCriticalNote,
       handleOk,
       criticalModalVisible,
       criticalNoteId,
