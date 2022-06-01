@@ -62,7 +62,7 @@ export default defineComponent({
           criticalNote: criticalNoteDetails.value ? criticalNoteDetails.value.criticalNote : ''
         })
       }
-      else {
+      else if(!props.criticalNoteId) {
         Object.assign(notes, {
           criticalNote: latestCriticalNote.value ? latestCriticalNote.value.criticalNote : ''
         })
@@ -76,15 +76,16 @@ export default defineComponent({
           criticalNoteId: props.criticalNoteId,
           criticalNote: notes,
         }).then(() => {
+          store.dispatch('criticalNotesList', patientId);
+          store.dispatch('patientCriticalNotes', patientId);
+          emit("saveModal", false)
+          emit("closeModal")
           if(patient.value && patientId != null) {
-            store.dispatch('criticalNotesList', patientId);
-            store.dispatch('patientCriticalNotes', patientId);
             store.dispatch('patientTimeline', {
               id:patientId,
               type:''
             });
           }
-          emit("closeModal");
         })
       }
       else {
@@ -93,10 +94,11 @@ export default defineComponent({
           udid:patientId,
           criticalNote:notes
         }).then(() => {
-          emit("closeModal");
+          store.dispatch('criticalNotesList', patientId);
+          store.dispatch('patientCriticalNotes', patientId);
+          emit("saveModal", false)
+          emit("closeModal")
           if(patient.value && patientId != null) {
-            store.dispatch('criticalNotesList', patientId);
-            store.dispatch('patientCriticalNotes', patientId);
             store.dispatch('patientTimeline', {
               id:patientId,
               type:''
