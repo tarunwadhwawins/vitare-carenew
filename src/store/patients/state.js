@@ -64,6 +64,7 @@ export default {
     closeModal:null,
     patientCriticalNotes:null,
     criticalNotesList:null,
+    latestCriticalNote:null,
     familyMembersList:null,
     familyMemberDetails:null,
     physiciansList:null,
@@ -89,5 +90,6 @@ export default {
     patientVitalList:null,
     referralDetail:null,
     startOn:true,
+    criticalNoteDetails:null,
 
 }

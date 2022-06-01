@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, computed,ref } from "vue";
+import { defineComponent, reactive, computed,ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 import {warningSwal } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
@@ -36,36 +36,74 @@ export default defineComponent({
 		patientUdid: {
       type: Number
     },
+		criticalNoteId: {
+      type: Number
+    },
 	},
   setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
     const patientId = props.patientUdid ? reactive(props.patientUdid) : route.params.udid
     const notes = reactive({
-      criticalNote:"",
+      criticalNote: "",
     });
 
+    const criticalNoteDetails = computed(() => {
+      return store.state.patients.criticalNoteDetails
+    })
+
+    const latestCriticalNote = computed(() => {
+      return store.state.patients.latestCriticalNote
+    })
+
+    watchEffect(() => {
+      if(props.criticalNoteId) {
+        Object.assign(notes, {
+          criticalNote: criticalNoteDetails.value ? criticalNoteDetails.value.criticalNote : ''
+        })
+      }
+      else {
+        Object.assign(notes, {
+          criticalNote: latestCriticalNote.value ? latestCriticalNote.value.criticalNote : ''
+        })
+      }
+    })
+
     function addCriticalNote() {
-      store.state.patients.patientCriticalNotes= ''
-      store.dispatch("addCriticalNote", {
-        udid:patientId,
-        criticalNote:notes
-      }).then(() => {
-        store.dispatch('patientCriticalNotes', patientId);
-        store.dispatch('patientTimeline', {
-          id:patientId,
-          type:''
-        });
-        emit("closeModal");
-      })
-      setTimeout(() => {
-        if(patient.value && patientId != null) {
-          reset();
-          store.dispatch('criticalNotesList', patientId);
-          emit("saveModal", false);
-        }
-      }, 2000);
-      
+      if(props.criticalNoteId) {
+        store.dispatch("updateCriticalNote", {
+          patientId: patientId,
+          criticalNoteId: props.criticalNoteId,
+          criticalNote: notes,
+        }).then(() => {
+          if(patient.value && patientId != null) {
+            store.dispatch('criticalNotesList', patientId);
+            store.dispatch('patientCriticalNotes', patientId);
+            store.dispatch('patientTimeline', {
+              id:patientId,
+              type:''
+            });
+          }
+          emit("closeModal");
+        })
+      }
+      else {
+        store.state.patients.patientCriticalNotes= ''
+        store.dispatch("addCriticalNote", {
+          udid:patientId,
+          criticalNote:notes
+        }).then(() => {
+          emit("closeModal");
+          if(patient.value && patientId != null) {
+            store.dispatch('criticalNotesList', patientId);
+            store.dispatch('patientCriticalNotes', patientId);
+            store.dispatch('patientTimeline', {
+              id:patientId,
+              type:''
+            });
+          }
+        })
+      }
     }
 
     const patient = computed(() => {
@@ -86,6 +124,7 @@ export default defineComponent({
     const checkFieldsData = computed(()=>{
       return store.state.common.checkChangeInput;
     })
+
     function closeModal() {
       if(checkFieldsData.value){
         warningSwal(messages.modalWarning).then((response) => {
@@ -95,6 +134,7 @@ export default defineComponent({
             store.commit('checkChangeInput',false)
           } else {
             emit("saveModal", true);
+            emit("closeModal");
           }
         });
       }

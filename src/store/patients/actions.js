@@ -1439,6 +1439,33 @@ export const addCriticalNote = async ({
   })
 }
 
+export const updateCriticalNote = async ({
+  commit
+}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("put", `${API_ENDPOINTS['patient']}/${data.patientId}/criticalNote/${data.criticalNoteId}`, null, data.criticalNote).then((response) => {
+    commit('closeModal', true)
+    successSwal(response.data.message)
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 500) {
+      // errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 401) {
+      // commit('errorMsg', error.response.data.message)
+      commit('loadingStatus', false)
+    }
+  })
+}
+
 export const patientCriticalNotes = async ({
   commit
 }, patientUdid) => {
@@ -1455,11 +1482,11 @@ export const patientCriticalNotes = async ({
   })
 }
 
-export const readCriticalNote = async ({
+export const readUnreadCriticalNote = async ({
   commit
 }, data) => {
-  await serviceMethod.common("put", API_ENDPOINTS['patient'] + '/' + data.patientUdid + '/' + API_ENDPOINTS['criticalNote'] + '/' + data.criticalNoteUdid, null, {
-    isRead: 1
+  await serviceMethod.common("put", API_ENDPOINTS['patient'] + '/' + data.patientUdid + '/' + API_ENDPOINTS['criticalNote'] + '/' + data.criticalNoteId, null, {
+    isRead: data.isRead
   }).catch((error) => {
     if (error.response) {
       errorLogWithDeviceInfo(error.response);
@@ -1477,6 +1504,32 @@ export const criticalNotesList = async ({
   commit('loadingStatus', true)
   await serviceMethod.common("get", `${API_ENDPOINTS['patient']}/${id}/criticalNote`, null, null).then((response) => {
     commit('criticalNotesList', response.data.data);
+    commit('latestCriticalNote', response.data.data);
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 500) {
+      // errorSwal(error.response.data.message)
+      commit('loadingStatus', false)
+    } else if (error.response.status === 401) {
+      // commit('errorMsg', error.response.data.message)
+      commit('loadingStatus', false)
+    }
+  })
+}
+export const criticalNoteDetails = async ({
+  commit
+}, data) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("get", `${API_ENDPOINTS['patient']}/${data.patientUdid}/criticalNote/${data.criticalNoteId}`, null, null).then((response) => {
+    commit('criticalNoteDetails', response.data.data);
     commit('loadingStatus', false)
   }).catch((error) => {
     if (error.response) {
