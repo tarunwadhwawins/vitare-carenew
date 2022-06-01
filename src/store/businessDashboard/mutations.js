@@ -3,13 +3,16 @@ import { yaxis, dataLabels, plotOptions, annotations } from '../../commonMethods
 export const cptCodeSuccess = (state, data) => {
 	let cptResult = [];
 	data.data.forEach((element) => {
+if(element.name!="General"){
 		let object = data.cpt.find((e) => e.text == element.name);
 
 		if (object == undefined) {
+			
 			cptResult.push({ total: 0, text: element.name });
 		} else {
 			cptResult.push(object);
 		}
+	}
 	});
 
 	state.cptCodeValue = {
