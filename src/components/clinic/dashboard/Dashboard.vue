@@ -4,9 +4,7 @@
         <a-col :span="24">
             <h2 class="pageTittle">
                 Clinical Dashboard
-                <div class="filter" v-if="timeline && Buttons">
-                    <a-button v-for="item in removeByAttr(timeline , 126)" :key="item.id" @click="showButton(item.id)" :class="Buttons.globalCodeId== item.id ? 'active' : ''"> {{ item.name }}</a-button>
-                </div>
+                 <DateFilter :Buttons="Buttons"  @clickButtons="showButton($event)" :custom="false" commit="timelineSuccess"/>
             </h2>
         </a-col>
         <a-col :span="24">
@@ -81,6 +79,7 @@ import EscaltionTable from "@/components/common/tables/EscalationTable"
 import EscaltionViewModal from "@/components/escalations/EscalationViewModal"
 import TaskTable from "@/components/tasks/TaskTable";
 import TasksModal from "@/components/modals/TasksModal";
+  import DateFilter from "@/components/common/DateFilter.vue"
 const columnData = [{
         title: "Name",
         dataIndex: "patientName",
@@ -177,7 +176,8 @@ export default {
         EscaltionTable,
         EscaltionViewModal,
         TaskTable,
-        TasksModal
+        TasksModal,
+        DateFilter
     },
 
     setup() {
@@ -197,15 +197,7 @@ export default {
 
             escaltionViewModal.value = value;
         };
-        const timeline =  store.getters.timeline
-    const  removeByAttr = (arr, attr) => {
-
-
-const findIndex = arr.findIndex(a => a.id === attr)
-
-  findIndex !== -1 && arr.splice(findIndex , 1)
-  return arr
-}
+ 
         function apiCall(data) {
             let from = moment()
             let to = moment()
@@ -285,13 +277,10 @@ const findIndex = arr.findIndex(a => a.id === attr)
             localStorage.clear();
         }
 
-        function showButton(id) {
-            store.dispatch("timeLine", {
-                id: id,
-                commit: 'timelineSuccess'
-            }).then(() => {
+        function showButton() {
+          
                 apiCall(timeLineButton.value)
-            })
+          
 
         }
         ///task list
@@ -327,7 +316,7 @@ const findIndex = arr.findIndex(a => a.id === attr)
             appointmentCount: store.getters.appointmentCount,
             Buttons: store.getters.dashboardTimeLineButton,
             showButton,
-            timeline,
+            
             widgetsPermissions: store.getters.widgetsPermissions,
             escalationRecord: store.getters.escalationRecord,
             totalPatients: store.getters.totalPatientcount,
@@ -342,7 +331,7 @@ const findIndex = arr.findIndex(a => a.id === attr)
             tasksListColumns,
             taskApiCall,
             screensPermissions: store.getters.screensPermissions,
-            removeByAttr
+            
         };
     },
 };

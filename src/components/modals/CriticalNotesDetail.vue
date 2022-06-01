@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="1000px" title="Pin Details" centered :maskClosable="false">
+  <a-modal width="1000px" title="Pin Details" centered :maskClosable="false" @cancel="closeModal">
     <a-row :gutter="24">
       <a-col :sm="24" :xs="24">
         <a-table  rowKey="id"  :columns="notesColumns" :data-source="criticalNotesList" :pagination="false">
@@ -12,36 +12,69 @@
           </a-popover>
         </template>
         <template #action="{record}">
-        <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,313)">
+          <a-tooltip placement="right" v-if="arrayToObjact(screensPermissions,313)">
             <template #title>
-                <span>{{$t('global.delete')}}</span>
+              <span>{{$t('global.edit')}}</span>
             </template>
-            <a class="icons" @click="deleteDocument(record.id);actionTrack(paramsId,313,'patient')">
-                <DeleteOutlined /></a>
-        </a-tooltip>
+            <a class="icons" @click="editCriticalNote(record.id);actionTrack(paramsId,313,'patient')">
+              <EditOutlined />
+            </a>
+          </a-tooltip>
+          <a-tooltip placement="right" v-if="record.isRead == 0 && arrayToObjact(screensPermissions,313)">
+            <template #title>
+              <span>{{$t('global.delete')}}</span>
+            </template>
+            <a class="icons" @click="readUnreadCriticalNote(record.id, 1);actionTrack(paramsId,313,'patient')">
+              <DeleteOutlined />
+            </a>
+          </a-tooltip>
+          <a-tooltip placement="right" v-if="record.isRead == 1 && arrayToObjact(screensPermissions,313)">
+            <template #title>
+              <span>{{$t('global.restore')}}</span>
+            </template>
+            <a class="icons" @click="readUnreadCriticalNote(record.id, 0);actionTrack(paramsId,313,'patient')">
+              <UndoOutlined />
+            </a>
+          </a-tooltip>
         </template>
         </a-table>
         <Loader/>
       </a-col>
     </a-row>
+    <AddCriticalNote v-model:visible="criticalModalVisible" :criticalNoteId="criticalNoteId" @closeModal="handleOk" @saveModal="handleCriticalNote($event)" />
   </a-modal>
 </template>
 <script>
-import { computed, defineComponent,watchEffect } from "vue";
+import {
+  computed,
+  defineComponent,
+  watchEffect,
+	ref
+} from "vue";
 import { useStore } from "vuex";
-import {DeleteOutlined} from "@ant-design/icons-vue";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  UndoOutlined,
+} from "@ant-design/icons-vue";
 import { warningSwal,actionTrack,arrayToObjact } from "@/commonMethods/commonMethod";
+import AddCriticalNote from "@/components/modals/CriticalNote";
 import { messages } from "@/config/messages";
 import {useRoute} from "vue-router"
 import Loader from "@/components/loader/Loader"
 export default defineComponent({
   components: {
+   EditOutlined,
    DeleteOutlined,
-   Loader
+   UndoOutlined,
+   Loader,
+   AddCriticalNote,
   },
-  setup(props, { emit }) {
+  setup(props, {emit}) {
     const store = useStore();
     const route = useRoute();
+    const criticalModalVisible = ref(false);
+    const criticalNoteId = ref(null);
 
     watchEffect(() => {
       if(route.name == 'PatientSummary') {
@@ -73,35 +106,61 @@ export default defineComponent({
       },
     ];
 
-    function deleteDocument(id) {
-      warningSwal(messages.deleteWarning).then((response) => {
+    function readUnreadCriticalNote(id, isRead) {
+      const restoreWarning = isRead ? messages.deleteWarning : messages.restoreWarning
+      warningSwal(restoreWarning).then((response) => {
         if (response == true) {
-          store.dispatch("criticalNotesDelete", {
-            id: route.params.udid,
-            documentId: id,
+          store.dispatch('readUnreadCriticalNote', {
+            patientUdid: route.params.udid,
+            criticalNoteId: id,
+            isRead: isRead,
           }).then(() => {
             store.dispatch('criticalNotesList', route.params.udid);
-            if(criticalNotesList.value.length <= 1) {
-              emit('closeModal', {
-                modal: 'criticalNotesDetails',
-                value: false
-              });
-            }
             store.dispatch('patientCriticalNotes', route.params.udid)
-          })
-          store.state.patients.patientCriticalNotes=''
+          });
         }
       });
     }
 
+    function editCriticalNote (id) {
+      criticalNoteId.value = id
+      store.dispatch('criticalNoteDetails', {
+        patientUdid: route.params.udid,
+        criticalNoteId: id,
+      }).then(() => {
+        criticalModalVisible.value = true
+      })
+    }
+
+    const closeModal = () => {
+      emit('closeModal', {
+        modal: 'criticalNotesDetails',
+        value: false
+      })
+    }
+
+    const handleCriticalNote = (value) => {
+      criticalModalVisible.value  =value
+    }
+
+    function handleOk() {
+      criticalModalVisible.value = false
+    }
+
     return {
+      closeModal,
+      handleCriticalNote,
+      handleOk,
+      criticalModalVisible,
+      criticalNoteId,
       arrayToObjact,
       screensPermissions: store.getters.screensPermissions,
       actionTrack,
       paramsId:route.params.udid,
-      deleteDocument,
+      readUnreadCriticalNote,
       criticalNotesList,
       notesColumns,
+      editCriticalNote,
     };
   },
 });
@@ -120,4 +179,7 @@ export default defineComponent({
   }
   th.criticalNoteAction, td.criticalNoteAction { text-align: center !important; }
 
+span.anticon.anticon-undo {
+  font-size: 20px !important;
+}
 </style>
