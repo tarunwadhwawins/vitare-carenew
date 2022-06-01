@@ -160,7 +160,7 @@ props:{
                    
 
                         store.dispatch("timeLogReportList", date + '&filter='+filter+
-                        "&page=" + current_page + store.getters.orderTable.value.data).then(() => {
+                        "&page=" + current_page + store.getters.orderTable.value.data+store.getters.searchTable.value).then(() => {
                             loadMoredata();
                         })
 
@@ -201,13 +201,13 @@ props:{
                     page: pag,
                     filters: filters
                 })
-                store.dispatch("timeLogReportList", date +'&filter='+filter+ '&search=' + orderParam)
+                store.dispatch("timeLogReportList", date +'&filter='+filter+ store.getters.searchTable.value + orderParam)
 
             } else {
                 store.dispatch('orderTable', {
                     data: '&orderField=&orderBy='
                 })
-                store.dispatch("timeLogReportList", date +'&filter='+filter+ '&search=' + store.getters.orderTable.value.data)
+                store.dispatch("timeLogReportList", date +'&filter='+filter+ store.getters.searchTable.value + store.getters.orderTable.value.data)
             }
         }
 

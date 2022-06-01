@@ -179,11 +179,13 @@ const iconLoading = ref(false)
 onMounted(()=>{
   cancelButton.value = ''
  
+ 
 })
 
     const button = ref(1);
 
     function showButton(value) {
+      console.log("value",value)
       button.value = value;
     }
     
