@@ -137,6 +137,7 @@ export const logoutUser = async ({
       localStorage.removeItem('widgetsPermission');
       localStorage.removeItem('fireBaseToken');
       localStorage.removeItem('expiresIn');
+      localStorage.removeItem('checkLogin');
       //router.push('/');
       setTimeout(() => {
         router.go();
