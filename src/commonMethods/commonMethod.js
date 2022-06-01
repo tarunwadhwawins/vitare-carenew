@@ -11,7 +11,7 @@ export function dateAndTimeFormate(timeStamp, format) {
 	var date = moment.unix(new Date(timeStamp));
 	return date.format(format);
 }
-export const globalDateFormat = "MMM DD,YYYY"
+export const globalDateFormat = "MMM DD, YYYY"
 export function errorLogWithDeviceInfo(errorMessage) {
 	let deviceInfo = Bowser.parse(window.navigator.userAgent)
 	store.dispatch('errorLogWithDeviceInfo', { deviceInfo: JSON.stringify(deviceInfo), errorMessage: JSON.stringify(errorMessage) })

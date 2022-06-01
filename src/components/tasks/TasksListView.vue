@@ -16,7 +16,7 @@
 			<StaffDropDown mode="multiple" @handleStaffChange="handleStaffChange($event, 'assignedBy')" placeholder="Reported By" />
 		</a-col>
 		<a-col :span="6">
-			<a-range-picker @change="handleStaffChange($event, 'dateRange')" :format="globalDateFormat" value-format="YYYY-MM-DD" size="large" style="width: 100%" />
+			<DatePicker @onChange="handleStaffChange($event, 'dateRange')" v-model:value="dateRange" datePickerType="range" />
 		</a-col>
 	</a-row>
 	
@@ -40,6 +40,7 @@ import TaskTable from "@/components/tasks/TaskTable";
 import TableLoader from "@/components/loader/TableLoader";
 import { arrayToObjact,exportExcel,timeStampFormate,globalDateFormat } from "@/commonMethods/commonMethod";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
+import DatePicker from "@/components/common/DatePicker";
 import { useRoute, useRouter } from 'vue-router';
 import { timeStamp } from '../../commonMethods/commonMethod';
 const tasksListColumns = [{
@@ -128,6 +129,7 @@ export default {
         TableLoader,
         ExportToExcel,
         StaffDropDown,
+        DatePicker,
     },
     setup(props, {
         emit
@@ -159,9 +161,9 @@ export default {
 				const toDateValue = ref("")
         const handleStaffChange = (value, type) => {
 					if(type == 'dateRange') {
-						console.log('dateRange', value)
-						fromDateValue.value = value.length > 0 ? `fromDate=${timeStamp(value[0])}` : ''
-						toDateValue.value = value.length > 0 ? `&toDate=${timeStamp(value[1])}` : ''
+						let newValue = value.value
+						fromDateValue.value = newValue.length > 0 ? `fromDate=${timeStamp(newValue[0])}` : ''
+						toDateValue.value = newValue.length > 0 ? `&toDate=${timeStamp(newValue[1])}` : ''
 					}
 					else if(type == 'assignedBy') {
 						assignedByValue.value = value.length > 0 ? `&assignedBy=${value},` : ''
@@ -264,6 +266,7 @@ export default {
             globalDateFormat,
             tasksListColumns,
 						handleStaffChange,
+						dateRange: ref(),
         };
     },
 };
