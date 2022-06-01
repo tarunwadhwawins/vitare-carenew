@@ -75,11 +75,7 @@ export default defineComponent({
     };
 
     const handlePatientChange = (val) => {
-      Services.singleDropdownSearch(
-        val,
-        (d) => (patientData.value = d),
-        "patient"
-      );
+      // Services.singleDropdownSearch( val, (d) => (patientData.value = d), "patient" );
       context.emit("handlePatientChange", val);
     };
 

@@ -78,7 +78,7 @@ export default defineComponent({
     };
 
     const handleStaffChange = (val) => {
-      Services.singleDropdownSearch(val, (d) => (staffData.value = d), "staff");
+      // Services.singleDropdownSearch(val, (d) => (staffData.value = d), "staff");
       if (props.checkSameAsStaff) {
         context.emit("handlePatientChange", val);
       } else {
