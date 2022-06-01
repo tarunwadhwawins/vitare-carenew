@@ -1,5 +1,17 @@
 <template>
-<a-input-search v-model:value="value" :placeholder="palcholder?palcholder:'Search...'" style="width: 100%"  @input="handleChange" size="large" />
+ <a-select
+ v-if="mode"
+    v-model:value="value"
+    
+    :mode="mode"
+    style="width: 100%"
+    placeholder="Search..."
+    @change="handle" 
+    size="large"
+  >
+  <template #suffixIcon><smile-outlined /></template>
+  </a-select>
+<a-input-search v-else v-model:value="value" :placeholder="palcholder?palcholder:'Search...'" style="width: 100%"  @input="handleChange" size="large" />
 </template>
 
 <script>
@@ -8,6 +20,7 @@ import {
     ref,
 
 } from 'vue';
+import { SmileOutlined } from '@ant-design/icons-vue';
 import { useRoute } from 'vue-router';
 import { useStore } from "vuex"
 export default defineComponent({
@@ -17,7 +30,11 @@ export default defineComponent({
             type: String
         },
         palcholder:String,
-        otherParam:String
+        otherParam:String,
+        mode:String
+    },
+    components:{
+        SmileOutlined
     },
     setup(props) {
       const store = useStore()
@@ -31,8 +48,11 @@ export default defineComponent({
                 timeout = null;
             }
             search.value = value.target.value;
-
-            function fake() {
+fake()
+            
+            timeout = setTimeout(fake, 600);
+        }
+        function fake() {
                 let ordring = store.getters.orderTable.value
                
                 let filter= route.query.filter ? '&filter='+route.query.filter : '&filter='
@@ -46,12 +66,14 @@ export default defineComponent({
                 })
                 store.dispatch("searchTable",'&search='+search.value)
             }
-            timeout = setTimeout(fake, 600);
-        };
-
+   const handle= value => {
+      search.value = value
+      fake()
+    }
         return {
             value: ref(undefined),
             handleChange,
+            handle
         };
     },
 

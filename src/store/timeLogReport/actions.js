@@ -7,7 +7,7 @@ export const timeLogReportList = async ({ commit }, page) => {
 	commit('loadingTableStatus', true)
 	let link = page ? "timeLog" + page : "timeLog"
 	await ServiceMethodService.common("get", link, null, null).then((response) => {
-		commit('timeLogReportList', response.data);
+		commit('timeLog', response.data);
 		commit('loadingTableStatus', false)
 	}).catch((error) => {
 		if (error.response) {

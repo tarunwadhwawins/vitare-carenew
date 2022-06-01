@@ -12,7 +12,7 @@
                         <a-col :span="24">
                             <h2 class="pageTittle">{{$t('timeLogReport.auditTimeLog')}}
                                
-                            <DateFilter :Buttons="Buttons" :timeline="timeLineCustomButton" @clickButtons="showButton($event)"/>
+                            <DateFilter :Buttons="Buttons"  @clickButtons="showButton($event)" :custom="true" commit="timelineReport"/>
                             </h2>
                         </a-col>
                     </a-row>
@@ -55,8 +55,13 @@
                                                     </a-row>
                                                 </a-form>
                         </a-col>
-                          <a-col :sm="4" :xs="24">
-                        <div class="text-right mt-28 mb-24">
+                        </a-row>
+                        <a-row>
+                        <a-col :span="12">
+        <SearchField endPoint="timeLog" v-if="arrayToObjact(screensPermissions, 65)" mode="tags" />
+    </a-col>
+                          <a-col :span="12">
+        <div class="text-right mb-24">
                             <ExportToExcel @click="exportExcel('patientTimelog_report',filtterDates)" v-if="arrayToObjact(screensPermissions, 333)" />
                         </div>
                     </a-col>
@@ -95,6 +100,7 @@ import {
 } from "vuex";
 import TimeLogTable from "./TimeLogTable"
 import moment from "moment"
+import SearchField from "@/components/common/input/SearchField";
 import { useRoute, useRouter } from 'vue-router';
 export default {
     components: {
@@ -102,7 +108,8 @@ export default {
         Sidebar,
         TimeLogTable,
         ExportToExcel,
-        DateFilter
+        DateFilter,
+        SearchField
     },
     setup() {
         const store = useStore();
@@ -122,16 +129,16 @@ export default {
         function dateChange() {
             dateSelect.value = moment(auditTimeLog.endDate).add(1, 'day')
         }
-      const timeLineCustomButton = ref([])
+      //const timeLineCustomButton = ref([])
       watchEffect(()=>{
-          if(store.getters.timeline.value){
-                timeLineCustomButton.value = store.getters.timeline.value
-                let findIndex = timeLineCustomButton.value.findIndex(a => a.id === 126)
+        //   if(store.getters.timeline.value){
+        //         timeLineCustomButton.value = store.getters.timeline.value
+        //         let findIndex = timeLineCustomButton.value.findIndex(a => a.id === 126)
                 
-                if(findIndex==-1){
-              timeLineCustomButton.value.push({ "id": 126, "globalCodeCategoryId": 46, "globalCodeCategory": "Timeline", "name": "Custom", "description": "Timeline", "isActive": 1, "predefined": 1, "usedCount": 0 })
-                }
-            }
+        //         if(findIndex==-1){
+        //       timeLineCustomButton.value.push({ "id": 126, "globalCodeCategoryId": 46, "globalCodeCategory": "Timeline", "name": "Custom", "description": "Timeline", "isActive": 1, "predefined": 1, "usedCount": 0 })
+        //         }
+        //     }
       })
         onMounted(() => {
             
@@ -176,7 +183,7 @@ export default {
         function updateAuditTime() {
             if (auditTimeLog.startDate && auditTimeLog.endDate) {
 
-                //store.getters.timeLogReports.value.timeLogReportList = ""
+                //store.getters.timeLogReports.value.timeLog = ""
                 store.getters.timeLogReports.value.timeLogeMeta = ''
                 startDate.value = auditTimeLog.startDate ? (moment(auditTimeLog.startDate)).format("YYYY-MM-DD") : ''
                 endDate.value = auditTimeLog.endDate ? (moment(auditTimeLog.endDate)).format("YYYY-MM-DD") : ''
@@ -235,18 +242,17 @@ export default {
         }
          function showButton(id) {
              if(id==126){
-                 customDateShow.value = true
-store.state.timeLogReport.timelineReport = { "globalCodeId": "126", "conditions": "-", "number": "6", "intervalType": "day", "startDate": "2022-05-31", "endDate": "2022-05-25" }
+customDateShow.value = true
              }else{
-                 customDateShow.value = false
-store.dispatch("timeLine", {id:id,commit:'timelineReport'}).then(() => {
-                apiCall(timeLineButton.value)
-            })
+customDateShow.value = false
+apiCall(timeLineButton.value)
              }
+           
             
 
         }
         function apiCall(data) {
+            
             let from = moment()
             let to = moment()
             if (data.globalCodeId == 122) {
@@ -266,7 +272,7 @@ store.dispatch("timeLine", {id:id,commit:'timelineReport'}).then(() => {
             }
         
              store.dispatch('auditTimeLogFilterDates', "?fromDate=" + to.format("YYYY-MM-DD") + "&toDate=" + from.format("YYYY-MM-DD"))
-                store.dispatch("timeLogReportList", "?fromDate=" + to.format("YYYY-MM-DD") + "&toDate=" + from.format("YYYY-MM-DD") + "&page=")
+             store.dispatch("timeLogReportList", "?fromDate=" + to.format("YYYY-MM-DD") + "&toDate=" + from.format("YYYY-MM-DD") + "&page=")
         }
         return {
             arrayToObjact,
@@ -281,7 +287,7 @@ store.dispatch("timeLine", {id:id,commit:'timelineReport'}).then(() => {
             filtterDates: store.getters.auditTimeLogFilterDates,
             value1: ref(),
             size: ref("large"),
-            timeLogReports: store.getters.timeLogReports.value,
+            timeLogReports: store.getters.timeLogReports,
             scrolller,
             clearData,
             remove,
@@ -289,7 +295,6 @@ store.dispatch("timeLine", {id:id,commit:'timelineReport'}).then(() => {
             globalDateFormat,
             route,
             Buttons:store.getters.timelineReport,
-            timeLineCustomButton,
             showButton,
             customDateShow,
         };
