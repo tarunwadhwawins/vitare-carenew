@@ -5,7 +5,7 @@
         <span v-for="tag,i in text.text.data" :key="tag.id">{{i==0?' ':','}}{{ tag.tag}}</span>
     </template>
     <template #document="text">
-          <a :href="text.text" target="_blank" >
+          <a :href="text.text" download>
             <FileOutlined />
           </a>
     </template>
