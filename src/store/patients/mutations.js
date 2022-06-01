@@ -995,6 +995,10 @@ export const criticalNotesList = (state, data) => {
   state.criticalNotesList = data
 }
 
+export const latestCriticalNote = (state, data) => {
+  state.latestCriticalNote = data[0]
+}
+
 export const familyMembersList = (state, responsiblePersons) => {
   state.familyMembersList = responsiblePersons.map(member => {
     member.isPrimary = member.isPrimary ? 'Yes' : 'No'
@@ -1103,4 +1107,8 @@ export const referralDetail = (state, data) => {
 
 export const startOn = (state, data) => {
   state.startOn = data
+}
+
+export const criticalNoteDetails = (state, data) => {
+  state.criticalNoteDetails = data
 }
