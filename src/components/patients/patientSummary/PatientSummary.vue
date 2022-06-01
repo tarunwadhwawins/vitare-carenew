@@ -97,6 +97,10 @@ import {
 } from '@/commonMethods/commonMethod';
 const value = ref(dayjs("12:08", "HH:mm"));
 const cancelButton = ref('')
+function clearEvent(event){
+        event.returnValue = '';
+      
+    }
 export default {
   components: {
     Header,
@@ -316,17 +320,9 @@ onMounted(()=>{
       store.commit('startOn', false);
     }
 
-    function clearEvent(event){
-        event.returnValue = '';
-      
-    }
+    
 
-    onUnmounted(() => {
-      clearInterval(timer.value);
-      localStorage.removeItem('timeLogId')
-
-      window.removeEventListener('beforeunload', clearEvent); 
-    })
+    
 
     const isAutomatic = ref(false);
 
@@ -411,7 +407,14 @@ onMounted(()=>{
     };
     
     onBeforeMount(() => {
-      window.addEventListener('beforeunload',clearEvent);
+        window.addEventListener('beforeunload',clearEvent);
+    })
+
+
+    onUnmounted(() => {
+      clearInterval(timer.value);
+      localStorage.removeItem('timeLogId')
+      window.removeEventListener('beforeunload', clearEvent); 
     })
 
     const conferenceId = computed(() => {
@@ -495,20 +498,21 @@ onMounted(()=>{
 
     
   },
+
   beforeRouteLeave (to, from, next) {
-    cancelButton.value = to.fullPath
-    //console.log()
+  cancelButton.value = to.fullPath
    var button= document.getElementById("timer")
-   
-   if(button){
-     button.click()
-     console.log(to, from)
+   if(to.fullPath!='/logout'){
+     if(button){
+       button.click()
+     }else{
+       next()
+     }
    }else{
-     next()
-   }
-    
-    
-  },
+      window.removeEventListener('beforeunload', clearEvent);
+       next()
+     }
+    }
   
 };
 </script>
