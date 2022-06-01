@@ -4,7 +4,7 @@ export const timelineReport = (state, data) => {
 
   state.timelineReport = data
 }
-export const timeLogReportList = async (state, data) => {
+export const timeLog = async (state, data) => {
   state.timeLogeMeta = data.meta.pagination
   state.timeLogReportColumns = [
     {

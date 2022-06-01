@@ -6,7 +6,7 @@
       </span>
     </template>
     <template #document="{record}">
-      <a :href="record.document" target="_blank">
+      <a :href="record.document" download>
         <FileOutlined />
       </a>
     </template>

@@ -4,9 +4,10 @@
         <a-col :span="24">
             <h2 class="pageTittle">
                 Business Dashboard
-                <div class="filter" v-if="timeline && Buttons">
+                <DateFilter :Buttons="Buttons"  @clickButtons="showButton($event)" :custom="false" commit="timelineSuccess"/>
+                <!-- <div class="filter" v-if="timeline && Buttons">
                     <a-button v-for="item in removeByAttr(timeline , 126)" :key="item.id" @click="showButton(item.id)" :class="Buttons.globalCodeId== item.id ? 'active' : ''"> {{item.name}}</a-button>
-                </div>
+                </div> -->
             </h2>
         </a-col>
         
@@ -41,12 +42,14 @@
   import { useStore } from 'vuex'
   import Loader from "@/components/loader/Loader";
   import moment from "moment"
+  import DateFilter from "@/components/common/DateFilter.vue"
   
 export default {
     components: {
 
         ApexChart,
-        Loader
+        Loader,
+        DateFilter
     },
 
     setup() {
@@ -124,23 +127,23 @@ export default {
             localStorage.clear();
         }
 
-        function showButton(id) {
-            store.dispatch("timeLine", {id:id,commit:'timelineSuccess'}).then(() => {
+        function showButton() {
+            
                 apiCall(timeLineButton.value)
-            })
+
 
         }
-        const timeline = store.getters.timeline
-const  removeByAttr = (arr, attr) => {
+//         const timeline = store.getters.timeline
+// const  removeByAttr = (arr, attr) => {
 
 
-const findIndex = arr.findIndex(a => a.id === attr)
+// const findIndex = arr.findIndex(a => a.id === attr)
 
-  findIndex !== -1 && arr.splice(findIndex , 1)
-  return arr
-}
+//   findIndex !== -1 && arr.splice(findIndex , 1)
+//   return arr
+// }
         return {
-            removeByAttr,
+          //  removeByAttr,
             grid:store.getters.grid,
             
             cptCodeValue:store.getters.cptCodeValue,
@@ -150,7 +153,7 @@ const findIndex = arr.findIndex(a => a.id === attr)
             
             Buttons:store.getters.dashboardTimeLineButton,
             showButton,
-            timeline,
+            //timeline,
             widgetsPermissions:store.getters.widgetsPermissions,
 referalCountRecord:store.getters.referalCountRecord,
 callStatus:store.getters.callStatus,

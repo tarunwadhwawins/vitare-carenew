@@ -2,7 +2,7 @@
 <div class="patientTable">
     <a-table rowKey="id" :columns="meta.column" :data-source="meta.patientList" :scroll="{ x: 1500,y:'calc(100vh - 470px)' }" :pagination="false" @change="handleTableChange">
         <template #firstName="{ text, record }" v-if="arrayToObjact(screensPermissions, 63)">
-            <router-link :to="{ name: 'PatientSummary', params: { udid: record.id } }">{{ text }}</router-link>
+            <router-link :to="{ name: 'PatientSummary', params: { udid: record.id },query:{filter:filter} }">{{ text }}</router-link>
 
         </template>
         <template #firstName="{ text }" v-else>
@@ -88,11 +88,11 @@ const meta = store.getters.patientsRecord.value;
 let data = [];
 const route = useRoute();
 
-let filter = "";
+const  filter = ref();
 let date = "";
 
 function checkDate() {
-    filter = route.query.filter ? route.query.filter : "";
+    filter.value = route.query.filter ? route.query.filter : "";
     date =
         route.query.fromDate && route.query.toDate ?
         "&fromDate=" +
@@ -126,7 +126,7 @@ onMounted(() => {
                         current_page +
                         date +
                         "&filter=" +
-                        filter +
+                        filter.value +
                         store.getters.searchTable.value +
                         store.getters.orderTable.value.data
                     )
@@ -167,7 +167,7 @@ const handleTableChange = (pag, filters, sorter) => {
             "?page=" +
             date +
             "&filter=" +
-            filter +
+            filter.value +
             store.getters.searchTable.value +
             orderParam
         );
@@ -180,7 +180,7 @@ const handleTableChange = (pag, filters, sorter) => {
             "?page=" +
             date +
             "&filter=" +
-            filter +
+            filter.value +
             store.getters.searchTable.value +
             store.getters.orderTable.value.data
         );
@@ -236,6 +236,7 @@ return {
     handleTableChange,
     deletePatients,
     updateStatus,
+    filter
 };
 },
 });
