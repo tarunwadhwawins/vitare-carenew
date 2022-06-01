@@ -126,7 +126,7 @@ export default {
       return store.state.patients.patientTimeline;
     })
     watchEffect(()=>{
-if(route.query.filter=='Critical' && patientTimeline.value && check.value){
+if(route.query.filter && patientTimeline.value && check.value){
 
 tabvalue.tab= [4,7]
    store.dispatch('patientTimeline', {
