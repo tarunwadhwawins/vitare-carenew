@@ -5,6 +5,7 @@
 			<a-tag v-if="route.query.toDate && route.query.fromDate" closable @close="remove('date')">{{timeStampFormate(route.query.fromDate,globalDateFormat) }} To {{timeStampFormate(route.query.toDate,globalDateFormat)}}</a-tag>
 		</div>
 	</a-row>
+
 	<a-row :gutter="24">
 		<a-col :span="6">
 			<SearchField endPoint="task" />
@@ -20,7 +21,7 @@
 		</a-col>
 	</a-row>
 	
-	<a-row :gutter="24">
+	<a-row :gutter="24" class="tasktable">
 		<a-col :span="24">
 			<div class="text-right mb-24">
 				<ExportToExcel @click="exportExcel('task_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions, 118)" />
@@ -28,7 +29,9 @@
 		</a-col>
 		<TaskTable @is-Edit="editTask($event)" :tasksListColumns="tasksListColumns"></TaskTable>
 	</a-row>
+
 	<TableLoader />
+
 </template>
 
 <script>
@@ -271,3 +274,10 @@ export default {
     },
 };
 </script>
+
+<style>
+.tasktable {
+	position: relative;
+	top: 25px;
+}
+</style>
