@@ -5,7 +5,7 @@
             <h2 class="pageTittle">
                 Business Dashboard
                 <div class="filter" v-if="timeline && Buttons">
-                    <a-button v-for="item in timeline" :key="item.id" @click="showButton(item.id)" :class="Buttons.globalCodeId== item.id ? 'active' : ''"> {{item.name}}</a-button>
+                    <a-button v-for="item in removeByAttr(timeline , 126)" :key="item.id" @click="showButton(item.id)" :class="Buttons.globalCodeId== item.id ? 'active' : ''"> {{item.name}}</a-button>
                 </div>
             </h2>
         </a-col>
@@ -130,8 +130,17 @@ export default {
             })
 
         }
+        const timeline = store.getters.timeline
+const  removeByAttr = (arr, attr) => {
 
+
+const findIndex = arr.findIndex(a => a.id === attr)
+
+  findIndex !== -1 && arr.splice(findIndex , 1)
+  return arr
+}
         return {
+            removeByAttr,
             grid:store.getters.grid,
             
             cptCodeValue:store.getters.cptCodeValue,
@@ -141,7 +150,7 @@ export default {
             
             Buttons:store.getters.dashboardTimeLineButton,
             showButton,
-            timeline:store.getters.timeline,
+            timeline,
             widgetsPermissions:store.getters.widgetsPermissions,
 referalCountRecord:store.getters.referalCountRecord,
 callStatus:store.getters.callStatus,

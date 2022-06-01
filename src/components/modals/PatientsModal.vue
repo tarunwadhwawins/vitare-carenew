@@ -869,16 +869,14 @@ const ShowReferralId= ref(true)
         const selectedDiseases = (event) => {
 					isValueChanged.value = true;
 					const searchedValue = event.target.value
-					if(searchedValue && searchedValue != "" && searchedValue != null) {
-						unSelectedDiseasesList.value = []
-						globalCode.value.healthCondition.map(function(healthCondition) {
-							if(healthCondition.name.toLowerCase().includes(searchedValue.toLowerCase())) {
-								if(!selectedDiseasesList.value.includes(healthCondition) && !unSelectedDiseasesList.value.includes(healthCondition)) {
-									unSelectedDiseasesList.value.push(healthCondition)
-								}
+					unSelectedDiseasesList.value = []
+					globalCode.value.healthCondition.map(function(healthCondition) {
+						if(healthCondition.name.toLowerCase().includes(searchedValue.toLowerCase())) {
+							if(!selectedDiseasesList.value.includes(healthCondition) && !unSelectedDiseasesList.value.includes(healthCondition)) {
+								unSelectedDiseasesList.value.push(healthCondition)
 							}
-						});
-					}
+						}
+					});
         }
 
 				const chooseDiseases = (event, isTrue) => {
