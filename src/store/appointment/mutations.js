@@ -106,3 +106,5 @@ export const patientAppointmentsList = (state, appointments) => {
 		return data
 	});
 };
+
+

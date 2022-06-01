@@ -10,52 +10,32 @@ export const task = async (state, tasks) => {
 	state.taskMeta = tasks.meta.pagination;
 	state.tasksListColumns = [
 		{
-			title: 'Task Name',
+			title: 'Priority ',
+			dataIndex: 'priority',
+			sorter: true
+		},
+		{
+			title: 'Due Date ',
+			dataIndex: 'dueDate',
+			sorter: true
+		},
+		{
+			title: 'Name',
 			dataIndex: 'title',
 			sorter: true,
 			slots: {
 				customRender: 'taskName'
 			}
-			// filters: [
-			//   {
-			//     text: "Task 1",
-			//     value: "task 1",
-			//   },
-			//   {
-			//     text: "Task 2",
-			//     value: "task 2",
-			//   },
-			// ],
-			// onFilter: (value, record) => record.taskName.indexOf(value) === 0,
 		},
 		{
-			title: 'Task Status ',
+			title: 'Status ',
 			dataIndex: 'taskStatus',
 			sorter: true,
 			slots: {
 				customRender: 'status'
 			}
 		},
-		{
-			title: 'Priority ',
-			dataIndex: 'priority',
-			sorter: true
-			//   filters: [
-			//     {
-			//       text: "High",
-			//       value: "high",
-			//     },
-			//     {
-			//       text: "Normal",
-			//       value: "normal",
-			//     },
-			//     {
-			//       text: "Urgent",
-			//       value: "urgent",
-			//     },
-			//   ],
-			//   onFilter: (value, record) => record.status.indexOf(value) === 0,
-		},
+		
 		{
 			title: 'Category',
 			dataIndex: 'category',
@@ -65,35 +45,11 @@ export const task = async (state, tasks) => {
 			}
 		},
 
-		{
-			title: 'Due Date ',
-			dataIndex: 'dueDate',
-			sorter: true
-			//   filters: [
-			//     {
-			//       text: "Dec 24, 2021",
-			//       value: "Dec 24, 2021",
-			//     },
-			//     {
-			//       text: "Dec 28, 2021",
-			//       value: "Dec 28, 2021",
-			//     },
-			//   ],
-			//   onFilter: (value, record) => record.dueDate.indexOf(value) === 0,
-		},
+		
 		{
 			title: 'Assigned By',
 			dataIndex: 'assignedBy',
-			// filters: [
-			//   {
-			//     text: "John",
-			//     value: "John",
-			//   },
-			//   {
-			//     text: "	Devin",
-			//     value: "	Devin",
-			//   },
-			// ],
+			
 			slots: {
 				customRender: 'assigned'
 			}

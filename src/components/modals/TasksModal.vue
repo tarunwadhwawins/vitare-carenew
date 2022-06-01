@@ -35,12 +35,13 @@
             <a-col v-if="!isPatientTask" :sm="12" :xs="24" v-show="!taskId">
                 <div class="form-group">
                     <a-form-item :label="$t('tasks.tasksModal.to')" name="to">
+                    <div class="btn toggleButton" :class="toggleTo ? '' : 'active'" @click="buttonToggle()">
+                            <span class="btn-content">{{ $t('global.careCoodinator') }}</span>
+                        </div>
                         <div class="btn toggleButton" :class="toggleTo ? 'active' : ''" @click="buttonToggle()">
                             <span class="btn-content">{{ $t('tasks.tasksModal.patient') }}</span>
                         </div>
-                        <div class="btn toggleButton" :class="toggleTo ? '' : 'active'" @click="buttonToggle()">
-                            <span class="btn-content">{{ $t('global.careCoodinator') }}</span>
-                        </div>
+                        
                         <a-input type="hidden" id="entityType" :value="toggleTo?taskForm.entityType= 'patient' : taskForm.entityType='staff'" />
                     </a-form-item>
                 </div>

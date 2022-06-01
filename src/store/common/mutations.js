@@ -25,7 +25,7 @@ export const globalCodes = (state, data) => {
                 }
                 return item
             })
-            state.taskPriority = element.globalCode;
+            state.taskPriority.splice(0,3, element.globalCode[1],element.globalCode[0],element.globalCode[2]);
         }
         if (element.name === 'Message Category') {
             state.messageCategories = element.globalCode;
@@ -75,7 +75,7 @@ export const globalCodes = (state, data) => {
             state.taskCategory = element.globalCode;
         }
         if (element.name === 'Task Status') {
-            state.taskStatus = element.globalCode;
+            state.taskStatus.splice(0,3, element.globalCode[1],element.globalCode[2],element.globalCode[0])
         }
 
         if (element.name === 'Insurance Name') {

@@ -12,18 +12,19 @@
         <a-layout-content v-else >
          
           <a-row>
-            <a-col :xl="8" :lg="12">
-              <a-row :gutter="24">
-                <a-col :xl="12" :lg="12">
+            <a-col :xl="4" :lg="12">
+             
+                
                   <h2 class="pageTittle">{{$t('patientSummary.patientSummary')}}</h2>
-                </a-col>
-                <a-col :xl="12" :lg="12">
+                
+               
+             
+            </a-col>
+             <a-col :xl="3" :lg="12">
                   <a-button class="blueBtn" @click="startCall" :loading="iconLoading">Start Call</a-button>
                   <!-- <router-link class="blueBtn" :to="{ name: 'videoCall', params: { id: enCodeString(conferenceId) } }" target="_blank">Start Call</router-link> -->
                 </a-col>
-              </a-row>
-            </a-col>
-            <a-col :xl="8" :lg="12">
+            <a-col :xl="9" :lg="12">
               <div class="pageTittle">
                 <div class="filter">
                   <a-button @click="showButton(1) ; actionTrack(paramsId,323,'patient')" :class="button == 1 ? 'active' : ''" v-if="arrayToObjact(screensPermissions, 323)">Default</a-button>

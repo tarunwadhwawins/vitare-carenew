@@ -42,51 +42,12 @@ import { arrayToObjact,exportExcel,timeStampFormate,globalDateFormat } from "@/c
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 import { useRoute, useRouter } from 'vue-router';
 import { timeStamp } from '../../commonMethods/commonMethod';
-const tasksListColumns = [{
-        title: 'Task Name',
-        dataIndex: 'title',
-        sorter: true,
-        slots: {
-            customRender: 'taskName'
-        }
-        // filters: [
-        //   {
-        //     text: "Task 1",
-        //     value: "task 1",
-        //   },
-        //   {
-        //     text: "Task 2",
-        //     value: "task 2",
-        //   },
-        // ],
-        // onFilter: (value, record) => record.taskName.indexOf(value) === 0,
-    },
-    {
-        title: 'Task Status ',
-        dataIndex: 'taskStatus',
-        sorter: true,
-        slots: {
-            customRender: 'status'
-        }
-    },
+const tasksListColumns = [
     {
         title: 'Priority ',
         dataIndex: 'priority',
         sorter: true
         
-    },
-    {
-        title: 'Category',
-        dataIndex: 'category',
-        sorter: true,
-        slots: {
-            customRender: 'category'
-        }
-    },
-    {
-        title: 'Start Date ',
-        dataIndex: 'startDate',
-        sorter: true
     },
     {
         title: 'Due Date ',
@@ -97,16 +58,55 @@ const tasksListColumns = [{
         }
     },
     {
-        title: 'Assigned To',
-        dataIndex: 'assignedTo',
+        title: 'Name',
+        dataIndex: 'title',
         sorter: true,
         slots: {
-            customRender: 'assignedTo'
+            customRender: 'taskName'
         }
-        
     },
     {
-        title: 'Reported By',
+        title: 'Status ',
+        dataIndex: 'taskStatus',
+        sorter: true,
+        slots: {
+            customRender: 'status'
+        }
+    },
+    
+    {
+        title: 'Category',
+        dataIndex: 'category',
+        sorter: true,
+        slots: {
+            customRender: 'category'
+        }
+    },
+    // {
+    //     title: 'Start Date ',
+    //     dataIndex: 'startDate',
+    //     sorter: true
+    // },
+    
+    // {
+    //     title: 'Assigned To',
+    //     dataIndex: 'assignedTo',
+    //     sorter: true,
+    //     slots: {
+    //         customRender: 'assignedTo'
+    //     }
+        
+    // },
+    {
+        title: 'Type',
+        dataIndex: 'taskType',
+        sorter: true,
+        slots: {
+            customRender: 'taskType'
+        }        
+    },
+    {
+        title: 'Assigned By',
         dataIndex: 'assignedBy',
         sorter: true,
         slots: {

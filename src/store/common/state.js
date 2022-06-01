@@ -12,10 +12,10 @@ export default {
     deviceType:null,
     program:null,
     timeline:null,
-    taskPriority:null,
+    taskPriority:[],
     network:null,
     specialization:null,
-    taskCategory:null,
+    taskCategory:[],
     successMsg:null, 
     insuranceName:null,
     insuranceType:null,
@@ -64,5 +64,6 @@ export default {
     toScroll:false,
     dateFilter:null,
     taskType:null,
+    taskStatus: []
 
 }
