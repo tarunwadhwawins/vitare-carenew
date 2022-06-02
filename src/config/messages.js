@@ -4,8 +4,10 @@ export const messages={
     warning:'Are you sure ?',
     deleteWarning:'Do you want to Delete ?',
     restoreWarning:'Do you want to Restore ?',
-    modalWarning:'Your data may be loss!',
+    modalWarning:'Are you sure you want to discard your changes?',
     formSuccess:'Data successfully added!',
     fieldsRequired:'Please fill all required fields.',
-    startTimeAndEndTime:'End time should be greater than start time.'
+    startTimeAndEndTime:'End time should be greater than start time.',
+    modalWarningDeleteTitle:"Are you sure you want to discard your changes?",
+    modalWarningCancelTitle:"Do you want to Delete ?"
 }
