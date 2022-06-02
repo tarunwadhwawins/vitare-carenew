@@ -177,6 +177,7 @@ export default {
 
         function handleOk(event) {
             onlyView.value = event
+            taskVisibleView.value = event
         }
         const handleTableChange = (pag, filters, sorter) => {
             checkDate()

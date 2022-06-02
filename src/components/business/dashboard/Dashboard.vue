@@ -4,7 +4,7 @@
         <a-col :span="24">
             <h2 class="pageTittle">
                 Business Dashboard
-                <DateFilter :Buttons="Buttons"  @clickButtons="showButton($event)" :custom="false" commit="timelineSuccess"/>
+                <DateFilter :Buttons="Buttons"  @clickButtons="showButton($event)" :custom="false" commit="timelineSuccess" v-if="widgetsPermissions.length > 0"/>
                 <!-- <div class="filter" v-if="timeline && Buttons">
                     <a-button v-for="item in removeByAttr(timeline , 126)" :key="item.id" @click="showButton(item.id)" :class="Buttons.globalCodeId== item.id ? 'active' : ''"> {{item.name}}</a-button>
                 </div> -->

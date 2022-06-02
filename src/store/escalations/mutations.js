@@ -121,7 +121,10 @@ export const singleEscalationRecord = (state, data) => {
     item.category = item.note.category
     item.type = item.note.type,
     item.addedBy = item.note.addedBy
+    item.color = item.note.color
+    item.flag = item.note.flag
     item.note = item.note.note
+    
     return item
   })
 
@@ -131,6 +134,7 @@ export const singleEscalationRecord = (state, data) => {
     item.deviceType = item.patientVital.deviceType,
     item.value = item.patientVital.value
     item.color = item.patientVital.color
+    item.flagName = item.patientVital.flagName
     return item
   })
 

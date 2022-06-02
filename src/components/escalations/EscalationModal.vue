@@ -1,3 +1,4 @@
+
 <template>
 <a-modal max-width="1140px" width="90%" title="Escalation Details" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
@@ -8,10 +9,10 @@
             <div class="steps-content" v-if="steps[current].title == 'Escalation Info'">
                 <a-form layout="vertical" ref="formRef" :model="escalation" @finish="submitEscalationForm">
                     <a-row :gutter="24">
-                      <a-col :sm="24" :xs="24" v-show="!paramId" >
+                        <a-col :sm="24" :xs="24" v-show="!paramId">
                             <div class="form-group">
                                 <a-form-item label="Patient" name="referenceId" :rules="[{ required: true, message: 'Patient'+' '+$t('global.validation')  }]">
-                                     <PatientDropDown @change="checkChangeInput($event)" :editDataPatient="editDataPatient"  v-model:value="escalation.referenceId" @handlePatientChange="handlePatientChange($event)" :close="closeValue"/>
+                                    <PatientDropDown @change="checkChangeInput($event)" :editDataPatient="editDataPatient" v-model:value="escalation.referenceId" @handlePatientChange="handlePatientChange($event)" :close="closeValue" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -41,11 +42,11 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item label="Due Date" name="dueBy" :rules="[{ required: true, message: 'Due Date'+' '+$t('global.validation')  }]">
-                                    <a-date-picker  :disabledDate="d => !d || d.isBefore(moment().subtract(1,'days'))" v-model:value="escalation.dueBy" :format="globalDateFormat" :value-format="globalDateFormat" :size="size" style="width: 100%" @change="checkChangeInput();" />
+                                    <a-date-picker :disabledDate="d => !d || d.isBefore(moment().subtract(1,'days'))" v-model:value="escalation.dueBy" :format="globalDateFormat" :value-format="globalDateFormat" :size="size" style="width: 100%" @change="checkChangeInput();" />
                                 </a-form-item>
                             </div>
                         </a-col>
-                         <a-col :sm="24" :xs="24">
+                        <a-col :sm="24" :xs="24">
                             <div class="form-group">
                                 <a-form-item label="Description" name="escalationDescription" :rules="[{ required: true, message: 'Description'+' '+$t('global.validation')  }]">
                                     <a-textarea @change="checkChangeInput()" v-model:value="escalation.escalationDescription" />
@@ -68,13 +69,7 @@
                     <a-row :gutter="24">
                         <a-col :xl="24" :xs="24" style="padding:20px;">
                             <div class="pageTittle">
-                                <!-- <div class="filter">
-                                    <a-button @click="showButton(1) " :class="button == 1 ? 'active' : ''">Day</a-button>
-                                    <a-button @click="showButton(2) " :class="button == 2 ? 'active' : ''">Week</a-button>
-                                    <a-button @click="showButton(3) " :class="button == 3 ? 'active' : ''">Month</a-button>
-                                    <a-button @click="showButton(4) " :class="button == 4 ? 'active' : ''">Custom</a-button>
-                                </div> -->
-                             <DateFilter :Buttons="Buttons"  @clickButtons="showButton($event)" :custom="true" commit="timelineSuccess" />
+                                <DateFilter :Buttons="Buttons" @clickButtons="showButton($event)" :custom="true" commit="timelineSuccess" />
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24" v-if="button ==126">
@@ -93,9 +88,11 @@
                         </a-col>
                     </a-row>
                     <a-row :gutter="24">
-                      <a-col :md="24" :sm="24" :xs="24" v-for="errMsg in errorMsg" :key="errMsg.id">
-                      <ul><li class="errorMsg">{{errMsg}}</li></ul>
-                      </a-col>
+                        <a-col :md="24" :sm="24" :xs="24" v-for="errMsg in errorMsg" :key="errMsg.id">
+                            <ul>
+                                <li class="errorMsg">{{errMsg}}</li>
+                            </ul>
+                        </a-col>
                     </a-row>
                     <a-row :gutter="24">
                         <a-collapse v-model:activeKey="activeKey" accordion style="width:100%">
@@ -103,8 +100,17 @@
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="notesId" :rules="[{ required: false, message:'Notes'+' '+$t('global.validation') }]">
-                                                <a-table  rowKey="id" :row-selection="noteSelection" :columns="notesColumns" :data-source="notesList" :pagination="false">
-                                                </a-table>
+                                            <a-table rowKey="id" :row-selection="noteSelection" :columns="notesColumns" :data-source="notesList" :pagination="false">
+                                                <template #color="{ record }">
+                                                    <a-tooltip placement="bottom">
+                                                        <template #title>
+                                                            <span>{{ record.flag }}</span>
+                                                        </template>
+                                                        <a class="icons">
+                                                            <Flags :flag="record.color" /></a>
+                                                    </a-tooltip>
+                                                </template>
+                                            </a-table>
                                         </a-form-item>
                                     </div>
                                 </a-col>
@@ -113,11 +119,17 @@
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="vitalId" :rules="[{ required: false, message:'Vital'+' '+$t('global.validation') }]">
-                                                <a-table  rowKey="id" :row-selection="vitalSelection" :columns="vitalColumns" :data-source="patientVitalList" :pagination="false">
-                                                    <template #color="{ record }">
-                                                        <Flags :flag="record.color" />
-                                                    </template>
-                                                </a-table>
+                                            <a-table rowKey="id" :row-selection="vitalSelection" :columns="vitalColumns" :data-source="patientVitalList" :pagination="false">
+                                                <template #color="{ record }">
+                                                    <a-tooltip placement="bottom">
+                                                        <template #title>
+                                                            <span>{{ record.flagName }}</span>
+                                                        </template>
+                                                        <a class="icons">
+                                                            <Flags :flag="record.color" /></a>
+                                                    </a-tooltip>
+                                                </template>
+                                            </a-table>
                                         </a-form-item>
                                     </div>
                                 </a-col>
@@ -126,8 +138,8 @@
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="carePlan" :rules="[{ required: false, message:'Care Plan'+' '+$t('global.validation') }]">
-                                                <a-table  rowKey="id" :row-selection="carePlanSelection" :columns="carePlanColumns" :data-source="carePlanList" :pagination="false">
-                                                </a-table>
+                                            <a-table rowKey="id" :row-selection="carePlanSelection" :columns="carePlanColumns" :data-source="carePlanList" :pagination="false">
+                                            </a-table>
                                         </a-form-item>
                                     </div>
                                 </a-col>
@@ -136,14 +148,21 @@
                                 <a-col :md="24" :sm="24" :xs="24">
                                     <div class="form-group ">
                                         <a-form-item name="flagIds" :rules="[{ required: false, message:'Flag'+' '+$t('global.validation') }]">
-                                                <a-table  rowKey="id" :row-selection="flagSelection" :columns="flagColumns" :data-source="patientFlagList" :pagination="false">
-                                                    <template #name="{ record }">
-                                                        <span>{{record.flagName}}</span>
-                                                    </template>
-                                                    <template #color="{ record }">
-                                                        <Flags :flag="record.color" />
-                                                    </template>
-                                                </a-table>
+                                            <a-table rowKey="id" :row-selection="flagSelection" :columns="flagColumns" :data-source="patientFlagList" :pagination="false">
+                                                <template #name="{ record }">
+                                                    <span>{{record.flagName}}</span>
+                                                </template>
+                                                <template #color="{ record }">
+                                                    <!-- <Flags :flag="record.color" /> -->
+                                                    <a-tooltip placement="bottom">
+                                                        <template #title>
+                                                            <span>{{ record.flagName }}</span>
+                                                        </template>
+                                                        <a class="icons">
+                                                            <Flags :flag="record.color" /></a>
+                                                    </a-tooltip>
+                                                </template>
+                                            </a-table>
                                         </a-form-item>
                                     </div>
                                 </a-col>
@@ -153,7 +172,7 @@
                             <div class="steps-action">
                                 <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                                 <a-button v-if="current < steps.length - 1" type="primary" @click="next">{{$t('global.next')}}</a-button>
-                                <a-button v-if="current == steps.length - 1" type="primary" html-type="submit" >
+                                <a-button v-if="current == steps.length - 1" type="primary" html-type="submit">
                                     {{$t('global.save')}}
                                 </a-button>
                             </div>
@@ -163,12 +182,11 @@
             </div>
         </a-col>
     </a-row>
-    <Loader/>
+    <Loader />
 </a-modal>
 </template>
-
 <script>
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed,reactive, ref } from "vue";
 import { useStore } from "vuex";
 import moment from "moment";
 import {
@@ -180,7 +198,7 @@ import {
   successSwal,
   startimeAdd,
 } from "@/commonMethods/commonMethod";
-  import DateFilter from "@/components/common/DateFilter.vue"
+import DateFilter from "@/components/common/DateFilter.vue";
 import { messages } from "@/config/messages";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch";
 import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue";
@@ -227,6 +245,13 @@ const notesColumns = [
     title: "Added By",
     dataIndex: "addedBy",
     key: "addedBy",
+  },
+  {
+    title: "Color",
+    dataIndex: "color",
+    slots: {
+      customRender: "color",
+    },
   },
 ];
 
@@ -353,8 +378,8 @@ export default {
     Flags,
     PatientDropDown,
     Loader,
-    DateFilter
-},
+    DateFilter,
+  },
   setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
@@ -362,7 +387,7 @@ export default {
     const errorMsg = ref([]);
     const button = ref(2);
     const status = ref(false);
-    const formRef = ref()
+    const formRef = ref();
     const paramId = ref(route.params.udid);
     const escalation = reactive({
       escalationType: [],
@@ -392,12 +417,6 @@ export default {
     const flagsList = computed(() => {
       return store.state.flags.flagsList;
     });
-    // const current = computed({
-    //   get: () => store.state.patients.escalationCounter,
-    //   set: (value) => {
-    //     store.state.patients.escalationCounter = value;
-    //   },
-    // })
     const current = computed({
       get: () => store.state.escalations.escalationCounter,
       set: (value) => {
@@ -443,42 +462,56 @@ export default {
 
     function submitEscalationForm() {
       if (addEscalation.value == null) {
-        store.dispatch("addBasicEscalation", {
-          escalationType: escalation.escalationType,
-          escalationDescription: escalation.escalationDescription,
-          flagId: escalation.flagId,
-          dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
-          staffIds: escalation.staffIds,
-          referenceId: escalation.referenceId
-            ? escalation.referenceId
-            : route.params.udid,
-          entityType: "patient",
-        }).then((response)=>{
-          if(response==true){
-            store.dispatch("timeLine", {id:123,commit:'timelineSuccess'}).then(() => {
-              apiCall(timeLineButton.value);
-            });
-          }
-        })
+        store
+          .dispatch("addBasicEscalation", {
+            escalationType: escalation.escalationType,
+            escalationDescription: escalation.escalationDescription,
+            flagId: escalation.flagId,
+            dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
+            staffIds: escalation.staffIds,
+            referenceId: escalation.referenceId
+              ? escalation.referenceId
+              : route.params.udid,
+            entityType: "patient",
+          })
+          .then((response) => {
+            if (response == true) {
+              store
+                .dispatch("timeLine", {
+                  id: 123,
+                  commit: "timelineSuccess",
+                })
+                .then(() => {
+                  apiCall(timeLineButton.value);
+                });
+            }
+          });
       } else {
-        store.dispatch("updateBasicEscalation", {
-          escalationType: escalation.escalationType,
-          escalationDescription: escalation.escalationDescription,
-          flagId: escalation.flagId,
-          dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
-          staffIds: escalation.staffIds,
-          referenceId: escalation.referenceId
-            ? escalation.referenceId
-            : route.params.udid,
-          entityType: "patient",
-          escalationId: addEscalation.value.id,
-        }).then((response)=>{
-          if(response==true){
-            store.dispatch("timeLine", {id:123,commit:'timelineSuccess'}).then(() => {
-              apiCall(timeLineButton.value);
-            });
-          }
-        })
+        store
+          .dispatch("updateBasicEscalation", {
+            escalationType: escalation.escalationType,
+            escalationDescription: escalation.escalationDescription,
+            flagId: escalation.flagId,
+            dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
+            staffIds: escalation.staffIds,
+            referenceId: escalation.referenceId
+              ? escalation.referenceId
+              : route.params.udid,
+            entityType: "patient",
+            escalationId: addEscalation.value.id,
+          })
+          .then((response) => {
+            if (response == true) {
+              store
+                .dispatch("timeLine", {
+                  id: 123,
+                  commit: "timelineSuccess",
+                })
+                .then(() => {
+                  apiCall(timeLineButton.value);
+                });
+            }
+          });
         Object.assign(escalationDetails, formEscalationDetails);
       }
     }
@@ -528,24 +561,29 @@ export default {
               successSwal("Data saved Successfully!");
               emit("saveModal", false);
               status.value = false;
-              if(route.name == 'PatientSummary'){
+              if (route.name == "PatientSummary") {
                 store.dispatch("escalation", {
                   referenceId: escalation.referenceId
                     ? escalation.referenceId
                     : route.params.udid,
                   entityType: "patient",
                 });
-              }else{
+              } else {
                 store.dispatch("escalation");
               }
               Object.assign(escalation, form);
-              store.commit("resetEscalationCounter")
+              store.commit("resetEscalationCounter");
               store.commit("checkChangeInput", false);
               store.state.escalations.addBasicEscalation = null;
               Object.assign(escalationDetails, formEscalationDetails);
-              store.dispatch("timeLine", {id:122,commit:'timelineSuccess'}).then(() => {
-                apiCall(timeLineButton.value);
-              });
+              store
+                .dispatch("timeLine", {
+                  id: 122,
+                  commit: "timelineSuccess",
+                })
+                .then(() => {
+                  apiCall(timeLineButton.value);
+                });
             }
           });
       }
@@ -554,8 +592,7 @@ export default {
 
     function checkChangeInput(val) {
       store.commit("checkChangeInput", true);
-      console.log(val)
-      
+      console.log(val);
     }
     const checkFieldsData = computed(() => {
       return store.state.common.checkChangeInput;
@@ -563,7 +600,7 @@ export default {
 
     const closeModal = () => {
       if (checkFieldsData.value) {
-        if(addEscalation.value){
+        if (addEscalation.value) {
           warningSwal(messages.modalWarning).then((response) => {
             if (response == true) {
               emit("saveModal", false);
@@ -571,14 +608,14 @@ export default {
               Object.assign(escalationDetails, formEscalationDetails);
               store.commit("resetEscalationCounter");
               store.commit("checkChangeInput", false);
-              store.dispatch('escalationDelete',addEscalation.value.id)
+              store.dispatch("escalationDelete", addEscalation.value.id);
               store.state.escalations.addBasicEscalation = null;
-              errorMsg.value = []
+              errorMsg.value = [];
             } else {
               emit("saveModal", true);
             }
           });
-        }else if(addEscalation.value == null){
+        } else if (addEscalation.value == null) {
           warningSwal(messages.modalWarning).then((response) => {
             if (response == true) {
               emit("saveModal", false);
@@ -587,14 +624,14 @@ export default {
               store.commit("resetEscalationCounter");
               store.commit("checkChangeInput", false);
               store.state.escalations.addBasicEscalation = null;
-              errorMsg.value = []
+              errorMsg.value = [];
             } else {
               emit("saveModal", true);
             }
           });
         }
       } else {
-         formRef.value.resetFields()
+        formRef.value.resetFields();
       }
     };
 
@@ -608,22 +645,14 @@ export default {
       return store.state.escalations.esacalationFlagList;
     });
 
-    onMounted(() => {
-      // store.dispatch("timeLine", 123).then(() => {
-      //   apiCall(timeLineButton.value);
-      // });
-    });
     const timeLineButton = store.getters.dashboardTimeLineButton;
 
     function showButton(id) {
-      console.log("gdfg",id)
-       button.value = id
-      if(id!=126){
-apiCall(timeLineButton.value)
+      console.log("gdfg", id);
+      button.value = id;
+      if (id != 126) {
+        apiCall(timeLineButton.value);
       }
-     
-        
-    
     }
 
     const handlePatientChange = (val) => {
@@ -632,6 +661,7 @@ apiCall(timeLineButton.value)
 
     let from = moment();
     let to = moment();
+
     function apiCall(data) {
       let dateFormate = "";
       if (data.globalCodeId == 122) {
@@ -660,7 +690,7 @@ apiCall(timeLineButton.value)
           toDate: timeStamp(endTimeAdd(from)),
         };
       }
-      if (route.params.udid && route.name == 'PatientSummary') {
+      if (route.params.udid && route.name == "PatientSummary") {
         store.dispatch("escalationNotesList", {
           id: route.params.udid,
           date: dateFormate,
@@ -695,8 +725,6 @@ apiCall(timeLineButton.value)
           date: dateFormate,
         });
       }
-
-      // console.log(from, to,dateFormate);
     }
 
     const noteSelection = {
@@ -722,12 +750,12 @@ apiCall(timeLineButton.value)
       },
     };
 
-     const editDataStaff = computed(()=>{
-        return store.state.escalations.editEscalationStaff
+    const editDataStaff = computed(() => {
+      return store.state.escalations.editEscalationStaff;
     });
 
-    const editDataPatient = computed(()=>{
-        return store.state.escalations.editEscalationPatient
+    const editDataPatient = computed(() => {
+      return store.state.escalations.editEscalationPatient;
     });
 
     return {
@@ -797,6 +825,7 @@ apiCall(timeLineButton.value)
   background-color: #f03131f3;
   color: #fff;
 }
+
 .errorMsg {
   color: #f03131f3;
 }
