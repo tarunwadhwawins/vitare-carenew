@@ -86,6 +86,9 @@ export const timeLogView = async (state, data) => {
     {
       title: "Change By",
       dataIndex: "createdBy",
+      slots: {
+        customRender: "createdBy",
+      },
     },  
     {
     title: "Time (MM:SS)",
