@@ -3,10 +3,16 @@
     <template #name="{text,record}" v-if="arrayToObjact(screensPermissions,38)">
         <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.uuid?record.uuid:'eyrer8758458958495'  }}">{{ text }}</router-link>
     </template>
+   
     <template #name="{text}" v-else>
         <span>{{ text }}</span>
     </template>
-
+ <template #role="{ record }">
+     
+            <span v-for="(role,i) in record.role" :key="role.id" >
+                <br v-if="i > 0"/> {{ i!= 0  ? ', '+  role.name :  role.name }}
+            </span>
+        </template>
     <template #createdDate="text">
         <span>{{ dateFormat(text.text) }}</span>
     </template>

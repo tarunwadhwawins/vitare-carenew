@@ -100,7 +100,9 @@ class ServiceMethodService {
                     store.commit('dropdownLoadingStatus', false)
                     if (currentValue === value) {
                         const result = d.data.data.map(item=>{
-                            item.name = item.UTCOffset
+                            if(item.UTCOffset){
+                                item.fullName = item.UTCOffset
+                            }
                             return item
                         });
                         // console.log("rewwa", result);
