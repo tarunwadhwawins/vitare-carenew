@@ -96,12 +96,12 @@ export default defineComponent({
           category: auditTimeLog.categoryId,
         },
         id: props.Id,
-      });
-      setTimeout(() => {
-        store.getters.timeLogReports.value.timeLogReportList=""
-        store.dispatch("timeLogReportList");
+      }).then(()=>{
+ store.getters.timeLogReports.value.timeLogReportList=""
+        store.dispatch("timeLogReportList",store.getters.auditTimeLogFilterDates);
         emit('saveAuditTimeLog')
-      }, 2000);
+      })
+     
     };
 
     const staffList = computed(() => {

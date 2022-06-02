@@ -4,7 +4,7 @@
         <a-col :span="24">
             <h2 class="pageTittle">
                 Clinical Dashboard
-                 <DateFilter :Buttons="Buttons"  @clickButtons="showButton($event)" :custom="false" commit="timelineSuccess"/>
+                 <DateFilter :Buttons="Buttons"  @clickButtons="showButton($event)" :custom="false" commit="timelineSuccess" v-if="widgetsPermissions.length > 0"/>
             </h2>
         </a-col>
         <a-col :span="24">
