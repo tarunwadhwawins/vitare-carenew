@@ -17,7 +17,7 @@
             <a class="icons"><DeleteOutlined @click="deleteDocument(record.id)" /></a>
           </template>
           <template #document="{record}">
-            <a :href="record.document" target="_blank">
+            <a :href="record.document" download>
               <FileOutlined />
             </a>
           </template>

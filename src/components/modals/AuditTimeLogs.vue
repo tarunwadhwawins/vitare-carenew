@@ -5,21 +5,21 @@
           <a-col :sm="24" :md="12" :xs="24">
             <div class="form-group" >
               <a-form-item :label="$t('timeLogs.category')" name="categoryId" :rules="[{ required: true, message: $t('timeLogs.category')+' '+$t('global.validation')  }]">
-                <GlobalCodeDropDown :disabled="disabledCategory" size="large" v-model:value="auditTimeLog.categoryId" :globalCode="timeLogCategories"/> 
+                <GlobalCodeDropDown :disabled="disabledCategory" size="large" v-model:value="auditTimeLog.categoryId" :globalCode="timeLogCategories" @change="checkChangeInput()"/> 
               </a-form-item>
             </div>
           </a-col>
           <a-col :sm="24" :md="12" :xs="24">
             <div class="form-group"  >
               <a-form-item :label="$t('timeLogs.cptCode')" name="cptCodeId" :rules="[{ required: true, message: $t('timeLogs.cptCode')+' '+$t('global.validation')  }]">
-                <GlobalCodeDropDown :disabled="disabledCptCode" size="large" v-model:value="auditTimeLog.cptCodeId" :globalCode="cptCodesList"/>
+                <GlobalCodeDropDown :disabled="disabledCptCode" size="large" v-model:value="auditTimeLog.cptCodeId" :globalCode="cptCodesList" @change="checkChangeInput()"/>
               </a-form-item>
             </div>
           </a-col>
           <a-col :sm="24" :md="12" :xs="24">
             <div class="form-group">
               <a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation')  }]">
-                <GlobalCodeDropDown :disabled="disabledFlag" size="large" v-model:value="auditTimeLog.flag" :globalCode="flagsList" />
+                <GlobalCodeDropDown :disabled="disabledFlag" size="large" v-model:value="auditTimeLog.flag" :globalCode="flagsList" @change="checkChangeInput()"/>
                 <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
               </a-form-item>
             </div>
@@ -27,19 +27,19 @@
           <a-col :sm="24" :md="12" :xs="24">
             <div class="form-group">
               <a-form-item :label="$t('timeLogs.timeAmount')" name="timeAmount" :rules="[{ required: true, message: $t('timeLogs.timeAmount')+' '+$t('global.validation')  }]">
-                <a-time-picker v-model:value="auditTimeLog.timeAmount" format="HH:mm:ss" value-format="HH:mm:ss" size="large" style="width: 100%" />
+                <a-time-picker v-model:value="auditTimeLog.timeAmount" format="HH:mm:ss" value-format="HH:mm:ss" size="large" style="width: 100%" @change="checkChangeInput()"/>
               </a-form-item>
             </div>
           </a-col>
           <a-col :sm="24" :md="24" :xs="24">
             <div class="form-group">
               <a-form-item :label="$t('timeLogReport.note')" name="note" :rules="[{ required: true, message: $t('timeLogReport.note')+' '+$t('global.validation') }]">
-                <a-textarea v-model:value="auditTimeLog.note" allow-clear />
+                <a-textarea v-model:value="auditTimeLog.note" allow-clear  @change="checkChangeInput()"/>
               </a-form-item>
             </div>
           </a-col>
           <a-col :sm="24" :md="24" :span="24">
-            <ModalButtons  :Id="Id"/>
+            <ModalButtons  :Id="Id"  @is_cancel="closeModal()"/>
           </a-col>
         </a-row>
     </a-form>
@@ -50,8 +50,9 @@
 import { defineComponent, reactive, computed, watchEffect, ref, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import ModalButtons from "@/components/common/button/ModalButtons";
-import { getSeconds} from '@/commonMethods/commonMethod'
+import { getSeconds,warningSwal} from '@/commonMethods/commonMethod'
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+import {   messages } from "../../config/messages";
 export default defineComponent({
   components: {
     ModalButtons,
@@ -133,10 +134,28 @@ export default defineComponent({
         Object.assign(auditTimeLog, timeLogReports.value)
       }
     })
+ function checkChangeInput() {
+            store.commit('checkChangeInput', true)
+        }
 
+        const checkFieldsData = computed(() => {
+            return store.state.common.checkChangeInput;
+        })
     const closeModal = () => {
-      emit('saveAuditTimeLog')
-      store.commit('errorMsg', null)
+      if (checkFieldsData.value) {
+                warningSwal(messages.modalWarning).then((response) => {
+                    if (response == true) {
+                         emit('saveAuditTimeLog',false)
+                        store.commit('errorMsg', null)
+                        store.commit('checkChangeInput', false)
+                    } else {
+                         emit('saveAuditTimeLog',true)
+                    }
+                });
+            } else {
+               store.commit('checkChangeInput', false)
+            }
+     
     }
 
     onUnmounted(() => {
@@ -157,6 +176,7 @@ export default defineComponent({
       cptCodesList:store.getters.activeCptCodes,
       timeLogCategories:store.getters.timeLogCategories,
       flagsList,
+      checkChangeInput,
     };
   },
 });

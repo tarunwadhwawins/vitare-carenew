@@ -11,9 +11,9 @@
                     <a-col :span="24">
                         <h2 class="pageTittle">
                             CPT Codes
-                            <div class="commonBtn">
+                            <!-- <div class="commonBtn">
                                 <Button :name="buttonName" @click="showModal(true)" v-if="arrayToObjact(screensPermissions,9)" />
-                            </div>
+                            </div> -->
                         </h2>
                     </a-col>
                     <a-col :span="12">
@@ -46,7 +46,7 @@ import CptCodesModal from "@/components/modals/CptCodesModal";
 import CptCodesTable from "@/components/administration/cpt-codes/tables/CptCodesTable";
 import { ref,onUnmounted, onMounted} from "vue";
 import SearchField from "@/components/common/input/SearchField";
-import Button from "@/components/common/button/Button";
+//import Button from "@/components/common/button/Button";
 import { arrayToObjact,exportExcel } from "@/commonMethods/commonMethod";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 import {
@@ -60,7 +60,7 @@ export default {
         CptCodesModal,
         CptCodesTable,
         SearchField,
-        Button,
+       // Button,
         ExportToExcel,
     },
     setup() {

@@ -74,7 +74,7 @@
                                 <a-tab-pane key="1" tab="Appointments">
                                     <!-- AppointmentTable Table -->
                                     <AppointmentTable />
-                                    <Loader />
+                                    <!-- <Loader /> -->
                                 </a-tab-pane>
                                 <a-tab-pane key="2" tab="Patients">
                                     <!-- PatientTable Table -->
@@ -172,6 +172,7 @@
 </div>
  <ResetPassword v-model:visible="resetPasswordVisible" @saveModal="saveModal($event)" endPoint="staff" :id="paramId"/>
 <PersonalInformation v-model:visible="visibleEditStaff" @saveModal="editStaffCloseModal($event)" />
+<Loader />
 </template>
 
 <script>

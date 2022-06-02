@@ -1,7 +1,7 @@
 
 <template>
 <a-table rowKey="id" :columns="meta.cptCodesColumns" :scroll="{ y:'calc(100vh - 470px)'}" :data-source="meta.cptCodesList"  :pagination="false" @change="handleTableChange">
-    <template #actions="{record}">
+    <!-- <template #actions="{record}">
         <a-tooltip placement="bottom" @click="editCpt(record.udid)" v-if="arrayToObjact(screensPermissions,10)">
             <template #title>
                 <span>{{$t('global.edit')}}</span>
@@ -16,7 +16,7 @@
             <a class="icons">
                 <DeleteOutlined /></a>
         </a-tooltip>
-    </template>
+    </template> -->
     <template #isActive="{record}" >
         <a-switch v-model:checked="record.isActive" @change="UpdateCptStatus(record.udid, $event)" :disabled="!arrayToObjact(screensPermissions,10)"/>
     </template>
@@ -25,7 +25,7 @@
 </template>
 <script>
 import { ref, onMounted } from "vue";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+//import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { messages } from "@/config/messages";
 import Loader from "@/components/loader/Loader";
 import { useStore } from "vuex";
@@ -37,8 +37,8 @@ import {
 } from "@/commonMethods/commonMethod";
 export default {
   components: {
-    DeleteOutlined,
-    EditOutlined,
+    //DeleteOutlined,
+    //EditOutlined,
     Loader,
   },
   props: {},
