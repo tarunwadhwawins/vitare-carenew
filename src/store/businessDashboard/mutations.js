@@ -3,12 +3,14 @@ import { yaxis, dataLabels, plotOptions, annotations } from '../../commonMethods
 export const cptCodeSuccess = (state, data) => {
 	let cptResult = [];
 	data.data.forEach((element) => {
-		let object = data.cpt.find((e) => e.text == element.name);
+		if (element.name != 'General') {
+			let object = data.cpt.find((e) => e.text == element.name);
 
-		if (object == undefined) {
-			cptResult.push({ total: 0, text: element.name });
-		} else {
-			cptResult.push(object);
+			if (object == undefined) {
+				cptResult.push({ total: 0, text: element.name });
+			} else {
+				cptResult.push(object);
+			}
 		}
 	});
 
@@ -88,7 +90,7 @@ export const referalCount = (state, data) => {
 			},
 			yaxis: yaxis('Referral Count'),
 			noData: {
-				text: "No data",
+				text: 'No data',
 				align: 'center',
 				verticalAlign: 'middle',
 				offsetX: 0,

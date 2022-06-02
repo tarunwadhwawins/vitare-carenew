@@ -183,3 +183,18 @@ export const patientAppointmentsList = async ({commit}, patientUdid) => {
   })
 }
 
+
+// export const timeZone = async ({commit}) => {
+//   commit('loadingStatus', true)
+//   await serviceMethod.common("get", `timezone`, null, null).then((response) => { 
+//     commit('timeZone', response.data.data);
+//     commit('loadingStatus', false)
+//   }).catch((error) => {
+//     if (error.response) {
+// 				errorLogWithDeviceInfo(error.response);
+// 			} else {
+// 				errorLogWithDeviceInfo(error);
+// 			}
+//     commit('loadingStatus', false)
+//   })
+// }

@@ -46,13 +46,21 @@
             </a-col>
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
+                    <a-form-item :label="'Time Zone'" name="timezoneId" :rules="[{ required: true, message: 'Time Zone'+' '+$t('global.validation')  }]">
+                         <TimeZoneDropDown  v-model:value="appointmentForm.timezoneId" @handleTimeZoneChange="handleTimeZoneChange($event)" @change="checkChangeInput()" :close="closeValue" />
+                        <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
+                    </a-form-item>
+                </div>
+            </a-col>
+            <a-col :sm="12" :xs="24">
+                <div class="form-group">
                     <a-form-item :label="$t('appointmentCalendar.addAppointment.typeOfVisit')" name="typeOfVisit" :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.typeOfVisit')+' '+$t('global.validation')  }]">
                         <GlobalCodeDropDown v-if="typeOfVisitList" v-model:value="appointmentForm.typeOfVisit" :globalCode="typeOfVisitList" @change="checkChangeInput()" />
                         <ErrorMessage v-if="errorMsg" :name="errorMsg.typeOfVisit?errorMsg.typeOfVisit[0]:''" />
                     </a-form-item>
                 </div>
             </a-col>
-            <a-col :sm="24" :xs="24">
+            <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation')  }]">
                         <GlobalCodeDropDown v-model:value="appointmentForm.flag" :globalCode="flagsList" />
@@ -60,6 +68,7 @@
                     </a-form-item>
                 </div>
             </a-col>
+            
             <a-col :span="24">
                 <div class="form-group">
                     <a-form-item :label="$t('appointmentCalendar.addAppointment.note')" name="note" :rules="[{ required: true, message: $t('appointmentCalendar.addAppointment.note')+' '+$t('global.validation') }]">
@@ -99,6 +108,7 @@ import {
 import moment from 'moment';
 import ModalButtons from "@/components/common/button/ModalButtons";
 import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue"
+import TimeZoneDropDown from "@/components/modals/search/TimeZoneSearch.vue"
 import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue"
 import {
     useRoute
@@ -119,7 +129,8 @@ export default {
         PatientDropDown,
         StaffDropDown,
         Loader,
-        GlobalCodeDropDown
+        GlobalCodeDropDown,
+        TimeZoneDropDown
     },
     props: {
         staff: {
@@ -166,6 +177,7 @@ export default {
             typeOfVisit: '',
             flag: '',
             note: '',
+            timezoneId:''
         });
 
         const flagsList = computed(() => {
@@ -195,6 +207,11 @@ export default {
         const handleStaffChange = (val) => {
 			store.commit('checkChangeInput', true)
             appointmentForm.staffId = val;
+        };
+
+        const handleTimeZoneChange = (val) => {
+			store.commit('checkChangeInput', true)
+            appointmentForm.timezoneId = val;
         };
 
         const handlePatientChange = (val) => {
@@ -235,6 +252,7 @@ export default {
                 appointmentTypeId: appointmentForm.typeOfVisit,
                 note: appointmentForm.note,
                 flag: appointmentForm.flag,
+                timezoneId:appointmentForm.timezoneId
             }).then(() => {
 				closeValue.value = true
                 if (props.patientId != null && route.name == 'PatientSummary') {
@@ -335,6 +353,7 @@ export default {
         }
 
         return {
+            handleTimeZoneChange,
             checkFieldsData,
             checkChangeInput,
             handlePatientChange,

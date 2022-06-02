@@ -67,7 +67,7 @@ import {
 import {
   dateFormat,
 } from '@/commonMethods/commonMethod';
-import { computed, ref, onMounted, reactive, toRefs} from 'vue-demi';
+import { computed, ref, onMounted, reactive, toRefs, watchEffect} from 'vue-demi';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import TableLoader from "@/components/loader/TableLoader";
@@ -118,11 +118,28 @@ export default {
           type: ''
         });
       }
+      
+       
     })
-    
-    const patientTimeline = computed(() => {
+    const check = ref(true)
+      const patientTimeline = computed(() => {
       return store.state.patients.patientTimeline;
     })
+    watchEffect(()=>{
+if(route.query.filter && patientTimeline.value && check.value){
+
+tabvalue.tab= [4,7]
+   store.dispatch('patientTimeline', {
+        id:route.params.udid ? route.params.udid : pId.value,
+        type:'4,7'
+      }).then(() => {
+        visibleRemoveAll.value = tabvalue.tab.length > 0 ? true : false
+        store.commit('loadingTableStatus', false)
+      })
+check.value = false
+  }
+    })
+  
     
     const showModalCustom = () => {
       custom.value = true;
@@ -137,6 +154,7 @@ export default {
       else {
         tabvalue.tab.length = 0
       }
+      
       getTimeline(type)
     }
 

@@ -16,7 +16,7 @@
     <template #lastReadingDate>
         <WarningOutlined />
     </template>
-    <template #action="{record}" v-if="arrayToObjact(screensPermissions,38)">
+    <template #action="{record}" >
         <a-tooltip placement="bottom">
             <template #title>
                 <span>{{'Reset Password'}}</span>
@@ -26,7 +26,7 @@
                 <KeyIcon height="16" width="16" alt="Reset Password" @click="resetPasseord(record.id)"/>
             </a>
         </a-tooltip>
-        <a-tooltip placement="bottom">
+        <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,39)">
             <template #title>
                 <span>{{$t('global.delete')}}</span>
             </template>

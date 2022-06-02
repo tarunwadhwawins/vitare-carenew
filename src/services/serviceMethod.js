@@ -99,7 +99,10 @@ class ServiceMethodService {
                 .then((d) => {
                     store.commit('dropdownLoadingStatus', false)
                     if (currentValue === value) {
-                        const result = d.data.data;
+                        const result = d.data.data.map(item=>{
+                            item.name = item.UTCOffset
+                            return item
+                        });
                         // console.log("rewwa", result);
                         const data = [];
                         result.forEach((item) => {

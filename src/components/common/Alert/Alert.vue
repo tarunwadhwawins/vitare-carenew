@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import { useRoute } from 'vue-router';
+
 import { useStore } from 'vuex'
 export default {
 	props: {
@@ -24,23 +24,13 @@ export default {
 			type: Number
 		},
 	},
-	setup(props) {
+	setup() {
 		const store = useStore()
-		const route = useRoute()
-		const patientId = props.patientUdid ? props.patientUdid : route.params.udid
 		
 		const onCloseAlert = (value) => {
-
-			const data = {
-				patientUdid: patientId,
-				criticalNoteUdid: value,
-			}
-			
-			store.dispatch('readCriticalNote', data).then(() => {
-				document.querySelectorAll('.critical-notes ul li')[0].remove();
-			});
+			console.log(value)
+			document.querySelectorAll('.critical-notes ul li')[0].remove();
 			store.state.patients.patientCriticalNotes=''
-			store.dispatch('patientCriticalNotes', patientId)
 		}
 
 		return {

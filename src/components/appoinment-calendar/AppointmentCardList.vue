@@ -48,6 +48,10 @@
                         <div class="rightWrapper">{{ dateAndTimeFormate(cardRecords.date,'hh:mm A') }}</div>
                     </div>
                     <div class="itemWrapper">
+                        <div class="leftWrapper">Time Zone</div>
+                        <div class="rightWrapper">{{ cardRecords.timezone?cardRecords.timezone.data.UTCOffset:''}}</div>
+                    </div>
+                    <div class="itemWrapper">
                         <div class="leftWrapper">Duration</div>
                         <div class="rightWrapper">{{ cardRecords.duration }}</div>
                     </div>

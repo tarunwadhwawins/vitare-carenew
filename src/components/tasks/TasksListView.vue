@@ -5,6 +5,7 @@
 			<a-tag v-if="route.query.toDate && route.query.fromDate" closable @close="remove('date')">{{timeStampFormate(route.query.fromDate,globalDateFormat) }} To {{timeStampFormate(route.query.toDate,globalDateFormat)}}</a-tag>
 		</div>
 	</a-row>
+
 	<a-row :gutter="24">
 		<a-col :span="6">
 			<SearchField endPoint="task" />
@@ -16,11 +17,11 @@
 			<StaffDropDown mode="multiple" @handleStaffChange="handleStaffChange($event, 'assignedBy')" placeholder="Reported By" />
 		</a-col>
 		<a-col :span="6">
-			<a-range-picker @change="handleStaffChange($event, 'dateRange')" :format="globalDateFormat" value-format="YYYY-MM-DD" size="large" style="width: 100%" />
+			<DatePicker @onChange="handleStaffChange($event, 'dateRange')" v-model:value="dateRange" datePickerType="range" />
 		</a-col>
 	</a-row>
 	
-	<a-row :gutter="24">
+	<a-row :gutter="24" class="tasktable">
 		<a-col :span="24">
 			<div class="text-right mb-24">
 				<ExportToExcel @click="exportExcel('task_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions, 118)" />
@@ -28,7 +29,9 @@
 		</a-col>
 		<TaskTable @is-Edit="editTask($event)" :tasksListColumns="tasksListColumns"></TaskTable>
 	</a-row>
+
 	<TableLoader />
+
 </template>
 
 <script>
@@ -40,53 +43,15 @@ import TaskTable from "@/components/tasks/TaskTable";
 import TableLoader from "@/components/loader/TableLoader";
 import { arrayToObjact,exportExcel,timeStampFormate,globalDateFormat } from "@/commonMethods/commonMethod";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
+import DatePicker from "@/components/common/DatePicker";
 import { useRoute, useRouter } from 'vue-router';
 import { timeStamp } from '../../commonMethods/commonMethod';
-const tasksListColumns = [{
-        title: 'Task Name',
-        dataIndex: 'title',
-        sorter: true,
-        slots: {
-            customRender: 'taskName'
-        }
-        // filters: [
-        //   {
-        //     text: "Task 1",
-        //     value: "task 1",
-        //   },
-        //   {
-        //     text: "Task 2",
-        //     value: "task 2",
-        //   },
-        // ],
-        // onFilter: (value, record) => record.taskName.indexOf(value) === 0,
-    },
-    {
-        title: 'Task Status ',
-        dataIndex: 'taskStatus',
-        sorter: true,
-        slots: {
-            customRender: 'status'
-        }
-    },
+const tasksListColumns = [
     {
         title: 'Priority ',
         dataIndex: 'priority',
         sorter: true
         
-    },
-    {
-        title: 'Category',
-        dataIndex: 'category',
-        sorter: true,
-        slots: {
-            customRender: 'category'
-        }
-    },
-    {
-        title: 'Start Date ',
-        dataIndex: 'startDate',
-        sorter: true
     },
     {
         title: 'Due Date ',
@@ -97,16 +62,55 @@ const tasksListColumns = [{
         }
     },
     {
-        title: 'Assigned To',
-        dataIndex: 'assignedTo',
+        title: 'Name',
+        dataIndex: 'title',
         sorter: true,
         slots: {
-            customRender: 'assignedTo'
+            customRender: 'taskName'
         }
-        
     },
     {
-        title: 'Reported By',
+        title: 'Status ',
+        dataIndex: 'taskStatus',
+        sorter: true,
+        slots: {
+            customRender: 'status'
+        }
+    },
+    
+    {
+        title: 'Category',
+        dataIndex: 'category',
+        sorter: true,
+        slots: {
+            customRender: 'category'
+        }
+    },
+    // {
+    //     title: 'Start Date ',
+    //     dataIndex: 'startDate',
+    //     sorter: true
+    // },
+    
+    // {
+    //     title: 'Assigned To',
+    //     dataIndex: 'assignedTo',
+    //     sorter: true,
+    //     slots: {
+    //         customRender: 'assignedTo'
+    //     }
+        
+    // },
+    {
+        title: 'Type',
+        dataIndex: 'taskType',
+        sorter: true,
+        slots: {
+            customRender: 'taskType'
+        }        
+    },
+    {
+        title: 'Assigned By',
         dataIndex: 'assignedBy',
         sorter: true,
         slots: {
@@ -128,6 +132,7 @@ export default {
         TableLoader,
         ExportToExcel,
         StaffDropDown,
+        DatePicker,
     },
     setup(props, {
         emit
@@ -159,9 +164,9 @@ export default {
 				const toDateValue = ref("")
         const handleStaffChange = (value, type) => {
 					if(type == 'dateRange') {
-						console.log('dateRange', value)
-						fromDateValue.value = value.length > 0 ? `fromDate=${timeStamp(value[0])}` : ''
-						toDateValue.value = value.length > 0 ? `&toDate=${timeStamp(value[1])}` : ''
+						let newValue = value.value
+						fromDateValue.value = newValue.length > 0 ? `fromDate=${timeStamp(newValue[0])}` : ''
+						toDateValue.value = newValue.length > 0 ? `&toDate=${timeStamp(newValue[1])}` : ''
 					}
 					else if(type == 'assignedBy') {
 						assignedByValue.value = value.length > 0 ? `&assignedBy=${value},` : ''
@@ -264,7 +269,15 @@ export default {
             globalDateFormat,
             tasksListColumns,
 						handleStaffChange,
+						dateRange: ref(),
         };
     },
 };
 </script>
+
+<style>
+.tasktable {
+	position: relative;
+	top: 25px;
+}
+</style>

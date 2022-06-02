@@ -78,12 +78,9 @@
         <div class="thumb-head" @click="showCriticalModal(); actionTrack(paramsId,293,'patient')" v-if="arrayToObjact(screensPermissions, 293)">Pin
           <PlusOutlined />
         </div>
-        <div v-if="criticalNotesList != null && arrayToObjact(screensPermissions, 311)" class="thumb-desc">
-          <a href="javascript:void(0)" @click="showCriticalNotesDetails();actionTrack(paramsId,311,'patient')" >{{ criticalNotesList[0]?criticalNotesList[0].criticalNote:'' }}</a>
+        <div v-if="latestCriticalNote != null && arrayToObjact(screensPermissions, 311)" class="thumb-desc">
+          <a href="javascript:void(0)" @click="showCriticalNotesDetails();actionTrack(paramsId,311,'patient')" >{{ latestCriticalNote ? latestCriticalNote.criticalNote : '' }}</a>
         </div>
-        <!-- <div v-if="criticalNotesList" class="thumb-desc">
-          <a href="javascript:void(0)" @click="showCriticalNotesDetails();actionTrack(paramsId,311,'patient')" >{{ criticalNotesList[0]?criticalNotesList[0].criticalNote.substring(0,20):'' }}</a>
-        </div> -->
       </div>
       
 
@@ -302,8 +299,8 @@ export default defineComponent({
       }
     })
 
-    const criticalNotesList = computed(() => {
-      return store.state.patients.criticalNotesList
+    const latestCriticalNote = computed(() => {
+      return store.state.patients.latestCriticalNote
     })
 
     const familyMembersList = computed(() => {
@@ -360,7 +357,7 @@ export default defineComponent({
     })
     
     const handleOk = ({modal, value}) => {
-      if(value) {
+      if(modal && value) {
         addEmergencyContactModalVisible.value = modal == 'addEmergencyContact' ? value : false;
         // addPhysicianModalVisible.value = modal == 'addPhysician' ? value : false;
         addfamilyMembersVisible.value = modal == 'addResponsiblePerson' ? value : false;
@@ -465,6 +462,7 @@ export default defineComponent({
     }
 
     const showCriticalNotesDetails = ()=>{
+      store.dispatch('patientCriticalNotes', route.params.udid);
       criticalNotesDetailVisible.value=true
     }
     const handleCriticalNote = (value) =>{
@@ -596,7 +594,7 @@ const checkFieldsData = computed(()=>{
       arrayToObjact,
       actionTrack,
       paramsId:route.params.udid,
-      criticalNotesList,
+      latestCriticalNote,
       showCriticalNotesDetails,
       handleCriticalNote,
       handleOk,

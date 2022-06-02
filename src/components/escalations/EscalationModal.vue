@@ -74,19 +74,17 @@
                                     <a-button @click="showButton(3) " :class="button == 3 ? 'active' : ''">Month</a-button>
                                     <a-button @click="showButton(4) " :class="button == 4 ? 'active' : ''">Custom</a-button>
                                 </div> -->
-                            <div class="filter" v-if="timeline && Buttons">
-                              <a-button v-for="item in timeline" :key="item.id" @click="showButton(item.id)" :class="Buttons.globalCodeId== item.id ? 'active' : ''"> {{item.name}}</a-button>
-                            </div>
+                             <DateFilter :Buttons="Buttons"  @clickButtons="showButton($event)" :custom="true" commit="timelineSuccess" />
                             </div>
                         </a-col>
-                        <a-col :sm="12" :xs="24" v-if="button ==4">
+                        <a-col :sm="12" :xs="24" v-if="button ==126">
                             <div class="form-group">
                                 <a-form-item label="Summary Start" name="summaryStart" :rules="[{ required: false, message: 'Due Date'+' '+$t('global.validation')  }]">
                                     <a-date-picker :disabledDate="d => !d || d.isAfter(moment().subtract(0,'days'))" v-model:value="escalationDetails.summaryStart" :format="globalDateFormat" :value-format="globalDateFormat" :size="size" style="width: 100%" @change="checkChangeInput(); changeDate()" />
                                 </a-form-item>
                             </div>
                         </a-col>
-                        <a-col :sm="12" :xs="24" v-if="button ==4">
+                        <a-col :sm="12" :xs="24" v-if="button ==126">
                             <div class="form-group">
                                 <a-form-item label="Summary end" name="summaryEnd" :rules="[{ required: false, message: 'Due Date'+' '+$t('global.validation')  }]">
                                     <a-date-picker :disabledDate="d => !d || d.isAfter(moment().subtract(0,'days'))" v-model:value="escalationDetails.summaryEnd" :format="globalDateFormat" :value-format="globalDateFormat" :size="size" style="width: 100%" @change="checkChangeInput(); changeDate()" />
@@ -182,6 +180,7 @@ import {
   successSwal,
   startimeAdd,
 } from "@/commonMethods/commonMethod";
+  import DateFilter from "@/components/common/DateFilter.vue"
 import { messages } from "@/config/messages";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch";
 import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue";
@@ -353,7 +352,8 @@ export default {
     StaffDropDown,
     Flags,
     PatientDropDown,
-    Loader
+    Loader,
+    DateFilter
 },
   setup(props, { emit }) {
     const store = useStore();
@@ -615,10 +615,15 @@ export default {
     });
     const timeLineButton = store.getters.dashboardTimeLineButton;
 
-    function showButton(id = 123) {
-      store.dispatch("timeLine", {id:id,commit:'timelineSuccess'}).then(() => {
-        apiCall(timeLineButton.value);
-      });
+    function showButton(id) {
+      console.log("gdfg",id)
+       button.value = id
+      if(id!=126){
+apiCall(timeLineButton.value)
+      }
+     
+        
+    
     }
 
     const handlePatientChange = (val) => {

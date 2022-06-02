@@ -34,6 +34,7 @@ const global = {
   add:'Add',
   edit:'Edit',
   delete:'Delete',
+  restore:'Restore',
   startTime:'Start Time',
   time:'Time',
   duration:'Duration',
