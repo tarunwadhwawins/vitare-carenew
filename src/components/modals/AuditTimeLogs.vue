@@ -86,6 +86,7 @@ export default defineComponent({
     })
 
     const updateAuditTime = () => {
+      
       store.dispatch("updateAuditTimeLog", {
         data: {
           timeAmount:getSeconds(auditTimeLog.timeAmount),
@@ -97,8 +98,8 @@ export default defineComponent({
         },
         id: props.Id,
       }).then(()=>{
- store.getters.timeLogReports.value.timeLogReportList=""
-        store.dispatch("timeLogReportList",store.getters.auditTimeLogFilterDates);
+        store.getters.timeLogReports.value.timeLogReportList=""
+        store.dispatch("timeLogReportList",store.getters.auditTimeLogFilterDates.value);
         emit('saveAuditTimeLog')
       })
      
