@@ -94,7 +94,7 @@ export const getStaffs = async (state, data) => {
 
 export const appointmentDetails = (state, data) => {
 	state.appointmentDetails = data;
-};
+}
 
 export const patientAppointmentsList = (state, appointments) => {
 	console.log('patientAppointmentsList Mutation', appointments)
