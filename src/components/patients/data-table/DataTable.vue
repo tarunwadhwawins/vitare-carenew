@@ -1,13 +1,13 @@
 <template>
 <div class="patientTable">
     <a-table rowKey="id" :columns="meta.column" :data-source="meta.patientList" :scroll="{ x: 1500,y:'calc(100vh - 470px)' }" :pagination="false" @change="handleTableChange">
-        <template #firstName="{ text, record }" v-if="arrayToObjact(screensPermissions, 63)">
+        <template #fullName="{ text, record }" v-if="arrayToObjact(screensPermissions, 63)">
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.id },query:{filter:filter} }">{{ text }}</router-link>
 
         </template>
-        <template #firstName="{ text }" v-else>
+        <!-- <template #firstName="{ text }" v-else>
             <span>{{ text }}</span>
-        </template>
+        </template> -->
         <template #flags="{ record }">
             <a-tooltip placement="bottom">
                 <template #title>
