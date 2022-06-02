@@ -123,7 +123,7 @@
     </template>
 
     <template #action="{record}" v-if="arrayToObjact(screensPermissions,109)">
-      <a-tooltip placement="bottom" v-if="record.type == 'SMS'">
+      <a-tooltip placement="bottom" v-if="record.type == 'App Message'">
         <template #title>
           <span>{{ $t("common.reply") }}</span>
         </template>
