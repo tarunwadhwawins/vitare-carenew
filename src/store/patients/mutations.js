@@ -34,23 +34,23 @@ export const patient = (state, data) => {
     
   },
   {
-    title: "Last Name",
-    dataIndex: "lastName",
+    title: "Name",
+    dataIndex: "fullName",
     slots: {
-      customRender: "lastName",
+      customRender: "fullName",
     },
     sorter: true,
-    width: '8%',
+    width: '16%',
   },
-  {
-    title: "First Name",
-    dataIndex: "firstName",
-    slots: {
-      customRender: "firstName",
-    },
-    sorter: true,
-    width: '8%',
-  },
+  // {
+  //   title: "First Name",
+  //   dataIndex: "firstName",
+  //   slots: {
+  //     customRender: "firstName",
+  //   },
+  //   sorter: true,
+  //   width: '8%',
+  // },
 
   {
     title: "Readings ",
