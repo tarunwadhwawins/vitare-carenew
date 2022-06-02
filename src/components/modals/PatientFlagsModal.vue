@@ -1,5 +1,5 @@
 <template>
-	<a-modal width="500px" height="500px" :title="title">
+	<a-modal width="30%" height="500px" :title="title">
     <a-form ref="formRef" :model="addFlagForm" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :sm="18" :xs="24">
@@ -13,7 +13,7 @@
           </a-form-item>
         </a-col>
         <a-col :sm="6" :xs="24">
-          <a-button class="add-button" size="large" html-type="submit">Add</a-button>
+          <a-button class="add-button" size="large" html-type="submit">{{ $t('global.save') }}</a-button>
         </a-col>
       </a-row>
     </a-form>
