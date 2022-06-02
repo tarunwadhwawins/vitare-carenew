@@ -136,6 +136,11 @@ export const auditTimePermissions = (state, auth) => {
   }
 
 }
+
 export const auditTimeLogFilterDates = (state, date) => {
 state.auditTimeLogFilterDates = date
+}
+
+export const taskFilters = (state, date) => {
+  state.taskFilters = date
 }

@@ -2,13 +2,13 @@
 	<a-row>
 		<div class="commonTags">
 			<a-tag v-if="route.query.filter" closable @close="remove('filter')">{{route.query.filter}}</a-tag>
-			<a-tag v-if="route.query.toDate && route.query.fromDate" closable @close="remove('date')">{{timeStampFormate(route.query.fromDate,globalDateFormat) }} To {{timeStampFormate(route.query.toDate,globalDateFormat)}}</a-tag>
+			<!-- <a-tag v-if="route.query.toDate && route.query.fromDate" closable @close="remove('date')"></a-tag> -->
 		</div>
 	</a-row>
 
 	<a-row :gutter="24">
 		<a-col :span="6">
-			<SearchField endPoint="task" />
+			<SearchField endPoint="task" @onChange="handleStaffChange($event, 'search')" :fromAll='true' />
 		</a-col>
 		<a-col :span="6">
 			<StaffDropDown mode="multiple" @handleStaffChange="handleStaffChange($event, 'assignedTo')" placeholder="Assigned To" />
@@ -17,7 +17,7 @@
 			<StaffDropDown mode="multiple" @handleStaffChange="handleStaffChange($event, 'assignedBy')" placeholder="Reported By" />
 		</a-col>
 		<a-col :span="6">
-			<DatePicker @onChange="handleStaffChange($event, 'dateRange')" v-model:value="dateRange" datePickerType="range" />
+			<DatePicker @onChange="handleStaffChange($event, 'dateRange')" v-model:value="dateRange" datePickerType="range" :dateRange="dateRange" />
 		</a-col>
 	</a-row>
 	
@@ -27,7 +27,7 @@
 				<ExportToExcel @click="exportExcel('task_report','?fromDate=&toDate='+search)" v-if="arrayToObjact(screensPermissions, 118)" />
 			</div>
 		</a-col>
-		<TaskTable @is-Edit="editTask($event)" :tasksListColumns="tasksListColumns"></TaskTable>
+		<TaskTable @is-Edit="editTask($event)" :tasksListColumns="tasksListColumns" @onChange="handleStaffChange($event, 'search')" :fromAll='true'></TaskTable>
 	</a-row>
 
 	<TableLoader />
@@ -141,10 +141,28 @@ export default {
         const router = useRouter()
         const route = useRoute()
         const toDate = ref('')
+        const dateRange = ref()
+        var dateRangeQuery = []
+
+				const params = ref("")
+				const assignedByValue = ref("")
+				const assignedToValue = ref("")
+				const fromDateValue = ref("")
+				const toDateValue = ref("")
+				const filterValue = ref("")
+				const searchValue = ref("")
+
         onMounted(() => {
+						// store.dispatch('taskFilters', "&fromDate=&toDate=")
             if (route.query.filter || route.query.fromDate) {
                 toDate.value = route.query.toDate
                 let filter = route.query.filter ? route.query.filter : ''
+								if(route.query.fromDate && route.query.toDate) {
+									dateRangeQuery.push(timeStampFormate(route.query.fromDate, 'YYYY-MM-DD'))
+									dateRangeQuery.push(timeStampFormate(route.query.toDate, 'YYYY-MM-DD'))
+									dateRange.value = dateRangeQuery
+								}
+								
                 let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
                 store.dispatch("tasksList", "?filter=" + filter + date);
             } else {
@@ -157,25 +175,33 @@ export default {
             })
         });
 
-				const params = ref("")
-				const assignedByValue = ref("")
-				const assignedToValue = ref("")
-				const fromDateValue = ref("")
-				const toDateValue = ref("")
         const handleStaffChange = (value, type) => {
 					if(type == 'dateRange') {
 						let newValue = value.value
-						fromDateValue.value = newValue.length > 0 ? `fromDate=${timeStamp(newValue[0])}` : ''
+						fromDateValue.value = newValue.length > 0 ? `&fromDate=${timeStamp(newValue[0])}` : ''
 						toDateValue.value = newValue.length > 0 ? `&toDate=${timeStamp(newValue[1])}` : ''
+						remove('date')
+					}
+					else if(type == 'search') {
+						searchValue.value = value.target.value != null ? `${value.target.value}` : ''
 					}
 					else if(type == 'assignedBy') {
-						assignedByValue.value = value.length > 0 ? `&assignedBy=${value},` : ''
+						assignedByValue.value = value.length > 0 ? `&assignedBy=${value}` : ''
 					}
 					else if(type == 'assignedTo') {
-						assignedToValue.value = value.length > 0 ? `&assignedTo=${value},` : ''
+						assignedToValue.value = value.length > 0 ? `&assignedTo=${value}` : ''
+					}
+					
+					if(route.query.filter) {
+						filterValue.value = '&filter='+route.query.filter
+						store.commit('taskFilters', fromDateValue.value + toDateValue.value + assignedByValue.value + assignedToValue.value + store.getters.searchTable.value + searchValue.value + filterValue.value)
+					}
+					else {
+						store.commit('taskFilters', fromDateValue.value + toDateValue.value + assignedByValue.value + assignedToValue.value + store.getters.searchTable.value + searchValue.value)
 					}
 
-					params.value = fromDateValue.value+toDateValue.value+assignedByValue.value+assignedToValue.value
+					params.value = store.getters.taskFilters.value
+					console.log('taskFilters', params.value)
 					store.dispatch('searchTasks', params.value)
         };
 
@@ -186,20 +212,12 @@ export default {
             });
         };
 
-        const updateTask = () => {
-            // console.log('updateTask', data)
-        };
-
-        const createAppointment = () => {
-            // console.log('createAppointment', id)
-        };
-
         onUnmounted(() => {
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
             })
-
+						store.dispatch('taskFilters', "?fromDate=&toDate=")
             //store.state.common.filter=''
         })
 
@@ -261,15 +279,13 @@ export default {
             size: ref([]),
             // tasksColumns,
             editTask,
-            updateTask,
-            createAppointment,
             remove,
             route,
             timeStampFormate,
             globalDateFormat,
             tasksListColumns,
 						handleStaffChange,
-						dateRange: ref(),
+						dateRange,
         };
     },
 };
