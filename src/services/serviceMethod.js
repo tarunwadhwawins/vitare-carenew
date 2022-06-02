@@ -100,8 +100,8 @@ class ServiceMethodService {
                     store.commit('dropdownLoadingStatus', false)
                     if (currentValue === value) {
                         const result = d.data.data.map(item=>{
-                            if(item.UTCOffset){
-                                item.fullName = item.UTCOffset
+                            if(item.abbr){
+                                item.fullName = item.abbr
                             }
                             return item
                         });
