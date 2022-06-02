@@ -1370,7 +1370,12 @@ Object.assign(emergencyContactForm, demographics)
         };
 
         const next = () => {
-            store.commit("counterPlus");
+					store.commit("counterPlus");
+					if(!props.isEdit && current.value == 5) {
+						store.dispatch("globalCodes").then(() => {
+							unSelectedDiseasesList.value = globalCode.value.healthCondition
+						})
+					}
         };
         const prev = () => {
 						if(patients.value.addDemographic && current.value == 1) {

@@ -1,7 +1,7 @@
 <template>
 <a-row class="mb-24" :gutter="24" >
     <a-col :xl="6" :sm="8" :xs="12" v-for="status in tasks.taskStatus" :key="status.id">
-        <FilterCard :filterCount="CompletedTasksFilterCount" :count="status.total ? status.total : 0" :color="status.color" class="blockLists five" :heading="status.text" />
+        <FilterCard :filterCount="CompletedTasksFilterCount" :count="status.total ? status.total : 0" :color="status.color" class="blockLists five" :heading="status.text" @click="linkOpen(status.text)"/>
     </a-col>
 </a-row>
 <a-row :gutter="24" >
@@ -65,6 +65,7 @@ import {
 import {
     arrayToObjact
 } from "@/commonMethods/commonMethod";
+import {  useRouter } from 'vue-router';
 export default {
     components: {
         FilterCard,
@@ -78,7 +79,7 @@ export default {
     setup() {
         const store = useStore();
         const toggle = ref(true);
-
+const router = useRouter()
         function clickHandler() {
             toggle.value = false;
         }
@@ -111,7 +112,14 @@ export default {
         const tasks = computed(() => {
             return store.state.tasks;
         });
-
+function linkOpen(name){
+    router.replace({
+                    query: {
+                        view: 'list',
+                        filter:name
+                    }
+                });
+}
         return {
             screensPermissions: store.getters.screensPermissions,
             arrayToObjact,
@@ -120,6 +128,7 @@ export default {
             clickHandler2,
             toggle,
             CompletedTasksFilterCount,
+            linkOpen,
         };
     },
 };
