@@ -82,11 +82,11 @@ import PatientVitalsView from "@/components/patients/patientSummary/views/Patien
 import CriticalNotes from "@/components/patients/patientSummary/common/CriticalNotes";
 import Escalation from "@/components/escalations/Escalation"
 import TableLoader from "@/components/loader/TableLoader"; 
-// import AddTimeLogModal from "@/components/modals/AddTimeLogs";
+import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 // import StartCallModal from "@/components/modals/StartCallModal";
 
 import dayjs from "dayjs"; 
-import { ref, computed, watchEffect,onBeforeMount, onUnmounted,reactive, onMounted, defineComponent, defineAsyncComponent} from "vue";
+import { ref, computed, watchEffect,onBeforeMount, onUnmounted,reactive, onMounted} from "vue";
 import { useStore } from 'vuex';
 import { useRoute,useRouter  } from 'vue-router';
 import {
@@ -102,7 +102,8 @@ function clearEvent(event){
         event.returnValue = '';
       
     }
-export default defineComponent({
+    const stoptimervisible = ref(false);
+export default {
   components: {
     Header,
     Sidebar,
@@ -113,7 +114,7 @@ export default defineComponent({
     PatientVitalsView,
     TableLoader,
     Escalation,
-    AddTimeLogModal:defineAsyncComponent(()=>import('@/components/modals/AddTimeLogs')),
+    AddTimeLogModal,
     CriticalNotes,
     // StartCallModal,
   },
@@ -132,7 +133,7 @@ export default defineComponent({
     const timelogsvisible = ref(false);
     const bloodoxygenvisible = ref(false);
     const bloodglucosevisible = ref(false);
-    const stoptimervisible = ref(false);
+    
     const isEditTimeLog = ref(false);
     // const startCallModalVisible = ref(false);
     const loader= ref(true)
@@ -504,8 +505,10 @@ onMounted(()=>{
 
   beforeRouteLeave (to, from, next) {
   cancelButton.value = to.fullPath
-   var button= document.getElementById("timer")
-   if(to.fullPath!='/logout'){
+
+  
+   if(to.path!='/logout'&&to.path!='/'){
+      var button= document.getElementById("timer")
      if(button){
        button.click()
      }else{
@@ -517,7 +520,7 @@ onMounted(()=>{
      }
     }
   
-});
+};
 </script>
 
 <style lang="scss">

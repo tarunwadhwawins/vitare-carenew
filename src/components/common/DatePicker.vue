@@ -6,7 +6,7 @@
 </template>
 <script>
 
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watchEffect } from 'vue';
 import {
   globalDateFormat
 } from "@/commonMethods/commonMethod";
@@ -15,19 +15,30 @@ export default defineComponent({
   props: {
     datePickerType: {
       type: String
-    }
+    },
+    dateRange: {
+      type: Array
+    },
   },
   setup(props, { emit }) {
+    const value1 = ref()
     const handleChange = (value) => {
       emit('onChange', {
         value: value,
         type: null,
       })
     }
+
+    watchEffect(() => {
+      if(props.dateRange) {
+        value1.value = props.dateRange
+      }
+    })
+
     return {
       globalDateFormat,
       handleChange,
-      value1: ref(),
+      value1,
     };
   },
 

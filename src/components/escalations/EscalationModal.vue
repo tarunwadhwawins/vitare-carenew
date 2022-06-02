@@ -75,17 +75,18 @@
                         <a-col :sm="12" :xs="24" v-if="button ==126">
                             <div class="form-group">
                                 <a-form-item label="Summary Start" name="summaryStart" :rules="[{ required: false, message: 'Due Date'+' '+$t('global.validation')  }]">
-                                    <a-date-picker :disabledDate="d => !d || d.isAfter(moment().subtract(0,'days'))" v-model:value="escalationDetails.summaryStart" :format="globalDateFormat" :value-format="globalDateFormat" :size="size" style="width: 100%" @change="checkChangeInput(); changeDate()" />
+                                    <a-date-picker :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" v-model:value="escalationDetails.summaryStart" :format="globalDateFormat" :value-format="globalDateFormat" :size="size" style="width: 100%" @change="checkChangeInput(); changeDate();" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24" v-if="button ==126">
                             <div class="form-group">
                                 <a-form-item label="Summary end" name="summaryEnd" :rules="[{ required: false, message: 'Due Date'+' '+$t('global.validation')  }]">
-                                    <a-date-picker :disabledDate="d => !d || d.isAfter(moment().subtract(0,'days'))" v-model:value="escalationDetails.summaryEnd" :format="globalDateFormat" :value-format="globalDateFormat" :size="size" style="width: 100%" @change="checkChangeInput(); changeDate()" />
+                                    <a-date-picker :disabledDate="d => !d || d.isSameOrBefore(escalationDetails.summaryStart)" v-model:value="escalationDetails.summaryEnd" :format="globalDateFormat" :value-format="globalDateFormat" :size="size" style="width: 100%" @change="checkChangeInput(); changeDate();dateChange();" />
                                 </a-form-item>
                             </div>
                         </a-col>
+                        
                     </a-row>
                     <a-row :gutter="24">
                         <a-col :md="24" :sm="24" :xs="24" v-for="errMsg in errorMsg" :key="errMsg.id">
@@ -482,6 +483,7 @@ export default {
                   commit: "timelineSuccess",
                 })
                 .then(() => {
+                  button.value = 123
                   apiCall(timeLineButton.value);
                 });
             }
@@ -508,6 +510,7 @@ export default {
                   commit: "timelineSuccess",
                 })
                 .then(() => {
+                  button.value = 123
                   apiCall(timeLineButton.value);
                 });
             }
@@ -661,7 +664,55 @@ export default {
 
     let from = moment();
     let to = moment();
+    const dateSelect = ref(null)
+    function dateChange() {
+            dateSelect.value = moment(escalationDetails.summaryEnd).add(1, 'day')
+        }
+function changeDate (){
+  console.log("check",escalationDetails.summaryStart)
+  if(escalationDetails.summaryStart && escalationDetails.summaryEnd){
+let dateFormate = {
+          fromDate: timeStamp(startimeAdd(moment(escalationDetails.summaryStart))),
+          toDate: timeStamp(endTimeAdd(moment(escalationDetails.summaryEnd))),
+        };
 
+        if (route.params.udid && route.name == "PatientSummary") {
+        store.dispatch("escalationNotesList", {
+          id: route.params.udid,
+          date: dateFormate,
+        });
+        store.dispatch("escalationVitalList", {
+          id: route.params.udid,
+          date: dateFormate,
+        });
+        store.dispatch("esacalationCarePlansList", {
+          id: route.params.udid,
+          date: dateFormate,
+        });
+        store.dispatch("esacalationFlagList", {
+          id: route.params.udid,
+          date: dateFormate,
+        });
+      } else if (escalation.referenceId) {
+        store.dispatch("escalationNotesList", {
+          id: escalation.referenceId,
+          date: dateFormate,
+        });
+        store.dispatch("escalationVitalList", {
+          id: escalation.referenceId,
+          date: dateFormate,
+        });
+        store.dispatch("esacalationCarePlansList", {
+          id: escalation.referenceId,
+          date: dateFormate,
+        });
+        store.dispatch("esacalationFlagList", {
+          id: escalation.referenceId,
+          date: dateFormate,
+        });
+      }
+  }
+}
     function apiCall(data) {
       let dateFormate = "";
       if (data.globalCodeId == 122) {
@@ -725,6 +776,7 @@ export default {
           date: dateFormate,
         });
       }
+    
     }
 
     const noteSelection = {
@@ -803,6 +855,9 @@ export default {
       next,
       prev,
       patientDetails,
+      changeDate,
+      dateSelect,
+      dateChange,
       size: ref("large"),
       steps: [
         {

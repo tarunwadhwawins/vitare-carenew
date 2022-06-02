@@ -1,7 +1,6 @@
 <template>
 <a-col :sm="24">
-
-    <a-table rowKey="id" :columns="tasksListColumns" :data-source="meta.tasksList"  :scroll="height ? {  y:height } :{ x: 900,y:'calc(100vh - 470px)'  }" :pagination="false" @change="handleTableChange">
+    <a-table rowKey="id" :columns="tasksListColumns" :data-source="tasksList"  :scroll="height ? {  y:height } :{ x: 900,y:'calc(100vh - 470px)'  }" :pagination="false" @change="handleTableChange">
 
         <template #taskName="{text,record}">
             <a @click="taskDetails(record.id)"><span>{{ text }}</span></a>
@@ -78,16 +77,19 @@ export default {
     },
     props: {
         height: Number,
-        tasksListColumns: Array
+        tasksListColumns: Array,
+        fromAll: Boolean,
     },
     setup(props, {
         emit
     }) {
+        const searchAll = props.fromAll ? ref(props.fromAll) : ref(false)
         const store = useStore();
         const route = useRoute()
         const taskID = ref(false);
         let data = [];
         const meta = store.getters.taskRecords.value;
+        const tasksList = store.getters.tasksList
         const taskVisibleView = ref(false)
         const onlyView = ref(false)
     
@@ -112,19 +114,21 @@ export default {
                        scroller = maxScroll;
                         data = meta.tasksList;
                         store.state.tasks.taskMeta = ''
-
-                        store
-                            .dispatch(
-                                "tasksList",
-                                "?page=" +
-                                current_page +
-                                dateFilter + filter +
-                                store.getters.searchTable.value +
-                                store.getters.orderTable.value.data
-                            )
-                            .then(() => {
-                                loadMoredata();
-                            });
+                        console.log('filters', store.getters.orderTable.value.data)
+                        if(!searchAll.value) {
+                            store
+                                .dispatch(
+                                    "tasksList",
+                                    "?page=" +
+                                    current_page +
+                                    dateFilter + filter +
+                                    store.getters.searchTable.value +
+                                    store.getters.orderTable.value.data
+                                )
+                                .then(() => {
+                                    loadMoredata();
+                                });
+                        }
                     }
                 }
             });
@@ -236,6 +240,7 @@ export default {
             taskVisibleView,
             onlyView,
             handleOk,
+            tasksList,
 
         };
     },
