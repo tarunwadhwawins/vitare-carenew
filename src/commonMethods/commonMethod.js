@@ -96,9 +96,9 @@ export async function messageSwal(message) {
 	}
 }
 // swal for warning message
-export async function warningSwal(message) {
+export async function warningSwal(message,title=null) {
 	const result = await Swal.fire({
-		title: 'Are you sure you want to discard your changes?',
+		title: title,
 		text: message,
 		icon: 'warning',
 		showCancelButton: true,

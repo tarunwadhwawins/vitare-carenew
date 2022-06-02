@@ -2,14 +2,15 @@
     <a-modal width="1100px" :maskClosable="false" centered v-model:visible="viewReport" title="Audit Time Log Change Report"  :footer="false" @cancel="closeModal()">
     
         <a-table   :columns="columns" :data-source="modalData" :pagination="false">
-            
+            <template #createdBy="{record}">
+                <router-link :to="{ name: 'CoordinatorSummary', params: { udid:record.createdById}}" >{{record.createdBy}}</router-link>
+            </template>
         </a-table>
         <TableLoader />
     </a-modal>
 </template>
 <script>
 import {
-    
     onMounted,
 } from "vue";
 import {

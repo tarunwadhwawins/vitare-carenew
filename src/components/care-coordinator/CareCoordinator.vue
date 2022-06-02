@@ -24,7 +24,7 @@
 </a-row>
 
 <a-row>
-    <a-col :span="12" >
+    <a-col :span="12" class=" mb-24">
         <SearchField endPoint="staff" v-if="arrayToObjact(screensPermissions,40)"/>
     </a-col>
     <a-col :span="12" >

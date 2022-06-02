@@ -86,6 +86,9 @@ export const timeLogView = async (state, data) => {
     {
       title: "Change By",
       dataIndex: "createdBy",
+      slots: {
+        customRender: "createdBy",
+      },
     },  
     {
     title: "Time (MM:SS)",
@@ -136,6 +139,11 @@ export const auditTimePermissions = (state, auth) => {
   }
 
 }
+
 export const auditTimeLogFilterDates = (state, date) => {
 state.auditTimeLogFilterDates = date
+}
+
+export const taskFilters = (state, date) => {
+  state.taskFilters = date
 }

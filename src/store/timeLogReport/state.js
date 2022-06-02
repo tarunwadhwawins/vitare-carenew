@@ -7,6 +7,7 @@ export default {
   timeLogView:null,
   viuewTimeReportModal:null,
   auditTimeLogFilterDates:null,
+  taskFilters:null,
   auditMetaLog:null,
   timelineReport:null
  
