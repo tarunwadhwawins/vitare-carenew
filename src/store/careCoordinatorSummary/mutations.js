@@ -41,14 +41,15 @@ export const staffSummaryAppointment= async (state, data) => {
 
 export const staffSummaryPatient= async (state, data) => {
     state.staffSummaryPatient = data.map(element => {
-        element.flags=element.patientFlags.data[0]?element.patientFlags.data[0].flags.data.color:'',
+      console.log('element',element.patientVitals.length)
+        element.flags = element.flagColor?element.flagColor:'',
         element.lastName=element.lastName?element.lastName :'',
-        element.firstName=element.name?element.name+' '+element.lastName :'' ,
-        element.lastReadingDate=element.lastReadingDate?element.lastReadingDate:'',
-        element.weight=element.weight?element.weight:'',
-        element.bp = element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='Systolic'){return JSON.parse(vitalData.value)}if(vitalData.vitalField=='Diastolic'){return '/'+JSON.parse(vitalData.value)}}),
-        element.spo2 = element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='SPO2'){return JSON.parse(vitalData.value)}}),
-        element.glucose = element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='Random Blood Sugar'){return JSON.parse(vitalData.value)}}),
+        element.firstName=element.name?element.name+' '+element.lastName :'' 
+        element.lastReadingDate=element.lastReadingDate?element.lastReadingDate:''
+        element.weight=element.weight?element.weight:''
+        element.bp = element.patientVitals.length>0?element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='Systolic'){return JSON.parse(vitalData.value)}if(vitalData.vitalField=='Diastolic'){return '/'+JSON.parse(vitalData.value)}}):''
+        element.spo2 = element.patientVitals.length>0?element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='SPO2'){return JSON.parse(vitalData.value)}}):'',
+        element.glucose = element.patientVitals.length>0?element.patientVitals.data.map(vitalData=>{ if(vitalData.vitalField=='Random Blood Sugar'){return JSON.parse(vitalData.value)}}):'',
         element.dob = Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10)>0?Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10):1
         return element
  })
@@ -63,6 +64,7 @@ export const staffSummaryPatient= async (state, data) => {
         {
           title: "Name",
           dataIndex: "firstName",
+          width: '15%',
           slots: {
             customRender: "firstName",
           },
@@ -70,14 +72,16 @@ export const staffSummaryPatient= async (state, data) => {
         {
           title: "Age",
           dataIndex: "dob",
+          width: '8%',
+          align: 'right',
           sorter: {
             compare: (a, b) => a.age - b.age,
             multiple: 3,
           },
         },
         {
-          title: "Sex",
-          dataIndex: "gender",
+          title: "Gender",
+          dataIndex: "genderName",
           sorter: {
             compare: (a, b) => a.sex - b.sex,
             multiple: 2,

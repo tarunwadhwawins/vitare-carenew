@@ -1,5 +1,5 @@
 <template>
-<a-table  rowKey="id" :columns="patients.staffSummaryPatientCols" :data-source="patients.staffSummaryPatient" :pagination="false" @change="onChange">
+<a-table  rowKey="id" :columns="patients.staffSummaryPatientCols" :data-source="patients.staffSummaryPatient" :scroll="{ x: 800,y:'calc(100vh - 470px)' }" :pagination="false" @change="onChange">
     <template #firstName="{ record }" v-if="arrayToObjact(screensPermissions,63)">
         <router-link :to="{ name: 'PatientSummary', params: { udid: record.id } }">{{ record.firstName }}</router-link>
     </template>
@@ -20,7 +20,7 @@
     <template #lastReadingValues>
         <WarningOutlined />
     </template>
-    <template #action="" v-if="arrayToObjact(screensPermissions,64)">
+    <template  v-if="arrayToObjact(screensPermissions,64)">
         <a-tooltip placement="bottom" >
             <template #title>
                 <span>{{$t('global.delete')}}</span>
