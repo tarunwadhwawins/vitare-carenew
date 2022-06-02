@@ -60,8 +60,8 @@
                 <div class="form-group">
                     <a-form-item :label="$t('global.careCoodinator')" name="assignedTo" :rules="[{ required: true, message: $t('global.careCoodinator')+' '+$t('global.validation')  }]">
                         <StaffDropDown v-if="!taskId" :disabled="taskId?true:false" mode="multiple" v-model:value="taskForm.assignedTo" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
-                        <StaffDropDown v-else :disabled="true" mode="multiple" v-model:value="taskForm.assignedName" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
-
+                        <!-- <StaffDropDown v-else mode="multiple" :disabled="taskId?true:false"  v-model:value="taskForm.assignedName" @handleStaffChange="handleStaffChange($event)" :close="closeValue" /> -->
+                        <PatientDropDown v-else mode="multiple" :disabled="true" v-model:value="taskForm.assignedName" @handlePatientChange="handlePatientChange($event)" :close="closeValue" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -159,7 +159,7 @@ export default defineComponent({
         });
 
         const submitForm = () => {
-            closeValue.value = true;
+            
             if (props.taskId) {
                 store
                     .dispatch("updateTask", {
@@ -177,7 +177,7 @@ export default defineComponent({
                         id: props.taskId,
                     })
                     .then(() => {
-
+                        closeValue.value = true;
                         if (props.onlyView) {
                             emit("clinicalDashboard")
                         } else {
@@ -208,12 +208,13 @@ export default defineComponent({
                         entityType: isPatientTask ? "patient" : taskForm.entityType,
                     })
                     .then(() => {
-
-                        closeValue.value = false;
+                        closeValue.value = true;
+                        
                         if (route.name == "PatientSummary") {
                             store.dispatch("latestTask", route.params.udid);
                         }
                         handleCancel()
+                        closeValue.value = false;
                         Object.assign(taskForm, form);
                         emit("closeModal", {
                             modal: "addTask",
@@ -271,7 +272,7 @@ export default defineComponent({
         };
 
         watchEffect(() => {
-            store.dispatch("allStaffList");
+            // store.dispatch("allStaffList");
             if (tasks.value.editTask && props.taskId) {
 
                 Object.assign(taskForm, tasks.value.editTask);

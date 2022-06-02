@@ -1,4 +1,3 @@
-
 <template>
 <a-modal max-width="1140px" width="70%" title="Details" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24" class="row">
@@ -27,10 +26,10 @@
             </a-table>
         </a-col>
     </a-row>
-    <a-row :gutter="24" class="row" v-show="record?record.escalationStaff.data.length>0:false" >
+    <a-row :gutter="24" class="row" v-show="record?record.escalationStaff.data.length>0:false">
         <a-col :sm="24" :xs="24">
             <strong>Assigned By : </strong>
-           <span v-if="arrayToObjact(screensPermissions, 408)">
+            <span v-if="arrayToObjact(screensPermissions, 408)">
                 <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.assignedById } }">{{ record.assignedBy }}</router-link>
             </span>
             <div v-else>
@@ -38,17 +37,18 @@
             </div>
         </a-col>
     </a-row>
-    
-    <a-row :gutter="24" class="row" v-show="record?record.escalationStaff.data.length>0:false" >
+
+    <a-row :gutter="24" class="row" v-show="record?record.escalationStaff.data.length>0:false">
         <a-col :sm="24" :xs="24" v-if="arrayToObjact(screensPermissions, 408)">
             <strong>Assigned Staff : </strong>
-           <span v-for="esc,i in record.escalationStaff.data" :key="esc.id" >
-                {{i==0?' ':','}} <router-link :to="{ name: 'CoordinatorSummary', params: { udid: esc.staffUdid } }">{{ esc.staffName }}</router-link>
+            <span v-for="esc,i in record.escalationStaff.data" :key="esc.id">
+                {{i==0?' ':','}}
+                <router-link :to="{ name: 'CoordinatorSummary', params: { udid: esc.staffUdid } }">{{ esc.staffName }}</router-link>
             </span>
         </a-col>
         <a-col :sm="24" :xs="24" v-else>
             <strong>Assigned Staff : </strong>
-           <span v-for="esc,i in record.escalationStaff.data" :key="esc.id" >
+            <span v-for="esc,i in record.escalationStaff.data" :key="esc.id">
                 {{i==0?' ':','}} <span>{{ esc.staffName }}</span>
             </span>
         </a-col>
@@ -61,72 +61,63 @@
         </a-col>
 
     </a-row>
-    
+
     <a-row :gutter="24" class="row">
         <a-col :sm="24" :xs="24">
             <strong>Escalation Type </strong>
         </a-col>
         <a-col :span="24">
             <a-collapse v-model:activeKey="activeKey" accordion>
-                <!-- <a-collapse-panel key="2" header="Escalation Description">
-                    <p>{{ record.escalationDescription }}</p>
-                </a-collapse-panel> -->
-
                 <a-collapse-panel key="3" header="Notes" v-show="record?record.escalationNotes.data.length>0:false">
                     <a-table rowKey="id" :columns="notesColumns" :data-source="escalation.escalationNots" :pagination="false">
+                        <template #color="{ record }">
+                            <a-tooltip placement="bottom">
+                                <template #title>
+                                    <span>{{ record.flag }}</span>
+                                </template>
+                                <a class="icons">
+                                    <Flags :flag="record.color" /></a>
+                            </a-tooltip>
+                        </template>
                     </a-table>
-                    <!-- <span>{{ note.note.data.date?'('+dateAndTimeFormate(note.note.data.date,globalDateFormat)+')':null}}</span> -->
-                    <!-- <div v-for=" note in record.escalationNotes.data" :key="note.id">
-                        <ul>
-                            <li><b>{{ note.note.data.date?dateAndTimeFormate(note.note.data.date,globalDateFormat)+' ':null}} </b>{{note.note.data.note}} </li>
-                        </ul>
-                    </div> -->
                 </a-collapse-panel>
                 <a-collapse-panel key="4" header="Vitals" v-show="record?record.escalationVital.data.length>0:false">
                     <a-table rowKey="id" :columns="vitalColumns" :data-source="escalation.escalationVitals" :pagination="false">
                         <template #color="{ record }">
-                            <Flags :flag="record.color" />
+                            <a-tooltip placement="bottom">
+                                <template #title>
+                                    <span>{{ record.flagName }}</span>
+                                </template>
+                                <a class="icons">
+                                    <Flags :flag="record.color" /></a>
+                            </a-tooltip>
                         </template>
                     </a-table>
-                    <!-- <div v-for=" vital in record.escalationVital.data" :key="vital.id">
-                        <ul>
-                            <li><b>{{vital.patientVital.takeTime?dateAndTimeFormate(vital.patientVital.takeTime,globalDateFormat)+' ':null}}</b>{{vital.patientVital.deviceType}} {{'('+vital.patientVital.vitalField+')'}} {{vital.patientVital.value}} </li>
-                        </ul>
-                    </div> -->
                 </a-collapse-panel>
                 <a-collapse-panel key="5" header="Care Plans" v-show="record?record.escalationCarePlan.data.length>0:false">
                     <a-table rowKey="id" :columns="carePlanColumns" :data-source="escalation.escalationCarePlan" :pagination="false">
                     </a-table>
-                    <!-- <div v-for=" cp in record.escalationCarePlan.data" :key="cp.id">
-                        <ul>
-                            <li>{{cp.carePlan.data.deviceType}} {{' ('+cp.carePlan.data.vitalField+')'}} {{cp.carePlan.data.lowValue}} -  {{cp.carePlan.data.highValue}} </li>
-                        </ul>
-                    </div> -->
                 </a-collapse-panel>
                 <a-collapse-panel key="6" header="Flags" v-show="record?record.escalationFlag.data.length>0:false">
-                    <!-- <p>{{ record.escalationFlag.data }}</p> -->
                     <a-table rowKey="id" :columns="flagColumns" :data-source="escalation.escalationFlags" :pagination="false">
                         <template #name="{ record }">
                             <span>{{record.flagName}}</span>
                         </template>
                         <template #color="{ record }">
-                            <Flags :flag="record.color" />
+                            <a-tooltip placement="bottom">
+                                <template #title>
+                                    <span>{{ record.flagName }}</span>
+                                </template>
+                                <a class="icons">
+                                    <Flags :flag="record.color" /></a>
+                            </a-tooltip>
                         </template>
                     </a-table>
-                    <!-- <div v-for=" flag in record.escalationFlag.data" :key="flag.id">
-                        <ul>
-                            <li><b>{{ flag.flag.data.createdAt?dateAndTimeFormate(flag.flag.data.createdAt,globalDateFormat)+' ':null}}</b>{{flag.flag.data.flags.data.name}}
-                                <Flags :flag="flag.flag.data.flags.data.color" />  
-                            </li>
-                        </ul>
-                    </div> -->
                 </a-collapse-panel>
-
             </a-collapse>
         </a-col>
     </a-row>
     <Loader />
-
 </a-modal>
 </template>
 <script>
@@ -137,7 +128,7 @@ import Loader from "@/components/loader/Loader";
 import {
   globalDateFormat,
   dateAndTimeFormate,
-  arrayToObjact
+  arrayToObjact,
 } from "@/commonMethods/commonMethod";
 const columnData = [
   {
@@ -197,6 +188,13 @@ const notesColumns = [
     title: "Added By",
     dataIndex: "addedBy",
     key: "addedBy",
+  },
+  {
+    title: "Color",
+    dataIndex: "color",
+    slots: {
+      customRender: "color",
+    },
   },
 ];
 const vitalColumns = [
@@ -295,23 +293,23 @@ export default {
     Flags,
     Loader,
   },
-  setup(props,{emit}) {
+  setup(props, { emit }) {
     const activeKey = ref([]);
     const store = useStore();
 
     const closeModal = () => {
-      emit("saveModal", false);     
+      emit("saveModal", false);
     };
     const record = computed(() => {
       return store.state.escalations.singleEscalationRecord;
     });
-    
-    const escalation = computed(()=>{
-      return store.state.escalations
-    })
-    const screensPermissions = computed(()=>{
-      return store.state.screenPermissions.screensPermissions
-    })
+
+    const escalation = computed(() => {
+      return store.state.escalations;
+    });
+    const screensPermissions = computed(() => {
+      return store.state.screenPermissions.screensPermissions;
+    });
     return {
       arrayToObjact,
       screensPermissions,
