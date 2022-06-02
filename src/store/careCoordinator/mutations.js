@@ -50,8 +50,8 @@ export const staff = async (state, data) => {
 		{
 			title: 'Role',
 			dataIndex: 'role',
-			customRender: ({ record }) => {
-				return record.role.name;
+			slots: {
+				customRender: 'role'
 			},
 			sorter: true
 		},
