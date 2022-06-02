@@ -82,11 +82,11 @@ import PatientVitalsView from "@/components/patients/patientSummary/views/Patien
 import CriticalNotes from "@/components/patients/patientSummary/common/CriticalNotes";
 import Escalation from "@/components/escalations/Escalation"
 import TableLoader from "@/components/loader/TableLoader"; 
-import AddTimeLogModal from "@/components/modals/AddTimeLogs";
+// import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 // import StartCallModal from "@/components/modals/StartCallModal";
 
 import dayjs from "dayjs"; 
-import { ref, computed, watchEffect,onBeforeMount, onUnmounted,reactive, onMounted} from "vue";
+import { ref, computed, watchEffect,onBeforeMount, onUnmounted,reactive, onMounted, defineComponent, defineAsyncComponent} from "vue";
 import { useStore } from 'vuex';
 import { useRoute,useRouter  } from 'vue-router';
 import {
@@ -102,7 +102,7 @@ function clearEvent(event){
         event.returnValue = '';
       
     }
-export default {
+export default defineComponent({
   components: {
     Header,
     Sidebar,
@@ -113,7 +113,7 @@ export default {
     PatientVitalsView,
     TableLoader,
     Escalation,
-    AddTimeLogModal,
+    AddTimeLogModal:defineAsyncComponent(()=>import('@/components/modals/AddTimeLogs')),
     CriticalNotes,
     // StartCallModal,
   },
@@ -517,7 +517,7 @@ onMounted(()=>{
      }
     }
   
-};
+});
 </script>
 
 <style lang="scss">
