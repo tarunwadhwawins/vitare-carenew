@@ -42,7 +42,7 @@
     </a-table>
     <TableLoader />
 
-    <AuditTimeLog v-if="visible" v-model:visible="visible" @saveAuditTimeLog="handleOk($event)" :Id="Id" />
+    <AuditTimeLog  v-model:visible="visible" @saveAuditTimeLog="handleOk($event)" :Id="Id" />
 </a-col>
 <ViewTimeLogTable v-if="viewReport" v-model:visible="viewReport" :id="auditId" />
 </template>
@@ -96,8 +96,8 @@ props:{
         const visible = ref(false);
         const viewReport = ref(false);
         const Id = ref()
-        const handleOk = () => {
-            visible.value = false;
+        const handleOk = (event) => {
+            visible.value = event;
             emit('scrolller')
 
         };
