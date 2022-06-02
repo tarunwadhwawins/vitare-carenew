@@ -90,7 +90,7 @@ const columnData = [{
         },
     },
     {
-        title: "Escalation Type",
+        title: "Type",
         dataIndex: "escalationType",
         width: '20%',
         //sorter: true,
