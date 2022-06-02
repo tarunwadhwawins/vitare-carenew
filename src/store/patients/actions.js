@@ -70,10 +70,11 @@ export const addDemographic = async ({
       errorLogWithDeviceInfo(error);
     }
     commit('loadingStatus', false)
-    // if (error.response.status === 422) {
-    //   commit('errorMsg', error.response.data)
-    //   commit('loadingStatus', false)
-    // } else if (error.response.status === 500) {
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
+    } 
+    // else if (error.response.status === 500) {
     //   errorSwal(error.response.data.message)
     //   commit('loadingStatus', false)
     // } else if (error.response.status === 401) {

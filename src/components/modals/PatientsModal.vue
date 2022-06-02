@@ -59,7 +59,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-                                    <a-input @change="changedValue" v-model:value="demographics.email" placeholder="test@test.com" size="large"  />
+                                    <a-input @change="changedValue" v-model:value="demographics.email" placeholder="test@test.com" size="large"  @input="emailChange()"/>
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.email?errorMsg.email[0]:''" />
                                 </a-form-item>
                             </div>
