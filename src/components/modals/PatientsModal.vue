@@ -1377,9 +1377,71 @@ Object.assign(emergencyContactForm, demographics)
 						})
 					}
         };
+
         const prev = () => {
 						if(patients.value.addDemographic && current.value == 1) {
 							Object.assign(demographics, patients.value.addDemographic);
+						}
+						
+						if(!props.isEdit && current.value == 6) {
+							if(patients.value.addCondition == null && patientConditions.value == null) {
+								unSelectedDiseasesList.value = []
+								store.dispatch('patientConditions', idPatient.value).then(() => {
+									globalCode.value.healthCondition.map(function(healthCondition) {
+										if(patientConditions.value.includes(healthCondition.id)) {
+											if(!selectedDiseasesList.value.includes(healthCondition)) {
+												selectedDiseasesList.value.push(healthCondition)
+												if(!conditions.condition.includes(healthCondition)) {
+													conditions.condition.push(healthCondition.id)
+												}
+											}
+										}
+										else {
+											unSelectedDiseasesList.value = globalCode.value.healthCondition
+										}
+									});
+								})
+							}
+							else if((patients.value.addCondition == null && patientConditions.value != null) || (patients.value.addCondition != null && patientConditions.value != null)) {
+								unSelectedDiseasesList.value = []
+								store.dispatch('patientConditions', idPatient.value).then(() => {
+									globalCode.value.healthCondition.map(function(healthCondition) {
+										if(patientConditions.value.includes(healthCondition.id)) {
+											if(!selectedDiseasesList.value.includes(healthCondition)) {
+												selectedDiseasesList.value.push(healthCondition)
+												if(!conditions.condition.includes(healthCondition)) {
+													conditions.condition.push(healthCondition.id)
+												}
+											}
+										}
+										else {
+											if(!unSelectedDiseasesList.value.includes(healthCondition)) {
+												unSelectedDiseasesList.value.push(healthCondition)
+											}
+										}
+									});
+								})
+							}
+							/* else if(patients.value.addCondition != null && patientConditions.value != null) {
+								unSelectedDiseasesList.value = []
+								store.dispatch('patientConditions', idPatient.value).then(() => {
+									globalCode.value.healthCondition.map(function(healthCondition) {
+										if(patientConditions.value.includes(healthCondition.id)) {
+											if(!selectedDiseasesList.value.includes(healthCondition)) {
+												selectedDiseasesList.value.push(healthCondition)
+												if(!conditions.condition.includes(healthCondition)) {
+													conditions.condition.push(healthCondition.id)
+												}
+											}
+										}
+										else {
+											if(!unSelectedDiseasesList.value.includes(healthCondition)) {
+												unSelectedDiseasesList.value.push(healthCondition)
+											}
+										}
+									});
+								})
+							} */
 						}
 						
 						// if(patients.value.addDemographic && current.value == 1) {
@@ -1712,5 +1774,8 @@ referalEmail.value = false
 
 .ant-input-number-handler-wrap {
     display: none;
+}
+label.ant-checkbox-wrapper.ant-checkbox-wrapper-checked {
+    width: fit-content;
 }
 </style>
