@@ -9,6 +9,7 @@ export const tasksList = async ({ commit }, page) => {
 		.then((response) => {
 			// console.log('tasksListSuccess', response.data.data)
 			commit('task', response.data);
+			// commit('tasksList', response.data.data);
 		commit('loadingTableStatus', false)
 		})
 		.catch((error) => {
@@ -296,9 +297,10 @@ export const taskCategory = async ({ commit }) => {
 };
 
 export const searchTasks = async ({ commit }, params) => {
-	await ServiceMethodService.common('get', API_ENDPOINTS['task']+`?${params}`, null, null)
+	await ServiceMethodService.common('get', API_ENDPOINTS['task']+`?active=1${params}`, null, null)
 		.then((response) => {
 			commit('searchTasks', response.data.data);
+			commit('tasksList', response.data.data);
 		})
 		.catch((error) => {
 			if (error.response) {

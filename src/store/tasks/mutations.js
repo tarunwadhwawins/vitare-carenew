@@ -349,6 +349,10 @@ export const addTask = async (state, result) => {
 	state.addTask = result;
 };
 
+// export const tasksList = async (state, result) => {
+// 	state.tasksList = result;
+// };
+
 export const editTask = async (state, result) => {
 	state.editTask = result;
 	state.editTask.taskStatusName = result.taskStatus;
