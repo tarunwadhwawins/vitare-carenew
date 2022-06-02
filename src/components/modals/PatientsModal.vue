@@ -978,6 +978,7 @@ const ShowReferralId= ref(true)
             id: '',
             self: false,
             relation: '',
+            relationId:'',
             firstName: '',
             middleName: '',
             lastName: '',
@@ -1181,7 +1182,6 @@ function newReferral(){
         })
 const referalEmail = ref(false)
         watchEffect(() => {
-        
             idPatient.value = patients.value.addDemographic ? patients.value.addDemographic.id : route.name == "PatientSummary" ? route.params.udid : null;
             // Bitrix data assign 
            
@@ -1197,7 +1197,7 @@ const referalEmail = ref(false)
             if (emergencyContact.value &&!props.isEdit) {
                 //emergencyContactShow.value= false
                
-                Object.assign(emergencyContactForm, emergencyContact.value)
+                //Object.assign(emergencyContactForm, emergencyContact.value)
                 
             }
             if (responsiblePerson.value) {
@@ -1234,11 +1234,11 @@ const referalEmail = ref(false)
         const parameters = reactive([]);
 
         const demographic = (counteValue=null) => {
-             if(responsiblePersonForm.self==true){
+             if(responsiblePersonForm.self==true && !responsiblePerson.value){
 Object.assign(responsiblePersonForm, demographics)
 
              }
-             if(emergencyContactForm.sameAsPrimary==true){
+             if(emergencyContactForm.sameAsPrimary==true && !emergencyContact.value){
 Object.assign(emergencyContactForm, demographics)
              }
             if((referal.firstName || referal.middleName || referal.lastName || referal.referralDesignation || 
@@ -1573,7 +1573,8 @@ referalEmail.value = false
                 Object.assign(responsiblePersonForm, demographics)
                 responsiblePersonForm.self = true
                 disableResponsiblePerson.value = true
-                responsiblePersonForm.relation = 258
+                responsiblePersonForm.relationId = relationId.value
+                responsiblePersonForm.relation = relationId.value
             } else {
                 Object.assign(responsiblePersonForm, responsiblePersonReactiveForm)
                 responsiblePersonForm.self = false
