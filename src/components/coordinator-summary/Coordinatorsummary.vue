@@ -421,7 +421,8 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+
+<style lang="scss">
 .resetPass {
     position: absolute;
     right: 40px;
@@ -433,5 +434,10 @@ export default defineComponent({
     right: 10px;
     top: 13px;
     z-index: 1;
+    span {
+        svg {
+            font-size: 22px;
+        }
+    }
 }
 </style>

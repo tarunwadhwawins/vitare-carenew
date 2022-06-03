@@ -4,7 +4,7 @@
       <a-button v-if="!Id && !isReset && !isTimeLog" class="modal-button" @click="handleClear()" html-type="reset">{{$t('global.clear')}}</a-button>
       <a-button v-if="!Id && isReset && !isTimeLog" class="modal-button" @click="handleClear()">{{$t('global.clear')}}</a-button>
       <!-- <a-button v-if="Id" class="modal-button" type="primary" @click="cancel" >Cancel</a-button> -->
-      <a-button v-if="Id" class="modal-button" type="primary" html-type="submit">{{$t('global.update')}}</a-button>
+      <a-button v-if="Id" class="modal-button" type="primary" html-type="submit" :disabled="disableButton">{{$t('global.update')}}</a-button>
       <a-button v-if="!Id && name!='communication'" class="modal-button" type="primary" html-type="submit" :disabled="disabled">{{$t('global.save')}}</a-button>
       
        <a-button v-show="name=='communication' && !Id" class="modal-button" type="primary" html-type="submit">{{$t('global.send')}}</a-button>
@@ -20,6 +20,7 @@
       disabled:Boolean,
       isReset:Boolean,
       isTimeLog:Boolean,
+      disableButton:Boolean
     },
     setup(props, {emit}) {
       const handleClear = () => {

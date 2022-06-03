@@ -12,4 +12,5 @@ export default{
     getStaff:null,
     appointmentDetails:null,
     patientAppointmentsList:null,
+    requestCall:null
 }

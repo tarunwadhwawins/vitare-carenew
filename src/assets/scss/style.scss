@@ -581,6 +581,11 @@
             position: absolute;
             top: 15px;
             right: 15px;
+            span {
+                svg {
+                    font-size: 22px;
+                }
+            }
         }
     }
     .name {
