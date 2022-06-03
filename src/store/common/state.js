@@ -64,6 +64,7 @@ export default {
     toScroll:false,
     dateFilter:null,
     taskType:null,
-    taskStatus: []
+    taskStatus: [],
+    otherFilters:null,
 
 }

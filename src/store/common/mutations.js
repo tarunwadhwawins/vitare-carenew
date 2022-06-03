@@ -217,5 +217,8 @@ export const checkChangeInput = (state, data) => {
   export const toScroll = (state, data) => {
     state.toScroll = data
   }
+  export const otherFilters = (state, date) => {
+    state.otherFilters = date
+  }
   
   

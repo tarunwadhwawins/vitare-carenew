@@ -131,6 +131,4 @@ export const deleteTimeLog = async ({ commit }, uuid) => {
 export const auditTimeLogFilterDates = ({commit},date) =>{
 	commit('auditTimeLogFilterDates', date);
 }
-export const taskFilters = ({commit},date) =>{
-	commit('taskFilters', date);
-}
+
