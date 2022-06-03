@@ -123,9 +123,9 @@
                                             </div>
 
                                     </a-menu-item>
-                                    <li class="allNotication">
+                                    <a-menu-item class="allNotication">
                                         <router-link to="/notifications">{{'Check All Request'}}</router-link>
-                                    </li>
+                                    </a-menu-item>
                                 </a-menu>
                             </template>
                         </a-dropdown>
@@ -176,8 +176,8 @@
                             </a>
                             <template #overlay>
                                 <a-menu class="headerDropdown" style="max-height: 400px; overflow: auto">
-                                    <li class="title">{{ $t("header.notification") }}</li>
-                                    <li class="listing" v-for="(notification, index) in notifications" :key="index">
+                                    <a-menu-item class="title">{{ $t("header.notification") }}</a-menu-item>
+                                    <a-menu-item class="listing" v-for="(notification, index) in notifications" :key="index">
                                         <router-link :to="notification.type == 'Appointment' ? '': '/communications'" @click=" isReadNotification(notification.id, notification.type,notification.type_id)">
                                             <a class="d-flex align-items-center" href="#">
                                                 <div class="flex-grow-1 ms-3 summary">
@@ -195,10 +195,10 @@
                                                 </div>
                                             </a>
                                         </router-link>
-                                    </li>
-                                    <li class="allNotication">
+                                    </a-menu-item>
+                                    <a-menu-item class="allNotication">
                                         <router-link to="/notifications">{{$t('header.checkAllNotifications')}}</router-link>
-                                    </li>
+                                    </a-menu-item>
                                 </a-menu>
                             </template>
                         </a-dropdown>
