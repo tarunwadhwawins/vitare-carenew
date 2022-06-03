@@ -159,6 +159,7 @@ export default {
       emergencyContactForm.phoneNumber = value;
     };
     const id = ref(null);
+    
     if (props.isEmergencyContactEdit) {
       id.value = patients.value.emergencyContactDetails;
     }
@@ -203,6 +204,8 @@ export default {
             });
           }
         });
+      }else{
+handleClear()
       }
     }
 
