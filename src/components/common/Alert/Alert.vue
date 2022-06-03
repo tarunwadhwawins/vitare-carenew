@@ -5,7 +5,6 @@
 
 <script>
 
-import { useStore } from 'vuex'
 export default {
 	props: {
 		text: {
@@ -20,17 +19,11 @@ export default {
 		itemId: {
 			type: Number
 		},
-		patientUdid: {
-			type: Number
-		},
 	},
 	setup() {
-		const store = useStore()
 		
-		const onCloseAlert = (value) => {
-			console.log(value)
+		const onCloseAlert = () => {
 			document.querySelectorAll('.critical-notes ul li')[0].remove();
-			store.state.patients.patientCriticalNotes=''
 		}
 
 		return {

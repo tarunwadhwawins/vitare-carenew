@@ -8,23 +8,22 @@
     <a-col :span="24" v-if="arrayToObjact(screensPermissions,65)">
         <a-row :gutter="24">
             <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox red" :count="5" :text="$t('patient.critical')" />
-                <!-- <CounterCard colorBox="colorBox red" :count="5" :text="$t('patient.critical')" @click="filter('Critical')" /> -->
+                <CounterCard colorBox="colorBox escalationBg" :count="12" :text="$t('patient.escalations')" />
             </a-col>
             <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox orangeBg" :count="10" :text="$t('patient.trending')" />
+                <CounterCard colorBox="colorBox criticalBg" :count="5" :text="$t('patient.critical')" />
             </a-col>
             <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox greenBg" :count="15" :text="$t('patient.WNL')" />
+                <CounterCard colorBox="colorBox trendingBg" :count="10" :text="$t('patient.trending')" />
             </a-col>
             <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox yellowBg" :count="8" :text="$t('patient.watchList')" />
+                <CounterCard colorBox="colorBox wnlBg" :count="15" :text="$t('patient.WNL')" />
             </a-col>
             <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox blue" :count="6" :text="$t('patient.messages')" />
+                <CounterCard colorBox="colorBox watchlistBg" :count="8" :text="$t('patient.watchList')" />
             </a-col>
             <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox whiteBg" :count="12" :text="$t('patient.escalations')" />
+                <CounterCard colorBox="colorBox messagesBg" :count="6" :text="$t('patient.messages')" />
             </a-col>
         </a-row>
     </a-col>

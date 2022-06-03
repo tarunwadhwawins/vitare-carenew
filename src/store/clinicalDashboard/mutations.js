@@ -52,6 +52,7 @@ let data = []
 	};
 };
 export const patientsFlag = (state, record) => {
+	console.log('patientsFlag', record)
 	let data = []
 	record.flags.forEach(element => {
 		let object = record.data.find(e=> e.text==element.name)
