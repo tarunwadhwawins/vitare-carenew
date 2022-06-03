@@ -155,9 +155,12 @@ export const appointmentCount = async ({ commit }, from) => {
 }
 export const patientsFlag = async ({ commit }, from) => {
 
-    await ServiceMethodService.common("get", API_ENDPOINTS['flag'] , null, null).then((response) => {
+    await ServiceMethodService.common("get", API_ENDPOINTS['flag']+`?type=patient` , null, null).then((response) => {
         ServiceMethodService.common("get", API_ENDPOINTS['patientsFlag']+ "?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((flags) => {
-            commit('patientsFlag', {flags:response.data.data,data:flags.data});
+            commit('patientsFlag', {
+                flags: response.data.data,
+                data: flags.data
+            });
             
         })
     }).catch((error) => {

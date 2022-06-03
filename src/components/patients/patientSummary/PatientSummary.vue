@@ -264,7 +264,7 @@ onMounted(()=>{
         store.dispatch('activeCptCodes')
         store.dispatch('allPatientsList')
         store.dispatch('allStaffList')
-        store.dispatch('flagsList')
+        store.dispatch('patientFlags')
         store.dispatch('patientFlagsList', patientUdid);
         store.dispatch('patientCriticalNotes', patientUdid);
         store.dispatch('responsiblePerson', patientUdid);

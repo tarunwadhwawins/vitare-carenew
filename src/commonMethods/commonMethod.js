@@ -461,6 +461,7 @@ export function convertData(patientVitals) {
 			itemObject['takeTime'] = dateFormat(item.takeTime);
 			itemObject['vitalField'] = item.vitalField;
 			itemObject['deviceType'] = item.deviceType;
+			itemObject['color'] = item.color;
 			itemObject[field] = item.value;
 		});
 		records.push(itemObject);

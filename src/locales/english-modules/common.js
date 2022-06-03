@@ -7,6 +7,7 @@ const common = {
   edit: 'Edit',
   delete: 'Delete',
   flag: 'Flag',
+  reason: 'Reason',
 }
 
 
