@@ -524,6 +524,8 @@ export default {
     });
 
     function submitDetailsForm() {
+      var filter = route.query.filter ? "?filter=" + route.query.filter : "?filter="
+     var dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
       errorMsg.value = [];
       let check = true;
       if (
@@ -572,7 +574,7 @@ export default {
                   entityType: "patient",
                 });
               } else {
-                store.dispatch("escalation");
+                store.dispatch("escalation" ,filter+dateFilter);
               }
               Object.assign(escalation, form);
               store.commit("resetEscalationCounter");

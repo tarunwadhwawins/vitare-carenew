@@ -7,7 +7,7 @@ import {
 export const escalation = async ({
   commit
 }, data) => {
-  console.log("check", data)
+ 
   let link = null
   if (data) {
     if (data.entityType) {

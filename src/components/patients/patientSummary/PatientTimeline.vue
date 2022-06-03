@@ -104,14 +104,14 @@ export default {
     });
 
     onMounted(() => {
-      if(route.name == 'PatientSummary') {
-        store.dispatch('timeLineType')
+      if(route.name == 'PatientSummary' && !route.query.filter) {
+       store.dispatch('timeLineType')
         store.dispatch('patientTimeline', {
           id: route.params.udid,
           type: ''
         });
       }
-      else if(route.name == 'videoCall') {
+      else if(route.name == 'videoCall' && !route.query.filter) {
         store.dispatch('timeLineType')
         store.dispatch('patientTimeline', {
           id: pId.value,
