@@ -23,13 +23,13 @@ export const cptCode = async (state, cptCodes) => {
         customRender: "isActive",
       },
     },
-    {
-      title: "Actions",
-      dataIndex: "actions",
-      slots: {
-        customRender: "actions",
-      },
-    },
+    // {
+    //   title: "Actions",
+    //   dataIndex: "actions",
+    //   slots: {
+    //     customRender: "actions",
+    //   },
+    // },
   ];
   state.cptCodesList = cptCodes.data.map((item)=>{
     item.billingAmout = '$ ' + item.billingAmout 

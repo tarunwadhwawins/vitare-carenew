@@ -102,6 +102,7 @@ function clearEvent(event){
         event.returnValue = '';
       
     }
+    const stoptimervisible = ref(false);
 export default {
   components: {
     Header,
@@ -132,7 +133,7 @@ export default {
     const timelogsvisible = ref(false);
     const bloodoxygenvisible = ref(false);
     const bloodglucosevisible = ref(false);
-    const stoptimervisible = ref(false);
+    
     const isEditTimeLog = ref(false);
     // const startCallModalVisible = ref(false);
     const loader= ref(true)
@@ -504,8 +505,10 @@ onMounted(()=>{
 
   beforeRouteLeave (to, from, next) {
   cancelButton.value = to.fullPath
-   var button= document.getElementById("timer")
-   if(to.fullPath!='/logout'){
+
+  
+   if(to.path!='/logout'&&to.path!='/'){
+      var button= document.getElementById("timer")
      if(button){
        button.click()
      }else{
