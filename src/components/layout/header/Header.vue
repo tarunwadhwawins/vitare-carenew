@@ -118,13 +118,13 @@
                                                 </div>
                                             <!-- </a> -->
                                             <div class="steps-action" style="padding-bottom:15px;margin-right:10px">
-                                                <a-button style="margin-right: 10px" @click="rejectReqCall">{{'Reject'}}</a-button>
-                                                <a-button type="primary" @click="requestCallNotification(reqCall.patient.id,reqCall.patient.fullName)">{{'Accept'}}</a-button>
+                                                <a-button style="margin-right: 10px" @click="rejectReqCall(reqCall.patient.id,reqCall.id)">{{'Reject'}}</a-button>
+                                                <a-button type="primary" @click="requestCallNotification(reqCall.patient.id,reqCall.patient.fullName,reqCall.id)">{{'Accept'}}</a-button>
                                             </div>
 
                                     </a-menu-item>
                                     <a-menu-item class="allNotication">
-                                        <router-link to="/notifications">{{'Check All Request'}}</router-link>
+                                        <router-link to="/request-call-notifications">{{'Check All Request'}}</router-link>
                                     </a-menu-item>
                                 </a-menu>
                             </template>
@@ -480,16 +480,30 @@ export default defineComponent({
             escalationVisible.value = value
         }
 
-        const requestCallNotification = (id,value) =>{
+        const requestCallNotification = (pId,value,id) =>{
           appointmentModal.value = true;
-          patientId.value = id
+          patientId.value = pId
           patientName.value = value
+          store.dispatch('isReadCallNotification',{patientId:pId,id:id}).then((resp)=>{
+            if(resp==true){
+              store.dispatch("requestCall");
+            }
+          })
+        }
+
+        const rejectReqCall = (pId,id) =>{
+          store.dispatch('isReadCallNotification',{patientId:pId,id:id}).then((resp)=>{
+            if(resp==true){
+              store.dispatch("requestCall");
+            }
+          })
         }
 
         return {
             requestCall: computed(() => {
                 return store.state.appointment.requestCall
             }),
+            rejectReqCall,
             patientId,
             patientName,
             requestCallNotification,

@@ -199,3 +199,22 @@ export const requestCall = async ({commit}) => {
   })
 }
 
+
+export const isReadCallNotification = async ({commit},data) => {
+  let status =false
+  commit('loadingStatus', true)
+  await serviceMethod.common("put", `requestCall/${data.patientId}/${data.id}`, null, true).then((response) => { 
+    commit('isReadCallNotification', response.data.data);
+    commit('loadingStatus', false)
+    status = true
+  }).catch((error) => {
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
+    commit('loadingStatus', false)
+  })
+  return status
+}
+

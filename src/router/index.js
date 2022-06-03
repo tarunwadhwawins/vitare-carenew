@@ -112,6 +112,12 @@ const routes = [
     meta: { authAdmin: true }
   },
   {
+    path: '/request-call-notifications',
+    name: 'CallNotifications',
+    component: () => import('@/components/notifications/RequestCallNotifications'),
+    meta: { authAdmin: true }
+  },
+  {
     path: '/video-call/:id?',
     name: 'videoCall',
     component: () => import('../components/video-call/videoCall'),
