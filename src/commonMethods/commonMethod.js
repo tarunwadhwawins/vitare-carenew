@@ -102,9 +102,11 @@ export async function warningSwal(message,title=null) {
 		text: message,
 		icon: 'warning',
 		showCancelButton: true,
+		
 		confirmButtonColor: '#3085d6',
 		cancelButtonColor: '#d33',
-		confirmButtonText: 'Yes'
+		confirmButtonText: 'Yes',
+		cancelButtonText: `No`,
 	});
 	if (result.isConfirmed) {
 		return true;
@@ -461,6 +463,7 @@ export function convertData(patientVitals) {
 			itemObject['takeTime'] = dateFormat(item.takeTime);
 			itemObject['vitalField'] = item.vitalField;
 			itemObject['deviceType'] = item.deviceType;
+			itemObject['color'] = item.color;
 			itemObject[field] = item.value;
 		});
 		records.push(itemObject);

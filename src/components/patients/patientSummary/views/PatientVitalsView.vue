@@ -34,9 +34,9 @@ export default {
 </script>
 
 <style lang="scss">
-.dangerValue {
+/* .dangerValue {
   padding: 5px;
   background-color: #f03131f3;
   color: #fff;
-}
+} */
 </style>

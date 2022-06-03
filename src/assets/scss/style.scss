@@ -244,11 +244,37 @@
     &.orangeBg {
         background-color: #ff4500;
     }
+    &.redBg {
+        background-color: #ed4242;
+    }
     &.greenBg {
         background-color: #008000;
     }
     &.yellowBg {
         background-color: #fdda0d;
+    }
+
+    // Cards
+    &.escalationBg {
+        background-color: #ffffff;
+    }
+    &.criticalBg {
+        background-color: #ed4242;
+    }
+    &.moderateBg {
+        background-color: #f77029;
+    }
+    &.wnlBg {
+        background-color: #008000;
+    }
+    &.watchlistBg {
+        background-color: #fdda0d;
+    }
+    &.trendingBg {
+        background-color: #be4620;
+    }
+    &.messagesBg {
+        background-color: #3338ac;
     }
 }
 
