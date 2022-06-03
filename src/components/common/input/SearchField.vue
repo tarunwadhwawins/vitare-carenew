@@ -29,24 +29,22 @@ export default defineComponent({
         palcholder:String,
         otherParam:String,
         mode:String,
-        fromAll:Boolean,
+       
     },
     components:{
         SmileOutlined
     },
-    setup(props, { emit }) {
+    setup(props) {
         const store = useStore()
-        const searchAll = props.fromAll ? ref(props.fromAll) : ref(false)
+       
         let timeout = ''
         let endPoints= ref(props.endPoint)
         const search = ref(null)
         const route = useRoute()
 
         const handleChange = value => {
-            if(searchAll.value) {
-                emit('onChange', value)
-            }
-            else {
+            
+           
                 if (timeout && value.target.value != '') {
                     clearTimeout(timeout);
                     timeout = null;
@@ -54,14 +52,13 @@ export default defineComponent({
                 search.value = value.target.value;
                 fake()            
                 timeout = setTimeout(fake, 600);
-            }
+            
         }
 
         function fake() {
-            let ordring = store.getters.orderTable.value
-            
+            let ordring = store.getters.orderTable.value 
             let filter= route.query.filter ? '&filter='+route.query.filter : '&filter='
-            let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate=" 
+            let date = store.getters.otherFilters.value ? store.getters.otherFilters.value :  route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate=" 
             store.dispatch("searchTableData", {
                 data:search.value,
                 endPoint:endPoints.value,
