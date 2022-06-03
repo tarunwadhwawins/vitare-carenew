@@ -8,7 +8,8 @@
     <a-col :span="24" v-if="arrayToObjact(screensPermissions,65)">
         <a-row :gutter="24">
             <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox red" :count="5" :text="$t('patient.critical')" @click="filter('Critical')" />
+                <CounterCard colorBox="colorBox red" :count="5" :text="$t('patient.critical')" />
+                <!-- <CounterCard colorBox="colorBox red" :count="5" :text="$t('patient.critical')" @click="filter('Critical')" /> -->
             </a-col>
             <a-col :xl="4" :sm="8" :xs="24">
                 <CounterCard colorBox="colorBox orangeBg" :count="10" :text="$t('patient.trending')" />

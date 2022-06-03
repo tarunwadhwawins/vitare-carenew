@@ -3,6 +3,7 @@ import {
   meridiemFormatFromTimestamp,
   dateOnlyFormat,
   dateTimeFormat,
+  dateFormat,
   dobFormat,
   dobFormat2,
   // timeFormatSimple
@@ -24,24 +25,34 @@ export const status = (state, data) => {
 
 
 export const patient = (state, data) => {
-  state.column = [{
-    title: "Flags",
-    dataIndex: "flags",
-    slots: {
-      customRender: "flags",
+  state.column = [
+    {
+      title: "Flags",
+      dataIndex: "flags",
+      slots: {
+        customRender: "flags",
+      },
+      width: '6%',
+      
     },
-    width: '7%',
-    
-  },
-  {
-    title: "Name",
-    dataIndex: "fullName",
-    slots: {
-      customRender: "fullName",
+    {
+      title: "Timestamp",
+      dataIndex: "flagTmeStamp",
+      slots: {
+        customRender: "flagTmeStamp",
+      },
+      width: '17%',
+      
     },
-    sorter: true,
-    width: '16%',
-  },
+    {
+      title: "Name",
+      dataIndex: "fullName",
+      slots: {
+        customRender: "fullName",
+      },
+      sorter: true,
+      width: '16%',
+    },
   // {
   //   title: "First Name",
   //   dataIndex: "firstName",
@@ -51,89 +62,89 @@ export const patient = (state, data) => {
   //   sorter: true,
   //   width: '8%',
   // },
-
-  {
-    title: "Readings ",
-    dataIndex: "patientVitals",
-    
-    slots: {
-      customRender: "patientVitals",
+    {
+      title: "Readings ",
+      dataIndex: "patientVitals",
+      
+      slots: {
+        customRender: "patientVitals",
+      },
+      children: [
+        {
+          title: "BP(mmHg)",
+          dataIndex: "bp",
+          key: "bp",
+          width: '10%',
+          align: 'right'
+        },
+        {
+          title: "Spo2(%)",
+          dataIndex: "spo2",
+          key: "spo2",
+          width: '8%',
+          align: 'right'
+        },
+        {
+          title: "Glucose(mg / dL)",
+          dataIndex: "glucose",
+          key: "glucose",
+          width: '15%',
+          align: 'right'
+        },
+        {
+          title: "Weight(LBS)",
+          dataIndex: "weight",
+          key: "weight",
+          sorter:true,
+          width: '12%',
+          align: 'right'
+        },
+      ],
     },
-    children: [{
-      title: "BP(mmHg)",
-      dataIndex: "bp",
-      key: "bp",
+ 
+    {
+      title: "Non Compliant",
+      dataIndex: "nonCompliance",
+      slots: {
+        customRender: "compliance",
+      },
       width: '10%',
-      align: 'right'
     },
     {
-      title: "Spo2(%)",
-      dataIndex: "spo2",
-      key: "spo2",
+      title: "Last Message Sent",
+      dataIndex: "lastMessageSent",
+      ellipsis: true,
+      onFilter: (value, record) => record.name.indexOf(value) === 0,
+      width: '10%',
+    },
+    {
+      title: "Age ",
+      dataIndex: "dob",
+      sorter: true,
       width: '8%',
       align: 'right'
     },
     {
-      title: "Glucose(mg / dL)",
-      dataIndex: "glucose",
-      key: "glucose",
-      width: '15%',
-      align: 'right'
+      title: "Gender ",
+      dataIndex: "genderName",
+      width: '8%',
     },
     {
-      title: "Weight(LBS)",
-      dataIndex: "weight",
-      key: "weight",
-      sorter:true,
-      width: '12%',
-      align: 'right'
+      title: 'Status',
+      dataIndex: 'isActive',
+      slots: {
+        customRender: 'status'
+      },
+      width: '8%',
     },
-    ],
-  },
- 
-  {
-    title: "Non Compliant",
-    dataIndex: "nonCompliance",
-    slots: {
-      customRender: "compliance",
-    },
-    width: '10%',
-  },
-  {
-    title: "Last Message Sent",
-    dataIndex: "lastMessageSent",
-    ellipsis: true,
-    onFilter: (value, record) => record.name.indexOf(value) === 0,
-    width: '10%',
-  },
-  {
-    title: "Age ",
-    dataIndex: "dob",
-    sorter: true,
-    width: '8%',
-    align: 'right'
-  },
-  {
-    title: "Gender ",
-    dataIndex: "genderName",
-    width: '8%',
-  },
-  {
-    title: 'Status',
-    dataIndex: 'isActive',
-    slots: {
-      customRender: 'status'
-    },
-    width: '8%',
-  },
-{
-  title:"Action ",
-  dataIndex: "actions",
-  slots: {
-    customRender: "action",
-  },
-  width: '8%',
-}
+    {
+      title:"Action ",
+      dataIndex: "actions",
+      slots: {
+        customRender: "action",
+      },
+      width: '8%',
+    }
   ];
   state.patientMeta = data.meta.pagination;
   state.patientList = data.data
@@ -142,6 +153,8 @@ export const patient = (state, data) => {
       element.flags = element.flagColor,
         element.lastName = element.lastName ? element.lastName : '',
         element.firstName = element.name ? element.name : '',
+        // element.flagTmeStamp = 'September 30, 2022 12:30 PM',
+        element.flagTmeStamp = element.flagTmeStamp ? dateFormat(element.flagTmeStamp) : '',
         element.lastReadingDate = element.lastReadingDate ? element.lastReadingDate : '',
         element.weight = element.weight ? element.weight : '',
         element.bp = element.patientVitals.length>0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'Systolic') { return JSON.parse(vitalData.value) } if (vitalData.vitalField == 'Diastolic') { return '/' + JSON.parse(vitalData.value) } }):'',
