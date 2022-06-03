@@ -218,7 +218,7 @@ img.reportFlag {
 		}
 	}
 	.ant-modal-body {
-		overflow:inherit;
+		overflow:auto;
 		max-height: 80vh;
 	}
 }
@@ -472,6 +472,3 @@ span.address-text {
 	}
 }
 
-.ant-select-dropdown{
-  top:37px!important;
-}
