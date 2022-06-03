@@ -102,9 +102,11 @@ export async function warningSwal(message,title=null) {
 		text: message,
 		icon: 'warning',
 		showCancelButton: true,
+		
 		confirmButtonColor: '#3085d6',
 		cancelButtonColor: '#d33',
-		confirmButtonText: 'Yes'
+		confirmButtonText: 'Yes',
+		cancelButtonText: `No`,
 	});
 	if (result.isConfirmed) {
 		return true;
