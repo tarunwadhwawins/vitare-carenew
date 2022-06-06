@@ -81,8 +81,8 @@ export default defineComponent({
         const store = useStore();
         const formRest = ref();
         const availability = reactive({
-            startTime: "",
-            endTime: "",
+            startTime: "08:00 AM",
+            endTime: "08:00 AM",
         });
         const button = ref(true)
         const staffs = computed(() => {
@@ -91,9 +91,10 @@ export default defineComponent({
 
         function addAvailability() {
             button.value = false
-            let startTime = timeStamp(moment().format('MM/DD/YYYY') + ' ' + availability.startTime + ':00');
+            let startTime = timeStamp(moment().format('MM/DD/YYYY') + ' ' + availability.startTime+ ':00')
             let endTime = timeStamp(moment().format('MM/DD/YYYY') + ' ' + availability.endTime + ':00')
-            if (startTime === endTime || startTime > endTime) {
+
+            if (moment(moment().format('MM/DD/YYYY') + ' ' + availability.startTime+ ':00', 'DD-MM-YYYY HH:mm:ss').valueOf()=== moment(moment().format('MM/DD/YYYY') + ' ' + availability.endTime+ ':00', 'DD-MM-YYYY HH:mm:ss').valueOf() || moment(moment().format('MM/DD/YYYY') + ' ' + availability.startTime+ ':00', 'DD-MM-YYYY HH:mm:ss').valueOf() > moment(moment().format('MM/DD/YYYY') + ' ' + availability.endTime+ ':00', 'DD-MM-YYYY HH:mm:ss').valueOf()) {
                 errorSwal(messages.startTimeAndEndTime)
                 button.value = true
             } else {
@@ -104,22 +105,22 @@ export default defineComponent({
                         startTime: startTime,
                         endTime: endTime
                     }
-                });
-
-            }
-            setTimeout(() => {
-                if (staffs.value.closeModal == true) {
+                }).then(()=>{
+                     if (staffs.value.closeModal == true) {
                     button.value = true
                     store.dispatch("availabilityList", props.paramId ? props.paramId : staffs.value.addStaff.id);
                     reset()
                     emit("saveModal", false)
+                    button.value = true
                 } else {
                     if (errorMsg.value) {
                         button.value = true
                     }
                 }
+                })
 
-            }, 2000);
+            }
+           
         }
 
         const Id = staffs.value.addStaff ? staffs.value.addStaff.id : ''
