@@ -69,6 +69,7 @@
                         </div>
                     </a-col>
                     <a-col :sm="17" :xs="24">
+                       
                         <div class="summary-tabs">
                             <a-tabs v-model:activeKey="activeKey1">
                                 <a-tab-pane key="1" tab="Appointments">
@@ -172,7 +173,7 @@
 </div>
  <ResetPassword v-model:visible="resetPasswordVisible" @saveModal="saveModal($event)" endPoint="staff" :id="paramId"/>
 <PersonalInformation v-model:visible="visibleEditStaff" @saveModal="editStaffCloseModal($event)" />
-<Loader />
+<TableLoader />
 </template>
 
 <script>
@@ -182,7 +183,7 @@ import {
     ref,
     computed,
     watchEffect,
-    onUnmounted,defineAsyncComponent, defineComponent
+    onUnmounted,defineAsyncComponent, defineComponent, onMounted
 } from "vue";
 import {
     // DeleteOutlined,
@@ -210,6 +211,7 @@ import RoleForm from ".././modals/forms/Roles";
 import DocumentTable from ".././care-coordinator/tables/DocumentTable";
 import StaffDocumentForm from ".././modals/forms/StaffDocuments";
 import Loader from "../loader/Loader"
+import TableLoader from "../loader/TableLoader"
 import {
     arrayToObjact
 } from "@/commonMethods/commonMethod"
@@ -245,7 +247,8 @@ export default defineComponent({
         Loader,
         PersonalInformation,
         MailOutlined,
-        PhoneOutlined
+        PhoneOutlined,
+        TableLoader
     },
     setup(props, {
         emit
@@ -254,7 +257,11 @@ export default defineComponent({
         const router = useRoute();
         const clearData = ref(false)
         const resetPasswordVisible = ref(false)
-
+ onMounted(()=>{
+      store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
+ })
         watchEffect(() => {
             if (router.params.udid && router.name == 'CoordinatorSummary') {
                 store.dispatch("staffSummary", router.params.udid);
@@ -263,7 +270,7 @@ export default defineComponent({
                 store.dispatch("roleList", router.params.udid);
                 store.dispatch("staffDocuments", router.params.udid);
                 store.dispatch("staffSummaryAppointment", router.params.udid);
-                store.dispatch("staffSummaryPatient", router.params.udid);
+                store.dispatch("staffSummaryPatient", {id:router.params.udid,data:"?page="});
             }
         });
 
@@ -378,6 +385,9 @@ export default defineComponent({
         }
         onUnmounted(() => {
             store.commit('clearStaffFormValidation', false)
+             store.dispatch('orderTable', {
+                data: '&orderField=&orderBy='
+            })
         })
 
         const resetPasseord = () => {
