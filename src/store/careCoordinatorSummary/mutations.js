@@ -40,8 +40,9 @@ export const staffSummaryAppointment= async (state, data) => {
 
 
 export const staffSummaryPatient= async (state, data) => {
-    state.staffSummaryPatient = data.map(element => {
-      console.log('element',element.patientVitals.length)
+  state.staffSummaryMeta = data.meta.pagination;
+    state.staffSummaryPatient = data.data.map(element => {
+     
         element.flags = element.flagColor?element.flagColor:'',
         element.lastName=element.lastName?element.lastName :'',
         element.firstName=element.name?element.name+' '+element.lastName :'' 
@@ -63,37 +64,29 @@ export const staffSummaryPatient= async (state, data) => {
         },
         {
           title: "Name",
-          dataIndex: "firstName",
+          dataIndex: "fullName",
           width: '15%',
+          sorter:true,
           slots: {
-            customRender: "firstName",
+            customRender: "fullName",
           },
         },
         {
           title: "Age",
-          dataIndex: "dob",
+          dataIndex: "age",
           width: '8%',
           align: 'right',
-          sorter: {
-            compare: (a, b) => a.age - b.age,
-            multiple: 3,
-          },
+          sorter: true,
         },
         {
           title: "Gender",
           dataIndex: "genderName",
-          sorter: {
-            compare: (a, b) => a.sex - b.sex,
-            multiple: 2,
-          },
+          sorter: true,
         },
         {
           title: "Last Reading Date",
           dataIndex: "lastReadingDate",
-          sorter: {
-            compare: (a, b) => a.reading - b.reading,
-            multiple: 1,
-          },
+          
         },
         // {
         //     title: "Actions",
@@ -103,4 +96,5 @@ export const staffSummaryPatient= async (state, data) => {
         //     },
         //   },
       ];
+
 }

@@ -1,9 +1,10 @@
-// import { computed } from "vue";
-// import state from "./state";
+ import { computed } from "vue";
 
-// export function getStaffSummary(){
-//    computed(()=>{
-//        return state.staffSummary
-//     })
+
+export const  staffSummaryMeta= (state)=>{
+    return computed(() => {
+        return state.staffSummaryMeta
+      })
+  
      
-// }
+}

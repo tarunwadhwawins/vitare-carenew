@@ -1239,7 +1239,7 @@ export default defineComponent({
         //Object.assign(emergencyContactForm, emergencyContact.value)
       }
       if (responsiblePerson.value) {
-        Object.assign(responsiblePersonForm, responsiblePerson.value);
+        Object.assign(responsiblePersonForm, responsiblePerson.value[0]);
       }
       if (patients.value.addDemographic || patients.value.patientDetails) {
         Object.assign(
