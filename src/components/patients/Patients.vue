@@ -5,26 +5,9 @@
     </a-col>
 </a-row>
 <a-row>
-    <a-col :span="24" v-if="arrayToObjact(screensPermissions,65)">
-        <a-row :gutter="24">
-            <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox escalationBg" :count="12" :text="$t('patient.escalations')" />
-            </a-col>
-            <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox criticalBg" :count="5" :text="$t('patient.critical')" />
-            </a-col>
-            <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox trendingBg" :count="10" :text="$t('patient.trending')" />
-            </a-col>
-            <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox wnlBg" :count="15" :text="$t('patient.WNL')" />
-            </a-col>
-            <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox watchlistBg" :count="8" :text="$t('patient.watchList')" />
-            </a-col>
-            <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox messagesBg" :count="6" :text="$t('patient.messages')" />
-            </a-col>
+    <a-col :span="24">
+        <a-row :gutter="24" v-if="arrayToObjact(screensPermissions, 65) && grid ">
+            <PatientCounterCards />
         </a-row>
     </a-col>
 </a-row>
@@ -58,10 +41,10 @@
 </template>
 
 <script>
-import {  ref,  onMounted,  computed,  onUnmounted} from "vue";
+import {  ref,  onMounted,  onUnmounted, watchEffect } from "vue";
 import { useStore} from "vuex";
 import PatientsModal from "@/components/modals/PatientsModal";
-import CounterCard from "./counter-card/CounterCard";
+import PatientCounterCards from "@/components/common/cards/PatientCounterCards"
 import ShowModalButton from "@/components/common/show-modal-button/ShowModalButton";
 import TableLoader from "@/components/loader/TableLoader"
 import {arrayToObjact,exportExcel,timeStampFormate,globalDateFormat} from "@/commonMethods/commonMethod";
@@ -73,7 +56,7 @@ export default {
     name: "Patients",
     components: {
         PatientsModal,
-        CounterCard,
+        PatientCounterCards,
         ShowModalButton,
         DataTable,
         TableLoader,
@@ -100,6 +83,14 @@ export default {
         };
         const handleChange = () => {};
 
+        let dateFormat = {
+            fromDate: '',
+            toDate: ''
+        }
+        watchEffect(() => {
+            store.dispatch("counterCard", dateFormat)
+        })
+
         onMounted(() => {
             store.getters.patientsRecord.patientList = ""
             store.dispatch("programList");
@@ -117,9 +108,6 @@ export default {
             })
         });
 
-        const totalPatients = computed(() => {
-            return store.state.counterCards.totalPatientcount
-        })
         onUnmounted(() => {
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
@@ -177,8 +165,8 @@ export default {
         }
         return {
             exportExcel,
-            totalPatients,
             screensPermissions: store.getters.screensPermissions,
+            grid: store.getters.grid,
             arrayToObjact,
             PatientsModal,
             showModal,

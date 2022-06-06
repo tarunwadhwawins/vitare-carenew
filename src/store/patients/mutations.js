@@ -53,15 +53,6 @@ export const patient = (state, data) => {
       sorter: true,
       width: '16%',
     },
-  // {
-  //   title: "First Name",
-  //   dataIndex: "firstName",
-  //   slots: {
-  //     customRender: "firstName",
-  //   },
-  //   sorter: true,
-  //   width: '8%',
-  // },
     {
       title: "Readings ",
       dataIndex: "patientVitals",
@@ -119,7 +110,7 @@ export const patient = (state, data) => {
     },
     {
       title: "Age ",
-      dataIndex: "dob",
+      dataIndex: "age",
       sorter: true,
       width: '8%',
       align: 'right'
@@ -159,8 +150,8 @@ export const patient = (state, data) => {
         element.weight = element.weight ? element.weight : '',
         element.bp = element.patientVitals.length>0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'Systolic') { return JSON.parse(vitalData.value) } if (vitalData.vitalField == 'Diastolic') { return '/' + JSON.parse(vitalData.value) } }):'',
         element.spo2 = element.patientVitals.length>0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'SPO2') { return JSON.parse(vitalData.value) } }):'',
-        element.glucose = element.patientVitals.length>0 ? element.patientVitals.data.map(vitalData => { if (vitalData.deviceType == 'Glucose') { return JSON.parse(vitalData.value) } }) : '',
-        element.dob = Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10) > 0 ? Math.floor((new Date() - new Date(element.dob).getTime()) / 3.15576e+10) : 1
+        element.glucose = element.patientVitals.length>0 ? element.patientVitals.data.map(vitalData => { if (vitalData.deviceType == 'Glucose') { return JSON.parse(vitalData.value) } }) : ''
+
       return element
     })
 
