@@ -1,6 +1,6 @@
 
 <template>
-	<a-modal width="60%" title="Add Emergency Contact" centered @cancel="closeModal()">
+	<a-modal width="60%" :title="isEmergencyContactEdit ? 'Edit Emergency Contact' :'Add Emergency Contact'" centered @cancel="closeModal()">
 		<a-form ref="formRef" :model="emergencyContactForm" layout="vertical" @finish="submitForm">
 			<a-row :gutter="24">
 
@@ -93,7 +93,7 @@
 				</a-col> -->
 
 				<a-col :sm="24" :span="24">
-					<ModalButtons :Id="id" @is_click="handleClear"/>
+					<ModalButtons :Id="isEmergencyContactEdit" @is_click="handleClear"/>
 				</a-col>
 			</a-row>
 		</a-form>
@@ -159,6 +159,7 @@ export default {
       emergencyContactForm.phoneNumber = value;
     };
     const id = ref(null);
+    
     if (props.isEmergencyContactEdit) {
       id.value = patients.value.emergencyContactDetails;
     }
@@ -203,6 +204,9 @@ export default {
             });
           }
         });
+      }else{
+         isValueChanged.value = false;
+handleClear()
       }
     }
 
@@ -223,9 +227,11 @@ export default {
                 modal: "addEmergencyContact",
                 value: false,
               });
+               
               formRef.value.resetFields();
               Object.assign(emergencyContactForm, form);
             }
+            isValueChanged.value = false;
           });
       } else {
         store
@@ -242,9 +248,11 @@ export default {
                 modal: "addEmergencyContact",
                 value: false,
               });
+               
               formRef.value.resetFields();
               Object.assign(emergencyContactForm, form);
             }
+            isValueChanged.value = false;
           });
       }
     };

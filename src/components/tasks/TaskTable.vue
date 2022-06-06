@@ -97,7 +97,7 @@ export default {
         let filter = ''
 
         function checkDate() {
-            dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
+            dateFilter = store.getters.otherFilters.value ? route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate=" : "&fromDate=&toDate="
             filter = route.query.filter ? "&filter=" + route.query.filter : "&filter="
         }
        

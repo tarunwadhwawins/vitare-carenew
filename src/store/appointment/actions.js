@@ -184,17 +184,37 @@ export const patientAppointmentsList = async ({commit}, patientUdid) => {
 }
 
 
-// export const timeZone = async ({commit}) => {
-//   commit('loadingStatus', true)
-//   await serviceMethod.common("get", `timezone`, null, null).then((response) => { 
-//     commit('timeZone', response.data.data);
-//     commit('loadingStatus', false)
-//   }).catch((error) => {
-//     if (error.response) {
-// 				errorLogWithDeviceInfo(error.response);
-// 			} else {
-// 				errorLogWithDeviceInfo(error);
-// 			}
-//     commit('loadingStatus', false)
-//   })
-// }
+export const requestCall = async ({commit}) => {
+  commit('loadingStatus', true)
+  await serviceMethod.common("get", `requestCall`, null, null).then((response) => { 
+    commit('requestCall', response.data.data);
+    commit('loadingStatus', false)
+  }).catch((error) => {
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
+    commit('loadingStatus', false)
+  })
+}
+
+
+export const isReadCallNotification = async ({commit},data) => {
+  let status =false
+  commit('loadingStatus', true)
+  await serviceMethod.common("put", `requestCall/${data.patientId}/${data.id}`, null, true).then((response) => { 
+    commit('isReadCallNotification', response.data.data);
+    commit('loadingStatus', false)
+    status = true
+  }).catch((error) => {
+    if (error.response) {
+				errorLogWithDeviceInfo(error.response);
+			} else {
+				errorLogWithDeviceInfo(error);
+			}
+    commit('loadingStatus', false)
+  })
+  return status
+}
+

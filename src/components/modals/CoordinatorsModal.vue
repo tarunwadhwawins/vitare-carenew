@@ -307,6 +307,9 @@ export default {
                     }
                 });
             }else{
+                store.state.careCoordinator.addStaff = null
+                Object.assign(personalInfoData, form);
+                store.commit("resetCounter")
                 info.value.resetFields()
             }
         }

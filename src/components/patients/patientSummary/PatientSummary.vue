@@ -86,7 +86,7 @@ import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 // import StartCallModal from "@/components/modals/StartCallModal";
 
 import dayjs from "dayjs"; 
-import { ref, computed, watchEffect,onBeforeMount, onUnmounted,reactive, onMounted} from "vue";
+import { ref, computed,onBeforeMount, onUnmounted,reactive, onMounted} from "vue";
 import { useStore } from 'vuex';
 import { useRoute,useRouter  } from 'vue-router';
 import {
@@ -204,7 +204,7 @@ onMounted(()=>{
     })
     const timerValue = ref(30000)
     
-    watchEffect(() => {
+    onMounted(() => {
       store.dispatch('patientDetails', route.params.udid).then(() => {
         if(!startOn.value) {
           timer.value = setInterval(() => {
@@ -264,7 +264,7 @@ onMounted(()=>{
         store.dispatch('activeCptCodes')
         store.dispatch('allPatientsList')
         store.dispatch('allStaffList')
-        store.dispatch('flagsList')
+        store.dispatch('patientFlags')
         store.dispatch('patientFlagsList', patientUdid);
         store.dispatch('patientCriticalNotes', patientUdid);
         store.dispatch('responsiblePerson', patientUdid);

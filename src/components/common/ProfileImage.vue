@@ -226,11 +226,11 @@ export default defineComponent({
 .resetPass{
   
     position: absolute;
-    right: 40px;
+    right: 45px;
     top: 16px;
 }
 .resetPass img {
-    width: 13px!important;
+    width: 18px!important;
     height: auto!important;
     margin: 0!important;
     border-radius: 0!important;

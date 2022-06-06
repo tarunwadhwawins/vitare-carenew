@@ -1,18 +1,20 @@
 <template>
-	<a-modal width="30%" height="500px" :title="title">
-    <a-form ref="formRef" :model="addFlagForm" @finish="submitForm">
+	<a-modal width="50%" height="500px" :title="title">
+    <a-form ref="formRef" :model="addFlagForm" @finish="submitForm" layout="vertical">
       <a-row :gutter="24">
-        <a-col :sm="18" :xs="24">
-          <a-form-item name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation') }]">
-            <!-- <a-select ref="select" v-model:value="addFlagForm.flag" size="large">
-              <a-select-option value="" hidden>Select Flag</a-select-option>
-              <a-select-option v-for="flag in flagsList" :key="flag.id" :value="flag.id">{{flag.name}}
-              </a-select-option>
-            </a-select> -->
-            <GlobalCodeDropDown v-model:value="addFlagForm.flag" :globalCode="flagsList"/>
+        <a-col :span="24">
+          <a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation') }]">
+            <GlobalCodeDropDown v-model:value="addFlagForm.flag" :globalCode="patientFlags" />
+            <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
           </a-form-item>
         </a-col>
-        <a-col :sm="6" :xs="24">
+        <a-col :span="24">
+          <a-form-item :label="$t('common.reason')" name="reason" :rules="[{ required: true, message: $t('common.reason')+' '+$t('global.validation') }]">
+            <a-textarea v-model:value="addFlagForm.reason" allow-clear />
+            <ErrorMessage v-if="errorMsg" :name="errorMsg.reason ? errorMsg.reason[0] : ''" />
+          </a-form-item>
+        </a-col>
+        <a-col :span="24">
           <a-button class="add-button" size="large" html-type="submit">{{ $t('global.save') }}</a-button>
         </a-col>
       </a-row>
@@ -43,17 +45,21 @@ export default {
       })
       const title = latestFlag.value && latestFlag.value != null ? ref('Update Flag') : ref('Add Flag')
 
-      const flagsList = computed(() => {
-        return store.state.flags.flagsList
+      const patientFlags = computed(() => {
+        return store.state.flags.patientFlags
       })
 
       const addFlagForm = reactive({
-        flag: ""
+        flag: "",
+        reason: ""
       })
       const form = reactive({ ...addFlagForm })
 
       const submitForm = () => {
-        store.dispatch('addPatientFlag', { patientUdid: patientUdid, data: addFlagForm }).then(() => {
+        store.dispatch('addPatientFlag', {
+          patientUdid: patientUdid,
+          data: addFlagForm
+        }).then(() => {
           store.dispatch('patientTimeline', {id:route.params.udid, type:''});
           store.dispatch('patientFlagsList', patientUdid).then(() => {
             title.value = latestFlag.value && latestFlag.value != null ? 'Update Flag' : 'Add Flag'
@@ -69,7 +75,7 @@ export default {
 
       return {
 				formRef,
-				flagsList,
+				patientFlags,
 				addFlagForm,
 				submitForm,
 				title,

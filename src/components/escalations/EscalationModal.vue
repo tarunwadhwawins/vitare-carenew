@@ -421,12 +421,10 @@ export default {
     const current = computed({
       get: () => store.state.escalations.escalationCounter,
       set: (value) => {
-        if (addEscalation.value) {
+        if (addEscalation.value && !value ==1) {
           store.state.escalations.escalationCounter = value;
         } else {
-          if (
-            Object.values(escalation).filter((item) => item != "").length >= 7
-          ) {
+          if (Object.values(escalation).filter((item) => item != "").length >= 7 || addEscalation.value) {
             submitEscalationForm();
           } else {
             errorSwal("All fields(*) are required!");
@@ -524,6 +522,8 @@ export default {
     });
 
     function submitDetailsForm() {
+      var filter = route.query.filter ? "?filter=" + route.query.filter : "?filter="
+     var dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
       errorMsg.value = [];
       let check = true;
       if (
@@ -572,7 +572,7 @@ export default {
                   entityType: "patient",
                 });
               } else {
-                store.dispatch("escalation");
+                store.dispatch("escalation" ,filter+dateFilter);
               }
               Object.assign(escalation, form);
               store.commit("resetEscalationCounter");

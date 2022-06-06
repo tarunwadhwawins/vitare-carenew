@@ -108,3 +108,9 @@ export const patientAppointmentsList = (state, appointments) => {
 };
 
 
+
+export const requestCall = (state, data) => {
+	state.requestCall = data;
+}
+
+

@@ -30,6 +30,16 @@ export const patientsRecord = (state)=>{
         return state.referralDetail
     })
   }
+  export const patientFlags = (state) => {
+    return computed(() => {
+      return state.patientFlags
+    })
+  }
+  export const grids = (state) => {
+    return computed(() => {
+      return state.grids
+    })
+  }
 
   
  

@@ -102,8 +102,11 @@
                         <a-col :span="24">
 
                             <div class="screens" v-for="widget in rolesAndPermissions.dashboardWidget" :key="widget.id">
-                                <a-checkbox v-model:checked="dashboardPermission.widget[widget.id]"><strong>{{ widget.widgetName }}</strong></a-checkbox>
-
+                                 <a-card  :title="widget.name">
+                                <div class="screens" v-for="dashboard in widget.widget" :key="dashboard.id+widget.id">
+                                <a-checkbox v-model:checked="dashboardPermission.widget[dashboard.id]"><strong>{{ dashboard.widgetName }}</strong></a-checkbox>
+                                </div>
+                                 </a-card>
                             </div>
 
                             <a-divider class="transparent" />

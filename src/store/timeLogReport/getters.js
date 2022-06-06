@@ -20,11 +20,7 @@ export const timeLogReports = (state)=>{
         return state.auditTimeLogFilterDates
     })
   }
-  export const taskFilters = (state)=>{
-    return computed(() => {
-      return state.taskFilters
-    })
-  }
+ 
   export const auditMetaLog = (state)=>{
     return computed(()=>{
         return state.auditMetaLog

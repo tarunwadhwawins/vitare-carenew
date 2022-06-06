@@ -47,7 +47,7 @@ const routes = [
   
   {
     path: '/manage-patients',
-    name: 'Patients with filter',
+    name: 'PatientsWithFilter',
     component: () => import('@/views/patients/Patients'),
     meta: { authAdmin: true }
   },
@@ -109,6 +109,12 @@ const routes = [
     path: '/notifications',
     name: 'Notifications',
     component: () => import('@/components/notifications/Notifications'),
+    meta: { authAdmin: true }
+  },
+  {
+    path: '/request-call-notifications',
+    name: 'CallNotifications',
+    component: () => import('@/components/notifications/RequestCallNotifications'),
     meta: { authAdmin: true }
   },
   {

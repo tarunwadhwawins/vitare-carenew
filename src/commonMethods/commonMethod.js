@@ -87,7 +87,7 @@ export async function messageSwal(message) {
 		
 		confirmButtonColor: '#3085d6',
 		cancelButtonColor: '#d33',
-		confirmButtonText: 'Yes'
+		confirmButtonText: 'Ok'
 	});
 	if (result.isConfirmed) {
 		return true;
@@ -102,9 +102,11 @@ export async function warningSwal(message,title=null) {
 		text: message,
 		icon: 'warning',
 		showCancelButton: true,
+		
 		confirmButtonColor: '#3085d6',
 		cancelButtonColor: '#d33',
-		confirmButtonText: 'Yes'
+		confirmButtonText: 'Yes',
+		cancelButtonText: `No`,
 	});
 	if (result.isConfirmed) {
 		return true;
@@ -461,6 +463,7 @@ export function convertData(patientVitals) {
 			itemObject['takeTime'] = dateFormat(item.takeTime);
 			itemObject['vitalField'] = item.vitalField;
 			itemObject['deviceType'] = item.deviceType;
+			itemObject['color'] = item.color;
 			itemObject[field] = item.value;
 		});
 		records.push(itemObject);
@@ -565,31 +568,35 @@ export const tableYScroller = 700
 export const tableYScrollerCounterPage = 500
 export const disableHours = [1, 2, 3, 4, 5, 6, 7, 21, 22, 23, 24]
 
-// export function tableScrollerData (page,date,filter,search,order,meta,){
-// 	window.addEventListener("scroll", () => {
-// 		if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
-// 			// you're at the bottom of the page
-// 			  let current_page = meta.patientMeta.current_page + 1;
-// 			  if (current_page <= meta.patientMeta.total_pages) {
+// export function tableScrollerData (tableContent,filters,meta,endPoint,gettres){
+	
+// 	var data = []
+// 	tableContent.addEventListener("scroll", (event) => {
+// 	let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+// 	let currentScroll = event.target.scrollTop + 2;
+// 	if (currentScroll >= maxScroll) {
+// 		let current_page = meta.current_page + 1;
+        
+// 		if (current_page <= meta.total_pages) {
+//          data= gettres
+// 			store
+// 				.dispatch(
+// 					endPoint,
+// 					"?page=" +
+// 					current_page +
+// 					filters
+// 				)
+// 				.then((resp) => {
+					
+// 					if(resp==true){
+// 						return {data:data,scroll:maxScroll}	
+// 					}
+// 				});
 				
-// 				meta.patientMeta = "";
-	
-// 				data = meta.patientList;
-// 				//store.state.patients.patientList = ""
-	
-// 				store
-// 				  .dispatch(
-// 					"patients",
-// 					page +
-// 					  date +
-// 					  filter +
-// 					  search +
-// 					  order
-// 				  )
-// 				  .then(() => {
-// 					loadMoredata();
-// 				  });
-// 			  }
-// 			}
-// 		  });
+// 		}
+
+		
+// 	}
+// 	return {data:data,scroll:maxScroll}	
+// })
 // }

@@ -5,26 +5,9 @@
     </a-col>
 </a-row>
 <a-row>
-    <a-col :span="24" v-if="arrayToObjact(screensPermissions,65)">
-        <a-row :gutter="24">
-            <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox red" :count="5" :text="$t('patient.critical')" @click="filter('Critical')" />
-            </a-col>
-            <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox orangeBg" :count="10" :text="$t('patient.trending')" />
-            </a-col>
-            <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox greenBg" :count="15" :text="$t('patient.WNL')" />
-            </a-col>
-            <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox yellowBg" :count="8" :text="$t('patient.watchList')" />
-            </a-col>
-            <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox blue" :count="6" :text="$t('patient.messages')" />
-            </a-col>
-            <a-col :xl="4" :sm="8" :xs="24">
-                <CounterCard colorBox="colorBox whiteBg" :count="12" :text="$t('patient.escalations')" />
-            </a-col>
+    <a-col :span="24">
+        <a-row :gutter="24" v-if="arrayToObjact(screensPermissions, 65) && grid">
+            <PatientCounterCards :isPatient="true" />
         </a-row>
     </a-col>
 </a-row>
@@ -58,10 +41,10 @@
 </template>
 
 <script>
-import {  ref,  onMounted,  computed,  onUnmounted} from "vue";
+import {  ref,  onMounted,  onUnmounted, watchEffect } from "vue";
 import { useStore} from "vuex";
 import PatientsModal from "@/components/modals/PatientsModal";
-import CounterCard from "./counter-card/CounterCard";
+import PatientCounterCards from "@/components/common/cards/PatientCounterCards"
 import ShowModalButton from "@/components/common/show-modal-button/ShowModalButton";
 import TableLoader from "@/components/loader/TableLoader"
 import {arrayToObjact,exportExcel,timeStampFormate,globalDateFormat} from "@/commonMethods/commonMethod";
@@ -73,7 +56,7 @@ export default {
     name: "Patients",
     components: {
         PatientsModal,
-        CounterCard,
+        PatientCounterCards,
         ShowModalButton,
         DataTable,
         TableLoader,
@@ -100,26 +83,25 @@ export default {
         };
         const handleChange = () => {};
 
+        let dateFormat = {
+            fromDate: '',
+            toDate: ''
+        }
+        watchEffect(() => {
+            store.dispatch("patientFlags", dateFormat)
+            filterPatients()
+        })
+
         onMounted(() => {
             store.getters.patientsRecord.patientList = ""
             store.dispatch("programList");
-            if (route.query.filter || route.query.fromDate) {
-                let filter = route.query.filter ? route.query.filter : ''
-                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
-                store.dispatch("patients", "?filter=" + filter + date)
-            } else {
-                store.dispatch("patients");
-            }
-
+            filterPatients()
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
             })
         });
 
-        const totalPatients = computed(() => {
-            return store.state.counterCards.totalPatientcount
-        })
         onUnmounted(() => {
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
@@ -131,8 +113,14 @@ export default {
            
         })
 
-        function filter(event) {
-            store.dispatch("patients", "?filter=" + event)
+        function filterPatients() {
+            if (route.query.filter || route.query.fromDate) {
+                let filter = route.query.filter ? route.query.filter : ''
+                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
+                store.dispatch("patients", "?filter=" + filter + date)
+            } else {
+                store.dispatch("patients");
+            }
         }
 
         function remove(event) {
@@ -177,8 +165,8 @@ export default {
         }
         return {
             exportExcel,
-            totalPatients,
             screensPermissions: store.getters.screensPermissions,
+            grid: store.getters.grids,
             arrayToObjact,
             PatientsModal,
             showModal,
@@ -186,7 +174,6 @@ export default {
             handleChange,
             searchoptions,
             search: store.getters.searchTable,
-            filter,
             route,
             remove,
             timeStampFormate,

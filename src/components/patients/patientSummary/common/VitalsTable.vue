@@ -1,42 +1,42 @@
 <template>
   <a-table rowKey="id" :columns="columns" :data-source="data" :pagination="false" >
     <template #blood_pressure_systolic="{record}">
-      <span v-if="record.blood_pressure_systolic" :class="className">{{ record.blood_pressure_systolic }}</span>
+      <span v-if="record.blood_pressure_systolic" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.color }">{{ record.blood_pressure_systolic }}</span>
     </template>
     <template #blood_pressure_diastolic="{record}">
-      <span v-if="record.blood_pressure_diastolic" :class="className">{{ record.blood_pressure_diastolic }}</span>
+      <span v-if="record.blood_pressure_diastolic" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.color }">{{ record.blood_pressure_diastolic }}</span>
     </template>
     <template #blood_pressure_bpm="{record}">
-      <span v-if="record.blood_pressure_bpm" :class="className">{{ record.blood_pressure_bpm }}</span>
+      <span v-if="record.blood_pressure_bpm" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.color }">{{ record.blood_pressure_bpm }}</span>
     </template>
     
     <template #glucose_random_blood_sugar="{record}">
-      <span v-if="record.glucose_random_blood_sugar" :class="className">{{ record.glucose_random_blood_sugar }}</span>
+      <span v-if="record.glucose_random_blood_sugar" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.color }">{{ record.glucose_random_blood_sugar }}</span>
     </template>
     <template #glucose_fasting_blood_sugar="{record}">
-      <span v-if="record.glucose_fasting_blood_sugar" :class="className">{{ record.glucose_fasting_blood_sugar }}</span>
+      <span v-if="record.glucose_fasting_blood_sugar" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.color }">{{ record.glucose_fasting_blood_sugar }}</span>
     </template>
     <template #glucose_fasting="{record}">
-      <span v-if="record.glucose_fasting" :class="className">{{ record.glucose_fasting }}</span>
+      <span v-if="record.glucose_fasting" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.color }">{{ record.glucose_fasting }}</span>
     </template>
     <template #glucose_pre_meal="{record}">
-      <span v-if="record.glucose_pre_meal" :class="className">{{ record.glucose_pre_meal }}</span>
+      <span v-if="record.glucose_pre_meal" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.color }">{{ record.glucose_pre_meal }}</span>
     </template>
     <template #glucose_post_meal="{record}">
-      <span v-if="record.glucose_post_meal" :class="className">{{ record.glucose_post_meal }}</span>
+      <span v-if="record.glucose_post_meal" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.color }">{{ record.glucose_post_meal }}</span>
     </template>
     <template #glucose_before_sleep="{record}">
-      <span v-if="record.glucose_before_sleep" :class="className">{{ record.glucose_before_sleep }}</span>
+      <span v-if="record.glucose_before_sleep" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.color }">{{ record.glucose_before_sleep }}</span>
     </template>
     <template #glucose_general="{record}">
-      <span v-if="record.glucose_general" :class="className">{{ record.glucose_general }}</span>
+      <span v-if="record.glucose_general" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.color }">{{ record.glucose_general }}</span>
     </template>
     
     <template #oximeter_spo2="{record}">
-      <span v-if="record.oximeter_spo2" :class="className">{{ record.oximeter_spo2 }}</span>
+      <span v-if="record.oximeter_spo2" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.color }">{{ record.oximeter_spo2 }}</span>
     </template>
     <template #oximeter_bpm="{record}">
-      <span v-if="record.oximeter_bpm" :class="className">{{ record.oximeter_bpm }}</span>
+      <span v-if="record.oximeter_bpm" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.color }">{{ record.oximeter_bpm }}</span>
     </template>
 
   </a-table>
@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style scoped>
-  .dangerValue { margin: 0px 3px; }
+  /* .dangerValue { margin: 0px 3px; } */
   th, td { text-align: center; }
   .chatBoxRight .ant-table-fixed {
     width: 800px !important
