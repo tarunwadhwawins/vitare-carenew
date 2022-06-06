@@ -1,6 +1,7 @@
 <template>
 <div>
   <a-select
+  class="globalDropList"
   :getPopupContainer="triggerNode => triggerNode.parentNode"
     ref="select"
     :mode="mode"

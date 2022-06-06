@@ -472,3 +472,16 @@ span.address-text {
 	}
 }
 
+.globalDropList{
+	position: relative;
+	.ant-select-arrow{
+		+ {
+			div{
+				// top: 0 !important;
+				.ant-select-dropdown{
+					top: 40px !important;
+				}
+			}
+		}
+	}	
+}
