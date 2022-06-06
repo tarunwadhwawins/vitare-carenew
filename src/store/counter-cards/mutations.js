@@ -1,7 +1,7 @@
 import { yaxis, dataLabels, plotOptions } from '../../commonMethods/commonMethod'
 export const counterCardSuccess = (state, count) => {
     state.grid = {
-        xlGrid: parseInt(24 / count.length),
+        xlGrid: parseInt(24 / count.length * 2),
         smGrid: parseInt(24 / parseInt(count.length / 2))
     }
     state.totalPatientcount = count
