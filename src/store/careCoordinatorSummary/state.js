@@ -3,5 +3,6 @@ export default{
     staffSummaryAppointment:null,
     staffSummaryAppointmentCols:null,
     staffSummaryPatient:null,
-    staffSummaryPatientCols:null
+    staffSummaryPatientCols:null,
+    staffSummaryMeta:null,
 }

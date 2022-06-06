@@ -143,7 +143,7 @@ function loadMoredata() {
     newData.forEach((element) => {
         data.push(element);
     });
-    meta.patientList = data;
+    store.state.patients.patientList = data;
     var tableContent = document.querySelector(".ant-table-body");
 
     setTimeout(() => {
