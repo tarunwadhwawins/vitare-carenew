@@ -36,7 +36,7 @@ export const patient = (state, data) => {
       
     },
     {
-      title: "Timestamp",
+      title: "Flag Assigned Date",
       dataIndex: "flagTmeStamp",
       slots: {
         customRender: "flagTmeStamp",
