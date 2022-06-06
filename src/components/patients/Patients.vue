@@ -6,8 +6,8 @@
 </a-row>
 <a-row>
     <a-col :span="24">
-        <a-row :gutter="24" v-if="arrayToObjact(screensPermissions, 65) && grid ">
-            <PatientCounterCards />
+        <a-row :gutter="24" v-if="arrayToObjact(screensPermissions, 65) && grid">
+            <PatientCounterCards :isPatient="true" />
         </a-row>
     </a-col>
 </a-row>
@@ -88,20 +88,14 @@ export default {
             toDate: ''
         }
         watchEffect(() => {
-            store.dispatch("counterCard", dateFormat)
+            store.dispatch("patientFlags", dateFormat)
+            filterPatients()
         })
 
         onMounted(() => {
             store.getters.patientsRecord.patientList = ""
             store.dispatch("programList");
-            if (route.query.filter || route.query.fromDate) {
-                let filter = route.query.filter ? route.query.filter : ''
-                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
-                store.dispatch("patients", "?filter=" + filter + date)
-            } else {
-                store.dispatch("patients");
-            }
-
+            filterPatients()
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
@@ -119,8 +113,14 @@ export default {
            
         })
 
-        function filter(event) {
-            store.dispatch("patients", "?filter=" + event)
+        function filterPatients() {
+            if (route.query.filter || route.query.fromDate) {
+                let filter = route.query.filter ? route.query.filter : ''
+                let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
+                store.dispatch("patients", "?filter=" + filter + date)
+            } else {
+                store.dispatch("patients");
+            }
         }
 
         function remove(event) {
@@ -166,7 +166,7 @@ export default {
         return {
             exportExcel,
             screensPermissions: store.getters.screensPermissions,
-            grid: store.getters.grid,
+            grid: store.getters.grids,
             arrayToObjact,
             PatientsModal,
             showModal,
@@ -174,7 +174,6 @@ export default {
             handleChange,
             searchoptions,
             search: store.getters.searchTable,
-            filter,
             route,
             remove,
             timeStampFormate,

@@ -1,7 +1,7 @@
 <template>
   <a-alert class="mb-24" message="Patients are highlighted" type="error" />
 
-  <a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900,  }" :pagination="false" :rowClassName="(record) => auth.user.id!=record.messageSender && record.isRead==0 ? 'bold':''" @change="handleTableChange">
+  <a-table rowKey="id" :columns="communicationColumns" :data-source="meta.communicationsList" :scroll="{ x: 900,y:'calc(100vh - 370px)'}"  :pagination="false" :rowClassName="(record) => auth.user.id!=record.messageSender && record.isRead==0 ? 'bold':''" @change="handleTableChange">
 
     <template #expandedRowRender="{ record }">
       <p>{{ record.message }}</p>
@@ -295,17 +295,19 @@ export default {
       }
     })
 
-    onMounted(() => {
-      window.addEventListener("scroll", () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+    let scroller = "";
+        onMounted(() => {
+            var tableContent = document.querySelector(".ant-table-body");
+            tableContent.addEventListener("scroll", (event) => {
+                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+                let currentScroll = event.target.scrollTop + 2;
+                if (currentScroll >= maxScroll) {
           let current_page = meta.communicationMeta.current_page + 1;
 
           if (current_page <= meta.communicationMeta.total_pages) {
-         
+            scroller = maxScroll;
             data = meta.communicationsList;
             meta.communicationMeta = "";
-            store.state.communications.communicationsList = "";
-
             store
               .dispatch(
                 "communicationsList",
@@ -316,21 +318,23 @@ export default {
               )
               .then(() => {
                 //console.log('response',response)
-                loadMoredata();
+                loadMoredata(tableContent);
               });
           }
         }
       });
     });
 
-    function loadMoredata() {
+    function loadMoredata(tableContent) {
       const newData = meta.communicationsList;
 
       newData.forEach((element) => {
         data.push(element);
       });
       meta.communicationsList = data;
-     
+            setTimeout(() => {
+                tableContent.scrollTo(0, scroller);
+            }, 50);
     }
     const handleTableChange = (pag, filters, sorter) => {
       if (sorter.order) {

@@ -113,6 +113,7 @@ const router = useRouter()
             return store.state.tasks;
         });
 function linkOpen(name){
+    store.dispatch("tasksList", '?filter=' + name)
     router.replace({
                     query: {
                         view: 'list',

@@ -91,6 +91,9 @@ export default {
     referralDetail:null,
     startOn:true,
     criticalNoteDetails:null,
-    editPatientReferral:[]
+    editPatientReferral:[],
+
+    grids:null,
+    patientFlags:null,
 
 }
