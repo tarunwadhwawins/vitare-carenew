@@ -1,8 +1,8 @@
 <template>
   <a-select
+  class="globalDropList"
   :getPopupContainer="triggerNode => triggerNode.parentNode"
     ref="select"
-    class="globalDropList"
     :mode="mode"
     :value="value"
     @input="updateValue"
@@ -12,9 +12,9 @@
     :show-arrow="true"
     :filter-option="false"
     :not-found-content="loadingStatus ? undefined : null"
-    :options="patientData"
-    @search="handlePatientSearch"
-    @change="handlePatientChange"
+    :options="referralData"
+    @search="handleReferralSearch"
+    @change="handleReferralChange"
     size="large"
   >
     <template v-if="loadingStatus" #notFoundContent>
@@ -34,12 +34,12 @@ export default defineComponent({
     value: String,
     mode: String,
     close: Boolean,
-    editDataPatient:Array
+    editDataReferral:Array
   },
 
   setup(props, context) {
     const store = useStore();
-    const patientData = ref()
+    const referralData = ref()
     
    
 
@@ -50,41 +50,41 @@ export default defineComponent({
       if (props.close) {
         Services.singleDropdownSearch(
           "",
-          (d) => (patientData.value = d),
-          "patient"
+          (d) => (referralData.value = d),
+          "referral?referral=referral"
         );
         store.commit("checkChangeInput", false);
       }
-       props.editDataPatient?patientData.value = props.editDataPatient:patientData.value
+       props.editDataReferral?referralData.value = props.editDataReferral:referralData.value
     });
     onMounted(() => {
       Services.singleDropdownSearch(
         "",
-        (d) => (patientData.value = d),
-        "patient"
+        (d) => (referralData.value = d),
+        "referral?referral=referral"
       );
     });
 
-    const handlePatientSearch = (val) => {
+    const handleReferralSearch = (val) => {
       store.commit("dropdownLoadingStatus", true);
-      patientData.value = [];
+      referralData.value = [];
       Services.singleDropdownSearch(
         val,
-        (d) => (patientData.value = d),
-        "patient"
+        (d) => (referralData.value = d),
+        "referral?referral=referral"
       );
     };
 
-    const handlePatientChange = (val) => {
-      // Services.singleDropdownSearch( val, (d) => (patientData.value = d), "patient" );
-      context.emit("handlePatientChange", val);
+    const handleReferralChange = (val) => {
+      // Services.singleDropdownSearch( val, (d) => (referralData.value = d), "Referral" );
+      context.emit("handleReferralChange", val);
     };
 
     return {
       loadingStatus: store.getters.dropdownLoadingStatus,
-      handlePatientChange,
-      handlePatientSearch,
-      patientData,
+      handleReferralChange,
+      handleReferralSearch,
+      referralData,
       updateValue,
     };
   },

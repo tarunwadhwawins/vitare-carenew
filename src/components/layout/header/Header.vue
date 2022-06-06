@@ -96,40 +96,7 @@
                 </div>
 
                 <div class="profile" :class="ellipse ? 'show' : ''">
-                    <div class="notifications">
-                        <a-dropdown :trigger="['click']" overlayClassName="notifications">
-                            <a class="ant-dropdown-link" @click.prevent>
-                                <div class="icon">
-                                    <a-badge :count="requestCall ? requestCall.length : ''" :number-style="{ backgroundColor: '#267dff' }">
-                                        <CalendarOutlined />
-                                    </a-badge>
-                                </div>
-                            </a>
-                            <template #overlay>
-                                <a-menu class="headerDropdown" style="max-height: 400px; overflow: auto">
-                                    <a-menu-item class="title">{{ 'Call Request' }}</a-menu-item>
-                                    <a-menu-item class="listing" v-for="(reqCall, index) in requestCall" :key="index">
-                                        
-                                            <!-- <a class="d-flex align-items-center"> -->
-                                                <div class="flex-grow-1 summary" style="padding:10px">
-                                                    <h3><router-link class="bluecolor" :to="{ name: 'PatientSummary', params: { udid: reqCall.patient.id  },query:{filter:filter} }">{{ reqCall.patient.fullName  }}</router-link></h3>
-                                                    <strong style="padding-left:10px">Time : </strong> {{ reqCall.contactTime.name }}
-
-                                                </div>
-                                            <!-- </a> -->
-                                            <div class="steps-action" style="padding-bottom:15px;margin-right:10px">
-                                                <a-button style="margin-right: 10px" @click="rejectReqCall(reqCall.patient.id,reqCall.id)">{{'Reject'}}</a-button>
-                                                <a-button type="primary" @click="requestCallNotification(reqCall.patient.id,reqCall.patient.fullName,reqCall.id)">{{'Accept'}}</a-button>
-                                            </div>
-
-                                    </a-menu-item>
-                                    <a-menu-item class="allNotication">
-                                        <router-link to="/request-call-notifications">{{'Check All Request'}}</router-link>
-                                    </a-menu-item>
-                                </a-menu>
-                            </template>
-                        </a-dropdown>
-                    </div>
+                    
                     <div class="quick-actions d-flex align-items-center">
                         <a-dropdown :trigger="['click']">
                             <a class="ant-dropdown-link" @click.prevent>
@@ -160,6 +127,40 @@
                                     </a-menu-item>
                                     <a-menu-item key="5">
                                         <a href="javascript:void(0)" @click="showEscalationModal(true)">{{ 'Add Escalation' }}</a>
+                                    </a-menu-item>
+                                </a-menu>
+                            </template>
+                        </a-dropdown>
+                    </div>
+                    <div class="notifications">
+                        <a-dropdown :trigger="['click']" overlayClassName="notifications">
+                            <a class="ant-dropdown-link" @click.prevent>
+                                <div class="icon">
+                                    <a-badge :count="requestCall ? requestCall.length : ''" :number-style="{ backgroundColor: '#267dff' }">
+                                        <CalendarOutlined />
+                                    </a-badge>
+                                </div>
+                            </a>
+                            <template #overlay>
+                                <a-menu class="headerDropdown" style="max-height: 400px; overflow: auto">
+                                    <a-menu-item class="title">{{ 'Call Request' }}</a-menu-item>
+                                    <a-menu-item class="listing" v-for="(reqCall, index) in requestCall" :key="index">
+                                        
+                                            <!-- <a class="d-flex align-items-center"> -->
+                                                <div class="flex-grow-1 summary" style="padding:10px">
+                                                    <h3><router-link class="bluecolor" :to="{ name: 'PatientSummary', params: { udid: reqCall.patient.id  },query:{filter:filter} }">{{ reqCall.patient.fullName  }}</router-link></h3>
+                                                    <strong style="padding-left:10px">Time : </strong> {{ reqCall.contactTime.name }}
+
+                                                </div>
+                                            <!-- </a> -->
+                                            <div class="steps-action" style="padding-bottom:15px;margin-right:10px">
+                                                <a-button style="margin-right: 10px" @click="rejectReqCall(reqCall.patient.id,reqCall.id)">{{'Reject'}}</a-button>
+                                                <a-button type="primary" @click="requestCallNotification(reqCall.patient.id,reqCall.patient.fullName,reqCall.id)">{{'Accept'}}</a-button>
+                                            </div>
+
+                                    </a-menu-item>
+                                    <a-menu-item class="allNotication">
+                                        <router-link to="/request-call-notifications">{{'Check All Request'}}</router-link>
                                     </a-menu-item>
                                 </a-menu>
                             </template>
