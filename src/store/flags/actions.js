@@ -22,7 +22,7 @@ export const flagsList = async ({ commit }) => {
 export const patientFlags = async ({ commit }) => {
 	commit('loadingStatus', true)
 	await serviceMethod.common("get", API_ENDPOINTS['flag']+`?type=patient`, null, null).then((response) => {
-		commit('patientFlags', response.data.data);
+		commit('flagsForPatients', response.data.data);
 		commit('loadingStatus', false)
 	})
 	.catch((error) => {

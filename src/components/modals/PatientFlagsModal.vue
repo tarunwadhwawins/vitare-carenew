@@ -4,7 +4,7 @@
       <a-row :gutter="24">
         <a-col :span="24">
           <a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation') }]">
-            <GlobalCodeDropDown v-model:value="addFlagForm.flag" :globalCode="patientFlags" />
+            <GlobalCodeDropDown v-model:value="addFlagForm.flag" :globalCode="flagsForPatients" />
             <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
           </a-form-item>
         </a-col>
@@ -45,8 +45,8 @@ export default {
       })
       const title = latestFlag.value && latestFlag.value != null ? ref('Update Flag') : ref('Add Flag')
 
-      const patientFlags = computed(() => {
-        return store.state.flags.patientFlags
+      const flagsForPatients = computed(() => {
+        return store.state.flags.flagsForPatients
       })
 
       const addFlagForm = reactive({
@@ -75,7 +75,7 @@ export default {
 
       return {
 				formRef,
-				patientFlags,
+				flagsForPatients,
 				addFlagForm,
 				submitForm,
 				title,
