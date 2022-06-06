@@ -48,6 +48,9 @@ import { computed, watchEffect, reactive, ref } from 'vue-demi'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import Loader from "@/components/loader/Loader";
+import {
+    regex
+} from "@/RegularExpressions/regex";
 
 export default {
   props: {
@@ -102,6 +105,7 @@ export default {
     }
 
     return {
+      regex,
       staffs,
       formRest,
       editContactForm,
