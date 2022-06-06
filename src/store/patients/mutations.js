@@ -790,6 +790,15 @@ export const fetchFromBitrix = (state, data) => {
   })
 }
 
+export const patientFlags = (state, count) => {
+  const data = count.flags
+  state.grids = {
+    xlGrid: parseInt(24 / data.length),
+    smGrid: parseInt(24 / parseInt(data.length / 2))
+  }
+	state.patientFlags = count.data
+}
+
 export const patientVitals = (state, vitals) => {
   var timeArray = [];
   var vitalFieldsArray = [];

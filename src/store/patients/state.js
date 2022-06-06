@@ -93,4 +93,7 @@ export default {
     criticalNoteDetails:null,
     editPatientReferral:[]
 
+    grids:null,
+    patientFlags:null,
+
 }
