@@ -28,7 +28,7 @@
         </a-col>
         <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase()}]">
+            <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
               <a-input-number v-model:value.trim="editContactForm.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber ? errorMsg.phoneNumber[0] : ''" />
             </a-form-item>

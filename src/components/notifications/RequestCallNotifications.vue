@@ -19,9 +19,9 @@
                                         <!-- <a class="d-flex align-items-center"> -->
                                         <div class="flex-grow-1 summary" style="padding:10px">
                                             <h3>
-                                                <router-link class="bluecolor" :to="{ name: 'PatientSummary', params: { udid: reqCall.patient.id  },query:{filter:filter} }">{{ reqCall.patient.fullName  }}</router-link>
+                                                <router-link style="color:#267dff!important" class="bluecolor" :to="{ name: 'PatientSummary', params: { udid: reqCall.patient.id  },query:{filter:filter} }">{{ reqCall.patient.fullName  }}</router-link>
                                             </h3>
-                                            <strong style="padding-left:10px">Time : </strong> {{ reqCall.contactTime.name }}
+                                            <strong style="padding-left:15px">Time : </strong> {{ reqCall.contactTime.name }}
 
                                         </div>
                                         <!-- </a> -->
@@ -39,7 +39,7 @@
                         </a-col>
                     </a-row>
                 </div>
-                <AddAppointment v-if="isAppointment" v-model:visible="isAppointment" @is-visible="showModal($event)" :patientId="patientId" :patientName="patientName" />
+                <AddAppointment v-if="isAppointment" v-model:visible="isAppointment" @is-visible="closeModal($event)" :patientId="patientId" :patientName="patientName" />
             </a-layout-content>
         </a-layout>
     </a-layout>
@@ -93,7 +93,7 @@ export default {
         };
 
         function closeModal(status) {
-            isAppointment.value = status
+            isAppointment.value = status.check
         }
         const rejectReqCall = (pId,id) =>{
           store.dispatch('isReadCallNotification',{patientId:pId,id:id}).then((resp)=>{
