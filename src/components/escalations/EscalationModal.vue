@@ -421,12 +421,10 @@ export default {
     const current = computed({
       get: () => store.state.escalations.escalationCounter,
       set: (value) => {
-        if (addEscalation.value) {
+        if (addEscalation.value && !value ==1) {
           store.state.escalations.escalationCounter = value;
         } else {
-          if (
-            Object.values(escalation).filter((item) => item != "").length >= 7
-          ) {
+          if (Object.values(escalation).filter((item) => item != "").length >= 7 || addEscalation.value) {
             submitEscalationForm();
           } else {
             errorSwal("All fields(*) are required!");
