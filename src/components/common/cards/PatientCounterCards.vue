@@ -35,10 +35,8 @@ export default {
         store.dispatch("counterCard", dateFormat)
       }
     })
-    console.log('props.isPatient', props.isPatient)
     const totalPatients = props.isPatient && props.isPatient == true ? store.getters.patientFlags.value : store.getters.totalPatientcount.value
     const grid = props.isPatient && props.isPatient == true ? store.getters.grids : store.getters.grid
-    console.log('props.isPatient', totalPatients)
     
     return {
       totalPatients,
