@@ -9,8 +9,7 @@
         </a-col>
         <a-col :span="24">
             <a-row :gutter="24" v-if="arrayToObjact(screensPermissions, 65) && grid">
-                <Card v-for="item in totalPatients" :key="item.count" :count="item.total" :text='item.text' link="Patients with filter" :xl="grid.xlGrid" :color="item.color" :sm="grid.smGrid" :textColor="item.textColor">
-                </Card>
+                <PatientCounterCards />
             </a-row>
         </a-col>
     </a-row>
@@ -62,7 +61,7 @@ import {
     onUnmounted,
     
 } from 'vue'
-import Card from "@/components/common/cards/Card"
+import PatientCounterCards from "@/components/common/cards/PatientCounterCards"
 import ApexChart from "@/components/common/charts/ApexChart"
 import {
     startimeAdd,
@@ -170,7 +169,7 @@ const tasksListColumns = [{
 ];
 export default {
     components: {
-        Card,
+        PatientCounterCards,
         ApexChart,
         Loader,
         EscaltionTable,
@@ -319,7 +318,7 @@ export default {
             
             widgetsPermissions: store.getters.widgetsPermissions,
             escalationRecord: store.getters.escalationRecord,
-            totalPatients: store.getters.totalPatientcount,
+            // totalPatients: store.getters.totalPatientcount,
             arrayToObjact,
             columnData,
             escalationList,
