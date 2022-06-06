@@ -87,7 +87,7 @@ export async function messageSwal(message) {
 		
 		confirmButtonColor: '#3085d6',
 		cancelButtonColor: '#d33',
-		confirmButtonText: 'Yes'
+		confirmButtonText: 'Ok'
 	});
 	if (result.isConfirmed) {
 		return true;
