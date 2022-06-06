@@ -513,6 +513,11 @@ export const addCondition = (state, data) => {
 
 export const addPatientReferals = (state, data) => {
   state.addPatientReferals = data
+
+  state.editPatientReferral = [{
+    value:data.id,
+    label:data.name
+  }]
 }
 
 export const addPatientPhysician = (state, data) => {
