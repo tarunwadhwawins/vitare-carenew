@@ -92,4 +92,7 @@ export default {
     startOn:true,
     criticalNoteDetails:null,
 
+    grids:null,
+    patientFlags:null,
+
 }

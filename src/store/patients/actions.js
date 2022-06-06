@@ -1499,6 +1499,28 @@ export const readUnreadCriticalNote = async ({
   })
 }
 
+export const patientFlags = async ({ commit }, from) => {
+  await serviceMethod.common("get", API_ENDPOINTS['flag']+`?type=patient` , null, null).then((response) => {
+      serviceMethod.common("get", API_ENDPOINTS['patientsFlag']+ "?fromDate=" + from.fromDate + "&toDate=" + from.toDate, null, null).then((flags) => {
+          commit('patientFlags', {
+            flags: response.data.data,
+            data: flags.data
+          });
+          
+      })
+  }).catch((error) => {
+      if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    } else {
+      errorLogWithDeviceInfo(error);
+    }
+      if (error.response.status == 401) {
+          //AuthService.logout();
+      }
+      commit('failure', error.response.data);
+  })
+}
+
 export const criticalNotesList = async ({
   commit
 }, id) => {
