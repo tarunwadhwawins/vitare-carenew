@@ -74,7 +74,7 @@ export const staffSummaryPatient= async (state, data) => {
         {
           title: "Age",
           dataIndex: "age",
-          width: '8%',
+          width: '10%',
           align: 'right',
           sorter: true,
         },
