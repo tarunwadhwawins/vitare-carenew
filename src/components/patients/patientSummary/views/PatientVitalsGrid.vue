@@ -1,9 +1,9 @@
 <template>
   <a-row :gutter="24">
-
-    <template v-if="showVitals == true">
+    <template v-for="device in patientDevices" :key="device.id">
+      
       <VitalsGrid
-        v-if="bloodPressure && bloodPressure.length > 0"
+        v-if="device.deviceType == 'Blood Pressure'"
         title="Blood Pressure"
         :activeKey="activeKey1"
         :tableColumns="bloodPressureColumns"
@@ -14,7 +14,7 @@
       />
 
       <VitalsGrid
-        v-if="bloodGlucose && bloodGlucose.length > 0"
+        v-if="device.deviceType == 'Glucose'"
         title="Blood Glucose"
         :activeKey="activeKey2"
         :tableColumns="bloodGlucoseColumns"
@@ -25,7 +25,7 @@
       />
 
       <VitalsGrid
-        v-if="bloodOxygen && bloodOxygen.length > 0"
+        v-if="device.deviceType == 'Oximeter'"
         title="Blood Oxygen Saturation"
         :activeKey="activeKey3"
         :tableColumns="bloodOxygenColumns"
@@ -36,11 +36,11 @@
       />
     </template>
 
-  <template v-else>
-    <a-col :sm="24">
-      <a-alert message="No devices are assigned to this Patient. Please assign device(s) to see Vitals." type="error" />
-    </a-col>
-  </template>
+    <template v-if="patientDevices && patientDevices.length == 0">
+      <a-col :sm="24">
+        <a-alert message="No devices are assigned to this Patient. Please assign device(s) to see Vitals." type="error" />
+      </a-col>
+    </template>
 
   </a-row>
   <AddVitalsModal v-if="visibleAddVitalsModal" v-model:visible="visibleAddVitalsModal" :title="title" :deviceId="deviceId" @closeModal="handleOk" :patientId="patientId" @ok="handleOk" />

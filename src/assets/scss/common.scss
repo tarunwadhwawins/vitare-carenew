@@ -472,6 +472,11 @@ span.address-text {
 	}
 }
 
+.ant-modal-content {
+	.ant-modal-body {
+		min-height: 260px;
+	}
+}
 .globalDropList{
 	position: relative;
 	.ant-select-arrow{
@@ -480,8 +485,37 @@ span.address-text {
 				// top: 0 !important;
 				.ant-select-dropdown{
 					top: 40px !important;
+					max-height: 160px;
 				}
 			}
 		}
 	}	
+}
+.titleWrapper{
+	display: flex;
+    justify-content: space-between;
+    width: 100%;
+	.commonBtn{
+		display: flex;
+		flex-direction: row;
+		position: relative;
+		right: auto;
+    	top: auto;
+		align-items: center;
+		grid-gap: 20px;
+		button{
+			display: flex;
+			align-items: center;
+		}
+		.filter {
+			position: relative;
+			right: auto;
+			top: auto;
+			display: flex;
+			align-items: center;
+			button{
+				margin: 0;
+			}
+		}
+	}
 }

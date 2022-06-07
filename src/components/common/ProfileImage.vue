@@ -1,7 +1,7 @@
 <template>
-  <a-row :gutter="24" v-bind:class="patientSection">
+  <a-row :gutter="isLeft ? 24 : 24" v-bind:class="patientSection">
     
-      <a-col :span="8" v-bind:class="patientImg">
+      <a-col :span="isLeft ? 8 : 3" v-bind:class="patientImg">
         <div class="patientImgInner">
           <div class="image-section" v-if="hideEditIcon==false">
             <img v-if="isPicuteLoading" class="picture-loader" src="@/assets/images/loader.gif" />
@@ -30,7 +30,7 @@
         </div>
       </a-col>
 
-      <a-col :span="12" v-bind:class="patientInfo">
+      <a-col :span="isLeft ? 12 : 20" v-bind:class="patientInfo">
         <div class="info">
           <span v-if="patientDetails.patientFullName">
             <p v-if="isLeft == true">Name: {{ patientDetails.patientFullName }}</p>
@@ -44,7 +44,7 @@
         </div>
       </a-col>
 
-      <a-col :span="4" v-bind:class="patientIcons">
+      <a-col :span="isLeft ? 4 : 1" v-bind:class="patientIcons">
         <a-tooltip placement="top">
           <template #title>
             <span>Reset Password</span>
@@ -235,11 +235,11 @@ export default defineComponent({
       patientDetails,
       isPicuteLoading,
       programsPatient,
-      patientImg:'patientImg',
-      patientSection:'patientSection',
-      patientInfo:'patientInfo',
-      patientIcons:'patientIcons',
-      patientPrograms:'patientPrograms',
+      patientImg: props.isLeft ? 'patientImg' : '',
+      patientSection: props.isLeft ? 'patientSection' : 'sectionPatient',
+      patientInfo: props.isLeft ? 'patientInfo' : '',
+      patientIcons: props.isLeft ? 'patientIcons' : 'iconsPatient',
+      patientPrograms: props.isLeft ? 'patientPrograms' : '',
     }
   }
 });
