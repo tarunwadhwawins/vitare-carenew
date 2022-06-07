@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import { watchEffect } from 'vue-demi'
+import { onMounted } from 'vue-demi'
 import { useStore } from 'vuex'
 import Card from "@/components/common/cards/Card"
 import {
@@ -28,9 +28,10 @@ export default {
       fromDate: from ? timeStamp(startimeAdd(from)) : '',
       toDate: to ? timeStamp(endTimeAdd(to)) : ''
     }
-    watchEffect(() => {
+    onMounted(() => {
       if(props.isPatient) {
         store.dispatch("patientFlags", dateFormat)
+        store.commit("dateFilter", dateFormat)
       }
       // else {
       //   console.log("check",dateFormat)
