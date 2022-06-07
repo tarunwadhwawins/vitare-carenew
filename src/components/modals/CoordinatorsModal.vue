@@ -78,7 +78,7 @@
                         </a-col>
                     </a-row>
 
-                    <div class="steps-action">
+                    <div class="steps-action personalInformation">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                         <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
                     </div>
@@ -392,5 +392,8 @@ export default {
 
 .steps-action {
     text-align: right;
+}
+.personalInformation {
+    margin: 10px 0 0;
 }
 </style>
