@@ -48,7 +48,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.phoneNo')" name="phoneNo" :rules="[{ required: true, message: 'This field is required.' }]">
-                    <a-input v-model:value="formState.phoneNo" placeholder="input placeholder" />
+                    <a-input v-maska="'###-###-####'" v-model:value="formState.phoneNo" placeholder="input placeholder" />
                 </a-form-item>
              </div>
         </a-col>

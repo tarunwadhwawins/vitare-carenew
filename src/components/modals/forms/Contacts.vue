@@ -28,9 +28,7 @@
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                    <!-- <vue-tel-input  v-model.trim:value="contact.phoneNumber" v-bind="bindProps" @change="checkChangeInput()"/> -->
-                     <!-- <PhoneNumber @change="checkChangeInput()" v-model.trim:value="contact.phoneNumber" @setPhoneNumber="setPhoneNumber"/> -->
-                      <a-input-number @change="checkChangeInput()" v-model:value.trim="contact.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%"/>
+                      <a-input-number v-maska="'###-###-####'" @change="checkChangeInput()" v-model:value.trim="contact.phoneNumber" placeholder="Please enter 10 digit number" size="large" style="width: 100%"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                 </a-form-item>
             </div>
@@ -91,9 +89,15 @@ export default defineComponent({
    
     function addContacts() {
       formButton.value = true;
+      let phone = contact.phoneNumber
       store.dispatch("addContacts", {
         id: props.paramId?props.paramId:staffs.value.addStaff.id,
-        data: contact,
+        data: {
+          firstName: contact.firstName,
+          lastName: contact.lastName,
+          email: contact.email,
+          phoneNumber: phone.replace(/-/g,''),
+        },
       });
       setTimeout(() => {
         if(staffs.value.closeModal==true){
