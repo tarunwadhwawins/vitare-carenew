@@ -22,6 +22,7 @@ const dashboard = {
   Critical: 'Critical',
   newPatientsChart:'New Patients Chart',
   Other:'Other',
+  Communication:"Communication"
   
 }
 
