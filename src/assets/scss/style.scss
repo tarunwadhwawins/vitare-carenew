@@ -601,6 +601,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        padding-left: 15px;
         .edit-button {
             font-size: 11px;
         }
@@ -1673,3 +1674,7 @@
         margin: auto!important;
     }
 }
+
+.patientIcons .editIcon span svg {
+    font-size: 20px;
+  }
