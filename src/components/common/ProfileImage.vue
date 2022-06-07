@@ -364,4 +364,11 @@ span.edit-icon {
   margin-top: 5px;
   margin-left: 5px;
 }
+
+.image-section  img {
+      min-width: 80px;
+      min-height: 80px;
+      max-width: 80px;
+      max-height: 80px;
+  }
 </style>
