@@ -40,7 +40,7 @@
                 </div>
             </a-col>
             <a-col :sm="24" :md="24" :span="24">
-                <ModalButtons :Id="Id" @is_cancel="closeModal()" :disableButton="disableButton" />
+                <ModalButtons :Id="Id" @is_cancel="closeModal($event)" :disableButton="disableButton" />
             </a-col>
         </a-row>
     </a-form>
@@ -154,7 +154,12 @@ export default defineComponent({
     const checkFieldsData = computed(() => {
       return store.state.common.checkChangeInput;
     });
-    const closeModal = () => {
+    const closeModal = (event) => {
+      if(event){
+        emit("saveAuditTimeLog", false);
+        
+      }
+      
       if (checkFieldsData.value) {
         warningSwal(messages.modalWarning).then((response) => {
           if (response == true) {

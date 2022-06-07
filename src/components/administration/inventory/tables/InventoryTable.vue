@@ -1,5 +1,5 @@
 <template>
-<a-table rowKey="id" :columns="inventoryColumns" :data-source="inventoriesList" :scroll="{ y:'calc(100vh - 470px)'}" :pagination="false" @change="handleTableChange">
+<a-table rowKey="id" :columns="inventoryColumns" :data-source="inventoriesList" :scroll="{ y:'calc(100vh - 370px)'}" :pagination="false" @change="handleTableChange">
     <template #actions="{record}">
         <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,338)">
             <template #title>

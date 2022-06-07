@@ -27,7 +27,7 @@
         emit("is_click")
       }
       const cancel = () =>{
-        emit("is_cancel")
+        emit("is_cancel",true)
       }
       return {
         handleClear,
