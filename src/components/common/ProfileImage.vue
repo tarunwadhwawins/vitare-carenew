@@ -308,7 +308,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style>
 
 .resetPass img {
   width: 15px !important;
@@ -322,7 +322,9 @@ span.anticon.anticon-plus {
   position: relative !important;
   top: 0;
 }
-
+.patientSectionInner{
+  display: flex;
+}
 span.edit-icon {
   position: relative;
   top: -1px;
@@ -332,7 +334,7 @@ span.edit-icon {
   border-bottom: none !important;
 }
 .patientInfo {
-  padding: 35px 15px 0 0 !important;
+  padding: 20px 15px 0 0 !important;
 }
 .patientSection {
   border-bottom: 1px solid #e3e3e3;
@@ -340,7 +342,7 @@ span.edit-icon {
   padding: 0 0 30px 0 !important;
   
 }
-.patientIcons {
+.patientIcons, .iconsPatient {
     position: absolute;
     right: 10px;
     top: 5px;
