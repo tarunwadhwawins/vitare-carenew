@@ -219,7 +219,7 @@ export default defineComponent({
               programID: id
             }).then(() => {
               isEdit.value = false
-      programId.value = null
+              programId.value = null
               store.dispatch("program", patientId);
               reset()
             });
@@ -233,11 +233,10 @@ export default defineComponent({
             store.dispatch('deleteProgram',{
               id:patients.value.addDemographic.id,
               programID:id
-            })
-            setTimeout(() => {
+            }).then(() => {
               isEdit.value = false
-      programId.value = null
-              store.dispatch("program",patients.value.addDemographic.id);
+              programId.value = null
+              store.dispatch("program", patients.value.addDemographic.id);
               reset()
             });
           }
