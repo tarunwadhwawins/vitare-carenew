@@ -5,7 +5,7 @@
     <div class="pat-profile">
       <div class="pat-profile-inner">
         <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 289)">
-          Flags <PlusOutlined @click="showAddFlagModal(); actionTrack(paramsId,289,'patient')" /><br />
+          Flag Changes <PlusOutlined @click="showAddFlagModal(); actionTrack(paramsId,289,'patient')" /><br />
         </div>
         <div class="thumb-desc" v-if="latestFlag">
           <Flags :data="latestFlag.flags.data" :flag="latestFlag.color" />
