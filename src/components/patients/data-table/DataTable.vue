@@ -1,6 +1,6 @@
 <template>
 <div class="patientTable">
-    <a-table rowKey="id" :columns="meta.column" :data-source="meta.patientList" :scroll="{ x: 1500,y:'calc(100vh - 470px)' }" :pagination="false" @change="handleTableChange">
+    <a-table rowKey="id" :columns="meta.column" :data-source="meta.patientList" :scroll="{ x: 1500,y:'calc(100vh - 490px)' }" :pagination="false" @change="handleTableChange">
         <template #fullName="{ text, record }" v-if="arrayToObjact(screensPermissions, 63)">
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.id },query:{filter:filter} }">{{ text }}</router-link>
 
@@ -92,6 +92,7 @@ const  filter = ref();
 let date = "";
 
 function checkDate() {
+    console.log("check",route.query.filter)
     filter.value = route.query.filter ? route.query.filter : "";
     date =
         route.query.fromDate && route.query.toDate ?
@@ -103,10 +104,11 @@ function checkDate() {
 }
 let scroller = "";
 onMounted(() => {
-    checkDate();
+    
 
     var tableContent = document.querySelector(".ant-table-body");
     tableContent.addEventListener("scroll", (event) => {
+        checkDate();
         let maxScroll = event.target.scrollHeight - event.target.clientHeight;
         let currentScroll = event.target.scrollTop + 2;
         if (currentScroll >= maxScroll) {

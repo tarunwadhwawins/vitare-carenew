@@ -9,8 +9,15 @@
     <template #lastName="text">
         <span >{{ text.text }}</span>
     </template>
-    <template #flags="{ text }">
-        <span class="box" :style="{'background-color':text}"></span>
+    <template #flags="{ record }">
+            <a-tooltip placement="bottom">
+                <template #title>
+                    <span>{{ record.flagName }}</span>
+                </template>
+                <a class="icons">
+                   <span class="box" :style="{'background-color':record.flagColor}"></span>
+                </a>
+            </a-tooltip>
     </template>
     <template #compliance>
         <a class="icons">
@@ -42,7 +49,7 @@ import {
 import { useRoute } from 'vue-router';
 export default {
     comments:{
-        DeleteOutlined
+        DeleteOutlined,
     },
     setup(){
         const store = useStore()

@@ -69,7 +69,7 @@ import {
 } from '@/commonMethods/commonMethod';
 import { computed, ref, onMounted, reactive, toRefs, watchEffect} from 'vue-demi';
 import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import TableLoader from "@/components/loader/TableLoader";
 import moment from "moment"
 export default {
@@ -98,6 +98,7 @@ export default {
     const visibleRemoveAll = ref(false);
     const store = useStore();
     const route = useRoute();
+    const router = useRouter()
     const pId = ref(props.profileId)
     const tabvalue = reactive({
       tab:[]
@@ -150,12 +151,17 @@ store.dispatch('patientTimeline', {
     };
 
     function chnageTab(value) {
+      
       store.commit('loadingTableStatus', true)
       var type = ''
       if(value == 'change') {
         type = tabvalue.tab.length == 0 ? '' :tabvalue.tab.join(",")
       }
       else {
+       router.replace({
+                            query: {}
+                        })
+                    
         tabvalue.tab.length = 0
       }
       
