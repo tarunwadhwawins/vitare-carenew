@@ -1,4 +1,5 @@
 <template>
+
   <Card v-for="item in totalPatients" :key="item.count" :count="item.total" :text='item.text' link="PatientsWithFilter" :xl="grid.xlGrid" :color="item.color" :sm="grid.smGrid" :textColor="item.textColor"></Card>
 </template>
 
@@ -31,11 +32,12 @@ export default {
       if(props.isPatient) {
         store.dispatch("patientFlags", dateFormat)
       }
-      else {
-        store.dispatch("counterCard", dateFormat)
-      }
+      // else {
+      //   console.log("check",dateFormat)
+      //   store.dispatch("counterCard", dateFormat)
+      // }
     })
-    const totalPatients = props.isPatient && props.isPatient == true ? store.getters.patientFlags.value : store.getters.totalPatientcount.value
+    const totalPatients = props.isPatient && props.isPatient == true ? store.getters.patientFlags.value : store.getters.totalPatientcount
     const grid = props.isPatient && props.isPatient == true ? store.getters.grids : store.getters.grid
     
     return {

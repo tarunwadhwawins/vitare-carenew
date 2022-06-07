@@ -5,7 +5,7 @@
             <div class="form-group">
                 
                 <a-form-item :label="$t('global.startTime')" name="startTime" :rules="[{ required: true, message: $t('global.startTime')+' '+$t('global.validation') }]">
-                    <a-time-picker use12-hours :disabledHours="() => disableHours" format="hh:mm A" v-model:value="availability.startTime" value-format="HH:mm" @change="checkChangeInput(); getTime('startTime')" />
+                    <a-time-picker use12-hours :disabledHours="() => disableHours" format="hh:mm A" v-model:value="availability.startTime" value-format="HH:mm" @change="checkChangeInput(); getTime('startTime')" @openChange="startTimechange"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.startTime?errorMsg.startTime[0]:''" />
                 </a-form-item>
             </div>
@@ -13,7 +13,7 @@
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.endTime')" name="endTime" :rules="[{ required: true, message: $t('global.endTime')+' '+$t('global.validation') }]">
-                    <a-time-picker v-model:value="availability.endTime" :disabledHours="() => disableHours" use12-hours format="hh:mm A" value-format="HH:mm" @change="checkChangeInput(); getTime('endTime')" />
+                    <a-time-picker v-model:value="availability.endTime" :disabledHours="() => disableHours" use12-hours format="hh:mm A" value-format="HH:mm" @change="checkChangeInput(); getTime('endTime');" @openChange="endTimechange"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.endTime?errorMsg.endTime[0]:''" />
                 </a-form-item>
             </div>
@@ -88,7 +88,22 @@ export default defineComponent({
         const staffs = computed(() => {
             return store.state.careCoordinator;
         });
-
+         function endTimechange(e){
+      if(e && !availability.endTime){
+        const m = moment();
+        m.set({hour:8,minute:0,second:0,millisecond:0});
+   
+        availability.endTime =m;
+      }
+    }
+ function startTimechange(e){
+      if(e && !availability.startTime){
+        const m = moment();
+        m.set({hour:8,minute:0,second:0,millisecond:0});
+   
+        availability.startTime =m;
+      }
+    }
         function addAvailability() {
             button.value = false
             let startTime = timeStamp(moment().format('MM/DD/YYYY') + ' ' + availability.startTime+ ':00')
@@ -183,6 +198,8 @@ export default defineComponent({
             button,
             disableHours,
             getTime,
+            startTimechange,
+            endTimechange
         };
     },
 });

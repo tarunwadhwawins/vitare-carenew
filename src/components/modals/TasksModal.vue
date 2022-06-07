@@ -189,6 +189,7 @@ export default defineComponent({
                                 value: false,
                             });
                             handleCancel()
+                            store.commit("checkChangeInput", false);
                             emit("saveTaskModal", false);
                             Object.assign(taskForm, form);
                             apiCall()
@@ -210,7 +211,7 @@ export default defineComponent({
                     })
                     .then(() => {
                         closeValue.value = true;
-                        
+                        store.commit("checkChangeInput", false);
                         if (route.name == "PatientSummary") {
                             store.dispatch("latestTask", route.params.udid);
                         }
@@ -236,7 +237,9 @@ export default defineComponent({
         function apiCall() {
             if (tasks.value.addTask != null || tasks.value.updateTask != null) {
                 if (route.params.udid == null) {
-                    store.dispatch("tasksList");
+                    let filter = route.query.filter ? route.query.filter : ''
+                    let date = store.getters.otherFilters.value ? store.getters.otherFilters.value : route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
+                    store.dispatch("tasksList",'?active=1' + store.getters.otherFilters.value + '&filter=' + filter +date);
                     store.dispatch("allTaskStatus");
                     store.dispatch("taskStatus");
                     store.dispatch("taskPriority");
