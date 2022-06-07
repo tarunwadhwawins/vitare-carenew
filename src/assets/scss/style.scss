@@ -591,7 +591,6 @@
         }
     }
     .patientImg {
-        margin: 0 auto;
         position: relative;
         display: flex;
         align-items: center;
@@ -1325,8 +1324,10 @@
                 .image-section {
                     position: initial;
                     img {
-                        width: 80px;
-                        height: 80px;
+                        min-width: 80px;
+                        min-height: 80px;
+                        max-width: 80px;
+                        max-height: 80px;
                     }
                 }
                 .info {
