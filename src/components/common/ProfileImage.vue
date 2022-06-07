@@ -1,67 +1,80 @@
 <template>
-  <div class="patientImg" >
-    <div class="patientImgInner">
-    <div class="image-section" v-if="hideEditIcon==false">
-      <img v-if="isPicuteLoading" class="picture-loader" src="@/assets/images/loader.gif" />
-      <img v-if="patientDetails.profilePhoto && !isPicuteLoading" class="ant-upload-text" :src="patientDetails.profilePhoto" alt="image"/>
-      <img v-else-if="imageUrl && !isPicuteLoading" :src="imageUrl" alt="avatar" class="ant-upload-text" />
-      <img v-else-if="!isPicuteLoading" src="@/assets/images/userAvatar.png" alt="image"/>
-    </div>
+  <a-row :gutter="24" v-bind:class="patientSection">
+    
+      <a-col :span="8" v-bind:class="patientImg">
+        <div class="patientImgInner">
+          <div class="image-section" v-if="hideEditIcon==false">
+            <img v-if="isPicuteLoading" class="picture-loader" src="@/assets/images/loader.gif" />
+            <img v-if="patientDetails.profilePhoto && !isPicuteLoading" class="ant-upload-text" :src="patientDetails.profilePhoto" alt="image"/>
+            <img v-else-if="imageUrl && !isPicuteLoading" :src="imageUrl" alt="avatar" class="ant-upload-text" />
+            <img v-else-if="!isPicuteLoading" src="@/assets/images/userAvatar.png" alt="image"/>
+          </div>
 
-    <div class="button-section" v-if="hideEditIcon==false">
-      <a-upload :show-upload-list="false" @change="handleChange" >
-        <div class="button-details">
-          <a class="edit-button">
-            <span class="edit-icon">
-              <EditOutlined />
-            </span>
-            <span class="edit-text">
-              Change Image
-            </span>
-            </a>
+          <div class="button-section" v-if="hideEditIcon==false">
+            <a-upload :show-upload-list="false" @change="handleChange" >
+              <div class="button-details">
+                <a class="edit-button">
+                  <span class="edit-icon">
+                    <EditOutlined />
+                  </span>
+                  <span class="edit-text">
+                    Change Image
+                  </span>
+                  </a>
+              </div>
+            </a-upload>
+          </div>
         </div>
-      </a-upload>
-    </div>
-    </div>
-    <div class="image-section" v-if="hideEditIcon==true">
-      <img v-if="patientDetails.profilePhoto" class="ant-upload-text" :src="patientDetails.profilePhoto" alt="image"/>
-    </div>
+        <div class="image-section" v-if="hideEditIcon==true">
+          <img v-if="patientDetails.profilePhoto" class="ant-upload-text" :src="patientDetails.profilePhoto" alt="image"/>
+        </div>
+      </a-col>
 
-    <div class="info">
-      <span v-if="patientDetails.patientFullName">
-        <p v-if="isLeft == true">Name: {{ patientDetails.patientFullName }}</p>
-        <h2 v-else>{{ patientDetails.patientFullName }}</h2>
-      </span>
-      <p v-if="patientDetails.patientDob">DOB : {{ patientDetails.patientDob }}</p>
-      <p v-if="patientDetails.medicalRecordNumber">MRN : {{ patientDetails.medicalRecordNumber }}</p>
-      <p v-if="patientDetails.email"><a @click="actionTrack(paramsId,321,'patient')" v-if="arrayToObjact(screensPermissions, 321)" href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
-      <p v-if="patientDetails.phoneNumber"><a @click="actionTrack(paramsId,322,'patient')" v-if="arrayToObjact(screensPermissions, 322)" href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
-      <p v-if="patientDetails.address"><HomeOutlined/> <span class="address-text">{{ patientDetails.address }}</span></p>
-    </div>
-    <a-tooltip placement="top">
-        <template #title>
-          <span>Reset Password</span>
-        </template>
-        <a class="resetPass">
-          <KeyIcon height="16" width="16" alt="Reset Password" @click="resetPasseord(patientDetails.id)"/>
-      <!-- <KeyOutlined @click="resetPasseord(patientDetails.id)" /> -->
-       <!-- <img src="@/assets/images/key.svg" height="16" width="16" alt="Reset Password" @click="resetPasseord(record.id)"> -->
-    </a>
-    </a-tooltip>
+      <a-col :span="12" v-bind:class="patientInfo">
+        <div class="info">
+          <span v-if="patientDetails.patientFullName">
+            <p v-if="isLeft == true">Name: {{ patientDetails.patientFullName }}</p>
+            <h2 v-else>{{ patientDetails.patientFullName }}</h2>
+          </span>
+          <p v-if="patientDetails.patientDob">DOB : {{ patientDetails.patientDob }}</p>
+          <p v-if="patientDetails.medicalRecordNumber">MRN : {{ patientDetails.medicalRecordNumber }}</p>
+          <p v-if="patientDetails.email"><a @click="actionTrack(paramsId,321,'patient')" v-if="arrayToObjact(screensPermissions, 321)" href="mailto:{{patientDetails.email}}"><MailOutlined /> {{ patientDetails.email }}</a></p>
+          <p v-if="patientDetails.phoneNumber"><a @click="actionTrack(paramsId,322,'patient')" v-if="arrayToObjact(screensPermissions, 322)" href="tel:{{patientDetails.phoneNumber}}"><PhoneOutlined :rotate="90" /> {{ patientDetails.phoneNumber }}</a></p>
+          <p v-if="patientDetails.address"><HomeOutlined/> <span class="address-text">{{ patientDetails.address }}</span></p>
+        </div>
+      </a-col>
 
-    <a-tooltip placement="top" class="editIcon">
-        <template #title>
-          <span>Edit</span>
-        </template>
-        <a>
-      <EditOutlined  @click="editPatient({udid: patientDetails.id, id: patientDetails.id});actionTrack(paramsId,301,'patient')" v-if="isLeft == true && (arrayToObjact(screensPermissions, 301) || arrayToObjact(screensPermissions, 63))"/>
-    </a>
-    </a-tooltip>
-    
-    
-   <!-- <ResetPassword v-model:visible="resetPasswordVisible" @saveModal="saveModal($event)" endPoint="patient" :id="patientDetails.id"/> -->
-  </div>
+      <a-col :span="4" v-bind:class="patientIcons">
+        <a-tooltip placement="top">
+          <template #title>
+            <span>Reset Password</span>
+          </template>
+          <a class="resetPass">
+            <KeyIcon alt="Reset Password" @click="resetPasseord(patientDetails.id)"/>
+          </a>
+        </a-tooltip>
+        <a-tooltip placement="top" class="editIcon">
+          <template #title>
+            <span>Edit</span>
+          </template>
+          <a>
+            <EditOutlined @click="editPatient({udid: patientDetails.id, id: patientDetails.id});actionTrack(paramsId,301,'patient')" v-if="isLeft == true && (arrayToObjact(screensPermissions, 301) || arrayToObjact(screensPermissions, 63))"/>
+          </a>
+        </a-tooltip>
+      </a-col>
+      
+      <a-col v-if="programsPatient && programsPatient.length > 0" :span="24" v-bind:class="patientPrograms">
+        <div class="patientPrograms">
+          <span class="programText" v-for="program in programsPatient" :key="program.id">
+            {{ program }}
+          </span>
+        </div>
+      </a-col>
+      
+  </a-row>
+
   <ImageCropper v-if="modalVisible" v-model:visible="modalVisible" :imageUrl="imageinCropper" @closeModal="closeImageModal" @crop="updateProfileImage" />
+
 </template>
 
 <script>
@@ -123,6 +136,10 @@ export default defineComponent({
     
     const patientDetails = computed(() => {
       return store.state.patients.patientDetails
+    })
+    
+    const programsPatient = computed(() => {
+      return store.state.patients.programsPatient
     })
 
     const imageinCropper = ref('');
@@ -217,46 +234,32 @@ export default defineComponent({
       editPatient,
       patientDetails,
       isPicuteLoading,
+      programsPatient,
+      patientImg:'patientImg',
+      patientSection:'patientSection',
+      patientInfo:'patientInfo',
+      patientIcons:'patientIcons',
+      patientPrograms:'patientPrograms',
     }
   }
 });
 </script>
 
 <style scoped>
-.resetPass{
-  
-    position: absolute;
-    right: 45px;
-    top: 16px;
+a.resetPass, a.editIcon {
+  position: relative;
+  top: 35px;
+  right: -30px;
+  margin-right: 5px;
+  font-size: 16px;
 }
 .resetPass img {
-    width: 18px!important;
-    height: auto!important;
-    margin: 0!important;
-    border-radius: 0!important;
+  width: 15px!important;
 }
-
-/* .info {
-  margin-left: 40px;
-} */
-/* .patientInfo .patientImg {
-  padding: 30px !important
-} */
 span.anticon.anticon-plus {
   position: relative;
   top: -2px;
 }
-
-/* .image-section {
-  position: absolute;
-  top: 25px;
-} */
-
-/* .button-section {
-  position: relative;
-  top: 70px;
-} */
-
 .button-details {
   position: relative !important;
   top: 0;
@@ -267,124 +270,27 @@ span.edit-icon {
   top: -1px;
   font-size: 12px;
 }
-
-/* .header .button-details { */
-  /* position: relative !important; */
-  /* top: 70px !important; */
-  /* left: -91px !important; */
-/* } */
-
-/* .header .button-section {
-  position: relative !important;
-  top: 50px !important;
-  left: -91px !important;
-} */
-/* .header .image-section {
-  left: 20px !important;
-  position: relative !important;
-  top: -10px !important;
-} */
-/* .callRightWrapper .header .patientInfo .patientImg .info {
-  margin-left: -50px !important;
-} */
-/* .callRightWrapper .header .patientInfo .patientImg {
-  padding: 30px !important;
-} */
-
-/* .container {
-  padding: 1em 0;
-  float: left;
-  width: 50%;
+.patientImg {
+  padding: 35px 35px 0px 35px !important;
+  border-bottom: none !important;
 }
-.container .title {
-  color: #1a1a1a;
-  text-align: center;
-  margin-bottom: 10px;
-} */
-
-/* .content {
-  margin: 0 auto;
-  position: relative;
-} */
-
-/* .content {
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  -o-object-fit: cover;
-  object-fit: cover;
-  margin: 0 15px 0 0;
+.patientInfo {
+  padding-top: 35px !important;
 }
-
-.content .content-overlay {
-  background: rgba(0,0,0,0.7);
-  position: absolute;
-  left: 15px;
-  top: 21px;
-  bottom: 0;
-  right: 0;
-  opacity: 0;
-  -webkit-transition: all 0.4s ease-in-out 0s;
-  -moz-transition: all 0.4s ease-in-out 0s;
-  transition: all 0.4s ease-in-out 0s;
-
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  -o-object-fit: cover;
-  object-fit: cover;
-  margin: 0 15px 0 0;
+.patientSection {
+  border-bottom: 1px solid #e3e3e3;
+  margin: 0 !important;
+  padding: 0 0 30px 0 !important;
 }
-
-.content:hover .content-overlay {
-  opacity: 1;
+.patientPrograms {
+  float: right;
+  padding-top: 10px;
 }
-
-.content:hover {
-  cursor: pointer;
+.programText {
+  border: 1px solid #c8c8c8;
+  border-radius: 50px;
+  padding: 7px 17px;
+  margin-top: 5px;
+  margin-left: 5px;
 }
-
-.content-details {
-  position: relative;
-  text-align: center;
-  padding-left: 1em;
-  padding-right: 1em;
-  width: 100%;
-  top: 50%;
-  left: 50%;
-  opacity: 0;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  -webkit-transition: all 0.3s ease-in-out 0s;
-  -moz-transition: all 0.3s ease-in-out 0s;
-  transition: all 0.3s ease-in-out 0s;
-}
-
-.content:hover .content-details {
-  top: 50%;
-  left: 50%;
-  opacity: 1;
-}
-
-.content-details h3 {
-  color: #fff;
-  font-weight: 500;
-  letter-spacing: 0.15em;
-  margin-bottom: 0.5em;
-  text-transform: uppercase;
-  font-size: 12px;
-}
-
-.content-details p {
-  color: #fff;
-  font-size: 0.8em;
-}
-
-.fadeIn-bottom {
-  top: -62px !important;
-  position: relative;
-  width: 200px;
-  left: 66px !important;
-} */
 </style>

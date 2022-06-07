@@ -185,6 +185,12 @@ export const addPatientProgram = (state, data) => {
 
 export const programPatients = (state, data) => {
   state.program = data.map(element => {
+
+    const program = (element.program).split(" - ")[0]
+    if (!state.programsPatient.includes(program)) {
+      state.programsPatient.push(program);
+    }
+    
     element.status = element.status == 1 ? 'Active' : 'Inactive'
     element.onboardingScheduleDate = dateOnlyFormat(element.onboardingScheduleDate),
       element.dischargeDate = dateOnlyFormat(element.dischargeDate)
@@ -223,7 +229,6 @@ export const programPatients = (state, data) => {
       },
     },
   ];
-
 }
 
 
