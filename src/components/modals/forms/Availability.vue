@@ -81,8 +81,8 @@ export default defineComponent({
         const store = useStore();
         const formRest = ref();
         const availability = reactive({
-            startTime: "08:00 AM",
-            endTime: "08:00 AM",
+            startTime: "",
+            endTime: "",
         });
         const button = ref(true)
         const staffs = computed(() => {
