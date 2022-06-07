@@ -255,6 +255,7 @@ onMounted(()=>{
       })
       // store.dispatch("appointmentCalls",{patientId:patientUdid})
       if(route.name == 'PatientSummary') {
+        store.dispatch("program", patientUdid);
         store.commit("loadingTableStatus",true)
         loader.value = true
         store.dispatch('patientVitals', {patientId: patientUdid, deviceType: 99})

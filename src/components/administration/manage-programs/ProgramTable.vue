@@ -1,8 +1,8 @@
 
 <template>
 <a-col :span="24">
-    <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.manageProgramList"  :scroll="{ x: 900,y:'calc(100vh - 470px)'}" @change="handleTableChange" :pagination=false>
-        <template #actions="text">
+    <a-table rowKey="id" :columns="meta.programColumns" :data-source="meta.manageProgramList"  :scroll="{ x: 900,y:'calc(100vh - 370px)'}" @change="handleTableChange" :pagination=false>
+        <!-- <template #actions="text">
             <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,16)">
                 <template #title>
                     <span>{{$t('global.edit')}}</span>
@@ -19,7 +19,7 @@
                     <DeleteOutlined />
                 </a>
             </a-tooltip>
-        </template>
+        </template> -->
         <template #isActive="{record}" >
             <a-switch v-model:checked="record.isActive" @change="UpdateProgramStatus(record.udid, $event)" :disabled="!arrayToObjact(screensPermissions,16)"/>
         </template>
@@ -29,7 +29,7 @@
 </template>
 <script>
 import { ref, onMounted, watchEffect } from "vue";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
+//import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import {
   warningSwal,
   arrayToObjact,
@@ -42,8 +42,8 @@ import TableLoader from "@/components/loader/TableLoader";
 export default {
   components: {
     TableLoader,
-    DeleteOutlined,
-    EditOutlined,
+    //DeleteOutlined,
+    //EditOutlined,
   },
   setup(props, { emit }) {
     const store = useStore();
