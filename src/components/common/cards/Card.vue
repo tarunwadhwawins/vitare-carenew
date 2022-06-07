@@ -73,7 +73,8 @@
 						query:{
 							fromDate: store.getters.dateFilter.value.fromDate,
 							toDate: store.getters.dateFilter.value.toDate,
-							filter: text
+							filter: text,
+              timelineId:store.getters.dashboardTimeLineButton.value.globalCodeId
 						}
 					})
 				}
