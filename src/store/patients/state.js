@@ -96,5 +96,7 @@ export default {
 
     grids:null,
     patientFlags:null,
+    conditionsList:null,
+    latestCondition:null,
 
 }
