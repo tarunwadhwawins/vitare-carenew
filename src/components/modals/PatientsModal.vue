@@ -1403,6 +1403,7 @@ export default defineComponent({
         })
         .then(() => {
           isValueChanged.value = false;
+          store.dispatch("patientConditions", patientId)
         });
       store.dispatch("checkForErrors");
       const checkForErrors = computed(() => {

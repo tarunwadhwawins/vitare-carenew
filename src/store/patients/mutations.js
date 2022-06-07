@@ -532,6 +532,8 @@ export const patientConditions = (state, conditions) => {
     condition = condition.conditionId
     return condition;
   })
+  state.conditionsList = conditions
+  state.latestCondition = conditions[0]
 }
 
 export const patientReferralSource = (state, referralSource) => {
