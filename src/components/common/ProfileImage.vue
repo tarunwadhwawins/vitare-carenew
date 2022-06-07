@@ -298,13 +298,13 @@ export default defineComponent({
       patientDetails,
       isPicuteLoading,
       programsPatient,
-      patientImg: "patientImg",
-      patientSection: "patientSection",
-      patientInfo: "patientInfo",
-      patientIcons: "patientIcons",
-      patientPrograms: "patientPrograms",
-    };
-  },
+      patientImg: props.isLeft ? 'patientImg' : '',
+      patientSection: props.isLeft ? 'patientSection' : 'sectionPatient',
+      patientInfo: props.isLeft ? 'patientInfo' : '',
+      patientIcons: props.isLeft ? 'patientIcons' : 'iconsPatient',
+      patientPrograms: props.isLeft ? 'patientPrograms' : '',
+    }
+  }
 });
 </script>
 

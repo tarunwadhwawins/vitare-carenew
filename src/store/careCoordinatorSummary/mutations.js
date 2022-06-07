@@ -2,7 +2,7 @@ import{meridiemFormatFromTimestamp,dateOnlyFormat} from "@/commonMethods/commonM
 
 export const staffSummary= async (state, data) => {
     state.staffSummary = data;
-    state.staffSummary['phoneNumber'] = data.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$2-$2-$3");
+    state.staffSummary['phoneNumber'] = data.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
 }
 
 export const staffSummaryAppointment= async (state, data) => {
@@ -44,7 +44,7 @@ export const staffSummaryPatient= async (state, data) => {
   state.staffSummaryMeta = data.meta.pagination;
     state.staffSummaryPatient = data.data.map(element => {
      
-        element.flags = element.flagColor?element.flagColor:'',
+        // element.flags = element.flagColor?element.flagColor:'',
         element.lastName=element.lastName?element.lastName :'',
         element.firstName=element.name?element.name+' '+element.lastName :'' 
         element.lastReadingDate=element.lastReadingDate?element.lastReadingDate:''

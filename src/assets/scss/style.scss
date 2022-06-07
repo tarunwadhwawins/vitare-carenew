@@ -577,6 +577,21 @@
     margin: 0 0 30px;
 }
 
+.ant-row.sectionPatient .image-section img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+.ant-row.sectionPatient {
+    padding: 30px;
+}
+.ant-col.ant-col-1.iconsPatient {
+    position: relative;
+    top: -40px;
+}
+
 .patientInfo {
     background-color: #fff;
     position: relative;
