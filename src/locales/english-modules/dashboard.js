@@ -6,7 +6,7 @@ const dashboard = {
   activePatients: 'Active Patients',
   Escalation: 'Escalation',
   Moderate: 'Moderate',
-  Communication: 'Communication',
+
   WNL: 'WNL',
   Watchlist: 'Watchlist',
   Trending: 'Trending',
