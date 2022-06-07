@@ -477,7 +477,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('patient.demographics.emailAddress')" name="email" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('patient.demographics.emailAddress').toLowerCase(), type: 'email' }]">
-                                        <a-input @change="changedValue" v-model:value="responsiblePersonForm.emergencyEmail" placeholder="test@test.com" size="large" :disabled="disableEmergencyContact" />
+                                        <a-input @change="changedValue" v-model:value="responsiblePersonForm.email" placeholder="test@test.com" size="large" :disabled="disableEmergencyContact" />
 
                                     </a-form-item>
                                 </div>
