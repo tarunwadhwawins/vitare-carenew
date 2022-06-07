@@ -1,9 +1,10 @@
 <template>
+
   <Card v-for="item in totalPatients" :key="item.count" :count="item.total" :text='item.text' link="PatientsWithFilter" :xl="grid.xlGrid" :color="item.color" :sm="grid.smGrid" :textColor="item.textColor"></Card>
 </template>
 
 <script>
-import { watchEffect } from 'vue-demi'
+import { onMounted } from 'vue-demi'
 import { useStore } from 'vuex'
 import Card from "@/components/common/cards/Card"
 import {
@@ -27,15 +28,17 @@ export default {
       fromDate: from ? timeStamp(startimeAdd(from)) : '',
       toDate: to ? timeStamp(endTimeAdd(to)) : ''
     }
-    watchEffect(() => {
+    onMounted(() => {
       if(props.isPatient) {
         store.dispatch("patientFlags", dateFormat)
+        store.commit("dateFilter", dateFormat)
       }
-      else {
-        store.dispatch("counterCard", dateFormat)
-      }
+      // else {
+      //   console.log("check",dateFormat)
+      //   store.dispatch("counterCard", dateFormat)
+      // }
     })
-    const totalPatients = props.isPatient && props.isPatient == true ? store.getters.patientFlags.value : store.getters.totalPatientcount.value
+    const totalPatients = props.isPatient && props.isPatient == true ? store.getters.patientFlags.value : store.getters.totalPatientcount
     const grid = props.isPatient && props.isPatient == true ? store.getters.grids : store.getters.grid
     
     return {
