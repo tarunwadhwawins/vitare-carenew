@@ -92,6 +92,7 @@ const  filter = ref();
 let date = "";
 
 function checkDate() {
+    console.log("check",route.query.filter)
     filter.value = route.query.filter ? route.query.filter : "";
     date =
         route.query.fromDate && route.query.toDate ?
@@ -103,10 +104,11 @@ function checkDate() {
 }
 let scroller = "";
 onMounted(() => {
-    checkDate();
+    
 
     var tableContent = document.querySelector(".ant-table-body");
     tableContent.addEventListener("scroll", (event) => {
+        checkDate();
         let maxScroll = event.target.scrollHeight - event.target.clientHeight;
         let currentScroll = event.target.scrollTop + 2;
         if (currentScroll >= maxScroll) {
