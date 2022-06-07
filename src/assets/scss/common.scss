@@ -491,3 +491,31 @@ span.address-text {
 		}
 	}	
 }
+.titleWrapper{
+	display: flex;
+    justify-content: space-between;
+    width: 100%;
+	.commonBtn{
+		display: flex;
+		flex-direction: row;
+		position: relative;
+		right: auto;
+    	top: auto;
+		align-items: center;
+		grid-gap: 20px;
+		button{
+			display: flex;
+			align-items: center;
+		}
+		.filter {
+			position: relative;
+			right: auto;
+			top: auto;
+			display: flex;
+			align-items: center;
+			button{
+				margin: 0;
+			}
+		}
+	}
+}

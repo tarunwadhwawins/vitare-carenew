@@ -39,7 +39,46 @@ export function deCodeString(value) {
 	let decode = window.atob(value);
 	return decode.replace('=', '');
 }
+//Common convert day week month date
+export const dayWeekMonthdate= (data)=>{
+	let from = moment()
+	let to = moment()
+	if (data.globalCodeId == 122) {
 
+		from = moment()
+		to = moment().subtract(data.number, data.intervalType);
+	} else if (data.globalCodeId == 123) {
+		from = moment();
+
+		to = moment().subtract(data.number, data.intervalType);
+	} else if (data.globalCodeId == 124) {
+		from = moment();
+		to = moment().subtract(data.number, data.intervalType);
+	} else {
+		from = moment();
+		to = moment().subtract(data.number, data.intervalType);
+	}
+	let dateFormate = {
+		fromDate: '',
+		toDate: ''
+	}
+
+	if (data.globalCodeId == 122) {
+		dateFormate = {
+			fromDate: from ? timeStamp(startimeAdd(from)) : '',
+			toDate: to ? timeStamp(endTimeAdd(to)) : ''
+		}
+
+	} else {
+		dateFormate = {
+			fromDate: timeStamp(startimeAdd(to)),
+			toDate: timeStamp(endTimeAdd(from))
+		}
+
+	}
+	return {fromDate:dateFormate.fromDate,toDate:dateFormate.toDate}
+
+}
 // encode a string
 export function enCodeString(value) {
 	return window.btoa(value);
