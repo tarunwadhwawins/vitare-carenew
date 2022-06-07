@@ -465,6 +465,7 @@ export const uploadFile = (state, data) => {
 
 export const patientDetails = (state, patient) => {
   patient.email = patient.user.data ? patient.user.data.email : null;
+  patient.phoneNumber = patient.user.data.phoneNumber ? patient.user.data.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$2-$2-$3") : null;
   patient.country = patient.countryId ? patient.countryId : null;
   patient.state = patient.stateId ? patient.stateId : null;
   patient.language = patient.languageId ? patient.languageId : null;
@@ -475,15 +476,18 @@ export const patientDetails = (state, patient) => {
   patient.patientDob = patient.dob ? dobFormat(patient.dob) : null;
 
   state.patientDetails = patient
+  state.patientDetails['phoneNumber'] = patient.user.data.patient.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$2-$2-$3")
+  state.patientDetails['phoneNumber'] = patient.emergencyContact.data.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$2-$2-$3")
 }
 
 export const responsiblePerson = (state, data) => {
-
+console.log('==>',data[0].phoneNumber)
   data.gender = data.genderId;
   data.relation = data.relationId;
   data.self = data.self ? true : false;
 
   state.responsiblePerson = data
+  state.responsiblePerson[0]['phoneNumber'] = data[0].phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$2-$2-$3")
 }
 
 export const emergencyContact = (state, data) => {
@@ -1037,7 +1041,7 @@ export const familyMembersList = (state, responsiblePersons) => {
 export const familyMemberDetails = (state, responsiblePerson) => {
   if(responsiblePerson) {
     responsiblePerson.familyEmail = responsiblePerson.email
-    responsiblePerson.familyPhoneNumber = responsiblePerson.phoneNumber
+    responsiblePerson.familyPhoneNumber = responsiblePerson.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$2-$2-$3")
     responsiblePerson.familyContactType = responsiblePerson.contactType ? JSON.parse(responsiblePerson.contactType) : []
     responsiblePerson.familyContactTime = responsiblePerson.contactTimeId ? JSON.parse(responsiblePerson.contactTimeId) : []
     responsiblePerson.familyGender = responsiblePerson.genderId

@@ -113,6 +113,7 @@ export default defineComponent({
             store.getters.auditTimeLogFilterDates.value
           );
           emit("saveAuditTimeLog");
+          disableButton.value = true;
         });
     };
 

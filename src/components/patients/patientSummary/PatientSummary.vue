@@ -1,8 +1,6 @@
 <template>
   <div>
-    
     <a-layout >
-      
       <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
         <Header />
       </a-layout-header>
@@ -10,15 +8,9 @@
         <Sidebar />
         <TableLoader v-if="loader"/>
         <a-layout-content v-else >
-         
           <a-row>
             <a-col :xl="4" :lg="12">
-             
-                
                   <h2 class="pageTittle">{{$t('patientSummary.patientSummary')}}</h2>
-                
-               
-             
             </a-col>
              <a-col :xl="3" :lg="12">
                   <a-button class="blueBtn" @click="startCall" :loading="iconLoading">Start Call</a-button>
