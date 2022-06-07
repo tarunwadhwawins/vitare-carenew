@@ -184,6 +184,7 @@ export const addPatientProgram = (state, data) => {
 
 
 export const programPatients = (state, data) => {
+  state.programsPatient = []
   state.program = data.map(element => {
 
     const program = (element.program).split(" - ")[0]
