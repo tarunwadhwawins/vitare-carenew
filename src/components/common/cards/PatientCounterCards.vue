@@ -7,12 +7,12 @@
 import { onMounted } from 'vue-demi'
 import { useStore } from 'vuex'
 import Card from "@/components/common/cards/Card"
-import {
-  startimeAdd,
-  endTimeAdd,
-  timeStamp,
-} from '@/commonMethods/commonMethod'
-import moment from "moment"
+// import {
+//   startimeAdd,
+//   endTimeAdd,
+//   timeStamp,
+// } from '@/commonMethods/commonMethod'
+// import moment from "moment"
 export default {
   props: {
     isPatient:Boolean
@@ -22,23 +22,23 @@ export default {
   },
   setup(props) {
     const store = useStore()
-    let from = moment()
-    let to = moment()
-    let dateFormat = {
-      fromDate: from ? timeStamp(startimeAdd(from)) : '',
-      toDate: to ? timeStamp(endTimeAdd(to)) : ''
-    }
+    // let from = moment()
+    // let to = moment()
+    // let dateFormat = {
+    //   fromDate: from ? timeStamp(startimeAdd(from)) : '',
+    //   toDate: to ? timeStamp(endTimeAdd(to)) : ''
+    // }
     onMounted(() => {
-      if(props.isPatient) {
-        store.dispatch("patientFlags", dateFormat)
-        store.commit("dateFilter", dateFormat)
-      }
+      // if(props.isPatient) {
+      //   store.dispatch("patientFlags", dateFormat)
+      //   store.commit("dateFilter", dateFormat)
+      // }
       // else {
       //   console.log("check",dateFormat)
       //   store.dispatch("counterCard", dateFormat)
       // }
     })
-    const totalPatients = props.isPatient && props.isPatient == true ? store.getters.patientFlags.value : store.getters.totalPatientcount
+    const totalPatients = props.isPatient && props.isPatient == true ? store.getters.patientFlags : store.getters.totalPatientcount
     const grid = props.isPatient && props.isPatient == true ? store.getters.grids : store.getters.grid
     
     return {
