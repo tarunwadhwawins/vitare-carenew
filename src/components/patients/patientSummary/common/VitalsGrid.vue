@@ -6,7 +6,7 @@
           <VitalsTable :columns="tableColumns" :data="tableData" :className="className" />
         </a-tab-pane>
         <a-tab-pane key="4" tab="Graph">
-          <ApexChart type="area" height="210" :options="chartOptions" :series="chartSeries" />
+          <ApexChart type="area" height="350" :options="chartOptions" :series="chartSeries" />
         </a-tab-pane>
       </a-tabs>
       <template #extra>
