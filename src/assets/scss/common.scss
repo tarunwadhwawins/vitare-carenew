@@ -472,6 +472,11 @@ span.address-text {
 	}
 }
 
+.ant-modal-content {
+	.ant-modal-body {
+		min-height: 260px;
+	}
+}
 .globalDropList{
 	position: relative;
 	.ant-select-arrow{
@@ -480,6 +485,7 @@ span.address-text {
 				// top: 0 !important;
 				.ant-select-dropdown{
 					top: 40px !important;
+					max-height: 160px;
 				}
 			}
 		}
