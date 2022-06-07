@@ -6,7 +6,7 @@
 </a-row>
 <a-row>
     <a-col :span="24">
-        <a-row :gutter="24" v-if="arrayToObjact(screensPermissions, 65) && grid">
+        <a-row class="patientBox" :gutter="24" v-if="arrayToObjact(screensPermissions, 65) && grid">
             <PatientCounterCards :isPatient="true" />
         </a-row>
     </a-col>

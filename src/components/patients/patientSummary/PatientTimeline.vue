@@ -104,29 +104,9 @@ export default {
     });
 
     onMounted(() => {
-      if(route.name == 'PatientSummary' && !route.query.filter) {
-       store.dispatch('timeLineType')
-        store.dispatch('patientTimeline', {
-          id: route.params.udid,
-          type: ''
-        });
-      }
-      else if(route.name == 'videoCall' && !route.query.filter) {
-        store.dispatch('timeLineType')
-        store.dispatch('patientTimeline', {
-          id: pId.value,
-          type: ''
-        });
-      }
-      
-       
-    })
-    const check = ref(true)
-      const patientTimeline = computed(() => {
-      return store.state.patients.patientTimeline;
-    })
-    watchEffect(()=>{
-if(route.query.filter && patientTimeline.value && check.value){
+      if(route.name == 'PatientSummary') {
+       store.dispatch('timeLineType').then(()=>{
+if(route.query.filter){
 
 tabvalue.tab= [4,7]
    store.dispatch('patientTimeline', {
@@ -136,8 +116,32 @@ tabvalue.tab= [4,7]
         visibleRemoveAll.value = tabvalue.tab.length > 0 ? true : false
         store.commit('loadingTableStatus', false)
       })
-check.value = false
-  }
+}else{
+store.dispatch('patientTimeline', {
+          id: route.params.udid,
+          type: ''
+        });
+}
+       })
+        
+      }
+      else if(route.name == 'videoCall') {
+        store.dispatch('timeLineType')
+        store.dispatch('patientTimeline', {
+          id: pId.value,
+          type: ''
+        });
+      }
+      
+       
+    })
+    //const check = ref(true)
+      const patientTimeline = computed(() => {
+      return store.state.patients.patientTimeline;
+    })
+    watchEffect(()=>{
+
+
     })
   
     

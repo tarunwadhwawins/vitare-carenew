@@ -2,7 +2,7 @@
   <a-table  rowKey="id" :columns="documentColumns" :data-source="documentsData" :pagination="false" :scroll="{ x: 900 }">
     <template #tags="text">
       <span v-for="tag,i in text.text.data" :key="tag.id">
-        <p>{{i==0?' ':','}}{{ tag.tag }}</p>
+        <p>{{i==0?' ':', '}}{{ tag.tag }}</p>
       </span>
     </template>
     <template #document="{record}">

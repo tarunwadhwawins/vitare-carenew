@@ -53,8 +53,7 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                                    <!-- <PhoneNumber  @change="checkChangeInput()" v-model:value="personalInfoData.phoneNumber" @setPhoneNumber="setPhoneNumber"/> -->
-                                    <a-input-number @change="checkChangeInput()"  v-model:value.trim="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
+                                    <a-input v-maska="'###-###-####'" @change="checkChangeInput()"  v-model:value="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" size="large"  style="width: 100%" />
                                     <ErrorMessage v-if="errorMsg && !personalInfoData.phoneNumber" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
                             </div>
@@ -78,7 +77,7 @@
                         </a-col>
                     </a-row>
 
-                    <div class="steps-action">
+                    <div class="steps-action personalInformation">
                         <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
                         <a-button v-if="current < steps.length - 1" type="primary" html-type="submit">{{$t('global.next')}}</a-button>
                     </div>
@@ -208,7 +207,9 @@ export default {
 
         const personalInfo = () => {
             // setTimeout(() => {
+            personalInfoData.phoneNumber = personalInfoData.phoneNumber.replace(/-/g,'')
             if (addStaff.value == null) {
+                // console.log("addStaff1", personalInfoData)
                 store.dispatch("addStaff", personalInfoData);
             }
             if (addStaff.value != null) {
@@ -392,5 +393,8 @@ export default {
 
 .steps-action {
     text-align: right;
+}
+.personalInformation {
+    margin: 10px 0 0;
 }
 </style>

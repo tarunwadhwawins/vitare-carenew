@@ -32,11 +32,11 @@ export const patient = (state, data) => {
       slots: {
         customRender: "flags",
       },
-      width: '6%',
+      width: '8%',
       
     },
     {
-      title: "Timestamp",
+      title: "Flag Assigned Date",
       dataIndex: "flagTmeStamp",
       slots: {
         customRender: "flagTmeStamp",
@@ -65,21 +65,21 @@ export const patient = (state, data) => {
           title: "BP(mmHg)",
           dataIndex: "bp",
           key: "bp",
-          width: '10%',
+          width: '12%',
           align: 'right'
         },
         {
           title: "Spo2(%)",
           dataIndex: "spo2",
           key: "spo2",
-          width: '8%',
+          width: '10%',
           align: 'right'
         },
         {
           title: "Glucose(mg / dL)",
           dataIndex: "glucose",
           key: "glucose",
-          width: '15%',
+          width: '18%',
           align: 'right'
         },
         {
@@ -87,7 +87,7 @@ export const patient = (state, data) => {
           dataIndex: "weight",
           key: "weight",
           sorter:true,
-          width: '12%',
+          width: '15%',
           align: 'right'
         },
       ],
@@ -99,26 +99,26 @@ export const patient = (state, data) => {
       slots: {
         customRender: "compliance",
       },
-      width: '10%',
+      width: '12%',
     },
     {
       title: "Last Message Sent",
       dataIndex: "lastMessageSent",
       ellipsis: true,
       onFilter: (value, record) => record.name.indexOf(value) === 0,
-      width: '10%',
+      width: '12%',
     },
     {
       title: "Age ",
       dataIndex: "age",
       sorter: true,
-      width: '8%',
+      width: '10%',
       align: 'right'
     },
     {
       title: "Gender ",
       dataIndex: "genderName",
-      width: '8%',
+      width: '10%',
     },
     {
       title: 'Status',
@@ -126,7 +126,7 @@ export const patient = (state, data) => {
       slots: {
         customRender: 'status'
       },
-      width: '8%',
+      width: '10%',
     },
     {
       title:"Action ",
@@ -134,7 +134,7 @@ export const patient = (state, data) => {
       slots: {
         customRender: "action",
       },
-      width: '8%',
+      width: '10%',
     }
   ];
   state.patientMeta = data.meta.pagination;
@@ -185,6 +185,12 @@ export const addPatientProgram = (state, data) => {
 
 export const programPatients = (state, data) => {
   state.program = data.map(element => {
+
+    const program = (element.program).split(" - ")[0]
+    if (!state.programsPatient.includes(program)) {
+      state.programsPatient.push(program);
+    }
+    
     element.status = element.status == 1 ? 'Active' : 'Inactive'
     element.onboardingScheduleDate = dateOnlyFormat(element.onboardingScheduleDate),
       element.dischargeDate = dateOnlyFormat(element.dischargeDate)
@@ -223,7 +229,6 @@ export const programPatients = (state, data) => {
       },
     },
   ];
-
 }
 
 
@@ -527,6 +532,8 @@ export const patientConditions = (state, conditions) => {
     condition = condition.conditionId
     return condition;
   })
+  state.conditionsList = conditions
+  state.latestCondition = conditions[0]
 }
 
 export const patientReferralSource = (state, referralSource) => {

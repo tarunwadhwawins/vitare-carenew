@@ -29,7 +29,7 @@
         <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-              <a-input-number v-model:value.trim="editContactForm.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%"/>
+              <a-input v-maska="'###-###-####'" v-model:value="editContactForm.phoneNumber" placeholder="Please enter 10 digit number" size="large"  style="width: 100%"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber ? errorMsg.phoneNumber[0] : ''" />
             </a-form-item>
           </div>
@@ -48,6 +48,9 @@ import { computed, watchEffect, reactive, ref } from 'vue-demi'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import Loader from "@/components/loader/Loader";
+import {
+    regex
+} from "@/RegularExpressions/regex";
 
 export default {
   props: {
@@ -89,10 +92,16 @@ export default {
     const form = reactive({ ...editContactForm })
     const submitForm = () => {
       isEdit = false
+      let phone = editContactForm.phoneNumber
       store.dispatch('updateContact', {
         id: staffs.value?staffs.value.id:route.params.udid,
         contactId: contactDetails.value.id,
-        data: editContactForm,
+        data: {
+          firstName: editContactForm.firstName,
+          lastName: editContactForm.lastName,
+          email: editContactForm.email,
+          phoneNumber: phone.replace(/-/g,''),
+        },
       }).then(() => {
         emit('closeModal')
         formRest.value.resetFields();
@@ -102,6 +111,7 @@ export default {
     }
 
     return {
+      regex,
       staffs,
       formRest,
       editContactForm,

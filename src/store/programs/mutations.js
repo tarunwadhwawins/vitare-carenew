@@ -18,13 +18,13 @@ export const program = async (state, data) => {
         customRender: "isActive",
       },
     },
-    {
-      title: "Actions",
-      dataIndex: "actions",
-      slots: {
-        customRender: "actions",
-      },
-    },
+    // {
+    //   title: "Actions",
+    //   dataIndex: "actions",
+    //   slots: {
+    //     customRender: "actions",
+    //   },
+    // },
   ]
   state.manageProgramList = data.data.map((item, index) => {
     item.isActive = item.isActive == 1 ? true : false

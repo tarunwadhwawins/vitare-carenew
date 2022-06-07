@@ -47,10 +47,7 @@
         <a-col :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                    <!-- <vue-tel-input  v-model.trim:value="personalInfoData.phoneNumber" v-bind="bindProps" @change="checkChangeInput()"/> -->
-                    <!-- <PhoneNumber @change="checkChangeInput()"  v-model.trim:value="personalInfoData.phoneNumber" @setPhoneNumber="setPhoneNumber"/> -->
-                      <a-input-number @change="checkChangeInput()" v-model:value.trim="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" size="large" style="width: 100%"   maxlength="10" />
-
+                      <a-input v-maska="'###-###-####'" @change="checkChangeInput()" v-model:value="personalInfoData.phoneNumber" placeholder="Please enter 10 digit number" size="large" style="width: 100%"   />
                     <ErrorMessage v-if="errorMsg && !personalInfoData.phoneNumber" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                 </a-form-item>
             </div>
@@ -126,10 +123,25 @@ export default {
       Object.assign(personalInfoData,getstaffSummary.value)
     })
 
+     const form = reactive({
+      ...personalInfoData,
+    });
+
     const personalInfo = () => {
+      let phone = personalInfoData.phoneNumber
       store.dispatch("updateStaff", {
       id:route.params.udid,
-      data:personalInfoData
+      data:{
+        firstName: personalInfoData.firstName,
+        lastName: personalInfoData.lastName,
+        designationId: personalInfoData.designationId,
+        genderId: personalInfoData.genderId,
+        email: personalInfoData.email,
+        phoneNumber: phone.replace(/-/g,''),
+        specializationId: personalInfoData.specializationId,
+        networkId: personalInfoData.networkId,
+        roleId: personalInfoData.roleId,
+      }
       });
       setTimeout(()=>{
         if(careCoordinators.value.closeModal==true){
@@ -137,7 +149,7 @@ export default {
           emit("saveModal", false)
           store.commit("resetCounter")
           store.commit('checkChangeInput',false)
-
+          Object.assign(personalInfoData, form);
       }
       },2000)
       
@@ -165,9 +177,7 @@ export default {
         errorMsg.value.email?errorMsg.value.email[0]=null:''
     }
 
-    const form = reactive({
-      ...personalInfoData,
-    });
+   
 
     function checkChangeInput(){
       store.commit('checkChangeInput',true)

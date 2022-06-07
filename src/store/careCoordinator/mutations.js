@@ -95,7 +95,10 @@ export const addContacts = (state, data) => {
 };
 
 export const staffContactList = (state, data) => {
-	state.staffContactList = data;
+	state.staffContactList = data.map(item => {
+		item.phoneNumber = item.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$2-$2-$3")
+		return item
+	});
 	state.staffContactColms = [
 		{
 			title: 'First Name',
@@ -259,6 +262,7 @@ export const availabilityDetails = (state, data) => {
 
 export const contactDetails = (state, data) => {
 	state.contactDetails = data;
+	state.contactDetails['phoneNumber'] = data.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$2-$2-$3")
 };
 
 

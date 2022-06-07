@@ -372,8 +372,76 @@
                                 </a-checkbox>
                             </a-col>
                         </a-row>
+ <a-row :gutter="24" v-if="emergencyContactForm.sameAsPrimary && responsiblePersonForm.self">
+                        
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: false, message: $t('global.firstName')+' '+$t('global.validation') }]">
+                                    <a-input @change="changedValue" v-model:value="demographics.firstName" size="large" :disabled="disableResponsiblePerson" />
 
-                        <a-row :gutter="24" v-if="emergencyContactForm.sameAsPrimary">
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.middleName')" name="middleName" :rules="[{ required: false, message: $t('global.middleName')+' '+$t('global.validation') }]">
+                                    <a-input @change="changedValue" v-model:value="demographics.middleName" size="large" :disabled="disableResponsiblePerson" />
+
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.lastName')" name="lastName" :rules="[{ required: false, message: $t('global.lastName')+' '+$t('global.validation') }]">
+                                    <a-input @change="changedValue" v-model:value="demographics.lastName" size="large" :disabled="disableResponsiblePerson" />
+
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('patient.demographics.emailAddress')" name="email" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('patient.demographics.emailAddress').toLowerCase(), type: 'email' }]">
+                                    <a-input @change="changedValue" v-model:value="demographics.email" placeholder="test@test.com" size="large" :disabled="disableResponsiblePerson" />
+
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
+                                    <a-input-number @change="changedValue" v-model:value.trim="demographics.phoneNumber" placeholder="Please enter 10 digit number" size="large" :disabled="disableResponsiblePerson" maxlength="10" style="width: 100%" />
+
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="contactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.contactType" mode="multiple" :globalCode="globalCode.pmOfcontact" :disabled="disableResponsiblePerson" />
+
+                                </a-form-item>
+                            </div>
+                        </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="contactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.contactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact" :disabled="disableResponsiblePerson" />
+
+                                </a-form-item>
+                            </div>
+                        </a-col>
+
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.gender')" name="gender" :rules="[{ required: false, message: $t('global.gender')+' '+$t('global.validation') }]">
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.gender" :globalCode="globalCode.gender" :disabled="disableResponsiblePerson" />
+
+                                </a-form-item>
+                            </div>
+                        </a-col>
+
+                    </a-row>
+                        <a-row :gutter="24" v-else-if="emergencyContactForm.sameAsPrimary">
                             <!-- <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.demographics.fullName')" name="fullName" :rules="[{ required: false, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
@@ -385,7 +453,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: false, message: $t('global.firstName')+' '+$t('global.validation') }]">
-                                        <a-input @change="changedValue" v-model:value="demographics.firstName" size="large" :disabled="disableEmergencyContact" />
+                                        <a-input @change="changedValue" v-model:value="responsiblePersonForm.firstName" size="large" :disabled="disableEmergencyContact" />
 
                                     </a-form-item>
                                 </div>
@@ -393,7 +461,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('global.middleName')" name="middleName" :rules="[{ required: false, message: $t('global.middleName')+' '+$t('global.validation') }]">
-                                        <a-input @change="changedValue" v-model:value="demographics.middleName" size="large" :disabled="disableEmergencyContact" />
+                                        <a-input @change="changedValue" v-model:value="responsiblePersonForm.middleName" size="large" :disabled="disableEmergencyContact" />
 
                                     </a-form-item>
                                 </div>
@@ -401,7 +469,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('global.lastName')" name="lastName" :rules="[{ required: false, message: $t('global.lastName')+' '+$t('global.validation') }]">
-                                        <a-input @change="changedValue" v-model:value="demographics.lastName" size="large" :disabled="disableEmergencyContact" />
+                                        <a-input @change="changedValue" v-model:value="responsiblePersonForm.lastName" size="large" :disabled="disableEmergencyContact" />
 
                                     </a-form-item>
                                 </div>
@@ -409,7 +477,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('patient.demographics.emailAddress')" name="email" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('patient.demographics.emailAddress').toLowerCase(), type: 'email' }]">
-                                        <a-input @change="changedValue" v-model:value="demographics.emergencyEmail" placeholder="test@test.com" size="large" :disabled="disableEmergencyContact" />
+                                        <a-input @change="changedValue" v-model:value="responsiblePersonForm.emergencyEmail" placeholder="test@test.com" size="large" :disabled="disableEmergencyContact" />
 
                                     </a-form-item>
                                 </div>
@@ -417,7 +485,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: false, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber }]">
-                                        <a-input-number @change="changedValue" size="large" v-model:value="demographics.phoneNumber" style="width: 100%" :disabled="disableEmergencyContact" />
+                                        <a-input-number @change="changedValue" size="large" v-model:value="responsiblePersonForm.phoneNumber" style="width: 100%" :disabled="disableEmergencyContact" />
 
                                     </a-form-item>
                                 </div>
@@ -425,7 +493,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="contactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
-                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.contactType" mode="multiple" :globalCode="globalCode.pmOfcontact" :disabled="disableEmergencyContact" />
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.contactType" mode="multiple" :globalCode="globalCode.pmOfcontact" :disabled="disableEmergencyContact" />
 
                                     </a-form-item>
                                 </div>
@@ -433,7 +501,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="contactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
-                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.contactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact" :disabled="disableEmergencyContact" />
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.contactTime" mode="multiple" :globalCode="globalCode.ptOfDayContact" :disabled="disableEmergencyContact" />
 
                                     </a-form-item>
                                 </div>
@@ -442,7 +510,7 @@
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('global.gender')" name="gender" :rules="[{ required: false, message: $t('global.gender')+' '+$t('global.validation') }]">
-                                        <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.gender" :globalCode="globalCode.gender" :disabled="disableEmergencyContact" />
+                                        <GlobalCodeDropDown @change="changedValue" v-model:value="responsiblePersonForm.gender" :globalCode="globalCode.gender" :disabled="disableEmergencyContact" />
 
                                     </a-form-item>
                                 </div>
@@ -1239,7 +1307,7 @@ export default defineComponent({
         //Object.assign(emergencyContactForm, emergencyContact.value)
       }
       if (responsiblePerson.value) {
-        Object.assign(responsiblePersonForm, responsiblePerson.value);
+        Object.assign(responsiblePersonForm, responsiblePerson.value[0]);
       }
       if (patients.value.addDemographic || patients.value.patientDetails) {
         Object.assign(
@@ -1279,7 +1347,15 @@ export default defineComponent({
         emergencyContactForm.sameAsPrimary == true &&
         !emergencyContact.value
       ) {
-        Object.assign(emergencyContactForm, demographics);
+         if(responsiblePersonForm.self){
+           Object.assign(emergencyContactForm, demographics);
+        emergencyContactForm.emergencyEmail = demographics.email;
+        emergencyContactForm.sameAsPrimary = true;
+        }else{
+Object.assign(emergencyContactForm, responsiblePersonForm);
+        emergencyContactForm.emergencyEmail = responsiblePersonForm.email;
+        emergencyContactForm.sameAsPrimary = true;
+        }
       }
       if (
         (referal.firstName ||
@@ -1403,6 +1479,7 @@ export default defineComponent({
         })
         .then(() => {
           isValueChanged.value = false;
+          store.dispatch("patientConditions", patientId)
         });
       store.dispatch("checkForErrors");
       const checkForErrors = computed(() => {
@@ -1641,6 +1718,7 @@ unSelectedDiseasesList.value.push(healthCondition)
           }
         });
       } else {
+        common()
         store.commit("resetCounter");
         formRef.value.resetFields();
       }
@@ -1708,10 +1786,16 @@ unSelectedDiseasesList.value.push(healthCondition)
 
       if (e.target.checked) {
         store.commit("isEditPatient", true);
-
-        Object.assign(emergencyContactForm, demographics);
-        emergencyContactForm.emergencyEmail = demographics.email;
-        emergencyContactForm.sameAsPrimary = true;
+//         if(responsiblePersonForm.self){
+//            Object.assign(emergencyContactForm, demographics);
+//         emergencyContactForm.emergencyEmail = demographics.email;
+//         emergencyContactForm.sameAsPrimary = true;
+//         }else{
+// Object.assign(emergencyContactForm, responsiblePersonForm);
+//         emergencyContactForm.emergencyEmail = responsiblePersonForm.email;
+//         emergencyContactForm.sameAsPrimary = true;
+//         }
+        
       } else {
         Object.assign(emergencyContactForm, emergencyForm);
         emergencyContactForm.sameAsPrimary = false;

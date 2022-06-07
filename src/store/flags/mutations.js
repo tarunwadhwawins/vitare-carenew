@@ -9,6 +9,6 @@ export const patientFlagsList = (state, flags) => {
   state.patientFlagsList = flags
 }
 
-export const patientFlags = (state, flags) => {
-  state.patientFlags = flags
+export const flagsForPatients = (state, flags) => {
+  state.flagsForPatients = flags
 }

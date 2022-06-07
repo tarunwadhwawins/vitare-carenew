@@ -92,8 +92,11 @@ export default {
     startOn:true,
     criticalNoteDetails:null,
     editPatientReferral:[],
+    programsPatient:[],
 
     grids:null,
     patientFlags:null,
+    conditionsList:null,
+    latestCondition:null,
 
 }
