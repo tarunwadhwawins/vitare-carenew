@@ -5,8 +5,9 @@
         <h2 class="pageTittle titleWrapper">
             {{$t('patient.patients')}}
          <div class="commonBtn"> 
+              <DateFilter :Buttons="Buttons" @clickButtons="showButton($event)" :custom="false" commit="timelineSuccess" style="visibility: hidden" />
             <a-button class="btn primaryBtn" @click="showModal" :isEdit="isEdit" v-if="arrayToObjact(screensPermissions,62)">{{$t('patient.addNewPatients')}}</a-button>
-            <DateFilter :Buttons="Buttons" @clickButtons="showButton($event)" :custom="false" commit="timelineSuccess" />
+           
         </div>
         </h2>
     </a-col>
@@ -121,7 +122,7 @@ export default {
                 if (timeLineButton.value == null) {
 
                     store.dispatch("timeLine", {
-                        id: 122,
+                        id: 125,
                         commit: 'timelineSuccess'
                     }).then(() => {
                         apiCall(timeLineButton.value)
