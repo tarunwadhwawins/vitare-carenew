@@ -482,7 +482,6 @@ export const patientDetails = (state, patient) => {
 }
 
 export const responsiblePerson = (state, data) => {
-console.log('==>',data[0].phoneNumber)
   data.gender = data.genderId;
   data.relation = data.relationId;
   data.self = data.self ? true : false;
