@@ -262,6 +262,7 @@ export const availabilityDetails = (state, data) => {
 
 export const contactDetails = (state, data) => {
 	state.contactDetails = data;
+	state.contactDetails['phoneNumber'] = data.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$2-$2-$3")
 };
 
 

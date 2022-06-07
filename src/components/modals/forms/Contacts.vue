@@ -28,7 +28,7 @@
         <a-col :md="12" :sm="12" :xs="24">
             <div class="form-group">
                 <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                      <a-input-number v-maska="'###-###-####'" @change="checkChangeInput()" v-model:value.trim="contact.phoneNumber" placeholder="Please enter 10 digit number" size="large" style="width: 100%"/>
+                      <a-input v-maska="'###-###-####'" @change="checkChangeInput()" v-model:value="contact.phoneNumber" placeholder="Please enter 10 digit number" size="large" style="width: 100%"/>
                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                 </a-form-item>
             </div>
@@ -83,9 +83,7 @@ export default defineComponent({
       phoneNumber: "",
     });
     const formButton = ref(false);
-    const setPhoneNumber = (value) => {
-      contact.phoneNumber = value;
-    };
+   
    
     function addContacts() {
       formButton.value = true;
@@ -147,7 +145,6 @@ export default defineComponent({
     }
     return {
       editFormOpen,
-      setPhoneNumber,
       formRest,
       checkChangeInput,
       reset,
