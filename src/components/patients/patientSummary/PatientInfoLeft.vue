@@ -110,6 +110,14 @@
         </div>
       </div>
       <div class="pat-profile-inner">
+        <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 297)">
+          Conditions
+        </div>
+        <div v-if="latestCondition != null && arrayToObjact(screensPermissions, 317)" class="thumb-desc">
+          <a href="javascript:void(0)" @click="showConditionsModal();actionTrack(paramsId,317,'patient')" >{{latestCondition.condition}}</a>
+        </div>
+      </div>
+      <div class="pat-profile-inner">
         <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 298)">
           Health Team <PlusOutlined @click="showAddPhysicianModal(0);actionTrack(paramsId,298,'patient')" />
         </div>
@@ -174,6 +182,7 @@
     <PatientVitalsDetailsModal v-model:visible="patientVitalsVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
     <NotesDetailModal v-model:visible="notesDetailVisible" @closeModal="handleOk" />
     <DocumentDetailModal v-model:visible="documentDetailVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
+    <ConditionsModal v-if="conditionsVisible" v-model:visible="conditionsVisible" @closeModal="handleOk" />
     <TimeLogsDetailModal v-model:visible="timeLogsDetailVisible" @editTimeLog="editTimeLog($event)" />
     <DeviceDetailModal v-model:visible="deviceDetailVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
 
@@ -216,6 +225,7 @@ export default defineComponent({
     NotesDetailModal: defineAsyncComponent(()=>import("@/components/modals/NotesDetail")),
     Documents: defineAsyncComponent(()=>import("@/components/modals/forms/Documents")),
     DocumentDetailModal: defineAsyncComponent(()=>import("@/components/modals/DocumentDetail")),
+    ConditionsModal: defineAsyncComponent(()=>import("@/components/modals/ConditionsModal")),
     AddCoordinatorsModal: defineAsyncComponent(()=>import("@/components/modals/AddCoordinatorsModal")),
     AddTimeLogsModal: defineAsyncComponent(()=>import("@/components/modals/AddTimeLogs")),
     TimeLogsDetailModal: defineAsyncComponent(()=>import("@/components/modals/TimeLogsDetail")),
@@ -256,6 +266,7 @@ export default defineComponent({
     const notesDetailVisible = ref(false);
     const addDocumentVisible = ref(false);
     const documentDetailVisible = ref(false);
+    const conditionsVisible = ref(false);
     const careCoordinatorsVisible = ref(false);
     const addTimeLogsVisible = ref(false);
     const timeLogsDetailVisible = ref(false);
@@ -270,12 +281,15 @@ export default defineComponent({
     const isAutomatic = ref(false);
     const staffType = ref(0);
     const title = ref(null);
-   const referralView = ref(false)
- function referral(){
-   referralView.value=true
- }
+    const referralView = ref(false)
+
+    function referral(){
+      referralView.value=true
+    }
+    
     watchEffect(() => {
       if(route.name == 'PatientSummary') {
+          store.dispatch("patientConditions", route.params.udid)
         store.dispatch('responsiblePerson', route.params.udid)
         store.dispatch('emergencyContact', route.params.udid)
         store.dispatch('familyMembersList', route.params.udid)
@@ -342,6 +356,9 @@ export default defineComponent({
     })
     const latestDocument = computed(() => {
       return store.state.patients.latestDocument
+    })
+    const latestCondition = computed(() => {
+      return store.state.patients.latestCondition
     })
     const latestCareTeam = computed(() => {
       return store.state.careTeam.latestCareTeam
@@ -523,6 +540,10 @@ export default defineComponent({
       documentDetailVisible.value = true;
     }
 
+    const showConditionsModal = () => {
+      conditionsVisible.value = true;
+    }
+
     // const addCareTeamModal = () => {
     //   careCoordinatorsVisible.value = true;
     //   staffType = 0;
@@ -624,6 +645,7 @@ const checkFieldsData = computed(()=>{
       notesDetailVisible,
       addDocumentVisible,
       documentDetailVisible,
+      conditionsVisible,
       careCoordinatorsVisible,
       addTimeLogsVisible,
       timeLogsDetailVisible,
@@ -638,6 +660,7 @@ const checkFieldsData = computed(()=>{
       showNotesModal,
       addDocumentsModal,
       showDocumentsModal,
+      showConditionsModal,
       // addCareTeamModal,
       addTimelogModal,
       showTimelogModal,
@@ -660,6 +683,7 @@ const checkFieldsData = computed(()=>{
       latestVital,
       latestNotes,
       latestDocument,
+      latestCondition,
       latestCareTeam,
       latestPhysician,
       latestTimeLog,

@@ -1479,6 +1479,7 @@ Object.assign(emergencyContactForm, responsiblePersonForm);
         })
         .then(() => {
           isValueChanged.value = false;
+          store.dispatch("patientConditions", patientId)
         });
       store.dispatch("checkForErrors");
       const checkForErrors = computed(() => {
