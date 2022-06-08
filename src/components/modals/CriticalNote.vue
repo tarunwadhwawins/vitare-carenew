@@ -128,6 +128,7 @@ export default defineComponent({
     })
 
     function closeModal() {
+      emit("saveModal", true)
       if(checkFieldsData.value){
         warningSwal(messages.modalWarning).then((response) => {
           if (response == true) {
@@ -139,6 +140,9 @@ export default defineComponent({
             emit("closeModal");
           }
         });
+      }
+      else {
+        emit("saveModal", false)
       }
     }
     return {

@@ -5,17 +5,17 @@
             <a-col :sm="12" :xs="24">
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.from')" name="from" :rules="[{ required: true, message: $t('communications.communicationsModal.from')+' '+$t('global.validation')  }]">
-                        <StaffDropDown :disabled="arrayToObjact(screensPermissions,37) ? false : true" v-model:value="messageForm.from" @handleStaffChange="handleStaffChange($event)" :close="closeValue" @change="checkChangeInput()" />
+                        <StaffDropDown :disabled="arrayToObjact(screensPermissions,37) ? false : true" v-model:value="messageForm.from" @handleStaffChange="handleStaffChange($event);checkChangeInput()" :close="closeValue" />
                     </a-form-item>
                 </div>
             </a-col>
             <a-col :sm="12" :xs="24" @click="referenceId">
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.to')" name="to">
-                        <div class="btn toggleButton" :class="toggleTo ? 'active' : ''" @click="toggleTo = !toggleTo">
+                        <div class="btn toggleButton" :class="toggleTo ? 'active' : ''" @click="toggleTo = !toggleTo; checkChangeInput()">
                             <span class="btn-content">{{ $t('communications.communicationsModal.patient') }}</span>
                         </div>
-                        <div class="btn toggleButton" :class="toggleTo ? '' : 'active'" @click="toggleTo = !toggleTo">
+                        <div class="btn toggleButton" :class="toggleTo ? '' : 'active'" @click="toggleTo = !toggleTo; checkChangeInput()">
                             <span class="btn-content">{{ $t('global.careCoodinator') }}</span>
                         </div>
                         <a-input type="hidden" id="entityType" v-model="messageForm.entityType" :value="toggleTo ? 'patient' : 'staff'" />
@@ -26,14 +26,14 @@
                 <div class="form-group">
                     <a-form-item :label="$t('communications.communicationsModal.patient')" name="referenceId" :rules="[{ required: true, message: $t('communications.communicationsModal.patient')+' '+$t('global.validation')  }]">
 
-                        <PatientDropDown v-if="patientsList" v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event)" :close="closeValue" @change="checkChangeInput()" />
+                        <PatientDropDown v-if="patientsList" v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event);checkChangeInput()" :close="closeValue" />
                     </a-form-item>
                 </div>
             </a-col>
             <a-col :sm="12" :xs="24" v-show="!toggleTo">
                 <div class="form-group">
                     <a-form-item :label="$t('global.careCoodinator')" name="referenceId" :rules="[{ required: true, message: $t('global.careCoodinator')+' '+$t('global.validation')  }]">
-                        <StaffDropDown v-if="staffList" :checkSameAsStaff="true" v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event)" @change="checkChangeInput()" :close="closeValue"/>
+                        <StaffDropDown v-if="staffList" :checkSameAsStaff="true" v-model:value="messageForm.referenceId" @handlePatientChange="handlePatientChange($event);checkChangeInput()" :close="closeValue"/>
                     </a-form-item>
                 </div>
             </a-col>
@@ -211,6 +211,7 @@ export default defineComponent({
         }
 
         function closeModal() {
+            emit("is-visible", true)
             if (checkFieldsData.value) {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
@@ -227,6 +228,7 @@ export default defineComponent({
                 });
             }else{
                 formRef.value.resetFields();
+                emit("is-visible", false)
             }
         }
         const patientChange = (value) => {

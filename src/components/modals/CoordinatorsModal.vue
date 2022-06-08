@@ -290,6 +290,7 @@ export default {
         })
 
         function closeModal() {
+            emit("saveModal", true)
             if (checkFieldsData.value) {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
@@ -312,6 +313,7 @@ export default {
                 Object.assign(personalInfoData, form);
                 store.commit("resetCounter")
                 info.value.resetFields()
+                emit("saveModal", false)
             }
         }
         onMounted(()=>{

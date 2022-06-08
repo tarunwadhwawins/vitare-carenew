@@ -71,7 +71,8 @@
     </a-row>
 
     <div class="steps-action">
-        <a-button  type="primary" html-type="submit">{{$t('global.update')}}</a-button>
+      <ModalButtons :Id="Id" @is_cancel="closeModal" />
+      <!-- <a-button  type="primary" html-type="submit">{{$t('global.update')}}</a-button> -->
     </div>
 </a-form>
 </a-modal>
@@ -87,12 +88,14 @@ import { successSwal,warningSwal, } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import { useRoute } from "vue-router";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
+import ModalButtons from "@/components/common/button/ModalButtons";
 // import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
 export default {
   components: {
     // PhoneNumber,
     ErrorMessage,
-    GlobalCodeDropDown
+    GlobalCodeDropDown,
+    ModalButtons,
   },
   setup(props, { emit }) {
     const store = useStore()
@@ -189,25 +192,33 @@ export default {
       Object.assign(personalInfoData, form);
       store.dispatch("allStaffList");
     }
+
     const checkFieldsData = computed(()=>{
       return store.state.common.checkChangeInput;
     })
+
     function closeModal() {
-      if(checkFieldsData.value){
-      warningSwal(messages.modalWarning).then((response) => {
-        if (response == true) {
-          emit("saveModal", false)
-          Object.assign(personalInfoData, form);
-          store.commit("resetCounter")
-          store.state.careCoordinator.addStaff =null
-          store.commit('checkChangeInput',false)
-        } else {
-          emit("saveModal", true);
-        }
-      });
+      emit("saveModal", true)
+      if(checkFieldsData.value) {
+        warningSwal(messages.modalWarning).then((response) => {
+          if (response == true) {
+            emit("saveModal", false)
+            Object.assign(personalInfoData, form)
+            store.commit("resetCounter")
+            store.state.careCoordinator.addStaff =null
+            store.commit('checkChangeInput',false)
+          }
+          else {
+            emit("saveModal", true);
+          }
+        });
+      }
+      else {
+        emit("saveModal", false)
       }
     }
-     onUnmounted(()=>{
+
+    onUnmounted(()=>{
       store.commit('errorMsg',null)
     })
          
@@ -230,6 +241,7 @@ export default {
       onFinishFailed,
       personalInfo,
       bindProps: store.state.common.bindProps,
+      Id:true
     };
   },
 };

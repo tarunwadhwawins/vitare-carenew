@@ -208,11 +208,15 @@ export default defineComponent({
     function closeStartCallModal(e){
       AddStartCall.value =e
     }
+    function closeModal(value) {
+      AddStartCall.value = value
+    }
 
  
     return {
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
+      closeModal,
       closeStartCallModal,
       showStartCallModal,
       AddStartCall,
