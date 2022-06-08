@@ -72,7 +72,8 @@ export const globalCodes = (state, data) => {
             state.specialization = element.globalCode;
         }
         if (element.name === 'Task Category') {
-            state.taskCategory = element.globalCode;
+            // state.taskCategory = element.globalCode;
+            state.taskCategory.splice(0,3, element.globalCode[2],element.globalCode[1],element.globalCode[3],element.globalCode[0],element.globalCode[5])
         }
         if (element.name === 'Task Status') {
             state.taskStatus.splice(0,3, element.globalCode[1],element.globalCode[2],element.globalCode[0])
