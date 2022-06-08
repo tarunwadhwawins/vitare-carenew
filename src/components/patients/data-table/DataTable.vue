@@ -14,7 +14,7 @@
                     <span>{{ record.flagName }}</span>
                 </template>
                 <a class="icons">
-                    <Flags :flag="record.flagColor" /></a>
+                    <Flags :flag="record.flagColor" :data="record" /></a>
             </a-tooltip>
         </template>
         <template #patientVitals>

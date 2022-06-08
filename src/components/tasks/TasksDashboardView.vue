@@ -79,7 +79,8 @@ export default {
     setup() {
         const store = useStore();
         const toggle = ref(true);
-const router = useRouter()
+        const router = useRouter()
+        
         function clickHandler() {
             toggle.value = false;
         }
@@ -112,15 +113,17 @@ const router = useRouter()
         const tasks = computed(() => {
             return store.state.tasks;
         });
-function linkOpen(name){
-    store.dispatch("tasksList", '?filter=' + name)
-    router.replace({
-                    query: {
-                        view: 'list',
-                        filter:name
-                    }
-                });
-}
+
+        function linkOpen(name) {
+            store.dispatch("tasksList", '?filter=' + name)
+            router.replace({
+                query: {
+                    view: 'list',
+                    filter:name
+                }
+            });
+        }
+
         return {
             screensPermissions: store.getters.screensPermissions,
             arrayToObjact,

@@ -4,6 +4,7 @@
     <template v-else-if="data && data.flagName" #title>{{ data.flagName }}</template>
     <template v-else-if="data && data.flag" #title>{{ data.flag }}</template>
     <span class="box" v-bind:style="{ backgroundColor: flag }" />
+    <!-- <span class="box" v-bind:style="data.isBlackFlag ? { 'border': '2px solid #000000', 'padding': '4px', backgroundColor: flag} : { backgroundColor: flag }" /> -->
   </a-tooltip>
 </template>
 

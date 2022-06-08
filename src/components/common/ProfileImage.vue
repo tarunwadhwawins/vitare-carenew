@@ -65,7 +65,7 @@
           <p v-if="patientDetails.medicalRecordNumber">
             MRN : {{ patientDetails.medicalRecordNumber }}
           </p>
-          <p v-if="patientDetails.email">
+          <p style="overflow-wrap: anywhere;" v-if="patientDetails.email">
             <a
               @click="actionTrack(paramsId, 321, 'patient')"
               v-if="arrayToObjact(screensPermissions, 321)"
@@ -121,7 +121,7 @@
         </a-tooltip>
       </div>
     </div>
-    <div
+    <div class="buttonGroup"
       v-if="programsPatient && programsPatient.length > 0"
       v-bind:class="patientPrograms"
     >
@@ -321,6 +321,7 @@ span.anticon.anticon-plus {
 .button-details {
   position: relative !important;
   top: 0;
+  text-align: center;
 }
 .patientSectionInner{
   display: flex;
@@ -355,14 +356,15 @@ span.edit-icon {
 }
 .patientPrograms {
   padding: 10px 10px 0 0;
-    text-align: right;
+  text-align: right;
+  display: contents;
 }
 .programText {
   border: 1px solid #c8c8c8;
   border-radius: 50px;
   padding: 7px 17px;
   margin-top: 5px;
-  margin-left: 5px;
+  margin-left: 2px;
 }
 
 .image-section  img {
@@ -370,5 +372,14 @@ span.edit-icon {
       min-height: 80px;
       max-width: 80px;
       max-height: 80px;
+  }
+ .patientInfo .sectionPatient {
+    display: flex;
+    flex-direction: column;
+}
+  .patientInfo .buttonGroup{
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: flex-end;
   }
 </style>

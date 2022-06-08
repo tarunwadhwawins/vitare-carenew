@@ -160,6 +160,26 @@ export function dateOnlyFormatSImple(timeStamp) {
 	return day.format('yyyy-MM-DD');
 }
 
+// Date for getting this format yyyy-MM-DD pass timeStamp
+export function fullDateTimeFormat(timeStamp) {
+	var day = moment.unix(new Date(timeStamp));
+	return day.format('yyyy-MM-DD HH:mm:ss');
+	// return day.format('yyyy-MM-DD HH:mm:ss');
+}
+
+// Date for getting this format yyyy-MM-DD pass timeStamp
+export function hoursDateTimeFormat(timeStamp) {
+	var day = moment.unix(new Date(timeStamp));
+	return day.format('yyyy-MM-DD HH');
+	// return day.format('yyyy-MM-DD HH:mm:ss');
+}
+
+// Date for getting this format yyyy-MM-DD pass timeStamp
+export function hourOnlyFormat(date) {
+	var day = moment.unix(date);
+	return day.format('HH');
+}
+
 export function timeFormatSimple(timeStamp) {
 	var day = moment.unix(new Date(timeStamp));
 	return day.format('HH:mm');
