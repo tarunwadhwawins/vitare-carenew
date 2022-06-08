@@ -44,7 +44,7 @@
         </a-layout>
 
     </a-layout>
-    <AddStartCall v-model:visible="AddStartCall" @is-visible="closeModal" />
+    <AddStartCall v-model:visible="AddStartCall"  @is-visibale="closeStartCallModal($event)"/>
 </div>
 </template>
 <script>
@@ -205,8 +205,8 @@ export default defineComponent({
     function showStartCallModal(){
       AddStartCall.value =true
     }
-    function closeStartCallModal(){
-      AddStartCall.value =false
+    function closeStartCallModal(e){
+      AddStartCall.value =e
     }
     function closeModal(value) {
       AddStartCall.value = value
