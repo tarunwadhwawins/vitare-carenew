@@ -5,8 +5,9 @@
         <h2 class="pageTittle titleWrapper">
             {{$t('patient.patients')}}
          <div class="commonBtn"> 
+              
             <a-button class="btn primaryBtn" @click="showModal" :isEdit="isEdit" v-if="arrayToObjact(screensPermissions,62)">{{$t('patient.addNewPatients')}}</a-button>
-            <DateFilter :Buttons="Buttons" @clickButtons="showButton($event)" :custom="false" commit="timelineSuccess" />
+            <!-- <DateFilter :Buttons="Buttons" @clickButtons="showButton($event)" :custom="false" commit="timelineSuccess" /> -->
         </div>
         </h2>
     </a-col>
@@ -55,7 +56,7 @@
 </template>
 
 <script>
-import {  ref,  onMounted,  onUnmounted } from "vue";
+import {  ref,  onUnmounted, watchEffect } from "vue";
 import { useStore} from "vuex";
 import PatientsModal from "@/components/modals/PatientsModal";
 import PatientCounterCards from "@/components/common/cards/PatientCounterCards"
@@ -66,7 +67,7 @@ import DataTable from "./data-table/DataTable"
 import SearchField from "@/components/common/input/SearchField";
 import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 import { useRoute, useRouter } from 'vue-router';
- import DateFilter from "@/components/common/DateFilter.vue"
+ //import DateFilter from "@/components/common/DateFilter.vue"
 export default {
     name: "Patients",
     components: {
@@ -77,7 +78,7 @@ export default {
         TableLoader,
         SearchField,
         ExportToExcel,
-        DateFilter
+       // DateFilter
     },
 
     setup() {
@@ -105,23 +106,23 @@ export default {
             toDate: ''
         }
 
-        onMounted(() => {
+        watchEffect(() => {
             store.dispatch("patientFlags", dateFormat)
             store.getters.patientsRecord.patientList = ""
 
             store.dispatch("programList");
-            if (route.query.timelineId) {
-                store.dispatch("timeLine", {
-                    id: route.query.timelineId,
-                    commit: 'timelineSuccess'
-                }).then(() => {
-                    apiCall(timeLineButton.value)
-                })
-            } else {
+            //if (route.query.timelineId) {
+                // store.dispatch("timeLine", {
+                //     id: route.query.timelineId,
+                //     commit: 'timelineSuccess'
+                // }).then(() => {
+                //     apiCall(timeLineButton.value)
+                // })
+            ///} else {
                 if (timeLineButton.value == null) {
 
                     store.dispatch("timeLine", {
-                        id: 122,
+                        id: 125,
                         commit: 'timelineSuccess'
                     }).then(() => {
                         apiCall(timeLineButton.value)
@@ -130,7 +131,7 @@ export default {
                 } else {
                     apiCall(timeLineButton.value)
                 }
-            }
+           // }
 
             store.dispatch("searchTable", '&search=')
             store.dispatch('orderTable', {
@@ -211,7 +212,7 @@ export default {
             store.dispatch("patientFlags", dateFormate)
             //store.dispatch("counterCard", dateFormate)
 
-            //store.commit("dateFilter", )
+            store.commit("dateFilter", dateFormate)
             let filter = route.query.filter ? route.query.filter : ''
             let date = route.query.fromDate && route.query.toDate ? "&fromDate=" + dateFormate.fromDate + "&toDate=" + dateFormate.toDate : "&fromDate=&toDate="
             store.dispatch("patients", "?filter=" + filter + date)
