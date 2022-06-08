@@ -147,8 +147,13 @@ export default defineComponent({
     });
 
     function checkChangeInput() {
-        disableButton.value = false;
-        store.commit("checkChangeInput", true);
+      if(timeLogReports.value.note != auditTimeLog.note || timeLogReports.value.flag != auditTimeLog.flag || timeLogReports.value.timeAmount != auditTimeLog.timeAmount){
+        disableButton.value = false
+        store.commit("checkChangeInput", true)
+      }else{
+        disableButton.value = true
+        store.commit("checkChangeInput", false)
+      }
     }
 
     
