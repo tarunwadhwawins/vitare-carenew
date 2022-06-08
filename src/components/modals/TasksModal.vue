@@ -87,12 +87,15 @@
                     </a-form-item>
                 </div>
             </a-col>
-            <a-col :span="24" v-if="onlyView">
+            <a-col :span="24">
+                <ModalButtons :Id="taskId" @is_click="handleCancel" @is_cancel="closeModal" />
+            </a-col>
+            <!-- <a-col :span="24" v-if="onlyView">
                 <ModalButtons :Id="taskId" @is_click="handleCancel" />
             </a-col>
             <a-col :span="24" v-else>
                 <ModalButtons :Id="taskId" @is_click="handleCancel" />
-            </a-col>
+            </a-col> -->
         </a-row>
     </a-form>
     <Loader />
@@ -311,6 +314,8 @@ export default defineComponent({
         });
 
         function closeModal() {
+            emit("closeModal", true)
+            emit("saveTaskModal", true)
             if (checkFieldsData.value) {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
@@ -336,7 +341,8 @@ export default defineComponent({
                     }
                 });
             } else {
-
+                emit("saveTaskModal", false)
+                emit("closeModal", false)
                 handleCancel()
 
             }

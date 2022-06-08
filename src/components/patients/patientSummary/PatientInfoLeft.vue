@@ -394,6 +394,7 @@ export default defineComponent({
         emergencyContactsModalVisible.value = modal == 'emergencyContactsList' ? value : false;
         deviceDetailVisible.value = modal == 'devicesListing' ? value : false;
         coordinatorsListingModalVisible.value = modal == 'deleteCareTeam' ? value : false;
+        addfamilyMembersVisible.value = modal == 'addFamilyMember' ? value : false;
       }
       else {
         flagsModalVisible.value = false;

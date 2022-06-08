@@ -147,7 +147,7 @@
     <TasksModal v-if="TasksModal" v-model:visible="TasksModal" @ok="taskOk" />
     <PatientsModal v-model:visible="PatientsModal" @ok="patientOk" />
     <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" />
-    <AddStartCall v-model:visible="AddStartCall" @ok="closeStartCallModal" />
+    <AddStartCall v-model:visible="AddStartCall" @ok="closeStartCallModal" @is-visible="closeModal" />
     
     <!---->
   </div>

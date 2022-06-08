@@ -48,7 +48,7 @@
         <a-row :gutter="24">
             <a-col :span="24">
                 <div class="steps-action">
-                    <ModalButtons @is_click="handleCancel" :disabled="formButton" :Id="threshodId" />
+                    <ModalButtons @is_cancel="closeModal" @is_click="handleCancel" :disabled="formButton" :Id="threshodId" />
                 </div>
             </a-col>
         </a-row>
@@ -143,6 +143,7 @@ export default {
 			return store.state.common.checkChangeInput;
 		})
         function closeModal() {
+            emit("is-visible", true)
             if (checkFieldsData.value) {
 				warningSwal(messages.modalWarning).then((response) => {
 					if (response == true) {
@@ -160,6 +161,7 @@ export default {
 			}
 			else {
 				handleCancel()
+                emit("is-visible", false)
 			}
            
            

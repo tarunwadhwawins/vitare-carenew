@@ -387,6 +387,7 @@ export default {
     });
 
     function closeModal() {
+      emit("closeModal", true)
       if (checkFieldsData.value) {
         warningSwal(messages.modalWarning).then((response) => {
           if (response == true) {
@@ -401,6 +402,8 @@ export default {
             emit("closeModal", true);
           }
         });
+      } else {
+        emit("closeModal", false);
       }
     }
 

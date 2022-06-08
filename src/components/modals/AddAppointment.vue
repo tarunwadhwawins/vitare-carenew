@@ -317,6 +317,8 @@ export default {
         })
 
         function closeModal() {
+            emit("is-visible", true)
+            emit("closeModal", true)
             if (checkFieldsData.value) {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
@@ -342,6 +344,8 @@ export default {
                 });
             } else {
                 formRef.value.resetFields();
+                emit("is-visible", false)
+                emit("closeModal", false)
             }
         }
 
