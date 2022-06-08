@@ -529,13 +529,13 @@ export function convertChartResponse(vitaldFieldsArray, recordsArray) {
 			let valuesObject = {
 				name: vitalField,
 				data: recordList.map((item) => {
-					return item.value;
+					// return item.value;
 					// const value = item.value+' At '+apexFormat(item.takeTime)
-					// const value = {
-					// 	x: dateFormat(item.takeTime),
-					// 	y: item.value
-					// }
-					// return value
+					const value = {
+						x: dateFormat(item.takeTime),
+						y: item.value
+					}
+					return value
 				})
 			};
 			records.push(valuesObject);
