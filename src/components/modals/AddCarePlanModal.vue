@@ -37,7 +37,7 @@
 
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item label="Frequency" name="frequency" :rules="[{ required: true, message: 'Frequency '+$t('global.validation')  }]">
+            <a-form-item label="No. of Times" name="frequency" :rules="[{ required: true, message: 'Frequency '+$t('global.validation')  }]">
               <a-input size="large" :min="1" :max="100000" v-model:value="addCarePlanForm.frequency" style="width: 100%" />
             </a-form-item>
           </div>
@@ -45,13 +45,13 @@
 
         <a-col :sm="12" :xs="24">
           <div class="form-group">
-            <a-form-item label=" " name="frequencyType" :rules="[{ required: true, message: 'This Field '+$t('global.validation')  }]">
+            <a-form-item label="Frequency" name="frequencyType" :rules="[{ required: true, message: 'This Field '+$t('global.validation')  }]">
               <a-select
                 ref="select"
                 v-model:value="addCarePlanForm.frequencyType"
                 style="width: 100%"
                 size="large">
-                <a-select-option value="" hidden>Choose Frequency Type </a-select-option>
+                <!-- <a-select-option value="" hidden> </a-select-option> -->
                 <a-select-option v-for="frequencyType in frequencyTypes" :key="frequencyType.id" :value="frequencyType.id">{{ frequencyType.name }}</a-select-option>
               </a-select>
             </a-form-item>
