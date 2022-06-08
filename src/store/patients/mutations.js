@@ -2,10 +2,11 @@
 import {
   meridiemFormatFromTimestamp,
   dateOnlyFormat,
-  dateTimeFormat,
   dateFormat,
+  dateTimeFormat,
   dobFormat,
   dobFormat2,
+  // hourOnlyFormat,
   // timeFormatSimple
   convertResponse,
   convertData,
@@ -13,8 +14,11 @@ import {
   timestampToDate,
   // createDynamicColumns,
   globalDateFormat,
-  dateAndTimeFormate
+  dateAndTimeFormate,
+  // dateOnlyFormatSImple,
+  // fullDateTimeFormat,
 } from '@/commonMethods/commonMethod';
+// import moment from 'moment';
 
 export const addDemographic = (state, data) => {
   state.addDemographic = data
@@ -140,6 +144,7 @@ export const patient = (state, data) => {
   state.patientMeta = data.meta.pagination;
   state.patientList = data.data
     .map(element => {
+      // const flagTimeStamp = element.flagTmeStamp
       element.isActive= element.isActive=='Active' ? true : false,
       element.flags = element.flagColor,
         element.lastName = element.lastName ? element.lastName : '',
@@ -152,6 +157,21 @@ export const patient = (state, data) => {
         element.spo2 = element.patientVitals.length>0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'SPO2') { return JSON.parse(vitalData.value) } }):'',
         element.glucose = element.patientVitals.length>0 ? element.patientVitals.data.map(vitalData => { if (vitalData.deviceType == 'Glucose') { return JSON.parse(vitalData.value) } }) : ''
 
+        /* if(flagTimeStamp != null && flagTimeStamp != "") {
+          const flagTimeDate = dateOnlyFormatSImple(flagTimeStamp)
+          const todayDate = moment().format('yyyy-MM-DD')
+          if(todayDate == flagTimeDate && element.flagName == 'Critical') {
+            const flagTimeDateTime = fullDateTimeFormat(flagTimeStamp)
+            const todayDateTime = moment().format('HH')
+            const addedHours = moment(flagTimeDateTime).add(2, 'hours').format('HH')
+            if(todayDateTime >= addedHours) {
+              element.isBlackFlag = true
+            }
+            else {
+              element.isBlackFlag = false
+            }
+          }
+        } */
       return element
     })
 

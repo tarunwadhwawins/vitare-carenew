@@ -58,6 +58,7 @@ export default {
         title: "Care Coordinator",
         dataIndex: "staff",
         key: "staff",
+        width: "20%",
       },
       // {
       //   title: "Patient",
