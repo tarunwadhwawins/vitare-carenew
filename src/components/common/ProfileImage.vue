@@ -364,7 +364,7 @@ span.edit-icon {
   border-radius: 50px;
   padding: 7px 17px;
   margin-top: 5px;
-  margin-left: 5px;
+  margin-left: 2px;
 }
 
 .image-section  img {
