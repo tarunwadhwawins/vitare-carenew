@@ -81,7 +81,7 @@
                         </a-col>
                         <a-col :sm="12" :xs="24" v-if="button ==126">
                             <div class="form-group">
-                                <a-form-item label="Summary end" name="summaryEnd" :rules="[{ required: false, message: 'Due Date'+' '+$t('global.validation')  }]">
+                                <a-form-item label="Summary End" name="summaryEnd" :rules="[{ required: false, message: 'Due Date'+' '+$t('global.validation')  }]">
                                     <a-date-picker :disabledDate="d => !d || d.isSameOrBefore(escalationDetails.summaryStart)" v-model:value="escalationDetails.summaryEnd" :format="globalDateFormat" :value-format="globalDateFormat" :size="size" style="width: 100%" @change="checkChangeInput(); changeDate();dateChange();" />
                                 </a-form-item>
                             </div>
@@ -313,15 +313,15 @@ const carePlanColumns = [
     dataIndex: "deviceType",
   },
   {
-    title: "Vital type",
+    title: "Vital Type",
     dataIndex: "vitalField",
   },
   {
-    title: "Start date",
+    title: "Start Date",
     dataIndex: "startDate",
   },
   {
-    title: "End date",
+    title: "End Date",
     dataIndex: "endDate",
   },
   {
