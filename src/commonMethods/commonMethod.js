@@ -529,14 +529,33 @@ export function convertChartResponse(vitaldFieldsArray, recordsArray) {
 			let valuesObject = {
 				name: vitalField,
 				data: recordList.map((item) => {
-					return item.value;
+					// return item.value;
+					// const value = item.value+' At '+apexFormat(item.takeTime)
+					const value = {
+						x: dateFormat(item.takeTime),
+						y: item.value
+					}
+					return value
 				})
 			};
 			records.push(valuesObject);
 		}
 	});
+	
+	const recordsList = records.sort((a, b) => {
+		let fa = a.name.toLowerCase(),
+		fb = b.name.toLowerCase();
+		if (fa > fb) {
+			return -1;
+		}
+		if (fa < fb) {
+			return 1;
+		}
+		return 0;
+	})
+	
 	return {
-		records,
+		records: recordsList,
 		timesArray
 	};
 }
