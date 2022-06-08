@@ -44,7 +44,7 @@
         </a-layout>
 
     </a-layout>
-    <AddStartCall v-model:visible="AddStartCall"  @is-visibale="closeStartCallModal($event)"/>
+    <AddStartCall v-model:visible="AddStartCall"  @is-visible="closeStartCallModal($event)"/>
 </div>
 </template>
 <script>
