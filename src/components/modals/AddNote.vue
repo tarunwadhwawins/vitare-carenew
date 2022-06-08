@@ -1,6 +1,6 @@
 <template>
  <a-modal width="50%" title="Add Note" centered @cancel="onCloseModal()">
-    <addNoteForm @closeModal="closeModal"/>
+    <addNoteForm @closeModal="closeModal" @valueChanged="changedValue"/>
     <Loader />
  </a-modal>
 </template>
@@ -81,11 +81,15 @@ export default defineComponent({
             ...addNoteForm
         });
 
-        const changedValue = () => {
-            isValueChanged.value = true;
+        const changedValue = (value) => {
+            isValueChanged.value = value;
         };
 
         function onCloseModal() {
+            emit("closeModal", {
+                modal: "addNote",
+                value: true,
+            });
             if (isValueChanged.value) {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
@@ -102,6 +106,13 @@ export default defineComponent({
                         });
                     }
                 });
+            }
+            else {
+                emit("closeModal", {
+                    modal: "addNote",
+                    value: false,
+                });
+    
             }
         }
 

@@ -129,7 +129,7 @@ export default {
             },
           });
         }
-        emit("is-visibale", false);
+        emit("is-visible", false);
         }
       })
     }
@@ -150,19 +150,20 @@ export default {
       formRef.value.resetFields();
     }
     const onCloseModal = () => {
+      emit("is-visible", true)
       if (isChangeInput.value) {
         warningSwal(messages.modalWarning).then((response) => {
           if (response == true) {
-            emit("is-visibale", false);
+            emit("is-visible", false);
             formRef.value.resetFields();
             Object.assign(startCall, form);
             isChangeInput.value = false;
           } else {
-            emit("is-visibale", true);
+            emit("is-visible", true);
           }
         });
       } else {
-        emit("is-visibale", false);
+        emit("is-visible", false);
         formRef.value.resetFields();
       }
     };

@@ -144,6 +144,10 @@ export default {
 
     function closeModal() {
 			if(isValueChanged.value) {
+				emit("closeModal", {
+					modal: 'addFamilyMember',
+					value: true
+				});
 				warningSwal(messages.modalWarning).then((response) => {
 					if (response == true) {
 						emit("closeModal", {
@@ -160,6 +164,12 @@ export default {
 						});
 					}
 				})
+			}
+			else {
+				emit("closeModal", {
+					modal: 'addFamilyMember',
+					value: false
+				});
 			}
     }
 		

@@ -44,7 +44,7 @@
         </a-layout>
 
     </a-layout>
-    <AddStartCall v-model:visible="AddStartCall"  @is-visibale="closeStartCallModal($event)"/>
+    <AddStartCall v-model:visible="AddStartCall"  @is-visible="closeStartCallModal($event)"/>
 </div>
 </template>
 <script>
@@ -208,11 +208,15 @@ export default defineComponent({
     function closeStartCallModal(e){
       AddStartCall.value =e
     }
+    function closeModal(value) {
+      AddStartCall.value = value
+    }
 
  
     return {
       screensPermissions:store.getters.screensPermissions,
       arrayToObjact,
+      closeModal,
       closeStartCallModal,
       showStartCallModal,
       AddStartCall,

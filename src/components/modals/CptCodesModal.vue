@@ -161,6 +161,7 @@ export default {
 			return store.state.common.checkChangeInput;
 		})
     function closeModal() {
+      emit("is-visible", true)
       if (checkFieldsData.value) {
 				warningSwal(messages.modalWarning).then((response) => {
 					if (response == true) {
@@ -178,6 +179,7 @@ export default {
 			}
 			else {
 				reset()
+        emit("is-visible", false)
 			}
       
     }

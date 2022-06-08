@@ -150,7 +150,7 @@ export default {
             store.commit('checkChangeInput', true)
         }
     function closeModal() {
-      
+      emit("is-visible", true);
       if (checkFieldsData.value) {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
