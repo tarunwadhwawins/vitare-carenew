@@ -5,7 +5,7 @@
         <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: true, message: $t('global.firstName')+' '+$t('global.validation')  }]">
-              <a-input v-model:value="editContactForm.firstName" size="large" name="firstName"/>
+              <a-input @change="changeValue()" v-model:value="editContactForm.firstName" size="large" name="firstName"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.firstName ? errorMsg.firstName[0] : ''" />
             </a-form-item>
           </div>
@@ -13,7 +13,7 @@
         <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('global.lastName')" name="lastName" :rules="[{ required: false, message: $t('global.lastName')+' '+$t('global.validation') }]">
-              <a-input v-model:value="editContactForm.lastName" size="large"/>
+              <a-input @change="changeValue()" v-model:value="editContactForm.lastName" size="large"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.lastName ? errorMsg.lastName[0] : ''" />
             </a-form-item>
           </div>
@@ -21,7 +21,7 @@
         <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('global.email')" name="email" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-              <a-input v-model:value="editContactForm.email" placeholder="test@test.com" size="large" @input="emailChange()"/>
+              <a-input @change="changeValue()" v-model:value="editContactForm.email" placeholder="test@test.com" size="large" @input="emailChange()"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.email ? errorMsg.email[0] : ''" />
             </a-form-item>
           </div>
@@ -29,7 +29,7 @@
         <a-col :md="12" :sm="12" :xs="24">
           <div class="form-group">
             <a-form-item :label="$t('global.phoneNo')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-              <a-input v-maska="'###-###-####'" v-model:value="editContactForm.phoneNumber" placeholder="Please enter 10 digit number" size="large"  style="width: 100%"/>
+              <a-input @change="changeValue()" v-maska="'###-###-####'" v-model:value="editContactForm.phoneNumber" placeholder="Please enter 10 digit number" size="large"  style="width: 100%"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber ? errorMsg.phoneNumber[0] : ''" />
             </a-form-item>
           </div>
@@ -51,6 +51,7 @@ import Loader from "@/components/loader/Loader";
 import {
     regex
 } from "@/RegularExpressions/regex";
+import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 
 export default {
   props: {
@@ -60,6 +61,7 @@ export default {
   },
   components: {
     Loader,
+    ErrorMessage,
   },
   setup(props, { emit }) {
     const store = useStore()
@@ -71,6 +73,11 @@ export default {
     const contactDetails = computed(() => {
       return store.state.careCoordinator.contactDetails
     })
+    
+    const errorMsg = computed(() => {
+      return store.state.careCoordinator.errorMsg
+    })
+
      const staffs = computed(() => {
       return store.state.careCoordinator.addStaff;
     });
@@ -82,6 +89,9 @@ export default {
       phoneNumber: "",
     })
 
+    const changeValue = () => {
+      store.commit('errorMsg', null)
+    }
     
     watchEffect(() => {
       if(isEdit) {
@@ -103,10 +113,12 @@ export default {
           phoneNumber: phone.replace(/-/g,''),
         },
       }).then(() => {
-        emit('closeModal')
-        formRest.value.resetFields();
-        Object.assign(editContactForm, form)
-        store.dispatch("staffContactList", staffs.value?staffs.value.id:route.params.udid);
+        if(errorMsg.value == null) {
+          emit('closeModal')
+          formRest.value.resetFields();
+          Object.assign(editContactForm, form)
+          store.dispatch("staffContactList", staffs.value?staffs.value.id:route.params.udid);
+        }
       })
     }
 
@@ -117,6 +129,8 @@ export default {
       editContactForm,
       paramId,
       submitForm,
+      errorMsg,
+      changeValue,
     }
   }
 }

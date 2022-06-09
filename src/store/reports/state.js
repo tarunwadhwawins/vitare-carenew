@@ -1,4 +1,5 @@
 export default {
-    reportList:null,
+    cptCodes:null,
+    cptCodesMeta:null,
     reportDetailList:null
 }

@@ -2,10 +2,11 @@ import serviceMethod from '@/services/serviceMethod';
 import {  errorLogWithDeviceInfo } from '@/commonMethods/commonMethod';
 
 
-export const reportList = async ({commit}) => {
+export const cptCodes = async ({commit},page) => {
 commit('loadingTableStatus', true)  
-await serviceMethod.common("get", `cptCodes`, null, null).then((response) => {
-    commit('reportList', response.data.data);
+let link =page ? `cptCodes` +page :`cptCodes`
+await serviceMethod.common("get", link, null, null).then((response) => {
+    commit('cptCodes', response.data);
     commit('loadingTableStatus', false)
   }).catch((error) => {
     if (error.response) {

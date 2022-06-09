@@ -130,6 +130,7 @@ export default defineComponent({
     })
 
     const editProgram = (id) => {
+      store.commit('errorMsg', null)
       isEdit.value = true
       programId.value = id
       store.dispatch("programDetails", {
@@ -153,6 +154,7 @@ export default defineComponent({
           patientUdid: route.params.udid,
           programId: programId.value,
         }).then(() => {
+          isEdit.value = false
           store.dispatch("program", patientId);
           emit('onChange', false)
           reset()
@@ -210,7 +212,7 @@ export default defineComponent({
     })
 
     function deleteProgram(id) {
-     
+      store.commit('errorMsg', null)
       if(patientId != null) {
         warningSwal(messages.deleteWarning).then((response) => {
           if(response==true) {

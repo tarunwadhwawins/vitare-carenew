@@ -1,8 +1,9 @@
 
 import {dateOnlyFormat,globalDateFormat,} from "@/commonMethods/commonMethod";
 
-export const reportList = (state, data) => {
-    state.reportList = data.map(item =>{
+export const cptCodes = (state, data) => {
+    state.cptCodesMeta = data.meta ? data.meta.pagination : ''
+    state.cptCodes = data.data.map(item =>{
         item.billingDate = dateOnlyFormat(item.billingDate,globalDateFormat)
         return item
     })

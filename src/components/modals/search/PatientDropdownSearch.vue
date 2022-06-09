@@ -8,7 +8,7 @@
     @input="updateValue"
     style="width: 100%"
     :show-search="true"
-    placeholder="input search text"
+    :placeholder="placeholder?placeholder:'input search text'"
     :show-arrow="true"
     :filter-option="false"
     :not-found-content="loadingStatus ? undefined : null"
@@ -34,7 +34,8 @@ export default defineComponent({
     value: String,
     mode: String,
     close: Boolean,
-    editDataPatient:Array
+    editDataPatient:Array,
+    placeholder:String
   },
 
   setup(props, context) {

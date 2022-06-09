@@ -1,12 +1,12 @@
 <template>
 	<a-modal width="60%" :title="$t('global.addFamilyMembers')" centered @cancel="closeModal()" zIndex="1040">
-		<a-form ref="formRef" :model="FamilyMemberForm" layout="vertical" @finish="submitForm">
+		<a-form ref="formRef" :model="familyMemberForm" layout="vertical" @finish="submitForm">
 			<a-row :gutter="24">
 
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.fullName')" name="fullName" :rules="[{ required: true, message: $t('patient.demographics.fullName')+' '+$t('global.validation') }]">
-							<a-input @change="changedValue" v-model:value="FamilyMemberForm.fullName" @keyup="keyup" size="large" />
+							<a-input @change="changedValue" v-model:value="familyMemberForm.fullName" @keyup="keyup" size="large" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.fullName?errorMsg.fullName[0]:''" />
 						</a-form-item>
 					</div>
@@ -15,7 +15,7 @@
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.emailAddress')" name="familyEmail" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
-							<a-input @change="changedValue" v-model:value="FamilyMemberForm.familyEmail" @keyup="keyup" placeholder="test@test.com" size="large" />
+							<a-input @change="changedValue" v-model:value="familyMemberForm.familyEmail" @keyup="keyup" placeholder="test@test.com" size="large" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyEmail?errorMsg.familyEmail[0]:''" />
 						</a-form-item>
 					</div>
@@ -24,9 +24,11 @@
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: false, message: $t('global.phoneNo')+' '+$t('global.validation') }]">
-							<!-- <PhoneNumber @change="changedValue" v-model.trim:value="FamilyMemberForm.familyPhoneNumber" @setPhoneNumber="setPhoneNumber" /> -->
-							<a-input-number @change="changedValue" v-model:value="FamilyMemberForm.familyPhoneNumber" @keyup="keyup" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
+							<!-- <PhoneNumber @change="changedValue" v-model.trim:value="familyMemberForm.familyPhoneNumber" @setPhoneNumber="setPhoneNumber" /> -->
+							<a-input v-maska="'###-###-####'" @change="changedValue" v-model:value="familyMemberForm.familyPhoneNumber" placeholder="Please enter 10 digit number" size="large" style="width: 100%" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyPhoneNumber?errorMsg.familyPhoneNumber[0]:''" />
+
+							<!-- <a-input-number @change="changedValue" v-model:value="familyMemberForm.familyPhoneNumber" @keyup="keyup" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" /> -->
 						</a-form-item>
 					</div>
 				</a-col>
@@ -34,7 +36,7 @@
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.preferredMethodofContact')" name="familyContactType" :rules="[{ required: false, message: $t('patient.demographics.preferredMethodofContact')+' '+$t('global.validation') }]">
-							<GlobalCodeDropDown @change="changedValue" v-model:value="FamilyMemberForm.familyContactType" @keyup="keyup" mode="multiple" :globalCode="globalCode.pmOfcontact"/>
+							<GlobalCodeDropDown @change="changedValue" v-model:value="familyMemberForm.familyContactType" @keyup="keyup" mode="multiple" :globalCode="globalCode.pmOfcontact"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactType?errorMsg.familyContactType[0]:''" />
 						</a-form-item>
 					</div>
@@ -43,7 +45,7 @@
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('patient.demographics.preferredTimeofDayforContact')" name="familyContactTime" :rules="[{ required: false, message: $t('patient.demographics.preferredTimeofDayforContact')+' '+$t('global.validation') }]">
-							<GlobalCodeDropDown @change="changedValue" v-model:value="FamilyMemberForm.familyContactTime" @keyup="keyup" mode="multiple" :globalCode="globalCode.ptOfDayContact"/>
+							<GlobalCodeDropDown @change="changedValue" v-model:value="familyMemberForm.familyContactTime" @keyup="keyup" mode="multiple" :globalCode="globalCode.ptOfDayContact"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyContactTime?errorMsg.familyContactTime[0]:''" />
 						</a-form-item>
 					</div>
@@ -52,7 +54,7 @@
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('global.gender')" name="familyGender" :rules="[{ required: true, message: $t('global.gender')+' '+$t('global.validation') }]">
-							<GlobalCodeDropDown @change="changedValue" v-model:value="FamilyMemberForm.familyGender" @keyup="keyup"  :globalCode="globalCode.gender"/>
+							<GlobalCodeDropDown @change="changedValue" v-model:value="familyMemberForm.familyGender" @keyup="keyup"  :globalCode="globalCode.gender"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyGender?errorMsg.familyGender[0]:''" />
 						</a-form-item>
 					</div>
@@ -61,22 +63,22 @@
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('global.relation')" name="relation" :rules="[{ required: true, message: $t('global.relation')+' '+$t('global.validation') }]">
-							<GlobalCodeDropDown @change="changedValue" v-model:value="FamilyMemberForm.relation" @keyup="keyup"  :globalCode="globalCode.relation"/>
+							<GlobalCodeDropDown @change="changedValue" v-model:value="familyMemberForm.relation" @keyup="keyup"  :globalCode="globalCode.relation"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.relation?errorMsg.relation[0]:''" />
 						</a-form-item>
 					</div>
 				</a-col>
 
-				<a-col v-if="isFamilyMemberEdit" :md="12" :sm="12" :xs="24">
+				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
 						<a-form-item :label="$t('global.isPrimary')" name="isPrimary">
-              <a-switch v-model:checked="FamilyMemberForm.isPrimary" size="large" />
+              <a-switch v-model:checked="familyMemberForm.isPrimary" size="large" />
             </a-form-item>
 					</div>
 				</a-col>
 
 				<a-col :sm="24" :span="24">
-					<ModalButtons :Id="id" @is_click="handleClear"/>
+					<ModalButtons :Id="id" @is_click="handleClear" @is_cancel="closeModal()"/>
 				</a-col>
 			</a-row>
 		</a-form>
@@ -122,11 +124,11 @@ export default {
       return store.state.common;
     });
 
-    const patients = computed(() => {
-      return store.state.patients;
+    const familyMemberDetails = computed(() => {
+      return store.state.patients.familyMemberDetails;
     });
 		
-		const FamilyMemberForm = reactive({
+		const familyMemberForm = reactive({
 			fullName: '',
 			familyEmail: '',
 			familyPhoneNumber: '',
@@ -134,9 +136,9 @@ export default {
 			familyContactTime: [],
 			familyGender: '',
 			relation: '',
-			isPrimary: patients.value.FamilyMemberDetails && patients.value.FamilyMemberDetails.isPrimary ? patients.value.FamilyMemberDetails.isPrimary : false,
+			isPrimary: familyMemberDetails.value && familyMemberDetails.value.isPrimary ? familyMemberDetails.value.isPrimary : false,
 		})
-    const form = reactive({ ...FamilyMemberForm });
+    const form = reactive({ ...familyMemberForm });
 
     const changedValue = () => {
 			isValueChanged.value = true;
@@ -154,7 +156,7 @@ export default {
 							modal: 'addFamilyMember',
 							value: false
 						});
-						Object.assign(FamilyMemberForm, form);
+						Object.assign(familyMemberForm, form);
 						isValueChanged.value = false;
 					}
 					else {
@@ -173,14 +175,10 @@ export default {
 			}
     }
 		
-		const id = ref(null)
-		if(props.isFamilyMemberEdit) {
-			id.value = patients.value.FamilyMemberDetails;
-		}
-
+		const id = props.isFamilyMemberEdit && familyMemberDetails.value ? ref(familyMemberDetails.value.id) : ref(null)
     watchEffect(() => {
       if(props.isFamilyMemberEdit) {
-        Object.assign(FamilyMemberForm, patients.value.FamilyMemberDetails);
+        Object.assign(familyMemberForm, familyMemberDetails.value);
       }
     })
 
@@ -200,8 +198,8 @@ export default {
       if(props.isFamilyMemberEdit) {
 				store.dispatch('updateFamilyMember', {
 					patientUdid: patientUdid,
-					familyUdid: patients.value.FamilyMemberDetails.id,
-					data: FamilyMemberForm
+					familyUdid: familyMemberDetails.value.id,
+					data: familyMemberForm
 				}).then(() => {
 					if(route.name == 'PatientSummary') {
 						store.dispatch('patientDetails', patientUdid)
@@ -213,14 +211,14 @@ export default {
 							value: false
 						});
 						formRef.value.resetFields();
-						Object.assign(FamilyMemberForm, form)
+						Object.assign(familyMemberForm, form)
 					}
 				})
 			}
 			else {
 				store.dispatch('addFamilyMember', {
 					patientUdid: patientUdid,
-					data: FamilyMemberForm
+					data: familyMemberForm
 				}).then(() => {
 					if(route.name == 'PatientSummary') {
 						store.dispatch('patientDetails', patientUdid)
@@ -232,7 +230,7 @@ export default {
 							value: false
 						});
 						formRef.value.resetFields();
-						Object.assign(FamilyMemberForm, form)
+						Object.assign(familyMemberForm, form)
 					}
 				})
 			}
@@ -240,7 +238,7 @@ export default {
 
     const handleClear = () => {
       formRef.value.resetFields();
-      Object.assign(FamilyMemberForm, form)
+      Object.assign(familyMemberForm, form)
     }
 
 		const errorMsg = computed(() => {
@@ -248,14 +246,14 @@ export default {
 		})
 
     const setPhoneNumber = (value) => {
-      FamilyMemberForm.familyPhoneNumber = value;
+      familyMemberForm.familyPhoneNumber = value;
     };
 
 		return {
       changedValue,
       formRef,
 			globalCode,
-			FamilyMemberForm,
+			familyMemberForm,
 			submitForm,
 			handleClear,
 			errorMsg,

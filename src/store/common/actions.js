@@ -175,9 +175,6 @@ export const searchTableData = async ({ commit }, search) => {
 				errorLogWithDeviceInfo(error);
 			}
       commit('errorMsg', error);
-      if (error.response.status === 500) {
-        // errorSwal(error.response.data.message)
-      }
       commit('loadingStatus', false)
       commit('loadingTableStatus', false)
     }
