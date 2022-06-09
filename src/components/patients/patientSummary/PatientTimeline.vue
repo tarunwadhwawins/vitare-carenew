@@ -24,6 +24,8 @@
               <FileTextOutlined class="blueIcon" v-if="timeline.type==6"/>
               <FlagOutlined class="redIcon" v-if="timeline.type==7"/>
               <PushpinOutlined class="greenIcon" v-if="timeline.type==8"/>
+              <MessageOutlined class="messageIcon" v-if="timeline.type==9"/>
+              <!-- <InfoCircleOutlined class="messageIcon" /> -->
             </template>
             <div class="timelineInner">
               <div class="timelineHeader">
@@ -61,6 +63,8 @@ import {
   ClockCircleOutlined,
   FileTextOutlined,
   PushpinOutlined,
+  MessageOutlined,
+  // InfoCircleOutlined,
   FlagOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons-vue";
@@ -81,6 +85,8 @@ export default {
     ClockCircleOutlined,
     FileTextOutlined,
     PushpinOutlined,
+    MessageOutlined,
+    // InfoCircleOutlined,
     FlagOutlined,
     CloseCircleOutlined,
     TableLoader
