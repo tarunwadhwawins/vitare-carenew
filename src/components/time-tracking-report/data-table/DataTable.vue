@@ -5,7 +5,7 @@
     </template>
     <template #typeOfService="{ record }">
         <span>{{record.typeOfService.name}} </span>
-        <p>{{record.device[0]?record.device[0].deviceType:record.vital[0].deviceType}}</p>
+        <p>{{record.device?.length>0?record.device[0]?.deviceType:record.vital[0]?.deviceType}}</p>
     </template>
     <template #cptCode="{ record }">
         <!-- <router-link :to="{ name: 'CptCodes', params: { udid: record.cptCode.id },query:{filter:filter} }">{{ record.cptCode.name }}</router-link> -->
