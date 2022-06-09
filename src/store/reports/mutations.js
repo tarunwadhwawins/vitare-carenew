@@ -11,7 +11,10 @@ export const cptCodes = (state, data) => {
 
  
  export const reportDetailList = (state, data) => {
+    //  console.log(data)
     state.reportDetailList = data
+    state.reportDetailList.device[0]['issueDate'] = dateOnlyFormat(data.device[0].issueDate,globalDateFormat)
+    state.reportDetailList.device[0]['setupDate' ]= dateOnlyFormat(data.device[0].setupDate,globalDateFormat)
  }
  
  
