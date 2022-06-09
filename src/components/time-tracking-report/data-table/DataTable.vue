@@ -31,10 +31,10 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, defineComponent,defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
 import { EyeOutlined } from "@ant-design/icons-vue";
-import RecordView from "../modals/ReportView";
+// import RecordView from "../modals/ReportView";
 import { useRoute } from "vue-router";
 const column = [
   {
@@ -106,10 +106,12 @@ const column = [
     },
   },
 ];
-export default {
+export default defineComponent({
   components: {
     EyeOutlined,
-    RecordView,
+    RecordView:defineAsyncComponent(() =>
+      import("../modals/ReportView")
+    ),
   },
   setup() {
     const store = useStore();
@@ -232,7 +234,7 @@ export default {
       dataList,
     };
   },
-};
+});
 </script>
 
 <style>
