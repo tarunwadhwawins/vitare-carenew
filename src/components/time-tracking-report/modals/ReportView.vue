@@ -89,6 +89,14 @@ export default defineComponent({
                 title: "MAC Address",
                 dataIndex: "macAddress",
             },
+            {
+                title: "Issue Date",
+                dataIndex: "issueDate",
+            },
+            {
+                title: "Setup Date",
+                dataIndex: "setupDate",
+            },
             //   {
             //     title: "Action",
             //     dataIndex: "action",

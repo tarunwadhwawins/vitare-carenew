@@ -1700,12 +1700,12 @@ unSelectedDiseasesList.value.push(healthCondition)
 
     function closeModal() {
       //current.value = 0
-      emit("saveModal", true)
-      emit("closeModal", {
-        modal: "editPatient",
-        value: true,
-      })
       if (isValueChanged.value || bitrixFormCheck.value) {
+        emit("saveModal", true)
+        emit("closeModal", {
+          modal: "editPatient",
+          value: true,
+        })
         warningSwal(messages.modalWarning).then((response) => {
           if (response == true) {
             store.commit("addDemographic", null);
@@ -1727,15 +1727,16 @@ unSelectedDiseasesList.value.push(healthCondition)
             store.state.patients.editPatientReferral = null;
           }
         });
-      } else {
-        common();
-        store.commit("resetCounter");
-        formRef.value.resetFields();
-        emit("saveModal", false)
+      }
+      else {
         emit("closeModal", {
           modal: "editPatient",
           value: false,
         })
+        emit("saveModal", false)
+        common();
+        store.commit("resetCounter");
+        formRef.value.resetFields();
       }
     }
 
