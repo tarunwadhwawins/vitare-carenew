@@ -17,7 +17,7 @@
         <span>{{(record.cptCode.billingAmout * record.numberOfUnit).toFixed(2)}}</span>
     </template>
     <template #action="{record}">
-        <a-tooltip placement="bottom" @click="showReportData(record.id,record.patient.id)">
+        <a-tooltip placement="bottom" @click="showReportData(record.id)">
             <template #title>
                 <span>{{ 'View' }}</span>
             </template>
@@ -125,10 +125,10 @@ export default {
       return store.state.reports.reportList;
     })
 
-    function showReportData(id,pId){
+    function showReportData(id){
          store.dispatch("reportDetailList",id)
-         store.dispatch("devices",pId)
         reportViewModal.value = true
+        
     }
 
     return {
