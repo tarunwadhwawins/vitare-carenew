@@ -76,16 +76,21 @@ export default defineComponent({
     mode:String,
     isColor:Boolean,
   },
-  setup() {
+  setup(props, { emit }) {
  
     const filterOption = (input, globalCode) => {
       console.log('globalCode', globalCode,input)
       return globalCode.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     };
 
+    const handleChange = () => {
+      emit('change')
+    }
+
     return {
       value: ref(undefined),
       filterOption,
+      handleChange,
     };
   },
 
