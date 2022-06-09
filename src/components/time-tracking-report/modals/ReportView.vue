@@ -131,7 +131,6 @@ export default defineComponent({
         })
 
        function closeModal(){
-           alert('hi')
         store.state.patients.bloodPressure =null
         store.state.patients.bloodOxygen =null
         store.state.patients.bloodGlucose = null
