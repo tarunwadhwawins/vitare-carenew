@@ -30,7 +30,7 @@
                         
                         <a-col :span="12">
                             <div class="text-right mb-24" >
-                                <!-- <ExportToExcel @click="exportExcel('','?fromDate=&toDate='+search)" /> -->
+                                <ExportToExcel @click="exportExcel('','?fromDate=&toDate='+search)" disabled />
                             </div>
                         </a-col>
                         <a-col :span="24">
@@ -53,7 +53,7 @@ import TableLoader from "@/components/loader/TableLoader";
 // import {arrayToObjact,exportExcel,timeStampFormate,globalDateFormat,dayWeekMonthdate} from "@/commonMethods/commonMethod";
 import DataTable from "./data-table/DataTable";
 import SearchField from "@/components/common/input/SearchField";
-// import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 // import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue";
 // import DateFilter from "@/components/common/DateFilter.vue";
 import { useStore } from "vuex";
@@ -62,7 +62,7 @@ export default {
     Header,
     Sidebar,
     DataTable,
-    // ExportToExcel,
+    ExportToExcel,
     SearchField,
     TableLoader,
     // PatientDropDown,

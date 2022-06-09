@@ -1,10 +1,11 @@
 <template>
-<a-table rowKey="id" :columns="column" :data-source="dataList" :scroll="{ x: 1500,y:'calc(100vh - 490px)' }" :pagination="false" @change="handleTableChange">
+<a-table rowKey="id" :columns="column" :data-source="dataList" :scroll="{ x: 1500,y:'calc(100vh - 390px)' }" :pagination="false" @change="handleTableChange">
     <template #patient="{ record }">
         <router-link :to="{ name: 'PatientSummary', params: { udid: record.patient.id },query:{filter:filter} }">{{ record.patient.patientFullName }}</router-link>
     </template>
     <template #typeOfService="{ record }">
-        <span>{{record.typeOfService.name}}</span>
+        <span>{{record.typeOfService.name}} </span>
+        <p>{{record.device[0]?record.device[0].deviceType:record.vital[0].deviceType}}</p>
     </template>
     <template #cptCode="{ record }">
         <!-- <router-link :to="{ name: 'CptCodes', params: { udid: record.cptCode.id },query:{filter:filter} }">{{ record.cptCode.name }}</router-link> -->
