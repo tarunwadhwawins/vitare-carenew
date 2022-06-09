@@ -9,4 +9,8 @@ export const reportList = (state, data) => {
  }
 
  
+ export const reportDetailList = (state, data) => {
+    state.reportDetailList = data
+ }
+ 
  

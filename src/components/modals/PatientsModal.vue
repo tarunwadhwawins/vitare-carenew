@@ -1305,7 +1305,10 @@ export default defineComponent({
         //Object.assign(emergencyContactForm, emergencyContact.value)
       }
       if (responsiblePerson.value) {
-        Object.assign(responsiblePersonForm, responsiblePerson.value[0]);
+        if(responsiblePerson.value.self) {
+          disableResponsiblePerson.value = true
+        }
+        Object.assign(responsiblePersonForm, responsiblePerson.value);
       }
       if (patients.value.addDemographic || patients.value.patientDetails) {
         Object.assign(
@@ -1330,7 +1333,7 @@ export default defineComponent({
         referalFormShow.value = false;
         emergencyContactShow.value = false;
         emergencyContactForm.sameAsPrimary = false;
-        responsiblePersonForm.self = false;
+        // responsiblePersonForm.self = false;
       }
       // }
     });
@@ -1684,7 +1687,7 @@ unSelectedDiseasesList.value.push(healthCondition)
       }
       isValueChanged.value = false;
       emergencyContactForm.sameAsPrimary = false;
-      responsiblePersonForm.self = false;
+      // responsiblePersonForm.self = false;
       Object.assign(demographics, form);
       Object.assign(responsiblePersonForm, responsiblePersonReactiveForm);
       Object.assign(referal, referalForm);
@@ -1830,7 +1833,7 @@ unSelectedDiseasesList.value.push(healthCondition)
         responsiblePersonForm.relation = relationId.value;
       } else {
         Object.assign(responsiblePersonForm, responsiblePersonReactiveForm);
-        responsiblePersonForm.self = false;
+        // responsiblePersonForm.self = false;
         disableResponsiblePerson.value = false;
       }
 
