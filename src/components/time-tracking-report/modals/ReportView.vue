@@ -9,7 +9,7 @@
     </a-row>
     <a-row v-else>
         <PatientVitalsGrid />
-    <Loader />
+        <Loader />
     </a-row>
 </a-modal>
 </template>
@@ -34,7 +34,7 @@ export default defineComponent({
     // DeleteOutlined,
     TableLoader,
     PatientVitalsGrid,
-    Loader
+    Loader,
   },
 
   setup(props, { emit }) {
@@ -64,13 +64,13 @@ export default defineComponent({
         title: "MAC Address",
         dataIndex: "macAddress",
       },
-    //   {
-    //     title: "Action",
-    //     dataIndex: "action",
-    //     slots: {
-    //       customRender: "action",
-    //     },
-    //   },
+      //   {
+      //     title: "Action",
+      //     dataIndex: "action",
+      //     slots: {
+      //       customRender: "action",
+      //     },
+      //   },
     ];
 
     const deleteDevice = (id) => {

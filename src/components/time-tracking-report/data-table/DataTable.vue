@@ -1,7 +1,7 @@
 <template>
 <a-table rowKey="id" :columns="column" :data-source="dataList" :scroll="{ x: 1500,y:'calc(100vh - 490px)' }" :pagination="false" @change="handleTableChange">
     <template #patient="{ record }">
-        <router-link :to="{ name: 'PatientSummary', params: { udid: record.patient.id },query:{filter:filter} }">{{ record.patient.name }}</router-link>
+        <router-link :to="{ name: 'PatientSummary', params: { udid: record.patient.id },query:{filter:filter} }">{{ record.patient.patientFullName }}</router-link>
     </template>
     <template #typeOfService="{ record }">
         <span>{{record.typeOfService.name}}</span>
