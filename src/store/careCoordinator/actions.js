@@ -218,6 +218,7 @@ export const updateContact = async ({ commit }, data) => {
   commit('loadingStatus', true)
   await serviceMethod.common("put", `staff/${data.id}/contact/${data.contactId}`, null, data.data).then((response) => {
     commit('loadingStatus', false)
+    commit('errorMsg', null);
     successSwal(response.data.message)
   }).catch((error) => {
     if (error.response) {
@@ -225,7 +226,7 @@ export const updateContact = async ({ commit }, data) => {
 			} else {
 				errorLogWithDeviceInfo(error);
 			}
-    commit('errorMsg', error);
+    commit('errorMsg', error.response.data);
     if(error.response.status === 500){
       // errorSwal(error.response.data.message)
     }
