@@ -51,11 +51,11 @@
                 <a-menu-item>
                     <FileTextOutlined /><span class="menuItem">{{$t('sidebar.auditTimeLog')}}</span></a-menu-item>
             </router-link>
-            <!-- <router-link to="/time-tracking-report">
+            <router-link to="/time-tracking-report">
                 <a-menu-item>
                     <FileTextOutlined /><span class="menuItem">{{$t('sidebar.reports')}}</span>
                 </a-menu-item>
-            </router-link> -->
+            </router-link>
 
             <router-link v-if="linkTo" :to="linkTo">
                 <a-menu-item>

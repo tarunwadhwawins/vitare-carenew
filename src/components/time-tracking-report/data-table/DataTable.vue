@@ -1,13 +1,14 @@
 <template>
 <a-table rowKey="id" :columns="column" :data-source="dataList" :scroll="{ x: 1500,y:'calc(100vh - 490px)' }" :pagination="false" @change="handleTableChange">
     <template #patient="{ record }">
-        <router-link :to="{ name: 'PatientSummary', params: { udid: record.patient.id },query:{filter:filter} }">{{ record.patient.name }}</router-link>
+        <router-link :to="{ name: 'PatientSummary', params: { udid: record.patient.id },query:{filter:filter} }">{{ record.patient.patientFullName }}</router-link>
     </template>
     <template #typeOfService="{ record }">
         <span>{{record.typeOfService.name}}</span>
     </template>
     <template #cptCode="{ record }">
-        <router-link :to="{ name: 'CptCodes', params: { udid: record.cptCode.id },query:{filter:filter} }">{{ record.cptCode.name }}</router-link>
+        <!-- <router-link :to="{ name: 'CptCodes', params: { udid: record.cptCode.id },query:{filter:filter} }">{{ record.cptCode.name }}</router-link> -->
+        <span>{{record.cptCode.name}}</span>
     </template>
     <template #billingAmout="{ record }">
         <span>{{record.cptCode.billingAmout}}</span>
@@ -35,12 +36,14 @@ import { EyeOutlined } from "@ant-design/icons-vue";
 import RecordView from "../modals/ReportView"
 const column = [
   {
-    title: "#ID",
-    dataIndex: "id",
+    title: "#",
+    dataIndex: "serviceId",
     sorter: true,
     //   slots: {
     //     customRender: "document",
     //   },
+    align: 'right',
+    width:'5%'
   },
   {
     title: "Patient Name",
@@ -49,9 +52,10 @@ const column = [
     slots: {
       customRender: "patient",
     },
+    
   },
   {
-    title: "Date of Billed",
+    title: "Date of Service",
     dataIndex: "billingDate",
     sorter: true,
   },
@@ -61,6 +65,7 @@ const column = [
     slots: {
       customRender: "typeOfService",
     },
+    sorter: true,
   },
   {
     title: "CPT Code",
@@ -69,27 +74,31 @@ const column = [
     slots: {
       customRender: "cptCode",
     },
+    align: 'right'
   },
   {
-    title: "Number of Units",
+    title: "#Units",
     dataIndex: "numberOfUnit",
     sorter: true,
+    align: 'right'
   },
   {
-    title: "CPT Code Fee",
+    title: "CPT Code Fee($)",
     dataIndex: "billingAmout",
     sorter: true,
     slots: {
       customRender: "billingAmout",
     },
+    align: 'right'
   },
   {
-    title: "Total Fee",
+    title: "Total Fee($)",
     // dataIndex: "TotalFee",
     sorter: true,
     slots: {
       customRender: "TotalFee",
     },
+    align: 'right'
   },
   {
     title: "Status",
@@ -117,8 +126,9 @@ export default {
     })
 
     function showReportData(id){
-        console.log(id)
+         store.dispatch("reportDetailList",id)
         reportViewModal.value = true
+        
     }
 
     return {
