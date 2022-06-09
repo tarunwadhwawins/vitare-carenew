@@ -153,9 +153,9 @@ export const patient = (state, data) => {
         element.flagTmeStamp = element.flagTmeStamp ? dateFormat(element.flagTmeStamp) : '',
         element.lastReadingDate = element.lastReadingDate ? element.lastReadingDate : '',
         element.weight = element.weight ? element.weight : '',
-        element.bp = element.patientVitals.length>0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'Systolic') { return JSON.parse(vitalData.value) } if (vitalData.vitalField == 'Diastolic') { return '/' + JSON.parse(vitalData.value) } }):'',
-        element.spo2 = element.patientVitals.length>0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'SPO2') { return JSON.parse(vitalData.value) } }):'',
-        element.glucose = element.patientVitals.length>0 ? element.patientVitals.data.map(vitalData => { if (vitalData.deviceType == 'Glucose') { return JSON.parse(vitalData.value) } }) : ''
+        element.bp = element.patientVitals.data.length > 0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'Systolic') { return JSON.parse(vitalData.value) } if (vitalData.vitalField == 'Diastolic') { return '/' + JSON.parse(vitalData.value) } }):'',
+        element.spo2 = element.patientVitals.data.length > 0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'SPO2') { return JSON.parse(vitalData.value) } }):'',
+        element.glucose = element.patientVitals.data.length > 0 ? element.patientVitals.data.map(vitalData => { if (vitalData.deviceType == 'Glucose') { return JSON.parse(vitalData.value) } }) : ''
 
         /* if(flagTimeStamp != null && flagTimeStamp != "") {
           const flagTimeDate = dateOnlyFormatSImple(flagTimeStamp)
@@ -498,16 +498,19 @@ export const patientDetails = (state, patient) => {
 
   state.patientDetails = patient
   state.patientDetails['phoneNumber'] = patient.user.data.patient.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
-  state.patientDetails['phoneNumber'] = patient.emergencyContact.data.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
+  state.patientDetails['phoneNumber'] = patient.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
 }
 
 export const responsiblePerson = (state, data) => {
-  data.gender = data.genderId;
-  data.relation = data.relationId;
-  data.self = data.self ? true : false;
+  const responsiblePerson = data.map(item => {
+    item.gender = item.genderId;
+    item.relation = item.relationId;
+    item.self = item.self ? true : false;
+    item.phoneNumber = data[0].phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
+    return item
+  })
 
-  state.responsiblePerson = data
-  state.responsiblePerson[0]['phoneNumber'] = data[0].phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
+  state.responsiblePerson = responsiblePerson[0]
 }
 
 export const emergencyContact = (state, data) => {
@@ -831,7 +834,6 @@ export const patientFlags = (state, count) => {
 }
 
 export const patientVitals = (state, vitals) => {
-  console.log('vitals',vitals)
   var timeArray = [];
   var vitalFieldsArray = [];
   var vitalsArray = [];
@@ -855,7 +857,7 @@ export const patientVitals = (state, vitals) => {
     const convertedResponse = convertResponse(timeArray, vitalsArray)
     const patientVitals = convertData(convertedResponse)
     const patientGraphData = convertChartResponse(vitalFieldsArray, vitalsArray)
-  
+
     vitalsArray.forEach(vital => {
       switch (vital.deviceType) {
         case 'Blood Pressure':
