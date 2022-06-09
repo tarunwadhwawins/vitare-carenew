@@ -1,3 +1,4 @@
+
 <template>
 <a-modal max-width="1140px" width="90%" title="Escalation Details" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24">
@@ -85,7 +86,7 @@
                                 </a-form-item>
                             </div>
                         </a-col>
-
+                        
                     </a-row>
                     <a-row :gutter="24">
                         <a-col :md="24" :sm="24" :xs="24" v-for="errMsg in errorMsg" :key="errMsg.id">
@@ -101,11 +102,6 @@
                                     <div class="form-group ">
                                         <a-form-item name="notesId" :rules="[{ required: false, message:'Notes'+' '+$t('global.validation') }]">
                                             <a-table rowKey="id" :row-selection="noteSelection" :columns="notesColumns" :data-source="notesList" :pagination="false">
-                                                <template #escalationStaff="{ record }">
-                                                    <span >
-                                                        <router-link :to="{ name: 'CoordinatorSummary', params: { udid: record.staffUdid } }">{{ record.staffName }}</router-link>
-                                                    </span>
-                                                </template>
                                                 <template #color="{ record }">
                                                     <a-tooltip placement="bottom">
                                                         <template #title>
@@ -190,716 +186,702 @@
     <Loader />
 </a-modal>
 </template>
-
 <script>
-import {
-    computed,
-    reactive,
-    ref
-} from "vue";
-import {
-    useStore
-} from "vuex";
+import { computed,reactive, ref } from "vue";
+import { useStore } from "vuex";
 import moment from "moment";
 import {
-    globalDateFormat,
-    timeStamp,
-    endTimeAdd,
-    warningSwal,
-    errorSwal,
-    successSwal,
-    startimeAdd,
+  globalDateFormat,
+  timeStamp,
+  endTimeAdd,
+  warningSwal,
+  errorSwal,
+  successSwal,
+  startimeAdd,
 } from "@/commonMethods/commonMethod";
 import DateFilter from "@/components/common/DateFilter.vue";
-import {
-    messages
-} from "@/config/messages";
+import { messages } from "@/config/messages";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch";
 import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue";
 import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue";
 import Flags from "@/components/common/flags/Flags";
-import {
-    useRoute
-} from "vue-router";
+import { useRoute } from "vue-router";
 import Loader from "@/components/loader/Loader.vue";
-const notesColumns = [{
-        title: "Select All",
-        dataIndex: "select",
-        key: "select",
-        slots: {
-            customRender: "select",
-        },
-        className: "note-select",
+const notesColumns = [
+  {
+    title: "Select All",
+    dataIndex: "select",
+    key: "select",
+    slots: {
+      customRender: "select",
     },
-    {
-        title: "Date",
-        dataIndex: "date",
-        key: "date",
-        className: "note-date",
+    className: "note-select",
+  },
+  {
+    title: "Date",
+    dataIndex: "date",
+    key: "date",
+    className: "note-date",
+  },
+  {
+    title: "Category",
+    dataIndex: "category",
+    key: "category",
+    className: "note-category",
+  },
+  {
+    title: "Type",
+    dataIndex: "type",
+    key: "type",
+    className: "note-type",
+  },
+  {
+    title: "Note",
+    dataIndex: "note",
+    key: "note",
+    className: "note-text",
+    ellipsis: true,
+  },
+  {
+    title: "Added By",
+    dataIndex: "addedBy",
+    key: "addedBy",
+  },
+  {
+    title: "Color",
+    dataIndex: "color",
+    slots: {
+      customRender: "color",
     },
-    {
-        title: "Category",
-        dataIndex: "category",
-        key: "category",
-        className: "note-category",
-    },
-    {
-        title: "Type",
-        dataIndex: "type",
-        key: "type",
-        className: "note-type",
-    },
-    {
-        title: "Note",
-        dataIndex: "note",
-        key: "note",
-        className: "note-text",
-        ellipsis: true,
-    },
-    {
-        title: "Added By",
-        dataIndex: "addedBy",
-        key: "addedBy",
-        slots: {
-            customRender: "escalationStaff",
-        },
-    },
-    {
-        title: "Color",
-        dataIndex: "color",
-        slots: {
-            customRender: "color",
-        },
-    },
+  },
 ];
 
-const vitalColumns = [{
-        title: "Select All",
-        dataIndex: "select",
-        key: "select",
-        slots: {
-            customRender: "select",
-        },
-        className: "vital-select",
+const vitalColumns = [
+  {
+    title: "Select All",
+    dataIndex: "select",
+    key: "select",
+    slots: {
+      customRender: "select",
     },
-    {
-        title: "Vital",
-        dataIndex: "vitalField",
-        key: "vitalField",
-        className: "vital-vitalField",
+    className: "vital-select",
+  },
+  {
+    title: "Vital",
+    dataIndex: "vitalField",
+    key: "vitalField",
+    className: "vital-vitalField",
+  },
+  {
+    title: "Device Type",
+    dataIndex: "deviceType",
+    key: "deviceType",
+    className: "vital-deviceType",
+  },
+  {
+    title: "Value",
+    dataIndex: "value",
+    key: "value",
+    className: "vital-value",
+  },
+  {
+    title: "Date",
+    dataIndex: "startTime",
+  },
+  {
+    title: "Color",
+    dataIndex: "color",
+    key: "color",
+    className: "vital-color",
+    slots: {
+      customRender: "color",
     },
-    {
-        title: "Device Type",
-        dataIndex: "deviceType",
-        key: "deviceType",
-        className: "vital-deviceType",
-    },
-    {
-        title: "Value",
-        dataIndex: "value",
-        key: "value",
-        className: "vital-value",
-    },
-    {
-        title: "Date",
-        dataIndex: "startTime",
-    },
-    {
-        title: "Color",
-        dataIndex: "color",
-        key: "color",
-        className: "vital-color",
-        slots: {
-            customRender: "color",
-        },
-    },
+  },
 ];
 
-const carePlanColumns = [{
-        title: "Select All",
-        dataIndex: "select",
-        key: "select",
-        slots: {
-            customRender: "select",
-        },
+const carePlanColumns = [
+  {
+    title: "Select All",
+    dataIndex: "select",
+    key: "select",
+    slots: {
+      customRender: "select",
     },
-    {
-        title: "Device",
-        dataIndex: "deviceType",
+  },
+  {
+    title: "Device",
+    dataIndex: "deviceType",
+  },
+  {
+    title: "Vital Type",
+    dataIndex: "vitalField",
+  },
+  {
+    title: "Start Date",
+    dataIndex: "startDate",
+  },
+  {
+    title: "End Date",
+    dataIndex: "endDate",
+  },
+  {
+    title: "Frequency",
+    dataIndex: "frequency",
+    slots: {
+      customRender: "frequency",
     },
-    {
-        title: "Vital Type",
-        dataIndex: "vitalField",
-    },
-    {
-        title: "Start Date",
-        dataIndex: "startDate",
-    },
-    {
-        title: "End Date",
-        dataIndex: "endDate",
-    },
-    {
-        title: "Frequency",
-        dataIndex: "frequency",
-        slots: {
-            customRender: "frequency",
-        },
-    },
-    {
-        title: "High Value",
-        dataIndex: "highValue",
-    },
-    {
-        title: "Low Value",
-        dataIndex: "lowValue",
-    },
-    {
-        title: "Note",
-        dataIndex: "note",
-    },
+  },
+  {
+    title: "High Value",
+    dataIndex: "highValue",
+  },
+  {
+    title: "Low Value",
+    dataIndex: "lowValue",
+  },
+  {
+    title: "Note",
+    dataIndex: "note",
+  },
 ];
-const flagColumns = [{
-        title: "Select All",
-        dataIndex: "select",
-        key: "select",
-        slots: {
-            customRender: "select",
-        },
+const flagColumns = [
+  {
+    title: "Select All",
+    dataIndex: "select",
+    key: "select",
+    slots: {
+      customRender: "select",
     },
-    {
-        title: "Name",
-        dataIndex: "name",
-        slots: {
-            customRender: "name",
-        },
+  },
+  {
+    title: "Name",
+    dataIndex: "name",
+    slots: {
+      customRender: "name",
     },
-    {
-        title: "Date",
-        dataIndex: "createdAt",
+  },
+  {
+    title: "Date",
+    dataIndex: "createdAt",
+  },
+  {
+    title: "Color",
+    dataIndex: "color",
+    slots: {
+      customRender: "color",
     },
-    {
-        title: "Color",
-        dataIndex: "color",
-        slots: {
-            customRender: "color",
-        },
-    },
+  },
 ];
 export default {
-    components: {
-        GlobalCodeDropDown,
-        StaffDropDown,
-        Flags,
-        PatientDropDown,
-        Loader,
-        DateFilter,
-    },
-    setup(props, {
-        emit
-    }) {
-        const store = useStore();
-        const route = useRoute();
-        const activeKey = ref([]);
-        const errorMsg = ref([]);
-        const button = ref(2);
-        const status = ref(false);
-        const formRef = ref();
-        const paramId = ref(route.params.udid);
-        const escalation = reactive({
-            escalationType: [],
-            escalationDescription: "",
-            flagId: "",
-            dueBy: "",
-            staffIds: [],
-            referenceId: route.params.udid,
+  components: {
+    GlobalCodeDropDown,
+    StaffDropDown,
+    Flags,
+    PatientDropDown,
+    Loader,
+    DateFilter,
+  },
+  setup(props, { emit }) {
+    const store = useStore();
+    const route = useRoute();
+    const activeKey = ref([]);
+    const errorMsg = ref([]);
+    const button = ref(2);
+    const status = ref(false);
+    const formRef = ref();
+    const paramId = ref(route.params.udid);
+    const escalation = reactive({
+      escalationType: [],
+      escalationDescription: "",
+      flagId: "",
+      dueBy: "",
+      staffIds: [],
+      referenceId: route.params.udid,
+      entityType: "patient",
+    });
+
+    const escalationDetails = reactive({
+      notesId: [],
+      vitalId: [],
+      carePlan: [],
+      flagIds: [],
+      summaryStart: "",
+      summaryEnd: "",
+    });
+
+    const patientDetails = computed(() => {
+      return store.state.patients.patientDetails;
+    });
+    const globalCode = computed(() => {
+      return store.state.common;
+    });
+    const flagsList = computed(() => {
+      return store.state.flags.flagsList;
+    });
+    const current = computed({
+      get: () => store.state.escalations.escalationCounter,
+      set: (value) => {
+        if (addEscalation.value && !value ==1) {
+          store.state.escalations.escalationCounter = value;
+        } else {
+          if (Object.values(escalation).filter((item) => item != "").length >= 7 || addEscalation.value) {
+            submitEscalationForm();
+          } else {
+            errorSwal("All fields(*) are required!");
+            store.state.escalations.escalationCounter = 0;
+          }
+        }
+      },
+    });
+    const next = () => {
+      store.commit("escalationCounterPlus");
+    };
+    const prev = () => {
+      store.commit("escalationCounterMinus");
+    };
+    const handleStaffChange = (val) => {
+      escalation.staffIds = val;
+      console.log(val);
+    };
+
+    const notesList = computed(() => {
+      return store.state.escalations.escalationNotesList;
+    });
+    const patientVitalList = computed(() => {
+      return store.state.escalations.escalationVitalList;
+    });
+
+    const addEscalation = computed(() => {
+      return store.state.escalations.addBasicEscalation;
+    });
+
+    const formEscalationDetails = reactive({
+      ...escalationDetails,
+    });
+
+    function submitEscalationForm() {
+      if (addEscalation.value == null) {
+        store
+          .dispatch("addBasicEscalation", {
+            escalationType: escalation.escalationType,
+            escalationDescription: escalation.escalationDescription,
+            flagId: escalation.flagId,
+            dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
+            staffIds: escalation.staffIds,
+            referenceId: escalation.referenceId
+              ? escalation.referenceId
+              : route.params.udid,
             entityType: "patient",
-        });
+          })
+          .then((response) => {
+            if (response == true) {
+              store
+                .dispatch("timeLine", {
+                  id: 123,
+                  commit: "timelineSuccess",
+                })
+                .then(() => {
+                  button.value = 123
+                  apiCall(timeLineButton.value);
+                });
+            }
+          });
+      } else {
+        store
+          .dispatch("updateBasicEscalation", {
+            escalationType: escalation.escalationType,
+            escalationDescription: escalation.escalationDescription,
+            flagId: escalation.flagId,
+            dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
+            staffIds: escalation.staffIds,
+            referenceId: escalation.referenceId
+              ? escalation.referenceId
+              : route.params.udid,
+            entityType: "patient",
+            escalationId: addEscalation.value.id,
+          })
+          .then((response) => {
+            if (response == true) {
+              store
+                .dispatch("timeLine", {
+                  id: 123,
+                  commit: "timelineSuccess",
+                })
+                .then(() => {
+                  button.value = 123
+                  apiCall(timeLineButton.value);
+                });
+            }
+          });
+        Object.assign(escalationDetails, formEscalationDetails);
+      }
+    }
 
-        const escalationDetails = reactive({
-            notesId: [],
-            vitalId: [],
-            carePlan: [],
-            flagIds: [],
-            summaryStart: "",
-            summaryEnd: "",
-        });
+    const form = reactive({
+      ...escalation,
+    });
 
-        const patientDetails = computed(() => {
-            return store.state.patients.patientDetails;
-        });
-        const globalCode = computed(() => {
-            return store.state.common;
-        });
-        const flagsList = computed(() => {
-            return store.state.flags.flagsList;
-        });
-        const current = computed({
-            get: () => store.state.escalations.escalationCounter,
-            set: (value) => {
-                if (addEscalation.value && !value == 1) {
-                    store.state.escalations.escalationCounter = value;
-                } else {
-                    if (Object.values(escalation).filter((item) => item != "").length >= 7 || addEscalation.value) {
-                        submitEscalationForm();
-                    } else {
-                        errorSwal("All fields(*) are required!");
-                        store.state.escalations.escalationCounter = 0;
-                    }
-                }
-            },
-        });
-        const next = () => {
-            store.commit("escalationCounterPlus");
-        };
-        const prev = () => {
-            store.commit("escalationCounterMinus");
-        };
-        const handleStaffChange = (val) => {
-            escalation.staffIds = val;
-            console.log(val);
-        };
+    function submitDetailsForm() {
+      var filter = route.query.filter ? "?filter=" + route.query.filter : "?filter="
+     var dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
+      errorMsg.value = [];
+      let check = true;
+      if (
+        escalationDetails.notesId.length == 0 &&
+        escalation.escalationType.includes(260)
+      ) {
+        check = false;
+        errorMsg.value.push("Notes Required.");
+      }
+      if (
+        escalationDetails.vitalId.length == 0 &&
+        escalation.escalationType.includes(259)
+      ) {
+        check = false;
+        errorMsg.value.push("Vitals Required.");
+      }
+      if (
+        escalationDetails.carePlan.length == 0 &&
+        escalation.escalationType.includes(262)
+      ) {
+        check = false;
+        errorMsg.value.push("Care plan Required.");
+      }
+      if (
+        escalationDetails.flagIds.length == 0 &&
+        escalation.escalationType.includes(261)
+      ) {
+        check = false;
+        errorMsg.value.push("Flags Required.");
+      } else if (check) {
+        store
+          .dispatch("addEscalationDetails", {
+            escalationDetails: escalationDetails,
+            escalationId: addEscalation.value.id,
+          })
+          .then((response) => {
+            if (response == true) {
+              successSwal("Data saved Successfully!");
+              emit("saveModal", false);
+              status.value = false;
+              if (route.name == "PatientSummary") {
+                store.dispatch("escalation", {
+                  referenceId: escalation.referenceId
+                    ? escalation.referenceId
+                    : route.params.udid,
+                  entityType: "patient",
+                });
+              } else {
+                store.dispatch("escalation" ,filter+dateFilter);
+              }
+              Object.assign(escalation, form);
+              store.commit("resetEscalationCounter");
+              store.commit("checkChangeInput", false);
+              store.state.escalations.addBasicEscalation = null;
+              Object.assign(escalationDetails, formEscalationDetails);
+              store
+                .dispatch("timeLine", {
+                  id: 122,
+                  commit: "timelineSuccess",
+                })
+                .then(() => {
+                  apiCall(timeLineButton.value);
+                });
+            }
+          });
+      }
+    }
 
-        const notesList = computed(() => {
-            return store.state.escalations.escalationNotesList;
-        });
-        const patientVitalList = computed(() => {
-            return store.state.escalations.escalationVitalList;
-        });
+    function checkChangeInput() {
+      store.commit("checkChangeInput", true);
+    }
+    const checkFieldsData = computed(() => {
+      return store.state.common.checkChangeInput;
+    });
 
-        const addEscalation = computed(() => {
-            return store.state.escalations.addBasicEscalation;
-        });
-
-        const formEscalationDetails = reactive({
-            ...escalationDetails,
-        });
-
-        function submitEscalationForm() {
-            if (addEscalation.value == null) {
-                store
-                    .dispatch("addBasicEscalation", {
-                        escalationType: escalation.escalationType,
-                        escalationDescription: escalation.escalationDescription,
-                        flagId: escalation.flagId,
-                        dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
-                        staffIds: escalation.staffIds,
-                        referenceId: escalation.referenceId ?
-                            escalation.referenceId :
-                            route.params.udid,
-                        entityType: "patient",
-                    })
-                    .then((response) => {
-                        if (response == true) {
-                            store
-                                .dispatch("timeLine", {
-                                    id: 123,
-                                    commit: "timelineSuccess",
-                                })
-                                .then(() => {
-                                    button.value = 123
-                                    apiCall(timeLineButton.value);
-                                });
-                        }
-                    });
+    const closeModal = () => {
+      emit("saveModal", true)
+      if (checkFieldsData.value) {
+        if (addEscalation.value) {
+          warningSwal(messages.modalWarning).then((response) => {
+            if (response == true) {
+              emit("saveModal", false);
+              Object.assign(escalation, form);
+              Object.assign(escalationDetails, formEscalationDetails);
+              store.commit("resetEscalationCounter");
+              store.commit("checkChangeInput", false);
+              store.dispatch("escalationDelete", addEscalation.value.id);
+              store.state.escalations.addBasicEscalation = null;
+              errorMsg.value = [];
             } else {
-                store
-                    .dispatch("updateBasicEscalation", {
-                        escalationType: escalation.escalationType,
-                        escalationDescription: escalation.escalationDescription,
-                        flagId: escalation.flagId,
-                        dueBy: timeStamp(endTimeAdd(moment(escalation.dueBy))),
-                        staffIds: escalation.staffIds,
-                        referenceId: escalation.referenceId ?
-                            escalation.referenceId :
-                            route.params.udid,
-                        entityType: "patient",
-                        escalationId: addEscalation.value.id,
-                    })
-                    .then((response) => {
-                        if (response == true) {
-                            store
-                                .dispatch("timeLine", {
-                                    id: 123,
-                                    commit: "timelineSuccess",
-                                })
-                                .then(() => {
-                                    button.value = 123
-                                    apiCall(timeLineButton.value);
-                                });
-                        }
-                    });
-                Object.assign(escalationDetails, formEscalationDetails);
+              emit("saveModal", true);
             }
-        }
-
-        const form = reactive({
-            ...escalation,
-        });
-
-        function submitDetailsForm() {
-            var filter = route.query.filter ? "?filter=" + route.query.filter : "?filter="
-            var dateFilter = route.query.fromDate && route.query.toDate ? "&fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate : "&fromDate=&toDate="
-            errorMsg.value = [];
-            let check = true;
-            if (
-                escalationDetails.notesId.length == 0 &&
-                escalation.escalationType.includes(260)
-            ) {
-                check = false;
-                errorMsg.value.push("Notes Required.");
-            }
-            if (
-                escalationDetails.vitalId.length == 0 &&
-                escalation.escalationType.includes(259)
-            ) {
-                check = false;
-                errorMsg.value.push("Vitals Required.");
-            }
-            if (
-                escalationDetails.carePlan.length == 0 &&
-                escalation.escalationType.includes(262)
-            ) {
-                check = false;
-                errorMsg.value.push("Care plan Required.");
-            }
-            if (
-                escalationDetails.flagIds.length == 0 &&
-                escalation.escalationType.includes(261)
-            ) {
-                check = false;
-                errorMsg.value.push("Flags Required.");
-            } else if (check) {
-                store
-                    .dispatch("addEscalationDetails", {
-                        escalationDetails: escalationDetails,
-                        escalationId: addEscalation.value.id,
-                    })
-                    .then((response) => {
-                        if (response == true) {
-                            successSwal("Data saved Successfully!");
-                            emit("saveModal", false);
-                            status.value = false;
-                            if (route.name == "PatientSummary") {
-                                store.dispatch("escalation", {
-                                    referenceId: escalation.referenceId ?
-                                        escalation.referenceId :
-                                        route.params.udid,
-                                    entityType: "patient",
-                                });
-                            } else {
-                                store.dispatch("escalation", filter + dateFilter);
-                            }
-                            Object.assign(escalation, form);
-                            store.commit("resetEscalationCounter");
-                            store.commit("checkChangeInput", false);
-                            store.state.escalations.addBasicEscalation = null;
-                            Object.assign(escalationDetails, formEscalationDetails);
-                            store
-                                .dispatch("timeLine", {
-                                    id: 122,
-                                    commit: "timelineSuccess",
-                                })
-                                .then(() => {
-                                    apiCall(timeLineButton.value);
-                                });
-                        }
-                    });
-            }
-        }
-
-        function checkChangeInput() {
-            store.commit("checkChangeInput", true);
-        }
-        const checkFieldsData = computed(() => {
-            return store.state.common.checkChangeInput;
-        });
-
-        const closeModal = () => {
-            emit("saveModal", true)
-            if (checkFieldsData.value) {
-                if (addEscalation.value) {
-                    warningSwal(messages.modalWarning).then((response) => {
-                        if (response == true) {
-                            emit("saveModal", false);
-                            Object.assign(escalation, form);
-                            Object.assign(escalationDetails, formEscalationDetails);
-                            store.commit("resetEscalationCounter");
-                            store.commit("checkChangeInput", false);
-                            store.dispatch("escalationDelete", addEscalation.value.id);
-                            store.state.escalations.addBasicEscalation = null;
-                            errorMsg.value = [];
-                        } else {
-                            emit("saveModal", true);
-                        }
-                    });
-                } else if (addEscalation.value == null) {
-                    warningSwal(messages.modalWarning).then((response) => {
-                        if (response == true) {
-                            emit("saveModal", false);
-                            Object.assign(escalation, form);
-                            Object.assign(escalationDetails, formEscalationDetails);
-                            store.commit("resetEscalationCounter");
-                            store.commit("checkChangeInput", false);
-                            store.state.escalations.addBasicEscalation = null;
-                            errorMsg.value = [];
-                        } else {
-                            emit("saveModal", true);
-                        }
-                    });
-                }
+          });
+        } else if (addEscalation.value == null) {
+          warningSwal(messages.modalWarning).then((response) => {
+            if (response == true) {
+              emit("saveModal", false);
+              Object.assign(escalation, form);
+              Object.assign(escalationDetails, formEscalationDetails);
+              store.commit("resetEscalationCounter");
+              store.commit("checkChangeInput", false);
+              store.state.escalations.addBasicEscalation = null;
+              errorMsg.value = [];
             } else {
-                formRef.value.resetFields();
-                emit("saveModal", false)
+              emit("saveModal", true);
             }
-        };
-
-        function escalationType(e) {
-            console.log("value", e);
+          });
         }
-        const carePlanList = computed(() => {
-            return store.state.escalations.esacalationCarePlansList;
-        });
-        const patientFlagList = computed(() => {
-            return store.state.escalations.esacalationFlagList;
-        });
+      } else {
+        formRef.value.resetFields();
+        emit("saveModal", false)
+      }
+    };
 
-        const timeLineButton = store.getters.dashboardTimeLineButton;
+    function escalationType(e) {
+      console.log("value", e);
+    }
+    const carePlanList = computed(() => {
+      return store.state.escalations.esacalationCarePlansList;
+    });
+    const patientFlagList = computed(() => {
+      return store.state.escalations.esacalationFlagList;
+    });
 
-        function showButton(id) {
-            console.log("gdfg", id);
-            button.value = id;
-            if (id != 126) {
-                apiCall(timeLineButton.value);
-            }
-        }
+    const timeLineButton = store.getters.dashboardTimeLineButton;
 
-        const handlePatientChange = (val) => {
-            escalation.referenceId = val;
-        };
+    function showButton(id) {
+      console.log("gdfg", id);
+      button.value = id;
+      if (id != 126) {
+        apiCall(timeLineButton.value);
+      }
+    }
 
-        let from = moment();
-        let to = moment();
-        const dateSelect = ref(null)
+    const handlePatientChange = (val) => {
+      escalation.referenceId = val;
+    };
 
-        function dateChange() {
+    let from = moment();
+    let to = moment();
+    const dateSelect = ref(null)
+    function dateChange() {
             dateSelect.value = moment(escalationDetails.summaryEnd).add(1, 'day')
         }
-
-        function changeDate() {
-            console.log("check", escalationDetails.summaryStart)
-            if (escalationDetails.summaryStart && escalationDetails.summaryEnd) {
-                let dateFormate = {
-                    fromDate: timeStamp(startimeAdd(moment(escalationDetails.summaryStart))),
-                    toDate: timeStamp(endTimeAdd(moment(escalationDetails.summaryEnd))),
-                };
-
-                if (route.params.udid && route.name == "PatientSummary") {
-                    store.dispatch("escalationNotesList", {
-                        id: route.params.udid,
-                        date: dateFormate,
-                    });
-                    store.dispatch("escalationVitalList", {
-                        id: route.params.udid,
-                        date: dateFormate,
-                    });
-                    store.dispatch("esacalationCarePlansList", {
-                        id: route.params.udid,
-                        date: dateFormate,
-                    });
-                    store.dispatch("esacalationFlagList", {
-                        id: route.params.udid,
-                        date: dateFormate,
-                    });
-                } else if (escalation.referenceId) {
-                    store.dispatch("escalationNotesList", {
-                        id: escalation.referenceId,
-                        date: dateFormate,
-                    });
-                    store.dispatch("escalationVitalList", {
-                        id: escalation.referenceId,
-                        date: dateFormate,
-                    });
-                    store.dispatch("esacalationCarePlansList", {
-                        id: escalation.referenceId,
-                        date: dateFormate,
-                    });
-                    store.dispatch("esacalationFlagList", {
-                        id: escalation.referenceId,
-                        date: dateFormate,
-                    });
-                }
-            }
-        }
-
-        function apiCall(data) {
-            let dateFormate = "";
-            if (data.globalCodeId == 122) {
-                from = moment();
-                to = moment().subtract(data.number, data.intervalType);
-            } else if (data.globalCodeId == 123) {
-                from = moment();
-
-                to = moment().subtract(data.number, data.intervalType);
-            } else if (data.globalCodeId == 124) {
-                from = moment();
-                to = moment().subtract(data.number, data.intervalType);
-            } else {
-                from = moment();
-                to = moment().subtract(data.number, data.intervalType);
-            }
-
-            if (data.globalCodeId == 122) {
-                dateFormate = {
-                    fromDate: from ? timeStamp(startimeAdd(from)) : "",
-                    toDate: to ? timeStamp(endTimeAdd(to)) : "",
-                };
-            } else {
-                dateFormate = {
-                    fromDate: timeStamp(startimeAdd(to)),
-                    toDate: timeStamp(endTimeAdd(from)),
-                };
-            }
-            if (route.params.udid && route.name == "PatientSummary") {
-                store.dispatch("escalationNotesList", {
-                    id: route.params.udid,
-                    date: dateFormate,
-                });
-                store.dispatch("escalationVitalList", {
-                    id: route.params.udid,
-                    date: dateFormate,
-                });
-                store.dispatch("esacalationCarePlansList", {
-                    id: route.params.udid,
-                    date: dateFormate,
-                });
-                store.dispatch("esacalationFlagList", {
-                    id: route.params.udid,
-                    date: dateFormate,
-                });
-            } else if (escalation.referenceId) {
-                store.dispatch("escalationNotesList", {
-                    id: escalation.referenceId,
-                    date: dateFormate,
-                });
-                store.dispatch("escalationVitalList", {
-                    id: escalation.referenceId,
-                    date: dateFormate,
-                });
-                store.dispatch("esacalationCarePlansList", {
-                    id: escalation.referenceId,
-                    date: dateFormate,
-                });
-                store.dispatch("esacalationFlagList", {
-                    id: escalation.referenceId,
-                    date: dateFormate,
-                });
-            }
-
-        }
-
-        const noteSelection = {
-            onChange: (selectedRowKeys) => {
-                escalationDetails.notesId = selectedRowKeys;
-            },
-        };
-        const vitalSelection = {
-            onChange: (selectedRowKeys) => {
-                escalationDetails.vitalId = selectedRowKeys;
-            },
+function changeDate (){
+  console.log("check",escalationDetails.summaryStart)
+  if(escalationDetails.summaryStart && escalationDetails.summaryEnd){
+let dateFormate = {
+          fromDate: timeStamp(startimeAdd(moment(escalationDetails.summaryStart))),
+          toDate: timeStamp(endTimeAdd(moment(escalationDetails.summaryEnd))),
         };
 
-        const carePlanSelection = {
-            onChange: (selectedRowKeys) => {
-                escalationDetails.carePlan = selectedRowKeys;
-            },
-        };
-
-        const flagSelection = {
-            onChange: (selectedRowKeys) => {
-                escalationDetails.flagIds = selectedRowKeys;
-            },
-        };
-
-        const editDataStaff = computed(() => {
-            return store.state.escalations.editEscalationStaff;
+        if (route.params.udid && route.name == "PatientSummary") {
+        store.dispatch("escalationNotesList", {
+          id: route.params.udid,
+          date: dateFormate,
         });
-
-        const editDataPatient = computed(() => {
-            return store.state.escalations.editEscalationPatient;
+        store.dispatch("escalationVitalList", {
+          id: route.params.udid,
+          date: dateFormate,
         });
+        store.dispatch("esacalationCarePlansList", {
+          id: route.params.udid,
+          date: dateFormate,
+        });
+        store.dispatch("esacalationFlagList", {
+          id: route.params.udid,
+          date: dateFormate,
+        });
+      } else if (escalation.referenceId) {
+        store.dispatch("escalationNotesList", {
+          id: escalation.referenceId,
+          date: dateFormate,
+        });
+        store.dispatch("escalationVitalList", {
+          id: escalation.referenceId,
+          date: dateFormate,
+        });
+        store.dispatch("esacalationCarePlansList", {
+          id: escalation.referenceId,
+          date: dateFormate,
+        });
+        store.dispatch("esacalationFlagList", {
+          id: escalation.referenceId,
+          date: dateFormate,
+        });
+      }
+  }
+}
+    function apiCall(data) {
+      let dateFormate = "";
+      if (data.globalCodeId == 122) {
+        from = moment();
+        to = moment().subtract(data.number, data.intervalType);
+      } else if (data.globalCodeId == 123) {
+        from = moment();
 
-        return {
-            editDataPatient,
-            editDataStaff,
-            formRef,
-            errorMsg,
-            formEscalationDetails,
-            paramId,
-            handlePatientChange,
-            timeline: store.getters.timeline,
-            Buttons: store.getters.dashboardTimeLineButton,
-            flagSelection,
-            carePlanSelection,
-            vitalSelection,
-            noteSelection,
-            status,
-            form,
-            checkFieldsData,
-            checkChangeInput,
-            button,
-            showButton,
-            addEscalation,
-            escalation,
-            flagColumns,
-            patientFlagList,
-            carePlanColumns,
-            carePlanList,
-            activeKey,
-            escalationType,
-            submitDetailsForm,
-            submitEscalationForm,
-            vitalColumns,
-            patientVitalList,
-            notesColumns,
-            closeModal,
-            notesList,
-            handleStaffChange,
-            globalDateFormat,
-            moment,
-            flagsList,
-            globalCode,
-            escalationDetails,
-            current,
-            next,
-            prev,
-            patientDetails,
-            changeDate,
-            dateSelect,
-            dateChange,
-            size: ref("large"),
-            steps: [{
-                    title: "Escalation Info",
-                    content: "First-content",
-                },
-                {
-                    title: "Details",
-                    content: "Second-content",
-                },
-            ],
+        to = moment().subtract(data.number, data.intervalType);
+      } else if (data.globalCodeId == 124) {
+        from = moment();
+        to = moment().subtract(data.number, data.intervalType);
+      } else {
+        from = moment();
+        to = moment().subtract(data.number, data.intervalType);
+      }
+
+      if (data.globalCodeId == 122) {
+        dateFormate = {
+          fromDate: from ? timeStamp(startimeAdd(from)) : "",
+          toDate: to ? timeStamp(endTimeAdd(to)) : "",
         };
-    },
+      } else {
+        dateFormate = {
+          fromDate: timeStamp(startimeAdd(to)),
+          toDate: timeStamp(endTimeAdd(from)),
+        };
+      }
+      if (route.params.udid && route.name == "PatientSummary") {
+        store.dispatch("escalationNotesList", {
+          id: route.params.udid,
+          date: dateFormate,
+        });
+        store.dispatch("escalationVitalList", {
+          id: route.params.udid,
+          date: dateFormate,
+        });
+        store.dispatch("esacalationCarePlansList", {
+          id: route.params.udid,
+          date: dateFormate,
+        });
+        store.dispatch("esacalationFlagList", {
+          id: route.params.udid,
+          date: dateFormate,
+        });
+      } else if (escalation.referenceId) {
+        store.dispatch("escalationNotesList", {
+          id: escalation.referenceId,
+          date: dateFormate,
+        });
+        store.dispatch("escalationVitalList", {
+          id: escalation.referenceId,
+          date: dateFormate,
+        });
+        store.dispatch("esacalationCarePlansList", {
+          id: escalation.referenceId,
+          date: dateFormate,
+        });
+        store.dispatch("esacalationFlagList", {
+          id: escalation.referenceId,
+          date: dateFormate,
+        });
+      }
+    
+    }
+
+    const noteSelection = {
+      onChange: (selectedRowKeys) => {
+        escalationDetails.notesId = selectedRowKeys;
+      },
+    };
+    const vitalSelection = {
+      onChange: (selectedRowKeys) => {
+        escalationDetails.vitalId = selectedRowKeys;
+      },
+    };
+
+    const carePlanSelection = {
+      onChange: (selectedRowKeys) => {
+        escalationDetails.carePlan = selectedRowKeys;
+      },
+    };
+
+    const flagSelection = {
+      onChange: (selectedRowKeys) => {
+        escalationDetails.flagIds = selectedRowKeys;
+      },
+    };
+
+    const editDataStaff = computed(() => {
+      return store.state.escalations.editEscalationStaff;
+    });
+
+    const editDataPatient = computed(() => {
+      return store.state.escalations.editEscalationPatient;
+    });
+
+    return {
+      editDataPatient,
+      editDataStaff,
+      formRef,
+      errorMsg,
+      formEscalationDetails,
+      paramId,
+      handlePatientChange,
+      timeline: store.getters.timeline,
+      Buttons: store.getters.dashboardTimeLineButton,
+      flagSelection,
+      carePlanSelection,
+      vitalSelection,
+      noteSelection,
+      status,
+      form,
+      checkFieldsData,
+      checkChangeInput,
+      button,
+      showButton,
+      addEscalation,
+      escalation,
+      flagColumns,
+      patientFlagList,
+      carePlanColumns,
+      carePlanList,
+      activeKey,
+      escalationType,
+      submitDetailsForm,
+      submitEscalationForm,
+      vitalColumns,
+      patientVitalList,
+      notesColumns,
+      closeModal,
+      notesList,
+      handleStaffChange,
+      globalDateFormat,
+      moment,
+      flagsList,
+      globalCode,
+      escalationDetails,
+      current,
+      next,
+      prev,
+      patientDetails,
+      changeDate,
+      dateSelect,
+      dateChange,
+      size: ref("large"),
+      steps: [
+        {
+          title: "Escalation Info",
+          content: "First-content",
+        },
+        {
+          title: "Details",
+          content: "Second-content",
+        },
+      ],
+    };
+  },
 };
 </script>
 
 <style lang="scss">
 .dangerValue {
-    padding: 5px;
-    background-color: #f03131f3;
-    color: #fff;
+  padding: 5px;
+  background-color: #f03131f3;
+  color: #fff;
 }
 
 .errorMsg {
-    color: #f03131f3;
+  color: #f03131f3;
 }
 </style>
