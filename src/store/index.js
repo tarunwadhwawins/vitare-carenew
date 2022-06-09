@@ -31,6 +31,7 @@ import { businessDashboard } from "./businessDashboard/index"
 import { clinicalDashboard } from "./clinicalDashboard/index"
 import { referral } from "./referral/index"
 import {escalations} from "./escalations/index"
+import {reports} from "./reports/index"
 export default createStore({
   modules: {
     dashBoard,
@@ -63,7 +64,8 @@ export default createStore({
     businessDashboard,
     clinicalDashboard,
     referral,
-    escalations
+    escalations,
+    reports
   },
   plugins: [ createPersistedState({
     reducer(state) {

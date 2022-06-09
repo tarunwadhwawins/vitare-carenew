@@ -1,6 +1,6 @@
 <template>
 <div class="patientTable">
-    <a-table rowKey="id" :columns="meta.column" :data-source="meta.patientList" :scroll="{ x: 1500,y:'calc(100vh - 490px)' }" :pagination="false" @change="handleTableChange">
+    <a-table rowKey="id" :columns="meta.column" :data-source="meta.patientList" :scroll="{ x: 1500,y:'calc(100vh - 516px)' }" :pagination="false" @change="handleTableChange">
         <template #fullName="{ text, record }" v-if="arrayToObjact(screensPermissions, 63)">
             <router-link :to="{ name: 'PatientSummary', params: { udid: record.id },query:{filter:filter} }">{{ text }}</router-link>
 
@@ -14,7 +14,7 @@
                     <span>{{ record.flagName }}</span>
                 </template>
                 <a class="icons">
-                    <Flags :flag="record.flagColor" /></a>
+                    <Flags :flag="record.flagColor" :data="record" /></a>
             </a-tooltip>
         </template>
         <template #patientVitals>

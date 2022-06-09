@@ -12,14 +12,14 @@
                         <a-col :sm="24" :xs="24" v-show="!paramId">
                             <div class="form-group">
                                 <a-form-item label="Patient" name="referenceId" :rules="[{ required: true, message: 'Patient'+' '+$t('global.validation')  }]">
-                                    <PatientDropDown @change="checkChangeInput($event)" :editDataPatient="editDataPatient" v-model:value="escalation.referenceId" @handlePatientChange="handlePatientChange($event)" :close="closeValue" />
+                                    <PatientDropDown :editDataPatient="editDataPatient" v-model:value="escalation.referenceId" @handlePatientChange="handlePatientChange($event);checkChangeInput()" :close="closeValue" />
                                 </a-form-item>
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item label="Escalation Type" name="escalationType" :rules="[{ required: true, message: 'Escalation Type'+' '+$t('global.validation')  }]">
-                                    <GlobalCodeDropDown @change="checkChangeInput($event)" mode="multiple" v-model:value="escalation.escalationType" :globalCode="globalCode.escalationType" />
+                                    <GlobalCodeDropDown @change="checkChangeInput()" mode="multiple" v-model:value="escalation.escalationType" :globalCode="globalCode.escalationType" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -34,7 +34,7 @@
                         <a-col :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item label="Assign To" name="staffIds" :rules="[{ required: true, message: 'Staff'+' '+$t('global.validation')  }]">
-                                    <StaffDropDown @change="checkChangeInput()" :editDataStaff="editDataStaff" mode="multiple" v-model:value="escalation.staffIds" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
+                                    <StaffDropDown :editDataStaff="editDataStaff" mode="multiple" v-model:value="escalation.staffIds" @handleStaffChange="handleStaffChange($event);checkChangeInput()" :close="closeValue" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -69,7 +69,7 @@
                     <a-row :gutter="24">
                         <a-col :xl="24" :xs="24" style="padding:20px;">
                             <div class="pageTittle">
-                                <DateFilter :Buttons="Buttons" @clickButtons="showButton($event)" :custom="true" commit="timelineSuccess" />
+                                <DateFilter :Buttons="Buttons" @clickButtons="showButton($event);checkChangeInput()" :custom="true" commit="timelineSuccess" />
                             </div>
                         </a-col>
                         <a-col :sm="12" :xs="24" v-if="button ==126">
@@ -81,7 +81,7 @@
                         </a-col>
                         <a-col :sm="12" :xs="24" v-if="button ==126">
                             <div class="form-group">
-                                <a-form-item label="Summary end" name="summaryEnd" :rules="[{ required: false, message: 'Due Date'+' '+$t('global.validation')  }]">
+                                <a-form-item label="Summary End" name="summaryEnd" :rules="[{ required: false, message: 'Due Date'+' '+$t('global.validation')  }]">
                                     <a-date-picker :disabledDate="d => !d || d.isSameOrBefore(escalationDetails.summaryStart)" v-model:value="escalationDetails.summaryEnd" :format="globalDateFormat" :value-format="globalDateFormat" :size="size" style="width: 100%" @change="checkChangeInput(); changeDate();dateChange();" />
                                 </a-form-item>
                             </div>
@@ -313,15 +313,15 @@ const carePlanColumns = [
     dataIndex: "deviceType",
   },
   {
-    title: "Vital type",
+    title: "Vital Type",
     dataIndex: "vitalField",
   },
   {
-    title: "Start date",
+    title: "Start Date",
     dataIndex: "startDate",
   },
   {
-    title: "End date",
+    title: "End Date",
     dataIndex: "endDate",
   },
   {
@@ -593,15 +593,15 @@ export default {
 
     }
 
-    function checkChangeInput(val) {
+    function checkChangeInput() {
       store.commit("checkChangeInput", true);
-      console.log(val);
     }
     const checkFieldsData = computed(() => {
       return store.state.common.checkChangeInput;
     });
 
     const closeModal = () => {
+      emit("saveModal", true)
       if (checkFieldsData.value) {
         if (addEscalation.value) {
           warningSwal(messages.modalWarning).then((response) => {
@@ -635,6 +635,7 @@ export default {
         }
       } else {
         formRef.value.resetFields();
+        emit("saveModal", false)
       }
     };
 

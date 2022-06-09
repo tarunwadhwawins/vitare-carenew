@@ -1697,6 +1697,11 @@ unSelectedDiseasesList.value.push(healthCondition)
 
     function closeModal() {
       //current.value = 0
+      emit("saveModal", true)
+      emit("closeModal", {
+        modal: "editPatient",
+        value: true,
+      })
       if (isValueChanged.value || bitrixFormCheck.value) {
         warningSwal(messages.modalWarning).then((response) => {
           if (response == true) {
@@ -1723,6 +1728,11 @@ unSelectedDiseasesList.value.push(healthCondition)
         common();
         store.commit("resetCounter");
         formRef.value.resetFields();
+        emit("saveModal", false)
+        emit("closeModal", {
+          modal: "editPatient",
+          value: false,
+        })
       }
     }
 

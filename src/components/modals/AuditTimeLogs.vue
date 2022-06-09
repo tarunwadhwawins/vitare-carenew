@@ -40,7 +40,7 @@
                 </div>
             </a-col>
             <a-col :sm="24" :md="24" :span="24">
-                <ModalButtons :Id="Id" @is_cancel="closeModal($event)" :disableButton="disableButton" />
+                <ModalButtons :Id="Id" @is_cancel="closeModal" :disableButton="disableButton" />
             </a-col>
         </a-row>
     </a-form>
@@ -147,20 +147,21 @@ export default defineComponent({
     });
 
     function checkChangeInput() {
-        disableButton.value = false;
-        store.commit("checkChangeInput", true);
+      if(timeLogReports.value.note != auditTimeLog.note || timeLogReports.value.flag != auditTimeLog.flag || timeLogReports.value.timeAmount != auditTimeLog.timeAmount){
+        disableButton.value = false
+        store.commit("checkChangeInput", true)
+      }else{
+        disableButton.value = true
+        store.commit("checkChangeInput", false)
+      }
     }
 
     
     const checkFieldsData = computed(() => {
       return store.state.common.checkChangeInput;
     });
-    const closeModal = (event) => {
-      if(event){
-        emit("saveAuditTimeLog", false);
-        
-      }
-      
+    const closeModal = () => {
+      emit("saveAuditTimeLog", true)
       if (checkFieldsData.value) {
         warningSwal(messages.modalWarning).then((response) => {
           if (response == true) {
@@ -173,8 +174,10 @@ export default defineComponent({
             disableButton.value = false;
           }
         });
-      } else {
-        store.commit("checkChangeInput", false);
+      }
+      else {
+        emit("saveAuditTimeLog", false)
+        store.commit("checkChangeInput", false)
       }
     };
 

@@ -245,7 +245,7 @@
     <TasksModal v-model:visible="tasksModal" @saveTaskModal="handleTaskOk($event)" />
     <PatientsModal v-model:visible="PatientsModal" @saveModal="closeAppointModal($event)" />
     <!-- <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" /> -->
-    <AddStartCall v-model:visible="AddStartCall" @ok="closeStartCallModal" @is-visibale="showStartCallModal($event)" />
+    <AddStartCall v-model:visible="AddStartCall" @ok="closeStartCallModal" @is-visible="showStartCallModal($event)" />
     <SendMessage v-model:visible="SendMessage" @ok="startOk" />
     <!---->
     <AppointmentDetails v-if="isAppointment" v-model:visible="isAppointment" @closeModal="closeModal(event)" />

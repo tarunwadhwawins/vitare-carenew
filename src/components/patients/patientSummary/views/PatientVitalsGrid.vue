@@ -1,5 +1,12 @@
 <template>
-  <a-row :gutter="24">
+  <a-row :gutter="24" v-bind:class="vitalGrid">
+
+    <template v-if="!patientDevices || patientDevices.length == 0">
+      <a-col :sm="24">
+        <a-alert message="No devices are assigned to this Patient. Please assign device(s) to see Vitals." type="error" />
+      </a-col>
+    </template>
+    
     <template v-for="device in patientDevices" :key="device.id">
       
       <VitalsGrid
@@ -34,12 +41,6 @@
         :chartSeries="bloodOxygenSeries"
         @showModal="showAddBloodOxygenModal"
       />
-    </template>
-
-    <template v-if="patientDevices && patientDevices.length == 0">
-      <a-col :sm="24">
-        <a-alert message="No devices are assigned to this Patient. Please assign device(s) to see Vitals." type="error" />
-      </a-col>
     </template>
 
   </a-row>
@@ -229,6 +230,7 @@ export default {
 
       patientDevices,
       showVitals,
+      vitalGrid:'vitalGrid',
     }
   }
 }
@@ -240,5 +242,9 @@ export default {
     background: #f6c9af;
     padding: 15px;
     font-size: 16px !important;
+  }
+  .vitalGrid {
+    margin-left: 5px !important;
+    margin-right: 5px !important;
   }
 </style>

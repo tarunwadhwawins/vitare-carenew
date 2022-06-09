@@ -172,7 +172,7 @@
     <!---->
 </div>
  <ResetPassword v-model:visible="resetPasswordVisible" @saveModal="saveModal($event)" endPoint="staff" :id="paramId"/>
-<PersonalInformation v-model:visible="visibleEditStaff" @saveModal="editStaffCloseModal($event)" />
+<PersonalInformation v-if="visibleEditStaff" v-model:visible="visibleEditStaff" @saveModal="editStaffCloseModal($event)" />
 <TableLoader />
 </template>
 

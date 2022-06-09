@@ -160,6 +160,26 @@ export function dateOnlyFormatSImple(timeStamp) {
 	return day.format('yyyy-MM-DD');
 }
 
+// Date for getting this format yyyy-MM-DD pass timeStamp
+export function fullDateTimeFormat(timeStamp) {
+	var day = moment.unix(new Date(timeStamp));
+	return day.format('yyyy-MM-DD HH:mm:ss');
+	// return day.format('yyyy-MM-DD HH:mm:ss');
+}
+
+// Date for getting this format yyyy-MM-DD pass timeStamp
+export function hoursDateTimeFormat(timeStamp) {
+	var day = moment.unix(new Date(timeStamp));
+	return day.format('yyyy-MM-DD HH');
+	// return day.format('yyyy-MM-DD HH:mm:ss');
+}
+
+// Date for getting this format yyyy-MM-DD pass timeStamp
+export function hourOnlyFormat(date) {
+	var day = moment.unix(date);
+	return day.format('HH');
+}
+
 export function timeFormatSimple(timeStamp) {
 	var day = moment.unix(new Date(timeStamp));
 	return day.format('HH:mm');
@@ -529,14 +549,33 @@ export function convertChartResponse(vitaldFieldsArray, recordsArray) {
 			let valuesObject = {
 				name: vitalField,
 				data: recordList.map((item) => {
-					return item.value;
+					// return item.value;
+					// const value = item.value+' At '+apexFormat(item.takeTime)
+					const value = {
+						x: dateFormat(item.takeTime),
+						y: item.value
+					}
+					return value
 				})
 			};
 			records.push(valuesObject);
 		}
 	});
+	
+	const recordsList = records.sort((a, b) => {
+		let fa = a.name.toLowerCase(),
+		fb = b.name.toLowerCase();
+		if (fa > fb) {
+			return -1;
+		}
+		if (fa < fb) {
+			return 1;
+		}
+		return 0;
+	})
+	
 	return {
-		records,
+		records: recordsList,
 		timesArray
 	};
 }

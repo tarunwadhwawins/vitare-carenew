@@ -83,8 +83,7 @@ import { useStore } from "vuex";
 import { timeStampLocal } from "@/commonMethods/commonMethod";
 import { useRoute } from "vue-router";
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
-import { warningSwal, globalDateFormat } from "@/commonMethods/commonMethod";
-import { messages } from "@/config/messages";
+import { globalDateFormat } from "@/commonMethods/commonMethod";
 import moment from "moment";
 // import Loader from "@/components/loader/Loader";
 // import { CloseOutlined } from "@ant-design/icons-vue";
@@ -137,27 +136,8 @@ export default defineComponent({
 
     const changedValue = () => {
       isValueChanged.value = true;
+      emit("valueChanged", isValueChanged.value);
     };
-
-    function onCloseModal() {
-      if (isValueChanged.value) {
-        warningSwal(messages.modalWarning).then((response) => {
-          if (response == true) {
-            emit("closeModal", {
-              modal: "addNote",
-              value: false,
-            });
-            Object.assign(addNoteForm, form);
-            isValueChanged.value = false;
-          } else {
-            emit("closeModal", {
-              modal: "addNote",
-              value: true,
-            });
-          }
-        });
-      }
-    }
 
     const handleClear = () => {
       formRef.value.resetFields();
@@ -204,7 +184,6 @@ export default defineComponent({
       noteCategories,
       isValueChanged,
       changedValue,
-      onCloseModal,
       flagsList,
       globalDateFormat,
     };

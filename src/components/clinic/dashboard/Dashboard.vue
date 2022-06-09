@@ -302,6 +302,7 @@ export default {
         onUnmounted(() => {
             store.state.escalations.escalation = ''
             store.state.tasks.task = ''
+            
         })
         return {
             editTask,

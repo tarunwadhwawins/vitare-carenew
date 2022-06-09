@@ -20,7 +20,7 @@
                                     </div>
                                     <div class="radioInput" v-else>
 
-                                        <a-radio :value="role.udid">{{ role.name}}</a-radio>
+                                        <a-radio @change="checkChangeInput()" :value="role.udid">{{ role.name}}</a-radio>
                                     </div>
                                 </template>
                             </a-radio-group>
@@ -385,6 +385,7 @@ export default {
         })
 
         function closeModal() {
+            emit("is-visible", true)
             if (checkFieldsData.value) {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
@@ -397,6 +398,7 @@ export default {
                 });
             } else {
                 reset()
+                emit("is-visible", false)
             }
         }
 

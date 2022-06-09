@@ -2,7 +2,7 @@ export const messages={
     //alert messages
     resetPassword:'You want to reset password.',
     warning:'Are you sure ?',
-    deleteWarning:'Do you want to Delete ?',
+    deleteWarning:'Are you sure you want to delete?',
     restoreWarning:'Do you want to Restore ?',
     modalWarning:'Are you sure you want to discard your changes?',
     formSuccess:'Data successfully added!',

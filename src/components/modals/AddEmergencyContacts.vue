@@ -188,6 +188,10 @@ export default {
     };
 
     function closeModal() {
+      emit("closeModal", {
+        modal: "addEmergencyContact",
+        value: true,
+      });
       if (isValueChanged.value) {
         warningSwal(messages.modalWarning).then((response) => {
           if (response == true) {
@@ -207,6 +211,10 @@ export default {
       }else{
          isValueChanged.value = false;
 handleClear()
+        emit("closeModal", {
+          modal: "addEmergencyContact",
+          value: false,
+        });
       }
     }
 

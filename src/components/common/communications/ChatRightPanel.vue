@@ -29,18 +29,21 @@
     </div>
 
     <div class="body">
+      <!-- <a-row :gutter="24"> -->
+        <!-- <a-col :span="24"> -->
+          <!-- <Pins v-if="patientPins && patientPins.length > 0" :patientPins="patientPins" :patientUdid="patientUdid" /> -->
+        <!-- </a-col> -->
+      <!-- </a-row> -->
       <a-row :gutter="24">
         <a-col :span="24">
-          <Pins v-if="patientPins && patientPins.length > 0" :patientPins="patientPins" :patientUdid="patientUdid" />
-        </a-col>
-      </a-row>
-      <a-row>
+        <Pins v-if="patientPins && patientPins.length > 0" :patientPins="patientPins" :patientUdid="patientUdid" />
         <PatientTimeline v-if="timelineDetailVisible == true" :isCommunication="true" :profileId="patientUdid" className="thumbDesc patientTimeline"/>
         <NotesDetail v-if="notesDetailVisible == true" :isCommunication="true" :patientId="patientUdid" />
         <DocumentDetail v-if="documentDetailVisible == true" :isCommunication="true" :patientId="patientUdid" />
         <PatientVitalsGrid v-if="patientVitalsVisible == true" :isCommunication="true" :patientId="patientUdid" />
         <AppointmentsTable v-if="patientAppointmentsVisible == true" :patientId="patientUdid" />
         <AddPin v-model:visible="addPinModalVisible" :patientUdid="patientUdid" @closeModal="closeModal"/>
+        </a-col>
       </a-row>
     </div>
 
@@ -202,6 +205,7 @@ export default {
       if(isCommunicationWithPatient.value) {
         store.dispatch("timeLineType")
       }
+      store.dispatch("program", patientUdid)
     })
 
     const list = store.getters.communicationRecord.value

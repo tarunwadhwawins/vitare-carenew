@@ -127,8 +127,9 @@ export default {
                     }).then(() => {
                         apiCall(timeLineButton.value)
                     })
-
-                } else {
+                    
+                } 
+                else {
                     apiCall(timeLineButton.value)
                 }
            // }
@@ -209,7 +210,7 @@ export default {
 
         function apiCall(data) {
             let dateFormate = dayWeekMonthdate(data)
-            store.dispatch("patientFlags", dateFormate)
+            // store.dispatch("patientFlags", dateFormate)
             //store.dispatch("counterCard", dateFormate)
 
             store.commit("dateFilter", dateFormate)
