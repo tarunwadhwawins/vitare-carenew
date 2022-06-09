@@ -6,7 +6,7 @@
               <div class="form-group">
                   <a-form-item :label="$t('patient.programs.program')" name="program" :rules="[{ required: true, message: $t('patient.programs.program')+' '+$t('global.validation') }]">
                       <GlobalCodeDropDown v-model:value="program.program" :globalCode="patients.programList" @change="changedValue"/>
-                      <ErrorMessage v-if="errorMsg" :name="errorMsg.program?errorMsg.program[0]:''" />
+                      <ErrorMessage v-if="errorMsg" :name="errorMsg.program ? errorMsg.program[0] : ''" />
                   </a-form-item>
               </div>
           </a-col>
@@ -108,6 +108,7 @@ export default defineComponent({
     });
     const changedValue = () => {
       emit('onChange')
+      store.commit('errorMsg', null)
     }
 
      const isEdit = ref(false)
@@ -246,6 +247,10 @@ export default defineComponent({
     // const programFailed = () => {
     //         errorSwal(messages.fieldsRequired)
     //     };
+
+    const errorMsg = computed(() => {
+      return store.state.patients.errorMsg
+    })
     
     return {
       screensPermissions: store.getters.screensPermissions,
@@ -260,7 +265,7 @@ export default defineComponent({
       patients,
       program,
       programs,
-      errorMsg:patients.value.errorMsg,
+      errorMsg,
       reset,
       formRef,
       dateChange,

@@ -502,12 +502,15 @@ export const patientDetails = (state, patient) => {
 }
 
 export const responsiblePerson = (state, data) => {
-  data.gender = data.genderId;
-  data.relation = data.relationId;
-  data.self = data.self ? true : false;
+  const responsiblePerson = data.map(item => {
+    item.gender = item.genderId;
+    item.relation = item.relationId;
+    item.self = item.self ? true : false;
+    item.phoneNumber = data[0].phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
+    return item
+  })
 
-  state.responsiblePerson = data
-  state.responsiblePerson[0]['phoneNumber'] = data[0].phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
+  state.responsiblePerson = responsiblePerson[0]
 }
 
 export const emergencyContact = (state, data) => {
