@@ -498,7 +498,7 @@ export const patientDetails = (state, patient) => {
 
   state.patientDetails = patient
   state.patientDetails['phoneNumber'] = patient.user.data.patient.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
-  state.patientDetails['phoneNumber'] = patient.emergencyContact.data.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
+  state.patientDetails['phoneNumber'] = patient.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3")
 }
 
 export const responsiblePerson = (state, data) => {
