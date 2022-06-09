@@ -172,7 +172,7 @@
     <AddTimeLogsModal v-model:visible="addTimeLogsVisible" :isEditTimeLog="isEditTimeLog" :isAutomatic="isAutomatic" @closeModal="addTimeLogsClose($event)" />
     <AddDeviceModal v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
     <PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
-    <PatientsModal v-model:visible="patientsModalVisible" :isEdit="true" @closeModal="handleOk" @saveModal="handleOk($event)" />
+    <PatientsModal v-model:visible="patientsModalVisible" :isEdit="true" @closeModal="handleOk" />
 
     <FamilyMembersDetailsModal v-model:visible="familyMembersModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
     <!-- <PhysiciansDetailsModal v-if="physiciansModalVisible" v-model:visible="physiciansModalVisible" @isPhysicianEdit="editPhysician" @closeModal="handleOk" :staffType="staffType" /> -->

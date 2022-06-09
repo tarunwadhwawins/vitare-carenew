@@ -1687,7 +1687,7 @@ unSelectedDiseasesList.value.push(healthCondition)
       }
       isValueChanged.value = false;
       emergencyContactForm.sameAsPrimary = false;
-      // responsiblePersonForm.self = false;
+      responsiblePersonForm.self = false;
       Object.assign(demographics, form);
       Object.assign(responsiblePersonForm, responsiblePersonReactiveForm);
       Object.assign(referal, referalForm);
@@ -1701,7 +1701,7 @@ unSelectedDiseasesList.value.push(healthCondition)
     function closeModal() {
       //current.value = 0
       if (isValueChanged.value || bitrixFormCheck.value) {
-        emit("saveModal", true)
+        // emit("saveModal", true)
         emit("closeModal", {
           modal: "editPatient",
           value: true,
@@ -1711,7 +1711,7 @@ unSelectedDiseasesList.value.push(healthCondition)
             store.commit("addDemographic", null);
 
             common();
-            emit("saveModal", false);
+            // emit("saveModal", false);
             emit("closeModal", {
               modal: "editPatient",
               value: false,
@@ -1719,7 +1719,7 @@ unSelectedDiseasesList.value.push(healthCondition)
             store.state.patients.editPatientReferral = null;
             // saveModal()
           } else {
-            emit("saveModal", true);
+            // emit("saveModal", true);
             emit("closeModal", {
               modal: "editPatient",
               value: true,
@@ -1733,10 +1733,8 @@ unSelectedDiseasesList.value.push(healthCondition)
           modal: "editPatient",
           value: false,
         })
-        emit("saveModal", false)
+        // emit("saveModal", false)
         common();
-        store.commit("resetCounter");
-        formRef.value.resetFields();
       }
     }
 
@@ -1834,7 +1832,7 @@ unSelectedDiseasesList.value.push(healthCondition)
         responsiblePersonForm.relation = relationId.value;
       } else {
         Object.assign(responsiblePersonForm, responsiblePersonReactiveForm);
-        // responsiblePersonForm.self = false;
+        responsiblePersonForm.self = false;
         disableResponsiblePerson.value = false;
       }
 
