@@ -136,25 +136,6 @@ export default defineComponent({
       }
     }
 
-                store.dispatch("addAvailability", {
-                    id: props.paramId ? props.paramId : staffs.value.addStaff.id,
-                    data: {
-                        startTime: startTime,
-                        endTime: endTime
-                    }
-                }).then(()=>{
-                     if (staffs.value.closeModal == true) {
-                    button.value = true
-                    store.dispatch("availabilityList", props.paramId ? props.paramId : staffs.value.addStaff.id);
-                    reset()
-                    emit("saveModal")
-                    button.value = true
-                } else {
-                    if (errorMsg.value) {
-                        button.value = true
-                    }
-                }
-                })
     function addAvailability() {
       button.value = false;
       let startTime = timeStamp(
@@ -197,7 +178,7 @@ export default defineComponent({
                 props.paramId ? props.paramId : staffs.value.addStaff.id
               );
               reset();
-              emit("saveModal", false);
+              emit("saveModal");
               button.value = true;
             } else {
               if (errorMsg.value) {
