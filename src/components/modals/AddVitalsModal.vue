@@ -41,7 +41,7 @@
 
           <a-col :sm="8" :xs="24" :xl="12">
             <div class="form-group">
-              <a-form-item label="Vital Type" :rules="[{ required: true, message: 'Type '+$t('global.validation')  }]">
+              <a-form-item label="Value" :rules="[{ required: true, message: 'Type '+$t('global.validation')  }]">
                 <a-input @change="checkChangeInput($event)" v-model:value="addVitalForm.value" style="width: 100%" size="large" />
               </a-form-item>
             </div>
@@ -185,9 +185,13 @@ export default {
       formRef.value.resetFields();
       Object.assign(addVitalForm, form)
     };
+
+    const checkChangedInput = computed(() => {
+      return store.state.common.checkChangeInput
+    })
     
     const closeModal = () => {
-      emit('closeModal')
+      emit('closeModal', checkChangedInput.value)
     }
 
     return {
