@@ -1,5 +1,5 @@
 <template>
-	<a-alert @close="onCloseAlert(itemId)" v-if="closable" :message="text" :type="type" closable/>
+	<a-alert @close="onCloseAlert(itemId)" v-if="closable" :message="text" :type="type" v-bind:class="isPin ? 'pinClass' : ''" closable/>
 	<a-alert @close="onCloseAlert(itemId)" v-else :message="text" :type="type"/>
 </template>
 
@@ -14,6 +14,9 @@ export default {
 			type: String
 		},
 		closable: {
+			type: Boolean
+		},
+		isPin: {
 			type: Boolean
 		},
 		itemId: {
@@ -35,4 +38,11 @@ export default {
 
 <style>
 	.ant-alert { width: 100%; }
+	.pinClass {
+		background-color: #64BF7A !important;
+		border: 1px solid #64BF7A !important;
+	}
+	.pinClass .ant-alert-message, .pinClass .anticon.anticon-close {
+		color: #fff !important;
+	}
 </style>
