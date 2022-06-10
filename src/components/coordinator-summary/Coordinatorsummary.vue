@@ -305,6 +305,7 @@ export default defineComponent({
                     if (response == true) {
                         visibleStaffDoc.value = false
                         store.commit('checkChangeInput', false)
+                        clearData.value = true
                     }
                     else {
                         visibleStaffDoc.value = true
@@ -323,6 +324,7 @@ export default defineComponent({
                     if (response == true) {
                         visibleRole.value = false
                         store.commit('checkChangeInput', false)
+                        clearData.value = true
                     }
                     else {
                         visibleRole.value = true
@@ -345,6 +347,7 @@ export default defineComponent({
                     if (response == true) {
                         visibleAvailability.value = false
                         store.commit('checkChangeInput', false)
+                        clearData.value = true
                     }
                     else {
                         visibleAvailability.value = true
@@ -363,6 +366,7 @@ export default defineComponent({
                     if (response == true) {
                         visibleContact.value = false
                         store.commit('checkChangeInput', false)
+                        clearData.value = true
                     }
                     else {
                         visibleContact.value = true
