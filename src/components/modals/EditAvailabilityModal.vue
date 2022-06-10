@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="50%" title="Edit Availability" centered :footer="false">
+  <a-modal width="50%" title="Edit Availability" centered :footer="false" @cancel="closeModal()">
     <a-form :model="editAvailabilityForm" ref="formRest" :footer="null" autocomplete="off" layout="vertical" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :span="12">
@@ -123,6 +123,14 @@ export default {
             store.commit('checkChangeInput', true)
         }
 
+    const checkChangedInput = computed(() => {
+      return store.state.common.checkChangeInput
+    })
+
+    const closeModal = () => {
+      emit("closeModal", checkChangedInput.value)
+    }
+
     return {
       button,
       disableHours,
@@ -132,7 +140,8 @@ export default {
       editAvailabilityForm,
       paramId,
       submitForm,
-      getTime
+      getTime,
+      closeModal,
     }
   }
 }

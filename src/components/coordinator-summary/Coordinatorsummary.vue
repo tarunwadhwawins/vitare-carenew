@@ -154,20 +154,20 @@
         </a-layout>
     </a-layout>
     <!--modals-->
-    <a-modal width="50%" v-model:visible="visibleStaffDoc" title="Add Documents" :maskClosable="false" centered @cancel="closeModal('visibleStaffDoc')" :footer="false">
-        <StaffDocumentForm :clearData="clearData" ref="StaffDocumentForm" entity="staff" :paramId="paramId" @saveModal="staffDocCloseModal($event)" />
+    <a-modal width="50%" v-model:visible="visibleStaffDoc" title="Add Documents" :maskClosable="false" centered @cancel="staffDocCloseModal()" :footer="false">
+        <StaffDocumentForm :clearData="clearData" ref="StaffDocumentForm" entity="staff" :paramId="paramId" @saveModal="staffDocCloseModal()" />
     </a-modal>
     <!---->
-    <a-modal width="50%" v-model:visible="visibleRole" title="Add Roles" :maskClosable="false" centered @cancel="closeModal('visibleRole')" :footer="false">
-        <RoleForm :clearData="clearData" :paramId="paramId" @saveModal="roleCloseModal($event)" />
+    <a-modal width="50%" v-model:visible="visibleRole" title="Add Roles" :maskClosable="false" centered @cancel="roleCloseModal('visibleRole')" :footer="false">
+        <RoleForm :clearData="clearData" :paramId="paramId" @saveModal="roleCloseModal()" />
     </a-modal>
     <!------>
-    <a-modal width="50%" v-model:visible="visibleAvailability" title="Add Availability" :maskClosable="false" centered @cancel="closeModal('visibleAvailability')" :footer="false">
-        <AvailabilityForm :clearData="clearData" :paramId="paramId" @saveModal="AvailabilityCloseModal($event)" />
+    <a-modal width="50%" v-model:visible="visibleAvailability" title="Add Availability" :maskClosable="false" centered @cancel="availabilityCloseModal()" :footer="false">
+        <AvailabilityForm :clearData="clearData" :paramId="paramId" @saveModal="availabilityCloseModal()" />
     </a-modal>
     <!---->
-    <a-modal width="60%" v-model:visible="visibleContact" title="Add Contacts" :maskClosable="false" centered @cancel="closeModal('visibleContact')" :footer="false">
-        <ContactForm :clearData="clearData" :paramId="paramId" @saveModal="contactCloseModal($event)" />
+    <a-modal width="60%" v-model:visible="visibleContact" title="Add Contacts" :maskClosable="false" centered @cancel="contactCloseModal('visibleContact')" :footer="false">
+        <ContactForm :clearData="clearData" :paramId="paramId" @saveModal="contactCloseModal()" />
     </a-modal>
     <!---->
 </div>
@@ -297,22 +297,82 @@ export default defineComponent({
             visibleEditStaff.value = value;
         };
 
-        const staffDocCloseModal = (value) => {
+        const staffDocCloseModal = () => {
             store.commit('errorMsg', null)
-            visibleStaffDoc.value = value;
+            visibleStaffDoc.value = true
+            if(checkChangedInput.value) {
+                warningSwal(messages.modalWarning).then((response) => {
+                    if (response == true) {
+                        visibleStaffDoc.value = false
+                        store.commit('checkChangeInput', false)
+                    }
+                    else {
+                        visibleStaffDoc.value = true
+                    }
+                });
+            }
+            else {
+                visibleStaffDoc.value = false;
+            }
         };
 
-        const roleCloseModal = (value) => {
-            visibleRole.value = value;
+        const roleCloseModal = () => {
+            visibleRole.value = true
+            if(checkChangedInput.value) {
+                warningSwal(messages.modalWarning).then((response) => {
+                    if (response == true) {
+                        visibleRole.value = false
+                        store.commit('checkChangeInput', false)
+                    }
+                    else {
+                        visibleRole.value = true
+                    }
+                });
+            }
+            else {
+                visibleRole.value = false;
+            }
         };
 
-        const AvailabilityCloseModal = (value) => {
-            visibleAvailability.value = value;
+        const checkChangedInput = computed(() => {
+        return store.state.common.checkChangeInput
+        })
+
+        const availabilityCloseModal = () => {
+            visibleAvailability.value = true
+            if(checkChangedInput.value) {
+                warningSwal(messages.modalWarning).then((response) => {
+                    if (response == true) {
+                        visibleAvailability.value = false
+                        store.commit('checkChangeInput', false)
+                    }
+                    else {
+                        visibleAvailability.value = true
+                    }
+                });
+            }
+            else {
+                visibleAvailability.value = false;
+            }
         };
 
-        const contactCloseModal = (value) => {
+        const contactCloseModal = () => {
+            visibleContact.value = true
+            if(checkChangedInput.value) {
+                warningSwal(messages.modalWarning).then((response) => {
+                    if (response == true) {
+                        visibleContact.value = false
+                        store.commit('checkChangeInput', false)
+                    }
+                    else {
+                        visibleContact.value = true
+                    }
+                });
+            }
+            else {
+                visibleContact.value = false;
+            }
             store.commit('errorMsg', null)
-            visibleContact.value = value;
         };
 
         const showDocModal = () => {
@@ -404,7 +464,7 @@ export default defineComponent({
             clearData,
             roleCloseModal,
             contactCloseModal,
-            AvailabilityCloseModal,
+            availabilityCloseModal,
             staffDocCloseModal,
             closeModal,
             editStaffCloseModal,

@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="50%" title="Edit Contact" :footer="false" centered >
+  <a-modal width="50%" title="Edit Contact" :footer="false" centered @cancel="closeModal()">
     <a-form :model="editContactForm" ref="formRest" autocomplete="off" layout="vertical" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :md="12" :sm="12" :xs="24">
@@ -91,6 +91,7 @@ export default {
 
     const changeValue = () => {
       store.commit('errorMsg', null)
+      store.commit('checkChangeInput', true)
     }
     
     watchEffect(() => {
@@ -122,6 +123,14 @@ export default {
       })
     }
 
+    const checkChangedInput = computed(() => {
+      return store.state.common.checkChangeInput
+    })
+
+    const closeModal = () => {
+      emit("closeModal", checkChangedInput.value)
+    }
+
     return {
       regex,
       staffs,
@@ -131,6 +140,7 @@ export default {
       submitForm,
       errorMsg,
       changeValue,
+      closeModal,
     }
   }
 }

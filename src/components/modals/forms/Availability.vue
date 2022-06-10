@@ -125,7 +125,7 @@ export default defineComponent({
                     button.value = true
                     store.dispatch("availabilityList", props.paramId ? props.paramId : staffs.value.addStaff.id);
                     reset()
-                    emit("saveModal", false)
+                    emit("saveModal")
                     button.value = true
                 } else {
                     if (errorMsg.value) {

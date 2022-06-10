@@ -1,12 +1,12 @@
 <template>
-  <a-modal width="1000px" :title="title" centered>
+  <a-modal width="1000px" :title="title" centered @cancel="closeModal()">
     <a-form ref="formRef" :model="addVitalForm" layout="vertical" @finish="submitForm">
       <a-row :gutter="24">
         
         <a-col :sm="8" :xs="24">
           <div class="form-group">
             <a-form-item label="Date & Time" name="takeTime" :rules="[{ required: true, message: $t('vitals.dateTime')+$t('global.validation')  }]">
-              <a-date-picker v-model:value="addVitalForm.takeTime" size="large" style="width: 100%" format="MM/DD/YYYY" />
+              <a-date-picker @change="checkChangeInput()" v-model:value="addVitalForm.takeTime" size="large" style="width: 100%" format="MM/DD/YYYY" />
             </a-form-item>
           </div>
         </a-col>
@@ -16,6 +16,7 @@
             <a-form-item label="Vital Type" name="type" :rules="[{ required: true, message: $t('vitals.vitalType')+$t('global.validation')  }]">
               <a-select
                 ref="select"
+                @change="checkChangeInput()"
                 v-model:value="addVitalForm.type"
                 style="width: 100%"
                 size="large">
@@ -29,7 +30,7 @@
         <a-col :sm="8" :xs="24">
           <div class="form-group">
             <a-form-item label="Value" name="value" :rules="[{ required: true, message: $t('vitals.value')+$t('global.validation')  }]">
-              <a-input v-model:value="addVitalForm.value" size="large" />
+              <a-input @change="checkChangeInput()" v-model:value="addVitalForm.value" size="large" />
             </a-form-item>
           </div>
         </a-col>
@@ -37,7 +38,7 @@
         <a-col :sm="24" :xs="24">
           <div class="form-group">
             <a-form-item label="Note" name="comment" :rules="[{ required: true, message: $t('vitals.note')+$t('global.validation')  }]">
-              <a-textarea v-model:value="addVitalForm.comment" size="large" />
+              <a-textarea @change="checkChangeInput()" v-model:value="addVitalForm.comment" size="large" />
             </a-form-item>
           </div>
         </a-col>
@@ -88,6 +89,10 @@ export default {
       store.dispatch('vitalFieldsByDeviceId', idDevice)
     })
 
+    function checkChangeInput() {
+      store.commit("checkChangeInput", true);
+    }
+
     const vitalFieldsByDeviceId = computed(() => {
       return store.state.common.vitalFieldsByDeviceId
     })
@@ -128,13 +133,19 @@ export default {
       formRef.value.resetFields();
       Object.assign(addVitalForm, form)
     };
+    
+    const closeModal = () => {
+      emit('closeModal')
+    }
 
     return {
+      closeModal,
       formRef,
       addVitalForm,
       submitForm,
       handleCancel,
       vitalFieldsByDeviceId,
+      checkChangeInput,
     };
   },
 }
