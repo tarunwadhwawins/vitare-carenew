@@ -1,5 +1,5 @@
 <template>
-<a-modal max-width="1140px" width="70%" :title="`${devicesList?.entity.charAt(0).toUpperCase() + devicesList?.entity.slice(1)}`+' '+`Details`" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
+<a-modal max-width="1140px" width="70%" :title="modalTitle" centered :footer="false" :maskClosable="false" @cancel="closeModal()">
     <a-row :gutter="24" class="row" v-if="devicesList?.entity == 'device'">
         <a-col :sm="24" :xs="24">
             <a-table rowKey="id" :columns="devicesColumns" :data-source="devicesList?.device" :pagination="false" @change="onChange">
@@ -8,19 +8,19 @@
         </a-col>
     </a-row>
     <a-row :gutter="24" v-else>
-        <a-col :sm="24" :xs="24" class="mb-24" v-if="patients.bloodPressure?.length>0">
-            <a-card title="Blood Pressure">
-                <VitalsTable :columns="patients.bloodPressureColumns" :data="patients.bloodPressure" />
+       <a-col :sm="24" :xs="24" class="mb-24" v-if="vitals.bloodPressure?.length>0">
+            <a-card :title="`Total Compliance Days - ${vitals.takeLength.length}`">
+                <VitalsTable :columns="vitals.bloodPressureColumns" :data="vitals.bloodPressure" />
             </a-card>
         </a-col>
-        <a-col :sm="24" :xs="24" class="mb-24" v-if="patients.bloodOxygen?.length>0">
-            <a-card title="Blood Oxygen Saturation">
-                <VitalsTable :columns="patients.bloodOxygenColumns" :data="patients.bloodOxygen" />
+        <a-col :sm="24" :xs="24" class="mb-24" v-if="vitals.bloodOxygen?.length>0">
+            <a-card :title="`Total Compliance Days - ${vitals.takeLength.length}`">
+                <VitalsTable :columns="vitals.bloodOxygenColumns" :data="vitals.bloodOxygen" />
             </a-card>
         </a-col>
-        <a-col :sm="24" :xs="24" class="mb-24" v-if="patients.bloodGlucose?.length>0">
-            <a-card title="Blood Glucose">
-                <VitalsTable :columns="patients.bloodGlucoseColumns" :data="patients.bloodGlucose" />
+        <a-col :sm="24" :xs="24" class="mb-24" v-if="vitals.bloodGlucose?.length>0">
+            <a-card :title="`Total Compliance Days - ${vitals.takeLength.length}`">
+                <VitalsTable :columns="vitals.bloodGlucoseColumns" :data="vitals.bloodGlucose" />
             </a-card>
         </a-col>
 
@@ -30,132 +30,103 @@
 </template>
 
 <script>
-import {
-    computed,
-    defineComponent,
-    watchEffect
-} from "vue";
+import { computed, defineComponent, watchEffect, ref } from "vue";
 import TableLoader from "@/components/loader/TableLoader";
-import // DeleteOutlined
-"@ant-design/icons-vue";
+import { useStore } from "vuex";
 import {
-    useStore
-} from "vuex";
-import {
-    warningSwal,
-    actionTrack,
-    arrayToObjact,
+  actionTrack,
+  arrayToObjact,
 } from "@/commonMethods/commonMethod";
-import {
-    messages
-} from "@/config/messages";
-import {
-    useRoute
-} from "vue-router";
+import { useRoute } from "vue-router";
 import VitalsTable from "@/components/patients/patientSummary/common/VitalsTable";
-// import Loader from "@/components/loader/Loader";
 export default defineComponent({
-    components: {
-        // DeleteOutlined,
-        TableLoader,
-        VitalsTable,
-    },
+  components: {
+    TableLoader,
+    VitalsTable,
+  },
 
-    setup(props, {
-        emit
-    }) {
-        const store = useStore();
-        const route = useRoute();
-        watchEffect(() => {});
-        const devicesList = computed(() => {
-            return store.state.reports.reportDetailList;
-        });
-        const devicesColumns = [{
-                title: "Home Unit Type",
-                dataIndex: "deviceType",
-                sorter: true,
-            },
-            {
-                title: "Model No",
-                dataIndex: "modelNumber",
-                sorter: true,
-            },
-            {
-                title: "Serial No",
-                dataIndex: "serialNumber",
-                sorter: true,
-            },
-            {
-                title: "MAC Address",
-                dataIndex: "macAddress",
-            },
-            {
-                title: "Issue Date",
-                dataIndex: "issueDate",
-            },
-            {
-                title: "Setup Date",
-                dataIndex: "setupDate",
-            },
-            //   {
-            //     title: "Action",
-            //     dataIndex: "action",
-            //     slots: {
-            //       customRender: "action",
-            //     },
-            //   },
-        ];
+  setup() {
+    const store = useStore()
+    const route = useRoute()
 
-        const deleteDevice = (id) => {
-            warningSwal(messages.deleteWarning).then((response) => {
-                if (response == true) {
-                    store
-                        .dispatch("deleteDevice", {
-                            id: id,
-                            deviceId: id,
-                        })
-                        .then(() => {
-                            if (devicesList.value.length <= 1) {
-                                emit("closeModal", {
-                                    modal: "devicesListing",
-                                    value: false,
-                                });
-                            }
-                            store.dispatch("devices", route.params.udid);
-                            if (route.name == "PatientSummary") {
-                                store.dispatch("latestDevice", route.params.udid);
-                                store.dispatch("patientTimeline", {
-                                    id: route.params.udid,
-                                    type: "",
-                                });
-                            }
-                        });
-                }
-            });
-        };
+    const modalTitle = ref()
 
-        const patients = computed(() => {
-            return store.state.patients
-        })
+    const devicesList = computed(() => {
+      return store.state.reports.reportDetailList;
+    });
+    watchEffect(() => {
+      if (devicesList.value) {
+        if (devicesList.value.device.length > 0) {
+          modalTitle.value =
+            devicesList.value.device.length > 0 ? "Device Details" : "Details";
+        } else {
+          if (devicesList.value.vital[0].deviceType == "Blood Pressure") {
+            modalTitle.value = "Vital Detail - Blood Pressure";
+          } else if (devicesList.value.vital[0].deviceType == "Oximeter") {
+            modalTitle.value = "Vital Detail - Blood Oxygen Saturation";
+          } else if (devicesList.value.vital[0].deviceType == "Glucose") {
+            modalTitle.value = "Vital Detail - Blood Glucose";
+          }
+        }
+      }
+    })
+    const devicesColumns = [
+      {
+        title: "Home Unit Type",
+        dataIndex: "deviceType",
+        sorter: true,
+      },
+      {
+        title: "Model No",
+        dataIndex: "modelNumber",
+        sorter: true,
+      },
+      {
+        title: "Serial No",
+        dataIndex: "serialNumber",
+        sorter: true,
+      },
+      {
+        title: "MAC Address",
+        dataIndex: "macAddress",
+      },
+      {
+        title: "Issue Date",
+        dataIndex: "issueDate",
+      },
+      {
+        title: "Setup Date",
+        dataIndex: "setupDate",
+      },
+      
+    ]
 
-       function closeModal(){
-        store.state.patients.bloodPressure =null
-        store.state.patients.bloodOxygen =null
-        store.state.patients.bloodGlucose = null
-       }
+    const vitals = computed(() => {
+      return store.state.reports;
+    })
 
-        return {
-            closeModal,
-            patients,
-            arrayToObjact,
-            screensPermissions: store.getters.screensPermissions,
-            actionTrack,
-            paramsId: route.params.udid,
-            devicesColumns,
-            devicesList,
-            deleteDevice,
-        };
-    },
+    function closeModal() {
+      store.state.reports.bloodPressure = null
+      store.state.reports.bloodOxygen = null
+      store.state.reports.bloodGlucose = null
+      store.state.reports.reportDetailList = null
+      store.state.reports.takeDateTime = null
+      store.state.reports.takeLength = null
+      modalTitle.value = null
+    }
+
+    return {
+      closeModal,
+      vitals,
+      arrayToObjact,
+      screensPermissions: store.getters.screensPermissions,
+      actionTrack,
+      paramsId: route.params.udid,
+      devicesColumns,
+      devicesList,
+      modalTitle,
+    };
+  },
 });
 </script>
 
