@@ -81,8 +81,22 @@ export default {
       return store.state.careCoordinator;
     });
 
-    const handleOk = () => {
-      availabilityFormvisible.value = false
+    const handleOk = (value) => {
+      if(value) {
+        availabilityFormvisible.value = true
+        warningSwal(messages.modalWarning).then((response) => {
+          if (response == true) {
+            availabilityFormvisible.value = false
+            store.commit('checkChangeInput', false)
+          }
+          else {
+            availabilityFormvisible.value = true
+          }
+        });
+      }
+      else {
+        availabilityFormvisible.value = false
+      }
       isEditAvailability.value = false
     }
    
