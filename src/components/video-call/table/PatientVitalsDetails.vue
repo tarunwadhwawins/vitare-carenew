@@ -97,8 +97,8 @@ export default {
     })
 
     const handleOk = () => {
-      visibleAddVitalsModal.value = true
-      if(checkChangedInput.value) {
+      visibleAddVitalsModal.value = value ? value : true
+      if(value && checkChangedInput.value) {
           warningSwal(messages.modalWarning).then((response) => {
               if (response == true) {
                   visibleAddVitalsModal.value = false

@@ -164,7 +164,10 @@ export const vitalFieldsList = (state, fields) => {
 }
 
 export const vitalFieldsByDeviceId = (state, fields) => {
-    state.vitalFieldsByDeviceId = fields
+    state.vitalFieldsByDeviceId = fields.map(field => {
+        field.fieldName = (field.field).toLowerCase()
+        return field
+    })
 }
 
 export const allPatientsList = (state, fields) => {
