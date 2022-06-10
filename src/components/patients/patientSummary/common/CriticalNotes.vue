@@ -5,7 +5,7 @@
 		<template #renderItem="{item}">
 			
 			<a-list-item class="critcal-note">
-				<Alert v-if="item.criticalNote" :itemId="item.id" :text="item.criticalNote" type="error" :closable="true" :patientUdid="patientUdid" />
+				<Alert v-if="item.criticalNote" :itemId="item.id" :text="item.criticalNote" type="error" :closable="true" :patientUdid="patientUdid" :isPin="true" />
 			</a-list-item>
 		</template>
 	</a-list>
