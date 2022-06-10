@@ -65,7 +65,7 @@
           <p v-if="patientDetails.medicalRecordNumber">
             MRN : {{ patientDetails.medicalRecordNumber }}
           </p>
-          <p style="overflow-wrap: anywhere;" v-if="patientDetails.email">
+          <p style="overflow-wrap: anywhere" v-if="patientDetails.email">
             <a
               @click="actionTrack(paramsId, 321, 'patient')"
               v-if="arrayToObjact(screensPermissions, 321)"
@@ -121,7 +121,8 @@
         </a-tooltip>
       </div>
     </div>
-    <div class="buttonGroup"
+    <div
+      class="buttonGroup"
       v-if="programsPatient && programsPatient.length > 0"
       v-bind:class="patientPrograms"
     >
@@ -298,21 +299,20 @@ export default defineComponent({
       patientDetails,
       isPicuteLoading,
       programsPatient,
-      patientImg: props.isLeft ? 'patientImg' : '',
-      patientSection: props.isLeft ? 'patientSection' : 'sectionPatient',
-      patientInfo: props.isLeft ? 'patientInfo' : '',
-      patientIcons: props.isLeft ? 'patientIcons' : 'iconsPatient',
-      patientPrograms: props.isLeft ? 'patientPrograms' : '',
-    }
-  }
+      patientImg: props.isLeft ? "patientImg" : "",
+      patientSection: props.isLeft ? "patientSection" : "sectionPatient",
+      patientInfo: props.isLeft ? "patientInfo" : "",
+      patientIcons: props.isLeft ? "patientIcons" : "iconsPatient",
+      patientPrograms: props.isLeft ? "patientPrograms" : "",
+    };
+  },
 });
 </script>
 
 <style>
-
 .resetPass img {
   width: 15px !important;
-  height: auto !important;;
+  height: auto !important;
 }
 span.anticon.anticon-plus {
   position: relative;
@@ -323,7 +323,7 @@ span.anticon.anticon-plus {
   top: 0;
   text-align: center;
 }
-.patientSectionInner{
+.patientSectionInner {
   display: flex;
 }
 span.edit-icon {
@@ -341,15 +341,15 @@ span.edit-icon {
   border-bottom: 1px solid #e3e3e3;
   margin: 0 !important;
   padding: 0 0 30px 0 !important;
-  
 }
-.patientIcons, .iconsPatient {
-    position: absolute;
-    right: 10px;
-    top: 5px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
+.patientIcons,
+.iconsPatient {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 .patientSection .patientSectionInner {
   display: flex;
@@ -357,7 +357,9 @@ span.edit-icon {
 .patientPrograms {
   padding: 10px 10px 0 0;
   text-align: right;
-  display: contents;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
 }
 .programText {
   border: 1px solid #c8c8c8;
@@ -367,19 +369,19 @@ span.edit-icon {
   margin-left: 2px;
 }
 
-.image-section  img {
-      min-width: 80px;
-      min-height: 80px;
-      max-width: 80px;
-      max-height: 80px;
-  }
- .patientInfo .sectionPatient {
-    display: flex;
-    flex-direction: column;
+.image-section img {
+  min-width: 80px;
+  min-height: 80px;
+  max-width: 80px;
+  max-height: 80px;
 }
-  .patientInfo .buttonGroup{
-    display: flex;
-    margin-bottom: 20px;
-    justify-content: flex-end;
-  }
+.patientInfo .sectionPatient {
+  display: flex;
+  flex-direction: column;
+}
+.patientInfo .buttonGroup {
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: flex-end;
+}
 </style>

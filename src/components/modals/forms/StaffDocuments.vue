@@ -193,7 +193,7 @@ export default defineComponent({
             reset();
             store.state.careCoordinator.documentStaffDetails=null
             image.value.stateValue = ''
-            emit("saveModal", false);
+            emit("saveModal");
           }
         }, 2000);
       }else {
@@ -217,7 +217,7 @@ export default defineComponent({
             );
             reset();
             image.value.stateValue = ''
-            emit("saveModal", false);
+            emit("saveModal");
           }
         }, 2000);
       }

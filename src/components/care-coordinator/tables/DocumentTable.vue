@@ -27,8 +27,8 @@
         </a-tooltip>
     </template>
 </a-table>
-<a-modal width="50%" v-model:visible="visibleStaffDoc" title="Edit Documents" :maskClosable="false" centered  @cancel="staffDocCancelModal()" :footer="false">
-    <StaffDocumentForm  entity="staff" :paramId="paramId" @saveModal="staffDocCloseModal($event)" />
+<a-modal width="50%" v-model:visible="visibleStaffDoc" title="Edit Documents" :maskClosable="false" centered  @cancel="staffDocCloseModal()" :footer="false">
+    <StaffDocumentForm  entity="staff" :paramId="paramId" @saveModal="staffDocCloseModal()" />
 </a-modal>
 </div>
 </template>
@@ -97,19 +97,30 @@ export default defineComponent({
       })
     }
 
-    const staffDocCloseModal = (value) => {
-      visibleStaffDoc.value = value;
-      store.state.careCoordinator.documentStaffDetails=null
-    };
+    const checkFieldsData = computed(() => {
+      return store.state.common.checkChangeInput;
+    })
 
-    
-    const staffDocCancelModal = () => {
-      visibleStaffDoc.value = false;
+    const staffDocCloseModal = () => {
+      visibleStaffDoc.value = true;
       store.state.careCoordinator.documentStaffDetails=null
+      if(checkFieldsData.value) {
+        warningSwal(messages.modalWarning).then((response) => {
+        if (response == true) {
+          visibleStaffDoc.value = false
+          store.commit('checkChangeInput', false)
+        }
+        else {
+          visibleStaffDoc.value = true
+        }
+        });
+      }
+      else {
+        visibleStaffDoc.value = false;
+      }
     };
     
     return {
-      staffDocCancelModal,
       staffDocCloseModal,
       addStaffs,
       paramId,

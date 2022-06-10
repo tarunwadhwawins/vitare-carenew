@@ -103,7 +103,7 @@ export default defineComponent({
           store.dispatch("staffContactList", props.paramId?props.paramId:staffs.value.addStaff.id);
           reset()
           store.state.careCoordinator.errorMsg=''
-          emit("saveModal", false)
+          emit("saveModal")
       }
       formButton.value = false;
       }, 2000);

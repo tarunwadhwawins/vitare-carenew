@@ -178,7 +178,7 @@ export default defineComponent({
                 props.paramId ? props.paramId : staffs.value.addStaff.id
               );
               reset();
-              emit("saveModal", false);
+              emit("saveModal");
               button.value = true;
             } else {
               if (errorMsg.value) {

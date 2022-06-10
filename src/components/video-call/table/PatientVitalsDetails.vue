@@ -57,6 +57,9 @@ import Loader from "@/components/loader/Loader";
 import {
   yaxis,
 } from '@/commonMethods/commonMethod'
+import { warningSwal } from "@/commonMethods/commonMethod";
+import { messages } from "@/config/messages";
+
 export default {
   components: {
     AddVitalsModal,
@@ -89,8 +92,26 @@ export default {
       return store.state.patients
     })
 
+    const checkChangedInput = computed(() => {
+      return store.state.common.checkChangeInput
+    })
+
     const handleOk = () => {
-      visibleAddVitalsModal.value = false;
+      visibleAddVitalsModal.value = true
+      if(checkChangedInput.value) {
+          warningSwal(messages.modalWarning).then((response) => {
+              if (response == true) {
+                  visibleAddVitalsModal.value = false
+                  store.commit('checkChangeInput', false)
+              }
+              else {
+                  visibleAddVitalsModal.value = true
+              }
+          });
+      }
+      else {
+          visibleAddVitalsModal.value = false;
+      }
     }
 
     const bloodPressureColumns = patients.value.bloodPressureColumns

@@ -13,7 +13,7 @@
 
             <div class="steps-content" v-if="steps[current].title === 'Demographics'">
                 <!-- <Demographics /> -->
-                <a-form :model="demographics" name="basic" ref="formRef" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="demographic()" @finishFailed="demographicsFailed">
+                <a-form :model="demographics" name="basic" ref="formRef"  scrollToFirstError=true autocomplete="off" layout="vertical" @finish="demographic()" @finishFailed="demographicsFailed">
                     <Loader />
 
                     <a-row :gutter="24">
@@ -760,7 +760,7 @@
             </div>
             <div class="steps-content" v-if="steps[current].title == 'Insurance'">
                 <!-- <Insurance /> -->
-                <a-form :model="insuranceData" name="basic" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="insuranceForm" @finishFailed="insuranceDataFailed">
+                <a-form :model="insuranceData" name="basic" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="insuranceForm" @finishFailed="insuranceDataFailed">
                     <Loader />
                     <a-row :gutter="24" v-for=" insuranceName,i in globalCode.insuranceType" :key="insuranceName.id">
                         <a-col :span="24">
