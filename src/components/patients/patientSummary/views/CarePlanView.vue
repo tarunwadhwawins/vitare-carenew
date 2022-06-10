@@ -4,7 +4,7 @@
       <PatientInfoTop :patientDetails="patientDetails"/>
     </a-col>
     <a-col :span="24">
-      <div class="text-right mb-24">
+      <div class="text-right mb-24 mt-28">
         <a-button class="primaryBtn" @click="AddCarePlan">Add Goal</a-button>
       </div>
       <CarePlanTable/>
