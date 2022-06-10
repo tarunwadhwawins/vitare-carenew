@@ -517,12 +517,13 @@ export function convertData(patientVitals) {
 		let itemObject = {};
 		element.data.forEach((item) => {
 			var field = (item.deviceType + '_' + item.vitalField).replace(/ /g, '_').toLowerCase();
+			var color = (item.deviceType + '_' + item.vitalField + '_color').replace(/ /g, '_').toLowerCase();
 			element.data = [];
 			itemObject['id'] = item.id;
 			itemObject['takeTime'] = dateFormat(item.takeTime);
 			itemObject['vitalField'] = item.vitalField;
 			itemObject['deviceType'] = item.deviceType;
-			itemObject['color'] = item.color;
+			itemObject[color] = item.color;
 			itemObject[field] = item.value;
 		});
 		records.push(itemObject);

@@ -1,9 +1,9 @@
 <template>
   <a-modal width="1000px" :title="title" centered @cancel="closeModal()">
-    <a-form ref="formRef" :model="addVitalForm" layout="vertical" @finish="submitForm">
+    <a-form ref="formRef" :model="addVitalForm" layout="vertical" @finish="submitForm" autocomplete="off">
       <a-row :gutter="24">
         
-        <a-col :sm="8" :xs="24">
+        <a-col :sm="8" :xs="24" :xl="12">
           <div class="form-group">
             <a-form-item label="Date & Time" name="takeTime" :rules="[{ required: true, message: $t('vitals.dateTime')+$t('global.validation')  }]">
               <a-date-picker @change="checkChangeInput()" v-model:value="addVitalForm.takeTime" size="large" style="width: 100%" format="MM/DD/YYYY" />
@@ -11,30 +11,16 @@
           </div>
         </a-col>
 
-        <a-col :sm="8" :xs="24">
-          <div class="form-group">
-            <a-form-item label="Vital Type" name="type" :rules="[{ required: true, message: $t('vitals.vitalType')+$t('global.validation')  }]">
-              <a-select
-                ref="select"
-                @change="checkChangeInput()"
-                v-model:value="addVitalForm.type"
-                style="width: 100%"
-                size="large">
-                <a-select-option value="" hidden>{{ $t('vitals.chooseVitalType') }}</a-select-option>
-                <a-select-option v-for="field in vitalFieldsByDeviceId" :key="field.id" :value="field.id">{{ field.field }}</a-select-option>
-              </a-select>
-            </a-form-item>
-          </div>
-        </a-col>
+        <template v-for="field in vitalFieldsByDeviceId" :key="field.id" :value="field.id">
+            <a-col :sm="8" :xs="24" :xl="12">
+              <div class="form-group">
+                <a-form-item :label="field.field" :id="field.id" :name="field.fieldName" :rules="[{ required: true, message: field.field+' '+$t('global.validation')  }]">
+                  <a-input @change="checkChangeInput($event)" v-model="addVitalForm.value" style="width: 100%" size="large" />
+                </a-form-item>
+              </div>
+            </a-col>
+        </template>
         
-        <a-col :sm="8" :xs="24">
-          <div class="form-group">
-            <a-form-item label="Value" name="value" :rules="[{ required: true, message: $t('vitals.value')+$t('global.validation')  }]">
-              <a-input @change="checkChangeInput()" v-model:value="addVitalForm.value" size="large" />
-            </a-form-item>
-          </div>
-        </a-col>
-
         <a-col :sm="24" :xs="24">
           <div class="form-group">
             <a-form-item label="Note" name="comment" :rules="[{ required: true, message: $t('vitals.note')+$t('global.validation')  }]">
@@ -85,18 +71,6 @@ export default {
     const idDevice = reactive(props.deviceId)
     const patientId = props.patientId ? reactive(props.patientId) : route.params.udid
 
-    watchEffect(() => {
-      store.dispatch('vitalFieldsByDeviceId', idDevice)
-    })
-
-    function checkChangeInput() {
-      store.commit("checkChangeInput", true);
-    }
-
-    const vitalFieldsByDeviceId = computed(() => {
-      return store.state.common.vitalFieldsByDeviceId
-    })
-
     const addVitalForm = reactive({
       takeTime: '',
       type: '',
@@ -105,19 +79,57 @@ export default {
     })
     const form = reactive({ ...addVitalForm })
 
+    const vitalTypes = [{
+      type: "",
+      value: "",
+      name: "",
+    }]
+
+    const vitalFieldsByDeviceId = computed(() => {
+      return store.state.common.vitalFieldsByDeviceId
+    })
+
+    watchEffect(() => {
+      store.dispatch('vitalFieldsByDeviceId', idDevice).then(() => {
+        vitalFieldsByDeviceId.value.map(item => {
+          const field = item.fieldName
+          addVitalForm[field] = ""
+          vitalTypes.push({
+            type: item.id,
+            value: '',
+            name: item.fieldName,
+          })
+        })
+      })
+    })
+
+    function checkChangeInput(event) {
+      vitalTypes.some(element => {
+        if (event && (element.type === Number(event.target.id))) {
+          element.value = event.target.value
+          const field = element.name
+          addVitalForm[field] = event.target.value
+        }
+      })
+      store.commit("checkChangeInput", true);
+    }
+
     const submitForm = () => {
-      // const patientId = route.params.udid;
-      addVitalForm.takeTime = timeStamp(addVitalForm.takeTime)
+      let vitalsData = []
+      vitalTypes.forEach(element => {
+        vitalsData.push({
+          type: element.type,
+          value: Number(element.value),
+          takeTime: timeStamp(addVitalForm.takeTime),
+          comment: addVitalForm.comment,
+          deviceType: idDevice,
+        })
+      });
+      vitalsData.splice(0, 1)
       const data = {
-        'vital': [{
-          'deviceType': idDevice,
-          'takeTime': addVitalForm.takeTime,
-          'type': addVitalForm.type,
-          'value': Number(addVitalForm.value),
-          'comment': addVitalForm.comment
-        }]
+        'vital': vitalsData
       }
-      
+
       store.dispatch('addVital', { patientId, data }).then(() => {
         store.dispatch('patientVitals', {patientId: patientId, deviceType: 99});
         store.dispatch('patientVitals', {patientId: patientId, deviceType: 100});
@@ -125,7 +137,7 @@ export default {
         store.dispatch('patientTimeline', {id:patientId, type:''});
         formRef.value.resetFields()
         Object.assign(addVitalForm, form)
-        emit('closeModal')
+        emit('closeModal', false)
       })
     }
     
