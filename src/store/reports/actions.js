@@ -24,7 +24,7 @@ export const reportDetailList = async ({commit},id) => {
   await serviceMethod.common("get", `cptCodes/${id}`, null, null).then((response) => {
       commit('reportDetailList', response.data.data);
       if(response.data.data.vital?.length>0){
-        commit('patientVitals', response.data.data.vital);
+        commit('patientReportVitals', response.data.data.vital);
       }
       commit('loadingTableStatus', false)
     }).catch((error) => {

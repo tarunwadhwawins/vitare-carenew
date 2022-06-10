@@ -62,7 +62,7 @@ export default defineComponent({
         if(staffs.value.closeModal==true){
         store.dispatch("roleList", props.paramId?props.paramId:staffs.value.addStaff.id);
           reset()
-          emit("saveModal", false)
+          emit("saveModal")
       }
       }, 2000);
     }

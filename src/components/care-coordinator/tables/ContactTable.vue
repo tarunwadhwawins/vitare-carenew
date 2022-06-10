@@ -82,8 +82,22 @@ export default {
       return store.state.careCoordinator;
     });
 
-    const handleOk = () => {
-      contactFormVisible.value = false
+    const handleOk = (value) => {
+      contactFormVisible.value = true
+      if(value) {
+        warningSwal(messages.modalWarning).then((response) => {
+        if (response == true) {
+          contactFormVisible.value = false
+          store.commit('checkChangeInput', false)
+        }
+        else {
+          contactFormVisible.value = true
+        }
+        });
+      }
+      else {
+        contactFormVisible.value = false;
+      }
       isEditContact.value = false
     }
     

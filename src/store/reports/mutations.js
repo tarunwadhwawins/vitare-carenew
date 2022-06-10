@@ -1,24 +1,234 @@
-
-import {dateOnlyFormat,globalDateFormat,} from "@/commonMethods/commonMethod";
+import {
+  dateOnlyFormat,
+  globalDateFormat,
+  convertResponse,
+  convertData,
+  convertChartResponse,
+} from "@/commonMethods/commonMethod";
 
 export const cptCodes = (state, data) => {
-    state.cptCodesMeta = data.meta ? data.meta.pagination : ''
-    state.cptCodes = data.data.map(item =>{
-        item.billingDate = dateOnlyFormat(item.billingDate,globalDateFormat)
-        return item
-    })
- }
+  state.cptCodesMeta = data.meta ? data.meta.pagination : ''
+  state.cptCodes = data.data.map(item => {
+    item.billingDate = dateOnlyFormat(item.billingDate, globalDateFormat)
+    return item
+  })
+}
 
- 
- export const reportDetailList = (state, data) => {
-    //  console.log(data)
-    state.reportDetailList = data
-    if(state.reportDetailList.device.length > 0){
-        state.reportDetailList.device[0]['issueDate'] = dateOnlyFormat(data.device[0].issueDate,globalDateFormat)
-        state.reportDetailList.device[0]['setupDate' ]= dateOnlyFormat(data.device[0].setupDate,globalDateFormat)
-    }
+
+export const reportDetailList = (state, data) => {
+  state.reportDetailList = data
+  if (state.reportDetailList.device.length > 0) {
+    state.reportDetailList.device[0]['issueDate'] = dateOnlyFormat(data.device[0].issueDate, globalDateFormat)
+    state.reportDetailList.device[0]['setupDate'] = dateOnlyFormat(data.device[0].setupDate, globalDateFormat)
+  }
+
+
+}
+
+
+
+export const patientReportVitals = (state, vitals) => {
+  var timeArray = [];
+  var vitalFieldsArray = [];
+  var vitalsArray = [];
+  if (vitals && (vitals.length > 0 || vitals != null)) {
+    vitals.map(vital => {
+      vitalsArray.push({
+        id: vital.id,
+        takeTime: vital.takeTime,
+        vitalField: vital.vitalField,
+        deviceType: vital.deviceType,
+        value: vital.value,
+        color: vital.color,
+      })
+      if (!timeArray.includes(vital.takeTime)) {
+        timeArray.push(vital.takeTime);
+      }
+     
+        
+      
+      if (!vitalFieldsArray.includes(vital.vitalField)) {
+        vitalFieldsArray.push(vital.vitalField);
+      }
+    })
+
     
 
- }
- 
- 
+    const convertedResponse = convertResponse(timeArray, vitalsArray)
+    const patientVitals = convertData(convertedResponse)
+    const patientGraphData = convertChartResponse(vitalFieldsArray, vitalsArray)
+
+    
+
+    state.takeDateTime = []
+    state.takeDateTime = timeArray.map(item => {
+      item = dateOnlyFormat(item, globalDateFormat)
+      return item
+    })
+
+    state.takeLength = []
+    state.takeDateTime.map(item => {
+      if (!state.takeLength.includes(item)) {
+        state.takeLength.push(item)
+      }
+    })
+
+    // state.timeArrayCheck = patientVitals.filter(item=>{item.takeDate == state.takeLength[0]})
+
+    
+
+    vitalsArray.forEach(vital => {
+      switch (vital.deviceType) {
+        case 'Blood Pressure':
+          state.bloodPressure = patientVitals.length > 0 ? patientVitals : null;
+          // state.bloodPressureGraph = patientGraphData;
+          console.log(patientGraphData)
+          break;
+        case 'Oximeter':
+          state.bloodOxygen = patientVitals.length > 0 ? patientVitals : null;
+          // state.bloodOxygenGraph = patientGraphData;
+          break;
+        case 'Glucose':
+          state.bloodGlucose = patientVitals.length > 0 ? patientVitals : null;
+          // state.bloodGlucoseGraph = patientGraphData;
+          break;
+        default:
+          break;
+      }
+    });
+
+
+    state.bloodPressureColumns = [{
+        title: "Date Recorded",
+        dataIndex: "takeTime",
+        key: "takeTime",
+        slots: {
+          customRender: "takeTime",
+        },
+      },
+      {
+        title: "Systolic",
+        dataIndex: "blood_pressure_systolic",
+        key: "blood_pressure_systolic",
+        slots: {
+          customRender: "blood_pressure_systolic",
+        },
+      },
+      {
+        title: "Diastolic",
+        dataIndex: "blood_pressure_diastolic",
+        key: "blood_pressure_diastolic",
+        slots: {
+          customRender: "blood_pressure_diastolic",
+        },
+      },
+      {
+        title: "BPM",
+        dataIndex: "blood_pressure_bpm",
+        key: "blood_pressure_bpm",
+        slots: {
+          customRender: "blood_pressure_bpm",
+        },
+      },
+    ];
+
+    state.bloodOxygenColumns = [{
+        title: "Date Recorded",
+        dataIndex: "takeTime",
+        key: "takeTime",
+        slots: {
+          customRender: "takeTime",
+        },
+      },
+      {
+        title: "SPO2",
+        dataIndex: "oximeter_spo2",
+        key: "oximeter_spo2",
+        slots: {
+          customRender: "oximeter_spo2",
+        },
+      },
+      {
+        title: "BPM",
+        dataIndex: "oximeter_bpm",
+        key: "oximeter_bpm",
+        slots: {
+          customRender: "oximeter_bpm",
+        },
+      },
+    ];
+
+    state.bloodGlucoseColumns = [{
+        title: "Date Recorded",
+        dataIndex: "takeTime",
+        key: "takeTime",
+        slots: {
+          customRender: "takeTime",
+        },
+      },
+      {
+        title: "Random Blood Sugar",
+        dataIndex: "glucose_random_blood_sugar",
+        key: "glucose_random_blood_sugar",
+        slots: {
+          customRender: "glucose_random_blood_sugar",
+        },
+      },
+      {
+        title: "Fasting Blood Sugar",
+        dataIndex: "glucose_fasting_blood_sugar",
+        key: "glucose_fasting_blood_sugar",
+        slots: {
+          customRender: "glucose_fasting_blood_sugar",
+        },
+      },
+      {
+        title: "Fasting",
+        dataIndex: "glucose_fasting",
+        key: "glucose_fasting",
+        slots: {
+          customRender: "glucose_fasting",
+        },
+      },
+      {
+        title: "Pre Meal",
+        dataIndex: "glucose_pre_meal",
+        key: "glucose_pre_meal",
+        slots: {
+          customRender: "glucose_pre_meal",
+        },
+      },
+      {
+        title: "Post Meal",
+        dataIndex: "glucose_post_meal",
+        key: "glucose_post_meal",
+        slots: {
+          customRender: "glucose_post_meal",
+        },
+      },
+      {
+        title: "Before Sleep",
+        dataIndex: "glucose_before_sleep",
+        key: "glucose_before_sleep",
+        slots: {
+          customRender: "glucose_before_sleep",
+        },
+      },
+      {
+        title: "General",
+        dataIndex: "glucose_general",
+        key: "glucose_general",
+        slots: {
+          customRender: "glucose_general",
+        },
+      },
+    ];
+  } else {
+    state.bloodPressure = null;
+    //   state.bloodPressureGraph = null;
+    state.bloodOxygen = null;
+    //   state.bloodOxygenGraph = null;
+    state.bloodGlucose = null;
+    //   state.bloodGlucoseGraph = null;
+  }
+}

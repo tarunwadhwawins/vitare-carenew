@@ -8,39 +8,45 @@
             <span class="icons">
                 <EditOutlined @click="editInventory(record.id, record.deviceTypeId)" /></span>
         </a-tooltip>
-        <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,339)" >
+        <a-tooltip placement="bottom" v-if="arrayToObjact(screensPermissions,339)">
             <template #title v-if="record.isAvailable=='Assigned'" disabled>
-                
+
                 <span disabled>Assigned Inventory Can`t Delete</span>
             </template>
             <template #title v-else>
-              
-              <span >Delete</span>
-          </template>
+
+                <span>Delete</span>
+            </template>
             <span class="icons" v-if="record.isAvailable=='Assigned'" disabled>
                 <DeleteOutlined /></span>
-                <span class="icons" v-else>
-                  <DeleteOutlined @click="deleteInventory(record.id)" /></span>
+            <span class="icons" v-else>
+                <DeleteOutlined @click="deleteInventory(record.id)" /></span>
         </a-tooltip>
     </template>
-    <template #isActive="{record}" >
-        <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" :disabled="!arrayToObjact(screensPermissions,338)"/>
+    <template #isActive="{record}">
+        <a-switch v-model:checked="record.isActive" @change="updateStatus(record.id, $event)" :disabled="!arrayToObjact(screensPermissions,338)" />
     </template>
     <template #isAvailable="{record}">
-        <span>{{ record.isAvailable }}</span>
+        <a-tooltip placement="bottom" v-if="record.isAvailable=='Assigned'">
+            <template #title>
+                <span>{{'Assigned to '+ record.fullName }}</span>
+            </template>
+            <router-link v-if="record.patientId" :to="{ name: 'PatientSummary', params: { udid: record.patientId } }">{{ record.isAvailable }}</router-link>
+        </a-tooltip>
+        <a-tooltip v-else>
+           <span>{{ record.isAvailable }}</span>
+        </a-tooltip>
     </template>
+    
 </a-table>
 <Loader />
 </template>
+
 <script>
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { watchEffect, onMounted } from "vue";
 import { useStore } from "vuex";
-import {
-  warningSwal,
- 
-  arrayToObjact,
-} from "@/commonMethods/commonMethod";
+import { warningSwal, arrayToObjact } from "@/commonMethods/commonMethod";
 import { messages } from "@/config/messages";
 import Loader from "@/components/loader/Loader";
 export default {
@@ -62,14 +68,14 @@ export default {
     const inventoriesList = store.getters.inventoriesList;
     const meta = store.getters.inventoryMeta;
     let data = [];
-    
-   let scroller = "";
-        onMounted(() => {
-            var tableContent = document.querySelector(".ant-table-body");
-            tableContent.addEventListener("scroll", (event) => {
-                let maxScroll = event.target.scrollHeight - event.target.clientHeight;
-                let currentScroll = event.target.scrollTop + 2;
-                if (currentScroll >= maxScroll) {
+
+    let scroller = "";
+    onMounted(() => {
+      var tableContent = document.querySelector(".ant-table-body");
+      tableContent.addEventListener("scroll", (event) => {
+        let maxScroll = event.target.scrollHeight - event.target.clientHeight;
+        let currentScroll = event.target.scrollTop + 2;
+        if (currentScroll >= maxScroll) {
           let current_page = meta.current_page + 1;
 
           if (current_page <= meta.total_pages) {
@@ -101,11 +107,11 @@ export default {
         data.push(element);
       });
       inventoriesList.value = data;
-     var tableContent = document.querySelector(".ant-table-body");
+      var tableContent = document.querySelector(".ant-table-body");
 
-            setTimeout(() => {
-                tableContent.scrollTo(0, scroller);
-            }, 50);
+      setTimeout(() => {
+        tableContent.scrollTo(0, scroller);
+      }, 50);
     }
     const editInventory = (id, deviceTypeId) => {
       store.state.inventory.deviceModalsList = null;
@@ -219,7 +225,7 @@ export default {
       updateStatus,
       inventoryColumns,
       inventoriesList,
-     
+
       handleTableChange,
     };
   },

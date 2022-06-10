@@ -1,11 +1,11 @@
 <template>
-  <a-modal width="50%" title="Edit Availability" centered :footer="false">
+  <a-modal width="50%" title="Edit Availability" centered :footer="false" @cancel="closeModal()">
     <a-form :model="editAvailabilityForm" ref="formRest" :footer="null" autocomplete="off" layout="vertical" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('global.startTime')" name="startTime" :rules="[{ required: true, message: $t('global.startTime')+' '+$t('global.validation') }]">
-              <a-time-picker use12-hours :disabledHours="() => disableHours" format="hh:mm A" v-model:value="editAvailabilityForm.startTime" value-format="HH:mm"  @change="checkChangeInput(); getTime('startTime')" />
+              <a-time-picker use12-hours :disabledHours="() => disableHours" format="hh:mm A" v-model:value="editAvailabilityForm.startTime" value-format="HH:mm"  @change="checkChangeInput(); getTime('startTime')" @openChange="startTimechange"/>
               <ErrorMessage v-if="errorMsg" :name="errorMsg.startTime ? errorMsg.startTime[0] : ''" />
             </a-form-item>
           </div>
@@ -13,7 +13,7 @@
         <a-col :span="12">
           <div class="form-group">
             <a-form-item :label="$t('global.endTime')" name="endTime" :rules="[{ required: true, message: $t('global.endTime')+' '+$t('global.validation') }]">
-              <a-time-picker v-model:value="editAvailabilityForm.endTime" :disabledHours="() => disableHours" use12-hours format="hh:mm A" value-format="HH:mm"  @change="checkChangeInput(); getTime('endTime')" />
+              <a-time-picker v-model:value="editAvailabilityForm.endTime" :disabledHours="() => disableHours" use12-hours format="hh:mm A" value-format="HH:mm"  @change="checkChangeInput(); getTime('endTime')" @openChange="endTimechange" />
               <ErrorMessage v-if="errorMsg" :name="errorMsg.endTime ? errorMsg.endTime[0] : ''" />
             </a-form-item>
           </div>
@@ -28,102 +28,181 @@
 </template>
 
 <script>
-import { computed, watchEffect, reactive, ref } from 'vue-demi'
-import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
-import { timeStamp,timeStampFormate,disableHours,errorSwal, } from '../../commonMethods/commonMethod';
-import moment from 'moment';
-import Loader from "@/components/loader/Loader";
+import { computed, watchEffect, reactive, ref } from "vue-demi";
+import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 import {
-    messages
-} from "@/config/messages"
+  timeStamp,
+  timeStampFormate,
+  disableHours,
+  errorSwal,
+} from "../../commonMethods/commonMethod";
+import moment from "moment";
+import Loader from "@/components/loader/Loader";
+import { messages } from "@/config/messages";
 
 export default {
   props: {
     isAvailabilityEdit: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   components: {
     Loader,
   },
   setup(props, { emit }) {
-    const store = useStore()
-    const route = useRoute()
-    const paramId = route.params.udid
-    const formRef = ref()
-    const button = ref(true)
-    var isEdit = reactive(props.isAvailabilityEdit)
+    const store = useStore();
+    const route = useRoute();
+    const paramId = route.params.udid;
+    const formRef = ref();
+    const button = ref(true);
+    var isEdit = reactive(props.isAvailabilityEdit);
 
     const availabilityDetails = computed(() => {
-      return store.state.careCoordinator.availabilityDetails
-    })
+      return store.state.careCoordinator.availabilityDetails;
+    });
 
     const editAvailabilityForm = reactive({
       startTime: "",
       endTime: "",
-    })
+    });
 
-     const addStaff = computed(() => {
-            return store.state.careCoordinator.addStaff;
+    const addStaff = computed(() => {
+      return store.state.careCoordinator.addStaff;
+    });
+
+    watchEffect(() => {
+      if (isEdit) {
+        Object.assign(editAvailabilityForm, availabilityDetails.value);
+      }
+    });
+
+     function endTimechange(e) {
+      if (e && !editAvailabilityForm.endTime) {
+        const m = moment();
+        m.set({
+          hour: 8,
+          minute: 0,
+          second: 0,
+          millisecond: 0,
         });
 
-    
-    watchEffect(() => {
-      if(isEdit) {
-        Object.assign(editAvailabilityForm, availabilityDetails.value)
+        editAvailabilityForm.endTime = m;
       }
-    })
+      if(!e){
+          if(typeof editAvailabilityForm.endTime == 'object'){
+              editAvailabilityForm.endTime='';
+          }
+      }
+    }
 
-    const form = reactive({ ...editAvailabilityForm })
+    function startTimechange(e) {
+      if (e && !editAvailabilityForm.startTime) {
+        const m = moment();
+        m.set({
+          hour: 8,
+          minute: 0,
+          second: 0,
+          millisecond: 0,
+        });
+
+        editAvailabilityForm.startTime = m;
+      }
+      if(!e){
+          if(typeof editAvailabilityForm.startTime == 'object'){
+              editAvailabilityForm.startTime='';
+          }
+      }
+    }
+
+    const form = reactive({ ...editAvailabilityForm });
     const submitForm = () => {
-      isEdit = false
-       button.value = false
-      let startTime = timeStamp(moment().format('MM/DD/YYYY') + ' ' + editAvailabilityForm.startTime + ':00');
-      let endTime = timeStamp(moment().format('MM/DD/YYYY') + ' ' + editAvailabilityForm.endTime + ':00')
+      isEdit = false;
+      button.value = false;
+      let startTime = timeStamp(
+        moment().format("MM/DD/YYYY") +
+          " " +
+          editAvailabilityForm.startTime +
+          ":00"
+      );
+      let endTime = timeStamp(
+        moment().format("MM/DD/YYYY") +
+          " " +
+          editAvailabilityForm.endTime +
+          ":00"
+      );
       const data = {
         startTime: startTime,
         endTime: endTime,
-      }
+      };
       if (startTime === endTime || startTime > endTime) {
-                errorSwal(messages.startTimeAndEndTime)
-                button.value = true
-            }else{
-
-              store.dispatch('updateAvailability', {
-                id: addStaff.value?addStaff.value.id:route.params.udid,
-                availabilityId: availabilityDetails.value.id,
-                data: data,
-              }).then(() => {
-                emit('closeModal')
-                Object.assign(editAvailabilityForm, form)
-                store.dispatch("availabilityList", addStaff.value?addStaff.value.id:route.params.udid);
-              })
-            }
-    }
+        errorSwal(messages.startTimeAndEndTime);
+        button.value = true;
+      } else {
+        store
+          .dispatch("updateAvailability", {
+            id: addStaff.value ? addStaff.value.id : route.params.udid,
+            availabilityId: availabilityDetails.value.id,
+            data: data,
+          })
+          .then(() => {
+            emit("closeModal");
+            Object.assign(editAvailabilityForm, form);
+            store.dispatch(
+              "availabilityList",
+              addStaff.value ? addStaff.value.id : route.params.udid
+            );
+          });
+      }
+    };
 
     function getTime(event) {
-            if (event == 'startTime') {
-                let timeSelect = timeStamp(moment().format('MM/DD/YYYY') + ' ' + editAvailabilityForm.startTime + ':00')
-                
-                if (timeStampFormate(timeSelect, 'HH:00') < '08:00' || timeStampFormate(timeSelect, 'HH:00') > '20:00') {
+      if (event == "startTime") {
+        let timeSelect = timeStamp(
+          moment().format("MM/DD/YYYY") +
+            " " +
+            editAvailabilityForm.startTime +
+            ":00"
+        );
 
-                    editAvailabilityForm.startTime = ''
-                }
-            } else {
-                let timeSelect = timeStamp(moment().format('MM/DD/YYYY') + ' ' + editAvailabilityForm.endTime + ':00')
-                if (timeStampFormate(timeSelect, 'HH:00') < '08:00' || timeStampFormate(timeSelect, 'HH:00') > '20:00') {
-                    editAvailabilityForm.endTime = ''
-                }
-            }
+        if (
+          timeStampFormate(timeSelect, "HH:00") < "08:00" ||
+          timeStampFormate(timeSelect, "HH:00") > "20:00"
+        ) {
+          editAvailabilityForm.startTime = "";
         }
+      } else {
+        let timeSelect = timeStamp(
+          moment().format("MM/DD/YYYY") +
+            " " +
+            editAvailabilityForm.endTime +
+            ":00"
+        );
+        if (
+          timeStampFormate(timeSelect, "HH:00") < "08:00" ||
+          timeStampFormate(timeSelect, "HH:00") > "20:00"
+        ) {
+          editAvailabilityForm.endTime = "";
+        }
+      }
+    }
 
-        function checkChangeInput() {
-            store.commit('errorMsg', null)
-            store.commit('checkChangeInput', true)
-        }
+    function checkChangeInput() {
+      store.commit("errorMsg", null);
+      store.commit("checkChangeInput", true);
+    }
+
+    const checkChangedInput = computed(() => {
+      return store.state.common.checkChangeInput
+    })
+
+    const closeModal = () => {
+      emit("closeModal", checkChangedInput.value)
+    }
 
     return {
+      endTimechange,
+      startTimechange,
       button,
       disableHours,
       checkChangeInput,
@@ -132,7 +211,8 @@ export default {
       editAvailabilityForm,
       paramId,
       submitForm,
-      getTime
+      getTime,
+      closeModal,
     }
   }
 }
