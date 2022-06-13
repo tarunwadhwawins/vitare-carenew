@@ -45,6 +45,7 @@ let data = []
 			{
 				name: 'Task',
 				data: data.map((item) => {
+					
 					return item.total;
 				})
 			}

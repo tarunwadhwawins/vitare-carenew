@@ -1,13 +1,13 @@
 <template>
-  <a-table rowKey="id" :row-selection="slectVitals" :columns="columns" :data-source="data" :pagination="false" >
+  <a-table rowKey="id" :columns="columns" :data-source="data" :pagination="false" >
     <template #blood_pressure_systolic="{record}">
-      <span v-if="record.blood_pressure_systolic" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.color }">{{ record.blood_pressure_systolic }}</span>
+      <span v-if="record.blood_pressure_systolic" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.blood_pressure_bpm_color }">{{ record.blood_pressure_systolic }}</span>
     </template>
     <template #blood_pressure_diastolic="{record}">
-      <span v-if="record.blood_pressure_diastolic" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.color }">{{ record.blood_pressure_diastolic }}</span>
+      <span v-if="record.blood_pressure_diastolic" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.blood_pressure_diastolic_color }">{{ record.blood_pressure_diastolic }}</span>
     </template>
     <template #blood_pressure_bpm="{record}">
-      <span v-if="record.blood_pressure_bpm" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.color }">{{ record.blood_pressure_bpm }}</span>
+      <span v-if="record.blood_pressure_bpm" :style="{ padding: 'inherit', 'border': '2px solid', 'border-color': record.blood_pressure_bpm_color }">{{ record.blood_pressure_bpm }}</span>
     </template>
     
     <template #glucose_random_blood_sugar="{record}">
@@ -53,8 +53,7 @@ export default {
     },
     className: {
       type: String
-    },
-    slectVitals:Array
+    }
   }
 }
 </script>

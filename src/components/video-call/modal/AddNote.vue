@@ -47,7 +47,7 @@ export default defineComponent({
       if (props.pId) {
         store.dispatch("notesList", props.pId);
       }
-      store.dispatch("globalCodes");
+      // store.dispatch("globalCodes");
     });
 
     const flagsList = computed(() => {
