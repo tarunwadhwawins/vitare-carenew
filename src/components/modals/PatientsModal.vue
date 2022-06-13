@@ -613,10 +613,11 @@
                                 </div>
                             </a-col>
                             <a-col :md="8" :sm="12" :xs="24">
-                                <a-button type="primary" style="margin-right: 8px" @click="newReferral">{{ShowReferral == false ? 'Add New Referral' : 'Back'}}</a-button>
+                              
+                                <a-button type="primary" class="mt-28 mb-24 "  @click="newReferral">{{ShowReferral == false ? 'Add New Referral' : 'Back'}}</a-button>
                             </a-col>
                         </a-row>
-                        <a-row v-if="ShowReferral">
+                        <a-row :gutter="24" v-if="ShowReferral">
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('global.firstName')" name="firstName" :rules="[{ required: false, message: $t('global.firstName')+' '+$t('global.validation')}]">
