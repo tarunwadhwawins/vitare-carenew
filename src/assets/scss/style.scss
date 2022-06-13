@@ -728,6 +728,8 @@
 }
 
 .pat-profile {
+    // max-height: calc(100vh - 540px);
+    // overflow: auto;
     .pat-profile-inner {
         display: flex;
         justify-content: space-between;
@@ -929,7 +931,7 @@
 }
 .patientsVitals {
     margin: 20px 0 0;
-    height: 375px;
+    max-height: calc(100vh - 470px);
     overflow: auto;
     padding: 0 15px;
     .ant-card {
@@ -946,6 +948,11 @@
             .ant-tabs-tab {
                 margin: 0;
             }
+        }
+    }
+    &.timelineView {
+        .defaultTimeline {
+            max-height: calc(100vh - 540px);
         }
     }
     .ant-checkbox-group {
@@ -974,7 +981,7 @@
         padding: 40px 20px 0;
         overflow: auto;
         &.defaultTimeline {
-            height: 520px;
+            // max-height: calc(100vh - 280px);
         }
         &.fullTimeline {
             height: calc(100vh - 450px);
