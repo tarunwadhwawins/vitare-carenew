@@ -182,6 +182,14 @@
                                 </a-form-item>
                             </div>
                         </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.placeOfService')" name="placeOfService" :rules="[{ required: false, message: $t('global.placeOfService')+' '+$t('global.validation') }]">
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.placeOfService" :globalCode="globalCode.placeOfService" />
+
+                                </a-form-item>
+                            </div>
+                        </a-col>
 
                     </a-row>
 
@@ -1070,6 +1078,7 @@ export default defineComponent({
       zipCode: "",
       appartment: "",
       address: "",
+      placeOfService: "",
     });
 
     const responsiblePersonForm = reactive({

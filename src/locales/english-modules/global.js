@@ -84,7 +84,7 @@ const global = {
   careCoodinator:'Care Coordinator',
   staff:'Staff',
   startCall:'Start Call',
-
+  placeOfService: 'Place of Service'
 }
 
 

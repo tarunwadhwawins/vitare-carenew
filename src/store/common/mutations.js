@@ -123,6 +123,9 @@ export const globalCodes = (state, data) => {
         if (element.name === 'Task Type') {
             state.taskType = element.globalCode;
         }
+        if (element.name === 'Place of Service') {
+            state.placeOfService = element.globalCode;
+        }
         
     });
 
