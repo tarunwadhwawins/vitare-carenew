@@ -145,12 +145,6 @@ export default defineComponent({
         moment().format("MM/DD/YYYY") + " " + availability.endTime + ":00"
       );
 
-      console.log("startTime", parseInt(startTime));
-      console.log("endTime", parseInt(endTime));
-
-      console.log("availability.startTime", availability.startTime);
-      console.log("availability.endTime", availability.endTime);
-
       // if (moment(moment().format('MM/DD/YYYY') + ' ' + availability.startTime+ ':00', 'DD-MM-YYYY HH:mm:ss').valueOf()=== moment(moment().format('MM/DD/YYYY') + ' ' + availability.endTime+ ':00', 'DD-MM-YYYY HH:mm:ss').valueOf() || moment(moment().format('MM/DD/YYYY') + ' ' + availability.startTime+ ':00', 'DD-MM-YYYY HH:mm:ss').valueOf() > moment(moment().format('MM/DD/YYYY') + ' ' + availability.endTime+ ':00', 'DD-MM-YYYY HH:mm:ss').valueOf()) {
       //     errorSwal(messages.startTimeAndEndTime)
       //     button.value = true

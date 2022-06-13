@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { computed, watchEffect, reactive, ref } from "vue-demi";
+import { computed, watchEffect, reactive, ref,onUnmounted } from "vue-demi";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import {
@@ -40,6 +40,7 @@ import {
 import moment from "moment";
 import Loader from "@/components/loader/Loader";
 import { messages } from "@/config/messages";
+import ErrorMessage from "@/components/common/messages/ErrorMessage.vue";
 
 export default {
   props: {
@@ -49,6 +50,7 @@ export default {
   },
   components: {
     Loader,
+    ErrorMessage
   },
   setup(props, { emit }) {
     const store = useStore();
@@ -116,6 +118,8 @@ export default {
     }
 
     const form = reactive({ ...editAvailabilityForm });
+
+    
     const submitForm = () => {
       isEdit = false;
       button.value = false;
@@ -145,13 +149,18 @@ export default {
             availabilityId: availabilityDetails.value.id,
             data: data,
           })
-          .then(() => {
-            emit("closeModal");
+          .then((resp) => {
+            if(resp==true){
+              emit("closeModal");
             Object.assign(editAvailabilityForm, form);
             store.dispatch(
               "availabilityList",
               addStaff.value ? addStaff.value.id : route.params.udid
             );
+            }else{
+              // 
+            }
+            
           });
       }
     };
@@ -200,7 +209,14 @@ export default {
       emit("closeModal", checkChangedInput.value)
     }
 
+    const errorMsg = computed(() => {
+            return store.state.careCoordinator.errorMsg;
+        });
+onUnmounted(() => {
+      store.commit("errorMsg", null);
+    });
     return {
+      errorMsg,
       endTimechange,
       startTimechange,
       button,
