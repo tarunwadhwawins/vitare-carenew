@@ -1,6 +1,7 @@
 import ServiceMethodService from '@/services/serviceMethod';
 import {
-  API_ENDPOINTS
+  API_ENDPOINTS,
+  messages
 } from '@/config/apiConfig';
 import {
   errorSwal,
@@ -87,7 +88,7 @@ const permission = async ({
   await ServiceMethodService.common('get', 'staff/access/action', null, null)
     .then((response) => {
       if (response.data.actionId.length == 0 && response.data.widgetId.length == 0) {
-        errorSwal("You don't have permission! Contact to Admin").then((response) => {
+        errorSwal(messages.permissionsError).then((response) => {
           commit('failure', 'true');
           if (response == true) {
             logoutUser({
