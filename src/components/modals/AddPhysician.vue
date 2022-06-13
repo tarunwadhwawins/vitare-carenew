@@ -6,7 +6,7 @@
                 <div class="form-group">
                     <a-form-item :label="$t('appointmentCalendar.careCoordinator')" name="staffId" :rules="[{ required: true, message: $t('appointmentCalendar.careCoordinator')+' '+$t('global.validation')  }]">
 
-                        <StaffDropDown v-if="staffList.allStaffList" v-model:value="physicianForm.staffId" @handleStaffChange="handleStaffChange($event)" :close="closeValue" />
+                        <StaffDropDown v-if="staffList.allStaffList" v-model:value="physicianForm.staffId" @handleStaffChange="handleStaffChange($event); checkChangeInput()" :close="closeValue" />
                     </a-form-item>
                 </div>
             </a-col>
@@ -25,7 +25,8 @@
 <script>
 import {
     ref,
-    reactive
+    reactive,
+    computed,
 } from "vue";
 import {
     useStore
@@ -34,15 +35,18 @@ import {
     arrayToObjact
 } from "@/commonMethods/commonMethod";
 import StaffDropDown from "@/components/modals/search/StaffDropdownSearch.vue";
+import { warningSwal } from '../../commonMethods/commonMethod';
+import { messages } from '../../config/messages';
+
 export default {
     props: {},
     components: {
         StaffDropDown,
     },
-    setup(props, {
-        emit
-    }) {
+    setup(props, { emit }) {
         const closeValue = ref(false)
+        const formRef = ref()
+
         const options = ref([{
                 value: "Steve Smith",
                 label: "Steve Smith",
@@ -60,6 +64,15 @@ export default {
                 label: "Jane Doe",
             },
         ]);
+
+        function checkChangeInput() {
+            store.commit("checkChangeInput", true);
+        }
+
+        const checkFieldsData = computed(() => {
+            return store.state.common.checkChangeInput;
+        });
+
         const store = useStore();
         const handleChange = (value) => {
             console.log(`selected ${value}`);
@@ -82,34 +95,38 @@ export default {
                 addStaff(physicianForm.staffId);
             });
         };
-        const form = reactive({
-            ...physicianForm,
-        });
+        const form = reactive({ ...physicianForm });
 
         function addStaff(event) {
             Object.assign(physicianForm, form);
-            //console.log(store.getters.appointmentRecords.value.getStaff)
             let objact = arrayToObjact(
                 store.getters.appointmentRecords.value.getStaff,
                 event
             );
             if (!objact) {
-                store.dispatch(
-                    "getStaffs",
-                    store.state.careCoordinatorSummary.staffSummary
-                );
+                store.dispatch("getStaffs", store.state.careCoordinatorSummary.staffSummary);
             }
-
             emit("is-visible", false);
         }
 
         function closeModal() {
-            closeValue.value = true
-            Object.assign(physicianForm, form);
-            setTimeout(() => {
-                closeValue.value = false
-            }, 100)
-            emit("is-visible", false);
+            emit("is-visible", true)
+            if(checkFieldsData.value) {
+                warningSwal(messages.modalWarning).then((response) => {
+                    if (response == true) {
+                        emit("is-visible", false)
+                        store.commit('checkChangeInput', false)
+                        Object.assign(physicianForm, form)
+                    }
+                    else {
+                        emit("is-visible", true)
+                    }
+                });
+            }
+            else {
+                emit("is-visible", false)
+                Object.assign(physicianForm, form)
+            }
         }
 
         const handleStaffChange = (val) => {
@@ -128,7 +145,9 @@ export default {
             physicianForm,
             addPhysician,
             closeModal,
-            closeValue
+            closeValue,
+            checkChangeInput,
+            formRef,
         };
     },
 };
