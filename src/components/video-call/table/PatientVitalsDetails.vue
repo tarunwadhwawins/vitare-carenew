@@ -96,9 +96,9 @@ export default {
       return store.state.common.checkChangeInput
     })
 
-    const handleOk = () => {
-      visibleAddVitalsModal.value = true
-      if(checkChangedInput.value) {
+    const handleOk = (value) => {
+      visibleAddVitalsModal.value = value ? value : true
+      if(value && checkChangedInput.value) {
           warningSwal(messages.modalWarning).then((response) => {
               if (response == true) {
                   visibleAddVitalsModal.value = false
