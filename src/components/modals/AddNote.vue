@@ -55,7 +55,7 @@ export default defineComponent({
         const isValueChanged = ref(false);
 
         watchEffect(() => {
-            store.dispatch("globalCodes");
+            // store.dispatch("globalCodes");
         });
 
         const flagsList = computed(() => {

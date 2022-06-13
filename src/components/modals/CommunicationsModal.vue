@@ -142,7 +142,7 @@ export default defineComponent({
             return store.state.common.checkChangeInput;
         })
         watchEffect(() => {
-            store.dispatch("globalCodes");
+            // store.dispatch("globalCodes");
             store.dispatch("allPatientsList");
             store.dispatch("allStaffList");
         });

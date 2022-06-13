@@ -10,17 +10,17 @@
     <a-row :gutter="24" v-else>
        <a-col :sm="24" :xs="24" class="mb-24" v-if="vitals.bloodPressure?.length>0">
             <a-card :title="`Total Compliance Days - ${vitals.takeLength.length}`">
-                <VitalsTable :slectVitals="slectVitals" :columns="vitals.bloodPressureColumns" :data="vitals.bloodPressure" />
+                <VitalsTable :columns="vitals.bloodPressureColumns" :data="vitals.bloodPressure" />
             </a-card>
         </a-col>
         <a-col :sm="24" :xs="24" class="mb-24" v-if="vitals.bloodOxygen?.length>0">
             <a-card :title="`Total Compliance Days - ${vitals.takeLength.length}`">
-                <VitalsTable :slectVitals="slectVitals" :columns="vitals.bloodOxygenColumns" :data="vitals.bloodOxygen" />
+                <VitalsTable :columns="vitals.bloodOxygenColumns" :data="vitals.bloodOxygen" />
             </a-card>
         </a-col>
         <a-col :sm="24" :xs="24" class="mb-24" v-if="vitals.bloodGlucose?.length>0">
             <a-card :title="`Total Compliance Days - ${vitals.takeLength.length}`">
-                <VitalsTable :slectVitals="slectVitals" :columns="vitals.bloodGlucoseColumns" :data="vitals.bloodGlucose" />
+                <VitalsTable :columns="vitals.bloodGlucoseColumns" :data="vitals.bloodGlucose" />
             </a-card>
         </a-col>
 
@@ -48,7 +48,6 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const route = useRoute()
-    const selectVitalsData = ref()
     const modalTitle = ref()
 
     const devicesList = computed(() => {
@@ -60,11 +59,11 @@ export default defineComponent({
           modalTitle.value =
             devicesList.value.device.length > 0 ? "Device Details" : "Details";
         } else {
-          if (devicesList.value.vital[0].deviceType == "Blood Pressure") {
+          if (devicesList.value.vital[0]?.deviceType == "Blood Pressure") {
             modalTitle.value = "Vital Detail - Blood Pressure";
-          } else if (devicesList.value.vital[0].deviceType == "Oximeter") {
+          } else if (devicesList.value.vital[0]?.deviceType == "Oximeter") {
             modalTitle.value = "Vital Detail - Blood Oxygen Saturation";
-          } else if (devicesList.value.vital[0].deviceType == "Glucose") {
+          } else if (devicesList.value.vital[0]?.deviceType == "Glucose") {
             modalTitle.value = "Vital Detail - Blood Glucose";
           }
         }
@@ -116,15 +115,9 @@ export default defineComponent({
     }
 
     
-    const slectVitals = {
-      onChange: (selectedRowKeys) => {
-        selectVitalsData.value= selectedRowKeys;
-      },
-    };
+ 
 
     return {
-      selectVitalsData,
-      slectVitals,
       closeModal,
       vitals,
       arrayToObjact,
