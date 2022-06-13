@@ -72,10 +72,6 @@ export default defineComponent({
     })
     const devicesColumns = [
       {
-        title: "All",
-        dataIndex: "id",
-      },
-      {
         title: "Home Unit Type",
         dataIndex: "deviceType",
         sorter: true,
