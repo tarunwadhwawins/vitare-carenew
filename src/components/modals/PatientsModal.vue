@@ -130,6 +130,14 @@
                                 </a-form-item>
                             </div>
                         </a-col>
+                        <a-col :md="8" :sm="12" :xs="24">
+                            <div class="form-group">
+                                <a-form-item :label="$t('global.placeOfService')" name="placeOfService" :rules="[{ required: false, message: $t('global.placeOfService')+' '+$t('global.validation') }]">
+                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.placeOfService" :globalCode="globalCode.placeOfService" />
+
+                                </a-form-item>
+                            </div>
+                        </a-col>
                     </a-row>
 
                     <a-row :gutter="24">
@@ -178,14 +186,6 @@
                             <div class="form-group">
                                 <a-form-item :label="$t('global.country')" name="country" :rules="[{ required: false, message: $t('global.country')+' '+$t('global.validation') }]">
                                     <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.country" :globalCode="globalCode.country" />
-
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                        <a-col :md="8" :sm="12" :xs="24">
-                            <div class="form-group">
-                                <a-form-item :label="$t('global.placeOfService')" name="placeOfService" :rules="[{ required: false, message: $t('global.placeOfService')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown @change="changedValue" v-model:value="demographics.placeOfService" :globalCode="globalCode.placeOfService" />
 
                                 </a-form-item>
                             </div>
@@ -598,7 +598,7 @@
                         <a-row :gutter="24">
                             <a-col :span="24">
                                 <div class="formHeading">
-                                    <h2>{{$t('patient.conditions.referralSource')}}</h2>
+                                    <h2>{{$t('patient.referralSource')}}</h2>
                                 </div>
                             </a-col>
                         </a-row>
@@ -669,7 +669,7 @@
                             </a-col>
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
-                                    <a-form-item :label="$t('patient.conditions.fax')" name="referralFax" :rules="[{ required: false, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
+                                    <a-form-item :label="$t('patient.fax')" name="referralFax" :rules="[{ required: false, message: $t('patient.fax')+' '+$t('global.validation') }]">
                                         <a-input @change="changedValue" @input="onKeyUp('referralFax')" v-model:value="referal.referralFax" size="large" />
                                         <ErrorMessage v-if="referralErrorMsg" :name="referralErrorMsg.referralFax?referralErrorMsg.referralFax[0]:''" />
                                     </a-form-item>
@@ -706,53 +706,13 @@
                 <!-- end  -->
             </div>
             <div class="steps-content" v-if="steps[current].title === 'Conditions'">
-                <!-- <Conditions /> -->
-                <a-form :model="conditions" name="basic" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="condition" @finishFailed="conditionsFailed">
-                    <a-row :gutter="24">
-                        <a-col :span="24">
-                            <div class="formHeading">
-                                <h2>{{$t('patient.conditions.healthConditions')}}</h2>
-                            </div>
-                        </a-col>
-                    </a-row>
+              <PatientConditions :idPatient="idPatient" @onChange="changedValue" />
 
-                    <a-row :gutter="24" class="mb-24">
-                        <a-col :md="24" :sm="24" :xs="24" class="mb-24">
-                            <a-input @change="selectedDiseases($event)" size="large" placeholder="Search..." id="conditionBox" />
-                        </a-col>
-                        <a-col :md="24" :sm="24" :xs="24">
-                            <div class="form-group conditionsCheckboxs">
-                                <a-form-item name="condition" :rules="[{ required: true, message: $t('patient.conditions.healthConditions')+' '+$t('global.validation') }]">
-                                    <!-- Selected -->
-
-                                    <p v-if="selectedDiseasesList && selectedDiseasesList.length > 0">
-                                        <a-checkbox-group v-model:value="conditions.condition">
-                                            <a-checkbox @change="chooseDiseases($event, false)" v-for="disease in selectedDiseasesList" :key="disease.id" :value="disease.id" name="condition">{{disease.name}}</a-checkbox>
-                                        </a-checkbox-group>
-                                    </p><br />
-                                    <!-- Unselected -->
-                                    <!-- {{conditions.unselectedConditions}} -->
-                                    <p v-if="unSelectedDiseasesList && unSelectedDiseasesList.length > 0">
-                                        <a-checkbox-group v-model:value="conditions.unselectedConditions">
-                                            <a-checkbox @change="chooseDiseases($event, true)" v-for="disease in unSelectedDiseasesList" :key="disease.id" :value="disease.id" name="unselectedConditions">{{disease.name}}</a-checkbox>
-                                        </a-checkbox-group>
-                                    </p>
-                                </a-form-item>
-                            </div>
-                        </a-col>
-                    </a-row>
-
-                    <div class="steps-action">
-                        <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
-                        <a-button v-if="current < steps.length - 1" type="primary" @click="scrollToTop(current)" html-type="submit">{{$t('global.next')}}</a-button>
-                        <a-button v-if="current == steps.length - 1" type="primary" @click="$message.success('Processing complete!')">
-                            {{$t('global.done')}}
-                        </a-button>
-                    </div>
-
-                </a-form>
-                <Loader />
-                <!--  -->
+              <div class="steps-action">
+                <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
+                <a-button v-if="current < steps.length - 1" type="primary" @click="next();scrollToTop(current)">{{$t('global.next')}}</a-button>
+              </div>
+              <Loader />
             </div>
 
             <div class="steps-content" v-if="steps[current].title == 'Clinical Data'">
@@ -856,6 +816,7 @@ import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue"
 
 import moment from "moment";
 //import PhoneNumber from "@/components/modals/forms/fields/PhoneNumber"
+import PatientConditions from "@/components/modals/forms/PatientConditions"
 export default defineComponent({
   props: {
     isEdit: Boolean,
@@ -863,6 +824,7 @@ export default defineComponent({
   components: {
     // PhoneNumber,
     //StaffDropDown,
+    PatientConditions,
     GlobalCodeDropDown,
     Programs: defineAsyncComponent(() =>
       import("@/components/modals/forms/Programs")
@@ -958,69 +920,6 @@ export default defineComponent({
     const changedValue = () => {
       store.commit("isEditPatient", false);
       isValueChanged.value = true;
-    };
-
-    const unSelectedDiseasesList = ref([]);
-    const selectedDiseasesList = ref([]);
-    const selectedDiseases = (event) => {
-      isValueChanged.value = true;
-      const searchedValue = event.target.value;
-      unSelectedDiseasesList.value = [];
-      globalCode.value.healthCondition.map(function (healthCondition) {
-        if (
-          healthCondition.name
-            .toLowerCase()
-            .includes(searchedValue.toLowerCase())
-        ) {
-          if (
-            !selectedDiseasesList.value.includes(healthCondition) &&
-            !unSelectedDiseasesList.value.includes(healthCondition)
-          ) {
-            unSelectedDiseasesList.value.push(healthCondition);
-          }
-        }
-      });
-    };
-
-    const chooseDiseases = (event, isTrue) => {
-      const value = event.target.value;
-      const checked = event.target.checked;
-      if (isTrue && checked) {
-        unSelectedDiseasesList.value.filter(function (healthCondition) {
-          if (value == healthCondition.id) {
-            const indexOfObject = unSelectedDiseasesList.value.findIndex(
-              (object) => {
-                return object.id === healthCondition.id;
-              }
-            );
-            unSelectedDiseasesList.value.splice(indexOfObject, 1);
-            if (!selectedDiseasesList.value.includes(healthCondition)) {
-              selectedDiseasesList.value.push(healthCondition);
-              if (!conditions.unselectedConditions.includes(value)) {
-                conditions.unselectedConditions.push(value);
-              }
-            }
-            conditions.condition.push(healthCondition.id);
-          }
-        });
-      } else if (!isTrue && !checked) {
-        conditions.condition = conditions.condition.filter(function (val) {
-          return value != val;
-        });
-        selectedDiseasesList.value.filter(function (healthCondition) {
-          if (value == healthCondition.id) {
-            const indexOfObject = selectedDiseasesList.value.findIndex(
-              (object) => {
-                return object.id === healthCondition.id;
-              }
-            );
-            selectedDiseasesList.value.splice(indexOfObject, 1);
-            if (!unSelectedDiseasesList.value.includes(healthCondition)) {
-              unSelectedDiseasesList.value.push(healthCondition);
-            }
-          }
-        });
-      }
     };
 
     const changedPhoneNumber = () => {
@@ -1122,11 +1021,6 @@ export default defineComponent({
       referral: "",
     });
 
-    const conditions = reactive({
-      condition: [],
-      unselectedConditions: [],
-    });
-
     const insuranceData = reactive({
       insuranceNumber: [],
       insuranceName: [],
@@ -1148,10 +1042,6 @@ export default defineComponent({
       ...referal,
     });
 
-    const patientConditions = computed(() => {
-      return store.state.patients.patientConditions;
-    });
-
     function newReferral() {
       if (ShowReferral.value == false) {
         ShowReferral.value = true;
@@ -1167,101 +1057,9 @@ export default defineComponent({
     const current = computed({
       get: () => store.state.patients.counter,
       set: (value) => {
-        selectedDiseasesList.value = [];
-        conditions.condition = [];
-        conditions.unselectedConditions = [];
-        if (props.isEdit && value == 5) {
-          if (
-            patients.value.addCondition == null &&
-            patientConditions.value == null
-          ) {
-            unSelectedDiseasesList.value = [];
-            store.dispatch("patientConditions", idPatient.value).then(() => {
-              globalCode.value.healthCondition.map(function (healthCondition) {
-                if (patientConditions.value.includes(healthCondition.id)) {
-                  if (!selectedDiseasesList.value.includes(healthCondition)) {
-                    selectedDiseasesList.value.push(healthCondition);
-                    if (!conditions.condition.includes(healthCondition)) {
-                      conditions.condition.push(healthCondition.id);
-                    }
-                  }
-                } else {
-                  unSelectedDiseasesList.value =
-                    globalCode.value.healthCondition;
-                }
-              });
-            });
-          } else if (
-            patients.value.addCondition == null &&
-            patientConditions.value != null
-          ) {
-            unSelectedDiseasesList.value = [];
-            store.dispatch("patientConditions", idPatient.value).then(() => {
-              globalCode.value.healthCondition.map(function (healthCondition) {
-                if (patientConditions.value.includes(healthCondition.id)) {
-                  if (!selectedDiseasesList.value.includes(healthCondition)) {
-                    selectedDiseasesList.value.push(healthCondition);
-                    if (!conditions.condition.includes(healthCondition)) {
-                      conditions.condition.push(healthCondition.id);
-                    }
-                  }
-                } else {
-                  if (!unSelectedDiseasesList.value.includes(healthCondition)) {
-                    unSelectedDiseasesList.value.push(healthCondition);
-                  }
-                }
-              });
-            });
-          } else if (
-            patients.value.addCondition != null &&
-            patientConditions.value != null
-          ) {
-            unSelectedDiseasesList.value = [];
-            store.dispatch("patientConditions", idPatient.value).then(() => {
-              globalCode.value.healthCondition.map(function (healthCondition) {
-                if (patientConditions.value.includes(healthCondition.id)) {
-                  if (!selectedDiseasesList.value.includes(healthCondition)) {
-                    selectedDiseasesList.value.push(healthCondition);
-                    if (!conditions.condition.includes(healthCondition)) {
-                      conditions.condition.push(healthCondition.id);
-                    }
-                  }
-                } else {
-                  if (!unSelectedDiseasesList.value.includes(healthCondition)) {
-                    unSelectedDiseasesList.value.push(healthCondition);
-                  }
-                }
-              });
-            });
-          }
-        } else if (!props.isEdit && value == 5) {
-          store.dispatch("globalCodes");
-          unSelectedDiseasesList.value = globalCode.value.healthCondition;
-          store.dispatch("patientConditions", idPatient.value).then(() => {
-            if (patientConditions.value != null) {
-              unSelectedDiseasesList.value = [];
-              globalCode.value.healthCondition.map(function (disease) {
-                if (patientConditions.value.includes(disease.id)) {
-                  if (!selectedDiseasesList.value.includes(disease)) {
-                    selectedDiseasesList.value.push(disease);
-                    if (!conditions.condition.includes(disease)) {
-                      conditions.condition.push(disease.id);
-                    }
-                  }
-                } else {
-                  if (!unSelectedDiseasesList.value.includes(disease)) {
-                    unSelectedDiseasesList.value.push(disease);
-                  }
-                }
-              });
-            } else {
-              unSelectedDiseasesList.value = globalCode.value.healthCondition;
-              selectedDiseasesList.value = [];
-            }
-          });
-          conditions.condition = [];
+        if(value == 5) {
+          store.commit('isConditionEdit', false)
         }
-
         if (props.isEdit || patients.value.addDemographic) {
           store.state.patients.counter = value;
         } else {
@@ -1479,29 +1277,6 @@ export default defineComponent({
       }
     };
 
-    const condition = () => {
-      const patientId = patients.value.patientDetails
-        ? patients.value.patientDetails.id
-        : idPatient.value;
-      const patientConditions = {
-        condition: conditions.condition,
-      };
-      store
-        .dispatch("addCondition", {
-          data: patientConditions,
-          id: patientId,
-        })
-        .then(() => {
-          isValueChanged.value = false;
-          store.dispatch("patientConditions", patientId);
-        });
-      store.dispatch("checkForErrors");
-      const checkForErrors = computed(() => {
-        return store.state.patients.checkForErrors;
-      });
-      console.log("checkForErrors 222", checkForErrors);
-    };
-
     const parameter = () => {
       store
         .dispatch("parameter", {
@@ -1541,10 +1316,8 @@ export default defineComponent({
 
     const next = () => {
       store.commit("counterPlus");
-      if (!props.isEdit && current.value == 5) {
-        store.dispatch("globalCodes").then(() => {
-          unSelectedDiseasesList.value = globalCode.value.healthCondition;
-        });
+      if(current.value == 5) {
+        store.commit('isConditionEdit', false)
       }
     };
 
@@ -1552,86 +1325,8 @@ export default defineComponent({
       if (patients.value.addDemographic && current.value == 1) {
         Object.assign(demographics, patients.value.addDemographic);
       }
-
-      if (!props.isEdit && current.value == 6) {
-        if (
-          patients.value.addCondition == null &&
-          patientConditions.value == null
-        ) {
-          unSelectedDiseasesList.value = [];
-          store.dispatch("patientConditions", idPatient.value).then(() => {
-            globalCode.value.healthCondition.map(function (healthCondition) {
-              if (patientConditions.value.includes(healthCondition.id)) {
-                if (!selectedDiseasesList.value.includes(healthCondition)) {
-                  selectedDiseasesList.value.push(healthCondition);
-                  if (!conditions.condition.includes(healthCondition)) {
-                    conditions.condition.push(healthCondition.id);
-                  }
-                }
-              } else {
-                unSelectedDiseasesList.value = globalCode.value.healthCondition;
-              }
-            });
-          });
-        } else if (
-          (patients.value.addCondition == null &&
-            patientConditions.value != null) ||
-          (patients.value.addCondition != null &&
-            patientConditions.value != null)
-        ) {
-          unSelectedDiseasesList.value = [];
-          store.dispatch("patientConditions", idPatient.value).then(() => {
-            globalCode.value.healthCondition.map(function (healthCondition) {
-              if (patientConditions.value.includes(healthCondition.id)) {
-                if (!selectedDiseasesList.value.includes(healthCondition)) {
-                  selectedDiseasesList.value.push(healthCondition);
-                  if (!conditions.condition.includes(healthCondition)) {
-                    conditions.condition.push(healthCondition.id);
-                  }
-                }
-              } else {
-                if (!unSelectedDiseasesList.value.includes(healthCondition)) {
-                  unSelectedDiseasesList.value.push(healthCondition);
-                }
-              }
-            });
-          });
-        }
-        /* else if(patients.value.addCondition != null && patientConditions.value != null) {
-                	unSelectedDiseasesList.value = []
-                	store.dispatch('patientConditions', idPatient.value).then(() => {
-
-globalCode.value.healthCondition.map(function(healthCondition) {
-
-if(patientConditions.value.includes(healthCondition.id)) {
-
-if(!selectedDiseasesList.value.includes(healthCondition)) {
-
-selectedDiseasesList.value.push(healthCondition)
-
-if(!conditions.condition.includes(healthCondition)) {
-
-conditions.condition.push(healthCondition.id)
-
-}
-
-}
-
-}
-
-else {
-
-if(!unSelectedDiseasesList.value.includes(healthCondition)) {
-
-unSelectedDiseasesList.value.push(healthCondition)
-
-}
-
-}
-
-});
-                	})
-                } */
+      if(current.value == 6) {
+        store.commit('isConditionEdit', false)
       }
 
       // if(patients.value.addDemographic && current.value == 1) {
@@ -1646,8 +1341,6 @@ unSelectedDiseasesList.value.push(healthCondition)
     const demographicsFailed = (e) => {
       console.log("demographicsFailed", e);
     };
-
-    const conditionsFailed = () => {};
 
     const insuranceDataFailed = () => {};
 
@@ -1796,7 +1489,7 @@ unSelectedDiseasesList.value.push(healthCondition)
     }
 
     const handleStaffChange = (val) => {
-      conditions.staff = val;
+      console.log(val);
     };
 
     function checkChangeInput() {
@@ -1875,7 +1568,6 @@ unSelectedDiseasesList.value.push(healthCondition)
       stepperClick,
       emailChange,
       insuranceDataFailed,
-      conditionsFailed,
       closeModal,
       warningSwal,
       form,
@@ -1896,14 +1588,12 @@ unSelectedDiseasesList.value.push(healthCondition)
       current,
       globalCode,
       demographic,
-      condition,
       steps,
       next,
       prev,
       size: ref("large"),
       search: ref(),
       demographics,
-      conditions,
       demographicsFailed,
       idPatient,
       patientDetail,
@@ -1922,10 +1612,6 @@ unSelectedDiseasesList.value.push(healthCondition)
       ShowReferral,
       newReferral,
       //   referralData: store.getters.referralList,
-      selectedDiseases,
-      selectedDiseasesList,
-      unSelectedDiseasesList,
-      chooseDiseases,
       ShowReferralId,
       referalEmail,
     };

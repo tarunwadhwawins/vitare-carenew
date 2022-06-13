@@ -98,5 +98,7 @@ export default {
     patientFlags:null,
     conditionsList:null,
     latestCondition:null,
+    conditionDetails:null,
+    isConditionEdit:false,
 
 }

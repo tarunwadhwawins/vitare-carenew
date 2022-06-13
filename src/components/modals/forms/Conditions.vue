@@ -58,7 +58,7 @@
   <a-row :gutter="24">
     <a-col :span="24">
       <div class="formHeading">
-        <h2>{{$t('patient.conditions.referralSource')}}</h2>
+        <h2>{{$t('patient.referralSource')}}</h2>
       </div>
     </a-col>
   </a-row>
@@ -99,7 +99,7 @@
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>{{$t('patient.conditions.fax')}}</label>
+        <label>{{$t('patient.fax')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
@@ -107,13 +107,13 @@
   <a-row :gutter="24">
     <a-col :span="24">
       <div class="formHeading">
-        <h2>{{$t('patient.conditions.primaryPhysician')}}</h2>
+        <h2>{{$t('patient.primaryPhysician')}}</h2>
       </div>
     </a-col>
   </a-row>
   <a-row :gutter="24">
     <a-col :md="24" :sm="24" :xs="24" class="mb-24">
-      <a-checkbox v-model:checked="checked9"> {{$t('patient.conditions.sameAsabove')}} </a-checkbox>
+      <a-checkbox v-model:checked="checked9"> {{$t('patient.sameAsabove')}} </a-checkbox>
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
@@ -151,7 +151,7 @@
     </a-col>
     <a-col :md="8" :sm="12" :xs="24">
       <div class="form-group">
-        <label>{{$t('patient.conditions.fax')}}</label>
+        <label>{{$t('patient.fax')}}</label>
         <a-input v-model="value" size="large" />
       </div>
     </a-col>
