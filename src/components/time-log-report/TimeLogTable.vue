@@ -9,7 +9,7 @@
         </template>
         <template #patient="{record}">
              <router-link :to="{ name: 'PatientSummary', params: { udid: record.patientId } }" v-if="arrayToObjact(screensPermissions, 63) || record.patientAccess==true">{{record.patient}}</router-link>
-            <span v-else title="You don't have access">{{record.patient}}</span>
+            <span v-else :title="messages.access">{{record.patient}}</span>
         </template>
         <template #flags="{ record }">
             <Flags :flag="record.flagColor" :data="record" />
@@ -72,6 +72,7 @@ import {
     arrayToObjact,
    timeStampFormate
 } from "@/commonMethods/commonMethod";
+
 
 import Flags from "@/components/common/flags/Flags";
 import { useRoute } from 'vue-router';

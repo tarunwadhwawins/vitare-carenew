@@ -1,5 +1,7 @@
 export const messages={
     //alert messages
+    access:"You don't have access",
+    permissionsError:'You don’t have permission! Contact your Admin',
     resetPassword:'You want to reset password.',
     warning:'Are you sure ?',
     deleteWarning:'Are you sure you want to delete?',

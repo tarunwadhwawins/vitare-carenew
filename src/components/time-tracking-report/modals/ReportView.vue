@@ -10,17 +10,17 @@
     <a-row :gutter="24" v-else>
        <a-col :sm="24" :xs="24" class="mb-24" v-if="vitals.bloodPressure?.length>0">
             <a-card :title="`Total Compliance Days - ${vitals.takeLength.length}`">
-                <VitalsTable :columns="vitals.bloodPressureColumns" :data="vitals.bloodPressure" />
+                <VitalsTable :slectVitals="slectVitals" :columns="vitals.bloodPressureColumns" :data="vitals.bloodPressure" />
             </a-card>
         </a-col>
         <a-col :sm="24" :xs="24" class="mb-24" v-if="vitals.bloodOxygen?.length>0">
             <a-card :title="`Total Compliance Days - ${vitals.takeLength.length}`">
-                <VitalsTable :columns="vitals.bloodOxygenColumns" :data="vitals.bloodOxygen" />
+                <VitalsTable :slectVitals="slectVitals" :columns="vitals.bloodOxygenColumns" :data="vitals.bloodOxygen" />
             </a-card>
         </a-col>
         <a-col :sm="24" :xs="24" class="mb-24" v-if="vitals.bloodGlucose?.length>0">
             <a-card :title="`Total Compliance Days - ${vitals.takeLength.length}`">
-                <VitalsTable :columns="vitals.bloodGlucoseColumns" :data="vitals.bloodGlucose" />
+                <VitalsTable :slectVitals="slectVitals" :columns="vitals.bloodGlucoseColumns" :data="vitals.bloodGlucose" />
             </a-card>
         </a-col>
 
@@ -38,7 +38,7 @@ import {
   arrayToObjact,
 } from "@/commonMethods/commonMethod";
 import { useRoute } from "vue-router";
-import VitalsTable from "@/components/patients/patientSummary/common/VitalsTable";
+import VitalsTable from "../data-table/VitalsTable";
 export default defineComponent({
   components: {
     TableLoader,
@@ -48,7 +48,7 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const route = useRoute()
-
+    const selectVitalsData = ref()
     const modalTitle = ref()
 
     const devicesList = computed(() => {
@@ -71,6 +71,10 @@ export default defineComponent({
       }
     })
     const devicesColumns = [
+      {
+        title: "All",
+        dataIndex: "id",
+      },
       {
         title: "Home Unit Type",
         dataIndex: "deviceType",
@@ -115,7 +119,16 @@ export default defineComponent({
       modalTitle.value = null
     }
 
+    
+    const slectVitals = {
+      onChange: (selectedRowKeys) => {
+        selectVitalsData.value= selectedRowKeys;
+      },
+    };
+
     return {
+      selectVitalsData,
+      slectVitals,
       closeModal,
       vitals,
       arrayToObjact,

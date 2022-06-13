@@ -122,7 +122,7 @@ export default {
                 if (timeLineButton.value == null) {
 
                     store.dispatch("timeLine", {
-                        id: 125,
+                        id: 122,
                         commit: 'timelineSuccess'
                     }).then(() => {
                         apiCall(timeLineButton.value)
@@ -169,12 +169,10 @@ export default {
         function remove(event) {
             if (event == "filter") {
                 if (route.query.fromDate && route.query.toDate) {
-
                     store.dispatch("patients", "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
                     setTimeout(() => {
                         router.replace({
                             query: {
-
                                 fromDate: route.query.fromDate,
                                 toDate: route.query.toDate,
                                 timelineId:route.query.timelineId
@@ -183,24 +181,33 @@ export default {
                         })
                     }, 1000)
                 } else {
-                    router.replace({
-                        query: {}
-                    })
+                    router.replace({query: {}})
                     store.dispatch("patients")
                 }
 
             } else {
-
                 if (route.query.filter) {
                     router.replace({
                         query: {
                             filter: route.query.filter
                         }
                     })
+                    store.dispatch("timeLine", {
+                        id: 122,
+                        commit: 'timelineSuccess'
+                    }).then(() => {
+                        apiCall(timeLineButton.value)
+                    })
                     store.dispatch("patients", "?filter=" + route.query.filter)
                 } else {
                     router.replace({
                         query: {}
+                    })
+                    store.dispatch("timeLine", {
+                        id: 122,
+                        commit: 'timelineSuccess'
+                    }).then(() => {
+                        apiCall(timeLineButton.value)
                     })
                     store.dispatch("patients")
                 }

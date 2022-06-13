@@ -10,5 +10,5 @@ export default {
     bloodOxygen:null,
     takeDateTime:[],
     takeLength:[],
-    timeArrayCheck:[]
+    dateWiseSortVitals:[]
 }
