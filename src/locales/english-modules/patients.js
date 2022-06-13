@@ -7,6 +7,11 @@ const patient = {
     watchList:'Watch List',
     messages:'Messages',
     escalations:'Escalations',
+    patientConditions:'Condition(s)',
+    referralSource:'Referral Source (Assisted Living, Home Health, Cardiologist)',
+    fax:'Fax',
+    sameAsabove:'Same as above',
+    primaryPhysician:'Primary Care Coordinator',
 
 
   demographics:{
@@ -39,11 +44,6 @@ const patient = {
     H00:'Diseases of the eye and adnexa (H00-H59)',
     H60:'Diseases of the ear and mastoid process(H60-H95)',
     I00:'Diseases of the circulatory system (I00-I99)',
-    referralSource:'Referral Source (Assisted Living, Home Health, Cardiologist)',
-    fax:'Fax',
-    primaryPhysician:'Primary Care Coordinator',
-    sameAsabove:'Same as above'
-
   },
 
   programs:{

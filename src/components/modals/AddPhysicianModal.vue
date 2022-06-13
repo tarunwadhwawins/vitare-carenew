@@ -45,7 +45,7 @@
 						
 						<a-col :sm="12" :xs="24">
 							<div class="form-group">
-								<a-form-item :label="$t('patient.conditions.fax')" name="fax" :rules="[{ required: false, message: $t('patient.conditions.fax')+' '+$t('global.validation') }]">
+								<a-form-item :label="$t('patient.fax')" name="fax" :rules="[{ required: false, message: $t('patient.fax')+' '+$t('global.validation') }]">
 									<a-input @change="changedValue" v-model:value="addPhysicianForm.fax" size="large" />
 									<ErrorMessage v-if="errorMsg" :name="errorMsg.fax?errorMsg.fax[0]:''" />
 								</a-form-item>

@@ -111,7 +111,7 @@
       </div>
       <div class="pat-profile-inner">
         <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 297)">
-          Conditions
+          Conditions <PlusOutlined @click="showConditionsModal()" />
         </div>
         <div v-if="latestCondition != null && arrayToObjact(screensPermissions, 317)" class="thumb-desc">
           <a href="javascript:void(0)" @click="showConditionsModal();actionTrack(paramsId,317,'patient')" >{{latestCondition.condition}}</a>
@@ -537,6 +537,7 @@ export default defineComponent({
     }
 
     const showConditionsModal = () => {
+      store.commit('isConditionEdit', false)
       conditionsVisible.value = true;
     }
 
