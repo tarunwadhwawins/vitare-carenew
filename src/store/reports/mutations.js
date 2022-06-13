@@ -59,7 +59,7 @@ export const patientReportVitals = (state, vitals) => {
     const patientGraphData = convertChartResponse(vitalFieldsArray, vitalsArray)
 
     
-
+    //days counter
     state.takeDateTime = []
     state.takeDateTime = timeArray.map(item => {
       item = dateOnlyFormat(item, globalDateFormat)
@@ -72,10 +72,22 @@ export const patientReportVitals = (state, vitals) => {
         state.takeLength.push(item)
       }
     })
+    //days counter end
 
-    // state.timeArrayCheck = patientVitals.filter(item=>{item.takeDate == state.takeLength[0]})
-
+    //datewise sorting 
+    patientVitals.sort(function(a, b) {
+      return a.takeDate.localeCompare(b.takeDate)
+    });
     
+    var map = {};
+    patientVitals.forEach(function(val) {
+      var date = val.takeDate;
+      map[date] = map[date] || [];
+      map[date].push(val)
+    });
+
+    state.dateWiseSortVitals = map
+    //datewise sorting end
 
     vitalsArray.forEach(vital => {
       switch (vital.deviceType) {
