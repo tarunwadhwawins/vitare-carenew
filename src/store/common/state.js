@@ -66,5 +66,6 @@ export default {
     taskType:null,
     taskStatus: [],
     otherFilters:null,
+    CPTCodeStatus:null
 
 }

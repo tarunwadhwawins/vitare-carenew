@@ -126,6 +126,10 @@ export const globalCodes = (state, data) => {
         if (element.name === 'Place of Service') {
             state.placeOfService = element.globalCode;
         }
+
+        if (element.name === 'CPTCode Status') {
+            state.CPTCodeStatus = element.globalCode;
+        }
         
     });
 

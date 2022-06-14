@@ -247,3 +247,7 @@ export const patientReportVitals = (state, vitals) => {
     //   state.bloodGlucoseGraph = null;
   }
 }
+
+export const cptCodeFilterDates = (state, date) => {
+  state.cptCodeFilterDates = date
+  }
