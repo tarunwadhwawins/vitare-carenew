@@ -656,14 +656,14 @@
                                 </div>
                             </a-col>
 
-                            <a-col :md="8" :sm="12" :xs="24">
+                            <!-- <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('global.designation')" name="referralDesignation" :rules="[{ required: false, message: $t('global.designation')+' '+$t('global.validation') }]">
                                         <GlobalCodeDropDown @change="changedValue" @input="onKeyUp('referralDesignation')" v-model:value="referal.referralDesignation" :globalCode="globalCode.designations" />
 
                                     </a-form-item>
                                 </div>
-                            </a-col>
+                            </a-col> -->
                             <a-col :md="8" :sm="12" :xs="24">
                                 <div class="form-group">
                                     <a-form-item :label="$t('global.email')" name="referralEmail" :rules="[{ required: referalEmail, message: $t('global.validValidation')+' '+$t('global.email').toLowerCase(), type: 'email' }]">
