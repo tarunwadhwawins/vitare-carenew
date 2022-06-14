@@ -5,7 +5,10 @@ import {
   convertData,
   convertChartResponse,
 } from "@/commonMethods/commonMethod";
+export const cptTimeline = (state, data) => {
 
+  state.cptTimeline = data
+}
 export const cptCodes = (state, data) => {
   state.cptCodesMeta = data.meta ? data.meta.pagination : ''
   state.cptCodes = data.data.map(item => {

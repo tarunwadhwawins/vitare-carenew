@@ -6,6 +6,6 @@ export const inventoriesList = (state)=>{
 }
 export const inventoryMeta = (state)=>{
     return computed(()=>{
-        return state.globalMeta
+        return state.inventoryMeta
     })
 }
