@@ -636,6 +636,10 @@ export const physicianErrorMsg = (state, data) => {
   state.physicianErrorMsg = data
 }
 
+export const emergencyErrorMsg = (state, data) => {
+  state.emergencyErrorMsg = data
+}
+
 export const closeModal = (state, data) => {
   state.closeModal = data
 }
