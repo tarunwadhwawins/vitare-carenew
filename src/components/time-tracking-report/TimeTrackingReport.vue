@@ -12,7 +12,7 @@
                     <a-row>
                         <a-col :span="24">
                             <h2 class="pageTittle">{{$t('global.reports')}}
-                                <DateFilter :Buttons="Buttons" @clickButtons="showButton($event);" :custom="true" commit="timelineReport" />
+                                <DateFilter :Buttons="Buttons" @clickButtons="showButton($event);" :custom="true" commit="cptTimeline" />
                             </h2>
                         </a-col>
                     </a-row>
@@ -96,7 +96,7 @@ export default {
       endDate: "",
     });
 
-    const timeLineButton = store.getters.timelineReport;
+    const timeLineButton = store.getters.cptTimeline;
     const customDateShow = ref(false);
 
     onMounted(() => {
@@ -115,8 +115,8 @@ export default {
         if (timeLineButton.value == null) {
           store
             .dispatch("timeLine", {
-              id: 123,
-              commit: "timelineReport",
+              id: 122,
+              commit: "cptTimeline",
             })
             .then(() => {
               apiCall(timeLineButton.value);
@@ -257,7 +257,7 @@ export default {
       remove,
       showButton,
       patient,
-      Buttons: store.getters.timelineReport,
+      Buttons: store.getters.cptTimeline,
       size: ref("large"),
     };
   },
