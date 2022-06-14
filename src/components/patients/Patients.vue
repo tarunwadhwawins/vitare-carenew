@@ -89,11 +89,6 @@ export default {
         const PatientsModal = ref(false);
         const timeLineButton = store.getters.dashboardTimeLineButton
         const showModal = (value) => {
-            store.state.patients.addDemographic = null
-            store.state.patients.patientDetails = null
-            store.state.patients.emergencyContact = null
-            store.state.patients.patientReferralSource = null
-            store.state.patients.responsiblePerson = null
             PatientsModal.value = value;
         };
         const handleOk = (status) => {
@@ -107,6 +102,11 @@ export default {
         }
 
         watchEffect(() => {
+            store.state.patients.addDemographic = null
+            store.state.patients.patientDetails = null
+            store.state.patients.emergencyContact = null
+            store.state.patients.patientReferralSource = null
+            store.state.patients.responsiblePerson = null
             store.dispatch("patientFlags", dateFormat)
             store.getters.patientsRecord.patientList = ""
 
