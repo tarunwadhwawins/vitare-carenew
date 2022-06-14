@@ -1090,7 +1090,7 @@ export const responsiblePerson = async ({
   commit
 }, id) => {
   await serviceMethod.common("get", API_ENDPOINTS['patient'] + `/${id}/responsible`, null, null).then((response) => {
-    commit('responsiblePerson', response.data.data);
+    commit("responsiblePerson", response.data.data);
   }).catch((error) => {
     if (error.response) {
       errorLogWithDeviceInfo(error.response);

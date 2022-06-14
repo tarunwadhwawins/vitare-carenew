@@ -1129,7 +1129,7 @@ export default defineComponent({
         //emergencyContactShow.value= false
         //Object.assign(emergencyContactForm, emergencyContact.value)
       }
-      if (responsiblePerson.value) {
+      if (props.isEdit && responsiblePerson.value) {
         if(responsiblePerson.value.self) {
           disableResponsiblePerson.value = true
         }
