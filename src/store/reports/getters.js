@@ -18,5 +18,9 @@ export const cptCodesMeta = (state)=>{
         return state.cptCodeFilterDates
     })
   }
-
+  export const cptTimeline= (state)=>{
+    return computed(()=>{
+        return state.cptTimeline
+    })
+  }
   

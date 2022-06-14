@@ -1,9 +1,9 @@
 <template>
 <a-row>
-    <a-col :span="12" style="padding-bottom:15px">
+    <a-col :span="8" style="padding-bottom:15px">
         <SearchField endPoint="cptCodes" v-show="!selectedRowKeys?.length>0" />
     </a-col>
-    <a-col :span="12">
+    <a-col :span="16">
         <div class="text-right mb-24">
             <ExportToExcel @click="exportExcel('','?fromDate=&toDate='+search)" disabled />
         </div>
@@ -27,16 +27,22 @@
         <span>{{record.typeOfService.name}} </span>
         <p>{{record.device?.length>0?record.device[0]?.deviceType:record.vital[0]?.deviceType}}</p>
     </template>
+    <template #condition="{ record }">
+        <a><span @click="showModal(record.condition)">{{'View'}}</span></a>
+    </template>
     <template #cptCode="{ record }">
-
         <span>{{record.cptCode.name}}</span>
     </template>
     <template #billingAmout="{ record }">
         <span>{{record.cptCode.billingAmout}}</span>
     </template>
+    <template #placeOfService="{ record }">
+        <span>{{record.placeOfService.name}}</span>
+    </template>
     <template #status="{ record }">
         <span>{{record.status.name}}</span>
     </template>
+
     <template #TotalFee="{record}">
         <span>{{(record.cptCode.billingAmout * record.numberOfUnit).toFixed(2)}}</span>
     </template>
@@ -51,6 +57,7 @@
     </template>
 </a-table>
 <RecordView v-model:visible="reportViewModal" />
+<ConditionView v-model:visible="conditionViewModal" :conditionsData="conditionsData"/>
 </template>
 
 <script>
@@ -83,6 +90,20 @@ const column = [
     slots: {
       customRender: "patient",
     },
+  },
+  {
+    title: "Place of Service",
+    dataIndex: "placeOfService",
+    slots: {
+      customRender: "placeOfService",
+    }
+  },
+  {
+    title: "ICD 10 Code",
+    dataIndex: "condition",
+    slots: {
+      customRender: "condition",
+    }
   },
   {
     title: "Date of Service",
@@ -148,6 +169,7 @@ export default defineComponent({
     ExportToExcel,
     SearchField,
     RecordView: defineAsyncComponent(() => import("../modals/ReportView")),
+    ConditionView: defineAsyncComponent(() => import("../modals/ConditionsView.vue")),
   },
   setup() {
     const store = useStore();
@@ -156,6 +178,8 @@ export default defineComponent({
       selectedRowKeys: [],
     });
     const status = ref();
+    const conditionViewModal = ref(false)
+    const conditionsData = ref()
     let data = [];
     const meta = store.getters.cptCodesMeta;
     const dataList = store.getters.cptCodes;
@@ -287,7 +311,15 @@ export default defineComponent({
           });
       }
     };
+
+     const showModal = (data) =>{
+       conditionViewModal.value = true
+       conditionsData.value = data
+     }
     return {
+      conditionsData,
+      conditionViewModal,
+      showModal,
       onSelectChange,
       submitStatus,
       status,
