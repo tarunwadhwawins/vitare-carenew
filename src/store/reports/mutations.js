@@ -5,7 +5,10 @@ import {
   convertData,
   convertChartResponse,
 } from "@/commonMethods/commonMethod";
+export const cptTimeline = (state, data) => {
 
+  state.cptTimeline = data
+}
 export const cptCodes = (state, data) => {
   state.cptCodesMeta = data.meta ? data.meta.pagination : ''
   state.cptCodes = data.data.map(item => {
@@ -247,3 +250,7 @@ export const patientReportVitals = (state, vitals) => {
     //   state.bloodGlucoseGraph = null;
   }
 }
+
+export const cptCodeFilterDates = (state, date) => {
+  state.cptCodeFilterDates = date
+  }

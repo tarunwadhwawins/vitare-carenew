@@ -1,19 +1,65 @@
 <template>
-<a-table rowKey="id" :row-selection="slectVitals" :columns="column" :data-source="dataList" :scroll="{ x: 1500,y:'calc(100vh - 390px)' }" :pagination="false" @change="handleTableChange">
+<a-row>
+    <a-col :span="8" style="padding-bottom:15px" v-if="!selectedRowKeys?.length>0">
+    <a-row :span="24">
+      <a-col :span="24">
+        <SearchField endPoint="cptCodes"  />
+        </a-col>
+        </a-row>
+    </a-col>
+    <a-col :span="8" style="padding-bottom:15px" v-else>
+    <a-row :span="24">
+      <a-col :span="18">
+        <GlobalCodeDropDown v-model:value="status" :globalCode="reportStatus" placeholder="Please select status" />
+    </a-col>
+    <a-col :span="2">
+        <div class="button-left">
+            <a-button :disabled="!status" class="blueBtn" @click="submitStatus">Submit</a-button>
+        </div>
+    </a-col>
+    </a-row>
+      
+    </a-col>
+    <a-col :span="16">
+        <div class="text-right mb-24">
+            <ExportToExcel @click="exportExcel('','?fromDate=&toDate='+search)" disabled />
+        </div>
+    </a-col>
+</a-row>
+<a-row style="padding-bottom:15px" v-show="selectedRowKeys?.length>0">
+    <!-- <a-col :span="6">
+        <GlobalCodeDropDown v-model:value="status" :globalCode="reportStatus" placeholder="Please select status" />
+    </a-col>
+    <a-col :span="6">
+        <div class="button-left">
+            <a-button :disabled="!status" class="blueBtn" @click="submitStatus">Submit</a-button>
+        </div>
+    </a-col> -->
+</a-row>
+<a-table rowKey="id" :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }" :columns="column" :data-source="dataList" :scroll="{ x: 1500,y:'calc(100vh - 390px)' }" :pagination="false" @change="handleTableChange">
     <template #patient="{ record }">
-        <router-link :to="{ name: 'PatientSummary', params: { udid: record.patient.id },query:{filter:filter} }">{{ record.patient.patientFullName }}</router-link>
+        <router-link v-if="record.patient.id" :to="{ name: 'PatientSummary', params: { udid: record.patient.id },query:{filter:filter} }">{{ record.patient.patientFullName }}</router-link>
     </template>
     <template #typeOfService="{ record }">
         <span>{{record.typeOfService.name}} </span>
         <p>{{record.device?.length>0?record.device[0]?.deviceType:record.vital[0]?.deviceType}}</p>
     </template>
+    <template #condition="{ record }">
+        <a><span @click="showModal(record.condition)">{{'View'}}</span></a>
+    </template>
     <template #cptCode="{ record }">
-        <!-- <router-link :to="{ name: 'CptCodes', params: { udid: record.cptCode.id },query:{filter:filter} }">{{ record.cptCode.name }}</router-link> -->
         <span>{{record.cptCode.name}}</span>
     </template>
     <template #billingAmout="{ record }">
         <span>{{record.cptCode.billingAmout}}</span>
     </template>
+    <template #placeOfService="{ record }">
+        <span>{{record.placeOfService.name}}</span>
+    </template>
+    <template #status="{ record }">
+        <span>{{record.status.name}}</span>
+    </template>
+
     <template #TotalFee="{record}">
         <span>{{(record.cptCode.billingAmout * record.numberOfUnit).toFixed(2)}}</span>
     </template>
@@ -28,23 +74,30 @@
     </template>
 </a-table>
 <RecordView v-model:visible="reportViewModal" />
+<ConditionView v-model:visible="conditionViewModal" :conditionsData="conditionsData"/>
 </template>
 
 <script>
-import { ref, onMounted, defineComponent,defineAsyncComponent } from "vue";
+import {
+  ref,
+  onMounted,
+  defineComponent,
+  defineAsyncComponent,
+  computed,
+  toRefs,
+  reactive,
+} from "vue";
 import { useStore } from "vuex";
 import { EyeOutlined } from "@ant-design/icons-vue";
-// import RecordView from "../modals/ReportView";
 import { useRoute } from "vue-router";
+import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
+import SearchField from "@/components/common/input/SearchField";
+import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
 const column = [
-  {
-    title: "Select All",
-    dataIndex: "",
-  },
   {
     title: "#",
     dataIndex: "serviceId",
-    align: "right",
+    align: "center",
     width: "5%",
   },
   {
@@ -54,6 +107,20 @@ const column = [
     slots: {
       customRender: "patient",
     },
+  },
+  {
+    title: "Place of Service",
+    dataIndex: "placeOfService",
+    slots: {
+      customRender: "placeOfService",
+    }
+  },
+  {
+    title: "ICD 10 Code",
+    dataIndex: "condition",
+    slots: {
+      customRender: "condition",
+    }
   },
   {
     title: "Date of Service",
@@ -92,7 +159,6 @@ const column = [
   },
   {
     title: "Total Fee($)",
-    // dataIndex: "TotalFee",
     slots: {
       customRender: "TotalFee",
     },
@@ -101,6 +167,9 @@ const column = [
   {
     title: "Status",
     dataIndex: "status",
+    slots: {
+      customRender: "status",
+    },
   },
   {
     title: "Action",
@@ -113,14 +182,21 @@ const column = [
 export default defineComponent({
   components: {
     EyeOutlined,
-    RecordView:defineAsyncComponent(() =>
-      import("../modals/ReportView")
-    ),
+    GlobalCodeDropDown,
+    ExportToExcel,
+    SearchField,
+    RecordView: defineAsyncComponent(() => import("../modals/ReportView")),
+    ConditionView: defineAsyncComponent(() => import("../modals/ConditionsView.vue")),
   },
   setup() {
     const store = useStore();
-    const reportViewModal = ref()
-    const selectVitalsData = ref()
+    const reportViewModal = ref();
+    const state = reactive({
+      selectedRowKeys: [],
+    });
+    const status = ref();
+    const conditionViewModal = ref(false)
+    const conditionsData = ref()
     let data = [];
     const meta = store.getters.cptCodesMeta;
     const dataList = store.getters.cptCodes;
@@ -222,23 +298,50 @@ export default defineComponent({
         tableContent.scrollTo(0, scroller);
       }, 50);
     }
-
-   
-
     function showReportData(id) {
       store.dispatch("reportDetailList", id);
       reportViewModal.value = true;
     }
-
-       const slectVitals = {
-      onChange: (selectedRowKeys) => {
-        selectVitalsData.value= selectedRowKeys;
-      },
+    const onSelectChange = (selectedRowKeys) => {
+      console.log("selectedRowKeys changed: ", selectedRowKeys);
+      state.selectedRowKeys = selectedRowKeys;
     };
 
+    const reportStatus = computed(() => {
+      return store.state.common.CPTCodeStatus;
+    });
+    const submitStatus = () => {
+      if (status.value && state.selectedRowKeys) {
+        store
+          .dispatch("cptCodeStatusUpdate", {
+            status: status.value,
+            CPTCodeId: state.selectedRowKeys,
+          })
+          .then((resp) => {
+            if (resp == true) {
+              (status.value = null),
+                store.dispatch("cptCodes");
+              setTimeout(() => {
+                state.selectedRowKeys = [];
+              }, 1000);
+            }
+          });
+      }
+    };
+
+     const showModal = (data) =>{
+       conditionViewModal.value = true
+       conditionsData.value = data
+     }
     return {
-      selectVitalsData,
-      slectVitals,
+      conditionsData,
+      conditionViewModal,
+      showModal,
+      onSelectChange,
+      submitStatus,
+      status,
+      reportStatus,
+      ...toRefs(state),
       loadMoredata,
       handleTableChange,
       reportViewModal,

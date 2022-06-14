@@ -10,5 +10,7 @@ export default {
     bloodOxygen:null,
     takeDateTime:[],
     takeLength:[],
-    dateWiseSortVitals:[]
+    dateWiseSortVitals:[],
+    cptCodeFilterDates:null,
+    cptTimeline:null
 }
