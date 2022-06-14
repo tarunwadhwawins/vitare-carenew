@@ -2,15 +2,15 @@
   <a-form ref="formRef" :model="conditions" name="basic" scrollToFirstError=true autocomplete="off" layout="vertical" @finish="submitForm">
     <a-row :gutter="24" class="mb-24">
       {{conditionDetails}}
-      <a-col :md="24" :sm="24" :xs="24" :xl="8">
+      <a-col :md="24" :sm="24" :xs="24" :xl="12">
         <div class="form-group">
           <a-form-item :label="$t('patient.patientConditions')" name="condition" :rules="[{ required: true, message: $t('patient.patientConditions')+' '+$t('global.validation') }]">
-            <GlobalCodeDropDown v-model:value="conditions.condition" :globalCode="globalCode.healthCondition" @change="changedValue" mode="multiple" :disabled="isConditionEdit" />
+            <GlobalCodeDropDown v-model:value="conditions.condition" :globalCode="healthConditions" @change="changedValue" mode="multiple" :disabled="isConditionEdit" />
             <ErrorMessage v-if="errorMsg" :name="errorMsg.condition ? errorMsg.condition[0] : ''" />
           </a-form-item>
         </div>
       </a-col>
-      <a-col :md="8" :sm="6" :xs="24" :xl="8">
+      <a-col :md="8" :sm="6" :xs="24" :xl="6">
         <div class="form-group">
           <a-form-item :label="$t('global.startDate')" name="startDate" :rules="[{ required: true, message: $t('global.startDate')+' '+$t('global.validation') }]">
             <a-date-picker @change="changedValue" v-model:value="conditions.startDate" :format="globalDateFormat" value-format="YYYY-MM-DD" :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" style="width: 100%" size="large" />
@@ -18,7 +18,7 @@
           </a-form-item>
         </div>
       </a-col>
-      <a-col :md="8" :sm="6" :xs="24" :xl="8">
+      <a-col :md="8" :sm="6" :xs="24" :xl="6">
         <div class="form-group">
           <a-form-item :label="$t('global.endDate')" name="endDate" :rules="[{ required: false, message: $t('global.endDate')+' '+$t('global.validation') }]">
             <a-date-picker @change="changedValue();dateChange();" v-model:value="conditions.endDate" :format="globalDateFormat" :disabledDate="d => !d || d.isSameOrBefore(conditions.startDate)" value-format="YYYY-MM-DD" style="width: 100%" size="large" />
@@ -38,7 +38,7 @@
 
 <script>
 import ConditionsTable from '@/components/patients/data-table/ConditionsTable';
-import { reactive, computed, ref } from 'vue-demi';
+import { reactive, computed, ref, watchEffect } from 'vue-demi';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
@@ -68,19 +68,27 @@ export default {
     });
 
     const form = reactive({ ...conditions })
+    
+    watchEffect(() => {
+      store.dispatch('healthConditions')
+    })
 
-    const globalCode = computed(() => {
-      return store.state.common;
-    });
     const errorMsg = computed(() => {
       return store.state.common.errorMsg;
     });
+
     const isConditionEdit = computed(() => {
       return store.state.patients.isConditionEdit;
     });
+    
     const conditionDetails = computed(() => {
       return store.state.patients.conditionDetails;
     });
+    
+    const healthConditions = computed(() => {
+      return store.state.patients.healthConditions;
+    });
+    console.log('healthConditions', healthConditions.value)
 
     const changedValue = () => {
       emit('onChange')
@@ -134,7 +142,7 @@ export default {
     return {
       formRef,
       conditions,
-      globalCode,
+      healthConditions,
       errorMsg,
       submitForm,
       changedValue,
