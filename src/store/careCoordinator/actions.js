@@ -215,10 +215,12 @@ export const contactDetails = async ({ commit }, data) => {
 }
 
 export const updateContact = async ({ commit }, data) => {
+  let status = false
   commit('loadingStatus', true)
   await serviceMethod.common("put", `staff/${data.id}/contact/${data.contactId}`, null, data.data).then((response) => {
     commit('loadingStatus', false)
     commit('errorMsg', null);
+    status = true
     successSwal(response.data.message)
   }).catch((error) => {
     if (error.response) {
@@ -232,6 +234,7 @@ export const updateContact = async ({ commit }, data) => {
     }
     commit('loadingStatus', false)
   })
+  return status
 }
 
 
@@ -326,22 +329,33 @@ export const availabilityDetails = async ({commit}, data) => {
 
 
 export const updateAvailability = async ({commit}, data) => {
+  let status = false
   commit('loadingStatus', true)
   await serviceMethod.common("put", `staff/${data.id}/availability/${data.availabilityId}`, null, data.data).then((response) => {
     successSwal(response.data.message)
     commit('loadingStatus', false)
+    status = true
   }).catch((error) => { 
     if (error.response) {
 				errorLogWithDeviceInfo(error.response);
 			} else {
 				errorLogWithDeviceInfo(error);
 			}
-    commit('errorMsg', error);
-    if(error.response.status === 500) {
-      // errorSwal(error.response.data.message)
-    }
-    commit('loadingStatus', false)
+      if(error.response.status === 422){
+        commit('errorMsg', error.response.data)
+        commit('closeModal',false)
+        commit('loadingStatus', false)
+      }else if(error.response.status === 500){
+        // errorSwal(error.response.data.message)
+        commit('closeModal',false)
+        commit('loadingStatus', false)
+      }else if(error.response.status === 401){
+        commit('errorMsg', error.response.data.message)
+        commit('loadingStatus', false)
+      }
   })
+
+  return status
 }
 
 

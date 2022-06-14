@@ -1,5 +1,5 @@
 <template>
-<a-table rowKey="id" :columns="column" :data-source="dataList" :scroll="{ x: 1500,y:'calc(100vh - 390px)' }" :pagination="false" @change="handleTableChange">
+<a-table rowKey="id" :row-selection="slectVitals" :columns="column" :data-source="dataList" :scroll="{ x: 1500,y:'calc(100vh - 390px)' }" :pagination="false" @change="handleTableChange">
     <template #patient="{ record }">
         <router-link :to="{ name: 'PatientSummary', params: { udid: record.patient.id },query:{filter:filter} }">{{ record.patient.patientFullName }}</router-link>
     </template>
@@ -37,6 +37,10 @@ import { EyeOutlined } from "@ant-design/icons-vue";
 // import RecordView from "../modals/ReportView";
 import { useRoute } from "vue-router";
 const column = [
+  {
+    title: "Select All",
+    dataIndex: "",
+  },
   {
     title: "#",
     dataIndex: "serviceId",
@@ -115,7 +119,8 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-    const reportViewModal = ref();
+    const reportViewModal = ref()
+    const selectVitalsData = ref()
     let data = [];
     const meta = store.getters.cptCodesMeta;
     const dataList = store.getters.cptCodes;
@@ -225,7 +230,15 @@ export default defineComponent({
       reportViewModal.value = true;
     }
 
+       const slectVitals = {
+      onChange: (selectedRowKeys) => {
+        selectVitalsData.value= selectedRowKeys;
+      },
+    };
+
     return {
+      selectVitalsData,
+      slectVitals,
       loadMoredata,
       handleTableChange,
       reportViewModal,

@@ -15,7 +15,7 @@ import {
   // createDynamicColumns,
   globalDateFormat,
   dateAndTimeFormate,
-  // dateOnlyFormatSImple,
+  dateOnlyFormatSImple,
   // fullDateTimeFormat,
 } from '@/commonMethods/commonMethod';
 // import moment from 'moment';
@@ -556,11 +556,24 @@ export const patientDocumentsSuccess = (state, documents) => {
 
 export const patientConditions = (state, conditions) => {
   state.patientConditions = conditions.map(condition => {
-    condition = condition.conditionId
+    condition.startDate = condition.startDate ? dateOnlyFormat(condition.startDate) : ""
+    condition.endDate = condition.endDate ? dateOnlyFormat(condition.endDate) : ""
     return condition;
   })
+  // state.patientConditions = conditions
   state.conditionsList = conditions
   state.latestCondition = conditions[0]
+}
+
+export const isConditionEdit = (state, data) => {
+  state.isConditionEdit = data
+}
+
+export const conditionDetails = (state, condition) => {
+  condition.condition = condition.conditionId
+  condition.startDate = condition.startDate ? dateOnlyFormatSImple(condition.startDate) : ""
+  condition.endDate = condition.endDate ? dateOnlyFormatSImple(condition.endDate) : ""
+  state.conditionDetails = condition
 }
 
 export const patientReferralSource = (state, referralSource) => {

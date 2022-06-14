@@ -262,6 +262,7 @@ onMounted(()=>{
         store.dispatch('patientCriticalNotes', patientUdid);
         store.dispatch('responsiblePerson', patientUdid);
         store.dispatch('physiciansList', patientUdid);
+        store.dispatch('patientConditions', patientUdid);
         store.dispatch('emergencyContactsList', patientUdid).then(()=>{
           store.commit("loadingTableStatus",false)
           loader.value = false

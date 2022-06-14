@@ -1,6 +1,6 @@
 <template>
-  <a-modal width="40%" title="Conditions Details" centered :maskClosable="false" @cancel="closeModal()">
-    <a-table rowKey="id" :columns="conditionsColumns" :data-source="conditionsList" :pagination="false"></a-table>
+  <a-modal width="90%" title="Conditions Details" centered :maskClosable="false" @cancel="closeModal()">
+    <PatientConditions />
   </a-modal>
 </template>
 
@@ -11,7 +11,11 @@ import { useRoute } from "vue-router";
 import {
   actionTrack
 } from '@/commonMethods/commonMethod';
+import PatientConditions from '@/components/modals/forms/PatientConditions';
 export default {
+  components: {
+    PatientConditions,
+  },
   setup(props, { emit }) {
     const store = useStore();
     const route = useRoute();
