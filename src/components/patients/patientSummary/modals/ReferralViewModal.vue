@@ -20,12 +20,12 @@
                             {{referralDetail.phoneNumber}}
                         </div>
                     </div>
-                    <div class="itemWrapper">
+                    <!-- <div class="itemWrapper">
                         <div class="leftWrapper">Designation</div>
                         <div class="rightWrapper">
                             {{referralDetail.designation}}
                         </div>
-                    </div>
+                    </div> -->
                     <div class="itemWrapper">
                         <div class="leftWrapper">Fax</div>
                         <div class="rightWrapper">
