@@ -1,7 +1,24 @@
 <template>
 <a-row>
-    <a-col :span="8" style="padding-bottom:15px">
-        <SearchField endPoint="cptCodes" v-show="!selectedRowKeys?.length>0" />
+    <a-col :span="8" style="padding-bottom:15px" v-if="!selectedRowKeys?.length>0">
+    <a-row :span="24">
+      <a-col :span="24">
+        <SearchField endPoint="cptCodes"  />
+        </a-col>
+        </a-row>
+    </a-col>
+    <a-col :span="8" style="padding-bottom:15px" v-else>
+    <a-row :span="24">
+      <a-col :span="18">
+        <GlobalCodeDropDown v-model:value="status" :globalCode="reportStatus" placeholder="Please select status" />
+    </a-col>
+    <a-col :span="2">
+        <div class="button-left">
+            <a-button :disabled="!status" class="blueBtn" @click="submitStatus">Submit</a-button>
+        </div>
+    </a-col>
+    </a-row>
+      
     </a-col>
     <a-col :span="16">
         <div class="text-right mb-24">
@@ -10,18 +27,18 @@
     </a-col>
 </a-row>
 <a-row style="padding-bottom:15px" v-show="selectedRowKeys?.length>0">
-    <a-col :span="6">
+    <!-- <a-col :span="6">
         <GlobalCodeDropDown v-model:value="status" :globalCode="reportStatus" placeholder="Please select status" />
     </a-col>
     <a-col :span="6">
         <div class="button-left">
             <a-button :disabled="!status" class="blueBtn" @click="submitStatus">Submit</a-button>
         </div>
-    </a-col>
+    </a-col> -->
 </a-row>
 <a-table rowKey="id" :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }" :columns="column" :data-source="dataList" :scroll="{ x: 1500,y:'calc(100vh - 390px)' }" :pagination="false" @change="handleTableChange">
     <template #patient="{ record }">
-        <router-link :to="{ name: 'PatientSummary', params: { udid: record.patient.id },query:{filter:filter} }">{{ record.patient.patientFullName }}</router-link>
+        <router-link v-if="record.patient.id" :to="{ name: 'PatientSummary', params: { udid: record.patient.id },query:{filter:filter} }">{{ record.patient.patientFullName }}</router-link>
     </template>
     <template #typeOfService="{ record }">
         <span>{{record.typeOfService.name}} </span>
