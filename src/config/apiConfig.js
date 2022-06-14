@@ -125,7 +125,10 @@ export const API_ENDPOINTS = {
     appointmentCount:'appointmentCount',
     escalationCount:'escalationCount',
     referalCount:"referalCount",
-    referralList:'referral'
+    referralList:'referral',
+
+    // Conditions
+    condition: "condition"
 };
 
 // export const getApiUrl = key => {

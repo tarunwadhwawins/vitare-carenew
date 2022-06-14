@@ -6,6 +6,11 @@ export const referralColumns = async (state) => {
       sorter:true
     },
     {
+      title: "Phone Number",
+      dataIndex: "phoneNumber",
+      sorter:true
+    },
+    {
       title: "Email",
       dataIndex: "email",
       sorter:true
@@ -18,11 +23,11 @@ export const referralColumns = async (state) => {
         customRender: "patientName",
       },
     },
-    {
-      title: "Designation",
-      dataIndex: "designation",
-      sorter:true
-    },
+    // {
+    //   title: "Designation",
+    //   dataIndex: "designation",
+    //   sorter:true
+    // },
   
     // {
     //   title: "Actions",

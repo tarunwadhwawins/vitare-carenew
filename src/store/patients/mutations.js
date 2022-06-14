@@ -21,6 +21,7 @@ import {
 // import moment from 'moment';
 
 export const addDemographic = (state, data) => {
+  data.contactTime = data.contactTimeId
   state.addDemographic = data
 }
 export const status = (state, data) => {
@@ -556,6 +557,7 @@ export const patientDocumentsSuccess = (state, documents) => {
 
 export const patientConditions = (state, conditions) => {
   state.patientConditions = conditions.map(condition => {
+    condition.condition = condition.conditionCode+'-'+condition.conditionDescription
     condition.startDate = condition.startDate ? dateOnlyFormat(condition.startDate) : ""
     condition.endDate = condition.endDate ? dateOnlyFormat(condition.endDate) : ""
     return condition;
@@ -633,6 +635,10 @@ export const referralErrorMsg = (state, data) => {
 
 export const physicianErrorMsg = (state, data) => {
   state.physicianErrorMsg = data
+}
+
+export const emergencyErrorMsg = (state, data) => {
+  state.emergencyErrorMsg = data
 }
 
 export const closeModal = (state, data) => {
@@ -1177,4 +1183,11 @@ export const startOn = (state, data) => {
 
 export const criticalNoteDetails = (state, data) => {
   state.criticalNoteDetails = data
+}
+
+export const healthConditions = (state, data) => {
+  state.healthConditions = data.map(item => {
+    item.name = item.code+' - '+item.description
+    return item
+  })
 }

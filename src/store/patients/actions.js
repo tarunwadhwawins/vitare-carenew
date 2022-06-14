@@ -45,6 +45,20 @@ export const addDemographic = async ({
       data.emergencyContactForm.gender) {
       serviceMethod.common("post", API_ENDPOINTS['patient'] + `/${response.data.data.id}/emergency`, null, data.emergencyContactForm).then((response) => {
         commit('emergencyContact', response.data.data);
+      }).catch((error) => {
+        if (error.response.status === 422) {
+          console.log('emergencyErrorMsg', error.response.status)
+          console.log('emergencyErrorMsg', error.response.data)
+          commit('emergencyErrorMsg', error.response.data)
+          commit('loadingStatus', false)
+        }
+        if (error.response) {
+          errorLogWithDeviceInfo(error.response);
+        } else {
+          errorLogWithDeviceInfo(error);
+        }
+        commit('loadingStatus', false)
+        commit('counterMinus')
       })
     }
 
@@ -55,28 +69,36 @@ export const addDemographic = async ({
         commit('addPatientReferals', response.data.data);
         commit('patientReferralSource', response.data.data);
         errorMessage.push(false)
+      }).catch((error) => {
+        if (error.response.status === 422) {
+          console.log('errorMsg', error.response.status)
+          console.log('errorMsg', error.response.data)
+          commit('errorMsg', error.response.data)
+          commit('loadingStatus', false)
+        }
+        if (error.response) {
+          errorLogWithDeviceInfo(error.response);
+        } else {
+          errorLogWithDeviceInfo(error);
+        }
+        commit('loadingStatus', false)
+        commit('counterMinus')
       })
     }
-    // successSwal(response.data.message)
     commit('loadingStatus', false)
     commit('counterPlus')
   }).catch((error) => {
+    if (error.response.status === 422) {
+      commit('errorMsg', error.response.data)
+      commit('loadingStatus', false)
+    }
     if (error.response) {
       errorLogWithDeviceInfo(error.response);
     } else {
       errorLogWithDeviceInfo(error);
     }
     commit('loadingStatus', false)
-    if (error.response.status === 422) {
-      commit('errorMsg', error.response.data)
-      commit('loadingStatus', false)
-    } 
-    // else if (error.response.status === 500) {
-    //   errorSwal(error.response.data.message)
-    //   commit('loadingStatus', false)
-    // } else if (error.response.status === 401) {
-    //   commit('loadingStatus', false)
-    // }
+    commit('counterMinus')
   })
 }
 
@@ -2072,4 +2094,17 @@ export const referralDetail = async ({
 
   })
 
+}
+
+export const healthConditions = async ({ commit }) => {
+  await serviceMethod.common("get", API_ENDPOINTS['condition'], null, null).then((response) => {
+    commit('healthConditions', response.data.data);
+  }).catch((error) => {
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    }
+    else {
+      errorLogWithDeviceInfo(error);
+    }
+  })
 }

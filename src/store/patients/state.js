@@ -29,6 +29,7 @@ export default {
     errorMsg:null,
     referralErrorMsg:null,
     physicianErrorMsg:null,
+    emergencyErrorMsg:null,
     errorMessage:null,
     patientDetails:null,
     patientTimeline:null,
@@ -100,5 +101,6 @@ export default {
     latestCondition:null,
     conditionDetails:null,
     isConditionEdit:false,
+    healthConditions:null,
 
 }
