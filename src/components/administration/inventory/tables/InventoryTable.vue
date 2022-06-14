@@ -71,18 +71,20 @@ export default {
 
     let scroller = "";
     onMounted(() => {
+      
       var tableContent = document.querySelector(".ant-table-body");
       tableContent.addEventListener("scroll", (event) => {
+        
         let maxScroll = event.target.scrollHeight - event.target.clientHeight;
         let currentScroll = event.target.scrollTop + 2;
         if (currentScroll >= maxScroll) {
-          let current_page = meta.current_page + 1;
+          let current_page = meta.value.current_page + 1;
 
-          if (current_page <= meta.total_pages) {
+          if (current_page <= meta.value.total_pages) {
             scroller = maxScroll;
             meta.value = "";
             data = inventoriesList.value;
-            store.state.inventory.inventoriesList = "";
+           // store.state.inventory.inventoriesList = "";
 
             store
               .dispatch(
@@ -106,7 +108,7 @@ export default {
       newData.forEach((element) => {
         data.push(element);
       });
-      inventoriesList.value = data;
+      store.state.inventory.inventoriesList = data;
       var tableContent = document.querySelector(".ant-table-body");
 
       setTimeout(() => {
