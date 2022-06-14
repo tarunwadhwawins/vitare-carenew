@@ -23,7 +23,7 @@
 
 				<a-col :md="12" :sm="12" :xs="24">
 					<div class="form-group">
-						<a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: false, message: $t('global.phoneNo')+' '+$t('global.validation') }]">
+						<a-form-item :label="$t('global.phoneNo')" name="familyPhoneNumber" :rules="[{ required: true, message: $t('global.phoneNo')+' '+$t('global.validation') }]">
 							<!-- <PhoneNumber @change="changedValue" v-model.trim:value="familyMemberForm.familyPhoneNumber" @setPhoneNumber="setPhoneNumber" /> -->
 							<a-input v-maska="'###-###-####'" @change="changedValue" v-model:value="familyMemberForm.familyPhoneNumber" placeholder="Please enter 10 digit number" size="large" style="width: 100%" />
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.familyPhoneNumber?errorMsg.familyPhoneNumber[0]:''" />
