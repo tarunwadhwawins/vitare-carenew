@@ -21,6 +21,7 @@ import {
 // import moment from 'moment';
 
 export const addDemographic = (state, data) => {
+  data.contactTime = data.contactTimeId
   state.addDemographic = data
 }
 export const status = (state, data) => {
