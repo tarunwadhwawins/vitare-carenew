@@ -226,13 +226,14 @@ export default defineComponent({
       formRef.value.resetFields();
       Object.assign(addTimeLogForm, form)
     }
-function cancelButton(){
-emit('closeModal', {
-              link:true,
-              modal: "addTimeLog",
-              value: false
-            });
-}
+
+    function cancelButton() {
+      emit('closeModal', {
+        link: true,
+        modal: "addTimeLog",
+        value: false
+      });
+    }
     const submitForm = () => {
       // if(props.isEditForm) {
       //   // store.dispatch('updateTimeLog', {timeLogId, addTimeLogForm});

@@ -170,11 +170,6 @@ const iconLoading = ref(false)
     const patientCriticalNotes = computed(() => {
       return store.state.patients.patientCriticalNotes
     })
-onMounted(()=>{
-  cancelButton.value = ''
- 
- 
-})
 
     const button = ref(1);
 
@@ -197,52 +192,10 @@ onMounted(()=>{
     const timerValue = ref(30000)
     
     onMounted(() => {
+      cancelButton.value = ''
       store.dispatch('patientDetails', route.params.udid).then(() => {
         if(!startOn.value) {
-          timer.value = setInterval(() => {
-            elapsedTime.value += 1000;
-            if((elapsedTime.value)%timerValue.value === 0) {
-              const newFormattedElapsedTime = getSeconds(formattedElapsedTime.value)
-              const timeLogId =  localStorage.getItem('timeLogId')
-              if((timeLogId && timeLogId != null)) {
-                const data = {
-                  category: '',
-                  loggedBy: loggedInUserId,
-                  performedBy: loggedInUserId,
-                  date: timeStamp(new Date()),
-                  timeAmount: newFormattedElapsedTime,
-                  cptCode: '',
-                  note: '',
-                  isAutomatic: true,
-                }
-                store.dispatch('updatePatientTimeLog', {
-                  timeLogId: timeLogId,
-                  patientUdid: patientUdid,
-                  data: data
-                }).then(() => {
-                  store.dispatch('latestTimeLog', patientUdid)
-                });
-              }
-              else {
-                const data = {
-                  category: '',
-                  loggedBy: loggedInUserId,
-                  performedBy: loggedInUserId,
-                  date: timeStamp(new Date()),
-                  timeAmount: newFormattedElapsedTime,
-                  cptCode: '',
-                  note: '',
-                  isAutomatic: true,
-                }
-                store.dispatch('addTimeLog', {
-                  id: patientUdid,
-                  data: data
-                }).then(() => {
-                  store.dispatch('latestTimeLog', patientUdid)
-                });
-              }
-            }
-          }, 1000);
+          startTimer()
         }
       })
       // store.dispatch("appointmentCalls",{patientId:patientUdid})
@@ -270,7 +223,7 @@ onMounted(()=>{
       }
     })
 
-    const startTimer = () => {
+    function startTimer() {
       timer.value = setInterval(() => {
         elapsedTime.value += 1000;
         if((elapsedTime.value)%timerValue.value === 0) {
@@ -318,10 +271,6 @@ onMounted(()=>{
       store.commit('startOn', false);
     }
 
-    
-
-    
-
     const isAutomatic = ref(false);
 
     const stopTimer = () => {
@@ -356,50 +305,7 @@ onMounted(()=>{
         // startCallModalVisible.value = modal == "startCall" ? value : false;
       }
       if(value == undefined) {
-        timer.value = setInterval(() => {
-          elapsedTime.value += 1000;
-          if((elapsedTime.value)%timerValue.value === 0) {
-            const newFormattedElapsedTime = getSeconds(formattedElapsedTime.value)
-            const timeLogId =  localStorage.getItem('timeLogId')
-            if((timeLogId && timeLogId != null)) {
-              const data = {
-                category: '',
-                loggedBy: loggedInUserId,
-                performedBy: loggedInUserId,
-                date: timeStamp(new Date()),
-                timeAmount: newFormattedElapsedTime,
-                cptCode: '',
-                note: '',
-                isAutomatic: true,
-              }
-              store.dispatch('updatePatientTimeLog', {
-                timeLogId: timeLogId,
-                patientUdid: patientUdid,
-                data: data
-              }).then(() => {
-                store.dispatch('latestTimeLog', patientUdid)
-              });
-            }
-            else {
-              const data = {
-                category: '',
-                loggedBy: loggedInUserId,
-                performedBy: loggedInUserId,
-                date: timeStamp(new Date()),
-                timeAmount: newFormattedElapsedTime,
-                cptCode: '',
-                note: '',
-                isAutomatic: true,
-              }
-              store.dispatch('addTimeLog', {
-                id: patientUdid,
-                data: data
-              }).then(() => {
-                store.dispatch('latestTimeLog', patientUdid)
-              });
-            }
-          }
-        }, 1000);
+        startTimer()
         store.commit('startOn', false);
       }
     };
