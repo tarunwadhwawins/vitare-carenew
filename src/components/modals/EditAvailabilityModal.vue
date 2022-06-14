@@ -158,7 +158,7 @@ export default {
               addStaff.value ? addStaff.value.id : route.params.udid
             );
             }else{
-              // 
+              button.value = true;
             }
             
           });
