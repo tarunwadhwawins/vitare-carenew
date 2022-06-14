@@ -18,7 +18,7 @@
                     <a-row :gutter="24">
                         <a-col :xl="24" :xs="24" style="padding:20px;">
                             <div class="pageTittle">
-                                <DateFilter :Buttons="Buttons" @clickButtons="showButton($event);checkChangeInput()" :custom="true" commit="timelineReport" />
+                                <DateFilter :Buttons="Buttons" @clickButtons="showButton($event);" :custom="true" commit="timelineReport" />
                             </div>
                         </a-col>
                     </a-row>
@@ -30,18 +30,7 @@
                             </a-tag>
                         </div>
                     </a-row>
-                    <!-- <a-row >
-                        <a-col :span="12" style="padding-bottom:15px">
-                            <SearchField endPoint="cptCodes" />
-                        </a-col>
-                        
-                        <a-col :span="12">
-                            <div class="text-right mb-24" >
-                                <ExportToExcel @click="exportExcel('','?fromDate=&toDate='+search)" disabled />
-                            </div>
-                        </a-col>
-                    </a-row> -->
-
+              
                     <a-row>
                         <a-col :span="24">
                             <DataTable />
@@ -63,9 +52,6 @@ import moment from "moment";
 import TableLoader from "@/components/loader/TableLoader";
 import { timeStampFormate } from "@/commonMethods/commonMethod";
 import DataTable from "./data-table/DataTable";
-// import SearchField from "@/components/common/input/SearchField";
-// import ExportToExcel from "@/components/common/export-excel/ExportExcel.vue";
-// import PatientDropDown from "@/components/modals/search/PatientDropdownSearch.vue";
 import DateFilter from "@/components/common/DateFilter.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -74,10 +60,7 @@ export default {
     Header,
     Sidebar,
     DataTable,
-    // ExportToExcel,
-    // SearchField,
     TableLoader,
-    // PatientDropDown,
     DateFilter,
   },
 
@@ -91,7 +74,6 @@ export default {
     const customDateShow = ref(false);
 
     onMounted(() => {
-      //   store.dispatch("cptCodes")
       if (route.query.filter || route.query.fromDate) {
         let filter = route.query.filter ? route.query.filter : "";
         let date =
@@ -101,7 +83,6 @@ export default {
               "&toDate=" +
               timeStampFormate(route.query.toDate, "YYYY-MM-DD")
             : "?fromDate=&toDate=";
-        //store.dispatch('cptCodeFilterDates', "?fromDate=" + route.query.fromDate + "&toDate=" + route.query.toDate)
         store.dispatch("cptCodes", date + "&filter=" + filter);
       } else {
         store.commit("dateFilter", "");
