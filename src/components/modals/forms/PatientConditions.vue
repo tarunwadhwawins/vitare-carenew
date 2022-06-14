@@ -42,7 +42,10 @@ import { reactive, computed, ref, watchEffect } from 'vue-demi';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
-import { timeStampLocal } from '../../../commonMethods/commonMethod';
+import { 
+  timeStampLocal,
+  globalDateFormat,
+} from '../../../commonMethods/commonMethod';
 export default {
   components: {
     ConditionsTable,
@@ -148,6 +151,7 @@ export default {
       changedValue,
       editCondition,
       isConditionEdit,
+      globalDateFormat,
     }
   }
 }
