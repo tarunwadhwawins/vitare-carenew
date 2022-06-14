@@ -27,8 +27,10 @@
         <span>{{record.typeOfService.name}} </span>
         <p>{{record.device?.length>0?record.device[0]?.deviceType:record.vital[0]?.deviceType}}</p>
     </template>
+    <template #condition="{ record }">
+        <a><span @click="showModal(record.condition)">{{'View'}}</span></a>
+    </template>
     <template #cptCode="{ record }">
-
         <span>{{record.cptCode.name}}</span>
     </template>
     <template #billingAmout="{ record }">
@@ -40,6 +42,7 @@
     <template #status="{ record }">
         <span>{{record.status.name}}</span>
     </template>
+
     <template #TotalFee="{record}">
         <span>{{(record.cptCode.billingAmout * record.numberOfUnit).toFixed(2)}}</span>
     </template>
@@ -54,6 +57,7 @@
     </template>
 </a-table>
 <RecordView v-model:visible="reportViewModal" />
+<ConditionView v-model:visible="conditionViewModal" :conditionsData="conditionsData"/>
 </template>
 
 <script>
@@ -92,6 +96,13 @@ const column = [
     dataIndex: "placeOfService",
     slots: {
       customRender: "placeOfService",
+    }
+  },
+  {
+    title: "ICD 10 Code",
+    dataIndex: "condition",
+    slots: {
+      customRender: "condition",
     }
   },
   {
@@ -158,6 +169,7 @@ export default defineComponent({
     ExportToExcel,
     SearchField,
     RecordView: defineAsyncComponent(() => import("../modals/ReportView")),
+    ConditionView: defineAsyncComponent(() => import("../modals/ConditionsView.vue")),
   },
   setup() {
     const store = useStore();
@@ -166,6 +178,8 @@ export default defineComponent({
       selectedRowKeys: [],
     });
     const status = ref();
+    const conditionViewModal = ref(false)
+    const conditionsData = ref()
     let data = [];
     const meta = store.getters.cptCodesMeta;
     const dataList = store.getters.cptCodes;
@@ -297,7 +311,15 @@ export default defineComponent({
           });
       }
     };
+
+     const showModal = (data) =>{
+       conditionViewModal.value = true
+       conditionsData.value = data
+     }
     return {
+      conditionsData,
+      conditionViewModal,
+      showModal,
       onSelectChange,
       submitStatus,
       status,
