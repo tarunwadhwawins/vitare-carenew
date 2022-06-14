@@ -2073,3 +2073,16 @@ export const referralDetail = async ({
   })
 
 }
+
+export const healthConditions = async ({ commit }) => {
+  await serviceMethod.common("get", API_ENDPOINTS['condition'], null, null).then((response) => {
+    commit('healthConditions', response.data.data);
+  }).catch((error) => {
+    if (error.response) {
+      errorLogWithDeviceInfo(error.response);
+    }
+    else {
+      errorLogWithDeviceInfo(error);
+    }
+  })
+}
