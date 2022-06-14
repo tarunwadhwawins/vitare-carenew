@@ -11,15 +11,9 @@
                 <div class="common-bg">
                     <a-row>
                         <a-col :span="24">
-                            <h2 class="pageTittle">{{$t('global.reports')}}</h2>
-                        </a-col>
-                    </a-row>
-
-                    <a-row :gutter="24">
-                        <a-col :xl="24" :xs="24" style="padding:20px;">
-                            <div class="pageTittle">
+                            <h2 class="pageTittle">{{$t('global.reports')}}
                                 <DateFilter :Buttons="Buttons" @clickButtons="showButton($event);" :custom="true" commit="timelineReport" />
-                            </div>
+                            </h2>
                         </a-col>
                     </a-row>
                     <a-row>
@@ -30,7 +24,32 @@
                             </a-tag>
                         </div>
                     </a-row>
-              
+                    <a-row>
+                        <a-col :sm="24" :xs="24">
+                            <a-form :model="customFilter" name="auditTimeLog" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" autocomplete="off" layout="vertical" @finish="updateFilter" v-if="customDateShow">
+                                <a-row :gutter="24">
+                                    <a-col :sm="10" :xs="24">
+                                        <div class="form-group">
+                                            <label>{{$t('global.startDate')}}</label>
+                                            <a-date-picker :format="globalDateFormat" value-format="YYYY-MM-DD" :disabledDate="d => !d || d.isSameOrAfter(dateSelect)" v-model:value="customFilter.startDate" :size="size" style="width: 100%" />
+                                        </div>
+                                    </a-col>
+                                    <a-col :sm="10" :xs="24">
+                                        <div class="form-group">
+                                            <label>{{$t('global.endDate')}}</label>
+                                            <a-date-picker :format="globalDateFormat" :disabledDate="d => !d || d.isSameOrBefore(customFilter.startDate)" value-format="YYYY-MM-DD" v-model:value="customFilter.endDate" :size="size" style="width: 100%" @change="dateChange" />
+                                        </div>
+                                    </a-col>
+
+                                    <a-col :sm="2" :xs="24">
+                                        <div class="text-right mt-28">
+                                            <a-button class="btn primaryBtn" html-type="submit">{{$t('timeLogReport.view')}}</a-button>
+                                        </div>
+                                    </a-col>
+                                </a-row>
+                            </a-form>
+                        </a-col>
+                    </a-row>
                     <a-row>
                         <a-col :span="24">
                             <DataTable />
@@ -47,7 +66,7 @@
 <script>
 import Sidebar from "../layout/sidebar/Sidebar";
 import Header from "../layout/header/Header";
-import { onMounted, ref, onUnmounted } from "vue";
+import { onMounted, ref, onUnmounted, reactive } from "vue";
 import moment from "moment";
 import TableLoader from "@/components/loader/TableLoader";
 import { timeStampFormate } from "@/commonMethods/commonMethod";
@@ -69,6 +88,13 @@ export default {
     const patient = ref([]);
     const route = useRoute();
     const router = useRouter();
+    const startDate = ref(null);
+    const endDate = ref(null);
+
+    const customFilter = reactive({
+      startDate: "",
+      endDate: "",
+    });
 
     const timeLineButton = store.getters.timelineReport;
     const customDateShow = ref(false);
@@ -200,13 +226,38 @@ export default {
       );
     }
 
+    function updateFilter() {
+      if (customFilter.startDate && customFilter.endDate) {
+        //store.getters.timeLogReports.value.timeLog = ""
+        // store.getters.timeLogReports.value.timeLogeMeta = ''
+        startDate.value = customFilter.startDate
+          ? moment(customFilter.startDate).format("YYYY-MM-DD")
+          : "";
+        endDate.value = customFilter.endDate
+          ? moment(customFilter.endDate).format("YYYY-MM-DD")
+          : "";
+        store.dispatch(
+          "cptCodeFilterDates",
+          "?fromDate=" + startDate.value + "&toDate=" + endDate.value
+        );
+        store.dispatch(
+          "cptCodes",
+          "?fromDate=" + startDate.value + "&toDate=" + endDate.value + "&page="
+        );
+      }
+    }
+
     return {
+      startDate,
+      endDate,
+      updateFilter,
+      customFilter,
       customDateShow,
       route,
       remove,
       showButton,
       patient,
-      Buttons: store.getters.dashboardTimeLineButton,
+      Buttons: store.getters.timelineReport,
       size: ref("large"),
     };
   },

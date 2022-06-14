@@ -1,9 +1,9 @@
 <template>
 <a-row>
-    <a-col :span="12" style="padding-bottom:15px">
+    <a-col :span="8" style="padding-bottom:15px">
         <SearchField endPoint="cptCodes" v-show="!selectedRowKeys?.length>0" />
     </a-col>
-    <a-col :span="12">
+    <a-col :span="16">
         <div class="text-right mb-24">
             <ExportToExcel @click="exportExcel('','?fromDate=&toDate='+search)" disabled />
         </div>
@@ -33,6 +33,9 @@
     </template>
     <template #billingAmout="{ record }">
         <span>{{record.cptCode.billingAmout}}</span>
+    </template>
+    <template #placeOfService="{ record }">
+        <span>{{record.placeOfService.name}}</span>
     </template>
     <template #status="{ record }">
         <span>{{record.status.name}}</span>
@@ -83,6 +86,13 @@ const column = [
     slots: {
       customRender: "patient",
     },
+  },
+  {
+    title: "Place of Service",
+    dataIndex: "placeOfService",
+    slots: {
+      customRender: "placeOfService",
+    }
   },
   {
     title: "Date of Service",
