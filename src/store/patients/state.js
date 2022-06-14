@@ -100,5 +100,6 @@ export default {
     latestCondition:null,
     conditionDetails:null,
     isConditionEdit:false,
+    healthConditions:null,
 
 }

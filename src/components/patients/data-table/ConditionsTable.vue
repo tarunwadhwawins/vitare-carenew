@@ -47,21 +47,25 @@ export default {
         title: "Conditions",
         dataIndex: "condition",
         key: "condition",
+        width: "30%"
       },
       {
         title: "Start Date",
         dataIndex: "startDate",
         key: "startDate",
+        width: "10%",
       },
       {
         title: "End Date",
         dataIndex: "endDate",
         key: "endDate",
+        width: "10%",
       },
       {
         title: "Actions",
         dataIndex: "actions",
         key: "actions",
+        width: "10%",
         slots: {
           customRender: "actions"
         },

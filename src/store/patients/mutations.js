@@ -556,6 +556,7 @@ export const patientDocumentsSuccess = (state, documents) => {
 
 export const patientConditions = (state, conditions) => {
   state.patientConditions = conditions.map(condition => {
+    condition.condition = condition.conditionCode+'-'+condition.conditionDescription
     condition.startDate = condition.startDate ? dateOnlyFormat(condition.startDate) : ""
     condition.endDate = condition.endDate ? dateOnlyFormat(condition.endDate) : ""
     return condition;
@@ -1177,4 +1178,11 @@ export const startOn = (state, data) => {
 
 export const criticalNoteDetails = (state, data) => {
   state.criticalNoteDetails = data
+}
+
+export const healthConditions = (state, data) => {
+  state.healthConditions = data.map(item => {
+    item.name = item.code+' - '+item.description
+    return item
+  })
 }
