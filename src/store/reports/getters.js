@@ -12,3 +12,11 @@ export const cptCodesMeta = (state)=>{
         return state.cptCodes
     })
   }
+
+  export const cptCodeFilterDates = (state)=>{
+    return computed(()=>{
+        return state.cptCodeFilterDates
+    })
+  }
+
+  

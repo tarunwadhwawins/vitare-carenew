@@ -21,6 +21,7 @@ import {
 // import moment from 'moment';
 
 export const addDemographic = (state, data) => {
+  data.contactTime = data.contactTimeId
   state.addDemographic = data
 }
 export const status = (state, data) => {
@@ -634,6 +635,10 @@ export const referralErrorMsg = (state, data) => {
 
 export const physicianErrorMsg = (state, data) => {
   state.physicianErrorMsg = data
+}
+
+export const emergencyErrorMsg = (state, data) => {
+  state.emergencyErrorMsg = data
 }
 
 export const closeModal = (state, data) => {
