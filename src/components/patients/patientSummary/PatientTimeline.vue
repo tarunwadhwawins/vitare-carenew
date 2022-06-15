@@ -2,6 +2,13 @@
 <div :class="className">
     <a-checkbox-group v-model:value="tab" @change="chnageTab('change')">
         <a-checkbox v-for="timeline in timeLineType" :key="timeline.id" :value="timeline.id">{{timeline.name}}</a-checkbox>
+        <a-tooltip v-if="value1.length>0" placement="bottom">
+        <template #title>
+          <span>Flag Submit</span>
+        </template>
+        <a class="icons" @click="showAddFlagModal">
+          <CheckCircleOutlined /></a>
+      </a-tooltip>
         <a-tooltip v-if="visibleRemoveAll" placement="bottom">
             <template #title>
                 <span>Unselect All</span>
@@ -10,7 +17,9 @@
                 <CloseCircleOutlined /></a>
         </a-tooltip>
     </a-checkbox-group>
-
+    <div class="customBtn" v-if="value1.length>0">
+        <a-button type="primary">Clear All Flags</a-button>
+    </div>
     <a-timeline class="defaultTimeline">
         <TableLoader />
         <div v-if="patientTimeline && (patientTimeline != null && patientTimeline.length > 0)">
@@ -37,7 +46,7 @@
                             </div>
                             
                                
-<a-checkbox v-model:value="timeline.id" v-if="timeline.type==7" @click="checkBox"></a-checkbox>
+<a-checkbox v-model:value="timeline.entity.data.id" v-if="timeline.type==7 && timeline.entity.data" @click="checkBox"></a-checkbox>
                               
                             
                         </div>
@@ -56,7 +65,7 @@
         </div>
     </a-timeline>
 </div>
-<PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" :flags="state"/>
+<PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" :flags="flagsRecord"/>
 </template>
 
 <script>
@@ -72,6 +81,7 @@ import {
   // InfoCircleOutlined,
   FlagOutlined,
   CloseCircleOutlined,
+  CheckCircleOutlined
 } from "@ant-design/icons-vue";
 import {
   dateFormat,
@@ -95,6 +105,7 @@ export default {
         FlagOutlined,
         CloseCircleOutlined,
         TableLoader,
+        CheckCircleOutlined,
         PatientFlagsModal: defineAsyncComponent(()=>import("@/components/modals/PatientFlagsModal")),
     },
     props: {
@@ -123,27 +134,20 @@ export default {
           value1:[]
         })
         watchEffect(() => {
-            if (store.state.patients.tabvalue) {
-                tabvalue.tab = [store.state.patients.tabvalue]
-                store.commit('loadingTableStatus', true)
-                store.dispatch('patientTimeline', {
-                    id: route.params.udid ? route.params.udid : pId.value,
-                    type: store.state.patients.tabvalue
-                }).then(() => {
-                    visibleRemoveAll.value = tabvalue.tab.length > 0 ? true : false
-                    store.commit('loadingTableStatus', false)
-                })
+            if (store.state.patients.tabvalue.length>0) {
+                tabvalue.tab = store.state.patients.tabvalue
+               
             }
         })
         onMounted(() => {
             if (route.name == 'PatientSummary') {
                 store.dispatch('timeLineType').then(() => {
                     if (route.query.filter) {
-
-                        tabvalue.tab = [4, 7]
+store.state.patients.tabvalue = [4, 7]
+                        tabvalue.tab = store.state.patients.tabvalue
                         store.dispatch('patientTimeline', {
                             id: route.params.udid ? route.params.udid : pId.value,
-                            type: '4,7'
+                            type: store.state.patients.tabvalue.join(",")
                         }).then(() => {
                             visibleRemoveAll.value = tabvalue.tab.length > 0 ? true : false
                             store.commit('loadingTableStatus', false)
@@ -175,11 +179,12 @@ export default {
         };
 
         function chnageTab(value) {
-            store.state.patients.tabvalue = null
+            store.state.patients.tabvalue=[]
             store.commit('loadingTableStatus', true)
             var type = ''
             if (value == 'change') {
                 type = tabvalue.tab.length == 0 ? '' : tabvalue.tab.join(",")
+                store.state.patients.tabvalue = tabvalue.tab
             } else {
                 router.replace({
                     query: {}
@@ -200,11 +205,26 @@ export default {
                 store.commit('loadingTableStatus', false)
             })
         }
- function checkBox(){
+        const flagsRecord = ref([])
+ function showAddFlagModal(){
+  flagsRecord.value = state.value1
   flagsModalVisible.value = true
-console.log("check",state)
+  
+
  }
+  const handleOk = ({modal, value}) => {
+      flagsModalVisible.value = value
+      if(value==false){
+        state.value1=[]
+      }
+      console.log(modal)
+
+
+        
+      }
         return {
+          handleOk,
+          showAddFlagModal,
             pId,
             showModalCustom,
             custom,
@@ -216,7 +236,8 @@ console.log("check",state)
             dateFormat,
             visibleRemoveAll,
             ...toRefs(state),
-            checkBox,
+            
+            flagsRecord,
             flagsModalVisible,
             patientDetails
         }
