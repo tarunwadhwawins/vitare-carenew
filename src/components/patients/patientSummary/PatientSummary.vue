@@ -293,33 +293,65 @@ export default {
     };
   
     const handleClose = ({link=null,modal, value}) => {
-      console.log("dgfd",link,cancelButton.value)
-      if(link==true&& cancelButton.value){
-       clearInterval(timer.value);
-       stoptimervisible.value = false;
-       router.push({
-                        path: cancelButton.value
-                    });
-                    
+      if(modal == 'cancelButton') {
+        if(link==true&& cancelButton.value) {
+          elapsedTime.value = 0;
+          store.commit('startOn', true);
+          stoptimervisible.value = false;
+          clearInterval(timer.value);
+          router.push({
+            path: cancelButton.value
+          });
+        }
+        else {
+          stoptimervisible.value = false;
+          startTimer()
+          store.commit('startOn', false);
+        }
       }
-      
-      if(modal == 'addTimeLog') {
+      else if(modal == 'closeTimeLogModal') {
+        startTimer()
+        store.commit('startOn', false);
+        stoptimervisible.value = false;
+      }
+      else if(modal == 'addTimeLog') {
         elapsedTime.value = 0;
         store.commit('startOn', true);
         stoptimervisible.value = false;
         clearInterval(timer.value);
       }
-      else if(value && modal == 'closeTimeLogModal') {
-        stoptimervisible.value = value;
-        clearInterval(timer.value);
-      }
-      else {
-        // startCallModalVisible.value = modal == "startCall" ? value : false;
-      }
       if(value == undefined) {
         startTimer()
         store.commit('startOn', false);
       }
+
+      // console.log("dgfd",link,cancelButton.value)
+      // if(link==true&& cancelButton.value){
+      //  clearInterval(timer.value);
+      //  stoptimervisible.value = false;
+      //  router.push({
+      //                   path: cancelButton.value
+      //               });
+                    
+      // }
+      
+      // if(modal == 'addTimeLog') {
+      //   elapsedTime.value = 0;
+      //   store.commit('startOn', true);
+      //   stoptimervisible.value = false;
+      //   clearInterval(timer.value);
+      // }
+      // else if(value && modal == 'closeTimeLogModal') {
+      //   stoptimervisible.value = value;
+      //   clearInterval(timer.value);
+      // }
+      // else {
+      //   // startCallModalVisible.value = modal == "startCall" ? value : false;
+      // }
+      // if(value == undefined) {
+      //   startTimer()
+      //   store.commit('startOn', false);
+      // }
     };
     
     onBeforeMount(() => {
@@ -418,7 +450,6 @@ export default {
   beforeRouteLeave (to, from, next) {
   cancelButton.value = to.fullPath
 
-  
    if(to.path!='/logout'&&to.path!='/'){
       var button= document.getElementById("timer")
      if(button){
