@@ -78,7 +78,7 @@ import AddTimeLogModal from "@/components/modals/AddTimeLogs";
 // import StartCallModal from "@/components/modals/StartCallModal";
 
 import dayjs from "dayjs"; 
-import { ref, computed,onBeforeMount, onUnmounted,reactive, onMounted} from "vue";
+import { ref, computed,onBeforeMount, onUnmounted,reactive, onMounted, watchEffect} from "vue";
 import { useStore } from 'vuex';
 import { useRoute,useRouter  } from 'vue-router';
 import {
@@ -132,10 +132,22 @@ export default {
     const startOn = computed(() => {
       return store.state.patients.startOn
     });
-const iconLoading = ref(false)
+    const iconLoading = ref(false)
     const onClose = (e) => {
       console.log(e, "I was closed.");
     };
+
+    watchEffect(() => {
+      store.dispatch('patientDetails', route.params.udid).then(() => {
+        if(!startOn.value && route.params.globalSearch) {
+          elapsedTime.value = 0;
+          store.commit('startOn', true);
+          stoptimervisible.value = false;
+          clearInterval(timer.value);
+          startTimer()
+        }
+      })
+    })
 
     // const startCall = () => {
     //   startCallModalVisible.value = true
