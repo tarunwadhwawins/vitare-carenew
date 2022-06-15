@@ -88,11 +88,11 @@ const meta = store.getters.patientsRecord.value;
 let data = [];
 const route = useRoute();
 
-const  filter = ref();
+const  filter = ref('');
 let date = "";
-
+filter.value = route.query.filter ? route.query.filter : "";
 function checkDate() {
-    console.log("check",route.query.filter)
+    
     filter.value = route.query.filter ? route.query.filter : "";
     date =
         route.query.fromDate && route.query.toDate ?

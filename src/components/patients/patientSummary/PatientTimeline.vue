@@ -17,7 +17,7 @@
                 <CloseCircleOutlined /></a>
         </a-tooltip>
     </a-checkbox-group>
-    <div class="customBtn">
+    <div class="customBtn" v-if="value1.length>0">
         <a-button type="primary">Clear All Flags</a-button>
     </div>
     <a-timeline class="defaultTimeline">
