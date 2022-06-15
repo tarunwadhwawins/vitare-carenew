@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="50%" title="Edit Contact" :footer="false" centered @cancel="closeModal()">
+  <a-modal width="50%" title="Edit Emergency Contact" :footer="false" centered @cancel="closeModal()">
     <a-form :model="editContactForm" ref="formRest" autocomplete="off" layout="vertical" @finish="submitForm">
       <a-row :gutter="24">
         <a-col :md="12" :sm="12" :xs="24">
