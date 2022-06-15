@@ -102,5 +102,7 @@ export default {
     conditionDetails:null,
     isConditionEdit:false,
     healthConditions:null,
+    editConditionDetails:null,
+    tabvalue:[],
 
 }

@@ -63,6 +63,8 @@
             color: #000;
             font-size: 13px;
             padding: 0 10px;
+            margin: 0 0 10px;
+
             &:last-child {
                 border-right: none;
             }
@@ -955,7 +957,7 @@
             max-height: calc(100vh - 540px);
         }
     }
-    .ant-checkbox-group {
+   > .ant-checkbox-group {
         width: 100%;
         background-color: #fff;
         padding: 15px 10px;
@@ -974,6 +976,15 @@
             }
             .ant-checkbox {
                 display: none;
+            }
+        }
+        .icons {
+            margin: 0 0 0 10px;
+            display: inline-block;
+            span {
+                svg {
+                    font-size: 20px;
+                }
             }
         }
     }

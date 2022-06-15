@@ -7,7 +7,7 @@
         <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 289)">
           Flag Status <PlusOutlined @click="showAddFlagModal(); actionTrack(paramsId,289,'patient')" /><br />
         </div>
-        <div class="thumb-desc" v-if="latestFlag">
+        <div class="thumb-desc" v-if="latestFlag" @click="flagTimeLineButton">
           <Flags :data="latestFlag.flags.data" :flag="latestFlag.color" />
         </div>
       </div>
@@ -171,7 +171,7 @@
     <AddCoordinatorsModal v-if="careCoordinatorsVisible" v-model:visible="careCoordinatorsVisible" @closeModal="handleOk" :staffType="staffType" :title="title" :isEditCareCoordinator="false" />
     <AddTimeLogsModal v-model:visible="addTimeLogsVisible" :isEditTimeLog="isEditTimeLog" :isAutomatic="isAutomatic" @closeModal="addTimeLogsClose($event)" />
     <AddDeviceModal v-model:visible="addDeviceVisible" :patientDetails="patientDetails" @closeModal="handleOk" />
-    <PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
+    <PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" :flags="[]"/>
     <PatientsModal v-model:visible="patientsModalVisible" :isEdit="true" @closeModal="handleOk" />
 
     <FamilyMembersDetailsModal v-model:visible="familyMembersModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" />
@@ -606,6 +606,14 @@ const checkFieldsData = computed(()=>{
       }    
         
     }
+    const flagTimeLineButton = () =>{
+      store.state.patients.tabvalue = [7]
+       store.dispatch('patientTimeline', {
+                    id: route.params.udid,
+                    type: store.state.patients.tabvalue.join(",")
+                })
+     
+    }
     return {
       
       screensPermissions:store.getters.screensPermissions,
@@ -705,7 +713,8 @@ const checkFieldsData = computed(()=>{
       addTimeLogsClose,
       referralView,
       referral,
-      referralDetail:store.getters.referralDetail
+      referralDetail:store.getters.referralDetail,
+      flagTimeLineButton,
       
     }
   }

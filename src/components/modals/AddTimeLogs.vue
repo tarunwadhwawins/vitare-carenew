@@ -226,13 +226,14 @@ export default defineComponent({
       formRef.value.resetFields();
       Object.assign(addTimeLogForm, form)
     }
-function cancelButton(){
-emit('closeModal', {
-              link:true,
-              modal: "addTimeLog",
-              value: false
-            });
-}
+
+    function cancelButton() {
+      emit('closeModal', {
+        link: true,
+        modal: "addTimeLog",
+        value: false
+      });
+    }
     const submitForm = () => {
       // if(props.isEditForm) {
       //   // store.dispatch('updateTimeLog', {timeLogId, addTimeLogForm});
@@ -258,6 +259,10 @@ emit('closeModal', {
             data: data
           }).then(() => {
             store.dispatch('latestTimeLog', route.params.udid)
+            store.dispatch("patientTimeline", {
+              id: route.params.udid,
+              type: "",
+            });
             emit('closeModal', {
               modal: "addTimeLog",
               value: false
@@ -281,6 +286,10 @@ emit('closeModal', {
           const patientId = route.params.udid;
           store.dispatch('addTimeLog', {id: patientId, data: data}).then(() => {
             store.dispatch('latestTimeLog', route.params.udid)
+            store.dispatch("patientTimeline", {
+              id: route.params.udid,
+              type: "",
+            });
             emit('closeModal', {
               modal: "addTimeLog",
               value: false

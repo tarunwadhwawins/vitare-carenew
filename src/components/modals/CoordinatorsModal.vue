@@ -85,7 +85,7 @@
                 </a-form>
             </div>
 
-            <div class="steps-content" v-if="steps[current].title == 'Contacts'">
+            <div class="steps-content" v-if="steps[current].title == 'Emergency Contacts'">
                 <Contacts id="contact" />
                 <div class="steps-action">
                     <a-button v-if="current > 0" style="margin-right: 8px" @click="prev">{{$t('global.previous')}}</a-button>
@@ -357,7 +357,7 @@ export default {
                     content: "First-content",
                 },
                 {
-                    title: "Contacts",
+                    title: "Emergency Contacts",
                     content: "Second-content",
                 },
                 {
