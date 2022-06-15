@@ -88,24 +88,23 @@ export const patientReportVitals = (state, vitals) => {
       map[date] = map[date] || [];
       map[date].push(val)
     });
-
-    state.dateWiseSortVitals = map
+    
     //datewise sorting end
 
     vitalsArray.forEach(vital => {
       switch (vital.deviceType) {
         case 'Blood Pressure':
-          state.bloodPressure = patientVitals.length > 0 ? patientVitals : null;
-          // state.bloodPressureGraph = patientGraphData;
+          state.bloodPressure = patientVitals.length > 0 ? patientVitals : null
+          state.bloodPressureData = map
           console.log(patientGraphData)
           break;
         case 'Oximeter':
-          state.bloodOxygen = patientVitals.length > 0 ? patientVitals : null;
-          // state.bloodOxygenGraph = patientGraphData;
+          state.bloodOxygen = patientVitals.length > 0 ? patientVitals : null
+          state.bloodOxygenData = map
           break;
         case 'Glucose':
-          state.bloodGlucose = patientVitals.length > 0 ? patientVitals : null;
-          // state.bloodGlucoseGraph = patientGraphData;
+          state.bloodGlucose = patientVitals.length > 0 ? patientVitals : null
+          state.bloodGlucoseData = map
           break;
         default:
           break;
