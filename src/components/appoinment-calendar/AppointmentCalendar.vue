@@ -211,6 +211,19 @@ watchEffect(()=>{
         };
 
         function staffSelect() {
+             let staffId = []
+            store.getters.appointmentRecords.value.getStaff ? store.getters.appointmentRecords.value.getStaff.map((item) => {
+                staffId.push(item.id)
+            }) : ''
+            physiciansId.value = staffId;
+             store.dispatch("searchAppointment", {
+                fromDate: fromDate.value,
+                toDate: toDate.value,
+                tabId: activeKey.value,
+                physiciansId: physiciansId.value.length == 0 ? '' : physiciansId.value.join(",")
+            }).then(() => {
+                monthRecord.value = true
+            })
             showLoaderMain.value = false
         }
 
