@@ -17,7 +17,9 @@
                 <CloseCircleOutlined /></a>
         </a-tooltip>
     </a-checkbox-group>
-
+    <div class="customBtn">
+        <a-button type="primary">Clear All Flags</a-button>
+    </div>
     <a-timeline class="defaultTimeline">
         <TableLoader />
         <div v-if="patientTimeline && (patientTimeline != null && patientTimeline.length > 0)">
