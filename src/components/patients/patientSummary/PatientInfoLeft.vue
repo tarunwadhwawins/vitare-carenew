@@ -607,7 +607,11 @@ const checkFieldsData = computed(()=>{
         
     }
     const flagTimeLineButton = () =>{
-      store.state.patients.tabvalue = 7
+      store.state.patients.tabvalue = [7]
+       store.dispatch('patientTimeline', {
+                    id: route.params.udid,
+                    type: store.state.patients.tabvalue.join(",")
+                })
      
     }
     return {
