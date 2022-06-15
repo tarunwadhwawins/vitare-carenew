@@ -41,7 +41,7 @@ export const cptCodeSuccess = (state, data) => {
 					return item.text;
 				})
 			},
-			yaxis: yaxis('Amount')
+			yaxis: yaxis('Amount ($)')
 		},
 		value: [
 			{
