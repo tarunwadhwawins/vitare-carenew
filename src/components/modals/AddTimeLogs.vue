@@ -259,6 +259,10 @@ export default defineComponent({
             data: data
           }).then(() => {
             store.dispatch('latestTimeLog', route.params.udid)
+            store.dispatch("patientTimeline", {
+              id: route.params.udid,
+              type: "",
+            });
             emit('closeModal', {
               modal: "addTimeLog",
               value: false
@@ -282,6 +286,10 @@ export default defineComponent({
           const patientId = route.params.udid;
           store.dispatch('addTimeLog', {id: patientId, data: data}).then(() => {
             store.dispatch('latestTimeLog', route.params.udid)
+            store.dispatch("patientTimeline", {
+              id: route.params.udid,
+              type: "",
+            });
             emit('closeModal', {
               modal: "addTimeLog",
               value: false
