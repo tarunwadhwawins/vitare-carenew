@@ -56,6 +56,7 @@
         </div>
     </a-timeline>
 </div>
+<PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" :flags="state"/>
 </template>
 
 <script>
@@ -75,7 +76,7 @@ import {
 import {
   dateFormat,
 } from '@/commonMethods/commonMethod';
-import { computed, ref, onMounted, reactive, toRefs, watchEffect} from 'vue-demi';
+import { computed, ref, onMounted, reactive, toRefs, watchEffect,defineAsyncComponent} from 'vue-demi';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import TableLoader from "@/components/loader/TableLoader";
@@ -93,7 +94,8 @@ export default {
         // InfoCircleOutlined,
         FlagOutlined,
         CloseCircleOutlined,
-        TableLoader
+        TableLoader,
+        PatientFlagsModal: defineAsyncComponent(()=>import("@/components/modals/PatientFlagsModal")),
     },
     props: {
         className: {
@@ -110,6 +112,10 @@ export default {
         const route = useRoute();
         const router = useRouter()
         const pId = ref(props.profileId)
+       const flagsModalVisible =ref(false)
+       const patientDetails = computed(() => {
+      return store.state.patients.patientDetails
+    })
         const tabvalue = reactive({
             tab: []
         });
@@ -195,6 +201,7 @@ export default {
             })
         }
  function checkBox(){
+  flagsModalVisible.value = true
 console.log("check",state)
  }
         return {
@@ -209,7 +216,9 @@ console.log("check",state)
             dateFormat,
             visibleRemoveAll,
             ...toRefs(state),
-            checkBox
+            checkBox,
+            flagsModalVisible,
+            patientDetails
         }
     }
 }
