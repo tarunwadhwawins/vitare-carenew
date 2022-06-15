@@ -99,9 +99,13 @@ class ServiceMethodService {
                 .then((d) => {
                     store.commit('dropdownLoadingStatus', false)
                     if (currentValue === value) {
+                        // console.log('=>',d.data.data)
                         const result = d.data.data.map(item=>{
                             if(item.abbr){
                                 item.fullName = item.abbr
+                            }
+                            if(item.code && item.description){
+                                item.fullName = item.code+' - '+item.description
                             }
                             return item
                         });

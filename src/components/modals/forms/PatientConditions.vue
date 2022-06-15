@@ -5,7 +5,7 @@
       <a-col :md="24" :sm="24" :xs="24" :xl="12">
         <div class="form-group">
           <a-form-item :label="$t('patient.patientConditions')" name="condition" :rules="[{ required: true, message: $t('patient.patientConditions')+' '+$t('global.validation') }]">
-            <GlobalCodeDropDown v-model:value="conditions.condition" :globalCode="healthConditions" @change="changedValue" mode="multiple" :disabled="isConditionEdit" />
+            <ConditionCodeDropDown :editDataCondition="editDataCondition"  v-model:value="conditions.condition" @handleConditionChange="handleConditionChange($event)" @change="changedValue" mode="multiple" :disabled="isConditionEdit" />
             <ErrorMessage v-if="errorMsg" :name="errorMsg.condition ? errorMsg.condition[0] : ''" />
           </a-form-item>
         </div>
@@ -41,15 +41,17 @@ import ConditionsTable from '@/components/patients/data-table/ConditionsTable';
 import { reactive, computed, ref, watchEffect } from 'vue-demi';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
-import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
+// import GlobalCodeDropDown from "@/components/modals/search/GlobalCodeSearch.vue";
+import ConditionCodeDropDown from "@/components/modals/search/ConditionSearch.vue";
 import { 
   timeStampLocal,
   globalDateFormat,
-} from '../../../commonMethods/commonMethod';
+} from '@/commonMethods/commonMethod';
 export default {
   components: {
     ConditionsTable,
-    GlobalCodeDropDown,
+    // GlobalCodeDropDown,
+    ConditionCodeDropDown
   },
   props: {
     idPatient: {
@@ -142,7 +144,17 @@ export default {
       Object.assign(conditions, form)    
     }
 
+    const handleConditionChange = (val) => {
+            conditions.condition = val;
+        };
+
+    const editDataCondition = computed(() => {
+      return store.state.patients.editConditionDetails;
+    });
+
     return {
+      editDataCondition,
+      handleConditionChange,
       formRef,
       conditions,
       healthConditions,

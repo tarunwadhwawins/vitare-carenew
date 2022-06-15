@@ -2,7 +2,7 @@
 	<a-modal width="50%" height="500px" :title="title">
     <a-form ref="formRef" :model="addFlagForm" @finish="submitForm" layout="vertical">
       <a-row :gutter="24">
-        <a-col :span="24">
+        <a-col :span="24" v-if="flags.length==0">
           <a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation') }]">
             <GlobalCodeDropDown v-model:value="addFlagForm.flag" :globalCode="flagsForPatients" />
             <ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
@@ -34,6 +34,9 @@ export default {
 		Loader,
     GlobalCodeDropDown
 	},
+  props:{
+    flags:Array
+  },
     setup(props, {emit}) {
       const store = useStore();
       const route = useRoute();

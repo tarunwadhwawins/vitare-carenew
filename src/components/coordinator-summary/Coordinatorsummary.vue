@@ -98,7 +98,7 @@
                                         </a-col>
                                     </a-row>
                                 </a-tab-pane>
-                                <a-tab-pane key="4" tab="Contacts">
+                                <a-tab-pane key="4" tab="Emergency Contacts">
                                     <a-row :gutter="24">
                                         <a-col :span="24">
                                             <div class="common-btn mb-24" v-if="arrayToObjact(screensPermissions,47)">
@@ -166,7 +166,7 @@
         <AvailabilityForm :clearData="clearData" :paramId="paramId" @saveModal="availabilityCloseModal()" />
     </a-modal>
     <!---->
-    <a-modal width="60%" v-model:visible="visibleContact" title="Add Contacts" :maskClosable="false" centered @cancel="contactCloseModal('visibleContact')" :footer="false">
+    <a-modal width="60%" v-model:visible="visibleContact" title="Add Emergency Contact" :maskClosable="false" centered @cancel="contactCloseModal('visibleContact')" :footer="false">
         <ContactForm :clearData="clearData" :paramId="paramId" @saveModal="contactCloseModal()" />
     </a-modal>
     <!---->
