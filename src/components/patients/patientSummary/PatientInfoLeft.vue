@@ -7,7 +7,7 @@
         <div class="thumb-head" v-if="arrayToObjact(screensPermissions, 289)">
           Flag Status <PlusOutlined @click="showAddFlagModal(); actionTrack(paramsId,289,'patient')" /><br />
         </div>
-        <div class="thumb-desc" v-if="latestFlag">
+        <div class="thumb-desc" v-if="latestFlag" @click="flagTimeLineButton">
           <Flags :data="latestFlag.flags.data" :flag="latestFlag.color" />
         </div>
       </div>
@@ -606,6 +606,10 @@ const checkFieldsData = computed(()=>{
       }    
         
     }
+    const flagTimeLineButton = () =>{
+      store.state.patients.tabvalue = 7
+     
+    }
     return {
       
       screensPermissions:store.getters.screensPermissions,
@@ -705,7 +709,8 @@ const checkFieldsData = computed(()=>{
       addTimeLogsClose,
       referralView,
       referral,
-      referralDetail:store.getters.referralDetail
+      referralDetail:store.getters.referralDetail,
+      flagTimeLineButton,
       
     }
   }
