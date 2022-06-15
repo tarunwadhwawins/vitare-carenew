@@ -2,13 +2,13 @@
 <div :class="className">
     <a-checkbox-group v-model:value="tab" @change="chnageTab('change')">
         <a-checkbox v-for="timeline in timeLineType" :key="timeline.id" :value="timeline.id">{{timeline.name}}</a-checkbox>
-        <a-tooltip v-if="value1.length>0" placement="bottom">
+        <!-- <a-tooltip v-if="value1.length>0" placement="bottom">
         <template #title>
           <span>Flag Submit</span>
         </template>
         <a class="icons" @click="showAddFlagModal">
           <CheckCircleOutlined /></a>
-      </a-tooltip>
+      </a-tooltip> -->
         <a-tooltip v-if="visibleRemoveAll" placement="bottom">
             <template #title>
                 <span>Unselect All</span>
@@ -18,7 +18,7 @@
         </a-tooltip>
     </a-checkbox-group>
     <div class="customBtn" v-if="value1.length>0">
-        <a-button type="primary">Clear All Flags</a-button>
+        <a-button type="primary" @click="showAddFlagModal">Clear Flag</a-button>
     </div>
     <a-timeline class="defaultTimeline">
         <TableLoader />
@@ -81,7 +81,7 @@ import {
   // InfoCircleOutlined,
   FlagOutlined,
   CloseCircleOutlined,
-  CheckCircleOutlined
+  //CheckCircleOutlined
 } from "@ant-design/icons-vue";
 import {
   dateFormat,
@@ -105,7 +105,7 @@ export default {
         FlagOutlined,
         CloseCircleOutlined,
         TableLoader,
-        CheckCircleOutlined,
+        //CheckCircleOutlined,
         PatientFlagsModal: defineAsyncComponent(()=>import("@/components/modals/PatientFlagsModal")),
     },
     props: {
