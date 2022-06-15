@@ -571,11 +571,16 @@ export const isConditionEdit = (state, data) => {
   state.isConditionEdit = data
 }
 
-export const conditionDetails = (state, condition) => {
+export const conditionDetails = (state, condition) => { 
   condition.condition = condition.conditionId
   condition.startDate = condition.startDate ? dateOnlyFormatSImple(condition.startDate) : ""
   condition.endDate = condition.endDate ? dateOnlyFormatSImple(condition.endDate) : ""
   state.conditionDetails = condition
+
+  state.editConditionDetails=[{
+    value:condition.conditionId,
+    label:condition.conditionCode+' - '+condition.conditionDescription
+  }]
 }
 
 export const patientReferralSource = (state, referralSource) => {
