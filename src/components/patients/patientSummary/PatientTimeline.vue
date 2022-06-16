@@ -20,7 +20,7 @@
     <div class="customBtn" v-if="value1.length>0">
         <a-button type="primary" @click="showAddFlagModal">Clear Flag</a-button>
     </div>
-    <a-timeline class="defaultTimeline" style="height:600px">
+    <a-timeline class="defaultTimeline" style="height:calc(100vh - 330px)">
         <TableLoader />
         <div v-if="patientTimeline && (patientTimeline != null && patientTimeline.length > 0)">
             <a-checkbox-group v-model:value="value1" style="width: 100%">
