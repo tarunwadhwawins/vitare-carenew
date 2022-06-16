@@ -104,5 +104,6 @@ export default {
     healthConditions:null,
     editConditionDetails:null,
     tabvalue:[],
+    patientTimelineMeta:null,
 
 }

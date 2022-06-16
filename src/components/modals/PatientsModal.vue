@@ -771,7 +771,7 @@
                         <a-col :sm="8" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('patient.insurance.expirationDate')" name="expirationDate" :rules="i==0?[{ required: true, message: $t('patient.insurance.expirationDate')+' '+$t('global.validation') }]:''">
-                                    <a-date-picker @change="changedValue" v-model:value="insuranceData.expirationDate[i]" :format="globalDateFormat" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
+                                    <a-date-picker :disabledDate="d => !d || d.isSameOrBefore(moment().subtract('day',1))" @change="changedValue" v-model:value="insuranceData.expirationDate[i]" :format="globalDateFormat" value-format="YYYY-MM-DD" :size="size" style="width: 100%" />
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.expirationDate?errorMsg.expirationDate[0]:''" />
                                 </a-form-item>
                             </div>
