@@ -1415,6 +1415,7 @@ export default defineComponent({
         store.state.patients.fetchFromBitrix = "";
         store.state.patients.uploadFile = "";
       }
+      clearValidtion()
       Object.assign(demographics, form);
       isValueChanged.value = false;
       emergencyContactForm.sameAsPrimary = false;

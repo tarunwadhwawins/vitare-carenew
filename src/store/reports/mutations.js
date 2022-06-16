@@ -26,6 +26,7 @@ export const reportDetailList = (state, data) => {
     state.reportDetailList.device[0]['issueDate'] = dateOnlyFormat(data.device[0].issueDate, globalDateFormat)
     state.reportDetailList.device[0]['setupDate'] = dateOnlyFormat(data.device[0].setupDate, globalDateFormat)
   }
+  totalMinutes = null
   if (state.reportDetailList.call.length > 0) {
     state.reportDetailList.call.map(item=>{
       const seconds = item.endTime-item.startTime;
