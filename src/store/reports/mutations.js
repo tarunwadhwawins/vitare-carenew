@@ -114,8 +114,8 @@ export const patientReportVitals = (state, vitals) => {
 
     state.bloodPressureColumns = [
       {
-        title: "Date Recorded",
-        dataIndex: "takeTime",
+        title: "Time Recorded",
+        dataIndex: "takeOnlyTime",
         key: "takeTime",
         slots: {
           customRender: "takeTime",
@@ -149,8 +149,8 @@ export const patientReportVitals = (state, vitals) => {
 
     state.bloodOxygenColumns = [
       {
-        title: "Date Recorded",
-        dataIndex: "takeTime",
+        title: "Time Recorded",
+        dataIndex: "takeOnlyTime",
         key: "takeTime",
         slots: {
           customRender: "takeTime",
@@ -176,8 +176,8 @@ export const patientReportVitals = (state, vitals) => {
 
     state.bloodGlucoseColumns = [
       {
-        title: "Date Recorded",
-        dataIndex: "takeTime",
+        title: "Time Recorded",
+        dataIndex: "takeOnlyTime",
         key: "takeTime",
         slots: {
           customRender: "takeTime",
