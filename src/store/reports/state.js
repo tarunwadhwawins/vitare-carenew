@@ -15,5 +15,5 @@ export default {
     takeLength:[],
     dateWiseSortVitals:[],
     cptCodeFilterDates:null,
-    cptTimeline:null
+    cptTimeline:null,
 }

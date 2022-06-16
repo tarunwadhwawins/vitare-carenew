@@ -528,7 +528,8 @@ export const emergencyContact = (state, data) => {
 }
 
 export const patientTimelineSuccess = (state, timeline) => {
-  state.patientTimeline = timeline
+  state.patientTimeline = timeline.data
+  state.patientTimelineMeta = timeline.meta.pagination
 }
 
 export const addCondition = (state, data) => {
