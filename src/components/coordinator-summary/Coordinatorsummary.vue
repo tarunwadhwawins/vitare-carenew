@@ -114,7 +114,7 @@
                                         </a-col>
                                     </a-row>
                                 </a-tab-pane>
-                                <a-tab-pane key="5" tab="Roles">
+                                <a-tab-pane key="5" tab="Roles" v-if="role.user.staff.id!=paramId">
                                     <a-row :gutter="24">
                                         <a-col :sm="24" :xs="24">
                                             <div class="common-btn mb-24">
@@ -257,6 +257,7 @@ export default defineComponent({
         const router = useRoute();
         const clearData = ref(false)
         const resetPasswordVisible = ref(false)
+        const role = JSON.parse(localStorage.getItem("auth"))
  onMounted(()=>{
       store.dispatch('orderTable', {
                 data: '&orderField=&orderBy='
@@ -490,6 +491,7 @@ export default defineComponent({
             showModalvailability,
             showModalContact,
             handleOk,
+            role
         };
     },
 });
