@@ -243,7 +243,7 @@
     <!---->
     <AddAppointment v-model:visible="appointmentModal" @is-visible="showModal($event)" :patientId="patientId" :patientName="patientName" />
     <TasksModal v-model:visible="tasksModal" @saveTaskModal="handleTaskOk($event)" />
-    <PatientsModal v-model:visible="PatientsModal" @saveModal="closeAppointModal($event)" />
+    <PatientsModal v-model:visible="PatientsModal" @closeModal="closeAppointModal($event)" />
     <!-- <CoordinatorsModal v-model:visible="CoordinatorsModal" @ok="handleOk" /> -->
     <AddStartCall v-model:visible="AddStartCall" @ok="closeStartCallModal" @is-visible="showStartCallModal($event)" />
     <SendMessage v-model:visible="SendMessage" @ok="startOk" />
@@ -404,7 +404,7 @@ export default defineComponent({
             PatientsModal.value = true;
         };
         const closeAppointModal = (status) => {
-            PatientsModal.value = status;
+            PatientsModal.value = status.value;
         };
 
         const CoordinatorsModal = ref(false);

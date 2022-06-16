@@ -6,7 +6,7 @@
             {{$t('patient.patients')}}
          <div class="commonBtn"> 
               
-            <a-button class="btn primaryBtn" @click="showModal" :isEdit="isEdit" v-if="arrayToObjact(screensPermissions,62)">{{$t('patient.addNewPatients')}}</a-button>
+            <a-button class="btn primaryBtn" @click="showModal(true)" :isEdit="isEdit" v-if="arrayToObjact(screensPermissions,62)">{{$t('patient.addNewPatients')}}</a-button>
             <!-- <DateFilter :Buttons="Buttons" @clickButtons="showButton($event)" :custom="false" commit="timelineSuccess" /> -->
         </div>
         </h2>
@@ -51,7 +51,7 @@
 </a-row>
 
 <!--modal-->
-<PatientsModal v-model:visible="PatientsModal" @saveModal="handleOk($event)" />
+<PatientsModal v-model:visible="PatientsModal" @closeModal="handleOk($event)" />
 <!--end-->
 </template>
 
@@ -92,7 +92,8 @@ export default {
             PatientsModal.value = value;
         };
         const handleOk = (status) => {
-            PatientsModal.value = status;
+          
+            PatientsModal.value = status.value;
         };
         const handleChange = () => {};
 
