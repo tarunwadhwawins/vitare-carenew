@@ -10,7 +10,9 @@
         </template> -->
         <template #flags="{ record }">
             <a-tooltip placement="bottom">
-               
+                <template #title>
+                    <span>{{ record.flagName }}</span>
+                </template>
                 <a class="icons">
                     <Flags :flag="record.flagColor" :data="record" /></a>
             </a-tooltip>

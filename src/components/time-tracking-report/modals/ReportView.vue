@@ -25,7 +25,7 @@
        <a-col :sm="24" :xs="24" class="mb-24" v-if="vitals.bloodPressure?.length>0">
             <a-card :title="`Total Compliance Days - ${vitals.takeLength.length}`">
                 <!-- <VitalsTable :columns="vitals.bloodPressureColumns" :data="vitals.bloodPressure" /> -->
-              <a-collapse v-model:activeKey="activeKey" accordion >  
+              <a-collapse v-model:activeKey="activeKey" accordion >
                 <a-collapse-panel  :header="i+' ('+'Count - '+data.length+')'" v-for="(data,i,key) in vitals.bloodPressureData" :key="key" >
                   <VitalsTable :columns="vitals.bloodPressureColumns" :data="data" />
                 </a-collapse-panel>

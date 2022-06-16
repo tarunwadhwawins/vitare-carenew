@@ -2,8 +2,7 @@
   <a-select
   :getPopupContainer="triggerNode => triggerNode.parentNode"
     ref="select"
-    class=""
-    :listHeight="listHeight?listHeight:100"
+    class="globalDropList"
     :mode="mode"
     :value="value"
     @input="updateValue"
@@ -36,8 +35,7 @@ export default defineComponent({
     mode: String,
     close: Boolean,
     editDataPatient:Array,
-    placeholder:String,
-    listHeight:Number
+    placeholder:String
   },
 
   setup(props, context) {

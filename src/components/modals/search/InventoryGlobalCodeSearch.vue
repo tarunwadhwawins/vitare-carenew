@@ -1,7 +1,6 @@
 <template>
   <a-select
-  class=""
-  listHeight="150"
+  class="globalDropList"
   :getPopupContainer="triggerNode => triggerNode.parentNode"
     :value="value"
     show-search
