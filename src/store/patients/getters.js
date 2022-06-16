@@ -40,7 +40,11 @@ export const patientsRecord = (state)=>{
       return state.grids
     })
   }
-
+  export const patientTimelineMeta = (state) => {
+    return computed(() => {
+      return state.patientTimelineMeta
+    })
+  }
   
  
 

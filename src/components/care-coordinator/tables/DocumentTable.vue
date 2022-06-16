@@ -6,7 +6,7 @@
     </template>
     <template #document="text">
           <a :href="text.text" download>
-            <FileOutlined />
+            <DownloadOutlined />
           </a>
     </template>
     <template #action="text">
@@ -35,7 +35,7 @@
 
 <script>
 import { computed,defineAsyncComponent,defineComponent,ref } from "vue";
-import { DeleteOutlined, FileOutlined,EditOutlined } from "@ant-design/icons-vue";
+import { DeleteOutlined, DownloadOutlined,EditOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { warningSwal,arrayToObjact } from "@/commonMethods/commonMethod";
@@ -44,7 +44,7 @@ import { messages } from "@/config/messages";
 export default defineComponent({
   components: {
     DeleteOutlined,
-    FileOutlined,
+    DownloadOutlined,
     EditOutlined,
     StaffDocumentForm:defineAsyncComponent(()=> import("@/components/modals/forms/StaffDocuments"))
 
