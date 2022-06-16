@@ -1,5 +1,5 @@
 <template>
-  <a-select v-if="globalCode && !isColor" class="globalDropList"
+  <a-select v-if="globalCode && !isColor" class="" listHeight="150"
   :getPopupContainer="triggerNode => triggerNode.parentNode"
     :value="value"
     show-search
@@ -13,7 +13,7 @@
     @change="handleChange"
   ></a-select>
 
-  <a-select v-else-if="globalCode && isColor" class="globalDropList"
+  <a-select v-else-if="globalCode && isColor" class="" listHeight="150"
   :getPopupContainer="triggerNode => triggerNode.parentNode"
     :value="value"
     show-search
