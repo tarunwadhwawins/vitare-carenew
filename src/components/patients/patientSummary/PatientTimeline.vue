@@ -63,7 +63,7 @@
         </div>
     </a-timeline>
 </div>
-<PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="patientDetails.id" @closeModal="handleOk" :flags="flagsRecord" />
+<PatientFlagsModal v-model:visible="flagsModalVisible" :patientId="profileId?profileId : patientDetails.id" @closeModal="handleOk" :flags="flagsRecord" />
 </template>
 
 <script>
