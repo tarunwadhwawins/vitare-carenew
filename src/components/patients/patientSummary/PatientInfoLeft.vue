@@ -374,6 +374,7 @@ export default defineComponent({
     })
     
     const handleOk = ({modal, value}) => {
+      
       if(modal && value) {
         addEmergencyContactModalVisible.value = modal == 'addEmergencyContact' ? value : false;
         // addPhysicianModalVisible.value = modal == 'addPhysician' ? value : false;
