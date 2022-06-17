@@ -56,7 +56,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('providers.phoneNumber')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                                    <a-input-number @change="checkChangeInput()" v-model:value.trim="providerForm.phoneNumber" placeholder="Please enter 10 digit number" size="large" maxlength="10" style="width: 100%" />
+                                    <a-input v-maska="'###-###-####'" @change="checkChangeInput()"  v-model:value="providerForm.phoneNumber" placeholder="Please enter 10 digit number" size="large"  style="width: 100%" />
                                     <!-- <PhoneNumber @change="checkChangeInput()" v-model:value.trim="providerForm.phoneNumber" @setPhoneNumber="setPhoneNumberProviderForm"/> -->
                                     <ErrorMessage v-if="errorMsg" :name="errorMsg.phoneNumber?errorMsg.phoneNumber[0]:''" />
                                 </a-form-item>
@@ -72,7 +72,7 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('providers.modules')" name="moduleId" :rules="[{ required: true, message: $t('providers.modules')+' '+$t('global.validation') }]">
-                                    <GlobalCodeDropDown v-model:value="providerForm.moduleId" mode="multiple" :globalCode="providerModules" @change="checkChangeInput()" />
+                                    <GlobalCodeDropDown :listHeight="100" v-model:value="providerForm.moduleId" mode="multiple" :globalCode="providerModules" @change="checkChangeInput()" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -144,9 +144,8 @@
                         <a-col :md="8" :sm="12" :xs="24">
                             <div class="form-group">
                                 <a-form-item :label="$t('providers.phoneNumber')" name="phoneNumber" :rules="[{ required: true, message: $t('global.validValidation')+' '+$t('global.phoneNo').toLowerCase(),pattern:regex.phoneNumber}]">
-                                    <a-input-number v-model:value="providerLocationForm.phoneNumber" size="large" maxlength="10" @change="checkChangeInput()" style="width: 100%"/>
-                                    <!-- <vue-tel-input  v-model.trim:value="providerLocationForm.phoneNumber" v-bind="bindProps" @change="checkChangeInput()" /> -->
-                                    <!-- <PhoneNumber @change="checkChangeInput()" v-model:value.trim="providerLocationForm.phoneNumber" @setPhoneNumber="setPhoneNumberProviderLocationForm"/> -->
+                                    <!-- <a-input-number size="large" maxlength="10" @change="checkChangeInput()" style="width: 100%"/> -->
+                                    <a-input v-maska="'###-###-####'" @change="checkChangeInput()"  v-model:value="providerLocationForm.phoneNumber"  placeholder="Please enter 10 digit number" size="large"  style="width: 100%" />
                                 </a-form-item>
                             </div>
                         </a-col>
@@ -185,7 +184,7 @@
                                     </a-tooltip>
                                 </template>
                             </a-table>
-                            <Loader />
+                            <!-- <Loader /> -->
                         </a-col>
                         <a-col :span="24">
                             <div class="steps-action">
@@ -276,22 +275,36 @@ export default {
       providerLocationForm.phoneNumber = value;
     };
 
+    const providersData = computed(() => {
+      return store.state.provider;
+    })
+
     function UpdateStatus(event) {
       providerForm.isActive = event;
     }
     const submitProviderForm = () => {
-      if (!providerId) {
-        store.dispatch("provider", providerForm);
+      console.log('providersData',providersData)
+      providerForm.phoneNumber = providerForm.phoneNumber.replace(/-/g,'')
+      if (providersData.value.provider == null && !providerId) {
+        store.dispatch("provider", providerForm).then((resp)=>{
+          if(resp==true){
+            store.state.provider.providersListAll = "";
+            store.dispatch("providersListAll");
+          }
+        })
       } else {
         store.dispatch("updateSingleProvider", {
           data:providerForm,
-          id: providerId,
-        });
+          id: providerId?providerId:providersData.value.provider.id,
+        }).then((resp)=>{
+          if(resp==true){
+            store.state.provider.providersListAll = "";
+            store.dispatch("providersListAll");
+          }
+        })
       }
-      store.state.provider.providersListAll = "";
-      setTimeout(() => {
-        store.dispatch("providersListAll");
-      }, 2000);
+      
+      
 
       current.value++;
     };
@@ -300,9 +313,7 @@ export default {
       return store.state.provider.providerLocationList;
     })
 
-    const providersData = computed(() => {
-      return store.state.provider;
-    })
+    
 
     const columns = computed(() => {
       return store.state.provider.columns;
@@ -377,6 +388,7 @@ export default {
       //store.dispatch("provider");
       store.commit("resetCounter");
       emit("closeModal", false);
+      providersData.value.provider=null
     }
 
     function checkChangeInput() {

@@ -1,6 +1,7 @@
 <template>
     <a-select
     v-if="mode"
+    :getPopupContainer="triggerNode => triggerNode.parentNode"
     v-model:value="value"
     :mode="mode"
     style="width: 100%"

@@ -154,10 +154,11 @@ export const patient = (state, data) => {
         element.flagTmeStamp = element.flagTmeStamp ? dateFormat(element.flagTmeStamp) : '',
         element.lastReadingDate = element.lastReadingDate ? element.lastReadingDate : '',
         element.weight = element.weight ? element.weight : '',
-        element.bp = element.patientVitals.data.length > 0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'Systolic') { return vitalData.value } if (vitalData.vitalField == 'Diastolic') { return '/' + vitalData.value } }):'',
-        element.spo2 = element.patientVitals.data.length > 0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'SPO2') { return vitalData.value } }):'',
-        element.glucose = element.patientVitals.data.length > 0 ? element.patientVitals.data.map(vitalData => { if (vitalData.deviceType == 'Glucose') { return vitalData.value } }) : ''
-
+        element.bp = element.patientVitals.data.length > 0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'Systolic') { return JSON.parse(vitalData.value) } if (vitalData.vitalField == 'Diastolic') { return '/' + JSON.parse(vitalData.value) } }):'',
+        element.spo2 = element.patientVitals.data.length > 0 ?element.patientVitals.data.map(vitalData => { if (vitalData.vitalField == 'SPO2') { return JSON.parse(vitalData.value) } }):'',
+        element.glucose = element.patientVitals.data.length  > 0? element.patientVitals.data.map(vitalData => {  if (vitalData.deviceType == 'Glucose') { return JSON.parse(vitalData.value) } }) : '',
+        element.glucose = element.glucose !=''?element.glucose.filter(vitalData => {  if (typeof vitalData !== 'undefined') { return vitalData } }):'',
+        element.glucose = element.glucose.length >0 ? element.glucose[element.glucose.length-1]:''
         /* if(flagTimeStamp != null && flagTimeStamp != "") {
           const flagTimeDate = dateOnlyFormatSImple(flagTimeStamp)
           const todayDate = moment().format('yyyy-MM-DD')

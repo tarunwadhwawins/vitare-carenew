@@ -1,7 +1,8 @@
 <template>
-  <a-select v-if="globalCode && !isColor" class="" listHeight="150"
+  <a-select v-if="globalCode && !isColor" class="" 
   :getPopupContainer="triggerNode => triggerNode.parentNode"
     :value="value"
+    :listHeight="listHeight?listHeight:150"
     show-search
     showArrow
     :mode="mode"
@@ -13,8 +14,9 @@
     @change="handleChange"
   ></a-select>
 
-  <a-select v-else-if="globalCode && isColor" class="" listHeight="150"
+  <a-select v-else-if="globalCode && isColor" class="" 
   :getPopupContainer="triggerNode => triggerNode.parentNode"
+  :listHeight="listHeight?listHeight:150"
     :value="value"
     show-search
     :mode="mode"
@@ -75,6 +77,7 @@ export default defineComponent({
     globalCode:Array,
     mode:String,
     isColor:Boolean,
+    listHeight:Number
   },
   setup(props, { emit }) {
  
