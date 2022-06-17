@@ -5,8 +5,10 @@ import { successSwal, errorLogWithDeviceInfo } from '@/commonMethods/commonMetho
 export const provider = async ({
   commit
 }, data) => {
+  let status = false
   await serviceMethod.common("post", API_ENDPOINTS['provider'], null, data).then((response) => {
     commit('providerData', response.data.data);
+    status = true
   }).catch((error) => {
    if (error.response) {
 				errorLogWithDeviceInfo(error.response);
@@ -21,6 +23,7 @@ export const provider = async ({
       // errorSwal(error.response.data.message)
     }
   })
+  return status
 }
 
 export const providerLocation = async ({commit}, data) => {
@@ -50,9 +53,11 @@ export const providerLocation = async ({commit}, data) => {
 
 export const editProviderLocation = async ({commit}, data) => {
   commit('loadingStatus', true)
+  let status = false
   await serviceMethod.common("get", `provider/${data.id}/location/${data.locationId}`, null, null).then((response) => {
     commit('editProviderLocation', response.data.data);
     commit("checkChangeInput", true)
+    status = true
   }).catch((error) => {
    if (error.response) {
 				errorLogWithDeviceInfo(error.response);
@@ -67,6 +72,7 @@ export const editProviderLocation = async ({commit}, data) => {
       commit('errorMsg', error.response.data.message)
     }
   })
+  return status
 }
 
 
@@ -116,9 +122,11 @@ export const providersListAll = async ({
 
 export const editSingleProvider = async ({ commit }, id) => {
   commit('loadingStatus', true)
+  let status = false
   await serviceMethod.common("get", `provider/${id}`, null, null).then((response) => {
     commit('editSingleProvider', response.data.data);
     commit('loadingStatus', false)
+    status =true
   }).catch((error) => {
    if (error.response) {
 				errorLogWithDeviceInfo(error.response);
@@ -135,6 +143,7 @@ export const editSingleProvider = async ({ commit }, id) => {
       commit('loadingStatus', false)
     }
   })
+  return status
 }
 export const providerLocationList = async ({
   commit
@@ -185,9 +194,10 @@ export const deleteProviderLocation = async ({ commit }, data) => {
 }
 
 export const updateSingleProvider = async ({ commit }, data) => {
-  
+  let status =false
   await serviceMethod.common("put",`provider`,data.id,data.data).then((response)=>{
     commit('updateSingleProvider', response.data.data);
+    status =true
     if(data.data.showPopup){
       successSwal(response.data.message)
     }
@@ -205,5 +215,6 @@ export const updateSingleProvider = async ({ commit }, data) => {
       // errorSwal(error.response.data.message)
     }
   })
+  return status
 }
 
