@@ -269,30 +269,6 @@ export default {
       isActive: 1,
     });
 
-    // const setPhoneNumberProviderForm = (value) => {
-    //   providerForm.phoneNumber = value;
-    // };
-    // const setPhoneNumberProviderLocationForm = (value) => {
-    //   providerLocationForm.phoneNumber = value;
-    // };
-
-    // const current = computed({
-    //         get: () =>store.state.provider.counter,
-    //         set: (value) => {
-    //             if (providersData.value.provider && !value==1) {
-    //                 store.state.provider.counter = value;
-    //             } else {
-    //                 if (Object.values(providerForm).filter(item => item != '').length >= 9) {
-    //                     submitProviderForm();
-    //                 } else {
-    //                     errorSwal(messages.fieldsRequired)
-    //                     store.state.provider.counter = 0;
-    //                 }
-    //             }
-
-    //         },
-    //     })
-
     const current = computed({
       get: () => store.state.provider.counter,
       set: (value) => {
