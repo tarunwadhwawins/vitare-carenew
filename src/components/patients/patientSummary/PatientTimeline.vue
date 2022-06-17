@@ -19,12 +19,22 @@
     </a-checkbox-group>
     <div class="customBtn" v-if="value1.length>0">
         <a-button type="primary" @click="showAddFlagModal">Clear Flag</a-button>
+        
     </div>
+                  <a-checkbox 
+                  v-if="tab.find((item) =>item==7)!=undefined"
+      v-model:checked="checkAll"
+      
+      @change="onCheckAllChange"
+    >
+      Check all
+    </a-checkbox>
     <a-timeline class="defaultTimeline" style="height:calc(100vh - 330px)">
         <TableLoader />
         <div v-if="patientTimeline && (patientTimeline != null && patientTimeline.length > 0)">
-            <a-checkbox-group v-model:value="value1" style="width: 100%">
+            <a-checkbox-group v-model:value="value1" style="width: 100%" @change="onChangeCheckBox">
                 <template v-for="timeline in patientTimeline" :key="timeline.id">
+       
                     <a-timeline-item color="blue">
                         <template #dot>
                             <BellOutlined class="yellowIcon" v-if="timeline.type==1" />
@@ -114,10 +124,13 @@ export default {
             tab: []
         });
         const state = reactive({
-            value1: []
+            value1: [],
+            checkAll:false
         })
         watchEffect(() => {
             if (store.state.patients.tabvalue.length > 0) {
+                state.value1 = []
+                state.checkAll=false
                 tabvalue.tab = store.state.patients.tabvalue
 
             }
@@ -125,6 +138,7 @@ export default {
          const patientTimeline = computed(() => {
             return store.state.patients.patientTimeline;
         })
+       
         const meta = store.getters.patientTimelineMeta
         let data = []
         let scroller = ''
@@ -210,6 +224,8 @@ export default {
         };
 
         function chnageTab(value) {
+            state.value1 = []
+            state.checkAll=false
             store.state.patients.tabvalue = []
             store.commit('loadingTableStatus', true)
             var type = ''
@@ -239,6 +255,7 @@ export default {
         const flagsRecord = ref([])
 
         function showAddFlagModal() {
+            console.log("check",state.value1)
             flagsRecord.value = state.value1
             flagsModalVisible.value = true
 
@@ -250,11 +267,43 @@ export default {
             flagsModalVisible.value = value
             if (value == false) {
                 state.value1 = []
+                state.checkAll=false
             }
             console.log(modal)
 
         }
+        const onCheckAllChange = e => {
+            if(e.target.checked){
+               patientTimeline.value.map((item)=>{
+                if(item.type==7 && item.entity.data){
+                    state.value1.push(item.entity.data.id)
+                }
+               }) 
+            }else{
+                state.value1=[]
+            }
+     
+    };
+    function onChangeCheckBox(){
+        
+        var count = 0
+         patientTimeline.value.map((item)=>{
+                if(item.type==7 && item.entity.data){
+                    count++
+                }
+               }) 
+            
+              if(count==state.value1.length){
+                state.checkAll=true
+              }else{
+                state.checkAll=false
+              }
+
+    }
         return {
+            onChangeCheckBox,
+            
+            onCheckAllChange,
             handleOk,
             showAddFlagModal,
             pId,

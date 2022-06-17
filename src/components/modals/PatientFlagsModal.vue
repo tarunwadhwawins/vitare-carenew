@@ -111,7 +111,7 @@ export default {
             if (checkFieldsData.value) {
                 warningSwal(messages.modalWarning).then((response) => {
                     if (response == true) {
-                        
+                        formRef.value.resetFields();
                        Object.assign(addFlagForm, form);
                         emit("closeModal", {
             modal: 'addFlag',
@@ -128,6 +128,7 @@ export default {
                     }
                 });
             } 
+            formRef.value.resetFields();
         }
       return {
 				formRef,

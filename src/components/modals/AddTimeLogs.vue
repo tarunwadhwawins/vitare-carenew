@@ -59,7 +59,7 @@
 
 				<a-col :sm="24" :xs="24">
 					<div class="form-group">
-						<a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: true, message: $t('common.flag')+' '+$t('global.validation')  }]">
+						<a-form-item :label="$t('common.flag')" name="flag" :rules="[{ required: false, message: $t('common.flag')+' '+$t('global.validation')  }]">
 							<GlobalCodeDropDown v-model:value="addTimeLogForm.flag" :globalCode="flagsList"/>
 							<ErrorMessage v-if="errorMsg" :name="errorMsg.flag ? errorMsg.flag[0] : ''" />
 						</a-form-item>
@@ -68,7 +68,7 @@
         
         <a-col :sm="24" :xs="24">
           <div class="form-group">
-            <a-form-item :label="$t('timeLogs.note')" name="note" :rules="[{ required: true, message: $t('timeLogs.note')+' '+$t('global.validation')  }]">
+            <a-form-item :label="$t('timeLogs.note')" name="note" :rules="[{ required: false, message: $t('timeLogs.note')+' '+$t('global.validation')  }]">
               <a-textarea @change="changedValue" v-model:value="addTimeLogForm.note" size="large" style="width: 100%" />
             </a-form-item>
           </div>
@@ -230,7 +230,7 @@ export default defineComponent({
     function cancelButton() {
       emit('closeModal', {
         link: true,
-        modal: "addTimeLog",
+        modal: "cancelButton",
         value: false
       });
     }
