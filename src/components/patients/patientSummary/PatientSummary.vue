@@ -481,6 +481,6 @@ export default {
 }
 .blueBtn {
   position: relative;
-  top: 3px;
+  top: 0;
 }
 </style>
